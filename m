@@ -2,68 +2,88 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id ED45E1A343
-	for <lists+selinux@lfdr.de>; Fri, 10 May 2019 21:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96A201A418
+	for <lists+selinux@lfdr.de>; Fri, 10 May 2019 22:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728074AbfEJTCm (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 10 May 2019 15:02:42 -0400
-Received: from 48.23.240.77.static.louhi.net ([77.240.23.48]:56178 "EHLO
-        kolttonen.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727535AbfEJTCm (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Fri, 10 May 2019 15:02:42 -0400
-X-Greylist: delayed 2765 seconds by postgrey-1.27 at vger.kernel.org; Fri, 10 May 2019 15:02:40 EDT
-Received: from 34-41-5D-CA-59-C7 (176-93-196-243.bb.dnainternet.fi [176.93.196.243])
-        (authenticated bits=0)
-        by vcust561.louhi.net (8.14.7/8.14.7/0) with ESMTP id x4AIIcgl013605
-        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO)
-        for <selinux@vger.kernel.org>; Fri, 10 May 2019 21:18:39 +0300
-DKIM-Filter: OpenDKIM Filter v2.11.0 vcust561.louhi.net x4AIIcgl013605
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kolttonen.fi;
-        s=mail; t=1557512319;
-        bh=9mTgzrVyc6W8yzazdzTBIq4ME79EYkNtWv9nLT8tNwM=;
-        h=Date:From:To:Subject:From;
-        b=W/nKo1n3eeufZCUX9EcqeltZCo+6oUPEtGgVEAcaP62enEh7ABMIJ317yhayi80o3
-         Sjc8bUkcjzo3o7VL4X+8mSJoZEMgbCueEWR4bCq/n9bhVbXmFTKRNLZZhgZ6Eil4KA
-         FJrJKUVJwf/XolmPqbZK0SDcJVbWkwpqH36wXmr3l+4tImsUbBHSj0SnldkwteJHvZ
-         Ko4Grc/RD3OYiRyH2JG4izFR64Hm3oRsVlvAPPKwnhzNhllOCprb5+vuEyKJelEtQF
-         /nXpiDKcTtTU3eVEuUfFtVdHtsA00ESJGD6jBi/ykmg9lQwRZffTMLK7DyCxyO9Q3i
-         nT1zJR7MUz9Tg==
-Date:   Fri, 10 May 2019 21:18:41 +0300 (EEST)
-From:   =?ISO-8859-15?Q?Jokke_H=E4m=E4l=E4inen?= 
-        <jokke.hamalainen@kolttonen.fi>
-To:     selinux@vger.kernel.org
-Subject: [PATCH] Check strdup() failure
-Message-ID: <alpine.LFD.2.21.1905102118010.16225@34-41-5D-CA-59-C7>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+        id S1727878AbfEJUvw (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 10 May 2019 16:51:52 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:33574 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727868AbfEJUvw (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 10 May 2019 16:51:52 -0400
+Received: by mail-oi1-f196.google.com with SMTP id m204so5529835oib.0
+        for <selinux@vger.kernel.org>; Fri, 10 May 2019 13:51:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=d5/XKfmcNWhzPfTilEmMNOHVf+iWpT6mQjFcg9TgJCA=;
+        b=k3VWfBgbeGyY+Sl82Ql/CNBuHRsELjm2rr2234+DxI8e2ojOu6/QT9iQdvkOnf4IQD
+         rWo1uEpHnakvM8DOPDTUhiuEFncsbFQoMr8kzZY01sIVRrBrJuY9i4lSzPUnQmNhdxhO
+         andzryhmcyZVSYZc1mKW0yWu+flQK2COJS9sq1qGtp0NhPEidWMi45zO5ssEFe0WT42r
+         AHDbrDWhNoy3EOqhbzGEzScb0CkHiqghh0+olGLPya6eHI9BwuCLMmHSaBW+imqcIR/S
+         YGVEuxSPVGUWyHhHZ5n0PZ3ACSut43n40pbrC7e1F0ZWM2pykAqIlA2Qnh9XcnAdaBLI
+         posA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=d5/XKfmcNWhzPfTilEmMNOHVf+iWpT6mQjFcg9TgJCA=;
+        b=uCdbs9MC8OaLtU46XbQHdfnMV7Xb0e7FUgY+ZSu9IRkhUaCbyvxOchZK/VKl1EgwQK
+         vqYDGxkdGCmB0PkxKOeZ604K0IlcYxvWbHxCRIIS7JokScOvcpDxspkF3J5NgpDqJHqK
+         D3rNQ5UfX9j2Jfn9KPaJwDJAcXXYfsILLxnpwQXrq/spt855qyog756eZ9a8y9XUsGRq
+         eaduwkEI+cwkpVXo0RbWXaXZGq/gw/k8KopSAKWU/MH6pphLnKczA72Q0oFYkrFR+8KA
+         52p7UDPPSoDH+66/G1xNNLa2dQ0PLkAjwBMPRDQMe1KXpCHx8r7qpYYkE3oaxq7iGBb3
+         B5YQ==
+X-Gm-Message-State: APjAAAXdt/XwG9kCcMg5TqhgDB+Gx0VWa26fMr4ySffOH0PXp19id5uR
+        fD7uS2kWK4N8jKZCLlWVwbqtEUmotJajYOHSMOb4ebfw
+X-Google-Smtp-Source: APXvYqzQf+BHapBtT/YttiD68lTo6zDD/0Vh5wuKsqLcW1Hv195h02n6FtEcss2kXwFgLTnI2QftR/wkXBs+5m5J4so=
+X-Received: by 2002:aca:c154:: with SMTP id r81mr6023975oif.160.1557521511133;
+ Fri, 10 May 2019 13:51:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+References: <alpine.LFD.2.21.1905102116350.16225@34-41-5D-CA-59-C7>
+In-Reply-To: <alpine.LFD.2.21.1905102116350.16225@34-41-5D-CA-59-C7>
+From:   William Roberts <bill.c.roberts@gmail.com>
+Date:   Fri, 10 May 2019 13:51:39 -0700
+Message-ID: <CAFftDdpJe1Yd_MdiNO=D+=pK6bbg3-G+a0aM_Ck=cz7dzJdsgA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] another style fix
+To:     =?UTF-8?B?Sm9ra2UgSMOkbcOkbMOkaW5lbg==?= 
+        <jokke.hamalainen@kolttonen.fi>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+On Fri, May 10, 2019 at 12:03 PM Jokke H=C3=A4m=C3=A4l=C3=A4inen
+<jokke.hamalainen@kolttonen.fi> wrote:
+>
+>
+>
+> ---
+>  libselinux/utils/matchpathcon.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/libselinux/utils/matchpathcon.c b/libselinux/utils/matchpath=
+con.c
+> index 9756d7d9..eb39a188 100644
+> --- a/libselinux/utils/matchpathcon.c
+> +++ b/libselinux/utils/matchpathcon.c
+> @@ -25,7 +25,7 @@ static int printmatchpathcon(const char *path, int head=
+er, int mode)
+>         int rc =3D matchpathcon(path, mode, &buf);
+>         if (rc < 0) {
+>                 if (errno =3D=3D ENOENT) {
+> -                       buf=3Dstrdup("<<none>>");
+> +                       buf =3D strdup("<<none>>");
+>                 } else {
+>                         fprintf(stderr, "matchpathcon(%s) failed: %s\n", =
+path,
+>                                 strerror(errno));
+> --
+> 2.21.0
+>
 
-
----
- libselinux/utils/getconlist.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/libselinux/utils/getconlist.c b/libselinux/utils/getconlist.c
-index 5ac0ca85..29c16640 100644
---- a/libselinux/utils/getconlist.c
-+++ b/libselinux/utils/getconlist.c
-@@ -27,6 +27,11 @@ int main(int argc, char **argv)
- 		switch (opt) {
- 		case 'l':
- 			level = strdup(optarg);
-+			if (!level) {
-+				fprintf(stderr, "memory allocation failure: %d(%s)\n",
-+					errno, strerror(errno));
-+				return 3;
-+			}
- 			break;
- 		default:
- 			usage(argv[0], "invalid option", 1);
--- 
-2.21.0
-
+ack

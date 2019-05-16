@@ -2,132 +2,248 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A54BF1FCB2
-	for <lists+selinux@lfdr.de>; Thu, 16 May 2019 01:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 296CC1FD46
+	for <lists+selinux@lfdr.de>; Thu, 16 May 2019 03:48:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726394AbfEOXNa (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 15 May 2019 19:13:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41572 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725953AbfEOXNa (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Wed, 15 May 2019 19:13:30 -0400
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C66112084E
-        for <selinux@vger.kernel.org>; Wed, 15 May 2019 23:13:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1557962009;
-        bh=oXIRUhaHoitttMrIPB2rv0mrXlZVPITnJpfkP2WGxVA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=VbF8Ip5K02eLqRuNtSS6WygUsSTTLfyAYn9NcN3u9GKSyhtm3+BN8zkh35/Dq8Ekl
-         BLooL6ayE6/H0fEyV9VadrhQFqHsDyCMtDszV2imLL0hKb1Cba9BH4ZcIchASyFnVv
-         uYGJFISNfE49xSl0pLPqhJzxWUFndnszyL6u0ULw=
-Received: by mail-wr1-f44.google.com with SMTP id s17so1258445wru.3
-        for <selinux@vger.kernel.org>; Wed, 15 May 2019 16:13:28 -0700 (PDT)
-X-Gm-Message-State: APjAAAXKJl2AA6y4cfftsoWg0S7L1PjSqm6q0zLgyDKVyA9e9VdFuER+
-        XfphhfqKVVh/jkK0/hNxUSYTI4dnrwefPG9rBN7NGQ==
-X-Google-Smtp-Source: APXvYqx8WK5Hi6FoJcSd9VsW2VbRkOOSjlnlo07tWriqsFOxSCmdirUQKhI03vZN1Sh8qXdY8fD30ruPZx0us0bAMz4=
-X-Received: by 2002:adf:fb4a:: with SMTP id c10mr26918322wrs.309.1557962007443;
- Wed, 15 May 2019 16:13:27 -0700 (PDT)
+        id S1727504AbfEPBqd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 May 2019 21:46:33 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:44973 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726773AbfEPAfE (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 15 May 2019 20:35:04 -0400
+Received: by mail-ot1-f67.google.com with SMTP id g18so1775270otj.11
+        for <selinux@vger.kernel.org>; Wed, 15 May 2019 17:35:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=GV0zBytOUkWMTc1mkwDidujCEM8RWB40RrYCLlpbtPE=;
+        b=FMY+F+vshneloA78kBpyVxKtDY2wvkpOXcan4ftIWYSg593a+HhcENdHNEMfhOC24e
+         wDyNs8waC70j+GaOiNcqgB4UjdKh8udW2qDKjqVPaWhK6imTTpS3RFb+r1uRzdaHwA85
+         NITipbLcV0nGgaOYLl+OmvrWsr+ymP6YCSeQZrE8zyTDkgzQlX6URJGNbhjERm/Gn0Zp
+         rKX8naqzC6LIJJwRClIDa+PP7ROYyTcLWGpstyJceYaPERxz+/oJlp+UuapZPvGz10it
+         iNhtaDKWGSGtHaJWXEpuism6wnKmDyMztei2BJTH4OFIEiwYqia4lqiMDXsxYvLX9iPR
+         BDMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=GV0zBytOUkWMTc1mkwDidujCEM8RWB40RrYCLlpbtPE=;
+        b=fRqI3d7t6PsFNRDLtv5v4tnSlwDMsN4SuPhlDvqAyTM+BfQnNpczQil+U/+VxesOQs
+         Eqo6V9GH6aFnWug1SbTCF8Lykb+4TVaW1cZm5sfEERrdaQARWGu3Hs4s2GieJ+u1n0s6
+         i12ffVtKpUqEmSUfWvNeUvPP7l9XCcRM3vvOcbNaBQQgt3Yk1wnJLb32aZ3JnV7LxoGE
+         B2ebcKwKmm/NKY7yTiRwl+6q4AB9BdjFmmUAOP1zgXN2mGsCa4UBQ8mXDY/IuqD/kZ+O
+         yv6Srnuy6+U/MM6nsJU9bzH8Ytk1bA1xMRAuV08Inrwku1MmkzsloEcPMHNbhtTtaIBd
+         qOow==
+X-Gm-Message-State: APjAAAXSK23cYV5mBtCgQeVELg8M5cdxJZYmk2/2W/stbXKhJDnLj87M
+        f8C4WlMmDLcck7WeR0WnzMIdSVfFoRm6srBwURuBV3A9SKU=
+X-Google-Smtp-Source: APXvYqz/sB7k4DDkRwCzaQOGBJnH3KAmKUqxeRKowQlaVxExrl7rkV9elntVTdayumDJ9UZS4nNQAr7h3U44a/jxZ/M=
+X-Received: by 2002:a9d:8a7:: with SMTP id 36mr26898959otf.111.1557966904096;
+ Wed, 15 May 2019 17:35:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <8fe520bb-30bd-f246-a3d8-c5443e47a014@intel.com>
- <358e9b36-230f-eb18-efdb-b472be8438b4@fortanix.com> <960B34DE67B9E140824F1DCDEC400C0F4E886094@ORSMSX116.amr.corp.intel.com>
- <6da269d8-7ebb-4177-b6a7-50cc5b435cf4@fortanix.com> <CALCETrWCZQwg-TUCm58DVG43=xCKRsMe1tVHrR8vdt06hf4fWA@mail.gmail.com>
- <20190513102926.GD8743@linux.intel.com> <20190514104323.GA7591@linux.intel.com>
- <CALCETrVbgTCnPo=PAq0-KoaRwt--urrPzn==quAJ8wodCpkBkw@mail.gmail.com>
- <20190514204527.GC1977@linux.intel.com> <CALCETrX6aL367mMJh5+Y1Seznfu-AvhPV6P7GkWF4Dhu0GV8cw@mail.gmail.com>
- <20190515013031.GF1977@linux.intel.com> <CALCETrXf8mSK45h7sTK5Wf+pXLVn=Bjsc_RLpgO-h-qdzBRo5Q@mail.gmail.com>
- <alpine.LRH.2.21.1905160543070.19802@namei.org> <CALCETrX_Q6qwNRNF0TL2tgfm1j6DKLX7NVHHmWbMFtk3WnHDKw@mail.gmail.com>
- <alpine.LRH.2.21.1905160844130.29250@namei.org>
-In-Reply-To: <alpine.LRH.2.21.1905160844130.29250@namei.org>
-From:   Andy Lutomirski <luto@kernel.org>
-Date:   Wed, 15 May 2019 16:13:15 -0700
-X-Gmail-Original-Message-ID: <CALCETrX2ovRx3Rre+1_xC-q6CiybyLjQ-gmB4FZF_qCZ-Qd+4A@mail.gmail.com>
-Message-ID: <CALCETrX2ovRx3Rre+1_xC-q6CiybyLjQ-gmB4FZF_qCZ-Qd+4A@mail.gmail.com>
-Subject: Re: SGX vs LSM (Re: [PATCH v20 00/28] Intel SGX1 support)
-To:     James Morris <jmorris@namei.org>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        Eric Paris <eparis@parisplace.org>, selinux@vger.kernel.org,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Jethro Beekman <jethro@fortanix.com>,
-        "Xing, Cedric" <cedric.xing@intel.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Dr. Greg" <greg@enjellic.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "nhorman@redhat.com" <nhorman@redhat.com>,
-        "npmccallum@redhat.com" <npmccallum@redhat.com>,
-        "Ayoun, Serge" <serge.ayoun@intel.com>,
-        "Katz-zamir, Shay" <shay.katz-zamir@intel.com>,
-        "Huang, Haitao" <haitao.huang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Svahn, Kai" <kai.svahn@intel.com>, Borislav Petkov <bp@alien8.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        "Huang, Kai" <kai.huang@intel.com>,
-        David Rientjes <rientjes@google.com>
+References: <alpine.LFD.2.21.1905102117140.16225@34-41-5D-CA-59-C7> <CAFftDdrWTEXizp=BhcDBfKnh43uDX6dc_683EA_aO8aimpSo_g@mail.gmail.com>
+In-Reply-To: <CAFftDdrWTEXizp=BhcDBfKnh43uDX6dc_683EA_aO8aimpSo_g@mail.gmail.com>
+From:   William Roberts <bill.c.roberts@gmail.com>
+Date:   Wed, 15 May 2019 17:34:52 -0700
+Message-ID: <CAFftDdq5PF8Dx09a6SxtRhNkVH=L1a25HaK7ixhaJrf1VfyXtw@mail.gmail.com>
+Subject: Re: [PATCH] Global replace exit(0) with more readable exit(EXIT_SUCCESS)
+To:     =?UTF-8?B?Sm9ra2UgSMOkbcOkbMOkaW5lbg==?= 
+        <jokke.hamalainen@kolttonen.fi>, Daniel J Walsh <dwalsh@redhat.com>
+Cc:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, May 15, 2019 at 3:46 PM James Morris <jmorris@namei.org> wrote:
+merged: https://github.com/SELinuxProject/selinux/pull/148
+
+On Fri, May 10, 2019 at 2:00 PM William Roberts
+<bill.c.roberts@gmail.com> wrote:
 >
-> On Wed, 15 May 2019, Andy Lutomirski wrote:
->
-> > > Why not just use an xattr, like security.sgx ?
+> On Fri, May 10, 2019 at 12:03 PM Jokke H=C3=A4m=C3=A4l=C3=A4inen
+> <jokke.hamalainen@kolttonen.fi> wrote:
 > >
-> > Wouldn't this make it so that only someone with CAP_MAC_ADMIN could
-> > install an enclave?  I think that this decision should be left up the
-> > administrator, and it should be easy to set up a loose policy where
-> > anyone can load whatever enclave they want.  That's what would happen
-> > in my proposal if there was no LSM loaded or of the LSM policy didn't
-> > restrict what .sigstruct files were acceptable.
+> >
+> >
+> > ---
+> >  libselinux/utils/avcstat.c         | 4 ++--
+> >  libselinux/utils/compute_av.c      | 2 +-
+> >  libselinux/utils/compute_create.c  | 2 +-
+> >  libselinux/utils/compute_member.c  | 2 +-
+> >  libselinux/utils/compute_relabel.c | 2 +-
+> >  libselinux/utils/compute_user.c    | 4 ++--
+> >  libselinux/utils/getfilecon.c      | 2 +-
+> >  libselinux/utils/getpidcon.c       | 2 +-
+> >  libselinux/utils/getseuser.c       | 2 +-
+> >  libselinux/utils/policyvers.c      | 2 +-
+> >  libselinux/utils/setfilecon.c      | 2 +-
+> >  11 files changed, 13 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/libselinux/utils/avcstat.c b/libselinux/utils/avcstat.c
+> > index 884a10bf..da239287 100644
+> > --- a/libselinux/utils/avcstat.c
+> > +++ b/libselinux/utils/avcstat.c
+> > @@ -116,7 +116,7 @@ int main(int argc, char **argv)
+> >                 case 'h':
+> >                 case '-':
+> >                         usage();
+> > -                       exit(0);
+> > +                       exit(EXIT_SUCCESS);
+>
+> I wonder why this is exit success (as well as other spots)? Wouldn't
+> something triggering usage be a fail unless they
+> asked for usage()? Is that what - is doing ($ avcstat ----)? The man
+> page doesn't mention it. Dan what was your thoughts here?
+> I'm assuming you wrote it based on the man page and it seems to be
+> included from Josh's initial import from SVN.
+>
+> >                 default:
+> >                         usage();
+> >                         die("unrecognized parameter '%c'", i);
+> > @@ -133,7 +133,7 @@ int main(int argc, char **argv)
+> >                 }
+> >                 if (n =3D=3D 0) {
+> >                         usage();
+> > -                       exit(0);
+> > +                       exit(EXIT_SUCCESS);
+> >                 }
+> >                 interval =3D n;
+> >         }
+> > diff --git a/libselinux/utils/compute_av.c b/libselinux/utils/compute_a=
+v.c
+> > index 574fa6ed..df4a77e8 100644
+> > --- a/libselinux/utils/compute_av.c
+> > +++ b/libselinux/utils/compute_av.c
+> > @@ -51,5 +51,5 @@ int main(int argc, char **argv)
+> >                 printf("\n");
+> >         }
+> >
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/compute_create.c b/libselinux/utils/compu=
+te_create.c
+> > index 4abc29fb..449ccd90 100644
+> > --- a/libselinux/utils/compute_create.c
+> > +++ b/libselinux/utils/compute_create.c
+> > @@ -32,5 +32,5 @@ int main(int argc, char **argv)
+> >
+> >         printf("%s\n", buf);
+> >         freecon(buf);
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/compute_member.c b/libselinux/utils/compu=
+te_member.c
+> > index 14edd451..c6dad19e 100644
+> > --- a/libselinux/utils/compute_member.c
+> > +++ b/libselinux/utils/compute_member.c
+> > @@ -32,5 +32,5 @@ int main(int argc, char **argv)
+> >
+> >         printf("%s\n", buf);
+> >         freecon(buf);
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/compute_relabel.c b/libselinux/utils/comp=
+ute_relabel.c
+> > index 970750e8..85c760bc 100644
+> > --- a/libselinux/utils/compute_relabel.c
+> > +++ b/libselinux/utils/compute_relabel.c
+> > @@ -32,5 +32,5 @@ int main(int argc, char **argv)
+> >
+> >         printf("%s\n", buf);
+> >         freecon(buf);
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/compute_user.c b/libselinux/utils/compute=
+_user.c
+> > index cae62b26..86d00a6e 100644
+> > --- a/libselinux/utils/compute_user.c
+> > +++ b/libselinux/utils/compute_user.c
+> > @@ -27,12 +27,12 @@ int main(int argc, char **argv)
+> >
+> >         if (!buf[0]) {
+> >                 printf("none\n");
+> > -               exit(0);
+> > +               exit(EXIT_SUCCESS);
+> >         }
+> >
+> >         for (ptr =3D buf; *ptr; ptr++) {
+> >                 printf("%s\n", *ptr);
+> >         }
+> >         freeconary(buf);
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/getfilecon.c b/libselinux/utils/getfileco=
+n.c
+> > index a7a51abb..6266ae16 100644
+> > --- a/libselinux/utils/getfilecon.c
+> > +++ b/libselinux/utils/getfilecon.c
+> > @@ -23,5 +23,5 @@ int main(int argc, char **argv)
+> >                 printf("%s\t%s\n", argv[i], buf);
+> >                 freecon(buf);
+> >         }
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/getpidcon.c b/libselinux/utils/getpidcon.=
+c
+> > index 3df0da1f..ea6c274e 100644
+> > --- a/libselinux/utils/getpidcon.c
+> > +++ b/libselinux/utils/getpidcon.c
+> > @@ -27,5 +27,5 @@ int main(int argc, char **argv)
+> >
+> >         printf("%s\n", buf);
+> >         freecon(buf);
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/getseuser.c b/libselinux/utils/getseuser.=
+c
+> > index c33a4ad2..9193fe0a 100644
+> > --- a/libselinux/utils/getseuser.c
+> > +++ b/libselinux/utils/getseuser.c
+> > @@ -36,5 +36,5 @@ int main(int argc, char **argv)
+> >         for (i =3D 0; i < n; i++)
+> >                 printf("Context %d\t%s\n", i, contextlist[i]);
+> >         freeconary(contextlist);
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/policyvers.c b/libselinux/utils/policyver=
+s.c
+> > index 0309d7d1..dd56f2c7 100644
+> > --- a/libselinux/utils/policyvers.c
+> > +++ b/libselinux/utils/policyvers.c
+> > @@ -14,5 +14,5 @@ int main(int argc __attribute__ ((unused)), char **ar=
+gv)
+> >         }
+> >
+> >         printf("%d\n", rc);
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > diff --git a/libselinux/utils/setfilecon.c b/libselinux/utils/setfileco=
+n.c
+> > index d69af84a..79af55de 100644
+> > --- a/libselinux/utils/setfilecon.c
+> > +++ b/libselinux/utils/setfilecon.c
+> > @@ -20,5 +20,5 @@ int main(int argc, char **argv)
+> >                         exit(2);
+> >                 }
+> >         }
+> > -       exit(0);
+> > +       exit(EXIT_SUCCESS);
+> >  }
+> > --
+> > 2.21.0
 > >
 >
-> You could try user.sigstruct, which does not require any privs.
->
-
-I don't think I understand your proposal.  What file would this
-attribute be on?  What would consume it?
-
-I'm imagining that there's some enclave in a file
-crypto_thingy.enclave.  There's also a file crypto_thingy.sigstruct.
-crypto_thingy.enclave has type lib_t or similar so that it's
-executable.  crypto_thingy.sigstruct has type sgx_sigstruct_t.  The
-enclave loader does, in effect:
-
-void *source_data = mmap(crypto_thingy.enclave, PROT_READ | PROT_EXEC, ...);
-int sigstruct_fd = open("crypto_thingy.sigstruct", O_RDONLY);
-int enclave_fd = open("/dev/sgx/enclave", O_RDWR);
-
-ioctl(enclave_fd, SGX_IOC_ADD_SOME_DATA, source_data + source_offset,
-enclave_offset, len, ...);
-ioctl(enclave_fd, SGX_IOC_ADD_SOME_DATA, source_data + source_offset2,
-enclave_offset2, len, ...);
-etc.
-
-/* Here's where LSMs get to check that the sigstruct is acceptable.
-The CPU will check that the sigstruct matches the enclave. */
-ioctl(enclave_fd, SGX_INIT_THE_ENCLAVE, sigstruct_fd);
-
-/* Actually map the thing */
-mmap(enclave_fd RO section, PROT_READ, ...);
-mmap(enclave_fd RW section, PROT_READ | PROT_WRITE, ...);
-mmap(enclave_fd RX section, PROT_READ | PROT_EXEC, ...);
-
-/* This should fail unless EXECMOD is available, I think */
-mmap(enclave_fd RWX section, PROT_READ | PROT_WRITE | PROT_EXEC);
-
-And the idea here is that, if the .enclave file isn't mapped
-PROT_EXEC, then mmapping the RX section will also require EXECMEM or
-EXECMOD.
+> ack on this as is, since it preserves behavior, but on the usage()
+> case I wonder why
+> some are not a failure.

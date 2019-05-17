@@ -2,17 +2,17 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0004A21C4E
-	for <lists+selinux@lfdr.de>; Fri, 17 May 2019 19:19:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4735321C58
+	for <lists+selinux@lfdr.de>; Fri, 17 May 2019 19:21:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728192AbfEQRTM (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 May 2019 13:19:12 -0400
-Received: from mail-pg1-f196.google.com ([209.85.215.196]:39099 "EHLO
-        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726293AbfEQRTL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 May 2019 13:19:11 -0400
-Received: by mail-pg1-f196.google.com with SMTP id w22so3589026pgi.6
-        for <selinux@vger.kernel.org>; Fri, 17 May 2019 10:19:11 -0700 (PDT)
+        id S1728263AbfEQRUj (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 May 2019 13:20:39 -0400
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:39565 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728253AbfEQRUi (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 May 2019 13:20:38 -0400
+Received: by mail-pl1-f193.google.com with SMTP id g9so3630746plm.6
+        for <selinux@vger.kernel.org>; Fri, 17 May 2019 10:20:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=amacapital-net.20150623.gappssmtp.com; s=20150623;
         h=content-transfer-encoding:from:mime-version:subject:date:message-id
@@ -29,21 +29,21 @@ X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         h=x-gm-message-state:content-transfer-encoding:from:mime-version
          :subject:date:message-id:references:cc:in-reply-to:to;
         bh=JAswoR5Qv/2WYAqzx6JaoqD58LtbqKgAkfQL5B0Gl2k=;
-        b=R8zLS3SBe4vqjY8tZbestTW3XMimu9MZghDz5ZqlB66E3Gx/LizcRvbSHLf0mu0iDn
-         03a0va0RyzXFNIRWMy6xiMgfVXb6GqdcpU+utZTgUclKTnMRB76O6/Rcb2h5Nbp+I8wJ
-         AqGCADJwE9yBuTlCd6Ub0wcHOPXacVdvAzMKbuibXT1OPpvWyh8+3PCwWNujDPTPu8Z5
-         GeHPzyQB/magjjtH48kwdjQnATtTe3h1thmLqqb+nbK3pG6Wzu9RQ8+sbFxERnsV/PPp
-         Zkgqu6oeNNWEoGQyhWlnQszXoOGUB8yQpsuSnviXBipC6EjgcytZxO9naMVCXR2MMrxB
-         YPoQ==
-X-Gm-Message-State: APjAAAU+5OB+xajzrtF1pndb51vlYwtWato9WzsPpJom/w16lm1G8drs
-        do9n1mL612VfUQQPGBgLnPKKQw==
-X-Google-Smtp-Source: APXvYqzB8HQYLiqoUkmvgy2Qbfkq0oKD7/O5SMJJluI3vpUX7KQUH6p/CAsDENs2ofp3S28Iz4r7gA==
-X-Received: by 2002:aa7:8c10:: with SMTP id c16mr16875764pfd.89.1558113551080;
-        Fri, 17 May 2019 10:19:11 -0700 (PDT)
+        b=q0VAuMtaJ9cHtoW2g91AWy1TUq4InW/xqtayUWVn2adSn5tqxYA0QPXRjkx0eq6MxS
+         v41anqalQ4K2ZkyHPzyOvrJZIKw/CVKidxFCG+cX7HYFJKO6X0OhQJdabPLTKhFNmrJl
+         79WRtFPCbTZlDGmghzr0OWolQBPk34UIfOERqKxtgP/v29xSUn7TwQ/gXTiZoCzZliqG
+         R+YQE/QCSt6aWQYRw0EyVuwsIaTT6+DWetr3u04+pa8XJDxi+vZFD7uMqI/Tsu49D222
+         IME2xq6A47S9lphFg36WjwSFJWpeZotSM/AI5f5reRtEsQHQwGqxRHh2TEFWrTv5DliK
+         mQ5w==
+X-Gm-Message-State: APjAAAVlJILAxYQGgcYtGcAOKKd55EnbIm59muu1KDU8DeVcFUVHVQCq
+        1xDhkla/hVyGLHvhITqX0wjcrg==
+X-Google-Smtp-Source: APXvYqx+qyuENZ/nUYFbGVAoO8hVLoci4YkNPBz4AUML7LDx6gfKrTjzh035v8BrqjYhwueHCgWmdA==
+X-Received: by 2002:a17:902:201:: with SMTP id 1mr13358334plc.263.1558113637940;
+        Fri, 17 May 2019 10:20:37 -0700 (PDT)
 Received: from [10.232.242.123] (96.sub-97-41-134.myvzw.com. [97.41.134.96])
-        by smtp.gmail.com with ESMTPSA id t2sm3841651pfh.166.2019.05.17.10.18.22
+        by smtp.gmail.com with ESMTPSA id o7sm13935991pfp.168.2019.05.17.10.20.37
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 17 May 2019 10:19:10 -0700 (PDT)
+        Fri, 17 May 2019 10:20:37 -0700 (PDT)
 Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: quoted-printable
 From:   Andy Lutomirski <luto@amacapital.net>

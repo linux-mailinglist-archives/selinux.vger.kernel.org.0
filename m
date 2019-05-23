@@ -2,201 +2,138 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E68327E4E
-	for <lists+selinux@lfdr.de>; Thu, 23 May 2019 15:39:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 172A227F5A
+	for <lists+selinux@lfdr.de>; Thu, 23 May 2019 16:17:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729972AbfEWNjx (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 23 May 2019 09:39:53 -0400
-Received: from mail-ed1-f68.google.com ([209.85.208.68]:45530 "EHLO
-        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729902AbfEWNjw (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 23 May 2019 09:39:52 -0400
-Received: by mail-ed1-f68.google.com with SMTP id g57so9261057edc.12
-        for <selinux@vger.kernel.org>; Thu, 23 May 2019 06:39:51 -0700 (PDT)
+        id S1730681AbfEWORF (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 23 May 2019 10:17:05 -0400
+Received: from upbd19pa12.eemsg.mail.mil ([214.24.27.87]:62475 "EHLO
+        upbd19pa12.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730323AbfEWORF (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 23 May 2019 10:17:05 -0400
+X-Greylist: delayed 748 seconds by postgrey-1.27 at vger.kernel.org; Thu, 23 May 2019 10:17:02 EDT
+X-EEMSG-check-017: 216369699|UPBD19PA12_EEMSG_MP12.csd.disa.mil
+Received: from emsm-gh1-uea10.ncsc.mil ([214.29.60.2])
+  by upbd19pa12.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 23 May 2019 14:04:14 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:message-id:mail-followup-to:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jXc2s0ib9el1/GVfCATbHKxMt9OETK5bj/CE+mVKAd4=;
-        b=hkOLXOdPXZEyJFZWbaod0kb8qXUmU5+R0Dpm506ffVqDWfX8bCo5G0TKwoaje5f5ss
-         M14xuzWGtmXLFrbLlwmkJCBqU4h78tbb7lsTuqo7LnJpD5ommPj0Urf+sF3jKgK44zv+
-         dpgP1cGH8/6MprzMmiY0xZyJWEArH5T2fyI+fion8U18FzZ6WlWbOkiElMaVIj/klzpJ
-         WPyGeByWTrYxpONomd0qcA6ndqyJ5VdiejGP9mvmkFvFz54g8erDU4e2fyWTDM4hX4Jr
-         PjwK7aM/bsROiGzhKcPg5fs6L7M+nlTHHlOdkMGuGi4e3gh16PLb11cQQnrJJewHcwmb
-         lwVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:mail-followup-to
-         :references:mime-version:content-disposition:in-reply-to:user-agent;
-        bh=jXc2s0ib9el1/GVfCATbHKxMt9OETK5bj/CE+mVKAd4=;
-        b=P79GYzakd+QNN4d9MjP1Xv0MfazTcVfvlGNKxx+Di0l4ujEB0oS/XZBDOXh5RdkE9d
-         /pwh9L1nWGt72J/yFsslkar0KZ4tdch1QO+AXx0TuprD3R9JSg8LKrmFLnGkPS1LMMEe
-         fL9IHN6WvZljMEPpzuXnmvEc7t5wdmR087sCsKXzTawg21NjvT7OxTp0/nlj7/U8nXPB
-         0i6QIIyBa+y4whAkdsPswgxxToGeRNamQPAuCH5nbqyq4NtSjl20IiFOi/bLl6RnbF1S
-         brZBzFO4W9ABPcCH51ibYIKyya/KE1GC2WnCEf2yJOdNnhAjrfDPcNuQKOGBw6d3TNaO
-         JlVw==
-X-Gm-Message-State: APjAAAWvRzwomSFcrhhFVmvIwF7tk+PdQCp5qM+RHTeYlugQMZ39IH8C
-        ovOuM7QvOa3FkFMChrXKRIoDleur
-X-Google-Smtp-Source: APXvYqyS7M1ZJG6/2nqkXU8qPBF/bKkGQ9Q1rQVUuQYdaw6rwyaEBTE1mmEKsRudpvYeQoudHNrH+g==
-X-Received: by 2002:a17:906:68c4:: with SMTP id y4mr64355902ejr.198.1558618790827;
-        Thu, 23 May 2019 06:39:50 -0700 (PDT)
-Received: from brutus.lan (brutus.defensec.nl. [2001:985:d55d::438])
-        by smtp.gmail.com with ESMTPSA id v27sm4452148eja.68.2019.05.23.06.39.48
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 23 May 2019 06:39:49 -0700 (PDT)
-Date:   Thu, 23 May 2019 15:39:47 +0200
-From:   Dominick Grift <dac.override@gmail.com>
-To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
-Subject: Re: [PATCH userspace 0/4] Remove redundant rules when building
- policydb
-Message-ID: <20190523133947.GB30512@brutus.lan>
-Mail-Followup-To: Ondrej Mosnacek <omosnace@redhat.com>,
+  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
+  s=tycho.nsa.gov; t=1558620255; x=1590156255;
+  h=subject:from:to:cc:references:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=7+V4fX918r2TNUZAC/oUOJwwWyErUaNH6IsIawevZIo=;
+  b=XMJ8sQggt6ahSw+s00sNXP0YM0zAZsnlppxrU6aXhV1CbkeuzaiDCkC1
+   I3NsKN2UYL9thRqho4fLAiBKt0zeY8U917wK4lmTu3Y1yaqaHhKptseSb
+   U3LUDy1Wb9mw5VV+rndVda2kGtEna0NRDigOguSlitVMGX6GTsSbsFArU
+   YB0GUB9fy62Pizi/AEh/LFe92BpjT6SjGgbk6F6zMG7uXUcFTwrwe3+/i
+   /C1kKrNZTyxbvr2ce+BrN1ymZbILfRerxxrNOsiuM3JiFFGTtCLya11t2
+   Ol1ygJ4H5h7AnyUXXS8iXpWZyKa25z4Jq8qoKx9MxY+sW+2SfEM7pGisr
+   A==;
+X-IronPort-AV: E=Sophos;i="5.60,503,1549929600"; 
+   d="scan'208";a="24026695"
+IronPort-PHdr: =?us-ascii?q?9a23=3ApgPbNBBjoSQalgc/bl5rUyQJP3N1i/DPJgcQr6?=
+ =?us-ascii?q?AfoPdwSPX5p8bcNUDSrc9gkEXOFd2Cra4d0qyP6vyrBjZIyK3CmUhKSIZLWR?=
+ =?us-ascii?q?4BhJdetC0bK+nBN3fGKuX3ZTcxBsVIWQwt1Xi6NU9IBJS2PAWK8TW94jEIBx?=
+ =?us-ascii?q?rwKxd+KPjrFY7OlcS30P2594HObwlSizexfK5+IA+roQnMucQajolvJrgswR?=
+ =?us-ascii?q?bVv3VEfPhby3l1LlyJhRb84cmw/J9n8ytOvv8q6tBNX6bncakmVLJUFDspPX?=
+ =?us-ascii?q?w7683trhnDUBCA5mAAXWUMkxpHGBbK4RfnVZrsqCT6t+592C6HPc3qSL0/RD?=
+ =?us-ascii?q?qv47t3RBLulSwKLCAy/n3JhcNsjaJbuBOhqAJ5w47Ie4GeKf5ycrrAcd8GWW?=
+ =?us-ascii?q?ZNW8BcWCJbAoO4coABEewPM+hFpIX5vlcDox+zCQyqCejyyDFHm2X20LUn3e?=
+ =?us-ascii?q?ohDw/G0g8uEdwAv3vbrtr6KKgcXPupzKTL1zjPc+9a1Dn/5YXObxsvoeuMXb?=
+ =?us-ascii?q?V1ccfJy0kuGR/KgU+KqYz5IT+ey+MAs2qV7uV8T+2vkXInpx9qrzizxsYjlo?=
+ =?us-ascii?q?nJhoUPxlDC7iV22pw5JdK/SE5leNOpFoZbuSKCN4ZuX88vTG5ltDw6x7Ebo5?=
+ =?us-ascii?q?K3YicHxIo9yxLCbfGMbpKG7Qj5VOmLJDd1nHdleLWiiBms6UWg0ej8VtWs0F?=
+ =?us-ascii?q?ZNsypFjsHAtnAT2BzX7ciKUud98V272TaOygDT8ftIIVw0lKXHK54hxaQ8lp?=
+ =?us-ascii?q?wPvkTYAiD6gkD2jK6Sdkk8++io7froYqn+q5OBOIJ5hRvyP6QzlsClH+g1PR?=
+ =?us-ascii?q?YCU3KG9eik0b3s50z5QLFEjv0slanZtYjXJcYVp6GlGQBVyJoj5wikAje60N?=
+ =?us-ascii?q?UXgXkHLFVfdBKBlIjmIUvCIP//Dfehm1isiitkx+jaPr39BZXANmLDkLb9cr?=
+ =?us-ascii?q?Z98UFc0hc8wshD6J1MCrEOOvPzWknvu9zDFRI2KBC0w+fhCNVhyIweQ2SPDb?=
+ =?us-ascii?q?GFMK/IrVCI4ecvKfGWZIAJoDb9N+Ql5/n2gH8ih1Adeaip3Z0KaHG3BflmPU?=
+ =?us-ascii?q?qZbmT2gtsbEmcFoBA+TOr0h12GSzJTYGyyX61vrg08XbinBofKXIzloLWA2i?=
+ =?us-ascii?q?qgVslMZ2tGA0qAJnzfd4yFXfoXQCiOI8l9nyYCWKTnQIgkg1XmrwL+yrx6Ps?=
+ =?us-ascii?q?LK9SAC85Huzt5446vUjx5h2yZzCpGfzGqEVX0u1jcKWDQ/xrwliVBswVeEl6?=
+ =?us-ascii?q?5jirpXEsIFtKABaRszKZOJl78yMNv1QA+UO47SGVs=3D?=
+X-IPAS-Result: =?us-ascii?q?A2DFAQBGp+Zc/wHyM5BlHQEBBQEHBQGBUwYBCwEBgWUqg?=
+ =?us-ascii?q?W0ohBOIe4tuLZhXgXsJAQEBAQEBAQEBNAECAQGCEoIuAoI4IzYHDgEDAQEBB?=
+ =?us-ascii?q?AEBAQEDAQFsKEIBEAGBZikBgmcBBSMPAQVBEAkCCQ8CAiYCAlcGAQwGAgEBg?=
+ =?us-ascii?q?l8/gWsDHYsEm2mBL4hygUaBDCgBi1GBVkCBOIJrPoIahTSCWASBLQGnEAYDg?=
+ =?us-ascii?q?g+FXY0rBhuWOIxkl10NJIFXKwpBSoEegU6CRo4oIwMwgQYBAYceg2ArgiUBA?=
+ =?us-ascii?q?Q?=
+Received: from tarius.tycho.ncsc.mil ([144.51.242.1])
+  by EMSM-GH1-UEA10.NCSC.MIL with ESMTP; 23 May 2019 14:04:13 +0000
+Received: from localhost.localdomain (moss-lions [192.168.25.4])
+        by tarius.tycho.ncsc.mil (8.14.4/8.14.4) with ESMTP id x4NE4DTJ023302;
+        Thu, 23 May 2019 10:04:13 -0400
+Subject: Re: [Non-DoD Source] [PATCH] libsepol/cil: Allow validatetrans rules
+ to be resolved
+From:   jwcart2 <jwcart2@tycho.nsa.gov>
+To:     Richard Haines <richard_c_haines@btinternet.com>,
         selinux@vger.kernel.org
-References: <20190523102449.9621-1-omosnace@redhat.com>
- <20190523131455.GA30512@brutus.lan>
+Cc:     sds@tycho.nsa.gov
+References: <20190521112206.5403-1-richard_c_haines@btinternet.com>
+ <82e7d8a1-d962-2a0b-fbdc-07143a8061c3@tycho.nsa.gov>
+Message-ID: <439d9204-647c-9c9a-e381-ef0b2ede34c4@tycho.nsa.gov>
+Date:   Thu, 23 May 2019 10:05:00 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="DKU6Jbt7q3WqK7+M"
-Content-Disposition: inline
-In-Reply-To: <20190523131455.GA30512@brutus.lan>
-User-Agent: Every email client sucks, this one just sucks less.
-X-PGP-Key: https://sks-keyservers.net/pks/lookup?op=get&search=0x3B6C5F1D2C7B6B02
+In-Reply-To: <82e7d8a1-d962-2a0b-fbdc-07143a8061c3@tycho.nsa.gov>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+On 5/21/19 1:59 PM, jwcart2 wrote:
+> On 5/21/19 7:22 AM, Richard Haines wrote:
+>> When validatetrans rule is in CIL policy it errors with:
+>> u3, r3, and t3 can only be used with mlsvalidatetrans rules
+>>
+>> Will now resolve these examples:
+>> (validatetrans binder (and (and (eq t1 t1_t) (eq t2 t2_t)) (eq t3 t3_t)))
+>> (mlsvalidatetrans file (and (and (eq t1 t1_t) (eq t2 t2_t))
+>>      (and (eq t3 t3_t) (domby h1 h2))))
+>>
+>> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+> 
+> Acked-by: James Carter <jwcart2@tycho.nsa.gov>
+> 
 
---DKU6Jbt7q3WqK7+M
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied.
+Thanks,
+Jim
 
-On Thu, May 23, 2019 at 03:14:55PM +0200, Dominick Grift wrote:
-> On Thu, May 23, 2019 at 12:24:45PM +0200, Ondrej Mosnacek wrote:
-> > This series implements an optional optimization step when building
-> > a policydb via semodule or secilc, which identifies and removes rules
-> > that are redundant -- i.e. they are already covered by a more general
-> > rule based on attribute inheritance.
->=20
-> Some stats with dssp2-standard:
->=20
-> [kcinimod@myguest dssp2-standard]$ time secilc -n `find . -name *.cil` -o=
- policy.31.noopt
->=20
-> real    0m9.278s
-> user    0m7.036s
-> sys     0m2.017s
-> [kcinimod@myguest dssp2-standard]$ time secilc `find . -name *.cil` -o po=
-licy.31.opt
->=20
-> real    0m19.343s
-> user    0m16.939s
-> sys     0m2.027s
-> [kcinimod@myguest dssp2-standard]$ ls -lh policy.*
-> -rw-rw-r--. 1 kcinimod kcinimod 2.4M May 23 15:11 policy.31.noopt
-> -rw-rw-r--. 1 kcinimod kcinimod 2.3M May 23 15:12 policy.31.opt
->=20
-> Was unable to see the actual diff as sediff got oom-killed on me
-
-According to percentage calculator thats roughly a 4 percent gain size-wise=
- at a 47 percent performance penalty.
-Looks like dssp2-standard is pretty efficient as it is.
-
->=20
-> >=20
-> > Since the performance penalty of this additional step is very small
-> > (it adds about 1 s to the current running time of ~20-30 s [1]) and
-> > it can have a big positive effect on the number of rules in policy
-> > (it manages to remove ~40% AV rules from Fedora 29 policy), the
-> > optimization is enabled by default and can be turned off using a
-> > command-line option (--no-optimize) in secilc and semodule [2].
-> >=20
-> > The optimization routine eliminates:
-> >  * all allow/neverallow/dontaudit/auditallow rules (including xperm
-> >    variants) that are covered by another more general rule,
-> >  * all conditional versions of the above rules that are covered by a
-> >    more general rule either in the unconditional table or in the same
-> >    branch of the same conditional.
-> >=20
-> > The optimization doesn't process other rules, since they currently
-> > do not support attributes. There is some room left for more precise
-> > optimization of conditional rules, but it would likely bring only
-> > little additional benefit.
-> >=20
-> > When the policy is mostly or fully expanded, the optimization should
-> > be turned off. If it isn't, the policy build time will increase a lot
-> > for no benefit. However, the complexity of optimization will be only
-> > linear w.r.t. the number of rules and so the impact should not be
-> > catastrophic. (When testing with secilc on a subset of Fedora policy
-> > with -X 100000 the build time was 1.7 s with optimization vs. 1 s
-> > without it.)
-> >=20
-> > Tested live on my Fedora 29 devel machine under normal use. No unusual
-> > AVCs were observed with optimized policy loaded.
-> >=20
-> > Travis build passed: https://travis-ci.org/WOnder93/selinux/builds/5361=
-57427
-> >=20
-> > NOTE: The xperm rule support wasn't tested -- I would welcome some
-> >       peer review/testing of this part.
-> >=20
-> > [1] As measured on my machine (Fedora 29 policy, x86_64).
-> > [2] I have no problem with switching it to opt-in if that is preferred.
-> >=20
-> > Ondrej Mosnacek (4):
-> >   libsepol: add a function to optimize kernel policy
-> >   secilc: optimize policy before writing
-> >   libsemanage: optimize policy on rebuild
-> >   semodule: add flag to disable policy optimization
-> >=20
-> >  libsemanage/include/semanage/handle.h      |   4 +
-> >  libsemanage/src/direct_api.c               |   7 +
-> >  libsemanage/src/handle.c                   |  13 +
-> >  libsemanage/src/handle.h                   |   1 +
-> >  libsemanage/src/libsemanage.map            |   5 +
-> >  libsepol/include/sepol/policydb.h          |   5 +
-> >  libsepol/include/sepol/policydb/policydb.h |   2 +
-> >  libsepol/src/libsepol.map.in               |   5 +
-> >  libsepol/src/optimize.c                    | 370 +++++++++++++++++++++
-> >  libsepol/src/policydb_public.c             |   5 +
-> >  policycoreutils/semodule/semodule.c        |  12 +-
-> >  secilc/secilc.c                            |  16 +-
-> >  12 files changed, 442 insertions(+), 3 deletions(-)
-> >  create mode 100644 libsepol/src/optimize.c
-> >=20
-> > --=20
-> > 2.20.1
-> >=20
->=20
-> --=20
-> Key fingerprint =3D 5F4D 3CDB D3F8 3652 FBD8 02D5 3B6C 5F1D 2C7B 6B02
-> https://sks-keyservers.net/pks/lookup?op=3Dget&search=3D0x3B6C5F1D2C7B6B02
-> Dominick Grift
+>> ---
+>>   libsepol/cil/src/cil_verify.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
+>> index 1036d73..1a21cf4 100644
+>> --- a/libsepol/cil/src/cil_verify.c
+>> +++ b/libsepol/cil/src/cil_verify.c
+>> @@ -221,8 +221,8 @@ int cil_verify_constraint_leaf_expr_syntax(enum cil_flavor 
+>> l_flavor, enum cil_fl
+>>               cil_log(CIL_ERR, "l1, l2, h1, and h2 cannot be used on the left 
+>> side with a string or list on the right side\n");
+>>               goto exit;
+>>           } else if (l_flavor == CIL_CONS_U3 || l_flavor == CIL_CONS_R3 || 
+>> l_flavor == CIL_CONS_T3) {
+>> -            if (expr_flavor != CIL_MLSVALIDATETRANS) {
+>> -                cil_log(CIL_ERR, "u3, r3, and t3 can only be used with 
+>> mlsvalidatetrans rules\n");
+>> +            if (expr_flavor != CIL_VALIDATETRANS && expr_flavor != 
+>> CIL_MLSVALIDATETRANS) {
+>> +                cil_log(CIL_ERR, "u3, r3, and t3 can only be used with 
+>> (mls)validatetrans rules\n");
+>>                   goto exit;
+>>               }
+>>           }
+>>
+> 
+> 
 
 
-
---=20
-Key fingerprint =3D 5F4D 3CDB D3F8 3652 FBD8 02D5 3B6C 5F1D 2C7B 6B02
-https://sks-keyservers.net/pks/lookup?op=3Dget&search=3D0x3B6C5F1D2C7B6B02
-Dominick Grift
-
---DKU6Jbt7q3WqK7+M
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQGzBAEBCAAdFiEEujmXliIBLFTc2Y4AJXSOVTf5R2kFAlzmop8ACgkQJXSOVTf5
-R2lVhAwAhYohkpWeKKUnNmckekfCBJN9pQ1pIOLIL18nAhndTPiJJ+R1zqdajw3U
-h78dVcnzPjbICV5S0vZtKdFiUQ7a3bdMM61ZXWfe/480GKY/5bGif6K9g8+wopM7
-kWDPTluxoY0++KG1bLnUZAjuu3cVzMgOtr+dkKvpOPkiW9pCchTkoR+zrfTGgoJP
-T1uef1aWqZlr6P9UOJx19fnDhvkFdGFEb3gczjU1x6Rw0HC0fPp86hZC17QvepQA
-5gTG0wK2/RfiMuiVFmn8niNsgmiuHt4ZEzwPm4V6fjOdQq23f5FhvEcfQL9MwypS
-V66N6nuWngYQYtvm4N7Gqekrowh6Xq/2jlJfdrIis0LRBURkyhr3ukAYuh2nPmfO
-nm7OsCvhmho3mH9bLl9PwzBmwCiDG5w3KneQS2R9P3hf8L9DAok9aBIAn/LddCBM
-fgb4G40hueWSnsr1nzZyt3+1YL3So+GdO7LBGyzffrOwszFG3iC6rsOMsgm34dR+
-AzxjlXF9
-=VjLW
------END PGP SIGNATURE-----
-
---DKU6Jbt7q3WqK7+M--
+-- 
+James Carter <jwcart2@tycho.nsa.gov>
+National Security Agency

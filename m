@@ -2,163 +2,203 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4446627F1F
-	for <lists+selinux@lfdr.de>; Thu, 23 May 2019 16:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2EBE27F5E
+	for <lists+selinux@lfdr.de>; Thu, 23 May 2019 16:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730601AbfEWOIf (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 23 May 2019 10:08:35 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:44043 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730323AbfEWOIf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 23 May 2019 10:08:35 -0400
-Received: by mail-ot1-f67.google.com with SMTP id g18so5495255otj.11
-        for <selinux@vger.kernel.org>; Thu, 23 May 2019 07:08:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+AQbOxNVsVuJwDCvZNN0XTv7I2z3BC51YvCRtMnZQFs=;
-        b=J6ICKQpSQl62Wcy18vu1+JTCSIE3o1auPPdZusOhlip0Rcrah6yckywUV0nApi7Rxn
-         cla7k+21nmRejmXnngMja7h1VgcNEoV3fbxVGGoXPzcxp6qD41Yrqb9GtehzVu4WPZnt
-         +aot5qoWDadeGu3NBUwVWeFlRrNMsvFRH+Z+vwc7Q1PKMP0cCRg0EN8cmb8QLHyB9isp
-         IfKVYL1x4BCPJQA6Z32mHGg4POz+9waDLf2lW87dRiN8Wy8hK2YJKeOW8+m6NsHpMm69
-         Py53l5/2GiaWGL9T670ylXCUIs866NWMzuYXiyJ4bGCvbIv9fsxuTB8tpFSRR9+67a8U
-         aACw==
-X-Gm-Message-State: APjAAAWdRcF/5Q9jrRaqZyEVMnNFzQ27iCgkYZ4bkdZyX8c/lzFg32pd
-        V6cx2MuMtns74C84wJC6jKsTXpMmZistJbL5XC5uhA==
-X-Google-Smtp-Source: APXvYqwuJFJuY8XGi8icDcQ2AqvFwGxSmcZoRihUdzCXxr85ddp7cUhPMvI4RY4ndQ3gCkoyIWpqf8JXAwwdAdZM19c=
-X-Received: by 2002:a9d:6a8a:: with SMTP id l10mr8397991otq.197.1558620513871;
- Thu, 23 May 2019 07:08:33 -0700 (PDT)
+        id S1730697AbfEWORy (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 23 May 2019 10:17:54 -0400
+Received: from mga05.intel.com ([192.55.52.43]:38831 "EHLO mga05.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730323AbfEWORy (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Thu, 23 May 2019 10:17:54 -0400
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 23 May 2019 07:17:53 -0700
+X-ExtLoop1: 1
+Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.36])
+  by orsmga003.jf.intel.com with ESMTP; 23 May 2019 07:17:52 -0700
+Date:   Thu, 23 May 2019 07:17:52 -0700
+From:   Sean Christopherson <sean.j.christopherson@intel.com>
+To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
+Cc:     Andy Lutomirski <luto@kernel.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        Paul Moore <paul@paul-moore.com>,
+        Eric Paris <eparis@parisplace.org>, selinux@vger.kernel.org,
+        Jethro Beekman <jethro@fortanix.com>,
+        "Xing, Cedric" <cedric.xing@intel.com>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        "Dr. Greg" <greg@enjellic.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>,
+        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "nhorman@redhat.com" <nhorman@redhat.com>,
+        "npmccallum@redhat.com" <npmccallum@redhat.com>,
+        "Ayoun, Serge" <serge.ayoun@intel.com>,
+        "Katz-zamir, Shay" <shay.katz-zamir@intel.com>,
+        "Huang, Haitao" <haitao.huang@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Svahn, Kai" <kai.svahn@intel.com>, Borislav Petkov <bp@alien8.de>,
+        Josh Triplett <josh@joshtriplett.org>,
+        "Huang, Kai" <kai.huang@intel.com>,
+        David Rientjes <rientjes@google.com>
+Subject: Re: SGX vs LSM (Re: [PATCH v20 00/28] Intel SGX1 support)
+Message-ID: <20190523141752.GA12078@linux.intel.com>
+References: <20190520114105.GD27805@linux.intel.com>
+ <20190521151836.GA4843@linux.intel.com>
+ <20190521155140.GE22089@linux.intel.com>
+ <20190522132022.GC31176@linux.intel.com>
+ <20190522132227.GD31176@linux.intel.com>
+ <0e183cce-c4b4-0e10-dbb6-bd81bea58b66@tycho.nsa.gov>
+ <20190522153836.GA24833@linux.intel.com>
+ <CALCETrUS8xyF1JJmQs18BGTDhPRXf+s81BkMZCZwmY73r7M+zg@mail.gmail.com>
+ <20190523023517.GA31950@linux.intel.com>
+ <20190523102628.GC10955@linux.intel.com>
 MIME-Version: 1.0
-References: <20190523102449.9621-1-omosnace@redhat.com> <20190523131455.GA30512@brutus.lan>
- <20190523133947.GB30512@brutus.lan>
-In-Reply-To: <20190523133947.GB30512@brutus.lan>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Thu, 23 May 2019 16:08:22 +0200
-Message-ID: <CAFqZXNv0cWnp3urHhCowFVKiypzsb52a2+dQ4G+0cjRdcEUwAg@mail.gmail.com>
-Subject: Re: [PATCH userspace 0/4] Remove redundant rules when building policydb
-To:     Dominick Grift <dac.override@gmail.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190523102628.GC10955@linux.intel.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, May 23, 2019 at 3:40 PM Dominick Grift <dac.override@gmail.com> wrote:
-> On Thu, May 23, 2019 at 03:14:55PM +0200, Dominick Grift wrote:
-> > On Thu, May 23, 2019 at 12:24:45PM +0200, Ondrej Mosnacek wrote:
-> > > This series implements an optional optimization step when building
-> > > a policydb via semodule or secilc, which identifies and removes rules
-> > > that are redundant -- i.e. they are already covered by a more general
-> > > rule based on attribute inheritance.
-> >
-> > Some stats with dssp2-standard:
-> >
-> > [kcinimod@myguest dssp2-standard]$ time secilc -n `find . -name *.cil` -o policy.31.noopt
-> >
-> > real    0m9.278s
-> > user    0m7.036s
-> > sys     0m2.017s
-> > [kcinimod@myguest dssp2-standard]$ time secilc `find . -name *.cil` -o policy.31.opt
-> >
-> > real    0m19.343s
-> > user    0m16.939s
-> > sys     0m2.027s
-> > [kcinimod@myguest dssp2-standard]$ ls -lh policy.*
-> > -rw-rw-r--. 1 kcinimod kcinimod 2.4M May 23 15:11 policy.31.noopt
-> > -rw-rw-r--. 1 kcinimod kcinimod 2.3M May 23 15:12 policy.31.opt
-> >
-> > Was unable to see the actual diff as sediff got oom-killed on me
->
-> According to percentage calculator thats roughly a 4 percent gain size-wise at a 47 percent performance penalty.
-> Looks like dssp2-standard is pretty efficient as it is.
+On Thu, May 23, 2019 at 01:26:28PM +0300, Jarkko Sakkinen wrote:
+> On Wed, May 22, 2019 at 07:35:17PM -0700, Sean Christopherson wrote:
+> > But actually, there's no need to disallow mmap() after ECREATE since the
+> > LSM checks also apply to mmap(), e.g. FILE__EXECUTE would be needed to
+> > mmap() any enclave pages PROT_EXEC.  I guess my past self thought mmap()
+> > bypassed LSM checks?  The real problem is that mmap()'ng an existing
+> > enclave would require FILE__WRITE and FILE__EXECUTE, which puts us back
+> > at square one.
+> 
+> I'm lost with the constraints we want to set.
 
-Hmm, yeah, looks like I'll have to make it opt-in after all... or add
-some heuristic to decide if running the optimization is really worth
-it.
+As is today, SELinux policies would require enclave loaders to have
+FILE__WRITE and FILE__EXECUTE permissions on /dev/sgx/enclave.  Presumably
+other LSMs have similar requirements.  Requiring all processes to have
+FILE__{WRITE,EXECUTE} permissions means the permissions don't add much
+value, e.g. they can't be used to distinguish between an enclave that is
+being loaded from an unmodified file and an enclave that is being
+generated on the fly, e.g. Graphene.
 
->
-> >
-> > >
-> > > Since the performance penalty of this additional step is very small
-> > > (it adds about 1 s to the current running time of ~20-30 s [1]) and
-> > > it can have a big positive effect on the number of rules in policy
-> > > (it manages to remove ~40% AV rules from Fedora 29 policy), the
-> > > optimization is enabled by default and can be turned off using a
-> > > command-line option (--no-optimize) in secilc and semodule [2].
-> > >
-> > > The optimization routine eliminates:
-> > >  * all allow/neverallow/dontaudit/auditallow rules (including xperm
-> > >    variants) that are covered by another more general rule,
-> > >  * all conditional versions of the above rules that are covered by a
-> > >    more general rule either in the unconditional table or in the same
-> > >    branch of the same conditional.
-> > >
-> > > The optimization doesn't process other rules, since they currently
-> > > do not support attributes. There is some room left for more precise
-> > > optimization of conditional rules, but it would likely bring only
-> > > little additional benefit.
-> > >
-> > > When the policy is mostly or fully expanded, the optimization should
-> > > be turned off. If it isn't, the policy build time will increase a lot
-> > > for no benefit. However, the complexity of optimization will be only
-> > > linear w.r.t. the number of rules and so the impact should not be
-> > > catastrophic. (When testing with secilc on a subset of Fedora policy
-> > > with -X 100000 the build time was 1.7 s with optimization vs. 1 s
-> > > without it.)
-> > >
-> > > Tested live on my Fedora 29 devel machine under normal use. No unusual
-> > > AVCs were observed with optimized policy loaded.
-> > >
-> > > Travis build passed: https://travis-ci.org/WOnder93/selinux/builds/536157427
-> > >
-> > > NOTE: The xperm rule support wasn't tested -- I would welcome some
-> > >       peer review/testing of this part.
-> > >
-> > > [1] As measured on my machine (Fedora 29 policy, x86_64).
-> > > [2] I have no problem with switching it to opt-in if that is preferred.
-> > >
-> > > Ondrej Mosnacek (4):
-> > >   libsepol: add a function to optimize kernel policy
-> > >   secilc: optimize policy before writing
-> > >   libsemanage: optimize policy on rebuild
-> > >   semodule: add flag to disable policy optimization
-> > >
-> > >  libsemanage/include/semanage/handle.h      |   4 +
-> > >  libsemanage/src/direct_api.c               |   7 +
-> > >  libsemanage/src/handle.c                   |  13 +
-> > >  libsemanage/src/handle.h                   |   1 +
-> > >  libsemanage/src/libsemanage.map            |   5 +
-> > >  libsepol/include/sepol/policydb.h          |   5 +
-> > >  libsepol/include/sepol/policydb/policydb.h |   2 +
-> > >  libsepol/src/libsepol.map.in               |   5 +
-> > >  libsepol/src/optimize.c                    | 370 +++++++++++++++++++++
-> > >  libsepol/src/policydb_public.c             |   5 +
-> > >  policycoreutils/semodule/semodule.c        |  12 +-
-> > >  secilc/secilc.c                            |  16 +-
-> > >  12 files changed, 442 insertions(+), 3 deletions(-)
-> > >  create mode 100644 libsepol/src/optimize.c
-> > >
-> > > --
-> > > 2.20.1
-> > >
-> >
-> > --
-> > Key fingerprint = 5F4D 3CDB D3F8 3652 FBD8 02D5 3B6C 5F1D 2C7B 6B02
-> > https://sks-keyservers.net/pks/lookup?op=get&search=0x3B6C5F1D2C7B6B02
-> > Dominick Grift
->
->
->
-> --
-> Key fingerprint = 5F4D 3CDB D3F8 3652 FBD8 02D5 3B6C 5F1D 2C7B 6B02
-> https://sks-keyservers.net/pks/lookup?op=get&search=0x3B6C5F1D2C7B6B02
-> Dominick Grift
+Looking back at Andy's mail, he was talking about requiring FILE__EXECUTE
+to run an enclave, so perhaps it's only FILE__WRITE that we're trying to
+special case.
 
+> We can still support fork() if we take a step back from v20 and require
+> the mmap(). Given the recent comments, I'd guess that is the best
+> compromise i.e. multiple processes can still share an enclave within
+> the limitations of ancestor hierarchy. Is this the constraint we agree
+> now upon? Some emails are a bit contradicting in this sense.
+> 
+> > Tracking permissions per enclave page isn't difficult, it's the new SGX
+> > specific LSM hooks and mprotect() interactions that I want to avoid.
+> > 
+> > Jumping back to mmap(), AIUI the fundamental issue is that we want to
+> > allow building/running an enclave without FILE__WRITE and FILE__EXECUTE,
+> > otherwise FILE__WRITE and FILE__EXECUTE become meaningless.  Assuming I'm
+> > not off in the weeds, that means we really just need to special case
+> > mmap() on enclaves so it can map enclave memory using the verified page
+> > permissions so as not to run afoul of LSM checks.  All other behaviors,
+> > e.g. mprotect(), can reuse the existing LSM checks for shared mappings.
+> > 
+> > So, what if we snapshot the permissions for each enclave page at EADD,
+> > and then special case mmap() to propagate flags from the snapshot to the
+> > VMA?  More or less the same idea as doing mprotect_fixup() using the
+> > source VMA during EADD.  We could define the EADD semantics to match
+> > this as well, e.g. only propagate the flags from the source VMA to the
+> > enclave VMA if the EADD range is fully mapped with PROT_NONE.  This would
+> > allow the enclave builder concept, albeit with funky semantics, and
+> > wouldn't require new LSM hooks.
+> 
+> Dropped off here completely. What if the mmap() is done before any of
+> the EADD operations?
 
+Three options I can think of, in descending order of magic required:
 
--- 
-Ondrej Mosnacek <omosnace at redhat dot com>
-Software Engineer, Security Technologies
-Red Hat, Inc.
+  1. Do nothing.  Userspace would essentially be required to mmap() the
+     enclave after EINIT, which is ugly but not breaking since userspace
+     could mmap() the enclave with a placeholder VMA prior to building
+     the enclave, and then a series of mmap() to establish its "real"
+     mapping.
+
+  2. Propagate the permissions from EADD to the VMAs of the current mm
+     if the entire EADD range is mapped and the mapping is PROT_NONE.
+
+  3. Propagate the permissions from EADD to the VMAs of all mm structs
+     that have mapped some piece of the enclave, following the matching
+     rules from #2.
+
+> > E.g. something like this:
+> > 
+> > static inline void sgx_mmap_update_prot_flags(struct vm_area_struct *vma,
+> > 					      struct sgx_encl *encl)
+> > {
+> > 	struct radix_tree_iter iter;
+> > 	struct sgx_encl_page *entry;
+> > 	unsigned long addr;
+> > 	vm_flags_t flags;
+> > 	void **slot;
+> > 
+> > 	/*
+> > 	 * SGX special: if userspace is requesting PROT_NONE and pages have
+> > 	 * been added to the enclave, then propagate the flags snapshot from
+> > 	 * the enclave to the VMA.  Do this if and only if all overlapped
+> > 	 * pages are defined and have identical permissions.  Stuffing the
+> > 	 * VMA on PROT_NONE allows userspace to map EPC pages without being
+> > 	 * incorrectly rejected by LSMs due to insufficient permissions (the
+> > 	 * snapshottted flags have alaredy been vetted).
+> > 	 */
+> > 	if (vma->vm_flags & (VM_READ|VM_WRITE|VM_EXEC))
+> > 		return;
+> > 
+> > 	flags = 0;
+> > 
+> > 	for (addr = vma->vm_start; addr < vma->vm_end; addr += PAGE_SIZE) {
+> > 		entry = radix_tree_lookup(&encl->page_tree, addr >> PAGE_SHIFT);
+> > 
+> > 		if (!entry && flags)
+> > 			return;
+> > 		if (!flags && entry) {
+> > 			if (addr == vma->vm_start) {
+> > 				flags = entry->vm_flags;
+> > 				continue;
+> > 			}
+> > 			return;
+> > 		}
+> > 		if (entry && flags && entry->vm_flags != flags)
+> > 			return;
+> > 
+> > 	}
+> > 	vma->vm_flags |= flags;
+> > }
+> 
+> This looks flakky and error prone. You'd better have some "shadow VMAs"
+> and check that you have such matching size of the VMA you try to mmap()
+> and check flags from that.
+> 
+> Who would call this function anyhow and when?
+> 
+> Would be better to first agree on constraints. I have zero idea within
+> which kind of enviroment this snippet would live e.g.
+> 
+> - mmap() (before, after?)
+> - multi process constraint (only fork or full on versatility)
+
+This would be called from sgx_mmap(), i.e. mmap().  Sorry that wasn't at
+all clear.  The idea is to inherit the protections from the enclave pages
+if mmap() was passed PROT_NONE, but do so in a paranoid way.
+
+I don't think multi-process contraints would be required.  This would
+allow an individual process to inherit the pre-verified protections.
+Other process(es) could map the enclave page with different protections,
+but doing so would require the appropriate FILE__* permissions for the
+other process(es).

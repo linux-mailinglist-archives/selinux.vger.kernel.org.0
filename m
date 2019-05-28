@@ -2,43 +2,43 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EFB02C962
-	for <lists+selinux@lfdr.de>; Tue, 28 May 2019 16:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90F002C964
+	for <lists+selinux@lfdr.de>; Tue, 28 May 2019 16:59:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726560AbfE1O7U (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 28 May 2019 10:59:20 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:33616 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726492AbfE1O7T (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 28 May 2019 10:59:19 -0400
-Received: by mail-wr1-f67.google.com with SMTP id d9so20616614wrx.0
+        id S1726453AbfE1O7V (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 28 May 2019 10:59:21 -0400
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:39425 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726371AbfE1O7V (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 28 May 2019 10:59:21 -0400
+Received: by mail-wr1-f68.google.com with SMTP id x4so1486761wrt.6
         for <selinux@vger.kernel.org>; Tue, 28 May 2019 07:59:19 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=19iPoGpOiSMwycDnEvf8l/yr1xOm+2SSCbxvSVojWOw=;
-        b=CVTff+MY34YnGrutEbVp1brTOXV6/msQjToRynQvt+3/NMjyzsXr7TOoWTbsd6bhNx
-         eGUQmpSmh9MCyhCGvelh8XnuRslfaBewW0gBUCw/0GOpHB5YzwWh9u6uA3pmQ5P37nKH
-         xAxm1RHTV6GUh4jquZD4tecqCJwmoJgJRdXwSFFO9HTJ3Bm2JGRSBp92bKAslUi4f5gs
-         Ec4I3g/8wXZM5eJwJuQPlGbpWuxvLBYJ8qOP8xldodSPnMI3nlC3NNS/jo89ea1tohF4
-         jYmt1CbYNhq3zKVAyd0Z1nt+sOOcHSZ+oCN1iuDL0R8cUZi+LujlN2zCPNk915ghKLtl
-         xVew==
-X-Gm-Message-State: APjAAAX26xBNBbUAn3oNcs9yeisVw3Do8fKG384e21vRkeX03jogLAr0
-        I4kKYm5tT3Y2hLN2EP6pPo1KGbjRhRo=
-X-Google-Smtp-Source: APXvYqw/LpvWQz2X16vwWQihT9NV05RLBCFYcrYoSbXDW10PodSPJ5qYvVKMYPi/hSYGUmI2XH1DsQ==
-X-Received: by 2002:a5d:45c7:: with SMTP id b7mr55651979wrs.176.1559055558119;
+        bh=9eYHtqKIFvk2sga2800OKaRZLw8u0KfBBn2TDnauC38=;
+        b=fbNp0nbMJM21bRpg+zuUwKb7jeza4RlF76zDKUojWD7YN/03Jrvc7znjqxNuIKh7i/
+         /4xd+DTdYG31Yg/0EflJrVTqnXLTFdHXfeRpT3cg4YwixbRVLOX2SoqxhcY2QpsLpOa/
+         V/9YD+lz8T8llPm82GG4ru3TfGx0He6qAsRqOC/HUFCrqvcZhxLEEYzleiA4T5t6QXA9
+         r6K6tXi/+TadqV6ZnT6eqSpIZ0yB0AKigZVqO3VeA7fOh5F5BeCdcW8ivVQjfRXv2u+X
+         ziepPYlikXgktUxOSPsfUum952JiRSGydJ7My9HZ4jAGsf44yGhSwOAyxteJNgQMZhMK
+         geTw==
+X-Gm-Message-State: APjAAAX5UKmkU4awrv/XsA35IJ+A4sKhpm010qMfuJTcpYwJeOIYsNrA
+        sOJnIMlua5gigbWsgI0OuSAsRzer6Yg=
+X-Google-Smtp-Source: APXvYqyjfreNgVYSei789nkhGV1fwYfFQ3GIQhPYSoplo+vrt115D9QjHV84pURpOoU1WmHzj4guhA==
+X-Received: by 2002:adf:deca:: with SMTP id i10mr6633086wrn.313.1559055558989;
         Tue, 28 May 2019 07:59:18 -0700 (PDT)
 Received: from localhost.localdomain.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id p17sm14118849wrq.95.2019.05.28.07.59.17
+        by smtp.gmail.com with ESMTPSA id p17sm14118849wrq.95.2019.05.28.07.59.18
         for <selinux@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 28 May 2019 07:59:17 -0700 (PDT)
+        Tue, 28 May 2019 07:59:18 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH userspace v2 3/7] semodule: add flag to enable policy optimization
-Date:   Tue, 28 May 2019 16:59:08 +0200
-Message-Id: <20190528145912.13827-4-omosnace@redhat.com>
+Subject: [PATCH userspace v2 4/7] secilc: add flag to enable policy optimization
+Date:   Tue, 28 May 2019 16:59:09 +0200
+Message-Id: <20190528145912.13827-5-omosnace@redhat.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190528145912.13827-1-omosnace@redhat.com>
 References: <20190528145912.13827-1-omosnace@redhat.com>
@@ -49,78 +49,74 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add a command-line option -O/--optimize to enable policy optimization
-when building kernel policy.
+Add a command-line option -O/--optimize to optimize the final policydb
+using sepol_policydb_optimize() before writing it out.
 
 Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- policycoreutils/semodule/semodule.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ secilc/secilc.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/policycoreutils/semodule/semodule.c b/policycoreutils/semodule/semodule.c
-index a76797f5..40314117 100644
---- a/policycoreutils/semodule/semodule.c
-+++ b/policycoreutils/semodule/semodule.c
-@@ -46,6 +46,7 @@ static int verbose;
- static int reload;
- static int no_reload;
- static int build;
-+static int optimize;
- static int disable_dontaudit;
- static int preserve_tunables;
- static int ignore_module_cache;
-@@ -123,9 +124,10 @@ static void usage(char *progname)
- 	printf("usage:  %s [option]... MODE...\n", progname);
- 	printf("Manage SELinux policy modules.\n");
- 	printf("MODES:\n");
--	printf("  -R, --reload		    reload policy\n");
--	printf("  -B, --build		    build and reload policy\n");
-+	printf("  -R,--reload		    reload policy\n");
-+	printf("  -B,--build		    build and reload policy\n");
- 	printf("  -D,--disable_dontaudit    Remove dontaudits from policy\n");
-+	printf("  -O,--optimize		    optimize built policy\n");
- 	printf("  -i,--install=MODULE_PKG   install a new module\n");
- 	printf("  -r,--remove=MODULE_NAME   remove existing module at desired priority\n");
- 	printf("  -l[KIND],--list-modules[=KIND]  display list of installed modules\n");
-@@ -191,6 +193,7 @@ static void parse_command_line(int argc, char **argv)
- 		{"reload", 0, NULL, 'R'},
- 		{"noreload", 0, NULL, 'n'},
- 		{"build", 0, NULL, 'B'},
-+		{"optimize", 0, NULL, 'O'},
- 		{"disable_dontaudit", 0, NULL, 'D'},
- 		{"preserve_tunables", 0, NULL, 'P'},
- 		{"ignore-module-cache", 0, NULL, 'C'},
-@@ -207,9 +210,10 @@ static void parse_command_line(int argc, char **argv)
- 	verbose = 0;
- 	reload = 0;
- 	no_reload = 0;
-+	optimize = 0;
- 	priority = 400;
- 	while ((i =
--		getopt_long(argc, argv, "s:b:hi:l::vr:u:RnNBDCPX:e:d:p:S:E:cH", opts,
-+		getopt_long(argc, argv, "s:b:hi:l::vr:u:RnNBDOCPX:e:d:p:S:E:cH", opts,
- 			    NULL)) != -1) {
- 		switch (i) {
- 		case 'b':
-@@ -268,6 +272,9 @@ static void parse_command_line(int argc, char **argv)
- 		case 'B':
- 			build = 1;
+diff --git a/secilc/secilc.c b/secilc/secilc.c
+index ad6862ba..26996ef9 100644
+--- a/secilc/secilc.c
++++ b/secilc/secilc.c
+@@ -68,6 +68,7 @@ static __attribute__((__noreturn__)) void usage(const char *prog)
+ 	printf("  -G, --expand-generated         Expand and remove auto-generated attributes\n");
+ 	printf("  -X, --expand-size <SIZE>       Expand type attributes with fewer than <SIZE>\n");
+ 	printf("                                 members.\n");
++	printf("  -n, --no-optimize              do not optimize final policy\n");
+ 	printf("  -v, --verbose                  increment verbosity level\n");
+ 	printf("  -h, --help                     display usage information\n");
+ 	exit(1);
+@@ -97,6 +98,7 @@ int main(int argc, char *argv[])
+ 	int policyvers = POLICYDB_VERSION_MAX;
+ 	int attrs_expand_generated = 0;
+ 	int attrs_expand_size = -1;
++	int optimize_policy = 1;
+ 	int opt_char;
+ 	int opt_index = 0;
+ 	char *fc_buf = NULL;
+@@ -117,12 +119,13 @@ int main(int argc, char *argv[])
+ 		{"filecontexts", required_argument, 0, 'f'},
+ 		{"expand-generated", no_argument, 0, 'G'},
+ 		{"expand-size", required_argument, 0, 'X'},
++		{"no-optimize", no_argument, 0, 'n'},
+ 		{0, 0, 0, 0}
+ 	};
+ 	int i;
+ 
+ 	while (1) {
+-		opt_char = getopt_long(argc, argv, "o:f:U:hvt:M:PDmNc:GX:", long_opts, &opt_index);
++		opt_char = getopt_long(argc, argv, "o:f:U:hvt:M:PDmNc:GX:n", long_opts, &opt_index);
+ 		if (opt_char == -1) {
  			break;
-+		case 'O':
-+			optimize = 1;
-+			break;
- 		case 'D':
- 			disable_dontaudit = 1;
- 			break;
-@@ -738,6 +745,8 @@ cleanup_disable:
- 			semanage_set_reload(sh, 0);
- 		if (build)
- 			semanage_set_rebuild(sh, 1);
-+		if (optimize)
-+			semanage_set_optimize(sh, 1);
- 		if (disable_dontaudit)
- 			semanage_set_disable_dontaudit(sh, 1);
- 		else if (build)
+ 		}
+@@ -211,6 +214,9 @@ int main(int argc, char *argv[])
+ 				}
+ 				break;
+ 			}
++			case 'n':
++				optimize_policy = 0;
++				break;
+ 			case 'h':
+ 				usage(argv[0]);
+ 			case '?':
+@@ -294,6 +300,14 @@ int main(int argc, char *argv[])
+ 		goto exit;
+ 	}
+ 
++	if (optimize_policy) {
++		rc = sepol_policydb_optimize(pdb);
++		if (rc != SEPOL_OK) {
++			fprintf(stderr, "Failed to optimize policydb\n");
++			goto exit;
++		}
++	}
++
+ 	if (output == NULL) {
+ 		int size = snprintf(NULL, 0, "policy.%d", policyvers);
+ 		output = malloc((size + 1) * sizeof(char));
 -- 
 2.20.1
 

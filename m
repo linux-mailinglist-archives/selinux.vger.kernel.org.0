@@ -2,112 +2,72 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AA9E2E1D5
-	for <lists+selinux@lfdr.de>; Wed, 29 May 2019 18:03:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B96002E1E2
+	for <lists+selinux@lfdr.de>; Wed, 29 May 2019 18:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726118AbfE2QDo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 29 May 2019 12:03:44 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:53052 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726062AbfE2QDo (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Wed, 29 May 2019 12:03:44 -0400
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 653CD30BB379
-        for <selinux@vger.kernel.org>; Wed, 29 May 2019 16:03:44 +0000 (UTC)
-Received: from workstation.redhat.com (ovpn-204-164.brq.redhat.com [10.40.204.164])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 799A52D22B;
-        Wed, 29 May 2019 16:03:43 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
-To:     selinux@vger.kernel.org
-Cc:     Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH] Add CONTRIBUTING
-Date:   Wed, 29 May 2019 18:03:37 +0200
-Message-Id: <20190529160337.4672-1-plautrba@redhat.com>
+        id S1726699AbfE2QFl (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 29 May 2019 12:05:41 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:45704 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726118AbfE2QFl (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 29 May 2019 12:05:41 -0400
+Received: by mail-lj1-f195.google.com with SMTP id r76so2995714lja.12
+        for <selinux@vger.kernel.org>; Wed, 29 May 2019 09:05:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=GUNtk3Faod98wzhOQl6CcpQubiZDazKUCPoXGhGTi2A=;
+        b=Pe+Fv1dWlqioITcj1M3595br7DXt6sHIyW5kaxwpK4BAAyQfm/8Hx4YQ88/thJT+Hs
+         jYzaL9Z0X6jiyeA0cZ0etWp8TKcmU6Ef+ySvHRdypkvejp6ubt4GPNWrKtYMmdVsxf72
+         riKZeU+xu5saUQz59eRcXE4B8kQyFGNEZGj+VgnufSI3OxLfSCmdEXNzZXqlcbj8bO6z
+         ryr6x9XO29H5TxAX1XZ91qvbP3mqqcn6AEqpf59m77HdFTaI8REzIPLboLWXcHJIieWZ
+         XfjzEhVHFIarfgZTXsdRuE6hoxuaaj/29SCCJcwfIl/Ks1mvAE5vC0yyedkqVHJ7ex13
+         aKiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=GUNtk3Faod98wzhOQl6CcpQubiZDazKUCPoXGhGTi2A=;
+        b=JFE254Et0XoojrK3F3UIcPW4YOBCwajUyasrrA7ChAYBK8T3HdyAGB4HtiRRB4FJ6e
+         fZRA1rRkgQ+2ePBGbZIA5I1a0824F4BEv3KAGPRWvd25tsWqByMlZ7tONcPS/fWTyP74
+         lDR7J+17Ioan9RUkE3mOdFUO5W8yxsxLk2n6k4ULdf4A6Wb747++ZM5C26jyDosFhOt5
+         noFbUWKgd+yHXD6PrqtAcFef0xg6K8PN9kNvpMunX/7ESEFPjROM/n6QmpIqcQJnpe8J
+         xycxR9QJ1LwTUzvr/iNurKQZggY0pDxdgjWEZ/7JpH7CY6NblGqamjZNMd5uTw5FcG7H
+         g1Dg==
+X-Gm-Message-State: APjAAAVcYEZk0lIPxuI7G27H4gqOsnaKvz7hFLbCvXpP9828O3lhF3GK
+        BVIuqAEvcoBWtDVYzd5Hcqb1W+EswEI36EsjeBszxrE=
+X-Google-Smtp-Source: APXvYqyuwJKbNVCcGH7vpIXH3Sm3+mNhg8RwIN6yye1ItL/TnosfKZ8PB+XFU7ckWx++IReX3O7LAzK2AKKZ5q6IKZ4=
+X-Received: by 2002:a2e:9bc5:: with SMTP id w5mr31069733ljj.87.1559145939065;
+ Wed, 29 May 2019 09:05:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.49]); Wed, 29 May 2019 16:03:44 +0000 (UTC)
+References: <20190529160337.4672-1-plautrba@redhat.com>
+In-Reply-To: <20190529160337.4672-1-plautrba@redhat.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 29 May 2019 12:05:28 -0400
+Message-ID: <CAHC9VhS8+h5TW1fAsss0uq=XspPun+SWzxRquusP6gLe7FMG7Q@mail.gmail.com>
+Subject: Re: [PATCH] Add CONTRIBUTING
+To:     Petr Lautrbach <plautrba@redhat.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Based on https://github.com/SELinuxProject/selinux/wiki/Contributing
+On Wed, May 29, 2019 at 12:03 PM Petr Lautrbach <plautrba@redhat.com> wrote:
+>
+> Based on https://github.com/SELinuxProject/selinux/wiki/Contributing
+>
+> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+> ---
+>  CONTRIBUTING | 60 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 60 insertions(+)
+>  create mode 100644 CONTRIBUTING
 
-Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
----
- CONTRIBUTING | 60 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
- create mode 100644 CONTRIBUTING
+I would suggest updating the wiki to point to this file if/when it is
+merged upstream.
 
-diff --git a/CONTRIBUTING b/CONTRIBUTING
-new file mode 100644
-index 00000000..784d2023
---- /dev/null
-+++ b/CONTRIBUTING
-@@ -0,0 +1,60 @@
-+# Contributing to SELinux
-+
-+Contributing to the SELinux userspace project is a similar process to
-+other open source projects. Bug reports, new features to the existing
-+code, additional tools, or updated documentation are all welcome.
-+
-+You can find a list of open issues where you might contribute to the SELinux kernel code at
-+https://github.com/SELinuxProject/selinux-kernel/issues or to the SELinux userspace code at
-+https://github.com/SELinuxProject/selinux/issues.
-+
-+See the selinuxproject.org http://selinuxproject.org/page/User_Resources page for more
-+information on mailing lists, documentation, and other resources.
-+
-+## Reporting Bugs
-+
-+All bugs and patches should be submitted to the SELinux mailing
-+list at selinux@vger.kernel.org - https://lore.kernel.org/selinux .
-+
-+When reporting bugs please include versions of SELinux related libraries and
-+tools (libsepol, libselinux, libsemanage, checkpolicy). If you are
-+using a custom policy please include it as well.
-+
-+## Compiling
-+
-+There are a number of dependencies required to build the userspace
-+tools/libraries. On a Fedora system you can install them with yum:
-+
-+    # yum install audit-libs-devel bison bzip2-devel dbus-devel dbus-glib-devel flex flex-devel flex-static glib2-devel libcap-devel libcap-ng-devel pam-devel pcre-devel python3-devel python3-setools swig xmlto redhat-rpm-config
-+
-+
-+The tools and libraries can be built and installed under a private directory from the top level with make, e.g.
-+
-+    $ make DESTDIR=~/obj install install-pywrap
-+
-+## Contributing Code
-+
-+After obtaining the code of the repository (see below), create a patch
-+against the repository, and post that patch to the SELinux mailing
-+list at selinux@vger.kernel.org - https://lore.kernel.org/selinux .
-+When preparing patches, please follow these guidelines:
-+
-+-   Patches should apply with -p1
-+-   Must apply against HEAD of the master branch
-+-   Separate large patches into logical patches
-+-   Patch descriptions must end with your "Signed-off-by" line.
-+    This means your code meets the Developer's certificate of origin -
-+    https://developercertificate.org/.
-+
-+When adding new, large features or tools it is best to discuss the
-+design on the mailing list prior to submitting the patch.
-+
-+## Development Repository
-+
-+Git is a modern source code management system. For more information
-+about Git please see the Git website.
-+
-+To get an anonymous checkout of the SELinux userland repository you can
-+run:
-+
-+    $ git clone <https://github.com/SELinuxProject/selinux
 -- 
-2.22.0.rc1
-
+paul moore
+www.paul-moore.com

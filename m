@@ -2,44 +2,46 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DB3FF2D679
-	for <lists+selinux@lfdr.de>; Wed, 29 May 2019 09:38:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2EF92D67C
+	for <lists+selinux@lfdr.de>; Wed, 29 May 2019 09:38:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726418AbfE2HiF (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 29 May 2019 03:38:05 -0400
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:44035 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726408AbfE2HiF (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 29 May 2019 03:38:05 -0400
-Received: by mail-wr1-f65.google.com with SMTP id w13so883731wru.11
-        for <selinux@vger.kernel.org>; Wed, 29 May 2019 00:38:04 -0700 (PDT)
+        id S1726515AbfE2HiI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 29 May 2019 03:38:08 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:55532 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726408AbfE2HiI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 29 May 2019 03:38:08 -0400
+Received: by mail-wm1-f67.google.com with SMTP id u78so833949wmu.5
+        for <selinux@vger.kernel.org>; Wed, 29 May 2019 00:38:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ajoxegz7SZl6Clxj/qTbfBPfVfwK3XvHqwJOGvkKipc=;
-        b=rAONM5WEqRULc77tH+nfE/GOBl5Hoe6ylnr6ZQqc49judkGqGzYmiFza8iqsTw60kE
-         hp5tMTjCjsyoGheyMr96vuxIQxAML+Ew4zfdRsqtiE9eAM8JZwLP/PzKS7o+a7iIXglv
-         fP0G/hKxYGwIMrNjwTcxf/FQFocdu+DZAL8+Xeo30MndHrpaqr3z69RPTun3/qCSadQ+
-         6rH+JmHDbuKUSElGY8Is2Ph/r33TulHIkTpKtEyNGTKi0chRCd+GL0OLf32HLFeqSWz9
-         ce5K1MtYh1JUi1vyFj01x6btuS07y7q7rWGPc8TPlgw63GlMrK2QpVSUe0U3NcDw8AEx
-         c5Qw==
-X-Gm-Message-State: APjAAAV7E30n9UWzBiLuBwjO2kF9nEyEZkN5TgEKSIdVpE8BWRmA3DjL
-        lyRWRmHJclz7H9pb6iIduSFEKH1rWkM=
-X-Google-Smtp-Source: APXvYqw1/6KeUItqZeiknQGtPsfk6OqKLcVyZEr6gWsFuXhY+OJuSwMjZfi9PxnE+U2N+5XTFEsq5A==
-X-Received: by 2002:a5d:6145:: with SMTP id y5mr30057770wrt.96.1559115483044;
-        Wed, 29 May 2019 00:38:03 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=sMI4yLZPripAM6IR7UVjCl1/ss7b2U9TPNkrY0JZSic=;
+        b=mdyqXdY7ezEWxZd54nzIe2+q3X8f4T8ZVnPNUuEGEGzU6/kJVJj5B5ZPJz6k2FYJtF
+         2Zi5bcWEF0qov5GZh72Pidox7SQyjN75Wc75DMeoha23cBBtaoIL8gOf5k7wFSZ6bxFV
+         A+w/mvNzo9/E5D28tZNN5vOfUVForbdrHLJJ+RSPlgzpQfh1wmxa7rvxigwUeeuYimlW
+         HuNW8wzQTFRf1/QnfF/buU7g3DH1G682P4DJGOWNDVqEfBV7TfUTCP2Tezy5MpQ44fs0
+         uEy35kAhyi1wm8yMnX41HMgbwjocsYn/hcJ+EsDWdkGKx/G1VvF3aSwBK++7EgCdWQZq
+         sSgA==
+X-Gm-Message-State: APjAAAVBq8M+JG0pAcWqwyPO6Xu6qcTdznoSUOEMPI3ETj816Tv5/jD6
+        yIR8H/NfsnMFWeeo/CrSul0sTfgLXN0=
+X-Google-Smtp-Source: APXvYqycOxbMOtmYZMgtB/bpL7IYw24JyeQHl+bgljS50sMcKg4wky8O6aFXQgU6pwLwCxdZfBBTnQ==
+X-Received: by 2002:a1c:1947:: with SMTP id 68mr5832881wmz.171.1559115484287;
+        Wed, 29 May 2019 00:38:04 -0700 (PDT)
 Received: from localhost.localdomain.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id p16sm32024877wrg.49.2019.05.29.00.38.01
+        by smtp.gmail.com with ESMTPSA id p16sm32024877wrg.49.2019.05.29.00.38.03
         for <selinux@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 29 May 2019 00:38:02 -0700 (PDT)
+        Wed, 29 May 2019 00:38:03 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH userspace v3 0/7] Remove redundant rules when building policydb
-Date:   Wed, 29 May 2019 09:37:52 +0200
-Message-Id: <20190529073759.20548-1-omosnace@redhat.com>
+Subject: [PATCH userspace v3 1/7] libsepol: add a function to optimize kernel policy
+Date:   Wed, 29 May 2019 09:37:53 +0200
+Message-Id: <20190529073759.20548-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190529073759.20548-1-omosnace@redhat.com>
+References: <20190529073759.20548-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -47,83 +49,488 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Changes in v3:
- * fix bad patch squashing
- * rename secilc --optimize-policy option to --optimize (to be simpler
-   and consistent with checkpolicy and semodule)
-v2: https://lore.kernel.org/selinux/20190528145912.13827-1-omosnace@redhat.com/T/
+Add sepol_policydb_optimize(), which checks a kernel policy for
+redundant rules (i.e. those that are covered by an existing more general
+rule) and removes them.
 
-Changes in v2:
- * fix handling of dontaudit (AVTAB_DENY) rules
- * switch optimization from opt-out to opt-in everywhere
- * add a patch from jwcart2 that adds optimization support to
-   checkpolicy as well
- * add two RFC modifications (see log messages for details):
-   * one improves the optimization to detect also rules covered by the
-     union of two or more other rules (on permission set level)
-   * the other one drops libsemanage/semodule run-time enabling/
-     disabling of optimization in favor of a global config option
-v1: https://lore.kernel.org/selinux/20190523102449.9621-1-omosnace@redhat.com/T/
+Results on Fedora 29 policy:
 
-This series implements an optional optimization step when building a
-policydb via semodule or secilc, which identifies and removes rules that
-are redundant -- i.e. they are already covered by a more general rule
-based on the type attribute hierarchy.
+WITHOUT OPTIMIZATION:
+    # time semodule -B
+    real    0m21,280s
+    user    0m18,636s
+    sys     0m2,525s
 
-Since the optimization might not always be useful (e.g. when care is
-taken to not have redundant rules or when the attributes are
-aggressively expanded) and might even drastically increase policy build
-times under some cicumstances (for example with the DSSP standard policy
-[1]), the optimization is applied only when requested explictly.
+    $ wc -c /sys/fs/selinux/policy
+    8692158 /sys/fs/selinux/policy
 
-The optimization routine eliminates:
- * all allow/dontaudit/auditallow(/neverallow) rules (including xperm
-   variants) that are covered by another more general rule,
- * all conditional versions of the above rules that are covered by a
-   more general rule either in the unconditional table or in the same
-   branch of the same conditional.
+    $ seinfo (edited)
+      Allow:            113159
+      Dontaudit:         10297
+      Total:            123156
 
-The optimization doesn't process other rules, since they currently do
-not support attributes. There is some room left for more precise
-optimization of conditional rules, but it would likely bring only little
-additional benefit.
+WITH OPTIMIZATION ENABLED:
+    # time semodule -B
+    real    0m22,825s
+    user    0m20,178s
+    sys     0m2,520s
 
-Travis build passed: https://travis-ci.org/WOnder93/selinux/builds/538601363
+    $ wc -c /sys/fs/selinux/policy
+    8096158 /sys/fs/selinux/policy
 
-Tested:
- * live on my Fedora 29 devel machine under normal use (no unusual AVCs
-   observed with the optimized policy loaded)
- * using: https://gitlab.com/omos/selinux-misc/blob/master/opt_test.sh
-   * tests also xperm rules
-   * doesn't test conditionals (yet)
+    $ seinfo (edited)
+      Allow:             66334
+      Dontaudit:          7480
+      Total:             73814
 
-[1] https://github.com/DefenSec/dssp2-standard
-
-James Carter (1):
-  checkpolicy: add flag to enable policy optimization
-
-Ondrej Mosnacek (6):
-  libsepol: add a function to optimize kernel policy
-  libsemanage: optionally optimize policy on rebuild
-  semodule: add flag to enable policy optimization
-  secilc: add flag to enable policy optimization
-  [RFC] lisepol: slightly more thorough optimization
-  [RFC] libsemanage: switch to config file entry
-
- checkpolicy/checkpolicy.c                  |  16 +-
- libsemanage/src/conf-parse.y               |  15 +-
- libsemanage/src/conf-scan.l                |   1 +
- libsemanage/src/direct_api.c               |   7 +
- libsemanage/src/semanage_conf.h            |   1 +
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
  libsepol/include/sepol/policydb.h          |   5 +
  libsepol/include/sepol/policydb/policydb.h |   2 +
  libsepol/src/libsepol.map.in               |   5 +
- libsepol/src/optimize.c                    | 376 +++++++++++++++++++++
+ libsepol/src/optimize.c                    | 374 +++++++++++++++++++++
  libsepol/src/policydb_public.c             |   5 +
- secilc/secilc.c                            |  16 +-
- 11 files changed, 445 insertions(+), 4 deletions(-)
+ 5 files changed, 391 insertions(+)
  create mode 100644 libsepol/src/optimize.c
 
+diff --git a/libsepol/include/sepol/policydb.h b/libsepol/include/sepol/policydb.h
+index 6769b913..792913dd 100644
+--- a/libsepol/include/sepol/policydb.h
++++ b/libsepol/include/sepol/policydb.h
+@@ -100,6 +100,11 @@ extern int sepol_policydb_set_handle_unknown(sepol_policydb_t * p,
+ extern int sepol_policydb_set_target_platform(sepol_policydb_t * p,
+ 					     int target_platform);
+ 
++/*
++ * Optimize the policy by removing redundant rules.
++ */
++extern int sepol_policydb_optimize(sepol_policydb_t * p);
++
+ /* 
+  * Read a policydb from a policy file.
+  * This automatically sets the type and version based on the 
+diff --git a/libsepol/include/sepol/policydb/policydb.h b/libsepol/include/sepol/policydb/policydb.h
+index 591ce6e0..a279382e 100644
+--- a/libsepol/include/sepol/policydb/policydb.h
++++ b/libsepol/include/sepol/policydb/policydb.h
+@@ -636,6 +636,8 @@ extern int policydb_user_cache(hashtab_key_t key,
+ 
+ extern int policydb_reindex_users(policydb_t * p);
+ 
++extern int policydb_optimize(policydb_t * p);
++
+ extern void policydb_destroy(policydb_t * p);
+ 
+ extern int policydb_load_isids(policydb_t * p, sidtab_t * s);
+diff --git a/libsepol/src/libsepol.map.in b/libsepol/src/libsepol.map.in
+index d879016c..6358e51f 100644
+--- a/libsepol/src/libsepol.map.in
++++ b/libsepol/src/libsepol.map.in
+@@ -59,3 +59,8 @@ LIBSEPOL_1.1 {
+ 	sepol_polcap_getnum;
+ 	sepol_polcap_getname;
+ } LIBSEPOL_1.0;
++
++LIBSEPOL_1.2 {
++  global:
++	sepol_optimize_policy;
++} LIBSEPOL_1.1;
+diff --git a/libsepol/src/optimize.c b/libsepol/src/optimize.c
+new file mode 100644
+index 00000000..b3859b6c
+--- /dev/null
++++ b/libsepol/src/optimize.c
+@@ -0,0 +1,374 @@
++/*
++ * Author: Ondrej Mosnacek <omosnacek@gmail.com>
++ *
++ * Copyright (C) 2019 Red Hat Inc.
++ *
++ *  This library is free software; you can redistribute it and/or
++ *  modify it under the terms of the GNU Lesser General Public
++ *  License as published by the Free Software Foundation; either
++ *  version 2.1 of the License, or (at your option) any later version.
++ *
++ *  This library is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ *  Lesser General Public License for more details.
++ *
++ *  You should have received a copy of the GNU Lesser General Public
++ *  License along with this library; if not, write to the Free Software
++ *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
++ */
++
++/*
++ * Binary policy optimization.
++ *
++ * Defines the policydb_optimize() function, which finds and removes
++ * redundant rules from the binary policy to reduce its size and potentially
++ * improve rule matching times. Only rules that are already covered by a
++ * more general rule are removed. The resulting policy is functionally
++ * equivalent to the original one.
++ */
++
++#include <sepol/policydb/policydb.h>
++#include <sepol/policydb/conditional.h>
++
++/* builds map: type/attribute -> {all attributes that are a superset of it} */
++static ebitmap_t *build_type_map(const policydb_t *p)
++{
++	unsigned int i, k;
++	ebitmap_t *map = malloc(p->p_types.nprim * sizeof(ebitmap_t));
++	if (!map)
++		return NULL;
++
++	for (i = 0; i < p->p_types.nprim; i++) {
++		if (p->type_val_to_struct[i] &&
++		    p->type_val_to_struct[i]->flavor != TYPE_ATTRIB) {
++			if (ebitmap_cpy(&map[i], &p->type_attr_map[i]))
++				goto err;
++		} else {
++			ebitmap_t *types_i = &p->attr_type_map[i];
++
++			ebitmap_init(&map[i]);
++			for (k = 0; k < p->p_types.nprim; k++) {
++				ebitmap_t *types_k = &p->attr_type_map[k];
++
++				if (ebitmap_contains(types_k, types_i)) {
++					if (ebitmap_set_bit(&map[i], k, 1))
++						goto err;
++				}
++			}
++		}
++	}
++	return map;
++err:
++	for (k = 0; k < i; k++)
++		ebitmap_destroy(&map[i]);
++	return NULL;
++}
++
++static void destroy_type_map(const policydb_t *p, ebitmap_t *type_map)
++{
++	unsigned int i;
++	for (i = 0; i < p->p_types.nprim; i++)
++		ebitmap_destroy(&type_map[i]);
++	free(type_map);
++}
++
++static int match_xperms(const uint32_t *p1, const uint32_t *p2)
++{
++	size_t i;
++
++	for (i = 0; i < EXTENDED_PERMS_LEN; i++) {
++		if ((p2[i] & p1[i]) != p1[i])
++			return 0;
++	}
++	return 1;
++}
++
++static int match_avtab_datum(uint16_t specified,
++			     const avtab_datum_t *d1, const avtab_datum_t *d2)
++{
++	/* inverse logic needed for AUDITDENY rules */
++	if (specified & AVTAB_AUDITDENY)
++		return (d1->data & d2->data) == d2->data;
++
++	if (specified & AVTAB_AV)
++		return (d2->data & d1->data) == d1->data;
++
++	if (specified & AVTAB_XPERMS) {
++		const avtab_extended_perms_t *x1 = d1->xperms;
++		const avtab_extended_perms_t *x2 = d2->xperms;
++
++		if (x1->specified == AVTAB_XPERMS_IOCTLFUNCTION) {
++			if (x2->specified == AVTAB_XPERMS_IOCTLFUNCTION) {
++				if (x1->driver != x2->driver)
++					return 0;
++				return match_xperms(x1->perms, x2->perms);
++			}
++			if (x2->specified == AVTAB_XPERMS_IOCTLDRIVER)
++				return xperm_test(x1->driver, x2->perms);
++		} else if (x1->specified == AVTAB_XPERMS_IOCTLDRIVER) {
++			if (x2->specified == AVTAB_XPERMS_IOCTLFUNCTION)
++				return 0;
++
++			if (x2->specified == AVTAB_XPERMS_IOCTLDRIVER)
++				return match_xperms(x1->perms, x2->perms);
++		}
++		return 0;
++	}
++	return 0;
++}
++
++/* checks if avtab contains a rule that covers the given rule */
++static int is_avrule_redundant(avtab_ptr_t entry, avtab_t *tab,
++			       const ebitmap_t *type_map)
++{
++	unsigned int i, k, s_idx, t_idx;
++	ebitmap_node_t *snode, *tnode;
++	avtab_datum_t *d1, *d2;
++	avtab_key_t key;
++
++	/* we only care about AV rules */
++	if (!(entry->key.specified & (AVTAB_AV|AVTAB_XPERMS)))
++		return 0;
++
++	s_idx = entry->key.source_type - 1;
++	t_idx = entry->key.target_type - 1;
++
++	key.target_class = entry->key.target_class;
++	key.specified    = entry->key.specified;
++
++	d1 = &entry->datum;
++
++	ebitmap_for_each_positive_bit(&type_map[s_idx], snode, i) {
++		key.source_type = i + 1;
++
++		ebitmap_for_each_positive_bit(&type_map[t_idx], tnode, k) {
++			if (s_idx == i && t_idx == k)
++				continue;
++
++			key.target_type = k + 1;
++
++			d2 = avtab_search(tab, &key);
++			if (!d2)
++				continue;
++
++			if (match_avtab_datum(key.specified, d1, d2))
++				return 1;
++		}
++	}
++	return 0;
++}
++
++static int is_type_attr(policydb_t *p, unsigned int id)
++{
++	return p->type_val_to_struct[id]->flavor == TYPE_ATTRIB;
++}
++
++static int is_avrule_with_attr(avtab_ptr_t entry, policydb_t *p)
++{
++	unsigned int s_idx = entry->key.source_type - 1;
++	unsigned int t_idx = entry->key.target_type - 1;
++
++	return is_type_attr(p, s_idx) || is_type_attr(p, t_idx);
++}
++
++/* checks if conditional list contains a rule that covers the given rule */
++static int is_cond_rule_redundant(avtab_ptr_t e1, cond_av_list_t *list,
++				  const ebitmap_t *type_map)
++{
++	unsigned int s1, t1, c1, k1, s2, t2, c2, k2;
++
++	/* we only care about AV rules */
++	if (!(e1->key.specified & (AVTAB_AV|AVTAB_XPERMS)))
++		return 0;
++
++	s1 = e1->key.source_type - 1;
++	t1 = e1->key.target_type - 1;
++	c1 = e1->key.target_class;
++	k1 = e1->key.specified;
++
++	for (; list; list = list->next) {
++		avtab_ptr_t e2 = list->node;
++
++		s2 = e2->key.source_type - 1;
++		t2 = e2->key.target_type - 1;
++		c2 = e2->key.target_class;
++		k2 = e2->key.specified;
++
++		if (k1 != k2 || c1 != c2)
++			continue;
++
++		if (s1 == s2 && t1 == t2)
++			continue;
++		if (!ebitmap_get_bit(&type_map[s1], s2))
++			continue;
++		if (!ebitmap_get_bit(&type_map[t1], t2))
++			continue;
++
++		if (match_avtab_datum(k1, &e1->datum, &e2->datum))
++			return 1;
++	}
++	return 0;
++}
++
++static void optimize_avtab(policydb_t *p, const ebitmap_t *type_map)
++{
++	avtab_t *tab = &p->te_avtab;
++	unsigned int i;
++	avtab_ptr_t *cur;
++
++	for (i = 0; i < tab->nslot; i++) {
++		cur = &tab->htable[i];
++		while (*cur) {
++			if (is_avrule_redundant(*cur, tab, type_map)) {
++				/* redundant rule -> remove it */
++				avtab_ptr_t tmp = *cur;
++
++				*cur = tmp->next;
++				if (tmp->key.specified & AVTAB_XPERMS)
++					free(tmp->datum.xperms);
++				free(tmp);
++
++				tab->nel--;
++			} else {
++				/* rule not redundant -> move to next rule */
++				cur = &(*cur)->next;
++			}
++		}
++	}
++}
++
++/* find redundant rules in (*cond) and put them into (*del) */
++static void optimize_cond_av_list(cond_av_list_t **cond, cond_av_list_t **del,
++				  policydb_t *p, const ebitmap_t *type_map)
++{
++	cond_av_list_t **listp = cond;
++	cond_av_list_t *pcov = NULL;
++	cond_av_list_t **pcov_cur = &pcov;
++
++	/*
++	 * Separate out all "potentially covering" rules (src or tgt is an attr)
++	 * and move them to the end of the list. This is needed to avoid
++	 * polynomial complexity when almost all rules are expanded.
++	 */
++	while (*cond) {
++		if (is_avrule_with_attr((*cond)->node, p)) {
++			cond_av_list_t *tmp = *cond;
++
++			*cond = tmp->next;
++			tmp->next = pcov;
++			pcov = tmp;
++		} else {
++			cond = &(*cond)->next;
++		}
++	}
++	/* link the "potentially covering" rules to the end of the list */
++	*cond = pcov;
++
++	/* now go through the list and find the redundant rules */
++	cond = listp;
++	pcov_cur = &pcov;
++	while (*cond) {
++		/* needed because pcov itself may get deleted */
++		if (*cond == pcov)
++			pcov_cur = cond;
++		/*
++		 * First check if covered by an unconditional rule, then also
++		 * check if covered by another rule in the same list.
++		 */
++		if (is_avrule_redundant((*cond)->node, &p->te_avtab, type_map) ||
++		    is_cond_rule_redundant((*cond)->node, *pcov_cur, type_map)) {
++			cond_av_list_t *tmp = *cond;
++
++			*cond = tmp->next;
++			tmp->next = *del;
++			*del = tmp;
++		} else {
++			cond = &(*cond)->next;
++		}
++	}
++}
++
++static void optimize_cond_avtab(policydb_t *p, const ebitmap_t *type_map)
++{
++	avtab_t *tab = &p->te_cond_avtab;
++	unsigned int i;
++	avtab_ptr_t *cur;
++	cond_node_t **cond;
++	cond_av_list_t **avcond, *del = NULL;
++
++	/* First go through all conditionals and collect redundant rules. */
++	cond = &p->cond_list;
++	while (*cond) {
++		optimize_cond_av_list(&(*cond)->true_list,  &del, p, type_map);
++		optimize_cond_av_list(&(*cond)->false_list, &del, p, type_map);
++		/* TODO: maybe also check for rules present in both lists */
++
++		/* nothing left in both lists -> remove the whole conditional */
++		if (!(*cond)->true_list && !(*cond)->false_list) {
++			cond_node_t *cond_tmp = *cond;
++
++			*cond = cond_tmp->next;
++			cond_node_destroy(cond_tmp);
++		} else {
++			cond = &(*cond)->next;
++		}
++	}
++
++	if (!del)
++		return;
++
++	/*
++	 * Now go through the whole cond_avtab and remove all rules that are
++	 * found in the 'del' list.
++	 */
++	for (i = 0; i < tab->nslot; i++) {
++		cur = &tab->htable[i];
++		while (*cur) {
++			int redundant = 0;
++			avcond = &del;
++			while (*avcond) {
++				if ((*avcond)->node == *cur) {
++					cond_av_list_t *cond_tmp = *avcond;
++
++					*avcond = cond_tmp->next;
++					free(cond_tmp);
++					redundant = 1;
++					break;
++				} else {
++					avcond = &(*avcond)->next;
++				}
++			}
++			if (redundant) {
++				avtab_ptr_t tmp = *cur;
++
++				*cur = tmp->next;
++				if (tmp->key.specified & AVTAB_XPERMS)
++					free(tmp->datum.xperms);
++				free(tmp);
++
++				tab->nel--;
++			} else {
++				cur = &(*cur)->next;
++			}
++		}
++	}
++}
++
++int policydb_optimize(policydb_t *p)
++{
++	ebitmap_t *type_map;
++
++	if (p->policy_type != POLICY_KERN)
++		return -1;
++
++	type_map = build_type_map(p);
++	if (!type_map)
++		return -1;
++
++	optimize_avtab(p, type_map);
++	optimize_cond_avtab(p, type_map);
++
++	destroy_type_map(p, type_map);
++	return 0;
++}
+diff --git a/libsepol/src/policydb_public.c b/libsepol/src/policydb_public.c
+index e7218423..747a43ff 100644
+--- a/libsepol/src/policydb_public.c
++++ b/libsepol/src/policydb_public.c
+@@ -169,6 +169,11 @@ int sepol_policydb_set_target_platform(sepol_policydb_t * sp,
+ 	return 0;
+ }
+ 
++int sepol_policydb_optimize(sepol_policydb_t * p)
++{
++	return policydb_optimize(&p->p);
++}
++
+ int sepol_policydb_read(sepol_policydb_t * p, sepol_policy_file_t * pf)
+ {
+ 	return policydb_read(&p->p, &pf->pf, 0);
 -- 
 2.20.1
 

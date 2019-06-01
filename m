@@ -2,192 +2,114 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EAAE3180C
-	for <lists+selinux@lfdr.de>; Sat,  1 Jun 2019 01:32:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC00A318EA
+	for <lists+selinux@lfdr.de>; Sat,  1 Jun 2019 03:55:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726902AbfEaXcj (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 31 May 2019 19:32:39 -0400
-Received: from mga07.intel.com ([134.134.136.100]:59345 "EHLO mga07.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726881AbfEaXci (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Fri, 31 May 2019 19:32:38 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 31 May 2019 16:32:31 -0700
-X-ExtLoop1: 1
-Received: from sjchrist-coffee.jf.intel.com ([10.54.74.36])
-  by orsmga008.jf.intel.com with ESMTP; 31 May 2019 16:32:31 -0700
-From:   Sean Christopherson <sean.j.christopherson@intel.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     Andy Lutomirski <luto@kernel.org>,
-        Cedric Xing <cedric.xing@intel.com>,
+        id S1726992AbfFABy7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 31 May 2019 21:54:59 -0400
+Received: from mail-pl1-f195.google.com ([209.85.214.195]:37128 "EHLO
+        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726881AbfFABy7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 31 May 2019 21:54:59 -0400
+Received: by mail-pl1-f195.google.com with SMTP id e7so4210959pln.4;
+        Fri, 31 May 2019 18:54:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=uS+vkMtqLwlIIErU0XBgxFsO/mgm3Z3e/UEBQvk7P8o=;
+        b=SLIlcpF/RkF/lfru9fMPLVo34LGp6B4XeEx1g4Lg4HJtqxO5Aja6HUn9uQgx611RkX
+         isnsTKvJMlYVOCP4kwvm+HPblCUpsvNA7wRaWwxqkxVKpB2X23uSoMuXlByZv/Hct1TG
+         aT9nqdC/bcDgcIPQHQ2tqJcXYY7gkersU7cC76wvqiS6aIuHmkXCCCx+blwCixi2NUA/
+         HMPT2W+zvwZXbJ7HNP13J41zO4SGnt9YSzGbdlbp66sUmYEF892q3DsWenZVebCNt4dL
+         vBAk0h2oupbJyLwf7LBwoNlNS2gIryySrMebXuAGW/T3FYbcqMhuAUVlEjocVS1Ivt/C
+         yPOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=uS+vkMtqLwlIIErU0XBgxFsO/mgm3Z3e/UEBQvk7P8o=;
+        b=ZUca1MxvksfElbArQMceZEgL0pEaM+r/pKNXuveDUaeMBuZNTpz9zfLnynk4yeadfc
+         A8snaqj8Oghbw7CO6aYIDGVHd/9lmNka5Lsb88SJohMwOAv7Uvvvr0/7R8bj6AiPJ/Zs
+         kReC3PVD4+RihBgpFDTYmtqN5XqJ7v6RGK8qGOc4dldniEnp4ezDRAUrYEgHuROxveqf
+         dJwYAm4rr/uh6UMOtKFBbk4wN8EJnjxMnE0wvY0imknAZPQoaD8HHjFofzJulXClLNth
+         cmwB8+obDcYknfeInzrd8RcUsF+C92N4UqVfM/+oqNGJ+boWsTYQBK/rv1f0cUiAWfxB
+         hIBA==
+X-Gm-Message-State: APjAAAX93JclN/enxHDNeiYj5dIoXSvXqJDpm5uJyXDv8Fq6t0oeyAWu
+        CFA5BgwB2yWAcqT575UAU94=
+X-Google-Smtp-Source: APXvYqyUxXtqiMXf43Nasi77WVM6izDgKinuUHnegJHnYh7EszBuC9IqxPnp5EESnDUDEZ24MZooXg==
+X-Received: by 2002:a17:902:205:: with SMTP id 5mr12386264plc.165.1559354098463;
+        Fri, 31 May 2019 18:54:58 -0700 (PDT)
+Received: from zhanggen-UX430UQ ([66.42.35.75])
+        by smtp.gmail.com with ESMTPSA id y16sm12198928pfo.133.2019.05.31.18.54.50
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 31 May 2019 18:54:57 -0700 (PDT)
+Date:   Sat, 1 Jun 2019 09:54:42 +0800
+From:   Gen Zhang <blackgod016574@gmail.com>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
         Stephen Smalley <sds@tycho.nsa.gov>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>, selinux@vger.kernel.org,
-        Jethro Beekman <jethro@fortanix.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        linux-sgx@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, nhorman@redhat.com,
-        npmccallum@redhat.com, Serge Ayoun <serge.ayoun@intel.com>,
-        Shay Katz-zamir <shay.katz-zamir@intel.com>,
-        Haitao Huang <haitao.huang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kai Svahn <kai.svahn@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Kai Huang <kai.huang@intel.com>,
-        David Rientjes <rientjes@google.com>,
-        William Roberts <william.c.roberts@intel.com>,
-        Philip Tricca <philip.b.tricca@intel.com>
-Subject: [RFC PATCH 9/9] security/selinux: Add enclave_load() implementation
-Date:   Fri, 31 May 2019 16:31:59 -0700
-Message-Id: <20190531233159.30992-10-sean.j.christopherson@intel.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190531233159.30992-1-sean.j.christopherson@intel.com>
-References: <20190531233159.30992-1-sean.j.christopherson@intel.com>
+        Eric Paris <eparis@parisplace.org>, ccross@android.com,
+        selinux@vger.kernel.org,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        netdev@vger.kernel.org
+Subject: Re: [PATCH v2] hooks: fix a missing-check bug in
+ selinux_add_mnt_opt()
+Message-ID: <20190601015442.GA7832@zhanggen-UX430UQ>
+References: <20190530080602.GA3600@zhanggen-UX430UQ>
+ <CAFqZXNtX1R1VDFxm7Jco3BZ=pVnNiHU3-C=d8MhCVV1XSUQ8bw@mail.gmail.com>
+ <20190530085438.GA2862@zhanggen-UX430UQ>
+ <CAHC9VhSwzD652qKUy7qrRJ=zy-NZtKRGc7H4NZurzUcK4OgFZA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHC9VhSwzD652qKUy7qrRJ=zy-NZtKRGc7H4NZurzUcK4OgFZA@mail.gmail.com>
+User-Agent: Mutt/1.5.24 (2015-08-30)
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The goal of selinux_enclave_load() is to provide a facsimile of the
-existing selinux_file_mprotect() and file_map_prot_check() policies,
-but tailored to the unique properties of SGX.
-
-For example, an enclave page is technically backed by a MAP_SHARED file,
-but the "file" is essentially shared memory that is never persisted
-anywhere and also requires execute permissions (for some pages).
-
-The basic concept is to require appropriate execute permissions on the
-source of the enclave for pages that are requesting PROT_EXEC, e.g. if
-an enclave page is being loaded from a regular file, require
-FILE__EXECUTE and/or FILE__EXECMOND, and if it's coming from an
-anonymous/private mapping, require PROCESS__EXECMEM since the process
-is essentially executing from the mapping, albeit in a roundabout way.
-
-Note, FILE__READ and FILE__WRITE are intentionally not required even if
-the source page is backed by a regular file.  Writes to the enclave page
-are contained to the EPC, i.e. never hit the original file, and read
-permissions have already been vetted (or the VMA doesn't have PROT_READ,
-in which case loading the page into the enclave will fail).
-
-Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
----
- security/selinux/hooks.c | 85 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 85 insertions(+)
-
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 3ec702cf46ca..f436a055dda7 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -6726,6 +6726,87 @@ static void selinux_bpf_prog_free(struct bpf_prog_aux *aux)
- }
- #endif
- 
-+#ifdef CONFIG_INTEL_SGX
-+int selinux_enclave_load(struct vm_area_struct *vma, unsigned long prot,
-+			 unsigned long *allowed_prot)
-+{
-+	const struct cred *cred = current_cred();
-+	u32 sid = cred_sid(cred);
-+	int rc;
-+
-+	/* SGX is supported only in 64-bit kernels. */
-+	WARN_ON_ONCE(!default_noexec);
-+
-+	/*
-+	 * SGX is responsible for checking @prot vs @allowed_prot, and SELinux
-+	 * only cares about execute related permissions for enclaves.
-+	 */
-+	if (!(*allowed_prot & PROT_EXEC))
-+		return 0;
-+
-+	/*
-+	 * Loading an executable enclave page from a VMA that is not executable
-+	 * itself requires EXECUTE permissions on the source file, or if there
-+	 * is no regular source file, EXECMEM since the page is being loaded
-+	 * from a non-executable anonymous mapping.
-+	 */
-+	if (!(vma->vm_flags & VM_EXEC)) {
-+		if (vma->vm_file && !IS_PRIVATE(file_inode(vma->vm_file)))
-+			rc = file_has_perm(cred, vma->vm_file, FILE__EXECUTE);
-+		else
-+			rc = avc_has_perm(&selinux_state,
-+					  sid, sid, SECCLASS_PROCESS,
-+					  PROCESS__EXECMEM, NULL);
-+
-+		/*
-+		 * Reject the load if the enclave *needs* the page to be
-+		 * executable, otherwise prevent it from becoming executable.
-+		 */
-+		if (rc) {
-+			if (prot & PROT_EXEC)
-+				return rc;
-+
-+			*allowed_prot &= ~PROT_EXEC;
-+		}
-+	}
-+
-+	/*
-+	 * An enclave page that may do RW->RX or W+X requires EXECMOD (backed
-+	 * by a regular file) or EXECMEM (loaded from an anonymous mapping).
-+	 * Note, this hybrid EXECMOD and EXECMEM behavior is intentional and
-+	 * reflects the nature of enclaves and the EPC, e.g. EPC is effectively
-+	 * a non-persistent shared file, but each enclave is a private domain
-+	 * within that shared file, so delegate to the source of the enclave.
-+	 */
-+	if ((*allowed_prot & PROT_EXEC) && (*allowed_prot & PROT_WRITE)) {
-+		if (vma->vm_file && !IS_PRIVATE(file_inode(vma->vm_file)))
-+			rc = file_has_perm(cred, vma->vm_file, FILE__EXECMOD);
-+		else
-+			rc = avc_has_perm(&selinux_state,
-+					  sid, sid, SECCLASS_PROCESS,
-+					  PROCESS__EXECMEM, NULL);
-+		/*
-+		 * Clear ALLOW_EXEC instead of ALLOWED_WRITE if permissions are
-+		 * lacking and @prot has neither PROT_WRITE or PROT_EXEC.  If
-+		 * userspace wanted RX they would have requested RX, and due to
-+		 * lack of permissions they can never get RW->RX, i.e. the only
-+		 * useful transition is R->RW.
-+		 */
-+		if (rc) {
-+			if ((prot & PROT_EXEC) && (prot & PROT_WRITE))
-+				return rc;
-+
-+			if (prot & PROT_EXEC)
-+				*allowed_prot &= ~PROT_WRITE;
-+			else
-+				*allowed_prot &= ~PROT_EXEC;
-+		}
-+	}
-+
-+	return 0;
-+}
-+#endif
-+
- struct lsm_blob_sizes selinux_blob_sizes __lsm_ro_after_init = {
- 	.lbs_cred = sizeof(struct task_security_struct),
- 	.lbs_file = sizeof(struct file_security_struct),
-@@ -6968,6 +7049,10 @@ static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
- 	LSM_HOOK_INIT(bpf_map_free_security, selinux_bpf_map_free),
- 	LSM_HOOK_INIT(bpf_prog_free_security, selinux_bpf_prog_free),
- #endif
-+
-+#ifdef CONFIG_INTEL_SGX
-+	LSM_HOOK_INIT(enclave_load, selinux_enclave_load),
-+#endif
- };
- 
- static __init int selinux_init(void)
--- 
-2.21.0
-
+On Fri, May 31, 2019 at 11:55:23AM -0400, Paul Moore wrote:
+> On Thu, May 30, 2019 at 4:55 AM Gen Zhang <blackgod016574@gmail.com> wrote:
+> >
+> > In selinux_add_mnt_opt(), 'val' is allcoted by kmemdup_nul(). It returns
+> > NULL when fails. So 'val' should be checked.
+> >
+> > Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+> > Fixes: 757cbe597fe8 ("LSM: new method: ->sb_add_mnt_opt()")
+> 
+> Previous comments regarding "selinux:" instead of "hooks:" apply here as well.
+> 
+Thanks for your comments, Paul. I will make some changes.
+> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> > index 3ec702c..4797c63 100644
+> > --- a/security/selinux/hooks.c
+> > +++ b/security/selinux/hooks.c
+> > @@ -1052,8 +1052,11 @@ static int selinux_add_mnt_opt(const char *option, const char *val, int len,
+> >         if (token == Opt_error)
+> >                 return -EINVAL;
+> >
+> > -       if (token != Opt_seclabel)
+> > -               val = kmemdup_nul(val, len, GFP_KERNEL);
+> > +       if (token != Opt_seclabel) {
+> > +                       val = kmemdup_nul(val, len, GFP_KERNEL);
+> > +                       if (!val)
+> > +                               return -ENOMEM;
+> 
+> It looks like this code is only ever called by NFS, which will
+> eventually clean up mnt_opts via security_free_mnt_opts(), but since
+> the selinux_add_opt() error handler below cleans up mnt_opts it might
+> be safer to do the same here in case this function is called multiple
+> times to add multiple options.
+> 
+> > +       }
+> >         rc = selinux_add_opt(token, val, mnt_opts);
+> >         if (unlikely(rc)) {
+> >                 kfree(val);
+> 
+> -- 
+> paul moore
+> www.paul-moore.com
+Thanks
+Gen

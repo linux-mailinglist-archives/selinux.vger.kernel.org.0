@@ -2,202 +2,48 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 16B5D34F8B
-	for <lists+selinux@lfdr.de>; Tue,  4 Jun 2019 20:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ADF1323EB
+	for <lists+selinux@lfdr.de>; Sun,  2 Jun 2019 18:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726301AbfFDSG2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 4 Jun 2019 14:06:28 -0400
-Received: from rgout0101.bt.lon5.cpcloud.co.uk ([65.20.0.121]:33944 "EHLO
-        rgout01.bt.lon5.cpcloud.co.uk" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726179AbfFDSG2 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 4 Jun 2019 14:06:28 -0400
-X-OWM-Source-IP: 86.147.205.94 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgieejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeosghilhhlrdgtrdhrohgsvghrthhssehgmhgrihhlrdgtohhmqedprhgtphhtthhopeeoshgushesthihtghhohdrnhhsrgdrghhovheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgieelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgjeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgjeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgkeduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgledvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedguddtgecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrleegnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdelgedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedguddukecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrleegnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdelgedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgudeffecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrleegnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdelgedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefhedgudegkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrleegnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdelgedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefiedgtdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefiedgfeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefiedgkeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefjedgtdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefjedgheeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefjedguddtkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrleegnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdelgedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefjedgudeitdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrleegnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdelgedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefkedggeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefkedgleekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefledgvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefledgjedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtdehrdelgeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrleegpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuuefqffgjpeekuefkvffokffogfdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduuddrudefledguddvudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrleegnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdelgedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-Received: from localhost.localdomain (86.147.205.94) by rgout01.bt.lon5.cpcloud.co.uk (9.0.019.26-1) (authenticated as richard_c_haines@btinternet.com)
-        id 5B321EA01FA6E0AC; Sun, 2 Jun 2019 14:36:15 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btcpcloud; t=1559671586; 
-        bh=BglxqAf1U631+jAx3q++eqXsJASy6EE0XklyEbUyHMs=;
-        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:MIME-Version;
-        b=k+Yyew98fnbaXN0Kijd61HPGe6J6Vz8KmGPqgohtmgM5lHrnBMv6NiWvwxvwFwHXh9ynL2oTd/04QlYWAySjCmjakOJSyOIzgxsbMJC5MUkra0mEEaPfl49kM3nqxL0zfgUhZk5oAL+AUnYmW0qOzq0FOBkBLox07AAfNwLEFJo=
-Message-ID: <d794f7e08a3728706fa3b865b3bae2cfd74afc45.camel@btinternet.com>
-Subject: Re: [PATCH] selinux: Fix strncpy in libselinux and libsepol
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     Stephen Smalley <sds@tycho.nsa.gov>, selinux@vger.kernel.org,
-        William Roberts <bill.c.roberts@gmail.com>
-Date:   Sun, 02 Jun 2019 14:35:55 +0100
-In-Reply-To: <d122ef80-dc99-511e-6132-44a4072e4b37@tycho.nsa.gov>
-References: <20190531151609.16873-1-richard_c_haines@btinternet.com>
-         <d122ef80-dc99-511e-6132-44a4072e4b37@tycho.nsa.gov>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.32.2 (3.32.2-1.fc30) 
+        id S1726720AbfFBQvJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 2 Jun 2019 12:51:09 -0400
+Received: from sonic303-8.consmr.mail.bf2.yahoo.com ([74.6.131.47]:42908 "EHLO
+        sonic303-8.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726633AbfFBQvJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 2 Jun 2019 12:51:09 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1559494267; bh=hp70s42sLJvM/zJRYPFnublS5r/YV4V9DcOROooBKGM=; h=From:To:Cc:Subject:Date:From:Subject; b=dSFlodrfgukvmhPhTVAVZWH0JuSkYLworhC7C+7zFA1eHgQNe0RXDbtOfL96QUAOnxm4Rtx6Xl0XM3IRzBTMB2VrXPwmdDDbgr//g0uXLefwmZoOVNiPdUSeAlkIgrK5YNnyLgQVfXKVnW6FwTmAxXegwpqExr34NghhuY9ypys8fcD4aHteKm5fLKaLigx76jTR3A0HmNcPnkPZBcs8DL69Qjfu0M3m2fUmOzgs44gA4kyDrc058wNCiDv/u+WxrY9ne6b84pjPXolEc9ytDAwUukod0K63dqmPwJXSiYo4/am6C006rox4X6Ov0z3OUOTr/14w4othdJ3+2CvsbQ==
+X-YMail-OSG: jqYvZxUVM1ls.TCbtcv78TdbjV.BWnYT4m4fw1fu2sgn6QbI7Z9uF2LsKAn09jz
+ Cbc2Q.HYbPitQm3x153SBNKQnp_wKO0vKLO07fmHnu2PDXIukeXgcak.pMMSl0.ZIRY4RP2StoL.
+ RucDA068.UGbacH_mZkE.Ik3g6qIhgcxj1w0yIAntIc9gDCNB2ff.AQZp.r2gDIEg1VA3KfvpxIr
+ LI_IYB0HfrW_zWgNJTcRfXv3JvPTvIOOTnPkwlvONP3eOmPx5P7R1S1qPZQtVerQJqI6ybQdf6PK
+ MdiqNAvegSNthqEAvwiMnDq6VTbDyYXhX9AnhHb4VEreExOZS0IKl4JFOD1lhWEtKqXveacdQrdn
+ UjtH5.2YJd1vV9e61jVgoFaWc7.dah921lrLDvDyB5dC6phc5w3t0MnWzu7Ts2aeXUggPAQUfwTf
+ zoIKewJTbqxp_3odiZKBdw_Qqi0tV2GFdPH_b66aPtUvVEmCdzhOB8hLCwJGDVMJjaQsFQt8C18y
+ AQvxoArM_9q4a_T5ZeOjtKU89TozeVoJFlcrmbF7hSxqgTY5W1QwxEyo4sOdJ1Qb5WarL12MVF5J
+ 4CCwCocI5EYbKs5WeDE9TM0WlOOUKcE9N5lharVhtQSlHMVYCflbNwojrBszjcNhXaaWSEmjiGag
+ 8xqP3uT2.1z.fLN6rBmcjt9GoV0N4ZEQafKoO1r48ElJNIYBbh5RzhZavpvHPepSnR7vf4hLUdL2
+ QUQhUiHX.Uuh7zp3QeVdFFuz8ybLyCtV2QetBcgVHz2KG_ttos_bySkeMCgcJMaqDKwIZ7WpEHwC
+ bPS1Fko7xF1Nen_ja6s70PL8IJlX6eKyBzK3miH1Zb0Wxefv1V5.qPElZYXcTiQJ4deeBJPZXnGw
+ J6lOoDKdr90hOpjt7iXs3UMA1A3zTXQhYRZL.X4lhrZjwOeP5LIKANGwhFmwnYrOF9G_xA1j5xPx
+ a6f6FKYYtiBP3hF93jlNgFrMewA2s2L_zXwyb6p4aDoPg.WcS0H78m5vWnjfoAwmiGN4CDVVQPPN
+ LMXs2gldwb0sjzrTbN2Vo9cvjClX8he7P0UXzMPHk..Ji.Kz5FuDCt6_relBR4_s9vlhOyJ930JO
+ qcqJZQ.rbkIcQy1DvLfFBv6x6oglpOgKtkzgKNXpwkY_HRjOm5mOwtsCmNl1eQOokd9Xm9XIsEyF
+ 3qAxBeJAuR155huKhPWDVg3Af6FQbmAzxRDvop0iqoEIX.ik5OkhxCW8OyBkZbN6Av1xJK7DzJ18
+ jshbXwF.rf3eHkuMJKlLRtHF7dP9tGKNipBDkTYfNygH0JoI7_5.Sa7ANal7QJPseWg--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.bf2.yahoo.com with HTTP; Sun, 2 Jun 2019 16:51:07 +0000
+Received: from c-73-223-4-185.hsd1.ca.comcast.net (EHLO localhost.net) ([73.223.4.185])
+          by smtp429.mail.bf1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID 844f659d1e234107537a664739855744;
+          Sun, 02 Jun 2019 16:51:03 +0000 (UTC)
+From:   Casey Schaufler <casey@schaufler-ca.com>
+To:     casey.schaufler@intel.com, jmorris@namei.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Cc:     casey@schaufler-ca.com, keescook@chromium.org,
+        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
+        paul@paul-moore.com, sds@tycho.nsa.gov
+Subject: [PATCH 00/58] LSM: Module stacking for AppArmor
+Date:   Sun,  2 Jun 2019 09:50:03 -0700
+Message-Id: <20190602165101.25079-1-casey@schaufler-ca.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -205,190 +51,91 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, 2019-05-31 at 15:35 -0400, Stephen Smalley wrote:
-> On 5/31/19 11:16 AM, Richard Haines wrote:
-> > When building with gcc9, get build errors such as:
-> > 
-> > genbools.c:24:2: error: ‘strncpy’ output may be truncated copying
-> > 8191
-> > bytes from a string of length 8191 [-Werror=stringop-truncation]
-> >     24 |  strncpy(dest, ptr, size);
-> >        |  ^~~~~~~~~~~~~~~~~~~~~~~~
-> 
-> It would be nice if we could just remove all of this code, modulo 
-> ABI/API concerns (maybe we could reduce the public interfaces to 
-> no-ops?).  It is all legacy code I think, predating kernel 2.6.22 
-> (kernel automatically preserves boolean values across policy reload)
-> and 
-> the use of libsemanage (managed policy, persistent boolean changes 
-> directly applied to the kernel policy file).  Probably not used by 
-> anything later than RHEL 4, which should be dead and gone by now I
-> hope.
+This patchset provides the changes required for
+the AppArmor security module to stack safely with any other.
 
-Any comments on this list:
+A new process attribute identifies which security module
+information should be reported by SO_PEERSEC and the
+/proc/.../attr/current interface. This is provided by
+/proc/.../attr/display. Writing the name of the security
+module desired to this interface will set which LSM hooks
+will be called for this information. The first security
+module providing the hooks will be used by default.
 
-libsepol/src/genusers.c
-	delete file + cleanup
+The use of integer based security tokens (secids) is
+generally (but not completely) replaced by a structure
+lsm_export. The lsm_export structure can contain information
+for each of the security modules that export information
+outside the LSM layer.
 
-libsepol/src/genbools.c
-	delete file + cleanup
+The LSM interfaces that provide "secctx" text strings
+have been changed to use a structure "lsm_context"
+instead of a pointer/length pair. In some cases the
+interfaces used a "char *" pointer and in others a
+"void *". This was necessary to ensure that the correct
+release mechanism for the text is used. It also makes
+many of the interfaces cleaner.
 
-libselinux/src/load_policy.c
-Remove areas that use:
-	genbools_array
-	genusers
-	genbools
-	setlocaldefs
-	preservebools
+https://github.com/cschaufler/lsm-stacking.git#stack-5.2-v1-apparmor
 
-libselinux/src/booleans.c
-no-op:
-	security_load_booleans()
-
-modify as no need for "int permanent":
-	security_set_boolean_list()
-
-libselinux/src/selinux_config.c
-Remove:
-	SETLOCALDEFS
-
-Clean up any leftovers (man pages etc.)
-
-
-> 
-> > Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
-> > ---
-> >   libselinux/src/booleans.c |  4 ++--
-> >   libsepol/src/genbools.c   | 20 +++++++++++---------
-> >   2 files changed, 13 insertions(+), 11 deletions(-)
-> > 
-> > diff --git a/libselinux/src/booleans.c b/libselinux/src/booleans.c
-> > index ab1e0754..cdc03517 100644
-> > --- a/libselinux/src/booleans.c
-> > +++ b/libselinux/src/booleans.c
-> > @@ -539,7 +539,7 @@ int security_load_booleans(char *path)
-> >   
-> >   	__fsetlocking(boolf, FSETLOCKING_BYCALLER);
-> >   	while (getline(&inbuf, &len, boolf) > 0) {
-> > -		int ret = process_boolean(inbuf, name, sizeof(name),
-> > &val);
-> > +		int ret = process_boolean(inbuf, name, len, &val);
-> 
-> This might fix the warning but is it correct? len is the size of the 
-> buffer allocated by getline, which could be larger or smaller than 
-> sizeof name and also could be larger than the number of bytes read. 
-> process_boolean() seems to want the size of the name buffer as a
-> bound 
-> for strncpy() in the strtrim() call. strtrim() also seems to be using
-> it 
-> wrongly as a bound for the source aka name1, presuming they are the
-> same 
-> size.
-> 
-Sent a V2 patch that I hope fixes these.
-
-> >   		if (ret == -1)
-> >   			errors++;
-> >   		if (ret == 1)
-> > @@ -557,7 +557,7 @@ int security_load_booleans(char *path)
-> >   		int ret;
-> >   		__fsetlocking(boolf, FSETLOCKING_BYCALLER);
-> >   		while (getline(&inbuf, &len, boolf) > 0) {
-> > -			ret = process_boolean(inbuf, name,
-> > sizeof(name), &val);
-> > +			ret = process_boolean(inbuf, name, len, &val);
-> 
-> Ditto.
-> 
-> >   			if (ret == -1)
-> >   				errors++;
-> >   			if (ret == 1)
-> > diff --git a/libsepol/src/genbools.c b/libsepol/src/genbools.c
-> > index d4a2df62..ad194ca6 100644
-> > --- a/libsepol/src/genbools.c
-> > +++ b/libsepol/src/genbools.c
-> > @@ -10,6 +10,8 @@
-> >   #include "private.h"
-> >   #include "dso.h"
-> >   
-> > +#define FGET_BUFSIZ 255
-> > +
-> >   /* -- Deprecated -- */
-> >   
-> >   static char *strtrim(char *dest, char *source, int size)
-> > @@ -32,7 +34,7 @@ static char *strtrim(char *dest, char *source,
-> > int size)
-> >   
-> >   static int process_boolean(char *buffer, char *name, int
-> > namesize, int *val)
-> >   {
-> > -	char name1[BUFSIZ];
-> > +	char name1[FGET_BUFSIZ];
-> >   	char *ptr = NULL;
-> >   	char *tok;
-> >   
-> > @@ -48,7 +50,7 @@ static int process_boolean(char *buffer, char
-> > *name, int namesize, int *val)
-> >   		ERR(NULL, "illegal boolean definition %s", buffer);
-> >   		return -1;
-> >   	}
-> > -	strncpy(name1, tok, BUFSIZ - 1);
-> > +	strncpy(name1, tok, FGET_BUFSIZ - 1);
-> >   	strtrim(name, name1, namesize - 1);
-> >   
-> >   	tok = strtok_r(NULL, "\0", &ptr);
-> > @@ -79,8 +81,8 @@ static int load_booleans(struct policydb
-> > *policydb, const char *path,
-> >   {
-> >   	FILE *boolf;
-> >   	char *buffer = NULL;
-> > -	char localbools[BUFSIZ];
-> > -	char name[BUFSIZ];
-> > +	char localbools[FGET_BUFSIZ];
-> > +	char name[FGET_BUFSIZ + 1];
-> 
-> Similarly seems to be making faulty assumptions about using the same 
-> buffer sizes throughout.
-> 
-> >   	int val;
-> >   	int errors = 0, changes = 0;
-> >   	struct cond_bool_datum *datum;
-> > @@ -90,12 +92,12 @@ static int load_booleans(struct policydb
-> > *policydb, const char *path,
-> >   		goto localbool;
-> >   
-> >   #ifdef __APPLE__
-> > -        if ((buffer = (char *)malloc(255 * sizeof(char))) == NULL)
-> > {
-> > -          ERR(NULL, "out of memory");
-> > -	  return -1;
-> > +	if ((buffer = (char *)malloc(FGET_BUFSIZ * sizeof(char))) ==
-> > NULL) {
-> > +		ERR(NULL, "out of memory");
-> > +		return -1;
-> >   	}
-> >   
-> > -        while(fgets(buffer, 255, boolf) != NULL) {
-> > +	while (fgets(buffer, FGET_BUFSIZ, boolf) != NULL) {
-> 
-> I think this was just a hack to make it build on macOS for
-> Android.  But 
-> there is no reason for this code to be used there.  I wouldn't
-> change 
-> the other buffer sizes to match.
-> 
-> >   #else
-> >   	size_t size = 0;
-> >   	while (getline(&buffer, &size, boolf) > 0) {
-> > @@ -124,7 +126,7 @@ static int load_booleans(struct policydb
-> > *policydb, const char *path,
-> >   
-> >   #ifdef __APPLE__
-> >   
-> > -	  while(fgets(buffer, 255, boolf) != NULL) {
-> > +	while (fgets(buffer, FGET_BUFSIZ, boolf) != NULL) {
-> >   #else
-> >   
-> >   	    while (getline(&buffer, &size, boolf) > 0) {
-> > 
-
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+---
+ drivers/android/binder.c                |  25 ++-
+ fs/kernfs/dir.c                         |   6 +-
+ fs/kernfs/inode.c                       |  31 ++-
+ fs/kernfs/kernfs-internal.h             |   3 +-
+ fs/nfs/inode.c                          |  13 +-
+ fs/nfs/internal.h                       |   8 +-
+ fs/nfs/nfs4proc.c                       |  17 +-
+ fs/nfs/nfs4xdr.c                        |  16 +-
+ fs/nfsd/nfs4proc.c                      |   8 +-
+ fs/nfsd/nfs4xdr.c                       |  14 +-
+ fs/nfsd/vfs.c                           |   7 +-
+ fs/proc/base.c                          |   1 +
+ include/linux/cred.h                    |   3 +-
+ include/linux/lsm_hooks.h               |  91 +++++----
+ include/linux/nfs4.h                    |   8 +-
+ include/linux/security.h                | 133 +++++++++----
+ include/net/af_unix.h                   |   2 +-
+ include/net/netlabel.h                  |  10 +-
+ include/net/scm.h                       |  14 +-
+ kernel/audit.c                          |  43 ++--
+ kernel/audit.h                          |   9 +-
+ kernel/auditfilter.c                    |   6 +-
+ kernel/auditsc.c                        |  77 ++++----
+ kernel/cred.c                           |  15 +-
+ net/ipv4/cipso_ipv4.c                   |  13 +-
+ net/ipv4/ip_sockglue.c                  |  12 +-
+ net/netfilter/nf_conntrack_netlink.c    |  29 ++-
+ net/netfilter/nf_conntrack_standalone.c |  16 +-
+ net/netfilter/nfnetlink_queue.c         |  38 ++--
+ net/netfilter/nft_meta.c                |  13 +-
+ net/netfilter/xt_SECMARK.c              |  14 +-
+ net/netlabel/netlabel_kapi.c            |   5 +-
+ net/netlabel/netlabel_unlabeled.c       | 101 +++++-----
+ net/netlabel/netlabel_unlabeled.h       |   2 +-
+ net/netlabel/netlabel_user.c            |  13 +-
+ net/netlabel/netlabel_user.h            |   2 +-
+ net/unix/af_unix.c                      |   6 +-
+ security/apparmor/audit.c               |   4 +-
+ security/apparmor/include/audit.h       |   2 +-
+ security/apparmor/include/net.h         |   6 +-
+ security/apparmor/include/secid.h       |   9 +-
+ security/apparmor/lsm.c                 |  64 +++---
+ security/apparmor/secid.c               |  42 ++--
+ security/integrity/ima/ima.h            |  14 +-
+ security/integrity/ima/ima_api.c        |   9 +-
+ security/integrity/ima/ima_appraise.c   |   6 +-
+ security/integrity/ima/ima_main.c       |  34 ++--
+ security/integrity/ima/ima_policy.c     |  19 +-
+ security/security.c                     | 338 +++++++++++++++++++++++++++-----
+ security/selinux/hooks.c                | 259 ++++++++++++------------
+ security/selinux/include/audit.h        |   5 +-
+ security/selinux/include/objsec.h       |  42 +++-
+ security/selinux/netlabel.c             |  25 +--
+ security/selinux/ss/services.c          |  18 +-
+ security/smack/smack.h                  |  18 ++
+ security/smack/smack_lsm.c              | 238 +++++++++++-----------
+ security/smack/smack_netfilter.c        |   8 +-
+ security/smack/smackfs.c                |  12 +-
+ 58 files changed, 1217 insertions(+), 779 deletions(-)

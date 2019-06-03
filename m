@@ -2,128 +2,295 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A8CF633A9A
-	for <lists+selinux@lfdr.de>; Tue,  4 Jun 2019 00:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DADC533AC4
+	for <lists+selinux@lfdr.de>; Tue,  4 Jun 2019 00:06:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726623AbfFCWCX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 3 Jun 2019 18:02:23 -0400
-Received: from mga01.intel.com ([192.55.52.88]:22918 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726097AbfFCWCW (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Mon, 3 Jun 2019 18:02:22 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 13:39:55 -0700
-X-ExtLoop1: 1
-Received: from ray.jf.intel.com (HELO [10.7.198.156]) ([10.7.198.156])
-  by orsmga007.jf.intel.com with ESMTP; 03 Jun 2019 13:39:53 -0700
-Subject: Re: [RFC PATCH 3/9] x86/sgx: Allow userspace to add multiple pages in
- single ioctl()
-To:     Sean Christopherson <sean.j.christopherson@intel.com>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Cedric Xing <cedric.xing@intel.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>, selinux@vger.kernel.org,
-        Jethro Beekman <jethro@fortanix.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        linux-sgx@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, nhorman@redhat.com,
-        npmccallum@redhat.com, Serge Ayoun <serge.ayoun@intel.com>,
-        Shay Katz-zamir <shay.katz-zamir@intel.com>,
-        Haitao Huang <haitao.huang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kai Svahn <kai.svahn@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Kai Huang <kai.huang@intel.com>,
-        David Rientjes <rientjes@google.com>,
-        William Roberts <william.c.roberts@intel.com>,
-        Philip Tricca <philip.b.tricca@intel.com>
-References: <20190531233159.30992-1-sean.j.christopherson@intel.com>
- <20190531233159.30992-4-sean.j.christopherson@intel.com>
- <beb8ac7a-b580-8ff2-7467-fb2870fb8cf0@intel.com>
- <20190603203712.GI13384@linux.intel.com>
-From:   Dave Hansen <dave.hansen@intel.com>
-Openpgp: preference=signencrypt
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-Message-ID: <e1d3b3a8-a3f5-f8f8-30dc-7fff7b23fb6f@intel.com>
-Date:   Mon, 3 Jun 2019 13:39:53 -0700
+        id S1726352AbfFCWFw (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 3 Jun 2019 18:05:52 -0400
+Received: from uhil19pa12.eemsg.mail.mil ([214.24.21.85]:29772 "EHLO
+        uhil19pa12.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726281AbfFCWFw (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 3 Jun 2019 18:05:52 -0400
+X-EEMSG-check-017: 416786946|UHIL19PA12_EEMSG_MP10.csd.disa.mil
+Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
+  by uhil19pa12.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 03 Jun 2019 20:43:13 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
+  s=tycho.nsa.gov; t=1559594593; x=1591130593;
+  h=subject:to:references:from:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=QmTWwuwr4Y+7bKyVQ5RA/Wy5TmJ8creUXk1HzCi+B9o=;
+  b=cDBWcpggeeSjObVHQ9KH+bCFAHGKAksx1nzELrQQvAvrdnhU+EiE7fz6
+   IafAf4x1p488NCDx68312HF42r/C68QZbewiALlZHmfxKD89i829BCX0L
+   r1DN87X9pf6KDQ3kdjpUG6izYSyjxq8XrYGTjvB1002yFJl+YPJt1ejEa
+   KlYJlNsnTTMFmR1K5KFnSym3Go3OWuzohaft+v0/som9HyP9KfriDqGTY
+   DAqlg12KWuRasmJECwEu/0Rnapbl2u8D8uXaul3xHUGTZ4iGF6OSL8rrq
+   LTmZjQBnRFlt/QqaWSXFVB9R0iKsoD2aCaZMg/R83uhaAn+Zof/bCLZq8
+   g==;
+X-IronPort-AV: E=Sophos;i="5.60,548,1549929600"; 
+   d="scan'208";a="28499749"
+IronPort-PHdr: =?us-ascii?q?9a23=3AhrHvuxXcEepRLdqBjIrv20KXI+LV8LGtZVwlr6?=
+ =?us-ascii?q?E/grcLSJyIuqrYZRSAvqdThVPEFb/W9+hDw7KP9fy5ACpZusnK6SxTOLV3FD?=
+ =?us-ascii?q?Y9wf0MmAIhBMPXQWbaF9XNKxIAIcJZSVV+9Gu6O0UGUOz3ZlnVv2HgpWVKQk?=
+ =?us-ascii?q?a3OgV6PPn6FZDPhMqrye+y54fTYwJVjzahfL9+Nhq7oRjMusUMnIdvJKQ8xh?=
+ =?us-ascii?q?TUrnZHf+ld2H9lK0+Ukxvg/Mm74YRt8z5Xu/Iv9s5AVbv1cqElRrFGDzooLn?=
+ =?us-ascii?q?446tTzuRbMUQWA6H0cUn4LkhVTGAjK8Av6XpbqvSTksOd2xTSXMtf3TbAwXj?=
+ =?us-ascii?q?Si8rtrRRr1gyoJKzI17GfagdFrgalFvByuuQBww4/MYIGUKvV+eL/dfcgHTm?=
+ =?us-ascii?q?ZFR8pdSjBNDp+5Y4YJAeUBJ+JYpJTjqVUIoxW1GA2gCPrxxjJMg3P727Ax3e?=
+ =?us-ascii?q?Y8HgHcxAEuAswAsHrUotv2OqkdX++6w6vUwjvMdP5WxTTw5ZLUfhw9r/yBX7?=
+ =?us-ascii?q?R9etfRx0k1EAPFi02dp5H5PzyLzuQNs3aU7+x9Xuyyjm4osQVxojyxycYsl4?=
+ =?us-ascii?q?LEgZkVxU3f9Shi3IY0JcG3SE58YdK+FptQrDuVO5F5QsMlXWFloSA3waAIt5?=
+ =?us-ascii?q?68eSgF0pUnxxjHZvyEbYeI+BTjW/iVITtig3JlYr2/ihCv+kaj0u3xTtS43V?=
+ =?us-ascii?q?lFoyZfktTAq2oB2wLc58SZUPdx40Gs0iuV2Q/J8OFLO0U0mLLeK54m37E/iI?=
+ =?us-ascii?q?IesV/GHi/qgEX2i7KWdlk89uio9evnZrLmq4eAN4BukAH+M7kumtelDeQkMg?=
+ =?us-ascii?q?kBQ2ib+eOm2L3l4UL5W6lFguczkqnYtJDWPcUbpqinDA9Jyosv9hmyAji83N?=
+ =?us-ascii?q?kYgHULNkxJdR2Zg4TzJl3COPX4Au2+g1Sonjdr3ffGPrj5D5XWM3fDi6zsfa?=
+ =?us-ascii?q?p96kFAyAozyspT55RPCr4bOv7zVUjxtMLAAh8jLwO02/rnCMl61o4GQ2KPA7?=
+ =?us-ascii?q?OWMKPIvl+S++0gO/WDa5cVuDnnKvgl4eDhjWQilFAGYamp3J0XaGymEfR8JU?=
+ =?us-ascii?q?WWf2bsjs0dHmcNuwo0VPbqh0GaUT5Pe3ayWLox5iolB4KiDIfDQJ2tgbOa0S?=
+ =?us-ascii?q?elEZ1ZeHpGBkqPEXj2bYWEXekDaCaILs9miDwEWqCrS5U92hG2qA/6171nI/?=
+ =?us-ascii?q?LP9S0ZsZLj0MJ56PHJmREo8jx7FNqS03uRT2FvhW4ISDo207p+oUx50FuMza?=
+ =?us-ascii?q?94g/kLXeBUsslIWQczL5KU7+V7Dd3pElbbf9yJQUyqdd6RATgwSN8q69USYk?=
+ =?us-ascii?q?BhFs+kgwyF1C2vVftdjLGPBZop4orC0HXrYcVw0XDL0O8mlVZiCvROMWmnj6?=
+ =?us-ascii?q?s3zQ/ZCpTViA3NnaeuceIXmjTK/mqZ0XGms0RRUQo2WqLACyMxfEzT+O/l61?=
+ =?us-ascii?q?vCQrnmMrEuNg9M2IbWMadRQsH4hlVBAvH4MZLRZHznyDT4PgqB2r7ZNNmiQG?=
+ =?us-ascii?q?4axiiITRFewg0=3D?=
+X-IPAS-Result: =?us-ascii?q?A2AUAAAqhfVc/wHyM5BmGwEBAQEDAQEBBwMBAQGBUQYBA?=
+ =?us-ascii?q?QELAYFmKmpRMyiEFIgciz0CBoEQJYlQjw2BewkBAQEBAQEBAQEtBwECAQGEQ?=
+ =?us-ascii?q?AKDEiM0CQ4BAwEBAQQBAQEBAwEBbBwMgjopAYJmAQEBAQIBIw8BBVELGAICJ?=
+ =?us-ascii?q?gICVwYBDAYCAQGCXz8BgWoDCQUPD6hcgTGEMgGBFIMmgUAGgQwoAYtZF3iBB?=
+ =?us-ascii?q?4ERJwyCMS4+ghqCKoMKglgEkx6VWwmCD4IYhCeMbQYbgiKKc4lZjQCHC5EKO?=
+ =?us-ascii?q?IFYKwgCGAghDzuCbBOCBRqIYYVbIwMwAQEBAYECAQGQPAEB?=
+Received: from tarius.tycho.ncsc.mil ([144.51.242.1])
+  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 03 Jun 2019 20:43:12 +0000
+Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
+        by tarius.tycho.ncsc.mil (8.14.4/8.14.4) with ESMTP id x53KhA8q031874;
+        Mon, 3 Jun 2019 16:43:10 -0400
+Subject: Re: [PATCH] selinux: Fix strncpy in libselinux and libsepol
+To:     Richard Haines <richard_c_haines@btinternet.com>,
+        selinux@vger.kernel.org, William Roberts <bill.c.roberts@gmail.com>
+References: <20190531151609.16873-1-richard_c_haines@btinternet.com>
+ <d122ef80-dc99-511e-6132-44a4072e4b37@tycho.nsa.gov>
+ <d794f7e08a3728706fa3b865b3bae2cfd74afc45.camel@btinternet.com>
+From:   Stephen Smalley <sds@tycho.nsa.gov>
+Message-ID: <f9b3c3bb-2285-f549-5a99-6182750d1862@tycho.nsa.gov>
+Date:   Mon, 3 Jun 2019 16:43:10 -0400
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190603203712.GI13384@linux.intel.com>
-Content-Type: text/plain; charset=utf-8
+In-Reply-To: <d794f7e08a3728706fa3b865b3bae2cfd74afc45.camel@btinternet.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 6/3/19 1:37 PM, Sean Christopherson wrote:
-> Heh, fair enough.  IIRC, a while back someone posted about having problems
-> building a 512gb enclave in a 92mb EPC...
+On 6/2/19 9:35 AM, Richard Haines wrote:
+> On Fri, 2019-05-31 at 15:35 -0400, Stephen Smalley wrote:
+>> On 5/31/19 11:16 AM, Richard Haines wrote:
+>>> When building with gcc9, get build errors such as:
+>>>
+>>> genbools.c:24:2: error: ‘strncpy’ output may be truncated copying
+>>> 8191
+>>> bytes from a string of length 8191 [-Werror=stringop-truncation]
+>>>      24 |  strncpy(dest, ptr, size);
+>>>         |  ^~~~~~~~~~~~~~~~~~~~~~~~
+>>
+>> It would be nice if we could just remove all of this code, modulo
+>> ABI/API concerns (maybe we could reduce the public interfaces to
+>> no-ops?).  It is all legacy code I think, predating kernel 2.6.22
+>> (kernel automatically preserves boolean values across policy reload)
+>> and
+>> the use of libsemanage (managed policy, persistent boolean changes
+>> directly applied to the kernel policy file).  Probably not used by
+>> anything later than RHEL 4, which should be dead and gone by now I
+>> hope.
 > 
-> How about this for the intermediate patch:
+> Any comments on this list:
 > 
-> 	struct sgx_enclave_add_region {
-> 		__u64	addr;
-> 		__u64	src;
-> 		__u64	size;
-> 		__u64	secinfo;
-> 		__u16	mrmask;
-> 		__u16	reserved16;
-> 		__u32	reserved;
-> 	}
+> libsepol/src/genusers.c
+> 	delete file + cleanup
+> 
+> libsepol/src/genbools.c
+> 	delete file + cleanup
+> 
+> libselinux/src/load_policy.c
+> Remove areas that use:
+> 	genbools_array
+> 	genusers
+> 	genbools
+> 	setlocaldefs
+> 	preservebools
+> 
+> libselinux/src/booleans.c
+> no-op:
+> 	security_load_booleans()
+> 
+> modify as no need for "int permanent":
+> 	security_set_boolean_list()
 
-Looks fine to me.
+Yes, we'd keep the argument to preserve API/ABI but drop the code 
+handling permanent == 1.  The callers were already updated to use 
+libsemanage instead for saving persistent booleans.
+
+> 
+> libselinux/src/selinux_config.c
+> Remove:
+> 	SETLOCALDEFS
+> 
+> Clean up any leftovers (man pages etc.)
+
+FWIW, see 
+https://lore.kernel.org/selinux/1177594803.24282.322.camel@moss-spartans.epoch.ncsc.mil/
+
+It never landed upstream since policyrep never merged to master.
+Picked up again here:
+https://lore.kernel.org/selinux/1201203958.21288.120.camel@moss-spartans.epoch.ncsc.mil/
+
+But RHEL4 was still a concern, so we fell back to just this patch:
+https://lore.kernel.org/selinux/1202311592.27371.150.camel@moss-spartans.epoch.ncsc.mil/
+
+I'm hoping we can remove it all now finally.
+
+> 
+> 
+>>
+>>> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+>>> ---
+>>>    libselinux/src/booleans.c |  4 ++--
+>>>    libsepol/src/genbools.c   | 20 +++++++++++---------
+>>>    2 files changed, 13 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/libselinux/src/booleans.c b/libselinux/src/booleans.c
+>>> index ab1e0754..cdc03517 100644
+>>> --- a/libselinux/src/booleans.c
+>>> +++ b/libselinux/src/booleans.c
+>>> @@ -539,7 +539,7 @@ int security_load_booleans(char *path)
+>>>    
+>>>    	__fsetlocking(boolf, FSETLOCKING_BYCALLER);
+>>>    	while (getline(&inbuf, &len, boolf) > 0) {
+>>> -		int ret = process_boolean(inbuf, name, sizeof(name),
+>>> &val);
+>>> +		int ret = process_boolean(inbuf, name, len, &val);
+>>
+>> This might fix the warning but is it correct? len is the size of the
+>> buffer allocated by getline, which could be larger or smaller than
+>> sizeof name and also could be larger than the number of bytes read.
+>> process_boolean() seems to want the size of the name buffer as a
+>> bound
+>> for strncpy() in the strtrim() call. strtrim() also seems to be using
+>> it
+>> wrongly as a bound for the source aka name1, presuming they are the
+>> same
+>> size.
+>>
+> Sent a V2 patch that I hope fixes these.
+> 
+>>>    		if (ret == -1)
+>>>    			errors++;
+>>>    		if (ret == 1)
+>>> @@ -557,7 +557,7 @@ int security_load_booleans(char *path)
+>>>    		int ret;
+>>>    		__fsetlocking(boolf, FSETLOCKING_BYCALLER);
+>>>    		while (getline(&inbuf, &len, boolf) > 0) {
+>>> -			ret = process_boolean(inbuf, name,
+>>> sizeof(name), &val);
+>>> +			ret = process_boolean(inbuf, name, len, &val);
+>>
+>> Ditto.
+>>
+>>>    			if (ret == -1)
+>>>    				errors++;
+>>>    			if (ret == 1)
+>>> diff --git a/libsepol/src/genbools.c b/libsepol/src/genbools.c
+>>> index d4a2df62..ad194ca6 100644
+>>> --- a/libsepol/src/genbools.c
+>>> +++ b/libsepol/src/genbools.c
+>>> @@ -10,6 +10,8 @@
+>>>    #include "private.h"
+>>>    #include "dso.h"
+>>>    
+>>> +#define FGET_BUFSIZ 255
+>>> +
+>>>    /* -- Deprecated -- */
+>>>    
+>>>    static char *strtrim(char *dest, char *source, int size)
+>>> @@ -32,7 +34,7 @@ static char *strtrim(char *dest, char *source,
+>>> int size)
+>>>    
+>>>    static int process_boolean(char *buffer, char *name, int
+>>> namesize, int *val)
+>>>    {
+>>> -	char name1[BUFSIZ];
+>>> +	char name1[FGET_BUFSIZ];
+>>>    	char *ptr = NULL;
+>>>    	char *tok;
+>>>    
+>>> @@ -48,7 +50,7 @@ static int process_boolean(char *buffer, char
+>>> *name, int namesize, int *val)
+>>>    		ERR(NULL, "illegal boolean definition %s", buffer);
+>>>    		return -1;
+>>>    	}
+>>> -	strncpy(name1, tok, BUFSIZ - 1);
+>>> +	strncpy(name1, tok, FGET_BUFSIZ - 1);
+>>>    	strtrim(name, name1, namesize - 1);
+>>>    
+>>>    	tok = strtok_r(NULL, "\0", &ptr);
+>>> @@ -79,8 +81,8 @@ static int load_booleans(struct policydb
+>>> *policydb, const char *path,
+>>>    {
+>>>    	FILE *boolf;
+>>>    	char *buffer = NULL;
+>>> -	char localbools[BUFSIZ];
+>>> -	char name[BUFSIZ];
+>>> +	char localbools[FGET_BUFSIZ];
+>>> +	char name[FGET_BUFSIZ + 1];
+>>
+>> Similarly seems to be making faulty assumptions about using the same
+>> buffer sizes throughout.
+>>
+>>>    	int val;
+>>>    	int errors = 0, changes = 0;
+>>>    	struct cond_bool_datum *datum;
+>>> @@ -90,12 +92,12 @@ static int load_booleans(struct policydb
+>>> *policydb, const char *path,
+>>>    		goto localbool;
+>>>    
+>>>    #ifdef __APPLE__
+>>> -        if ((buffer = (char *)malloc(255 * sizeof(char))) == NULL)
+>>> {
+>>> -          ERR(NULL, "out of memory");
+>>> -	  return -1;
+>>> +	if ((buffer = (char *)malloc(FGET_BUFSIZ * sizeof(char))) ==
+>>> NULL) {
+>>> +		ERR(NULL, "out of memory");
+>>> +		return -1;
+>>>    	}
+>>>    
+>>> -        while(fgets(buffer, 255, boolf) != NULL) {
+>>> +	while (fgets(buffer, FGET_BUFSIZ, boolf) != NULL) {
+>>
+>> I think this was just a hack to make it build on macOS for
+>> Android.  But
+>> there is no reason for this code to be used there.  I wouldn't
+>> change
+>> the other buffer sizes to match.
+>>
+>>>    #else
+>>>    	size_t size = 0;
+>>>    	while (getline(&buffer, &size, boolf) > 0) {
+>>> @@ -124,7 +126,7 @@ static int load_booleans(struct policydb
+>>> *policydb, const char *path,
+>>>    
+>>>    #ifdef __APPLE__
+>>>    
+>>> -	  while(fgets(buffer, 255, boolf) != NULL) {
+>>> +	while (fgets(buffer, FGET_BUFSIZ, boolf) != NULL) {
+>>>    #else
+>>>    
+>>>    	    while (getline(&buffer, &size, boolf) > 0) {
+>>>
+> 
+

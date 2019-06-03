@@ -2,94 +2,138 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5341733AF8
-	for <lists+selinux@lfdr.de>; Tue,  4 Jun 2019 00:16:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8A6533A82
+	for <lists+selinux@lfdr.de>; Mon,  3 Jun 2019 23:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726205AbfFCWQo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 3 Jun 2019 18:16:44 -0400
-Received: from mga09.intel.com ([134.134.136.24]:19879 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726101AbfFCWQo (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Mon, 3 Jun 2019 18:16:44 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 Jun 2019 13:54:20 -0700
-X-ExtLoop1: 1
-Received: from jgaire-mobl.ger.corp.intel.com (HELO localhost) ([10.252.20.169])
-  by orsmga001.jf.intel.com with ESMTP; 03 Jun 2019 13:54:07 -0700
-Date:   Mon, 3 Jun 2019 23:54:05 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Andy Lutomirski <luto@kernel.org>
-Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
-        "Xing, Cedric" <cedric.xing@intel.com>,
-        "Christopherson, Sean J" <sean.j.christopherson@intel.com>,
-        William Roberts <bill.c.roberts@gmail.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        Jethro Beekman <jethro@fortanix.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        "Dr. Greg" <greg@enjellic.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "nhorman@redhat.com" <nhorman@redhat.com>,
-        "npmccallum@redhat.com" <npmccallum@redhat.com>,
-        "Ayoun, Serge" <serge.ayoun@intel.com>,
-        "Katz-zamir, Shay" <shay.katz-zamir@intel.com>,
-        "Huang, Haitao" <haitao.huang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Svahn, Kai" <kai.svahn@intel.com>, Borislav Petkov <bp@alien8.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        "Huang, Kai" <kai.huang@intel.com>,
-        David Rientjes <rientjes@google.com>
-Subject: Re: SGX vs LSM (Re: [PATCH v20 00/28] Intel SGX1 support)
-Message-ID: <20190603205405.GE4894@linux.intel.com>
-References: <960B34DE67B9E140824F1DCDEC400C0F654E965F@ORSMSX116.amr.corp.intel.com>
- <CALCETrXXVMutX8eZk6nnkOAeS+Tj0sQd0FkW+wk6Rx8hQxCe6w@mail.gmail.com>
- <960B34DE67B9E140824F1DCDEC400C0F654E9824@ORSMSX116.amr.corp.intel.com>
- <20190528202407.GB13158@linux.intel.com>
- <285f279f-b500-27f0-ab42-fb1dbcc5ab18@tycho.nsa.gov>
- <960B34DE67B9E140824F1DCDEC400C0F654EB487@ORSMSX116.amr.corp.intel.com>
- <678a37af-797d-7bd5-a406-32548a270e3d@tycho.nsa.gov>
- <CALCETrWXB9fNNDH7gZxPTx05F78Og6K=ZtAr2aA++BDwY09Wbg@mail.gmail.com>
- <c1135352-0b5e-4694-b1a9-105876095877@tycho.nsa.gov>
- <CALCETrWsEXzUC33eJpGCpdMCBO4aYVviZLRD-CLMNaG5Jv-TCA@mail.gmail.com>
+        id S1726157AbfFCV7Q (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 3 Jun 2019 17:59:16 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:34562 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726049AbfFCV7P (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 3 Jun 2019 17:59:15 -0400
+Received: by mail-lf1-f65.google.com with SMTP id y198so4311995lfa.1
+        for <selinux@vger.kernel.org>; Mon, 03 Jun 2019 14:59:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=39SsS75pnQ5vHdEqbne0WJ2yXM1xbTpEuZ3/IBKSvQw=;
+        b=iHxItZmO7EMI3oQoeYJNo81cTXL+a2p2lGyUDGhwEFPlL7xmIzWMz2BXM9RXXpR8HJ
+         bArXNfvV6zQe9IVr2+s/xKS8FaFXc/zYRj4s8VwQUrsFbtonyI6viek4fO8KY8ypzEhP
+         8yPBFAHB2MiATF/1ZdJoqWHdv0wyyNK5PXublbT5pKOGjVLjmQp27zoYA6KWmMIBVk4n
+         KLoHEK3LWJD5b+6lDu+yQ0byVhXODfaT4qcOgyoqCn1LN2X/NKX81uXtFnrvjiX+XoR4
+         7XMccsJarvfaKxnubqoBtMZFM2Wbo6yl1WFEvAqILRdXP5cwozFrPoWhqw6KmJJ8+9ks
+         Ph/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=39SsS75pnQ5vHdEqbne0WJ2yXM1xbTpEuZ3/IBKSvQw=;
+        b=FrLHqa6dUYs3+u6wv4RkQFIcMB8Bvaz+xlWKgC4PMueF/2iCFCXunh5smrWUhmgARv
+         mp9Yl/IJtgIbp8cBJRX+9kG6v0cYzb9wK9m9S3saiya/UWYbu9/obbB/gGvh4uVMNx7e
+         EmHcgxBzOFkYVJlfdGK3/B5xULGVsskrN6cLS8sdAig61xwSheDLuUIwgtJ4pjel7x5U
+         QQtoyX3F77oe8ySMNc6IbztPq4DsIqY+2B6v0Y3dhOOUKy+a9Zogq02Ll5MZxnVMC/Tn
+         abMhOQRcWxWSCOD67OwPI0pbs/Plxm3E1QpIlV0K/c5yUkAjLFwrmUqyo5mgcxy9cno6
+         hnjQ==
+X-Gm-Message-State: APjAAAU5/v4WClm1IySRyg3u82K4bVYjxKaZXM5qyfiX8dUTUJqxgvpx
+        aOn6UIoguBptjajy6lgy60pKGh+jb5MUh5z3lVnL
+X-Google-Smtp-Source: APXvYqxKd5fwr8QHl9rJyGVa9hftw7WKVY4g2KKTll9Io6rs88ViptI9pRCooetIr8mIjw9lSzXtBYo7RsBEknadaiw=
+X-Received: by 2002:a19:c301:: with SMTP id t1mr15151815lff.137.1559595462723;
+ Mon, 03 Jun 2019 13:57:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALCETrWsEXzUC33eJpGCpdMCBO4aYVviZLRD-CLMNaG5Jv-TCA@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20190601021526.GA8264@zhanggen-UX430UQ> <CAFqZXNuPMxOQeq-5evh4dSuGC-Q5sQPjbhRgCBh4Q=u6OrEi9Q@mail.gmail.com>
+In-Reply-To: <CAFqZXNuPMxOQeq-5evh4dSuGC-Q5sQPjbhRgCBh4Q=u6OrEi9Q@mail.gmail.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 3 Jun 2019 16:57:31 -0400
+Message-ID: <CAHC9VhSt9Qsj1Lgr+H0unbbxOR18KZqoSbfXPR=XpJ8uD8Q2AQ@mail.gmail.com>
+Subject: Re: [PATCH v3] selinux: lsm: fix a missing-check bug in selinux_sb_eat_lsm_opts()
+To:     Ondrej Mosnacek <omosnace@redhat.com>,
+        Gen Zhang <blackgod016574@gmail.com>
+Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
+        Eric Paris <eparis@parisplace.org>, selinux@vger.kernel.org,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, May 30, 2019 at 09:14:10AM -0700, Andy Lutomirski wrote:
-> > What is the "source file" i.e. the target of the check?  Enclave file,
-> > sigstruct file, or /dev/sgx/enclave?
-> 
-> Enclave file -- that is, the file backing the vma from which the data
-> is loaded.
+On Mon, Jun 3, 2019 at 3:27 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> On Sat, Jun 1, 2019 at 4:15 AM Gen Zhang <blackgod016574@gmail.com> wrote:
+> > In selinux_sb_eat_lsm_opts(), 'arg' is allocated by kmemdup_nul(). It
+> > returns NULL when fails. So 'arg' should be checked. And 'mnt_opts'
+> > should be freed when error.
+> >
+> > Signed-off-by: Gen Zhang <blackgod016574@gmail.com>
+> > Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
+> > Fixes: 99dbbb593fe6 ("selinux: rewrite selinux_sb_eat_lsm_opts()")
+> > ---
+> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> > index 3ec702c..f329fc0 100644
+> > --- a/security/selinux/hooks.c
+> > +++ b/security/selinux/hooks.c
+> > @@ -2616,6 +2616,7 @@ static int selinux_sb_eat_lsm_opts(char *options, void **mnt_opts)
+> >         char *from = options;
+> >         char *to = options;
+> >         bool first = true;
+> > +       int ret;
+>
+> I'd suggest just moving the declaration of 'rc' here and simply reuse
+> that variable. Otherwise the patch looks good to me.
 
-Wonder why KVM gets away without having this given that enclaves are
-lot alike VMs.
+Agreed.  Creating "ret" only makes the patch larger and doesn't add any value.
 
-> It's provided by userspace based on whether it thinks the data in
-> question is enclave code.  source->vm_file is the file from which the
-> code is being loaded.  I'm assuming that the user code will only set
-> excute_intent ==true if it actually wants to execute the code, so, if
-> there's a denial, it will be fatal.  The normal case will be that the
-> request will be granted on the basis of EXECUTE.
+I try to avoid making broad statements, but if you are unsure about
+which approach to take when fixing a problem, start with the smallest
+patch you can write.  Even if it turns out not to be the "best"
+solution upstream, it will be easier to review, discuss, and
+potentially port to other/older kernels.
 
-AFAIK user spaces tells that already with the SECINFO flags. I don't
-get why we need a duplicate parameter.
+> >
+> >         while (1) {
+> >                 int len = opt_len(from);
+> > @@ -2635,15 +2636,16 @@ static int selinux_sb_eat_lsm_opts(char *options, void **mnt_opts)
+> >                                                 *q++ = c;
+> >                                 }
+> >                                 arg = kmemdup_nul(arg, q - arg, GFP_KERNEL);
+> > +                               if (!arg) {
+> > +                                       ret = -ENOMEM;
+> > +                                       goto free_opt;
+> > +                               }
+> >                         }
+> >                         rc = selinux_add_opt(token, arg, mnt_opts);
+> >                         if (unlikely(rc)) {
+> > +                               ret = rc;
+> >                                 kfree(arg);
+> > -                               if (*mnt_opts) {
+> > -                                       selinux_free_mnt_opts(*mnt_opts);
+> > -                                       *mnt_opts = NULL;
+> > -                               }
+> > -                               return rc;
+> > +                               goto free_opt;
+> >                         }
+> >                 } else {
+> >                         if (!first) {   // copy with preceding comma
+> > @@ -2661,6 +2663,12 @@ static int selinux_sb_eat_lsm_opts(char *options, void **mnt_opts)
+> >         }
+> >         *to = '\0';
+> >         return 0;
+> > +free_opt:
+> > +       if (*mnt_opts) {
+> > +               selinux_free_mnt_opts(*mnt_opts);
+> > +               *mnt_opts = NULL;
+> > +       }
+> > +       return ret;
+> >  }
+> >
+> >  static int selinux_sb_remount(struct super_block *sb, void *mnt_opts)
+>
+> --
+> Ondrej Mosnacek <omosnace at redhat dot com>
+> Software Engineer, Security Technologies
+> Red Hat, Inc.
 
-/Jarkko
+-- 
+paul moore
+www.paul-moore.com

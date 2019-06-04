@@ -2,88 +2,55 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0702E3511C
-	for <lists+selinux@lfdr.de>; Tue,  4 Jun 2019 22:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B0235134
+	for <lists+selinux@lfdr.de>; Tue,  4 Jun 2019 22:42:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726312AbfFDUgu (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 4 Jun 2019 16:36:50 -0400
-Received: from mga01.intel.com ([192.55.52.88]:44647 "EHLO mga01.intel.com"
+        id S1726293AbfFDUm3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 4 Jun 2019 16:42:29 -0400
+Received: from namei.org ([65.99.196.166]:36780 "EHLO namei.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726033AbfFDUgu (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Tue, 4 Jun 2019 16:36:50 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Jun 2019 13:36:50 -0700
-X-ExtLoop1: 1
-Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.36])
-  by fmsmga001.fm.intel.com with ESMTP; 04 Jun 2019 13:36:49 -0700
-Date:   Tue, 4 Jun 2019 13:36:49 -0700
-From:   Sean Christopherson <sean.j.christopherson@intel.com>
-To:     Andy Lutomirski <luto@kernel.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Cedric Xing <cedric.xing@intel.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>, selinux@vger.kernel.org,
-        Jethro Beekman <jethro@fortanix.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        linux-sgx@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>, nhorman@redhat.com,
-        npmccallum@redhat.com, Serge Ayoun <serge.ayoun@intel.com>,
-        Shay Katz-zamir <shay.katz-zamir@intel.com>,
-        Haitao Huang <haitao.huang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kai Svahn <kai.svahn@intel.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Kai Huang <kai.huang@intel.com>,
-        David Rientjes <rientjes@google.com>,
-        William Roberts <william.c.roberts@intel.com>,
-        Philip Tricca <philip.b.tricca@intel.com>
-Subject: Re: [RFC PATCH 8/9] LSM: x86/sgx: Introduce ->enclave_load() hook
- for Intel SGX
-Message-ID: <20190604203649.GC7775@linux.intel.com>
-References: <20190531233159.30992-1-sean.j.christopherson@intel.com>
- <20190531233159.30992-9-sean.j.christopherson@intel.com>
- <CALCETrXf3ujAn6uOwWMU8SRZOvBRb8ALvo_LQvwxc899mrakwQ@mail.gmail.com>
+        id S1726033AbfFDUm2 (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Tue, 4 Jun 2019 16:42:28 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by namei.org (8.14.4/8.14.4) with ESMTP id x54KgCIO031551;
+        Tue, 4 Jun 2019 20:42:12 GMT
+Date:   Wed, 5 Jun 2019 06:42:12 +1000 (AEST)
+From:   James Morris <jmorris@namei.org>
+To:     Casey Schaufler <casey@schaufler-ca.com>
+cc:     Stephen Smalley <sds@tycho.nsa.gov>, casey.schaufler@intel.com,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        keescook@chromium.org, john.johansen@canonical.com,
+        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com
+Subject: Re: [PATCH 00/58] LSM: Module stacking for AppArmor
+In-Reply-To: <a493956a-8a2f-6239-e5fe-09030640c397@schaufler-ca.com>
+Message-ID: <alpine.LRH.2.21.1906050638550.31292@namei.org>
+References: <20190602165101.25079-1-casey@schaufler-ca.com> <f71388e9-a4c5-8935-137b-8eb50be7f833@tycho.nsa.gov> <66a87b0b-b6f4-74ff-2e51-afc8e2d30de1@schaufler-ca.com> <2a9049a7-6259-5ae0-2790-0aaf337c51a4@tycho.nsa.gov>
+ <a493956a-8a2f-6239-e5fe-09030640c397@schaufler-ca.com>
+User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALCETrXf3ujAn6uOwWMU8SRZOvBRb8ALvo_LQvwxc899mrakwQ@mail.gmail.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+Content-Type: text/plain; charset=US-ASCII
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Jun 04, 2019 at 01:29:10PM -0700, Andy Lutomirski wrote:
-> On Fri, May 31, 2019 at 4:32 PM Sean Christopherson
-> <sean.j.christopherson@intel.com> wrote:
-> >  static int sgx_encl_add_page(struct sgx_encl *encl, unsigned long addr,
-> > diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
-> > index 47f58cfb6a19..0562775424a0 100644
-> > --- a/include/linux/lsm_hooks.h
-> > +++ b/include/linux/lsm_hooks.h
-> > @@ -1446,6 +1446,14 @@
-> >   * @bpf_prog_free_security:
-> >   *     Clean up the security information stored inside bpf prog.
-> >   *
-> > + * Security hooks for Intel SGX enclaves.
-> > + *
-> > + * @enclave_load:
-> > + *     On success, returns 0 and optionally adjusts @allowed_prot
-> > + *     @vma: the source memory region of the enclave page being loaded.
-> > + *     @prot: the initial protection of the enclave page.
-> 
-> What do you mean "initial"?  The page is always mapped PROT_NONE when
-> this is called, right?  I feel like I must be missing something here.
+On Tue, 4 Jun 2019, Casey Schaufler wrote:
 
-Initial protection in the EPCM.  Yet another reason to ignore SECINFO.
+> > It isn't free so there should be a cost/benefit analysis.
+> 
+> Some benchmarking is definitely in order, but most
+> of what's you're calling out as downside is hypothetical
+> or based on assumption. 
+
+When you're proposing changes such as these, which make fundamental and 
+far-reaching changes, the burden is on you to present the cost/benefit 
+analysis.
+
+You can't just say "Here are some changes and here are the benefits, and 
+any possible costs are merely hypothetical".
+
+
+-- 
+James Morris
+<jmorris@namei.org>
+

@@ -2,70 +2,96 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A6AC3AB29
-	for <lists+selinux@lfdr.de>; Sun,  9 Jun 2019 20:39:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9321D3AF40
+	for <lists+selinux@lfdr.de>; Mon, 10 Jun 2019 09:04:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729384AbfFISjD (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 9 Jun 2019 14:39:03 -0400
-Received: from mail-qk1-f181.google.com ([209.85.222.181]:36248 "EHLO
-        mail-qk1-f181.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729415AbfFISjD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 9 Jun 2019 14:39:03 -0400
-Received: by mail-qk1-f181.google.com with SMTP id g18so4361039qkl.3
-        for <selinux@vger.kernel.org>; Sun, 09 Jun 2019 11:39:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=J6h205K9VwncrhdwAH5KZdu3Yk1B8j0yHv6kNl6pk5c=;
-        b=G49IuZa3DSyzo9+zv2eQq6Smf+HSwRTWWwm/G0/06PrF6M4ymmjcvWJzei/4wMr1lz
-         53JRvq2Ih0QDedm1s23MZlWeRufZ3opIbgx3USPqMUe71UB6hYsey5xoemUS94jFv2gQ
-         aI4pWCYE3jR02tTgSwIadpbLouEgab8gbKtWI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=J6h205K9VwncrhdwAH5KZdu3Yk1B8j0yHv6kNl6pk5c=;
-        b=ZFZLdXNRnJ/EZKzGAQayPFV0xHtkv2vouLTb/97wltpzn8Ub8e5vL95B8juZIpCjSe
-         dB2PdbhtdWMF/+sqJVA4oxuPCdihRJAdWmKnV/S8L5BDVN/4Eg9Qjw8+k2fRSE0ew3od
-         gL4jkaf1PAVaS2O3n3Q/saYdjQnk5ozWlskLXa/1LIgjGfRy1ORBZUnYX3eRoc+ENJL4
-         X5hCkrHXtT84LKNdc8QAcrlRIwnI9FwNHhBvqZkmPVaavhsHBHqdDp8ynStMWNmLKmco
-         hHzNGRmm4ofVk1idoPvryu54zHaUZyCysvplJCB08x022q0v1zI08g/lE1TzWmJCdkiR
-         Syqw==
-X-Gm-Message-State: APjAAAUzvnWWc8zENldDX8sXF8cyZjNWLMaHOTUtIZIliZcP4ZEApAJ/
-        T6tpGOMK7w/319HbMgvw/t5urUFY6vY=
-X-Google-Smtp-Source: APXvYqx5mxrtDthT4QyS6XS11EC4w5+Fyr4dii2RWCPMNzU03TzXimPSaa1MFXNpbySGlyqzm54v8Q==
-X-Received: by 2002:a37:64cb:: with SMTP id y194mr44357025qkb.197.1560105541601;
-        Sun, 09 Jun 2019 11:39:01 -0700 (PDT)
-Received: from [192.168.1.190] (pool-108-15-23-247.bltmmd.fios.verizon.net. [108.15.23.247])
-        by smtp.gmail.com with ESMTPSA id d17sm3884182qtp.84.2019.06.09.11.39.00
-        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 09 Jun 2019 11:39:01 -0700 (PDT)
-To:     refpolicy <selinux-refpolicy@vger.kernel.org>,
-        selinux@vger.kernel.org
-From:   Chris PeBenito <pebenito@ieee.org>
-Subject: ANN: Reference Policy 2.20190609
-Message-ID: <f73cf738-ea92-d029-004f-fc32712588f9@ieee.org>
-Date:   Sun, 9 Jun 2019 14:38:59 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S2387702AbfFJHDK (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 10 Jun 2019 03:03:10 -0400
+Received: from mga04.intel.com ([192.55.52.120]:3981 "EHLO mga04.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2387582AbfFJHDK (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Mon, 10 Jun 2019 03:03:10 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 10 Jun 2019 00:03:09 -0700
+X-ExtLoop1: 1
+Received: from bxing-mobl.amr.corp.intel.com (HELO ubt18m.amr.corp.intel.com) ([10.255.90.159])
+  by fmsmga001.fm.intel.com with ESMTP; 10 Jun 2019 00:03:08 -0700
+From:   Cedric Xing <cedric.xing@intel.com>
+To:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org
+Cc:     Cedric Xing <cedric.xing@intel.com>,
+        jarkko.sakkinen@linux.intel.com, luto@kernel.org,
+        sds@tycho.nsa.gov, jmorris@namei.org, serge@hallyn.com,
+        paul@paul-moore.com, eparis@parisplace.org, jethro@fortanix.com,
+        dave.hansen@intel.com, tglx@linutronix.de,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        nhorman@redhat.com, pmccallum@redhat.com, serge.ayoun@intel.com,
+        shay.katz-zamir@intel.com, haitao.huang@intel.com,
+        andriy.shevchenko@linux.intel.com, kai.svahn@intel.com,
+        bp@alien8.de, josh@joshtriplett.org, kai.huang@intel.com,
+        rientjes@google.com, william.c.roberts@intel.com,
+        philip.b.tricca@intel.com
+Subject: [RFC PATCH v1 0/3] security/x86/sgx: SGX specific LSM hooks
+Date:   Mon, 10 Jun 2019 00:03:03 -0700
+Message-Id: <cover.1560131039.git.cedric.xing@intel.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190606021145.12604-1-sean.j.christopherson@intel.com>
+References: <20190606021145.12604-1-sean.j.christopherson@intel.com>
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This release includes one new module (stubby) and several systemd 
-updates, including initial support for systemd --user sessions.
+This series intends to make the new SGX subsystem and the existing LSM
+architecture work together smoothly so that, say, SGX cannot be abused to work
+around restrictions set forth by LSM. This series applies on top of Jarkko
+Sakkinen's SGX series v20 (https://lkml.org/lkml/2019/4/17/344), where abundant
+details of this SGX/LSM problem could be found.
 
-This release requires SELinux userspace 2.8 or higher and Python 3 to build.
+This series is an alternative to Sean Christopherson's recent RFC series
+(https://lkml.org/lkml/2019/6/5/1070) that was trying to solve the same
+problem. The key problem is for LSM to determine the "maximal (most permissive)
+protection" allowed for individual enclave pages. Sean's approach is to take
+that from user mode code as a parameter of the EADD ioctl, validate it with LSM
+ahead of time, and then enforce it inside the SGX subsystem. The major
+disadvantage IMHO is that a priori knowledge of "maximal protection" is needed,
+but it isn't always available in certain use cases. In fact, it is an unusual
+approach to take "maximal protection" from user code, as what SELinux is doing
+today is to determine "maximal protection" of a vma using attributes associated
+with vma->vm_file instead. When it comes to enclaves, vma->vm_file always
+points /dev/sgx/enclave, so what's missing is a new way for LSM modules to
+remember origins of enclave pages so that they don't solely depend on
+vma->vm_file to determine "maximal protection".
 
-79 files changed, 1329 insertions, 191 deletions
+This series takes advantage of the fact that enclave pages cannot be remapped
+(to different linear address), therefore the pair of { vma->vm_file,
+linear_address } can be used to uniquely identify an enclave page. Then by
+notifying LSM on creation of every enclave page (via a new LSM hook -
+security_enclave_load), LSM modules would be able to track origin and
+protection changes of every page, hence be able to judge correctly upon
+mmap/mprotect requests.
 
-<https://github.com/SELinuxProject/refpolicy/releases/tag/RELEASE_2_20190609>
+Cedric Xing (3):
+  LSM/x86/sgx: Add SGX specific LSM hooks
+  LSM/x86/sgx: Implement SGX specific hooks in SELinux
+  LSM/x86/sgx: Call new LSM hooks from SGX subsystem
+
+ arch/x86/kernel/cpu/sgx/driver/ioctl.c |  72 +++++-
+ arch/x86/kernel/cpu/sgx/driver/main.c  |  12 +-
+ include/linux/lsm_hooks.h              |  33 +++
+ include/linux/security.h               |  26 +++
+ security/security.c                    |  21 ++
+ security/selinux/Makefile              |   2 +
+ security/selinux/hooks.c               |  77 ++++++-
+ security/selinux/include/intel_sgx.h   |  18 ++
+ security/selinux/include/objsec.h      |   3 +
+ security/selinux/intel_sgx.c           | 292 +++++++++++++++++++++++++
+ 10 files changed, 545 insertions(+), 11 deletions(-)
+ create mode 100644 security/selinux/include/intel_sgx.h
+ create mode 100644 security/selinux/intel_sgx.c
 
 -- 
-Chris PeBenito
+2.17.1
+

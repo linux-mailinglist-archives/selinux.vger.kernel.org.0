@@ -2,102 +2,66 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 329954393B
-	for <lists+selinux@lfdr.de>; Thu, 13 Jun 2019 17:12:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50C8343F99
+	for <lists+selinux@lfdr.de>; Thu, 13 Jun 2019 17:59:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387729AbfFMPMU (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 13 Jun 2019 11:12:20 -0400
-Received: from mga09.intel.com ([134.134.136.24]:61276 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1732284AbfFMNsL (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Thu, 13 Jun 2019 09:48:11 -0400
-X-Amp-Result: UNSCANNABLE
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Jun 2019 06:48:09 -0700
-X-ExtLoop1: 1
-Received: from bbouchn-mobl.ger.corp.intel.com (HELO localhost) ([10.252.35.22])
-  by orsmga006.jf.intel.com with ESMTP; 13 Jun 2019 06:48:01 -0700
-Date:   Thu, 13 Jun 2019 16:48:00 +0300
-From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-To:     Andy Lutomirski <luto@amacapital.net>
-Cc:     "Xing, Cedric" <cedric.xing@intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        "Christopherson, Sean J" <sean.j.christopherson@intel.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        James Morris <jmorris@namei.org>,
-        "Serge E . Hallyn" <serge@hallyn.com>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
-        Jethro Beekman <jethro@fortanix.com>,
-        "Hansen, Dave" <dave.hansen@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        LKML <linux-kernel@vger.kernel.org>, X86 ML <x86@kernel.org>,
-        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "nhorman@redhat.com" <nhorman@redhat.com>,
-        "npmccallum@redhat.com" <npmccallum@redhat.com>,
-        "Ayoun, Serge" <serge.ayoun@intel.com>,
-        "Katz-zamir, Shay" <shay.katz-zamir@intel.com>,
-        "Huang, Haitao" <haitao.huang@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        "Svahn, Kai" <kai.svahn@intel.com>, Borislav Petkov <bp@alien8.de>,
-        Josh Triplett <josh@joshtriplett.org>,
-        "Huang, Kai" <kai.huang@intel.com>,
-        David Rientjes <rientjes@google.com>,
-        "Roberts, William C" <william.c.roberts@intel.com>,
-        "Tricca, Philip B" <philip.b.tricca@intel.com>
-Subject: Re: [RFC PATCH 2/9] x86/sgx: Do not naturally align MAP_FIXED address
-Message-ID: <20190613134800.GA12791@linux.intel.com>
-References: <20190531233159.30992-1-sean.j.christopherson@intel.com>
- <20190531233159.30992-3-sean.j.christopherson@intel.com>
- <20190604114951.GC30594@linux.intel.com>
- <CALCETrVe0jhAWAFmx+NFEjJcijSJv2LDVC7cUXi0w99kNKjh_g@mail.gmail.com>
- <960B34DE67B9E140824F1DCDEC400C0F654EDBDE@ORSMSX116.amr.corp.intel.com>
- <20190605151653.GK11331@linux.intel.com>
- <5A85C1D7-A159-437E-B42A-3F4254E07305@amacapital.net>
- <20190606153710.GB25112@linux.intel.com>
+        id S1731806AbfFMP6m (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 13 Jun 2019 11:58:42 -0400
+Received: from 48.23.240.77.static.louhi.net ([77.240.23.48]:37814 "EHLO
+        kolttonen.fi" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S2390315AbfFMP6j (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Thu, 13 Jun 2019 11:58:39 -0400
+Received: from 34-41-5D-CA-59-C7 (82-203-159-32.bb.dnainternet.fi [82.203.159.32])
+        (authenticated bits=0)
+        by vcust561.louhi.net (8.14.7/8.14.7/0) with ESMTP id x5DFvMxV030707
+        (version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+        Thu, 13 Jun 2019 18:57:23 +0300
+DKIM-Filter: OpenDKIM Filter v2.11.0 vcust561.louhi.net x5DFvMxV030707
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kolttonen.fi;
+        s=mail; t=1560441443;
+        bh=auEUAEvUZQwo04ZuhvGcSpPIo/2aicDVcv6bduz4D2I=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=pAcdCgZofufv4JhtSvbwuGDPaPNa1xNF9r66VmKzyxxtRm4XCe9O3DnRMCqyIPxm5
+         DS76ccAp9vs3FmWx05/zVHvHVZ8T9wvo6laPeahdejeDKwfD1r0V+wZ/IcEcKsjaYV
+         ukTJ7ILL2W3ML0VaWUzvphC8/XrpHFofC4KNDXA7Mo7W2LwiS+Lt0Sh319XhuCXehP
+         4oFMlgI0otxRHUiNQZRArYQv3ApAry4We62COFsToaWBB9P3HuhR3kgTWNHq039UwZ
+         bSXfjqJIxPbJouiXny4RVPsnNgx1KjbJS8yFFihw9F4usOSa9T0hOZpBd4YhKevDst
+         z18oWjfc/AWoA==
+Date:   Thu, 13 Jun 2019 18:57:56 +0300 (EEST)
+From:   =?ISO-8859-15?Q?Jokke_H=E4m=E4l=E4inen?= 
+        <jokke.hamalainen@kolttonen.fi>
+To:     William Roberts <bill.c.roberts@gmail.com>
+cc:     Petr Lautrbach <plautrba@redhat.com>, selinux@vger.kernel.org
+Subject: Re: [PATCH] trivial: remove unneeded int
+In-Reply-To: <CAFftDdp=Tp1V0wfdn_wiFcaSyHwQV_=NYi0s_Rz5Yvvj-DaUiw@mail.gmail.com>
+Message-ID: <alpine.LFD.2.21.1906131856280.5703@34-41-5D-CA-59-C7>
+References: <alpine.LFD.2.21.1905242306150.9521@34-41-5D-CA-59-C7> <pjd5zphv6ei.fsf@redhat.com> <pjd4l51v4ge.fsf@redhat.com> <alpine.LFD.2.21.1906121730070.28042@34-41-5D-CA-59-C7> <CAFftDdp=Tp1V0wfdn_wiFcaSyHwQV_=NYi0s_Rz5Yvvj-DaUiw@mail.gmail.com>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20190606153710.GB25112@linux.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: multipart/mixed; boundary="-1463786495-857999591-1560441477=:5703"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jun 06, 2019 at 06:37:10PM +0300, Jarkko Sakkinen wrote:
-> On Wed, Jun 05, 2019 at 01:14:04PM -0700, Andy Lutomirski wrote:
-> > 
-> > 
-> > > On Jun 5, 2019, at 8:17 AM, Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com> wrote:
-> > > 
-> > >> On Tue, Jun 04, 2019 at 10:10:22PM +0000, Xing, Cedric wrote:
-> > >> A bit off topic here. This mmap()/mprotect() discussion reminds me a
-> > >> question (guess for Jarkko): Now that vma->vm_file->private_data keeps
-> > >> a pointer to the enclave, why do we store it again in vma->vm_private?
-> > >> It isn't a big deal but non-NULL vm_private does prevent mprotect()
-> > >> from merging adjacent VMAs. 
-> > > 
-> > > Same semantics as with a regular mmap i.e. you can close the file and
-> > > still use the mapping.
-> > > 
-> > > 
-> > 
-> > The file should be properly refcounted — vm_file should not go away while it’s mapped.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-mm already takes care of that so vm_file does not go away. Still
-we need an internal refcount for enclaves to synchronize with the
-swapper. In summary nothing needs to be done.
+---1463786495-857999591-1560441477=:5703
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-> Right, makes sense. It is easy one to change essentially just removing
-> internal refcount from sgx_encl and using file for the same. I'll update
-> this to my tree along with the changes to remove LKM/ACPI bits ASAP.
 
-/Jarkko
+Hi!
+
+On Wed, 12 Jun 2019, William Roberts wrote:
+
+> I'm OK with those three if you fix the 4 issues I pointed out. I'll
+> let Stephen decide the fate on the pure style patches.
+
+Sorry for this mess, guys. I will resend the three patches, hopefully 
+correctly this time.
+
+Best regards,
+Jokke Hämäläinen
+---1463786495-857999591-1560441477=:5703--

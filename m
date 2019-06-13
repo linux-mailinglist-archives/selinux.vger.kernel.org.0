@@ -2,25 +2,28 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53FA144773
-	for <lists+selinux@lfdr.de>; Thu, 13 Jun 2019 18:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A41F14472B
+	for <lists+selinux@lfdr.de>; Thu, 13 Jun 2019 18:57:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730003AbfFMQ7r convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Thu, 13 Jun 2019 12:59:47 -0400
-Received: from mga06.intel.com ([134.134.136.31]:22262 "EHLO mga06.intel.com"
+        id S2393146AbfFMQ5Z convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Thu, 13 Jun 2019 12:57:25 -0400
+Received: from mga07.intel.com ([134.134.136.100]:45747 "EHLO mga07.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729804AbfFMAKj (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Wed, 12 Jun 2019 20:10:39 -0400
+        id S1729926AbfFMBCf (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Wed, 12 Jun 2019 21:02:35 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 17:10:38 -0700
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga105.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 12 Jun 2019 18:02:34 -0700
 X-ExtLoop1: 1
 Received: from orsmsx103.amr.corp.intel.com ([10.22.225.130])
-  by fmsmga008.fm.intel.com with ESMTP; 12 Jun 2019 17:10:38 -0700
+  by fmsmga005.fm.intel.com with ESMTP; 12 Jun 2019 18:02:33 -0700
+Received: from orsmsx115.amr.corp.intel.com (10.22.240.11) by
+ ORSMSX103.amr.corp.intel.com (10.22.225.130) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Wed, 12 Jun 2019 18:02:33 -0700
 Received: from orsmsx116.amr.corp.intel.com ([169.254.7.166]) by
- ORSMSX103.amr.corp.intel.com ([169.254.5.232]) with mapi id 14.03.0415.000;
- Wed, 12 Jun 2019 17:10:37 -0700
+ ORSMSX115.amr.corp.intel.com ([169.254.4.229]) with mapi id 14.03.0415.000;
+ Wed, 12 Jun 2019 18:02:32 -0700
 From:   "Xing, Cedric" <cedric.xing@intel.com>
 To:     "Christopherson, Sean J" <sean.j.christopherson@intel.com>,
         "Andy Lutomirski" <luto@kernel.org>
@@ -40,7 +43,6 @@ CC:     Stephen Smalley <sds@tycho.nsa.gov>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         "nhorman@redhat.com" <nhorman@redhat.com>,
-        "pmccallum@redhat.com" <pmccallum@redhat.com>,
         "Ayoun, Serge" <serge.ayoun@intel.com>,
         "Katz-zamir, Shay" <shay.katz-zamir@intel.com>,
         "Huang, Haitao" <haitao.huang@intel.com>,
@@ -56,8 +58,8 @@ Subject: RE: [RFC PATCH v1 2/3] LSM/x86/sgx: Implement SGX specific hooks in
 Thread-Topic: [RFC PATCH v1 2/3] LSM/x86/sgx: Implement SGX specific hooks
  in SELinux
 Thread-Index: AQHVH1ilvNGS2ZisK0eWTCWidam/YaaW7RmAgACMWICAAWfBAIAAKpIA//+YzvA=
-Date:   Thu, 13 Jun 2019 00:10:37 +0000
-Message-ID: <960B34DE67B9E140824F1DCDEC400C0F65503261@ORSMSX116.amr.corp.intel.com>
+Date:   Thu, 13 Jun 2019 01:02:32 +0000
+Message-ID: <960B34DE67B9E140824F1DCDEC400C0F65503305@ORSMSX116.amr.corp.intel.com>
 References: <cover.1560131039.git.cedric.xing@intel.com>
  <a382d46f66756e13929ca9244479dd9f689c470e.1560131039.git.cedric.xing@intel.com>
  <b6f099cd-c0eb-d5cf-847d-27a15ac5ceaf@tycho.nsa.gov>

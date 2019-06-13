@@ -2,157 +2,137 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD80E44466
-	for <lists+selinux@lfdr.de>; Thu, 13 Jun 2019 18:37:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E14E43B1C
+	for <lists+selinux@lfdr.de>; Thu, 13 Jun 2019 17:26:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404000AbfFMQgg (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 13 Jun 2019 12:36:36 -0400
-Received: from wind.enjellic.com ([76.10.64.91]:35228 "EHLO wind.enjellic.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730675AbfFMH3B (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Thu, 13 Jun 2019 03:29:01 -0400
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id x5D7PfTQ001652;
-        Thu, 13 Jun 2019 02:25:41 -0500
-Received: (from greg@localhost)
-        by wind.enjellic.com (8.15.2/8.15.2/Submit) id x5D7PdX1001651;
-        Thu, 13 Jun 2019 02:25:39 -0500
-Date:   Thu, 13 Jun 2019 02:25:39 -0500
-From:   "Dr. Greg" <greg@enjellic.com>
-To:     Sean Christopherson <sean.j.christopherson@intel.com>
-Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
-        Cedric Xing <cedric.xing@intel.com>,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-sgx@vger.kernel.org,
-        jarkko.sakkinen@linux.intel.com, luto@kernel.org,
-        jmorris@namei.org, serge@hallyn.com, paul@paul-moore.com,
-        eparis@parisplace.org, jethro@fortanix.com, dave.hansen@intel.com,
-        tglx@linutronix.de, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, nhorman@redhat.com,
-        pmccallum@redhat.com, serge.ayoun@intel.com,
-        shay.katz-zamir@intel.com, haitao.huang@intel.com,
-        andriy.shevchenko@linux.intel.com, kai.svahn@intel.com,
-        bp@alien8.de, josh@joshtriplett.org, kai.huang@intel.com,
-        rientjes@google.com, william.c.roberts@intel.com,
-        philip.b.tricca@intel.com
-Subject: Re: [RFC PATCH v1 2/3] LSM/x86/sgx: Implement SGX specific hooks in SELinux
-Message-ID: <20190613072539.GA1499@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <cover.1560131039.git.cedric.xing@intel.com> <a382d46f66756e13929ca9244479dd9f689c470e.1560131039.git.cedric.xing@intel.com> <b6f099cd-c0eb-d5cf-847d-27a15ac5ceaf@tycho.nsa.gov> <20190611220243.GB3416@linux.intel.com> <20190612093221.GA24188@wind.enjellic.com> <20190612142557.GB20308@linux.intel.com>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190612142557.GB20308@linux.intel.com>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Thu, 13 Jun 2019 02:25:42 -0500 (CDT)
+        id S1727960AbfFMP0W (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 13 Jun 2019 11:26:22 -0400
+Received: from mail-wm1-f68.google.com ([209.85.128.68]:35752 "EHLO
+        mail-wm1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729202AbfFMLqD (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 13 Jun 2019 07:46:03 -0400
+Received: by mail-wm1-f68.google.com with SMTP id c6so9808960wml.0
+        for <selinux@vger.kernel.org>; Thu, 13 Jun 2019 04:46:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0IOJ5mTiW9Di+6byx/XFd8J4wj9ksF3QCX6IatyZ6Mo=;
+        b=pSt62Hu+NG4H0BB7bLrkuNoTC4Lp7ojAg2VJy56DHdaLvClmEQSXCbG455l1xLzYqL
+         TOANTDtYTCzyxiCq2t4Z3e9u37Ans/RcgwMx19/SLLuL5mLsXPc9tKLbQPO8XIpJ+b1m
+         pkHdpPGKkxtbTX/aRPdI3j0t6Qy8YVP8l3afe87InqCiPY6RMXsso5Sfn3znfvggo9px
+         ZCPbcPz4/apXf+jQXFYZQpVpyg9Y+y1MqwyrPxAzDxc0WTZCxIFp1G6ARiD1x3F1M8D/
+         LElli/TBwAIiXUleShiiS58PG91OEty+NEJFuqvdTU7wKR4zS5RrcQyPl4sf9WmVY0EN
+         TzzA==
+X-Gm-Message-State: APjAAAWjAsED0DiPRN+VACq3E9jKmRbGJ0YpfppWH+cekpFe/3UDufvI
+        Gj5mZqItPqLVqHcaLozvCKXGRP13qrM=
+X-Google-Smtp-Source: APXvYqwzes/bglPWM052LJlwdpB3TSI/iM57lSwoj2QawTMZJW2S0EgkAJdw9s0xZNoGVN2twW/NOg==
+X-Received: by 2002:a7b:cd15:: with SMTP id f21mr3215540wmj.99.1560426361126;
+        Thu, 13 Jun 2019 04:46:01 -0700 (PDT)
+Received: from localhost.localdomain.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id b203sm2906357wmd.41.2019.06.13.04.46.00
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Thu, 13 Jun 2019 04:46:00 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH userspace v4 0/4] Remove redundant rules when building policydb
+Date:   Thu, 13 Jun 2019 13:45:54 +0200
+Message-Id: <20190613114558.32621-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jun 12, 2019 at 07:25:57AM -0700, Sean Christopherson wrote:
+Changes in v4:
+ * fix deallocation in error path in build_type_map()
+ * fix leaked cond nodes
+ * also update the man pages
+ * use UINT32_C for 0xFFFFFFFF constant
+ * squash in the RFC patches & drop the semodule patch
+v3: https://lore.kernel.org/selinux/20190529073759.20548-1-omosnace@redhat.com/T/
 
-Good morning, we hope the week continues to go well for everyone.
+Changes in v3:
+ * fix bad patch squashing
+ * rename secilc --optimize-policy option to --optimize (to be simpler
+   and consistent with checkpolicy and semodule)
+v2: https://lore.kernel.org/selinux/20190528145912.13827-1-omosnace@redhat.com/T/
 
-> On Wed, Jun 12, 2019 at 04:32:21AM -0500, Dr. Greg wrote:
-> > With SGX2 we will, by necessity, have to admit the notion that a
-> > platform owner will not have any effective visibility into code that
-> > is loaded and executed, since it can come in over a secured network
-> > connection in an enclave security context.  This advocates for the
-> > simplest approach possible to providing some type of regulation to any
-> > form of WX page access.
+Changes in v2:
+ * fix handling of dontaudit (AVTAB_DENY) rules
+ * switch optimization from opt-out to opt-in everywhere
+ * add a patch from jwcart2 that adds optimization support to
+   checkpolicy as well
+ * add two RFC modifications (see log messages for details):
+   * one improves the optimization to detect also rules covered by the
+     union of two or more other rules (on permission set level)
+   * the other one drops libsemanage/semodule run-time enabling/
+     disabling of optimization in favor of a global config option
+v1: https://lore.kernel.org/selinux/20190523102449.9621-1-omosnace@redhat.com/T/
 
-> I believe we're all on the same page in the sense that we all want
-> the "simplest approach possible", but there's a sliding scale of
-> complexity between the kernel and userspace.  We can make life
-> simple for userspace at the cost of additional complexity in the
-> kernel, and vice versa.  The disagreement is over where to shove the
-> extra complexity.
+This series implements an optional optimization step when building a
+policydb via semodule or secilc, which identifies and removes rules that
+are redundant -- i.e. they are already covered by a more general rule
+based on the type attribute hierarchy.
 
-Yes, we are certainly cognizant of and sympathetic to the engineering
-tensions involved.
+Since the optimization might not always be useful (e.g. when care is
+taken to not have redundant rules or when the attributes are
+aggressively expanded) and might even drastically increase policy build
+times under some cicumstances (for example with the DSSP standard policy
+[1]), the optimization is applied only when requested explictly.
 
-The purpose of our e-mail was to leaven the discussion with the notion
-that the most important question is how much complexity should be
-shoved in either direction.  With respect to SGX as a technology, the
-most important engineering metric is how much effective security is
-actually being achieved.
+The optimization routine eliminates:
+ * all allow/dontaudit/auditallow(/neverallow) rules (including xperm
+   variants) that are covered by another more general rule (or by a
+   union of other rules),
+ * all conditional versions of the above rules that are covered by a
+   more general rule either in the unconditional table or in the same
+   branch of the same conditional.
 
-Given an admission that enclave dynamic memory management (EDMM/SGX2)
-is the goal in all of this, there are only two effective security
-questions to be answered:
+The optimization doesn't process other rules, since they currently do
+not support attributes. There is some room left for more precise
+optimization of conditional rules, but it would likely bring only little
+additional benefit.
 
-1.) Should a corpus of known memory with executable permissions be
-copied into to an enclave.
+Travis build passed: https://travis-ci.org/WOnder93/selinux/builds/545184071
 
-2.) Should a corpus of executable memory with unknown content be
-available to an enclave.
+Tested:
+ * live on my Fedora 29 devel machine under normal use (no unusual AVCs
+   observed with the optimized policy loaded)
+ * using: https://gitlab.com/omos/selinux-misc/blob/master/opt_test.sh
+   * tests also xperm rules
+   * doesn't test conditionals
 
-Given the functionality that SGX implements, both questions ultimately
-devolve to whether or not a platform owner trusts an enclave author.
-Security relevant trust is conveyed through cryptographically mediated
-mechanisms.
+[1] https://github.com/DefenSec/dssp2-standard
 
-The decision has been made to take full hardware mediated
-cryptographic trust off the table for the mainstream Linux
-implementation.  Given that, the most pragmatic engineering solution
-would seem to be to implement the least complex implementation that
-allows a platform owner to answer the two questions above.
+James Carter (1):
+  checkpolicy: add flag to enable policy optimization
 
-See below.
+Ondrej Mosnacek (3):
+  libsepol: add a function to optimize kernel policy
+  libsemanage: optionally optimize policy on rebuild
+  secilc: add flag to enable policy optimization
 
-> > Current state of the art, and there doesn't appear to be a reason to
-> > change this, is to package an enclave in the form of an ELF shared
-> > library.  It seems straight forward to inherit and act on page
-> > privileges from the privileges specified on the ELF sections that are
-> > loaded.  Loaders will have a file descriptor available so an mmap of
-> > the incoming page with the specified privileges should trigger the
-> > required LSM interventions and tie them to a specific enclave.
-> > 
-> > The current enclave 'standard' also uses layout metadata, stored in a
-> > special .notes section of the shared image, to direct a loader with
-> > respect to construction of the enclave stack, heap, TCS and other
-> > miscellaneous regions not directly coded by the ELF TEXT sections.  It
-> > seems straight forward to extend this paradigm to declare region(s) of
-> > an enclave that are eligible to be generated at runtime (EAUG'ed) with
-> > the RWX protections needed to support dynamically loaded code.
-> > 
-> > If an enclave wishes to support this functionality, it would seem
-> > straight forward to require an enclave to provide a single zero page
-> > which the loader will mmap with those protections in order to trigger
-> > the desired LSM checks against that specific enclave.
+ checkpolicy/checkpolicy.8                  |   3 +
+ checkpolicy/checkpolicy.c                  |  16 +-
+ libsemanage/man/man5/semanage.conf.5       |   5 +
+ libsemanage/src/conf-parse.y               |  15 +-
+ libsemanage/src/conf-scan.l                |   1 +
+ libsemanage/src/direct_api.c               |   7 +
+ libsemanage/src/semanage_conf.h            |   1 +
+ libsepol/include/sepol/policydb.h          |   5 +
+ libsepol/include/sepol/policydb/policydb.h |   2 +
+ libsepol/src/libsepol.map.in               |   5 +
+ libsepol/src/optimize.c                    | 378 +++++++++++++++++++++
+ libsepol/src/policydb_public.c             |   5 +
+ secilc/secilc.8.xml                        |   5 +
+ secilc/secilc.c                            |  16 +-
+ 14 files changed, 460 insertions(+), 4 deletions(-)
+ create mode 100644 libsepol/src/optimize.c
 
-> This is effectively #1, e.g. would require userspace to pre-declare its
-> intent to make regions W->X.
+-- 
+2.20.1
 
-Yes, we understood that when we wrote our original e-mail.
-
-This model effectively allows the two relevant security questions to
-be easily answered and is most consistent with current enclave
-formats, software practices and runtimes.  It is also largely
-consistent with existing LSM practices.
-
-There hasn't been any discussion with respect to backports of this
-driver but we believe it it safe to conclude that the industry is
-going to be at least two years away from any type of realistic
-deployments of this driver.  By that time there will be over a half a
-decade of software deployment of existing API's and enclave formats.
-
-Expecting a 'flag day' to be successful would seem to be contrary to
-all known history of software practice and would thus disadvantage
-Linux as an effective platform for this technology.
-
-Best wishes for a productive remainder of the week to everyone.
-
-Dr. Greg
-
-As always,
-Dr. G.W. Wettstein, Ph.D.   Enjellic Systems Development, LLC.
-4206 N. 19th Ave.           Specializing in information infra-structure
-Fargo, ND  58102            development.
-PH: 701-281-1686            EMAIL: greg@enjellic.com
-------------------------------------------------------------------------------
-"Sometimes I sing and dance around the house in my underwear,
- doesn't make me Madonna, never will.
-                                -- Cyn
-                                   Working Girl

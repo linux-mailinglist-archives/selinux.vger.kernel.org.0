@@ -2,149 +2,170 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EFC24EC6A
-	for <lists+selinux@lfdr.de>; Fri, 21 Jun 2019 17:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E2DE4ED50
+	for <lists+selinux@lfdr.de>; Fri, 21 Jun 2019 18:42:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726115AbfFUPpE (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 21 Jun 2019 11:45:04 -0400
-Received: from mail-lj1-f194.google.com ([209.85.208.194]:41083 "EHLO
-        mail-lj1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726083AbfFUPpE (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 21 Jun 2019 11:45:04 -0400
-Received: by mail-lj1-f194.google.com with SMTP id s21so6382281lji.8
-        for <selinux@vger.kernel.org>; Fri, 21 Jun 2019 08:45:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6wunovJg8BwXTrkq4m3n2UlWMWuzrWT4H0UoqV1eL1U=;
-        b=b0ATrcWxGaE/0VCOltoDkNNDI9oWgM9OV6TE2WA1cfua5Mf5LSlcfVm90fO9aWnGBr
-         6DlzAoDZxOucdKhOSTLt0+hU7yWFK5V4GEg8Sq3LbdWLl13e7DJKdniQb7heFDpZU4wf
-         RkqRSwNyzQXeTS3YbT+YZSIEXCWxmxO7DvLGzFzHk4hCTcaP5PHo1KdT2Db39++iunci
-         X7jHn+KoiygV5/3bjxYoM1K/FCAQyCKVogCMFdIX7sWnqnjnWfUovwWNuwj5m1gLSAd3
-         I+aAN4SwSzRYkmnpLIdtmG0VT6RoKDBwZtXLte+NG1TLiTWsVoO1fUqJqNIysBb7i5Vt
-         RrAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6wunovJg8BwXTrkq4m3n2UlWMWuzrWT4H0UoqV1eL1U=;
-        b=e3pj5MJ2rYSKbokZnwRSgOkQgdnobdaUS6p10reann91hc8n4anFXKet9X9IAmVl5U
-         JBEGl6eePRtP6X8EBXy8oaAtMsIpkJX6X6EcyC1SFBa+gKBV06ksKHr9QAwfhFZguywa
-         lv2eLW0ySJ9bt+JbOzLWSEyViV3QvzLu485HFCBkUcS1MgnGZjI/bb2q9wElXOl5AOmE
-         VQNjk0Rk3ymhafT/+lLtUL+fm87IKlAekeuhqeT9TUG/2SOxHjTORF/46fo2xGHeM/uu
-         Jo5GhBkDsG5Wy4SuY2Z0PUXm+E0v1uAj214QxHh3mc2rhWJ4Swhk6qDuubt0GN0gJjtk
-         XBsg==
-X-Gm-Message-State: APjAAAXwb9jd89yo25G1txGvP0eJZ6nOfru2C9ZytKlzHMxdTgaSImLw
-        BSJrfV65Wh0hXQt1ROI9kPe93f+bJZDk3mDPX0ux
-X-Google-Smtp-Source: APXvYqy3qvTGN7xx3GNDBVPWRDw8QnCTz9dbZ9P1UIubsYv3OyxspynJ7OWkIIOoUDHYXMSHMEAirbYoD0irjINm6SA=
-X-Received: by 2002:a2e:9e1a:: with SMTP id e26mr7200997ljk.158.1561131901580;
- Fri, 21 Jun 2019 08:45:01 -0700 (PDT)
+        id S1726017AbfFUQm6 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Fri, 21 Jun 2019 12:42:58 -0400
+Received: from mga11.intel.com ([192.55.52.93]:58996 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725985AbfFUQm5 (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Fri, 21 Jun 2019 12:42:57 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 21 Jun 2019 09:42:56 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.63,401,1557212400"; 
+   d="scan'208";a="154506727"
+Received: from orsmsx101.amr.corp.intel.com ([10.22.225.128])
+  by orsmga008.jf.intel.com with ESMTP; 21 Jun 2019 09:42:56 -0700
+Received: from orsmsx121.amr.corp.intel.com (10.22.225.226) by
+ ORSMSX101.amr.corp.intel.com (10.22.225.128) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Fri, 21 Jun 2019 09:42:56 -0700
+Received: from orsmsx116.amr.corp.intel.com ([169.254.7.97]) by
+ ORSMSX121.amr.corp.intel.com ([169.254.10.250]) with mapi id 14.03.0439.000;
+ Fri, 21 Jun 2019 09:42:56 -0700
+From:   "Xing, Cedric" <cedric.xing@intel.com>
+To:     "Christopherson, Sean J" <sean.j.christopherson@intel.com>,
+        "Jarkko Sakkinen" <jarkko.sakkinen@linux.intel.com>
+CC:     "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        "Roberts, William C" <william.c.roberts@intel.com>,
+        "Schaufler, Casey" <casey.schaufler@intel.com>,
+        James Morris <jmorris@namei.org>,
+        "Hansen, Dave" <dave.hansen@intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Jethro Beekman <jethro@fortanix.com>,
+        "Dr . Greg Wettstein" <greg@enjellic.com>,
+        "Stephen Smalley" <sds@tycho.nsa.gov>
+Subject: RE: [RFC PATCH v4 04/12] x86/sgx: Require userspace to define
+ enclave pages' protection bits
+Thread-Topic: [RFC PATCH v4 04/12] x86/sgx: Require userspace to define
+ enclave pages' protection bits
+Thread-Index: AQHVJu27XnLeOL4jVkKHLIzqsJHQ+6amSqtg
+Date:   Fri, 21 Jun 2019 16:42:54 +0000
+Message-ID: <960B34DE67B9E140824F1DCDEC400C0F65518451@ORSMSX116.amr.corp.intel.com>
+References: <20190619222401.14942-1-sean.j.christopherson@intel.com>
+ <20190619222401.14942-5-sean.j.christopherson@intel.com>
+In-Reply-To: <20190619222401.14942-5-sean.j.christopherson@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiZTc2NDJhNDgtNDI3OS00ZTg2LTg3MjctODZjMWI4NmY1ZWU0IiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoidWtrMVE3c0U2MlpiQXV2XC9DdHUwcUhpK3cyTWI2OTh3SzBKU29PM1VBYzQ1MlpLSUJaUUxydTlKcEpVaWtLdG0ifQ==
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.0.600.7
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.139]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-References: <20190619142630.26648-1-sds@tycho.nsa.gov> <CAHC9VhQ1Bo-xpROgZa18MqxJSnTLoYoj6GbQR-pmDy2jSDs1bQ@mail.gmail.com>
- <a11f8817-ac26-ce5c-1b1d-20c310777a03@tycho.nsa.gov>
-In-Reply-To: <a11f8817-ac26-ce5c-1b1d-20c310777a03@tycho.nsa.gov>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 21 Jun 2019 11:44:50 -0400
-Message-ID: <CAHC9VhQViswrAHWZ6b4a4iAmErrumLLYHeNrZenqXrT+0FxP7w@mail.gmail.com>
-Subject: Re: [PATCH] selinux-testsuite: fix old python shebang in tests/overlay/access
-To:     Stephen Smalley <sds@tycho.nsa.gov>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jun 19, 2019 at 12:04 PM Stephen Smalley <sds@tycho.nsa.gov> wrote:
-> On 6/19/19 10:40 AM, Paul Moore wrote:
-> > On Wed, Jun 19, 2019 at 10:26 AM Stephen Smalley <sds@tycho.nsa.gov> wrote:
-> >>
-> >> /usr/bin/python is no longer installed by default, so this test
-> >> script fails on default installs.
-> >> Best practice guidance appears to be to switch to using
-> >> /usr/bin/python3 instead, per
-> >> https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/
-> >>
-> >> Fixes: #46
-> >> Signed-off-by: Stephen Smalley <sds@tycho.nsa.gov>
-> >> ---
-> >>   tests/overlay/access | 2 +-
-> >>   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > I think it would be better to reference the Python upstream guidance
-> > regarding "python3" instead of the Fedora packaging guidelines.
-> > Keeping things distro agnostic is a good goal whenever possible.
-> >
-> > * https://www.python.org/dev/peps/pep-0394
->
-> When I looked for guidance in response to the github issue for
-> selinux-testsuite [1], there seemed to be some ambiguity left by pep-0394:
->
-> 1) It says "One exception to this is scripts that are deliberately
-> written to be source compatible with both Python 2.x and 3.x. Such
-> scripts may continue to use python on their shebang line.".  This leaves
-> open the possibility of staying with "/usr/bin/python" as far as the pep
-> is concerned since the script itself is not version-specific in any way,
-> but doing so is not permitted by the Fedora guidelines and breaks on
-> default installs of Fedora.
+> From: Christopherson, Sean J
+> Sent: Wednesday, June 19, 2019 3:24 PM
+> 
+> diff --git a/arch/x86/include/uapi/asm/sgx.h b/arch/x86/include/uapi/asm/sgx.h index
+> 6dba9f282232..67a3babbb24d 100644
+> --- a/arch/x86/include/uapi/asm/sgx.h
+> +++ b/arch/x86/include/uapi/asm/sgx.h
+> @@ -35,15 +35,17 @@ struct sgx_enclave_create  {
+>   * @src:	address for the page data
+>   * @secinfo:	address for the SECINFO data
+>   * @mrmask:	bitmask for the measured 256 byte chunks
+> + * @prot:	maximal PROT_{READ,WRITE,EXEC} protections for the page
+>   */
+>  struct sgx_enclave_add_page {
+>  	__u64	addr;
+>  	__u64	src;
+>  	__u64	secinfo;
+> -	__u64	mrmask;
+> +	__u16	mrmask;
+> +	__u8	prot;
+> +	__u8	pad;
+>  };
 
-[SIDE NOTE: for some reason my mail is acting a bit odd - this got
-buried in a folder and didn't bubble up like normal - my apologies on
-the delay, I didn't see it until I was checking for patches today.]
+Given EPCM permissions cannot change in SGX1, these maximal PROT_* flags can be the same as EPCM permissions, so don't have to be specified by user code until SGX2. Given we don't have a clear picture on how SGX2 will work yet, I think we shall take "prot" off until it is proven necessary. 
 
-Yes, I saw that too but considering that we are about six months away
-from python2 going EOL I think it is reasonable to ignore python2 for
-upstream work at this point.
+> diff --git a/arch/x86/kernel/cpu/sgx/driver/main.c b/arch/x86/kernel/cpu/sgx/driver/main.c
+> index 29384cdd0842..dabfe2a7245a 100644
+> --- a/arch/x86/kernel/cpu/sgx/driver/main.c
+> +++ b/arch/x86/kernel/cpu/sgx/driver/main.c
+> @@ -93,15 +93,64 @@ static long sgx_compat_ioctl(struct file *filep, unsigned int cmd,  }
+> #endif
+> 
+> +/*
+> + * Returns the AND of VM_{READ,WRITE,EXEC} permissions across all pages
+> + * covered by the specific VMA.  A non-existent (or yet to be added)
+> +enclave
+> + * page is considered to have no RWX permissions, i.e. is inaccessible.
+> + */
+> +static unsigned long sgx_allowed_rwx(struct sgx_encl *encl,
+> +				     struct vm_area_struct *vma)
+> +{
+> +	unsigned long allowed_rwx = VM_READ | VM_WRITE | VM_EXEC;
+> +	unsigned long idx, idx_start, idx_end;
+> +	struct sgx_encl_page *page;
+> +
+> +	idx_start = PFN_DOWN(vma->vm_start);
+> +	idx_end = PFN_DOWN(vma->vm_end - 1);
+> +
+> +	for (idx = idx_start; idx <= idx_end; ++idx) {
+> +		/*
+> +		 * No need to take encl->lock, vm_prot_bits is set prior to
+> +		 * insertion and never changes, and racing with adding pages is
+> +		 * a userspace bug.
+> +		 */
+> +		rcu_read_lock();
+> +		page = radix_tree_lookup(&encl->page_tree, idx);
+> +		rcu_read_unlock();
 
-> 2) It doesn't specify whether or not one should use "/usr/bin/env
-> python3" or just "/usr/bin/python3".  The github issue reported had
-> originally suggested the former, but this is also prohibited by the
-> Fedora guidelines.
+This loop iterates through every page in the range, which could be very slow if the range is large.
 
-My initial reaction was that we should "/usr/bin/env" until I saw that
-bit in the Fedora guidelines, which I honestly don't understand.  Does
-anyone with a better understanding of cross-distro userspace know why
-"/usr/bin/env" is bad?
+> +
+> +		/* Do not allow R|W|X to a non-existent page. */
+> +		if (!page)
+> +			allowed_rwx = 0;
+> +		else
+> +			allowed_rwx &= page->vm_prot_bits;
+> +		if (!allowed_rwx)
+> +			break;
+> +	}
+> +
+> +	return allowed_rwx;
+> +}
+> +
+>  static int sgx_mmap(struct file *file, struct vm_area_struct *vma)  {
+>  	struct sgx_encl *encl = file->private_data;
+> +	unsigned long allowed_rwx;
+>  	int ret;
+> 
+> +	allowed_rwx = sgx_allowed_rwx(encl, vma);
+> +	if (vma->vm_flags & (VM_READ | VM_WRITE | VM_EXEC) & ~allowed_rwx)
+> +		return -EACCES;
+> +
+>  	ret = sgx_encl_mm_add(encl, vma->vm_mm);
+>  	if (ret)
+>  		return ret;
+> 
+> +	if (!(allowed_rwx & VM_READ))
+> +		vma->vm_flags &= ~VM_MAYREAD;
+> +	if (!(allowed_rwx & VM_WRITE))
+> +		vma->vm_flags &= ~VM_MAYWRITE;
+> +	if (!(allowed_rwx & VM_EXEC))
+> +		vma->vm_flags &= ~VM_MAYEXEC;
+> +
 
-> That's why I went with the Fedora guidelines.  Happy to use whatever but
-> at least that particular PEP doesn't clearly motivate the use of
-> "/usr/bin/python3" here.
->
-> [1] https://github.com/SELinuxProject/selinux-testsuite/issues/46
+Say a range comprised of a RW sub-range and a RX sub-range is being mmap()'ed as R here. It'd succeed but mprotect(<RW sub-range>, RW) afterwards will fail because VM_MAYWRITE is cleared here. However, if those two sub-ranges are mapped by separate mmap() calls then the same mprotect() would succeed. The inconsistence here is unexpected and unprecedented.
 
-Fair enough, I'll go ahead and merge it since it does fix a real
-problem.  I did make once change to convert the "Fixes: #46" to use
-the full URL, e.g. "Fixes: https://github.com..."; I think this helps
-provide some necessary context (what if 10yrs from now we aren't on
-github, what does "#46" reference?).
+>  	vma->vm_ops = &sgx_vm_ops;
+>  	vma->vm_flags |= VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP | VM_IO;
+>  	vma->vm_private_data = encl;
 
-This is starting to stretch the topic a bit, but as far as "use
-whatever" is concerned, I'd really like to see us keep moving towards
-a more distro agnostic approach when it comes to upstream
-development/testing/etc.  While SELinux has always had a "special"
-relationship with Fedora/RH, we've seen SELinux grow quite a bit over
-the years and I think it would be good to start trying to bring other
-distros up to the same level as Fedora when it comes to SELinux
-support.  I think one easy first step is to start looking beyond the
-Fedora guidelines and see what other distros do/recommend.
-
-> >> diff --git a/tests/overlay/access b/tests/overlay/access
-> >> index 5a47eb145904..e50d5b402ebd 100755
-> >> --- a/tests/overlay/access
-> >> +++ b/tests/overlay/access
-> >> @@ -1,4 +1,4 @@
-> >> -#!/bin/python
-> >> +#!/usr/bin/python3
-> >>   import os, sys
-> >>   try:
-> >>           acc=eval("os.%s" % sys.argv[2])
-> >> --
-> >> 2.20.1
-> >
->
-
-
--- 
-paul moore
-www.paul-moore.com

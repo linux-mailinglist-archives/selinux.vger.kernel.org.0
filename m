@@ -2,26 +2,26 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 62CAC4DEB0
-	for <lists+selinux@lfdr.de>; Fri, 21 Jun 2019 03:36:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B1E44DF1A
+	for <lists+selinux@lfdr.de>; Fri, 21 Jun 2019 04:28:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725948AbfFUBgg (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 20 Jun 2019 21:36:36 -0400
-Received: from mga03.intel.com ([134.134.136.65]:31493 "EHLO mga03.intel.com"
+        id S1725936AbfFUC2S (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 20 Jun 2019 22:28:18 -0400
+Received: from mga06.intel.com ([134.134.136.31]:6289 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725906AbfFUBge (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Thu, 20 Jun 2019 21:36:34 -0400
+        id S1725911AbfFUC2S (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Thu, 20 Jun 2019 22:28:18 -0400
 X-Amp-Result: UNKNOWN
 X-Amp-Original-Verdict: FILE UNKNOWN
 X-Amp-File-Uploaded: False
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 18:35:28 -0700
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 20 Jun 2019 19:28:17 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.63,398,1557212400"; 
-   d="scan'208";a="243825515"
+   d="scan'208";a="181996563"
 Received: from mudigirx-mobl1.gar.corp.intel.com (HELO localhost) ([10.252.61.12])
-  by orsmga001.jf.intel.com with ESMTP; 20 Jun 2019 18:35:22 -0700
-Date:   Fri, 21 Jun 2019 04:35:20 +0300
+  by fmsmga001.fm.intel.com with ESMTP; 20 Jun 2019 19:28:12 -0700
+Date:   Fri, 21 Jun 2019 05:28:10 +0300
 From:   Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
 To:     Sean Christopherson <sean.j.christopherson@intel.com>
 Cc:     linux-sgx@vger.kernel.org, linux-security-module@vger.kernel.org,
@@ -35,14 +35,15 @@ Cc:     linux-sgx@vger.kernel.org, linux-security-module@vger.kernel.org,
         Jethro Beekman <jethro@fortanix.com>,
         "Dr . Greg Wettstein" <greg@enjellic.com>,
         Stephen Smalley <sds@tycho.nsa.gov>
-Subject: Re: [RFC PATCH v4 06/12] mm: Introduce vm_ops->may_mprotect()
-Message-ID: <20190621013520.GK20474@linux.intel.com>
+Subject: Re: [RFC PATCH v4 07/12] LSM: x86/sgx: Introduce ->enclave_map()
+ hook for Intel SGX
+Message-ID: <20190621022810.GL20474@linux.intel.com>
 References: <20190619222401.14942-1-sean.j.christopherson@intel.com>
- <20190619222401.14942-7-sean.j.christopherson@intel.com>
+ <20190619222401.14942-8-sean.j.christopherson@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190619222401.14942-7-sean.j.christopherson@intel.com>
+In-Reply-To: <20190619222401.14942-8-sean.j.christopherson@intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: selinux-owner@vger.kernel.org
@@ -50,41 +51,51 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jun 19, 2019 at 03:23:55PM -0700, Sean Christopherson wrote:
-> SGX will use ->may_mprotect() to invoke an SGX variant of the existing
-> file_mprotect() and mmap_file() LSM hooks.
-> 
-> The name may_mprotect() is intended to reflect the hook's purpose as a
-> way to restrict mprotect() as opposed to a wholesale replacement.
+On Wed, Jun 19, 2019 at 03:23:56PM -0700, Sean Christopherson wrote:
+> enclave_map() is an SGX specific variant of file_mprotect() and
+> mmap_file(), and is provided so that LSMs can apply W^X restrictions to
+> enclaves.
 > 
 > Due to the nature of SGX and its Enclave Page Cache (EPC), all enclave
 > VMAs are backed by a single file, i.e. /dev/sgx/enclave, that must be
 > MAP_SHARED.  Furthermore, all enclaves need read, write and execute
 > VMAs.  As a result, applying W^X restrictions on /dev/sgx/enclave using
 > existing LSM hooks is for all intents and purposes impossible, e.g.
-> denying either W or X would deny access to *any* enclave.
+> denying either W or X would deny access to any enclave.
 > 
-> By hooking mprotect(), SGX can invoke an SGX specific LSM hook, which in
-> turn allows LSMs to enforce W^X policies.
+> Note, extensive discussion yielded no sane alternative to some form of
+> SGX specific LSM hook[1].
 > 
-> Alternatively, SGX could provide a helper to identify enclaves given a
-> vma or file.  LSMs could then check if a mapping is for enclave and take
-> action according.
-> 
-> A second alternative would be to have SGX implement its own LSM hooks
-> for file_mprotect() and mmap_file(), using them to "forward" the call to
-> the SGX specific hook.
-> 
-> The major con to both alternatives is that they provide zero flexibility
-> for the SGX specific LSM hook.  The "is_sgx_enclave()" helper doesn't
-> allow SGX can't supply any additional information whatsoever, and the
-> mmap_file() hook is called before the final address is known, e.g. SGX
-> can't provide any information about the specific enclave being mapped.
+> [1] https://lkml.kernel.org/r/CALCETrXf8mSK45h7sTK5Wf+pXLVn=Bjsc_RLpgO-h-qdzBRo5Q@mail.gmail.com
 > 
 > Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 
-Absolutely nothing to say about this one. We can take it as part of the
-main patch set as it is. Not going to apply it though before the things
-have been sorted out.
+All the non-LSM changes are almost cleared from my part.
+
+I would suggest that we scrape v21 together as soon as you return from
+your vacation discluding the LSM hooks.
+
+There is no any particular reason to get the LSM changes to the mainline
+before the SGX foundations so now is the right time close things
+underlying them.
+
+I'm now in the same boat with your changes to the ioctl API, which means
+that we are ready to go. I feel a tiny bit bad that it took me so long
+time with [1] but I'm a simple minded person so what I can do :-)
+
+Once you can come back please deal with the suggestions that I made
+and provide a "pure" SRCU patch (apologies for repeating myself). I
+will the squash them to the existing patch set.
+
+After that is fully done we can make v21 scope decision when it comes
+to the enclave life-cycle.
+
+Even if the LSM changes  would not be upstreamed as part of the
+foundations I can start holding versions of them in my tree but only
+after v21 is out.
+
+Can you cope with this plan?
+
+[1] https://patchwork.kernel.org/patch/11005431/
 
 /Jarkko

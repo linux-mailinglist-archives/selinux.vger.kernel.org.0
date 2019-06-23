@@ -2,148 +2,93 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 996E84FD42
-	for <lists+selinux@lfdr.de>; Sun, 23 Jun 2019 19:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DE7C4FD80
+	for <lists+selinux@lfdr.de>; Sun, 23 Jun 2019 20:24:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbfFWRRY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 23 Jun 2019 13:17:24 -0400
-Received: from wind.enjellic.com ([76.10.64.91]:36178 "EHLO wind.enjellic.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726399AbfFWRRY (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Sun, 23 Jun 2019 13:17:24 -0400
-Received: from wind.enjellic.com (localhost [127.0.0.1])
-        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id x5NHGScC025697;
-        Sun, 23 Jun 2019 12:16:28 -0500
-Received: (from greg@localhost)
-        by wind.enjellic.com (8.15.2/8.15.2/Submit) id x5NHGQhc025696;
-        Sun, 23 Jun 2019 12:16:26 -0500
-Date:   Sun, 23 Jun 2019 12:16:26 -0500
-From:   "Dr. Greg" <greg@enjellic.com>
-To:     James Morris <jmorris@namei.org>
-Cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Sean Christopherson <sean.j.christopherson@intel.com>,
-        linux-sgx@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>,
-        Cedric Xing <cedric.xing@intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Jethro Beekman <jethro@fortanix.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>, casey.schaufler@intel.com,
-        william.c.roberts@intel.com, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org
-Subject: Re: [RFC PATCH v3 09/12] LSM: x86/sgx: Introduce ->enclave_load() hook for Intel SGX
-Message-ID: <20190623171626.GA25683@wind.enjellic.com>
-Reply-To: "Dr. Greg" <greg@enjellic.com>
-References: <20190617222438.2080-1-sean.j.christopherson@intel.com> <20190617222438.2080-10-sean.j.christopherson@intel.com> <0c4f75a0ae2fdeee6db07f3a224918f321163d56.camel@linux.intel.com> <alpine.LRH.2.21.1906200702040.28119@namei.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LRH.2.21.1906200702040.28119@namei.org>
-User-Agent: Mutt/1.4i
-X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Sun, 23 Jun 2019 12:16:28 -0500 (CDT)
+        id S1726718AbfFWSYW (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 23 Jun 2019 14:24:22 -0400
+Received: from mail-vs1-f65.google.com ([209.85.217.65]:46484 "EHLO
+        mail-vs1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726399AbfFWSYW (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 23 Jun 2019 14:24:22 -0400
+Received: by mail-vs1-f65.google.com with SMTP id l125so7149853vsl.13
+        for <selinux@vger.kernel.org>; Sun, 23 Jun 2019 11:24:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Un5Ke0Ru3iTFXv9DrHEizflVlYGBaDhARoB+8+C5nXM=;
+        b=kKYycvipgLxS2LwMTfuEprvevH/PRhCflfmYJ2Kz5KI8C3qeXUTtSsX1VoLyeElZVb
+         P2aXOiG7c68wpioZQDFtQR2N9hd6krOo7j3/9pcGQT7BjUT52YtYRqUDazu1qCSDvB9u
+         48a+liMs6eFkRhKuRKF6zvYLqnwU57cJaQOqQWNgfEQOjt/XKw4NBxuNrC8OlYAdyCK4
+         3mijNhAJ5wzgUfvbkJGqwNQb0lcUG7qjoqyun54OSjDuAi30RiET/EFe7Odi6jL8A2nB
+         m/yxZLiPIs0nHG12PR7exr9XyHaBFS35VJfvQVSCMJZAYReC+tCasXv3yjoIHjRzrM3X
+         /Cpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Un5Ke0Ru3iTFXv9DrHEizflVlYGBaDhARoB+8+C5nXM=;
+        b=oUPiEQQgUJtJ3B3cZ6CqPx3Mk5C0XNU1HWhA5iZTDHUreffddr+E6HvTCxjKWeM1WE
+         zpDEOgExrUBgDCERRxQZ/ixZM9ixTACzX5I5tBxL8/+2kVUoTXQgspoCLFClDIbbcLmC
+         PddW2TrBUH+BU4BSIXvpcQFzjvWL8SuE7nasr7/dkoMmUlNbS1YArvdGdfPan/GXzGwn
+         hsIl4ILDZanAJVcNu4hE8Z4rtEkQ5LaoWoyHeqzvjTsi+p03fDPkF4QZyFeKBHTN+sPb
+         Ul80aN1fJcZdOY+IZVq+xjx7fFP465Qp8WojRduf/3sEx5HLefBPILAWnS48gILymcG3
+         mexg==
+X-Gm-Message-State: APjAAAWz+Zk7zRLwU0DuImUbsQhesmIGrHoeDuUB0UjJvJ2tks6B7VwN
+        NCyfXT85oEydotKgzGfnfSRKgJROGY+LOyWvbEc=
+X-Google-Smtp-Source: APXvYqzsuTuLyhSmIAN9N25S6aYsumIAs6ljetaMc43oa06iN7jmEAaRqHcp7Lrmea/zEijqVMpCk6V4rvuUsdHeXZw=
+X-Received: by 2002:a67:2c50:: with SMTP id s77mr10184979vss.50.1561314261681;
+ Sun, 23 Jun 2019 11:24:21 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a67:e183:0:0:0:0:0 with HTTP; Sun, 23 Jun 2019 11:24:21
+ -0700 (PDT)
+Reply-To: miss.fatimayusuf11@gmail.com
+From:   "Miss.Fatima Yusuf" <fatimayusuf20001@gmail.com>
+Date:   Sun, 23 Jun 2019 18:24:21 +0000
+Message-ID: <CAMYDnHBGfm7gXmU+eX-GhZ9p9o_873nBUSRpgN7nYsrtC1FXHw@mail.gmail.com>
+Subject: From:Miss: Fatima Yusuf.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jun 20, 2019 at 07:13:50AM +1000, James Morris wrote:
+From:Miss: Fatima Yusuf.
 
-Good morning, I hope the weekend has been going well for everyone.
+For sure this mail would definitely come to you as a surprise, but do
+take your good time to go through it, My name is Ms. Fatima Yusuf,i am
+from Ivory Coast.
 
-> On Wed, 19 Jun 2019, Jarkko Sakkinen wrote:
-> 
-> > Can LSM callbacks ever non-generic when it comes to hardware? This is
-> > the very first time I ever see such callbacks being introduced.
-> > 
-> > I suspect that from maintainers perspective, accepting such changes for
-> > Intel hardware, could open a pandoras box.
+I lost my parents a year and couple of months ago. My father was a
+serving director of the Agro-exporting board until his death. He was
+assassinated by his business partners.Before his death, he made a
+deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for
+the purchase of cocoa processing machine and development of another
+factory before his untimely death.
 
-> If there's a major distro/userbase committing to ship with these
-> hooks enabled via a supported in-tree LSM, the case for inclusion is
-> clear.
+Being that this part of the world experiences political and crises
+time without number, there is no guarantee of lives and properties. I
+cannot invest this money here any long, despite the fact it had been
+my late father's industrial plans.
 
-I see that Jarkko responded down thread that there may be a major
-distribution already committed to SGX specific LSM hooks.  My
-apologies for providing these reflections if that is the case and
-there is some type of 'deal' in place with respect to all of this.
+I want you to do me a favor to receive this funds into your country or
+any safer place as the beneficiary, I have plans to invest this money
+in continuation with the investment vision of my late father, but not
+in this place again rather in your country. I have the vision of going
+into real estate and industrial production or any profitable business
+venture.
 
-> If the hooks could be generalized beyond just SGX, that would be
-> ideal, but it's not clear if that's feasible.
+I will be ready to compensate you with 20% of the total Amount, now
+all my hope is banked on you and i really wants to invest this money
+in your country, where there is stability of Government, political and
+economic welfare.
 
-We believe there is some degree of commonality that can be addressed
-with respect to implementing LSM enforcement over SGX enclaves.
+My greatest worry now is how to move out of this country because my
+uncle is threatening to kill me as he killed my father,Please do not
+let anybody hear about this, it is between me and you alone because of
+my security reason.
 
-However, big picture, here is the challenge that we see with respect
-to these conversations surrounding the integration of the SGX driver
-with the LSM:
-
-As a technology, SGX was designed to enable software to protect itself
-from an adversarial operating system and hardware platform.  Given
-that, if we are intellectually honest, how effective can the LSM/OS be
-with respect to controlling the actions of an enclave?
-
-Without question, being able to regulate and control which identities
-can intersect to load executable content into an enclave is important.
-All of the infrastructure appears to be already there to accomplish
-that, given the default model of a shared library implementation of an
-enclave and requiring the loader to mmap file backed TEXT pages RX.
-
-The most relevant and important control with respect to whether or not
-an enclave should be allowed to execute is evaluation of the
-SIGSTRUCT.  Given the trajectory that platform security is on, SGX is
-not going to be the last technology of its type nor the only
-technology that makes use of cryptographically based code provenance.
-
-As a result, if we are content with handing an opaque pointer of a
-descriptive struture to an LSM routine, a generic hook that is tasked
-with verifying code or execution environment provenance doesn't seem
-like it would need to be technology specific nor controversial.
-
-That leaves as the last thorny issue the question of dynamic
-allocation of memory for executable content.  As we have stated
-before, and at the outset of this note, from a security perspective
-this is only, effectively, a binary question for the platform owner as
-to whether or not the concept should be allowed.
-
-A generic LSM hook, appropriately named, could execute that decision
-without being SGX specific.  Arguably, the hook should be named to
-indicate that it is seeking approval for allocating memory to be used
-for anonymous executable content, since that is what it would be
-effectively requesting approval for, in the case of SGX.
-
-For completeness a third generic hook may be useful.  The purpose of
-that hook would be to verify a block of memory as being
-measured or signed for consideration as executable content.  Arguably
-that will have utility far beyond SGX.
-
-In the case of SGX it would address the issue as to whether or not a
-block of executable content in untrusted space is eligible for
-anonymous execution.  That may be a useful security measure in order
-to provide some control over an enclave being used as a random
-execution oracle.
-
-It obviously has no security utility against the enclave author since,
-as we have noted before, it is possible for the enclave author to
-simply pull whatever code is desired over an encrypted network
-connection.
-
-> James Morris
-
-Hopefully these comments are a useful basis for further discussion.
-
-Best wishes for a productive week to everyone.
-
-Dr. Greg
-
-As always,
-Dr. Greg Wettstein, Ph.D, Worker
-IDfusion, LLC
-4206 N. 19th Ave.           Implementing measured information privacy
-Fargo, ND  58102            and integrity architectures.
-PH: 701-281-1686
-FAX: 701-281-3949           EMAIL: gw@idfusion.org
-------------------------------------------------------------------------------
-"My thoughts on trusting Open-Source?  A quote I once saw said it
- best: 'Remember, Amateurs built the ark.  Professionals built the
- Titanic.'  Perhaps most significantly the ark was one guy, there were
- no doubt committees involved with the Titanic project."
-                                -- Dr. G.W. Wettstein
-                                   Resurrection
+I am waiting to hear from you.
+Yours Sincerely,
+Miss.Fatima Yusuf.

@@ -2,1405 +2,597 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A2F9251A39
-	for <lists+selinux@lfdr.de>; Mon, 24 Jun 2019 20:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77B0F51A8F
+	for <lists+selinux@lfdr.de>; Mon, 24 Jun 2019 20:31:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732728AbfFXSEM (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Jun 2019 14:04:12 -0400
-Received: from rgout0103.bt.lon5.cpcloud.co.uk ([65.20.0.123]:5235 "EHLO
-        rgout01.bt.lon5.cpcloud.co.uk" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727607AbfFXSEM (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Jun 2019 14:04:12 -0400
-X-OWM-Source-IP: 86.147.202.200 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduvddruddvgdduvdegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddugeejrddvtddvrddvtddtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtddvrddvtddtpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehsughssehthigthhhordhnshgrrdhgohhvqedprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-Received: from localhost.localdomain (86.147.202.200) by rgout01.bt.lon5.cpcloud.co.uk (9.0.019.26-1) (authenticated as richard_c_haines@btinternet.com)
-        id 5CFA38CA01A6115E; Mon, 24 Jun 2019 19:04:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btcpcloud; t=1561399450; 
-        bh=uQg97jPWMZ1HIjLemtznRpXxNLhFSJxDCEYoW1iJgyk=;
-        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=b0t3rqAW2YeeICB+byJCyUAKtP54K+JzVC7OCnfimgy2Zbt//Ozf11Z0cOT54Y8tJe6ehn9jSx2EZ0kixf3o/0iZeMAYZT98z4A5qYafg3nlekxtOZDr8BMcB+eI/vHl21t9z3KUxoBiCN8r0hy7gE1epBt4UBxQFKAo74NyxHU=
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     selinux@vger.kernel.org, sds@tycho.nsa.gov
-Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH V3 1/2] selinux: Remove legacy local boolean and user code
-Date:   Mon, 24 Jun 2019 19:02:28 +0100
-Message-Id: <20190624180229.9573-2-richard_c_haines@btinternet.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190624180229.9573-1-richard_c_haines@btinternet.com>
-References: <20190624180229.9573-1-richard_c_haines@btinternet.com>
+        id S1729770AbfFXSb6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Jun 2019 14:31:58 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:50052 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727672AbfFXSb6 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Jun 2019 14:31:58 -0400
+Received: from static-50-53-46-226.bvtn.or.frontiernet.net ([50.53.46.226] helo=[192.168.192.153])
+        by youngberry.canonical.com with esmtpsa (TLS1.0:RSA_AES_128_CBC_SHA1:16)
+        (Exim 4.76)
+        (envelope-from <john.johansen@canonical.com>)
+        id 1hfTkm-00084v-Iw; Mon, 24 Jun 2019 18:31:44 +0000
+From:   John Johansen <john.johansen@canonical.com>
+Subject: [PATCH v3 01/24] LSM: Infrastructure management of the superblock
+To:     Casey Schaufler <casey@schaufler-ca.com>,
+        casey.schaufler@intel.com, jmorris@namei.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Cc:     keescook@chromium.org, penguin-kernel@i-love.sakura.ne.jp,
+        paul@paul-moore.com, sds@tycho.nsa.gov
+References: <20190621185233.6766-1-casey@schaufler-ca.com>
+ <20190621185233.6766-2-casey@schaufler-ca.com>
+Openpgp: preference=signencrypt
+Autocrypt: addr=john.johansen@canonical.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Canonical
+Message-ID: <4e963683-2caa-2074-4887-931d20f61b87@canonical.com>
+Date:   Mon, 24 Jun 2019 11:31:41 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190621185233.6766-2-casey@schaufler-ca.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Remove legacy local boolean and user code, and to preserve API/ABI
-compatibility the following functions int values should be set to '0'
-as they are no longer used:
-  selinux_mkload_policy(int preservebools)
-  security_set_boolean_list(.... int permanent)
-and the following are now no-op and return '-1':
-  security_load_booleans()
-  sepol_genusers()
-  sepol_set_delusers()
-  sepol_genbools()
-  sepol_genbools_array()
-and these still return their paths for compatibility, however they are
-marked as deprecated:
-  selinux_booleans_path()
-  selinux_users_path()
+On 6/21/19 11:52 AM, Casey Schaufler wrote:
+> Move management of the superblock->sb_security blob out
+> of the individual security modules and into the security
+> infrastructure. Instead of allocating the blobs from within
+> the modules the modules tell the infrastructure how much
+> space is required, and the space is allocated there.
+> 
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 
-These have been removed as they are local functions only:
-  sepol_genusers_policydb()
-  sepol_genbools_policydb()
+with small fix below
 
-Also "SETLOCALDEFS" removed from SELinux config file and code.
+Reviewed-by:John Johansen <john.johansen@canonical.com>
 
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
----
- libselinux/include/selinux/selinux.h       |  18 +-
- libselinux/src/booleans.c                  | 225 +-------------
- libselinux/src/file_path_suffixes.h        |   2 +
- libselinux/src/load_policy.c               | 100 +-----
- libselinux/src/selinux_config.c            |   9 +-
- libselinux/src/selinux_internal.h          |   1 -
- libsepol/include/sepol/booleans.h          |  15 +-
- libsepol/include/sepol/policydb/services.h |   6 -
- libsepol/include/sepol/users.h             |  13 +-
- libsepol/src/deprecated_funcs.c            |  50 +++
- libsepol/src/genbools.c                    | 279 -----------------
- libsepol/src/genusers.c                    | 343 ---------------------
- policycoreutils/load_policy/load_policy.c  |   2 +-
- 13 files changed, 78 insertions(+), 985 deletions(-)
- create mode 100644 libsepol/src/deprecated_funcs.c
- delete mode 100644 libsepol/src/genbools.c
- delete mode 100644 libsepol/src/genusers.c
+> ---
+>  include/linux/lsm_hooks.h         |  1 +
+>  security/security.c               | 46 ++++++++++++++++++++----
+>  security/selinux/hooks.c          | 58 ++++++++++++-------------------
+>  security/selinux/include/objsec.h |  6 ++++
+>  security/selinux/ss/services.c    |  3 +-
+>  security/smack/smack.h            |  6 ++++
+>  security/smack/smack_lsm.c        | 35 +++++--------------
+>  7 files changed, 85 insertions(+), 70 deletions(-)
+> 
+> diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
+> index a240a3fc5fc4..f9222a04968d 100644
+> --- a/include/linux/lsm_hooks.h
+> +++ b/include/linux/lsm_hooks.h
+> @@ -2047,6 +2047,7 @@ struct lsm_blob_sizes {
+>  	int	lbs_cred;
+>  	int	lbs_file;
+>  	int	lbs_inode;
+> +	int	lbs_superblock;
+>  	int	lbs_ipc;
+>  	int	lbs_msg_msg;
+>  	int	lbs_task;
+> diff --git a/security/security.c b/security/security.c
+> index 23cbb1a295a3..550988a0f024 100644
+> --- a/security/security.c
+> +++ b/security/security.c
+> @@ -172,6 +172,7 @@ static void __init lsm_set_blob_sizes(struct lsm_blob_sizes *needed)
+>  	lsm_set_blob_size(&needed->lbs_inode, &blob_sizes.lbs_inode);
+>  	lsm_set_blob_size(&needed->lbs_ipc, &blob_sizes.lbs_ipc);
+>  	lsm_set_blob_size(&needed->lbs_msg_msg, &blob_sizes.lbs_msg_msg);
+> +	lsm_set_blob_size(&needed->lbs_superblock, &blob_sizes.lbs_superblock);
+>  	lsm_set_blob_size(&needed->lbs_task, &blob_sizes.lbs_task);
+>  }
+>  
+> @@ -300,12 +301,13 @@ static void __init ordered_lsm_init(void)
+>  	for (lsm = ordered_lsms; *lsm; lsm++)
+>  		prepare_lsm(*lsm);
+>  
+> -	init_debug("cred blob size     = %d\n", blob_sizes.lbs_cred);
+> -	init_debug("file blob size     = %d\n", blob_sizes.lbs_file);
+> -	init_debug("inode blob size    = %d\n", blob_sizes.lbs_inode);
+> -	init_debug("ipc blob size      = %d\n", blob_sizes.lbs_ipc);
+> -	init_debug("msg_msg blob size  = %d\n", blob_sizes.lbs_msg_msg);
+> -	init_debug("task blob size     = %d\n", blob_sizes.lbs_task);
+> +	init_debug("cred blob size       = %d\n", blob_sizes.lbs_cred);
+> +	init_debug("file blob size       = %d\n", blob_sizes.lbs_file);
+> +	init_debug("inode blob size      = %d\n", blob_sizes.lbs_inode);
+> +	init_debug("ipc blob size        = %d\n", blob_sizes.lbs_ipc);
+> +	init_debug("msg_msg blob size    = %d\n", blob_sizes.lbs_msg_msg);
+> +	init_debug("superblock blob size = %d\n", blob_sizes.lbs_superblock);
+> +	init_debug("task blob size       = %d\n", blob_sizes.lbs_task);
+>  
+>  	/*
+>  	 * Create any kmem_caches needed for blobs
+> @@ -603,6 +605,27 @@ static void __init lsm_early_task(struct task_struct *task)
+>  		panic("%s: Early task alloc failed.\n", __func__);
+>  }
+>  
+> +/**
+> + * lsm_superblock_alloc - allocate a composite superblock blob
+> + * @sb: the superblock that needs a blob
+> + *
+> + * Allocate the superblock blob for all the modules
+> + *
+> + * Returns 0, or -ENOMEM if memory can't be allocated.
+> + */
+> +int lsm_superblock_alloc(struct super_block *sb)
 
-diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
-index f54f236b..f2d32214 100644
---- a/libselinux/include/selinux/selinux.h
-+++ b/libselinux/include/selinux/selinux.h
-@@ -286,11 +286,7 @@ extern int security_get_initial_context_raw(const char *name,
-  * manipulating it as needed for current boolean settings and/or local 
-  * definitions, and then calling security_load_policy to load it.
-  *
-- * 'preservebools' is a boolean flag indicating whether current 
-- * policy boolean values should be preserved into the new policy (if 1) 
-- * or reset to the saved policy settings (if 0).  The former case is the
-- * default for policy reloads, while the latter case is an option for policy
-- * reloads but is primarily for the initial policy load.
-+ * 'preservebools' is no longer supported, set to 0.
-  */
- extern int selinux_mkload_policy(int preservebools);
- 
-@@ -316,13 +312,15 @@ typedef struct {
- 	char *name;
- 	int value;
- } SELboolean;
--/* save a list of booleans in a single transaction.  */
-+/* save a list of booleans in a single transaction. 'permanent' is no
-+ * longer supported, set to 0.
-+ */
- extern int security_set_boolean_list(size_t boolcnt,
- 				     SELboolean * boollist, int permanent);
- 
--/* Load policy boolean settings.
--   Path may be NULL, in which case the booleans are loaded from
--   the active policy boolean configuration file. */
-+/* Load policy boolean settings. Deprecated as local policy booleans no
-+ * longer supported. Will always return 0.
-+ */
- extern int security_load_booleans(char *path);
- 
- /* Check the validity of a security context. */
-@@ -569,8 +567,10 @@ extern const char *selinux_systemd_contexts_path(void);
- extern const char *selinux_contexts_path(void);
- extern const char *selinux_securetty_types_path(void);
- extern const char *selinux_booleans_subs_path(void);
-+/* Deprecated as local policy booleans no longer supported. */
- extern const char *selinux_booleans_path(void);
- extern const char *selinux_customizable_types_path(void);
-+/* Deprecated as policy ./users no longer supported. */
- extern const char *selinux_users_path(void);
- extern const char *selinux_usersconf_path(void);
- extern const char *selinux_translations_path(void);
-diff --git a/libselinux/src/booleans.c b/libselinux/src/booleans.c
-index ab1e0754..c1caf929 100644
---- a/libselinux/src/booleans.c
-+++ b/libselinux/src/booleans.c
-@@ -322,175 +322,6 @@ int security_commit_booleans(void)
- 		return -1;
- }
- 
--static char *strtrim(char *dest, char *source, int size)
--{
--	int i = 0;
--	char *ptr = source;
--	i = 0;
--	while (isspace(*ptr) && i < size) {
--		ptr++;
--		i++;
--	}
--	strncpy(dest, ptr, size);
--	for (i = strlen(dest) - 1; i > 0; i--) {
--		if (!isspace(dest[i]))
--			break;
--	}
--	dest[i + 1] = '\0';
--	return dest;
--}
--static int process_boolean(char *buffer, char *name, int namesize, int *val)
--{
--	char name1[BUFSIZ];
--	char *ptr = NULL;
--	char *tok;
--
--	/* Skip spaces */
--	while (isspace(buffer[0]))
--		buffer++;
--	/* Ignore comments */
--	if (buffer[0] == '#')
--		return 0;
--
--	tok = strtok_r(buffer, "=", &ptr);
--	if (!tok) {
--		errno = EINVAL;
--		return -1;
--	}
--	strncpy(name1, tok, BUFSIZ - 1);
--	strtrim(name, name1, namesize - 1);
--
--	tok = strtok_r(NULL, "\0", &ptr);
--	if (!tok) {
--		errno = EINVAL;
--		return -1;
--	}
--
--	while (isspace(*tok))
--		tok++;
--
--	*val = -1;
--	if (isdigit(tok[0]))
--		*val = atoi(tok);
--	else if (!strncasecmp(tok, "true", sizeof("true") - 1))
--		*val = 1;
--	else if (!strncasecmp(tok, "false", sizeof("false") - 1))
--		*val = 0;
--	if (*val != 0 && *val != 1) {
--		errno = EINVAL;
--		return -1;
--	}
--	return 1;
--}
--static int save_booleans(size_t boolcnt, SELboolean * boollist)
--{
--	ssize_t len;
--	size_t i;
--	char outbuf[BUFSIZ];
--	char *inbuf = NULL;
--
--	/* Open file */
--	const char *bool_file = selinux_booleans_path();
--	char local_bool_file[PATH_MAX];
--	char tmp_bool_file[PATH_MAX];
--	FILE *boolf;
--	int fd;
--	int *used = (int *)malloc(sizeof(int) * boolcnt);
--	if (!used) {
--		return -1;
--	}
--	/* zero out used field */
--	for (i = 0; i < boolcnt; i++)
--		used[i] = 0;
--
--	snprintf(tmp_bool_file, sizeof(tmp_bool_file), "%s.XXXXXX", bool_file);
--	fd = mkstemp(tmp_bool_file);
--	if (fd < 0) {
--		free(used);
--		return -1;
--	}
--
--	snprintf(local_bool_file, sizeof(local_bool_file), "%s.local",
--		 bool_file);
--	boolf = fopen(local_bool_file, "re");
--	if (boolf != NULL) {
--		ssize_t ret;
--		size_t size = 0;
--		int val;
--		char boolname[BUFSIZ-3];
--		char *buffer;
--		inbuf = NULL;
--		__fsetlocking(boolf, FSETLOCKING_BYCALLER);
--		while ((len = getline(&inbuf, &size, boolf)) > 0) {
--			buffer = strdup(inbuf);
--			if (!buffer)
--				goto close_remove_fail;
--			ret =
--			    process_boolean(inbuf, boolname, sizeof(boolname),
--					    &val);
--			if (ret != 1) {
--				ret = write(fd, buffer, len);
--				free(buffer);
--				if (ret != len)
--					goto close_remove_fail;
--			} else {
--				free(buffer);
--				for (i = 0; i < boolcnt; i++) {
--					if (strcmp(boollist[i].name, boolname)
--					    == 0) {
--						snprintf(outbuf, sizeof(outbuf),
--							 "%s=%d\n", boolname,
--							 boollist[i].value);
--						len = strlen(outbuf);
--						used[i] = 1;
--						if (write(fd, outbuf, len) !=
--						    len)
--							goto close_remove_fail;
--						else
--							break;
--					}
--				}
--				if (i == boolcnt) {
--					val = !!val;
--					snprintf(outbuf, sizeof(outbuf),
--						 "%s=%d\n", boolname, val);
--					len = strlen(outbuf);
--					if (write(fd, outbuf, len) != len)
--						goto close_remove_fail;
--				}
--			}
--			free(inbuf);
--			inbuf = NULL;
--		}
--		fclose(boolf);
--	}
--
--	for (i = 0; i < boolcnt; i++) {
--		if (used[i] == 0) {
--			snprintf(outbuf, sizeof(outbuf), "%s=%d\n",
--				 boollist[i].name, boollist[i].value);
--			len = strlen(outbuf);
--			if (write(fd, outbuf, len) != len) {
--			      close_remove_fail:
--				free(inbuf);
--				close(fd);
--			      remove_fail:
--				unlink(tmp_bool_file);
--				free(used);
--				return -1;
--			}
--		}
--
--	}
--	if (fchmod(fd, S_IRUSR | S_IWUSR) != 0)
--		goto close_remove_fail;
--	close(fd);
--	if (rename(tmp_bool_file, local_bool_file) != 0)
--		goto remove_fail;
--
--	free(used);
--	return 0;
--}
- static void rollback(SELboolean * boollist, int end)
- {
- 	int i;
-@@ -519,62 +350,18 @@ int security_set_boolean_list(size_t boolcnt, SELboolean * boollist,
- 		return -1;
- 	}
- 
-+	/* Return error as flag no longer used */
- 	if (permanent)
--		return save_booleans(boolcnt, boollist);
-+		return -1;
- 
- 	return 0;
- }
--int security_load_booleans(char *path)
--{
--	FILE *boolf;
--	char *inbuf;
--	char localbools[BUFSIZ];
--	size_t len = 0, errors = 0;
--	int val;
--	char name[BUFSIZ];
--
--	boolf = fopen(path ? path : selinux_booleans_path(), "re");
--	if (boolf == NULL)
--		goto localbool;
--
--	__fsetlocking(boolf, FSETLOCKING_BYCALLER);
--	while (getline(&inbuf, &len, boolf) > 0) {
--		int ret = process_boolean(inbuf, name, sizeof(name), &val);
--		if (ret == -1)
--			errors++;
--		if (ret == 1)
--			if (security_set_boolean(name, val) < 0) {
--				errors++;
--			}
--	}
--	fclose(boolf);
--      localbool:
--	snprintf(localbools, sizeof(localbools), "%s.local",
--		 (path ? path : selinux_booleans_path()));
--	boolf = fopen(localbools, "re");
--
--	if (boolf != NULL) {
--		int ret;
--		__fsetlocking(boolf, FSETLOCKING_BYCALLER);
--		while (getline(&inbuf, &len, boolf) > 0) {
--			ret = process_boolean(inbuf, name, sizeof(name), &val);
--			if (ret == -1)
--				errors++;
--			if (ret == 1)
--				if (security_set_boolean(name, val) < 0) {
--					errors++;
--				}
--		}
--		fclose(boolf);
--	}
--	if (security_commit_booleans() < 0)
--		return -1;
- 
--	if (errors)
--		errno = EINVAL;
--	return errors ? -1 : 0;
-+/* This function is deprecated */
-+int security_load_booleans(char *path __attribute__((unused)))
-+{
-+	return -1;
- }
--
- #else
- 
- #include <stdlib.h>
-diff --git a/libselinux/src/file_path_suffixes.h b/libselinux/src/file_path_suffixes.h
-index 2d3ca497..a5573134 100644
---- a/libselinux/src/file_path_suffixes.h
-+++ b/libselinux/src/file_path_suffixes.h
-@@ -8,10 +8,12 @@ S_(BINPOLICY, "/policy/policy")
-     S_(FAILSAFE_CONTEXT, "/contexts/failsafe_context")
-     S_(DEFAULT_TYPE, "/contexts/default_type")
-     S_(SECURETTY_TYPES, "/contexts/securetty_types")
-+	/* BOOLEANS is deprecated */
-     S_(BOOLEANS, "/booleans")
-     S_(MEDIA_CONTEXTS, "/contexts/files/media")
-     S_(REMOVABLE_CONTEXT, "/contexts/removable_context")
-     S_(CUSTOMIZABLE_TYPES, "/contexts/customizable_types")
-+	/* USERS_DIR is deprecated */
-     S_(USERS_DIR, "/users/")
-     S_(SEUSERS, "/seusers")
-     S_(TRANSLATIONS, "/setrans.conf")
-diff --git a/libselinux/src/load_policy.c b/libselinux/src/load_policy.c
-index 20052beb..9e75292d 100644
---- a/libselinux/src/load_policy.c
-+++ b/libselinux/src/load_policy.c
-@@ -48,22 +48,18 @@ int security_load_policy(void *data, size_t len)
- hidden_def(security_load_policy)
- 
- #ifndef ANDROID
--int load_setlocaldefs hidden = 1;
--
- #undef max
- #define max(a, b) (((a) > (b)) ? (a) : (b))
- 
--int selinux_mkload_policy(int preservebools)
-+int selinux_mkload_policy(int preservebools __attribute__((unused)))
- {	
- 	int kernvers = security_policyvers();
- 	int maxvers = kernvers, minvers = DEFAULT_POLICY_VERSION, vers;
--	int setlocaldefs = load_setlocaldefs;
- 	char path[PATH_MAX];
- 	struct stat sb;
--	struct utsname uts;
- 	size_t size;
- 	void *map, *data;
--	int fd, rc = -1, prot;
-+	int fd, rc = -1;
- 	sepol_policydb_t *policydb;
- 	sepol_policy_file_t *pf;
- 	int usesepol = 0;
-@@ -77,9 +73,6 @@ int selinux_mkload_policy(int preservebools)
- 	int (*policydb_read)(sepol_policydb_t *, sepol_policy_file_t *) = NULL;
- 	int (*policydb_set_vers)(sepol_policydb_t *, unsigned int) = NULL;
- 	int (*policydb_to_image)(sepol_handle_t *, sepol_policydb_t *, void **, size_t *) = NULL;
--	int (*genbools_array)(void *data, size_t len, char **names, int *values, int nel) = NULL;
--	int (*genusers)(void *data, size_t len, const char *usersdir, void **newdata, size_t * newlen) = NULL;
--	int (*genbools)(void *data, size_t len, const char *boolpath) = NULL;
- 
- #ifdef SHARED
- 	char *errormsg = NULL;
-@@ -110,13 +103,6 @@ int selinux_mkload_policy(int preservebools)
- 		DLERR();
- 		policydb_to_image = dlsym(libsepolh, "sepol_policydb_to_image");
- 		DLERR();
--		genbools_array = dlsym(libsepolh, "sepol_genbools_array");
--		DLERR();
--		genusers = dlsym(libsepolh, "sepol_genusers");
--		DLERR();
--		genbools = dlsym(libsepolh, "sepol_genbools");
--		DLERR();
--
- #undef DLERR
- 	}
- #else
-@@ -131,42 +117,11 @@ int selinux_mkload_policy(int preservebools)
- 	policydb_read = sepol_policydb_read;
- 	policydb_set_vers = sepol_policydb_set_vers;
- 	policydb_to_image = sepol_policydb_to_image;
--	genbools_array = sepol_genbools_array;
--	genusers = sepol_genusers;
--	genbools = sepol_genbools;
--
- #endif
- 
--	/*
--	 * Check whether we need to support local boolean and user definitions.
--	 */
--	if (setlocaldefs) {
--		if (access(selinux_booleans_path(), F_OK) == 0)
--			goto checkbool;
--		snprintf(path, sizeof path, "%s.local", selinux_booleans_path());
--		if (access(path, F_OK) == 0)
--			goto checkbool;
--		snprintf(path, sizeof path, "%s/local.users", selinux_users_path());
--		if (access(path, F_OK) == 0)
--			goto checkbool;
--		/* No local definition files, so disable setlocaldefs. */
--		setlocaldefs = 0;
--	}
--
--checkbool:
--	/* 
--	 * As of Linux 2.6.22, the kernel preserves boolean
--	 * values across a reload, so we do not need to 
--	 * preserve them in userspace.
--	 */
--	if (preservebools && uname(&uts) == 0 && strverscmp(uts.release, "2.6.22") >= 0)
--		preservebools = 0;
--
- 	if (usesepol) {
--		maxvers = vers_max();
-+		maxvers = max(kernvers, vers_max());
- 		minvers = vers_min();
--		if (!setlocaldefs && !preservebools)
--			maxvers = max(kernvers, maxvers);
- 	}
- 
- 	vers = maxvers;
-@@ -195,12 +150,8 @@ checkbool:
- 		goto close;
- 	}
- 
--	prot = PROT_READ;
--	if (setlocaldefs || preservebools)
--		prot |= PROT_WRITE;
--
- 	size = sb.st_size;
--	data = map = mmap(NULL, size, prot, MAP_PRIVATE, fd, 0);
-+	data = map = mmap(NULL, size, PROT_READ, MAP_PRIVATE, fd, 0);
- 	if (map == MAP_FAILED) {
- 		fprintf(stderr,
- 			"SELinux:  Could not map policy file %s:  %s\n",
-@@ -239,49 +190,6 @@ checkbool:
- 		policydb_free(policydb);
- 	}
- 
--	if (usesepol) {
--		if (setlocaldefs) {
--			void *olddata = data;
--			size_t oldsize = size;
--			rc = genusers(olddata, oldsize, selinux_users_path(),
--				      &data, &size);
--			if (rc < 0) {
--				/* Fall back to the prior image if genusers failed. */
--				data = olddata;
--				size = oldsize;
--				rc = 0;
--			} else {
--				if (olddata != map)
--					free(olddata);
--			}
--		}
--		
--		if (preservebools) {
--			int *values, len, i;
--			char **names;
--			rc = security_get_boolean_names(&names, &len);
--			if (!rc) {
--				values = malloc(sizeof(int) * len);
--				if (!values) {
--					free(names);
--					goto unmap;
--				}
--				for (i = 0; i < len; i++)
--					values[i] =
--						security_get_boolean_active(names[i]);
--				(void)genbools_array(data, size, names, values,
--						     len);
--				free(values);
--				for (i = 0; i < len; i++)
--					free(names[i]);
--				free(names);
--			}
--		} else if (setlocaldefs) {
--			(void)genbools(data, size, selinux_booleans_path());
--		}
--	}
--
--
- 	rc = security_load_policy(data, size);
- 	
- 	if (rc)
-diff --git a/libselinux/src/selinux_config.c b/libselinux/src/selinux_config.c
-index b06cb63b..b16a3851 100644
---- a/libselinux/src/selinux_config.c
-+++ b/libselinux/src/selinux_config.c
-@@ -16,7 +16,6 @@
- #define SELINUXDEFAULT "targeted"
- #define SELINUXTYPETAG "SELINUXTYPE="
- #define SELINUXTAG "SELINUX="
--#define SETLOCALDEFS "SETLOCALDEFS="
- #define REQUIRESEUSERS "REQUIRESEUSERS="
- 
- /* Indices for file paths arrays. */
-@@ -28,10 +27,12 @@
- #define USER_CONTEXTS     5
- #define FAILSAFE_CONTEXT  6
- #define DEFAULT_TYPE      7
-+/* BOOLEANS is deprecated */
- #define BOOLEANS          8
- #define MEDIA_CONTEXTS    9
- #define REMOVABLE_CONTEXT 10
- #define CUSTOMIZABLE_TYPES    11
-+/* USERS_DIR is deprecated */
- #define USERS_DIR         12
- #define SEUSERS           13
- #define TRANSLATIONS      14
-@@ -192,10 +193,6 @@ static void init_selinux_config(void)
- 				}
- 				free(type);
- 				continue;
--			} else if (!strncmp(buf_p, SETLOCALDEFS,
--					    sizeof(SETLOCALDEFS) - 1)) {
--				value = buf_p + sizeof(SETLOCALDEFS) - 1;
--				intptr = &load_setlocaldefs;
- 			} else if (!strncmp(buf_p, REQUIRESEUSERS,
- 					    sizeof(REQUIRESEUSERS) - 1)) {
- 				value = buf_p + sizeof(REQUIRESEUSERS) - 1;
-@@ -410,6 +407,7 @@ const char *selinux_user_contexts_path(void)
- 
- hidden_def(selinux_user_contexts_path)
- 
-+/* Deprecated as local policy booleans no longer supported. */
- const char *selinux_booleans_path(void)
- {
- 	return get_path(BOOLEANS);
-@@ -417,6 +415,7 @@ const char *selinux_booleans_path(void)
- 
- hidden_def(selinux_booleans_path)
- 
-+/* Deprecated as no longer supported. */
- const char *selinux_users_path(void)
- {
- 	return get_path(USERS_DIR);
-diff --git a/libselinux/src/selinux_internal.h b/libselinux/src/selinux_internal.h
-index acd59c7c..8b4bed2f 100644
---- a/libselinux/src/selinux_internal.h
-+++ b/libselinux/src/selinux_internal.h
-@@ -110,7 +110,6 @@ hidden_proto(selinux_reset_config);
- 
- hidden void flush_class_cache(void);
- 
--extern int load_setlocaldefs hidden;
- extern int require_seusers hidden;
- extern int selinux_page_size hidden;
- 
-diff --git a/libsepol/include/sepol/booleans.h b/libsepol/include/sepol/booleans.h
-index 2966903d..06d2230c 100644
---- a/libsepol/include/sepol/booleans.h
-+++ b/libsepol/include/sepol/booleans.h
-@@ -10,23 +10,10 @@
- extern "C" {
- #endif
- 
--/*--------------compatibility--------------*/
--
--/* Given an existing binary policy (starting at 'data', with length 'len')
--   and a boolean configuration file named by 'boolpath', rewrite the binary
--   policy for the boolean settings in the boolean configuration file.
--   The binary policy is rewritten in place in memory.
--   Returns 0 upon success, or -1 otherwise. */
-+/* These two functions are deprecated. See src/deprecated_funcs.c */
- extern int sepol_genbools(void *data, size_t len, const char *boolpath);
--
--/* Given an existing binary policy (starting at 'data', with length 'len')
--   and boolean settings specified by the parallel arrays ('names', 'values')
--   with 'nel' elements, rewrite the binary policy for the boolean settings.
--   The binary policy is rewritten in place in memory.
--   Returns 0 upon success or -1 otherwise. */
- extern int sepol_genbools_array(void *data, size_t len,
- 				char **names, int *values, int nel);
--/*---------------end compatbility------------*/
- 
- /* Set the specified boolean */
- extern int sepol_bool_set(sepol_handle_t * handle,
-diff --git a/libsepol/include/sepol/policydb/services.h b/libsepol/include/sepol/policydb/services.h
-index 6ef27a8c..776c2cff 100644
---- a/libsepol/include/sepol/policydb/services.h
-+++ b/libsepol/include/sepol/policydb/services.h
-@@ -30,12 +30,6 @@ extern "C" {
- extern int sepol_set_policydb(policydb_t * p);
- extern int sepol_set_sidtab(sidtab_t * s);
- 
--/* Modify a policydb for boolean settings. */
--int sepol_genbools_policydb(policydb_t * policydb, const char *booleans);
--
--/* Modify a policydb for user settings. */
--int sepol_genusers_policydb(policydb_t * policydb, const char *usersdir);
--
- /* Load the security policy. This initializes the policydb
-    and sidtab based on the provided binary policy. */
- extern int sepol_load_policy(void *data, size_t len);
-diff --git a/libsepol/include/sepol/users.h b/libsepol/include/sepol/users.h
-index ad23f89b..70158ac4 100644
---- a/libsepol/include/sepol/users.h
-+++ b/libsepol/include/sepol/users.h
-@@ -10,23 +10,12 @@
- extern "C" {
- #endif
- 
--/*---------compatibility------------*/
--
--/* Given an existing binary policy (starting at 'data with length 'len')
--   and user configurations living in 'usersdir', generate a new binary
--   policy for the new user configurations.  Sets '*newdata' and '*newlen'
--   to refer to the new binary policy image. */
-+/* These two functions are deprecated. See src/deprecated_funcs.c */
- extern int sepol_genusers(void *data, size_t len,
- 			  const char *usersdir,
- 			  void **newdata, size_t * newlen);
--
--/* Enable or disable deletion of users by sepol_genusers(3) when
--   a user in original binary policy image is not defined by the
--   new user configurations.  Defaults to disabled. */
- extern void sepol_set_delusers(int on);
- 
--/*--------end compatibility----------*/
--
- /* Modify the user, or add it, if the key is not found */
- extern int sepol_user_modify(sepol_handle_t * handle,
- 			     sepol_policydb_t * policydb,
-diff --git a/libsepol/src/deprecated_funcs.c b/libsepol/src/deprecated_funcs.c
-new file mode 100644
-index 00000000..d0dab7df
---- /dev/null
-+++ b/libsepol/src/deprecated_funcs.c
-@@ -0,0 +1,50 @@
-+#include <stdio.h>
-+#include "debug.h"
-+
-+/*
-+ * Need to keep these stubs for the libsepol interfaces exported in
-+ * libsepol.map.in, as they are part of the shared library ABI.
-+ */
-+
-+static const char *msg = "Deprecated interface";
-+
-+/*
-+ * These two functions are deprecated and referenced in:
-+ *	include/libsepol/users.h
-+ */
-+int sepol_genusers(void *data __attribute((unused)),
-+		   size_t len __attribute((unused)),
-+		   const char *usersdir __attribute((unused)),
-+		   void **newdata __attribute((unused)),
-+		   size_t *newlen __attribute((unused)))
-+{
-+	WARN(NULL, "%s", msg);
-+	return -1;
-+}
-+
-+void sepol_set_delusers(int on __attribute((unused)))
-+{
-+	WARN(NULL, "%s", msg);
-+}
-+
-+/*
-+ * These two functions are deprecated and referenced in:
-+ *	include/libsepol/booleans.h
-+ */
-+int sepol_genbools(void *data __attribute((unused)),
-+		   size_t len __attribute((unused)),
-+		   const char *booleans __attribute((unused)))
-+{
-+	WARN(NULL, "%s", msg);
-+	return -1;
-+}
-+
-+int sepol_genbools_array(void *data __attribute((unused)),
-+			 size_t len __attribute((unused)),
-+			 char **names __attribute((unused)),
-+			 int *values __attribute((unused)),
-+			 int nel __attribute((unused)))
-+{
-+	WARN(NULL, "%s", msg);
-+	return -1;
-+}
-diff --git a/libsepol/src/genbools.c b/libsepol/src/genbools.c
-deleted file mode 100644
-index d4a2df62..00000000
---- a/libsepol/src/genbools.c
-+++ /dev/null
-@@ -1,279 +0,0 @@
--#include <stdio.h>
--#include <stdlib.h>
--#include <ctype.h>
--#include <errno.h>
--
--#include <sepol/policydb/policydb.h>
--#include <sepol/policydb/conditional.h>
--
--#include "debug.h"
--#include "private.h"
--#include "dso.h"
--
--/* -- Deprecated -- */
--
--static char *strtrim(char *dest, char *source, int size)
--{
--	int i = 0;
--	char *ptr = source;
--	i = 0;
--	while (isspace(*ptr) && i < size) {
--		ptr++;
--		i++;
--	}
--	strncpy(dest, ptr, size);
--	for (i = strlen(dest) - 1; i > 0; i--) {
--		if (!isspace(dest[i]))
--			break;
--	}
--	dest[i + 1] = '\0';
--	return dest;
--}
--
--static int process_boolean(char *buffer, char *name, int namesize, int *val)
--{
--	char name1[BUFSIZ];
--	char *ptr = NULL;
--	char *tok;
--
--	/* Skip spaces */
--	while (isspace(buffer[0]))
--		buffer++;
--	/* Ignore comments */
--	if (buffer[0] == '#')
--		return 0;
--
--	tok = strtok_r(buffer, "=", &ptr);
--	if (!tok) {
--		ERR(NULL, "illegal boolean definition %s", buffer);
--		return -1;
--	}
--	strncpy(name1, tok, BUFSIZ - 1);
--	strtrim(name, name1, namesize - 1);
--
--	tok = strtok_r(NULL, "\0", &ptr);
--	if (!tok) {
--		ERR(NULL, "illegal boolean definition %s=%s", name, buffer);
--		return -1;
--	}
--
--	while (isspace(*tok))
--		tok++;
--
--	*val = -1;
--	if (isdigit(tok[0]))
--		*val = atoi(tok);
--	else if (!strncasecmp(tok, "true", sizeof("true") - 1))
--		*val = 1;
--	else if (!strncasecmp(tok, "false", sizeof("false") - 1))
--		*val = 0;
--	if (*val != 0 && *val != 1) {
--		ERR(NULL, "illegal value for boolean %s=%s", name, tok);
--		return -1;
--	}
--	return 1;
--}
--
--static int load_booleans(struct policydb *policydb, const char *path,
--			 int *changesp)
--{
--	FILE *boolf;
--	char *buffer = NULL;
--	char localbools[BUFSIZ];
--	char name[BUFSIZ];
--	int val;
--	int errors = 0, changes = 0;
--	struct cond_bool_datum *datum;
--
--	boolf = fopen(path, "r");
--	if (boolf == NULL)
--		goto localbool;
--
--#ifdef __APPLE__
--        if ((buffer = (char *)malloc(255 * sizeof(char))) == NULL) {
--          ERR(NULL, "out of memory");
--	  return -1;
--	}
--
--        while(fgets(buffer, 255, boolf) != NULL) {
--#else
--	size_t size = 0;
--	while (getline(&buffer, &size, boolf) > 0) {
--#endif
--		int ret = process_boolean(buffer, name, sizeof(name), &val);
--		if (ret == -1)
--			errors++;
--		if (ret == 1) {
--			datum = hashtab_search(policydb->p_bools.table, name);
--			if (!datum) {
--				ERR(NULL, "unknown boolean %s", name);
--				errors++;
--				continue;
--			}
--			if (datum->state != val) {
--				datum->state = val;
--				changes++;
--			}
--		}
--	}
--	fclose(boolf);
--      localbool:
--	snprintf(localbools, sizeof(localbools), "%s.local", path);
--	boolf = fopen(localbools, "r");
--	if (boolf != NULL) {
--
--#ifdef __APPLE__
--
--	  while(fgets(buffer, 255, boolf) != NULL) {
--#else
--
--	    while (getline(&buffer, &size, boolf) > 0) {
--#endif
--			int ret =
--			    process_boolean(buffer, name, sizeof(name), &val);
--			if (ret == -1)
--				errors++;
--			if (ret == 1) {
--				datum =
--				    hashtab_search(policydb->p_bools.table,
--						   name);
--				if (!datum) {
--					ERR(NULL, "unknown boolean %s", name);
--					errors++;
--					continue;
--				}
--				if (datum->state != val) {
--					datum->state = val;
--					changes++;
--				}
--			}
--		}
--		fclose(boolf);
--	}
--	free(buffer);
--	if (errors)
--		errno = EINVAL;
--	*changesp = changes;
--	return errors ? -1 : 0;
--}
--
--int sepol_genbools(void *data, size_t len, const char *booleans)
--{
--	struct policydb policydb;
--	struct policy_file pf;
--	int rc, changes = 0;
--
--	if (policydb_init(&policydb))
--		goto err;
--	if (policydb_from_image(NULL, data, len, &policydb) < 0)
--		goto err;
--
--	if (load_booleans(&policydb, booleans, &changes) < 0) {
--		WARN(NULL, "error while reading %s", booleans);
--	}
--
--	if (!changes)
--		goto out;
--
--	if (evaluate_conds(&policydb) < 0) {
--		ERR(NULL, "error while re-evaluating conditionals");
--		errno = EINVAL;
--		goto err_destroy;
--	}
--
--	policy_file_init(&pf);
--	pf.type = PF_USE_MEMORY;
--	pf.data = data;
--	pf.len = len;
--	rc = policydb_write(&policydb, &pf);
--	if (rc) {
--		ERR(NULL, "unable to write new binary policy image");
--		errno = EINVAL;
--		goto err_destroy;
--	}
--
--      out:
--	policydb_destroy(&policydb);
--	return 0;
--
--      err_destroy:
--	policydb_destroy(&policydb);
--
--      err:
--	return -1;
--}
--
--int hidden sepol_genbools_policydb(policydb_t * policydb, const char *booleans)
--{
--	int rc, changes = 0;
--
--	rc = load_booleans(policydb, booleans, &changes);
--	if (!rc && changes)
--		rc = evaluate_conds(policydb);
--	if (rc)
--		errno = EINVAL;
--	return rc;
--}
--
--/* -- End Deprecated -- */
--
--int sepol_genbools_array(void *data, size_t len, char **names, int *values,
--			 int nel)
--{
--	struct policydb policydb;
--	struct policy_file pf;
--	int rc, i, errors = 0;
--	struct cond_bool_datum *datum;
--
--	/* Create policy database from image */
--	if (policydb_init(&policydb))
--		goto err;
--	if (policydb_from_image(NULL, data, len, &policydb) < 0)
--		goto err;
--
--	for (i = 0; i < nel; i++) {
--		datum = hashtab_search(policydb.p_bools.table, names[i]);
--		if (!datum) {
--			ERR(NULL, "boolean %s no longer in policy", names[i]);
--			errors++;
--			continue;
--		}
--		if (values[i] != 0 && values[i] != 1) {
--			ERR(NULL, "illegal value %d for boolean %s",
--			    values[i], names[i]);
--			errors++;
--			continue;
--		}
--		datum->state = values[i];
--	}
--
--	if (evaluate_conds(&policydb) < 0) {
--		ERR(NULL, "error while re-evaluating conditionals");
--		errno = EINVAL;
--		goto err_destroy;
--	}
--
--	policy_file_init(&pf);
--	pf.type = PF_USE_MEMORY;
--	pf.data = data;
--	pf.len = len;
--	rc = policydb_write(&policydb, &pf);
--	if (rc) {
--		ERR(NULL, "unable to write binary policy");
--		errno = EINVAL;
--		goto err_destroy;
--	}
--	if (errors) {
--		errno = EINVAL;
--		goto err_destroy;
--	}
--
--	policydb_destroy(&policydb);
--	return 0;
--
--      err_destroy:
--	policydb_destroy(&policydb);
--
--      err:
--	return -1;
--}
-diff --git a/libsepol/src/genusers.c b/libsepol/src/genusers.c
-deleted file mode 100644
-index c375c669..00000000
---- a/libsepol/src/genusers.c
-+++ /dev/null
-@@ -1,343 +0,0 @@
--#include <stdio.h>
--
--#include <stdlib.h>
--#include <ctype.h>
--#include <errno.h>
--#include <limits.h>
--
--#include <sepol/policydb/policydb.h>
--
--#ifndef __APPLE__
--#include <stdio_ext.h>
--#endif
--
--#include <stdarg.h>
--
--#include "debug.h"
--#include "private.h"
--#include "dso.h"
--#include "mls.h"
--
--/* -- Deprecated -- */
--
--void sepol_set_delusers(int on __attribute((unused)))
--{
--	WARN(NULL, "Deprecated interface");
--}
--
--#undef BADLINE
--#define BADLINE() { \
--	ERR(NULL, "invalid entry %s (%s:%u)", \
--		buffer, path, lineno); \
--	continue; \
--}
--
--static int load_users(struct policydb *policydb, const char *path)
--{
--	FILE *fp;
--	char *buffer = NULL, *p, *q, oldc;
--	ssize_t nread;
--	unsigned lineno = 0, islist = 0, bit;
--	user_datum_t *usrdatum;
--	role_datum_t *roldatum;
--	ebitmap_node_t *rnode;
--
--	fp = fopen(path, "r");
--	if (fp == NULL)
--		return -1;
--
--#ifdef __APPLE__
--	if ((buffer = (char *)malloc(255 * sizeof(char))) == NULL) {
--	  ERR(NULL, "out of memory");
--	  return -1;
--	}
--
--	while(fgets(buffer, 255, fp) != NULL) {
--		nread = strlen(buffer);
--#else
--	size_t len = 0;
--	__fsetlocking(fp, FSETLOCKING_BYCALLER);
--	while ((nread = getline(&buffer, &len, fp)) > 0) {
--#endif
--
--		lineno++;
--		if (buffer[nread - 1] == '\n')
--			buffer[nread - 1] = 0;
--		p = buffer;
--		while (*p && isspace(*p))
--			p++;
--		if (!(*p) || *p == '#')
--			continue;
--
--		if (strncasecmp(p, "user", 4))
--			BADLINE();
--		p += 4;
--		if (!isspace(*p))
--			BADLINE();
--		while (*p && isspace(*p))
--			p++;
--		if (!(*p))
--			BADLINE();
--		q = p;
--		while (*p && !isspace(*p))
--			p++;
--		if (!(*p))
--			BADLINE();
--		*p++ = 0;
--
--		usrdatum = hashtab_search(policydb->p_users.table, q);
--		if (usrdatum) {
--			/* Replacing an existing user definition. */
--			ebitmap_destroy(&usrdatum->roles.roles);
--			ebitmap_init(&usrdatum->roles.roles);
--		} else {
--			char *id = strdup(q);
--
--			if (!id) {
--				ERR(NULL, "out of memory");
--				free(buffer);
--				fclose(fp);
--				return -1;
--			}
--
--			/* Adding a new user definition. */
--			usrdatum = malloc(sizeof(user_datum_t));
--			if (!usrdatum) {
--				ERR(NULL, "out of memory");
--				free(buffer);
--				free(id);
--				fclose(fp);
--				return -1;
--			}
--
--			user_datum_init(usrdatum);
--			usrdatum->s.value = ++policydb->p_users.nprim;
--			if (hashtab_insert(policydb->p_users.table,
--					   id, (hashtab_datum_t) usrdatum)) {
--				ERR(NULL, "out of memory");
--				free(buffer);
--				free(id);
--				user_datum_destroy(usrdatum);
--				free(usrdatum);
--				fclose(fp);
--				return -1;
--			}
--		}
--
--		while (*p && isspace(*p))
--			p++;
--		if (!(*p))
--			BADLINE();
--		if (strncasecmp(p, "roles", 5))
--			BADLINE();
--		p += 5;
--		if (!isspace(*p))
--			BADLINE();
--		while (*p && isspace(*p))
--			p++;
--		if (!(*p))
--			BADLINE();
--		if (*p == '{') {
--			islist = 1;
--			p++;
--		} else
--			islist = 0;
--
--		oldc = 0;
--		do {
--			while (*p && isspace(*p))
--				p++;
--			if (!(*p))
--				break;
--
--			q = p;
--			while (*p && *p != ';' && *p != '}' && !isspace(*p))
--				p++;
--			if (!(*p))
--				break;
--			if (*p == '}')
--				islist = 0;
--			oldc = *p;
--			*p++ = 0;
--			if (!q[0])
--				break;
--
--			roldatum = hashtab_search(policydb->p_roles.table, q);
--			if (!roldatum) {
--				ERR(NULL, "undefined role %s (%s:%u)",
--				    q, path, lineno);
--				continue;
--			}
--			/* Set the role and every role it dominates */
--			ebitmap_for_each_positive_bit(&roldatum->dominates, rnode, bit) {
--				if (ebitmap_set_bit
--				    (&usrdatum->roles.roles, bit, 1)) {
--					ERR(NULL, "out of memory");
--					free(buffer);
--					fclose(fp);
--					return -1;
--				}
--			}
--		} while (islist);
--		if (oldc == 0)
--			BADLINE();
--
--		if (policydb->mls) {
--			context_struct_t context;
--			char *scontext, *r, *s;
--
--			while (*p && isspace(*p))
--				p++;
--			if (!(*p))
--				BADLINE();
--			if (strncasecmp(p, "level", 5))
--				BADLINE();
--			p += 5;
--			if (!isspace(*p))
--				BADLINE();
--			while (*p && isspace(*p))
--				p++;
--			if (!(*p))
--				BADLINE();
--			q = p;
--			while (*p && (!isspace(*p) || strncasecmp(p + 1, "range", 5)))
--				p++;
--			if (!(*p) || p == q)
--				BADLINE();
--			*p = 0;
--			p++;
--
--			scontext = malloc(p - q);
--			if (!scontext) {
--				ERR(NULL, "out of memory");
--				free(buffer);
--				fclose(fp);
--				return -1;
--			}
--			r = scontext;
--			s = q;
--			while (*s) {
--				if (!isspace(*s))
--					*r++ = *s;
--				s++;
--			}
--			*r = 0;
--			r = scontext;
--
--			context_init(&context);
--			if (mls_context_to_sid(policydb, oldc, &r, &context) <
--			    0) {
--				ERR(NULL, "invalid level %s (%s:%u)", scontext,
--				    path, lineno);
--				free(scontext);
--				continue;
--
--			}
--			free(scontext);
--			memcpy(&usrdatum->dfltlevel, &context.range.level[0],
--			       sizeof(usrdatum->dfltlevel));
--
--			if (strncasecmp(p, "range", 5))
--				BADLINE();
--			p += 5;
--			if (!isspace(*p))
--				BADLINE();
--			while (*p && isspace(*p))
--				p++;
--			if (!(*p))
--				BADLINE();
--			q = p;
--			while (*p && *p != ';')
--				p++;
--			if (!(*p))
--				BADLINE();
--			*p++ = 0;
--
--			scontext = malloc(p - q);
--			if (!scontext) {
--				ERR(NULL, "out of memory");
--				free(buffer);
--				fclose(fp);
--				return -1;
--			}
--			r = scontext;
--			s = q;
--			while (*s) {
--				if (!isspace(*s))
--					*r++ = *s;
--				s++;
--			}
--			*r = 0;
--			r = scontext;
--
--			context_init(&context);
--			if (mls_context_to_sid(policydb, oldc, &r, &context) <
--			    0) {
--				ERR(NULL, "invalid range %s (%s:%u)", scontext,
--				    path, lineno);
--				free(scontext);
--				continue;
--			}
--			free(scontext);
--			memcpy(&usrdatum->range, &context.range,
--			       sizeof(usrdatum->range));
--		}
--	}
--
--	free(buffer);
--	fclose(fp);
--	return 0;
--}
--
--int sepol_genusers(void *data, size_t len,
--		   const char *usersdir, void **newdata, size_t * newlen)
--{
--	struct policydb policydb;
--	char path[PATH_MAX];
--
--	/* Construct policy database */
--	if (policydb_init(&policydb))
--		goto err;
--	if (policydb_from_image(NULL, data, len, &policydb) < 0)
--		goto err;
--
--	/* Load locally defined users. */
--	snprintf(path, sizeof path, "%s/local.users", usersdir);
--	if (load_users(&policydb, path) < 0)
--		goto err_destroy;
--
--	/* Write policy database */
--	if (policydb_to_image(NULL, &policydb, newdata, newlen) < 0)
--		goto err_destroy;
--
--	policydb_destroy(&policydb);
--	return 0;
--
--      err_destroy:
--	policydb_destroy(&policydb);
--
--      err:
--	return -1;
--}
--
--int hidden sepol_genusers_policydb(policydb_t * policydb, const char *usersdir)
--{
--	char path[PATH_MAX];
--
--	/* Load locally defined users. */
--	snprintf(path, sizeof path, "%s/local.users", usersdir);
--	if (load_users(policydb, path) < 0) {
--		ERR(NULL, "unable to load local.users: %s", strerror(errno));
--		return -1;
--	}
--
--	if (policydb_reindex_users(policydb) < 0) {
--		ERR(NULL, "unable to reindex users: %s", strerror(errno));
--		return -1;
--
--	}
--
--	return 0;
--}
--
--/* -- End Deprecated -- */
-diff --git a/policycoreutils/load_policy/load_policy.c b/policycoreutils/load_policy/load_policy.c
-index 2707d6fe..322ed002 100644
---- a/policycoreutils/load_policy/load_policy.c
-+++ b/policycoreutils/load_policy/load_policy.c
-@@ -77,7 +77,7 @@ int main(int argc, char **argv)
- 		}
- 	}
- 	else {
--		ret = selinux_mkload_policy(1);
-+		ret = selinux_mkload_policy(0);
- 	}
- 	if (ret < 0) {
- 		fprintf(stderr, _("%s:  Can't load policy:  %s\n"),
--- 
-2.21.0
+
+should be static
+
+
+> +{
+> +	if (blob_sizes.lbs_superblock == 0) {
+> +		sb->s_security = NULL;
+> +		return 0;
+> +	}
+> +
+> +	sb->s_security = kzalloc(blob_sizes.lbs_superblock, GFP_KERNEL);
+> +	if (sb->s_security == NULL)
+> +		return -ENOMEM;
+> +	return 0;
+> +}
+> +
+>  /*
+>   * Hook list operation macros.
+>   *
+> @@ -776,12 +799,21 @@ int security_fs_context_parse_param(struct fs_context *fc, struct fs_parameter *
+>  
+>  int security_sb_alloc(struct super_block *sb)
+>  {
+> -	return call_int_hook(sb_alloc_security, 0, sb);
+> +	int rc = lsm_superblock_alloc(sb);
+> +
+> +	if (unlikely(rc))
+> +		return rc;
+> +	rc = call_int_hook(sb_alloc_security, 0, sb);
+> +	if (unlikely(rc))
+> +		security_sb_free(sb);
+> +	return rc;
+>  }
+>  
+>  void security_sb_free(struct super_block *sb)
+>  {
+>  	call_void_hook(sb_free_security, sb);
+> +	kfree(sb->s_security);
+> +	sb->s_security = NULL;
+>  }
+>  
+>  void security_free_mnt_opts(void **mnt_opts)
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 1d0b37af2444..7478d8eda00a 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -335,7 +335,7 @@ static void inode_free_security(struct inode *inode)
+>  
+>  	if (!isec)
+>  		return;
+> -	sbsec = inode->i_sb->s_security;
+> +	sbsec = selinux_superblock(inode->i_sb);
+>  	/*
+>  	 * As not all inode security structures are in a list, we check for
+>  	 * empty list outside of the lock to make sure that we won't waste
+> @@ -366,11 +366,7 @@ static int file_alloc_security(struct file *file)
+>  
+>  static int superblock_alloc_security(struct super_block *sb)
+>  {
+> -	struct superblock_security_struct *sbsec;
+> -
+> -	sbsec = kzalloc(sizeof(struct superblock_security_struct), GFP_KERNEL);
+> -	if (!sbsec)
+> -		return -ENOMEM;
+> +	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+>  
+>  	mutex_init(&sbsec->lock);
+>  	INIT_LIST_HEAD(&sbsec->isec_head);
+> @@ -379,18 +375,10 @@ static int superblock_alloc_security(struct super_block *sb)
+>  	sbsec->sid = SECINITSID_UNLABELED;
+>  	sbsec->def_sid = SECINITSID_FILE;
+>  	sbsec->mntpoint_sid = SECINITSID_UNLABELED;
+> -	sb->s_security = sbsec;
+>  
+>  	return 0;
+>  }
+>  
+> -static void superblock_free_security(struct super_block *sb)
+> -{
+> -	struct superblock_security_struct *sbsec = sb->s_security;
+> -	sb->s_security = NULL;
+> -	kfree(sbsec);
+> -}
+> -
+>  struct selinux_mnt_opts {
+>  	const char *fscontext, *context, *rootcontext, *defcontext;
+>  };
+> @@ -507,7 +495,7 @@ static int selinux_is_genfs_special_handling(struct super_block *sb)
+>  
+>  static int selinux_is_sblabel_mnt(struct super_block *sb)
+>  {
+> -	struct superblock_security_struct *sbsec = sb->s_security;
+> +	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+>  
+>  	/*
+>  	 * IMPORTANT: Double-check logic in this function when adding a new
+> @@ -535,7 +523,7 @@ static int selinux_is_sblabel_mnt(struct super_block *sb)
+>  
+>  static int sb_finish_set_opts(struct super_block *sb)
+>  {
+> -	struct superblock_security_struct *sbsec = sb->s_security;
+> +	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+>  	struct dentry *root = sb->s_root;
+>  	struct inode *root_inode = d_backing_inode(root);
+>  	int rc = 0;
+> @@ -648,7 +636,7 @@ static int selinux_set_mnt_opts(struct super_block *sb,
+>  				unsigned long *set_kern_flags)
+>  {
+>  	const struct cred *cred = current_cred();
+> -	struct superblock_security_struct *sbsec = sb->s_security;
+> +	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+>  	struct dentry *root = sbsec->sb->s_root;
+>  	struct selinux_mnt_opts *opts = mnt_opts;
+>  	struct inode_security_struct *root_isec;
+> @@ -881,8 +869,8 @@ static int selinux_set_mnt_opts(struct super_block *sb,
+>  static int selinux_cmp_sb_context(const struct super_block *oldsb,
+>  				    const struct super_block *newsb)
+>  {
+> -	struct superblock_security_struct *old = oldsb->s_security;
+> -	struct superblock_security_struct *new = newsb->s_security;
+> +	struct superblock_security_struct *old = selinux_superblock(oldsb);
+> +	struct superblock_security_struct *new = selinux_superblock(newsb);
+>  	char oldflags = old->flags & SE_MNTMASK;
+>  	char newflags = new->flags & SE_MNTMASK;
+>  
+> @@ -914,8 +902,9 @@ static int selinux_sb_clone_mnt_opts(const struct super_block *oldsb,
+>  					unsigned long *set_kern_flags)
+>  {
+>  	int rc = 0;
+> -	const struct superblock_security_struct *oldsbsec = oldsb->s_security;
+> -	struct superblock_security_struct *newsbsec = newsb->s_security;
+> +	const struct superblock_security_struct *oldsbsec =
+> +						selinux_superblock(oldsb);
+> +	struct superblock_security_struct *newsbsec = selinux_superblock(newsb);
+>  
+>  	int set_fscontext =	(oldsbsec->flags & FSCONTEXT_MNT);
+>  	int set_context =	(oldsbsec->flags & CONTEXT_MNT);
+> @@ -1085,7 +1074,7 @@ static int show_sid(struct seq_file *m, u32 sid)
+>  
+>  static int selinux_sb_show_options(struct seq_file *m, struct super_block *sb)
+>  {
+> -	struct superblock_security_struct *sbsec = sb->s_security;
+> +	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+>  	int rc;
+>  
+>  	if (!(sbsec->flags & SE_SBINITIALIZED))
+> @@ -1377,7 +1366,7 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
+>  	if (isec->sclass == SECCLASS_FILE)
+>  		isec->sclass = inode_mode_to_security_class(inode->i_mode);
+>  
+> -	sbsec = inode->i_sb->s_security;
+> +	sbsec = selinux_superblock(inode->i_sb);
+>  	if (!(sbsec->flags & SE_SBINITIALIZED)) {
+>  		/* Defer initialization until selinux_complete_init,
+>  		   after the initial policy is loaded and the security
+> @@ -1767,7 +1756,8 @@ selinux_determine_inode_label(const struct task_security_struct *tsec,
+>  				 const struct qstr *name, u16 tclass,
+>  				 u32 *_new_isid)
+>  {
+> -	const struct superblock_security_struct *sbsec = dir->i_sb->s_security;
+> +	const struct superblock_security_struct *sbsec =
+> +						selinux_superblock(dir->i_sb);
+>  
+>  	if ((sbsec->flags & SE_SBINITIALIZED) &&
+>  	    (sbsec->behavior == SECURITY_FS_USE_MNTPOINT)) {
+> @@ -1798,7 +1788,7 @@ static int may_create(struct inode *dir,
+>  	int rc;
+>  
+>  	dsec = inode_security(dir);
+> -	sbsec = dir->i_sb->s_security;
+> +	sbsec = selinux_superblock(dir->i_sb);
+>  
+>  	sid = tsec->sid;
+>  
+> @@ -1947,7 +1937,7 @@ static int superblock_has_perm(const struct cred *cred,
+>  	struct superblock_security_struct *sbsec;
+>  	u32 sid = cred_sid(cred);
+>  
+> -	sbsec = sb->s_security;
+> +	sbsec = selinux_superblock(sb);
+>  	return avc_has_perm(&selinux_state,
+>  			    sid, sbsec->sid, SECCLASS_FILESYSTEM, perms, ad);
+>  }
+> @@ -2578,11 +2568,6 @@ static int selinux_sb_alloc_security(struct super_block *sb)
+>  	return superblock_alloc_security(sb);
+>  }
+>  
+> -static void selinux_sb_free_security(struct super_block *sb)
+> -{
+> -	superblock_free_security(sb);
+> -}
+> -
+>  static inline int opt_len(const char *s)
+>  {
+>  	bool open_quote = false;
+> @@ -2653,7 +2638,7 @@ static int selinux_sb_eat_lsm_opts(char *options, void **mnt_opts)
+>  static int selinux_sb_remount(struct super_block *sb, void *mnt_opts)
+>  {
+>  	struct selinux_mnt_opts *opts = mnt_opts;
+> -	struct superblock_security_struct *sbsec = sb->s_security;
+> +	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+>  	u32 sid;
+>  	int rc;
+>  
+> @@ -2877,7 +2862,7 @@ static int selinux_inode_init_security(struct inode *inode, struct inode *dir,
+>  	int rc;
+>  	char *context;
+>  
+> -	sbsec = dir->i_sb->s_security;
+> +	sbsec = selinux_superblock(dir->i_sb);
+>  
+>  	newsid = tsec->create_sid;
+>  
+> @@ -3115,7 +3100,7 @@ static int selinux_inode_setxattr(struct dentry *dentry, const char *name,
+>  		return dentry_has_perm(current_cred(), dentry, FILE__SETATTR);
+>  	}
+>  
+> -	sbsec = inode->i_sb->s_security;
+> +	sbsec = selinux_superblock(inode->i_sb);
+>  	if (!(sbsec->flags & SBLABEL_MNT))
+>  		return -EOPNOTSUPP;
+>  
+> @@ -3296,13 +3281,14 @@ static int selinux_inode_setsecurity(struct inode *inode, const char *name,
+>  				     const void *value, size_t size, int flags)
+>  {
+>  	struct inode_security_struct *isec = inode_security_novalidate(inode);
+> -	struct superblock_security_struct *sbsec = inode->i_sb->s_security;
+> +	struct superblock_security_struct *sbsec;
+>  	u32 newsid;
+>  	int rc;
+>  
+>  	if (strcmp(name, XATTR_SELINUX_SUFFIX))
+>  		return -EOPNOTSUPP;
+>  
+> +	sbsec = selinux_superblock(inode->i_sb);
+>  	if (!(sbsec->flags & SBLABEL_MNT))
+>  		return -EOPNOTSUPP;
+>  
+> @@ -6647,6 +6633,7 @@ struct lsm_blob_sizes selinux_blob_sizes __lsm_ro_after_init = {
+>  	.lbs_inode = sizeof(struct inode_security_struct),
+>  	.lbs_ipc = sizeof(struct ipc_security_struct),
+>  	.lbs_msg_msg = sizeof(struct msg_security_struct),
+> +	.lbs_superblock = sizeof(struct superblock_security_struct),
+>  };
+>  
+>  static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
+> @@ -6675,7 +6662,6 @@ static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
+>  	LSM_HOOK_INIT(fs_context_parse_param, selinux_fs_context_parse_param),
+>  
+>  	LSM_HOOK_INIT(sb_alloc_security, selinux_sb_alloc_security),
+> -	LSM_HOOK_INIT(sb_free_security, selinux_sb_free_security),
+>  	LSM_HOOK_INIT(sb_eat_lsm_opts, selinux_sb_eat_lsm_opts),
+>  	LSM_HOOK_INIT(sb_free_mnt_opts, selinux_free_mnt_opts),
+>  	LSM_HOOK_INIT(sb_remount, selinux_sb_remount),
+> diff --git a/security/selinux/include/objsec.h b/security/selinux/include/objsec.h
+> index 231262d8eac9..d08d7e5d2f93 100644
+> --- a/security/selinux/include/objsec.h
+> +++ b/security/selinux/include/objsec.h
+> @@ -188,4 +188,10 @@ static inline struct ipc_security_struct *selinux_ipc(
+>  	return ipc->security + selinux_blob_sizes.lbs_ipc;
+>  }
+>  
+> +static inline struct superblock_security_struct *selinux_superblock(
+> +					const struct super_block *superblock)
+> +{
+> +	return superblock->s_security + selinux_blob_sizes.lbs_superblock;
+> +}
+> +
+>  #endif /* _SELINUX_OBJSEC_H_ */
+> diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
+> index ec62918521b1..e3f5d6aece66 100644
+> --- a/security/selinux/ss/services.c
+> +++ b/security/selinux/ss/services.c
+> @@ -50,6 +50,7 @@
+>  #include <linux/audit.h>
+>  #include <linux/mutex.h>
+>  #include <linux/vmalloc.h>
+> +#include <linux/lsm_hooks.h>
+>  #include <net/netlabel.h>
+>  
+>  #include "flask.h"
+> @@ -2751,7 +2752,7 @@ int security_fs_use(struct selinux_state *state, struct super_block *sb)
+>  	struct sidtab *sidtab;
+>  	int rc = 0;
+>  	struct ocontext *c;
+> -	struct superblock_security_struct *sbsec = sb->s_security;
+> +	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+>  	const char *fstype = sb->s_type->name;
+>  
+>  	read_lock(&state->ss->policy_rwlock);
+> diff --git a/security/smack/smack.h b/security/smack/smack.h
+> index cf52af77d15e..caecbcba9942 100644
+> --- a/security/smack/smack.h
+> +++ b/security/smack/smack.h
+> @@ -375,6 +375,12 @@ static inline struct smack_known **smack_ipc(const struct kern_ipc_perm *ipc)
+>  	return ipc->security + smack_blob_sizes.lbs_ipc;
+>  }
+>  
+> +static inline struct superblock_smack *smack_superblock(
+> +					const struct super_block *superblock)
+> +{
+> +	return superblock->s_security + smack_blob_sizes.lbs_superblock;
+> +}
+> +
+>  /*
+>   * Is the directory transmuting?
+>   */
+> diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+> index 5c1613519d5a..807eff2ccce9 100644
+> --- a/security/smack/smack_lsm.c
+> +++ b/security/smack/smack_lsm.c
+> @@ -540,12 +540,7 @@ static int smack_syslog(int typefrom_file)
+>   */
+>  static int smack_sb_alloc_security(struct super_block *sb)
+>  {
+> -	struct superblock_smack *sbsp;
+> -
+> -	sbsp = kzalloc(sizeof(struct superblock_smack), GFP_KERNEL);
+> -
+> -	if (sbsp == NULL)
+> -		return -ENOMEM;
+> +	struct superblock_smack *sbsp = smack_superblock(sb);
+>  
+>  	sbsp->smk_root = &smack_known_floor;
+>  	sbsp->smk_default = &smack_known_floor;
+> @@ -554,22 +549,10 @@ static int smack_sb_alloc_security(struct super_block *sb)
+>  	/*
+>  	 * SMK_SB_INITIALIZED will be zero from kzalloc.
+>  	 */
+> -	sb->s_security = sbsp;
+>  
+>  	return 0;
+>  }
+>  
+> -/**
+> - * smack_sb_free_security - free a superblock blob
+> - * @sb: the superblock getting the blob
+> - *
+> - */
+> -static void smack_sb_free_security(struct super_block *sb)
+> -{
+> -	kfree(sb->s_security);
+> -	sb->s_security = NULL;
+> -}
+> -
+>  struct smack_mnt_opts {
+>  	const char *fsdefault, *fsfloor, *fshat, *fsroot, *fstransmute;
+>  };
+> @@ -781,7 +764,7 @@ static int smack_set_mnt_opts(struct super_block *sb,
+>  {
+>  	struct dentry *root = sb->s_root;
+>  	struct inode *inode = d_backing_inode(root);
+> -	struct superblock_smack *sp = sb->s_security;
+> +	struct superblock_smack *sp = smack_superblock(sb);
+>  	struct inode_smack *isp;
+>  	struct smack_known *skp;
+>  	struct smack_mnt_opts *opts = mnt_opts;
+> @@ -880,7 +863,7 @@ static int smack_set_mnt_opts(struct super_block *sb,
+>   */
+>  static int smack_sb_statfs(struct dentry *dentry)
+>  {
+> -	struct superblock_smack *sbp = dentry->d_sb->s_security;
+> +	struct superblock_smack *sbp = smack_superblock(dentry->d_sb);
+>  	int rc;
+>  	struct smk_audit_info ad;
+>  
+> @@ -917,7 +900,7 @@ static int smack_bprm_set_creds(struct linux_binprm *bprm)
+>  	if (isp->smk_task == NULL || isp->smk_task == bsp->smk_task)
+>  		return 0;
+>  
+> -	sbsp = inode->i_sb->s_security;
+> +	sbsp = smack_superblock(inode->i_sb);
+>  	if ((sbsp->smk_flags & SMK_SB_UNTRUSTED) &&
+>  	    isp->smk_task != sbsp->smk_root)
+>  		return 0;
+> @@ -1168,7 +1151,7 @@ static int smack_inode_rename(struct inode *old_inode,
+>   */
+>  static int smack_inode_permission(struct inode *inode, int mask)
+>  {
+> -	struct superblock_smack *sbsp = inode->i_sb->s_security;
+> +	struct superblock_smack *sbsp = smack_superblock(inode->i_sb);
+>  	struct smk_audit_info ad;
+>  	int no_block = mask & MAY_NOT_BLOCK;
+>  	int rc;
+> @@ -1410,7 +1393,7 @@ static int smack_inode_removexattr(struct dentry *dentry, const char *name)
+>  	 */
+>  	if (strcmp(name, XATTR_NAME_SMACK) == 0) {
+>  		struct super_block *sbp = dentry->d_sb;
+> -		struct superblock_smack *sbsp = sbp->s_security;
+> +		struct superblock_smack *sbsp = smack_superblock(sbp);
+>  
+>  		isp->smk_inode = sbsp->smk_default;
+>  	} else if (strcmp(name, XATTR_NAME_SMACKEXEC) == 0)
+> @@ -1680,7 +1663,7 @@ static int smack_mmap_file(struct file *file,
+>  	isp = smack_inode(file_inode(file));
+>  	if (isp->smk_mmap == NULL)
+>  		return 0;
+> -	sbsp = file_inode(file)->i_sb->s_security;
+> +	sbsp = smack_superblock(file_inode(file)->i_sb);
+>  	if (sbsp->smk_flags & SMK_SB_UNTRUSTED &&
+>  	    isp->smk_mmap != sbsp->smk_root)
+>  		return -EACCES;
+> @@ -3288,7 +3271,7 @@ static void smack_d_instantiate(struct dentry *opt_dentry, struct inode *inode)
+>  		goto unlockandout;
+>  
+>  	sbp = inode->i_sb;
+> -	sbsp = sbp->s_security;
+> +	sbsp = smack_superblock(sbp);
+>  	/*
+>  	 * We're going to use the superblock default label
+>  	 * if there's no label on the file.
+> @@ -4575,6 +4558,7 @@ struct lsm_blob_sizes smack_blob_sizes __lsm_ro_after_init = {
+>  	.lbs_inode = sizeof(struct inode_smack),
+>  	.lbs_ipc = sizeof(struct smack_known *),
+>  	.lbs_msg_msg = sizeof(struct smack_known *),
+> +	.lbs_superblock = sizeof(struct superblock_smack),
+>  };
+>  
+>  static struct security_hook_list smack_hooks[] __lsm_ro_after_init = {
+> @@ -4586,7 +4570,6 @@ static struct security_hook_list smack_hooks[] __lsm_ro_after_init = {
+>  	LSM_HOOK_INIT(fs_context_parse_param, smack_fs_context_parse_param),
+>  
+>  	LSM_HOOK_INIT(sb_alloc_security, smack_sb_alloc_security),
+> -	LSM_HOOK_INIT(sb_free_security, smack_sb_free_security),
+>  	LSM_HOOK_INIT(sb_free_mnt_opts, smack_free_mnt_opts),
+>  	LSM_HOOK_INIT(sb_eat_lsm_opts, smack_sb_eat_lsm_opts),
+>  	LSM_HOOK_INIT(sb_statfs, smack_sb_statfs),
+> 
+
+
 

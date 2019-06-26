@@ -2,114 +2,92 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C5B6571AD
-	for <lists+selinux@lfdr.de>; Wed, 26 Jun 2019 21:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBA73572AB
+	for <lists+selinux@lfdr.de>; Wed, 26 Jun 2019 22:39:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726605AbfFZTX2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 26 Jun 2019 15:23:28 -0400
-Received: from sonic308-13.consmr.mail.gq1.yahoo.com ([98.137.68.37]:34648
-        "EHLO sonic308-13.consmr.mail.gq1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726328AbfFZTX1 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 26 Jun 2019 15:23:27 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561577006; bh=8dC1jVQXX043wsRfaniHkOG90Ze0+lXUWQhSzRkq1W0=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject; b=c1d4Xzx6sx9J+WjbsoNGt97cM9K+luz/v2OuH/oiOpMGeVU/uh8XqUyfStDQwTUXD7dg83iYY7tHKDrOviPM3SVZvO/DszB9u95mqLfLqITKUdUUUcrkQuIwgr26CDwK/b59oh+ZnKlLsFu5NlmoYNrPXwkoZJRVptOY5q7Y5TqK5HElNssKo6cc0Efy+5ggSLCHTQbfmSJpTfCSsTFqyrbHc2ACjbDASdQjAwj4MKtzYZXfrhlbSf967kQtW+gUC7v4XK61diH94d05upG2m7d28KqMEX4n1n5nKWGbHOo5q8h2BZp3xS0Axx46zKET+OmSXwH7/sISlI71fca2DA==
-X-YMail-OSG: _NWEug0VM1lN0.btj2278hRw9Vdt6C1c8GH7esYu6CQGwcFEn7wTJ.6P.S.6eZV
- LCFpOZbrXy0vR2KaDG_XeEapGiUq22eetj9XovKsEYOyrpC2UynDoj4J6vNwM7.Z5s111d4j9p1a
- hHgwhI_r0Jc.azv2Z.DaAJJoe9ipGTHOZ6p_tjWcXiDI6Al.h01cYunviH3UoOqoxufnln9zpSC9
- u0V2bWmK1.vjzGI0EcngYS6f_pFU7DT8_KwD0BOKHpcgYlWsOn9ulP73h0sGJaScrBChyaUjGyPK
- 7xv3kFATO1lBK5Q0DY.4PIddUKqM0lV.7TGGFVCWCcfcgo3oicewc8AhH.bwIwO0DP3rlJ3JKQBs
- wUNsqkBGxsDBKmJ4yBdl5UUywcZEylkLi_xXIDyLOtA1WFrNmK1K69aqPt4DmfDqwXClObqh4GBt
- TUXxq25y6MLyL3EFjotbsuPN5GFy_Q_mQlSrKH0.D2qo4vBWeArjIaCafGMPrFfjBML4K91f.WIg
- uiZFe3yr42RMxBHBnO5k3K85GpatatJ5jJumm1oFJgZ9ur8eUkB5hRl66IPsXRaGD9X4CNlnctw1
- h6JdEE7lLSkGPAxpKovg9tndY5sPEXr.ckVodyrbgRAyEY2guLxVml6ljGAytQFx6vHzBdaqUVpM
- xtkwPsA_tndtocYVJLhnI1soQSD7Q8jbRLPHfD6ozhmU3AJALKtRKTYSmSZPGQ_Q9jcVatF_ReKV
- q1qfskMkNrarBu8yhLGtyrmXqo6L5Ov.Qy8yHuBIRCu9X70V.wEjGw86Qdk2VV_tM0P.byw3eilq
- _yJ_GZ4eD..PpWkhL3i.EUxEVDjXLXvPOiLt8FjDmQLqDOPhg.3A_kl0fQe5li31WRKChEBkliE5
- Yf4tqOBHyGSuUdYhxsP_k64HN4pIzx3ZswhpOCPPUNFnObUxxuuW7Uvbw0syOrSiHghhJYjOSvkE
- Bd2fMRZGYx0IlCpBymT4EbKNolwi42kZ.unoilxezfzqB_IzMYKp5EyEQOKGK6vFTSXx_hJ_yYjG
- YkDo67oJ6CIDdWvXVYqBcOvnhuW3niOsfbEyLa2F80j7i7jhVt3cJk6DDqVrdLLGN8HW0mu6gH0E
- 0M88YtYJmS3fU0n7.8YVQfCsfAe4.mo08DQ77R19hy5o5PU6iWRT5RofvYKuqkK9oeUoW8Jgm39V
- x4RM1jqwO2PBpPhHW1wqlJcBgJFKh5NdyuXSlRXnglAaIJ75kpk3_XwMJL0WR8x0t0Cyq7trWWjl
- XkvhpFDlahCT_1.wXNcxHAvrTi8s8D55sngAUwWxQMEQ-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.gq1.yahoo.com with HTTP; Wed, 26 Jun 2019 19:23:26 +0000
-Received: from c-73-223-4-185.hsd1.ca.comcast.net (EHLO localhost.net) ([73.223.4.185])
-          by smtp413.mail.gq1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID 7fc532bf6bcf33ac8b649a0abf15fbe8;
-          Wed, 26 Jun 2019 19:23:21 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, keescook@chromium.org,
-        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
-        paul@paul-moore.com, sds@tycho.nsa.gov
-Subject: [PATCH v4 23/23] AppArmor: Remove the exclusive flag
-Date:   Wed, 26 Jun 2019 12:22:34 -0700
-Message-Id: <20190626192234.11725-24-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190626192234.11725-1-casey@schaufler-ca.com>
-References: <20190626192234.11725-1-casey@schaufler-ca.com>
+        id S1726385AbfFZUjR (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 26 Jun 2019 16:39:17 -0400
+Received: from namei.org ([65.99.196.166]:48592 "EHLO namei.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726227AbfFZUjP (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Wed, 26 Jun 2019 16:39:15 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by namei.org (8.14.4/8.14.4) with ESMTP id x5QKd5NF030044;
+        Wed, 26 Jun 2019 20:39:05 GMT
+Date:   Thu, 27 Jun 2019 06:39:05 +1000 (AEST)
+From:   James Morris <jmorris@namei.org>
+To:     "Dr. Greg" <greg@enjellic.com>
+cc:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
+        Sean Christopherson <sean.j.christopherson@intel.com>,
+        linux-sgx@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>,
+        Cedric Xing <cedric.xing@intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Jethro Beekman <jethro@fortanix.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>, casey.schaufler@intel.com,
+        william.c.roberts@intel.com, linux-security-module@vger.kernel.org,
+        selinux@vger.kernel.org
+Subject: Re: [RFC PATCH v3 09/12] LSM: x86/sgx: Introduce ->enclave_load()
+ hook for Intel SGX
+In-Reply-To: <20190623171626.GA25683@wind.enjellic.com>
+Message-ID: <alpine.LRH.2.21.1906270637300.28132@namei.org>
+References: <20190617222438.2080-1-sean.j.christopherson@intel.com> <20190617222438.2080-10-sean.j.christopherson@intel.com> <0c4f75a0ae2fdeee6db07f3a224918f321163d56.camel@linux.intel.com> <alpine.LRH.2.21.1906200702040.28119@namei.org>
+ <20190623171626.GA25683@wind.enjellic.com>
+User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-With the inclusion of the "display" process attribute
-mechanism AppArmor no longer needs to be treated as an
-"exclusive" security module. Remove the flag that indicates
-it is exclusive. Remove the stub getpeersec_dgram AppArmor
-hook as it has no effect in the single LSM case and
-interferes in the multiple LSM case.
+On Sun, 23 Jun 2019, Dr. Greg wrote:
 
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
----
- security/apparmor/lsm.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+> The most relevant and important control with respect to whether or not
+> an enclave should be allowed to execute is evaluation of the
+> SIGSTRUCT.  Given the trajectory that platform security is on, SGX is
+> not going to be the last technology of its type nor the only
+> technology that makes use of cryptographically based code provenance.
+> 
+> As a result, if we are content with handing an opaque pointer of a
+> descriptive struture to an LSM routine, a generic hook that is tasked
+> with verifying code or execution environment provenance doesn't seem
+> like it would need to be technology specific nor controversial.
+> 
+> That leaves as the last thorny issue the question of dynamic
+> allocation of memory for executable content.  As we have stated
+> before, and at the outset of this note, from a security perspective
+> this is only, effectively, a binary question for the platform owner as
+> to whether or not the concept should be allowed.
+> 
+> A generic LSM hook, appropriately named, could execute that decision
+> without being SGX specific.  Arguably, the hook should be named to
+> indicate that it is seeking approval for allocating memory to be used
+> for anonymous executable content, since that is what it would be
+> effectively requesting approval for, in the case of SGX.
+> 
+> For completeness a third generic hook may be useful.  The purpose of
+> that hook would be to verify a block of memory as being
+> measured or signed for consideration as executable content.  Arguably
+> that will have utility far beyond SGX.
+> 
+> In the case of SGX it would address the issue as to whether or not a
+> block of executable content in untrusted space is eligible for
+> anonymous execution.  That may be a useful security measure in order
+> to provide some control over an enclave being used as a random
+> execution oracle.
+> 
+> It obviously has no security utility against the enclave author since,
+> as we have noted before, it is possible for the enclave author to
+> simply pull whatever code is desired over an encrypted network
+> connection.
+> 
+> > James Morris
+> 
+> Hopefully these comments are a useful basis for further discussion.
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 6d2eefc9b7c1..fb5798683ae1 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1079,22 +1079,6 @@ static int apparmor_socket_getpeersec_stream(struct socket *sock,
- 	return error;
- }
- 
--/**
-- * apparmor_socket_getpeersec_dgram - get security label of packet
-- * @sock: the peer socket
-- * @skb: packet data
-- * @secid: pointer to where to put the secid of the packet
-- *
-- * Sets the netlabel socket state on sk from parent
-- */
--static int apparmor_socket_getpeersec_dgram(struct socket *sock,
--					    struct sk_buff *skb, u32 *secid)
--
--{
--	/* TODO: requires secid support */
--	return -ENOPROTOOPT;
--}
--
- /**
-  * apparmor_sock_graft - Initialize newly created socket
-  * @sk: child sock
-@@ -1195,8 +1179,6 @@ static struct security_hook_list apparmor_hooks[] __lsm_ro_after_init = {
- #endif
- 	LSM_HOOK_INIT(socket_getpeersec_stream,
- 		      apparmor_socket_getpeersec_stream),
--	LSM_HOOK_INIT(socket_getpeersec_dgram,
--		      apparmor_socket_getpeersec_dgram),
- 	LSM_HOOK_INIT(sock_graft, apparmor_sock_graft),
- #ifdef CONFIG_NETWORK_SECMARK
- 	LSM_HOOK_INIT(inet_conn_request, apparmor_inet_conn_request),
-@@ -1707,7 +1689,7 @@ static int __init apparmor_init(void)
- 
- DEFINE_LSM(apparmor) = {
- 	.name = "apparmor",
--	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
-+	.flags = LSM_FLAG_LEGACY_MAJOR,
- 	.enabled = &apparmor_enabled,
- 	.blobs = &apparmor_blob_sizes,
- 	.init = apparmor_init,
+Thanks, this is helpful.
+
 -- 
-2.20.1
+James Morris
+<jmorris@namei.org>
 

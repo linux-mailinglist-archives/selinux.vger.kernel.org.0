@@ -2,140 +2,115 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B3960FD5
-	for <lists+selinux@lfdr.de>; Sat,  6 Jul 2019 12:21:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29C9F611E8
+	for <lists+selinux@lfdr.de>; Sat,  6 Jul 2019 17:32:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725934AbfGFKVQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 6 Jul 2019 06:21:16 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:51851 "EHLO
-        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725926AbfGFKVQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 6 Jul 2019 06:21:16 -0400
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id 1C64B5612BC
-        for <selinux@vger.kernel.org>; Sat,  6 Jul 2019 12:21:12 +0200 (CEST)
-Received: by mail-ot1-f45.google.com with SMTP id r6so11399340oti.3
-        for <selinux@vger.kernel.org>; Sat, 06 Jul 2019 03:21:12 -0700 (PDT)
-X-Gm-Message-State: APjAAAU+s3HpIxPtY1tOV9ckdK0wodvAQDX3JkL3dI05LuqOJDRUf9Sb
-        ka5kM4vFqfXEkomLNGoTmA8/slSt3RKheUj5+Ow=
-X-Google-Smtp-Source: APXvYqzVnQM2g1toiT7zB0mEVSUCYmpwF7xj6JUlKUK+TUMyWxm+4TyhLx/YHMCRh5E+gyBia20qppXtnl/LU0R7aQA=
-X-Received: by 2002:a9d:460c:: with SMTP id y12mr6221336ote.358.1562408471154;
- Sat, 06 Jul 2019 03:21:11 -0700 (PDT)
+        id S1727045AbfGFPcd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 6 Jul 2019 11:32:33 -0400
+Received: from rgout0502.bt.lon5.cpcloud.co.uk ([65.20.0.223]:9431 "EHLO
+        rgout05.bt.lon5.cpcloud.co.uk" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727044AbfGFPcd (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 6 Jul 2019 11:32:33 -0400
+X-OWM-Source-IP: 86.147.205.157 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-RazorGate-Vade-Classification: clean
+X-RazorGate-Vade-Verdict: clean 0
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-SNCR-VADESECURE: CLEAN
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduvddrfeeigdekkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepkeeirddugeejrddvtdehrdduheejnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdduheejpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeonhhitgholhgrshdrihhoohhsshesmheggidrohhrgheqpdhrtghpthhtohepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeoshgushesthihtghhohdrnhhsrgdrghhovheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqedprhgtphhtthhopeeogihunhgthhgrnhhgsehgohhoghhlvgdrtghomheqnecuvehluhhsthgvrhfuihiivgeptd
+X-RazorGate-Vade-Classification: clean
+X-RazorGate-Vade-Verdict: clean 0
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-SNCR-VADESECURE: CLEAN
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduvddrfeeigdeltdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepkeeirddugeejrddvtdehrdduheejnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddugeejrddvtdehrdduheejpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
+Received: from localhost.localdomain (86.147.205.157) by rgout05.bt.lon5.cpcloud.co.uk (9.0.019.26-1) (authenticated as richard_c_haines@btinternet.com)
+        id 5C24804F11ED600D; Sat, 6 Jul 2019 16:21:19 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btcpcloud; t=1562427153; 
+        bh=16nAdZPH0m4oGj/5W1O3EmN/0ou6AnDq1IZrbUpBt+Q=;
+        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version;
+        b=h18hT1tzbkNTXNh4XOikUddea516kfIcFBh0n0lki5zYrcTrPyBX8qlW35X2qqNMwuMvIfnbVbNKOtNZ5SZyS3qdhccVpiHmVF7ovjWj8LfMErw8kleDQrt851+RNPviU98hk3dps7NatbG4tpzGqq2UgclKVuL3KwhANaiH5zc=
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     selinux@vger.kernel.org, sds@tycho.nsa.gov
+Cc:     xunchang@google.com, nicolas.iooss@m4x.org,
+        Richard Haines <richard_c_haines@btinternet.com>
+Subject: [PATCH V4 0/2] Update restorecon to support new digest scheme
+Date:   Sat,  6 Jul 2019 16:21:13 +0100
+Message-Id: <20190706152115.8490-1-richard_c_haines@btinternet.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-References: <20190704155621.20227-1-richard_c_haines@btinternet.com> <20190704155621.20227-2-richard_c_haines@btinternet.com>
-In-Reply-To: <20190704155621.20227-2-richard_c_haines@btinternet.com>
-From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-Date:   Sat, 6 Jul 2019 12:20:59 +0200
-X-Gmail-Original-Message-ID: <CAJfZ7=nwhZf9RnQ6TXdd-t8Ee-Tin3RjUewYjsad28eCLn+ZxA@mail.gmail.com>
-Message-ID: <CAJfZ7=nwhZf9RnQ6TXdd-t8Ee-Tin3RjUewYjsad28eCLn+ZxA@mail.gmail.com>
-Subject: Re: [PATCH V3 1/2] libselinux: Save digest of all partial matches for directory
-To:     Richard Haines <richard_c_haines@btinternet.com>
-Cc:     selinux@vger.kernel.org, Stephen Smalley <sds@tycho.nsa.gov>,
-        Tianjie Xu <xunchang@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sat Jul  6 12:21:12 2019 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=B087D56460B
-X-Org-Mail: nicolas.iooss.2010@polytechnique.org
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jul 4, 2019 at 6:02 PM Richard Haines
-<richard_c_haines@btinternet.com> wrote:
->
-> We used to hash the file_context and skip the restorecon on the top
-> level directory if the hash doesn't change. But the file_context
-> might change after an OTA update; and some users experienced long
-> restorecon time as they have lots of files under directories like
-> /data/media.
->
-> This CL tries to hash all the partial match entries in the
-> file_context for each directory; and skips the restorecon if that
-> digest stays the same, regardless of the changes to the other parts
-> of file_context.
->
-> This is a version ported from Android that was originally written by:
-> xunchang <xunchang@google.com>
->
-> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
-> ---
-> V2 Change:
-> Restore using SELABEL_OPT_DIGEST
-> V3 Change:
-> Replace memcpy in get_digests_all_partial_matches() to overcome error
-> flagged by -D_FORTIFY_SOURCE= when building only libselinux.
-[...]
-> +static void digestcpy(uint8_t *dest, const uint8_t *src, size_t count)
-> +{
-> +       uint8_t *destp = dest;
-> +       const uint8_t *srcp = src;
-> +
-> +       while (count) {
-> +               *(destp++) = *(srcp++);
-> +               --count;
-> +       }
-> +}
-> +
-> +/*
-> + * Returns true if the digest of all partial matched contexts is the same as
-> + * the one saved by setxattr, otherwise returns false. The length of the SHA1
-> + * digest will always be returned. The caller must free any returned digests.
-> + */
-> +static bool get_digests_all_partial_matches(struct selabel_handle *rec,
-> +                                           const char *pathname,
-> +                                           uint8_t **calculated_digest,
-> +                                           uint8_t **xattr_digest,
-> +                                           size_t *digest_len)
-> +{
-> +       uint8_t read_digest[SHA1_HASH_SIZE];
-> +       ssize_t read_size = getxattr(pathname, RESTORECON_PARTIAL_MATCH_DIGEST,
-> +                                    read_digest, SHA1_HASH_SIZE);
-> +       uint8_t hash_digest[SHA1_HASH_SIZE];
-> +       bool status = selabel_hash_all_partial_matches(rec, pathname,
-> +                                                      hash_digest);
-> +
-> +       *xattr_digest = NULL;
-> +       *calculated_digest = NULL;
-> +       *digest_len = SHA1_HASH_SIZE;
-> +
-> +       if (read_size == SHA1_HASH_SIZE) {
-> +               *xattr_digest = calloc(1, sizeof(SHA1_HASH_SIZE + 1));
-> +               if (!*xattr_digest)
-> +                       goto oom;
-> +
-> +               digestcpy(*xattr_digest, read_digest, SHA1_HASH_SIZE);
-> +       }
-> +
-> +       if (status) {
-> +               *calculated_digest = calloc(1, sizeof(SHA1_HASH_SIZE + 1));
-> +               if (!*calculated_digest)
-> +                       goto oom;
-> +
-> +               digestcpy(*calculated_digest, hash_digest, SHA1_HASH_SIZE);
-> +       }
-> +
+These patches require [1] and [2] be installed first. They have
+been implemented on Android and sent to the selinux list, however their
+merge has been deferred. They will install the core hashing of
+file_context entries and fix root stem processing.
 
-No. This is hiding a real bug, not fixing it. Here is what this code does:
+Patch 1/2 updates selinux_restorecon() replacing the per-mountpoint
+security.restorecon_last attribute with a per-directory security.sehash
+attribute computed from only those file contexts entries that partially
+match the directory. This is to avoid the need to walk the entire tree
+when any part of file_contexts changes, limiting relabels to only those
+parts of the tree that could have changed.
 
-* sizeof(SHA1_HASH_SIZE + 1) gets replaced with sizeof(( 160 / 8 ) +
-1) = sizeof(int) = 4
-* "*xattr_digest = calloc(1, sizeof(SHA1_HASH_SIZE + 1));" is replaced
-by "*xattr_digest = calloc(1, 4);" : it allocates 4 bytes instead of
-160/8=20
-* digestcpy(*xattr_digest, read_digest, SHA1_HASH_SIZE) copies 20
-bytes into a 4-byte buffer, which is a vulnerability kind called "heap
-overflow".
+One change is to add a new selabel_get_digests_all_partial_matches(3)
+function that is explained in the man page. This could replace the Android
+version of selabel_hash_all_partial_matches(3), that could then be
+converted into a local function (The Android team would need to approve).
 
-In the end, you have only hidden the heap overflow you wanted to
-introduce and which was correctly reported by the compiler. Please do
-not re-implement memcpy.
+The patch [3] "selinux-testsuite: Add test for restorecon" will test these
+changes.
 
-A real fix would consists in using calloc(1, SHA1_HASH_SIZE + 1),
-without the sizeof.
+Patch 1/2 Changes:
+V2 Change:
+Restore using SELABEL_OPT_DIGEST
+V3 Change:
+Replace memcpy in get_digests_all_partial_matches() to overcome error
+flagged by -D_FORTIFY_SOURCE= when building only libselinux.
+V4 Change:
+Correctly fix the get_digests_all_partial_matches() memcpy error as pointed
+out by Nicolas in [4].
 
-Thanks,
-Nicolas
+Patch 2/2 Changes:
+V2 Change
+Keep restorecon(8) and setfiles(8) as they were for compatibility
+ 
+[1] https://lore.kernel.org/selinux/20190311222442.49824-1-xunchang@google.com/
+[2] https://lore.kernel.org/selinux/20190417180955.136942-1-xunchang@google.com/
+[3] https://lore.kernel.org/selinux/20190603095609.21429-1-richard_c_haines@btinternet.com/
+[4] https://lore.kernel.org/selinux/CAJfZ7=nwhZf9RnQ6TXdd-t8Ee-Tin3RjUewYjsad28eCLn+ZxA@mail.gmail.com/
+
+Richard Haines (2):
+  libselinux: Save digest of all partial matches for directory
+  setfiles: Update utilities for the new digest scheme
+
+ libselinux/include/selinux/label.h            |   5 +
+ libselinux/include/selinux/restorecon.h       |  17 +-
+ .../selabel_get_digests_all_partial_matches.3 |  70 +++++
+ libselinux/man/man3/selinux_restorecon.3      |  81 +++---
+ .../man/man3/selinux_restorecon_xattr.3       |   8 +-
+ libselinux/src/label.c                        |  15 +
+ libselinux/src/label_file.c                   |  51 ++++
+ libselinux/src/label_file.h                   |   4 +
+ libselinux/src/label_internal.h               |   5 +
+ libselinux/src/selinux_restorecon.c           | 271 ++++++++++++------
+ libselinux/utils/.gitignore                   |   1 +
+ .../selabel_get_digests_all_partial_matches.c | 170 +++++++++++
+ policycoreutils/setfiles/restorecon.8         |  10 +-
+ policycoreutils/setfiles/restorecon_xattr.8   |  20 +-
+ policycoreutils/setfiles/restorecon_xattr.c   |   2 +-
+ policycoreutils/setfiles/setfiles.8           |  10 +-
+ 16 files changed, 580 insertions(+), 160 deletions(-)
+ create mode 100644 libselinux/man/man3/selabel_get_digests_all_partial_matches.3
+ create mode 100644 libselinux/utils/selabel_get_digests_all_partial_matches.c
+
+-- 
+2.21.0
 

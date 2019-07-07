@@ -2,239 +2,153 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 66A4C6120C
-	for <lists+selinux@lfdr.de>; Sat,  6 Jul 2019 17:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E176261514
+	for <lists+selinux@lfdr.de>; Sun,  7 Jul 2019 15:31:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726922AbfGFP5e (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 6 Jul 2019 11:57:34 -0400
-Received: from rgout05.bt.lon5.cpcloud.co.uk ([65.20.0.182]:6752 "EHLO
-        rgout05.bt.lon5.cpcloud.co.uk" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726446AbfGFP5d (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 6 Jul 2019 11:57:33 -0400
-X-OWM-Source-IP: 86.147.205.157 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduvddrfeeigdekkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrudehjeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrudehjedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehnihgtohhlrghsrdhiohhoshhssehmgeigrdhorhhgqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehsughssehthigthhhordhnshgrrdhgohhvqedprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqpdhrtghpthhtohepoeiguhhntghhrghnghesghhoohhglhgvrdgtohhmqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduvddrfeeigdeltdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrudehjeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrudehjedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduvddrfeeigdelvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrudehjeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrudehjedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade-Verdict: clean 0
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-SNCR-VADESECURE: CLEAN
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduvddrfeeigdelhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudegjedrvddthedrudehjeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudegjedrvddthedrudehjedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
-Received: from localhost.localdomain (86.147.205.157) by rgout05.bt.lon5.cpcloud.co.uk (9.0.019.26-1) (authenticated as richard_c_haines@btinternet.com)
-        id 5C24804F11ED602F; Sat, 6 Jul 2019 16:21:20 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btcpcloud; t=1562428653; 
-        bh=Zgua94MQaA/VBicPl+gZOLDwmOLWZrCteOW1/jfNBm8=;
-        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=lmMtuM850tFDhUMKuIUhIXw3UpXfQjWtLeFpALy2FkynQELoKFK4Czt6j4s/pqcFahb+Zl4B3W8k6JcZLH67bs7OIoruiRX4Q+v+uTC2TRqmc0Eh5Z9AQgMJIOiHog4yl/FhNM2JeaWR2hipoVgM2NAGv+BXHiE2F+v2++4OPpQ=
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     selinux@vger.kernel.org, sds@tycho.nsa.gov
-Cc:     xunchang@google.com, nicolas.iooss@m4x.org,
-        Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH V4 2/2] setfiles: Update utilities for the new digest scheme
-Date:   Sat,  6 Jul 2019 16:21:15 +0100
-Message-Id: <20190706152115.8490-3-richard_c_haines@btinternet.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190706152115.8490-1-richard_c_haines@btinternet.com>
-References: <20190706152115.8490-1-richard_c_haines@btinternet.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1726302AbfGGNbA (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 7 Jul 2019 09:31:00 -0400
+Received: from wind.enjellic.com ([76.10.64.91]:37324 "EHLO wind.enjellic.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725928AbfGGNbA (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Sun, 7 Jul 2019 09:31:00 -0400
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id x67DUQYt004625;
+        Sun, 7 Jul 2019 08:30:26 -0500
+Received: (from greg@localhost)
+        by wind.enjellic.com (8.15.2/8.15.2/Submit) id x67DUNRn004624;
+        Sun, 7 Jul 2019 08:30:23 -0500
+Date:   Sun, 7 Jul 2019 08:30:23 -0500
+From:   "Dr. Greg" <greg@enjellic.com>
+To:     Casey Schaufler <casey@schaufler-ca.com>
+Cc:     "Xing, Cedric" <cedric.xing@intel.com>,
+        Stephen Smalley <stephen.smalley@gmail.com>,
+        "linux-sgx@vger.kernel.org" <linux-sgx@vger.kernel.org>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        "Schaufler, Casey" <casey.schaufler@intel.com>,
+        "jmorris@namei.org" <jmorris@namei.org>,
+        "luto@kernel.org" <luto@kernel.org>,
+        "jethro@fortanix.com" <jethro@fortanix.com>,
+        "sds@tycho.nsa.gov" <sds@tycho.nsa.gov>,
+        "jarkko.sakkinen@linux.intel.com" <jarkko.sakkinen@linux.intel.com>,
+        "Christopherson, Sean J" <sean.j.christopherson@intel.com>
+Subject: Re: [RFC PATCH v2 1/3] x86/sgx: Add SGX specific LSM hooks
+Message-ID: <20190707133023.GA4521@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <CAB9W1A1RpM_9D_49E1VauuKE1tL=TyfeATomv47HX4FONnjA4A@mail.gmail.com> <18833f2e-9d18-1f39-6bc5-9242910ab25c@schaufler-ca.com> <960B34DE67B9E140824F1DCDEC400C0F6551D585@ORSMSX116.amr.corp.intel.com> <f59529e4-6cc8-2405-d7db-2519727f9a80@schaufler-ca.com> <960B34DE67B9E140824F1DCDEC400C0F6551D7F7@ORSMSX116.amr.corp.intel.com> <63c92ab6-dc8d-826b-b8bf-05ad262f06e4@schaufler-ca.com> <960B34DE67B9E140824F1DCDEC400C0F6551DBF7@ORSMSX116.amr.corp.intel.com> <9e45df1b-3aac-e851-4ef2-5b262f5139bd@schaufler-ca.com> <20190703094651.GA29601@wind.enjellic.com> <012fc47d-4e9d-3398-0d9d-d9298a758c8d@schaufler-ca.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <012fc47d-4e9d-3398-0d9d-d9298a758c8d@schaufler-ca.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Sun, 07 Jul 2019 08:30:26 -0500 (CDT)
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Update restorecon_xattr and man pages for new digest scheme
-managed by selinux_restorecon(3).
+On Wed, Jul 03, 2019 at 08:32:10AM -0700, Casey Schaufler wrote:
 
-Note that the Russian man pages require updating.
+Good morning, I hope the weekend has been enjoyable for everyone.
 
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
----
-V2 Change
-Keep restorecon(8) and setfiles(8) as they were for compatibility
+> >> On 7/2/2019 12:42 AM, Xing, Cedric wrote:
+> >>> ...
+> >>> Guess this discussion will never end if we don't get into
+> >>> code. Guess it'd be more productive to talk over phone then come back
+> >>> to this thread with a conclusion. Will that be ok with you?
+> >> I don't think that a phone call is going to help. Talking code
+> >> issues tends to muddle them in my brain. If you can give me a few
+> >> days I will propose a rough version of how I think your code should
+> >> be integrated into the LSM environment. I'm spending more time
+> >> trying (unsuccessfully :( ) to discribe the issues in English than
+> >> it will probably take in C.
+> > While Casey is off writing his rosetta stone,
 
- policycoreutils/setfiles/restorecon.8       | 10 +++++-----
- policycoreutils/setfiles/restorecon_xattr.8 | 20 +++++++++-----------
- policycoreutils/setfiles/restorecon_xattr.c |  2 +-
- policycoreutils/setfiles/setfiles.8         | 10 +++++-----
- 4 files changed, 20 insertions(+), 22 deletions(-)
+> I'd hardly call it that. More of an effort to round the corners on
+> the square peg. And Cedric has some ideas on how to approach that.
 
-diff --git a/policycoreutils/setfiles/restorecon.8 b/policycoreutils/setfiles/restorecon.8
-index 0f81db4..bbfc83f 100644
---- a/policycoreutils/setfiles/restorecon.8
-+++ b/policycoreutils/setfiles/restorecon.8
-@@ -100,7 +100,7 @@ section for further details.
- .B \-D
- Set or update any directory SHA1 digests. Use this option to
- enable usage of the
--.IR security.restorecon_last
-+.IR security.sehash
- extended attribute.
- .TP
- .B \-m
-@@ -184,10 +184,10 @@ option to
- .B restorecon
- will cause it to store a SHA1 digest of the default specfiles set in an extended
- attribute named
--.IR security.restorecon_last
--on the directory specified in each
-+.IR security.sehash
-+on each directory specified in
- .IR pathname \ ...
--once the relabeling has been completed successfully. This digest will be
-+once the relabeling has been completed successfully. These digests will be
- checked should
- .B restorecon
- .B \-D
-@@ -204,7 +204,7 @@ option will ignore the SHA1 digest from each directory specified in
- and provided the
- .B \-n
- option is NOT set and recursive mode is set, files will be relabeled as
--required with the digest then being updated provided there are no errors.
-+required with the digests then being updated provided there are no errors.
- 
- .SH "AUTHOR"
- This man page was written by Dan Walsh <dwalsh@redhat.com>.
-diff --git a/policycoreutils/setfiles/restorecon_xattr.8 b/policycoreutils/setfiles/restorecon_xattr.8
-index 65b28ea..e04528e 100644
---- a/policycoreutils/setfiles/restorecon_xattr.8
-+++ b/policycoreutils/setfiles/restorecon_xattr.8
-@@ -1,7 +1,7 @@
- .TH "restorecon_xattr" "8" "24 Sept 2016" "" "SELinux User Command"
- .SH "NAME"
- restorecon_xattr \- manage
--.I security.restorecon_last
-+.I security.sehash
- extended attribute entries added by
- .BR setfiles (8)
- or
-@@ -24,7 +24,7 @@ or
- .SH "DESCRIPTION"
- .B restorecon_xattr
- will display the SHA1 digests added to extended attributes
--.I security.restorecon_last
-+.I security.sehash
- or delete the attribute completely. These attributes are set by
- .BR restorecon (8)
- or
-@@ -43,7 +43,7 @@ from.
- and
- .B TMPFS
- filesystems do not support the
--.I security.restorecon_last
-+.I security.sehash
- extended attribute and are automatically excluded from searches.
- .sp
- By default
-@@ -62,12 +62,12 @@ option.
- .TP
- .B \-d
- delete all non-matching
--.I security.restorecon_last
-+.I security.sehash
- directory digest entries.
- .TP
- .B \-D
- delete all
--.I security.restorecon_last
-+.I security.sehash
- directory digest entries.
- .TP
- .B \-m
-@@ -87,7 +87,10 @@ Do not append "Match" or "No Match" to displayed digests.
- recursively descend directories.
- .TP
- .B \-v
--display SHA1 digest generated by specfile set.
-+display SHA1 digest generated by specfile set (Note that this digest is not
-+used to match the
-+.I security.sehash
-+directory digest entries, and is shown for reference only).
- .TP
- .B \-e
- .I directory
-@@ -101,11 +104,6 @@ an optional
- .I specfile
- containing file context entries as described in
- .BR file_contexts (5).
--This will be used by
--.BR selabel_open (3)
--to retrieve the set of labeling entries, with the SHA1 digest being
--retrieved by
--.BR selabel_digest (3).
- If the option is not specified, then the default file_contexts will be used.
- 
- .SH "ARGUMENTS"
-diff --git a/policycoreutils/setfiles/restorecon_xattr.c b/policycoreutils/setfiles/restorecon_xattr.c
-index 91c087f..59b1f74 100644
---- a/policycoreutils/setfiles/restorecon_xattr.c
-+++ b/policycoreutils/setfiles/restorecon_xattr.c
-@@ -27,7 +27,7 @@ static __attribute__((__noreturn__)) void usage(const char *progname)
- 		"-D  Delete all digest entries.\n\t"
- 		"-e  Directory to exclude (repeat option for more than one directory).\n\t"
- 		"-f  Optional specfile for calculating the digest.\n\t"
--		"pathname  Path to search for xattr \"security.restorecon_last\" entries.\n\n",
-+		"pathname  Path to search for xattr \"security.sehash\" entries.\n\n",
- 		progname);
- 	exit(-1);
- }
-diff --git a/policycoreutils/setfiles/setfiles.8 b/policycoreutils/setfiles/setfiles.8
-index ccaaf4d..c9f8be0 100644
---- a/policycoreutils/setfiles/setfiles.8
-+++ b/policycoreutils/setfiles/setfiles.8
-@@ -90,7 +90,7 @@ section for further details.
- .B \-D
- Set or update any directory SHA1 digests. Use this option to
- enable usage of the
--.IR security.restorecon_last
-+.IR security.sehash
- extended attribute.
- .TP
- .B \-l
-@@ -228,10 +228,10 @@ option to
- will cause it to store a SHA1 digest of the
- .B spec_file
- set in an extended attribute named
--.IR security.restorecon_last
--on the directory specified in each
-+.IR security.sehash
-+on each directory specified in
- .IR pathname \ ...
--once the relabeling has been completed successfully. This digest will be
-+once the relabeling has been completed successfully. These digests will be
- checked should
- .B setfiles
- .B \-D
-@@ -250,7 +250,7 @@ option will ignore the SHA1 digest from each directory specified in
- .IR pathname \ ...
- and provided the
- .B \-n
--option is NOT set, files will be relabeled as required with the digest then
-+option is NOT set, files will be relabeled as required with the digests then
- being updated provided there are no errors.
- 
- .SH "AUTHOR"
--- 
-2.21.0
+Should we infer from this comment that, of the two competing
+strategies, Cedric's is the favored architecture?
 
+> > let me suggest that the
+> > most important thing we need to do is to take a little time, step back
+> > and look at the big picture with respect to what we are trying to
+> > accomplish and if we are going about it in a way that makes any sense
+> > from an engineering perspective.
+> >
+> > This conversation shouldn't be about SGX, it should be about the best
+> > way for the kernel/LSM to discipline a Trusted Execution Environment
+> > (TEE).  As I have noted previously, a TEE is a 'blackbox' that, by
+> > design, is intended to allow execution of code and processing of data
+> > in a manner that is resistant to manipulation or inspection by
+> > untrusted userspace, the kernel and/or the hardware itself.
+> >
+> > Given that fact, if we are to be intellectually honest, we need to ask
+> > ourselves how effective we believe we can be in controlling any TEE
+> > with kernel based mechanisms.  This is particularly the case if the
+> > author of any code running in the TEE has adversarial intent.
+> >
+> > Here is the list of controls that we believe an LSM can, effectively,
+> > implement against a TEE:
+> >
+> > 1.) Code provenance and origin.
+> >
+> > 2.) Cryptographic verification of dynamically executable content.
+> >
+> > 2.) The ability of a TEE to implement anonymous executable content.
+> >
+> > If people are in agreement with this concept, it is difficult to
+> > understand why we should be implementing complex state machines and
+> > the like, whether it is in the driver or the LSM.  Security code has
+> > to be measured with a metric of effectiveness, otherwise we are
+> > engaging in security theater.
+> >
+> > I believe that if we were using this lens, we would already have a
+> > mainline SGX driver, since we seem to have most of the needed LSM
+> > infrastructure and any additional functionality would be a straight
+> > forward implementation.  Most importantly, the infrastructure would
+> > not be SGX specific, which would seem to be a desirable political
+> > concept.
+
+> Generality introduced in the absence of multiple instances
+> often results in unnecessary complexity, unused interfaces
+> and feature compromise. Guessing what other TEE systems might
+> do, and constraining SGX to those models (or the other way around)
+> is a well established road to ruin. The LSM infrastructure is
+> a fine example. For the first ten years the "general" mechanism
+> had a single user. I'd say to hold off on the general until there
+> is more experience with the specific. It's easier to construct
+> a general mechanism around things that work than to fit things
+> that need to work into some preconceived notion of generality. 
+
+All well taken points from an implementation perspective, but they
+elide the point I was trying to make.  Which is the fact that without
+any semblance of a discussion regarding the requirements needed to
+implement a security architecture around the concept of a TEE, this
+entire process, despite Cedric's well intentioned efforts, amounts to
+pounding a square solution into the round hole of a security problem.
+
+Which, as I noted in my e-mail, is tantamount to security theater.
+
+Everyone wants to see this driver upstream.  If we would have had a
+reasoned discussion regarding what it means to implement proper
+controls around a TEE, when we started to bring these issues forward
+last November, we could have possibly been on the road to having a
+driver with reasoned security controls and one that actually delivers
+the security guarantees the hardware was designed to deliver.
+
+Best wishes for a productive week to everyone.
+
+Dr. Greg
+
+As always,
+Dr. G.W. Wettstein, Ph.D.   Enjellic Systems Development, LLC.
+4206 N. 19th Ave.           Specializing in information infra-structure
+Fargo, ND  58102            development.
+PH: 701-281-1686            EMAIL: greg@enjellic.com
+------------------------------------------------------------------------------
+"Any intelligent fool can make things bigger and more complex... It
+ takes a touch of genius - and a lot of courage to move in the opposite
+ direction."
+                                -- Albert Einstein

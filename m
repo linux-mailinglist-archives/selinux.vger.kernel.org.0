@@ -2,104 +2,112 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 017FC61640
-	for <lists+selinux@lfdr.de>; Sun,  7 Jul 2019 21:03:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EB4B61795
+	for <lists+selinux@lfdr.de>; Sun,  7 Jul 2019 23:03:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727369AbfGGTDO (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 7 Jul 2019 15:03:14 -0400
-Received: from mga14.intel.com ([192.55.52.115]:62680 "EHLO mga14.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726044AbfGGTDO (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Sun, 7 Jul 2019 15:03:14 -0400
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-X-Amp-File-Uploaded: False
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Jul 2019 12:03:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.63,463,1557212400"; 
-   d="scan'208";a="364025853"
-Received: from sjchrist-coffee.jf.intel.com (HELO linux.intel.com) ([10.54.74.165])
-  by fmsmga006.fm.intel.com with ESMTP; 07 Jul 2019 12:03:12 -0700
-Date:   Sun, 7 Jul 2019 12:03:12 -0700
-From:   Sean Christopherson <sean.j.christopherson@intel.com>
-To:     Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>
-Cc:     linux-sgx@vger.kernel.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org,
-        Bill Roberts <william.c.roberts@intel.com>,
-        Casey Schaufler <casey.schaufler@intel.com>,
-        James Morris <jmorris@namei.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Cedric Xing <cedric.xing@intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Jethro Beekman <jethro@fortanix.com>,
-        "Dr . Greg Wettstein" <greg@enjellic.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>
-Subject: Re: [RFC PATCH v4 05/12] x86/sgx: Enforce noexec filesystem
- restriction for enclaves
-Message-ID: <20190707190312.GD19593@linux.intel.com>
-References: <20190619222401.14942-1-sean.j.christopherson@intel.com>
- <20190619222401.14942-6-sean.j.christopherson@intel.com>
- <20190621012654.GI20474@linux.intel.com>
+        id S1727349AbfGGVDN convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Sun, 7 Jul 2019 17:03:13 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:47338 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727073AbfGGVDN (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 7 Jul 2019 17:03:13 -0400
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 5E44656470D
+        for <selinux@vger.kernel.org>; Sun,  7 Jul 2019 23:03:10 +0200 (CEST)
+Received: by mail-ot1-f50.google.com with SMTP id e8so14148689otl.7
+        for <selinux@vger.kernel.org>; Sun, 07 Jul 2019 14:03:10 -0700 (PDT)
+X-Gm-Message-State: APjAAAURLb+trIe2Fr+9J8WV+Ljs9hUDsQycOPPOU1nqzLKGQ46VysKp
+        q/gjuf56ABhgDjrqZErjLt4tHb2URrNygZNfSGA=
+X-Google-Smtp-Source: APXvYqy1KyIzBLb2odO1sAhe1xPGp2o5PNRsnmDt0139hsr4Wk2N+sZwA0mvNQlbg9Wzm2bkkb3BW/4/wsb0tL3A3zw=
+X-Received: by 2002:a05:6830:1516:: with SMTP id k22mr11188604otp.189.1562533389553;
+ Sun, 07 Jul 2019 14:03:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190621012654.GI20474@linux.intel.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
+References: <20190703141255.6321-1-richard_c_haines@btinternet.com>
+In-Reply-To: <20190703141255.6321-1-richard_c_haines@btinternet.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Sun, 7 Jul 2019 23:02:58 +0200
+X-Gmail-Original-Message-ID: <CAJfZ7==rnxFKiUtNg0FFXLM7_F6qCPVWJAwBK86EaZsyKp-ktA@mail.gmail.com>
+Message-ID: <CAJfZ7==rnxFKiUtNg0FFXLM7_F6qCPVWJAwBK86EaZsyKp-ktA@mail.gmail.com>
+Subject: Re: [PATCH] libselinux: Fix security_get_boolean_names build error
+To:     Richard Haines <richard_c_haines@btinternet.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sun Jul  7 23:03:10 2019 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=D9E8856471E
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Jun 21, 2019 at 04:26:54AM +0300, Jarkko Sakkinen wrote:
-> On Wed, Jun 19, 2019 at 03:23:54PM -0700, Sean Christopherson wrote:
-> > Do not allow an enclave page to be mapped with PROT_EXEC if the source
-> > vma does not have VM_MAYEXEC.  This effectively enforces noexec as
-> > do_mmap() clears VM_MAYEXEC if the vma is being loaded from a noexec
-> > path, i.e. prevents executing a file by loading it into an enclave.
-> > 
-> > Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
-> > ---
-> >  arch/x86/kernel/cpu/sgx/driver/ioctl.c | 42 +++++++++++++++++++++++---
-> >  1 file changed, 37 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/arch/x86/kernel/cpu/sgx/driver/ioctl.c b/arch/x86/kernel/cpu/sgx/driver/ioctl.c
-> > index e18d2afd2aad..1fca70a36ce3 100644
-> > --- a/arch/x86/kernel/cpu/sgx/driver/ioctl.c
-> > +++ b/arch/x86/kernel/cpu/sgx/driver/ioctl.c
-> > @@ -564,6 +564,39 @@ static int sgx_encl_add_page(struct sgx_encl *encl, unsigned long addr,
-> >  	return ret;
-> >  }
-> >  
-> > +static int sgx_encl_page_copy(void *dst, unsigned long src, unsigned long prot)
-> 
-> I will probably forget the context with this name after this has been
-> merged :-) So many functions dealing with enclave pages. Two
-> alternatives that come up to my mind:
-> 
-> 1. sgx_encl_page_user_import()
-> 2. sgx_encl_page_user_copy_from()
+On Wed, Jul 3, 2019 at 5:22 PM Richard Haines
+<richard_c_haines@btinternet.com> wrote:
+>
+> When running 'make' from libselinux on Fedora 30 (gcc 9.1.1) the
+> following error is reported:
+>
+> bute=const -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 -Wstrict-overflow=5
+> -I../include -D_GNU_SOURCE  -DNO_ANDROID_BACKEND  -c -o booleans.o
+> booleans.c
+> booleans.c: In function ‘security_get_boolean_names’:
+> booleans.c:39:5: error: assuming signed overflow does not occur when
+> changing X +- C1 cmp C2 to X cmp C2 -+ C1 [-Werror=strict-overflow]
+>   39 | int security_get_boolean_names(char ***names, int *len)
+>       |    ^~~~~~~~~~~~~~~~~~~~~~~~~~
+> cc1: all warnings being treated as errors
+> make[1]: *** [Makefile:171: booleans.o] Error 1
+>
+> This is caused by the '--i' in the: 'for (--i; i >= 0; --i)' loop.
+>
+> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+> ---
+>  libselinux/src/booleans.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/libselinux/src/booleans.c b/libselinux/src/booleans.c
+> index ab1e0754..882a5dca 100644
+> --- a/libselinux/src/booleans.c
+> +++ b/libselinux/src/booleans.c
+> @@ -81,8 +81,13 @@ int security_get_boolean_names(char ***names, int *len)
+>         free(namelist);
+>         return rc;
+>        bad_freen:
+> -       for (--i; i >= 0; --i)
+> +       if (i == 0)
+> +               goto bad_freen1;
+> +       else if (i > 0)
+> +               --i;
+> +       for (; i >= 0; --i)
+>                 free(n[i]);
+> +bad_freen1:
+>         free(n);
+>        bad:
+>         goto out;
+> --
+> 2.21.0
+>
 
-What about sgx_encl_page_copy_from_user() to align with copy_from_user()?
- 
-> Not saying that they are beatiful names but at least you immediately
-> know the context.
-> 
-> > +{
-> > +	struct vm_area_struct *vma;
-> > +	int ret;
-> > +
-> > +	/* Hold mmap_sem across copy_from_user() to avoid a TOCTOU race. */
-> > +	down_read(&current->mm->mmap_sem);
-> > +
-> > +	/* Query vma's VM_MAYEXEC as an indirect path_noexec() check. */
-> > +	if (prot & PROT_EXEC) {
-> > +		vma = find_vma(current->mm, src);
-> > +		if (!vma) {
-> > +			ret = -EFAULT;
-> > +			goto out;
-> 
-> Should this be -EINVAL instead?
+Hi,
+Thanks for your patch. It looks more complicated than it should be.
+Why do you introduce a new label instead of a simpler if statement?
+For example I think of this code (I have not tested it and it may
+contain issues):
 
-copy_from_user() failure is handled via -EFAULT, this is effectively an
-equivalent check.
+bad_freen:
+    if (i > 0) {
+        for (--i; i >= 0; --i)
+            free(n[i]);
+    }
+    free(n);
+
+>From my point of view, this would be easier to maintain. If you have a
+good reason for using a new goto label, please add some sentences
+about this in the patch description or/and in a comment next to the
+modified lines.
+
+Thanks,
+Nicolas
+

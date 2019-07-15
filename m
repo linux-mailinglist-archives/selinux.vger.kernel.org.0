@@ -2,88 +2,95 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 907E4694D3
-	for <lists+selinux@lfdr.de>; Mon, 15 Jul 2019 16:54:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 976EC69665
+	for <lists+selinux@lfdr.de>; Mon, 15 Jul 2019 17:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392260AbfGOOyH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 15 Jul 2019 10:54:07 -0400
-Received: from ithil.bigon.be ([163.172.57.153]:37764 "EHLO ithil.bigon.be"
+        id S2387501AbfGOOIu (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 15 Jul 2019 10:08:50 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59384 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2392258AbfGOOyH (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Mon, 15 Jul 2019 10:54:07 -0400
-Received: from localhost (localhost [IPv6:::1])
-        by ithil.bigon.be (Postfix) with ESMTP id 4D3CE1FED5
-        for <selinux@vger.kernel.org>; Mon, 15 Jul 2019 16:45:04 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bigon.be; h=
-        content-transfer-encoding:content-type:content-type:mime-version
-        :references:in-reply-to:x-mailer:message-id:date:date:subject
-        :subject:from:from:received:received:received; s=key2; t=
-        1563201904; x=1565016305; bh=Vd4GG41nuM6CvzdnQKQyHYGgtF8mNrRC5Cw
-        YjJVmFBQ=; b=ViNLypGe17qEtlS1RIfuLYPxGFSeAkTZnE97mSEiwZ1NsODbHcf
-        76KCw/AM6MKpA13rrUUsdCuOkmtLaYTdAnMrC3jGi6KTZisZPXKT+rYu49CB/SQ0
-        V9m3Qr0Va2LxS/slIJIRRqOs0s15A69UwLGjmmjtJQTEWacM4P/arpRY=
-Received: from ithil.bigon.be ([IPv6:::1])
-        by localhost (ithil.bigon.be [IPv6:::1]) (amavisd-new, port 10026)
-        with ESMTP id Wr6lLYC9A-fa for <selinux@vger.kernel.org>;
-        Mon, 15 Jul 2019 16:45:04 +0200 (CEST)
-Received: from edoras.bigon.be (mail2.vdab.be [193.53.238.200])
-        (using TLSv1 with cipher ECDHE-RSA-AES256-SHA (256/256 bits))
+        id S2388577AbfGOOIo (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Mon, 15 Jul 2019 10:08:44 -0400
+Received: from sasha-vm.mshome.net (unknown [73.61.17.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        (Authenticated sender: bigon@bigon.be)
-        by ithil.bigon.be (Postfix) with ESMTPSA
-        for <selinux@vger.kernel.org>; Mon, 15 Jul 2019 16:45:04 +0200 (CEST)
-Received: from bigon (uid 1000)
-        (envelope-from bigon@bigon.be)
-        id 640dd
-        by edoras.bigon.be (DragonFly Mail Agent v0.11);
-        Mon, 15 Jul 2019 16:45:02 +0200
-From:   Laurent Bigonville <bigon@debian.org>
-To:     selinux@vger.kernel.org
-Subject: [PATCH 3/3] mcstrans: Add reference to setools.conf man page in the daemon one
-Date:   Mon, 15 Jul 2019 16:45:02 +0200
-Message-Id: <20190715144502.30547-3-bigon@debian.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20190715144502.30547-1-bigon@debian.org>
-References: <20190715144502.30547-1-bigon@debian.org>
+        by mail.kernel.org (Postfix) with ESMTPSA id 9514C20C01;
+        Mon, 15 Jul 2019 14:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1563199723;
+        bh=w5v7sWLAcSUnhsaiQsTidlDrLl91cqg976ss1tbUK9M=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=OWkM9gRjavzej2RGTNA3ISY2sK5DSLNEWI1Yi83iRI0ipP5O5XEf5sZ+1HP+gsqg5
+         pGBz6AjPf4U7UhpmxC/PUez9SZ2keE6DE2n55iSYdP752OLDj4PaYiSl7XXxvDe1mu
+         c4gVV/hcRunfcTvoLahb8NF+OTBoyd/K2Rd8iYpY=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
+        Kir Kolyshkin <kir@sacred.ru>,
+        Paul Moore <paul@paul-moore.com>,
+        Sasha Levin <sashal@kernel.org>, selinux@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.1 085/219] selinux: fix empty write to keycreate file
+Date:   Mon, 15 Jul 2019 10:01:26 -0400
+Message-Id: <20190715140341.6443-85-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190715140341.6443-1-sashal@kernel.org>
+References: <20190715140341.6443-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: Laurent Bigonville <bigon@bigon.be>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-Signed-off-by: Laurent Bigonville <bigon@bigon.be>
+[ Upstream commit 464c258aa45b09f16aa0f05847ed8895873262d9 ]
+
+When sid == 0 (we are resetting keycreate_sid to the default value), we
+should skip the KEY__CREATE check.
+
+Before this patch, doing a zero-sized write to /proc/self/keycreate
+would check if the current task can create unlabeled keys (which would
+usually fail with -EACCESS and generate an AVC). Now it skips the check
+and correctly sets the task's keycreate_sid to 0.
+
+Bug report: https://bugzilla.redhat.com/show_bug.cgi?id=1719067
+
+Tested using the reproducer from the report above.
+
+Fixes: 4eb582cf1fbd ("[PATCH] keys: add a way to store the appropriate context for newly-created keys")
+Reported-by: Kir Kolyshkin <kir@sacred.ru>
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mcstrans/man/man8/mcstransd.8    | 2 +-
- mcstrans/man/ru/man8/mcstransd.8 | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ security/selinux/hooks.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/mcstrans/man/man8/mcstransd.8 b/mcstrans/man/man8/mcstransd.8
-index 64774a52..9a5922ba 100644
---- a/mcstrans/man/man8/mcstransd.8
-+++ b/mcstrans/man/man8/mcstransd.8
-@@ -29,4 +29,4 @@ The program was enhanced/rewritten by Joe Nall <joe@nall.com>.
- /etc/selinux/{SELINUXTYPE}/setrans.conf 
- 
- .SH "SEE ALSO"
--.BR mcs (8),
-+.BR setrans.conf (5), mcs (8)
-diff --git a/mcstrans/man/ru/man8/mcstransd.8 b/mcstrans/man/ru/man8/mcstransd.8
-index 90247c32..4cd68c17 100644
---- a/mcstrans/man/ru/man8/mcstransd.8
-+++ b/mcstrans/man/ru/man8/mcstransd.8
-@@ -23,7 +23,7 @@ mcstransd \- внутренняя служба MCS (мультикатегори
- /etc/selinux/{SELINUXTYPE}/setrans.conf 
- 
- .SH "СМОТРИТЕ ТАКЖЕ"
--.BR mcs (8)
-+.BR setrans.conf (5), mcs (8)
- 
- .SH "АВТОРЫ"
- Эта man-страница написана Dan Walsh <dwalsh@redhat.com>.
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 614bc753822c..bf37bdce9918 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -6269,11 +6269,12 @@ static int selinux_setprocattr(const char *name, void *value, size_t size)
+ 	} else if (!strcmp(name, "fscreate")) {
+ 		tsec->create_sid = sid;
+ 	} else if (!strcmp(name, "keycreate")) {
+-		error = avc_has_perm(&selinux_state,
+-				     mysid, sid, SECCLASS_KEY, KEY__CREATE,
+-				     NULL);
+-		if (error)
+-			goto abort_change;
++		if (sid) {
++			error = avc_has_perm(&selinux_state, mysid, sid,
++					     SECCLASS_KEY, KEY__CREATE, NULL);
++			if (error)
++				goto abort_change;
++		}
+ 		tsec->keycreate_sid = sid;
+ 	} else if (!strcmp(name, "sockcreate")) {
+ 		tsec->sockcreate_sid = sid;
 -- 
-2.22.0
+2.20.1
 

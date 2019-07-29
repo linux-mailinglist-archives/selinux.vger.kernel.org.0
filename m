@@ -2,152 +2,77 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D299787A7
-	for <lists+selinux@lfdr.de>; Mon, 29 Jul 2019 10:41:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8269978C25
+	for <lists+selinux@lfdr.de>; Mon, 29 Jul 2019 15:00:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727243AbfG2IlZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 29 Jul 2019 04:41:25 -0400
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:34585 "EHLO
-        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727620AbfG2IlZ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 29 Jul 2019 04:41:25 -0400
-Received: by mail-wm1-f67.google.com with SMTP id w9so42465492wmd.1
-        for <selinux@vger.kernel.org>; Mon, 29 Jul 2019 01:41:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=w6hjZaMsiA3P0uqA6gSQG3A0bsA9reuqGUwApnVTNkQ=;
-        b=AbZdMby7cmumNwtL9uKoKuSoVbyIo2XwtD0vHjNveBMElPCrwIs/xwfMgsAKvMQ97R
-         ztHmrmjDKP71A8hPAWTZUtUcFxEAfooe6tct4Nc7Hw7ju2AaIKL27xeXwcxyXhZXKXNR
-         e/gDbNigBqajUcvG6aWDpuX5xXQBQQEvZyi15A8+47MVx/hoTYUBarj3VZQ5RKnxxmiK
-         +7h0yruWF9C0WMHcBlxMN6QeCWXE+L+Pqhd14rRUFUgiNhrlGPLlmAZf0aHK9s76rUHF
-         iscvpSfpbAfX0ry/PSy2BMXt2QHtYSGUtYSVmnr66Ld/McS95IjFYaXyNEMxx/lZQQs2
-         J2/Q==
-X-Gm-Message-State: APjAAAW9xpc18hWbKT3OzuHpTg1S6NcasnyFsf5eny61qnKWPuBTo0Kc
-        SDeyt0QazX1cEJacpgMM+ux7lCBchI3rsg==
-X-Google-Smtp-Source: APXvYqz9/tms/jE+Hnx9pQbBssuJWu0W6ixfugTFDxKqg9cYHFg2TqUbYTrd+CY5EnqT7CPDU4QBzA==
-X-Received: by 2002:a1c:6504:: with SMTP id z4mr96061278wmb.172.1564389682384;
-        Mon, 29 Jul 2019 01:41:22 -0700 (PDT)
-Received: from localhost.localdomain.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id v5sm70190544wre.50.2019.07.29.01.41.21
-        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Mon, 29 Jul 2019 01:41:21 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
-Cc:     Dmitry Vyukov <dvyukov@google.com>
-Subject: [PATCH v2 3/3] selinux: policydb - rename type_val_to_struct_array
-Date:   Mon, 29 Jul 2019 10:41:17 +0200
-Message-Id: <20190729084117.18677-4-omosnace@redhat.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190729084117.18677-1-omosnace@redhat.com>
-References: <20190729084117.18677-1-omosnace@redhat.com>
+        id S1728370AbfG2NAh (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 29 Jul 2019 09:00:37 -0400
+Received: from bhuna.collabora.co.uk ([46.235.227.227]:55830 "EHLO
+        bhuna.collabora.co.uk" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727977AbfG2NAg (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 29 Jul 2019 09:00:36 -0400
+Received: from localhost (unknown [IPv6:2a00:5f00:102:0:3aba:f8ff:fe58:9ca1])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: smcv)
+        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id C735C28A6B9;
+        Mon, 29 Jul 2019 14:00:35 +0100 (BST)
+Date:   Mon, 29 Jul 2019 14:00:33 +0100
+From:   Simon McVittie <smcv@collabora.com>
+To:     Casey Schaufler <casey@schaufler-ca.com>
+Cc:     casey.schaufler@intel.com, jmorris@namei.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        keescook@chromium.org, john.johansen@canonical.com,
+        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com,
+        sds@tycho.nsa.gov
+Subject: Re: [PATCH 25/27] NET: Add SO_PEERCONTEXT for multiple LSMs
+Message-ID: <20190729130033.GD2383@horizon>
+References: <20190726233923.2570-1-casey@schaufler-ca.com>
+ <20190726233923.2570-26-casey@schaufler-ca.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190726233923.2570-26-casey@schaufler-ca.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The name is overly long and inconsistent with the other *_val_to_struct
-members. Dropping the "_array" prefix makes the code easier to read and
-gets rid of one line over 80 characters warning.
+On Fri, 26 Jul 2019 at 16:39:21 -0700, Casey Schaufler wrote:
+> A new option SO_PEERCONTEXT is added to report the
+> security "context" of multiple modules using a "compound" format
+> 
+> 	lsm1\0value\0lsm2\0value\0
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- security/selinux/ss/policydb.c | 14 +++++++-------
- security/selinux/ss/policydb.h |  2 +-
- security/selinux/ss/services.c |  6 +++---
- 3 files changed, 11 insertions(+), 11 deletions(-)
+> +		/*
+> +		 * A compound context, in the form lsm='value'[,lsm='value']...
+> +		 */
 
-diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-index ffeae0e252d2..4e2f35f11d40 100644
---- a/security/selinux/ss/policydb.c
-+++ b/security/selinux/ss/policydb.c
-@@ -390,7 +390,7 @@ void policydb_destroy(struct policydb *p)
- 	kfree(p->class_val_to_struct);
- 	kfree(p->role_val_to_struct);
- 	kfree(p->user_val_to_struct);
--	kvfree(p->type_val_to_struct_array);
-+	kvfree(p->type_val_to_struct);
- 
- 	avtab_destroy(&p->te_avtab);
- 
-@@ -677,7 +677,7 @@ static int type_index(void *key, void *datum, void *datap)
- 		    || typdatum->bounds > p->p_types.nprim)
- 			return -EINVAL;
- 		p->sym_val_to_name[SYM_TYPES][typdatum->value - 1] = key;
--		p->type_val_to_struct_array[typdatum->value - 1] = typdatum;
-+		p->type_val_to_struct[typdatum->value - 1] = typdatum;
- 	}
- 
- 	return 0;
-@@ -819,10 +819,10 @@ static int policydb_index(struct policydb *p)
- 	if (!p->user_val_to_struct)
- 		return -ENOMEM;
- 
--	p->type_val_to_struct_array = kvcalloc(p->p_types.nprim,
--					       sizeof(*p->type_val_to_struct_array),
--					       GFP_KERNEL);
--	if (!p->type_val_to_struct_array)
-+	p->type_val_to_struct = kvcalloc(p->p_types.nprim,
-+					 sizeof(*p->type_val_to_struct),
-+					 GFP_KERNEL);
-+	if (!p->type_val_to_struct)
- 		return -ENOMEM;
- 
- 	rc = cond_init_bool_indexes(p);
-@@ -1726,7 +1726,7 @@ static int type_bounds_sanity_check(void *key, void *datum, void *datap)
- 			return -EINVAL;
- 		}
- 
--		upper = p->type_val_to_struct_array[upper->bounds - 1];
-+		upper = p->type_val_to_struct[upper->bounds - 1];
- 		BUG_ON(!upper);
- 
- 		if (upper->attribute) {
-diff --git a/security/selinux/ss/policydb.h b/security/selinux/ss/policydb.h
-index 27039149ff0a..05fc672831aa 100644
---- a/security/selinux/ss/policydb.h
-+++ b/security/selinux/ss/policydb.h
-@@ -255,7 +255,7 @@ struct policydb {
- 	struct class_datum **class_val_to_struct;
- 	struct role_datum **role_val_to_struct;
- 	struct user_datum **user_val_to_struct;
--	struct type_datum **type_val_to_struct_array;
-+	struct type_datum **type_val_to_struct;
- 
- 	/* type enforcement access vectors and transitions */
- 	struct avtab te_avtab;
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index d3a8f6fbc552..ca56cd045bf9 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -544,13 +544,13 @@ static void type_attribute_bounds_av(struct policydb *policydb,
- 	struct type_datum *target;
- 	u32 masked = 0;
- 
--	source = policydb->type_val_to_struct_array[scontext->type - 1];
-+	source = policydb->type_val_to_struct[scontext->type - 1];
- 	BUG_ON(!source);
- 
- 	if (!source->bounds)
- 		return;
- 
--	target = policydb->type_val_to_struct_array[tcontext->type - 1];
-+	target = policydb->type_val_to_struct[tcontext->type - 1];
- 	BUG_ON(!target);
- 
- 	memset(&lo_avd, 0, sizeof(lo_avd));
-@@ -893,7 +893,7 @@ int security_bounded_transition(struct selinux_state *state,
- 
- 	index = new_context->type;
- 	while (true) {
--		type = policydb->type_val_to_struct_array[index - 1];
-+		type = policydb->type_val_to_struct[index - 1];
- 		BUG_ON(!type);
- 
- 		/* not bounded anymore */
--- 
-2.21.0
+Presumably the commit message (and the implementation) means the comment
+is out of date?
 
+> +			/*
+> +			 * Don't propogate trailing nul bytes.
+> +			 */
+> +			clen = strnlen(cp, clen) + 1;
+> +			tlen = llen + clen;
+...
+> +			memcpy(tp + finallen + llen, cp, clen);
+
+This assumes that cp points to a '\0'-terminated string, with the '\0'
+either inside the span of memory cp[clen]..cp[clen-1], or at cp[clen]
+(which is just outside the range that is obviously safe to access).
+Is that assumption robust? If an LSM that worked with length-counted
+("Pascal") strings internally would be allowed to fill the buffer with
+nonzero bytes and not place a '\0' immediately after it, then it would
+be necessary to insert the NUL explicitly:
+
+    clen = strnlen(cp, clen);
+    tlen = llen + clen + 1;
+    ...
+    memcpy(tp + finallen + llen, cp, clen);
+    tp[finallen + llen + clen] = '\0';
+
+Thanks,
+    smcv

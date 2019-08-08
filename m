@@ -2,78 +2,89 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CCD7185624
-	for <lists+selinux@lfdr.de>; Thu,  8 Aug 2019 00:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ECDE85C41
+	for <lists+selinux@lfdr.de>; Thu,  8 Aug 2019 09:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389627AbfHGWnT (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 7 Aug 2019 18:43:19 -0400
-Received: from sonic317-27.consmr.mail.gq1.yahoo.com ([98.137.66.153]:40625
-        "EHLO sonic317-27.consmr.mail.gq1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2389633AbfHGWnT (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 7 Aug 2019 18:43:19 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1565217798; bh=Osu6XGAcDFD0M+ySV74N8nqsIlm0gr6gJHIRJiI8EKM=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject; b=RquEBeu1b/YoxREBJjZ7gub/9K61AxuchCoOB/HXcoHeavU9PVR9MwyHfGwW5n0B/wsqmyQ9OEH7nJ8GW+ujd64XIjH3804xNSOlaeOTUpf2mmIbLSR1+VRsVdqDdSnk6y0ffuG3rZ/7tVRnVM8nFoVSYGRnzG3AACp2U/12cO+bC6TPJD0sVGui1bEOdqQbqKGTRS0E+r8p8k6t6z9DTtaBvROcQc5YTOX4I1lDDUbcE6g4r693/PB/OKgzYDbT4D6QRl539VqfXQSdQXk4eHfE9L6ykYq+PKmpAAHW7vPw0VNTTWVn8+aRX/c89cLmHNiPgVXAg+XfhN0+FjZ/uA==
-X-YMail-OSG: zKbkBj4VM1k2F8fyRmZc7wxkgQ8GgHwKp8JxA7LrIZk188gCX8xMfADb1pDzirA
- TPpPRTxf3JmLzvac.LhnpC9MX3TkpqoWhRQoQGcXshFQKpOaSCt1ptwC2q2O15ZOupQyhJ4SFDWY
- yOiElM37jIAyCB5xHw0406exMri5GQ9plajmhxKxaBNWYZN8M37hKUQFc_MvfHBqaDrtGSdGKu.7
- nRJIswrkr.z4pfLhgjFauLu7yBbSQqtvb42otrARqCdpkILmFk8OZEETSkYwNsRtAB8Q8mC1AGcd
- nroZ7cbod7U8Jnjz5si9sUqeHJlDKdH.rWF32ZhROixFfGuM_9trc8u44SInUCPeJn4sw8sFz6__
- sLh8vNSUTKEzwG2x8E0S45Rv76f9.lvZ3UOksgM7eI1NVz859i4XZTxmXHLdhMK2wBwjvhYMa8Ok
- 8DfkhuXoB3HhcCMnV_t7q9IVwbjvbHD_.g1MWMKvLvz6NpCmCbFe6A2ibem0NC7jjt.3dcsxuoIZ
- GCdKLQeJiRS5Eox.tCKzgewWJe7R6FCjmQB3kCxzTXXec6pOy_qYWiBGKaVP3EzIHpFfR8012XgY
- 3XoMC4pgPljAWuj6OzqDxiM4TtOr6SMrq38Lah2csHF8aOLd4YrHcwhr0tu..faKP15iU5Px5l_R
- yQRBMkKp0f1O68VkABFInWXJ8tODZFgYUxLAI3rYTZPD9CsDqyCB1iYHsiq58OV9_hCLId9A7HI2
- ZEkgXvaOd.2cFFEEYDfwrzhWXTcxOhnM6KC_0rCb4GZrffhjNykf968tJzS5CB2AtqckLQUWW9nC
- K.PZhApBGEmI9kNldkve1brS39gJvG3YxW019yBfb5AEZysbbXzS3oYmKie4K_8ba_qSY3P4PnFG
- AH_ZAG4KJ0ItM5dLRBQgJAZ8xpNtFJLSSNlvHFSC9CJyD8uxdikmFBupvUG5gmI2JKc5T.BKaq7I
- FR7t7nKl6cbgRDQ6TWJhpLkywqLkg5A3Iregsoa1zwLWtVBcNNmnGYeVEWxr.IkiGkqFLAWS3q_n
- k7ng4baWQGE_r0QPsj9ht8O6xu7oKoSwYbf6t4EWvRP4f9SG9muaS6nyuw78aWCqWSWFmI8jS_P_
- FvrdJYNFVgQHdY576v7H1TtP2TDfpxTgo9xdKh9mTzCf8JPJDueIERmja45xHeqwv94JdxpVTyWS
- w5NUq3i7zPfU4t3iQsAc1vtuASSz4CIJeL9A78KbZia0hv1vfs4mqxTUw6LJN0kopO0gi.uw5uvi
- Df_FMtM3JDpH17tPgiSrcs6kmgBMDG1y0R5NfV.X9YyXecd5cvlywNcsJiawgVDYrwqeGeTELKLG
- eeLpE
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.gq1.yahoo.com with HTTP; Wed, 7 Aug 2019 22:43:18 +0000
-Received: by smtp405.mail.gq1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID b31e22a1723893410aaa66faa171513d;
-          Wed, 07 Aug 2019 22:43:17 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, keescook@chromium.org,
-        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
-        paul@paul-moore.com, sds@tycho.nsa.gov
-Subject: [PATCH v7 16/16] Smack: Remove the exclusive flag
-Date:   Wed,  7 Aug 2019 15:42:45 -0700
-Message-Id: <20190807224245.10798-18-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190807224245.10798-1-casey@schaufler-ca.com>
-References: <20190807224245.10798-1-casey@schaufler-ca.com>
+        id S1731736AbfHHH7x (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 8 Aug 2019 03:59:53 -0400
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:45352 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731548AbfHHH7x (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 8 Aug 2019 03:59:53 -0400
+Received: by mail-ot1-f66.google.com with SMTP id x21so21811763otq.12
+        for <selinux@vger.kernel.org>; Thu, 08 Aug 2019 00:59:52 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uHKc1nqV6r+sye72Gbcul5qu7ivZjMnQlJDhy7guy84=;
+        b=BZNYosIZImVwKJOQAX1Z/z/6qMLdpEwKcCVnof5+zWyJxljHUjgp4udRPdA3LNij7L
+         kcHtUrF/nDyyQExbdLHnHqM2wriANpJAhW20h3KB6dIibG7i3hx5JD71oOmEB6pUvQfz
+         zHXMxK9suzMzwbk50kZR2jMI1Ph/TMv8mqL9IHOUYgNwyN+L1hxKM3z+8WpIPnf2+HFX
+         jylS+eQzLdXGLRnKF7ROuFbBJirXfGrvW9YtFnDA0bQCV5mWz/9pcJ5NmZlRDtk5gkCN
+         Ql4ae4NRX3V8kqL7gu7aS6I0gmcpnc2LsJWTiA4ibITVLf1G+iHuU1U9wAQGbLw5zZX7
+         uXuA==
+X-Gm-Message-State: APjAAAWZ+sJqHDdKX3eKrz8F5NuBgiATgCLHG8Ne+vRgrbVKhxY4kXPP
+        +FEmbT3UNbs1xNdfp8lYyi80cqkePnuH9mr1x+3/jQ==
+X-Google-Smtp-Source: APXvYqzo1ASOcZyBInSR+hD3Aad0gC0HonCxDXa/g6l1dqbWRagMtLJFx/QpUURx8i6UxazoEheDYa6IZ6Vh82C3ZI8=
+X-Received: by 2002:a9d:4c17:: with SMTP id l23mr10823891otf.367.1565251192452;
+ Thu, 08 Aug 2019 00:59:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20190801140243.24080-1-omosnace@redhat.com> <20190801160910.GW1131@ZenIV.linux.org.uk>
+In-Reply-To: <20190801160910.GW1131@ZenIV.linux.org.uk>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Thu, 8 Aug 2019 09:59:41 +0200
+Message-ID: <CAFqZXNs5igF_G8=EA+bD-JRorS6xeuCiXQr5vweaJFYNwEVKZA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/4] selinux: fix race when removing selinuxfs entries
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Paul Moore <paul@paul-moore.com>, linux-fsdevel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Smack no longer needs to be treated as an "exclusive" security module.
-Remove the flag that indicates it is exclusive.
+On Thu, Aug 1, 2019 at 6:09 PM Al Viro <viro@zeniv.linux.org.uk> wrote:
+> On Thu, Aug 01, 2019 at 04:02:39PM +0200, Ondrej Mosnacek wrote:
+> > After hours and hours of getting familiar with dcache and debugging,
+> > I think I finally found a solution that works and hopefully stands a
+> > chance of being committed.
+> >
+> > The series still doesn't address the lack of atomicity of the policy
+> > reload transition, but this is part of a wider problem and can be
+> > resolved later. Let's fix at least the userspace-triggered lockup
+> > first.
+>
+> I don't think this is the right approach.  Consider the related problem:
+> what happens if somebody has mounted something upon a selinuxfs file?
+> That is the hard part here, and AFAICS your variant doesn't help it
+> at all...
 
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
----
- security/smack/smack_lsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+But that's another independent problem and it's not even fixed in
+debugfs, which for now I'm treating as the baseline as I don't know of
+any other filesystem that needs to remove its own directory trees in a
+similar way.
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 122c13604d28..3b76ec6cf960 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4822,7 +4822,7 @@ static __init int smack_init(void)
-  */
- DEFINE_LSM(smack) = {
- 	.name = "smack",
--	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
-+	.flags = LSM_FLAG_LEGACY_MAJOR,
- 	.blobs = &smack_blob_sizes,
- 	.init = smack_init,
- };
+I get that you don't want me to add a new function to the dcache API
+that isn't bulletproof (and what I wrote here is apparently still far
+from it), but you also previously said that I shouldn't open-code this
+stuff in selinuxfs.c... I don't think I have the wits to write a
+common function that handles all the possible issues, but I still want
+to fix at least this one scenario (dcache_readdir() vs.
+sel_remove_entries()).
+
+Is there some way I could do this without getting a NACK from you? For
+example, I thought of taking what is now debugfs_remove[_recursive]()
+out of debugfs into, say, fs/libfs.c (providing some optional callback
+to allow debugfs to do its __debugfs_file_removed() business) and use
+this function(s) from both debugfs and selinuxfs. This way we could
+later fix the leftover mount issue in one place and both filesystems
+would (hopefully) immediately benefit from it. Would that be a
+feasible way forward?
+
+Thanks,
 -- 
-2.20.1
-
+Ondrej Mosnacek <omosnace at redhat dot com>
+Software Engineer, Security Technologies
+Red Hat, Inc.

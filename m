@@ -2,91 +2,94 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 25C7F993B3
-	for <lists+selinux@lfdr.de>; Thu, 22 Aug 2019 14:33:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64E3099939
+	for <lists+selinux@lfdr.de>; Thu, 22 Aug 2019 18:33:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388612AbfHVMd0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 22 Aug 2019 08:33:26 -0400
-Received: from mail-lj1-f196.google.com ([209.85.208.196]:46401 "EHLO
-        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732206AbfHVMdZ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 22 Aug 2019 08:33:25 -0400
-Received: by mail-lj1-f196.google.com with SMTP id f9so5340012ljc.13
-        for <selinux@vger.kernel.org>; Thu, 22 Aug 2019 05:33:24 -0700 (PDT)
+        id S1733102AbfHVQcc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 22 Aug 2019 12:32:32 -0400
+Received: from mail-lf1-f65.google.com ([209.85.167.65]:37948 "EHLO
+        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732823AbfHVQcc (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 22 Aug 2019 12:32:32 -0400
+Received: by mail-lf1-f65.google.com with SMTP id f21so20123lfc.5
+        for <selinux@vger.kernel.org>; Thu, 22 Aug 2019 09:32:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=iVbicIO0p0gRad2mojfMoXPK1bvee8m7TQDWF1D1ACPE9HqmNhL2GBY+oHjfleXep+
-         wlwnOwIGGXywTfWnwFY2sQ2+h7NA0iPrPVMp/fpPZz0TCkDtzEkceGvTPOs+5VsA+PDA
-         bog9JENsSaOIYx1EC+/cR0/9HBbgj+daWMstdn5zms4O325GD0AQaD/ms3ETHmSt6uto
-         Q6665qufcUQQcAyfjYrg0fnfHXit5ax05ENYUjOrRwG/w//Vr5t0ubPdCTC7BmhWIJWz
-         mQQKKeL+2FnzNGwY3o/OwTiNkaLGMTHC1jVl8gl5NMf5tKp3Dcziy6EpzKOnIMzsAz/Z
-         Gt/Q==
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ujwYz/NxPt4KuZjfQpu/cnFqN0PKCiE0M+fWaEKXyzU=;
+        b=pi6XK9pe93bWuyf6pKryFGG43zRe1ZCwwDleYSgufZv9Ci87EtNumSlh81D/RMBUB1
+         SkpQVhfDqHWd+OvxONVKRfKsmHySwguPchGfTt+wRko0hWR9DVzcoHkWnhqNRVJLc463
+         PiOXVl+YsmkFkn5w2u+TMtRHc6qyawh1xi+nxO6St0bc+jI1FT3TA/9k/+Vm2YIdcgGp
+         EBYt5j1wQaaqWleGeWnb3Mw9+6lZSjsrpJAvvXLPTJFHmVqklBrovOL1hU02MgFGeiqX
+         PC7aIX8nX/8P96zUM4rYaQG02bsss1BLzMdmXQ2sZU/WQaDv1/5fphkKSKBF1bFyqIJi
+         4FmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=aWwEGZ7IKPwlD1SyN53LweuoS+rG8j2WBRgPDxMagPA=;
-        b=GCm0iKrwF8oEwlVv03Qw6KLw2VKWQekcoafAIya/pzokh0g1jo/jg5ZrKoOIDuOPoK
-         zEX+etp8nyogtIESdDMNr17NRt43e1tNEWSsImhANpYyj6Uhkg5IWJ135zjZYhR+xW5V
-         S6r0oBuSFu6SdPg1ci9L6vr4R0R2+tDtluxfPtfpyAxXVJ8fbxUvEOcAsiCtvuico+rR
-         Hp6qNhI19TWe21ZIw12/rBQuaDuG7Ww6IqSCf/kO3R2AVIrnGBIlMP/ccg0wKoqeatL3
-         1QJmj+WqauD4xxtoap2HuZiqZuWwDjOrAlLg9q+Be04OwhpLavYR0+dxARIP+dUUQkKn
-         zv/w==
-X-Gm-Message-State: APjAAAVTz78qRXC6U26vLxKBcE3TmqiHSyRoESHBOrm48oQzvb48JpCF
-        qbJ6SOy5oT0WkAS/Yqt/wGwmyYq7asVRf34mKDU=
-X-Google-Smtp-Source: APXvYqzw94KeAGRPQVwAh+UJFBQ7DOYzf35Giv9H76e1wjU00JCNb63boziaVgpph5IBHV5hsn94tmvSTLyQYtVZmJc=
-X-Received: by 2002:a2e:63cd:: with SMTP id s74mr17881307lje.3.1566477203899;
- Thu, 22 Aug 2019 05:33:23 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ujwYz/NxPt4KuZjfQpu/cnFqN0PKCiE0M+fWaEKXyzU=;
+        b=JWzESl1bZ2u6gPoocOWPjki4FMZjLlLeco9JFfwI39PIQ7Z7bOielqpz+7L0BNruBW
+         WQ3Jm/Emb4F+mTxafp6rM7WndzV54myekROm8WuwnFIzN9PBLwCCSQMWA2GRaKTBNsUQ
+         Rnmam20YR+Lo6xMNgsiUcNWwqurCiTGed/0XhiSoH4HwqfQCPL9gXeZYaCepBOJ3ZLW/
+         BEPeR7rMR26Ys9ld0rbSWe7WprQ5QD66qLo+kYbejPGLlQ6B5Xig/QaBGhUgqioDQg7b
+         3PC9jWUrmwK1Y9Oq5MxpA6TaXtFGFd57ShQFmhvZcdLbIZn0pC2y6wrSZRy7B9MudKnM
+         v4PA==
+X-Gm-Message-State: APjAAAXYEz504jbDZjBmTFMlPlQ/KzAV/BexqjuKts0BrXVZ3azSD1ns
+        MLVL3mGCh9G4zFzwJEfJh6OQoNJdkiq9OwQX7l78
+X-Google-Smtp-Source: APXvYqzz2n4ssNU9eUBLNHNiiN1igpCWk1mywwCx6WmTr0Wqj7FtpXsRl6ByHayPfeQfIrJhDa2FjRZ8pjDimCZFisc=
+X-Received: by 2002:a19:4349:: with SMTP id m9mr35378lfj.64.1566491549775;
+ Thu, 22 Aug 2019 09:32:29 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ab3:6a0f:0:0:0:0:0 with HTTP; Thu, 22 Aug 2019 05:33:23
- -0700 (PDT)
-Reply-To: eku.lawfirm@gmail.com
-From:   "Law firm(Eku and Associates)" <ezeobodo1@gmail.com>
-Date:   Thu, 22 Aug 2019 12:33:23 +0000
-Message-ID: <CAN-_bTaBz=R_5Eq36MajojFPC316zxdyXEEVzKzzZgeSdGG98A@mail.gmail.com>
-Subject: MY $25,000,000.00 INVESTMENT PROPOSAL WITH YOU AND IN YOUR COUNTRY.
-To:     undisclosed-recipients:;
+References: <CAHC9VhSz1_KA1tCJtNjwK26BOkGhKGbPT7v1O82mWPduvWwd4A@mail.gmail.com>
+ <20190822070358.GE20113@breakpoint.cc>
+In-Reply-To: <20190822070358.GE20113@breakpoint.cc>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Thu, 22 Aug 2019 12:32:18 -0400
+Message-ID: <CAHC9VhQ_+3ywPu0QRzP3cSgPH2i9Br994wJttp-yXy2GA4FrNg@mail.gmail.com>
+Subject: Re: New skb extension for use by LSMs (skb "security blob")?
+To:     Florian Westphal <fw@strlen.de>
+Cc:     netdev@vger.kernel.org, linux-security-module@vger.kernel.org,
+        selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
---=20
-Dear,
-With due respect this is not spam or Scam mail, because I have
-contacted you before and there was no response from you,I apologise if
-the contents of this mail are contrary to your moral ethics, which I
-feel may be of great disturbance to your person, but please treat this
-with absolute confidentiality, believing that this email reaches you
-in good faith. My contacting you is not a mistake or a coincidence
-because God can use any person known or unknown to accomplish great
-things.
-I am a lawyer and I have an investment business proposal to offer you.
-It is not official but should be considered as legal and confidential
-business. I have a customer's deposit of $US25 million dollars ready
-to be moved for investment if you can partner with us. We are ready to
-offer you 10% of this total amount as your compensation for supporting
-the transaction to completion. If you are interested to help me please
-reply me with your full details as stated below:
-(1) Your full names:
-(2) Your address:
-(3) Your occupation:
-(4) Your mobile telephone number:
-(5) Your nationality:
-(6) Your present location:
-(7) Your age:
-So that I will provide you more details on what to do and what is
-required for successful completion.
-Note: DO NOT REPLY ME IF YOU ARE NOT INTERESTED AND WITHOUT THE ABOVE
-MENTIONED DETAILS
+On Thu, Aug 22, 2019 at 3:03 AM Florian Westphal <fw@strlen.de> wrote:
+> Paul Moore <paul@paul-moore.com> wrote:
+> > Hello netdev,
+> >
+> > I was just made aware of the skb extension work, and it looks very
+> > appealing from a LSM perspective.  As some of you probably remember,
+> > we (the LSM folks) have wanted a proper security blob in the skb for
+> > quite some time, but netdev has been resistant to this idea thus far.
+>
+> Is that "blob" in addition to skb->secmark, or a replacement?
 
-Sinc=C3=A8rement v=C3=B4tre,
-Avocat Etienne Eku Esq.(Lawfirm)
-Procureur principal. De Cabinet d=E2=80=99avocats de l=E2=80=99Afrique de l=
-=E2=80=99ouest.
-Skype:westafricalawfirm
+That's a good question.  While I thought about that, I wasn't sure if
+that was worth bringing up as previous attempts to trade the secmark
+field for a void pointer met with failure.  Last time I played with it
+I was able to take the additional 32-bits from holes in the skb, and
+possibly even improve some of the cacheline groupings (but that is
+always going to be a dependent on use case I think), but that wasn't
+enough.
+
+I think we could consider freeing up the secmark in the main skb, and
+move it to a skb extension, but this would potentially increase the
+chances that we would need to add an extension to a skb.  I don't have
+any hard numbers, but based on discussions and questions I suspect
+Secmark is more widely used than NetLabel and/or labeled IPsec;
+although I'm confident it is still a minor percentage of the overall
+Linux installed base.
+
+For me the big question is what would it take for us to get a security
+blob associated with the skb?  Would moving the secmark into the skb
+extension be enough?  Something else?  Or is this simply never going
+to happen?  I want to remain optimistic, but I've been trying for this
+off-and-on for over a decade and keep running into a brick wall ;)
+
+-- 
+paul moore
+www.paul-moore.com

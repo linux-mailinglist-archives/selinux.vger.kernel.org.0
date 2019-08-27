@@ -2,93 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BE5619F1B0
-	for <lists+selinux@lfdr.de>; Tue, 27 Aug 2019 19:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3B689F1EB
+	for <lists+selinux@lfdr.de>; Tue, 27 Aug 2019 19:56:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730276AbfH0Rdw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 27 Aug 2019 13:33:52 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:39947 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727219AbfH0Rdw (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 27 Aug 2019 13:33:52 -0400
-Received: by mail-lf1-f65.google.com with SMTP id u29so2981395lfk.7
-        for <selinux@vger.kernel.org>; Tue, 27 Aug 2019 10:33:51 -0700 (PDT)
+        id S1728711AbfH0R4X (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 27 Aug 2019 13:56:23 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:38181 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727683AbfH0R4W (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 27 Aug 2019 13:56:22 -0400
+Received: by mail-wr1-f67.google.com with SMTP id e16so2609098wro.5
+        for <selinux@vger.kernel.org>; Tue, 27 Aug 2019 10:56:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RKUULj5eMdf+J6Z6LlD09aOvP9ewJfGxBeSdaumGUzU=;
-        b=xKTB20+x3GyH4q//bJQM3AUuY05a1ha/AGFuXj0CxwGXFqGL0l1Ny8ycNeWKTzUZAS
-         3jIsywAZHsMA1KnH0wpU7LzS36IaVcRW0Kmadkjof7UWsvp09/okc+PQR1zf+E0H4rpW
-         80mqtv4V9o1LL0JJQw0SFi9hswDcwMZd54dEQE0nFzzM1CpKcGim/ejfoHBDpKG/bo+s
-         uv+IF8+LFe5MHRTuGAhjfK1IZhyW0UpUpH5qMRKmYoPwowOn+y379hxKzESvmKloSBlb
-         AELm48Is4GzeGXGAyiW8z5nAqZ71wqjbevaie/WJMNKheu7Xr9V4aRc2qLDshDxcmrO2
-         olPw==
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=3b35UF3gucyj2B//XoGyah7nhw68lBf6QgCuRZf5Qog=;
+        b=AyhxyYDPAduSIAKUuW6LetJjmdE/gM6u53BHOmz2G6fy2gYmXxaTfMmC/1J/RqxIOq
+         Ub2/N665mrKVARztwVR65jWqp04Z5PM8LAsy7ho/JTh7tO410QCRhotvsHqSHJXa31Gw
+         QBNh74cyZSi+5lf4wzYATbSTDpkb6u8oxNYftn7Ih+Pc1VSviflCbSBb7unc9slRrcgW
+         yX+6+FuxvZut/qrTloOXgJ7m7Bd8PzFy5jw5D337HhIY6p+q2uCZwu/10YKOC9U6JiPI
+         kdy7rKW2Lbv0Lx1mQYN5cQm45+j095UaR0AGRpUt0KU/hc6vrYZWWJjd49TVFdl2cZ+f
+         IQyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RKUULj5eMdf+J6Z6LlD09aOvP9ewJfGxBeSdaumGUzU=;
-        b=j2iErutBM7A4ierVScyeaf/ylXGxAU7k1dJRcZiIxCevBevw8VLj+2ulLxA4Hba1jL
-         2TiS34S79vt3bB3W6qimRn9xy8dS8foHeY/hTnJziOs97OhEwJaEs7/xJAnzna47B8TY
-         yUMJgh3Fw4vwvWmAOfZ0xSFOB+RVo/q8HQQvRadWWwfj3/yr7kXTE/upyD3L0wZ8vEgm
-         7y/yYzlEJEl+QKTwup2/M735BKRClqGFPOh8Tsh5mzhpZeRuLlLy64o0BZa37puYn+J3
-         WE37vLAYn+/UxuhH01/KPiqozYndUFWW9OQbwVhfcf81cwg1ETibcLrenwOZc6W0iQ7A
-         VFww==
-X-Gm-Message-State: APjAAAUlem4TbKheR8AGZllflNFfVHRDrV5DqJ//YvbQPOvQVCxX7wWC
-        qcAjyEE1/51Yk2bYFraZ9YqvN8EcM+J65d/U1iPa
-X-Google-Smtp-Source: APXvYqzHpCxqXkmI4wP2SkK4RfTN8y2/Pw0NAgTQJbUBs4JWo3/CkwLnu23URV3boQnM/b1UUDGCEbN0ijojirR0ccA=
-X-Received: by 2002:a19:8c14:: with SMTP id o20mr8407138lfd.158.1566927228960;
- Tue, 27 Aug 2019 10:33:48 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=3b35UF3gucyj2B//XoGyah7nhw68lBf6QgCuRZf5Qog=;
+        b=GQlk5pWT4mwrq7zKvGeAjQtWnzI3OWLOG0PBIPdwY4j40TJj6Ez4EM2omFT3n+3T15
+         k+d0jjk9BXiW46D0IaiSkmGlHcfGQvaVU5p/TXQMfV+V57CTtf1KDcz2AoMuKRQt/o12
+         OFUxJvL+ry1437flP9BnCGLgGkUQeqtIALb0iz0zwStbl/3qfNcixqQKX7PndwTmtk+b
+         Kf0UXpy+2pYLgn2vcVRwTXkAqAjuKkCRF49JwEZDuxIC1KRSTD2btdptMhTqyBxm7Urq
+         KY7z/3EKCK4rpcYgvG3KBkbjnoSV6vRs7bTDTKILpLU+Yx+GzOaKJI+OsP2XNFuqLR4C
+         0fTg==
+X-Gm-Message-State: APjAAAXj7W86iDmJW35C9gYaTvVtI52tgAe3a1RuBmZipsuWObLaoAq5
+        GJcNKL2YvUd0ExNM0h/ufPawO6JgC/5jfJMcZ6U=
+X-Google-Smtp-Source: APXvYqwDRITyEnHaXeWBXrXLCMkwKwshTX0KoLKgTvDKnHL5On6lfifHfVOk75zGyOunYB5NXChzB80T/bBpUKFtNDw=
+X-Received: by 2002:a5d:5701:: with SMTP id a1mr1864645wrv.95.1566928581739;
+ Tue, 27 Aug 2019 10:56:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190814133320.28516-1-omosnace@redhat.com>
-In-Reply-To: <20190814133320.28516-1-omosnace@redhat.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 27 Aug 2019 13:33:37 -0400
-Message-ID: <CAHC9VhRb1==sCoNxKZN09-rhs+yHiDXbd4Lw+fRZGen5d1A2uA@mail.gmail.com>
-Subject: Re: [PATCH v2] selinux: avoid atomic_t usage in sidtab
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     selinux@vger.kernel.org, Jann Horn <jannh@google.com>,
-        NitinGote <nitin.r.gote@intel.com>,
-        Kees Cook <keescook@chromium.org>
+Received: by 2002:adf:b60c:0:0:0:0:0 with HTTP; Tue, 27 Aug 2019 10:56:21
+ -0700 (PDT)
+Reply-To: madammercywilliams06@gmail.com
+From:   Mrs Mercy Williams <madammercywilliams04@gmail.com>
+Date:   Tue, 27 Aug 2019 18:56:21 +0100
+Message-ID: <CALwUhJgZj3V+814EAbSuTOj4mef-FzoKxRLodkbZPkMa7E_4nQ@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Aug 14, 2019 at 9:33 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> As noted in Documentation/atomic_t.txt, if we don't need the RMW atomic
-> operations, we should only use READ_ONCE()/WRITE_ONCE() +
-> smp_rmb()/smp_wmb() where necessary (or the combined variants
-> smp_load_acquire()/smp_store_release()).
->
-> This patch converts the sidtab code to use regular u32 for the counter
-> and reverse lookup cache and use the appropriate operations instead of
-> atomic_get()/atomic_set(). Note that when reading/updating the reverse
-> lookup cache we don't need memory barriers as it doesn't need to be
-> consistent or accurate. We can now also replace some atomic ops with
-> regular loads (when under spinlock) and stores (for conversion target
-> fields that are always accessed under the master table's spinlock).
->
-> We can now also bump SIDTAB_MAX to U32_MAX as we can use the full u32
-> range again.
->
-> Suggested-by: Jann Horn <jannh@google.com>
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> Reviewed-by: Jann Horn <jannh@google.com>
-> ---
->
-> v2: Added comments detailing access semantics of sidtab fields.
->
->  security/selinux/ss/sidtab.c | 48 ++++++++++++++++--------------------
->  security/selinux/ss/sidtab.h | 19 ++++++++++----
->  2 files changed, 35 insertions(+), 32 deletions(-)
+Hello,
 
-Sorry for the delay on this, it was a casualty of LSS-NA.  Regardless,
-this looks better, I just merged it into selinux/next - thanks!
-
--- 
-paul moore
-www.paul-moore.com
+Did you receive the previous mail i sent to you? Contact me via :
+madammercywilliams06@gmail.com

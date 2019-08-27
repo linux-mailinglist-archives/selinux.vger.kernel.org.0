@@ -2,59 +2,156 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3B689F1EB
-	for <lists+selinux@lfdr.de>; Tue, 27 Aug 2019 19:56:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 968AD9F473
+	for <lists+selinux@lfdr.de>; Tue, 27 Aug 2019 22:47:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728711AbfH0R4X (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 27 Aug 2019 13:56:23 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:38181 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727683AbfH0R4W (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 27 Aug 2019 13:56:22 -0400
-Received: by mail-wr1-f67.google.com with SMTP id e16so2609098wro.5
-        for <selinux@vger.kernel.org>; Tue, 27 Aug 2019 10:56:22 -0700 (PDT)
+        id S1728371AbfH0UrT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 27 Aug 2019 16:47:19 -0400
+Received: from mail-lj1-f196.google.com ([209.85.208.196]:36157 "EHLO
+        mail-lj1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726584AbfH0UrT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 27 Aug 2019 16:47:19 -0400
+Received: by mail-lj1-f196.google.com with SMTP id u15so547761ljl.3
+        for <selinux@vger.kernel.org>; Tue, 27 Aug 2019 13:47:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=3b35UF3gucyj2B//XoGyah7nhw68lBf6QgCuRZf5Qog=;
-        b=AyhxyYDPAduSIAKUuW6LetJjmdE/gM6u53BHOmz2G6fy2gYmXxaTfMmC/1J/RqxIOq
-         Ub2/N665mrKVARztwVR65jWqp04Z5PM8LAsy7ho/JTh7tO410QCRhotvsHqSHJXa31Gw
-         QBNh74cyZSi+5lf4wzYATbSTDpkb6u8oxNYftn7Ih+Pc1VSviflCbSBb7unc9slRrcgW
-         yX+6+FuxvZut/qrTloOXgJ7m7Bd8PzFy5jw5D337HhIY6p+q2uCZwu/10YKOC9U6JiPI
-         kdy7rKW2Lbv0Lx1mQYN5cQm45+j095UaR0AGRpUt0KU/hc6vrYZWWJjd49TVFdl2cZ+f
-         IQyQ==
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=676eBGOMnEbCXdYc2k42Pn3qEQ+iqzW4O3w2nRFpLyY=;
+        b=wjz2OlUL8SBaRIjQe2a3q3lg/KbUwYCbasUcIyh0tUnuwP/DR2Nx/EIcHFqRFsMuov
+         BMbbpB7exp43OZSkAwaHJfxuZd0k8xIREjlTyNSPAz8yw656ub/Sb2ZsX7warBLAVVmy
+         PnEeBerc/wgN7MYukl+57MTdVvVs84Mh3E/EsmTW5eASJGVG8WI+cNcLbUl9ASoS0gJK
+         nEiqqzY4o6eWY45oYImbaodwiaPLHfhMEjXFBbMNBYCd3IcXU9MO/G2qaD6HMM4iDgbN
+         YKNdXvzEusmflmeX0/d2oyJ1RzO3XdoSXxzq8qAz6tc/k1nh5P2QWpLAS9yQ32DvnFIo
+         zg9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=3b35UF3gucyj2B//XoGyah7nhw68lBf6QgCuRZf5Qog=;
-        b=GQlk5pWT4mwrq7zKvGeAjQtWnzI3OWLOG0PBIPdwY4j40TJj6Ez4EM2omFT3n+3T15
-         k+d0jjk9BXiW46D0IaiSkmGlHcfGQvaVU5p/TXQMfV+V57CTtf1KDcz2AoMuKRQt/o12
-         OFUxJvL+ry1437flP9BnCGLgGkUQeqtIALb0iz0zwStbl/3qfNcixqQKX7PndwTmtk+b
-         Kf0UXpy+2pYLgn2vcVRwTXkAqAjuKkCRF49JwEZDuxIC1KRSTD2btdptMhTqyBxm7Urq
-         KY7z/3EKCK4rpcYgvG3KBkbjnoSV6vRs7bTDTKILpLU+Yx+GzOaKJI+OsP2XNFuqLR4C
-         0fTg==
-X-Gm-Message-State: APjAAAXj7W86iDmJW35C9gYaTvVtI52tgAe3a1RuBmZipsuWObLaoAq5
-        GJcNKL2YvUd0ExNM0h/ufPawO6JgC/5jfJMcZ6U=
-X-Google-Smtp-Source: APXvYqwDRITyEnHaXeWBXrXLCMkwKwshTX0KoLKgTvDKnHL5On6lfifHfVOk75zGyOunYB5NXChzB80T/bBpUKFtNDw=
-X-Received: by 2002:a5d:5701:: with SMTP id a1mr1864645wrv.95.1566928581739;
- Tue, 27 Aug 2019 10:56:21 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=676eBGOMnEbCXdYc2k42Pn3qEQ+iqzW4O3w2nRFpLyY=;
+        b=UEnNv5Q6V8wMHYxfwGCbKyVKXynMuygs438PHiA3Nw12yOsJTFUvkdN7uixF2QiFmW
+         sfOg/P5zcDINemj5aacfD8XtW5542Gn8QFdWpY62G4S8Nj0XkGuLBBwUibiUFFEWIznJ
+         Qq3Bs7t4P0iVblN0emNYZPZgADF7ZMLbwnMwL3ASLdptwTDn98Dz061dlGYyiaHm8UEv
+         3d+LTxY0HeDRCd8J1Tyy0Y9Sc49ekb1smZxb6B5Qg71+6/FDNnSg0G1j59ZXAuGWw+jh
+         m5Bez+Qv+VYDzQQLbhWixg6SJtcoaSXTG1vl3nHfvpOE0tWoc+o/gYEQiUlnmVXeUlbz
+         kllA==
+X-Gm-Message-State: APjAAAWAxzaIMUNVty79y8wsiNCQcRLW2c2qfnrM4igPrEpWbiCqjyyL
+        G9kw8/Ulw17MsVao4tz+bgjiLHUXxt15VHiXwle2
+X-Google-Smtp-Source: APXvYqz18ASa+PuVHWeWsueo2BGnqQKKMgfHbJJ8aC+DXkQeY09FG1NoMCLdKpFnC0jdgk4t+vpziyBLozSTThLqkds=
+X-Received: by 2002:a2e:6393:: with SMTP id s19mr135317lje.46.1566938836251;
+ Tue, 27 Aug 2019 13:47:16 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:adf:b60c:0:0:0:0:0 with HTTP; Tue, 27 Aug 2019 10:56:21
- -0700 (PDT)
-Reply-To: madammercywilliams06@gmail.com
-From:   Mrs Mercy Williams <madammercywilliams04@gmail.com>
-Date:   Tue, 27 Aug 2019 18:56:21 +0100
-Message-ID: <CALwUhJgZj3V+814EAbSuTOj4mef-FzoKxRLodkbZPkMa7E_4nQ@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
+References: <20190821134547.96929-1-jeffv@google.com> <20190822.161913.326746900077543343.davem@davemloft.net>
+ <CABXk95BF=RfqFSHU_---DRHDoKyFON5kS_vYJbc4ns2OS=_t0w@mail.gmail.com>
+In-Reply-To: <CABXk95BF=RfqFSHU_---DRHDoKyFON5kS_vYJbc4ns2OS=_t0w@mail.gmail.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Tue, 27 Aug 2019 16:47:04 -0400
+Message-ID: <CAHC9VhRmmEp_nFtOFy_YRa9NwZA4qPnjw7D3JQvqED-tO4Ha1g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rtnetlink: gate MAC address with an LSM hook
+To:     Jeffrey Vander Stoep <jeffv@google.com>
+Cc:     David Miller <davem@davemloft.net>, netdev@vger.kernel.org,
+        LSM List <linux-security-module@vger.kernel.org>,
+        selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello,
+On Fri, Aug 23, 2019 at 7:41 AM Jeffrey Vander Stoep <jeffv@google.com> wro=
+te:
+> On Fri, Aug 23, 2019 at 1:19 AM David Miller <davem@davemloft.net> wrote:
+> > From: Jeff Vander Stoep <jeffv@google.com>
+> > Date: Wed, 21 Aug 2019 15:45:47 +0200
+> >
+> > > MAC addresses are often considered sensitive because they are
+> > > usually unique and can be used to identify/track a device or
+> > > user [1].
+> > >
+> > > The MAC address is accessible via the RTM_NEWLINK message type of a
+> > > netlink route socket[2]. Ideally we could grant/deny access to the
+> > > MAC address on a case-by-case basis without blocking the entire
+> > > RTM_NEWLINK message type which contains a lot of other useful
+> > > information. This can be achieved using a new LSM hook on the netlink
+> > > message receive path. Using this new hook, individual LSMs can select
+> > > which processes are allowed access to the real MAC, otherwise a
+> > > default value of zeros is returned. Offloading access control
+> > > decisions like this to an LSM is convenient because it preserves the
+> > > status quo for most Linux users while giving the various LSMs
+> > > flexibility to make finer grained decisions on access to sensitive
+> > > data based on policy.
+> > >
+> > > [1] https://adamdrake.com/mac-addresses-udids-and-privacy.html
+> > > [2] Other access vectors like ioctl(SIOCGIFHWADDR) are already covere=
+d
+> > > by existing LSM hooks.
+> > >
+> > > Signed-off-by: Jeff Vander Stoep <jeffv@google.com>
+> >
+> > I'm sure the MAC address will escape into userspace via other means,
+> > dumping pieces of networking config in other contexts, etc.  I mean,
+> > if I can get a link dump, I can dump the neighbor table as well.
+>
+> These are already gated by existing LSM hooks and capability checks.
+> They are not allowed on mandatory access control systems unless explicitl=
+y
+> granted.
+>
+> > I kinda think this is all very silly whack-a-mole kind of stuff, to
+> > be quite honest.
+>
+> We evaluated mechanisms for the MAC to reach unprivileged apps.
+> A number of researchers have published on this as well such as:
+> https://www.usenix.org/conference/usenixsecurity19/presentation/reardon
+>
+> Three "leaks" were identified, two have already been fixed.
+> -ioctl(SIOCGIFHWADDR). Fixed using finer grained LSM checks
+> on socket ioctls (similar to this change).
+> -IPv6 IP addresses. Fixed by no longer including the MAC as part
+> of the IP address.
+> -RTM_NEWLINK netlink route messages. The last mole to be whacked.
+>
+> > And like others have said, tomorrow you'll be like "oh crap, we should
+> > block X too" and we'll get another hook, another config knob, another
+> > rulset update, etc.
+>
+> This seems like an issue inherent with permissions/capabilities. I don=E2=
+=80=99t
+> think we should abandon the concept of permissions because someone
+> can forget to add a check.  Likewise, if someone adds new code to the
+> kernel and omits a capable(CAP_NET_*) check, I would expect it to be
+> fixed like any other bug without the idea of capability checks being toss=
+ed
+> out.
+>
+> We need to do something because this information is being abused. Any
+> recommendations? This seemed like the simplest approach, but I can
+> definitely appreciate that it has downsides.
+>
+> I could make this really generic by adding a single hook to the end of
+> sock_msgrecv() which would allow an LSM to modify the message to omit
+> the MAC address and any other information that we deem as sensitive in th=
+e
+> future. Basically what Casey was suggesting. Thoughts on that approach?
 
-Did you receive the previous mail i sent to you? Contact me via :
-madammercywilliams06@gmail.com
+I apologize for the delay in responding; I'm blaming LSS-NA travel.
+
+I'm also not a big fan of inserting the hook in rtnl_fill_ifinfo(); as
+presented it is way too specific for a LSM hook for me to be happy.
+However, I do agree that giving the LSMs some control over netlink
+messages makes sense.  As others have pointed out, it's all a matter
+of where to place the hook.
+
+If we only care about netlink messages which leverage nlattrs I
+suppose one option that I haven't seen mentioned would be to place a
+hook in nla_put().  While it is a bit of an odd place for a hook, it
+would allow the LSM easy access to the skb and attribute type to make
+decisions, and all of the callers should already be checking the
+return code (although we would need to verify this).  One notable
+drawback (not the only one) is that the hook is going to get hit
+multiple times for each message.
+
+--
+paul moore
+www.paul-moore.com

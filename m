@@ -2,280 +2,257 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F7DAA295D
-	for <lists+selinux@lfdr.de>; Fri, 30 Aug 2019 00:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B197A2AB0
+	for <lists+selinux@lfdr.de>; Fri, 30 Aug 2019 01:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728026AbfH2WFY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 29 Aug 2019 18:05:24 -0400
-Received: from USAT19PA23.eemsg.mail.mil ([214.24.22.197]:27758 "EHLO
-        USAT19PA23.eemsg.mail.mil" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726894AbfH2WFY (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 29 Aug 2019 18:05:24 -0400
-X-Greylist: delayed 626 seconds by postgrey-1.27 at vger.kernel.org; Thu, 29 Aug 2019 18:05:23 EDT
-X-EEMSG-check-017: 22393809|USAT19PA23_ESA_OUT04.csd.disa.mil
-X-IronPort-AV: E=Sophos;i="5.64,445,1559520000"; 
-   d="scan'208";a="22393809"
-Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
-  by USAT19PA23.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 29 Aug 2019 20:46:15 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
-  s=tycho.nsa.gov; t=1567111575; x=1598647575;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=cCwQipwradapd1jJ416jlS1TeeBrpVaByP4WzFp95ZQ=;
-  b=DvjhVJ+ADuAgBksdCx+7jskojAh+kvLOui2fuYhBgQhZCuRTtPwDWizM
-   0i/IirnDScmv7wVe7Sk2LdRvuTZFXOFQ0QfjB7EZZhC1AcmQt1Gzo6JUX
-   ZX25tb807PTLcfbH5EFpUWgDGALPAkeOlunUuAujxiJAX2IFj4WFak0o6
-   pvI2wPBvYoo6qlgRoxgETRvAr2ee3RH/3xaQw/KkI2d+p7wDe13XP1qKf
-   8lM4bivM/URlNQzpVvjHKp254GKqq+PIwj3j43+fYTfxb3+JNNfPYE5SH
-   jS8rkcFCOXP1GqBV7EA0l0qbE40MaZL/VA2sMKdGwjsQiuNOR0Xe0syQ/
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.64,444,1559520000"; 
-   d="scan'208";a="32153224"
-IronPort-PHdr: =?us-ascii?q?9a23=3AHWcHShWXS1Zggi+W4NSvOCxj0vbV8LGtZVwlr6?=
- =?us-ascii?q?E/grcLSJyIuqrYZRSEtadThVPEFb/W9+hDw7KP9fy5AypZv8zK6SxcOLV3FD?=
- =?us-ascii?q?Y9wf0MmAIhBMPXQWbaF9XNKxIAIcJZSVV+9Gu6O0UGUOz3ZlnVv2HgpWVKQk?=
- =?us-ascii?q?a3OgV6PPn6FZDPhMqrye+y54fTYwJVjzahfL9+Nhq7oRjPusUMnIdvK7g9xh?=
- =?us-ascii?q?TUrnZHeuld2H9lK0+Ukxvg/Mm74YRt8z5Xu/Iv9s5AVbv1cqElRrFGDzooLn?=
- =?us-ascii?q?446tTzuRbMUQWA6H0cUn4LkhVTGAjK8Av6XpbqvSTksOd2xTSXMtf3TbAwXj?=
- =?us-ascii?q?Si8rtrRRr1gyoJKzI17GfagdFrgalFvByuuQBww4/MYIGUKvV+eL/dfcgHTm?=
- =?us-ascii?q?ZFR8pdSjBNDp+5Y4YJAeUBJ+JYpJTjqVUIoxW1GA2gCPrhxzJMg3P727Ax3e?=
- =?us-ascii?q?Y8HgHcxAEuAswAsHrUotv2OqkdX++6w6vUwjvMdP5WxTXw5ZLUfhw9r/yBX7?=
- =?us-ascii?q?R9etfRx0k1EAPFi02dp5H5PzyLzuQNs3aU7+x9Xuyyjm4osQVxojyxycYsl4?=
- =?us-ascii?q?LEgZkVxU3f9Shi3IY0JcG3SE58YdK+FptQrDuVO5F5QsMlXWFloSA3waAFt5?=
- =?us-ascii?q?6jZCUG1ZsqyhHFZ/GHboSE+AzvWemPLTtimX5ofq+0iQyo/ki60OL8U9G50F?=
- =?us-ascii?q?NNriVYjNbBrmsN1xnP6sifTft941uh1S6P1w/N7uFEJlg5lbbBJJ47w74wi4?=
- =?us-ascii?q?ETvV7fHi72hEr2jKiWel8i+ue08OTofq/qppqdN49wkg3+M6IuldKjAekgLw?=
- =?us-ascii?q?QDUGeW9f682bH+50H1XrpHguMsnqXEqJzaIN4Upq+9Aw9byIYj7BO/Ai+90N?=
- =?us-ascii?q?sFhnkKN05FeRKbgIjpPFHCOvb4DeyljFi2nzdrwO7GMqX7AprRNnjDjKvhfb?=
- =?us-ascii?q?Fl5k5ezwoz1tBf549OBb0bO/3zQE7xtNrFAR89LQO52ProCM9g1oMYRW2PAq?=
- =?us-ascii?q?+YP77Ivl+U/O0jOfWDZIgQuDzlMfgq++bujWMlmV8aZaSpxoUYaHS5HvRgPk?=
- =?us-ascii?q?WYbmHhgskOEWgUpAoyVu/qh0OYUT5VeXmyW7gw5jYhCIKpFY3DXJyigKSd3C?=
- =?us-ascii?q?enGZ1bfnhGBUqREXfsbIiEQ+0DaD+WIsN4lzwEUr+hS5U/2h20qAD6zL9nJP?=
- =?us-ascii?q?LO+iIErZLjyMR15+rLmB4u9Tx7FcKd03qKT2FyhW4ISTg23LpjrkNj0leD1q?=
- =?us-ascii?q?l4g/pEFdBJ+/xJVQI6ZtbgyLlYDMvyRwuJVM2ITlqiT53yAzYqTs84hdUUYk?=
- =?us-ascii?q?BxH9iKhQre2SGqErMci7XND5sxpOaUxHX1JsBg217Y26Q7yVorWM1CMSuhnK?=
- =?us-ascii?q?Es2RLUAtvyj0iBl6usPZ8Z1SrJ+XbLmXGCp2lEQQVwVuPDRnlZaUzI+4eqrn?=
- =?us-ascii?q?jeRqOjXOx0ejBKztSPf+4TMYzk?=
-X-IPAS-Result: =?us-ascii?q?A2A5BwBVOWhd/wHyM5BmHQEBBQEHBQGBZ4FuKoE/ATIqh?=
- =?us-ascii?q?CGPWAEBAQEGgTaJbpElCQEBAQEBAQEBATQBAgEBhD8CglkjOBMCCwEBAQQBA?=
- =?us-ascii?q?QEBAQYDAQFshTqCOikBgmYBAQEBAgEjBBE6BxALGAICEgETAgJXBgEMBgIBA?=
- =?us-ascii?q?ReCSD+BdwUPrBh/M4VKgzuBSYEMKIt3GHiBB4E4gms+hA1/AoJBglgEjEeId?=
- =?us-ascii?q?5VdbQmCIIImjUmEXgYbmF0tjUKaRiGBWCsIAhgIIQ+DJ4JOF44hHSMDMIEGA?=
- =?us-ascii?q?QGMMgINF4IuAQE?=
-Received: from tarius.tycho.ncsc.mil ([144.51.242.1])
-  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 29 Aug 2019 20:45:53 +0000
-Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
-        by tarius.tycho.ncsc.mil (8.14.4/8.14.4) with ESMTP id x7TKjmmH019969;
-        Thu, 29 Aug 2019 16:45:49 -0400
-Subject: Re: [PATCH v2] default_range glblub implementation
-To:     Joshua Brindle <joshua.brindle@crunchydata.com>,
-        selinux@vger.kernel.org
-Cc:     paul@paul-moore.com, Chad Hanson <chanson@forcepoint.com>
-References: <20190828204259.23160-1-joshua.brindle@crunchydata.com>
-From:   Stephen Smalley <sds@tycho.nsa.gov>
-Message-ID: <bdab2922-a4e0-8d5b-514d-2874e0be1440@tycho.nsa.gov>
-Date:   Thu, 29 Aug 2019 16:45:48 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.7.0
+        id S1725826AbfH2X3o (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 29 Aug 2019 19:29:44 -0400
+Received: from sonic307-16.consmr.mail.ne1.yahoo.com ([66.163.190.39]:41645
+        "EHLO sonic307-16.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725917AbfH2X3n (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 29 Aug 2019 19:29:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1567121382; bh=QNFfpIuENp2OnNTjoEf6b+PwLh7yejarWuQe1E8hiLI=; h=From:To:Cc:Subject:Date:From:Subject; b=qpG31DoUHhTSfzdTcddJavvjrJHHu2xIZ5/sTZ/abr/pmHSecZrJ6Zl8oUy3IP07rsBp509hsoUYAEewjz2lFCQR09VGwQLk5WWg4MNDYxsNd90e+jgYTnR7uiU9ZH5u96uiBL0Ry//VVUb3RLw8ua5KvY6RVwouVFYjJ8RuNFgupaIwgE1jx0rSLbNUTwbvTq7WHYk8glFKcLEBBzdw4ZE0ISsYHPCtwR8ORKZ0OAW6oFOsDXXy4SOG4pIlPZibOyCsKwMDtVIylUA9nhuiSyvGFjmrcGaX1lKzGSK7+Z0XEfvd5GNI4lOCZHZdIT+3uNY1MzljBXpGz+H/MDIyNA==
+X-YMail-OSG: B4DmbSUVM1mfQ5hoIaRsO5qGlw0R1tlBQ1FlHRpw_t4RiO8ZIOuC3XJCBwHn_tT
+ pqgYRWnAHOo.rb.XGKXKEqyiyaTuKE3dClkGs2WhitQ_TRhTWcykg84aDBmOi7xZz.am9y2z35DN
+ PRQJL6KiKDLAFA4yRU1uQp2BwmRoPk_NXCPS7ex.hEMYdk4Y3dlbNUvGl9NdbCrk3FukpwoVyhqw
+ gNFbYJ8KiMrVgtlIUtv.kpr_xNWQszurt57yrgUbGXFnCXLNXWnkfTkLn55BVjsrAlMWC3tJPkE9
+ FONhxh0BCmscPm.2nwY.XIECjql8D9AgfmnozhVEdfwSDKUhSAodSL_2h9Cn1W1fCVZLJjCVyUYX
+ eQoKcOL93cxj_wA5_4O8zqV5RfYHaygEZpte5VfoDHZ8kNfAQkDHbe6_eySgg7n5jmWVRCNsL3Qp
+ w1a6lG87c5qi.JfYRxlL7BfK2GQVfXIfTEKugtoJ5tGLVGUdhFrOR1ISNyxzZ4TFR5toWyJ4VeXh
+ 7zlijRBXa2q4sC9ewo4fqh7_uc5oJPlKGr.p4ifp8uCaIww5ccpoz7lnsWhc0JE0t3gGWbWxrMgk
+ W1f0q.BAeoxu87e4EbJUC9ARZLcOIQ016ObvWfUpkfUBY04Grdv.M78mOpc.KcJvv75gT8nWSfwX
+ zCsRkHump4_G1UKJRadxY2SxqEQWPlGv3hf_VN2U3u.7BchAY9W.a45JGYE_l_xGtCEpq75gX0Qs
+ eeoAFxRyXCXa_.S8aPElN7IkRDNWoF1GqGA1Vbp1JiHZRpXAxwT2yqglWKhXF6H8XvPIK6MV1pzq
+ LKrCK_A6dvCbHQ6HXVvf_U0kgfDCEiuZpQ2TWcoW3650qo4WurH9mwK1Gu_VkgqwsC5Ji.FDExDF
+ zShuV5GMdF_Q6rGBCMKIdsyH4SbSNS.QH3jV13561EY4LXbxaGJOopsldUe6moM.X6MZmMK07z5v
+ ri_y93Mum0rtJXM8AYpBwhWGFm23qAo9xEXEn1dk1INLX1t_oO71HQzs6DXxbv.3ANwEvWZbclfX
+ J5sJJDrG8n9zrcFxAENyJdXss0YQ5wDxqkUS0fgY2KlmqO5yI8NazcoF0W5wftyZ4gvYLbp4wD9K
+ Z_zAcewLzLLzaZl1XIA8pgtmsMhlquK4uxUAREM.JsWhiIn_soPFTs3FCOkG66jwo28zHldm8Din
+ zkpBQWA4W065qxbF4f3XGCyCTSGsUNSm.kilj.p1TLVrBPbm92ewapGR.75_P0ggGDPp8QRFV27Z
+ 0SRIfMiNtfCxPDRfQ9C5qNBt5dKvJTcgl1WQXT9n30TOd.eQZ6Go653PXlGoRNCDdf8P7j0I4i4n
+ 6ntsb8Ai__6bIdQ--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Thu, 29 Aug 2019 23:29:42 +0000
+Received: by smtp403.mail.ne1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID 348e1bb830015a550a7ef552e960420a;
+          Thu, 29 Aug 2019 23:29:37 +0000 (UTC)
+From:   Casey Schaufler <casey@schaufler-ca.com>
+To:     casey.schaufler@intel.com, jmorris@namei.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Cc:     casey@schaufler-ca.com, keescook@chromium.org,
+        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
+        paul@paul-moore.com, sds@tycho.nsa.gov
+Subject: [PATCH v8 00/28] LSM: Module stacking for AppArmor
+Date:   Thu, 29 Aug 2019 16:29:07 -0700
+Message-Id: <20190829232935.7099-1-casey@schaufler-ca.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <20190828204259.23160-1-joshua.brindle@crunchydata.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 8/28/19 4:43 PM, Joshua Brindle wrote:
-> A policy developer can now specify glblub as a default_range default and
-> the computed transition will be the intersection of the mls range of
-> the two contexts.
-> 
-> The glb (greatest lower bound) lub (lowest upper bound) of a range is calculated
-> as the greater of the low sensitivities and the lower of the high sensitivities
-> and the and of each category bitmap.
-> 
-> This can be used by MLS solution developers to compute a context that satisfies,
-> for example, the range of a network interface and the range of a user logging in.
-> 
-> Some examples are:
-> 
-> User Permitted Range | Network Device Label | Computed Label
-> ---------------------|----------------------|----------------
-> S0-S1:c0.c12         | S0                   | S0
-> S0-S1:c0.c12         | S0-S1:c0.c1024       | S0-S1:c0.c12
-> S0-S4:c0.c512        | S1-S1:c0.c1024       | S1-S1:c0.c512
-> S0-S16:c0,c2         | S4-S6:c0.c128        | S4-S6:c0,c2
-> S0-S4                | S2-S6                | S2-S4
-> S0-S4                | S5-S8                | INVALID
-> S5-S8                | S0-S4                | INVALID
-> S6:c0,c2-S7:c4,c5    | S0:c2,c4-S6:c5.c100  | S6:c2-S6:c5
+This patchset provides the changes required for
+the AppArmor security module to stack safely with any other.
 
-I don't quite understand why it is an AND / intersection of the 
-categories on both levels.  Normally lub would be an OR / union. 
-Possibly it is just a terminology issue.  Is this "glblub" relation 
-defined by anyone else, or used in any other MLS system?
+v8: Incorporate feedback from v7
+    - Minor clean-up in display value management
+    - refactor "compound" context creation to use a common
+      append_ctx() function.
 
-Also, I'm left wondering whether certain cases of differing category 
-sets ought to yield an INVALID state.  What if the user's permitted 
-range was s0:c0,c5-s15:c0,c5 and the network device label was s0:c13? Or 
-take your last example - is it really correct to let the user login w/o c0?
+v7: Incorporate feedback from v6
+    - Make setting the display a privileged operation. The
+      availability of compound contexts reduces the need for
+      setting the display.
 
-> 
-> Signed-off-by: Joshua Brindle <joshua.brindle@crunchydata.com>
-> ---
->   security/selinux/include/security.h |  3 ++-
->   security/selinux/ss/context.h       | 28 ++++++++++++++++++++++++++++
->   security/selinux/ss/ebitmap.c       | 18 ++++++++++++++++++
->   security/selinux/ss/ebitmap.h       |  1 +
->   security/selinux/ss/mls.c           |  2 ++
->   security/selinux/ss/policydb.c      |  5 +++++
->   security/selinux/ss/policydb.h      |  1 +
->   7 files changed, 57 insertions(+), 1 deletion(-)
-> 
-> diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
-> index 111121281c47..ae840634e3c7 100644
-> --- a/security/selinux/include/security.h
-> +++ b/security/selinux/include/security.h
-> @@ -40,10 +40,11 @@
->   #define POLICYDB_VERSION_CONSTRAINT_NAMES	29
->   #define POLICYDB_VERSION_XPERMS_IOCTL	30
->   #define POLICYDB_VERSION_INFINIBAND		31
-> +#define POLICYDB_VERSION_GLBLUB		32
->   
->   /* Range of policy versions we understand*/
->   #define POLICYDB_VERSION_MIN   POLICYDB_VERSION_BASE
-> -#define POLICYDB_VERSION_MAX   POLICYDB_VERSION_INFINIBAND
-> +#define POLICYDB_VERSION_MAX   POLICYDB_VERSION_GLBLUB
->   
->   /* Mask for just the mount related flags */
->   #define SE_MNTMASK	0x0f
-> diff --git a/security/selinux/ss/context.h b/security/selinux/ss/context.h
-> index 2260c44a568c..0a0fbcc0d90c 100644
-> --- a/security/selinux/ss/context.h
-> +++ b/security/selinux/ss/context.h
-> @@ -95,6 +95,34 @@ static inline int mls_context_cpy_high(struct context *dst, struct context *src)
->   	return rc;
->   }
->   
-> +
-> +static inline int mls_context_glblub(struct context *dst, struct context *c1, struct context *c2)
-> +{
-> +	struct mls_range *dr = &dst->range, *r1 = &c1->range, *r2 = &c2->range;
-> +	int rc = 0;
-> +
-> +	if (r1->level[1].sens < r2->level[0].sens || r2->level[1].sens < r1->level[0].sens)
-> +		/* These ranges have no common sensitivities */
-> +		return -1;
+v6: Incorporate feedback from v5
+    - Add subj_<lsm>= and obj_<lsm>= fields to audit records
+    - Add /proc/.../attr/context to get the full context in
+      lsmname\0value\0... format as suggested by Simon McVittie
+    - Add SO_PEERCONTEXT for getsockopt() to get the full context
+      in the same format, also suggested by Simon McVittie.
+    - Add /sys/kernel/security/lsm_display_default to provide
+      the display default value.
 
-This error will get propagate to userspace as an errno? So it should be 
--EINVAL?
+v5: Incorporate feedback from v4
+    - Initialize the lsmcontext in security_secid_to_secctx()
+    - Clear the lsmcontext in all security_release_secctx() cases
+    - Don't use the "display" on strictly internal context
+      interfaces.
+    - The SELinux binder hooks check for cases where the context
+      "display" isn't compatible with SELinux.
 
-> +
-> +	// Take the greatest of the low
-> +	dr->level[0].sens = max(r1->level[0].sens, r2->level[0].sens);
-> +
-> +        // Take the least of the high
-> +	dr->level[1].sens = min(r1->level[1].sens, r2->level[1].sens);
-> +
-> +	rc = ebitmap_and(&dr->level[0].cat, &r1->level[0].cat, &r2->level[0].cat);
-> +	if (rc)
-> +		goto out;
-> +
-> +	rc = ebitmap_and(&dr->level[1].cat, &r1->level[1].cat, &r2->level[1].cat);
-> +	if (rc)
-> +		goto out;
-> +
-> +out:
-> +	return rc;
-> +}
-> +
->   static inline int mls_context_cmp(struct context *c1, struct context *c2)
->   {
->   	return ((c1->range.level[0].sens == c2->range.level[0].sens) &&
-> diff --git a/security/selinux/ss/ebitmap.c b/security/selinux/ss/ebitmap.c
-> index 09929fc5ab47..c0a9f8ecffc3 100644
-> --- a/security/selinux/ss/ebitmap.c
-> +++ b/security/selinux/ss/ebitmap.c
-> @@ -77,6 +77,24 @@ int ebitmap_cpy(struct ebitmap *dst, struct ebitmap *src)
->   	return 0;
->   }
->   
-> +int ebitmap_and(struct ebitmap *dst, struct ebitmap *e1, struct ebitmap *e2)
-> +{
-> +	struct ebitmap_node *n;
-> +	int bit;
-> +
-> +	ebitmap_init(dst);
-> +
-> +	ebitmap_for_each_positive_bit(e1, n, bit) {
-> +		if (ebitmap_get_bit(e2, bit)) {
-> +			int rc = ebitmap_set_bit(dst, bit, 1);
-> +			if (rc < 0)
-> +				return rc;
-> +		}
-> +	}
-> +	return 0;
-> +}
-> +
-> +
->   #ifdef CONFIG_NETLABEL
->   /**
->    * ebitmap_netlbl_export - Export an ebitmap into a NetLabel category bitmap
-> diff --git a/security/selinux/ss/ebitmap.h b/security/selinux/ss/ebitmap.h
-> index 6aa7cf6a2197..9a23b81b8832 100644
-> --- a/security/selinux/ss/ebitmap.h
-> +++ b/security/selinux/ss/ebitmap.h
-> @@ -124,6 +124,7 @@ static inline void ebitmap_node_clr_bit(struct ebitmap_node *n,
->   
->   int ebitmap_cmp(struct ebitmap *e1, struct ebitmap *e2);
->   int ebitmap_cpy(struct ebitmap *dst, struct ebitmap *src);
-> +int ebitmap_and(struct ebitmap *dst, struct ebitmap *e1, struct ebitmap *e2);
->   int ebitmap_contains(struct ebitmap *e1, struct ebitmap *e2, u32 last_e2bit);
->   int ebitmap_get_bit(struct ebitmap *e, unsigned long bit);
->   int ebitmap_set_bit(struct ebitmap *e, unsigned long bit, int value);
-> diff --git a/security/selinux/ss/mls.c b/security/selinux/ss/mls.c
-> index 5e05f5b902d7..76c8ad014ac9 100644
-> --- a/security/selinux/ss/mls.c
-> +++ b/security/selinux/ss/mls.c
-> @@ -529,6 +529,8 @@ int mls_compute_sid(struct policydb *p,
->   			return mls_context_cpy_high(newcontext, tcontext);
->   		case DEFAULT_TARGET_LOW_HIGH:
->   			return mls_context_cpy(newcontext, tcontext);
-> +		case DEFAULT_GLBLUB:
-> +			return mls_context_glblub(newcontext, scontext, tcontext);
->   		}
->   
->   		/* Fallthrough */
-> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-> index f8efaa9f647c..1b59f72effbb 100644
-> --- a/security/selinux/ss/policydb.c
-> +++ b/security/selinux/ss/policydb.c
-> @@ -160,6 +160,11 @@ static struct policydb_compat_info policydb_compat[] = {
->   		.sym_num	= SYM_NUM,
->   		.ocon_num	= OCON_NUM,
->   	},
-> +	{
-> +		.version	= POLICYDB_VERSION_GLBLUB,
-> +		.sym_num	= SYM_NUM,
-> +		.ocon_num	= OCON_NUM,
-> +	},
->   };
->   
->   static struct policydb_compat_info *policydb_lookup_compat(int version)
-> diff --git a/security/selinux/ss/policydb.h b/security/selinux/ss/policydb.h
-> index fcc6366b447f..0c41d0b4da96 100644
-> --- a/security/selinux/ss/policydb.h
-> +++ b/security/selinux/ss/policydb.h
-> @@ -69,6 +69,7 @@ struct class_datum {
->   #define DEFAULT_TARGET_LOW     4
->   #define DEFAULT_TARGET_HIGH    5
->   #define DEFAULT_TARGET_LOW_HIGH        6
-> +#define DEFAULT_GLBLUB		7
->   	char default_range;
->   };
->   
-> 
+v4: Incorporate feedback from v3
+    - Mark new lsm_<blob>_alloc functions static
+    - Replace the lsm and slot fields of the security_hook_list
+      with a pointer to a LSM allocated lsm_id structure. The
+      LSM identifies if it needs a slot explicitly. Use the
+      lsm_id rather than make security_add_hooks return the
+      slot value.
+    - Validate slot values used in security.c
+    - Reworked the "display" process attribute handling so that
+      it works right and doesn't use goofy list processing.
+    - fix display value check in dentry_init_security
+    - Replace audit_log of secids with '?' instead of deleting
+      the audit log
 
+v3: Incorporate feedback from v2
+    - Make lsmblob parameter and variable names more
+      meaningful, changing "le" and "l" to "blob".
+    - Improve consistency of constant naming.
+    - Do more sanity checking during LSM initialization.
+    - Be a bit clearer about what is temporary scaffolding.
+    - Rather than clutter security_getpeersec_dgram with
+      otherwise unnecessary checks remove the apparmor
+      stub, which does nothing useful.
+
+Patches 0001-0003 complete the process of moving management
+of security blobs that might be shared from the individual
+modules to the infrastructure.
+
+Patches 0004-0014 replace system use of a "secid" with
+a structure "lsmblob" containing information from the
+security modules to be held and reused later. At this
+point lsmblob contains an array of u32 secids, one "slot"
+for each of the security modules compiled into the
+kernel that used secids. A "slot" is allocated when
+a security module requests one.
+The infrastructure is changed to use the slot number
+to pass the correct secid to or from the security module
+hooks.
+
+It is important that the lsmblob be a fixed size entity
+that does not have to be allocated. Several of the places
+where it is used would have performance and/or locking
+issues with dynamic allocation.
+
+Patch 0015 provides a mechanism for a process to
+identify which security module's hooks should be used
+when displaying or converting a security context string.
+A new interface /proc/.../attr/display contains the name
+of the security module to show. Reading from this file
+will present the name of the module, while writing to
+it will set the value. Only names of active security
+modules are accepted. Internally, the name is translated
+to the appropriate "slot" number for the module which
+is then stored in the task security blob. Setting the
+display requires CAP_MAC_ADMIN.
+
+Patch 0016 Starts the process of changing how a security
+context is represented. Since it is possible for a
+security context to have been generated by more than one
+security module it is now necessary to note which module
+created a security context so that the correct "release"
+hook can be called. There are several places where the
+module that created a security context cannot be inferred.
+
+This is achieved by introducing a "lsmcontext" structure
+which contains the context string, its length and the
+"slot" number of the security module that created it.
+The security_release_secctx() interface is changed,
+replacing the (string,len) pointer pair with a lsmcontext
+pointer.
+
+Patches 0017-0019 convert the security interfaces from
+(string,len) pointer pairs to a lsmcontext pointer.
+The slot number identifying the creating module is
+added by the infrastructure. Where the security context
+is stored for extended periods the data type is changed.
+
+The Netlabel code is converted to save lsmblob structures
+instead of secids in Patches 0020-21.
+
+Patch 0022 adds checks to the SELinux binder hooks
+which verify that if either "display" used is SELinux
+both are.
+
+Patches 0023-24 add addition data to the audit records
+to identify the LSM specific data for all active
+modules.
+
+Patches 0025-0027 add new interfaces for getting the
+compound security contexts.
+
+Finally, with all interference on the AppArmor hooks
+removed, Patch 0028 removes the exclusive bit from
+AppArmor. An unnecessary stub hook was also removed.
+
+The Ubuntu project is using an earlier version of
+this patchset in their distribution to enable stacking
+for containers.
+
+Performance measurements to date have the change
+within the "noise". The sockperf and dbench results
+are on the order of 0.2% to 0.8% difference, with
+better performance being as common as worse. The
+benchmarks were run with AppArmor and Smack on Ubuntu.
+
+https://github.com/cschaufler/lsm-stacking.git#stack-5.2-v8-apparmor
+
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+---
+ arch/alpha/include/uapi/asm/socket.h    |   1 +
+ arch/mips/include/uapi/asm/socket.h     |   1 +
+ arch/parisc/include/uapi/asm/socket.h   |   1 +
+ arch/sparc/include/uapi/asm/socket.h    |   1 +
+ drivers/android/binder.c                |  24 +-
+ fs/kernfs/dir.c                         |   5 +-
+ fs/kernfs/inode.c                       |  35 +-
+ fs/kernfs/kernfs-internal.h             |   3 +-
+ fs/nfs/nfs4proc.c                       |  22 +-
+ fs/nfsd/nfs4xdr.c                       |  20 +-
+ fs/proc/base.c                          |   2 +
+ include/linux/audit.h                   |   1 +
+ include/linux/cred.h                    |   3 +-
+ include/linux/lsm_hooks.h               |  39 +-
+ include/linux/security.h                | 184 ++++++++--
+ include/net/af_unix.h                   |   2 +-
+ include/net/netlabel.h                  |   8 +-
+ include/net/scm.h                       |  15 +-
+ include/uapi/asm-generic/socket.h       |   1 +
+ kernel/audit.c                          |  70 +++-
+ kernel/audit.h                          |   9 +-
+ kernel/audit_fsnotify.c                 |   1 +
+ kernel/auditfilter.c                    |  10 +-
+ kernel/auditsc.c                        | 129 ++++---
+ kernel/cred.c                           |  12 +-
+ net/core/sock.c                         |   7 +-
+ net/ipv4/cipso_ipv4.c                   |   6 +-
+ net/ipv4/ip_sockglue.c                  |  12 +-
+ net/netfilter/nf_conntrack_netlink.c    |  20 +-
+ net/netfilter/nf_conntrack_standalone.c |  11 +-
+ net/netfilter/nfnetlink_queue.c         |  26 +-
+ net/netfilter/nft_meta.c                |  13 +-
+ net/netfilter/xt_SECMARK.c              |   5 +-
+ net/netlabel/netlabel_kapi.c            |   6 +-
+ net/netlabel/netlabel_unlabeled.c       |  98 ++---
+ net/netlabel/netlabel_unlabeled.h       |   2 +-
+ net/netlabel/netlabel_user.c            |  13 +-
+ net/netlabel/netlabel_user.h            |   6 +-
+ net/unix/af_unix.c                      |   6 +-
+ net/xfrm/xfrm_policy.c                  |   2 +
+ net/xfrm/xfrm_state.c                   |   2 +
+ security/apparmor/include/net.h         |   6 +-
+ security/apparmor/lsm.c                 |  85 ++---
+ security/commoncap.c                    |   7 +-
+ security/inode.c                        |  22 +-
+ security/integrity/ima/ima.h            |  14 +-
+ security/integrity/ima/ima_api.c        |  10 +-
+ security/integrity/ima/ima_appraise.c   |   6 +-
+ security/integrity/ima/ima_main.c       |  36 +-
+ security/integrity/ima/ima_policy.c     |  19 +-
+ security/integrity/integrity_audit.c    |   1 +
+ security/loadpin/loadpin.c              |   8 +-
+ security/safesetid/lsm.c                |   8 +-
+ security/security.c                     | 632 +++++++++++++++++++++++++++++---
+ security/selinux/hooks.c                | 213 +++++------
+ security/selinux/include/objsec.h       |  18 +
+ security/selinux/include/security.h     |   1 +
+ security/selinux/netlabel.c             |  25 +-
+ security/selinux/ss/services.c          |   7 +-
+ security/smack/smack.h                  |  19 +
+ security/smack/smack_lsm.c              | 185 +++++-----
+ security/smack/smack_netfilter.c        |   8 +-
+ security/smack/smackfs.c                |  10 +-
+ security/tomoyo/tomoyo.c                |   8 +-
+ security/yama/yama_lsm.c                |   7 +-
+ 65 files changed, 1503 insertions(+), 686 deletions(-)

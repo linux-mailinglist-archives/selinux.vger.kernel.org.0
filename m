@@ -2,82 +2,127 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 449FBBC210
-	for <lists+selinux@lfdr.de>; Tue, 24 Sep 2019 08:51:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9ADF9BC287
+	for <lists+selinux@lfdr.de>; Tue, 24 Sep 2019 09:26:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728479AbfIXGv2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 24 Sep 2019 02:51:28 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:60284 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727191AbfIXGv2 (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Tue, 24 Sep 2019 02:51:28 -0400
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 2051520F5;
-        Tue, 24 Sep 2019 06:51:28 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.43.12.184])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8182F60BFB;
-        Tue, 24 Sep 2019 06:51:27 +0000 (UTC)
-Subject: Re: [PATCH] policycoreutils/fixfiles: Fix "verify" option
-To:     Stephen Smalley <sds@tycho.nsa.gov>, selinux@vger.kernel.org
-References: <20190923144340.3197-1-vmojzis@redhat.com>
- <f9727681-817e-ba7a-7ba7-7837bf7f0212@tycho.nsa.gov>
-From:   Vit Mojzis <vmojzis@redhat.com>
-Message-ID: <1eaf887d-8ff5-0436-60b1-8dace27359df@redhat.com>
-Date:   Tue, 24 Sep 2019 08:51:26 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.0
+        id S2409259AbfIXH0Q (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 24 Sep 2019 03:26:16 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:51959 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2409182AbfIXH0Q (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 24 Sep 2019 03:26:16 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1569309975;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=EpW8vnAzU3Nxa16Bw4kzQ/chIOikZGy1ygSYTY7Jog8=;
+        b=im5PHaj1jXZQIClmeNnvtzBG0HJX2kXCKSIJLN+djTJ21yJoi4NMj63wh5nZDRR+1SCdRW
+        oWEyZc/nWdfqeTCiHx5LCDB9iJOco3ABAPg5UnzzjTRfMaK9CU1NUjKaNg2+5bD94az24K
+        YNUyXdw6wEsye5VjSC5M1J/oSoqo3/A=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-230-fgoJWGlAMwS25oDtEtCmww-1; Tue, 24 Sep 2019 03:26:13 -0400
+Received: by mail-ot1-f72.google.com with SMTP id i8so645484otc.19
+        for <selinux@vger.kernel.org>; Tue, 24 Sep 2019 00:26:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EpW8vnAzU3Nxa16Bw4kzQ/chIOikZGy1ygSYTY7Jog8=;
+        b=jpJgYMvtrzkTH9yqjGvQmzp2tB5ZAYFXPbthjgroHcndxkvPMJc+3Nof3Ugd8Z8/Cd
+         N/dWuxkNcQ9swDpPCgzBDI4JJ0ZWcSd2IRn7B+hWfUD8FlemKGxMx421yo5NGWAOHBrZ
+         f4FLyepRk5VhnZmj9b6jlVvRtISWgg6FbiKg6sCujwDVVyesWx/kJ8lKqnclIXwWhZ+G
+         0txwpJTmMD7vyXTOYZEFV5Usq0kp/fYJO6fpRjFy3venbVeU5NT62QehpHSMY62re6BV
+         St0cnqnlLdpWy6Vqtvf0W7tNj5+euNMTknNUOMfrUg6O0r6DSkdMjlg1fwtSGUp2jeoM
+         vvEQ==
+X-Gm-Message-State: APjAAAX4UbWiWRlT9V4uFZeCs5yIM1B7plmpQDGypknM7uwbP65F6AAe
+        /w1sAbwkBCm1tGmWFwO5cNPMo44Rzdr2S+oL5SgbyJHXPDLcnKy5ldjmvGGZLzVu7V8IPbQjHZV
+        x1v5mFhfZAK8L68MrfmcP80NSv3o8NXY3IQ==
+X-Received: by 2002:a9d:3f26:: with SMTP id m35mr797572otc.66.1569309972586;
+        Tue, 24 Sep 2019 00:26:12 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqxYD8CCLzeoItuCgSGUJ0Re7jLjOdU9XOHtmMdJrXCRrO2HH0C/ltX+3mGOAawCCMXbN8GvaJGGZqhUsSc0E3c=
+X-Received: by 2002:a9d:3f26:: with SMTP id m35mr797560otc.66.1569309972319;
+ Tue, 24 Sep 2019 00:26:12 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <f9727681-817e-ba7a-7ba7-7837bf7f0212@tycho.nsa.gov>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.6.2 (mx1.redhat.com [10.5.110.71]); Tue, 24 Sep 2019 06:51:28 +0000 (UTC)
+References: <156927687193.621177.11371002337716273956.stgit@chester> <156927696325.621177.10551869484430505777.stgit@chester>
+In-Reply-To: <156927696325.621177.10551869484430505777.stgit@chester>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Tue, 24 Sep 2019 09:26:01 +0200
+Message-ID: <CAFqZXNvhNUvCoquAC-Zq9hZCSmAVUGySubJSUER1x--MqqPdng@mail.gmail.com>
+Subject: Re: [PATCH 1/2] selinux-testsuite: use our own version of perltidy in
+ the Travis CI tests
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+X-MC-Unique: fgoJWGlAMwS25oDtEtCmww-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-
-On 9/23/19 5:08 PM, Stephen Smalley wrote:
-> On 9/23/19 10:43 AM, Vit Mojzis wrote:
->> "restorecon -n" (used in the "restore" function) has to be used with
->> "-v" to display the files whose labels would be changed.
->>
->> Fixes:
->>     Fixfiles verify does not report misslabelled files unless "-v" 
->> option is
->>     used.
+On Tue, Sep 24, 2019 at 12:16 AM Paul Moore <paul@paul-moore.com> wrote:
+> From: Paul Moore <paul@paul-moore.com>
 >
-> Please add a Signed-off-by line.  With this change, aside from display 
-> "Verifying" vs. "Checking" there seems to be no difference between 
-> fixfiles verify and fixfiles check?  Wondering if there was some 
-> difference originally?
+> Unfortunately the perltidy results differ between moden distros and the
+> current Travis CI environment.  This patch attempts to address this by
+> using the current upstream perltidy in the Travis CI tests.
+
+Generally thumbs up from me, although I have a few comments below.
+
+>
+> Signed-off-by: Paul Moore <paul@paul-moore.com>
+> ---
+>  .travis.yml |    9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+>
+> diff --git a/.travis.yml b/.travis.yml
+> index 61bb1f2..256e92c 100644
+> --- a/.travis.yml
+> +++ b/.travis.yml
+> @@ -6,10 +6,17 @@ addons:
+>    apt:
+>      packages:
+>        - astyle
+> -      - perltidy
+>        - libselinux1-dev
+>        - libsctp-dev
+>
+> +before_install:
+> +  - git clone https://github.com/perltidy/perltidy.git perltidy
+
+I think it would be safer to add here something like:
+
+- git checkout 8551fc60fc515cd290ba38ee8c758c1f4df52b56
+
+That way the Travis checks won't suddenly break when something changes
+in the master branch (where I'd expect things to change/break once in
+a while). IMHO having to bump the commit manually from time to time is
+less bothersome than having to deal with random changes in the
+upstream branch.
+
+> +  - |
+> +    (cd perltidy;
+> +     perl Makefile.PL;
+> +     make;
+> +     sudo make install)
+
+This is not a big deal, but you might want to join these with '&&'
+instead of ';' since if an earlier command fails, it doesn't make much
+sense to try to run the rest (the pipeline would then almost certainly
+fail later anyway).
+
+> +
+>  script:
+>    - tools/check-syntax -f && git diff --exit-code
+>    - make
 >
 
-Apparently "Verify" used to call "restorecon -n -o -", but "-o" is now 
-obsolete. You are right, "Verify" and "Check" do the same thing now.
+--
+Ondrej Mosnacek <omosnace at redhat dot com>
+Software Engineer, Security Technologies
+Red Hat, Inc.
 
-
->> ---
->>   policycoreutils/scripts/fixfiles | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/policycoreutils/scripts/fixfiles 
->> b/policycoreutils/scripts/fixfiles
->> index 5be9ba6e..1a31e061 100755
->> --- a/policycoreutils/scripts/fixfiles
->> +++ b/policycoreutils/scripts/fixfiles
->> @@ -302,7 +302,7 @@ process() {
->>   case "$1" in
->>       restore) restore Relabel;;
->>       check) VERBOSE="-v"; restore Check -n;;
->> -    verify) restore Verify -n;;
->> +    verify) VERBOSE="-v"; restore Verify -n;;
->>       relabel) relabel;;
->>       onboot)
->>       if [ "$RESTORE_MODE" != DEFAULT ]; then
->>
->

@@ -2,27 +2,27 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE7AC1868
-	for <lists+selinux@lfdr.de>; Sun, 29 Sep 2019 19:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD012C181B
+	for <lists+selinux@lfdr.de>; Sun, 29 Sep 2019 19:41:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729444AbfI2Rbr (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 29 Sep 2019 13:31:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:42300 "EHLO mail.kernel.org"
+        id S1730093AbfI2Rli (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 29 Sep 2019 13:41:38 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44872 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729400AbfI2Rbq (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Sun, 29 Sep 2019 13:31:46 -0400
+        id S1730087AbfI2Rde (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Sun, 29 Sep 2019 13:33:34 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id BA31121906;
-        Sun, 29 Sep 2019 17:31:44 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 688F921A4A;
+        Sun, 29 Sep 2019 17:33:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569778305;
-        bh=F8RTzDc+fECkTRNigXyurxf3VNTlrsOpbjYpgckPm38=;
+        s=default; t=1569778413;
+        bh=M7f/VWIS3/HVL4XSOEzhDN9zeadlxe+WeHhKS89VrqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bDaE5NSM3FVA7TK9eB/IZuU9lbf+p4wlFN+y8ttg5ZMVQmxuAg1tPSe2Pc5Mf8n8m
-         ONMQvnVJTHd+d3Ec92HD9RIlKWTpRXH0SyEO3R8IIJ1x9/jgJEBEpEIelrYmXr8VgV
-         uyAdF0FSCcZvHdTxEf5ygdy3F8YPm+QKz7Lo864Q=
+        b=AwAJdis9UZyhuA1K168jY+Ff5VZjLm3Tdm+Cb8tz5HmHS6dEnx5l5CCOqpHz7yPSb
+         tKfiPRTEwnLot6gB2lmDCFSa4f45yay5Eue0ChB6b03zAgnYLcO566HysF3+jlBtek
+         8qZNFGaJmCPhpGnvsI1VBUg+yH3AYvQhrWctR3o0=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
@@ -30,12 +30,12 @@ Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
         James Morris <jamorris@linux.microsoft.com>,
         Paul Moore <paul@paul-moore.com>,
         Sasha Levin <sashal@kernel.org>, selinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 24/49] selinux: fix residual uses of current_security() for the SELinux blob
-Date:   Sun, 29 Sep 2019 13:30:24 -0400
-Message-Id: <20190929173053.8400-24-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.2 21/42] selinux: fix residual uses of current_security() for the SELinux blob
+Date:   Sun, 29 Sep 2019 13:32:20 -0400
+Message-Id: <20190929173244.8918-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190929173053.8400-1-sashal@kernel.org>
-References: <20190929173053.8400-1-sashal@kernel.org>
+In-Reply-To: <20190929173244.8918-1-sashal@kernel.org>
+References: <20190929173244.8918-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -70,7 +70,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 74dd46de01b6a..e755174647866 100644
+index 3ec7ac70c3130..c106167423a12 100644
 --- a/security/selinux/hooks.c
 +++ b/security/selinux/hooks.c
 @@ -3403,7 +3403,7 @@ static int selinux_inode_copy_up_xattr(const char *name)

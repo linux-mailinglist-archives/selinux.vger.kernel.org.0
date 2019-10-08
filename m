@@ -2,59 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 24E3ACF303
-	for <lists+selinux@lfdr.de>; Tue,  8 Oct 2019 08:53:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE84BCF307
+	for <lists+selinux@lfdr.de>; Tue,  8 Oct 2019 08:54:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730129AbfJHGxu (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Oct 2019 02:53:50 -0400
-Received: from mx3-rdu2.redhat.com ([66.187.233.73]:50730 "EHLO mx1.redhat.com"
+        id S1730170AbfJHGyM (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Oct 2019 02:54:12 -0400
+Received: from mx3-rdu2.redhat.com ([66.187.233.73]:49006 "EHLO mx1.redhat.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1730123AbfJHGxu (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Tue, 8 Oct 2019 02:53:50 -0400
-X-Greylist: delayed 523 seconds by postgrey-1.27 at vger.kernel.org; Tue, 08 Oct 2019 02:53:49 EDT
+        id S1730131AbfJHGyL (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Tue, 8 Oct 2019 02:54:11 -0400
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id C0E9C402302B
-        for <selinux@vger.kernel.org>; Tue,  8 Oct 2019 06:45:10 +0000 (UTC)
+        by mx1.redhat.com (Postfix) with ESMTPS id 95FFA405C64A
+        for <selinux@vger.kernel.org>; Tue,  8 Oct 2019 06:45:16 +0000 (UTC)
 Received: from slave.localdomain.com (unknown [10.64.193.217])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 04BB5178BF;
-        Tue,  8 Oct 2019 06:45:09 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CEF33178BA;
+        Tue,  8 Oct 2019 06:45:15 +0000 (UTC)
 From:   Masatake YAMATO <yamato@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     yamato@redhat.com
-Subject: [PATCH 1/5] dispol: extend usage() to take error code as an argument
-Date:   Tue,  8 Oct 2019 15:44:55 +0900
-Message-Id: <20191008064500.8651-2-yamato@redhat.com>
+Subject: [PATCH 1/5] dispol: extend usage() to take exit status
+Date:   Tue,  8 Oct 2019 15:44:56 +0900
+Message-Id: <20191008064500.8651-3-yamato@redhat.com>
 In-Reply-To: <20191008064500.8651-1-yamato@redhat.com>
 References: <20191008064500.8651-1-yamato@redhat.com>
 X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.6]); Tue, 08 Oct 2019 06:45:10 +0000 (UTC)
-X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.6]); Tue, 08 Oct 2019 06:45:10 +0000 (UTC) for IP:'10.11.54.5' DOMAIN:'int-mx05.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'yamato@redhat.com' RCPT:''
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Tue, 08 Oct 2019 06:45:16 +0000 (UTC)
+X-Greylist: inspected by milter-greylist-4.5.16 (mx1.redhat.com [10.11.55.7]); Tue, 08 Oct 2019 06:45:16 +0000 (UTC) for IP:'10.11.54.5' DOMAIN:'int-mx05.intmail.prod.int.rdu2.redhat.com' HELO:'smtp.corp.redhat.com' FROM:'yamato@redhat.com' RCPT:''
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This allows dispol command to exit successfully after
-printing help messages.
-
 Signed-off-by: Masatake YAMATO <yamato@redhat.com>
 ---
- checkpolicy/test/dispol.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ checkpolicy/test/dispol.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/checkpolicy/test/dispol.c b/checkpolicy/test/dispol.c
-index d72d9fb3..1d9556f4 100644
+index d72d9fb3..6c4829c4 100644
 --- a/checkpolicy/test/dispol.c
 +++ b/checkpolicy/test/dispol.c
-@@ -36,10 +36,11 @@
+@@ -36,10 +36,10 @@
  
  static policydb_t policydb;
  
 -static __attribute__((__noreturn__)) void usage(const char *progname)
-+static __attribute__((__noreturn__)) void usage(const char *progname,
-+						int status)
++static __attribute__((__noreturn__)) void usage(const char *progname, int status)
  {
  	printf("usage:  %s binary_pol_file\n\n", progname);
 -	exit(1);
@@ -62,7 +57,7 @@ index d72d9fb3..1d9556f4 100644
  }
  
  int render_access_mask(uint32_t mask, avtab_key_t * key, policydb_t * p,
-@@ -395,7 +396,7 @@ int main(int argc, char **argv)
+@@ -395,7 +395,7 @@ int main(int argc, char **argv)
  	struct policy_file pf;
  
  	if (argc != 2)

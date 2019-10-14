@@ -2,521 +2,122 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA38D55B2
-	for <lists+selinux@lfdr.de>; Sun, 13 Oct 2019 12:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1753ED5D1E
+	for <lists+selinux@lfdr.de>; Mon, 14 Oct 2019 10:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728772AbfJMKwx (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 13 Oct 2019 06:52:53 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:44201 "EHLO
-        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728691AbfJMKwx (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 13 Oct 2019 06:52:53 -0400
-Received: from localhost.localdomain (85-168-38-217.rev.numericable.fr [85.168.38.217])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id E91115612CB;
-        Sun, 13 Oct 2019 12:52:47 +0200 (CEST)
-From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+        id S1728941AbfJNIG5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Oct 2019 04:06:57 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:36654 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725934AbfJNIG5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Oct 2019 04:06:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1571040416;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=tmiFdkZ9lJtSvRVSby+4gbn8htChwN1YPSW0hA5BNLk=;
+        b=M7QIOuu7xh7M+lS+oyVBe//MppsOCbVZGV8AAmN//TfKAHjZbbiAJhB87RQEArEYqlJO8+
+        w6v49KNO0vvLtnOiSw6X4X0d56L0SUgEUgidQf1cVd00mAAlg6l58uFEtT+metTTKPf1I6
+        2wWER0MN535WLQOXsN1T3zVY3PSTY68=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-344-LHYe_mauPeiqDmCD4qeYGw-1; Mon, 14 Oct 2019 04:06:52 -0400
+Received: by mail-wr1-f70.google.com with SMTP id w2so8194504wrn.4
+        for <selinux@vger.kernel.org>; Mon, 14 Oct 2019 01:06:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=weoPf8V32eoQfWf0fi8raIVupdNas4XZvwJjZ3KvUHA=;
+        b=KhFu1BePXzdlIdgI35D8/p5xjwRyESL6J8OeQ/7nY28/FiaN8hXtHFsvFxCqknS0nO
+         PZJpV6BB/yIMuzWomlkXaSKWWYn13g/Vh7LC+EzyGl1wkIwnPbDETnd+sOWe4SxqbGru
+         WDd0yBsyc4B3tPqd+MdkgSEXdxSiAvfELzspGWF4jm6jJMIumFNI7F77DzvGwGbYunlc
+         DtESEz/fKjfR3D+VdXAn6EE+xCuwCvjGrwqSI/GNldEg1wtte543k3v4lChuQ7YrTjrs
+         wWSSVl/QzqXdp8Xi1c/7zUdLR0HpsJUoOachpVpSmCcb6usa6vWtRN6FoMElabRay89S
+         DsGw==
+X-Gm-Message-State: APjAAAUukNIhzZOKI+0pKE/5CMayk7U9R/KMTeBDq0OoPyp4v9qCtjoy
+        F5VzYWLAbFRFlsYPK7KzBbN5zwD4fcn9C3BuvwnwineyrMo5rajV1J8jH/jREIudVJ511TTtuPP
+        7Z0kqnFoae08dsViNtg==
+X-Received: by 2002:a1c:7ed7:: with SMTP id z206mr13694080wmc.104.1571040410824;
+        Mon, 14 Oct 2019 01:06:50 -0700 (PDT)
+X-Google-Smtp-Source: APXvYqx9gWTHQTj0pLlvzeH/OI98fOPbcYYDiaan4FaN+t95SrKF2tjvBLDfcxHAK2RSoLxcbQujnw==
+X-Received: by 2002:a1c:7ed7:: with SMTP id z206mr13694062wmc.104.1571040410593;
+        Mon, 14 Oct 2019 01:06:50 -0700 (PDT)
+Received: from localhost.localdomain.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id t203sm20351114wmf.42.2019.10.14.01.06.49
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 14 Oct 2019 01:06:49 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Cc:     Michael Shigorin <mike@altlinux.org>
-Subject: [PATCH 2/2] libsemanage: mark all exported function "extern"
-Date:   Sun, 13 Oct 2019 12:52:16 +0200
-Message-Id: <20191013105216.614224-2-nicolas.iooss@m4x.org>
-X-Mailer: git-send-email 2.22.0
-In-Reply-To: <20191013105216.614224-1-nicolas.iooss@m4x.org>
-References: <20191013105216.614224-1-nicolas.iooss@m4x.org>
+Subject: [PATCH userspace] sepolicy: generate man pages in parallel
+Date:   Mon, 14 Oct 2019 10:06:47 +0200
+Message-Id: <20191014080647.19602-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.21.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sun Oct 13 12:52:48 2019 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=66F22564682
-X-Org-Mail: nicolas.iooss.2010@polytechnique.org
+X-MC-Unique: LHYe_mauPeiqDmCD4qeYGw-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Many functions are already marked "extern" in libsemanage's public
-headers and this will help using the content of the headers in order to
-automatically generate some glue code for Python bindings.
+Generating man pages takes a lot of time. Do it in parallel to speed up
+the process.
 
-Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- libsemanage/include/semanage/handle.h  |  58 ++++-----
- libsemanage/include/semanage/modules.h | 158 ++++++++++++-------------
- 2 files changed, 108 insertions(+), 108 deletions(-)
+ python/sepolicy/sepolicy.py | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/libsemanage/include/semanage/handle.h b/libsemanage/include/semanage/handle.h
-index c816590094c5..946d69bc91fe 100644
---- a/libsemanage/include/semanage/handle.h
-+++ b/libsemanage/include/semanage/handle.h
-@@ -32,13 +32,13 @@ typedef struct semanage_handle semanage_handle_t;
- 
- /* Create and return a semanage handle.
-    The handle is initially in the disconnected state. */
--semanage_handle_t *semanage_handle_create(void);
-+extern semanage_handle_t *semanage_handle_create(void);
- 
- /* Deallocate all space associated with a semanage_handle_t, including
-  * the pointer itself.	CAUTION: this function does not disconnect
-  * from the backend; be sure that a semanage_disconnect() was
-  * previously called if the handle was connected. */
--void semanage_handle_destroy(semanage_handle_t *);
-+extern void semanage_handle_destroy(semanage_handle_t *);
- 
- /* This is the type of connection to the store, for now only
-  * direct is supported */
-@@ -51,65 +51,65 @@ enum semanage_connect_type {
-  * It must be called after semanage_handle_create but before 
-  * semanage_connect. The argument should be the full path to the store.
-  */
--void semanage_select_store(semanage_handle_t * handle, char *path,
--			   enum semanage_connect_type storetype);
-+extern void semanage_select_store(semanage_handle_t * handle, char *path,
-+				  enum semanage_connect_type storetype);
- 
- /* Just reload the policy */
--int semanage_reload_policy(semanage_handle_t * handle);
-+extern int semanage_reload_policy(semanage_handle_t * handle);
- 
- /* set whether to reload the policy or not after a commit,
-  * 1 for yes (default), 0 for no */
--void semanage_set_reload(semanage_handle_t * handle, int do_reload);
-+extern void semanage_set_reload(semanage_handle_t * handle, int do_reload);
- 
- /* set whether to rebuild the policy on commit, even if no
-  * changes were performed.
-  * 1 for yes, 0 for no (default) */
--void semanage_set_rebuild(semanage_handle_t * handle, int do_rebuild);
-+extern void semanage_set_rebuild(semanage_handle_t * handle, int do_rebuild);
- 
- /* Fills *compiler_path with the location of the hll compiler sh->conf->compiler_directory_path
-  * corresponding to lang_ext.
-  * Upon success returns 0, -1 on error. */
--int semanage_get_hll_compiler_path(semanage_handle_t *sh, char *lang_ext, char **compiler_path);
-+extern int semanage_get_hll_compiler_path(semanage_handle_t *sh, char *lang_ext, char **compiler_path);
- 
- /* create the store if it does not exist, this only has an effect on 
-  * direct connections and must be called before semanage_connect 
-  * 1 for yes, 0 for no (default) */
--void semanage_set_create_store(semanage_handle_t * handle, int create_store);
-+extern void semanage_set_create_store(semanage_handle_t * handle, int create_store);
- 
- /*Get whether or not dontaudits will be disabled upon commit */
--int semanage_get_disable_dontaudit(semanage_handle_t * handle);
-+extern int semanage_get_disable_dontaudit(semanage_handle_t * handle);
- 
- /* Set whether or not to disable dontaudits upon commit */
--void semanage_set_disable_dontaudit(semanage_handle_t * handle, int disable_dontaudit);
-+extern void semanage_set_disable_dontaudit(semanage_handle_t * handle, int disable_dontaudit);
- 
- /* Set whether or not to execute setfiles to check file contexts upon commit */
--void semanage_set_check_contexts(semanage_handle_t * sh, int do_check_contexts);
-+extern void semanage_set_check_contexts(semanage_handle_t * sh, int do_check_contexts);
- 
- /* Get the default priority. */
--uint16_t semanage_get_default_priority(semanage_handle_t *sh);
-+extern uint16_t semanage_get_default_priority(semanage_handle_t *sh);
- 
- /* Set the default priority. */
--int semanage_set_default_priority(semanage_handle_t *sh, uint16_t priority);
-+extern int semanage_set_default_priority(semanage_handle_t *sh, uint16_t priority);
- 
- /* Check whether policy is managed via libsemanage on this system.
-  * Must be called prior to trying to connect.
-  * Return 1 if policy is managed via libsemanage on this system,
-  * 0 if policy is not managed, or -1 on error.
-  */
--int semanage_is_managed(semanage_handle_t *);
-+extern int semanage_is_managed(semanage_handle_t *);
- 
- /* "Connect" to a manager based on the configuration and 
-  * associate the provided handle with the connection.
-  * If the connect fails then this function returns a negative value, 
-  * else it returns zero.
-  */
--int semanage_connect(semanage_handle_t *);
-+extern int semanage_connect(semanage_handle_t *);
- 
- /* Disconnect from the manager given by the handle.  If already
-  * disconnected then this function does nothing.  Return 0 if
-  * disconnected properly or already disconnected, negative value on
-  * error. */
--int semanage_disconnect(semanage_handle_t *);
-+extern int semanage_disconnect(semanage_handle_t *);
- 
- /* Attempt to obtain a transaction lock on the manager.	 If another
-  * process has the lock then this function may block, depending upon
-@@ -118,47 +118,47 @@ int semanage_disconnect(semanage_handle_t *);
-  * Note that if the semanage_handle has not yet obtained a transaction
-  * lock whenever a writer function is called, there will be an
-  * implicit call to this function. */
--int semanage_begin_transaction(semanage_handle_t *);
-+extern int semanage_begin_transaction(semanage_handle_t *);
- 
- /* Attempt to commit all changes since this transaction began.	If the
-  * commit is successful then increment the "policy sequence number"
-  * and then release the transaction lock.  Return that policy number
-  * afterwards, or -1 on error.
-  */
--int semanage_commit(semanage_handle_t *);
-+extern int semanage_commit(semanage_handle_t *);
- 
- #define SEMANAGE_CAN_READ 1
- #define SEMANAGE_CAN_WRITE 2
- /* returns SEMANAGE_CAN_READ or SEMANAGE_CAN_WRITE if the store is readable
-  * or writable, respectively. <0 if an error occurred */
--int semanage_access_check(semanage_handle_t * sh);
-+extern int semanage_access_check(semanage_handle_t * sh);
- 
- /* returns 0 if not connected, 1 if connected */
--int semanage_is_connected(semanage_handle_t * sh);
-+extern int semanage_is_connected(semanage_handle_t * sh);
- 
- /* returns 1 if policy is MLS, 0 otherwise. */
--int semanage_mls_enabled(semanage_handle_t *sh);
-+extern int semanage_mls_enabled(semanage_handle_t *sh);
- 
- /* Change to alternate semanage root path */
--int semanage_set_root(const char *path);
-+extern int semanage_set_root(const char *path);
- 
- /* Get the current semanage root path */
--const char * semanage_root(void);
-+extern const char * semanage_root(void);
- 
- /* Get whether or not needless unused branch of tunables would be preserved */
--int semanage_get_preserve_tunables(semanage_handle_t * handle);
-+extern int semanage_get_preserve_tunables(semanage_handle_t * handle);
- 
- /* Set whether or not to preserve the needless unused branch of tunables */
--void semanage_set_preserve_tunables(semanage_handle_t * handle, int preserve_tunables);
-+extern void semanage_set_preserve_tunables(semanage_handle_t * handle, int preserve_tunables);
- 
- /* Get the flag value for whether or not caching is ignored for compiled CIL modules from HLL files */
--int semanage_get_ignore_module_cache(semanage_handle_t *handle);
-+extern int semanage_get_ignore_module_cache(semanage_handle_t *handle);
- 
- /* Set semanage_handle flag for whether or not to ignore caching of compiled CIL modules from HLL files */
--void semanage_set_ignore_module_cache(semanage_handle_t *handle, int ignore_module_cache);
-+extern void semanage_set_ignore_module_cache(semanage_handle_t *handle, int ignore_module_cache);
- 
- /* set the store root path for semanage output files */
--void semanage_set_store_root(semanage_handle_t *sh, const char *store_root);
-+extern void semanage_set_store_root(semanage_handle_t *sh, const char *store_root);
- 
- /* META NOTES
-  *
-diff --git a/libsemanage/include/semanage/modules.h b/libsemanage/include/semanage/modules.h
-index 03f7e57d50dd..ac4039314857 100644
---- a/libsemanage/include/semanage/modules.h
-+++ b/libsemanage/include/semanage/modules.h
-@@ -32,11 +32,11 @@ typedef struct semanage_module_key semanage_module_key_t;
-  * a transaction  
-  */
- 
--int semanage_module_install(semanage_handle_t *,
--			    char *module_data, size_t data_len, char *name, char *ext_lang);
--int semanage_module_install_file(semanage_handle_t *,
--				 const char *module_name);
--int semanage_module_remove(semanage_handle_t *, char *module_name);
-+extern int semanage_module_install(semanage_handle_t *,
-+				   char *module_data, size_t data_len, char *name, char *ext_lang);
-+extern int semanage_module_install_file(semanage_handle_t *,
-+					const char *module_name);
-+extern int semanage_module_remove(semanage_handle_t *, char *module_name);
- 
- /* semanage_module_info is for getting information on installed
-    modules, only name at this time */
-@@ -52,18 +52,18 @@ typedef struct semanage_module_info semanage_module_info_t;
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_extract(semanage_handle_t *sh,
--				 semanage_module_key_t *modkey,
--				 int extract_cil,
--				 void **mapped_data,
--				 size_t *data_len,
--				 semanage_module_info_t **modinfo);
--int semanage_module_list(semanage_handle_t *,
--			 semanage_module_info_t **, int *num_modules);
--void semanage_module_info_datum_destroy(semanage_module_info_t *);
--semanage_module_info_t *semanage_module_list_nth(semanage_module_info_t * list,
--						 int n);
--const char *semanage_module_get_name(semanage_module_info_t *);
-+extern int semanage_module_extract(semanage_handle_t *sh,
-+				  semanage_module_key_t *modkey,
-+				  int extract_cil,
-+				  void **mapped_data,
-+				  size_t *data_len,
-+				  semanage_module_info_t **modinfo);
-+extern int semanage_module_list(semanage_handle_t *,
-+				semanage_module_info_t **, int *num_modules);
-+extern void semanage_module_info_datum_destroy(semanage_module_info_t *);
-+extern semanage_module_info_t *semanage_module_list_nth(semanage_module_info_t * list,
-+							int n);
-+extern const char *semanage_module_get_name(semanage_module_info_t *);
- 
- /* Module Info */
- 
-@@ -74,8 +74,8 @@ const char *semanage_module_get_name(semanage_module_info_t *);
-  * The @modinfo should be destroyed with semanage_module_info_destroy.
-  * The caller should call free() on the struct.
-  */
--int semanage_module_info_create(semanage_handle_t *sh,
--				semanage_module_info_t **modinfo);
-+extern int semanage_module_info_create(semanage_handle_t *sh,
-+				       semanage_module_info_t **modinfo);
- 
- /* Frees the members of the module info struct.
-  *
-@@ -83,8 +83,8 @@ int semanage_module_info_create(semanage_handle_t *sh,
-  *
-  * The caller should call free() on the struct.
-  */
--int semanage_module_info_destroy(semanage_handle_t *handle,
--				 semanage_module_info_t *modinfo);
-+extern int semanage_module_info_destroy(semanage_handle_t *handle,
-+					semanage_module_info_t *modinfo);
- 
- /* Module Info Getters */
- 
-@@ -92,33 +92,33 @@ int semanage_module_info_destroy(semanage_handle_t *handle,
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_get_priority(semanage_handle_t *sh,
--				      semanage_module_info_t *modinfo,
--				      uint16_t *priority);
-+extern int semanage_module_info_get_priority(semanage_handle_t *sh,
-+					     semanage_module_info_t *modinfo,
-+					     uint16_t *priority);
- 
- /* Get @name from @modinfo. Caller should not free @name.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_get_name(semanage_handle_t *sh,
--				  semanage_module_info_t *modinfo,
--				  const char **name);
-+extern int semanage_module_info_get_name(semanage_handle_t *sh,
-+					 semanage_module_info_t *modinfo,
-+					 const char **name);
- 
- /* Get @lang_ext from @modinfo. Caller should not free @lang_ext.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_get_lang_ext(semanage_handle_t *sh,
--				      semanage_module_info_t *modinfo,
--				      const char **lang_ext);
-+extern int semanage_module_info_get_lang_ext(semanage_handle_t *sh,
-+					     semanage_module_info_t *modinfo,
-+					     const char **lang_ext);
- 
- /* Get @enabled from @modinfo.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_get_enabled(semanage_handle_t *sh,
--				     semanage_module_info_t *modinfo,
--				     int *enabled);
-+extern int semanage_module_info_get_enabled(semanage_handle_t *sh,
-+					    semanage_module_info_t *modinfo,
-+					    int *enabled);
- 
- /* Module Info Setters */
- 
-@@ -126,33 +126,33 @@ int semanage_module_info_get_enabled(semanage_handle_t *sh,
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_set_priority(semanage_handle_t *sh,
--				      semanage_module_info_t *modinfo,
--				      uint16_t priority);
-+extern int semanage_module_info_set_priority(semanage_handle_t *sh,
-+					     semanage_module_info_t *modinfo,
-+					     uint16_t priority);
- 
- /* Set @name in @modinfo.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_set_name(semanage_handle_t *sh,
--				  semanage_module_info_t *modinfo,
--				  const char *name);
-+extern int semanage_module_info_set_name(semanage_handle_t *sh,
-+					 semanage_module_info_t *modinfo,
-+					 const char *name);
- 
- /* Set @lang_ext in @modinfo.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_set_lang_ext(semanage_handle_t *sh,
--				      semanage_module_info_t *modinfo,
--				      const char *lang_ext);
-+extern int semanage_module_info_set_lang_ext(semanage_handle_t *sh,
-+					     semanage_module_info_t *modinfo,
-+					     const char *lang_ext);
- 
- /* Set @enabled in @modinfo.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_info_set_enabled(semanage_handle_t *sh,
--				     semanage_module_info_t *modinfo,
--				     int enabled);
-+extern int semanage_module_info_set_enabled(semanage_handle_t *sh,
-+					    semanage_module_info_t *modinfo,
-+					    int enabled);
- 
- /* Module Key */
- 
-@@ -163,16 +163,16 @@ int semanage_module_info_set_enabled(semanage_handle_t *sh,
-  * The @modkey should be destroyed with semanage_module_key_destroy.
-  * The caller should call free() on the struct.
-  */
--int semanage_module_key_create(semanage_handle_t *sh,
--			       semanage_module_key_t **modkey);
-+extern int semanage_module_key_create(semanage_handle_t *sh,
-+				      semanage_module_key_t **modkey);
- 
- /* Frees members of the @modkey, but not the struct. The caller should
-  * call free() on struct.
-  *
-  * Returns 0 on success, and -1 on error.
-  */
--int semanage_module_key_destroy(semanage_handle_t *sh,
--				semanage_module_key_t *modkey);
-+extern int semanage_module_key_destroy(semanage_handle_t *sh,
-+				       semanage_module_key_t *modkey);
- 
- /* Module Key Getters */
- 
-@@ -180,17 +180,17 @@ int semanage_module_key_destroy(semanage_handle_t *sh,
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_key_get_name(semanage_handle_t *sh,
--				 semanage_module_key_t *modkey,
--				 const char **name);
-+extern int semanage_module_key_get_name(semanage_handle_t *sh,
-+					semanage_module_key_t *modkey,
-+					const char **name);
- 
- /* Get @name from @modkey.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_key_get_priority(semanage_handle_t *sh,
--				     semanage_module_key_t *modkey,
--				     uint16_t *priority);
-+extern int semanage_module_key_get_priority(semanage_handle_t *sh,
-+					    semanage_module_key_t *modkey,
-+					    uint16_t *priority);
- 
- /* Module Key Setters */
- 
-@@ -198,17 +198,17 @@ int semanage_module_key_get_priority(semanage_handle_t *sh,
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_key_set_name(semanage_handle_t *sh,
--				 semanage_module_key_t *modkey,
--				 const char *name);
-+extern int semanage_module_key_set_name(semanage_handle_t *sh,
-+					semanage_module_key_t *modkey,
-+					const char *name);
- 
- /* Set @priority in @modkey.
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_key_set_priority(semanage_handle_t *sh,
--				     semanage_module_key_t *modkey,
--				     uint16_t priority);
-+extern int semanage_module_key_set_priority(semanage_handle_t *sh,
-+					    semanage_module_key_t *modkey,
-+					    uint16_t priority);
- 
- /* Set module @enabled status from @modkey. Modules are enabled on a per
-  * module name basis (across all priorities). @modkey only needs to have
-@@ -216,18 +216,18 @@ int semanage_module_key_set_priority(semanage_handle_t *sh,
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_set_enabled(semanage_handle_t *sh,
--				const semanage_module_key_t *modkey,
--				int enabled);
-+extern int semanage_module_set_enabled(semanage_handle_t *sh,
-+				       const semanage_module_key_t *modkey,
-+				       int enabled);
- 
- /* Lookup @modinfo by @modkey. Caller should use
-  * semanage_module_info_destroy and free on @modinfo.
-  * 
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_get_module_info(semanage_handle_t *sh,
--				    const semanage_module_key_t *modkey,
--				    semanage_module_info_t **modinfo);
-+extern int semanage_module_get_module_info(semanage_handle_t *sh,
-+					   const semanage_module_key_t *modkey,
-+					   semanage_module_info_t **modinfo);
- 
- /* Create a list of all modules in @modinfos of length @modinfos_len.
-  * The list will be sorted from high priority to low and alphabetically
-@@ -238,9 +238,9 @@ int semanage_module_get_module_info(semanage_handle_t *sh,
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_list_all(semanage_handle_t *sh,
--			     semanage_module_info_t **modinfos,
--			     int *modinfos_len);
-+extern int semanage_module_list_all(semanage_handle_t *sh,
-+				    semanage_module_info_t **modinfos,
-+				    int *modinfos_len);
- 
- /* Install the module indicated by @modinfo with input data from 
-  * @module_data with length @data_len.
-@@ -254,10 +254,10 @@ int semanage_module_list_all(semanage_handle_t *sh,
-  *	-2	failure, invalid @modinfo
-  *	-3	failure, error writing file
-  */
--int semanage_module_install_info(semanage_handle_t *sh,
--				 const semanage_module_info_t *modinfo,
--				 char *data,
--				 size_t data_len);
-+extern int semanage_module_install_info(semanage_handle_t *sh,
-+					const semanage_module_info_t *modinfo,
-+					char *data,
-+					size_t data_len);
- 
- /* Remove the module indicated by @modkey.
-  * @modkey must have key values filled in.
-@@ -267,8 +267,8 @@ int semanage_module_install_info(semanage_handle_t *sh,
-  *	-1	failure, out of memory
-  *	-2	failure, @module not found or couldn't be removed
-  */
--int semanage_module_remove_key(semanage_handle_t *sh,
--			       const semanage_module_key_t *modkey);
-+extern int semanage_module_remove_key(semanage_handle_t *sh,
-+				      const semanage_module_key_t *modkey);
- 
- /* Module Enabled */
- 
-@@ -278,8 +278,8 @@ int semanage_module_remove_key(semanage_handle_t *sh,
-  *
-  * Returns 0 on success and -1 on error.
-  */
--int semanage_module_get_enabled(semanage_handle_t *sh,
--				const semanage_module_key_t *modkey,
--				int *enabled);
-+extern int semanage_module_get_enabled(semanage_handle_t *sh,
-+				       const semanage_module_key_t *modkey,
-+				       int *enabled);
- 
- #endif
--- 
-2.22.0
+diff --git a/python/sepolicy/sepolicy.py b/python/sepolicy/sepolicy.py
+index 1934cd86..02094013 100755
+--- a/python/sepolicy/sepolicy.py
++++ b/python/sepolicy/sepolicy.py
+@@ -25,6 +25,7 @@ import os
+ import sys
+ import selinux
+ import sepolicy
++from concurrent.futures import ProcessPoolExecutor
+ from sepolicy import get_os_version, get_conditionals, get_conditionals_fo=
+rmat_text
+ import argparse
+ PROGNAME =3D "policycoreutils"
+@@ -326,8 +327,13 @@ def gen_gui_args(parser):
+     gui.set_defaults(func=3Dgui_run)
+=20
+=20
++def manpage_work(domain, path, root, source_files, web):
++    from sepolicy.manpage import ManPage
++    m =3D ManPage(domain, path, root, source_files, web)
++    print(m.get_man_page_path())
++
+ def manpage(args):
+-    from sepolicy.manpage import ManPage, HTMLManPages, manpage_domains, m=
+anpage_roles, gen_domains
++    from sepolicy.manpage import HTMLManPages, manpage_domains, manpage_ro=
+les, gen_domains
+=20
+     path =3D args.path
+     if not args.policy and args.root !=3D "/":
+@@ -340,9 +346,9 @@ def manpage(args):
+     else:
+         test_domains =3D args.domain
+=20
+-    for domain in test_domains:
+-        m =3D ManPage(domain, path, args.root, args.source_files, args.web=
+)
+-        print(m.get_man_page_path())
++    with ProcessPoolExecutor() as e:
++        for domain in test_domains:
++            e.submit(manpage_work, domain, path, args.root, args.source_fi=
+les, args.web)
+=20
+     if args.web:
+         HTMLManPages(manpage_roles, manpage_domains, path, args.os)
+--=20
+2.21.0
 

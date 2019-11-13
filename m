@@ -2,584 +2,269 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A51B7FB4C3
-	for <lists+selinux@lfdr.de>; Wed, 13 Nov 2019 17:15:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 967E6FB59A
+	for <lists+selinux@lfdr.de>; Wed, 13 Nov 2019 17:51:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726298AbfKMQPE (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 13 Nov 2019 11:15:04 -0500
-Received: from mailomta25-re.btinternet.com ([213.120.69.118]:37205 "EHLO
-        re-prd-fep-041.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726114AbfKMQPE (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 13 Nov 2019 11:15:04 -0500
-Received: from re-prd-rgout-004.btmx-prd.synchronoss.net ([10.2.54.7])
-          by re-prd-fep-041.btinternet.com with ESMTP
-          id <20191113161459.MPRH17769.re-prd-fep-041.btinternet.com@re-prd-rgout-004.btmx-prd.synchronoss.net>;
-          Wed, 13 Nov 2019 16:14:59 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1573661699; 
-        bh=qIU9IoQl0Y+JB+W3LiCGBsdZsoeYyGZ9OIoNEbiqjWw=;
-        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version;
-        b=ZF/cs7hvxDpbdHCuK2us3/gvpZLT51hW4smP+taqbx7Qiyr4jel7YVRMsf0LKVvF0Db26cQjBbq3sXMLtJxH612CzcjjD+VBGZLXvpnLbyjr2sXtWH7od++3LH71/DD5N+v60VzRYvA78gBCuuvsse3kULJbRwSV8pehjFIQCV2FvtmSCf92+U+zhLs0Dazlg5aq0YQtTMIZQFOEFfFve1B+3EbDF00HqWf6C6Mfk9R1AxHc9EFEUz/B1KZCZdvmKl04WTABauNODMdqnHGPJD1cBdRnC0OvoD9vFkwTmoaHQzSe/SN5kqM+gFP5a6pgQzwVZmz4U0iTpDoq6V4SBg==
-Authentication-Results: btinternet.com;
-    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
-X-Originating-IP: [86.134.5.83]
-X-OWM-Source-IP: 86.134.5.83 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedufedrudefuddgkeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddtnecunecujfgurhephffvufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucfkphepkeeirddufeegrdehrdekfeenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudefgedrhedrkeefpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqnecuvehluhhsthgvrhfuihiivgeptd
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from localhost.localdomain (86.134.5.83) by re-prd-rgout-004.btmx-prd.synchronoss.net (5.8.337) (authenticated as richard_c_haines@btinternet.com)
-        id 5DB07BDD03ED3AF8; Wed, 13 Nov 2019 16:14:59 +0000
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     selinux@vger.kernel.org
-Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH] selinux-testsuite: Add kernel module tests
-Date:   Wed, 13 Nov 2019 16:14:54 +0000
-Message-Id: <20191113161454.4370-1-richard_c_haines@btinternet.com>
-X-Mailer: git-send-email 2.23.0
+        id S1728129AbfKMQvS (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 13 Nov 2019 11:51:18 -0500
+Received: from sonic306-27.consmr.mail.ne1.yahoo.com ([66.163.189.89]:39517
+        "EHLO sonic306-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728018AbfKMQvS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 13 Nov 2019 11:51:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1573663876; bh=2yLtcp8P2eqJ5gOUBc6t9JhwZELQNS4Ab1P/9PIEQms=; h=From:To:Cc:Subject:Date:References:From:Subject; b=pT0TClH+o9B795W6WmjEJdZVKN8rBBF9DazJDhLECQRRfwjzXXePBCy/MJDSX0cehM4irLzJvB5gA2OXBKHVFPsqo+5ukibaIX6mPG253fGGGchM6B+ZfW0t/HDXeiEH/PhDC1NTOnjZqdPliHjLiZH2wqUWIBgd79ssgJisn48mzUZPUoSL4mEBaORsg7ROwvqYKyi7B9NAHXmd9EcKPG+CHHVHRc54Z7DuXWgWSLnGpaTehzEGcy+1DFLJpt4dKVgietTZ052/MXgKNipiHUTlg2Y1dWEW/D4dG/gllq+Bc+tDhqVTppKg6liSSkpqKc8fOtwzdVKu3uJiW75USg==
+X-YMail-OSG: 2hVbptMVM1mUqsHLT8Q54LGY0OCTrgUWg8059Sqh2lSGPlTb0o6u_lijkBo5o75
+ 2.FXyyAtNPLNvE5TKAOvaYcZGjy2fN9tmzZG7BtJtgxmogRFG8IO8qXI5cyS.NHBRKLc4DJL1a2L
+ 0Ahr84PPt5mAjazHNEPNW4F9hGw2Tf90krJXsrrYEbY6tigSo60xkYcDp8sr2fk6vypm.NFJmhKm
+ vNXdR96gFl6G8JCKo_RjUkeTBjSemr1X5.H0HswF.NDZrrYG1KyWc3afKKciPo7G1hmMPT7PrmMp
+ yOQ3ZR3QtG.fdaLmmOyK7hZxQPV_w1RutidTp_x22ZKJvY3UYd_.KEvCLo4jeqd5JXnkAsIkZLdt
+ HlFJthHvTKuiq5_CXrQzA6Um_XTfbCni21SDH4xHcCJ9eyVG7ErS19ozYcKQxa4EvNxWkPqO1LFe
+ GST0.h26qPEmzWWFctxTOmx4Rl3WArpafKC3OT6jrbdS0rVlGRtcUxd0MvC1B.umWDJpi_PSOOHf
+ AziPh9crMsGjd.UpnPV_KWkxUsIBfHyyfNiP.IdoYg.hN_XB35ufxWzSUeeidUWBjpXWD_pQLyMn
+ rshaUJpBd3QeKU9VwSl_MnxWOnH.aj25O28fKGRul3XhlfYDdnIbzsSm1XY1fldlAyv1G1KTBA5i
+ tmnJpkTglBQI0rta.5Q4xJ2iLUKWvzy38PgafCOB7Sr2cGmmLrjarvOCb804eLo838cpW2q54rL_
+ njsa2CX58YUA2E67fP9z1lKmNmQt4CPghMkAFeXBSItQ73p_1bC2LbcEv1TBEhhC3.s217cSRiWq
+ YxdHIF9MKlPFmpy_QPTlwtobNKrW24deLtVyEizeF6AJPUhena.rIPhuyquqQltiAQDcxpIbf8SB
+ hbeUo8CowhN79giLSAEUOoT4ISk1W1cu9qh994N0ZVttefc927y0B2LMmV3Ni_UNBQWUjNXQh6di
+ xj9mFV0KcKSAeAnpVr02dwVVBkZgLsUqgeOVfTNatR7W8d0UXDrWn7phTTfW8mnMABxrSY2h8Wbl
+ spyu3.fF8GSPCpFe0N2.IN97n9G8xFNYho0ZH8aMLRHFu7.OfUOh6WV6c3w4NpB9DA3edRMyvq1N
+ QIazaa625g9lPekshWPVs19NHM2BBgUz0PjUyGY0ilkXMUWlskDzw_7Toot02phBQkYbZ.MLH.Tk
+ ghEzakXdiGvPANPXdivRXo.cJw.u.RxsG8__Tc6v1ukNSwYSOJh_hiUC5VTRzV5xhKA.iSQ.8i8J
+ ZE0nXgWO5gJrWfoSslk6stTn96Uwp6SuPNroL9Xd0VRI9E_fODZgiODK2CRrdHd9r8AuP6n7xQWB
+ Hf3DobV_Zrtyk3RafigGw6HV7o85jbyxmaLOTKD2g9_n2A32_.AvDfuaRKfGn5bB.rW_XhADLlDF
+ PJpLKDwvr390dN7vA4j.aekMqMw--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Wed, 13 Nov 2019 16:51:16 +0000
+Received: by smtp411.mail.bf1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID e948f3a250728d7566d3e2a83137ba19;
+          Wed, 13 Nov 2019 16:51:14 +0000 (UTC)
+From:   Casey Schaufler <casey@schaufler-ca.com>
+To:     casey.schaufler@intel.com, jmorris@namei.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Cc:     casey@schaufler-ca.com, keescook@chromium.org,
+        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
+        paul@paul-moore.com, sds@tycho.nsa.gov
+Subject: [PATCH v11 00/25] LSM: Module stacking for AppArmor
+Date:   Wed, 13 Nov 2019 08:50:46 -0800
+Message-Id: <20191113165111.6744-1-casey@schaufler-ca.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+References: <20191113165111.6744-1-casey.ref@schaufler-ca.com>
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Test kernel module loading permissions.
+This patchset provides the changes required for
+the AppArmor security module to stack safely with any other.
 
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+v11: Rebase to 5.4-rc6
+     Incorporate feedback from v10
+     - Disambiguate reading /proc/.../attr/display by restricting
+       all use of the interface to the current process.
+     - Fix a merge error in AppArmor's display attribute check
+
+v10: Ask the security modules if the display can be changed.
+
+v9: There is no version 9
+
+v8: Incorporate feedback from v7
+    - Minor clean-up in display value management
+    - refactor "compound" context creation to use a common
+      append_ctx() function.
+
+v7: Incorporate feedback from v6
+    - Make setting the display a privileged operation. The
+      availability of compound contexts reduces the need for
+      setting the display.
+
+v6: Incorporate feedback from v5
+    - Add subj_<lsm>= and obj_<lsm>= fields to audit records
+    - Add /proc/.../attr/context to get the full context in
+      lsmname\0value\0... format as suggested by Simon McVittie
+    - Add SO_PEERCONTEXT for getsockopt() to get the full context
+      in the same format, also suggested by Simon McVittie.
+    - Add /sys/kernel/security/lsm_display_default to provide
+      the display default value.
+
+v5: Incorporate feedback from v4
+    - Initialize the lsmcontext in security_secid_to_secctx()
+    - Clear the lsmcontext in all security_release_secctx() cases
+    - Don't use the "display" on strictly internal context
+      interfaces.
+    - The SELinux binder hooks check for cases where the context
+      "display" isn't compatible with SELinux.
+
+v4: Incorporate feedback from v3
+    - Mark new lsm_<blob>_alloc functions static
+    - Replace the lsm and slot fields of the security_hook_list
+      with a pointer to a LSM allocated lsm_id structure. The
+      LSM identifies if it needs a slot explicitly. Use the
+      lsm_id rather than make security_add_hooks return the
+      slot value.
+    - Validate slot values used in security.c
+    - Reworked the "display" process attribute handling so that
+      it works right and doesn't use goofy list processing.
+    - fix display value check in dentry_init_security
+    - Replace audit_log of secids with '?' instead of deleting
+      the audit log
+
+v3: Incorporate feedback from v2
+    - Make lsmblob parameter and variable names more
+      meaningful, changing "le" and "l" to "blob".
+    - Improve consistency of constant naming.
+    - Do more sanity checking during LSM initialization.
+    - Be a bit clearer about what is temporary scaffolding.
+    - Rather than clutter security_getpeersec_dgram with
+      otherwise unnecessary checks remove the apparmor
+      stub, which does nothing useful.
+
+Patche 0001 moves management of the sock security blob from the individual
+modules to the infrastructure.
+
+Patches 0002-0012 replace system use of a "secid" with
+a structure "lsmblob" containing information from the
+security modules to be held and reused later. At this
+point lsmblob contains an array of u32 secids, one "slot"
+for each of the security modules compiled into the
+kernel that used secids. A "slot" is allocated when
+a security module requests one.
+The infrastructure is changed to use the slot number
+to pass the correct secid to or from the security module
+hooks.
+
+It is important that the lsmblob be a fixed size entity
+that does not have to be allocated. Several of the places
+where it is used would have performance and/or locking
+issues with dynamic allocation.
+
+Patch 0013 provides a mechanism for a process to
+identify which security module's hooks should be used
+when displaying or converting a security context string.
+A new interface /proc/self/attr/display contains the name
+of the security module to show. Reading from this file
+will present the name of the module, while writing to
+it will set the value. Only names of active security
+modules are accepted. Internally, the name is translated
+to the appropriate "slot" number for the module which
+is then stored in the task security blob. Setting the
+display requires that all modules using the /proc interfaces
+allow the transition. The "display" of other processess
+can be neither read nor written. All suggested cases
+for reading the display of a different process have race
+conditions.
+
+Patch 0014 Starts the process of changing how a security
+context is represented. Since it is possible for a
+security context to have been generated by more than one
+security module it is now necessary to note which module
+created a security context so that the correct "release"
+hook can be called. There are several places where the
+module that created a security context cannot be inferred.
+
+This is achieved by introducing a "lsmcontext" structure
+which contains the context string, its length and the
+"slot" number of the security module that created it.
+The security_release_secctx() interface is changed,
+replacing the (string,len) pointer pair with a lsmcontext
+pointer.
+
+Patches 0015-0017 convert the security interfaces from
+(string,len) pointer pairs to a lsmcontext pointer.
+The slot number identifying the creating module is
+added by the infrastructure. Where the security context
+is stored for extended periods the data type is changed.
+
+The Netlabel code is converted to save lsmblob structures
+instead of secids in Patches 0018-0019.
+
+Patch 0020 adds checks to the binder hooks which verify
+that if both ends of a transaction use the same "display".
+
+Patches 0021-0022 add addition data to the audit records
+to identify the LSM specific data for all active modules.
+
+Patches 0023-0024 add new interfaces for getting the
+compound security contexts.
+
+Finally, with all interference on the AppArmor hooks
+removed, Patch 0025 removes the exclusive bit from
+AppArmor. An unnecessary stub hook was also removed.
+
+The Ubuntu project is using an earlier version of
+this patchset in their distribution to enable stacking
+for containers.
+
+Performance measurements to date have the change
+within the "noise". The sockperf and dbench results
+are on the order of 0.2% to 0.8% difference, with
+better performance being as common as worse. The
+benchmarks were run with AppArmor and Smack on Ubuntu.
+
+https://github.com/cschaufler/lsm-stacking.git#stack-5.4-rc6-v11-apparmor
+
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 ---
- policy/Makefile                        |   4 +
- policy/test_module_load.te             | 118 ++++++++++++++++++++++++
- tests/Makefile                         |   4 +
- tests/module_load/.gitignore           |  13 +++
- tests/module_load/Makefile             |  12 +++
- tests/module_load/finit_load.c         |  94 +++++++++++++++++++
- tests/module_load/init_load.c          | 121 +++++++++++++++++++++++++
- tests/module_load/setestsuite_module.c |  22 +++++
- tests/module_load/test                 |  62 +++++++++++++
- 9 files changed, 450 insertions(+)
- create mode 100644 policy/test_module_load.te
- create mode 100644 tests/module_load/.gitignore
- create mode 100644 tests/module_load/Makefile
- create mode 100644 tests/module_load/finit_load.c
- create mode 100644 tests/module_load/init_load.c
- create mode 100644 tests/module_load/setestsuite_module.c
- create mode 100755 tests/module_load/test
-
-diff --git a/policy/Makefile b/policy/Makefile
-index ff65153..545f3b5 100644
---- a/policy/Makefile
-+++ b/policy/Makefile
-@@ -90,6 +90,10 @@ ifeq ($(shell grep -q all_file_perms.*watch $(POLDEV)/include/support/all_perms.
- TARGETS+=test_notify.te
- endif
- 
-+ifeq ($(shell grep -q module_load $(POLDEV)/include/support/all_perms.spt && echo true),true)
-+TARGETS+=test_module_load.te
-+endif
-+
- ifeq (x$(DISTRO),$(filter x$(DISTRO),xRHEL4 xRHEL5 xRHEL6))
- TARGETS:=$(filter-out test_overlayfs.te test_mqueue.te test_ibpkey.te, $(TARGETS))
- endif
-diff --git a/policy/test_module_load.te b/policy/test_module_load.te
-new file mode 100644
-index 0000000..566ddf7
---- /dev/null
-+++ b/policy/test_module_load.te
-@@ -0,0 +1,118 @@
-+#
-+############################## Define Macro ################################
-+#
-+# Replace domain_type() macro as it hides some relevant denials in audit.log
-+#
-+gen_require(`
-+	type setrans_var_run_t, syslogd_t;
-+')
-+
-+define(`module_domain_type',`
-+	allow $1 proc_t:dir { search };
-+	allow $1 proc_t:lnk_file { read };
-+	allow $1 self:dir { search };
-+	allow $1 self:file { open read write };
-+	dontaudit init_t syslogd_t:fd use;
-+	dontaudit $1 security_t:filesystem getattr;
-+	dontaudit $1 self:file getattr;
-+	dontaudit $1 setrans_var_run_t:dir search;
-+	dontaudit unconfined_t $1:process { noatsecure rlimitinh siginh };
-+')
-+
-+#
-+############# Test kernel modules with finitmod_module(2) ###################
-+#
-+attribute finitmoddomain;
-+
-+type test_finitmod_t;
-+module_domain_type(test_finitmod_t)
-+unconfined_runs_test(test_finitmod_t)
-+typeattribute test_finitmod_t testdomain;
-+typeattribute test_finitmod_t finitmoddomain;
-+
-+allow test_finitmod_t self:capability { sys_module };
-+allow test_finitmod_t test_file_t:system { module_load };
-+allow test_finitmod_t kernel_t:system { module_request };
-+
-+############### Deny cap sys_module ######################
-+type test_finitmod_deny_sys_module_t;
-+module_domain_type(test_finitmod_deny_sys_module_t)
-+unconfined_runs_test(test_finitmod_deny_sys_module_t)
-+typeattribute test_finitmod_deny_sys_module_t testdomain;
-+typeattribute test_finitmod_deny_sys_module_t finitmoddomain;
-+
-+neverallow test_finitmod_deny_sys_module_t self:capability { sys_module };
-+
-+############### Deny sys module_load ######################
-+type test_finitmod_deny_module_load_t;
-+module_domain_type(test_finitmod_deny_module_load_t)
-+unconfined_runs_test(test_finitmod_deny_module_load_t)
-+typeattribute test_finitmod_deny_module_load_t testdomain;
-+typeattribute test_finitmod_deny_module_load_t finitmoddomain;
-+
-+allow test_finitmod_deny_module_load_t self:capability { sys_module };
-+neverallow test_finitmod_deny_module_load_t test_file_t:system { module_load };
-+
-+############### Deny sys module_request ######################
-+type test_finitmod_deny_module_request_t;
-+module_domain_type(test_finitmod_deny_module_request_t)
-+unconfined_runs_test(test_finitmod_deny_module_request_t)
-+typeattribute test_finitmod_deny_module_request_t testdomain;
-+typeattribute test_finitmod_deny_module_request_t finitmoddomain;
-+
-+allow test_finitmod_deny_module_request_t self:capability { sys_module };
-+allow test_finitmod_deny_module_request_t test_file_t:system { module_load };
-+neverallow test_finitmod_deny_module_request_t kernel_t:system { module_request };
-+
-+#
-+############# Test kernel modules with initmod_module(2) ###################
-+#
-+attribute initmoddomain;
-+
-+type test_initmod_t;
-+module_domain_type(test_initmod_t)
-+unconfined_runs_test(test_initmod_t)
-+typeattribute test_initmod_t testdomain;
-+typeattribute test_initmod_t initmoddomain;
-+
-+allow test_initmod_t self:capability { sys_module };
-+allow test_initmod_t self:system { module_load };
-+allow test_initmod_t kernel_t:system { module_request };
-+
-+############### Deny cap sys_module ######################
-+type test_initmod_deny_sys_module_t;
-+module_domain_type(test_initmod_deny_sys_module_t)
-+unconfined_runs_test(test_initmod_deny_sys_module_t)
-+typeattribute test_initmod_deny_sys_module_t testdomain;
-+typeattribute test_initmod_deny_sys_module_t initmoddomain;
-+
-+neverallow test_initmod_deny_sys_module_t self:capability { sys_module };
-+
-+############### Deny sys module_load ######################
-+type test_initmod_deny_module_load_t;
-+module_domain_type(test_initmod_deny_module_load_t)
-+unconfined_runs_test(test_initmod_deny_module_load_t)
-+typeattribute test_initmod_deny_module_load_t testdomain;
-+typeattribute test_initmod_deny_module_load_t initmoddomain;
-+
-+allow test_initmod_deny_module_load_t self:capability { sys_module };
-+neverallow test_initmod_deny_module_load_t self:system { module_load };
-+
-+############### Deny sys module_request ######################
-+type test_initmod_deny_module_request_t;
-+module_domain_type(test_initmod_deny_module_request_t)
-+unconfined_runs_test(test_initmod_deny_module_request_t)
-+typeattribute test_initmod_deny_module_request_t testdomain;
-+typeattribute test_initmod_deny_module_request_t initmoddomain;
-+
-+allow test_initmod_deny_module_request_t self:capability { sys_module };
-+allow test_initmod_deny_module_request_t self:system { module_load };
-+neverallow test_initmod_deny_module_request_t kernel_t:system { module_request };
-+
-+#
-+########### Allow these domains to be entered from sysadm domain ############
-+#
-+miscfiles_domain_entry_test_files(finitmoddomain)
-+userdom_sysadm_entry_spec_domtrans_to(finitmoddomain)
-+miscfiles_domain_entry_test_files(initmoddomain)
-+userdom_sysadm_entry_spec_domtrans_to(initmoddomain)
-diff --git a/tests/Makefile b/tests/Makefile
-index 0021590..4731d8c 100644
---- a/tests/Makefile
-+++ b/tests/Makefile
-@@ -68,6 +68,10 @@ ifeq ($(shell grep -q all_file_perms.*watch $(POLDEV)/include/support/all_perms.
- SUBDIRS+=notify
- endif
- 
-+ifeq ($(shell grep -q module_load $(POLDEV)/include/support/all_perms.spt && echo true),true)
-+SUBDIRS+=module_load
-+endif
-+
- ifeq ($(DISTRO),RHEL4)
-     SUBDIRS:=$(filter-out bounds dyntrace dyntrans inet_socket mmap nnp_nosuid overlay unix_socket, $(SUBDIRS))
- endif
-diff --git a/tests/module_load/.gitignore b/tests/module_load/.gitignore
-new file mode 100644
-index 0000000..77fe4bd
---- /dev/null
-+++ b/tests/module_load/.gitignore
-@@ -0,0 +1,13 @@
-+finit_load
-+init_load
-+modules.order
-+Module.symvers
-+setestsuite_module.ko
-+.setestsuite_module.ko.cmd
-+setestsuite_module.mod
-+setestsuite_module.mod.c
-+.setestsuite_module.mod.cmd
-+setestsuite_module.mod.o
-+.setestsuite_module.mod.o.cmd
-+setestsuite_module.o
-+.setestsuite_module.o.cmd
-diff --git a/tests/module_load/Makefile b/tests/module_load/Makefile
-new file mode 100644
-index 0000000..cb8f28d
---- /dev/null
-+++ b/tests/module_load/Makefile
-@@ -0,0 +1,12 @@
-+obj-m = setestsuite_module.o
-+
-+TARGETS = finit_load init_load
-+LDLIBS += -lselinux
-+KDIR = /usr/src/kernels/$(shell uname -r)
-+
-+all: $(TARGETS)
-+	$(MAKE) -C $(KDIR) M=$(PWD)
-+
-+clean:
-+	rm -f $(TARGETS)
-+	rm -f *.o *.ko *.cmd *.mod *.mod.c .*.cmd Module.symvers modules.order
-diff --git a/tests/module_load/finit_load.c b/tests/module_load/finit_load.c
-new file mode 100644
-index 0000000..029c698
---- /dev/null
-+++ b/tests/module_load/finit_load.c
-@@ -0,0 +1,94 @@
-+#define _GNU_SOURCE 1
-+
-+#include <stdio.h>
-+#include <unistd.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <errno.h>
-+#include <stdbool.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <sys/syscall.h>
-+#include <selinux/selinux.h>
-+
-+static void print_usage(char *progfile_name)
-+{
-+	fprintf(stderr,
-+		"usage:  %s [-v] path name\n"
-+		"Where:\n\t"
-+		"-v    Print information.\n\t"
-+		"path  Kernel module build path.\n\t"
-+		"name  Name of kernel module to load.\n", progfile_name);
-+	exit(-1);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	char *context, file_name[PATH_MAX];
-+	int opt, result, fd;
-+	bool verbose = false;
-+
-+	while ((opt = getopt(argc, argv, "v")) != -1) {
-+		switch (opt) {
-+		case 'v':
-+			verbose = true;
-+			break;
-+		default:
-+			print_usage(argv[0]);
-+		}
-+	}
-+
-+	if (optind >= argc)
-+		print_usage(argv[0]);
-+
-+	result = sprintf(file_name, "%s/%s.ko", argv[optind],
-+			 argv[optind + 1]);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed sprintf\n");
-+		exit(-1);
-+	}
-+
-+	fd = open(file_name, O_RDONLY);
-+	if (!fd) {
-+		fprintf(stderr, "Failed to open %s: %s\n",
-+			file_name, strerror(errno));
-+		exit(-1);
-+	}
-+
-+	result = getcon(&context);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed to obtain process context\n");
-+		close(fd);
-+		exit(-1);
-+	}
-+
-+	if (verbose)
-+		printf("Process context:\n\t%s\n", context);
-+
-+	free(context);
-+
-+	result = syscall(__NR_finit_module, fd, "", 0);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed to load '%s' module: %s\n",
-+			file_name, strerror(errno));
-+		close(fd);
-+		/* Denying: sys_module=EPERM, module_load=EACCES */
-+		exit(errno);
-+	}
-+	close(fd);
-+
-+	if (verbose)
-+		printf("Loaded kernel module:  %s\n", file_name);
-+
-+	result = syscall(__NR_delete_module, argv[optind + 1], 0);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed to delete '%s' module: %s\n",
-+			argv[optind + 1], strerror(errno));
-+		exit(-1);
-+	}
-+
-+	if (verbose)
-+		printf("Deleted kernel module: %s\n", argv[optind + 1]);
-+
-+	return 0;
-+}
-diff --git a/tests/module_load/init_load.c b/tests/module_load/init_load.c
-new file mode 100644
-index 0000000..5f9997b
---- /dev/null
-+++ b/tests/module_load/init_load.c
-@@ -0,0 +1,121 @@
-+#define _GNU_SOURCE 1
-+
-+#include <stdio.h>
-+#include <unistd.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <errno.h>
-+#include <stdbool.h>
-+#include <fcntl.h>
-+#include <limits.h>
-+#include <sys/stat.h>
-+#include <sys/syscall.h>
-+#include <selinux/selinux.h>
-+
-+static void print_usage(char *progfile_name)
-+{
-+	fprintf(stderr,
-+		"usage:  %s [-v] path name\n"
-+		"Where:\n\t"
-+		"-v    Print information.\n\t"
-+		"path  Kernel module build path.\n\t"
-+		"name  Name of kernel module to load.\n", progfile_name);
-+	exit(-1);
-+}
-+
-+int main(int argc, char *argv[])
-+{
-+	char *context, file_name[PATH_MAX];
-+	int opt, result, fd;
-+	bool verbose = false;
-+	void *elf_image;
-+	struct stat st;
-+
-+	while ((opt = getopt(argc, argv, "v")) != -1) {
-+		switch (opt) {
-+		case 'v':
-+			verbose = true;
-+			break;
-+		default:
-+			print_usage(argv[0]);
-+		}
-+	}
-+
-+	if (optind >= argc)
-+		print_usage(argv[0]);
-+
-+	result = sprintf(file_name, "%s/%s.ko", argv[optind],
-+			 argv[optind + 1]);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed sprintf\n");
-+		exit(-1);
-+	}
-+
-+	fd = open(file_name, O_RDONLY);
-+	if (!fd) {
-+		fprintf(stderr, "Failed to open %s: %s\n",
-+			file_name, strerror(errno));
-+		exit(-1);
-+	}
-+
-+	result = getcon(&context);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed to obtain process context\n");
-+		close(fd);
-+		exit(-1);
-+	}
-+
-+	if (verbose)
-+		printf("Process context:\n\t%s\n", context);
-+
-+	free(context);
-+
-+	result = fstat(fd, &st);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed fstat on %s: %s\n",
-+			file_name, strerror(errno));
-+		close(fd);
-+		exit(-1);
-+	}
-+
-+	elf_image = malloc(st.st_size);
-+	if (!elf_image) {
-+		fprintf(stderr, "Failed malloc on %s: %s\n",
-+			file_name, strerror(errno));
-+		close(fd);
-+		exit(-1);
-+	}
-+
-+	result = read(fd, elf_image, st.st_size);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed read on %s: %s\n",
-+			file_name, strerror(errno));
-+		close(fd);
-+		exit(-1);
-+	}
-+	close(fd);
-+
-+	result = syscall(__NR_init_module, elf_image, st.st_size, "");
-+	if (result < 0) {
-+		fprintf(stderr, "Failed to load '%s' module: %s\n",
-+			file_name, strerror(errno));
-+		/* Denying: sys_module=EPERM, module_load & request=EACCES */
-+		exit(errno);
-+	}
-+	free(elf_image);
-+
-+	if (verbose)
-+		printf("Loaded kernel module:  %s\n", file_name);
-+
-+	result = syscall(__NR_delete_module, argv[optind + 1], 0);
-+	if (result < 0) {
-+		fprintf(stderr, "Failed to delete '%s' module: %s\n",
-+			argv[optind + 1], strerror(errno));
-+		exit(-1);
-+	}
-+
-+	if (verbose)
-+		printf("Deleted kernel module: %s\n", argv[optind + 1]);
-+
-+	return 0;
-+}
-diff --git a/tests/module_load/setestsuite_module.c b/tests/module_load/setestsuite_module.c
-new file mode 100644
-index 0000000..1f6be02
---- /dev/null
-+++ b/tests/module_load/setestsuite_module.c
-@@ -0,0 +1,22 @@
-+#include <linux/init.h>
-+#include <linux/module.h>
-+#include <linux/kernel.h>
-+
-+static int __init setestsuite_module_init(void)
-+{
-+	int result = 0;
-+
-+	pr_info("INIT - setestsuite_module\n");
-+	result = request_module_nowait("dummy-module");
-+	pr_info("request_module() returned: %d\n", result);
-+	return result;
-+}
-+
-+static void __exit setestsuite_module_exit(void)
-+{
-+	pr_info("EXIT - setestsuite_module\n");
-+}
-+
-+module_init(setestsuite_module_init);
-+module_exit(setestsuite_module_exit);
-+MODULE_LICENSE("GPL");
-diff --git a/tests/module_load/test b/tests/module_load/test
-new file mode 100755
-index 0000000..1cfc219
---- /dev/null
-+++ b/tests/module_load/test
-@@ -0,0 +1,62 @@
-+#!/usr/bin/perl
-+use Test::More;
-+
-+BEGIN {
-+    $basedir = $0;
-+    $basedir =~ s|(.*)/[^/]*|$1|;
-+
-+    # allow info to be shown during tests
-+    $v = $ARGV[0];
-+    if ($v) {
-+        if ( $v ne "-v" ) {
-+            plan skip_all => "Invalid option (use -v)";
-+        }
-+    }
-+    else {
-+        $v = " ";
-+    }
-+
-+    plan tests => 8;
-+}
-+
-+print "Test finit_module(2)\n";
-+$result = system
-+"runcon -t test_finitmod_t $basedir/finit_load $v $basedir setestsuite_module";
-+ok( $result eq 0 );
-+
-+# Deny capability { sys_module } - EPERM
-+$result = system
-+"runcon -t test_finitmod_deny_sys_module_t $basedir/finit_load $v $basedir setestsuite_module 2>&1";
-+ok( $result >> 8 eq 1 );
-+
-+# Deny system { module_load } - EACCES
-+$result = system
-+"runcon -t test_finitmod_deny_module_load_t $basedir/finit_load $v $basedir setestsuite_module 2>&1";
-+ok( $result >> 8 eq 13 );
-+
-+# Deny system { module_request } - EACCES
-+$result = system
-+"runcon -t test_finitmod_deny_module_request_t $basedir/finit_load $v $basedir setestsuite_module 2>&1";
-+ok( $result >> 8 eq 13 );
-+
-+print "Test init_module(2)\n";
-+$result = system
-+  "runcon -t test_initmod_t $basedir/init_load $v $basedir setestsuite_module";
-+ok( $result eq 0 );
-+
-+# Deny capability { sys_module } - EPERM
-+$result = system
-+"runcon -t test_initmod_deny_sys_module_t $basedir/init_load $v $basedir setestsuite_module 2>&1";
-+ok( $result >> 8 eq 1 );
-+
-+# Deny system { module_load } - EACCES
-+$result = system
-+"runcon -t test_initmod_deny_module_load_t $basedir/init_load $v $basedir setestsuite_module 2>&1";
-+ok( $result >> 8 eq 13 );
-+
-+# Deny system { module_request } - EACCES
-+$result = system
-+"runcon -t test_initmod_deny_module_request_t $basedir/init_load $v $basedir setestsuite_module 2>&1";
-+ok( $result >> 8 eq 13 );
-+
-+exit;
--- 
-2.23.0
-
+ arch/alpha/include/uapi/asm/socket.h    |   1 +
+ arch/mips/include/uapi/asm/socket.h     |   1 +
+ arch/parisc/include/uapi/asm/socket.h   |   1 +
+ arch/sparc/include/uapi/asm/socket.h    |   1 +
+ drivers/android/binder.c                |  26 +-
+ fs/ceph/xattr.c                         |   6 +-
+ fs/nfs/nfs4proc.c                       |  22 +-
+ fs/nfsd/nfs4xdr.c                       |  20 +-
+ fs/proc/base.c                          |   2 +
+ include/linux/audit.h                   |   1 +
+ include/linux/cred.h                    |   3 +-
+ include/linux/lsm_hooks.h               |  37 +-
+ include/linux/security.h                | 175 ++++++++--
+ include/net/af_unix.h                   |   2 +-
+ include/net/netlabel.h                  |   8 +-
+ include/net/scm.h                       |  15 +-
+ include/uapi/asm-generic/socket.h       |   1 +
+ kernel/audit.c                          |  72 +++-
+ kernel/audit.h                          |   9 +-
+ kernel/audit_fsnotify.c                 |   1 +
+ kernel/auditfilter.c                    |  10 +-
+ kernel/auditsc.c                        | 127 ++++---
+ kernel/cred.c                           |  12 +-
+ net/core/sock.c                         |   7 +-
+ net/ipv4/cipso_ipv4.c                   |   6 +-
+ net/ipv4/ip_sockglue.c                  |  12 +-
+ net/netfilter/nf_conntrack_netlink.c    |  20 +-
+ net/netfilter/nf_conntrack_standalone.c |  11 +-
+ net/netfilter/nfnetlink_queue.c         |  26 +-
+ net/netfilter/nft_meta.c                |  13 +-
+ net/netfilter/xt_SECMARK.c              |   5 +-
+ net/netlabel/netlabel_kapi.c            |   6 +-
+ net/netlabel/netlabel_unlabeled.c       |  97 +++---
+ net/netlabel/netlabel_unlabeled.h       |   2 +-
+ net/netlabel/netlabel_user.c            |  13 +-
+ net/netlabel/netlabel_user.h            |   6 +-
+ net/unix/af_unix.c                      |   6 +-
+ net/xfrm/xfrm_policy.c                  |   2 +
+ net/xfrm/xfrm_state.c                   |   2 +
+ security/apparmor/include/apparmor.h    |   3 +-
+ security/apparmor/include/net.h         |   6 +-
+ security/apparmor/lsm.c                 | 117 +++----
+ security/commoncap.c                    |   7 +-
+ security/integrity/ima/ima.h            |  15 +-
+ security/integrity/ima/ima_api.c        |  11 +-
+ security/integrity/ima/ima_appraise.c   |   6 +-
+ security/integrity/ima/ima_main.c       |  49 +--
+ security/integrity/ima/ima_policy.c     |  19 +-
+ security/integrity/integrity_audit.c    |   1 +
+ security/loadpin/loadpin.c              |   8 +-
+ security/safesetid/lsm.c                |   8 +-
+ security/security.c                     | 593 +++++++++++++++++++++++++++++---
+ security/selinux/hooks.c                | 109 +++---
+ security/selinux/include/classmap.h     |   2 +-
+ security/selinux/include/objsec.h       |   5 +
+ security/selinux/include/security.h     |   1 +
+ security/selinux/netlabel.c             |  25 +-
+ security/selinux/ss/services.c          |   4 +-
+ security/smack/smack.h                  |   6 +
+ security/smack/smack_lsm.c              | 124 ++++---
+ security/smack/smack_netfilter.c        |   8 +-
+ security/smack/smackfs.c                |  10 +-
+ security/tomoyo/tomoyo.c                |   8 +-
+ security/yama/yama_lsm.c                |   7 +-
+ 64 files changed, 1376 insertions(+), 563 deletions(-)

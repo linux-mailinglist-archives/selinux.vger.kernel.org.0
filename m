@@ -2,138 +2,98 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4750BFE0C4
-	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2019 16:01:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB82FFE102
+	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2019 16:16:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727487AbfKOPBU (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 15 Nov 2019 10:01:20 -0500
-Received: from UPDC19PA24.eemsg.mail.mil ([214.24.27.199]:63746 "EHLO
-        UPDC19PA24.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727406AbfKOPBU (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 15 Nov 2019 10:01:20 -0500
-X-EEMSG-check-017: 31306147|UPDC19PA24_ESA_OUT06.csd.disa.mil
-X-IronPort-AV: E=Sophos;i="5.68,308,1569283200"; 
-   d="scan'208";a="31306147"
-Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
-  by UPDC19PA24.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 15 Nov 2019 15:01:16 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
-  s=tycho.nsa.gov; t=1573830076; x=1605366076;
-  h=subject:to:references:from:message-id:date:mime-version:
-   in-reply-to:content-transfer-encoding;
-  bh=ih98zDuzg+FBi38GXzHfC7tVVsYGUScEsteLX2M0gLk=;
-  b=f0EKd7PeWjr4WRWXFkmeKhPqIwCuGvCPWqeZYjsOUTOlr1ZPSV3JWp0W
-   AZELfacN7K3c+BJbyOHVEaHB3e0+dtyee9tZ+A0Sl/GubFjGoj1usE2aI
-   QpRE1ioEXf4zCJldwFsbneitrbRjuJsD5OpogovHamF+MAtDpBh9J/rVY
-   1aN7PdBAyg0v5U6TINLXIN6Og+vOLlgxLzYBQQ3dqilYawubNwUdEO/QF
-   vpBNXKvZ/KwFVqkd5R9QpzKcfjSsUBkZ93qOwf5Bjx7ePHs8wvaVtXp6G
-   75TuPgQPNxZdAyBajh0hnAzRfaFVmx3b1k1Y8Jua68zISLOFSbhjBI8uj
-   Q==;
-X-IronPort-AV: E=Sophos;i="5.68,308,1569283200"; 
-   d="scan'208";a="35583395"
-IronPort-PHdr: =?us-ascii?q?9a23=3AxH0tgxI1k+caB43llNmcpTZWNBhigK39O0sv0r?=
- =?us-ascii?q?FitYgeIvTxwZ3uMQTl6Ol3ixeRBMOHsqkC0rGL+P+4EUU7or+5+EgYd5JNUx?=
- =?us-ascii?q?JXwe43pCcHRPC/NEvgMfTxZDY7FskRHHVs/nW8LFQHUJ2mPw6arXK99yMdFQ?=
- =?us-ascii?q?viPgRpOOv1BpTSj8Oq3Oyu5pHfeQpFiCezbL9oMRm7owXcusYUjId+N6081g?=
- =?us-ascii?q?bHrnxUdupM2GhmP0iTnxHy5sex+J5s7SFdsO8/+sBDTKv3Yb02QaRXAzo6PW?=
- =?us-ascii?q?814tbrtQTYQguU+nQcSGQWnQFWDAXD8Rr3Q43+sir+tup6xSmaIcj7Rq06VD?=
- =?us-ascii?q?i+86tmTgLjhTwZPDAl7m7Yls1wjLpaoB2/oRx/35XUa5yROPZnY6/RYc8WSW?=
- =?us-ascii?q?9HU8lfTSxBBp63YZUJAeQPIO1Uq5DxqlUKoBe7AwSnGeHhxSJShnLuwKM0ze?=
- =?us-ascii?q?ohHwHF0gIuEd0Bv3bbo8n6OqoJTeC4zrPFwSnfY/5Y2zrw7pXDfBA7ofGLWL?=
- =?us-ascii?q?J9adffyVUxGAPdjlWft4rlNC6I2OQIqWeb6+5gWvyvimU6rAxxuSWgxtw3h4?=
- =?us-ascii?q?nVhoMa1lDE9SJjzIYzPt23UlR3YdGjEJtOriyXMZZ9TMA6Q2xwpSo3xbILtY?=
- =?us-ascii?q?S7cSQX0pgr2RHSZ+Kdf4SV5B/oSfyfLi1ihH1/fbKynxOy8U+9xeLiTsS0y1?=
- =?us-ascii?q?NKrjZdktnLq3ANywTf6siZRft5+UeswSqP2BrJ6uFFPEA0jrDXK4Ihw7Eslp?=
- =?us-ascii?q?oTtl7PHinql0XtkKCabEAk+ums6+j/Y7XmoIGTN5Nshw3jPakjldazDOQlPg?=
- =?us-ascii?q?QUQWSW9vqw2Kf+8UHhRbVFlPw2kq3XsJDAIsQbo7a0AxRI3YY48Bu/Ezen38?=
- =?us-ascii?q?gYnXkANl5FfgmHgJLzN1HBJ/D4E++zg06wnzdz2/DGIrrhD43VLnjHirjhYK?=
- =?us-ascii?q?p961RHxwUp1t1f/YxbBawBIP3pRk/9rsDXDhg8Mwas2eboFM191p8CWWKIGq?=
- =?us-ascii?q?KZK73dsVuJ5uIpPumNa5QYuCjyK/c7/f7il3w5lkEHfamvw5QXbGq0HvN8I0?=
- =?us-ascii?q?WWMjLQhYI5HHsQ9i43UfDwglSJUXYHf3K7Qr4m7DgTEo+qDY7fAIuqherFlD?=
- =?us-ascii?q?y2GpxQe3BuFF+BCzHrep+CVvNKbzidceF7lTlRbqSsU48s01mVsQb+z7d2Zr?=
- =?us-ascii?q?7P9jYwqYPo1N8z4fba0x4162onXIymz2iRQjQszSszTDgs0fU6+Bcsxw=3D?=
- =?us-ascii?q?=3D?=
-X-IPAS-Result: =?us-ascii?q?A2DnAACavM5d/wHyM5BkGgEBAQEBAQEBAQMBAQEBEQEBA?=
- =?us-ascii?q?QICAQEBAYF+gXQsbFUyKoQpjwlRAQEBBoERJYlmih+HJAkBAQEBAQEBAQEnD?=
- =?us-ascii?q?QECAQGEQAKCIyQ4EwIOAQEBBAEBAQEBBQMBAWyFQ4I7KQGCbQEFIwQRUQsOC?=
- =?us-ascii?q?gICJgICVwYBDAYCAQGCXz8BglIlr1l/M4VOgzyBSIEOKIESiwMYeIEHgTgMg?=
- =?us-ascii?q?l8+hA6DR4I8IgSNGohdYUZ0lhOCNII3hGKOLgYbmg4thCGJepwZIoFYKwgCG?=
- =?us-ascii?q?AghD4MnCUcRFJ9+IwMwgQUBAY4fgkABAQ?=
-Received: from tarius.tycho.ncsc.mil ([144.51.242.1])
-  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 15 Nov 2019 15:01:15 +0000
-Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
-        by tarius.tycho.ncsc.mil (8.14.4/8.14.4) with ESMTP id xAFF1FZr029924;
-        Fri, 15 Nov 2019 10:01:15 -0500
-Subject: Re: [PATCH] dbus: Fix FileNotFoundError in
- org.selinux.relabel_on_boot
-To:     Petr Lautrbach <plautrba@redhat.com>, selinux@vger.kernel.org
-References: <20191115145425.1460016-1-plautrba@redhat.com>
-From:   Stephen Smalley <sds@tycho.nsa.gov>
-Message-ID: <6ce96a14-0be8-5829-7fa4-e84d7f33c678@tycho.nsa.gov>
-Date:   Fri, 15 Nov 2019 10:01:15 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+        id S1727593AbfKOPQc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 15 Nov 2019 10:16:32 -0500
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:29347 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727380AbfKOPQ3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 15 Nov 2019 10:16:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1573830988;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=E6nIvbP52YxRoc/7UCe2yJFho9w+onZ6I7kx42kFDK4=;
+        b=FYm9+F2T29FjOuldirA0vZYv+wvdCURvTsx+/jEcdERMSKAB+7KPR9SXysX+DO2q1YyxCv
+        BjEs48DGbSZcWtpzZlrI1r+T7PcChKJNmfsqRmPJ0aTMxnAwu+DZhmOW+DFXtpJJQckBaa
+        cP4UGQe2PtnHL9z94OUmyFezANISwvc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-155-wrkLhszvPGeoI5eBxGYKsQ-1; Fri, 15 Nov 2019 10:16:27 -0500
+Received: by mail-wm1-f70.google.com with SMTP id 199so7131490wmb.0
+        for <selinux@vger.kernel.org>; Fri, 15 Nov 2019 07:16:27 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7IxzdqDjGf5VhxeNyWOtmpENKMQuXs8U4TbdEp1sG64=;
+        b=rS/Su1s0nN/j7HPaJpwWTeDdyrLbrIFiw8HlAJ5XvCkduHen6iuo52DOW/t2VwW/YP
+         1pehRNPDOnJny7qDYWgrv20PqVqWPvM5kUmKtLWlzXU6C3L2uS4jiG3Sab96fZTn58j5
+         /i2UkQJRL3DmEuVyfvVRIBGsvXJjZqGbOOLNpjjGPxB5540/CU+mZ37ZdrBsVgYI45qC
+         Kfy647DuwXLHb/16s9euSspjJ8P+PVyDMqTQXEzR5J75d40Xx6naLblOvFwRsC4jVzTv
+         NsjOneTmzKy+wXfTQk7moyHvnp/d2qiU10/Sy1qTQ6zfeoFnNcTHKz+5YFB+0xU5lix5
+         aLTQ==
+X-Gm-Message-State: APjAAAXf7INiGUuqQhR8sXdoYHhDz4BsdocOg/JgQSi0908xtl8O0gvp
+        fmTFegLwqBtfvPWqBmx70hM0/cdKuLj843olDiUATb8znGjU1ceJ5kdP8uxa//Yt2YRxBjUVYSz
+        ECygKNSHXedrGWtHQmQ==
+X-Received: by 2002:a1c:9d4a:: with SMTP id g71mr16051053wme.66.1573830985792;
+        Fri, 15 Nov 2019 07:16:25 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyD0TNbtnK4JR4mvzLKgbcjDwsFnWwSZlangHT3h/YMlTsVhNjGqJq46inHweR3PZC4GQ7ADw==
+X-Received: by 2002:a1c:9d4a:: with SMTP id g71mr16051017wme.66.1573830985435;
+        Fri, 15 Nov 2019 07:16:25 -0800 (PST)
+Received: from localhost.localdomain.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id j63sm10337239wmj.46.2019.11.15.07.16.24
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Nov 2019 07:16:24 -0800 (PST)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH testsuite v2 0/3] Fix refpolicy build & build test_policy.pp in Travis
+Date:   Fri, 15 Nov 2019 16:16:20 +0100
+Message-Id: <20191115151623.265770-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.23.0
 MIME-Version: 1.0
-In-Reply-To: <20191115145425.1460016-1-plautrba@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+X-MC-Unique: wrkLhszvPGeoI5eBxGYKsQ-1
+X-Mimecast-Spam-Score: 0
+Content-Type: text/plain; charset=WINDOWS-1252
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 11/15/19 9:54 AM, Petr Lautrbach wrote:
-> When org.selinux.relabel_on_boot(0) was called twice, it failed with
-> FileNotFoundError.
-> 
-> Fixes:
->      $ dbus-send --system --print-reply --dest=org.selinux /org/selinux/object org.selinux.relabel_on_boot int64:1
->      method return sender=:1.53 -> dest=:1.54 reply_serial=2
->      $ dbus-send --system --print-reply --dest=org.selinux /org/selinux/object org.selinux.relabel_on_boot int64:0
->      method return sender=:1.53 -> dest=:1.55 reply_serial=2
->      $ dbus-send --system --print-reply --dest=org.selinux /org/selinux/object org.selinux.relabel_on_boot int64:0
->      Error org.freedesktop.DBus.Python.FileNotFoundError: FileNotFoundError: [Errno 2] No such file or directory: '/.autorelabel'
-> 
-> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
-> ---
-> 
-> Note: This is python 3 only code and it fails in travis with PYVER=python2.7 RUBYLIBVER=2.6:
-> 
-> $ PATH="$VIRTUAL_ENV/bin:$PATH" ./scripts/run-flake8
-> 
-> Analyzing 187 Python scripts
-> 
-> ./dbus/selinux_server.py:90:20: F821 undefined name 'FileNotFoundError'
-> 
-> ./installdir/usr/share/system-config-selinux/selinux_server.py:90:20: F821 undefined name 'FileNotFoundError'
-> 
-> The command "PATH="$VIRTUAL_ENV/bin:$PATH" ./scripts/run-flake8" exited with 1.
+This series fixes the remaining test_policy.pp build errors under
+refpolicy and enables building the test policy under both Fedora policy
+and refpolicy in Travis CI.
 
-Hmm...given that, do we want to defer it until after 3.0 final release, 
-or are we going to switch travis over to only test with python3 now?
+Changes in v2:
+ - report policy version 999 in the fake selinuxfs to force building
+   latest version
+ - install userspace tools and libraries straight from source instead
+   of working around maissing features in the Ubuntu builds
+ - install also latest keyutils from source to allow the new 'keys'
+   subtest helpers to build
 
-> 
-> 
-> 
->   dbus/selinux_server.py | 5 ++++-
->   1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/dbus/selinux_server.py b/dbus/selinux_server.py
-> index b9debc071485..be4f4557a9fa 100644
-> --- a/dbus/selinux_server.py
-> +++ b/dbus/selinux_server.py
-> @@ -85,7 +85,10 @@ class selinux_server(slip.dbus.service.Object):
->               fd = open("/.autorelabel", "w")
->               fd.close()
->           else:
-> -            os.unlink("/.autorelabel")
-> +            try:
-> +                os.unlink("/.autorelabel")
-> +            except FileNotFoundError:
-> +                pass
->   
->       def write_selinux_config(self, enforcing=None, policy=None):
->           path = selinux.selinux_path() + "config"
-> 
+Ondrej Mosnacek (3):
+  policy: consolidate macros for home dirs access
+  policy: add fallbacks for Fedora-specific macros
+  travis: test building the test policy package
+
+ .travis.yml                         | 48 ++++++++++++++++++++++++++---
+ policy/Makefile                     | 11 ++++---
+ policy/test_overlayfs.te            |  6 ++--
+ policy/test_policy.if               | 23 ++++++++++++--
+ travis-ci/enable-policy.sh          | 10 ++++++
+ travis-ci/setup-policy-fedora.sh    | 33 ++++++++++++++++++++
+ travis-ci/setup-policy-refpolicy.sh | 19 ++++++++++++
+ 7 files changed, 136 insertions(+), 14 deletions(-)
+ create mode 100644 travis-ci/enable-policy.sh
+ create mode 100644 travis-ci/setup-policy-fedora.sh
+ create mode 100644 travis-ci/setup-policy-refpolicy.sh
+
+--=20
+2.23.0
 

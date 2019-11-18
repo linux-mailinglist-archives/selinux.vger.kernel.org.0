@@ -2,64 +2,64 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C281005A6
-	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2019 13:31:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 33E9D1005A8
+	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2019 13:31:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726541AbfKRMbH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 18 Nov 2019 07:31:07 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:49077 "EHLO
+        id S1726464AbfKRMbK (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 18 Nov 2019 07:31:10 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20879 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726506AbfKRMbH (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 18 Nov 2019 07:31:07 -0500
+        with ESMTP id S1726506AbfKRMbK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 18 Nov 2019 07:31:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1574080265;
+        s=mimecast20190719; t=1574080268;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=mmfmcVgleq4XojmESt2YDfC/zy2jlK4moL+EHl6ZwqA=;
-        b=Wq2jxbTf9ks/QU/0LlZtio9Srl1SofHWq8LNJvtf8Wa/cDBm3YbS2HV69J57oYewiXDUCG
-        nijBdm8ImrmlVEq8TrdbISHa5Lga3z1oJ3kz6rf3BP1qSWZZOCi3coL+NO4Gm0gUsTxUjx
-        Ewo6spp6t9zLM+k4DpTo5xYhIydNuz4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-150-Ii_Qv8_8MeufWM0NkNRnZQ-1; Mon, 18 Nov 2019 07:31:04 -0500
-Received: by mail-wm1-f72.google.com with SMTP id y14so13046182wmi.4
-        for <selinux@vger.kernel.org>; Mon, 18 Nov 2019 04:31:04 -0800 (PST)
+        bh=YynLGcwqfrg1zrZcC7yWAsZBhR/R+Oy3X5+AJIk9Z2o=;
+        b=K+CuusKJZh4avxEWZRazaWB+Awy5qbmG/sQ/yTUvLTyqr9P5/GeCNsZLOEd2eeGTxXi34T
+        8nHaxPWoDVb3KmdJpIgzZT51izj9BiyzOTlAQxZSmzq6Suxa5aP5B3imPCWSZxVeacaq8U
+        oROsoP5oJwxF5c6YGt7+9D825Hlcbwo=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-211-LZQMbN15OB-E8QqQxEA84w-1; Mon, 18 Nov 2019 07:31:05 -0500
+Received: by mail-wr1-f69.google.com with SMTP id u2so15256849wrm.7
+        for <selinux@vger.kernel.org>; Mon, 18 Nov 2019 04:31:05 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=p/XKvt+mhWO02aFoWBkyMxCZKoizE4AwSsalWQCFgMo=;
-        b=VfRUoU5TVpEpKdwFCVTBN2+oExAdDA7uL6YgRfG/M/MVQsusdnL3n7T0p/x462qPxd
-         GmJyEBXTF5sKKUaJR1eUr2xtC0VqqMIbPZyekeg2++N3SLHEVN1Owd+qacwbMBNabAGc
-         XjJkx15Zjg5IMTPFx6kBJNa02MgHZGK7YCG6ZuBIzh9bFsp4egDm0D64yUtIpkMXfnIP
-         7x6wEq5pxA2Z20OGr9/B1wfKwUeJZwnuXT9G8Kt4EIGrtqRYMm4LSA5sm5+k0jNnqV82
-         YLsSrdwmIISLKqddmQNcOmova+FQboCI+lOfITZUmrKXB4h/vG9q8EyhbvWgsvuuK0MW
-         HVTA==
-X-Gm-Message-State: APjAAAW8dCAb7bvVUyvPfQF5Kkl+8YTPm1e/aIQ5reVmIOT2cGBhXTDL
-        QNO7Y6qUqmvIQ7DETk9xL8tAa522fhrTPkTx+b++auKUCFFbth349xdeaI9sbfuLd7QUkAtA3Ct
-        VDmjMYXlvu5gOWi31Dg==
-X-Received: by 2002:a5d:4609:: with SMTP id t9mr30663376wrq.178.1574080263037;
-        Mon, 18 Nov 2019 04:31:03 -0800 (PST)
-X-Google-Smtp-Source: APXvYqw88f6c5oO4xi9CdTbHTk9oSkJVB5Rj7kzXW31Z+j7O/MfFHn4eClybjGpuCrwuhIJ25O936A==
-X-Received: by 2002:a5d:4609:: with SMTP id t9mr30663362wrq.178.1574080262809;
-        Mon, 18 Nov 2019 04:31:02 -0800 (PST)
+        bh=lCsn/X0nmr4hSWIgFPGsvpX5LzN+Uu1MiAqfZRe9+Lg=;
+        b=Xw4p2D4XUk+TH0tcVLCiXqitosDViTEgfg8PnHw7Z08M4XQYnYmm3Lyt/4GN9gESaA
+         K9I8AfgMOPJ0BpwIqi5ZL9wudy9uJ3WCbILK1wnhJW1i80br7kw5A56KwXYz1l6zL0L+
+         9IbXBhI0qNmwEK1+kq3XO1kb7tiDffYjjfMS6g3iw2YvtYXjShPJmn3dh21G+Eie50O4
+         SYUG9k1KjGfPuSNoryJLmKp5Wz5CWKpzILRoP1mXa+SafSnWOL9ncMQYxRCDUHa2ei1u
+         +2nUPDIpapGttGunhruhW3HMgvqGE+SNQc7mvyd4w76PDmn6h0kOJKRIL3kbtxJ8n3qu
+         UDGQ==
+X-Gm-Message-State: APjAAAXkeXJz8sfe23ERYstqFUI31O7uDWqKV/MegjZHpJv64ca9IPSc
+        9wY3tc4ZcDkzEUPfbKm3tJQGT15eaHXnsZzks8+uinKJWh/frIn1p+KAIV6/+G6E9MmtBxhR193
+        DH5cEva+AJKK6Vkhe4A==
+X-Received: by 2002:a1c:a406:: with SMTP id n6mr30418221wme.90.1574080264475;
+        Mon, 18 Nov 2019 04:31:04 -0800 (PST)
+X-Google-Smtp-Source: APXvYqytg8aTdkkE9YOf3Gr5GbogVNNlfL3K/rF3xQNTYm0UsINBa7gDpDDVq5pO8CcMQ7COtnuNtA==
+X-Received: by 2002:a1c:a406:: with SMTP id n6mr30418188wme.90.1574080264149;
+        Mon, 18 Nov 2019 04:31:04 -0800 (PST)
 Received: from localhost.localdomain.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id h205sm21815802wmf.35.2019.11.18.04.31.00
+        by smtp.gmail.com with ESMTPSA id h205sm21815802wmf.35.2019.11.18.04.31.02
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Nov 2019 04:31:01 -0800 (PST)
+        Mon, 18 Nov 2019 04:31:03 -0800 (PST)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite v3 2/3] policy: add fallbacks for Fedora-specific macros
-Date:   Mon, 18 Nov 2019 13:30:55 +0100
-Message-Id: <20191118123056.338496-3-omosnace@redhat.com>
+Subject: [PATCH testsuite v3 3/3] travis: test building the test policy package
+Date:   Mon, 18 Nov 2019 13:30:56 +0100
+Message-Id: <20191118123056.338496-4-omosnace@redhat.com>
 X-Mailer: git-send-email 2.23.0
 In-Reply-To: <20191118123056.338496-1-omosnace@redhat.com>
 References: <20191118123056.338496-1-omosnace@redhat.com>
 MIME-Version: 1.0
-X-MC-Unique: Ii_Qv8_8MeufWM0NkNRnZQ-1
+X-MC-Unique: LZQMbN15OB-E8QqQxEA84w-1
 X-Mimecast-Spam-Score: 0
 Content-Type: text/plain; charset=WINDOWS-1252
 Content-Transfer-Encoding: quoted-printable
@@ -68,50 +68,199 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-dev_rw_infiniband_dev() and mount_rw_pid_files() are not defined in
-refpolicy. Fall back to dev_rw_generic_files() and
-mount_rw_runtime_files() if they are not defined.
-
-Also, userdom_search_admin_dir() is not defined in refpolicy because it
-doesn't have admin_home_t. Fall back to
-userdom_search_user_home_content(), which should apply for root's home
-directory under refpolicy.
+Download, build, and install Fedora policy & refpolicy and try building
+the test policy package against both of them.
 
 Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- policy/test_policy.if | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ .travis.yml                         | 48 ++++++++++++++++++++++++++---
+ policy/Makefile                     | 11 ++++---
+ travis-ci/enable-policy.sh          | 10 ++++++
+ travis-ci/setup-policy-fedora.sh    | 33 ++++++++++++++++++++
+ travis-ci/setup-policy-refpolicy.sh | 19 ++++++++++++
+ 5 files changed, 113 insertions(+), 8 deletions(-)
+ create mode 100644 travis-ci/enable-policy.sh
+ create mode 100644 travis-ci/setup-policy-fedora.sh
+ create mode 100644 travis-ci/setup-policy-refpolicy.sh
 
-diff --git a/policy/test_policy.if b/policy/test_policy.if
-index 939cd7e..38214a9 100644
---- a/policy/test_policy.if
-+++ b/policy/test_policy.if
-@@ -60,3 +60,24 @@ interface(`userdom_sysadm_entry_spec_domtrans_to',`
-         allow $1 sysadm_t:process sigchld;
- ')
- ')
+diff --git a/.travis.yml b/.travis.yml
+index fbbe98d..42b2490 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -1,6 +1,6 @@
+ language: c
+=20
+-dist: xenial
++dist: bionic
+=20
+ addons:
+   apt:
+@@ -8,16 +8,56 @@ addons:
+       - astyle
+       - libselinux1-dev
+       - libsctp-dev
++      - libaudit-dev
++      - libcap-dev
++      - libdbus-glib-1-dev
++      - xmlto
 +
-+# Workarounds for refpolicy:
++cache:
++  directories:
++    - selinux-policy
++    - container-selinux
++    - refpolicy
+=20
+ before_install:
++  - export LIBRARY_PATH=3D/usr/local/lib
++  - export LD_LIBRARY_PATH=3D/usr/local/lib
+   # FYI: known good with HEAD at 8551fc60fc515cd290ba38ee8c758c1f4df52b56
+   - git clone https://github.com/perltidy/perltidy.git perltidy
+   - |
+     (cd perltidy &&
+      perl Makefile.PL &&
+-     make &&
+-     sudo make install)
++     make PREFIX=3D/usr/local &&
++     sudo make install PREFIX=3D/usr/local)
++  # install libbpf from sources
++  - git clone https://github.com/libbpf/libbpf
++  - (cd libbpf/src && make PREFIX=3D/usr/local)
++  - (cd libbpf/src && sudo make install PREFIX=3D/usr/local)
++  # install keyutils from sources
++  - git clone https://git.kernel.org/pub/scm/linux/kernel/git/dhowells/key=
+utils.git
++  - KEYUTILS_OPTS=3D""
++  - KEYUTILS_OPTS+=3D"BINDIR=3D/usr/local/bin SBINDIR=3D/usr/local/sbin "
++  - KEYUTILS_OPTS+=3D"LIBDIR=3D/usr/local/lib USRLIBDIR=3D/usr/local/lib "
++  - KEYUTILS_OPTS+=3D"INCLUDEDIR=3D/usr/local/include "
++  - KEYUTILS_OPTS+=3D"SHAREDIR=3D/usr/local/share/keyutils MANDIR=3D/usr/l=
+ocal/share/man"
++  - (cd keyutils && make $KEYUTILS_OPTS)
++  - (cd keyutils && sudo make install $KEYUTILS_OPTS)
++  # install SELinux userspace from source
++  - git clone https://github.com/SELinuxProject/selinux
++  - (cd selinux && sudo make install PREFIX=3D/usr/local SHLIBDIR=3D/usr/l=
+ocal/lib)
++  # install Fedora policy and refpolicy
++  - bash travis-ci/setup-policy-fedora.sh
++  - bash travis-ci/setup-policy-refpolicy.sh
++  # establish a fake "selinuxfs" mount (policy/Makefile just greps for sel=
+inuxfs)
++  - sudo mkdir -p /tmp/fake-selinuxfs
++  - sudo mount -t tmpfs tmpfs /tmp/fake-selinuxfs
++  - echo 999 >/tmp/fake-selinuxfs/policyvers
+=20
+ script:
+   - tools/check-syntax -f && git diff --exit-code
+-  - make
++  - |
++    bash travis-ci/enable-policy.sh targeted &&
++    make PREFIX=3D/usr/local POLDEV=3D/usr/share/selinux/targeted
++  - |
++    bash travis-ci/enable-policy.sh refpolicy &&
++    make PREFIX=3D/usr/local POLDEV=3D/usr/share/selinux/refpolicy
+diff --git a/policy/Makefile b/policy/Makefile
+index ff65153..39ae84a 100644
+--- a/policy/Makefile
++++ b/policy/Makefile
+@@ -1,8 +1,11 @@
+=20
+-POLDEV ?=3D /usr/share/selinux/devel
+-SEMODULE =3D /usr/sbin/semodule
+-CHECKPOLICY =3D /usr/bin/checkpolicy
+-CHECKMODULE =3D /usr/bin/checkmodule
++PREFIX ?=3D /usr
++BINDIR ?=3D $(PREFIX)/bin
++SBINDIR ?=3D $(PREFIX)/sbin
++POLDEV ?=3D $(PREFIX)/share/selinux/devel
++SEMODULE =3D $(SBINDIR)/semodule
++CHECKPOLICY =3D $(BINDIR)/checkpolicy
++CHECKMODULE =3D $(BINDIR)/checkmodule
+=20
+ DISTRO=3D$(shell ../tests/os_detect)
+=20
+diff --git a/travis-ci/enable-policy.sh b/travis-ci/enable-policy.sh
+new file mode 100644
+index 0000000..ae53fbe
+--- /dev/null
++++ b/travis-ci/enable-policy.sh
+@@ -0,0 +1,10 @@
++#!/bin/bash
 +
-+ifdef(`dev_rw_infiniband_dev', `', ` dnl
-+interface(`dev_rw_infiniband_dev', `
-+    dev_rw_generic_files($1)
-+')
-+')
++set -e
 +
-+ifdef(`mount_rw_pid_files', `', ` dnl
-+interface(`mount_rw_pid_files', `
-+    mount_rw_runtime_files($1)
-+')
-+')
++# create a dummy /etc/selinux/config
++sudo mkdir -p /etc/selinux
++sudo tee /etc/selinux/config >/dev/null <<EOF
++SELINUX=3Ddisabled
++SELINUXTYPE=3D$1
++EOF
+diff --git a/travis-ci/setup-policy-fedora.sh b/travis-ci/setup-policy-fedo=
+ra.sh
+new file mode 100644
+index 0000000..d2793f0
+--- /dev/null
++++ b/travis-ci/setup-policy-fedora.sh
+@@ -0,0 +1,33 @@
++#!/bin/bash
 +
-+# Refpolicy doesn't have admin_home_t - assume /root will be user_home_dir=
-_t.
-+ifdef(`userdom_search_admin_dir', `', ` dnl
-+interface(`userdom_search_admin_dir', `
-+    userdom_search_user_home_content($1)
-+')
-+')
++set -ex
++
++if ! [ -d selinux-policy/.git ]; then
++=09git clone --recursive https://github.com/fedora-selinux/selinux-policy
++=09(cd selinux-policy/policy/modules/contrib && git checkout rawhide)
++else
++=09(cd selinux-policy && git pull || { git checkout '*' && git pull; })
++=09(cd selinux-policy/policy/modules/contrib && git pull)
++fi
++
++if ! [ -d container-selinux/.git ]; then
++=09git clone https://github.com/containers/container-selinux.git
++=09for f in container.if container.te; do
++=09=09ln -s ../../../../container-selinux/$f \
++=09=09=09selinux-policy/policy/modules/contrib/$f
++=09done
++else
++=09(cd container-selinux && git pull)
++fi
++
++cd selinux-policy
++
++grep -q refpolicy build.conf && sed -i 's/refpolicy/targeted/' build.conf
++
++[ -f policy/modules.conf ] || make conf
++
++make -j`nproc --all` BINDIR=3D/usr/local/bin SBINDIR=3D/usr/local/sbin
++sudo make install install-headers
++
++# workaround for different Makefile location in Fedora RPMs
++sudo ln -s include/Makefile /usr/share/selinux/targeted/Makefile
+diff --git a/travis-ci/setup-policy-refpolicy.sh b/travis-ci/setup-policy-r=
+efpolicy.sh
+new file mode 100644
+index 0000000..abd4ca4
+--- /dev/null
++++ b/travis-ci/setup-policy-refpolicy.sh
+@@ -0,0 +1,19 @@
++#!/bin/bash
++
++set -ex
++
++if ! [ -d refpolicy/.git ]; then
++=09git clone https://github.com/SELinuxProject/refpolicy
++else
++=09git pull || { git checkout '*' && git pull; }
++fi
++
++cd refpolicy
++
++[ -f policy/modules.conf ] || make conf
++
++make -j`nproc --all` BINDIR=3D/usr/local/bin SBINDIR=3D/usr/local/sbin
++sudo make install install-headers
++
++# workaround for different Makefile location in Fedora RPMs
++sudo ln -s include/Makefile /usr/share/selinux/refpolicy/Makefile
 --=20
 2.23.0
 

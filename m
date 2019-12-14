@@ -2,80 +2,158 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AAF0511F392
-	for <lists+selinux@lfdr.de>; Sat, 14 Dec 2019 19:50:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD64D11F3FC
+	for <lists+selinux@lfdr.de>; Sat, 14 Dec 2019 21:30:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726358AbfLNSuI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 14 Dec 2019 13:50:08 -0500
-Received: from mail-wm1-f67.google.com ([209.85.128.67]:52073 "EHLO
+        id S1726687AbfLNUaj (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 14 Dec 2019 15:30:39 -0500
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:40020 "EHLO
         mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725943AbfLNSuI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 14 Dec 2019 13:50:08 -0500
-Received: by mail-wm1-f67.google.com with SMTP id d73so2268863wmd.1
-        for <selinux@vger.kernel.org>; Sat, 14 Dec 2019 10:50:07 -0800 (PST)
+        with ESMTP id S1726484AbfLNUai (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 14 Dec 2019 15:30:38 -0500
+Received: by mail-wm1-f67.google.com with SMTP id t14so2369984wmi.5
+        for <selinux@vger.kernel.org>; Sat, 14 Dec 2019 12:30:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelim-com.20150623.gappssmtp.com; s=20150623;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=IT4hFqEwmvp7RtwmBJVqtxcXNbbcdnZYZ34jOii3rSk=;
-        b=k70Pg+az59Da3g0zVRU8t3/KUtAdjjS1BORuueIy6Eemd/8w9jrKXFYOclyqmS2wOg
-         iCLV9C+un3pxnwQ+Rq8SdrVl8X2I+JHqesgwH+4NonjrsjVBMGXXqXY/47OKyE00d6Ly
-         MWw0FvUN4fqxqgjkhJfUPxGq8fPiZs4JYvH0hxkLbaDbpgJsh9IBI+yBHwHZgEx6VwR5
-         hrFwl48zsTEqptT+d+ZuwVdpAn07DSHrjnLvwKjycOgH8nmroB0IfYdHDKHOqiOB+II1
-         qDOlRpIdh1JlhSTPoomBH2+nZJi6LeuLaPfJWMtd+CPgUI0mZtLWumbzC+vp60ObDqdW
-         XtKQ==
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=6UOxhi6+Z0aq+uYOx5yjJOikHBP2UaOly8Rh6ZJVM/4=;
+        b=J0/cHgWlH3frV+cw6uWr409Vw+hIoeOIl7lY2gI+rd8GDPCdsghT5b3PLu8vt7CbW0
+         jG5Ua+C/0eIy83a7PSqYLOGEfA8OB3Q/hZ3rg7N4XLownMM6iO/1C9O0fGYzpqWpJXs6
+         sNXVyy1xhxgJkRR+GAJaIzOqpTaHEJxX5/ur1vBnuZwQI7pBhRvijBHjS5YgFd+dYtE1
+         Fxa2wx5Doe4/vbwjrUVIxH2XviMTjE/TbBwFg+mZdqnn6NtfwjKBB26s6sKQkIMVaQBv
+         7zKe/I+1I4VAFoIn2DQjfcHAbWVBRgqS3X2dFFxfbNnghW/ybN9B6+jSpOsRM4KdqlWu
+         OetA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=IT4hFqEwmvp7RtwmBJVqtxcXNbbcdnZYZ34jOii3rSk=;
-        b=gs0ZurrdcZBemRVWatdC0VMZI+hbMhFQWN6hNB7lSWKHyf3YhWBEhsQ7BTwHodKQdj
-         Um46oG6319DCArO0WO9INojIPaHS4YjQqjUbNSE8BbGTqnJw97uIvx6MBxOTVa1cSDZ5
-         9EP8fBLWgS6K6DK0dOZk1hAh4u/FuPw/vH/shc+m1vf7hFpWLvjCWh9iFRqqal1uE0f8
-         uuJbZer35wWbLA4gYnZgE1ts2vJcW73VlYZLJ+eqA5Gec1EEOr01TkbgyauzyvMJsc3P
-         qKIvyayvoNl5sa48nC2YZzBQOf1yMygrLSrR5/0tc/CySeJA3/iPg/A0ruqaKG5CC/XA
-         xHXw==
-X-Gm-Message-State: APjAAAUcR0HiJZp+yG9eo3eR2Old34/dCwaKWHbqWs2aNb5PZBhRPmyq
-        64JPPgDbzK6FqFaGs5TDl+SYww==
-X-Google-Smtp-Source: APXvYqwQPuBFiXEGJ3o4wGyOrIyiPGVsw4hMVpEpw0nHY2yO2zUShDELvfKnvidGI9LzvaIUMDPGXQ==
-X-Received: by 2002:a7b:c3d7:: with SMTP id t23mr11685427wmj.33.1576349406367;
-        Sat, 14 Dec 2019 10:50:06 -0800 (PST)
-Received: from gmail.com ([5.102.220.98])
-        by smtp.gmail.com with ESMTPSA id z18sm14689252wmf.21.2019.12.14.10.50.04
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to:user-agent;
+        bh=6UOxhi6+Z0aq+uYOx5yjJOikHBP2UaOly8Rh6ZJVM/4=;
+        b=MZc6o09CH0TGlaUUKyLyJYrcywnBPgSIf9uRklsOCKvnqbQgjZt34GYPBGBfJFZgGJ
+         XvP/avYMTwLtAvgGA5OmAHZrKDGhiCBwsmOeHRf3AlyNMG/Fazxu11a5LCrDdwThBKsb
+         PxR8GdhrdufO/cd837lGpLvq9W7V75CAcdCiIsS+gjfm6dyW5vIVQxLeVjloxxUfOXt7
+         qYWXa2hL7fZEbiw00YjlGYVlk5vub2Ju4n+d/N6vrr0mINV7oDAmICf69HrCR2JgBtZL
+         LU4cxA0+m0DusJiWOEWGtCcVvxgK14jsQmrRpQW4DZ2INLFo9Op1Ne+46n289ghghYJP
+         S2dQ==
+X-Gm-Message-State: APjAAAXwxv1bO6ousxpDmTRi6nZBiLLNpx+QO9L+kHG2UQorZnUBjH9/
+        xnfCt7smFb2+hGDYGoBROkNAFNOp
+X-Google-Smtp-Source: APXvYqyZLvPtlPGznAznstlCnqfq4s69OilaKGXxzhugI9V/NBM3RJ31ql8Js6srejxFPXUQn5FQaw==
+X-Received: by 2002:a1c:6809:: with SMTP id d9mr20010611wmc.70.1576355436807;
+        Sat, 14 Dec 2019 12:30:36 -0800 (PST)
+Received: from brutus.lan (brutus.defensec.nl. [2001:985:d55d::438])
+        by smtp.gmail.com with ESMTPSA id o15sm15597066wra.83.2019.12.14.12.30.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Dec 2019 10:50:05 -0800 (PST)
-Date:   Sat, 14 Dec 2019 20:50:02 +0200
-From:   Dan Aloni <dan@kernelim.com>
-To:     Stephen Smalley <sds@tycho.nsa.gov>
-Cc:     paul@paul-moore.com, selinux@vger.kernel.org,
-        keescook@chromium.org, omosnace@redhat.com, jeffv@google.com
-Subject: Re: [RFC PATCH] selinux: randomize layout of key structures
-Message-ID: <20191214185002.GA8076@gmail.com>
-References: <20191213202838.7323-1-sds@tycho.nsa.gov>
+        Sat, 14 Dec 2019 12:30:35 -0800 (PST)
+Date:   Sat, 14 Dec 2019 21:30:34 +0100
+From:   Dominick Grift <dac.override@gmail.com>
+To:     Alexander Wetzel <alexander@wetzel-home.de>
+Cc:     selinux@vger.kernel.org, acgoide@tycho.nsa.gov, paul@paul-moore.com
+Subject: Re: "watch" - Problem when using kernel >= 5.4
+Message-ID: <20191214203034.GA233591@brutus.lan>
+Mail-Followup-To: Alexander Wetzel <alexander@wetzel-home.de>,
+        selinux@vger.kernel.org, acgoide@tycho.nsa.gov, paul@paul-moore.com
+References: <9d54debb-7031-4d93-38b7-62c853289512@wetzel-home.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="7AUc2qLy4jB3hD7Z"
 Content-Disposition: inline
-In-Reply-To: <20191213202838.7323-1-sds@tycho.nsa.gov>
+In-Reply-To: <9d54debb-7031-4d93-38b7-62c853289512@wetzel-home.de>
+User-Agent: Every email client sucks, this one just sucks less.
+X-PGP-Key: https://sks-keyservers.net/pks/lookup?op=get&search=0x3B6C5F1D2C7B6B02
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Dec 13, 2019 at 03:28:38PM -0500, Stephen Smalley wrote:
-> I would have expected that two kernels built with the same config
-> with this enabled would have yielded different struct layouts in
-> pahole vmlinux output, but that doesn't appear to be the case. They
-> do have different seeds.  Am I doing something wrong?
-> Also, does DEBUG_INFO_BTF effectively undermine/negate the benefits of this
-> change if enabled?
 
-There's currently a long-standing bug with the GCC plugin where the
-generated debug info is in declaration order, not build order (see:
-[1]).  So, to verify it, try looking at the generated machine code.
+--7AUc2qLy4jB3hD7Z
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Planned Clang implementation of this feature does not have this bug.
+On Sat, Dec 14, 2019 at 05:40:51PM +0100, Alexander Wetzel wrote:
+> Hello,
+>=20
+> I've a strange problem with selinux when switching a kernel >=3D 5.4.0 and
+> since this could be an unintended regression I want to report it here, to=
+o.
+>=20
+> There are two threads in the Gentoo forum with more details:
+> https://forums.gentoo.org/viewtopic-t-1105128.html (started by me)
+> https://forums.gentoo.org/viewtopic-t-1104916.html (looks like the same
+> underlying issue)
+>=20
+> In a nutshell commit ac5656d8a4cd ("fanotify, inotify, dnotify, security:
+> add security hook for fs notifications") added new hooks for fs
+> notifications which also seem to requite updated user space and policies
+> which seem to be unavailable as for now.
+>=20
+> So when updating the kernel to >=3D 5.4.0 all processes trying to registe=
+r for
+> file notifications will be blocked. And at least I was unable to add rules
+> for the new permission "watch", even after updating all selinux
+> tools/libraries and policies to the upstream git versions - as provided by
+> Gentoo's -9999 version of the packages.
+>=20
+> Dec  8 14:49:01 web kernel: audit: type=3D1400 audit(1575812941.870:2069):
+> avc:  denied  { watch } for  pid=3D2826 comm=3D"crond"
+> path=3D"/var/spool/cron/crontabs" dev=3D"sda3" ino=3D2539899
+> scontext=3Dsystem_u:system_r:crond_t tcontext=3Dsystem_u:object_r:cron_sp=
+ool_t
+> tclass=3Ddir permissive=3D0
+>=20
+> I ended up reverting commit ac5656d8a4cd ("fanotify, inotify, dnotify,
+> security: add security hook for fs notifications") and asked in the gentoo
+> forum - so far without success (link above) - how that should work proper=
+ly.
+>=20
+> If there is a way to use an unmodified kernel >=3D 5.4.0 with older (so f=
+ar
+> all current) selinux tools and policies I did miss it.
+>=20
+> Do you have a pointer how I can keep the commit ac5656d8a4cd in a selinux
+> enabled system in enforcing mode without breaking all file change
+> notifications?
+>=20
+> Alexander
 
-[1] https://gcc.gnu.org/bugzilla/show_bug.cgi?format=multiple&id=84052
+I do not believe there is a regression. However support in the policy for t=
+his functionality may be lagging behind (be non existent as of now).
+You could try this as a temporary workaround:
 
--- 
-Dan Aloni
+echo "(handleunknown allow)" > mytest.cil && sudo semodule -i mytest.cil
+
+If that works then that should tell selinux to ignore the watch access vect=
+or permissions (and any other permission unknown to the policy).
+
+>=20
+>=20
+>=20
+>=20
+>=20
+
+--=20
+Key fingerprint =3D 5F4D 3CDB D3F8 3652 FBD8 02D5 3B6C 5F1D 2C7B 6B02
+https://sks-keyservers.net/pks/lookup?op=3Dget&search=3D0x3B6C5F1D2C7B6B02
+Dominick Grift
+
+--7AUc2qLy4jB3hD7Z
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQGzBAEBCAAdFiEEujmXliIBLFTc2Y4AJXSOVTf5R2kFAl31RmUACgkQJXSOVTf5
+R2k84gwAscgv2tncBRUSohI2ltWz1G9JkSHNE2wI6HfSGwla/pNB6owzAw8g/0S7
+1JqNDodw6dBnlokf4gSpoaI5//nZr00ggIwRnLNY+VKQ+O8HDytcvPrFKJeOzgCS
+QSmDGVHE9H5LjP2WnRn0U9XVh1fvGwlNwNgmlFsIac8igH1dUN0IHlwWbLUEQe47
+vbwDkk8K1A4c/nRLxA+ptf0K1a2IEYJtX2PPiaxLpmyP9fchz0HtaBO6qw0IhR/z
+qvzsnCum83tlWQzP+0naAd+Bu1OxFg229kp/rL4tJwOap9ZlXwZwRwglWA8y2ww5
+3emtUs7ZUGzHlyhnv/vZeZuT2AVS+4DoGGk1P0/d07j+33IEv3ZXlTy/A4ng4zli
+xb1PwXzlIkNFXY9z9z8zcjVM7+XX+CJTzvUzob307IXztZxbnv/ojVxiZdisrDmN
+VZv6AVd9fRnVqgq99uQ1clf1SU+XjNy/JI3LcFCvWY05IN7HBCMTVjCBVBjYcIYA
+IoOSz3UQ
+=c1HT
+-----END PGP SIGNATURE-----
+
+--7AUc2qLy4jB3hD7Z--

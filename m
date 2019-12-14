@@ -2,72 +2,93 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 625CE11EF3A
-	for <lists+selinux@lfdr.de>; Sat, 14 Dec 2019 01:32:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 926E411F3DF
+	for <lists+selinux@lfdr.de>; Sat, 14 Dec 2019 21:16:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726771AbfLNAcH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 13 Dec 2019 19:32:07 -0500
-Received: from www262.sakura.ne.jp ([202.181.97.72]:54074 "EHLO
-        www262.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726752AbfLNAcH (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 13 Dec 2019 19:32:07 -0500
-Received: from fsav301.sakura.ne.jp (fsav301.sakura.ne.jp [153.120.85.132])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id xBE0W5Kg059018;
-        Sat, 14 Dec 2019 09:32:05 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav301.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav301.sakura.ne.jp);
- Sat, 14 Dec 2019 09:32:05 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav301.sakura.ne.jp)
-Received: from [192.168.1.9] (softbank126040062084.bbtec.net [126.40.62.84])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id xBE0W5s3059014
-        (version=TLSv1.2 cipher=AES256-SHA bits=256 verify=NO);
-        Sat, 14 Dec 2019 09:32:05 +0900 (JST)
-        (envelope-from penguin-kernel@i-love.sakura.ne.jp)
-Subject: Re: [PATCH] LSM: allow an LSM to disable all hooks at once
-To:     James Morris <jmorris@namei.org>,
-        Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     Linux Security Module list 
-        <linux-security-module@vger.kernel.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        John Johansen <john.johansen@canonical.com>,
-        Kees Cook <keescook@chromium.org>,
-        Micah Morton <mortonm@chromium.org>
-References: <20191211140833.939845-1-omosnace@redhat.com>
- <66706222-b6af-5099-e485-b99391ad70b3@i-love.sakura.ne.jp>
- <CAFqZXNv=AnPxHuQCusoJQGEJ8Q+yF7_TPBCRyAcE5OPzoYFc9w@mail.gmail.com>
- <alpine.LRH.2.21.1912140547490.9693@namei.org>
-From:   Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Message-ID: <a57a35cf-264a-429b-c4a8-f839f10f3384@i-love.sakura.ne.jp>
-Date:   Sat, 14 Dec 2019 09:32:01 +0900
-User-Agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+        id S1726541AbfLNUQS (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 14 Dec 2019 15:16:18 -0500
+Received: from 9.mo7.mail-out.ovh.net ([46.105.60.248]:59708 "EHLO
+        9.mo7.mail-out.ovh.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726484AbfLNUQS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 14 Dec 2019 15:16:18 -0500
+X-Greylist: delayed 12601 seconds by postgrey-1.27 at vger.kernel.org; Sat, 14 Dec 2019 15:16:18 EST
+Received: from player734.ha.ovh.net (unknown [10.108.57.226])
+        by mo7.mail-out.ovh.net (Postfix) with ESMTP id 90197142AC4
+        for <selinux@vger.kernel.org>; Sat, 14 Dec 2019 17:40:58 +0100 (CET)
+Received: from awhome.eu (p57B7EAA4.dip0.t-ipconnect.de [87.183.234.164])
+        (Authenticated sender: postmaster@awhome.eu)
+        by player734.ha.ovh.net (Postfix) with ESMTPSA id 87924D373498;
+        Sat, 14 Dec 2019 16:40:55 +0000 (UTC)
+To:     selinux@vger.kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=wetzel-home.de;
+        s=wetzel-home; t=1576341627;
+        bh=PX5c0hnu32u4SGNecXgJaF+xxS0X/wQruR2oSRtw2GQ=;
+        h=To:Cc:From:Subject:Date;
+        b=WfHDSFOPq+oZyS6dNKPW6uKknskDrtVQybXk7cep0hkmWTIJYFgr/tDpYjzNK+XlD
+         3cWQt6jQIljlep4w273kWTdAcP/cAsF+qJrt0sKI1kuRkgIeInLO7TcF0ToLeFGG0a
+         GFVpT+NaEvwdMGomyHM9PLN74oqTeh+wBqQLvPtw=
+Cc:     acgoide@tycho.nsa.gov, paul@paul-moore.com
+From:   Alexander Wetzel <alexander@wetzel-home.de>
+Subject: "watch" - Problem when using kernel >= 5.4
+Message-ID: <9d54debb-7031-4d93-38b7-62c853289512@wetzel-home.de>
+Date:   Sat, 14 Dec 2019 17:40:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.0
 MIME-Version: 1.0
-In-Reply-To: <alpine.LRH.2.21.1912140547490.9693@namei.org>
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
+X-Ovh-Tracer-Id: 1196268654371478528
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: 0
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedufedrvddtuddgleefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucenucfjughrpefvhffukffffgggtgfgsehtjeertddtfeejnecuhfhrohhmpeetlhgvgigrnhguvghrucghvghtiigvlhcuoegrlhgvgigrnhguvghrseifvghtiigvlhdqhhhomhgvrdguvgeqnecuffhomhgrihhnpehgvghnthhoohdrohhrghenucfkpheptddrtddrtddrtddpkeejrddukeefrddvfeegrdduieegnecurfgrrhgrmhepmhhouggvpehsmhhtphdqohhuthdphhgvlhhopehplhgrhigvrhejfeegrdhhrgdrohhvhhdrnhgvthdpihhnvghtpedtrddtrddtrddtpdhmrghilhhfrhhomheprghlvgigrghnuggvrhesfigvthiivghlqdhhohhmvgdruggvpdhrtghpthhtohepshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedt
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2019/12/14 3:48, James Morris wrote:
-> On Thu, 12 Dec 2019, Ondrej Mosnacek wrote:
-> 
->> I'd say the burden of implementing this would lie on the arms of
->> whoever prepares the patches for dynamic load/unload.
-> 
-> Correct, and I don't see any such patches being accepted.
-> 
-> Go and look at some exploits, where LSM is used as a rootkit API...
-> 
+Hello,
 
-Evaluating trust of LSM modules is a job of module signing / integrity
-checking etc. Disallowing loadable LSM modules (because of worrying
-about rootkit API) is as stupid as enforcing CONFIG_MODULES=n.
+I've a strange problem with selinux when switching a kernel >= 5.4.0 and 
+since this could be an unintended regression I want to report it here, too.
+
+There are two threads in the Gentoo forum with more details:
+https://forums.gentoo.org/viewtopic-t-1105128.html (started by me)
+https://forums.gentoo.org/viewtopic-t-1104916.html (looks like the same 
+underlying issue)
+
+In a nutshell commit ac5656d8a4cd ("fanotify, inotify, dnotify, 
+security: add security hook for fs notifications") added new hooks for 
+fs notifications which also seem to requite updated user space and 
+policies which seem to be unavailable as for now.
+
+So when updating the kernel to >= 5.4.0 all processes trying to register 
+for file notifications will be blocked. And at least I was unable to 
+add rules for the new permission "watch", even after updating all 
+selinux tools/libraries and policies to the upstream git versions - as 
+provided by Gentoo's -9999 version of the packages.
+
+Dec  8 14:49:01 web kernel: audit: type=1400 audit(1575812941.870:2069): 
+avc:  denied  { watch } for  pid=2826 comm="crond" 
+path="/var/spool/cron/crontabs" dev="sda3" ino=2539899 
+scontext=system_u:system_r:crond_t 
+tcontext=system_u:object_r:cron_spool_t tclass=dir permissive=0
+
+I ended up reverting commit ac5656d8a4cd ("fanotify, inotify, dnotify, 
+security: add security hook for fs notifications") and asked in the 
+gentoo forum - so far without success (link above) - how that should 
+work properly.
+
+If there is a way to use an unmodified kernel >= 5.4.0 with older (so 
+far all current) selinux tools and policies I did miss it.
+
+Do you have a pointer how I can keep the commit ac5656d8a4cd in a 
+selinux enabled system in enforcing mode without breaking all file 
+change notifications?
+
+Alexander
+
+
+
+
+

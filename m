@@ -2,332 +2,149 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3A3B12499C
-	for <lists+selinux@lfdr.de>; Wed, 18 Dec 2019 15:28:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9FEB124B03
+	for <lists+selinux@lfdr.de>; Wed, 18 Dec 2019 16:13:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727152AbfLRO2Z (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 18 Dec 2019 09:28:25 -0500
-Received: from mail-ed1-f67.google.com ([209.85.208.67]:46699 "EHLO
-        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727189AbfLRO2Y (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 18 Dec 2019 09:28:24 -0500
-Received: by mail-ed1-f67.google.com with SMTP id m8so1782738edi.13
-        for <selinux@vger.kernel.org>; Wed, 18 Dec 2019 06:28:23 -0800 (PST)
+        id S1726996AbfLRPNu (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 18 Dec 2019 10:13:50 -0500
+Received: from mail-ua1-f43.google.com ([209.85.222.43]:41262 "EHLO
+        mail-ua1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726723AbfLRPNu (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 18 Dec 2019 10:13:50 -0500
+Received: by mail-ua1-f43.google.com with SMTP id f7so745118uaa.8
+        for <selinux@vger.kernel.org>; Wed, 18 Dec 2019 07:13:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+        h=mime-version:from:date:message-id:subject:to
          :content-transfer-encoding;
-        bh=j5AMi00ikqquEUsGSw0RdDNar4ei548oAVjXgUD8JZE=;
-        b=Nz8yXoI71e+3jo3GrcLzz7JZognPSFmCQtrb+qLvVeeRWI9tfWUy/uzsr3YaGk62w5
-         KsrXe5S9eRyBhWs672WTSVpfiKDsMB9G1Ov5CpIWGAcf9INNlNp421H2Vw/YDZhRTbAY
-         htsDkm+EvJvYCXoJUdSrGjBlP6pGz9PR+lSY+IOTQR1y47dQD7JbcO5lRvySHM7bDjoJ
-         WJI6dQnBA6QgB1xZqVGkBmw8h4cbqIfJGaeosC/cM3mGdh3X9B6nw2HwdRciZ08GUzpI
-         KTBV9oIiG2SkMX4A0aQ7JcZiNzpa3iugVSHybjYICwtFV74KGVNY507t3RUWK9TUxOAo
-         9ZQg==
+        bh=2EIEXfvfMwN3D7ORQF5+AB996TGcSb5Y+7lCcWkOPIw=;
+        b=Hn5IgkWIA+OV9Hyor/8Bg55Ovc4H7/5wXzhFbX9sW/kYo7RC5OPnEzvQrUXaweWC2U
+         mMRL//BBkqf5cdDv6uGgJhnyhlk6jJChzE83w+IW8fRRzawviFTu+34pz48PpNfkxkLD
+         OFMgfqo8lvHbTmNqxf/eh2wU7gDwHea0syWWIzm+J4SGy4J3wweljaPIRK1eNx5hzfZl
+         tOofBdEKXUSm/8KQb9XGsoeRwKW1FZfxXqovl1rf0BE+CFwRYhu7J7IWgNePkoGnwETj
+         dhGro6UvVRerUS1f3pN8DKFrv2ckg7XH+36MosiNZ38m+C0rBoXGNJCE7Fi4sE4rkH58
+         LrGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=j5AMi00ikqquEUsGSw0RdDNar4ei548oAVjXgUD8JZE=;
-        b=QD28zEm+J8dpIPL/YnV6ylfukNLqxiH78KZWsqnP6t2z5g6Uqv/MigMaUFL51ozgTJ
-         1pYec1+kmqIbIDau5CZJPzTP/I4JfMdmwNI8mJFbRl/nCoX7zxSb71czC3dUsYDnKVSP
-         u3xPSGHBtHuMsHdaiGx+F8LGKmqOe8H30EhxfjZwdFmHvVtNW3a1wq1Tv/XOr4K16qzQ
-         y2ByPnz9TNeEiLtZDwcvvW7kudpyjAclY1kCwGppcudzvdie2LrpEftXpgj/1/0VV4Jy
-         lkcaM2oiQtJ8tgzNtKhe371jcTAPYudjVzOIIu8HeQWVE/8EhZtGEzO4i9VgJceHcyrv
-         IaLA==
-X-Gm-Message-State: APjAAAV+s7MYOyw2gkeJpqv7q4cvSffE+3Iake4edeP1LAOgB59h/eSD
-        HPcGWkZXgdHjuymUcHgAP/GSDg9p
-X-Google-Smtp-Source: APXvYqywJGYcD1nT2Y1Y5r6/DdmpM2v91ZiZEdZZ6VqbtNqavmozuoLQJQaudBujmV45uayWZb45sQ==
-X-Received: by 2002:a05:6402:2052:: with SMTP id bc18mr2644404edb.161.1576679302358;
-        Wed, 18 Dec 2019 06:28:22 -0800 (PST)
-Received: from desktopdebian.localdomain (x4d015122.dyn.telefonica.de. [77.1.81.34])
-        by smtp.gmail.com with ESMTPSA id mh16sm96826ejb.46.2019.12.18.06.28.21
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2019 06:28:21 -0800 (PST)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [RFC PATCH 8/8] core: add notes to D-Bus interfaces about adding SELinux checks
-Date:   Wed, 18 Dec 2019 15:28:08 +0100
-Message-Id: <20191218142808.30433-9-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20191218142808.30433-1-cgzones@googlemail.com>
-References: <20191218142808.30433-1-cgzones@googlemail.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=2EIEXfvfMwN3D7ORQF5+AB996TGcSb5Y+7lCcWkOPIw=;
+        b=ierRgUj2Z4vnrd9l6gtFilR0vlzhOadSmztMsPA2EujHU7W7EZd/ustOJz8kdncIG8
+         lZHRky/T1CA9uG+1PBWYslLW/vfYx9ywlUS1RargPenYR/Ry8JTnrp4WK/UeSKlMv7uG
+         ZHKF28Twi3snj4jL4TAaLLjdBGps2Rj73FSNiHYgl0ETJjnHg3wVnOL7H6kgNKsH8mdi
+         lixx43QdeBjAVaDBjo8a2ZYnqIqjee4HK+7OXAvmyHRpHth2YrNEWnb43KaBH9pKNMEW
+         ffe9N2FBa/UdHJryk8VDQZC2VXBp9g/9bWTX8oFCw/XXuV5NN1t4qcVnc+HVQZLXBsLm
+         5O5Q==
+X-Gm-Message-State: APjAAAXyQnKjfI+eInykemrFg5iTFJebh1bbEOQfpXOQvOsU+5Z8hige
+        66Nz6fJmOY3tyvanW9YDb0mmM7JIsL/ltIZOyupTKWLz
+X-Google-Smtp-Source: APXvYqxracT0GYdCAhocK7cH2P06o2WMyFDvl7MXzjsEw+tog9AcCYUUCppYSkL7ACr8VF7Cgc61/njHYGx83vvd9Pg=
+X-Received: by 2002:ab0:2759:: with SMTP id c25mr1679223uap.104.1576682028931;
+ Wed, 18 Dec 2019 07:13:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Date:   Wed, 18 Dec 2019 16:13:37 +0100
+Message-ID: <CAJ2a_Ddz0dXzuhyyO_SNNZRc==8K7Nba0N6Rh_u+yig6c7w3tQ@mail.gmail.com>
+Subject: incorrect sysfs contexts
+To:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
----
- src/core/dbus-automount.c | 3 +++
- src/core/dbus-cgroup.c    | 3 +++
- src/core/dbus-device.c    | 3 +++
- src/core/dbus-execute.c   | 3 +++
- src/core/dbus-job.c       | 3 +++
- src/core/dbus-kill.c      | 3 +++
- src/core/dbus-manager.c   | 3 +++
- src/core/dbus-mount.c     | 3 +++
- src/core/dbus-path.c      | 3 +++
- src/core/dbus-scope.c     | 3 +++
- src/core/dbus-service.c   | 3 +++
- src/core/dbus-slice.c     | 3 +++
- src/core/dbus-socket.c    | 3 +++
- src/core/dbus-swap.c      | 3 +++
- src/core/dbus-target.c    | 3 +++
- src/core/dbus-timer.c     | 3 +++
- src/core/dbus-unit.c      | 6 ++++++
- 17 files changed, 54 insertions(+)
+Hi,
 
-diff --git a/src/core/dbus-automount.c b/src/core/dbus-automount.c
-index bd6e6a9dde..129ef98df1 100644
---- a/src/core/dbus-automount.c
-+++ b/src/core/dbus-automount.c
-@@ -8,6 +8,9 @@
- 
- static BUS_DEFINE_PROPERTY_GET_ENUM(property_get_result, automount_result, AutomountResult);
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_automount_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Where", "s", NULL, offsetof(Automount, where), SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-cgroup.c b/src/core/dbus-cgroup.c
-index 27dc9e43c3..ad277e94c9 100644
---- a/src/core/dbus-cgroup.c
-+++ b/src/core/dbus-cgroup.c
-@@ -344,6 +344,9 @@ static int property_get_ip_address_access(
-         return sd_bus_message_close_container(reply);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_cgroup_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Delegate", "b", bus_property_get_bool, offsetof(CGroupContext, delegate), 0),
-diff --git a/src/core/dbus-device.c b/src/core/dbus-device.c
-index 6cf7f58e02..c2566c274b 100644
---- a/src/core/dbus-device.c
-+++ b/src/core/dbus-device.c
-@@ -4,6 +4,9 @@
- #include "device.h"
- #include "unit.h"
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_device_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("SysFSPath", "s", NULL, offsetof(Device, sysfs), SD_BUS_VTABLE_PROPERTY_EMITS_CHANGE),
-diff --git a/src/core/dbus-execute.c b/src/core/dbus-execute.c
-index 1d0bc1ede3..67bc91c3c6 100644
---- a/src/core/dbus-execute.c
-+++ b/src/core/dbus-execute.c
-@@ -692,6 +692,9 @@ static int property_get_log_extra_fields(
-         return sd_bus_message_close_container(reply);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_exec_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Environment", "as", NULL, offsetof(ExecContext, environment), SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-job.c b/src/core/dbus-job.c
-index 7b0b093757..ca531570ba 100644
---- a/src/core/dbus-job.c
-+++ b/src/core/dbus-job.c
-@@ -119,6 +119,9 @@ int bus_job_method_get_waiting_jobs(sd_bus_message *message, void *userdata, sd_
-         return sd_bus_send(NULL, reply, NULL);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_job_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_METHOD("Cancel", NULL, NULL, bus_job_method_cancel, SD_BUS_VTABLE_UNPRIVILEGED),
-diff --git a/src/core/dbus-kill.c b/src/core/dbus-kill.c
-index 30597e86f0..e7d0d2b16c 100644
---- a/src/core/dbus-kill.c
-+++ b/src/core/dbus-kill.c
-@@ -25,6 +25,9 @@ static int property_get_restart_kill_signal(
-         return sd_bus_message_append_basic(reply, 'i', &s);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_kill_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("KillMode", "s", property_get_kill_mode, offsetof(KillContext, kill_mode), SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-manager.c b/src/core/dbus-manager.c
-index 14085ba1a1..721ebeeaa8 100644
---- a/src/core/dbus-manager.c
-+++ b/src/core/dbus-manager.c
-@@ -2476,6 +2476,9 @@ static int method_abandon_scope(sd_bus_message *message, void *userdata, sd_bus_
-         return bus_scope_method_abandon(message, u, error);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_manager_vtable[] = {
-         SD_BUS_VTABLE_START(0),
- 
-diff --git a/src/core/dbus-mount.c b/src/core/dbus-mount.c
-index b6d61627eb..1fface5532 100644
---- a/src/core/dbus-mount.c
-+++ b/src/core/dbus-mount.c
-@@ -39,6 +39,9 @@ static BUS_DEFINE_PROPERTY_GET(property_get_options, "s", Mount, mount_get_optio
- static BUS_DEFINE_PROPERTY_GET(property_get_type, "s", Mount, mount_get_fstype);
- static BUS_DEFINE_PROPERTY_GET_ENUM(property_get_result, mount_result, MountResult);
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_mount_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Where", "s", NULL, offsetof(Mount, where), SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-path.c b/src/core/dbus-path.c
-index 1a97d62486..9f53c4bd1e 100644
---- a/src/core/dbus-path.c
-+++ b/src/core/dbus-path.c
-@@ -42,6 +42,9 @@ static int property_get_paths(
-         return sd_bus_message_close_container(reply);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_path_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Unit", "s", bus_property_get_triggered_unit, 0, SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-scope.c b/src/core/dbus-scope.c
-index 84d91dcfa3..740a09874d 100644
---- a/src/core/dbus-scope.c
-+++ b/src/core/dbus-scope.c
-@@ -42,6 +42,9 @@ int bus_scope_method_abandon(sd_bus_message *message, void *userdata, sd_bus_err
- 
- static BUS_DEFINE_PROPERTY_GET_ENUM(property_get_result, scope_result, ScopeResult);
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_scope_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Controller", "s", NULL, offsetof(Scope, controller), SD_BUS_VTABLE_PROPERTY_EMITS_CHANGE),
-diff --git a/src/core/dbus-service.c b/src/core/dbus-service.c
-index 5cf9b21890..ef912577ab 100644
---- a/src/core/dbus-service.c
-+++ b/src/core/dbus-service.c
-@@ -91,6 +91,9 @@ static int property_get_exit_status_set(
-         return sd_bus_message_close_container(reply);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_service_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Type", "s", property_get_type, offsetof(Service, type), SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-slice.c b/src/core/dbus-slice.c
-index effd5fa5d7..db49933ae3 100644
---- a/src/core/dbus-slice.c
-+++ b/src/core/dbus-slice.c
-@@ -5,6 +5,9 @@
- #include "slice.h"
- #include "unit.h"
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_slice_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_VTABLE_END
-diff --git a/src/core/dbus-socket.c b/src/core/dbus-socket.c
-index 25d3d71391..15ba47091d 100644
---- a/src/core/dbus-socket.c
-+++ b/src/core/dbus-socket.c
-@@ -74,6 +74,9 @@ static int property_get_listen(
-         return sd_bus_message_close_container(reply);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_socket_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("BindIPv6Only", "s", property_get_bind_ipv6_only, offsetof(Socket, bind_ipv6_only), SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-swap.c b/src/core/dbus-swap.c
-index 353fa20132..de4a0b0e55 100644
---- a/src/core/dbus-swap.c
-+++ b/src/core/dbus-swap.c
-@@ -29,6 +29,9 @@ static BUS_DEFINE_PROPERTY_GET(property_get_priority, "i", Swap, swap_get_priori
- static BUS_DEFINE_PROPERTY_GET(property_get_options, "s", Swap, swap_get_options);
- static BUS_DEFINE_PROPERTY_GET_ENUM(property_get_result, swap_result, SwapResult);
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_swap_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("What", "s", NULL, offsetof(Swap, what), SD_BUS_VTABLE_PROPERTY_EMITS_CHANGE),
-diff --git a/src/core/dbus-target.c b/src/core/dbus-target.c
-index ba50113641..7c61f7d6fd 100644
---- a/src/core/dbus-target.c
-+++ b/src/core/dbus-target.c
-@@ -3,6 +3,9 @@
- #include "dbus-target.h"
- #include "unit.h"
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_target_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_VTABLE_END
-diff --git a/src/core/dbus-timer.c b/src/core/dbus-timer.c
-index 439c276fac..354336e4a3 100644
---- a/src/core/dbus-timer.c
-+++ b/src/core/dbus-timer.c
-@@ -118,6 +118,9 @@ static int property_get_next_elapse_monotonic(
-                                                                  TIMER_MONOTONIC_CLOCK(t), CLOCK_MONOTONIC));
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_timer_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Unit", "s", bus_property_get_triggered_unit, 0, SD_BUS_VTABLE_PROPERTY_CONST),
-diff --git a/src/core/dbus-unit.c b/src/core/dbus-unit.c
-index 37b5decf52..184405d8be 100644
---- a/src/core/dbus-unit.c
-+++ b/src/core/dbus-unit.c
-@@ -764,6 +764,9 @@ static int property_get_refs(
-         return sd_bus_message_close_container(reply);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_unit_vtable[] = {
-         SD_BUS_VTABLE_START(0),
- 
-@@ -1350,6 +1353,9 @@ int bus_unit_method_attach_processes(sd_bus_message *message, void *userdata, sd
-         return sd_bus_reply_method_return(message, NULL);
- }
- 
-+/* Note: when adding a SD_BUS_WRITABLE_PROPERTY or SD_BUS_METHOD add a TODO(selinux),
-+ *       so the SELinux people can add a permission check.
-+ */
- const sd_bus_vtable bus_unit_cgroup_vtable[] = {
-         SD_BUS_VTABLE_START(0),
-         SD_BUS_PROPERTY("Slice", "s", property_get_slice, 0, 0),
--- 
-2.24.1
+I am trying to refine contexts of sysfs.
 
+When using genfscon statements like:
+    genfscon sysfs /  system_u:object_r:sysfs_t:s0
+    genfscon sysfs /class/net  system_u:object_r:net_sysfs_t:s0
+    genfscon sysfs /devices  system_u:object_r:generic_device_sysfs_t:s0
+    genfscon sysfs /devices/system/cpu  system_u:object_r:cpu_sysfs_t:s0
+    genfscon sysfs /devices/system/cpu/online
+system_u:object_r:cpu_online_sysfs_t:s0
+    genfscon sysfs /firmware  system_u:object_r:firmware_sysfs_t:s0
+    genfscon sysfs /module/apparmor  system_u:object_r:apparmor_sysfs_t:s0
+
+and file context definitions like:
+    /sys(/.*)?
+gen_context(system_u:object_r:sysfs_t,s0)
+    /sys/module/apparmor(/.*)?
+gen_context(system_u:object_r:apparmor_sysfs_t,s0)
+    /sys/devices/system/cpu(/.*)?
+gen_context(system_u:object_r:cpu_sysfs_t,s0)
+    /sys/devices/system/cpu/online          --
+gen_context(system_u:object_r:cpu_online_sysfs_t,s0)
+    /sys/firmware(/.*)?
+gen_context(system_u:object_r:firmware_sysfs_t,s0)
+    /sys/devices(/.*)?
+gen_context(system_u:object_r:generic_device_sysfs_t,s0)
+    /sys/devices/.*/sd[a-z](/.*)?
+gen_context(system_u:object_r:harddrive_sysfs_t,s0)
+    /sys/devices/.*/hwmon(/.*)?
+gen_context(system_u:object_r:hwmon_sysfs_t,s0)
+    /sys/class/net(/.*)?
+gen_context(system_u:object_r:net_sysfs_t,s0)
+    /sys/devices/.*/net(/.*)?
+gen_context(system_u:object_r:net_sysfs_t,s0)
+
+with a systemd tmpfiles entry:
+    #Type Path        Mode UID  GID  Age Argument
+    Z     /sys        -    -    -    -   -
+
+I still get incorrect labeled entries after boot:
+
+$ restorecon -v -R -n /
+Would relabel /sys/devices/platform/intel_rapl_msr.0/subsystem from
+system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/0-0:AD1980/subsystem
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/controlC0/de=
+vice
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/controlC0/su=
+bsystem
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/pcmC0D1c/dev=
+ice
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/pcmC0D1c/sub=
+system
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/pcmC0D0c/dev=
+ice
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/pcmC0D0c/sub=
+system
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/device
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/subsystem
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/pcmC0D0p/dev=
+ice
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+Would relabel /sys/devices/pci0000:00/0000:00:05.0/sound/card0/pcmC0D0p/sub=
+system
+from system_u:object_r:sysfs_t:s0 to
+system_u:object_r:generic_device_sysfs_t:s0
+
+Using auditallow statements reveals no accesses.
+
+How can I enforce these entries to be created with correct labels?
+
+
+Best regards,
+     Christian G=C3=B6ttsche

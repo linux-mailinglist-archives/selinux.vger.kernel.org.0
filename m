@@ -2,82 +2,113 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 36E34127D88
-	for <lists+selinux@lfdr.de>; Fri, 20 Dec 2019 15:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DEAA127E50
+	for <lists+selinux@lfdr.de>; Fri, 20 Dec 2019 15:43:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728299AbfLTOet (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 20 Dec 2019 09:34:49 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39010 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728213AbfLTOes (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Fri, 20 Dec 2019 09:34:48 -0500
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 4A22F24695;
-        Fri, 20 Dec 2019 14:34:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1576852488;
-        bh=zUpkqMwan0EDcea0gZWwUYSw2llqaLgxDSihAC5ohjM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FwImDSxoLbj3h6CuG7ZCkpl86R0B7B5YMiJzvj7+KlRVg8MQAvzIr8Q6sOcPu2+36
-         2htUAMkhIXr7wvO9UIVe4GsVAZ9U9GP5Ogaft8oAV/JbzpL9MIWl+he+QFIWltbmYI
-         NZrINpiyOTyMLpJ2byn4dp3pfXESjEjrn7UKA2+I=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>, linux-afs@lists.infradead.org
-Subject: [PATCH AUTOSEL 4.19 11/34] afs: Fix SELinux setting security label on /afs
-Date:   Fri, 20 Dec 2019 09:34:10 -0500
-Message-Id: <20191220143433.9922-11-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20191220143433.9922-1-sashal@kernel.org>
-References: <20191220143433.9922-1-sashal@kernel.org>
+        id S1727369AbfLTOnL (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 20 Dec 2019 09:43:11 -0500
+Received: from mail-qv1-f66.google.com ([209.85.219.66]:43481 "EHLO
+        mail-qv1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727359AbfLTOnL (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 20 Dec 2019 09:43:11 -0500
+Received: by mail-qv1-f66.google.com with SMTP id p2so3679147qvo.10
+        for <selinux@vger.kernel.org>; Fri, 20 Dec 2019 06:43:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ieee.org; s=google;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=XOgqRtaI1snRljGQ2MFZhne9YMQCAWoniKBKc/KGEDQ=;
+        b=Admw93pj+fgWccurqxqslaWTA3zePSiDCre8pWFz/4bT0WaPO1GHgVn0dvi7TpV2FA
+         a7LzrjITmbbUHxCis8YDt/cQTOvVfrmXFKIKiC7uWL7UMTjehoTUQDAFtmUPJzI8huTR
+         2benSKM+WgWwa0fovW/UAbVtUj+88fDwMf/Wg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=XOgqRtaI1snRljGQ2MFZhne9YMQCAWoniKBKc/KGEDQ=;
+        b=Vdc2bkfLWX3urNp4qJuLQnBGsMCgzgGfCzu+dgWmx/oSafPUYT6un5/JgohhbIpr6+
+         h7Xz67ucZWhmVIl+KED2zh8ynd6SoIWzruDMq7PsTNWRtNu25Z4+oYYdttYAl/ckIE6H
+         bPqWgAbz8wSZScKnN2Wox3nhhkWYJAdV/QK3DInkvs1kNMMwLwwaD5y5Kj4JL9I1bUyv
+         d/yAZiWqIJaiLRgoelxfLPOQ7vchUoNAR6j4bWdMxIXsqTSuf+5bGQEYd4XyAXmg/gmD
+         v8NQWysbLBj9kWd1PTIFhix2DPybDgAsxLixx/wt6GNYQdSmJqMzgOKQzplcHdrkNxQR
+         0WLw==
+X-Gm-Message-State: APjAAAUBX1v/H8U48I1a+JzNGsRNGZOY5T54NK2X5QsHABMDSgGGpz58
+        IFGmgido5DRXhetqnnWlXE+CBCJgI6U=
+X-Google-Smtp-Source: APXvYqyqln5me0fQcuSNrTkoVJ+OccFDMy+G4ZyDxE32y+jK5OY6PVIdgqh2q9hadhLcxlHblZ4g4w==
+X-Received: by 2002:a0c:b502:: with SMTP id d2mr12780809qve.110.1576852990329;
+        Fri, 20 Dec 2019 06:43:10 -0800 (PST)
+Received: from fedora.pebenito.net (pool-108-15-23-247.bltmmd.fios.verizon.net. [108.15.23.247])
+        by smtp.gmail.com with ESMTPSA id g62sm2887668qkd.25.2019.12.20.06.43.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Dec 2019 06:43:09 -0800 (PST)
+Subject: Re: [RFC PATCH 0/8] systemd: improve SELinux support
+To:     =?UTF-8?Q?Christian_G=c3=b6ttsche?= <cgzones@googlemail.com>,
+        selinux@vger.kernel.org
+References: <20191218142808.30433-1-cgzones@googlemail.com>
+ <2bf8ca3c-e1be-45ac-1472-5dc2d046620b@ieee.org>
+ <20191220105416.GB632812@brutus.lan>
+From:   Chris PeBenito <pebenito@ieee.org>
+Message-ID: <57742923-f40d-d4b8-117b-ec6fb4bdb7bc@ieee.org>
+Date:   Fri, 20 Dec 2019 09:43:09 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <20191220105416.GB632812@brutus.lan>
+Content-Type: text/plain; charset=windows-1252; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: David Howells <dhowells@redhat.com>
+On 12/20/19 5:54 AM, Dominick Grift wrote:
+> On Thu, Dec 19, 2019 at 03:24:34PM -0500, Chris PeBenito wrote:
+>> On 12/18/19 9:28 AM, Christian Göttsche wrote:
+>>> Improve the SELinux support in systemd, especially re-adding checks for
+>>> unit file operations, like enable, mask...
+>>>
+>>> The original pull request can be found at https://github.com/systemd/systemd/pull/10023
+>>>
+>>> Patch 1 and 2 improve logging on failures in permissive mode.
+>>>
+>>> Patch 3 adds the ability to obtain the context for a masked unit.
+>>>
+>>> Patch 4 and 5 change several system und service checks. For better
+>>> distinction two new permissions are introduced: modify and listdynusers.
+>>>
+>>> Patch 6 and 7 re-introduce checking unit file install operations.
+>>> They were dropped in 8faae625dc9b6322db452937f54176e56e65265a .
+>>> For consistency in the unexpected case while perforimg a service access
+>>> check no path can be gathered, now the check will still be executed on
+>>> the service security class (currently it switches to the system security
+>>> class).
+>>>
+>>> Patch 8 adds some notes for adding future D-Bus interfaces.
+>>
+>> Thanks for working on this.  Just to make sure I didn't miss anything while
+>> reading the patches, there are no new permissions being added to the system
+>> class, correct?
+> 
+> This is what i understand:
+> 
+> Systemd first wants the regression fixed (re-add enable disable permission checks)
+> This phase should not add anything to the system class. It merely addresses a previous regression.
 
-[ Upstream commit bcbccaf2edcf1b76f73f890e968babef446151a4 ]
 
-Make the AFS dynamic root superblock R/W so that SELinux can set the
-security label on it.  Without this, upgrades to, say, the Fedora
-filesystem-afs RPM fail if afs is mounted on it because the SELinux label
-can't be (re-)applied.
+I didn't look at all of the implementation details, but as long as there 
+are no new permissions in the system class, I'm ok with the changes.
 
-It might be better to make it possible to bypass the R/O check for LSM
-label application through setxattr.
 
-Fixes: 4d673da14533 ("afs: Support the AFS dynamic root")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Marc Dionne <marc.dionne@auristor.com>
-cc: selinux@vger.kernel.org
-cc: linux-security-module@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/afs/super.c | 1 -
- 1 file changed, 1 deletion(-)
+> When that is done, then either the whole thing can be redone properly using policy capabilities, or we can add new permissions and in that scenario i guess the new permissions would be added to the existing system class (?).
+> If we redo the whole thing without interfering with the existing implementation then we can get rid of the system class usage for systemd.
+> One can opt in for the proper implementation by enabling the policy capability or otherwise one can stick with the current implementation.
+The correct thing to do with future changes is to remove the userspace 
+permissions and put them in a new userspace object class (with 
+appropriate compat, etc).  If you're adding new permissions at the same 
+time, a disabled policy capability would mean not checking the new 
+permission; it wouldn't mean adding the new permission to the system class.
 
-diff --git a/fs/afs/super.c b/fs/afs/super.c
-index 4d3e274207fb7..bd26082974732 100644
---- a/fs/afs/super.c
-+++ b/fs/afs/super.c
-@@ -404,7 +404,6 @@ static int afs_fill_super(struct super_block *sb,
- 	/* allocate the root inode and dentry */
- 	if (as->dyn_root) {
- 		inode = afs_iget_pseudo_dir(sb, true);
--		sb->s_flags	|= SB_RDONLY;
- 	} else {
- 		sprintf(sb->s_id, "%u", as->volume->vid);
- 		afs_activate_volume(as->volume);
 -- 
-2.20.1
-
+Chris PeBenito

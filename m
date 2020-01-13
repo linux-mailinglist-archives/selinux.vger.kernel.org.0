@@ -2,72 +2,123 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 53CAF138B95
-	for <lists+selinux@lfdr.de>; Mon, 13 Jan 2020 07:03:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3936A138E69
+	for <lists+selinux@lfdr.de>; Mon, 13 Jan 2020 11:00:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729830AbgAMGDI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 13 Jan 2020 01:03:08 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:41878 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729184AbgAMGDI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 13 Jan 2020 01:03:08 -0500
-Received: by mail-il1-f196.google.com with SMTP id f10so7133876ils.8
-        for <selinux@vger.kernel.org>; Sun, 12 Jan 2020 22:03:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=tfjdcQWlQVBcWEhWaNntOsaXOZmVUq7RzPa6vaueTJfqQqtvsbfC9YXxzZT3V8PKoz
-         ZbP679MgBJOdG42Ub05FhDlPc4JvWWKtH4ayzq4mhkVs84lzyJC4mfJg+avDgCEMPwKP
-         Us/aQbAn90Ilutre/GHURsrPk4+6XPaDjIRyLsYAuN6y5ep9L+1Rbg5YZrT/n/A4v4SQ
-         H/Szo8pgRz1Ovff8euf/Q7xZn7wdKXxENCUU4g4JSViOwpI7arqSJdKPHwMp3QjpxJp0
-         UmXYwTgoH5T8kwEc4GOqb0sUADkGsgeRfti0FXw5goycDM0HhxlZV7XMkoraF1omAY+D
-         B4Zg==
+        id S1726001AbgAMKAk (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 13 Jan 2020 05:00:40 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:20784 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725978AbgAMKAk (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 13 Jan 2020 05:00:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1578909638;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=+Ofz5cGqlCAg0ob1EDru1R0PIDxRoCJIGrPX3XZZto8=;
+        b=Tov5xuqQ0onCn/9C/AOAarEHNOkKIsoTjowzcCo3bLAle+NlDnXfxu0ovr3fddwIea3lob
+        YsaQkzy1FnwlQw4RJe8XYUGrpc0HeZS/lszsQ/E3c9HIAWad8WVHsK0lZxEVTHbWYq8xPK
+        6SwKylQq2xlxxGBW9CPKly5ALjmMo50=
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com
+ [209.85.210.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-299-8CE1DHwANtytbyzyhKFBnA-1; Mon, 13 Jan 2020 05:00:36 -0500
+X-MC-Unique: 8CE1DHwANtytbyzyhKFBnA-1
+Received: by mail-ot1-f72.google.com with SMTP id v2so6151132otq.2
+        for <selinux@vger.kernel.org>; Mon, 13 Jan 2020 02:00:36 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Rjbe3pVeMfYVPdmVklZ4b2stSqI32LIYp+bn/8NyJvk=;
-        b=sXe03hf/ZQ9FU2A1qig59xs87bBieXrsAx1K9X5cf4DPAjDs7yiMe/atBe2yyAJdRY
-         xPM0NE+WLsW5QcWFCb3A8M3gK3UcZzM/E0wf3Dd48lHk/e1DAz8jv1bpafX6K6g4rcfy
-         e4T4fIFmOqKfEAM1K66U5FHNh5JUXq4B9wfH34Mo+hgWTpOObW1f+rTJ4pxGagc8K0SA
-         3EoTbGNLAoyMoV3y3K6ozXKl9zg6IyoufyEPJP5iCK7CfSYnvp3LrP66z+hQT/gITuJ1
-         tFOzK0x+8bgIwSqLhb1qv+Jn+3SEcfRz58+8P98Od7d1bZBxAgNKokFsrPHndQ6ClzEm
-         Ef3Q==
-X-Gm-Message-State: APjAAAXvloUhBZhAwT2mnDZZRL1ES/p3pAXH+l6QmT3N4vdvg5cjWL59
-        5h/lpGhQWLmz8qvQ7PaRNxSLD/dzA/E/ikAFUNo=
-X-Google-Smtp-Source: APXvYqwD+Tmsa10XUjcQocNh7xArS100lpS2TCgBUvPIFnyH/VoH/nmOzgSgBmnP/q/bCqV/4C9Ad3hidExF3CJt68Y=
-X-Received: by 2002:a92:9184:: with SMTP id e4mr13763622ill.70.1578895387520;
- Sun, 12 Jan 2020 22:03:07 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+Ofz5cGqlCAg0ob1EDru1R0PIDxRoCJIGrPX3XZZto8=;
+        b=uOitxL1t4UTeAVfz9CoqsB4j7G5VrjQcgWJQBuf2l4WHpSkmGCr4E71zrKxLQkXeKu
+         Ok0n12AlaNOy6LXINSkQpMjzkF1aU5bgQTjEt9+200CbcbePDxd0UrCkSzQu4/6cKk3H
+         F+YStuBRdSYDmc91pDFSzkbkx82FE1FHbt0R4uIJprEL2sgBxU5JkHIdqcxebBN+u8nC
+         YtSOG5vSzpSXNpPwKdBoH67w9X6xdC8mOH1fhhU0Mbk0kj9bKWfnYoFi5XPVDCX5y4UD
+         fW6Op/ZZW6thXDKK2ePYFwdzQpT65soINmypkTGP+K/KqG/YgKjHK42TZA/z23PbysDW
+         724A==
+X-Gm-Message-State: APjAAAUN5K+WD8VReiVzu/JWZeALOJ9tgKDfdm9D6tuIjfJ7PWniH84S
+        oY9Cyxqu04VyolhjyGWHVf+BElUkDY/+TIP1ZlcYPU+RoCchYzglAXeCmMnPeDV+Hm+URQrRqKj
+        xtdg6MonURmil7gyjsQsDHD7xAwdBu/BqoA==
+X-Received: by 2002:aca:4d4f:: with SMTP id a76mr12380848oib.26.1578909635644;
+        Mon, 13 Jan 2020 02:00:35 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyyDHfR9EetLXjZlojl+iDPnylhCcmxzjimaWB3o0hB60YmN/zBC/3pTi4V9y5GzcagWfcZGdbYwTneD6QLF+w=
+X-Received: by 2002:aca:4d4f:: with SMTP id a76mr12380831oib.26.1578909635349;
+ Mon, 13 Jan 2020 02:00:35 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:6e02:dc9:0:0:0:0 with HTTP; Sun, 12 Jan 2020 22:03:07
- -0800 (PST)
-Reply-To: rickschaech@gmail.com
-From:   Rick Schaech <julianlfrd@gmail.com>
-Date:   Mon, 13 Jan 2020 02:03:07 -0400
-Message-ID: <CACEXX6hVubKG7cqyiuucyAJyV1YoXMzWG-y12mJwpLv56VALaA@mail.gmail.com>
-Subject: I wait for your swift response,
-To:     undisclosed-recipients:;
+References: <20200108140958.870283-1-omosnace@redhat.com> <CAHC9VhS7fWscz-dOwwBDdzoeUr4-7Yt410RSEZPctoNBTnAsJw@mail.gmail.com>
+In-Reply-To: <CAHC9VhS7fWscz-dOwwBDdzoeUr4-7Yt410RSEZPctoNBTnAsJw@mail.gmail.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Mon, 13 Jan 2020 11:00:23 +0100
+Message-ID: <CAFqZXNvzz9GSJjBgYLV3MPVKvxx4nKSGquVxy=0gRj4n=veuOg@mail.gmail.com>
+Subject: Re: [PATCH v2] selinux: reorder hooks to make runtime disable less broken
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Dear, I'm Mr Rick Schaech, I am the General Account Auditor, Though i
-know we have not meet each other before but sometimes in life God have
-a reason of bringing two people from two different countries together
-as business partners or life partners.
+On Fri, Jan 10, 2020 at 9:38 PM Paul Moore <paul@paul-moore.com> wrote:
+> On Wed, Jan 8, 2020 at 9:10 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> > Commit b1d9e6b0646d ("LSM: Switch to lists of hooks") switched the LSM
+> > infrastructure to use per-hook lists, which meant that removing the
+> > hooks for a given module was no longer atomic. Even though the commit
+> > clearly documents that modules implementing runtime revmoval of hooks
+> > (only SELinux attempts this madness) need to take special precautions to
+> > avoid race conditions, SELinux has never addressed this.
+> >
+> > By inserting an artificial delay between the loop iterations of
+> > security_delete_hooks() (I used 100 ms), booting to a state where
+> > SELinux is enabled, but policy is not yet loaded, and running these
+> > commands:
+> >
+> >     while true; do ping -c 1 <some IP>; done &
+> >     echo -n 1 >/sys/fs/selinux/disable
+> >     kill %1
+> >     wait
+> >
+> > ...I was able to trigger NULL pointer dereferences in various places. I
+> > also have a report of someone getting panics on a stock RHEL-8 kernel
+> > after setting SELINUX=disabled in /etc/selinux/config and rebooting
+> > (without adding "selinux=0" to kernel command-line).
+> >
+> > Reordering the SELinux hooks such that those that allocate structures
+> > are removed last seems to prevent these panics. It is very much possible
+> > that this doesn't make the runtime disable completely race-free, but at
+> > least it makes the operation much less fragile.
+> >
+> > Fixes: b1d9e6b0646d ("LSM: Switch to lists of hooks")
+> > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> > ---
+> >
+> > Changes in v2:
+> >  - rebased on latest selinux/next
+> >  - added comment above selinux_nf_ip_exit() call to ensure it remains
+> >    ordered correctly
+> >
+> >  security/selinux/hooks.c | 101 +++++++++++++++++++++++++++------------
+> >  1 file changed, 70 insertions(+), 31 deletions(-)
+>
+> Thanks Ondrej, I've merged this into selinux/next and added the stable
+> kernel CC.  Normally when we mark something for stable I send it up to
+> Linus during the -rcX development phase, but I think this case is
+> somewhat unique in that it isn't widespread (and there is no
+> indication it will become widespread) and it requires privilege to
+> trigger.  Also, while not a major factor, we are at -rc5 which means
+> we are very near the end of the -rcX cycle and I'd rather not
+> accidentally break something else this late in an attempt to fix such
+> a limited problem.
+>
+> Comments and objections are welcome ;)
 
-My dear friend, I have the sum of 15.7 Million USD i wish to put in
-your name due to the death of my late client who died several years
-ago as his next of kin column still remain blank. Though the internet
-medium is highly abuse these days but am assuring you that this
-transaction is legitimate and I am contacting you that we may have a
-deal, note for your cooperation and collaboration 40% of the sum will
-be for you while the other 60% will be for me as well. I wait for your
-swift response for more details. please forward your response to my
-personal E-mail: rickschaech@gmail.com
+No objections. I'm perfectly fine with that in this case :)
 
-Yours sincerely,
-Rick Schaech.
+Thanks,
+
+--
+Ondrej Mosnacek <omosnace at redhat dot com>
+Software Engineer, Security Technologies
+Red Hat, Inc.
+

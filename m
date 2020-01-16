@@ -2,144 +2,94 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BC88C13D993
-	for <lists+selinux@lfdr.de>; Thu, 16 Jan 2020 13:06:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D2813DB0A
+	for <lists+selinux@lfdr.de>; Thu, 16 Jan 2020 14:03:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726440AbgAPMEy (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Jan 2020 07:04:54 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:60964 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726370AbgAPMEx (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Jan 2020 07:04:53 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579176291;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VBjsbTKLWInXCZNCu2D+Hav+9iUtOgN9abWLjQLDMhw=;
-        b=Lcu+tSYaiwSuJ2YswlNXS2p9FpubNZUlrpvFk3h4W275xsRajrjf4m2uo6btvO6RMV8/Hb
-        y88cjXb7YYZDHrldgZztVg2JGthz+dtPzEcCZWBqDLdeG7rh39zWP65lzOx0SJJZySb4g3
-        AfuHrcChWUkjzrg4QRManSprQ542nWU=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-197-NIYYgCE4PR-Jg5wa60jOyw-1; Thu, 16 Jan 2020 07:04:48 -0500
-X-MC-Unique: NIYYgCE4PR-Jg5wa60jOyw-1
-Received: by mail-wr1-f70.google.com with SMTP id u18so9153073wrn.11
-        for <selinux@vger.kernel.org>; Thu, 16 Jan 2020 04:04:48 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=VBjsbTKLWInXCZNCu2D+Hav+9iUtOgN9abWLjQLDMhw=;
-        b=PVHlDevTb0MM8gFgS9qC35A4u2bndL9ULZD3mwRljW+jkBtwH4l/m+iRBLeUhp41Ej
-         lgQj7wEmnZY2npK9KOdlNBlDqRckmG4VEcamoENnpPwD4EHO2QrkD/iSOpAvFItBAWDu
-         sq1uErqbKGd99DkNNQ5u08z75geVnGsI8f7d6OA0hpxTwVEKiK3pimKkq0JJWM0p8V3q
-         3OYyQdez6l0cchKStKo+6Sg5oxzPP1kzkjpXKY5LgczFaocBTCB65tL8I33mIr0Drnva
-         XmS0SSo7MEafDylGXD8qVdvbTr1OEJSS0RXwguI5Uhp1tLYSRPlguvjqmkkl2TDl8VRH
-         mQrQ==
-X-Gm-Message-State: APjAAAWFhJ8xyYk+/P1945e2XDwNCbUo8pUyzu0QHpqyueNXWiJ2D0gW
-        AxnvcVaQPGUybjidXrROhopFKmF/eG1xVRdqojDNxc070toFrrF9qSPBvRIMUvoUh46aW4hEpHC
-        wCMX378gncFGi9L3uCA==
-X-Received: by 2002:a05:600c:2059:: with SMTP id p25mr5887753wmg.161.1579176287340;
-        Thu, 16 Jan 2020 04:04:47 -0800 (PST)
-X-Google-Smtp-Source: APXvYqyzXj5dkHXUT1hxubDpyvdPI9hw5PlSg+pNhIeo9Mep2mG4mxdD0zL3GBa97NxIZh9u4hSlcQ==
-X-Received: by 2002:a05:600c:2059:: with SMTP id p25mr5887735wmg.161.1579176287132;
-        Thu, 16 Jan 2020 04:04:47 -0800 (PST)
-Received: from omos.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id b67sm278117wmc.38.2020.01.16.04.04.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2020 04:04:46 -0800 (PST)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
-Cc:     Stephen Smalley <sds@tycho.nsa.gov>
-Subject: [PATCH 6/6] selinux: generalize evaluate_cond_node()
-Date:   Thu, 16 Jan 2020 13:04:39 +0100
-Message-Id: <20200116120439.303034-7-omosnace@redhat.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200116120439.303034-1-omosnace@redhat.com>
-References: <20200116120439.303034-1-omosnace@redhat.com>
+        id S1726378AbgAPND3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Jan 2020 08:03:29 -0500
+Received: from mailomta14-sa.btinternet.com ([213.120.69.20]:31751 "EHLO
+        sa-prd-fep-044.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726329AbgAPND3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Jan 2020 08:03:29 -0500
+Received: from sa-prd-rgout-002.btmx-prd.synchronoss.net ([10.2.38.5])
+          by sa-prd-fep-044.btinternet.com with ESMTP
+          id <20200116130327.CHQS8432.sa-prd-fep-044.btinternet.com@sa-prd-rgout-002.btmx-prd.synchronoss.net>;
+          Thu, 16 Jan 2020 13:03:27 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1579179807; 
+        bh=hSilISzTjZsLVHusRA2wwQ0P7fkfeW478rFTAcnlvic=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:MIME-Version;
+        b=WDhHhPVZE6CWqncrA8A08bRX8SQIeMlFGTdQffptmRC3AsLghxzo1PK+eGdL9LmFr56kir0B3jfZOO1dnFLsWBZddF7FMvlex6fR8Ok2MaBca5y+p+rDZ6Pbio1EuPwMGz/SKNXKaMElRYGtaCd04YpXG0z+uBy/+tH17D6J/wDWh0IauNhw88rLIP5Ku9bC6Y24SqzUiGtU6qvt7on1C1iKJEztlcKkKnEs2p0x0aOI5abj10lxYbT7ipl/N1EinI26Zmxl7w+tN7Kdyzl1xLHzCRWlwzcgeUDLhsrOpaznA/EAnC6wXAXXegXX72SN5qBXehf2cJM5r+AJEQ7lJQ==
+Authentication-Results: btinternet.com;
+    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
+X-Originating-IP: [86.134.6.91]
+X-OWM-Source-IP: 86.134.6.91 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedugedrtdehgdegjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnegfrhhlucfvnfffucdlqddutddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecukfhppeekiedrudefgedriedrledunecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddufeegrdeirdeluddpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehomhhoshhnrggtvgesrhgvughhrghtrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssehhohhtmhgrihhlrdgtohhmqedprhgtphhtthhopeeoshgushesthihtghhohdrnhhsrgdrghhovheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqeenucevlhhushhtvghrufhiiigvpedt
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from localhost.localdomain (86.134.6.91) by sa-prd-rgout-002.btmx-prd.synchronoss.net (5.8.337) (authenticated as richard_c_haines@btinternet.com)
+        id 5DC137950C5EE4F5; Thu, 16 Jan 2020 13:03:26 +0000
+Message-ID: <84627a0c4895105a5ebb9ecd113c0ba872edba00.camel@btinternet.com>
+Subject: Re: [PATCH V5 1/1] selinux-testsuite: Add filesystem tests
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     Ondrej Mosnacek <omosnace@redhat.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Date:   Thu, 16 Jan 2020 13:03:26 +0000
+In-Reply-To: <CAFqZXNsqYzaaOSAuZ=1z3vrgvW8cJ0LKufEpvPdNqmrhXW5yhw@mail.gmail.com>
+References: <20200114144426.355523-1-richard_c_haines@btinternet.com>
+         <20200114144426.355523-2-richard_c_haines@btinternet.com>
+         <4c43a27d-6af6-4be0-611a-9564d898ff06@tycho.nsa.gov>
+         <CAFqZXNsqYzaaOSAuZ=1z3vrgvW8cJ0LKufEpvPdNqmrhXW5yhw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.2 (3.34.2-1.fc31) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Both callers iterate the cond_list and call it for each node - turn it
-into evaluate_cond_nodes(), which does the iteration for them.
+On Thu, 2020-01-16 at 10:00 +0100, Ondrej Mosnacek wrote:
+> On Wed, Jan 15, 2020 at 10:09 PM Stephen Smalley <sds@tycho.nsa.gov>
+> wrote:
+> > On 1/14/20 9:44 AM, Richard Haines wrote:
+> > > Test filesystem permissions, setfscreatecon(3), file { quotaon }
+> > > and
+> > > changing file context via non and name-based type_transition
+> > > rules.
+> > > 
+> > >  From kernels 5.5 filesystem { watch } is also tested.
+> > > 
+> > > Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+> > 
+> > This looks good to me and passes travis-ci and testing on Fedora.
+> > Ondrej, how does it fare on RHEL?
+> 
+> Thanks for asking! Unfortunately the policy fails to build on RHEL-6
+> due to lack of support for filename-based transitions... That part of
+> the test needs to be somehow conditioned on $(MOD_POL_VERS) >= 11 and
+> $(POL_VERS) >= 25. After I removed the two filetrans rules, only the
+> expected two subtests failed, so the rest seems to be fine.
+> 
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- security/selinux/ss/conditional.c | 10 +++++++++-
- security/selinux/ss/conditional.h |  2 +-
- security/selinux/ss/services.c    |  6 ++----
- 3 files changed, 12 insertions(+), 6 deletions(-)
+Okay I'll fix this.
 
-diff --git a/security/selinux/ss/conditional.c b/security/selinux/ss/conditional.c
-index 8f9f2f3c86a0..ad709ccea036 100644
---- a/security/selinux/ss/conditional.c
-+++ b/security/selinux/ss/conditional.c
-@@ -86,7 +86,7 @@ static int cond_evaluate_expr(struct policydb *p, struct cond_expr *expr)
-  * list appropriately. If the result of the expression is undefined
-  * all of the rules are disabled for safety.
-  */
--void evaluate_cond_node(struct policydb *p, struct cond_node *node)
-+static void evaluate_cond_node(struct policydb *p, struct cond_node *node)
- {
- 	struct avtab_node *avnode;
- 	int new_state;
-@@ -117,6 +117,14 @@ void evaluate_cond_node(struct policydb *p, struct cond_node *node)
- 	}
- }
- 
-+void evaluate_cond_nodes(struct policydb *p)
-+{
-+	u32 i;
-+
-+	for (i = 0; i < p->cond_list_len; i++)
-+		evaluate_cond_node(p, &p->cond_list[i]);
-+}
-+
- int cond_policydb_init(struct policydb *p)
- {
- 	int rc;
-diff --git a/security/selinux/ss/conditional.h b/security/selinux/ss/conditional.h
-index 4677c6ff7450..b9eb888ffa76 100644
---- a/security/selinux/ss/conditional.h
-+++ b/security/selinux/ss/conditional.h
-@@ -78,6 +78,6 @@ void cond_compute_av(struct avtab *ctab, struct avtab_key *key,
- 		struct av_decision *avd, struct extended_perms *xperms);
- void cond_compute_xperms(struct avtab *ctab, struct avtab_key *key,
- 		struct extended_perms_decision *xpermd);
--void evaluate_cond_node(struct policydb *p, struct cond_node *node);
-+void evaluate_cond_nodes(struct policydb *p);
- 
- #endif /* _CONDITIONAL_H_ */
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index b0f71afcf4b8..887331a0cc3c 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -2954,8 +2954,7 @@ int security_set_bools(struct selinux_state *state, u32 len, int *values)
- 			policydb->bool_val_to_struct[i]->state = 0;
- 	}
- 
--	for (i = 0; i < policydb->cond_list_len; i++)
--		evaluate_cond_node(policydb, &policydb->cond_list[i]);
-+	evaluate_cond_nodes(policydb);
- 
- 	seqno = ++state->ss->latest_granting;
- 	rc = 0;
-@@ -3006,8 +3005,7 @@ static void security_preserve_bools(struct policydb *oldpolicydb,
- 		if (booldatum)
- 			booldatum->state = value;
- 	}
--	for (i = 0; i < newpolicydb->cond_list_len; i++)
--		evaluate_cond_node(newpolicydb, &newpolicydb->cond_list[i]);
-+	evaluate_cond_nodes(newpolicydb);
- }
- 
- /*
--- 
-2.24.1
+I'm also reworking the policy to make some of the contexts a bit more
+sensible. Also trying to differentiate between these in the audit log
+for denials:
+
+hooks.c may_context_mount_inode_relabel() FILESYSTEM__ASSOCIATE
+type: test_filesystem_inode_relabel_no_associate_t
+hooks.c may_create() FILESYSTEM__ASSOCIATE
+type: test_filesystem_may_create_no_associate_t
+hooks.c selinux_inode_setxattr() FILESYSTEM__ASSOCIATE
+type: test_filesystem_inode_setxattr_no_associate_t
+
+hooks.c may_context_mount_inode_relabel() FILESYSTEM__RELABELFROM
+type: test_filesystem_no_inode_no_relabelfrom_t
+hooks.c may_context_mount_sb_relabel() FILESYSTEM__RELABELFROM
+type: test_filesystem_sb_relabel_no_relabelfrom_t
+
 

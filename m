@@ -2,130 +2,172 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D217213DFF2
-	for <lists+selinux@lfdr.de>; Thu, 16 Jan 2020 17:22:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48C4013E02D
+	for <lists+selinux@lfdr.de>; Thu, 16 Jan 2020 17:33:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726933AbgAPQVw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Jan 2020 11:21:52 -0500
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:41462 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726867AbgAPQVw (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Jan 2020 11:21:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579191711;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=3N7OqoLUmvvlWWKU6tThe0biTBZ6e8LL6Hyc/mDDk1U=;
-        b=YOujkYqzAQ2iO1ytOEEJPxXJcC8Xc2o5wYFVmj0KlUPvprqkRTzt1w/OVLbNIVoQgT5uh/
-        8d3kM+GJ47R700D4ZWiB3u4bfZbEDPln7HFRRH6Kcb/Qg79HfFblE2/b1SxaUGDF7zRAIr
-        D6OZlMQQ4DgWoah4tGgN1fR81zCvjHc=
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
- [209.85.167.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-402-YBi3hoCeOfuxB0ouO4glOw-1; Thu, 16 Jan 2020 11:21:49 -0500
-X-MC-Unique: YBi3hoCeOfuxB0ouO4glOw-1
-Received: by mail-oi1-f197.google.com with SMTP id w205so8074593oie.13
-        for <selinux@vger.kernel.org>; Thu, 16 Jan 2020 08:21:49 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3N7OqoLUmvvlWWKU6tThe0biTBZ6e8LL6Hyc/mDDk1U=;
-        b=cvE4t4i+IcezxE0DiY8s+OopQG+dTdSHo0Qt2VQ1pZQuJl7jbNGDyinfYRtnCgCJMz
-         T3nt+GqRlUSr9dyq5jjlcRiZ80MnhXVUNqe853zZpyPI9CEWJK+DsApfGMABFOlAjaAT
-         PJ/JUOVuOiyu4nNy5KHxaRu+sZjYCkb8pnmv0paXp/d9Nm5iU6mywbMGVo6EVq9aBTXT
-         e3GY96UmIUPbiaHeHI2RNUrtA8OC8IE7pf10lRrvh+yeKDsMa5Dh1kuXMa9LENbhkLdI
-         P5+JFv+jhU5/TbSpMsUgHk0MflVwG+jNGBOTj5Rj3brthtUrBg7AGVEC5Y5wOq5p1c6m
-         Rm6w==
-X-Gm-Message-State: APjAAAUVlhcyOV0G/2cPufLHHbN9Mrs5ijB2C7emwnq2HbE98trjZp68
-        HTMDNKtpyYrT/LJH8Qpj3EBsu1S5oueZt3kT+OifnZX9qlKwFGe4uxEd/zgA35vM2QC6OEtXJ+X
-        I15KeDodxe2jqQ7ao65H3xu8CsTi+WTgZUg==
-X-Received: by 2002:aca:c30d:: with SMTP id t13mr4756167oif.166.1579191708984;
-        Thu, 16 Jan 2020 08:21:48 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxtrODb/BN3dEcMHlaUDK0aNakM9ndEuuyM5y/We23o5uSqYfg5zHUpsOsICHWTk+PbWfRSGTqK3O5Magk3MUI=
-X-Received: by 2002:aca:c30d:: with SMTP id t13mr4756138oif.166.1579191708668;
- Thu, 16 Jan 2020 08:21:48 -0800 (PST)
-MIME-Version: 1.0
-References: <20200116131928.315533-1-omosnace@redhat.com> <c26b26d4-9fcd-8802-bf3b-f5e0f75a0730@tycho.nsa.gov>
- <ede9c1eb-2c60-44fd-336d-c8b802833393@tycho.nsa.gov>
-In-Reply-To: <ede9c1eb-2c60-44fd-336d-c8b802833393@tycho.nsa.gov>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Thu, 16 Jan 2020 17:21:37 +0100
-Message-ID: <CAFqZXNtuq2FYBbQenLpJarckXfmgyGC_f3XgB=d+ye_tSoLuuw@mail.gmail.com>
-Subject: Re: [PATCH] selinux: fix sparse warnings in policydb.c
-To:     Stephen Smalley <sds@tycho.nsa.gov>
-Cc:     SElinux list <selinux@vger.kernel.org>,
+        id S1726897AbgAPQdz (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Jan 2020 11:33:55 -0500
+Received: from UPDC19PA19.eemsg.mail.mil ([214.24.27.194]:42973 "EHLO
+        UPDC19PA19.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726151AbgAPQdy (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Jan 2020 11:33:54 -0500
+X-EEMSG-check-017: 46515451|UPDC19PA19_ESA_OUT01.csd.disa.mil
+X-IronPort-AV: E=Sophos;i="5.70,326,1574121600"; 
+   d="scan'208";a="46515451"
+Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
+  by UPDC19PA19.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 16 Jan 2020 16:33:50 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
+  s=tycho.nsa.gov; t=1579192431; x=1610728431;
+  h=subject:to:references:from:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=C9jcebGN5Y6nq+IXwDDpJJ9bJMV0SiuvMmFPT5kVkvM=;
+  b=BInPKA1LpqhpCCiXNas9P6BjBdkXgxs2OTkfcmNzn3vxB5sKOsWieqb2
+   p5CKdFcK5CCxczP1R8WPYfOfYSW1oaqdTaqCKHnq7bkOWap8KtPa91O9K
+   SL1qAicme2zFv+qccnE6FDOJ9ap39VZcQEWegCpc4tqUSucMcCrm3pdDa
+   AR0PgJlpQetTycTVAr2KuVFQAPGb3qWbd+t4lG2iC8uUbyzqodzcNW++q
+   yN2G69LOs+uEfSzgnNxIkGGLVZRC4H1ALa3EGhJoeSHUKpGtmvQPlLwh6
+   GnvViZSU43XVsHFe6wZupsds4BY/68Y7H439Ggw/zisNwRYjFyW8L2bGu
+   w==;
+X-IronPort-AV: E=Sophos;i="5.70,326,1574121600"; 
+   d="scan'208";a="37883664"
+IronPort-PHdr: =?us-ascii?q?9a23=3AkA/1NRWnd1BpZEPq/CsssNGi18TV8LGtZVwlr6?=
+ =?us-ascii?q?E/grcLSJyIuqrYZRSFu6dThVPEFb/W9+hDw7KP9fy5BSpYvN3R7ThCKMUKC0?=
+ =?us-ascii?q?Zez51O3kQJO42sMQXDNvnkbig3ToxpdWRO2DWFC3VTA9v0fFbIo3e/vnY4Ex?=
+ =?us-ascii?q?T7MhdpdKyuQtaBx8u42Pqv9JLNfg5GmCSyYa9oLBWxsA7dqtQajZFtJ6osxR?=
+ =?us-ascii?q?bFuGdEduRZyW5rJV+YghLw6tut8JJ5/Clcpvws+9RcXanmeqgzUKBVAikhP2?=
+ =?us-ascii?q?0p/sPgqAPNTRGI5nsSU2UWlgRHDg3Y5xzkXZn/rzX3uPNl1CaVIcP5Q7Y0WS?=
+ =?us-ascii?q?+/76hwUx/nlD0HNz8i/27JjMF7kb9Wrwigpxx7xI7UfZ2VOf9jda7TYd8WWW?=
+ =?us-ascii?q?xMVdtKWidfHo2zcZcAD+sZPeZZsYb9oUcOrQCjDgWoHe/j1yNEimPz0aA83e?=
+ =?us-ascii?q?shCwXG1xE+EdwIvnrfsdH5OL4cXO2xyaXFyyjIYfFL1jfn8IXGbw4vof+MU7?=
+ =?us-ascii?q?xzf8Tex0YgGAHZgVufsoHlIzGY2/4Rv2SH4edtV+SigHMnpQFrpTivw98hhJ?=
+ =?us-ascii?q?TVho0L0lDE9Tt2wIAoLtOlTU50e9qkEJ9OuCCaKoB7RdgiTHxzuCsh1r0HuY?=
+ =?us-ascii?q?K0fCgNyJg9wR7fcOaIf5KH4hLkSuacODF1j29mdrKnnxu+7Eetx+LmWsS0zV?=
+ =?us-ascii?q?pGtDRJn9bSunwXyhDe7NWMROFn8Ue7wzmP0hje6uRDIU8pi6XWM4Uhwrsslp?=
+ =?us-ascii?q?oLtkTDAzP2lF32jKCIckUk/fCl6/j9bbX8p5+cKpR0hhv/MqQolMy/Bv84PR?=
+ =?us-ascii?q?YSUGSB5eS91KHs/U3+QLlQiP05jrLZv4zAKcQep665BxdZ0ocl6xmhEzeryM?=
+ =?us-ascii?q?kUkHYIIV5feB+LkpLlN0/BLfzmF/uznkygkDJxyPDHOr3hDI/NLn/GkLr5Zr?=
+ =?us-ascii?q?Zy9lVcxREvzdFf+51UCrYBLOj1Wk/qrtPUFBA5Mwuqw+r/EtVyypseWX6TAq?=
+ =?us-ascii?q?+eKK7StlqI5uU0I+mKfoAapCjyJuM/5/HwkHA5mUUSfbWz0ZQLb3C4G+xsI1?=
+ =?us-ascii?q?+Fbnr0ntcBDWAKsxIlTOP0jF2CUDhTZ2u9Xq8n+DE7B5ypDZ3ZSoCunrOBxi?=
+ =?us-ascii?q?G7EYNSZmxcDVCMC3jofZ2eW/gQcCKSPtNhkjscWLi5UYAhyBWuuRTiy7V9M+?=
+ =?us-ascii?q?rU/jQUtZfk1Nhy/e3ciws++iBzD8SYgCmxSDRTmG8SSj1++adkp0V2x1TLha?=
+ =?us-ascii?q?99hOdeHNdez+lEXgczKdjXyOksT5jpVwbAeMqZYEipT8/gAjwrSN81hdgUbA?=
+ =?us-ascii?q?I1I9y/iljm2C2wDvdBj7WWALQs+7/Ymn32INxwjX3B0f9yoUMhR550KWC+hq?=
+ =?us-ascii?q?N5vzPWDorNnlTRw72mbowAzSXN8yGF1mPIs0ZGBl0jGZ7ZVGwSMxOF5e/y4V?=
+ =?us-ascii?q?nPGvr3UuUq?=
+X-IPAS-Result: =?us-ascii?q?A2CuBABljiBe/wHyM5BlHAEBAQEBBwEBEQEEBAEBgXuBf?=
+ =?us-ascii?q?YFtIBIqhBCJA4ZfAQEBBoE3iW6RSQkBAQEBAQEBAQE3AQGEQAKCJjgTAhABA?=
+ =?us-ascii?q?QEEAQEBAQEFAwEBbIVDgjspAYJ6AQUjBBFRCw4KAgImAgJXBgEMBgIBAYJjP?=
+ =?us-ascii?q?4JXJawrfzOFSoNNgT6BDiiMNnmBB4E4D4JdPodZgl4EjVqJVkaXVoJDgkmTY?=
+ =?us-ascii?q?QYbmnCOXJ0VIoFYKwgCGAghD4MnUBgNiA0XjkEjAzCNbAEB?=
+Received: from tarius.tycho.ncsc.mil (HELO tarius.infosec.tycho.ncsc.mil) ([144.51.242.1])
+  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 16 Jan 2020 16:33:47 +0000
+Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
+        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 00GGX7xH018881;
+        Thu, 16 Jan 2020 11:33:08 -0500
+Subject: Re: [PATCH 1/6] selinux: do not allocate ancillary buffer on first
+ load
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
         Paul Moore <paul@paul-moore.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <20200116120439.303034-1-omosnace@redhat.com>
+ <20200116120439.303034-2-omosnace@redhat.com>
+From:   Stephen Smalley <sds@tycho.nsa.gov>
+Message-ID: <b54c441c-a0fc-7c56-e1ad-4b95cc60b644@tycho.nsa.gov>
+Date:   Thu, 16 Jan 2020 11:34:34 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.3.1
+MIME-Version: 1.0
+In-Reply-To: <20200116120439.303034-2-omosnace@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jan 16, 2020 at 5:10 PM Stephen Smalley <sds@tycho.nsa.gov> wrote:
-> On 1/16/20 11:08 AM, Stephen Smalley wrote:
-> > On 1/16/20 8:19 AM, Ondrej Mosnacek wrote:
-> >> Two places used u32 where there should have been __le32.
-> >>
-> >> Fixes sparse warnings:
-> >>    CHECK   [...]/security/selinux/ss/services.c
-> >> [...]/security/selinux/ss/policydb.c:2669:16: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2669:16:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2669:16:    got restricted __le32
-> >> [usertype]
-> >> [...]/security/selinux/ss/policydb.c:2674:24: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2674:24:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2674:24:    got restricted __le32
-> >> [usertype]
-> >> [...]/security/selinux/ss/policydb.c:2675:24: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2675:24:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2675:24:    got restricted __le32
-> >> [usertype]
-> >> [...]/security/selinux/ss/policydb.c:2676:24: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2676:24:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2676:24:    got restricted __le32
-> >> [usertype]
-> >> [...]/security/selinux/ss/policydb.c:2681:32: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2681:32:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2681:32:    got restricted __le32
-> >> [usertype]
-> >> [...]/security/selinux/ss/policydb.c:2701:16: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2701:16:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2701:16:    got restricted __le32
-> >> [usertype]
-> >> [...]/security/selinux/ss/policydb.c:2706:24: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2706:24:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2706:24:    got restricted __le32
-> >> [usertype]
-> >> [...]/security/selinux/ss/policydb.c:2707:24: warning: incorrect type
-> >> in assignment (different base types)
-> >> [...]/security/selinux/ss/policydb.c:2707:24:    expected unsigned int
-> >> [...]/security/selinux/ss/policydb.c:2707:24:    got restricted __le32
-> >> [usertype]
-> >>
-> >> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> >
-> > Reviewed-by: Stephen Smalley <sds@tycho.nsa.gov>
->
-> However, note that checkpatch doesn't like your subject line.
-> WARNING: A patch subject line should describe the change not the tool
-> that found it
+On 1/16/20 7:04 AM, Ondrej Mosnacek wrote:
+> In security_load_policy(), we can defer allocating the newpolicydb
+> ancillary array to after checking state->initialized, thereby avoiding
+> the pointless allocation when loading policy the first time.
+> 
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 
-Hm, I run checkpatch.pl from a pre-commit git hook, so it likely only
-looks at the diff itself... I'll see if I can tweak the hook to check
-a full patch generated from the commit.
+Reviewed-by: Stephen Smalley <sds@tycho.nsa.gov>
 
-It has a good point, though. I'll reword the subject.
-
--- 
-Ondrej Mosnacek <omosnace at redhat dot com>
-Software Engineer, Security Technologies
-Red Hat, Inc.
+> ---
+>   security/selinux/ss/services.c | 28 +++++++++++++---------------
+>   1 file changed, 13 insertions(+), 15 deletions(-)
+> 
+> diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
+> index 55cf42945cba..42ca9f6dbbf4 100644
+> --- a/security/selinux/ss/services.c
+> +++ b/security/selinux/ss/services.c
+> @@ -2183,26 +2183,17 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len)
+>   	int rc = 0;
+>   	struct policy_file file = { data, len }, *fp = &file;
+>   
+> -	oldpolicydb = kcalloc(2, sizeof(*oldpolicydb), GFP_KERNEL);
+> -	if (!oldpolicydb) {
+> -		rc = -ENOMEM;
+> -		goto out;
+> -	}
+> -	newpolicydb = oldpolicydb + 1;
+> -
+>   	policydb = &state->ss->policydb;
+>   
+>   	newsidtab = kmalloc(sizeof(*newsidtab), GFP_KERNEL);
+> -	if (!newsidtab) {
+> -		rc = -ENOMEM;
+> -		goto out;
+> -	}
+> +	if (!newsidtab)
+> +		return -ENOMEM;
+>   
+>   	if (!state->initialized) {
+>   		rc = policydb_read(policydb, fp);
+>   		if (rc) {
+>   			kfree(newsidtab);
+> -			goto out;
+> +			return rc;
+>   		}
+>   
+>   		policydb->len = len;
+> @@ -2211,14 +2202,14 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len)
+>   		if (rc) {
+>   			kfree(newsidtab);
+>   			policydb_destroy(policydb);
+> -			goto out;
+> +			return rc;
+>   		}
+>   
+>   		rc = policydb_load_isids(policydb, newsidtab);
+>   		if (rc) {
+>   			kfree(newsidtab);
+>   			policydb_destroy(policydb);
+> -			goto out;
+> +			return rc;
+>   		}
+>   
+>   		state->ss->sidtab = newsidtab;
+> @@ -2231,9 +2222,16 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len)
+>   		selinux_status_update_policyload(state, seqno);
+>   		selinux_netlbl_cache_invalidate();
+>   		selinux_xfrm_notify_policyload();
+> -		goto out;
+> +		return 0;
+>   	}
+>   
+> +	oldpolicydb = kcalloc(2, sizeof(*oldpolicydb), GFP_KERNEL);
+> +	if (!oldpolicydb) {
+> +		kfree(newsidtab);
+> +		return -ENOMEM;
+> +	}
+> +	newpolicydb = oldpolicydb + 1;
+> +
+>   	rc = policydb_read(newpolicydb, fp);
+>   	if (rc) {
+>   		kfree(newsidtab);
+> 
 

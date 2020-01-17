@@ -2,144 +2,222 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 27CCC1405B8
-	for <lists+selinux@lfdr.de>; Fri, 17 Jan 2020 10:00:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C88151405CF
+	for <lists+selinux@lfdr.de>; Fri, 17 Jan 2020 10:08:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729451AbgAQI6r (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 Jan 2020 03:58:47 -0500
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:32108 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729144AbgAQI6r (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jan 2020 03:58:47 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579251526;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=BV+b/JM1TawckUWa4ei0v6xN0KrVd4heK2kZffGLI4I=;
-        b=QluMUZxAWeUneq3GMT1fUUt5oZW9dbsxo5aZ2Y+VL4UH+vNjFU5ENEBc5J2/uFm2mAfogY
-        RdQiQ4UUq01zQ6q0mXRcVBYWc6f+NgiuSdwAi/z1RzY3wyqm4LUT8NTn3rwanK2I8s6H9L
-        0lgo3sCwodZ61YgTPX05qlSQawaE6xI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-398-XCJg3UAVOweuz8oaTNQLcw-1; Fri, 17 Jan 2020 03:58:45 -0500
-X-MC-Unique: XCJg3UAVOweuz8oaTNQLcw-1
-Received: by mail-wr1-f71.google.com with SMTP id u12so10272658wrt.15
-        for <selinux@vger.kernel.org>; Fri, 17 Jan 2020 00:58:44 -0800 (PST)
+        id S1726578AbgAQJIJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 Jan 2020 04:08:09 -0500
+Received: from mail-wm1-f74.google.com ([209.85.128.74]:35161 "EHLO
+        mail-wm1-f74.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726897AbgAQJIJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jan 2020 04:08:09 -0500
+Received: by mail-wm1-f74.google.com with SMTP id 18so2027096wmp.0
+        for <selinux@vger.kernel.org>; Fri, 17 Jan 2020 01:08:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=YRUzknZV6240gfy51vNWEpBJ5day2/TrHf2rgkpYr1g=;
+        b=tpoykEOMZDT6GZ/K+eB2T8FYxNLUjrieR2FgUeHOz7jkvxGY3FsQYhsCPRBpnSTjQp
+         bK19CzXHHr4IFgenKMsdvUfQYA7iPsugdP6NxNGb7B4acEOB4UIeubTrxAa44JshC4f+
+         N9PseCExCYDL77OtyGbLucIX7+EK6w08UJzuIqhQmxLcMjybP2bjmvLFNX9AV5OGTK5m
+         P66CsfkBxn2JUXPqP/A0TqXY9FyzigBLFgb3TLMQfdow9Y+mOPCkzRTJm09L5yb1z5n3
+         gOWq5R7Ym496FB/XVmsIuLumo4qN7o2DHpTicPuNLCu2CW7p6eSB1q5XaYCZTIRqzd7z
+         qLHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=BV+b/JM1TawckUWa4ei0v6xN0KrVd4heK2kZffGLI4I=;
-        b=W1CmKa77Gf1I06XbDxl8Vh70M46vYYRaJ1CFJPXAc32AzqFDocjLHxY+iNS9F4duJa
-         r6mPTL50kza/FVoXviBEflby1X2m4t8T13KwboAwBLZWgl0wjJkB6DdeFfSEqRb8KxR1
-         qdhUp09dyVAe0RPM53j+7Q11SywL8SX96lENmm9sG4ixyIorj1qNXLBxgVmeaCYmU+i9
-         qpwhz7ZfdhJ3/tvoIFdlfCPuWBH5sKRKSzWL2OpRMEpxWpd0VuD2mIE2bxA8k4D7HqOv
-         zeO8JKCeeifUz42lmZV2U0f0+4+P13FCMQVZWCGxHgtxh3rqUt09P9RL+J6nQ1M0KyS8
-         q9kg==
-X-Gm-Message-State: APjAAAVAK6ZMcAxRqbJ0pHSvXvgYhOMHMl+YPc7/ABI29p/hSRXkL9qr
-        us7u/pR5HLBcyYp4fEAa7MfSPVlo5sVahcsc4BaL3kzDR5nXbpubdyJnwwbYDT4qIZnDVn9x1fj
-        3uGOGnsawZniaSWAsRw==
-X-Received: by 2002:a7b:c851:: with SMTP id c17mr3377843wml.71.1579251523663;
-        Fri, 17 Jan 2020 00:58:43 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwqYbo3vulC7PBlXtb8d3NEz4+QQpdGiWBTscLRpEgcaG24k5Gp4/wrLcxpH0XUvrDO7/bfbA==
-X-Received: by 2002:a7b:c851:: with SMTP id c17mr3377828wml.71.1579251523474;
-        Fri, 17 Jan 2020 00:58:43 -0800 (PST)
-Received: from omos.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id x18sm33391312wrr.75.2020.01.17.00.58.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jan 2020 00:58:43 -0800 (PST)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
-Cc:     Stephen Smalley <sds@tycho.nsa.gov>
-Subject: [PATCH v2 5/5] selinux: generalize evaluate_cond_node()
-Date:   Fri, 17 Jan 2020 09:58:36 +0100
-Message-Id: <20200117085836.445797-6-omosnace@redhat.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200117085836.445797-1-omosnace@redhat.com>
-References: <20200117085836.445797-1-omosnace@redhat.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=YRUzknZV6240gfy51vNWEpBJ5day2/TrHf2rgkpYr1g=;
+        b=SadqkT6oRkM4CdkbPT1qQWf+TUfACBL1t85e/nYR+vQTidHINa4du+PYLlreS5qVcr
+         YPEwTarWU3wHi0/4W04mmRxOZueNsGQAfyvQj6lH4K8WeZU4/1FLibjU1r7s/ctWuF7o
+         xBLF1DJjE+Dr1AB6B4gz6ttMudVf1/KWQ+69/q1QINTiXdiUyca8mQJZeCjSlPwn6izI
+         X9kjiGQiMIV+6RX3nirH1esL75P5uD0wQf2K1Hz+5AJQBk+chCYgUOzf3F6kukVoqhdk
+         kKZ9JWFaKtJ9Sk/amnfru2vUMkUjaGc2CPAqVL3B1yzn5Vox8ubN0s0O4xuby4azZ5AC
+         BqlQ==
+X-Gm-Message-State: APjAAAX33Y3CruxRtYh4VoKBG+LDtzYO2MP084112V8wpNaWx7CQudzu
+        QEbwfuGZYO7yB3G4OKrOb75nu6KqdBcAboZZSZ0SO6KqBnevoUIkK4vxsIzncZMmurDZ6rzf/Mp
+        4VVpNrJi0FM/6AZPX4QAd0vpyYUTeK1FhunYnQcax62CFgU7X71mDak0stFBg
+X-Google-Smtp-Source: APXvYqzm8kEzv+NoZabtjfuzOBFBn4IeVWMPSJjP2U0kRWtPDWNdtTeA83Zh3RnjzCA2kQ1kSKzz0YFLyA==
+X-Received: by 2002:adf:c746:: with SMTP id b6mr1933540wrh.298.1579252085886;
+ Fri, 17 Jan 2020 01:08:05 -0800 (PST)
+Date:   Fri, 17 Jan 2020 10:08:02 +0100
+Message-Id: <20200117090802.36613-1-jeffv@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.25.0.341.g760bfbb309-goog
+Subject: [PATCH v3] selinux: map RTM_GETLINK to a privileged permission
+From:   Jeff Vander Stoep <jeffv@google.com>
+To:     selinux@vger.kernel.org
+Cc:     paul@paul-moore.com, sds@tycho.nsa.gov,
+        Jeff Vander Stoep <jeffv@google.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Both callers iterate the cond_list and call it for each node - turn it
-into evaluate_cond_nodes(), which does the iteration for them.
+Persistent device identifiers like MAC addresses are sensitive
+because they are (usually) unique and can be used to
+identify/track a device or user [1]. The MAC address is
+accessible via the RTM_GETLINK request message type of a netlink
+route socket[2] which returns the RTM_NEWLINK message.
+Mapping RTM_GETLINK to a separate permission enables restricting
+access to the MAC address without changing the behavior for
+other RTM_GET* message types.
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+[1] https://adamdrake.com/mac-addresses-udids-and-privacy.html
+[2] Other access vectors like ioctl(SIOCGIFHWADDR) are already covered
+by existing LSM hooks.
+
+v3:
+-Add security_policycaps_init() to handle loading of policycaps,
+selinux_nlmsg_init(), and future initializations resulting from
+policy capabilities.
+
+v2:
+-Fix comment.
+-Use ARRAY_SIZE instead of sizeof/sizeof.
+-Call selinux_nlmsg_init() after both instances of
+selinux_load_policycaps().
+Signed-off-by: Jeff Vander Stoep <jeffv@google.com>
 ---
- security/selinux/ss/conditional.c | 10 +++++++++-
- security/selinux/ss/conditional.h |  2 +-
- security/selinux/ss/services.c    |  6 ++----
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ security/selinux/include/classmap.h |  2 +-
+ security/selinux/include/security.h |  9 +++++++++
+ security/selinux/nlmsgtab.c         | 26 +++++++++++++++++++++++++-
+ security/selinux/ss/services.c      | 13 ++++++++++---
+ 4 files changed, 45 insertions(+), 5 deletions(-)
 
-diff --git a/security/selinux/ss/conditional.c b/security/selinux/ss/conditional.c
-index 8f9f2f3c86a0..ad709ccea036 100644
---- a/security/selinux/ss/conditional.c
-+++ b/security/selinux/ss/conditional.c
-@@ -86,7 +86,7 @@ static int cond_evaluate_expr(struct policydb *p, struct cond_expr *expr)
-  * list appropriately. If the result of the expression is undefined
-  * all of the rules are disabled for safety.
-  */
--void evaluate_cond_node(struct policydb *p, struct cond_node *node)
-+static void evaluate_cond_node(struct policydb *p, struct cond_node *node)
+diff --git a/security/selinux/include/classmap.h b/security/selinux/include/classmap.h
+index 986f3ac14282..77ccd558890a 100644
+--- a/security/selinux/include/classmap.h
++++ b/security/selinux/include/classmap.h
+@@ -116,7 +116,7 @@ struct security_class_mapping secclass_map[] = {
+ 	  { COMMON_IPC_PERMS, NULL } },
+ 	{ "netlink_route_socket",
+ 	  { COMMON_SOCK_PERMS,
+-	    "nlmsg_read", "nlmsg_write", NULL } },
++	    "nlmsg_read", "nlmsg_write", "nlmsg_readpriv", NULL } },
+ 	{ "netlink_tcpdiag_socket",
+ 	  { COMMON_SOCK_PERMS,
+ 	    "nlmsg_read", "nlmsg_write", NULL } },
+diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
+index a39f9565d80b..1671b418ddcb 100644
+--- a/security/selinux/include/security.h
++++ b/security/selinux/include/security.h
+@@ -79,6 +79,7 @@ enum {
+ 	POLICYDB_CAPABILITY_ALWAYSNETWORK,
+ 	POLICYDB_CAPABILITY_CGROUPSECLABEL,
+ 	POLICYDB_CAPABILITY_NNP_NOSUID_TRANSITION,
++	POLICYDB_CAPABILITY_NETLINK_ROUTE_GETLINK,
+ 	__POLICYDB_CAPABILITY_MAX
+ };
+ #define POLICYDB_CAPABILITY_MAX (__POLICYDB_CAPABILITY_MAX - 1)
+@@ -209,6 +210,13 @@ static inline bool selinux_policycap_nnp_nosuid_transition(void)
+ 	return state->policycap[POLICYDB_CAPABILITY_NNP_NOSUID_TRANSITION];
+ }
+ 
++static inline bool selinux_policycap_nlroute_getlink(void)
++{
++	struct selinux_state *state = &selinux_state;
++
++	return state->policycap[POLICYDB_CAPABILITY_NETLINK_ROUTE_GETLINK];
++}
++
+ int security_mls_enabled(struct selinux_state *state);
+ int security_load_policy(struct selinux_state *state,
+ 			 void *data, size_t len);
+@@ -422,6 +430,7 @@ extern struct vfsmount *selinuxfs_mount;
+ extern void selnl_notify_setenforce(int val);
+ extern void selnl_notify_policyload(u32 seqno);
+ extern int selinux_nlmsg_lookup(u16 sclass, u16 nlmsg_type, u32 *perm);
++extern void selinux_nlmsg_init(void);
+ 
+ extern void avtab_cache_init(void);
+ extern void ebitmap_cache_init(void);
+diff --git a/security/selinux/nlmsgtab.c b/security/selinux/nlmsgtab.c
+index c97fdae8f71b..3992f4894cf7 100644
+--- a/security/selinux/nlmsgtab.c
++++ b/security/selinux/nlmsgtab.c
+@@ -25,7 +25,7 @@ struct nlmsg_perm {
+ 	u32	perm;
+ };
+ 
+-static const struct nlmsg_perm nlmsg_route_perms[] =
++static struct nlmsg_perm nlmsg_route_perms[] =
  {
- 	struct avtab_node *avnode;
- 	int new_state;
-@@ -117,6 +117,14 @@ void evaluate_cond_node(struct policydb *p, struct cond_node *node)
+ 	{ RTM_NEWLINK,		NETLINK_ROUTE_SOCKET__NLMSG_WRITE },
+ 	{ RTM_DELLINK,		NETLINK_ROUTE_SOCKET__NLMSG_WRITE },
+@@ -208,3 +208,27 @@ int selinux_nlmsg_lookup(u16 sclass, u16 nlmsg_type, u32 *perm)
+ 
+ 	return err;
+ }
++
++static void nlmsg_set_getlink_perm(u32 perm)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(nlmsg_route_perms); i++) {
++		if (nlmsg_route_perms[i].nlmsg_type == RTM_GETLINK) {
++			nlmsg_route_perms[i].perm = perm;
++			break;
++		}
++	}
++}
++
++/**
++ * Use nlmsg_readpriv as the permission for RTM_GETLINK messages if the
++ * netlink_route_getlink policy capability is set. Otherwise use nlmsg_read.
++ */
++void selinux_nlmsg_init(void)
++{
++	if (selinux_policycap_nlroute_getlink())
++		nlmsg_set_getlink_perm(NETLINK_ROUTE_SOCKET__NLMSG_READPRIV);
++	else
++		nlmsg_set_getlink_perm(NETLINK_ROUTE_SOCKET__NLMSG_READ);
++}
+diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
+index 0e8b94e8e156..091eeafd650d 100644
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -73,7 +73,8 @@ const char *selinux_policycap_names[__POLICYDB_CAPABILITY_MAX] = {
+ 	"extended_socket_class",
+ 	"always_check_network",
+ 	"cgroup_seclabel",
+-	"nnp_nosuid_transition"
++	"nnp_nosuid_transition",
++	"netlink_route_getlink"
+ };
+ 
+ static struct selinux_ss selinux_ss;
+@@ -2157,6 +2158,12 @@ static void security_load_policycaps(struct selinux_state *state)
  	}
  }
  
-+void evaluate_cond_nodes(struct policydb *p)
++static void security_policycaps_init(struct selinux_state *state)
 +{
-+	u32 i;
-+
-+	for (i = 0; i < p->cond_list_len; i++)
-+		evaluate_cond_node(p, &p->cond_list[i]);
++	security_load_policycaps(state);
++	selinux_nlmsg_init();
 +}
 +
- int cond_policydb_init(struct policydb *p)
- {
- 	int rc;
-diff --git a/security/selinux/ss/conditional.h b/security/selinux/ss/conditional.h
-index 4677c6ff7450..b9eb888ffa76 100644
---- a/security/selinux/ss/conditional.h
-+++ b/security/selinux/ss/conditional.h
-@@ -78,6 +78,6 @@ void cond_compute_av(struct avtab *ctab, struct avtab_key *key,
- 		struct av_decision *avd, struct extended_perms *xperms);
- void cond_compute_xperms(struct avtab *ctab, struct avtab_key *key,
- 		struct extended_perms_decision *xpermd);
--void evaluate_cond_node(struct policydb *p, struct cond_node *node);
-+void evaluate_cond_nodes(struct policydb *p);
+ static int security_preserve_bools(struct selinux_state *state,
+ 				   struct policydb *newpolicydb);
  
- #endif /* _CONDITIONAL_H_ */
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index 8fc8ec317bb6..7fb7f2efe566 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -2958,8 +2958,7 @@ int security_set_bools(struct selinux_state *state, u32 len, int *values)
- 			policydb->bool_val_to_struct[i]->state = 0;
- 	}
+@@ -2222,7 +2229,7 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len)
+ 		}
  
--	for (i = 0; i < policydb->cond_list_len; i++)
--		evaluate_cond_node(policydb, &policydb->cond_list[i]);
-+	evaluate_cond_nodes(policydb);
- 
- 	seqno = ++state->ss->latest_granting;
- 	rc = 0;
-@@ -3012,8 +3011,7 @@ static int security_preserve_bools(struct selinux_state *state,
- 		if (booldatum)
- 			booldatum->state = bvalues[i];
- 	}
--	for (i = 0; i < policydb->cond_list_len; i++)
--		evaluate_cond_node(policydb, &policydb->cond_list[i]);
-+	evaluate_cond_nodes(policydb);
- 
- out:
- 	if (bnames) {
+ 		state->ss->sidtab = newsidtab;
+-		security_load_policycaps(state);
++		security_policycaps_init(state);
+ 		selinux_mark_initialized(state);
+ 		seqno = ++state->ss->latest_granting;
+ 		selinux_complete_init();
+@@ -2294,7 +2301,7 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len)
+ 	write_lock_irq(&state->ss->policy_rwlock);
+ 	memcpy(policydb, newpolicydb, sizeof(*policydb));
+ 	state->ss->sidtab = newsidtab;
+-	security_load_policycaps(state);
++	security_policycaps_init(state);
+ 	oldmapping = state->ss->map.mapping;
+ 	state->ss->map.mapping = newmap.mapping;
+ 	state->ss->map.size = newmap.size;
 -- 
-2.24.1
+2.25.0.341.g760bfbb309-goog
 

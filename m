@@ -2,81 +2,82 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 616FC1410B6
-	for <lists+selinux@lfdr.de>; Fri, 17 Jan 2020 19:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 89A721410FB
+	for <lists+selinux@lfdr.de>; Fri, 17 Jan 2020 19:42:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbgAQSXe (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 Jan 2020 13:23:34 -0500
-Received: from UHIL19PA35.eemsg.mail.mil ([214.24.21.194]:17821 "EHLO
-        UHIL19PA35.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726970AbgAQSXe (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jan 2020 13:23:34 -0500
-X-EEMSG-check-017: 67533930|UHIL19PA35_ESA_OUT01.csd.disa.mil
+        id S1726761AbgAQSma (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 Jan 2020 13:42:30 -0500
+Received: from UHIL19PA40.eemsg.mail.mil ([214.24.21.199]:51894 "EHLO
+        UHIL19PA40.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726603AbgAQSma (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jan 2020 13:42:30 -0500
+X-Greylist: delayed 425 seconds by postgrey-1.27 at vger.kernel.org; Fri, 17 Jan 2020 13:42:29 EST
+X-EEMSG-check-017: 67621014|UHIL19PA40_ESA_OUT06.csd.disa.mil
 X-IronPort-AV: E=Sophos;i="5.70,331,1574121600"; 
-   d="scan'208";a="67533930"
+   d="scan'208";a="67621014"
 Received: from emsm-gh1-uea10.ncsc.mil ([214.29.60.2])
-  by UHIL19PA35.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 17 Jan 2020 18:23:32 +0000
+  by UHIL19PA40.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 17 Jan 2020 18:35:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
-  s=tycho.nsa.gov; t=1579285412; x=1610821412;
+  s=tycho.nsa.gov; t=1579286123; x=1610822123;
   h=subject:to:references:from:message-id:date:mime-version:
    in-reply-to:content-transfer-encoding;
-  bh=481d840C1CNQAOnJOTIFjo+Tw927kjMJg7GUeGXX6TE=;
-  b=HcFJeN5D/KmfgH+b+raNQUzRc8tokWv6NTebbYLDGd0+CZeNRvuIfiFJ
-   xqf3+e0V5i3QOOemkVGSMwS4I8e3OwdXHKcTJb07gzLCHoDU7teIj+YfN
-   ej+GmJmYcKh3vhMNbVGmUjZ79Qm2ykfrF6nh8ra8qnFyeFF8hz4UV1UTD
-   KFnfT6qPi1Ax21tN5jIBrK0nIrAm50rh40bhqvnn8da+wr5ICSsrJrAyE
-   I6lNJqRRaheVATcbIdpkQ+apSZlVEhDtPk+3unMDz3AZi+Euoo/gi9TP7
-   GMTb0HybttE1KdkyBq0iXj1PozCqC0xLnCpKqIPmpiiWgbJzbaidhHjq3
-   A==;
+  bh=VkkZI9EqR49EDkPcuCONnH/lv0ZfhYjWdRqBJ2iEqTg=;
+  b=m7HxamDAAWANFnz8WoQhhT23Uk/HC8RxtW6PJQ98VfdLsjY/uUICh/p5
+   PwORa6weSJM5/ZjYVefaFfvPZPGoq68NpYZw+S/3NtKy+vKeM1sFPfiu8
+   3ZLfEeu3Cv77erSLO8VDO+Rn0be6TWLYRt7IpMarKc+kQ25FjCtZUTOWt
+   WUdauyb4xcWvVhILZXY2CVQP9+dw+6qA/M0FmJcUKGEW1DKirs5BL3CrN
+   SEgC/dkr9f0VzDXgXLngoNN2IMnszEkDsRbnvcpFJxoM0uQyuQrv98shS
+   2ox0QjlVA3WLSllGCPLyqKfXn/UIk4jT3p1uHb3kas8HhayVDUQ84TvFB
+   g==;
 X-IronPort-AV: E=Sophos;i="5.70,331,1574121600"; 
-   d="scan'208";a="32086715"
-IronPort-PHdr: =?us-ascii?q?9a23=3AicqAbB///p2M8P9uRHKM819IXTAuvvDOBiVQ1K?=
- =?us-ascii?q?B22u8cTK2v8tzYMVDF4r011RmVBNmds6IP0rWe8/i5HzBZutDZ6DFKWacPfi?=
- =?us-ascii?q?dNsd8RkQ0kDZzNImzAB9muURYHGt9fXkRu5XCxPBsdMs//Y1rPvi/6tmZKSV?=
- =?us-ascii?q?3wOgVvO+v6BJPZgdip2OCu4Z3TZBhDiCagbb9oIxi6sArcutMKjYZhJao91x?=
- =?us-ascii?q?nEqWZMd+hK2G9kP12ekwvy68uq4JJv7yFcsO89+sBdVqn3Y742RqFCAjQ8NG?=
- =?us-ascii?q?A16szrtR3dQgaK+3ARTGYYnAdWDgbc9B31UYv/vSX8tupmxSmVJtb2QqwuWT?=
- =?us-ascii?q?Sj9KhkVhnlgzoaOjEj8WHXjstwjL9HoB+kuhdyzZLYbJ2TOfFjZa7WY88USn?=
- =?us-ascii?q?RdUcZQTyxBA52zb40TD+oaIO1Uq5Dxq0YSoReiAAWhAu3gyiVMhnTrw6M01e?=
- =?us-ascii?q?ovGhzC0AA5Ad4DtHHYodPoP6kQTO+11rHFwyjdYfNY2Tnz64bGfR4urv6OQb?=
- =?us-ascii?q?1+ftHcyVUtGg7fklmctYLoMjGT2+8Qs2ab9e1gVee3hmA6twF+vCCvxscyhY?=
- =?us-ascii?q?nPm4kb11XE+j99wIYxO9K5SFNwbNm/EJRNrCGXLJd2Q8M+TGFovyY20LsGuY?=
- =?us-ascii?q?WhcyQQx5QnwADfZuWBfoOV7BzjU+ORLi15hHJjYL+/iQi9/lWnyu3mTMa00V?=
- =?us-ascii?q?BKriRfktbWqn8N0xvT6tWaRfdn+UehwzmP2gbO4e9HOUA5jbfXJpEuz7Iqlp?=
- =?us-ascii?q?cfrF7PEjH5lUnolqOaa0Mp8fWy5ev9eLXpvJqcOpdxigH5L6shhNSyAf89Mg?=
- =?us-ascii?q?gSR2ib/vm81KH78U35XrpKivo2n7HFsJ/AP8Qbp7O5AxRP3oYi7Ra/ATCm0M?=
- =?us-ascii?q?8GknYbNl5FZBKGgJTpO1HJOvz4C+uwg0+wnztxwvDGP7nhDo3MLnjFjrjhYa?=
- =?us-ascii?q?5w51NTxQc819xS549YBqsfLP/8REP9rsHUAgc8MwOuwubnDNt91pkZWWKKGq?=
- =?us-ascii?q?KZK77dsUST6+IzI+iDeI8VuDHnJ/gj/P7hl2U1mVAafam3xZcXcmy3Hux6I0?=
- =?us-ascii?q?WFZnrhms8BEWMQsQojUOzqkkaNXiRIanaoQa0z+zE7B5i6DYvZWo+th7mB1j?=
- =?us-ascii?q?+hHpJKfmBGFkyMEXDweoWfRfgMbCOSIsl8kj0LTrWhVYAh2g+0tAPgyLpoMP?=
- =?us-ascii?q?DU+isGupLnztR14PfTlR5hvQBzWvyQz3vFa2hpgnkCTjQ2lPRnpUVg1k2J2I?=
- =?us-ascii?q?BijvBYHMAV7PRMBENyLpPYzupnG/jsVQ/bONSEUlCrRpOhGz5iYMg2xoo1f0?=
- =?us-ascii?q?tlG9ikxivG1i6uDq5dw6eHH7Qo46nc2D73PM87xHHYgvpyx2I6S9dCYDX1zp?=
- =?us-ascii?q?V08BLeUsuQyRSU?=
-X-IPAS-Result: =?us-ascii?q?A2AkAwAA+yFe/wHyM5BlHAEBAQEBBwEBEQEEBAEBgXuBe?=
- =?us-ascii?q?AWBGHUSKoQRiQOGYgaBN4luj2KBZwkBAQEBAQEBAQEtCgEBhEACgi44EwIQA?=
- =?us-ascii?q?QEBBAEBAQEBBQMBAWyFNwyCOykBgnoBBSMVUQsOCgICJgICVwYBDAYCAQGCY?=
- =?us-ascii?q?z8BglYlD60ngTKFSoMwgTgGgQ4ojC55gQeBOA+CKDU+hAIvgyiCXgSXMEaXV?=
- =?us-ascii?q?oJDgkmEdI5tBhuaci2OL4hhlDUigVgrCAIYCCEPO4I4AQEyUBgNkQiFXSMDM?=
- =?us-ascii?q?AKNZQEB?=
+   d="scan'208";a="32087384"
+IronPort-PHdr: =?us-ascii?q?9a23=3AmwFv6hOSs/nWweKcg7cl6mtUPXoX/o7sNwtQ0K?=
+ =?us-ascii?q?IMzox0I/n/rarrMEGX3/hxlliBBdydt6sYzbKG+PmxESxYuNDd6StEKMQNHz?=
+ =?us-ascii?q?Y+yuwu1zQ6B8CEDUCpZNXLVAcdWPp4aVl+4nugOlJUEsutL3fbo3m18CJAUk?=
+ =?us-ascii?q?6nbVk9Kev6AJPdgNqq3O6u5ZLTfx9IhD2gar9uMRm6twrcutQZjId4Nqo8yR?=
+ =?us-ascii?q?TFrmZMdu9LwW9kOU+fkwzz68ut8pNv6Thct+4k+8VdTaj0YqM0QKBCAj87KW?=
+ =?us-ascii?q?41/srrtRfCTQuL+HQRV3gdnwRLDQbY8hz0R4/9vSTmuOVz3imaJtD2QqsvWT?=
+ =?us-ascii?q?u+9adrSQTnhzkBOjUk7WzYkM1wjKZcoBK8uxxyxpPfbY+JOPZieK7WYMgXTn?=
+ =?us-ascii?q?RdUMlPSyNBA5u8b4oRAOoHIeZYtJT2q18XoRejGQWgGObjxzlGiX/s2a0xzv?=
+ =?us-ascii?q?ovHwfI0gc9G94CqXTZodHwOKoUTOu7zrTHzS/bYv1Lxzn95ojGfBMvr/6CUr?=
+ =?us-ascii?q?1/c9bex0Y0GgPZjFids5DpMy+b2+kPtWWQ8upuVfioi24iswxxoDauyds2hY?=
+ =?us-ascii?q?nTmoIZ1E3P+CJ7wIc7OdK3UlR7YcK6HJZLqyGbN5d5QsMlQ21yviY60acJtY?=
+ =?us-ascii?q?S0fCgN1pQq3hjSYOGEfYiQ+h/vSemcLDhiiH9lZb6znQi+/Ee+xuHmS8W51k?=
+ =?us-ascii?q?tBoDBfndnWrH8N0gTe6s2ASvRg4EiswS2P1wXP6uFcJkA0iLbbJ4YhwrEukp?=
+ =?us-ascii?q?oTtlzOHjPsl0Xsja+Wa14k9vKp6+ThbLXmoYScOJFohQ3kLqQvmtCwAeQ/Mg?=
+ =?us-ascii?q?QUWWiU5f+826H58U38QbVKiuU6kqjfsJ/EOcQWvrO1DgBa34o56xuzEi2q3M?=
+ =?us-ascii?q?oXkHUZNl5JZQqLj43zNFHPJPD4A+2/g1OpkDpzxfDHMKHuDY/XLnjfjrvsZq?=
+ =?us-ascii?q?p96k5AxwozytBT/ZRUCqobL/7pVU/xs8LYAgcjMwOo2+bnFMl91oQGVG2SBa?=
+ =?us-ascii?q?+ZNaLSsVmJ5u0zIOmAfoAVuCz8K/gr+/7jlmI2lkETfaa325sXc263Eeh8L0?=
+ =?us-ascii?q?WfZXrmms0BHnsSvgoiUOzqj0WPUSVNaHa2XqI84Cw7CY29AIfdSYCinqaB0D?=
+ =?us-ascii?q?24HpJIfGBGDE6DEXPye4WDQfcMZ3HaHsg0vjsBVL6gQIxp+guvuhOyn7ZgK+?=
+ =?us-ascii?q?vS+yYb85351dZpz+Hemxw07jF/ScKZhSXFVGxwn2UVVxco061l509w0FGO1e?=
+ =?us-ascii?q?5/mfMLO8ZU4qZLTQwzL4KGh7h4FNv7QB6bVsuYQ1ahBNO9CHc+ScxnkIxGWF?=
+ =?us-ascii?q?p0B9j31kOL5CGtGbJA0uXWVZE=3D?=
+X-IPAS-Result: =?us-ascii?q?A2DmBgA7/SFe/wHyM5BlHAEBAQEBBwEBEQEEBAEBgXsCg?=
+ =?us-ascii?q?XuCDRIqhBGJA4gfmzcJAQEBAQEBAQEBNwEBghOCLQKCLjkFDQIQAQEBBAEBA?=
+ =?us-ascii?q?QEBBQMBAWyFQ4I7KQGCeQEBAQECASMVRgsLCQ8CAiYCAlcGAQwGAgEBgmM/g?=
+ =?us-ascii?q?lwgrEp1gTKFSoMwgT6BDiiNbkCBOA+CXT6HWYJeBIE/AYwQiWBGepVmdgaCP?=
+ =?us-ascii?q?ZYqBhuaco5clx+FeCGBWCsKQYFogU5QGA2IOY4sIwMwjWcBAQ?=
 Received: from tarius.tycho.ncsc.mil (HELO tarius.infosec.tycho.ncsc.mil) ([144.51.242.1])
-  by EMSM-GH1-UEA10.NCSC.MIL with ESMTP; 17 Jan 2020 18:23:31 +0000
-Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
-        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 00HIMtQQ240983;
-        Fri, 17 Jan 2020 13:22:55 -0500
-Subject: Re: [PATCH] libselinux: remove flask.h and av_permissions.h
-To:     Petr Lautrbach <plautrba@redhat.com>, selinux@vger.kernel.org
-References: <20200115155523.69438-1-sds@tycho.nsa.gov>
- <pjdh80vqivt.fsf@redhat.com> <pjdd0biq95r.fsf@redhat.com>
-From:   Stephen Smalley <sds@tycho.nsa.gov>
-Message-ID: <5d7eb243-1dbe-9c54-9cf6-b3e7cdfba7c7@tycho.nsa.gov>
-Date:   Fri, 17 Jan 2020 13:24:14 -0500
+  by EMSM-GH1-UEA10.NCSC.MIL with ESMTP; 17 Jan 2020 18:35:22 +0000
+Received: from moss-lions.infosec.tycho.ncsc.mil (moss-lions [192.168.25.4])
+        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 00HIYjmZ250547;
+        Fri, 17 Jan 2020 13:34:45 -0500
+Subject: Re: [Non-DoD Source] Re: any reason why a class mapping is not able
+ to solve permissionx?
+To:     Dominick Grift <dominick.grift@defensec.nl>,
+        selinux@vger.kernel.org
+References: <20200117173448.GA166208@brutus.lan>
+ <20200117182405.GA182181@brutus.lan>
+From:   jwcart2 <jwcart2@tycho.nsa.gov>
+Message-ID: <21c6b770-0b7c-451e-501d-c7291858107e@tycho.nsa.gov>
+Date:   Fri, 17 Jan 2020 13:36:25 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.1
+ Thunderbird/68.2.2
 MIME-Version: 1.0
-In-Reply-To: <pjdd0biq95r.fsf@redhat.com>
+In-Reply-To: <20200117182405.GA182181@brutus.lan>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -85,52 +86,72 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 1/17/20 12:34 PM, Petr Lautrbach wrote:
-> 
-> Petr Lautrbach <plautrba@redhat.com> writes:
-> 
->> Stephen Smalley <sds@tycho.nsa.gov> writes:
+On 1/17/20 1:24 PM, Dominick Grift wrote:
+> On Fri, Jan 17, 2020 at 06:34:48PM +0100, Dominick Grift wrote:
+>> For example this:
 >>
->>> The flask.h and av_permissions.h header files were deprecated and
->>> all selinux userspace references to them were removed in
->>> commit 76913d8adb61b5 ("Deprecate use of flask.h and av_permissions.h.")
->>> back in 2014 and included in the 20150202 / 2.4 release.
->>> All userspace object managers should have been updated
->>> to use the dynamic class/perm mapping support since that time.
->>> Remove these headers finally to ensure that no users remain and
->>> that no future uses are ever introduced.
+>> (permissionx alg_socket_ioctl_except_SIOCGIFHWADDR (ioctl alg_socket (and (all) (not (0x8927)))))
+>> (classmap all_sockets (ioctl_except_SIOCGIFHWADDR))
+>> (classmapping all_sockets ioctl_except_SIOCGIFHWADDR alg_socket_ioctl_except_SIOCGIFHWADDR)
 >>
->> I've patched libselinux and I'm building all packages which requires
->> libselinux-devel [1] in Fedora. I'm in the middle of package list and so far there
->> are only 3 packages which fails to build without flask.h or
->> av_permission.h - libuser (the particular file wasn't updated since
->> 2012), ipsec-tools and mesa. When it's finished I'll investigate all
->> results, but I don't think there will be some blocker.
+>> (allowx a self (all_sockets (ioctl_except_SIOCGIFHWADDR)))
 >>
->> [1] https://copr.fedorainfracloud.org/coprs/plautrba/libselinux-without-flask.h/builds/
+>> Say's:
 >>
+>> <snip>
+>> Building AST from Parse Tree
+>> Destroying Parse Tree
+>> Resolving AST
+>> Failed to resolve classmapping statement at policy/base/class_maps.cil:994
+>> Problem at policy/base/class_maps.cil:994
+>> Pass 14 of resolution failed
+>> Failed to resolve ast
+>> Failed to compile cildb: -2
+>> make: *** [Makefile:30: policy.32] Error 254
+>>
+>> Am i doing something wrong or is this unsupported?
 > 
-> So the complete list of Fedora packages dependent on selinux/flask.h is:
-> 
-> xinetd
-> usermode
-> sed
-> pam
-> oddjob
-> libuser
-> ipsec-tools
-> 
-> Problems are usually in tests or in Fedora specific patches. I'll start
-> to work on fixes with affected maintainers.
 
-Great, thank you.  Hopefully the other patch for libsepol,checkpolicy to 
-prune its copy of flask.h of all SECCLASS_* definitions and take it 
-private to libsepol won't break anything.  With those two changes, we 
-should be free of any lingering uses of hardcoded class and permission 
-definitions.  Then all we need is for dbus-daemon to either set up a 
-POLICYLOAD callback and re-fresh its mapping at that time or switch over 
-to looking up the class and permissions each time as per the guidance in 
-the updated libselinux man pages (per my third patch) and userspace 
-should be safe for class or permission changes.
+Class maps only support normal permissions, they do not support extended 
+permissions.
+
+> Are we supposed to be able to use allowx rules in macros?
+> 
+
+allowx rules are allowed in macros. I will see if I can reproduce the error 
+below and figure out what's going wrong.
+
+Jim
+
+> This works when the tunable is set false:
+> 
+> (tunable no_mac_addr true)
+> 
+> (block bla1
+>          (blockinherit system_agent_template)
+> 
+>          (macro stuff ((type ARG1))
+>                  (tunableif no_mac_addr
+>                    (true
+>                        (allow ARG1 self create_except_ioctl_tcp_stream_socket_perms)
+>                        (allowx ARG1 self tcp_socket_ioctl_except_SIOCGIFHWADDR))
+>                    (false
+>                        (allow ARG1 self create_tcp_stream_socket_perms)))))
+> 
+> (block blah2
+>          (blockinherit system_agent_template)
+> 
+>          (call bla1.stuff (subj)))
+> 
+> But when the tunable is set true:
+> <snip>
+> Building AST from Parse Tree
+> Destroying Parse Tree
+> Resolving AST
+> make: *** [Makefile:30: policy.32] Segmentation fault (core dumped)
+> 
 
 
+-- 
+James Carter <jwcart2@tycho.nsa.gov>
+National Security Agency

@@ -2,14 +2,14 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CC9E1458FA
+	by mail.lfdr.de (Postfix) with ESMTP id 2CCD41458F9
 	for <lists+selinux@lfdr.de>; Wed, 22 Jan 2020 16:47:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725868AbgAVPrF (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S1725943AbgAVPrF (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Wed, 22 Jan 2020 10:47:05 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:55985 "EHLO
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:60262 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725924AbgAVPrF (ORCPT
+        with ESMTP id S1725884AbgAVPrF (ORCPT
         <rfc822;selinux@vger.kernel.org>); Wed, 22 Jan 2020 10:47:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
         s=mimecast20190719; t=1579708024;
@@ -17,45 +17,45 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
          to:to:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LYfRnkQJdMTx1mbzdd7g82oChTdJdhTvJ8PHrPBQXYE=;
-        b=NmkSoyG35srm3EuFUZveo785NPZ82EedqKhVwclscc2xwQ49xVgyk12PKrUsp089smr5IT
-        gA8O+ua7rBUNU/+SDIB/xCAO1kI6bE83Kjxi33XczMgeghImPylKo0OWBhPlGW96p4LX4X
-        +BPARWmB4etRzCDIfQtRRGvw1ZncbjI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-43-mO4XHkb4PiWDFC2KSOoGAQ-1; Wed, 22 Jan 2020 10:47:01 -0500
-X-MC-Unique: mO4XHkb4PiWDFC2KSOoGAQ-1
-Received: by mail-wr1-f70.google.com with SMTP id f15so3297821wrr.2
-        for <selinux@vger.kernel.org>; Wed, 22 Jan 2020 07:47:01 -0800 (PST)
+        bh=AEQROmI1rYNcfex/ub9JvmWDAcn867q7P2H/yW8vP8U=;
+        b=H6ilF9xh/ZSbKQW+73Vatm1KQGAOoC84yUbBmk5ZgrOTethpLY7XDd4HQ0EFs365fWYUnP
+        YcOGZHsXmC8MSlHD1r3F8jKBawI4GAt+GV4cJAmhg2gLvnbL4WQm+ywIaIDJCSqQw7CfpI
+        FkmGwIxEy/n/QnVuUHNU9bV/BC2JaCE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-327-jvgkadv6PbSF0VZHggMo2w-1; Wed, 22 Jan 2020 10:47:02 -0500
+X-MC-Unique: jvgkadv6PbSF0VZHggMo2w-1
+Received: by mail-wr1-f72.google.com with SMTP id f15so3297837wrr.2
+        for <selinux@vger.kernel.org>; Wed, 22 Jan 2020 07:47:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=LYfRnkQJdMTx1mbzdd7g82oChTdJdhTvJ8PHrPBQXYE=;
-        b=kdh40lR2LykITynE+4AH0Up97VjElMp20GXQB/panydrnoQP8zxTVuItIfjBB6Fub6
-         CwJbvA9RI6YoCMHvQLjK57CrzAMSYPu9TYpGawWnmyIcbvMZ41TzIgtrI5N+g1A0c89Q
-         hdP4ALWu5f9/SeN8rLzc8QpEkTRgppbgPDtirsjbloiWt5+Wnqyba4GYKd5BawKQke3S
-         TJD/c2FLuBe9gva/CSHrn5x1VkodtW5ttmKArfwTSoKDo6b5pN1NMaf0IdR7GkeDx+Ai
-         qAT0Z8BOKqUk5AHRskepHryiJBNpxaVD+kB5yCtq0yYMRBExV+9RewJSFhjlTRwo0XTR
-         TD/A==
-X-Gm-Message-State: APjAAAXbeBDsUtZdgN/Vtwj7wFImjeVJ1MQ/HgiujRYNGK4AX4O6tWzr
-        hm5y12PWFMJ7oQxuxT29ufMhHrHfy0W2XxFEfvPEGWRJC9K8vFD9OmjuCrix4TusdE9upp71GfC
-        85KUWKx1U9NOrLVQdGA==
-X-Received: by 2002:a1c:67c3:: with SMTP id b186mr3595316wmc.36.1579708020289;
-        Wed, 22 Jan 2020 07:47:00 -0800 (PST)
-X-Google-Smtp-Source: APXvYqydvImKur+0/nwMa05WNR2Frp23x6SbVj3dtJ77rAfQEnDgIzkj20cfnW0mnlC1JkTrzq8Xsg==
-X-Received: by 2002:a1c:67c3:: with SMTP id b186mr3595306wmc.36.1579708020134;
-        Wed, 22 Jan 2020 07:47:00 -0800 (PST)
+        bh=AEQROmI1rYNcfex/ub9JvmWDAcn867q7P2H/yW8vP8U=;
+        b=OXeJDgFpazEyOXaDg6ALlG/L2M6r2nniI3Al5VG1NzK376pTQBwzNfb+5XUlo+Qqzm
+         JWcfbWLCPBBq1evP5H6A77gOKSLmV/ogFoY+hLkvZFVj7TIOSeQlkyVlCKbSWvFgD0Rb
+         38ZAi2+LeSy/bvlJyOweavnfuC6LajyVz98E3Dbzhbzv16nXN7yGbpoXFqOJYBDpgKIg
+         iMqm6Uq8mUfuPNCBK5IqPQPiWeCf3hlIWojbBifTXR4LjN2thpzQ3awtqGPBGhs4LKSb
+         KTZMwx3gHj514ytu+2lwWoYujuHHf0/ov8f/FBcMQBzz9vf8fNrIpKMKZHzwjZd2Slv8
+         8k3A==
+X-Gm-Message-State: APjAAAULE94H82p1hRQSK7BUDxQMdWWMVzO3lVGONa4/km6SEHNAzlC0
+        gt8v6jkOt59YlymWS0JagUVLVf6bkgcv32RamI8M/aL2s1eao7glQ89duhVY6g4eZAcd95r1N6v
+        5nhEHaVqGts/yNeyglA==
+X-Received: by 2002:a1c:f20c:: with SMTP id s12mr3552693wmc.173.1579708021402;
+        Wed, 22 Jan 2020 07:47:01 -0800 (PST)
+X-Google-Smtp-Source: APXvYqypjlyIFaNoMRmP/3Uu3vKBSUowl/D0/pZia07ifYj15VpyhoZ5Q0sulGp+HmPxXvdZlMU4tA==
+X-Received: by 2002:a1c:f20c:: with SMTP id s12mr3552684wmc.173.1579708021249;
+        Wed, 22 Jan 2020 07:47:01 -0800 (PST)
 Received: from omos.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id c5sm4811788wmb.9.2020.01.22.07.46.59
+        by smtp.gmail.com with ESMTPSA id c5sm4811788wmb.9.2020.01.22.07.47.00
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2020 07:46:59 -0800 (PST)
+        Wed, 22 Jan 2020 07:47:00 -0800 (PST)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH userspace 3/4] checkpolicy: remove unused te_assertions
-Date:   Wed, 22 Jan 2020 16:46:54 +0100
-Message-Id: <20200122154655.257233-4-omosnace@redhat.com>
+Subject: [PATCH userspace 4/4] Makefile: always build with -fno-common
+Date:   Wed, 22 Jan 2020 16:46:55 +0100
+Message-Id: <20200122154655.257233-5-omosnace@redhat.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200122154655.257233-1-omosnace@redhat.com>
 References: <20200122154655.257233-1-omosnace@redhat.com>
@@ -66,27 +66,28 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This variable is declared in a header file, but never defined or used.
-Remove it.
+GCC 10 has it enabled by default and everything now builds OK with it,
+so add it to CFLAGS to avoid breaking the build in the future.
 
 Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- checkpolicy/checkpolicy.h | 2 --
- 1 file changed, 2 deletions(-)
+ Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/checkpolicy/checkpolicy.h b/checkpolicy/checkpolicy.h
-index 3868f1fa..8fbc1b7d 100644
---- a/checkpolicy/checkpolicy.h
-+++ b/checkpolicy/checkpolicy.h
-@@ -13,8 +13,6 @@ typedef struct te_assert {
- 	struct te_assert *next;
- } te_assert_t;
+diff --git a/Makefile b/Makefile
+index c238dbc8..298cd2b7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -16,7 +16,8 @@ else
+ 		-Wstrict-prototypes \
+ 		-Wundef \
+ 		-Wunused \
+-		-Wwrite-strings
++		-Wwrite-strings \
++		-fno-common
+ endif
  
--te_assert_t *te_assertions;
--
- extern unsigned int policyvers;
- 
- #endif
+ ifneq ($(DESTDIR),)
 -- 
 2.24.1
 

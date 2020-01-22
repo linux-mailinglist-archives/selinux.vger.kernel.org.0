@@ -2,92 +2,95 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CCD41458F9
-	for <lists+selinux@lfdr.de>; Wed, 22 Jan 2020 16:47:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CEBB145984
+	for <lists+selinux@lfdr.de>; Wed, 22 Jan 2020 17:11:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725943AbgAVPrF (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 22 Jan 2020 10:47:05 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:60262 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725884AbgAVPrF (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 22 Jan 2020 10:47:05 -0500
+        id S1725868AbgAVQLQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 22 Jan 2020 11:11:16 -0500
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:34271 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725827AbgAVQLQ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 22 Jan 2020 11:11:16 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579708024;
+        s=mimecast20190719; t=1579709475;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=AEQROmI1rYNcfex/ub9JvmWDAcn867q7P2H/yW8vP8U=;
-        b=H6ilF9xh/ZSbKQW+73Vatm1KQGAOoC84yUbBmk5ZgrOTethpLY7XDd4HQ0EFs365fWYUnP
-        YcOGZHsXmC8MSlHD1r3F8jKBawI4GAt+GV4cJAmhg2gLvnbL4WQm+ywIaIDJCSqQw7CfpI
-        FkmGwIxEy/n/QnVuUHNU9bV/BC2JaCE=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-327-jvgkadv6PbSF0VZHggMo2w-1; Wed, 22 Jan 2020 10:47:02 -0500
-X-MC-Unique: jvgkadv6PbSF0VZHggMo2w-1
-Received: by mail-wr1-f72.google.com with SMTP id f15so3297837wrr.2
-        for <selinux@vger.kernel.org>; Wed, 22 Jan 2020 07:47:02 -0800 (PST)
+        bh=oWbRKXJtGqqKFzsIXxKdeZ5nRlHUs8ymlLAzphEQQNg=;
+        b=Cuerz6vORFptfLzXJsZSRHueCXXeMcaMbyxlwysm/Y/JQhxDnPIkpsU7WCIjEj4Z+gzkig
+        YdSZ8o+0fds/ICK59bv5OgsbHdJePcTvnCVDi5EQp+RqF4WRlNKZJ0bbSCC4gAzICh7HmG
+        fLXuCe3fHXGp5CxGmeir3z/L0dx0D08=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-248-SkEcZkCpOG2MIvSmx_3wNQ-1; Wed, 22 Jan 2020 11:11:11 -0500
+X-MC-Unique: SkEcZkCpOG2MIvSmx_3wNQ-1
+Received: by mail-oi1-f197.google.com with SMTP id c73so2835086oig.21
+        for <selinux@vger.kernel.org>; Wed, 22 Jan 2020 08:11:11 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=AEQROmI1rYNcfex/ub9JvmWDAcn867q7P2H/yW8vP8U=;
-        b=OXeJDgFpazEyOXaDg6ALlG/L2M6r2nniI3Al5VG1NzK376pTQBwzNfb+5XUlo+Qqzm
-         JWcfbWLCPBBq1evP5H6A77gOKSLmV/ogFoY+hLkvZFVj7TIOSeQlkyVlCKbSWvFgD0Rb
-         38ZAi2+LeSy/bvlJyOweavnfuC6LajyVz98E3Dbzhbzv16nXN7yGbpoXFqOJYBDpgKIg
-         iMqm6Uq8mUfuPNCBK5IqPQPiWeCf3hlIWojbBifTXR4LjN2thpzQ3awtqGPBGhs4LKSb
-         KTZMwx3gHj514ytu+2lwWoYujuHHf0/ov8f/FBcMQBzz9vf8fNrIpKMKZHzwjZd2Slv8
-         8k3A==
-X-Gm-Message-State: APjAAAULE94H82p1hRQSK7BUDxQMdWWMVzO3lVGONa4/km6SEHNAzlC0
-        gt8v6jkOt59YlymWS0JagUVLVf6bkgcv32RamI8M/aL2s1eao7glQ89duhVY6g4eZAcd95r1N6v
-        5nhEHaVqGts/yNeyglA==
-X-Received: by 2002:a1c:f20c:: with SMTP id s12mr3552693wmc.173.1579708021402;
-        Wed, 22 Jan 2020 07:47:01 -0800 (PST)
-X-Google-Smtp-Source: APXvYqypjlyIFaNoMRmP/3Uu3vKBSUowl/D0/pZia07ifYj15VpyhoZ5Q0sulGp+HmPxXvdZlMU4tA==
-X-Received: by 2002:a1c:f20c:: with SMTP id s12mr3552684wmc.173.1579708021249;
-        Wed, 22 Jan 2020 07:47:01 -0800 (PST)
-Received: from omos.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id c5sm4811788wmb.9.2020.01.22.07.47.00
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 Jan 2020 07:47:00 -0800 (PST)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH userspace 4/4] Makefile: always build with -fno-common
-Date:   Wed, 22 Jan 2020 16:46:55 +0100
-Message-Id: <20200122154655.257233-5-omosnace@redhat.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200122154655.257233-1-omosnace@redhat.com>
-References: <20200122154655.257233-1-omosnace@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to;
+        bh=oWbRKXJtGqqKFzsIXxKdeZ5nRlHUs8ymlLAzphEQQNg=;
+        b=HQpXExOnyRBx8Vvylo+xB/y6AemvelzQDMgm6KuYp7TG8Sw72gAYSv+SvAKKeRbzNJ
+         k2fiJf9nulydAKCTNr3tXD4/kBcsPeuw6qJD2MWmeh75S/vjLra7RvYIigejKUXWmHLD
+         fe4M4OTrjPmD6N3A5JW01vFg9djeaqZ42usCLfKEhArArqF838kuOnloLB2Mp4hUSEDt
+         b/AcOssA03YmfhmbH+2XDWEqCROFA7H13Pt1YYgtqe6EBgIEnVpE63r9rWyBNykjpRMX
+         GpSsclEsiPPPVGQTUF8T5snes8mEpPSOfEGcsUD5Z082kbpIIwofc+1J9oIa4+u1RMgw
+         Pw/w==
+X-Gm-Message-State: APjAAAVfwoUI51Sxr2elOYnZTp0lZ6qPlg4hbTLt0sRmjpDnjvUM3ChG
+        ATUZTCqYRBCEH+iWLFcu2CsFohXGSJqNCQQo4ZqGfyz7mlDdK9eF6LSgQU19wz3kGbPskTZ3R3g
+        kcd/yuR8+aUOclWiWU2I3HOHmaCIlyxt4UQ==
+X-Received: by 2002:aca:f507:: with SMTP id t7mr7305332oih.156.1579709470422;
+        Wed, 22 Jan 2020 08:11:10 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyixyXOg4hw+YC//Q2NunXtPpHzYTPx+BvYCCzPZEV8+QgMcafq3rvwfOTJ1+7ZV0fDtWkHNG6saYEzGDwTuSQ=
+X-Received: by 2002:aca:f507:: with SMTP id t7mr7305314oih.156.1579709470112;
+ Wed, 22 Jan 2020 08:11:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200122154655.257233-1-omosnace@redhat.com> <20200122154655.257233-4-omosnace@redhat.com>
+In-Reply-To: <20200122154655.257233-4-omosnace@redhat.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Wed, 22 Jan 2020 17:10:59 +0100
+Message-ID: <CAFqZXNvBgn9LK4GU4=dNF9YXSdPCxNUQQPZ9dPB5e6NVQnm8rw@mail.gmail.com>
+Subject: Re: [PATCH userspace 3/4] checkpolicy: remove unused te_assertions
+To:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-GCC 10 has it enabled by default and everything now builds OK with it,
-so add it to CFLAGS to avoid breaking the build in the future.
+On Wed, Jan 22, 2020 at 4:46 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> This variable is declared in a header file, but never defined or used.
+> Remove it.
+>
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> ---
+>  checkpolicy/checkpolicy.h | 2 --
+>  1 file changed, 2 deletions(-)
+>
+> diff --git a/checkpolicy/checkpolicy.h b/checkpolicy/checkpolicy.h
+> index 3868f1fa..8fbc1b7d 100644
+> --- a/checkpolicy/checkpolicy.h
+> +++ b/checkpolicy/checkpolicy.h
+> @@ -13,8 +13,6 @@ typedef struct te_assert {
+>         struct te_assert *next;
+>  } te_assert_t;
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Actually, it looks like this whole struct definition can go as well.
+I'll post a v2 later.
 
-diff --git a/Makefile b/Makefile
-index c238dbc8..298cd2b7 100644
---- a/Makefile
-+++ b/Makefile
-@@ -16,7 +16,8 @@ else
- 		-Wstrict-prototypes \
- 		-Wundef \
- 		-Wunused \
--		-Wwrite-strings
-+		-Wwrite-strings \
-+		-fno-common
- endif
- 
- ifneq ($(DESTDIR),)
+>
+> -te_assert_t *te_assertions;
+> -
+>  extern unsigned int policyvers;
+>
+>  #endif
+> --
+> 2.24.1
+>
+
 -- 
-2.24.1
+Ondrej Mosnacek <omosnace at redhat dot com>
+Software Engineer, Security Technologies
+Red Hat, Inc.
 

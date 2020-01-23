@@ -2,141 +2,95 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EEE7B14676B
-	for <lists+selinux@lfdr.de>; Thu, 23 Jan 2020 12:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 824D0146881
+	for <lists+selinux@lfdr.de>; Thu, 23 Jan 2020 13:57:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727307AbgAWL7q (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 23 Jan 2020 06:59:46 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:59412 "EHLO
+        id S1726260AbgAWM53 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 23 Jan 2020 07:57:29 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:36142 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726026AbgAWL7q (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 23 Jan 2020 06:59:46 -0500
+        with ESMTP id S1726240AbgAWM53 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 23 Jan 2020 07:57:29 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579780784;
+        s=mimecast20190719; t=1579784248;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=yMYi0cQAaVsk6wwuLwzQrXocdRVZi8fyMFzRoe3fK+c=;
-        b=FcibaHABPoEgEdYweLJ46WbY9gTJ+3Sule0Wz0YpZl3nIhChIpnlZS8vOZx8oN/91s9n4O
-        wXX5c++DBeCCGyUVARK7nL+76HqGTv+TZb7ajVhaZxwgk9jyXtuWhzDNjwFgPkQ27pnMzA
-        UyvHADDmQZNI32Q9X+5NUbBGLdCVeTA=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-62-EFRaHlkbPTyqVrlD6C9uiw-1; Thu, 23 Jan 2020 06:59:41 -0500
-X-MC-Unique: EFRaHlkbPTyqVrlD6C9uiw-1
-Received: by mail-ot1-f69.google.com with SMTP id v2so1409310otq.2
-        for <selinux@vger.kernel.org>; Thu, 23 Jan 2020 03:59:40 -0800 (PST)
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=nlmmimid0sY1DeantLWMBQ/czSfJCxIUjm/zNfDLtVA=;
+        b=Zbw5AtYbPZhZm3z+ywYBuZGMpqqnGhUb1Ww0ekABJAL6QByIbr2QvtuRDcJknKOyZ2Lkv2
+        XPgmc0LZhD72QAp7gylXg9k0SkipDJgcu6C+wFTL4qL3HvuyURWPYCZF1Ix8EX7yeysZHq
+        pCDY1gnk+VT8dx0pXAUYUZLaRgcBGZo=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-66-1IurbjvKM1K1Mh-KuTyEwQ-1; Thu, 23 Jan 2020 07:57:19 -0500
+X-MC-Unique: 1IurbjvKM1K1Mh-KuTyEwQ-1
+Received: by mail-wr1-f71.google.com with SMTP id b13so1606249wrx.22
+        for <selinux@vger.kernel.org>; Thu, 23 Jan 2020 04:57:19 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=yMYi0cQAaVsk6wwuLwzQrXocdRVZi8fyMFzRoe3fK+c=;
-        b=AvIz+cNBvOcCaE5CYVc1WoGy4/uij494y729jStRnQoi0LI/scI65wdBrkdUMTLJYz
-         i62mrXOCpvg+e3Pe7VcqSnkvKSr+/UooiVEi7yBI0ee5XdNWOiOfjGCg6cJuFGjiGl7O
-         F4Xmhnx7h5rO7us8p7bJtqQth8BdtX431uqaClbjrg706xu6KK9J8KF54zObs61lnQko
-         PE5RccvYj8BlwNyEuBAV+c/druB1JEiYXKBnZVoNL0qOWBlHxF4J/Z6RHbs/wi4hnYai
-         IyGXRv/eb/d+lGLA0W6e0Rl6WYHyQkBn+nqY0sj3naOJzTC9ieZ0r7k+8lz5N3H0bovq
-         sUng==
-X-Gm-Message-State: APjAAAVLtVWdBVtLeXWSfnKV6CdIrN+GKWyh0S312Ht031ce7blyojmC
-        3IP4yh/qVZ4RRRP3m9RqEdnbw58WM+JiBYrswolmnNdw9lSmhGTyrsRt+V01j+uusN/fS7LzuMn
-        ElDuU7NYu/PC6iNFdlb3Y6oWj0JIr8bYlag==
-X-Received: by 2002:aca:d15:: with SMTP id 21mr10492721oin.127.1579780779926;
-        Thu, 23 Jan 2020 03:59:39 -0800 (PST)
-X-Google-Smtp-Source: APXvYqwMP2k7Olv1uxAVa0okKG4dyao4jetTrvuDX6G1nrZ38GP0sdRUdBkMGv5H5FeLfmPHPSiKAKPjHz034Ro7Ug0=
-X-Received: by 2002:aca:d15:: with SMTP id 21mr10492714oin.127.1579780779704;
- Thu, 23 Jan 2020 03:59:39 -0800 (PST)
-MIME-Version: 1.0
-References: <20200122154655.257233-1-omosnace@redhat.com> <20200122154655.257233-3-omosnace@redhat.com>
- <a730c6ee-c5b4-2eb2-60c8-a069a87ec0a4@tycho.nsa.gov>
-In-Reply-To: <a730c6ee-c5b4-2eb2-60c8-a069a87ec0a4@tycho.nsa.gov>
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nlmmimid0sY1DeantLWMBQ/czSfJCxIUjm/zNfDLtVA=;
+        b=dAZ7QdSDHgdjioSSKhQzUCwoNH1ImlpMuY3W4zrEsb+70gO+bpvVec7jYpvKu1QESz
+         XrHiIYGdfhUDqKTDYe5Hkgw7ltbZzNlfx63BojMBpSix4Kq6R0ozukIoxt4Fj+glz7GA
+         YWsyYBetXUTfqlj6e1u33XMa3/gn7g/Ty4cQ32x1Y3oRNq7nHGFaEOKhSr6+moJSa+HR
+         Jf5M3hufMasZ896WRwymAbS/3xdZCY6htCWDS9Ybp/CI1koAfNlSWqoKdmjNd6VDVX+O
+         e27oS/rewvR0+j3ypg3Kbqo9ZUkpRqB8VNjWfzCrASHeYotwMVNhQolf1FWoYpn0Za//
+         gJpA==
+X-Gm-Message-State: APjAAAU7Ru3GMf9JVtLyezMFeObJY3aTq0lRAGGoNUb/rN/miK8vXEmR
+        HZij08W4LvQ6nVZocHz8ZI2jzmVMGSXSFts3GiEZt4JGti01d2yHrj2TAla+1OjW0qzs3jhxf3b
+        1ZPOFhuGilDH/ILen1A==
+X-Received: by 2002:a7b:cb91:: with SMTP id m17mr3898858wmi.146.1579784238041;
+        Thu, 23 Jan 2020 04:57:18 -0800 (PST)
+X-Google-Smtp-Source: APXvYqzn+wsth2BT/9vQJKyLy2n4ZeKIfrRApmcqGy8WALt9zxq7qsWZfjxgHTCvwuhDv83bluPGIw==
+X-Received: by 2002:a7b:cb91:: with SMTP id m17mr3898838wmi.146.1579784237790;
+        Thu, 23 Jan 2020 04:57:17 -0800 (PST)
+Received: from omos.redhat.com (ip-46.34.233.121.o2inet.sk. [46.34.233.121])
+        by smtp.gmail.com with ESMTPSA id d8sm2821028wrx.71.2020.01.23.04.57.16
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Jan 2020 04:57:17 -0800 (PST)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Thu, 23 Jan 2020 12:59:30 +0100
-Message-ID: <CAFqZXNvPjZk549Yi00KqFjXesmxPD3-KbGdJUNu8rrYeoJrs0Q@mail.gmail.com>
-Subject: Re: [Non-DoD Source] [PATCH userspace 2/4] libsepol: remove unused cil_mem_error_handler
-To:     jwcart2 <jwcart2@tycho.nsa.gov>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     selinux@vger.kernel.org
+Subject: [PATCH userspace v2 0/4] Fix build with -fno-common
+Date:   Thu, 23 Jan 2020 13:57:12 +0100
+Message-Id: <20200123125716.12662-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.24.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jan 22, 2020 at 7:54 PM jwcart2 <jwcart2@tycho.nsa.gov> wrote:
-> On 1/22/20 10:46 AM, Ondrej Mosnacek wrote:
-> > It is declared in an internal header but never defined. Remove it.
-> >
-> > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> > ---
-> >   libsepol/cil/src/cil_mem.h     | 1 -
-> >   libsepol/cil/src/cil_strpool.c | 2 --
-> >   2 files changed, 3 deletions(-)
-> >
-> > diff --git a/libsepol/cil/src/cil_mem.h b/libsepol/cil/src/cil_mem.h
-> > index 902ce131..794f02a3 100644
-> > --- a/libsepol/cil/src/cil_mem.h
-> > +++ b/libsepol/cil/src/cil_mem.h
-> > @@ -36,7 +36,6 @@ void *cil_calloc(size_t num_elements, size_t element_size);
-> >   void *cil_realloc(void *ptr, size_t size);
-> >   char *cil_strdup(const char *str);
-> >   int cil_asprintf(char **strp, const char *fmt, ...);
-> > -void (*cil_mem_error_handler)(void);
-> >
-> >   #endif /* CIL_MEM_H_ */
-> >
-> > diff --git a/libsepol/cil/src/cil_strpool.c b/libsepol/cil/src/cil_strpool.c
-> > index 97d4c4b9..508541d6 100644
-> > --- a/libsepol/cil/src/cil_strpool.c
-> > +++ b/libsepol/cil/src/cil_strpool.c
-> > @@ -80,7 +80,6 @@ char *cil_strpool_add(const char *str)
-> >               int rc = hashtab_insert(cil_strpool_tab, (hashtab_key_t)strpool_ref->str, strpool_ref);
-> >               if (rc != SEPOL_OK) {
-> >                       pthread_mutex_unlock(&cil_strpool_mutex);
-> > -                     (*cil_mem_error_handler)();
-> >                       pthread_mutex_lock(&cil_strpool_mutex);
-> >               }
-> >       }
->
-> I removed the cil_mem_error_handler stuff last Fall (see commit 4459d635). I
-> guess that I must have missed these somehow.
->
-> In the other places where I removed it, I replaced it with the inlined default
-> hanlder which consisted of the following:
->
->    cil_log(CIL_ERR, "Failed to allocate memory\n");
->    exit(1);
->
-> Since we are existing, the pthread_mutex_lock() call can be removed.
+GCC 10 is going to enable -fno-common by default [1], so fix all build
+errors uncovered by it and add it to global CFLAGS to avoid introducing
+new bugs.
 
-I see, thanks for pointing it out! I'm now quite embarrassed for not
-noticing the needless lock-unlock sequence I left behind in this patch
-:)
+Changes in v2:
+ - remove also struct te_assert definition, which is also useless
+ - redo cil_mem_error_handler to match commit 4459d635b8f1 as suggested
+   by Jim Carter
 
-I will rework this patch to match commit 4459d635 in v2.
+Travis build: [2]
 
->
-> > @@ -104,7 +103,6 @@ void cil_strpool_init(void)
-> >               cil_strpool_tab = hashtab_create(cil_strpool_hash, cil_strpool_compare, CIL_STRPOOL_TABLE_SIZE);
-> >               if (cil_strpool_tab == NULL) {
-> >                       pthread_mutex_unlock(&cil_strpool_mutex);
-> > -                     (*cil_mem_error_handler)();
-> >                       return;
-> >               }
-> >       }
-> >
->
-> Same thing here, but now the return won't be needed.
->
-> Thanks,
-> Jim
->
->
-> --
-> James Carter <jwcart2@tycho.nsa.gov>
-> National Security Agency
->
+[1] https://gcc.gnu.org/gcc-10/porting_to.html#common
+[2] https://travis-ci.org/WOnder93/selinux/builds/640875119
 
---
-Ondrej Mosnacek <omosnace at redhat dot com>
-Software Engineer, Security Technologies
-Red Hat, Inc.
+Ondrej Mosnacek (4):
+  libsepol: fix CIL_KEY_* build errors with -fno-common
+  libsepol: remove leftovers of cil_mem_error_handler
+  checkpolicy: remove unused te_assertions
+  Makefile: always build with -fno-common
+
+ Makefile                        |   3 +-
+ checkpolicy/checkpolicy.h       |  14 --
+ libsepol/cil/src/cil.c          | 162 ++++++++++++++++
+ libsepol/cil/src/cil_internal.h | 322 ++++++++++++++++----------------
+ libsepol/cil/src/cil_mem.h      |   1 -
+ libsepol/cil/src/cil_strpool.c  |   8 +-
+ 6 files changed, 329 insertions(+), 181 deletions(-)
+
+-- 
+2.24.1
 

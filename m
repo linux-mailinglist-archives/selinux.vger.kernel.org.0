@@ -2,60 +2,60 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B22AB14687E
-	for <lists+selinux@lfdr.de>; Thu, 23 Jan 2020 13:57:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16C8C146880
+	for <lists+selinux@lfdr.de>; Thu, 23 Jan 2020 13:57:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726026AbgAWM50 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 23 Jan 2020 07:57:26 -0500
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:29337 "EHLO
+        id S1726170AbgAWM51 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 23 Jan 2020 07:57:27 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:36940 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726170AbgAWM50 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 23 Jan 2020 07:57:26 -0500
+        with ESMTP id S1726227AbgAWM51 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 23 Jan 2020 07:57:27 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1579784245;
+        s=mimecast20190719; t=1579784246;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=h8ZaCM7bdq/CkFeMDtbL8WdIlXEbdg+xTYAfqBBIVoU=;
-        b=PVQhKoVbQZKwBP5A74BJRbFo+pYAf8uHPeNo+YKVfiLzsGXylHPUN4SM91e30/Ha+3LFML
-        0cjvQIQ/LIpNbwXjJZVTPFK+3kbrkuwE7yjqzVyEN6t1HmlwrlIUib7Zh4PZypQiTGl4qd
-        kAdfRXImIs6nKW+krhsWErUmcr4Cf1U=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-22-UnIzFFb-O0O0RAEjvZaQzA-1; Thu, 23 Jan 2020 07:57:23 -0500
-X-MC-Unique: UnIzFFb-O0O0RAEjvZaQzA-1
-Received: by mail-wr1-f69.google.com with SMTP id z10so1628159wrt.21
-        for <selinux@vger.kernel.org>; Thu, 23 Jan 2020 04:57:22 -0800 (PST)
+        bh=AEQROmI1rYNcfex/ub9JvmWDAcn867q7P2H/yW8vP8U=;
+        b=IYPdka9JTgVxev2a29k2aL5Qdytp4vALKK1fcHw92RTVH5R/cqkPCImaOKBuFP7wEolgha
+        9a1JBVcGAXWUKtI3H6VeQ1fb/D9wvA6lPZJqhFmtwOZnSiZkBsm0tNZ+z4huVNZ8D3AMov
+        QOAsWh+aWnjRk5T07ebuNYrnaxlrF1Q=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-416-LZ58JgZ6NSGK91CuSLlFwQ-1; Thu, 23 Jan 2020 07:57:24 -0500
+X-MC-Unique: LZ58JgZ6NSGK91CuSLlFwQ-1
+Received: by mail-wr1-f71.google.com with SMTP id t3so1613901wrm.23
+        for <selinux@vger.kernel.org>; Thu, 23 Jan 2020 04:57:24 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=h8ZaCM7bdq/CkFeMDtbL8WdIlXEbdg+xTYAfqBBIVoU=;
-        b=ffa1hIpMuU1YrT2iS6vJGA8wK3xEMoJmsqMvMi5E4Kk58DvUrUuNdgg1DZIJU2OnTb
-         1oPq3E33rj7SjZ+0t6hfYGzQVF7YJr0HZ+5deHkc8TrMPZKjV7tXkdu0uINS5CI7rKBa
-         e+6kFULPTSytK4cam+mjQSyvGZTa1VtFUkdF90ry+Hu5CVtV16JIjF3KyWO8AQjcZphV
-         tSQT2o+SS9W4pF/ys7hG5prJWoikP+XfFwvaNEyaE/6pm0Kii+cA5udAhU/qVsfIz7Vd
-         f8VYGASrPN/vvkxeWBumJFzgdoIzzyZOIEthN6583xqvahkxO6fRSnppJN1vBIX0vifZ
-         WIJg==
-X-Gm-Message-State: APjAAAUjlv9qCTHZU0+Wl2dEOJRzZ0SQbjpkJBPTKZRP899DEgKO1Rf4
-        k1XcLuvY1/ZVz7xNkYS5IV8nnycrjze/L4DCkuKCSmGg4e8ccjOPCu/cW3zkmZDJMsQlJ81TH8V
-        9gR9Y06Wro/PBh3Sakg==
-X-Received: by 2002:adf:e609:: with SMTP id p9mr17261673wrm.397.1579784241529;
-        Thu, 23 Jan 2020 04:57:21 -0800 (PST)
-X-Google-Smtp-Source: APXvYqxc2CZkQZNUmMKvKbtOiWJGkDku8vdv8V5zyWLL/DCfXo/4M3EZijVorJe0zqywgUVRq7G5qQ==
-X-Received: by 2002:adf:e609:: with SMTP id p9mr17261652wrm.397.1579784241271;
-        Thu, 23 Jan 2020 04:57:21 -0800 (PST)
+        bh=AEQROmI1rYNcfex/ub9JvmWDAcn867q7P2H/yW8vP8U=;
+        b=Xxza8CJJPSi6ksT8NXMKcJIUtsLxG/bdAZZmi4Vtg3h4/EvHq7R+FwWw7htodYMV5o
+         SvCKMc7NYSXuHoK1P+taaHreXFI3I73VuLSFF5nfaytOP8rUGyDs1ph+0eveI4164ZPp
+         FEVEzTeZjStS+1t7JkSQnw4QbvAcGRiXPD36vmdDqL2z53HwqCZumCFBvhCXiTkfnkNf
+         IsWp4RwjRFmuEL/tWSF7wW4u4PyZu4A0563Ce89KmO2KxOLwC/0++RzIa6TxU5SJLx1w
+         +y/oNaoSdxutAbgBSQdT/CIDOcWbAHpmeWvk5vNDPrPWUB6mHYvFiWEWilxMqACqQHMu
+         um7Q==
+X-Gm-Message-State: APjAAAXPVwVi/BM/i9e1OwWPsx9fuMV6iCqLQt8bzhUhUWHhGGnFz6Jg
+        79sVYJU5gm0cMC26CzdiTl41gzpJDSDHCgq5X/fzrBMYtZsJD+4MYiUV0ITIvdZ0nVVcCS6ZZJX
+        YgbDQa27+vp7mNAdw4Q==
+X-Received: by 2002:a7b:c1d8:: with SMTP id a24mr4116979wmj.130.1579784243211;
+        Thu, 23 Jan 2020 04:57:23 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyVYtds6UetVTLFLMBOFGPQN1nJuD1UhwW6rzH5KQcdYxJ2HsTl20JBaUYOjmgyfsukEVY5Pw==
+X-Received: by 2002:a7b:c1d8:: with SMTP id a24mr4116957wmj.130.1579784242952;
+        Thu, 23 Jan 2020 04:57:22 -0800 (PST)
 Received: from omos.redhat.com (ip-46.34.233.121.o2inet.sk. [46.34.233.121])
-        by smtp.gmail.com with ESMTPSA id d8sm2821028wrx.71.2020.01.23.04.57.20
+        by smtp.gmail.com with ESMTPSA id d8sm2821028wrx.71.2020.01.23.04.57.21
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2020 04:57:20 -0800 (PST)
+        Thu, 23 Jan 2020 04:57:22 -0800 (PST)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH userspace v2 3/4] checkpolicy: remove unused te_assertions
-Date:   Thu, 23 Jan 2020 13:57:15 +0100
-Message-Id: <20200123125716.12662-4-omosnace@redhat.com>
+Subject: [PATCH userspace v2 4/4] Makefile: always build with -fno-common
+Date:   Thu, 23 Jan 2020 13:57:16 +0100
+Message-Id: <20200123125716.12662-5-omosnace@redhat.com>
 X-Mailer: git-send-email 2.24.1
 In-Reply-To: <20200123125716.12662-1-omosnace@redhat.com>
 References: <20200123125716.12662-1-omosnace@redhat.com>
@@ -66,40 +66,28 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This variable is declared in a header file, but never defined or used.
-The te_assert structure definition is only used in this declaration, so
-remove both.
+GCC 10 has it enabled by default and everything now builds OK with it,
+so add it to CFLAGS to avoid breaking the build in the future.
 
 Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- checkpolicy/checkpolicy.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/checkpolicy/checkpolicy.h b/checkpolicy/checkpolicy.h
-index 3868f1fa..f127687e 100644
---- a/checkpolicy/checkpolicy.h
-+++ b/checkpolicy/checkpolicy.h
-@@ -1,20 +1,6 @@
- #ifndef _CHECKPOLICY_H_
- #define _CHECKPOLICY_H_
+diff --git a/Makefile b/Makefile
+index c238dbc8..298cd2b7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -16,7 +16,8 @@ else
+ 		-Wstrict-prototypes \
+ 		-Wundef \
+ 		-Wunused \
+-		-Wwrite-strings
++		-Wwrite-strings \
++		-fno-common
+ endif
  
--#include <sepol/policydb/ebitmap.h>
--
--typedef struct te_assert {
--	ebitmap_t stypes;
--	ebitmap_t ttypes;
--	ebitmap_t tclasses;
--	int self;
--	sepol_access_vector_t *avp;
--	unsigned long line;
--	struct te_assert *next;
--} te_assert_t;
--
--te_assert_t *te_assertions;
--
- extern unsigned int policyvers;
- 
- #endif
+ ifneq ($(DESTDIR),)
 -- 
 2.24.1
 

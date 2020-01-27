@@ -2,82 +2,115 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC80149E4B
-	for <lists+selinux@lfdr.de>; Mon, 27 Jan 2020 03:47:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 45E45149FE5
+	for <lists+selinux@lfdr.de>; Mon, 27 Jan 2020 09:32:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726703AbgA0Cq7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 26 Jan 2020 21:46:59 -0500
-Received: from mail-qv1-f67.google.com ([209.85.219.67]:34615 "EHLO
-        mail-qv1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726545AbgA0Cq7 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 26 Jan 2020 21:46:59 -0500
-Received: by mail-qv1-f67.google.com with SMTP id o18so3826160qvf.1
-        for <selinux@vger.kernel.org>; Sun, 26 Jan 2020 18:46:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=Y1LOinoFs2snfW7au8djoHjzFkQwXsbqcHMZRvjgW0o=;
-        b=c/BosDOAskwx6K5Zj8+wZCdThQnqT6vpA1giRIs2JOV/baRRRMrBwTyHBC8Wn87YJK
-         hCdgkgkBrM9Y+Evu43un2luVFrZg1+nq5LGBk9dpfNUdrNfope/Lvn3CxeDkp69QERlM
-         e6TtY70iR2IIsDoOdzBqTQesffzWXTZlKarPbvDgk5JEFOSmogUJIlnmywMsO/n6YFUi
-         pDvQP/dveRX0XiS+sVExa0W19461AYAgvyfDsU+ZO97qX5cFSmUS9W/ayH+QhoTqCggU
-         FSJce4XU8kR9nEOUNcz0H/SBdr177qhUjrQRxutY6gKLl258xkULd6t51losC6QWkPKL
-         yQug==
+        id S1727233AbgA0Icx (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 27 Jan 2020 03:32:53 -0500
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:39568 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726260AbgA0Icx (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 27 Jan 2020 03:32:53 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1580113971;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=CwXUB4tcc2u3Coa0YrhYVO8NQzpKHpWEQqa+lBL078s=;
+        b=P8juSNPYkh5rqsy5ldepSdynwviwyZW5iwwWPT7SZRpfei76DlUYCH0+LNo0G8ZwCpTde7
+        jh9fC0xJ9WfI/jiFH7bc8+5ZvtS4sfDBNT//gu6TmKv7S4h4MMgHv0dg9p/OlgZAiWKPtP
+        K835NTp72qiLjqHKNPaX00Y2b2HN5G8=
+Received: from mail-oi1-f198.google.com (mail-oi1-f198.google.com
+ [209.85.167.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-337-eVdfZWuPO-e0hYliqcmCMg-1; Mon, 27 Jan 2020 03:32:49 -0500
+X-MC-Unique: eVdfZWuPO-e0hYliqcmCMg-1
+Received: by mail-oi1-f198.google.com with SMTP id 199so1482735oie.10
+        for <selinux@vger.kernel.org>; Mon, 27 Jan 2020 00:32:49 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=Y1LOinoFs2snfW7au8djoHjzFkQwXsbqcHMZRvjgW0o=;
-        b=GfFaawzqHv3msY2/1tXDqRxCWv17IHVuIN64S8IOAPPbZPSDuT4TU9qppXdxFR7Iix
-         OjL04RZOac6yWp1HUIOn98cXcR8Pxzdr047DxYoUj/KBN9WfF9v1zWbMAOLD6ZPC4ps2
-         C0L6cHHwah13HVY/QjItWS+E9x1m7mh+UbKWaXvx/Bl+l0onuCuCR/Hiz0ryP92I0imb
-         IeFvA3rM9uAVd8mM7UCsKOH06nEDbGSmctS8pTDlPFVMWVfjIlYYdPCmLg0cz0ffFmlv
-         QM7flbGKtmKd7J13x5mskgH7FmmHVnFd342P8GKZ6ayDFfi1AQKMVzdHDrjd28s2Y44L
-         B2LA==
-X-Gm-Message-State: APjAAAW5BVxX6kc1XoZc3aIOSg58xSZM1Yd5U6+FsW0rrWPjS/i4FJBg
-        U5btFfJPvQUJJz0uzvLIUozYFtlaiy3pEbRqPsI=
-X-Google-Smtp-Source: APXvYqyYBuLxA4+AggCi0Wp57MlT7IXFrvBIyBJppgHbG8Ww90qmqHXii/E4D2AgHzKbM6xjHscR7rVv1UvWMCP37Zo=
-X-Received: by 2002:ad4:5562:: with SMTP id w2mr14817523qvy.147.1580093218375;
- Sun, 26 Jan 2020 18:46:58 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CwXUB4tcc2u3Coa0YrhYVO8NQzpKHpWEQqa+lBL078s=;
+        b=R7Xb0ewFVDUJwcXoOSZOWLP8JlQBBlmFMcnHceCGVwsDxrsaN283rAXHQ51PVBrgMp
+         vS0da0SJn9WELtL0iP/Ft4Fr78jEQKE0lUMVAIku6Zop8P7/e68nmPOdYjaNyqppQjBQ
+         UC19JpSt31pI6dssQsLFcE8tZkif6y+4aJKixAN/z6IW0D6aLJ2ZPKNmxpdjI6VUiodt
+         mvUjEbN0ZrwLHK12EGtMkoNE5ajUH0wyfOzEI4gG8yoDXWlWKt97VR4FzJ8i8aVYQ8Xs
+         sFPVqiEyNw9Jz26RfD/INUkKPn60g6EDUBXyBw829sBrSeIp1Z9BqQ7gjSWLRYWAAg3H
+         1U8Q==
+X-Gm-Message-State: APjAAAUUUOBfqgEyVkU0VvSw6Y0j5EXPUvpKnW/i7HNO9ql1w6BKqaxE
+        EtE8ktcgJ14jHqavIVcv1/h/wqRxXDV+GstjVOI/W4oO/2240VrocssGgcjuEWJv8LjA8rOy5VK
+        QjUCg/xfwev2cLFXv/4rIdF+m3ZZKrcoglg==
+X-Received: by 2002:a9d:65da:: with SMTP id z26mr11620484oth.197.1580113968813;
+        Mon, 27 Jan 2020 00:32:48 -0800 (PST)
+X-Google-Smtp-Source: APXvYqyW/TfOd/p7mNMWaradaHcM7p0DWtIbKHdmXS1wMxXs6NLXFWiEIjw+nTrJ1+9yGq6h5gWOIGaaK6lSjItsuro=
+X-Received: by 2002:a9d:65da:: with SMTP id z26mr11620467oth.197.1580113968530;
+ Mon, 27 Jan 2020 00:32:48 -0800 (PST)
 MIME-Version: 1.0
-Reply-To: mrsanna.lbrahim02@gmail.com
-Received: by 2002:ad4:44ac:0:0:0:0:0 with HTTP; Sun, 26 Jan 2020 18:46:57
- -0800 (PST)
-From:   Miss Anna Lbrahim <mrsanna.lbrahim02@gmail.com>
-Date:   Mon, 27 Jan 2020 03:46:57 +0100
-X-Google-Sender-Auth: 3iLPrns68fXrip2lh8itp9sPTA4
-Message-ID: <CAFVOf9BGwN-qNWhbwJz-8WbcRMmJMGh48G8Wuw6EG_SPCgOQKg@mail.gmail.com>
-Subject: I NEED YOUR URGENT ASSISTANCE,
-To:     undisclosed-recipients:;
+References: <20200123204004.25600-1-jwcart2@tycho.nsa.gov> <CAFqZXNtkpV+E-Vpkeq2_2FitKQFFfu1bjDdaZFD5SA3gm9FfSg@mail.gmail.com>
+In-Reply-To: <CAFqZXNtkpV+E-Vpkeq2_2FitKQFFfu1bjDdaZFD5SA3gm9FfSg@mail.gmail.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Mon, 27 Jan 2020 09:32:37 +0100
+Message-ID: <CAFqZXNvorPP0esNoKZ_5jrVOrqibc4h1=HXc704b_rD2DbP6NQ@mail.gmail.com>
+Subject: Re: [PATCH] libsepol/cil: Fix bug in cil_copy_avrule() in extended
+ permission handling
+To:     James Carter <jwcart2@tycho.nsa.gov>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Dear Friend.
+On Fri, Jan 24, 2020 at 2:12 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> On Thu, Jan 23, 2020 at 9:39 PM James Carter <jwcart2@tycho.nsa.gov> wrote:
+> > When copying an avrule with extended permissions (permx) in
+> > cil_copy_avrule(), the check for a named permx checks the new permx
+> > instead of the old one, so the check will always fail. This leads to a
+> > segfault when trying to copy a named permx because there will be an
+> > attempt to copy the nonexistent permx struct instead of the name of
+> > the named permx.
+> >
+> > Check whether the original is a named permx instead of the new one.
+> >
+> > Signed-off-by: James Carter <jwcart2@tycho.nsa.gov>
+>
+> (OK, this looks simple enough to try out my new maintainer "powers" :)
+>
+> Acked-by: Ondrej Mosnacek <omosnace@redhat.com>
 
-My Name is Miss Anna Ibrahim. from Libya, I am 22 years old, I am in
-St.Christopher's Parish for refugee in Burkina Faso under United
-Nations High commission for Refugee ,I lost my parents in the recent
-war in  Libya, right now am in Burkina Faso,
+Now applied, thanks.
 
-please save my life i am in danger need your help in transferring my
-inheritance my father left behind for me in a Bank in Burkina Faso
-here,
+>
+> > ---
+> >  libsepol/cil/src/cil_copy_ast.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/libsepol/cil/src/cil_copy_ast.c b/libsepol/cil/src/cil_copy_ast.c
+> > index 7af00aaf..67dd8528 100644
+> > --- a/libsepol/cil/src/cil_copy_ast.c
+> > +++ b/libsepol/cil/src/cil_copy_ast.c
+> > @@ -827,7 +827,7 @@ int cil_copy_avrule(struct cil_db *db, void *data, void **copy, __attribute__((u
+> >         if (!new->is_extended) {
+> >                 cil_copy_classperms_list(orig->perms.classperms, &new->perms.classperms);
+> >         } else {
+> > -               if (new->perms.x.permx_str != NULL) {
+> > +               if (orig->perms.x.permx_str != NULL) {
+> >                         new->perms.x.permx_str = orig->perms.x.permx_str;
+> >                 } else {
+> >                         cil_permissionx_init(&new->perms.x.permx);
+> > --
+> > 2.21.1
+> >
+>
+> --
+> Ondrej Mosnacek <omosnace at redhat dot com>
+> Software Engineer, Security Technologies
+> Red Hat, Inc.
 
-I have every document for the transfer, all i need is a foreigner who
-will stand as the foreign partner to my father and beneficiary of the
-fund.
 
-The money deposited in the Bank is US10.5 MILLION UNITED STATES
-DOLLAR) I just need this fund to be transfer to your account so that I
-will come over to your country and complete my education as you know
-that my country have been in deep crisis due to the war .and I cannot
-go back there again because I have nobody again all of my family were
-killed in the war. If you are interested to save me and help me
-receive my inheritance fund please get back to me,
 
-Thanks
+--
+Ondrej Mosnacek <omosnace at redhat dot com>
+Software Engineer, Security Technologies
+Red Hat, Inc.
 
-Miss Anna Lbrahim,

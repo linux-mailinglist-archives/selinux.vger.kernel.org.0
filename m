@@ -2,14 +2,14 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3170414F295
-	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2020 20:15:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7928014F297
+	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2020 20:15:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726017AbgAaTPh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 31 Jan 2020 14:15:37 -0500
-Received: from sonic315-22.consmr.mail.bf2.yahoo.com ([74.6.134.196]:33378
+        id S1725978AbgAaTPi (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 31 Jan 2020 14:15:38 -0500
+Received: from sonic315-22.consmr.mail.bf2.yahoo.com ([74.6.134.196]:35712
         "EHLO sonic315-22.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725978AbgAaTPh (ORCPT
+        by vger.kernel.org with ESMTP id S1726001AbgAaTPh (ORCPT
         <rfc822;selinux@vger.kernel.org>); Fri, 31 Jan 2020 14:15:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1580498133; bh=+HMZ1cNkdNn0Xm67ZFi1VgVmua/C4u4lizvOrWvjHVk=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject; b=RiDD9AZ1aeOKoUyAN8wwm6zBs/vvsB0wzy8qwbDOwQvKY+r2xIunVsR0hNW1CLkKC6EH/o1XX2SSSNVQhlt8ewJV3kOL4th7L1pX5AlaEckmiPbXEfG5H7uhhZP+wGkibAHSWM8rnwvGcvHuAM0a2wjGgWdmqLUBCkaAGxt/HbIQw0ZbD1gvX5JU3FvZGU/OEeKY9q7OA2iUsmF1uLkD+/rghrc/0syjBaVnhSzEdnIYm7XRVUU8yuEsB4DSljk90onqaH+RkFTR9PpAd+Tw7MfECGLvuLfqHae3X0hkTQyJ/h5qf/ByCnfq6o5tt3EeWxmXSWwk/gCPYpeMF1eJXQ==
 X-YMail-OSG: s073JVQVM1kABIc6kXirvZe9qRP3gYn5vglZj.b3yZ5z5ara5_3vb1iR2gLe9Ug

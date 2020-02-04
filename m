@@ -2,414 +2,325 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C981F15214E
-	for <lists+selinux@lfdr.de>; Tue,  4 Feb 2020 20:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BF171521ED
+	for <lists+selinux@lfdr.de>; Tue,  4 Feb 2020 22:22:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727394AbgBDTqm (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 4 Feb 2020 14:46:42 -0500
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:40328 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727382AbgBDTqm (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 4 Feb 2020 14:46:42 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1580845600;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=WGktWXsZrsgTz9L6aeYEsqCBJ1SoWXmpX2iPZk1ZhgE=;
-        b=GPDHJA36h5sqkurxsSExvNnJBgl6ZmEZzDQBlzHRo5AbCPqmVVDhcFyjQJFxS5vHlUoRCU
-        Quog6sLg5t/ycQ062XBN/ScxCBj+EiCkt9kvC57QQB2rZ3KSPCy/7dsIi/U2ygsQQm41sn
-        Ezc1NJriWGeiQJNeFmQE5vO4F46PNR0=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-390-HQZ0lcpkNBCXZX-KHk6jzQ-1; Tue, 04 Feb 2020 14:46:17 -0500
-X-MC-Unique: HQZ0lcpkNBCXZX-KHk6jzQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 2B66ADB23
-        for <selinux@vger.kernel.org>; Tue,  4 Feb 2020 19:46:16 +0000 (UTC)
-Received: from workstation.redhat.com (ovpn-204-39.brq.redhat.com [10.40.204.39])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A65725C1B5;
-        Tue,  4 Feb 2020 19:46:14 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
-To:     selinux@vger.kernel.org
-Cc:     Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH v2] libselinux: Eliminate use of security_compute_user()
-Date:   Tue,  4 Feb 2020 20:46:03 +0100
-Message-Id: <20200204194603.525561-1-plautrba@redhat.com>
+        id S1727500AbgBDVW5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 4 Feb 2020 16:22:57 -0500
+Received: from UPDC19PA21.eemsg.mail.mil ([214.24.27.196]:54132 "EHLO
+        UPDC19PA21.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727412AbgBDVW4 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 4 Feb 2020 16:22:56 -0500
+X-EEMSG-check-017: 54514113|UPDC19PA21_ESA_OUT03.csd.disa.mil
+X-IronPort-AV: E=Sophos;i="5.70,403,1574121600"; 
+   d="scan'208";a="54514113"
+Received: from emsm-gh1-uea10.ncsc.mil ([214.29.60.2])
+  by UPDC19PA21.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 04 Feb 2020 19:06:05 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
+  s=tycho.nsa.gov; t=1580843165; x=1612379165;
+  h=subject:to:references:from:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=fAP9EuV5DuqSfaHxf25LoPW/TGXbkxduPHcOvT97caw=;
+  b=k5Lioe9NGUclPnluvT5/HFzrl+AuklfUbk0RCzJqDSqcLLn7MYp4JoRC
+   lD2xQ63FKe1frmu+SaaSNrSEvYNBi2T+he0DfO1YWUSUT1P/WA1u+xxov
+   dSeLyOHR94GOJjKjUBNP+vQlemQrjsseGJiniEN3kloUOD2JsCHMs6nvu
+   BEuJY6l53cEmGbtk3b0i2dy/aw3y/8uOwrIwf/u5y92mNM2CJQ+q31ZEv
+   a37W/J2v8m5MIipYQHQmFIROvF5dTkj7YT6XCdMI/gnLAD/Fnox/ThyCV
+   5qva77Q2mHAelqNoAXEKxicgdaW7JbOGOoYKx3bwVNcIp2zoHq55YsYeR
+   Q==;
+X-IronPort-AV: E=Sophos;i="5.70,402,1574121600"; 
+   d="scan'208";a="32673371"
+IronPort-PHdr: =?us-ascii?q?9a23=3AqQkvIxRV5FGshoMTmk9Wn8DMptpsv+yvbD5Q0Y?=
+ =?us-ascii?q?Iujvd0So/mwa6yYBSN2/xhgRfzUJnB7Loc0qyK6vymBT1LuM/Y+DBaKdoQDk?=
+ =?us-ascii?q?RD0Z1X1yUbQ+e9QXXhK/DrayFoVO9jb3RCu0+BDE5OBczlbEfTqHDhpRQbGx?=
+ =?us-ascii?q?H4KBYnbr+tQt2agMu4zf299IPOaAtUmjW9falyLBKrpgnNq8Uam4RvJrs+xx?=
+ =?us-ascii?q?fTrXZFf+tayX51KV6Ogh3w4tu88IN5/ylfpv4s+dRMXbnmc6g9ULdVECkoP2?=
+ =?us-ascii?q?cp6cPxqBLNVxGP5nwSUmUXlhpHHQ3I5wzkU5nyryX3qPNz1DGVMsPqQ780Xy?=
+ =?us-ascii?q?+i77pwRx/zlCgHLT85/3rJhcF2kalWvQiupx17w47TfYGVKP9zdb7TcN8GWW?=
+ =?us-ascii?q?ZMWNtaWCJbAoO4coABEewPM+hFpIX5vlcDrR+zCQyqCejyyDFHm2X20LUn3e?=
+ =?us-ascii?q?o/HwHI3A8uEdwAv3vbrtr6KKgcXPupzKTK1zjPc+9a1Dn/5YXObxsvoeuMXb?=
+ =?us-ascii?q?V1ccfJy0kuGR/KgU+KqYz5IT+ey+MAs2qV7uV8T+2vkXInpx9qrzizxsYjlo?=
+ =?us-ascii?q?nJhoUPxlDC7iV22pw5JdK/SE5leNOpFoZbuSKCN4ZuX88vTG5ltDw6x7Ebo5?=
+ =?us-ascii?q?K3YicHxIo9yxLCbfGMbpKG7Qj5VOmLJDd1nHdleLWiiBms6UWg0ej8VtWs0F?=
+ =?us-ascii?q?ZNsypFjsHAtnAT2BzX7ciKUud98V272TaOygDT8ftIIUEylarVLJ4h2aA/mY?=
+ =?us-ascii?q?YJvUTfHi75hEX2jKiMekUi5ueo8Pjobq/jpp+dM494kgD+MqIwlcyjGek0Lw?=
+ =?us-ascii?q?cDUmeB9em8ybHv51P1TbpUgvEsj6XVqJXaKt4apq69DQ9VyIEj6xOnAjek3t?=
+ =?us-ascii?q?UXgWMILEhZeB6ZlIXpJ1HPL+z4Dfe4mVislixryOrcMr3uBZXNMGDPkK39cr?=
+ =?us-ascii?q?Zl905c1A0zwMhE551KDrEBIfTzWlL+tdHDEB85PBK7w/z9BNV+yIweQ2SPDb?=
+ =?us-ascii?q?GdMK/Itl+I/O0vcKGwY9oupDvlK/Ujr8XrhHs9lE5VKbKlxrMLeXu4GbJgOE?=
+ =?us-ascii?q?zfbn3y1JNJCmoOvwwjXMT0h1CYFz1efXC/W+Q7/D5oJpihCNLBWYukmqDblH?=
+ =?us-ascii?q?O5AZZffHwcIkydGnfvMYOfUrEDbzzEcZwpqSANSbX0E9xp7hqprgKvjuc2Iw?=
+ =?us-ascii?q?=3D=3D?=
+X-IPAS-Result: =?us-ascii?q?A2C0AgBFvzle/wHyM5BlGwEBAQEBAQEFAQEBEQEBAwMBA?=
+ =?us-ascii?q?QGBe4F9gRhVIBIWFIQUiQOIJps4CQEBAQEBAQEBASMUAQGCE4ItAoJbOBMCE?=
+ =?us-ascii?q?AEBAQQBAQEBAQUDAQFshTcMgjspgwMBBSMEEVELCQUKAgImAgJXBgEMBgIBA?=
+ =?us-ascii?q?YJjPwEqAYJQrT5/M4VKg0GBPoEOKo18QIERJw+CXT6HW4JeBIE/AYwaBIh6Y?=
+ =?us-ascii?q?UaXZAaCP40QiS0GG5sIjmGPAI4rIoFYKwpBgWiBTglHGA2OKRcViAyGICMDM?=
+ =?us-ascii?q?IwMLYE1XwEB?=
+Received: from tarius.tycho.ncsc.mil (HELO tarius.infosec.tycho.ncsc.mil) ([144.51.242.1])
+  by EMSM-GH1-UEA10.NCSC.MIL with ESMTP; 04 Feb 2020 19:06:03 +0000
+Received: from moss-lions.infosec.tycho.ncsc.mil (moss-lions [192.168.25.4])
+        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 014J55UY021546;
+        Tue, 4 Feb 2020 14:05:13 -0500
+Subject: Re: [PATCH v2] libsepol,checkpolicy: support omitting unused initial
+ sid contexts
+To:     Stephen Smalley <sds@tycho.nsa.gov>, selinux@vger.kernel.org
+References: <20200129150104.50720-1-sds@tycho.nsa.gov>
+From:   jwcart2 <jwcart2@tycho.nsa.gov>
+Message-ID: <947974f0-2e70-d2ba-017a-954ccb9be079@tycho.nsa.gov>
+Date:   Tue, 4 Feb 2020 14:07:16 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200129150104.50720-1-sds@tycho.nsa.gov>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-get_ordered_context_list() code used to ask the kernel to compute the com=
-plete
-set of reachable contexts using /sys/fs/selinux/user aka
-security_compute_user(). This set can be so huge so that it doesn't fit i=
-nto a
-kernel page and security_compute_user() fails. Even if it doesn't fail,
-get_ordered_context_list() throws away the vast majority of the returned
-contexts because they don't match anything in
-/etc/selinux/targeted/contexts/default_contexts or
-/etc/selinux/targeted/contexts/users/
+On 1/29/20 10:01 AM, Stephen Smalley wrote:
+> Remove restrictions in libsepol and checkpolicy that required all
+> declared initial SIDs to be assigned a context.  With this patch,
+> it is possible to build and load a policy that drops the sid <sidname>
+> <context> declarations for the unused initial SIDs.  It is still
+> required to retain the sid <sidname> declarations (in the flask
+> definitions) in order to preserve the initial SID ordering/values.
+> The unused initial SIDs can be renamed, e.g. to add an unused_
+> prefix or similar, if desired, since the names used in the policy
+> are not stored in the kernel binary policy.
+> 
+> In CIL policies, the (sid ...) and (sidorder (...)) statements
+> must be left intact for compatibility but the (sidcontext ...)
+> statements for the unused initial SIDs can be omitted after this change.
+> 
+> With current kernels, if one removes an unused initial SID context
+> from policy, builds policy with this change applied and loads the
+> policy into the kernel, cat /sys/fs/selinux/initial_contexts/<sidname>
+> will show the unlabeled context.  With the kernel patch to remove unused
+> initial SIDs, the /sys/fs/selinux/initial_contexts/<sidname>
+> file will not be created for unused initial SIDs in the first place.
+> 
+> NB If an unused initial SID was assigned a context different from
+> the unlabeled context in existing policy, then it is not safe to
+> remove that initial SID context from policy and reload policy on
+> the running kernel that was booted with the original policy.  This
+> is because that kernel may have assigned that SID to various kernel
+> objects already and those objects will then be treated as having
+> the unlabeled context after the removal.  In refpolicy, examples
+> of such initial SIDs are the "fs" SID and the "sysctl" SID.  Even
+> though these initial SIDs are not directly used (in code) by the current
+> kernel, their contexts are being applied to filesystems and sysctl files by
+> policy and therefore the SIDs are being assigned to objects.
+> 
+> NB The "sysctl" SID was in use by the kernel up until
+> commit 8e6c96935fcc1ed3dbebc96fddfef3f2f2395afc ("security/selinux:
+> fix /proc/sys/ labeling) circa v2.6.39.  Removing its context from
+> policy will cause sysctl(2) or /proc/sys accesses to end up
+> performing permission checks against the unlabeled context and
+> likely encounter denials for kernels < 2.6.39.
+> 
+> Signed-off-by: Stephen Smalley <sds@tycho.nsa.gov>
 
-get_ordered_context_list() is rewritten to compute set of contexts based =
-on
-/etc/selinux/targeted/contexts/users/ and
-/etc/selinux/targeted/contexts/default_contexts files and to return only =
-valid
-contexts, using security_check_context(), from this set.
+Acked-by: James Carter <jwcart2@tycho.nsa.gov>
 
-Fixes: https://github.com/SELinuxProject/selinux/issues/28
+> ---
+> v2 issues informational messages about missing initial SID contexts
+> so that policy developers can detect unintended inconsistencies,
+> and ensures that the entries are stripped before writing kernel policy
+> rather than accepting them when reading.  Something isn't quite right
+> here though; I see the messages when compiling monolithic policy with
+> checkpolicy but not with a modular build (even upon make validate) or
+> semodule -v -i of a modified base module that removes some initial
+> SID contexts.
+> 
+>   checkpolicy/test/dismod.c     |  4 ++--
+>   libsepol/cil/src/cil_binary.c |  4 +++-
+>   libsepol/cil/src/cil_verify.c |  3 +--
+>   libsepol/src/expand.c         | 24 ++++++++++++------------
+>   libsepol/src/policydb.c       |  4 ----
+>   libsepol/src/write.c          | 22 ++++++++++++++++++++--
+>   6 files changed, 38 insertions(+), 23 deletions(-)
+> 
+> diff --git a/checkpolicy/test/dismod.c b/checkpolicy/test/dismod.c
+> index 8d6be2ff9522..3408e9b6b767 100644
+> --- a/checkpolicy/test/dismod.c
+> +++ b/checkpolicy/test/dismod.c
+> @@ -444,8 +444,8 @@ void display_initial_sids(policydb_t * p, FILE * fp)
+>   		user = p->p_user_val_to_name[cur->context[0].user - 1];
+>   		role = p->p_role_val_to_name[cur->context[0].role - 1];
+>   		type = p->p_type_val_to_name[cur->context[0].type - 1];
+> -		fprintf(fp, "\t%s: sid %d, context %s:%s:%s\n",
+> -			cur->u.name, cur->sid[0], user, role, type);
+> +		fprintf(fp, "\tsid %d, context %s:%s:%s\n",
+> +			cur->sid[0], user, role, type);
+>   	}
+>   #if 0
+>   	fprintf(fp, "Policy Initial SIDs:\n");
+> diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+> index f8e20d32f9f1..e52b6679c289 100644
+> --- a/libsepol/cil/src/cil_binary.c
+> +++ b/libsepol/cil/src/cil_binary.c
+> @@ -3067,9 +3067,11 @@ int cil_sidorder_to_policydb(policydb_t *pdb, const struct cil_db *db)
+>   		struct cil_sid *cil_sid = (struct cil_sid*)curr->data;
+>   		struct cil_context *cil_context = cil_sid->context;
+>   
+> +		/* even if no context, we must preserve initial SID values */
+> +		count++;
+> +
+>   		if (cil_context != NULL) {
+>   			ocontext_t *new_ocon = cil_add_ocontext(&pdb->ocontexts[OCON_ISID], &tail);
+> -			count++;
+>   			new_ocon->sid[0] = count;
+>   			new_ocon->u.name = cil_strdup(cil_sid->datum.fqn);
+>   			rc = __cil_context_to_sepol_context(pdb, cil_context, &new_ocon->context[0]);
+> diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
+> index 018514dc1bb9..d1a6538be651 100644
+> --- a/libsepol/cil/src/cil_verify.c
+> +++ b/libsepol/cil/src/cil_verify.c
+> @@ -439,8 +439,7 @@ int __cil_verify_initsids(struct cil_list *sids)
+>   		struct cil_sid *sid = i->data;
+>   		if (sid->context == NULL) {
+>   			struct cil_tree_node *node = sid->datum.nodes->head->data;
+> -			cil_tree_log(node, CIL_ERR, "No context assigned to SID %s declared",sid->datum.name);
+> -			rc = SEPOL_ERR;
+> +			cil_tree_log(node, CIL_INFO, "No context assigned to SID %s, omitting from policy",sid->datum.name);
+>   		}
+>   	}
+>   
+> diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
+> index 796121cf5ad8..5738b598ee39 100644
+> --- a/libsepol/src/expand.c
+> +++ b/libsepol/src/expand.c
+> @@ -2093,6 +2093,12 @@ static int ocontext_copy_xen(expand_state_t *state)
+>   	for (i = 0; i < OCON_NUM; i++) {
+>   		l = NULL;
+>   		for (c = state->base->ocontexts[i]; c; c = c->next) {
+> +			if (i == OCON_XEN_ISID && !c->context[0].user) {
+> +				INFO(state->handle,
+> +				     "No context assigned to SID %s, omitting from policy",
+> +				     c->u.name);
+> +				continue;
+> +			}
+>   			n = malloc(sizeof(ocontext_t));
+>   			if (!n) {
+>   				ERR(state->handle, "Out of memory!");
+> @@ -2106,12 +2112,6 @@ static int ocontext_copy_xen(expand_state_t *state)
+>   			l = n;
+>   			switch (i) {
+>   			case OCON_XEN_ISID:
+> -				if (c->context[0].user == 0) {
+> -					ERR(state->handle,
+> -					    "Missing context for %s initial sid",
+> -					    c->u.name);
+> -					return -1;
+> -				}
+>   				n->sid[0] = c->sid[0];
+>   				break;
+>   			case OCON_XEN_PIRQ:
+> @@ -2159,6 +2159,12 @@ static int ocontext_copy_selinux(expand_state_t *state)
+>   	for (i = 0; i < OCON_NUM; i++) {
+>   		l = NULL;
+>   		for (c = state->base->ocontexts[i]; c; c = c->next) {
+> +			if (i == OCON_ISID && !c->context[0].user) {
+> +				INFO(state->handle,
+> +				     "No context assigned to SID %s, omitting from policy",
+> +				     c->u.name);
+> +				continue;
+> +			}
+>   			n = malloc(sizeof(ocontext_t));
+>   			if (!n) {
+>   				ERR(state->handle, "Out of memory!");
+> @@ -2172,12 +2178,6 @@ static int ocontext_copy_selinux(expand_state_t *state)
+>   			l = n;
+>   			switch (i) {
+>   			case OCON_ISID:
+> -				if (c->context[0].user == 0) {
+> -					ERR(state->handle,
+> -					    "Missing context for %s initial sid",
+> -					    c->u.name);
+> -					return -1;
+> -				}
+>   				n->sid[0] = c->sid[0];
+>   				break;
+>   			case OCON_FS:	/* FALLTHROUGH */
+> diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
+> index 745e546baa3a..5b289a523a94 100644
+> --- a/libsepol/src/policydb.c
+> +++ b/libsepol/src/policydb.c
+> @@ -1610,10 +1610,6 @@ int policydb_load_isids(policydb_t * p, sidtab_t * s)
+>   
+>   	head = p->ocontexts[OCON_ISID];
+>   	for (c = head; c; c = c->next) {
+> -		if (!c->context[0].user) {
+> -			ERR(NULL, "SID %s was never defined", c->u.name);
+> -			return -1;
+> -		}
+>   		if (sepol_sidtab_insert(s, c->sid[0], &c->context[0])) {
+>   			ERR(NULL, "unable to load initial SID %s", c->u.name);
+>   			return -1;
+> diff --git a/libsepol/src/write.c b/libsepol/src/write.c
+> index 7e634510d038..1fd6a16a248b 100644
+> --- a/libsepol/src/write.c
+> +++ b/libsepol/src/write.c
+> @@ -1293,8 +1293,15 @@ static int ocontext_write_xen(struct policydb_compat_info *info, policydb_t *p,
+>   	ocontext_t *c;
+>   	for (i = 0; i < info->ocon_num; i++) {
+>   		nel = 0;
+> -		for (c = p->ocontexts[i]; c; c = c->next)
+> +		for (c = p->ocontexts[i]; c; c = c->next) {
+> +			if (i == OCON_XEN_ISID && !c->context[0].user) {
+> +				INFO(fp->handle,
+> +				     "No context assigned to SID %s, omitting from policy",
+> +				     c->u.name);
+> +				continue;
+> +			}
+>   			nel++;
+> +		}
+>   		buf[0] = cpu_to_le32(nel);
+>   		items = put_entry(buf, sizeof(uint32_t), 1, fp);
+>   		if (items != 1)
+> @@ -1302,6 +1309,8 @@ static int ocontext_write_xen(struct policydb_compat_info *info, policydb_t *p,
+>   		for (c = p->ocontexts[i]; c; c = c->next) {
+>   			switch (i) {
+>   			case OCON_XEN_ISID:
+> +				if (!c->context[0].user)
+> +					break;
+>   				buf[0] = cpu_to_le32(c->sid[0]);
+>   				items = put_entry(buf, sizeof(uint32_t), 1, fp);
+>   				if (items != 1)
+> @@ -1392,8 +1401,15 @@ static int ocontext_write_selinux(struct policydb_compat_info *info,
+>   	ocontext_t *c;
+>   	for (i = 0; i < info->ocon_num; i++) {
+>   		nel = 0;
+> -		for (c = p->ocontexts[i]; c; c = c->next)
+> +		for (c = p->ocontexts[i]; c; c = c->next) {
+> +			if (i == OCON_ISID && !c->context[0].user) {
+> +				INFO(fp->handle,
+> +				     "No context assigned to SID %s, omitting from policy",
+> +				     c->u.name);
+> +				continue;
+> +			}
+>   			nel++;
+> +		}
+>   		buf[0] = cpu_to_le32(nel);
+>   		items = put_entry(buf, sizeof(uint32_t), 1, fp);
+>   		if (items != 1)
+> @@ -1401,6 +1417,8 @@ static int ocontext_write_selinux(struct policydb_compat_info *info,
+>   		for (c = p->ocontexts[i]; c; c = c->next) {
+>   			switch (i) {
+>   			case OCON_ISID:
+> +				if (!c->context[0].user)
+> +					break;
+>   				buf[0] = cpu_to_le32(c->sid[0]);
+>   				items = put_entry(buf, sizeof(uint32_t), 1, fp);
+>   				if (items != 1)
+> 
 
-Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
----
 
-This is second version of https://patchwork.kernel.org/patch/10936883/ up=
-dated
-based on comments in the thread:
-
-- fixed indentation
-- error when the size of partial context is too big
-- dropped two free(usercon_str)
-- parsing continues only if the partial context can't be parsed
-
-Tested on Fedora using python3 and atd:
-
-Before:
-
-# python3
->>> import selinux
->>> selinux.get_ordered_context_list("staff_u", "system_u:system_r:crond_=
-t:s0-s0:c0.c1023")
-['staff_u:unconfined_r:unconfined_t:s0']
-
-[staff@localhost ~]$ at now + 1 minutes <<EOF
-id -Z > /tmp/id-Z
-EOF
-[staff@localhost ~]$ cat /tmp/id-Z
-staff_u:unconfined_r:unconfined_t:s0
-
-
-After:
->>> selinux.get_ordered_context_list("staff_u", "system_u:system_r:crond_=
-t:s0-s0:c0.c1023")
-['staff_u:staff_r:staff_t:s0-s0:c0.c1023', 'staff_u:staff_r:cronjob_t:s0-=
-s0:c0.c1023', 'staff_u:staff_r:staff_t:s0-s0:c0.c1023', 'staff_u:sysadm_r=
-:sysadm_t:s0-s0:c0.c1023', 'staff_u:unconfined_r:unconfined_t:s0-s0:c0.c1=
-023', 'staff_u:staff_r:cronjob_t:s0-s0:c0.c1023', 'staff_u:sysadm_r:cronj=
-ob_t:s0-s0:c0.c1023', 'staff_u:system_r:system_cronjob_t:s0-s0:c0.c1023',=
- 'staff_u:unconfined_r:unconfined_cronjob_t:s0-s0:c0.c1023']
-
-[staff@localhost ~]$ cat /tmp/id-Z=20
-staff_u:staff_r:staff_t:s0-s0:c0.c1023
-
- libselinux/src/get_context_list.c | 197 +++++++++++-------------------
- 1 file changed, 74 insertions(+), 123 deletions(-)
-
-diff --git a/libselinux/src/get_context_list.c b/libselinux/src/get_conte=
-xt_list.c
-index 689e46589f30..a3dcaea2ffc4 100644
---- a/libselinux/src/get_context_list.c
-+++ b/libselinux/src/get_context_list.c
-@@ -2,6 +2,7 @@
- #include <errno.h>
- #include <stdio.h>
- #include <stdio_ext.h>
-+#include <stdint.h>
- #include <stdlib.h>
- #include <string.h>
- #include <ctype.h>
-@@ -114,61 +115,25 @@ int get_default_context(const char *user,
- 	return 0;
- }
-=20
--static int find_partialcon(char ** list,
--			   unsigned int nreach, char *part)
--{
--	const char *conrole, *contype;
--	char *partrole, *parttype, *ptr;
--	context_t con;
--	unsigned int i;
--
--	partrole =3D part;
--	ptr =3D part;
--	while (*ptr && !isspace(*ptr) && *ptr !=3D ':')
--		ptr++;
--	if (*ptr !=3D ':')
--		return -1;
--	*ptr++ =3D 0;
--	parttype =3D ptr;
--	while (*ptr && !isspace(*ptr) && *ptr !=3D ':')
--		ptr++;
--	*ptr =3D 0;
--
--	for (i =3D 0; i < nreach; i++) {
--		con =3D context_new(list[i]);
--		if (!con)
--			return -1;
--		conrole =3D context_role_get(con);
--		contype =3D context_type_get(con);
--		if (!conrole || !contype) {
--			context_free(con);
--			return -1;
--		}
--		if (!strcmp(conrole, partrole) && !strcmp(contype, parttype)) {
--			context_free(con);
--			return i;
--		}
--		context_free(con);
--	}
--
--	return -1;
--}
--
--static int get_context_order(FILE * fp,
-+static int get_context_user(FILE * fp,
- 			     char * fromcon,
--			     char ** reachable,
--			     unsigned int nreach,
--			     unsigned int *ordering, unsigned int *nordered)
-+			     const char * user,
-+			     char ***reachable,
-+			     unsigned int *nreachable)
- {
- 	char *start, *end =3D NULL;
- 	char *line =3D NULL;
--	size_t line_len =3D 0;
-+	size_t line_len =3D 0, usercon_len;
-+	size_t user_len =3D strlen(user);
- 	ssize_t len;
- 	int found =3D 0;
--	const char *fromrole, *fromtype;
-+	const char *fromrole, *fromtype, *fromlevel;
- 	char *linerole, *linetype;
--	unsigned int i;
-+	char **new_reachable =3D NULL;
-+	char *usercon_str;
- 	context_t con;
-+	context_t usercon;
-+
- 	int rc;
-=20
- 	errno =3D -EINVAL;
-@@ -180,6 +145,7 @@ static int get_context_order(FILE * fp,
- 		return -1;
- 	fromrole =3D context_role_get(con);
- 	fromtype =3D context_type_get(con);
-+	fromlevel =3D context_range_get(con);
- 	if (!fromrole || !fromtype) {
- 		context_free(con);
- 		return -1;
-@@ -243,23 +209,66 @@ static int get_context_order(FILE * fp,
- 		if (*end)
- 			*end++ =3D 0;
-=20
--		/* Check for a match in the reachable list. */
--		rc =3D find_partialcon(reachable, nreach, start);
--		if (rc < 0) {
--			/* No match, skip it. */
-+		/* Check whether a new context is valid */
-+		if (SIZE_MAX - user_len < strlen(start) + 1) {
-+			fprintf(stderr, "%s: one of partial contexts is too big\n", __FUNCTIO=
-N__);
-+			errno =3D EINVAL;
-+			rc =3D -1;
-+			goto out;
-+		}
-+		usercon_len =3D user_len + strlen(start) + 1;
-+		usercon_str =3D malloc(usercon_len);
-+		if (!usercon_str) {
-+			rc =3D -1;
-+			goto out;
-+		}
-+
-+		/* set range from fromcon in the new usercon */
-+		snprintf(usercon_str, usercon_len - 1, "%s:%s", user, start);
-+		usercon =3D context_new(usercon_str);
-+		free(usercon_str);
-+		if (!usercon) {
-+			if (errno !=3D EINVAL) {
-+				rc =3D -1;
-+				goto out;
-+			}
-+			fprintf(stderr,
-+				"%s: can't create a context from %s, skipping\n",
-+				__FUNCTION__, usercon_str);
- 			start =3D end;
- 			continue;
- 		}
--
--		/* If a match is found and the entry is not already ordered
--		   (e.g. due to prior match in prior config file), then set
--		   the ordering for it. */
--		i =3D rc;
--		if (ordering[i] =3D=3D nreach)
--			ordering[i] =3D (*nordered)++;
-+		context_range_set(usercon, fromlevel);
-+		usercon_str =3D context_str(usercon);
-+
-+		if (security_check_context(usercon_str) =3D=3D 0) {
-+			if (*nreachable =3D=3D 0) {
-+				new_reachable =3D malloc(2 * sizeof(char *));
-+				if (!new_reachable) {
-+					context_free(usercon);
-+					rc =3D -1;
-+					goto out;
-+				}
-+			} else {
-+				new_reachable =3D realloc(*reachable, (*nreachable + 2) * sizeof(cha=
-r *));
-+				if (!new_reachable) {
-+					context_free(usercon);
-+					rc =3D -1;
-+					goto out;
-+				}
-+			}
-+			new_reachable[*nreachable] =3D strdup(usercon_str);
-+			if (new_reachable[*nreachable] =3D=3D NULL) {
-+				rc =3D -1;
-+				goto out;
-+			}
-+			new_reachable[*nreachable + 1] =3D 0;
-+			*reachable =3D new_reachable;
-+			*nreachable +=3D 1;
-+		}
-+		context_free(usercon);
- 		start =3D end;
- 	}
--
- 	rc =3D 0;
-=20
-       out:
-@@ -313,21 +322,6 @@ static int get_failsafe_context(const char *user, ch=
-ar ** newcon)
- 	return 0;
- }
-=20
--struct context_order {
--	char * con;
--	unsigned int order;
--};
--
--static int order_compare(const void *A, const void *B)
--{
--	const struct context_order *c1 =3D A, *c2 =3D B;
--	if (c1->order < c2->order)
--		return -1;
--	else if (c1->order > c2->order)
--		return 1;
--	return strcmp(c1->con, c2->con);
--}
--
- int get_ordered_context_list_with_level(const char *user,
- 					const char *level,
- 					char * fromcon,
-@@ -395,11 +389,8 @@ int get_ordered_context_list(const char *user,
- 			     char *** list)
- {
- 	char **reachable =3D NULL;
--	unsigned int *ordering =3D NULL;
--	struct context_order *co =3D NULL;
--	char **ptr;
- 	int rc =3D 0;
--	unsigned int nreach =3D 0, nordered =3D 0, freefrom =3D 0, i;
-+	unsigned nreachable =3D 0, freefrom =3D 0;
- 	FILE *fp;
- 	char *fname =3D NULL;
- 	size_t fname_len;
-@@ -413,23 +404,6 @@ int get_ordered_context_list(const char *user,
- 		freefrom =3D 1;
- 	}
-=20
--	/* Determine the set of reachable contexts for the user. */
--	rc =3D security_compute_user(fromcon, user, &reachable);
--	if (rc < 0)
--		goto failsafe;
--	nreach =3D 0;
--	for (ptr =3D reachable; *ptr; ptr++)
--		nreach++;
--	if (!nreach)
--		goto failsafe;
--
--	/* Initialize ordering array. */
--	ordering =3D malloc(nreach * sizeof(unsigned int));
--	if (!ordering)
--		goto failsafe;
--	for (i =3D 0; i < nreach; i++)
--		ordering[i] =3D nreach;
--
- 	/* Determine the ordering to apply from the optional per-user config
- 	   and from the global config. */
- 	fname_len =3D strlen(user_contexts_path) + strlen(user) + 2;
-@@ -440,8 +414,8 @@ int get_ordered_context_list(const char *user,
- 	fp =3D fopen(fname, "re");
- 	if (fp) {
- 		__fsetlocking(fp, FSETLOCKING_BYCALLER);
--		rc =3D get_context_order(fp, fromcon, reachable, nreach, ordering,
--				       &nordered);
-+		rc =3D get_context_user(fp, fromcon, user, &reachable, &nreachable);
-+
- 		fclose(fp);
- 		if (rc < 0 && errno !=3D ENOENT) {
- 			fprintf(stderr,
-@@ -454,8 +428,7 @@ int get_ordered_context_list(const char *user,
- 	fp =3D fopen(selinux_default_context_path(), "re");
- 	if (fp) {
- 		__fsetlocking(fp, FSETLOCKING_BYCALLER);
--		rc =3D get_context_order(fp, fromcon, reachable, nreach, ordering,
--				       &nordered);
-+		rc =3D get_context_user(fp, fromcon, user, &reachable, &nreachable);
- 		fclose(fp);
- 		if (rc < 0 && errno !=3D ENOENT) {
- 			fprintf(stderr,
-@@ -463,40 +436,18 @@ int get_ordered_context_list(const char *user,
- 				__FUNCTION__, selinux_default_context_path());
- 			/* Fall through */
- 		}
--		rc =3D 0;
-+		rc =3D nreachable;
- 	}
-=20
--	if (!nordered)
-+	if (!nreachable)
- 		goto failsafe;
-=20
--	/* Apply the ordering. */
--	co =3D malloc(nreach * sizeof(struct context_order));
--	if (!co)
--		goto failsafe;
--	for (i =3D 0; i < nreach; i++) {
--		co[i].con =3D reachable[i];
--		co[i].order =3D ordering[i];
--	}
--	qsort(co, nreach, sizeof(struct context_order), order_compare);
--	for (i =3D 0; i < nreach; i++)
--		reachable[i] =3D co[i].con;
--	free(co);
--
--	/* Only report the ordered entries to the caller. */
--	if (nordered <=3D nreach) {
--		for (i =3D nordered; i < nreach; i++)
--			free(reachable[i]);
--		reachable[nordered] =3D NULL;
--		rc =3D nordered;
--	}
--
-       out:
- 	if (rc > 0)
- 		*list =3D reachable;
- 	else
- 		freeconary(reachable);
-=20
--	free(ordering);
- 	if (freefrom)
- 		freecon(fromcon);
-=20
---=20
-2.24.1
-
+-- 
+James Carter <jwcart2@tycho.nsa.gov>
+National Security Agency

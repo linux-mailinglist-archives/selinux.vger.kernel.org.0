@@ -2,177 +2,147 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 214B3151F08
-	for <lists+selinux@lfdr.de>; Tue,  4 Feb 2020 18:14:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A92B15215C
+	for <lists+selinux@lfdr.de>; Tue,  4 Feb 2020 20:59:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727379AbgBDROw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 4 Feb 2020 12:14:52 -0500
-Received: from sonic307-15.consmr.mail.ne1.yahoo.com ([66.163.190.38]:38832
-        "EHLO sonic307-15.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727310AbgBDROw (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 4 Feb 2020 12:14:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1580836490; bh=B3pWg7wFR2gR8/KuQNCSOT02AyMV+tggSbmOljHhI1M=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject; b=ShmKIUH2xtCYRBpj7nwzzor3FP+ycjKGB7QMepaRAP85889+OX2OEtVsWCOYfo5E8h058HXgbL8HoS5k6pHsIVEmdGCQXYXP+TNskT9bz0JTa91m6Nxp9Pz53movHEdAXhYuYTdZaCDyxkq7ktizx5FuEFTJKKZ9sU5fSkW1g3XZxkzKySGYVSHtJ7377MAz8w1nCD0WjG3JpcfFZEJFSzwuEVSgt4v4zssvB6R6K1jlH8H/ouC8+mFnfznx0tEgvR28i1Vk/H/vxpaBQo8L5cNpPbD5+dcE0dSe8UtIQP0KqikttE/cr78XwAVb/27giUq8PitTizz9hQGeJi6cBw==
-X-YMail-OSG: i_Ls9QIVM1lQbZ5hqz.JR2ut88dWBdFDNoZsxIC5Z7TjiRqIbMlv70s5HNlmnkv
- JxDEExebpn68ep3geAGIN5h5VSrYB4XnDn1LLPdqBs6riVtJtiE8nERfwTzPIv0bzmG_ULYAl3da
- b1a1tLVLWglofzruxoX8mjKx.mewOfjVjEj1d5WtI6rLe9qpYiC.2abONprmruxBM5sroNn.lc_c
- bvbWWrE_V9W3mn8VSbSmNBiQiQbCQtBfm4a_mbBqHfG3W3uxZW9u8rX1hNAtf5TTItNTeedC0Q7Z
- jl5ITGd9I55PO7.u1ACH7R1Dq1nwS9W1W6ExxC7cZ8OEqwf_PRXcKNpk9I5V0MXeTajGevP4hovq
- WWoTazE4VrPb9Xy_zbD7BEib9kenRzGgisGktVXNqgoV_VUGpGjpHXzReox3dUcfi5.gMyNimq7a
- XbmlgXp2FgOzXh4v5N_6guAwnsJlTK01m61JMG1RyiBKsLtovamp2pxeUT17vED2Ltx2Vd.iDjkK
- oC81IjFrlNihi.PwtGNkG9jEpJ.MQI0pzus.wQ5NdDYZ1US_yW79_0dG5TwWtFoXAnil3p13U54P
- xoH5uhBEmH4FhyhdHj4MlDmx1KP1.wM7.RUvV.yk0bprRlmgLaogNnH8ZnGuiXyXBYL6zmmaM.rL
- 78_lvTAtc3LI68vS_QnIRPAnMR2pMF1T8SxwUSq6EhXTQRixP7y7miY2VQu37ae6k6_hNlHXWGsT
- uZ_jbOV47JT2IpCr1z81IjC2ri.OgArrPKw.ON1Csgyapg3aNlGYfuDoBP06beLodCj1cQGAS6Ei
- mFdxVo4sW3hV.OmR.1TclnKspSzGE41cLAktFYGiaW_GRRBk5BNs1jOoMpVYucRRNoNdxCHSllxB
- hyQnus70vfALcy7nxdbO.zU1bNmsG59zc3F2Lca.PNVZBd38m3wATtxjXdeAzlkng4WEPzm2eTVJ
- cAkzzwGPKeDB.v2FKAj5Ff.TdTdH87BAozy4XUMKr_SjwaUPfsDAq5Bn6kxez4W0tHpIamhr.Qub
- vbWz.wgok0.KR9o498yEt.Mc3Qoj.RZRuxSf6LUfWGoUS6PusvPMvr0U.Xa1CCMNF20sFoAa_1e5
- tZWL2XFbNYbL3mGo_9x7OdiG_3OeboRnyB3csGmhHSywDZ6oPh25qrQdhV_KqtIwkbsNaha2n3Hj
- nDHqekBSbjs4TKfwi_m2NBLCEe2woGkGArRpv08LxI63Ait9XGKcMGPd9HtvUFuy0OmJ1IvqNdl8
- CIlzEe8JBmJcE0_J8QUJWfvvwVo2bR97LzUEiq349vHTVh3bNU8A_kj1cDwhyWkPMtc_BWn.lWH_
- RXjVbuyC51iHwvg.4.fyA3m9NIWPm1jb6oQFhwlWYumGFjvusEAMYi64z1qODtVmUqVhzqtR_o.F
- PVAaOz2_IJdfeLb6MN4IvmudUYgLvD9I-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 4 Feb 2020 17:14:50 +0000
-Received: by smtp427.mail.ne1.yahoo.com (Oath Hermes SMTP Server) with ESMTPA ID 26caaa4df940cfe3c62d5a7f9873f224;
-          Tue, 04 Feb 2020 17:14:46 +0000 (UTC)
-Subject: Re: [PATCH v14 22/23] LSM: Add /proc attr entry for full LSM context
-To:     Stephen Smalley <sds@tycho.nsa.gov>, casey.schaufler@intel.com,
-        jmorris@namei.org, linux-security-module@vger.kernel.org,
+        id S1727486AbgBDT7j (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 4 Feb 2020 14:59:39 -0500
+Received: from UPDC19PA22.eemsg.mail.mil ([214.24.27.197]:17241 "EHLO
+        UPDC19PA22.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727450AbgBDT7j (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 4 Feb 2020 14:59:39 -0500
+X-EEMSG-check-017: 54303445|UPDC19PA22_ESA_OUT04.csd.disa.mil
+X-IronPort-AV: E=Sophos;i="5.70,403,1574121600"; 
+   d="scan'208";a="54303445"
+Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
+  by UPDC19PA22.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 04 Feb 2020 18:21:54 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
+  s=tycho.nsa.gov; t=1580840515; x=1612376515;
+  h=subject:to:references:from:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=0chuA4uokmmPLbXLFOtvpyRRhJVnAfRUJP1xRrLxnhw=;
+  b=B5x2t86zAPMTVYW+Q2HxtuD8NjN9FFloJ50GaLpBGTGrmkDGfNBCbIH4
+   ZmtbsBJID77IRl+/VIbI99rse3NBj7a+xl3y6hQUg88u5qL/aV1eNu2HU
+   DBPG8nmsgJA6fYiRj3JxybSf9+ZnnL5hNRmxFabqGY/qprWS2SU6IHeLM
+   OqQdAOdoL5MJKsBWks7ypOtQuhL7qh92KZQzLqc0Sy50AzNyxk272W97R
+   wG76AQpiCWFnpdIHuKTMosraF7kJKPT2060hp1YgJ2K2g9QH7X46TmzBL
+   Fde5HkSWE6ftLkBnh3upMSiybEaLSLDZufFKIKTDMp9nTpKRZ/gaz05Bf
+   A==;
+X-IronPort-AV: E=Sophos;i="5.70,402,1574121600"; 
+   d="scan'208";a="38660833"
+IronPort-PHdr: =?us-ascii?q?9a23=3AVh8hzx8wE4Ua4v9uRHKM819IXTAuvvDOBiVQ1K?=
+ =?us-ascii?q?B21OwcTK2v8tzYMVDF4r011RmVBNmdt6MP0rKN++C4ACpcuM3H6ChDOLV3FD?=
+ =?us-ascii?q?Y9wf0MmAIhBMPXQWbaF9XNKxIAIcJZSVV+9Gu6O0UGUOz3ZlnVv2HgpWVKQk?=
+ =?us-ascii?q?a3OgV6PPn6FZDPhMqrye+y54fTYwJVjzahfL9+Nhq7oRjeu8UMjoZvLqk9xg?=
+ =?us-ascii?q?bVrnZGZu9awX9kKU+Jkxvz+8u98oRv/zhMt/4k6sVNTbj0c6MkQLJCET8oKX?=
+ =?us-ascii?q?o15MrltRnCSQuA+H4RWXgInxRLHgbI8gj0Uo/+vSXmuOV93jKaPdDtQrAvRT?=
+ =?us-ascii?q?ui9aZrRwT2hyoBKjU07XvYis10jKJcvRKhuxlyyJPabY2JKPZzeL7WcMgETm?=
+ =?us-ascii?q?RdQMleSy1BApu9b4QRCeoBIf1YpJT5q1cXsBeyGRWgCObpxzBGnH/22bAx3f?=
+ =?us-ascii?q?onHw/IwQcsG8sCvXTQodnwMqoZTOK7w7TSzTjbcv1Yxzn95ojLfB4vr/6DUr?=
+ =?us-ascii?q?B/ftbex0Q0CwPIjE+dpZD5Mz6b1OkAtXWQ4ep6VeKojm4qsxx/oiSxycc0io?=
+ =?us-ascii?q?nGmIQVwU3Z+yV82ok1Idm4R1B7YNW5F5ZQrDyVN5BtT8M+Q2BnpCY6yroctZ?=
+ =?us-ascii?q?69ZygF0o4rxxHYa/yZaoWF5A/oWuWJITpgmX5od72yiwyy/ES90OHwSMa53E?=
+ =?us-ascii?q?hQoiZYlNTHq2oD2AbJ6sedT/tw5kKh2TGS2A/N8uxEOkU0lbbDK54m374wio?=
+ =?us-ascii?q?IfsUTdES/yn0X7lLOWeV8++uip9uTnea/qpp6aN496jQH+KbohldClDeQkMg?=
+ =?us-ascii?q?kBQ2ib+eOm2L3l4UL5W6lFguczkqnYtJDWPcUbpqinDA9Jyosv9hmyAji83N?=
+ =?us-ascii?q?kYgHULNkxJdR2Zg4TzJl3COPX4Au2+g1Sonjdr3ffGPrj5D5XWM3fDi6zsfa?=
+ =?us-ascii?q?p96kFAyAozyspT55RPCr4bOv7zVUjxtMLAAh8jLwO02/rnCMl61o4GQ2KPA7?=
+ =?us-ascii?q?OWMKPIvl+S++0gO/WDa5cVuDnnKvgl4eDhjWQilFAGYamp3J0XaGymEfR8JU?=
+ =?us-ascii?q?WWf2bsjs0dHmcNuwo0VPbqh0GaUT5Pe3ayWLox5iolB4KiDIfDQJ2tgbOa0S?=
+ =?us-ascii?q?elEZ1ZeHpGBkqPEXj2bYWEXekDaCaILs9miDwEWuvpd4h07xCltAbgx/JHJ+?=
+ =?us-ascii?q?vS9zZQ4Yji39h8/eHkniYy/D1yAt+12X2MSX15hGUFW3k926Up5QRmx1OC17?=
+ =?us-ascii?q?Voq+JXGMYV5P5TVAo+c5nGwL9UEdf3Dzndc8+JRVDuedCvBTU8X5pl2NMVS1?=
+ =?us-ascii?q?psENWlyBbY1mylBKFDxO/DP4A97q+Jhyu5HM160XuTkfB83lQ=3D?=
+X-IPAS-Result: =?us-ascii?q?A2DZAABatTle/wHyM5BlGwEBAQEBAQEFAQEBEQEBAwMBA?=
+ =?us-ascii?q?QGBe4F9gRhVIBIqhBSJA4ZmAQEBBoE3iW+RSQkBAQEBAQEBAQEjFAEBhEACg?=
+ =?us-ascii?q?ls4EwIQAQEBBAEBAQEBBQMBAWyFNwyCOykBgwEBAQEBAgEjFVELGAICJgICV?=
+ =?us-ascii?q?wYBDAgBAYJjPwGCVgUgrFh1gTKFSoM+gT6BDiqMPHmBB4E4D4IoNT6BDoE9h?=
+ =?us-ascii?q?RCCXgSNVIllRnuWaYJFgk6Ee450BhuDQJdIjmGdKyKBWCsIAhgIIQ+DJwlHG?=
+ =?us-ascii?q?A2TRIQUhSkjAzCOTQEB?=
+Received: from tarius.tycho.ncsc.mil (HELO tarius.infosec.tycho.ncsc.mil) ([144.51.242.1])
+  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 04 Feb 2020 18:21:52 +0000
+Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
+        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 014IL1N7270121;
+        Tue, 4 Feb 2020 13:21:02 -0500
+Subject: Re: [RFC PATCH 0/1] selinux-testsuite: Test all mount option context
+ types
+To:     Richard Haines <richard_c_haines@btinternet.com>,
         selinux@vger.kernel.org
-Cc:     keescook@chromium.org, john.johansen@canonical.com,
-        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com,
-        Casey Schaufler <casey@schaufler-ca.com>
-References: <20200124002306.3552-1-casey@schaufler-ca.com>
- <20200124002306.3552-23-casey@schaufler-ca.com>
- <1de8338a-9c1c-c13b-16f0-e47ebec0e7ea@tycho.nsa.gov>
- <f3dea066-1f6d-4b92-1a5b-dac25b58aae7@tycho.nsa.gov>
- <9afb8d9d-a590-0e13-bf46-53a347ea15dd@schaufler-ca.com>
- <6bd3e393-e1df-7117-d15a-81cb1946807b@tycho.nsa.gov>
- <446935fa-2926-c346-a273-ae1ecbb072cd@schaufler-ca.com>
- <09d96236-715a-344a-38bc-c05208698125@tycho.nsa.gov>
- <cdb0ba7f-2863-d721-7ec2-1e01464e2b41@tycho.nsa.gov>
- <7ac0fa7d-225a-a554-bc1f-78d4d07b8adc@schaufler-ca.com>
- <9a07bf65-c0a8-6295-a3a5-ac1817385891@tycho.nsa.gov>
-From:   Casey Schaufler <casey@schaufler-ca.com>
-Autocrypt: addr=casey@schaufler-ca.com; keydata=
- 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
- abzjfg==
-Message-ID: <913132fa-7318-bc6b-1ebb-5463291dd916@schaufler-ca.com>
-Date:   Tue, 4 Feb 2020 09:14:45 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.2
+References: <20200204143707.318337-1-richard_c_haines@btinternet.com>
+From:   Stephen Smalley <sds@tycho.nsa.gov>
+Message-ID: <ad706239-69a1-eeae-31ce-ac8b70081613@tycho.nsa.gov>
+Date:   Tue, 4 Feb 2020 13:22:46 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <9a07bf65-c0a8-6295-a3a5-ac1817385891@tycho.nsa.gov>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20200204143707.318337-1-richard_c_haines@btinternet.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-X-Mailer: WebService/1.1.15158 hermes Apache-HttpAsyncClient/4.1.4 (Java/1.8.0_181)
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2/4/2020 5:37 AM, Stephen Smalley wrote:
-> On 2/3/20 4:39 PM, Casey Schaufler wrote:
->> On 2/3/2020 11:37 AM, Stephen Smalley wrote:
->>> BTW, I think the above guarantees with the exception of no trailing w=
-hitespace and whether the NUL byte is included or excluded from length ar=
-e in reality also required for "current" (and SO_PEERSEC) or existing use=
-rspace will break.
->>
->> The behavior of interfaces (e.g. "current", "exec") that are module de=
-fined
->> is only of concern with respect to to "display" behavior. If a securit=
-y module
->> wants to provide a variable size binary blob in "current" I would obje=
-ct on
->> principle, but policy as I understand it has long been that if the aut=
-hors want
->> to do that, it's their call.
->
-> Doing so would break existing userspace (not just LSM-specific userspac=
-e), so I think it would be a deal breaker even for new security modules t=
-o move away from those guarantees for "current" at least. procps-ng (and =
-I think procps before it) directly reads /proc/pid/attr/current and trunc=
-ates at the first unprintable character.=20
+On 2/4/20 9:37 AM, Richard Haines wrote:
+> Not sure how useful these tests are but using them as a starter for running
+> tests on all supported filesystems (that I could find).
+> 
+> These test all the *context= mount options by reading /sbin/mkfs.* entries.
+> I've failed/passed tests based on what I have seen, however some could be
+> wrong.
 
-An user-space that makes invalid assumptions about an interface
-can't implicitly define the behavior of that interface. You can't
-declare that "current" is defined to be a string just because a
-developer looked at how one security module uses it and coded the
-application accordingly. You can't declare that "current" will
-always be a SELinux context. That horse left the barn in 2007,
-and there are still people writing code assuming that is what
-they're getting.
+A few preliminary comments:
 
-If the sub-system maintainer, James Morris, is willing to state that
-"current" must have a particular format that would be different.
+- The existence of /sbin/mkfs.foo does not guarantee that the kernel 
+config enables the foo filesystem,
 
-> systemd's sd-bus reads /proc/pid/attr/current directly and treats \n, \=
-r, or \0 byte as terminators and truncated on first occurrence.=C2=A0 A v=
-ariety of userspace code uses the value obtained from /proc/pid/attr/curr=
-ent and/or SO_PEERSEC as something that it can pass to printf-like functi=
-ons using a %s specifier for inclusion in logs and audit messages.
+- I'm not sure that we really want to test all of these filesystem types 
+all the time; my earlier comments were more directed at enabling us to 
+apply as many of the existing filesystem + fs_filesystem tests as 
+possible to whatever filesystem type is in use as the native/host 
+filesystem type in which selinux-testsuite lives as is the case for all 
+other tests, so that distributions with different defaults will get 
+their own defaults tested automatically (e.g. ext4 vs xfs vs btrfs) when 
+run on their distribution and labeled NFS will be fully exercised when 
+running nfs.sh,
 
-Yup. And so far no security module has been foolish enough to export
-a binary blob in a /proc/.../attr interface. That doesn't mean that
-the interface is defined as a string. It's certainly the convention,
-but nowhere is it documented as a requirement.
+- Only exercising fsconfig(2) without actually mounting won't tell us if 
+the context is actually being applied as expected, unlike the existing 
+filesystem tests,
 
-That's why I'm putting in the effort to define the format for "context"
-and SO_PEERCONTEXT. Interfaces at the LSM level need to be defined so as
-to allow the underlying security modules to provide the information they
-want in a way that is unambiguous and application non-hostile. The help
-I've gotten from you and the rest of the reviewers over the life of this
-effort has been extremely helpful, if not always easy to swallow.
+- Fail/pass shouldn't be based on what we happen to see when we run the 
+test but on what is known to be the actual correct behavior. Offhand, 
+the only cases expected to fail if allowed by policy would be use of any 
+of the context mount options in a non-init user namespace (except for 
+tmpfs/ramfs/devpts) or use of defcontext= with a filesystem type that 
+isn't fs_use_xattr in policy or using native labeling (labeled NFS).
 
->
->> The "context" has a defined format, and it would
->> be up to the authors to come up with a printable ASCII representation =
-of the
->> binary blob. If they care. They're not required to provide a "context"=
-=2E
->
->
+> 
+> Notes:
+> 1) As I use fsconfig(2), the btrfs tests will always fail as there is a
+>     bug somewhere in the kernel (being investigated).
+> 2) I have had to disable udisks as that interferes with the tests. You can
+>     keep it enabled by ./test -e.
+>     I think there is really a problem with udisks getting in the way as I
+>     rapidly fsopen(fd), fsconfig(2) close(fd) for each test (on my system
+>     this equals 48 times).
+> 
+> Richard Haines (1):
+>    selinux-testsuite: Test all mount option context types
+> 
+>   policy/test_filesystem.te      |  12 +++
+>   tests/Makefile                 |   2 +-
+>   tests/filesystem/Filesystem.pm |  19 +++-
+>   tests/fs_contexts/.gitignore   |   1 +
+>   tests/fs_contexts/Makefile     |  13 +++
+>   tests/fs_contexts/fsconfig.c   |  72 ++++++++++++++++
+>   tests/fs_contexts/test         | 153 +++++++++++++++++++++++++++++++++
+>   7 files changed, 268 insertions(+), 4 deletions(-)
+>   create mode 100644 tests/fs_contexts/.gitignore
+>   create mode 100644 tests/fs_contexts/Makefile
+>   create mode 100644 tests/fs_contexts/fsconfig.c
+>   create mode 100755 tests/fs_contexts/test
+
 

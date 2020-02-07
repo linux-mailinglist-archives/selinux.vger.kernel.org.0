@@ -2,71 +2,116 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6D74156032
-	for <lists+selinux@lfdr.de>; Fri,  7 Feb 2020 21:54:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D67201560BB
+	for <lists+selinux@lfdr.de>; Fri,  7 Feb 2020 22:30:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726987AbgBGUyo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 7 Feb 2020 15:54:44 -0500
-Received: from mail-il1-f196.google.com ([209.85.166.196]:34045 "EHLO
-        mail-il1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726947AbgBGUyn (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 7 Feb 2020 15:54:43 -0500
-Received: by mail-il1-f196.google.com with SMTP id l4so741853ilj.1
-        for <selinux@vger.kernel.org>; Fri, 07 Feb 2020 12:54:42 -0800 (PST)
+        id S1726987AbgBGVah (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 7 Feb 2020 16:30:37 -0500
+Received: from UPDC19PA22.eemsg.mail.mil ([214.24.27.197]:45128 "EHLO
+        UPDC19PA22.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726947AbgBGVag (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 7 Feb 2020 16:30:36 -0500
+X-EEMSG-check-017: 56437953|UPDC19PA22_ESA_OUT04.csd.disa.mil
+X-IronPort-AV: E=Sophos;i="5.70,414,1574121600"; 
+   d="scan'208";a="56437953"
+Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
+  by UPDC19PA22.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 07 Feb 2020 21:26:54 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=Tnr8nECbnLDym/CkU9bvUYL7oOeA7s6V/lToBd/3R5HH1FT71G8m9Gb3OVT5M/K1Cx
-         PHJITb3umO4dkBk5huslViwg5baHateWxw55p79AtPaRX8nhiKrUotkXlFWY86Vpo8hR
-         tDQF6KLo2eis4V/WWJTsa0gJY1t0GWxXOJkxsBhS+4HN/CbIxPKtlZckXF47wJLPS1+j
-         oKD2r5j2ftGWunlt+z2yxsfSPDpTejrdGsWGE3vR0oOf93L7I0SC2sffY+OAX4KPD+An
-         riWec1qtQikxwOgiKcGOaFmXmAUVRHXKbZXnuHiT7dH+huiKIAT3wMazvI8VNkUtk5i3
-         hsyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=8cDRXBFOpE9J1p6S5H+HXSQg9q3m7pUJ3iUuQ5MPcDc=;
-        b=bIRrExyUL7hxxFFAufm1FOoLgvQRoz7HLKwUZAmdFZ4Y1VHEShxh/g3wkiUPjCpRZ/
-         FKY8pr1TPw3EzWAvJU6Qfcxv352RpTg5AP+CdgBisNQIrwqzmqGElBGvnI1zwcU9Uzy/
-         RnPgolXQIRgXgUr69siU+6boJBvu+aRI0SSgamIz+vxaIzlmsNFYVH7uNRpoZM9CsOLB
-         2x+9PXJd60fB9kpBq2hJ6l+1m+6uyEo2nLiwlyH74WO+2VYulxjl65FdOhpthttE7r1P
-         TgH+wVTo7Z7YS1dMzF+zgg8+u+oQFeLnp1Y0u5jRXwT/F7uooL8EnmMzIevtO8y5BXO4
-         hsrg==
-X-Gm-Message-State: APjAAAXsWhB+ym4fW32JhBf/OLgvUqvy2ZRIJHB6cPANTWQ6aeBmW1ox
-        WPxeKGHeRHaL5u6ISkHretxA/hPNQmkHqJkFDgg=
-X-Google-Smtp-Source: APXvYqxPOT9+dn/lU5oZUEjWbuPGNmqpD08Cvu+Zmz9GaSk6m/mqdxnYl89KiF7AzHaOwcDpSHj2KPWU70s6SsRLEIE=
-X-Received: by 2002:a92:bf10:: with SMTP id z16mr1352460ilh.87.1581108882346;
- Fri, 07 Feb 2020 12:54:42 -0800 (PST)
+  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
+  s=tycho.nsa.gov; t=1581110814; x=1612646814;
+  h=subject:to:references:from:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=rDTD5FejupCBwtEdcpyE3zsVfH02UiQNIQMG6z1QtEY=;
+  b=RrVDcsLF9+bA+Akmb6vNRZBXwuRvdo2VpAlpC7DFRu2i0FJGF9vsmpsA
+   5W2bYh5Ctg6EiAGiWPEHROG++LQ1P+6rAxsYpZYq9Vys3QRqtsE4Sq9qO
+   97Ss8eOauXis1N+6s799TQSQW6790gz06XJM/3L6koZnKko3G290U80Wi
+   Wu+w1vNqRSzruCf11uSEpGOVA45cgq5QbPfUKGayJX7q3fj+bw9t0VH9e
+   A0VYc3RFXsoTmJVyuagqxYCI6UPJZKqWFmvfjDJSykCw3GRD4P2H84Ue/
+   1pJ1hyBgOc+QuTKtsD8vv0H3PALGUBa1Oju2pr5QuLfpABEXcTrySUlky
+   g==;
+X-IronPort-AV: E=Sophos;i="5.70,414,1574121600"; 
+   d="scan'208";a="38841646"
+IronPort-PHdr: =?us-ascii?q?9a23=3AxmR2uxIGZ6COt/sJwNmcpTZWNBhigK39O0sv0r?=
+ =?us-ascii?q?FitYgfLv3xwZ3uMQTl6Ol3ixeRBMOHsq4C1red6vy+ESxYuNDd6StEKMQNHz?=
+ =?us-ascii?q?Y+yuwu1zQ6B8CEDUCpZNXLVAcdWPp4aVl+4nugOlJUEsutL3fbo3m18CJAUk?=
+ =?us-ascii?q?6nbVk9Kev6AJPdgNqq3O6u5ZLTfx9IhD2gar9uMRm6twrcutQZjId4Kqs8yh?=
+ =?us-ascii?q?TFrmZHdulX2GhkIU6fkwvm6sq/4ZJu/T5ct+49+8JFTK73Y7k2QbtEATo8Lm?=
+ =?us-ascii?q?s7/tfrtR7NTQuO4nsTTGAbmQdWDgbG8R/3QI7/vjP1ueRh1iaaO9b2Ta0vVj?=
+ =?us-ascii?q?S586hrUh7ohzwZODM/7Wral9Z/jKNfoBKmuhx/34vZa5ybOfZiYq/Qe84RSH?=
+ =?us-ascii?q?FfVchNSSNOHoK8b5MOD+UfO+ZYs5L9rEYKoRenGAWgGP/jxjpOi3D4x6061/?=
+ =?us-ascii?q?kqHx/A0gIuAtkCtG3YodvxOasXV+2+0avGwijZb/5OxDnz9obIfBAir/+CU7?=
+ =?us-ascii?q?1/fsjexlUgGQ7eklWdq5boMy+J2ukDsWWW6fdrW+K1i24grgF8uiWhxtsyhY?=
+ =?us-ascii?q?nRhoIa1FbE/jhkzoYwP9K4TEp7bsCkEZBNsCyaLJZ5Qtg5TmF0uCc11r0GuZ?=
+ =?us-ascii?q?mhcCgM05Qo3QTTa/OAc4iW+x/uUvuaLzRghH99Zb6yiBm//VKgx+HhTMW4zl?=
+ =?us-ascii?q?lHojRfntXRsH0Gygbd5dKdSvRn+0eswTOP1wfO5e5aOU00jq/bK4I5wr43i5?=
+ =?us-ascii?q?oTrVzPHi/ol0Xyi6+bblkk9fKy6+Tmf7XmvYWQN45yigHwNaQugdKwDvgiPg?=
+ =?us-ascii?q?gSX2mU5eS81Lr58U3/XLpKleE5nrPcsJDbIcQXvq+5AwlL3YY/8xuzEjir3d?=
+ =?us-ascii?q?sCkXQHMV5JYgyLgof3N13UPfz0FfK/jE6tkDdvyfDGJLrhApDVI3jYjbjhZq?=
+ =?us-ascii?q?1w61JcyQUvzdBf4IhYCrcaIP3pQEPxu9vYDgEhPwyu3+nnEMl91p8ZWW+XBa?=
+ =?us-ascii?q?+ZNaTSsUSO5u01P+aDepQYuCzjJPc45/7hl2M5lUUBcqmu2JsdcGq4Eeh+I0?=
+ =?us-ascii?q?WFfXrshc8MEXwUsQo6TezqjkCCUDFIanasUKIz+Cs7BJilDYjdXICthqKO3C?=
+ =?us-ascii?q?OhEp1RfGBGBQPELXC9UIOIQfoOIAeVOclomTEHHeymTog60xiluSfgxrZnJ/?=
+ =?us-ascii?q?aS8Sod49arz9Vx5uvOhTks+jFuSceQyWeASydzhGxbaSUx2fVEvUFlylqFmZ?=
+ =?us-ascii?q?N9ivhcGM0bs+hFSS8mJJXcyKp8ENm0VQXfKITaAG26S8mrVGliBuk6xMUDNg?=
+ =?us-ascii?q?MkQISv?=
+X-IPAS-Result: =?us-ascii?q?A2CvAAC91T1e/wHyM5BmHAEBAQEBBwEBEQEEBAEBgWoEA?=
+ =?us-ascii?q?QELAYF8gW0gEiqEFYkDhmQBAQEGgTeJcJFLCQEBAQEBAQEBATcBAYRAAoJnN?=
+ =?us-ascii?q?wYOAhABAQEEAQEBAQEFAwEBbIVDgjspAYMCAQUjFVELDgoCAiYCAlcGAQwGA?=
+ =?us-ascii?q?gEBgmM/glclr1+BMoVKg2CBPoEOKgGMPHmBB4E4D4JdPoEOhk2CXgSXQkaXa?=
+ =?us-ascii?q?oJEgk6TeAYbmw+OZJ01I4FYKwgCGAghD4MnUBgNnQEjAzCOaAEB?=
+Received: from tarius.tycho.ncsc.mil (HELO tarius.infosec.tycho.ncsc.mil) ([144.51.242.1])
+  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 07 Feb 2020 21:26:51 +0000
+Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
+        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 017LPxxw240770;
+        Fri, 7 Feb 2020 16:25:59 -0500
+Subject: Re: [PATCH 2/2] Travis-CI: test that DEBUG build works
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
+References: <20200206131901.535779-1-omosnace@redhat.com>
+ <20200206131901.535779-3-omosnace@redhat.com>
+From:   Stephen Smalley <sds@tycho.nsa.gov>
+Message-ID: <6fd93c7d-e5fe-b5ce-d5cc-b11125b9c587@tycho.nsa.gov>
+Date:   Fri, 7 Feb 2020 16:27:57 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.1
 MIME-Version: 1.0
-Received: by 2002:a92:8f4b:0:0:0:0:0 with HTTP; Fri, 7 Feb 2020 12:54:42 -0800 (PST)
-Reply-To: auch197722@gmail.com
-From:   "Mr. Theophilus Odadudu" <siramsarmull@gmail.com>
-Date:   Fri, 7 Feb 2020 15:54:42 -0500
-Message-ID: <CAB==GxyzS2+E1T8nXWmpAu+jgDiYNRQB5L04jAfsFh2QJzp=kA@mail.gmail.com>
-Subject: LETTER OF INQUIRY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200206131901.535779-3-omosnace@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Good Day,
+On 2/6/20 8:19 AM, Ondrej Mosnacek wrote:
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 
-I work as a clerk in a Bank here in Nigeria, I have a very
-confidential Business Proposition for you. There is a said amount of
-money floating in the bank unclaimed, belonging to the bank Foreign
-customer who die with his family in the Ethiopian Airline crash of
-March 11, 2019.
+Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
 
-I seek your good collaboration to move the fund for our benefit. we
-have agreed that 40% be yours once you help claim.
+> ---
+>   .travis.yml | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/.travis.yml b/.travis.yml
+> index e9f86baa..918958ac 100644
+> --- a/.travis.yml
+> +++ b/.travis.yml
+> @@ -13,6 +13,7 @@ env:
+>       # Test the last version of Python and Ruby together, with some linkers
+>       - PYVER=python3.7 RUBYLIBVER=2.6
+>       - PYVER=python3.7 RUBYLIBVER=2.6 TEST_FLAGS_OVERRIDE=1
+> +    - PYVER=python3.7 RUBYLIBVER=2.6 TEST_DEBUG=1
+>       - PYVER=python3.7 RUBYLIBVER=2.6 LINKER=gold
+>       - PYVER=python3.7 RUBYLIBVER=2.6 LINKER=bfd
+>   
+> @@ -116,6 +117,8 @@ before_script:
+>   
+>     # If TEST_FLAGS_OVERRIDE is defined, test that overriding CFLAGS, LDFLAGS and other variables works fine
+>     - if [ -n "$TEST_FLAGS_OVERRIDE" ]; then EXPLICIT_MAKE_VARS="CFLAGS=-I$DESTDIR/usr/include LDFLAGS=-L$DESTDIR/usr/lib LDLIBS= CPPFLAGS=" ; fi
+> +  # If TEST_DEBUG is defined, test that debug build works fine
+> +  - if [ -n "$TEST_DEBUG" ]; then EXPLICIT_MAKE_VARS="$EXPLICIT_MAKE_VARS DEBUG=1" ; fi
+>   
+>   script:
+>     # Start by installing everything into $DESTDIR
+> 
 
-Do get back to with 1) Your Full Name: (2) Residential Address: (3)
-Phone, Mobile  (4) Scan Copy of Your ID. to apply for claims of the
-funds.
-
-Regards
-Theophilus Odadudu

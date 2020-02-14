@@ -2,43 +2,43 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D82D515F234
-	for <lists+selinux@lfdr.de>; Fri, 14 Feb 2020 19:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F39E715F43A
+	for <lists+selinux@lfdr.de>; Fri, 14 Feb 2020 19:23:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392560AbgBNSHp (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 14 Feb 2020 13:07:45 -0500
-Received: from USFB19PA32.eemsg.mail.mil ([214.24.26.195]:50945 "EHLO
+        id S2394771AbgBNSTq (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 14 Feb 2020 13:19:46 -0500
+Received: from USFB19PA32.eemsg.mail.mil ([214.24.26.195]:53174 "EHLO
         USFB19PA32.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389243AbgBNSHo (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 14 Feb 2020 13:07:44 -0500
-X-EEMSG-check-017: 56598909|USFB19PA32_ESA_OUT02.csd.disa.mil
+        with ESMTP id S2394770AbgBNSTp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 14 Feb 2020 13:19:45 -0500
+X-EEMSG-check-017: 56603579|USFB19PA32_ESA_OUT02.csd.disa.mil
 X-IronPort-AV: E=Sophos;i="5.70,441,1574121600"; 
-   d="scan'208";a="56598909"
-Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
-  by USFB19PA32.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 14 Feb 2020 18:07:40 +0000
+   d="scan'208";a="56603579"
+Received: from emsm-gh1-uea10.ncsc.mil ([214.29.60.2])
+  by USFB19PA32.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 14 Feb 2020 18:19:42 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
-  s=tycho.nsa.gov; t=1581703661; x=1613239661;
-  h=subject:from:to:cc:references:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=ZmEj9uPZdHOZAKRIp4AYJ5EUxrhvAKsghoYmsQJ8N7o=;
-  b=Zhq0BFS0Y1HMVNQg/PSwdqMDhZeDtXpZLaF1qrpa4OgxAcuKbtnB+9BJ
-   yKhPvd+rMtyUUhT7wj69hIXUpfwj2aksCSjXPTOA95gAI1WUGA6yaOzYU
-   Ei/bbES0GI3zTkSw6wykstXuYHVKcnd3lY86/pdF0JQtSrhFNWFQey7CN
-   ZsDqIUStWHApBTokmMUPh8vvUycpa7KgXAdiphUSv5WTGZIQWaOwCQ+Fr
-   13yAJPXUV26ThO7VdDNUiyKyLbpg/COMyaCbAHg01220GfjTfR1gsH2o8
-   tyNYweqLwzQFnr1k5lhIwaYhy73DBb8uklsyHmxSAkdJk/LaKb198nGXa
+  s=tycho.nsa.gov; t=1581704383; x=1613240383;
+  h=subject:from:to:references:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=1D/nkGWZojJe8wAtdJo6OugCugfPkXEf7UDlNGpi83A=;
+  b=fayNFbuqPohiqPCMAZUqWRHJTK8W6iGQdmVGrBkfXZNqVw/nbykhWIc2
+   6zoqlB5Lzq9e08MYoTVjZxB2enLcd1nCfUmmGGsAORQPavzH4ktKszW5p
+   BIgHNZQquT98BzdmB5hVgAW7jTHbMcQdJOIhk/IXpM1j2xkRLL/ypBmyD
+   a7R+wejq0an1QQHQZRqx+VmcCndFzgrUyCemLp3TSpJcJOBS7rlMblKQN
+   UhNdR921xusBWBjb8PHZ5CVNy2tP/SqX+CLbI6TCi/yCbhhbj1cMQA42x
+   FDo5MzbQ18AHkzxno/HS708nLBTPP8BZHmvajauSHnp+O+IWf0OirnZ2d
    A==;
 X-IronPort-AV: E=Sophos;i="5.70,441,1574121600"; 
-   d="scan'208";a="39145515"
-IronPort-PHdr: =?us-ascii?q?9a23=3A5Ab/UxN4X/ceccRAbyMl6mtUPXoX/o7sNwtQ0K?=
- =?us-ascii?q?IMzox0K/jyrsbcNUDSrc9gkEXOFd2Cra4d16yJ6+u5AT1IyK3CmU5BWaQEbw?=
+   d="scan'208";a="33088628"
+IronPort-PHdr: =?us-ascii?q?9a23=3AE1WkcRAdh9Cc3WHRYTEFUyQJP3N1i/DPJgcQr6?=
+ =?us-ascii?q?AfoPdwSPX+pcbcNUDSrc9gkEXOFd2Cra4d16yJ6+u5ADVIyK3CmU5BWaQEbw?=
  =?us-ascii?q?UCh8QSkl5oK+++Imq/EsTXaTcnFt9JTl5v8iLzG0FUHMHjew+a+SXqvnYdFR?=
- =?us-ascii?q?rlKAV6OPn+FJLMgMSrzeCy/IDYbxlViDanbr5+MRq7oR/Tu8UKjoduN7o9xx?=
- =?us-ascii?q?/UqXZUZupawn9lKl2Ukxvg/Mm74YRt8z5Xu/Iv9s5AVbv1cqElRrFGDzooLn?=
+ =?us-ascii?q?rlKAV6OPn+FJLMgMSrzeCy/IDYbxlViDanbr5+MRq7oR/Tu8UKjoduN7s9xg?=
+ =?us-ascii?q?bUqXZUZupawn9lKl2Ukxvg/Mm74YRt8z5Xu/Iv9s5AVbv1cqElRrFGDzooLn?=
  =?us-ascii?q?446tTzuRbMUQWA6H0cUn4LkhVTGAjK8Av6XpbqvSTksOd2xTSXMtf3TbAwXj?=
  =?us-ascii?q?Si8rtrRRr1gyoJKzI17GfagdFrgalFvByuuQBww4/MYIGUKvV+eL/dfcgHTm?=
- =?us-ascii?q?ZFR8pdSjBNDp+5Y4YJAeUBJ+JYpJTjqVUIoxW1GA2gCPrvxzJMg3P727Ax3e?=
+ =?us-ascii?q?ZFR8pdSjBNDp+5Y4YJAeUBJ+JYpJTjqVUIoxW1GA2gCPrhxzJMg3P727Ax3e?=
  =?us-ascii?q?Y8HgHcxAEuAtIAvmrarNv2OqkdX++6w6vUwjvMdP5WxTTw5ZLUfhw9r/yBX7?=
  =?us-ascii?q?R9etfRx0k1EAPFi02dp5H5PzyLzuQNs3aU7+x9Xuyyjm4osQVxojyxycYsl4?=
  =?us-ascii?q?LEgZkVxU3f9Shi3IY0JcG3SE58YdK+FptQrDuVO5F5QsMlXWFloSA3waAFt5?=
@@ -47,59 +47,35 @@ IronPort-PHdr: =?us-ascii?q?9a23=3A5Ab/UxN4X/ceccRAbyMl6mtUPXoX/o7sNwtQ0K?=
  =?us-ascii?q?ETvV7CHi/wlkX2i7SWeVs49eSy9+TmYqnppp+bN4NujAHxLr8uldClDeQ9Mw?=
  =?us-ascii?q?gOW3CX+eW61LL94U30WKhGg/I5n6XDsJ3WON4XqrC2DgNLyIov9g6zDzK839?=
  =?us-ascii?q?QZmXkHIkhFeBWCj4XxIFHBPev4AOyjg1WsjDhrx/fGMqfnApXWNHfPirjhfb?=
- =?us-ascii?q?Fj60JE0go80chf545ICrEGOP/8R1X+tNrEAR8+Nwy52OnnCNJ61oMRXWKAHL?=
- =?us-ascii?q?WVP7/VsV+N/ugvOfWDZJcJuDbhLPgo/+LujX48mV8YYKmpx4EXZ2q4H/l9LE?=
- =?us-ascii?q?WZZn3sgtgFEWgUpAYxUOvqiFiaWz5Je3myR7485i08CI++FofMWIStgL2H3C?=
- =?us-ascii?q?emEZxbfX5GCl+SHnfybYmEWOkDaDiUIsB/ljwIT7+hS5Uu1Ru2rg/116JnLv?=
- =?us-ascii?q?bI+i0frZ/j0Nl15+vOlRA97DB0FNqS3H2QT2Fun2MIWz830Ll6oUx611iDzK?=
- =?us-ascii?q?x4jOJDGNxN6PNGTB06OYTfz+NkEdDyXBzOftOTRFahWNWmDik7TsgtzN8Wf0?=
- =?us-ascii?q?Z9B9KigwjH3yqrBb8VirOKCIU68qLHwnf+Odh9xGjC1KQ6kVkmTdVANXe8iq?=
- =?us-ascii?q?586QfTHYjJnFudl6qwcqQcxiHN/n+ZzWWSpEFYTBJwUaLdUHAbZ0vWq8n550?=
- =?us-ascii?q?zbQ7+tF7snKA1BxtCGKqZRdN3pgktJRO35NNTdfW2xgWGwCgiMxr+Wa4rqYW?=
- =?us-ascii?q?od1j3HCEcYiwAT4WqGNQ8mCyeivWLeCSdjFUzgY0zy6+lysnC7QVEuzwGMcU?=
- =?us-ascii?q?Jh06C5+hkPhfyTU/kTxK4LuD89qzVoG1awx8zWC9uapwpmZ6hdYM0y4FFG1W?=
- =?us-ascii?q?LHrQB9Op2gL6Z/hl8RaQh3uFnu1xptBoVdksggtGkqwxZqKaKEzFNBcCuV3Y?=
- =?us-ascii?q?jqNb3KLmn/5wivZLTL2lHaydqW/6AP6PMiq1r9pg2mCk0i83B/2dlPz3Sc/o?=
- =?us-ascii?q?nKDBYVUZ/pVEY38Rt6qqrVYik64IPU2nlsPreuvjDe3NIpAfMvygy8cNdHLK?=
- =?us-ascii?q?OECAjyHtUeB8ipK+wlhUOpbhILPOBT6aE0JdmpeuCJ2K6sO+Zgkzamgnpd7I?=
- =?us-ascii?q?9h1UKM8jJ2SvTU0JYd3/GYwgyHWi/+jFi/vMD3l55EaCodHmq4zijkC4pRab?=
- =?us-ascii?q?NocYkXDmeuJp7/+tIrq5frWnNcvHWkA1od086ufxfaO1D02wZX0WwYpnuonS?=
- =?us-ascii?q?b+xDtxxWIHtK2aiRfSzvzieRxPAWtCQG1vnB+4OoSvp8wLV0ivKQ4ynV2q4l?=
- =?us-ascii?q?islPsTn7h2M2SGGRQARCPxNWw3F/Lt57c=3D?=
-X-IPAS-Result: =?us-ascii?q?A2CMAwA84UZe/wHyM5BmHQEBAQkBEQUFAYF7gX2BbSASh?=
- =?us-ascii?q?D6JA4ZZAQEEBoESJYlwkUoJAQEBAQEBAQEBNwQBAYRAAoIlOBMCEAEBAQUBA?=
- =?us-ascii?q?QEBAQUDAQFshUOCOykBgwIBBSMPAQVBEAsOCgICJgICVwYNCAEBgmM/glclr?=
- =?us-ascii?q?jiBMokdgT6BDiqMPnmBB4E4DAOCXT6HW4JeBI1ggj6Hb5dtgkSCT5N8BgIam?=
- =?us-ascii?q?xisJyKBWCsIAhgIIQ+DKE8YDY4pF45BIwORCAEB?=
+ =?us-ascii?q?Fj60JE0go80chf545ICrEGOP/zXUrxtNvDDh8/KQO73/joBc5n1owARG2PAr?=
+ =?us-ascii?q?WWML/IvVCU4eIvJvGGZJUJtzblN/gl+/nugGcimVADeamp3J0XaG23H/l9PU?=
+ =?us-ascii?q?WZbmTjgs0bHWcJoAU+Vurqh0OGUTJJYHayRa08tXkHD9eBC4vZS4Llpbua2i?=
+ =?us-ascii?q?6wE54eMmdDDUuKGHzlX5+JV/cFdGSZJco31nQfWLygTZIx/Q+huRW8yLd9KO?=
+ =?us-ascii?q?fQvCoCutar9tFw6vabvhgo6TFuR5CfzGqEVX0utn8ZTD8xmqZkqApyzUnVgo?=
+ =?us-ascii?q?ZihPkNLsBe//NEVE8BMJfYy+FrQ4TpVhnpYsaCSFHgRM6vRz42UIRikJc1f0?=
+ =?us-ascii?q?9hFoD63Vj41C2wDupQzufaCQ=3D=3D?=
+X-IPAS-Result: =?us-ascii?q?A2B1AgDF40Ze/wHyM5BmHAEBAQEBBwEBEQEEBAEBgXuBf?=
+ =?us-ascii?q?YFtIBIqhBSJA4ZZAQEEBoESJYlwkUoJAQEBAQEBAQEBNwQBAYRAAoIlOBMCE?=
+ =?us-ascii?q?AEBAQUBAQEBAQUDAQFshUOCOykBgwIBBSMECwEFUQkCDgoCAiYCAlcGAQwGA?=
+ =?us-ascii?q?gEBgmM/glclkj+beX8ziSGBPoEOKow+eYEHgTgMA4JdPodbgl4EmA2XbYJEg?=
+ =?us-ascii?q?k+TfAYCGpsYjmidPyKBWCsIAhgIIQ+DJ1AYDY4pF45BIwMwkFgBAQ?=
 Received: from tarius.tycho.ncsc.mil (HELO tarius.infosec.tycho.ncsc.mil) ([144.51.242.1])
-  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 14 Feb 2020 18:07:39 +0000
+  by EMSM-GH1-UEA10.NCSC.MIL with ESMTP; 14 Feb 2020 18:19:41 +0000
 Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
-        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 01EI6e3h233238;
-        Fri, 14 Feb 2020 13:06:40 -0500
-Subject: Re: [PATCH 2/3] Teach SELinux about anonymous inodes
+        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 01EIIgRw233398;
+        Fri, 14 Feb 2020 13:18:43 -0500
+Subject: Re: [PATCH userspace v2] libsepol: cache ebitmap cardinality value
 From:   Stephen Smalley <sds@tycho.nsa.gov>
-To:     Daniel Colascione <dancol@google.com>
-Cc:     Tim Murray <timmurray@google.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>, kvm@vger.kernel.org,
-        Al Viro <viro@zeniv.linux.org.uk>, paul@paul-moore.com,
-        Nick Kralevich <nnk@google.com>,
-        Lokesh Gidra <lokeshgidra@google.com>,
-        Jeffrey Vander Stoep <jeffv@google.com>
-References: <20200211225547.235083-1-dancol@google.com>
- <20200214032635.75434-1-dancol@google.com>
- <20200214032635.75434-3-dancol@google.com>
- <9ca03838-8686-0007-0971-ee63bf5031da@tycho.nsa.gov>
- <CAKOZuev-=7Lgu35E3tzpHQn0m_KAvvrqi+ZJr1dpqRjHERRSqg@mail.gmail.com>
- <23f725ca-5b5a-5938-fcc8-5bbbfc9ba9bc@tycho.nsa.gov>
-Message-ID: <97603935-9f6b-ccf4-4229-87f26380c3db@tycho.nsa.gov>
-Date:   Fri, 14 Feb 2020 13:08:48 -0500
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
+        James Carter <jwcart2@tycho.nsa.gov>
+References: <20200213133959.14217-1-omosnace@redhat.com>
+ <1a11d058-eee1-41c5-9686-da01ecf6ea33@tycho.nsa.gov>
+Message-ID: <68198406-85ad-4a99-7549-15b8c4e0a517@tycho.nsa.gov>
+Date:   Fri, 14 Feb 2020 13:20:51 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <23f725ca-5b5a-5938-fcc8-5bbbfc9ba9bc@tycho.nsa.gov>
+In-Reply-To: <1a11d058-eee1-41c5-9686-da01ecf6ea33@tycho.nsa.gov>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 8bit
@@ -108,28 +84,103 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2/14/20 1:02 PM, Stephen Smalley wrote:
-> It shouldn't fire for non-anon inodes because on a (non-anon) file 
-> creation, security_transition_sid() is passed the parent directory SID 
-> as the second argument and we only assign task SIDs to /proc/pid 
-> directories, which don't support (userspace) file creation anyway.
+On 2/14/20 12:38 PM, Stephen Smalley wrote:
+> On 2/13/20 8:39 AM, Ondrej Mosnacek wrote:
+>> According to profiling of semodule -BN, ebitmap_cardinality() is called
+>> quite often and contributes a lot to the total runtime. Cache its result
+>> in the ebitmap struct to reduce this overhead. The cached value is
+>> invalidated on most modifying operations, but ebitmap_cardinality() is
+>> usually called once the ebitmap doesn't change any more.
+>>
+>> After this patch, the time to do 'semodule -BN' on Fedora Rawhide has
+>> decreased from ~14.6s to ~12.4s (2.2s saved).
+>>
+>> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 > 
-> However, in the absence of a matching type_transition rule, we'll end up 
-> defaulting to the task SID on the anon inode, and without a separate 
-> class we won't be able to distinguish it from a /proc/pid inode.  So 
-> that might justify a separate anoninode or similar class.
-> 
-> This however reminded me that for the context_inode case, we not only 
-> want to inherit the SID but also the sclass from the context_inode. That 
-> is so that anon inodes created via device node ioctls inherit the same 
-> SID/class pair as the device node and a single allowx rule can govern 
-> all ioctl commands on that device.
+> This seems fine but I was wondering how many of the callers of 
+> ebitmap_cardinality() actually need anything more than ebitmap_length()?
 
-At least that's the way our patch worked with the /dev/kvm example. 
-However, if we are introducing a separate anoninode class for the 
-type_transition case, maybe we should apply that to all anon inodes 
-regardless of how they are labeled (based on context_inode or 
-transition) and then we'd need to write two allowx rules, one for ioctls 
-on the original device node and one for those on anon inodes created 
-from it.  Not sure how Android wants to handle that as the original 
-developer and primary user of SELinux ioctl whitelisting.
+Regardless,
+
+Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
+
+> 
+>> ---
+>>
+>> v2: corrected time values in commit message
+>>
+>>   libsepol/include/sepol/policydb/ebitmap.h |  1 +
+>>   libsepol/src/ebitmap.c                    | 10 ++++++++++
+>>   2 files changed, 11 insertions(+)
+>>
+>> diff --git a/libsepol/include/sepol/policydb/ebitmap.h 
+>> b/libsepol/include/sepol/policydb/ebitmap.h
+>> index e62df01c..53fafdaa 100644
+>> --- a/libsepol/include/sepol/policydb/ebitmap.h
+>> +++ b/libsepol/include/sepol/policydb/ebitmap.h
+>> @@ -37,6 +37,7 @@ typedef struct ebitmap_node {
+>>   typedef struct ebitmap {
+>>       ebitmap_node_t *node;    /* first node in the bitmap */
+>>       uint32_t highbit;    /* highest position in the total bitmap */
+>> +    unsigned int cardinality;    /* cached value of cardinality */
+>>   } ebitmap_t;
+>>   #define ebitmap_length(e) ((e)->highbit)
+>> diff --git a/libsepol/src/ebitmap.c b/libsepol/src/ebitmap.c
+>> index 6c9951b7..d23444ce 100644
+>> --- a/libsepol/src/ebitmap.c
+>> +++ b/libsepol/src/ebitmap.c
+>> @@ -67,6 +67,7 @@ int ebitmap_union(ebitmap_t * dst, const ebitmap_t * 
+>> e1)
+>>       ebitmap_destroy(dst);
+>>       dst->node = tmp.node;
+>>       dst->highbit = tmp.highbit;
+>> +    dst->cardinality = 0;
+>>       return 0;
+>>   }
+>> @@ -128,9 +129,14 @@ int ebitmap_andnot(ebitmap_t *dst, ebitmap_t *e1, 
+>> ebitmap_t *e2, unsigned int ma
+>>   unsigned int ebitmap_cardinality(ebitmap_t *e1)
+>>   {
+>>       unsigned int i, count = 0;
+>> +
+>> +    if (e1->cardinality || e1->highbit == 0)
+>> +        return e1->cardinality;
+>> +
+>>       for (i=ebitmap_startbit(e1); i < ebitmap_length(e1); i++)
+>>           if (ebitmap_get_bit(e1, i))
+>>               count++;
+>> +    e1->cardinality = count;
+>>       return count;
+>>   }
+>> @@ -194,6 +200,7 @@ int ebitmap_cpy(ebitmap_t * dst, const ebitmap_t * 
+>> src)
+>>       }
+>>       dst->highbit = src->highbit;
+>> +    dst->cardinality = src->cardinality;
+>>       return 0;
+>>   }
+>> @@ -309,6 +316,7 @@ int ebitmap_set_bit(ebitmap_t * e, unsigned int 
+>> bit, int value)
+>>                       free(n);
+>>                   }
+>>               }
+>> +            e->cardinality = 0; /* invalidate cached cardinality */
+>>               return 0;
+>>           }
+>>           prev = n;
+>> @@ -339,6 +347,7 @@ int ebitmap_set_bit(ebitmap_t * e, unsigned int 
+>> bit, int value)
+>>           e->node = new;
+>>       }
+>> +    e->cardinality = 0; /* invalidate cached cardinality */
+>>       return 0;
+>>   }
+>> @@ -358,6 +367,7 @@ void ebitmap_destroy(ebitmap_t * e)
+>>       e->highbit = 0;
+>>       e->node = 0;
+>> +    e->cardinality = 0;
+>>       return;
+>>   }
+>>
+> 
+

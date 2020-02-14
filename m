@@ -2,89 +2,79 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F3E815ED45
-	for <lists+selinux@lfdr.de>; Fri, 14 Feb 2020 18:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 16B7D15EE08
+	for <lists+selinux@lfdr.de>; Fri, 14 Feb 2020 18:38:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390648AbgBNRdB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 14 Feb 2020 12:33:01 -0500
-Received: from UCOL19PA37.eemsg.mail.mil ([214.24.24.197]:60335 "EHLO
-        UCOL19PA37.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2390455AbgBNQGf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 14 Feb 2020 11:06:35 -0500
-X-EEMSG-check-017: 76796021|UCOL19PA37_ESA_OUT04.csd.disa.mil
+        id S2390075AbgBNRh7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 14 Feb 2020 12:37:59 -0500
+Received: from USFB19PA33.eemsg.mail.mil ([214.24.26.196]:40201 "EHLO
+        USFB19PA33.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387566AbgBNRh6 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 14 Feb 2020 12:37:58 -0500
+X-EEMSG-check-017: 56190395|USFB19PA33_ESA_OUT03.csd.disa.mil
 X-IronPort-AV: E=Sophos;i="5.70,441,1574121600"; 
-   d="scan'208";a="76796021"
-Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
-  by UCOL19PA37.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 14 Feb 2020 16:06:30 +0000
+   d="scan'208";a="56190395"
+Received: from emsm-gh1-uea10.ncsc.mil ([214.29.60.2])
+  by USFB19PA33.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 14 Feb 2020 17:37:45 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
-  s=tycho.nsa.gov; t=1581696390; x=1613232390;
-  h=subject:to:cc:references:from:message-id:date:
-   mime-version:in-reply-to:content-transfer-encoding;
-  bh=pkuyM9BpXgAmo35Ot9rhpzPQQM9SFT5CnmiggrmTKDI=;
-  b=QR7fGnKdOV7G+wPK0XPFMlIJzKO8yBxIZXP6pXFCT41AfLRKTNuIK5AV
-   RFAKCMd00b3CQcbAAySH51e4EuoE94tCGmeXhrWIr7iCZgq4kP7RakEby
-   ktYjhrusBVEaHfZpGUQkgFrnrF1sDdpfN8/ZdyN0gWzjRTRtHUyzR71GL
-   /Ql/ouN8SfE/iCOfO/tCDKrxZ/NljqD1ah2NtslwUgDb5IExcd1f80h6/
-   VtCnd7QPYa/aAFFVMvdnqIwtz1i+1Meu1sXOyz2udPgHml+FZ87McHhOb
-   W45f+RC7F+LUydVmnp5E2En3KD1565hJsXJg6taCotZKtqAzNdcgLQTsZ
+  s=tycho.nsa.gov; t=1581701866; x=1613237866;
+  h=subject:to:references:from:message-id:date:mime-version:
+   in-reply-to:content-transfer-encoding;
+  bh=S919K1rLRq+cDGAmlvMS0P3NsOjXPe7efRX4FBizyuY=;
+  b=owirVQybpgqphvt++r9yI8j5z1Irt/agDx8W65WSmv3l2Fkc2xglHRk3
+   G2kXTnwFMQJ0+gNSqD5fKOwSQioK2OAsTxgvCnylTyRYv8HNDl9CyJmiG
+   1aFhbB4ziQkmvA8wXucaxfvgI1zcyz9g8XRFhbUNV2kBx0tItD5130xMD
+   AQCJn1mFoNfiDlXs3y0zIPAw8dgB2JA4yUQsl++D39ThMRAeF8+lb27uT
+   yVx5AW0eqewvUu31G9ut3yF+7me8Nb8FZTDmolFOrJ637XnNAKXl59TDV
+   3oWLR1tiZRzw0Df22Jmndd3V8v5drtlyHBUK8/GNZYcVuQwqxyk5woFqn
    A==;
 X-IronPort-AV: E=Sophos;i="5.70,441,1574121600"; 
-   d="scan'208";a="39137111"
-IronPort-PHdr: =?us-ascii?q?9a23=3A4pCgqBCRARvRfDj+JdDCUyQJP3N1i/DPJgcQr6?=
- =?us-ascii?q?AfoPdwSP36oMSwAkXT6L1XgUPTWs2DsrQY0raQ7PirCTdIyK3CmU5BWaQEbw?=
- =?us-ascii?q?UCh8QSkl5oK+++Imq/EsTXaTcnFt9JTl5v8iLzG0FUHMHjew+a+SXqvnYdFR?=
- =?us-ascii?q?rlKAV6OPn+FJLMgMSrzeCy/IDYbxlViDanbr5+MRq7oR/Tu8UKjodvKag8wQ?=
- =?us-ascii?q?bVr3VVfOhb2WxnKVWPkhjm+8y+5oRj8yNeu/Ig885PT6D3dLkmQLJbETorLX?=
- =?us-ascii?q?k76NXkuhffQwSP4GAcUngNnRpTHwfF9hD6UYzvvSb8q+FwxTOVPczyTbAzRD?=
- =?us-ascii?q?Si86JmQwLmhSsbKzI09nzch9duh6xHvh2uux1/w5bVYI6LMvp+Yrjdds4eSW?=
- =?us-ascii?q?ZYQ8pdSzBNDoa6YoQBFeoBOftToZf7qVUAsBCyARCgCP3rxzNNgHL9wK803P?=
- =?us-ascii?q?k7EQzewQIuAdwOvnTXotv7OqgdXuK6w7XHwzjYc/Nb2y3w5JTUfh0vo/yBW6?=
- =?us-ascii?q?97f8rLyUkoEgPIlkieqZD7MDON1uQCrW6b5Pd9W+KqkWEnrwVxrSavx8wxjY?=
- =?us-ascii?q?TJnZ8aykvf+CVlwIc6Od24SElhbd6iC5tfrTuWN4RxQsM8WmxlvjsxxL4euZ?=
- =?us-ascii?q?OjYSQHx5sqywTfZvCaaYSE/B3uWPiLLTtlgn9uZaixiAyo8Ue6z+3xTsy00F?=
- =?us-ascii?q?FXoSVbitTMrXUN1wDL6siAV/t94l+t2TaR2ADX7eFJOVw0mrDBK54g374wjY?=
- =?us-ascii?q?AfsUXFHi/4n0X2l7GZeVk+9ui06+XofrXmppiGO49ylg7+Kbghlta6AeQ5Ng?=
- =?us-ascii?q?gCR2mb+eKi273/5UD1XbpHg/IsnqTZrZzWP9oXq6GnDwNPz4ov8xO/AC2n0N?=
- =?us-ascii?q?Qck3kHNlVFeBefgojyJl7OO+v1Deu/gluwkDdrwOrKPrv6AprXNHTDn7Dhfa?=
- =?us-ascii?q?hl505G1AUz1cxf545TCrwZO/L8QFTxtNzCAR89KAG0wPjoCM971owAXWKDGK?=
- =?us-ascii?q?iZMLndsVWQ/OIgP/GMZJMJuDb6M/Ul4//ujXkkmV4SZKWp3oUYaGq+Hvt4J0?=
- =?us-ascii?q?WUemTsgtgfHmcQpAY+T/LliEeEUTFNY3a+RaU85is0CIi+F4fMWpitgKCd3C?=
- =?us-ascii?q?e8BpBWfXxGBUqXHnfsaYqJQOkMaC2MLc97iDAEVqauS5Un1R6wsA/20b1nLv?=
- =?us-ascii?q?Db+icAr5LsyMB15/HPlRE17TF0F96S03yJT2xvhmMHXSI23KRmrUx4zVeD1r?=
- =?us-ascii?q?J4jOJCGdNP4PNJVx8wNYTAwOxiF9DyRgXBc8+TSFa9Q9WpHCw+TtUzw98PeE?=
- =?us-ascii?q?tyB9KigQ3d0CWwHr8VjbuLBIYu/a7G2HjxPcl9wW7c1KY9l1kmXtdPNWq+i6?=
- =?us-ascii?q?5k6QfTA4/Jk0OEl6elbqkcwiHN+3mZzWaUv0FXThRwUaPbUnAbfEfWqs755k?=
- =?us-ascii?q?yRB4OpXI8uKQtIgeqPNKpMIonyhE5GTfPLO9nEZW+13WCqCkDMjreNapf6Pm?=
- =?us-ascii?q?YQxiPQDGAanA0Ju3WLLw4zAmGmuW2aRCdyHFjrbmvy/uRk7nC2VEk5y0eNdU?=
- =?us-ascii?q?Iy+aCy/0sumfGES/4VlokBsSMlpiQ8SE2xxPrKGtGAoExnZ6wabtQjtgQUnV?=
- =?us-ascii?q?nFvhBwa8TzZ5tpgUQTJkEu5RLj?=
-X-IPAS-Result: =?us-ascii?q?A2BMAAAPxUZe/wHyM5BmGgEBAQEBAQEBAQMBAQEBEQEBA?=
- =?us-ascii?q?QICAQEBAYF7gX2BbSASKoQUiQOGWQEBBAaBN4lwkUoJAQEBAQEBAQEBNwQBA?=
- =?us-ascii?q?YRAAoIlOBMCEAEBAQUBAQEBAQUDAQFshUOCOykBgwEBAQEBAyMEEUEQCxUDA?=
- =?us-ascii?q?gIfBwICVwYBDAYCAQGCYz+CVyWtInV/M4VKg0aBPoEOKow+eYEHgREnD4JdP?=
- =?us-ascii?q?odbgl4EjWSJY0aXbYJEgk+TfAYcmxgtjjudPyKBWCsIAhgIIQ87gmxQGA2OK?=
- =?us-ascii?q?RcVjiwjAzCQWAEB?=
+   d="scan'208";a="33086506"
+IronPort-PHdr: =?us-ascii?q?9a23=3AVvddyxHajAQAdNpbq9Mgk51GYnF86YWxBRYc79?=
+ =?us-ascii?q?8ds5kLTJ7yos6wAkXT6L1XgUPTWs2DsrQY0raQ7PirADRbqb+681k8M7V0Hy?=
+ =?us-ascii?q?cfjssXmwFySOWkMmbcaMDQUiohAc5ZX0Vk9XzoeWJcGcL5ekGA6ibqtW1aFR?=
+ =?us-ascii?q?rwLxd6KfroEYDOkcu3y/qy+5rOaAlUmTaxe7x/IAi5oAnLtMQanYRuJrstxh?=
+ =?us-ascii?q?bHv3BFZ/lYyWR0KF2cmBrx+t2+94N5/SRKvPIh+c9AUaHkcKk9ULdVEjcoPX?=
+ =?us-ascii?q?0r6cPyrRXMQheB6XUaUmUNjxpHGBPF4w3gXpfwqST1qOxw0zSHMMLsTLA0XT?=
+ =?us-ascii?q?Oi77p3SBLtlSwKOSI1/H3Rh8dtl69Qvg6vqAJjzI7VeIGVNeRxfqXBfdMBWG?=
+ =?us-ascii?q?FNWt9dWzFdDo+gaocCCeQOPfxcr4LguVUAqxWwDhSoCO/2xDJFgnr60Ksn2O?=
+ =?us-ascii?q?ojDA7GxhQtEc8QvnTarNv7N6kcXu66w6bK0TrNYOhb2Sv/5YXSbhwtvf+BUL?=
+ =?us-ascii?q?B2fMHMyUcvDQTFjlCIpIL4IzOayPwNs2iF4OpmSOmhlmsnpBt1ojir2Mgtip?=
+ =?us-ascii?q?TCi4UOyl/Z7iV025o1JN2kR057Zt6oCp1QtzqAOIdsTcMiRH9otT88x7Ybup?=
+ =?us-ascii?q?C7ZDAHxIkoyhPQcfCKc5WE7gj9WOuePzt0nm9pdbSijBio60eg0PfzVsys3V?=
+ =?us-ascii?q?ZPqSpKj8fDu2gW1xzW9siHUvx9/lq92TqX1wDc9OVEIUcsmKrHMZEh2L8wlo?=
+ =?us-ascii?q?cIsUjZHy/2nkv2jKiNdko65uek8fjnY7X6qZ+cMI94kAf+Pbg1msOjG+g4Nw?=
+ =?us-ascii?q?kOX2yD9eS90r3s41H5Ta1XgvA5naTVqpDXKdkBqqKnDAJZzJwv5wunAzejyt?=
+ =?us-ascii?q?sYnH0HLFxfeBKAiojkI0rOL+3jDfqkn1StkCtkx/DBPrH7BJXNNWLMnK3ufb?=
+ =?us-ascii?q?Z69U5Q0BAzwsxH55JIFrEBJ+r+Wkj0tNzfFR85NRa7zPr5B9hmzIMRR3+AAq?=
+ =?us-ascii?q?+DP6POq1OH+uUvI+yUbo8PpDn9M+Ql5+LpjXIhgl8SY62p3ZoRaHClEfVrOF?=
+ =?us-ascii?q?uZYXXyjdcbC2sKvRQxTPbsiFKcVT5ffXGyX7gz5mJzNIXzKoHPXI2vyJmGxy?=
+ =?us-ascii?q?GyFZBVLjRBD1eXF37jeq2eVvsMYT7UKchkxHhMTrWlSok8xTmwuwLgjblqNO?=
+ =?us-ascii?q?zZ/msfr52nnPp84uDI3To77yB5FYzJ0X6GRntoxEsUVjQ22+Z5ukU7xVCdh/?=
+ =?us-ascii?q?tWmftdQOdP6utJXwFyDpvVy+h3GpimQQ7aVsuYQ1ahBNO9CHc+ScxnkIxGWF?=
+ =?us-ascii?q?p0B9j31kOL5CGtGbJA0uXQVZE=3D?=
+X-IPAS-Result: =?us-ascii?q?A2BzAgBl2kZe/wHyM5BmHAEBAQEBBwEBEQEEBAEBgXuBf?=
+ =?us-ascii?q?YFtIBIqhBSJA4ZZAQEEBoESJYlwkUoJAQEBAQEBAQEBNwQBAYRAAoIlOBMCE?=
+ =?us-ascii?q?AEBAQUBAQEBAQUDAQFshUOCOykBgwIBBSMEEVELDgoCAiYCAlcGAQwGAgEBg?=
+ =?us-ascii?q?mM/glclri1/M4VKg06BPoEOKow+eYEHgTgMA4JdPodbgl4El0dGl22CRIJPk?=
+ =?us-ascii?q?3wGHJsYjmidPyKBWCsIAhgIIQ+DJ1AYDY4pF45BIwMwkFgBAQ?=
 Received: from tarius.tycho.ncsc.mil (HELO tarius.infosec.tycho.ncsc.mil) ([144.51.242.1])
-  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 14 Feb 2020 16:06:29 +0000
+  by EMSM-GH1-UEA10.NCSC.MIL with ESMTP; 14 Feb 2020 17:37:42 +0000
 Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto [192.168.25.131])
-        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 01EG5UMo166729;
-        Fri, 14 Feb 2020 11:05:30 -0500
-Subject: Re: [PATCH AUTOSEL 5.5 190/542] selinux: ensure we cleanup the
- internal AVC counters on error in avc_insert()
-To:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Cc:     Paul Moore <paul@paul-moore.com>, rsiddoji@codeaurora.org,
-        selinux@vger.kernel.org
-References: <20200214154854.6746-1-sashal@kernel.org>
- <20200214154854.6746-190-sashal@kernel.org>
+        by tarius.infosec.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 01EHai1P214335;
+        Fri, 14 Feb 2020 12:36:44 -0500
+Subject: Re: [PATCH userspace v2] libsepol: cache ebitmap cardinality value
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org,
+        James Carter <jwcart2@tycho.nsa.gov>
+References: <20200213133959.14217-1-omosnace@redhat.com>
 From:   Stephen Smalley <sds@tycho.nsa.gov>
-Message-ID: <64b56666-4e4a-10e0-0a1d-60ee28615d23@tycho.nsa.gov>
-Date:   Fri, 14 Feb 2020 11:07:37 -0500
+Message-ID: <1a11d058-eee1-41c5-9686-da01ecf6ea33@tycho.nsa.gov>
+Date:   Fri, 14 Feb 2020 12:38:52 -0500
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.4.1
 MIME-Version: 1.0
-In-Reply-To: <20200214154854.6746-190-sashal@kernel.org>
+In-Reply-To: <20200213133959.14217-1-omosnace@redhat.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -93,97 +83,98 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2/14/20 10:43 AM, Sasha Levin wrote:
-> From: Paul Moore <paul@paul-moore.com>
+On 2/13/20 8:39 AM, Ondrej Mosnacek wrote:
+> According to profiling of semodule -BN, ebitmap_cardinality() is called
+> quite often and contributes a lot to the total runtime. Cache its result
+> in the ebitmap struct to reduce this overhead. The cached value is
+> invalidated on most modifying operations, but ebitmap_cardinality() is
+> usually called once the ebitmap doesn't change any more.
 > 
-> [ Upstream commit d8db60cb23e49a92cf8cada3297395c7fa50fdf8 ]
+> After this patch, the time to do 'semodule -BN' on Fedora Rawhide has
+> decreased from ~14.6s to ~12.4s (2.2s saved).
 > 
-> Fix avc_insert() to call avc_node_kill() if we've already allocated
-> an AVC node and the code fails to insert the node in the cache.
-> 
-> Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
-> Reported-by: rsiddoji@codeaurora.org
-> Suggested-by: Stephen Smalley <sds@tycho.nsa.gov>
-> Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
-> Signed-off-by: Paul Moore <paul@paul-moore.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 
-You should also apply 030b995ad9ece9fa2d218af4429c1c78c2342096 
-("selinux: ensure we cleanup the internal AVC counters on error in 
-avc_update()") which fixes one additional instance of the same kind of 
-bug not addressed by this patch.
+This seems fine but I was wondering how many of the callers of 
+ebitmap_cardinality() actually need anything more than ebitmap_length()?
 
 > ---
->   security/selinux/avc.c | 51 ++++++++++++++++++++----------------------
->   1 file changed, 24 insertions(+), 27 deletions(-)
 > 
-> diff --git a/security/selinux/avc.c b/security/selinux/avc.c
-> index 23dc888ae3056..6646300f7ccb2 100644
-> --- a/security/selinux/avc.c
-> +++ b/security/selinux/avc.c
-> @@ -617,40 +617,37 @@ static struct avc_node *avc_insert(struct selinux_avc *avc,
->   	struct avc_node *pos, *node = NULL;
->   	int hvalue;
->   	unsigned long flag;
-> +	spinlock_t *lock;
-> +	struct hlist_head *head;
+> v2: corrected time values in commit message
+> 
+>   libsepol/include/sepol/policydb/ebitmap.h |  1 +
+>   libsepol/src/ebitmap.c                    | 10 ++++++++++
+>   2 files changed, 11 insertions(+)
+> 
+> diff --git a/libsepol/include/sepol/policydb/ebitmap.h b/libsepol/include/sepol/policydb/ebitmap.h
+> index e62df01c..53fafdaa 100644
+> --- a/libsepol/include/sepol/policydb/ebitmap.h
+> +++ b/libsepol/include/sepol/policydb/ebitmap.h
+> @@ -37,6 +37,7 @@ typedef struct ebitmap_node {
+>   typedef struct ebitmap {
+>   	ebitmap_node_t *node;	/* first node in the bitmap */
+>   	uint32_t highbit;	/* highest position in the total bitmap */
+> +	unsigned int cardinality;	/* cached value of cardinality */
+>   } ebitmap_t;
 >   
->   	if (avc_latest_notif_update(avc, avd->seqno, 1))
-> -		goto out;
-> +		return NULL;
+>   #define ebitmap_length(e) ((e)->highbit)
+> diff --git a/libsepol/src/ebitmap.c b/libsepol/src/ebitmap.c
+> index 6c9951b7..d23444ce 100644
+> --- a/libsepol/src/ebitmap.c
+> +++ b/libsepol/src/ebitmap.c
+> @@ -67,6 +67,7 @@ int ebitmap_union(ebitmap_t * dst, const ebitmap_t * e1)
+>   	ebitmap_destroy(dst);
+>   	dst->node = tmp.node;
+>   	dst->highbit = tmp.highbit;
+> +	dst->cardinality = 0;
 >   
->   	node = avc_alloc_node(avc);
-> -	if (node) {
-> -		struct hlist_head *head;
-> -		spinlock_t *lock;
-> -		int rc = 0;
-> -
-> -		hvalue = avc_hash(ssid, tsid, tclass);
-> -		avc_node_populate(node, ssid, tsid, tclass, avd);
-> -		rc = avc_xperms_populate(node, xp_node);
-> -		if (rc) {
-> -			kmem_cache_free(avc_node_cachep, node);
-> -			return NULL;
-> -		}
-> -		head = &avc->avc_cache.slots[hvalue];
-> -		lock = &avc->avc_cache.slots_lock[hvalue];
-> +	if (!node)
-> +		return NULL;
->   
-> -		spin_lock_irqsave(lock, flag);
-> -		hlist_for_each_entry(pos, head, list) {
-> -			if (pos->ae.ssid == ssid &&
-> -			    pos->ae.tsid == tsid &&
-> -			    pos->ae.tclass == tclass) {
-> -				avc_node_replace(avc, node, pos);
-> -				goto found;
-> -			}
-> +	avc_node_populate(node, ssid, tsid, tclass, avd);
-> +	if (avc_xperms_populate(node, xp_node)) {
-> +		avc_node_kill(avc, node);
-> +		return NULL;
-> +	}
+>   	return 0;
+>   }
+> @@ -128,9 +129,14 @@ int ebitmap_andnot(ebitmap_t *dst, ebitmap_t *e1, ebitmap_t *e2, unsigned int ma
+>   unsigned int ebitmap_cardinality(ebitmap_t *e1)
+>   {
+>   	unsigned int i, count = 0;
 > +
-> +	hvalue = avc_hash(ssid, tsid, tclass);
-> +	head = &avc->avc_cache.slots[hvalue];
-> +	lock = &avc->avc_cache.slots_lock[hvalue];
-> +	spin_lock_irqsave(lock, flag);
-> +	hlist_for_each_entry(pos, head, list) {
-> +		if (pos->ae.ssid == ssid &&
-> +			pos->ae.tsid == tsid &&
-> +			pos->ae.tclass == tclass) {
-> +			avc_node_replace(avc, node, pos);
-> +			goto found;
->   		}
-> -		hlist_add_head_rcu(&node->list, head);
-> -found:
-> -		spin_unlock_irqrestore(lock, flag);
+> +	if (e1->cardinality || e1->highbit == 0)
+> +		return e1->cardinality;
+> +
+>   	for (i=ebitmap_startbit(e1); i < ebitmap_length(e1); i++)
+>   		if (ebitmap_get_bit(e1, i))
+>   			count++;
+> +	e1->cardinality = count;
+>   	return count;
+>   }
+>   
+> @@ -194,6 +200,7 @@ int ebitmap_cpy(ebitmap_t * dst, const ebitmap_t * src)
 >   	}
-> -out:
-> +	hlist_add_head_rcu(&node->list, head);
-> +found:
-> +	spin_unlock_irqrestore(lock, flag);
->   	return node;
+>   
+>   	dst->highbit = src->highbit;
+> +	dst->cardinality = src->cardinality;
+>   	return 0;
+>   }
+>   
+> @@ -309,6 +316,7 @@ int ebitmap_set_bit(ebitmap_t * e, unsigned int bit, int value)
+>   					free(n);
+>   				}
+>   			}
+> +			e->cardinality = 0; /* invalidate cached cardinality */
+>   			return 0;
+>   		}
+>   		prev = n;
+> @@ -339,6 +347,7 @@ int ebitmap_set_bit(ebitmap_t * e, unsigned int bit, int value)
+>   		e->node = new;
+>   	}
+>   
+> +	e->cardinality = 0; /* invalidate cached cardinality */
+>   	return 0;
+>   }
+>   
+> @@ -358,6 +367,7 @@ void ebitmap_destroy(ebitmap_t * e)
+>   
+>   	e->highbit = 0;
+>   	e->node = 0;
+> +	e->cardinality = 0;
+>   	return;
 >   }
 >   
 > 

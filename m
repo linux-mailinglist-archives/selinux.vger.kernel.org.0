@@ -2,54 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A274E16EF9F
-	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2020 21:02:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F4A016EFA2
+	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2020 21:02:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731387AbgBYUCq (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 25 Feb 2020 15:02:46 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:36958 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731178AbgBYUCp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 25 Feb 2020 15:02:45 -0500
-Received: by mail-pf1-f193.google.com with SMTP id p14so122465pfn.4
-        for <selinux@vger.kernel.org>; Tue, 25 Feb 2020 12:02:45 -0800 (PST)
+        id S1731690AbgBYUCt (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 25 Feb 2020 15:02:49 -0500
+Received: from mail-pl1-f194.google.com ([209.85.214.194]:43787 "EHLO
+        mail-pl1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731702AbgBYUCs (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 25 Feb 2020 15:02:48 -0500
+Received: by mail-pl1-f194.google.com with SMTP id p11so233354plq.10
+        for <selinux@vger.kernel.org>; Tue, 25 Feb 2020 12:02:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=W23xTt7ttGIK1C1HvZAN92fOe86sF7EeKTsLn8aQd+o=;
-        b=Ovd4AKhT32F8m4v2MqyiOaLKmD3hhWHg02Q2vXM5WJ93CKKo5llFhtoK2nl6N4LF2R
-         ZtUGJQUGqpL2gAfoKrTtkR8t4oaEeQ3k8vnyC1k60ytuFT6HPkA8+arLxHSnmZ7NKsIh
-         M/J3u/bqo4attnvccyvl8oKz7lJDdzJE4LljUHsk6nDH8bdOttQpCWWKysaQmz8umH/5
-         6CRfPdX8Hs4DmJXcZHgiMFNRVAlA13a9XUb2uFXWjPZcroS7A6WwVOiX8YPeVRNz3x7S
-         c3Rg8ahk+dZU19/A6O8bujbTV3DcNM4Z4kMdJms5BS+z31Pamqu7VSMIE8depfQNOOPs
-         wE3w==
+        bh=pc/+g3osm/weoUsazCj+HpjXMuRGJTtyWnawdWS70NE=;
+        b=CrnOp0KCAw/HlN9PuTXrao+qW5NUbs7z36g9b1ZZjIjWmVNgoZ992GxiQce9O+pjlP
+         vvoud/f/pjHXhCoL+7jFPZ4Eb+MSVjNPTe6EZbh/Bz5Z3HFQr/ocLHTGYWGqqmDNcTei
+         cZBpGvQFrgyWL2K9qZb7/xEyhINw55R/hhDnZq0/fbGaKpDhW32uvjgjvwhAMp5hbv3R
+         L8Q0Sv59Isqmd4ktj12TJyu8Q9oDYav4RIkSeB6zAkFd20z54wevu9ynnr0hA3iW2OH1
+         JV26HTlZMULgDbxMS8XWgvLeP1Z5oMre9nLuLR8uXf0utFQq2lL8rjxBal8rclR83TGW
+         wYRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=W23xTt7ttGIK1C1HvZAN92fOe86sF7EeKTsLn8aQd+o=;
-        b=ikjZxJ1IviCp92Jcokc+bqwTiV76Zsst5N4cOr6ySUp8R4+IrOu+uYSoKn4Id6rUkt
-         M/fTEF2iq9/vGUf6bKGxv26x1d0ODzuD7xLmfVaYupc4zSZO1xak+o1tyNRU6uT2xIVX
-         yxQjfVWOxwofiUWvO83QiNu3SEyheDR5/FoHPVQpHgy0asxAWHexGmxrhMbUdh6zX1sI
-         +lDZnmaq0VI2Ip45LE8I9Xge+HLRsiTnfYt+KB7RctP5CphVrAqVlyBJrX1U00sXh5+S
-         ct1Ex6KvKF31fH+Jv9+qgM/yaIHwWzm46yz0sVeWejGEu2JfCbGsX9x/qtsEP3kwdDGu
-         wB6g==
-X-Gm-Message-State: APjAAAVhPAtQUaI+75Ud2cqvunWQYCyZmccsDQZdNW9ZQJI8h7zKvXWS
-        O7zEJg8f1qJ5b1gaoWc9MOs=
-X-Google-Smtp-Source: APXvYqyGIGyjHY/P99Oh2kPFIcXLinmYtZXLb7JKqPhsKn9ah61a/czkNW9Q5MwhMpUsETYd0p7V7A==
-X-Received: by 2002:aa7:9808:: with SMTP id e8mr434862pfl.32.1582660965158;
-        Tue, 25 Feb 2020 12:02:45 -0800 (PST)
+        bh=pc/+g3osm/weoUsazCj+HpjXMuRGJTtyWnawdWS70NE=;
+        b=CjbqBRhixP4dgvFLsUpDiD2Pki1ioCr7ToWKl7ktzWg/81icPHnuoW950jfltuOpHS
+         fxOLaer1L0e/pLq5646ysuL3pVoo/M6HGcWhGaCY6/ZUY4z8jzF0MC5mLcYYyxU44Fud
+         pRgKKU7JTi1oN8IjPQsZi11HM4VWHO90lq3xOOGWRLn9hxIn5twHdGrvSvpG3+tIUfKF
+         Ib2ESzkHClw/+3fBNisFpxH4Dhne3KyXQ6zrSBW2adgl0zMIcLoX0Hfkkeu4lReXNAgm
+         KSo9o3JYg1B+WMphH7mDYbknJ33ETA5o+4QO3WFSmhK0hz+DeDx+1a37ceHeJZVpnCUY
+         g7UA==
+X-Gm-Message-State: APjAAAVAakUFwMlajdtewOy69VXSTr/tARLVpkcOW/K5cCj3m5+HZjNK
+        evLnFyTACer1QxjR+a0inmk=
+X-Google-Smtp-Source: APXvYqyTwlMHPOeLWbiiSJ3LSeqLfniKMwH3csKrgkITZ3VRPkMLvu9gOtRfKrIbPoTnMnPo25kRJg==
+X-Received: by 2002:a17:90a:b10b:: with SMTP id z11mr801970pjq.132.1582660966894;
+        Tue, 25 Feb 2020 12:02:46 -0800 (PST)
 Received: from localhost.localdomain (fmdmzpr03-ext.fm.intel.com. [192.55.54.38])
-        by smtp.gmail.com with ESMTPSA id v29sm10636362pgc.72.2020.02.25.12.02.43
+        by smtp.gmail.com with ESMTPSA id v29sm10636362pgc.72.2020.02.25.12.02.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2020 12:02:44 -0800 (PST)
+        Tue, 25 Feb 2020 12:02:46 -0800 (PST)
 From:   bill.c.roberts@gmail.com
 X-Google-Original-From: william.c.roberts@intel.com
 To:     sds@tycho.nsa.gov, plautrba@redhat.com, selinux@vger.kernel.org
 Cc:     William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH 04/17] selinux_users_path: annotate deprecated
-Date:   Tue, 25 Feb 2020 14:02:06 -0600
-Message-Id: <20200225200219.6163-5-william.c.roberts@intel.com>
+Subject: [PATCH 05/17] rpm_execcon: annotate deprecated
+Date:   Tue, 25 Feb 2020 14:02:07 -0600
+Message-Id: <20200225200219.6163-6-william.c.roberts@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200225200219.6163-1-william.c.roberts@intel.com>
 References: <20200225200219.6163-1-william.c.roberts@intel.com>
@@ -62,22 +62,23 @@ From: William Roberts <william.c.roberts@intel.com>
 
 Signed-off-by: William Roberts <william.c.roberts@intel.com>
 ---
- libselinux/include/selinux/selinux.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ libselinux/include/selinux/selinux.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
-index 0f77debaa06c..e5c8fdf3e4fb 100644
+index e5c8fdf3e4fb..e531f927be1e 100644
 --- a/libselinux/include/selinux/selinux.h
 +++ b/libselinux/include/selinux/selinux.h
-@@ -574,7 +574,7 @@ extern const char *selinux_booleans_subs_path(void);
- extern const char *selinux_booleans_path(void) __attribute__ ((deprecated));
- extern const char *selinux_customizable_types_path(void);
- /* Deprecated as policy ./users no longer supported. */
--extern const char *selinux_users_path(void);
-+extern const char *selinux_users_path(void) __attribute__ ((deprecated));
- extern const char *selinux_usersconf_path(void);
- extern const char *selinux_translations_path(void);
- extern const char *selinux_colors_path(void);
+@@ -629,7 +629,8 @@ extern int setexecfilecon(const char *filename, const char *fallback_type);
+ /* Execute a helper for rpm in an appropriate security context. */
+ extern int rpm_execcon(unsigned int verified,
+ 		       const char *filename,
+-		       char *const argv[], char *const envp[]);
++		       char *const argv[], char *const envp[])
++	__attribute__((deprecated("Use setexecfilecon and execve")));
+ #endif
+ 
+ /* Returns whether a file context is customizable, and should not 
 -- 
 2.17.1
 

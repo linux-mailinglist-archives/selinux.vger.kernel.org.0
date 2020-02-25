@@ -2,54 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F84F16EF98
-	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2020 21:02:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 48A4516EF9A
+	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2020 21:02:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730953AbgBYUCk (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 25 Feb 2020 15:02:40 -0500
-Received: from mail-pj1-f65.google.com ([209.85.216.65]:39275 "EHLO
-        mail-pj1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730961AbgBYUCk (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 25 Feb 2020 15:02:40 -0500
-Received: by mail-pj1-f65.google.com with SMTP id e9so183985pjr.4
-        for <selinux@vger.kernel.org>; Tue, 25 Feb 2020 12:02:39 -0800 (PST)
+        id S1731665AbgBYUCm (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 25 Feb 2020 15:02:42 -0500
+Received: from mail-pl1-f193.google.com ([209.85.214.193]:38939 "EHLO
+        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731645AbgBYUCl (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 25 Feb 2020 15:02:41 -0500
+Received: by mail-pl1-f193.google.com with SMTP id g6so243982plp.6
+        for <selinux@vger.kernel.org>; Tue, 25 Feb 2020 12:02:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=WWiCjevwx9oSwa3spOQKQxkLTwNuVsw2YwnfJ5bbW80=;
-        b=nB2p+acBTZOoOhKEqADex/+4gkNLsfoCs3Bss+jKWwt8+WSZPBLZysyrutHHG1DAhH
-         xr335wcoPrmvqxlCNNMm4UmFXhw3mU7krXlqVUDv4biD4zicazJLl+wlZkdJruJfJkLp
-         gimv1qH91acEC2qKkVVJjfYdhFDIZOMg+acmQLB/ruJRBW3lhyX5aYMAd7RypS5b6bnQ
-         51jyRSfzpgrTT5dlbJUChwkmwNHCb7IMvh6groWKZ/juUl8GTFhA6AXfFY4VV5mJpPxW
-         oRMVUWGvqc95ZHsOgLlZk9RfMi3U+h3Xfh8fgLBcX7v5AAgAmK42GTM+giEEAzjm73S4
-         wL+w==
+        bh=p1GByf6fsu6kmddAau9KLY0+hGhmNnwPe1Shj/m1U6Q=;
+        b=AqXeCmY5IvPepWRvxoeKzkTP2Tdn+bclC6xw/XTDZo6CEMsi4RvdGbs3NVE9U3azoh
+         mxLYIf3e71fth1lkgXfee7L1CUWXeNesDv4C5dluij/VEjHvezKoiEUGM9MN0ZPzqvAS
+         3j2G7d5i0vK8foAQ6eQvA91hTH9KvzmJ6BowOnmBc72aS1cJkRo1NnkYJTXtXBlV9Y0j
+         jGmOZu5qX2I3N6twiUUcrxvG8EC1KyGwZ3K7I+6cYWTTvXBB5/WwR0vCN2E5bDUrwoXR
+         uN5DIfDvzmm7HKNYzXr/Cmzy7XOgKtbAUvXU/u7Bj8pofSS70jrU0JruZfWKfSZRVu23
+         xKSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=WWiCjevwx9oSwa3spOQKQxkLTwNuVsw2YwnfJ5bbW80=;
-        b=sQjzPHn1pMKgQlEnlKO/+yifmWIw04EDzRlnJwZ0FVO8JkcYirF1FQR6RwVLFbiqvJ
-         cqYxh+ndmasEe88WyyipsYy5+E7yjH7QZULwvhqnGJBXXAKJv5XJvEIV3l+gk8D6YzwV
-         sJoYx4zDcSMals4qSVrw7HIcHQbNQZhwo8CSm0L2Iqa+iQ0fXiu18ONV/H+lBJBUrrpL
-         SWC/xUzUk73sH/beB7zn4ayyBaQ1BV08i9VHcTFzIus7rMYOt3HXrGKfDQJtoPMFYa5C
-         CDczWnInRReOWiMYUK0ljQaqUgBQEspuq2iJ3yiwomGuLm9cV4cmeNQorBZ5gZNm1vzf
-         O9Hg==
-X-Gm-Message-State: APjAAAWPVwwZKEDJGEXI1p/mMHm0DeHosBtSPu4zt0pXvnvN8Xao3Ajh
-        H4+g//0WwhHPN8Tyr0061TU=
-X-Google-Smtp-Source: APXvYqwQU20IvbNIZFk6sRMiWMjEq5rUHsA0bZUBBOumQjvbj7OsleubhRSoZNoKv901G+tAkxaRzA==
-X-Received: by 2002:a17:90a:3841:: with SMTP id l1mr803017pjf.108.1582660959218;
-        Tue, 25 Feb 2020 12:02:39 -0800 (PST)
+        bh=p1GByf6fsu6kmddAau9KLY0+hGhmNnwPe1Shj/m1U6Q=;
+        b=oYa2aD3Mqhpgpjo0Cch0jhwEj42gUUQpyXm0dT5GplG7ijfSG3bP2Xk8yygMhGptcy
+         pLTKCc6fYx/MaVt1xsG/55hJTvY5BuFDT4wXGNO5GGCEQ1NgFQz+OeZK4PfKuybMViaw
+         +VN0s56y5toZOoS5r4j24ARAvtUTJQQA3YibkCctaxRv6Alb3P9IDoJLunczBz1i+ADj
+         uCdpenyM5EojsjEp64kulit0UHVktcI7fZA9KsZ9l0VY7MYt0M2jTQe1CNiPoCbVQlaK
+         b8JqJj/k2Tu3evQK0wj3wIigB7drqt5q+NkllS5fp5vIQDI2Xjjva1EF9XhXehrC8YFg
+         qZ5A==
+X-Gm-Message-State: APjAAAWkiCtgojlTmLqmoipJgDJUZJvktGkL/2hjxYj0mSDcK1WvYy53
+        pxgAlx71w635qsCO7MbF28c=
+X-Google-Smtp-Source: APXvYqyTmxm7oPa5/0LdAXKRKDKTtqL4sVPsxpDBAUO1ZRUaPfNk9NqP/5rjPaL6M8si7HEf24IQhw==
+X-Received: by 2002:a17:90a:c390:: with SMTP id h16mr742388pjt.131.1582660961068;
+        Tue, 25 Feb 2020 12:02:41 -0800 (PST)
 Received: from localhost.localdomain (fmdmzpr03-ext.fm.intel.com. [192.55.54.38])
-        by smtp.gmail.com with ESMTPSA id v29sm10636362pgc.72.2020.02.25.12.02.37
+        by smtp.gmail.com with ESMTPSA id v29sm10636362pgc.72.2020.02.25.12.02.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2020 12:02:38 -0800 (PST)
+        Tue, 25 Feb 2020 12:02:40 -0800 (PST)
 From:   bill.c.roberts@gmail.com
 X-Google-Original-From: william.c.roberts@intel.com
 To:     sds@tycho.nsa.gov, plautrba@redhat.com, selinux@vger.kernel.org
 Cc:     William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH 01/17] security_load_booleans: update return comment
-Date:   Tue, 25 Feb 2020 14:02:03 -0600
-Message-Id: <20200225200219.6163-2-william.c.roberts@intel.com>
+Subject: [PATCH 02/17] selinux_booleans_path: annotate deprecated
+Date:   Tue, 25 Feb 2020 14:02:04 -0600
+Message-Id: <20200225200219.6163-3-william.c.roberts@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200225200219.6163-1-william.c.roberts@intel.com>
 References: <20200225200219.6163-1-william.c.roberts@intel.com>
@@ -60,26 +60,24 @@ X-Mailing-List: selinux@vger.kernel.org
 
 From: William Roberts <william.c.roberts@intel.com>
 
-The code returns -1 not 0, correct it.
-
 Signed-off-by: William Roberts <william.c.roberts@intel.com>
 ---
  libselinux/include/selinux/selinux.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
-index 883d8b85742c..ee808dd954ad 100644
+index ee808dd954ad..97834cc842dd 100644
 --- a/libselinux/include/selinux/selinux.h
 +++ b/libselinux/include/selinux/selinux.h
-@@ -319,7 +319,7 @@ extern int security_set_boolean_list(size_t boolcnt,
- 				     SELboolean * boollist, int permanent);
- 
+@@ -321,7 +321,7 @@ extern int security_set_boolean_list(size_t boolcnt,
  /* Load policy boolean settings. Deprecated as local policy booleans no
-- * longer supported. Will always return 0.
-+ * longer supported. Will always return -1.
+  * longer supported. Will always return -1.
   */
- extern int security_load_booleans(char *path);
+-extern int security_load_booleans(char *path);
++extern int security_load_booleans(char *path) __attribute__ ((deprecated));
  
+ /* Check the validity of a security context. */
+ extern int security_check_context(const char * con);
 -- 
 2.17.1
 

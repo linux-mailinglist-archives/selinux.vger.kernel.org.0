@@ -2,61 +2,64 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 865161722B7
-	for <lists+selinux@lfdr.de>; Thu, 27 Feb 2020 17:03:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 735441722BB
+	for <lists+selinux@lfdr.de>; Thu, 27 Feb 2020 17:03:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729425AbgB0QDE (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 27 Feb 2020 11:03:04 -0500
-Received: from us-smtp-2.mimecast.com ([207.211.31.81]:35802 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729235AbgB0QDE (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 27 Feb 2020 11:03:04 -0500
+        id S1729842AbgB0QDJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 27 Feb 2020 11:03:09 -0500
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:32673 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729153AbgB0QDJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 27 Feb 2020 11:03:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1582819383;
+        s=mimecast20190719; t=1582819388;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=422MM+dX8SeyrozZfwnYxcqpPJs5evrxiAguBDF1Z7Q=;
-        b=GrK1Su8yI9uMbTTDAzPYthAlwVbegbehElAz1KbpTzeviYdPkmgdt6JkdoUZpzkBa/1tum
-        nrI6ymyd/057n+9PZMvMQDVP7JOxxEQzUcGtLB4n7pnr3PxvmDuTezxeQNYxOAfNg9ZqGH
-        jXbsb7hprSZx8qNP+b/9OswmURcOQM8=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-135-hib09oviNEmgXAlDGDNJyA-1; Thu, 27 Feb 2020 11:03:01 -0500
-X-MC-Unique: hib09oviNEmgXAlDGDNJyA-1
-Received: by mail-wr1-f72.google.com with SMTP id m15so19945wrs.22
-        for <selinux@vger.kernel.org>; Thu, 27 Feb 2020 08:03:01 -0800 (PST)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=Hl0zGBH+n27gE0Df1dBcIr3nnNIxDiWCQl++8TVsIoo=;
+        b=h/rO1qwHxaK9hMYnRIu4YYHVHI5exzZJV67FZvgrEbB147QlyUDndZDOea7qSu5Y3n2WYl
+        BBH2gB5OdzyQa6L+W6ErlaTbubUZcmlH72pKggnP30c0KQWh3v8MYiaVI/7qSnkXOUuVqc
+        FxcpmBwJq0hMe9OEG+jVgYB6xJPwtEw=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-190-LR6XcntmORiQ0xrvDrlg5Q-1; Thu, 27 Feb 2020 11:03:06 -0500
+X-MC-Unique: LR6XcntmORiQ0xrvDrlg5Q-1
+Received: by mail-wr1-f71.google.com with SMTP id c6so24126wrm.18
+        for <selinux@vger.kernel.org>; Thu, 27 Feb 2020 08:03:06 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=422MM+dX8SeyrozZfwnYxcqpPJs5evrxiAguBDF1Z7Q=;
-        b=fdppekj9v0iuPLBSFTMPfJF7I1iL9jInLgidOEF6AuM7JntMAXvmKo1WQu/xL86sQ+
-         dW2pqOYyKGVPPf8L+BNixllisJ+7l2uazR6huJBDu8gt3HgVW+q+L5X1UVJCH6uvU3u4
-         CVFCdVCJEzdRB/mV+0MH20Zx4aF7PalnHarY3Uxi4lHMRPrXGAL4h5xc68DgIyU5ePVJ
-         UKxf1+NCqY4jPzaaJAy/QzuTb6wLZJYDQnfboZKsjAHR04fUTAj/L8uiccgVQ2T88RI0
-         TJOeZyLxn26fNQzQMPM+pzsyYydIc3YH5B8C9l+aE1NX5wPup693yKHkG8H2qoKFlFEB
-         lU1g==
-X-Gm-Message-State: APjAAAV1lduS0XTUP8I3XNWRXivx3LxiHfjYNgcJZdh4tC48kfBxl8RK
-        gi86kNTk1EQGx+Oj7WCG7f/zPY4Cyskl0FO0FgTpxEItsyjOS5ThvLc58YY+Ulqm+wJdFvqDKmc
-        7axIkC+Vm9gQAHIyQxw==
-X-Received: by 2002:a5d:69cb:: with SMTP id s11mr5256443wrw.47.1582819380032;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Hl0zGBH+n27gE0Df1dBcIr3nnNIxDiWCQl++8TVsIoo=;
+        b=fZBLMRUOPcSw8B+nM+2jBWw5zs6Mj1wJ4W4PK5AxWNSkujZ0Rwe92owp5kMIfNKWxh
+         92etD64Xah9p3VnDecwCCZHxhk0HHwltUviwFsOcOmBSKh7HujJna9grX7bW5XXXvfND
+         rU373vRVlg8lKp+doh+G60kErjcDtmFCsiYp9XHvQ1kfc/g2lvBv40HyIeBCnvu7Q9Jk
+         th5HzJQkRBZZ/hpxiq0Qcpr5jmGHqTSAfFsmz/4XUt3NRfOkuFDajKgMpnr4It+EgM5E
+         8S3sGqm70xZ+2keJ6lJscfFiv0hoB1anW224t9tseBw4qbrbaPQH04Vx09gX4fxpRsVy
+         2NRA==
+X-Gm-Message-State: APjAAAW8TUruAxzgeNluytYpzbI/goY0NN4jKsnVEDGP1HMGTLxHZEw8
+        vzQywcCZprA5NcKnGsGB1Yxo28JDtkOgJL+xdSW6Ts4AkFnWR+eQurL4JXaKDlY5B3qEMKQ4X5Q
+        EkNxTgR9DJBrewFjKug==
+X-Received: by 2002:a05:600c:291d:: with SMTP id i29mr202286wmd.39.1582819380924;
         Thu, 27 Feb 2020 08:03:00 -0800 (PST)
-X-Google-Smtp-Source: APXvYqy5sQbrJJSfsEEI2oLxCIqRE7nl9hCJOEls7W9asuz9vLtvL2SNa2ht7BpyooNBWjVW5tLchg==
-X-Received: by 2002:a5d:69cb:: with SMTP id s11mr5256419wrw.47.1582819379778;
-        Thu, 27 Feb 2020 08:02:59 -0800 (PST)
+X-Google-Smtp-Source: APXvYqxzoaNXpqxTYgYGeSWmf4uNVUQjUCiM/ufjVIt+fYP4pG/T8Mic8YvbPGeHKPs84NdgaiXp+Q==
+X-Received: by 2002:a05:600c:291d:: with SMTP id i29mr202260wmd.39.1582819380694;
+        Thu, 27 Feb 2020 08:03:00 -0800 (PST)
 Received: from omos.redhat.com (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id d17sm8063456wmb.36.2020.02.27.08.02.58
+        by smtp.gmail.com with ESMTPSA id d17sm8063456wmb.36.2020.02.27.08.02.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Feb 2020 08:02:59 -0800 (PST)
+        Thu, 27 Feb 2020 08:03:00 -0800 (PST)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     Stephen Smalley <sds@tycho.nsa.gov>,
         James Carter <jwcart2@tycho.nsa.gov>
-Subject: [PATCH 0/3] libsepol: Speed up policy optimization
-Date:   Thu, 27 Feb 2020 17:02:54 +0100
-Message-Id: <20200227160257.340737-1-omosnace@redhat.com>
+Subject: [PATCH 1/3] libsepol: skip unnecessary check in build_type_map()
+Date:   Thu, 27 Feb 2020 17:02:55 +0100
+Message-Id: <20200227160257.340737-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.24.1
+In-Reply-To: <20200227160257.340737-1-omosnace@redhat.com>
+References: <20200227160257.340737-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -64,19 +67,29 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This series contains two small changes (these don't seem to affect
-performance measurably, but are nonetheless logical) and a patch that
-changes how the policy optimization "type_map" helper structure is
-represented, which speeds up the whole process.
+I copy-pasted it from a different part of the code, which had to deal
+with policydb that isn't final yet. Since we only deal with the final
+kernel policy here, we can skip the check for the type datum being NULL.
 
-Ondrej Mosnacek (3):
-  libsepol: skip unnecessary check in build_type_map()
-  libsepol: optimize inner loop in build_type_map()
-  libsepol: speed up policy optimization
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ libsepol/src/optimize.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- libsepol/src/optimize.c | 119 +++++++++++++++++++++++++++++++---------
- 1 file changed, 94 insertions(+), 25 deletions(-)
-
+diff --git a/libsepol/src/optimize.c b/libsepol/src/optimize.c
+index 1e5e97e8..4d835d47 100644
+--- a/libsepol/src/optimize.c
++++ b/libsepol/src/optimize.c
+@@ -40,8 +40,7 @@ static ebitmap_t *build_type_map(const policydb_t *p)
+ 		return NULL;
+ 
+ 	for (i = 0; i < p->p_types.nprim; i++) {
+-		if (p->type_val_to_struct[i] &&
+-		    p->type_val_to_struct[i]->flavor != TYPE_ATTRIB) {
++		if (p->type_val_to_struct[i]->flavor != TYPE_ATTRIB) {
+ 			if (ebitmap_cpy(&map[i], &p->type_attr_map[i]))
+ 				goto err;
+ 		} else {
 -- 
 2.24.1
 

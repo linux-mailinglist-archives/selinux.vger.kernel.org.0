@@ -2,99 +2,92 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 86B4C18207C
-	for <lists+selinux@lfdr.de>; Wed, 11 Mar 2020 19:14:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 73A17182093
+	for <lists+selinux@lfdr.de>; Wed, 11 Mar 2020 19:17:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730524AbgCKSOH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 11 Mar 2020 14:14:07 -0400
-Received: from mail-oi1-f195.google.com ([209.85.167.195]:43705 "EHLO
-        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730468AbgCKSOH (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 11 Mar 2020 14:14:07 -0400
-Received: by mail-oi1-f195.google.com with SMTP id p125so2803750oif.10
-        for <selinux@vger.kernel.org>; Wed, 11 Mar 2020 11:14:07 -0700 (PDT)
+        id S1730658AbgCKSRR (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 11 Mar 2020 14:17:17 -0400
+Received: from mail-ot1-f67.google.com ([209.85.210.67]:45932 "EHLO
+        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730808AbgCKSRF (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 11 Mar 2020 14:17:05 -0400
+Received: by mail-ot1-f67.google.com with SMTP id f21so3043778otp.12
+        for <selinux@vger.kernel.org>; Wed, 11 Mar 2020 11:17:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=MUy4mOZBpAFOY0eZ4KfaukIAjaGTOe91sr3VJSy2fog=;
-        b=pr2jxa6mpc8WDvdvju3bt2siu3Z50Yr4FbrLoXY6wIOoPQ13bK3wLn0AzDF3PxqC8y
-         UTjAYrRAfDM5+bnoqiiVoD2CwnsoN4VCrr2/CQ56d47WaCzCa9uSfG1+5qF5om0k0cJC
-         klaLMmVnvfzkrYIN6Lou/nf9JDynYAhG0Y+JLGlCKBu+zVPGuC5BNKFKM69ZtaT8j479
-         a/1Zf6ukpIGjrulFDKrHv1NYuJd3d6v/7zkdV/WjJJxGW7PhcbgxCqGX0z8u3fuxan5v
-         vy9zEQoekjY0iUj/fIq6NeeQtjp7cbAP1y9AMuHEjlVu1CdFQqixQc9tORcyLyH492eP
-         poww==
+        bh=uw7hWVMRjOcjBjHn1QBIWn5FBX1/APpiUsivw1WJzfU=;
+        b=gJ8dNjpiaFrm90pgXFCJa7REr0NxhyX+0GJLu3uoF3ytkO/KsFJb2r0KSx/EebYf4H
+         JK0LlU31kMtdfijes/u9r06fEsSULz9toqcF77MqQLm1/YcR9Lt9X4nzy4iX1m+74rQh
+         HR6g6SPWeIOBVH8M3jmhOW88O5qYSme0RStdBKlXME0FfpGWO9NMukOXY/e39V80bGvw
+         tm9ik6HCx9RXaiZqhGJvJiHz0/5Kv/6hoN48zPaok15JbJZlh+DYP48AEqJuq2H9Yy4Y
+         szNQ4XWqgf3P5YwP00eGbI+1x9UM/AwpCmSxMbpzHDGlew+jYw7AmQlGWLi/2TxyN/Xg
+         AbNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=MUy4mOZBpAFOY0eZ4KfaukIAjaGTOe91sr3VJSy2fog=;
-        b=qedx+1mwsoaR3GjjeZOmOONF2sUydb/xan2LpXSLWGVdOY00RcnZD5zFS21btFR4qS
-         K6Dbrsqr84krGY3VuMjiet9Q7NRwGr6hXZiYH6jACAtnl483qJNT3Z1V/D+cGqaTyqeW
-         RuNL364ZbNjzEHg5MqKfN5RBWhjDz861DJayD5hUPej/3/p15exx0RgT6pXDTVZtLdI2
-         O1ckfXimBuTbbmgIBRVYXnlz54kkfQUoVqfj/uqHVhdCWIx28A2Bn04PE3PcMO9o41s7
-         Qy2dsxrluISjefgt7suaVyHW1lqVqYIlgJbxiJlQWGvboiaQRdd5IWlpe5yGOmd9Xpq7
-         Qubg==
-X-Gm-Message-State: ANhLgQ1EqRxchwAyWD96Wenm3A/CP33KKAg4bPYupDWsTabOezaoqmI/
-        bX5vD6lXPmEBb6UBJUfL/7gLaS5E7wPcEwztDQcUvqpg
-X-Google-Smtp-Source: ADFU+vuX0BZAF9y3Lep3w9Qau9oOBUWPPsIIDEfit944LNtPEJOoTKvRK6fLo8LUYi1iVQTwdn4WjLyNZzu3TkEp7Fc=
-X-Received: by 2002:a05:6808:34c:: with SMTP id j12mr2764720oie.92.1583950446693;
- Wed, 11 Mar 2020 11:14:06 -0700 (PDT)
+        bh=uw7hWVMRjOcjBjHn1QBIWn5FBX1/APpiUsivw1WJzfU=;
+        b=GNx4pwGrfhxlRerNs5M1aVvpdQNvaOQZI5Ko4KiTYonawFvTTFsmAQFQ1eXp6J2kVi
+         B/XVmn4r4FJBsC0yP/Ao0Pm22h+p9COH/MbO0l3TvJEGjDPmOSfqZM0B4MltLjKiytEa
+         4zS3oXNoGOs/purRQN0Y8aawmUb505VOFDQsGDLJM4agFRXRgcVDYB1Wp6obRWV3+zk+
+         D32wDtmbDiTj+2oDsjdSfomEPQ4vtpaQaYWx8IIeCtgnpcoRXV/dTsva55NwwALU7zQp
+         XqjZtejK+mfGy91DiEFhsV2HK7ZMr5+MNWvPw9Eh3y06EPk7xgQg1ALf7I00PkR6cuZD
+         /LpA==
+X-Gm-Message-State: ANhLgQ2CB09huHQeuvtkDiQUQV90hPilTqm06F6k49AkFMQro+JWmShh
+        KzkU+UIhWKgy73Vwq0QuZwjC1Jujzf4qv1zqVP5uTg==
+X-Google-Smtp-Source: ADFU+vtajbJEzafojDWCrpZwfNiDsFJyIlUt6OMGZRtGZPNoGuM/xUT31BMl1dUQF8Cloumh0Q07trQmEZhnCZo/rU0=
+X-Received: by 2002:a05:6830:1610:: with SMTP id g16mr3434350otr.295.1583950624897;
+ Wed, 11 Mar 2020 11:17:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAJfZ7==wU4R7VG3=gKpEoWKFKpP6tHiwN-0_O89-vp0w-ByPRw@mail.gmail.com>
- <20200302164112.10669-1-william.c.roberts@intel.com> <CAEjxPJ4sURPgJuTzGX_MBu-nThwn9NCWDKj0z39Pum8Mhh3axg@mail.gmail.com>
- <pjdd09r6ki8.fsf@redhat.com> <CAFftDdob6kA2XbsaLLKPND7uRFPFJyBwnzcPQPJ+pZsNw+vBzg@mail.gmail.com>
- <CAFftDdo2grFfgkFhSmw_XSeyu3Eo9wKvThqNyAjD73EoJdXJYQ@mail.gmail.com>
-In-Reply-To: <CAFftDdo2grFfgkFhSmw_XSeyu3Eo9wKvThqNyAjD73EoJdXJYQ@mail.gmail.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Wed, 11 Mar 2020 14:14:59 -0400
-Message-ID: <CAEjxPJ7wqdhF5G_2n1EsGjuvHdZhLG6Ww4dEkZ+HJjbffFjDVA@mail.gmail.com>
-Subject: Re: [V4] libselinux: drop dso.h
-To:     William Roberts <bill.c.roberts@gmail.com>
-Cc:     Petr Lautrbach <plautrba@redhat.com>,
-        Nicolas Iooss <nicolas.iooss@m4x.org>,
-        Ulrich Drepper <drepper@redhat.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        William Roberts <william.c.roberts@intel.com>
+References: <20200310144133.381567-1-dburgener@linux.microsoft.com> <CAP+JOzTwr8hC2zkjy15PJpJb_jjJAMdAhj8d-JwzzBVOVWpWwQ@mail.gmail.com>
+In-Reply-To: <CAP+JOzTwr8hC2zkjy15PJpJb_jjJAMdAhj8d-JwzzBVOVWpWwQ@mail.gmail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Wed, 11 Mar 2020 14:18:28 -0400
+Message-ID: <CAP+JOzSe7YNQRj07GYKvvcP2Kjj8oo3XdUKbccow7QaLgBs-WA@mail.gmail.com>
+Subject: Re: [PATCH] checkpolicy: Treat invalid characters as an error
+To:     Daniel Burgener <dburgener@linux.microsoft.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Mar 5, 2020 at 2:09 PM William Roberts <bill.c.roberts@gmail.com> wrote:
+On Tue, Mar 10, 2020 at 3:19 PM James Carter <jwcart2@gmail.com> wrote:
 >
-> On Thu, Mar 5, 2020 at 10:12 AM William Roberts
-> <bill.c.roberts@gmail.com> wrote:
+> On Tue, Mar 10, 2020 at 10:42 AM Daniel Burgener
+> <dburgener@linux.microsoft.com> wrote:
 > >
-> > On Thu, Mar 5, 2020 at 6:42 AM Petr Lautrbach <plautrba@redhat.com> wrote:
-> > >
-> > >
-> > > Stephen Smalley <stephen.smalley.work@gmail.com> writes:
-> > >
-> > > > On Mon, Mar 2, 2020 at 11:41 AM <bill.c.roberts@gmail.com> wrote:
-> > > >> [PATCH v4 1/4] dso: drop hidden_proto and hidden_def
-> > > >> [PATCH v4 2/4] Makefile: add -fno-semantic-interposition
-> > > >> [PATCH v4 3/4] Makefile: add linker script to minimize exports
-> > > >> [PATCH v4 4/4] libselinux: drop symbols from map
-> > > >
-> > > > This looks fine to me but I'd like at least one of the distro
-> > > > maintainers to ack it (especially the last one).
-> > >
-> > > Acked-by: Petr Lautrbach <plautrba@redhat.com>
-> > >
+> > Previously the behavior was to warn, discard the character and proceed. Now the build will halt upon encountering an expected character.
 > >
-> > Thanks staged:
-> > https://github.com/SELinuxProject/selinux/pull/205
+> > Signed-off-by: Daniel Burgener <dburgener@linux.microsoft.com>
 >
-> merged.
+> Acked-by: James Carter <jwcart2@gmail.com>
+>
+>
 
-I've noticed a change since this was applied; if I build userspace
-against the updated libselinux, the dynamic loader will
-print a warning if it is run on a system with the older libselinux, ala:
-$ /sbin/restorecon -v /etc
-/sbin/restorecon: /lib64/libselinux.so.1: no version information
-available (required by /sbin/restorecon)
-It still works since there was no real change in the ABI but I don't
-know if this is a concern for distros.
+Thanks, applied.
+Jim
+
+> > ---
+> >  checkpolicy/policy_scan.l | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/checkpolicy/policy_scan.l b/checkpolicy/policy_scan.l
+> > index e2f676e4..8c100f3d 100644
+> > --- a/checkpolicy/policy_scan.l
+> > +++ b/checkpolicy/policy_scan.l
+> > @@ -290,7 +290,7 @@ GLBLUB                              { return(GLBLUB); }
+> >  "]" |
+> >  "~" |
+> >  "*"                            { return(yytext[0]); }
+> > -.                               { yywarn("unrecognized character");}
+> > +.                               { yyerror("unrecognized character");}
+> >  %%
+> >  int yyerror(const char *msg)
+> >  {
+> > --
+> > 2.24.1
+> >

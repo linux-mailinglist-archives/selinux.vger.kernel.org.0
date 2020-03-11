@@ -2,93 +2,118 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 77165182049
-	for <lists+selinux@lfdr.de>; Wed, 11 Mar 2020 19:01:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C1D8818207D
+	for <lists+selinux@lfdr.de>; Wed, 11 Mar 2020 19:14:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730570AbgCKSBv (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 11 Mar 2020 14:01:51 -0400
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:35261 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730468AbgCKSBv (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 11 Mar 2020 14:01:51 -0400
-Received: by mail-ot1-f67.google.com with SMTP id k26so3032931otr.2
-        for <selinux@vger.kernel.org>; Wed, 11 Mar 2020 11:01:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6JJDvyRfOngG68GV+UmE7eQqJePB3nz1JLNZQ/v84k8=;
-        b=ACWFGJvYnA3qy+xQr/gxFq1OZAS4Ck4y6cu825b3RlKidEpxuUKS5YE78oHuJH9DDe
-         bgcf9msT7Cm0zcI5ibyYcV/M4yHX/vKNWZAO/TBWg5eXhM5/BG04QNzOEh8hwBhda/rw
-         Tl2zWme88ElGwjeyq4lovM/pi5DvClFUuUHMKyHaWpUltCS7TCDarC3AU0ZiWQdvw57j
-         A7fsDLwpYxz9BdiR//tPjKgaO79aHISS6ADTcROAD7p2812/hp2AaJnG93QJf78xpgpR
-         0rW/qL9QkMnkXzBm99iYGLGGIdh7sItZCvAPn5NNpV6TzujAu0XjJN/TG2gCw50jhO0H
-         YkUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6JJDvyRfOngG68GV+UmE7eQqJePB3nz1JLNZQ/v84k8=;
-        b=Q0o2BHkGiSKi0PpxsaNuyT6hKWAZmHiLT0J56jh/N1NZKjBcFpsbtFt2Igv/fSYPyk
-         wGjtaf3i3vuXs2mnFG7NmGldabN6qljSFoGCG3JWUJbqkBNV8EwwJvo/aEQpJJ/bIiri
-         xDetVu/f9GDh03MFRtfK+kUa9ChjnYsWUA7cP4eVC47hRPfWwfgHEExyGpV1aHTUk4I+
-         JqpOINAlqv6XrQxRTIkNznDzenADuaIJoJUjhtT+co4/JG065XDiD6yMiba3e5yDMorB
-         F11Tocy8q+rR9EIqwFlBpvAYAZ0SX7FJTK6vHZWxWhRcy/YjHIeT9jX5HdSIyw6ZvwBy
-         MBjw==
-X-Gm-Message-State: ANhLgQ0qUPd8VpQrFo8LQ+ypewBdmpt8BJmzXCYjeoQifpTh5oYTJbHi
-        r7bwzujEI+oOCr7hLPRQMHVm9/fxX1KNXu8uB0O+Fw==
-X-Google-Smtp-Source: ADFU+vtSiyVdBqK3HCPx3FZB/hQrCw0s/yBwJgX63C0Bx1piIoAfbZv/26M0J1nLB9ze9PGSUkGasbfsIIYxKWBWyKA=
-X-Received: by 2002:a9d:6457:: with SMTP id m23mr3337952otl.162.1583949710485;
- Wed, 11 Mar 2020 11:01:50 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200310162456.32240-1-richard_c_haines@btinternet.com>
- <CAEjxPJ4USNdqFY40vPnviLPHSZR22Tpq0y1L+LauJenKXRw6HA@mail.gmail.com> <5b317d8b29fbf7d56238a136254b53b042becf96.camel@btinternet.com>
-In-Reply-To: <5b317d8b29fbf7d56238a136254b53b042becf96.camel@btinternet.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Wed, 11 Mar 2020 14:02:41 -0400
-Message-ID: <CAEjxPJ54UEMrNU+NBKtJoffB_gyErFbzsLrHj3EbVRMmA+EWmQ@mail.gmail.com>
-Subject: Re: [RFC V3 PATCH 0/2] selinux-testsuite: Use native filesystem for tests
-To:     Richard Haines <richard_c_haines@btinternet.com>
+        id S1730670AbgCKSO4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 11 Mar 2020 14:14:56 -0400
+Received: from mailomta1-re.btinternet.com ([213.120.69.94]:41558 "EHLO
+        re-prd-fep-042.btinternet.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1730524AbgCKSO4 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 11 Mar 2020 14:14:56 -0400
+Received: from re-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.54.6])
+          by re-prd-fep-042.btinternet.com with ESMTP
+          id <20200311181452.IAIC28880.re-prd-fep-042.btinternet.com@re-prd-rgout-003.btmx-prd.synchronoss.net>;
+          Wed, 11 Mar 2020 18:14:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1583950492; 
+        bh=ifpyMWEmQt06tPbflk67pEut2Eixcpi1g48H34uC90o=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:MIME-Version;
+        b=WJ6XO7KSs6sxxzcgyCXKbZL70yTBtQENwUwx6QiM0vksM7Fi3K8BIL+RDE8hT3T8lxXrAm6+ECAwUyzJP542D6kpCcBDQ/BBO2Saq+QZI1QIM7Gq5NbRZOZhjmxjKud+wDMT2thrbXSZ5PeGYWlB5bPYe+71ajaP4PiaAq3QWxDTEg+up1Q+spYJBu/vNUddedbl/EQZzy/lxw6Mt+z52BkOONSoteKtpu58Lb5eJ6tmkW4s2qsNcYxl0mDXM42Mo+GTdRk1E6AtgDKfb4DfYTY67QfmtUDCEGVtpS8wPszwiH4cmpVGT26kUKRycjpau7k0mQjLAkt9ZPgHUUAetQ==
+Authentication-Results: btinternet.com;
+    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
+X-Originating-IP: [86.134.4.28]
+X-OWM-Source-IP: 86.134.4.28 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedugedruddvvddguddutdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepkeeirddufeegrdegrddvkeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirddufeegrdegrddvkedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoehrihgthhgrrhgupggtpghhrghinhgvsheshhhothhmrghilhdrtghomheqpdhrtghpthhtohepoehsughssehthigthhhordhnshgrrdhgohhvqedprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqpdhrtghpthhtohepoehsmhgrhihhvgifsehrvgguhhgrthdrtghomheqpdhrtghpthhtohepoehsthgvphhhvghnrdhsmhgrlhhlvgihrdif
+        ohhrkhesghhmrghilhdrtghomheq
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from localhost.localdomain (86.134.4.28) by re-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
+        id 5E3A16DE056899FB; Wed, 11 Mar 2020 18:14:52 +0000
+Message-ID: <81c75bff0cd0b8d4d56e28a7ada43589b216adc5.camel@btinternet.com>
+Subject: Re: [RFC V3 PATCH 0/2] selinux-testsuite: Use native filesystem for
+ tests
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     Stephen Smalley <stephen.smalley.work@gmail.com>
 Cc:     SElinux list <selinux@vger.kernel.org>,
         Stephen Smalley <sds@tycho.nsa.gov>,
         Scott Mayhew <smayhew@redhat.com>
+Date:   Wed, 11 Mar 2020 18:14:52 +0000
+In-Reply-To: <CAEjxPJ4ES3fsDsWbyz+35a+TUW1PfBSQTL37m8SOdJx74NsQqw@mail.gmail.com>
+References: <20200310162456.32240-1-richard_c_haines@btinternet.com>
+         <CAEjxPJ69FMkO=X4fxMvgF1F7rsv9ZsEaJemgFzkuvzRWrgfUNg@mail.gmail.com>
+         <6b43f33ac519bbeaa42a79125e2e97e9823ec8f9.camel@btinternet.com>
+         <CAEjxPJ4ES3fsDsWbyz+35a+TUW1PfBSQTL37m8SOdJx74NsQqw@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.34.4 (3.34.4-1.fc31) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Mar 11, 2020 at 1:52 PM Richard Haines
-<richard_c_haines@btinternet.com> wrote:
->
-> On Wed, 2020-03-11 at 10:55 -0400, Stephen Smalley wrote:
-> > On Tue, Mar 10, 2020 at 12:25 PM Richard Haines
-> > <richard_c_haines@btinternet.com> wrote:
-> > > I've revamped the nfs.sh to handle tests that require specific
-> > > mount
-> > > options, these plus many more are now in tests/nfs_filesystem. This
-> > > only
-> > > gets run by nfs.sh.
-> >
-> > I don't really understand why you moved tests that could only be run
-> > from nfs.sh out of it into
-> > tests/nfs_filesystem?
->
-> I only moved them as it seemed more in keeping with the testsuite.
-> Would you prefer them in the shell script ? I don't mind either way.
+On Wed, 2020-03-11 at 13:53 -0400, Stephen Smalley wrote:
+> On Wed, Mar 11, 2020 at 12:54 PM Richard Haines
+> <richard_c_haines@btinternet.com> wrote:
+> > On Wed, 2020-03-11 at 12:02 -0400, Stephen Smalley wrote:
+> > > On Tue, Mar 10, 2020 at 12:25 PM Richard Haines
+> > > <richard_c_haines@btinternet.com> wrote:
+> > > > [1]
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/patch/security/selinux?id=e4cfa05e9bfe286457082477b32ecd17737bdbce
+> > > > [2]
+> > > > https://lore.kernel.org/selinux/20200303225837.1557210-1-smayhew@redhat.com/
+> > > 
+> > > Even with the patches above applied, I am seeing failures during
+> > > the
+> > > tests/nfs_filesystem tests:
+> > 
+> > Looks like my /mnt was mis-labeled. I've fixed and had to add this
+> > to
+> > test_filesystem.te:
+> > 
+> > files_mounton_non_security(filesystemdomain)
+> > 
+> > and now works okay. Could you confirm please, then I'll resend new
+> > patch later
+> 
+> With that change to policy and no other changes, it then fails
+> earlier
+> during fs_filesystem/test as shown below even
+> though the kernel does have the referenced patch (and it passes if I
+> revert that policy change).  Also, I noticed that
+> as it is running the tests for filesystem and fs_filesystem, it shows
+> a question mark (?) as the total/planned number of tests,
+> suggesting a problem with the plan.
 
-Previously they weren't dependent on the test policy (weren't running
-in any test domain
-or using any test types) and were only testing NFS labeling behavior.
-I think you switched
-them over to running in test domains and on test files/directories.
-If we stay with the former,
-then keeping them in nfs.sh makes more sense.  If we choose the
-latter, then moving them as
-you have done makes more sense.  Not sure about the tradeoffs here.
+I've tried to fix this and failed !!. It seems that because I have to
+load the subroutines from Filesystem.pm before doing plan tests =>
+$test_count;, it gets upset, hence the ?.
 
-One thing to double check is that if you move them and there is a
-failure, is that failure reported
-properly and propagated up to the shell script in a way that causes
-the entire test to fail.  Might be
-but I haven't confirmed it.
+> 
+> ...
+> filesystem/test ............. ok
+> 
+> #   Failed test 'Failed as kernel 5.6.0 without "selinux: fix
+> regression introduced by move_mount(2) syscall" patch'
+> #   at fs_filesystem/test line 752.
+> # Looks like you failed 1 test of 26.
+> fs_filesystem/test ..........
+> Dubious, test returned 1 (wstat 256, 0x100)
+> Failed 1/26 subtests
+
+Looks like this is too open. I'll fix later
+files_mounton_non_security(filesystemdomain)
+
+> 
+> Test Summary Report
+> -------------------
+> fs_filesystem/test        (Wstat: 256 Tests: 26 Failed: 1)
+>   Failed test:  22
+>   Non-zero exit status: 1
+> Files=63, Tests=623, 161 wallclock secs ( 0.33 usr  0.90 sys +  2.76
+> cusr 46.78 csys = 50.77 CPU)
+> Result: FAIL
+> Failed 1/63 test programs. 1/623 subtests failed.
+

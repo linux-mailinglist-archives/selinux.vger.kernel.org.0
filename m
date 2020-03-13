@@ -2,53 +2,53 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 222F2184949
-	for <lists+selinux@lfdr.de>; Fri, 13 Mar 2020 15:27:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9677318494A
+	for <lists+selinux@lfdr.de>; Fri, 13 Mar 2020 15:27:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726642AbgCMO11 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 13 Mar 2020 10:27:27 -0400
-Received: from mail-qt1-f194.google.com ([209.85.160.194]:33396 "EHLO
-        mail-qt1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726528AbgCMO11 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 13 Mar 2020 10:27:27 -0400
-Received: by mail-qt1-f194.google.com with SMTP id d22so7639332qtn.0
-        for <selinux@vger.kernel.org>; Fri, 13 Mar 2020 07:27:25 -0700 (PDT)
+        id S1726664AbgCMO1a (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 13 Mar 2020 10:27:30 -0400
+Received: from mail-qv1-f68.google.com ([209.85.219.68]:45600 "EHLO
+        mail-qv1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726406AbgCMO1a (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 13 Mar 2020 10:27:30 -0400
+Received: by mail-qv1-f68.google.com with SMTP id h20so721323qvr.12
+        for <selinux@vger.kernel.org>; Fri, 13 Mar 2020 07:27:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=QVn8bUDvQMQRcgXe3domBFrTPd3i4YzkwC2oOnLdznQ=;
-        b=mSxi0XeZ0r6ns5hjL8j91ujXUYI7gorOVo4ev+WlFmavDb3kj5DGxu7HH6ganpmtOn
-         1fIDbTVeHRgPj5QpFze5bl4A4EiW0J701GgJ/BqR7amoXthh2piBG0uEdLNd8MfnAJp8
-         Ilug0PVBMFbteKq0jSEZAE49gjXjsagM9iOp+Y0f0hb+WcSbF4Wlc7gregNFO3b01mbD
-         xj6rilk2dvIcmm4uLWjAqng/HH34YVDnsavE8bK5DpsLSp0/nKIMQjCu6KDDJtCYGiMn
-         ES+N2CWADTMDoUpUGh6QAJP+P3xxYbGzguTpGNl2VNQ4oRe+6DxaQc+yCLgGMNW72bGP
-         TUKw==
+        bh=r80rvMIFdLVAThe3rNvQ+8HL5UXcoIxIS8jB4i0/byg=;
+        b=nerl++9OvHsIBhz3QCQ0iRSIoF4mRdK/XPbnGRqlJp45P9hj9DEjuXsmKQhfqx3KPz
+         nbi9GhEGoKHf+SyZZ6ilCQPC8OQ99jBhMh6PeKEBy/XjuU1VYdi86gwwn9L/GYATIl9n
+         0xTUeICvHxNuxa3TfqynfQY4kw53Yhe/eG8vga4v8IeQBKp5AuTy5Y0hoxMcwUX04C6X
+         qwSmbRqXHPlygfDrz+EGyF8dq/yCKz1jt72XgnsoQFiNkG6FNuB41pTlWE3eKcg767Xn
+         oV/MebK336tOYLKxQ+9WVEJuKyWFkDJT2tlx/DGXXOW++KqO2bpv12d7rrbval3nPm+0
+         LGcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=QVn8bUDvQMQRcgXe3domBFrTPd3i4YzkwC2oOnLdznQ=;
-        b=DsE7LnalBTmZS5kpsKqYZD9AhLKNUAK+RMwFAKxOKbOMPCnswB2G/z1aU2DCcOQvKe
-         ZUleT5m2pp68cOXjaC/z0DEk4hjs7AakgE4Bw4L98XQ/4XCHMg35XK+EXH2RUSYVLk/u
-         nmsOo2gfwcGOuPs6wojUB8xCiRd7NJFHbc640CbRoPYJacBzM2tJi+TqXw7g1L3nA6ca
-         2ik4EqIiC8FKm2XaYjdqmk1bVbZqYkymaQuTqCjRwefIdz2INYDf+aTsstaod8Fv7+Yf
-         szER16ldm7vPWmVNJ250Pvoc/rRZs54gJBxcU2KgzvASUt3YoN9mKKUqKWtwNGhjP406
-         Q6PQ==
-X-Gm-Message-State: ANhLgQ1TUOw0SZvDBXSJBINesxFclFqkeP1Hjb3yzs9rubSDiBI3nB8X
-        5BFQPknYDOJz8RvbqFVqqX8=
-X-Google-Smtp-Source: ADFU+vuWKvZ33S8UTIVyD0YyjTEisQGH6AIEgP0FaSn1YgPaK7/HtXo4qd99DGUdAZjbYdDo9L3nDw==
-X-Received: by 2002:aed:3fce:: with SMTP id w14mr5569130qth.0.1584109644357;
-        Fri, 13 Mar 2020 07:27:24 -0700 (PDT)
+        bh=r80rvMIFdLVAThe3rNvQ+8HL5UXcoIxIS8jB4i0/byg=;
+        b=snu+fr5FajcjlYqxQ7yWO3JWljCK5LDjrK66O1rV5rqfr20yNtqOaeCE/INR1zkzTW
+         iLuHeRXGtVl3KxhjyX6KuCb5SED7kDysF7C4oMCicH/byhIRAfsgs2KRRLTiB88RhCnQ
+         +bS4wed0msfP55PnzFxHzGuZb2D1Aw/8d6ktXGYckBwoHbfj3g7+C4uhQiySCHoEKUCu
+         d2yt4A9VpNu1ytOpG/8H0qdDuJRK5+A9teJm8hcf6m7Zq6hFFi9BWrZqcFQt4J/qnO7I
+         rgrdq6nnju/FY8dzffa/bDUALclehUSaIyLdv8JQpKN2cMrpUy29uyUhVSJL5oWoOeEi
+         oBoQ==
+X-Gm-Message-State: ANhLgQ32D5xcMGcQfcPS6ZIapz9Iou+wjmj3a/H29L7ZJ9gNq54HNRNE
+        WUn2rCLn0YS42jLKqHpsUx6FqAWz
+X-Google-Smtp-Source: ADFU+vvsHWgk3stv8LhvHSkAr9MuPsDku1gtnn4j9wmCJ5uf/VicPaIgycwzmE3/N82ivmfZQ4HbWA==
+X-Received: by 2002:ad4:5909:: with SMTP id ez9mr12356657qvb.56.1584109646399;
+        Fri, 13 Mar 2020 07:27:26 -0700 (PDT)
 Received: from r21-ubuntu-01.ltsnet.net ([65.127.220.137])
-        by smtp.gmail.com with ESMTPSA id a15sm2906139qko.122.2020.03.13.07.27.23
+        by smtp.gmail.com with ESMTPSA id a15sm2906139qko.122.2020.03.13.07.27.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Mar 2020 07:27:23 -0700 (PDT)
+        Fri, 13 Mar 2020 07:27:25 -0700 (PDT)
 From:   Stephen Smalley <stephen.smalley.work@gmail.com>
 To:     paul@paul-moore.com
 Cc:     selinux@vger.kernel.org, Stephen Smalley <sds@tycho.nsa.gov>
-Subject: [RFC PATCH 3/5] selinux-testsuite: add tests/sandbox/rxdir_no_allow.cil
-Date:   Fri, 13 Mar 2020 10:26:53 -0400
-Message-Id: <20200313142655.29424-3-stephen.smalley.work@gmail.com>
+Subject: [RFC PATCH 4/5] selinux-testsuite: add tests/sandbox/rxdir_rx_allow.cil
+Date:   Fri, 13 Mar 2020 10:26:54 -0400
+Message-Id: <20200313142655.29424-4-stephen.smalley.work@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200313142655.29424-1-stephen.smalley.work@gmail.com>
 References: <20200313142655.29424-1-stephen.smalley.work@gmail.com>
@@ -61,16 +61,16 @@ From: Stephen Smalley <sds@tycho.nsa.gov>
 
 Signed-off-by: Stephen Smalley <sds@tycho.nsa.gov>
 ---
- tests/sandbox/rxdir_no_allow.cil | 609 +++++++++++++++++++++++++++++++
- 1 file changed, 609 insertions(+)
- create mode 100644 tests/sandbox/rxdir_no_allow.cil
+ tests/sandbox/rxdir_rx_allow.cil | 612 +++++++++++++++++++++++++++++++
+ 1 file changed, 612 insertions(+)
+ create mode 100644 tests/sandbox/rxdir_rx_allow.cil
 
-diff --git a/tests/sandbox/rxdir_no_allow.cil b/tests/sandbox/rxdir_no_allow.cil
+diff --git a/tests/sandbox/rxdir_rx_allow.cil b/tests/sandbox/rxdir_rx_allow.cil
 new file mode 100644
-index 0000000..502802a
+index 0000000..dee5e71
 --- /dev/null
-+++ b/tests/sandbox/rxdir_no_allow.cil
-@@ -0,0 +1,609 @@
++++ b/tests/sandbox/rxdir_rx_allow.cil
+@@ -0,0 +1,612 @@
 +; This information is NOT compiled into a sandbox policy, it is here just to
 +; make the cil compiler happy. For now, we leave it here with dummy information.
 +(sid SID)
@@ -89,7 +89,7 @@ index 0000000..502802a
 +(sidcontext SID (USER ROLE test_sandbox_dir_t ((SENS)(SENS))))
 +
 +; type: test_sandbox_rxdir_t
-+; perms: no
++; perms: rx
 +; mode: allow
 +
 +(class security (compute_av compute_create compute_member check_context load_policy compute_relabel compute_user setenforce setbool setsecparam setcheckreqprot read_policy validate_trans))
@@ -680,6 +680,9 @@ index 0000000..502802a
 +(allow test_sandbox_rxdir_t var_t (lnk_file (getattr read)))
 +(allow test_sandbox_rxdir_t bin_t (file (execmod getattr execute ioctl map open read)))
 +(allow test_sandbox_rxdir_t zero_device_t (chr_file (append getattr ioctl lock open read write)))
++
++(allow test_sandbox_rxdir_t test_sandbox_dir_t (dir (getattr open read search)))
++(allow test_sandbox_rxdir_t test_sandbox_dir_t (file (getattr)))
 -- 
 2.17.1
 

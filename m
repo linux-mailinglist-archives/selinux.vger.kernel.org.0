@@ -2,272 +2,124 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 623EE18684A
-	for <lists+selinux@lfdr.de>; Mon, 16 Mar 2020 10:55:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 068B9186895
+	for <lists+selinux@lfdr.de>; Mon, 16 Mar 2020 11:05:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730421AbgCPJzf (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 16 Mar 2020 05:55:35 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:50183 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730423AbgCPJzf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 16 Mar 2020 05:55:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584352533;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=Wsgt4vWlscGuOQeWZQpaYQV5iCmAQ9fH4xN/BxTZF9A=;
-        b=LpDgNakmIh2s/pHvQMMOF38ldIKEGe6bWB4yNt6TAjexrB+WZv9IB/vK633we9D2U1XwcK
-        mndW9lojgCuFw0QvOGNml7qHBV/JSrqCreIJ0HC1aJbAzVyrDFT0wai0HSKVBoT1yxsbuq
-        +FRD7Q6Xm4WyxwdDhpoR1wGyEabPHOg=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-348-dpZNzdZANYm64X2NDO00Rg-1; Mon, 16 Mar 2020 05:55:29 -0400
-X-MC-Unique: dpZNzdZANYm64X2NDO00Rg-1
-Received: by mail-wm1-f70.google.com with SMTP id z16so499231wmi.2
-        for <selinux@vger.kernel.org>; Mon, 16 Mar 2020 02:55:29 -0700 (PDT)
+        id S1730509AbgCPKFA (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 16 Mar 2020 06:05:00 -0400
+Received: from mail-pl1-f196.google.com ([209.85.214.196]:37705 "EHLO
+        mail-pl1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730543AbgCPKFA (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 16 Mar 2020 06:05:00 -0400
+Received: by mail-pl1-f196.google.com with SMTP id f16so7782127plj.4
+        for <selinux@vger.kernel.org>; Mon, 16 Mar 2020 03:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=toQgd/BbAOWzQ6Hdl5KAXkvOW9lbMbuLWlPhhtalYGk=;
+        b=f41sEjEB+y2IG0xdX/DwIlC6BIbrkZh5KXOzOhpzK9UCegfBjHwO0fy4/rC1LsRZB7
+         +Njk1vkOspxNFoKI3lLPGZoGMn5vHTudgsvrqRvL4dAOawhpg3ChbBmLdRxHorsWdfZ7
+         +56vp7fxHWBfay9G1fCA8De3Ea/g/h/fz/5kJ05ygDC5ZxiQERGXFHXmC50oo1gLBiKt
+         LBUFYR2HDEOcv2YQdTvc0A73CuMl+uHrcgLxqexcQEMKOdrlLkAXswkr8/TvNOarBohE
+         GJPDBuYWEzasbxeVTfeGSPtsm7bG9A7CpGdhHAGHv8qvqDJuv+vK5FMke4YH9v4ITB4W
+         308w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Wsgt4vWlscGuOQeWZQpaYQV5iCmAQ9fH4xN/BxTZF9A=;
-        b=oTq87ybWFb8vT6IeyFJ6aUcJbsAsro0UhkO9ex2HEMIFUQr5+8Q9nNNM688DAlO2lu
-         SS3Pll2VcLl3DWKegNUjdm84g5aE9h+rdJ4oWVBqCwplJRX0mLn4V3jGHgE34x0kDCVK
-         eQz99vdud68iS9UjuhhXJmpmE/0yNcmLUMGIpRaQDXSaaLxvoLqijFx0zInY+/s7zcjt
-         GzTf1MQK13s4dfLdxjAEgO4miCs/fA6mLUUqxIcfR6gLdtosnAwT+t6TiNqev+tNrH9k
-         NdXOYj0MFG90jZrHcr14tiYlZt3ZBtZy5m1ir6VHRgIRNtOAJ+td4+Ry1ea6VDqNfnLW
-         NpZA==
-X-Gm-Message-State: ANhLgQ2n+sOTbQ+7S+To1QftX5K8ocQtCs4NxgIw3Bg/9dHPywExoC0h
-        /8SFyQMQFT+kJBSUB4qoUrub5wa5yG9BOYllAMNu9iOc4+JfM+tkdgz1HT7WJPGV7YsbfCsKcQO
-        E0IEV3EcGoSf0gpeKvw==
-X-Received: by 2002:adf:8023:: with SMTP id 32mr24936418wrk.189.1584352527495;
-        Mon, 16 Mar 2020 02:55:27 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vsUTU0hQ5GVQRVoj7Tu3jhjDYWPQ/rsxu8y0xIHBJaQz0lHtrYvEqwupXzrhHGlhGaNZMEpJA==
-X-Received: by 2002:adf:8023:: with SMTP id 32mr24936392wrk.189.1584352527186;
-        Mon, 16 Mar 2020 02:55:27 -0700 (PDT)
-Received: from omos.redhat.com ([2a02:8308:b13f:2100:f695:3ae5:c8bf:2f57])
-        by smtp.gmail.com with ESMTPSA id l5sm28279284wml.3.2020.03.16.02.55.25
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Mar 2020 02:55:26 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH v2] secilc: add basic test for policy optimization
-Date:   Mon, 16 Mar 2020 10:55:23 +0100
-Message-Id: <20200316095523.335474-1-omosnace@redhat.com>
-X-Mailer: git-send-email 2.24.1
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to:content-transfer-encoding;
+        bh=toQgd/BbAOWzQ6Hdl5KAXkvOW9lbMbuLWlPhhtalYGk=;
+        b=T/PwELLyXbjjbBrzDR75mYvz3Pq6hWE8GJc0j/CK64kjA4v/RFZfqMDFaV8O1RXDhL
+         ifdlv4Wei/uL/HSrOSSChgoWshd/lPxY4Xg2PKX/G37lslfIjyY2xWP/PXm+4aFYzUae
+         lBJyW94MawzS8AqaIKX+J3Bpv8lWIbpDLa6gO5vEXZs3MhtxCxTPMofSN/LsZAUivfBo
+         dG20iktVpxZRcYlvY1F/jYbeLFbm3il5FbjxWznN1xoiyvsBdM6e3ZMvCDIPNKcjEspv
+         LKxMgMFYOs/1bVvkh1y6vlZu8fGzt1/22+rqiHTAKJzYhiZgQk8k2BiHyOLvXWA7tDrL
+         JVkg==
+X-Gm-Message-State: ANhLgQ38v0bPpxUw9FBi1DPhF3Th82abIINXEZ0ChNN1Fcc/ogOblU9k
+        7qNI0/oCCayK4+wedOKtGADvZlBrRBnjfl2lMK4=
+X-Google-Smtp-Source: ADFU+vtKYCY+F45EunpS/YfEznovC2Zf3TArve8ETCPmWHL2/PhXwNaq4E9WpqtW1eigzJhprhOxQ9o6MSnf7qXQDGU=
+X-Received: by 2002:a17:90a:930e:: with SMTP id p14mr787425pjo.159.1584353097287;
+ Mon, 16 Mar 2020 03:04:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Reply-To: sebastient766@gmail.com
+Received: by 2002:a17:90a:6c97:0:0:0:0 with HTTP; Mon, 16 Mar 2020 03:04:54
+ -0700 (PDT)
+From:   =?UTF-8?B?TXIuU8OpYmFzdGllbiBUb25p?= <sebastient766@gmail.com>
+Date:   Mon, 16 Mar 2020 03:04:54 -0700
+X-Google-Sender-Auth: 9cheeGuxu2qwm2OP3-3jDE2HMTs
+Message-ID: <CADQawC1P-i5=k5bf9HVu9UaiFZuUDmqJPVh16yAS_6_-8kE+1A@mail.gmail.com>
+Subject: VERY URGENT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add a simple test for secilc -O to make sure that it produces the
-expected output. This might produce some false positives when the output
-of secilc/checkpolicy changes slightly, in which case the expected CIL
-will need to be updated along with the change.
+FROM MR.S=C3=89BASTIEN TONI
+AUDIT& ACCOUNT MANAGER
+BANK OF AFRICA (B.O.A)
+OUAGADOUGOU BURKINA FASO
+WEST AFRICA.
 
-The test should normally work even with a checkpolicy built from an
-older tree, as long as it produces the same CIL output, so it uses the
-checkpolicy it finds in PATH by default.
+Dear Friend,
 
-The test policy is taken from an e-mail from James Carter:
-https://lore.kernel.org/selinux/CAP+JOzTQQx6aM81QyVe0yoiPJeDU+7xE6nn=0UMAB1EZ_c9ryA@mail.gmail.com/T/
+With due respect, I have decided to contact you on
+abusinesstransaction  that will be beneficial to both of us. At the
+bank last account and  auditing evaluation, my staffs came across an
+old account which was being maintained by a foreign client who we
+learn was among the deceased passengers of motor accident on
+November.2003, the deceased was unable to run this account since his
+death. Theaccount has  remained dormant without the knowledge of his
+family since it was put in a  safe deposit account in the bank for
+future investment by the client.
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
+Since his demise, even the members of his family haven't applied for
+claims  over this fund and it has been in the safe deposit account
+until I  discovered that it cannot be claimed since our client
+isaforeign national and we are sure that he has no next of kin here to
+file claims over the money. As the director of the department, this
+discovery was brought to my office so as to decide what is to bedone.I
+ decided to seek ways through which to transfer this money out of the
+bank  and
+out of the country too.
 
-v2:
- - move test policies to the 'test' subdirectory
- - use a simplified test policy supplied by James
+The total amount in the account is 18.6 million with my positions as
+staffs  of the bank, I am handicapped because I cannot operate foreign
+accounts and  cannot lay bonafide claim over this money. The client
+was a foreign  national and you will only be asked to act as his next
+of kin and I will  supply you with all the necessary information and
+bank data to assist you in being able to transfer this money to any
+bank of your  choice where this money could be transferred into.The
+total sum will be shared as follows: 50% for me, 50% for you and
+expenses incidental occur  during the transfer will be incur by both
+of us. The transfer is risk free on both sides hence you are going to
+follow my instruction till the fund  transfer to your account. Since I
+work in this bank that is why you should  be confident in the success
+of this transaction because you will be updated with information as at
+when desired.
 
- secilc/.gitignore            |  2 ++
- secilc/Makefile              |  9 +++++
- secilc/test/opt-expected.cil | 57 +++++++++++++++++++++++++++++++
- secilc/test/opt-input.cil    | 65 ++++++++++++++++++++++++++++++++++++
- 4 files changed, 133 insertions(+)
- create mode 100644 secilc/test/opt-expected.cil
- create mode 100644 secilc/test/opt-input.cil
+I will wish you to keep this transaction secret and confidential as I
+am  hoping to retire with my share of this money at the end of
+transaction  which will be when this money is safety in your account.
+I will then come over to your country for sharing according to the
+previously agreed percentages. You might even have to advise me on
+possibilities of investment in your country or elsewhere of our
+choice. May  God help you to help me to a restive retirement,Amen,And
+You have to  contact me through my private e-mail
+at(sebastient766@gmail.com)Please for further information and inquires
+feel free to contact me back immediately for more explanation and
+better  understanding I want you to assure me your capability of
+handling this  project with trust by providing me your following
+information details such as:
 
-diff --git a/secilc/.gitignore b/secilc/.gitignore
-index 2d3ff405..164523b0 100644
---- a/secilc/.gitignore
-+++ b/secilc/.gitignore
-@@ -7,3 +7,5 @@ file_contexts
- docs/html
- docs/pdf
- docs/tmp
-+opt-actual.bin
-+opt-actual.cil
-diff --git a/secilc/Makefile b/secilc/Makefile
-index 16640098..d4a1c35a 100644
---- a/secilc/Makefile
-+++ b/secilc/Makefile
-@@ -13,6 +13,10 @@ SECIL2CONF_OBJS := $(patsubst %.c,%.o,$(SECIL2CONF_SRCS))
- SECILC_MANPAGE = secilc.8
- SECIL2CONF_MANPAGE = secil2conf.8
- XMLTO = xmlto
-+DIFF = diff
-+
-+CHECKPOLICY = checkpolicy
-+POL_VERS = $(shell $(CHECKPOLICY) -V | cut -f 1 -d ' ')
- 
- CFLAGS ?= -Wall -Wshadow -Wextra -Wundef -Wmissing-format-attribute -Wcast-align -Wstrict-prototypes -Wpointer-arith -Wunused
- 
-@@ -26,6 +30,9 @@ $(SECILC): $(SECILC_OBJS)
- 
- test: $(SECILC)
- 	./$(SECILC) test/policy.cil
-+	./$(SECILC) -c $(POL_VERS) -O -M 1 -f /dev/null -o opt-actual.bin test/opt-input.cil
-+	$(CHECKPOLICY) -b -C -M -o opt-actual.cil opt-actual.bin >/dev/null
-+	$(DIFF) test/opt-expected.cil opt-actual.cil
- 
- $(SECIL2CONF): $(SECIL2CONF_OBJS)
- 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
-@@ -58,6 +65,8 @@ clean:
- 	rm -f file_contexts
- 	rm -f $(SECILC_MANPAGE)
- 	rm -f $(SECIL2CONF_MANPAGE)
-+	rm -f opt-actual.cil
-+	rm -f opt-actual.bin
- 	$(MAKE) -C docs clean
- 
- relabel:
-diff --git a/secilc/test/opt-expected.cil b/secilc/test/opt-expected.cil
-new file mode 100644
-index 00000000..73ac9045
---- /dev/null
-+++ b/secilc/test/opt-expected.cil
-@@ -0,0 +1,57 @@
-+(handleunknown deny)
-+(class cl01 (p01a p01b p11a p11b))
-+(classorder (cl01))
-+(sid kernel)
-+(sidorder (kernel))
-+(mls true)
-+(sensitivity s01)
-+(sensitivityorder (s01))
-+(category c01)
-+(categoryorder (c01))
-+(sensitivitycategory s01 (c01))
-+(typeattribute at02)
-+(boolean b01 false)
-+(type tp01)
-+(type tp02)
-+(type tp04)
-+(type tpr1)
-+(type tpr2)
-+(type tpr3)
-+(type tpr4)
-+(type tpr5)
-+(typeattributeset at02 (tp01 tp02))
-+(allow at02 tpr1 (cl01 (p01a p01b p11a)))
-+(allow at02 tpr3 (cl01 (p01a p01b p11a)))
-+(allow tp01 self (cl01 (p01a p01b p11a p11b)))
-+(allow tp01 tpr1 (cl01 (p11b)))
-+(dontaudit at02 tpr2 (cl01 (p01a p01b p11a)))
-+(dontaudit at02 tpr4 (cl01 (p01a p01b p11a)))
-+(dontaudit tp01 tpr2 (cl01 (p11b)))
-+(booleanif b01
-+    (true
-+        (allow tp01 tpr3 (cl01 (p11b)))
-+        (allow tp01 tpr5 (cl01 (p01a p01b p11a p11b)))
-+        (allow tp02 tpr5 (cl01 (p01a p11a)))
-+        (dontaudit tp01 tpr4 (cl01 (p11b)))
-+    )
-+    (false
-+        (allow at02 tpr5 (cl01 (p01a p01b p11a)))
-+    )
-+)
-+(role object_r)
-+(role rl01)
-+(roletype rl01 tp01)
-+(roletype object_r tp01)
-+(roletype object_r tp02)
-+(roletype object_r tp04)
-+(roletype object_r tpr1)
-+(roletype object_r tpr2)
-+(roletype object_r tpr3)
-+(roletype object_r tpr4)
-+(roletype object_r tpr5)
-+(user us01)
-+(userrole us01 object_r)
-+(userrole us01 rl01)
-+(userlevel us01 (s01))
-+(userrange us01 ((s01) (s01)))
-+(sidcontext kernel (us01 rl01 tp01 ((s01) (s01))))
-diff --git a/secilc/test/opt-input.cil b/secilc/test/opt-input.cil
-new file mode 100644
-index 00000000..5bb6c266
---- /dev/null
-+++ b/secilc/test/opt-input.cil
-@@ -0,0 +1,65 @@
-+(handleunknown deny)
-+(class cl01 (p01a p01b p11a p11b))
-+(classorder (cl01))
-+(sid kernel)
-+(sidorder (kernel))
-+(mls true)
-+(sensitivity s01)
-+(sensitivityorder (s01))
-+(category c01)
-+(categoryorder (c01))
-+(sensitivitycategory s01 (c01))
-+(typeattribute at01)
-+(typeattribute at02)
-+(boolean b01 false)
-+(type tp01)
-+(type tp02)
-+(type tp04)
-+(type tpr1)
-+(type tpr2)
-+(type tpr3)
-+(type tpr4)
-+(type tpr5)
-+(typeattributeset at01 (tp01))
-+(typeattributeset at02 (tp01 tp02))
-+(allow at02 tpr1 (cl01 (p11a p01a p01b)))
-+(allow at02 tpr3 (cl01 (p11a p01a p01b)))
-+(allow tp01 at01 (cl01 (p11b)))
-+(allow tp01 self (cl01 (p11a p01a)))
-+(allow tp01 tp01 (cl01 (p01b)))
-+(allow tp01 tpr1 (cl01 (p11a p11b p01a p01b)))
-+(allow tp02 tpr1 (cl01 (p11a p01a)))
-+(dontaudit at02 tpr2 (cl01 (p11a p01a p01b)))
-+(dontaudit at02 tpr4 (cl01 (p11a p01a p01b)))
-+(dontaudit tp01 tpr2 (cl01 (p11a p11b p01a p01b)))
-+(dontaudit tp02 tpr2 (cl01 (p11a p01a)))
-+(booleanif (b01)
-+    (true
-+        (allow tp01 tpr3 (cl01 (p11a p11b p01a p01b)))
-+        (allow tp01 tpr5 (cl01 (p11a p11b p01a p01b)))
-+        (allow tp02 tpr3 (cl01 (p11a p01a)))
-+        (allow tp02 tpr5 (cl01 (p11a p01a)))
-+        (dontaudit tp01 tpr4 (cl01 (p11a p11b p01a p01b)))
-+        (dontaudit tp02 tpr4 (cl01 (p11a p01a)))
-+    )
-+    (false
-+        (allow at02 tpr5 (cl01 (p11a p01a p01b)))
-+    )
-+)
-+(role object_r)
-+(role rl01)
-+(roletype rl01 tp01)
-+(roletype object_r tp01)
-+(roletype object_r tp02)
-+(roletype object_r tp04)
-+(roletype object_r tpr1)
-+(roletype object_r tpr2)
-+(roletype object_r tpr3)
-+(roletype object_r tpr4)
-+(roletype object_r tpr5)
-+(user us01)
-+(userrole us01 object_r)
-+(userrole us01 rl01)
-+(userlevel us01 (s01))
-+(userrange us01 ((s01) (s01)))
-+(sidcontext kernel (us01 rl01 tp01 ((s01) (s01))))
--- 
-2.24.1
+(1)NAME..............
+(2)AGE:................
+(3)SEX:.....................
+(4)PHONE NUMBER:.................
+(5)OCCUPATION:.....................
+(6)YOUR COUNTRY:.....................
 
+Yours sincerely,
+Mr.S=C3=A9bastien Toni

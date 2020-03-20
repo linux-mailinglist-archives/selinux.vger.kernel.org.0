@@ -2,89 +2,78 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A8D18CC07
-	for <lists+selinux@lfdr.de>; Fri, 20 Mar 2020 11:58:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC90518CC93
+	for <lists+selinux@lfdr.de>; Fri, 20 Mar 2020 12:20:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726806AbgCTK6W (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 20 Mar 2020 06:58:22 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([216.205.24.74]:27322 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726796AbgCTK6V (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 20 Mar 2020 06:58:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1584701900;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cUY99P5AKtg6SpOpKL2xCfjvzunsmGBvVhUliXwUY7I=;
-        b=TnPoUGupsaVqqCdhnTQI0DZdgcEmVJF9o1KTvW34fnPFiIrc/2CutB9tPmrW0/ZbcWyyoE
-        jb8RBP/Hkldw2clOL6V1c/he7N+52ZyxsxKdXoAnPsBDpwVaij6+TVHItNIZBhQitXT5hK
-        qfu1iC3x+ylKEfXDYlB59P2zZAke1Rs=
-Received: from mail-ot1-f71.google.com (mail-ot1-f71.google.com
- [209.85.210.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-157-vKFB_C-COYWhQaLIYLBR8Q-1; Fri, 20 Mar 2020 06:58:19 -0400
-X-MC-Unique: vKFB_C-COYWhQaLIYLBR8Q-1
-Received: by mail-ot1-f71.google.com with SMTP id 22so3529411otg.21
-        for <selinux@vger.kernel.org>; Fri, 20 Mar 2020 03:58:19 -0700 (PDT)
+        id S1726814AbgCTLUE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 20 Mar 2020 07:20:04 -0400
+Received: from mail-oi1-f195.google.com ([209.85.167.195]:34459 "EHLO
+        mail-oi1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726843AbgCTLUE (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 20 Mar 2020 07:20:04 -0400
+Received: by mail-oi1-f195.google.com with SMTP id j5so6106362oij.1
+        for <selinux@vger.kernel.org>; Fri, 20 Mar 2020 04:20:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
+        b=duuFC854Gg8oOx5l5AYN6iP68xZYeqHzpGZtEnTw/ik/EKtzQMEuZ3BqqeKwq61QgD
+         +vY/mY91SwpGkG1yK3rSBJKN+4xC494DwxJaYTx8uHaIi/Aa30XompFIP48WGIeqIwiF
+         lmKQtbTHvPkRMldiDL8Xktb6KouFkMBKZhVNhcdHBawiSSbmxmQCVzCOp1bGB5SNU2G7
+         eNeZoUuI6xIuD9d2fckvamAvbBb0B/IfFeWLMb4GjUFeF6ecwLlRpq8rnEb+5s/PPieP
+         UzptDDKRf8YaSwtim/MmRx/0JCu8xcty8AV+ycTNTc9AJ0fMS3zo1D8dhCWOyVkHN9rv
+         Y/gw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=cUY99P5AKtg6SpOpKL2xCfjvzunsmGBvVhUliXwUY7I=;
-        b=LHDkif6Jzuuysav/SOOpoCC8CbUZpJFzdzwf6Rp1p5xaY5p9+gy65VoFpH47XIAks+
-         uA70IGSzxtg//n48R56xGwotV3eWnUjyHl1ySRSo8ILwCJzP+zJzFe1lqkiGzBxDU8Rn
-         GqxbRWNko7IDE3Y9UsmlM/KpGsluyDzDJ9SpEsQomQuihc/aLT9CGOsfuRIMBW568MvX
-         Nrjok6wdNNhIMEm7XwHCqBA0EwI8oI/I9cK50tby1WYqylouq6A4SFA5F+iRcZQG9ciw
-         sFUBY5fWt247mTQqLu9eaclnpOaJulf0ir+4KOrEnP+JUHiPrJbPC/XOrDDyUXdF+NvJ
-         ymSA==
-X-Gm-Message-State: ANhLgQ3f35ucDq5ZRVcTD037l5PHtjFmPWiV/zmpOm3f/cG2/TqdLyRu
-        QsmQJjn17izkv+KRr/sBOp6WXRFZxT7qQhfhVGT4vBIRarWTtHRjlA90WsoUK2JLYyDzCralDSF
-        8MBcdJBxtsWkIZFanC3AvLMEmCkP0LOqYlw==
-X-Received: by 2002:a05:6808:16:: with SMTP id u22mr5934570oic.127.1584701898413;
-        Fri, 20 Mar 2020 03:58:18 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vu6YaznDTphqJ5Z1zg7b8g+jb43+tgdaZdhu4I9o93bU/iOnWmfStnor7IdLBYN9tLPY+OAlmVNGTflF9Vd4yA=
-X-Received: by 2002:a05:6808:16:: with SMTP id u22mr5934557oic.127.1584701898196;
- Fri, 20 Mar 2020 03:58:18 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=6w+aFSJ+2vZ3lBtg9xVXLOFVqSNoMPd625E7FNYobb8=;
+        b=cUm+glJCWEgI4juWQu8cgwQrq+yGXrjr9Y+JrLNvDYv70uALGD+FLNXh3PYJ7W8H8G
+         02GwS/UHyJaW4a6cGD1ja7ofcRfG8Dv0lTmC+cClD+9JqjfB2DhMQchD//o6JEdtI5d0
+         RPHrM1TEpLwWZYW0XEiBc713825EVp3XHP8QrVh9sC/P7ZR2bRWd0QUUI71+cwMsIdcA
+         C77GcX9iNN8b/UCGrhzPB04TNbPdKwR/G85UyDp5uNM2xq3pFLpepOw3iF5DzFYiISGi
+         pTh+w85aFAjmPuJH9ULRvHw3eBSS3nqTqROi/g36zkPXVellJymRiyHJvFwRtJoV0weO
+         HHdg==
+X-Gm-Message-State: ANhLgQ1Tp+UFlQGWqWiet5phzbQl5EhjlkQhvobT+3pVBLI06AxccMfh
+        3Qx7QWfEnauIjs2vIJUxIGPcM1DWEbsBOUGKek8=
+X-Google-Smtp-Source: ADFU+vvR/mGZ0F8IfP8rajl/KXQB0WzRsQQFR7vAUhwy8MWQCvfNv+SkrV92lNJ1CcznVLp5pjBwJcU6pW16BlfCV4o=
+X-Received: by 2002:aca:210c:: with SMTP id 12mr5676182oiz.0.1584703202252;
+ Fri, 20 Mar 2020 04:20:02 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200312084001.101645-1-omosnace@redhat.com> <CAHC9VhSD-mLS8C1f+n+8F81ed4nSonWmj=gdDT=YGsG9gm0Cqg@mail.gmail.com>
-In-Reply-To: <CAHC9VhSD-mLS8C1f+n+8F81ed4nSonWmj=gdDT=YGsG9gm0Cqg@mail.gmail.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Fri, 20 Mar 2020 11:58:06 +0100
-Message-ID: <CAFqZXNtDThnLeSvZLc193u4knBGBgyg9t0-kksg_Pd2q+6M6Lw@mail.gmail.com>
-Subject: Re: [PATCH testsuite] tests/bpf: ask for unlimited RLIMIT_MEMLOCK
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+Received: by 2002:a05:6838:40c6:0:0:0:0 with HTTP; Fri, 20 Mar 2020 04:20:01
+ -0700 (PDT)
+From:   ECOWAS COMMITEE <ecowasmonitoringcommitteeabj@gmail.com>
+Date:   Fri, 20 Mar 2020 11:20:01 +0000
+Message-ID: <CAHHubrZRrohCzE4mAJroy4ozKitfTgF-wH6yi7zkLdQu26eLpA@mail.gmail.com>
+Subject: HAPPY SURVIVAL OF CORONAVIRUS
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Mar 12, 2020 at 1:36 PM Paul Moore <paul@paul-moore.com> wrote:
-> On Thu, Mar 12, 2020 at 4:40 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > Currently the code sets it to at most 128K, but this is not enough in
-> > some aarch64/ppc64le environments. Therefore, stop guessing the magic
-> > threshold and just set it straight to RLIM_INFINITY.
-> >
-> > Fixes: 8f0f980a4ad5 ("selinux-testsuite: Add BPF tests")
-> > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> > ---
-> >  tests/bpf/bpf_common.c | 16 ++++------------
-> >  1 file changed, 4 insertions(+), 12 deletions(-)
->
-> I have to make a similar fix to the audit-testsuite earlier this week,
-> I didn't think to check the selinux-testsuite because the bpf tests
-> were running just fine on my aarch64 test system.  Sorry about that, I
-> should have checked regardless.
->
-> One small style nit below, but otherwise ...
->
-> Acked-by: Paul Moore <paul@paul-moore.com>
+Dear Sir/Madam
 
-I went ahead and applied the patch, thanks!
+HAPPY SURVIVAL OF CORONAVIRUS
 
--- 
-Ondrej Mosnacek <omosnace at redhat dot com>
-Software Engineer, Security Technologies
-Red Hat, Inc.
+We the West African Monitoring Committee of the West African Economic
+Community(ECOWAS)are contacting you for a business transaction which
+we feel will be of great interest to you.
 
+Our duty is to see to the coming in and out of funds into this sub
+region.There is a fund which we confiscated worth of $12.5 million
+dollars.We will like you to receive this fund on your name in your
+account and as well helping us in the investment.
+
+You are advised to contact us as soon as you get this message for
+details of the transaction if you find it interesting.
+
+Best Regards,
+
+Mr John Aka
+
+Chairman
+ECOWAS
+West African Monitoring Committee
+Tel 00225 6716 6756
+Abidjan Cote D'Ivoire

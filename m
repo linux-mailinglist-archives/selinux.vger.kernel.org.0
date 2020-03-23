@@ -2,81 +2,90 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 655BF18F55D
-	for <lists+selinux@lfdr.de>; Mon, 23 Mar 2020 14:10:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 41CCD18F8B2
+	for <lists+selinux@lfdr.de>; Mon, 23 Mar 2020 16:35:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728349AbgCWNKk (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 23 Mar 2020 09:10:40 -0400
-Received: from sonic317-32.consmr.mail.ne1.yahoo.com ([66.163.184.43]:35819
-        "EHLO sonic317-32.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728275AbgCWNKk (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 23 Mar 2020 09:10:40 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1584969029; bh=/GcFFbn2btZiSKYiGCo/BleXlnSRHZPoMjv/YxR5ftE=; h=Date:From:Reply-To:Subject:References:From:Subject; b=SuGLfpppmWaG3Ez2ng1u4SH6WggbUnb4p59uWqqssRrRSVE14UGDWVo+125eFyzBFDLJCpgFbbp0X4PP8oKG9ql4SDVGrjq7YJhW0tm78Gj1eF+q9KecN4mOZY0HoFjtdVAzQHV1MSrygSPRKZ+954G/YlrY3oMuvKiWjMD25e/P1Njuj6cpo3GYJe+rYpHKwk3jbHHndy8FoHR1JLbVXu47G+KcOZQrnb/+fA0o+Dj7wEdsOT0/6zle0vbk1c9wzYW3WCQ9EZS67h08ni5tbw9+iry9xZ+NitLQ+P5iFcNE37+DW+qQhx/ZHHxlEjzCXAauTT4HOHPU4tpt8PeL3w==
-X-YMail-OSG: GC87qOwVM1mCInqscR9ZtTIs4DpA.glJE22cS6B2HGJNSvFAppdpwVFFIUQJc7T
- XSj3vx4si15W9440IjD6MZG6wLKd.UqPqe6IW0PGJgfGDfVPzK8tmFPcMGnNNonnpXUNBP0_q1.m
- OcECD7aRJzKGgK6sxbE1LvAWgnNNSRz.kcMoTbAgrXqE3kaTV9K886rC8B2Pc4C1.v.vusxEK.zp
- Avcnmvk06oqGAUQIPhh7ICXc6K04FjU6avZ83RPUDXDDwhi0jL4PZTUMv8NjvZIDfwcoHf1k74ck
- ygyeWPN7szdKbP.fIW4S2uTRsZ6YrRJELdN7c6NQIgUTbbuncfssvCGWVvET0U6uDe_rAmm3raqG
- f6O_oBDCYgNRlX3YeY4Oh1FIiM9a66XfhemdHTasGnuJpqSwDqT2vYN8a03ELyCPW9Ls6TQ_vlxD
- kHWbhES6Jw0lsoMMtCtrwquv8CjT.A_TuWLKzrDVg2VjJTD.XeUlLM4xRSr717gnAlh0Iiu9DCuz
- gS_.ixBoV3TiGCKiCftTpky6Ol1vxRRZebYfyfxqmyrMwswZRErNkpm_1QqRIlO7ddTk0u4TqVOH
- ETmLFc5jSD0_uCzzVYQ5GncKRu37DnsKV8.oPsCZ9Qv_6O.4f7LtmJmAEceleEaA8RbL_lXK2coe
- o9g5vkKRGa3XejEdcRjXUK6ofBValp3Y8rzr7og_cXEDs5RKlxUjvzoUvF5FQDLt.TDBEDWJFv4.
- Zg6qJ7RBK9Ep2VUUNHrQSt0s5GG.m2MFwHAU.6EWZo2oSpa7NeqF1asjyFmh1jzT7apTIdzmMmLD
- 7PZGKRxnGknnxpD5v5Pww5u1HRSVwDC1uxi2bOy6P7RPLiLcr3O.nKOvyO7NwfdvTuW3lZ4L7uo5
- b00_8pwPjFOEEAHD3pHqimSBBqn9hGjV5Mm56nSIkR3.ysGJLI7cksN1zyPe8v97PrOTCnlCuVyg
- N5bu79yB7zOjRcMgC4Cb64V5z4S9gEn5zoVQow50ZmOSeJMItdolBQan3fB.6G5hXsstvLOp0QB_
- aLFgtOAVlueJnWTKiaQZXs0clEZ8kbM01MYPs6syO_RbQVto4ouMGML8sV5ytVVPW4KkIsREUMjb
- iwNYL9x8iKO3EN8TjVIhmmelcMPygo3rS0xyoABSTZATOjJMGVP0v4.j0NO1mjzOe.K4GD6Ny_gv
- _wUXxuHf8tGkdr7qcaUt6h0E7KiyndUukt7FF9LmW4V4MNVReEgo4DZ1YZJo_tIucTDtUbX7zDtm
- GVvq6vortbBobhcy7wMFBSpvdcyByL5RmKp8U684LIDQmCo6aYIITNnFr5E53
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.ne1.yahoo.com with HTTP; Mon, 23 Mar 2020 13:10:29 +0000
-Date:   Mon, 23 Mar 2020 13:10:26 +0000 (UTC)
-From:   Jak Abdullah mishail <mjakabdullah@gmail.com>
-Reply-To: mishailjakabdullah@gmail.com
-Message-ID: <97172868.535398.1584969026128@mail.yahoo.com>
-Subject: GREETING,
+        id S1727124AbgCWPfp (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 23 Mar 2020 11:35:45 -0400
+Received: from mail-io1-f66.google.com ([209.85.166.66]:37762 "EHLO
+        mail-io1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727053AbgCWPfp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 23 Mar 2020 11:35:45 -0400
+Received: by mail-io1-f66.google.com with SMTP id q9so14591909iod.4
+        for <selinux@vger.kernel.org>; Mon, 23 Mar 2020 08:35:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BJm5QvJRI/LXqt+oprFqO371ZA0WUhxKq92DJc28RG4=;
+        b=VaQk0QeUamYmTnqSIETeLhtaycA/0RBhHped2oEPZxstjRlntc+bZKtUciu6ZzcgF/
+         4KpA+hLdYS66kBVJPEOnYUF+d2DGwElVE5Zgu1VPTUSNqy1LOjQ7PGqq5JICssL5LUfN
+         R5OgDedctW+fqWnObSAn16x6722T01zeieDePYxQrZ/xF2UDoU9NbJbiLZrqWXzh9CYn
+         KES+cCSU36gINhQOavp/E3BplVP8h1IzNytZEemGoMEedDq9krGkzo3S2ZC03j74TfKL
+         ZngLsIORHwHfyPVc1mA4UMamMreYq6koXUhbwZD+NMoB7U36DmHeF46dej1WihOgz3KH
+         GIcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BJm5QvJRI/LXqt+oprFqO371ZA0WUhxKq92DJc28RG4=;
+        b=OmrQEdaVyYWpEFwnnbqsx4iQphQfJtStnFfSxxGky5ZwbChqPRPvz4mvU5fjKOpXWZ
+         zNk+uDuPdMhpV8b1p2B61w8A528mrz4eA21yIBSEXiNjp8mniUFvt6LYHEqraE5ocLJ4
+         RKfs6haa1xcfkru+g3sZEZ2Wz3HC0y7xa08tDBq14xcRjez1E5W6aDcOxDBY1bZKuRJd
+         RVoLvVVMDJTPXxLxko413vJJB9c7y73XTXL4OTd9EsUOm1/Q2KZJNCVVtmwqmRZlPgeV
+         bWHGgqnKaqDirzcvEOsCVib75biNWgQwq/ipLjexno5egpDnqfCoSvcustGM/oOps21B
+         MQ3Q==
+X-Gm-Message-State: ANhLgQ0up+fRS7pzMaaEDYTAWt5EfdoQTneWrfKfNmHudugBCmCfOZO+
+        YkzPDSnXZkF3WBTQUKQ+r47YNvosY2WjlPl21jg=
+X-Google-Smtp-Source: ADFU+vvPBs/PgS8JxupAQ7yfxrePtlGUtsT/ymnSccPmFLgiacU7pGvnHqCFVJAAV57PQ5nU8kNiP0mZuJxDYQHpRPs=
+X-Received: by 2002:a6b:8d50:: with SMTP id p77mr20009907iod.143.1584977742790;
+ Mon, 23 Mar 2020 08:35:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <97172868.535398.1584969026128.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15518 YMailNodin Mozilla/5.0 (Windows NT 6.3; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0
-To:     unlisted-recipients:; (no To-header on input)
+References: <CAFftDdqYnjyrXYRpUhaXere+jz-RXXWM9qPF5w1vzyi3SZOYKg@mail.gmail.com>
+ <20200319194853.15709-1-william.c.roberts@intel.com> <CAFqZXNtZLpdtreN1D5=FU+L8Rm10OpUu=jD4nzEqor7g50f3qw@mail.gmail.com>
+In-Reply-To: <CAFqZXNtZLpdtreN1D5=FU+L8Rm10OpUu=jD4nzEqor7g50f3qw@mail.gmail.com>
+From:   William Roberts <bill.c.roberts@gmail.com>
+Date:   Mon, 23 Mar 2020 10:35:31 -0500
+Message-ID: <CAFftDdoizXnNMOsyPdSeU15VmOgjpeAEU80DLLGSLzgyUC5gpQ@mail.gmail.com>
+Subject: Re: [PATCH] cil: drop remaining dso.h include
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        William Roberts <william.c.roberts@intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Greeting,
+On Fri, Mar 20, 2020 at 3:08 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>
+> On Thu, Mar 19, 2020 at 8:49 PM <bill.c.roberts@gmail.com> wrote:
+> > From: William Roberts <william.c.roberts@intel.com>
+> >
+> > Signed-off-by: William Roberts <william.c.roberts@intel.com>
+> > ---
+> >  libsepol/cil/src/cil.c | 1 -
+> >  1 file changed, 1 deletion(-)
+> >
+> > diff --git a/libsepol/cil/src/cil.c b/libsepol/cil/src/cil.c
+> > index c010ca2aeaf4..12cc28eff389 100644
+> > --- a/libsepol/cil/src/cil.c
+> > +++ b/libsepol/cil/src/cil.c
+> > @@ -50,7 +50,6 @@
+> >  #include "cil_binary.h"
+> >  #include "cil_policy.h"
+> >  #include "cil_strpool.h"
+> > -#include "dso.h"
+> >
+> >  #ifndef DISABLE_SYMVER
+> >  asm(".symver cil_build_policydb_pdb,        cil_build_policydb@LIBSEPOL_1.0");
+> > --
+> > 2.17.1
+> >
+>
+> Acked-by: Ondrej Mosnacek <omosnace@redhat.com>
+>
+Merged: https://github.com/SELinuxProject/selinux/pull/210
 
-My Name is Mr.Jak Abdullah mishail from Damascus Syria, and I am now resign=
-ed from the government. I am a member of an opposition party goverment in S=
-yria and a business man also,
-
-I need a foreign partner to enable me transport my investment capital and t=
-hen Relocate with my family, honestly I wish I will discuss more and get al=
-ong I need a partner because my investment capital is in my international a=
-ccount. Am interested in buying Properties, houses, building real estates a=
-nd some tourist places, my capital for investment is ($16.5 million USD) Me=
-anwhile if there is any profitable investment that you have so much experie=
-nce on it then we can join together as partners since I=E2=80=99m a foreign=
-er.
-
-I came across your e-mail contact through private search while in need of y=
-our assistance and I decided to contact you directly to ask you if you know=
- any Lucrative Business Investment in your Country I can invest my Money si=
-nce my Country Syria Security and Economic Independent has lost to the Grea=
-test Lower level, and our Culture has lost forever including our happiness =
-has been taken away from us. Our Country has been on fire for many years no=
-w.
-
-If you are capable of handling this business Contact me for more details i =
-will appreciate it if you can contact me immediately.
-You may as well tell me little more about yourself. Contact me urgently to =
-enable us proceed with the business.
-
-I will be waiting for your respond.
-
-Sincerely Yours,
-
-Jak Abdullah mishail
+Thanks

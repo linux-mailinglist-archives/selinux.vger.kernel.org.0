@@ -2,146 +2,92 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C5BE18FBE6
-	for <lists+selinux@lfdr.de>; Mon, 23 Mar 2020 18:50:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C94918FCAB
+	for <lists+selinux@lfdr.de>; Mon, 23 Mar 2020 19:27:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725880AbgCWRu6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 23 Mar 2020 13:50:58 -0400
-Received: from mail-pl1-f195.google.com ([209.85.214.195]:41173 "EHLO
-        mail-pl1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727194AbgCWRu5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 23 Mar 2020 13:50:57 -0400
-Received: by mail-pl1-f195.google.com with SMTP id t16so6216550plr.8
-        for <selinux@vger.kernel.org>; Mon, 23 Mar 2020 10:50:56 -0700 (PDT)
+        id S1727179AbgCWS1A (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 23 Mar 2020 14:27:00 -0400
+Received: from mail-wr1-f65.google.com ([209.85.221.65]:43653 "EHLO
+        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727141AbgCWS1A (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 23 Mar 2020 14:27:00 -0400
+Received: by mail-wr1-f65.google.com with SMTP id b2so18333252wrj.10
+        for <selinux@vger.kernel.org>; Mon, 23 Mar 2020 11:26:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=YLZOqM9ng4NNDqfTkJr2kNSz3HYuUJym2C41/J8u3pg=;
-        b=rxzMJAf/3N1DcgStQLY23MKT6kLyqaE06gqnM8DZLr/FQyJQbUpN+zYtlZk52vGgMk
-         +qY5o6PSprYLNw+oEyU42CVusXO5nQxGRmXFWP9k97iTftqDKpd6X0lB8S7JSH9cD5uK
-         MEdlAJahv5siedALtBJMKeAVKyVkH7VwjmLWdt2/FPqrHBk+fcnA9cW1pAS4Uj4T58uP
-         rn9U6rxHWBtfmFGMn+GUGMLeP5DlPoM9qKZPfAHoEpQyDVyoM2KYaglX5/a6GcrD5OSk
-         OfSwmThvSTY8+ohD++TnmFON3vxQEKe4FJASyNl4xfI38rK9aIG+dbD7dU7mvUQijsTk
-         EMbg==
+        d=googlemail.com; s=20161025;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KErY0mdQ8xlxh5QWsefnC72AyinB+h9YtpAmpAgrUmw=;
+        b=lTTel+hfd4WdRKnlhH6QBbSgFVyvyxFHYeHqtN/yLXenrCdO5GmWft1dyOBY4UsCNU
+         W6u0brqEwZEx30/kdq2nb5a311r+4WEVNZF3NHlVaBsC2MUfbmGX6qIcX3wrRsZe67Fg
+         Bnl1Fl7xd3P7JgNvtAItSFr9jwk6IJlw/JuwaFFgE9k/x72xYeAE9HtiMYxlyD+H3nxW
+         itVoNE8rmATXdydmek1sU91qwWBzPZ5F6Iqi6edCjL+r1AuYF0yrSo/PDnelhdfx71ZO
+         bEuKjeLYdNOR2k/RbiockicYSVW/bSyGeBVYPQrpW2gmthGPEpP/pXMf8eNX5QHUY7o5
+         oe0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=YLZOqM9ng4NNDqfTkJr2kNSz3HYuUJym2C41/J8u3pg=;
-        b=M0hlkVJe1BhUoIpWhk8fYn3EBLAKUR7yneOiGHSl/XQal4sluY0pPr5INPnb/K6zmM
-         1pjlRZTAbE5JNI63ZId1UomMqpfmdqSWcwLC/Hqkd9GejYR0W2M7F+pDUFJEgl4pQuBR
-         IQfITS7oSortQ6X6TmzNXd6fUgewGaUyAkAKcr4URucfkPI54kDnpgLiAIIKrvyBUlrf
-         Tskskx/lDTnrlZvVXYp3ZePqSHHXzFb9sZDz3/CoEpDiXsKm2I3WkC5N0igoU7YoD5WZ
-         riCG0fwQC8ZGsLZlQR8OxcyVIpOgPCIksdkNjRvkzjrXs9TsyeLGIKFxFE3AYqsJsU2m
-         faAQ==
-X-Gm-Message-State: ANhLgQ0Dfrm+2P9KPmgckW3YN/dXeSIF/xStlIm3RRjObdfVInkNmrnk
-        MqvQTIcjc7sxRRIVc6NYBONeks1Uv7w=
-X-Google-Smtp-Source: ADFU+vu2f97D7ZFTuBJq2UsA/EKSl+qpJ7IVPaFdWUVIrxihiD4GWxFBKT3VO4EnVOUP97rBLNqMEw==
-X-Received: by 2002:a17:90a:d585:: with SMTP id v5mr552385pju.168.1584985856104;
-        Mon, 23 Mar 2020 10:50:56 -0700 (PDT)
-Received: from localhost.localdomain ([192.55.54.44])
-        by smtp.gmail.com with ESMTPSA id j126sm13963979pfg.60.2020.03.23.10.50.54
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=KErY0mdQ8xlxh5QWsefnC72AyinB+h9YtpAmpAgrUmw=;
+        b=mKu00xqKwhg6PvWQWqK5iPxHVC3bx5DnihWkbGByDOGlvZdpfIfGcc61TBm0Psbzxh
+         qXHjCYsZ7ciYwi0kIsKuVqoWgtAWK9VoOFianiWc7OT4DpAMFd4CHbtteIcLpjg8X2RL
+         wdLaq06otKP9n2DZrct5O1RZNzuJfKexP+gpjG9YWaNeuCuXaKANkDkPM2N4JB0XlMXh
+         ZxEQAILOax8y64wRahYsDt+4DnZzOYAFyNwBRb8+drdq5ECK/GjeEW6kWNRgfKH2Z4Oa
+         vlhnrTrmgRaA2wNvrPudyYS8xxgrDoMgtsQVd1okt9rp6ufa3mSygN5VOkTW54HXswSz
+         uoLQ==
+X-Gm-Message-State: ANhLgQ1azVkQHdXl7DtChq+1bijSVD27Waur6I3R/F9lbw3LfgrMEywH
+        mGJapcmNX/l5eiSvbyXxFeISHas7
+X-Google-Smtp-Source: ADFU+vvqHZNkeBOEotAMYWTVOi0YHSyQ6I5o/3C5ncz7O10APdat94wKTqe9p2rJoPnPoMJAtZy2qg==
+X-Received: by 2002:adf:f14a:: with SMTP id y10mr10023229wro.43.1584988018302;
+        Mon, 23 Mar 2020 11:26:58 -0700 (PDT)
+Received: from debianHome.localdomain (x4d004a48.dyn.telefonica.de. [77.0.74.72])
+        by smtp.gmail.com with ESMTPSA id o26sm490534wmc.33.2020.03.23.11.26.57
+        for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Mar 2020 10:50:55 -0700 (PDT)
-From:   bill.c.roberts@gmail.com
-X-Google-Original-From: william.c.roberts@intel.com
-To:     bill.c.roberts@gmail.com
-Cc:     drepper@redhat.com, nicolas.iooss@m4x.org, omosnace@redhat.com,
-        plautrba@redhat.com, selinux@vger.kernel.org,
-        stephen.smalley.work@gmail.com, william.c.roberts@intel.com
-Subject: [PATCH 4/4] libsemanage: cleanup linker map file
-Date:   Mon, 23 Mar 2020 12:50:37 -0500
-Message-Id: <20200323175037.19170-5-william.c.roberts@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200323175037.19170-1-william.c.roberts@intel.com>
-References: <20200323175037.19170-1-william.c.roberts@intel.com>
+        Mon, 23 Mar 2020 11:26:57 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH] checkpolicy: add missing forward declaration
+Date:   Mon, 23 Mar 2020 19:26:33 +0100
+Message-Id: <20200323182633.12384-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.26.0.rc2
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: William Roberts <william.c.roberts@intel.com>
+policy_scan.l:294:3: warning: implicit declaration of function 'yyerror' is
 
-The linker map file had inconsistent style in the 1_1 versions.
-Drop the mixed tabs and spaces and use the consistent spacing indent
-of two spaces.
+      invalid in C99 [-Wimplicit-function-declaration]
 
-Signed-off-by: William Roberts <william.c.roberts@intel.com>
+{ yyerror("unrecognized character");}
+
+  ^
+
+policy_scan.l:294:3: warning: this function declaration is not a prototype
+
+      [-Wstrict-prototypes]
+
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/libsemanage.map | 62 ++++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 31 deletions(-)
+ checkpolicy/policy_scan.l | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/libsemanage/src/libsemanage.map b/libsemanage/src/libsemanage.map
-index e1861ccbebe1..ff5977b9f483 100644
---- a/libsemanage/src/libsemanage.map
-+++ b/libsemanage/src/libsemanage.map
-@@ -349,35 +349,35 @@ LIBSEMANAGE_1.0 {
+diff --git a/checkpolicy/policy_scan.l b/checkpolicy/policy_scan.l
+index 094645d1..4067268b 100644
+--- a/checkpolicy/policy_scan.l
++++ b/checkpolicy/policy_scan.l
+@@ -37,6 +37,7 @@ typedef int (* require_func_t)(void);
+ static char linebuf[2][255];
+ static unsigned int lno = 0;
+ int werror = 0;
++int yyerror(const char *msg);
+ int yywarn(const char *msg);
  
- LIBSEMANAGE_1.1 {
-   global:
--	  semanage_module_install;
--	  semanage_module_extract;
--	  semanage_get_hll_compiler_path;
--	  semanage_get_ignore_module_cache;
--	  semanage_set_ignore_module_cache;
--	  semanage_get_default_priority;
--	  semanage_set_default_priority;
--	  semanage_module_info_create;
--	  semanage_module_info_destroy;
--	  semanage_module_info_get_priority;
--	  semanage_module_info_get_name;
--	  semanage_module_info_get_lang_ext;
--	  semanage_module_info_get_enabled;
--	  semanage_module_info_set_priority;
--	  semanage_module_info_set_name;
--	  semanage_module_info_set_lang_ext;
--	  semanage_module_info_set_enabled;
--	  semanage_module_key_create;
--	  semanage_module_key_destroy;
--	  semanage_module_key_get_priority;
--	  semanage_module_key_get_name;
--	  semanage_module_key_set_priority;
--	  semanage_module_key_set_name;
--	  semanage_module_get_module_info;
--	  semanage_module_list_all;
--	  semanage_module_get_enabled;
--	  semanage_module_set_enabled;
--	  semanage_module_install_info;
--	  semanage_module_upgrade_info;
--	  semanage_module_remove_key;
--	  semanage_set_store_root;
-+    semanage_module_install;
-+    semanage_module_extract;
-+    semanage_get_hll_compiler_path;
-+    semanage_get_ignore_module_cache;
-+    semanage_set_ignore_module_cache;
-+    semanage_get_default_priority;
-+    semanage_set_default_priority;
-+    semanage_module_info_create;
-+    semanage_module_info_destroy;
-+    semanage_module_info_get_priority;
-+    semanage_module_info_get_name;
-+    semanage_module_info_get_lang_ext;
-+    semanage_module_info_get_enabled;
-+    semanage_module_info_set_priority;
-+    semanage_module_info_set_name;
-+    semanage_module_info_set_lang_ext;
-+    semanage_module_info_set_enabled;
-+    semanage_module_key_create;
-+    semanage_module_key_destroy;
-+    semanage_module_key_get_priority;
-+    semanage_module_key_get_name;
-+    semanage_module_key_set_priority;
-+    semanage_module_key_set_name;
-+    semanage_module_get_module_info;
-+    semanage_module_list_all;
-+    semanage_module_get_enabled;
-+    semanage_module_set_enabled;
-+    semanage_module_install_info;
-+    semanage_module_upgrade_info;
-+    semanage_module_remove_key;
-+    semanage_set_store_root;
- } LIBSEMANAGE_1.0;
+ void set_source_file(const char *name);
 -- 
-2.17.1
+2.26.0.rc2
 

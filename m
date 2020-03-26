@@ -2,135 +2,93 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C1A44194857
-	for <lists+selinux@lfdr.de>; Thu, 26 Mar 2020 21:07:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DEF194D44
+	for <lists+selinux@lfdr.de>; Fri, 27 Mar 2020 00:30:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728708AbgCZUG4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 26 Mar 2020 16:06:56 -0400
-Received: from mail-vk1-f202.google.com ([209.85.221.202]:45552 "EHLO
-        mail-vk1-f202.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728781AbgCZUG4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 26 Mar 2020 16:06:56 -0400
-Received: by mail-vk1-f202.google.com with SMTP id j68so2554712vkj.12
-        for <selinux@vger.kernel.org>; Thu, 26 Mar 2020 13:06:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=date:in-reply-to:message-id:mime-version:references:subject:from:to
-         :cc;
-        bh=Y8Q8F3IH8c2hotjV+QMJ3kSw7Jeojd38t24yU7GezVM=;
-        b=lPpmx9yPrL/MYyExIQJGT42ZfXmoCaxGEUrGYFUYgtzqZErnqz25tEHuBVs6UbKG03
-         cbq05kXjAStd0QUwzzsPx/m4hLKByFqoRBu0ZMko8DOGfpMbfqphPTAc1n4aoSx+jUiD
-         GUkRqspDcIHkNyB21E+AmXM76aByOoFTLmj5Z68AhLoDMFd2yhNWF9wo2X0u1uuBOqyP
-         yWaZ/1SYoC2exZSC6kN0hyxiU7LLLW36qCYgUEFeqhpAMNQye8oOAMZk5AE/478eAua1
-         38w9tfa8n6lzqlf4LQ8lmPqLhDyBDGb2agpgeh/LtUoaVTpE4nt/fnX+IkzbBesH8+78
-         Azyw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=Y8Q8F3IH8c2hotjV+QMJ3kSw7Jeojd38t24yU7GezVM=;
-        b=pPp+sRMOa1zf69M14Bg/6wk+mp8x1cJrm14e0N2zFv8pdP/kqb5LthV5irzyYEqkXZ
-         Ot17Vwa2nMPAbK+TiquukxZ/be8UpOnzgTyYrRba9wTC3A6IUt3DsKmFo0jlgYiT+71X
-         1GK98iPAJcO5UOUtnuJUHeYxO6AbK76xUIqZ4wEKsCOEIiVplyzMAGYSKMghL+53bxVv
-         OlkmE4ZOTTNXjQlUF8nPTEbK84KSvUCOQSOp6SZLb9yX8+oDWcEFnrW6nqSzcNECIlmr
-         N8thUqH/Uffl1l0JGCtIWHyqPuQKmw7CDd/lVR/bCPrs1MXBkvypNpld5+eQobzIynmw
-         rvXQ==
-X-Gm-Message-State: ANhLgQ3tBYlSxzerFwfox6yyRMkQtOzwmLsPoOPSYOkdRD02slBm2vaZ
-        34idBxvhwYMManY1BZ/pQ0quzrwGtDs=
-X-Google-Smtp-Source: ADFU+vusyX36d2CY3Mx/oaqEexC02/Z3H/IlNDB9bKUbWp7T4L1OJf34Zf2nIPvcXbTAxx7+cBlBgkr2U4g=
-X-Received: by 2002:ab0:424:: with SMTP id 33mr8765913uav.143.1585253213293;
- Thu, 26 Mar 2020 13:06:53 -0700 (PDT)
-Date:   Thu, 26 Mar 2020 13:06:34 -0700
-In-Reply-To: <20200326200634.222009-1-dancol@google.com>
-Message-Id: <20200326200634.222009-4-dancol@google.com>
-Mime-Version: 1.0
-References: <20200326181456.132742-1-dancol@google.com> <20200326200634.222009-1-dancol@google.com>
-X-Mailer: git-send-email 2.25.1.696.g5e7596f4ac-goog
-Subject: [PATCH v4 3/3] Wire UFFD up to SELinux
-From:   Daniel Colascione <dancol@google.com>
-To:     timmurray@google.com, selinux@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, viro@zeniv.linux.org.uk, paul@paul-moore.com,
-        nnk@google.com, sds@tycho.nsa.gov, lokeshgidra@google.com,
-        jmorris@namei.org
-Cc:     Daniel Colascione <dancol@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S1727711AbgCZXaa (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 26 Mar 2020 19:30:30 -0400
+Received: from namei.org ([65.99.196.166]:43756 "EHLO namei.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726954AbgCZXaa (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Thu, 26 Mar 2020 19:30:30 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by namei.org (8.14.4/8.14.4) with ESMTP id 02QNSlWb015673;
+        Thu, 26 Mar 2020 23:28:47 GMT
+Date:   Fri, 27 Mar 2020 10:28:47 +1100 (AEDT)
+From:   James Morris <jmorris@namei.org>
+To:     Serge Hallyn <serge@hallyn.com>
+cc:     Alexey Budankov <alexey.budankov@linux.intel.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        "joonas.lahtinen@linux.intel.com" <joonas.lahtinen@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Will Deacon <will@kernel.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-man@vger.kernel.org, Andi Kleen <ak@linux.intel.com>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+        "selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "intel-gfx@lists.freedesktop.org" <intel-gfx@lists.freedesktop.org>,
+        Igor Lubashev <ilubashe@akamai.com>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Stephane Eranian <eranian@google.com>,
+        "linux-security-module@vger.kernel.org" 
+        <linux-security-module@vger.kernel.org>,
+        oprofile-list@lists.sf.net, Jiri Olsa <jolsa@redhat.com>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [Intel-gfx] [PATCH v7 00/12] Introduce CAP_PERFMON to secure
+ system performance monitoring and observability
+In-Reply-To: <20200302001913.GA21145@sl>
+Message-ID: <alpine.LRH.2.21.2003271026290.14767@namei.org>
+References: <c8de937a-0b3a-7147-f5ef-69f467e87a13@linux.intel.com> <3ae0bed5-204e-de81-7647-5f0d8106cd67@linux.intel.com> <20200302001913.GA21145@sl>
+User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This change gives userfaultfd file descriptors a real security
-context, allowing policy to act on them.
+On Sun, 1 Mar 2020, Serge Hallyn wrote:
 
-Signed-off-by: Daniel Colascione <dancol@google.com>
----
- fs/userfaultfd.c | 30 ++++++++++++++++++++++++++----
- 1 file changed, 26 insertions(+), 4 deletions(-)
+> Thanks, this looks good to me, in keeping with the CAP_SYSLOG break.
+> 
+> Acked-by: Serge E. Hallyn <serge@hallyn.com>
+> 
+> for the set.
+> 
+> James/Ingo/Peter, if noone has remaining objections, whose branch
+> should these go in through?
+> 
+> thanks,
+> -serge
+> 
+> On Tue, Feb 25, 2020 at 12:55:54PM +0300, Alexey Budankov wrote:
+> > 
+> > Hi,
+> > 
+> > Is there anything else I could do in order to move the changes forward
+> > or is something still missing from this patch set?
+> > Could you please share you mind?
 
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 37df7c9eedb1..78ff5d898733 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -76,6 +76,8 @@ struct userfaultfd_ctx {
- 	bool mmap_changing;
- 	/* mm with one ore more vmas attached to this userfaultfd_ctx */
- 	struct mm_struct *mm;
-+	/* The inode that owns this context --- not a strong reference.  */
-+	const struct inode *owner;
- };
- 
- struct userfaultfd_fork_ctx {
-@@ -1022,8 +1024,10 @@ static int resolve_userfault_fork(struct userfaultfd_ctx *ctx,
- {
- 	int fd;
- 
--	fd = anon_inode_getfd("[userfaultfd]", &userfaultfd_fops, new,
--			      O_RDWR | (new->flags & UFFD_SHARED_FCNTL_FLAGS));
-+	fd = anon_inode_getfd_secure(
-+		"[userfaultfd]", &userfaultfd_fops, new,
-+		O_RDWR | (new->flags & UFFD_SHARED_FCNTL_FLAGS),
-+		ctx->owner);
- 	if (fd < 0)
- 		return fd;
- 
-@@ -1945,6 +1949,7 @@ static void init_once_userfaultfd_ctx(void *mem)
- 
- SYSCALL_DEFINE1(userfaultfd, int, flags)
- {
-+	struct file *file;
- 	struct userfaultfd_ctx *ctx;
- 	int fd;
- 
-@@ -1974,8 +1979,25 @@ SYSCALL_DEFINE1(userfaultfd, int, flags)
- 	/* prevent the mm struct to be freed */
- 	mmgrab(ctx->mm);
- 
--	fd = anon_inode_getfd("[userfaultfd]", &userfaultfd_fops, ctx,
--			      O_RDWR | (flags & UFFD_SHARED_FCNTL_FLAGS));
-+	file = anon_inode_getfile_secure(
-+		"[userfaultfd]", &userfaultfd_fops, ctx,
-+		O_RDWR | (flags & UFFD_SHARED_FCNTL_FLAGS),
-+		NULL);
-+	if (IS_ERR(file)) {
-+		fd = PTR_ERR(file);
-+		goto out;
-+	}
-+
-+	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
-+	if (fd < 0) {
-+		fput(file);
-+		goto out;
-+	}
-+
-+	ctx->owner = file_inode(file);
-+	fd_install(fd, file);
-+
-+out:
- 	if (fd < 0) {
- 		mmdrop(ctx->mm);
- 		kmem_cache_free(userfaultfd_ctx_cachep, ctx);
+Alexey,
+
+It seems some of the previous Acks are not included in this patchset, e.g. 
+https://lkml.org/lkml/2020/1/22/655
+
+Every patch needs a Reviewed-by or Acked-by from maintainers of the code 
+being changed.
+
+You have enough from the security folk, but I can't see any included from 
+the perf folk.
+
+
 -- 
-2.25.1.696.g5e7596f4ac-goog
+James Morris
+<jmorris@namei.org>
 

@@ -2,463 +2,111 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D38B1959A5
-	for <lists+selinux@lfdr.de>; Fri, 27 Mar 2020 16:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FC85195C01
+	for <lists+selinux@lfdr.de>; Fri, 27 Mar 2020 18:08:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726937AbgC0PVQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 27 Mar 2020 11:21:16 -0400
-Received: from us-smtp-delivery-74.mimecast.com ([63.128.21.74]:57380 "EHLO
-        us-smtp-delivery-74.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726900AbgC0PVQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 27 Mar 2020 11:21:16 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1585322475;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=r1blPuC8cDlTH93Jr9nXfNpES5GP+LPNmplVpsvC4b0=;
-        b=PaZe6glpH01Qn/p5AvSlDeuP/79x1IMePeymFOyI/iGmDrSFyPJpsD7gqBcNE6VdqWSoJX
-        s/PScBULa8oAbcVKEXs1X10RIs6LqEiAj23KgkqoWVIV7xouAQull6l/x4WCuA77qp6IX7
-        Szi02bdT37AyuRWwsm5jyC+G1UnBS9E=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-488-AIWEi6QjNEu2IvssMQigqA-1; Fri, 27 Mar 2020 11:21:13 -0400
-X-MC-Unique: AIWEi6QjNEu2IvssMQigqA-1
-Received: by mail-wm1-f71.google.com with SMTP id m4so5696494wme.0
-        for <selinux@vger.kernel.org>; Fri, 27 Mar 2020 08:21:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=r1blPuC8cDlTH93Jr9nXfNpES5GP+LPNmplVpsvC4b0=;
-        b=LvztGIoqvESdstnlamplrtMF1fCPIYXjrEgKqliiIVUaR6wAgxexOOytWjdVGpqj5q
-         QL9v7IUeWUkWSJ10L8jiOBHzSwKmI9VdC+UUQQh+uEpcqv4YhcMhYUvyduOxi6LVELJ8
-         +yoNBA4RjQJWCEovSg+PWAdu3mkZ62RuWTeUdwQTQsxoz80qqYciu3b5hkkcdDJtydNT
-         HUmi11b9U1Up4/QN7xaptLL+VYmP/y4OTpAB9epEDANU88pPZYIICMdsvUCM4ENcZXv+
-         Ww4bOwcO5fBLOcotxMryoIzj+USXnZQaQMuI1M81d6ohYCaMpBk8XXLTqVgJ7sM8BgHH
-         3S1Q==
-X-Gm-Message-State: ANhLgQ0d1d60ojNdBndU3jFtMGcAseQBs4GNSMMKZMfVNgGQfoCmUHzo
-        byDCChm6dqYVd/+ZOSF3fh30j0uYk4cLXf6kbnw7Qit7ekLgZsK/DkNpyO9m+r7n2vdJNnGfzZU
-        Fpa9w4uQ3BxfVrcHfew==
-X-Received: by 2002:a5d:4c87:: with SMTP id z7mr16751021wrs.39.1585322472031;
-        Fri, 27 Mar 2020 08:21:12 -0700 (PDT)
-X-Google-Smtp-Source: ADFU+vuP6fTxd3RzonNjXqG+toYGwICJs5jJo9MFRZr+5dpdF3X5uCBRQp/+bH3EarlptBFKrqvW3w==
-X-Received: by 2002:a5d:4c87:: with SMTP id z7mr16750984wrs.39.1585322471673;
-        Fri, 27 Mar 2020 08:21:11 -0700 (PDT)
-Received: from omos.redhat.com ([2a02:8308:b13f:2100:f695:3ae5:c8bf:2f57])
-        by smtp.gmail.com with ESMTPSA id t21sm8284746wmt.43.2020.03.27.08.21.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Mar 2020 08:21:11 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
+        id S1726758AbgC0RIH (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 27 Mar 2020 13:08:07 -0400
+Received: from USFB19PA33.eemsg.mail.mil ([214.24.26.196]:44014 "EHLO
+        USFB19PA33.eemsg.mail.mil" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726333AbgC0RIH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 27 Mar 2020 13:08:07 -0400
+X-EEMSG-check-017: 68663446|USFB19PA33_ESA_OUT03.csd.disa.mil
+X-IronPort-AV: E=Sophos;i="5.72,313,1580774400"; 
+   d="scan'208";a="68663446"
+Received: from emsm-gh1-uea11.ncsc.mil ([214.29.60.3])
+  by USFB19PA33.eemsg.mail.mil with ESMTP/TLS/DHE-RSA-AES256-SHA256; 27 Mar 2020 17:07:56 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tycho.nsa.gov; i=@tycho.nsa.gov; q=dns/txt;
+  s=tycho.nsa.gov; t=1585328876; x=1616864876;
+  h=subject:to:cc:references:from:message-id:date:
+   mime-version:in-reply-to:content-transfer-encoding;
+  bh=x/UHmnLd7u9WOLpn8n9eg1G2CuOQRZKv1tPdR1NrTeI=;
+  b=RLU5Qula4VJUcDbWuFQNuGLCDy6eyVJHpJwgsFxjbJN+DCxF+8t2Gj5p
+   e6Scho1ytE2JkdCe+WnnAUlc6sOPNDYbviIEiLflw8xdoPafLZrMJzDm5
+   t3nMfcvZFROsKSyRigxveAATDD5YeWHxUHuKgDClT74SYvVHjzm1VVQFc
+   /7nFk8ECbd1BtYNlZBBx1KJuG5WLH6n5H/Q1QXojNZc+vzIlw7IgfiaYv
+   G5BR5pFuyMhuuvgv8oD0VJ++2ceDyAh2FggyXRP9LYWkCpesBZ4B9o54G
+   SFFFMHgvNfqM1IC2QiK62fPgr7Hs6VrqmMV7kxcy95WgcldTSzNSVvOrX
+   A==;
+X-IronPort-AV: E=Sophos;i="5.72,313,1580774400"; 
+   d="scan'208";a="41146068"
+IronPort-PHdr: =?us-ascii?q?9a23=3AImOeahVQJV+IJOcS4BxKmuc7LzHV8LGtZVwlr6?=
+ =?us-ascii?q?E/grcLSJyIuqrYbRCPt8tkgFKBZ4jH8fUM07OQ7/m8HzVdsN3Q6zgrS99laV?=
+ =?us-ascii?q?wssY0uhQsuAcqIWwXQDcXBSGgEJvlET0Jv5HqhMEJYS47UblzWpWCuv3ZJQk?=
+ =?us-ascii?q?2sfQV6Kf7oFYHMks+5y/69+4HJYwVPmTGxfa5+IA+5oAnMucQam5ZuJ6Y1xx?=
+ =?us-ascii?q?fGpnZFdfldyH91K16Ugxvz6cC88YJ5/S9Nofwh7clAUav7f6Q8U7NVCSktPn?=
+ =?us-ascii?q?426sP2qxTNVBOD6XQAXGoYlBpIGBXF4wrhXpjtqCv6t/Fy1zecMMbrUL07Qz?=
+ =?us-ascii?q?Wi76NsSB/1lCcKMiMy/W/LhsBsiq9QvQmsrAJjzYHKfI6VNeJ+fqLDctMcWW?=
+ =?us-ascii?q?pBRdtaWyhYDo+hc4cDE+8NMOBWoInno1sFsAWwCw+iCujyzjNEn3H70Kk/3+?=
+ =?us-ascii?q?knDArI3hEvH8gWvXrJstv1OqccX+O7wqbGwjrMbe9Z1zjm5YjUcB0su+2AUa?=
+ =?us-ascii?q?5+fMfTz0QkCgPLjk+XqYzgJz6by/gNvHaD7+pgS+2vjXMspRx0oje1wscsjp?=
+ =?us-ascii?q?fGh4IIwV3D7iV23Z01KMakSE97fdGkEJxQuzucN4ttWMwuWW5ouCEkyrAfv5?=
+ =?us-ascii?q?OwYSsEyIw/yhLCZPGKfJKE7xL+WOqLPzt1i2xpdKiiixu07EOu0PfzVtOu31?=
+ =?us-ascii?q?ZPtidFl97MuW0T2BHL8ciHT+d9/l+m2TaSywDf8uFELl4wlarcM5Mh3qQ/lo?=
+ =?us-ascii?q?ASsUTeBS/6gln2ja+KeUUk/eik8eLnban9ppCALYN0jwD+MqA2lsy+B+Q3LB?=
+ =?us-ascii?q?QOUnCG9emz27Dv5030TKhQgvEonaTVrorWKdkDqq68GQBV04Ij6xilDzeh1d?=
+ =?us-ascii?q?QVhWIHI09eeB+ck4joO03BIPD/DfulhVSsiy1ky+rJPr3mHJXBNmLDn6v5fb?=
+ =?us-ascii?q?Zh905czxI+zdda55JTEbEBJuj8VVPvu9HDFB82LRG7w+b9B9VhzI8RRWWPAq?=
+ =?us-ascii?q?qBOqPIrVCI/v4vI/WLZIINozbyNfwl5//ojX8kll4QZrep3ZQJZ3CiBPhmIF?=
+ =?us-ascii?q?uWYWDqgtgfFWcGpA0+TPbliFeaSz5ce26yX74g5jE8EI+mFZnMSZuzj7yH3S?=
+ =?us-ascii?q?e7AppWa3tHCl+SD3jnaZ+IW/AWaCKdcYddlWkjU7S7Ro1p8Ba1sgbxxrkveu?=
+ =?us-ascii?q?3R/TYevJnu/MJ46+3aiVc58jkiS4yG3mWMSXxktn0HSiVw361lp0F5jFCZ3v?=
+ =?us-ascii?q?tWmftdQOdP6utJXwFyDpvVy+h3GpimQQ7aVsuYQ1ahBNO9CHc+ScxnkIxGWF?=
+ =?us-ascii?q?p0B9j31kOL5CGtGbJA0uXQVZE=3D?=
+X-IPAS-Result: =?us-ascii?q?A2CjAABaMn5e/wHyM5BmHAEBAQEBBwEBEQEEBAEBgWoEA?=
+ =?us-ascii?q?QELAYF8LIFBMiqEGo9TBoEKLYl7iimHJAoBAQEBAQEBAQE0AQIEAQGERAKCM?=
+ =?us-ascii?q?SQ3Bg4CEAEBAQUBAQEBAQUDAQFshWKCOykBgwwBBSMVQRALDgoCAiYCAlcGA?=
+ =?us-ascii?q?QwGAgEBgmM/glglrUGBMoVLg16BPoEOKgGMMBp5gQeBOA+CXj6HYIJeBJgCm?=
+ =?us-ascii?q?FuCRoJWlDAGHZtpLY5nngojgVgrCAIYCCEPgydQGA2dASUDMIEGAQGOFQEB?=
+Received: from tarius.tycho.ncsc.mil ([144.51.242.1])
+  by emsm-gh1-uea11.NCSC.MIL with ESMTP; 27 Mar 2020 17:07:55 +0000
+Received: from moss-pluto.infosec.tycho.ncsc.mil (moss-pluto.infosec.tycho.ncsc.mil [192.168.25.131])
+        by tarius.tycho.ncsc.mil (8.14.7/8.14.4) with ESMTP id 02RH8FRv047149;
+        Fri, 27 Mar 2020 13:08:15 -0400
+Subject: Re: [PATCH 2/2] libsepol: implement POLICYDB_VERSION_COMP_FTRANS
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
 Cc:     Chris PeBenito <pebenito@ieee.org>
-Subject: [PATCH 2/2] libsepol: implement POLICYDB_VERSION_COMP_FTRANS
-Date:   Fri, 27 Mar 2020 16:21:07 +0100
-Message-Id: <20200327152107.95915-3-omosnace@redhat.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20200327152107.95915-1-omosnace@redhat.com>
 References: <20200327152107.95915-1-omosnace@redhat.com>
+ <20200327152107.95915-3-omosnace@redhat.com>
+From:   Stephen Smalley <sds@tycho.nsa.gov>
+Message-ID: <cb990775-f602-8436-4460-f78b7ce3a96f@tycho.nsa.gov>
+Date:   Fri, 27 Mar 2020 13:09:15 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20200327152107.95915-3-omosnace@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Implement a new, more space-efficient form of storing filename
-transitions in the binary policy. The internal structures have already
-been converted to this new representation; this patch just implements
-reading/writing an equivalent representation from/to the binary policy.
+On 3/27/20 11:21 AM, Ondrej Mosnacek wrote:
+> Implement a new, more space-efficient form of storing filename
+> transitions in the binary policy. The internal structures have already
+> been converted to this new representation; this patch just implements
+> reading/writing an equivalent representation from/to the binary policy.
+> 
+> This new format reduces the size of Fedora policy from 7.6 MB to only
+> 3.3 MB (with policy optimization enabled in both cases). With the
+> unconfined module disabled, the size is reduced from 3.3 MB to 2.4 MB.
+> 
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> ---
 
-This new format reduces the size of Fedora policy from 7.6 MB to only
-3.3 MB (with policy optimization enabled in both cases). With the
-unconfined module disabled, the size is reduced from 3.3 MB to 2.4 MB.
+Haven't looked at the code yet, but something is wrong with the handling 
+when it needs to dowgrade to an older policy version for a kernel that 
+doesn't yet support this new version:
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- libsepol/include/sepol/policydb/policydb.h |   3 +-
- libsepol/src/policydb.c                    | 217 +++++++++++++++++----
- libsepol/src/write.c                       |  72 ++++++-
- 3 files changed, 241 insertions(+), 51 deletions(-)
+$ sudo semodule -B
+libsepol.mls_read_range_helper: range overflow
+libsepol.context_read_and_validate: error reading MLS range of context
+libsepol.policydb_to_image: new policy image is invalid
+libsepol.policydb_to_image: could not create policy image
+SELinux:  Could not downgrade policy file 
+/etc/selinux/targeted/policy/policy.33, searching for an older version.
 
-diff --git a/libsepol/include/sepol/policydb/policydb.h b/libsepol/include/sepol/policydb/policydb.h
-index c3180c61..9ef43abc 100644
---- a/libsepol/include/sepol/policydb/policydb.h
-+++ b/libsepol/include/sepol/policydb/policydb.h
-@@ -755,10 +755,11 @@ extern int policydb_set_target_platform(policydb_t *p, int platform);
- #define POLICYDB_VERSION_XPERMS_IOCTL	30 /* Linux-specific */
- #define POLICYDB_VERSION_INFINIBAND		31 /* Linux-specific */
- #define POLICYDB_VERSION_GLBLUB		32
-+#define POLICYDB_VERSION_COMP_FTRANS	33 /* compressed filename transitions */
- 
- /* Range of policy versions we understand*/
- #define POLICYDB_VERSION_MIN	POLICYDB_VERSION_BASE
--#define POLICYDB_VERSION_MAX	POLICYDB_VERSION_GLBLUB
-+#define POLICYDB_VERSION_MAX	POLICYDB_VERSION_COMP_FTRANS
- 
- /* Module versions and specific changes*/
- #define MOD_POLICYDB_VERSION_BASE		4
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index 6b121d66..f108e4af 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -200,6 +200,13 @@ static struct policydb_compat_info policydb_compat[] = {
- 	 .ocon_num = OCON_IBENDPORT + 1,
- 	 .target_platform = SEPOL_TARGET_SELINUX,
- 	},
-+	{
-+	 .type = POLICY_KERN,
-+	 .version = POLICYDB_VERSION_COMP_FTRANS,
-+	 .sym_num = SYM_NUM,
-+	 .ocon_num = OCON_IBENDPORT + 1,
-+	 .target_platform = SEPOL_TARGET_SELINUX,
-+	},
- 	{
- 	 .type = POLICY_BASE,
- 	 .version = MOD_POLICYDB_VERSION_BASE,
-@@ -2661,73 +2668,201 @@ int policydb_filetrans_insert(policydb_t *p, uint32_t stype, uint32_t ttype,
- 	return ebitmap_set_bit(&datum->stypes, stype - 1, 1);
- }
- 
--int filename_trans_read(policydb_t *p, struct policy_file *fp)
-+static int filename_trans_read_one_old(policydb_t *p, struct policy_file *fp)
- {
--	unsigned int i;
--	uint32_t buf[4], nel, len, stype, ttype, tclass, otype;
-+	uint32_t buf[4], len, stype, ttype, tclass, otype;
-+	char *name = NULL;
- 	int rc;
--	char *name;
- 
- 	rc = next_entry(buf, fp, sizeof(uint32_t));
- 	if (rc < 0)
- 		return -1;
--	nel = le32_to_cpu(buf[0]);
-+	len = le32_to_cpu(buf[0]);
-+	if (zero_or_saturated(len))
-+		return -1;
- 
--	for (i = 0; i < nel; i++) {
--		name = NULL;
-+	name = calloc(len + 1, sizeof(*name));
-+	if (!name)
-+		return -1;
- 
--		rc = next_entry(buf, fp, sizeof(uint32_t));
--		if (rc < 0)
--			goto err;
--		len = le32_to_cpu(buf[0]);
--		if (zero_or_saturated(len))
-+	rc = next_entry(name, fp, len);
-+	if (rc < 0)
-+		goto err;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t) * 4);
-+	if (rc < 0)
-+		goto err;
-+
-+	stype  = le32_to_cpu(buf[0]);
-+	ttype  = le32_to_cpu(buf[1]);
-+	tclass = le32_to_cpu(buf[2]);
-+	otype  = le32_to_cpu(buf[3]);
-+
-+	rc = policydb_filetrans_insert(p, stype, ttype, tclass, name, &name,
-+				       otype, NULL);
-+	if (rc) {
-+		if (rc != SEPOL_EEXIST)
- 			goto err;
-+		/*
-+		 * Some old policies were wrongly generated with
-+		 * duplicate filename transition rules.  For backward
-+		 * compatibility, do not reject such policies, just
-+		 * issue a warning and ignore the duplicate.
-+		 */
-+		WARN(fp->handle,
-+		     "Duplicate name-based type_transition %s %s:%s \"%s\":  %s, ignoring",
-+		     p->p_type_val_to_name[stype - 1],
-+		     p->p_type_val_to_name[ttype - 1],
-+		     p->p_class_val_to_name[tclass - 1],
-+		     name,
-+		     p->p_type_val_to_name[otype - 1]);
-+		/* continue, ignoring this one */
-+	}
-+	free(name);
-+	return 0;
-+err:
-+	free(name);
-+	return -1;
-+}
-+
-+static int filename_trans_check_datum(filename_trans_datum_t *datum)
-+{
-+	ebitmap_t stypes, otypes;
-+
-+	ebitmap_init(&stypes);
-+	ebitmap_init(&otypes);
-+
-+	while (datum) {
-+		if (ebitmap_get_bit(&otypes, datum->otype))
-+			return -1;
-+
-+		if (ebitmap_set_bit(&otypes, datum->otype, 1))
-+			return -1;
- 
--		name = calloc(len + 1, sizeof(*name));
--		if (!name)
-+		if (ebitmap_match_any(&stypes, &datum->stypes))
-+			return -1;
-+
-+		if (ebitmap_union(&stypes, &datum->stypes))
-+			return -1;
-+	}
-+	return 0;
-+}
-+
-+static int filename_trans_read_one_new(policydb_t *p, struct policy_file *fp)
-+{
-+	filename_trans_key_t *ft = NULL;
-+	filename_trans_datum_t **dst, *datum, *first = NULL;
-+	unsigned int i;
-+	uint32_t buf[3], len, ttype, tclass, ndatum;
-+	char *name = NULL;
-+	int rc;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t));
-+	if (rc < 0)
-+		return -1;
-+	len = le32_to_cpu(buf[0]);
-+	if (zero_or_saturated(len))
-+		return -1;
-+
-+	name = calloc(len + 1, sizeof(*name));
-+	if (!name)
-+		return -1;
-+
-+	rc = next_entry(name, fp, len);
-+	if (rc < 0)
-+		goto err;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t) * 3);
-+	if (rc < 0)
-+		goto err;
-+
-+	ttype = le32_to_cpu(buf[0]);
-+	tclass = le32_to_cpu(buf[1]);
-+	ndatum = le32_to_cpu(buf[2]);
-+	if (ndatum == 0)
-+		goto err;
-+
-+	dst = &first;
-+	for (i = 0; i < ndatum; i++) {
-+		datum = malloc(sizeof(*datum));
-+		if (!datum)
- 			goto err;
- 
--		rc = next_entry(name, fp, len);
-+		*dst = datum;
-+
-+		/* ebitmap_read() will at least init the bitmap */
-+		rc = ebitmap_read(&datum->stypes, fp);
- 		if (rc < 0)
- 			goto err;
- 
--		rc = next_entry(buf, fp, sizeof(uint32_t) * 4);
-+		rc = next_entry(buf, fp, sizeof(uint32_t));
- 		if (rc < 0)
- 			goto err;
- 
--		stype  = le32_to_cpu(buf[0]);
--		ttype  = le32_to_cpu(buf[1]);
--		tclass = le32_to_cpu(buf[2]);
--		otype  = le32_to_cpu(buf[3]);
-+		datum->otype = le32_to_cpu(buf[0]);
- 
--		rc = policydb_filetrans_insert(p, stype, ttype, tclass, name,
--					       &name, otype, NULL);
--		if (rc) {
--			if (rc != SEPOL_EEXIST)
--				goto err;
--			/*
--			 * Some old policies were wrongly generated with
--			 * duplicate filename transition rules.  For backward
--			 * compatibility, do not reject such policies, just
--			 * issue a warning and ignore the duplicate.
--			 */
--			WARN(fp->handle,
--			     "Duplicate name-based type_transition %s %s:%s \"%s\":  %s, ignoring",
--			     p->p_type_val_to_name[stype - 1],
--			     p->p_type_val_to_name[ttype - 1],
--			     p->p_class_val_to_name[tclass - 1],
--			     name,
--			     p->p_type_val_to_name[otype - 1]);
--			/* continue, ignoring this one */
--		}
--		free(name);
-+		dst = &datum->next;
- 	}
-+	*dst = NULL;
-+
-+	if (ndatum > 1 && filename_trans_check_datum(first))
-+		goto err;
-+
-+	ft = malloc(sizeof(*ft));
-+	if (!ft)
-+		goto err;
-+
-+	ft->ttype = ttype;
-+	ft->tclass = tclass;
-+	ft->name = name;
-+
-+	rc = hashtab_insert(p->filename_trans, (hashtab_key_t)ft,
-+			    (hashtab_datum_t)first);
-+	if (rc)
-+		goto err;
-+
-+	p->filename_trans_count++;
- 	return 0;
- err:
-+	free(ft);
- 	free(name);
-+	while (first) {
-+		datum = first;
-+		first = first->next;
-+
-+		ebitmap_destroy(&datum->stypes);
-+		free(datum);
-+	}
- 	return -1;
- }
- 
-+int filename_trans_read(policydb_t *p, struct policy_file *fp)
-+{
-+	unsigned int i;
-+	uint32_t buf[1], nel;
-+	int rc;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t));
-+	if (rc < 0)
-+		return -1;
-+	nel = le32_to_cpu(buf[0]);
-+
-+	if (p->policyvers < POLICYDB_VERSION_COMP_FTRANS) {
-+		for (i = 0; i < nel; i++) {
-+			rc = filename_trans_read_one_old(p, fp);
-+			if (rc < 0)
-+				return -1;
-+		}
-+	} else {
-+		for (i = 0; i < nel; i++) {
-+			rc = filename_trans_read_one_new(p, fp);
-+			if (rc < 0)
-+				return -1;
-+		}
-+	}
-+	return 0;
-+}
-+
- static int ocontext_read_xen(struct policydb_compat_info *info,
- 	policydb_t *p, struct policy_file *fp)
- {
-diff --git a/libsepol/src/write.c b/libsepol/src/write.c
-index d3aee8d5..9c74d9f5 100644
---- a/libsepol/src/write.c
-+++ b/libsepol/src/write.c
-@@ -569,7 +569,7 @@ static int role_allow_write(role_allow_t * r, struct policy_file *fp)
- 	return POLICYDB_SUCCESS;
- }
- 
--static int filename_write_helper(hashtab_key_t key, void *data, void *ptr)
-+static int filename_write_one_old(hashtab_key_t key, void *data, void *ptr)
- {
- 	uint32_t bit, buf[4];
- 	size_t items, len;
-@@ -605,6 +605,54 @@ static int filename_write_helper(hashtab_key_t key, void *data, void *ptr)
- 	return 0;
- }
- 
-+static int filename_write_one_new(hashtab_key_t key, void *data, void *ptr)
-+{
-+	uint32_t buf[3];
-+	size_t items, len, ndatum;
-+	filename_trans_key_t *ft = (filename_trans_key_t *)key;
-+	filename_trans_datum_t *datum;
-+	void *fp = ptr;
-+
-+	len = strlen(ft->name);
-+	buf[0] = cpu_to_le32(len);
-+	items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+	if (items != 1)
-+		return POLICYDB_ERROR;
-+
-+	items = put_entry(ft->name, sizeof(char), len, fp);
-+	if (items != len)
-+		return POLICYDB_ERROR;
-+
-+	ndatum = 0;
-+	datum = data;
-+	do {
-+		ndatum++;
-+		datum = datum->next;
-+	} while (datum);
-+
-+	buf[0] = cpu_to_le32(ft->ttype);
-+	buf[1] = cpu_to_le32(ft->tclass);
-+	buf[2] = cpu_to_le32(ndatum);
-+	items = put_entry(buf, sizeof(uint32_t), 3, fp);
-+	if (items != 3)
-+		return POLICYDB_ERROR;
-+
-+	datum = data;
-+	do {
-+		if (ebitmap_write(&datum->stypes, fp))
-+			return POLICYDB_ERROR;
-+
-+		buf[0] = cpu_to_le32(datum->otype);
-+		items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+		if (items != 1)
-+			return POLICYDB_ERROR;
-+
-+		datum = datum->next;
-+	} while (datum);
-+
-+	return 0;
-+}
-+
- static int filename_trans_write(struct policydb *p, void *fp)
- {
- 	size_t items;
-@@ -614,16 +662,22 @@ static int filename_trans_write(struct policydb *p, void *fp)
- 	if (p->policyvers < POLICYDB_VERSION_FILENAME_TRANS)
- 		return 0;
- 
--	buf[0] = cpu_to_le32(p->filename_trans_count);
--	items = put_entry(buf, sizeof(uint32_t), 1, fp);
--	if (items != 1)
--		return POLICYDB_ERROR;
-+	if (p->policyvers < POLICYDB_VERSION_COMP_FTRANS) {
-+		buf[0] = cpu_to_le32(p->filename_trans_count);
-+		items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+		if (items != 1)
-+			return POLICYDB_ERROR;
- 
--	rc = hashtab_map(p->filename_trans, filename_write_helper, fp);
--	if (rc)
--		return rc;
-+		rc = hashtab_map(p->filename_trans, filename_write_one_old, fp);
-+	} else {
-+		buf[0] = cpu_to_le32(p->filename_trans->nel);
-+		items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+		if (items != 1)
-+			return POLICYDB_ERROR;
- 
--	return 0;
-+		rc = hashtab_map(p->filename_trans, filename_write_one_new, fp);
-+	}
-+	return rc;
- }
- 
- static int role_set_write(role_set_t * x, struct policy_file *fp)
--- 
-2.25.1
 

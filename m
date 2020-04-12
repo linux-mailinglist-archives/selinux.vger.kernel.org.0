@@ -2,71 +2,116 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19E601A5D66
-	for <lists+selinux@lfdr.de>; Sun, 12 Apr 2020 10:10:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B0C21A5D6D
+	for <lists+selinux@lfdr.de>; Sun, 12 Apr 2020 10:15:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726614AbgDLIKO (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 12 Apr 2020 04:10:14 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:49100 "EHLO
-        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726658AbgDLIKN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 12 Apr 2020 04:10:13 -0400
-Received: from localhost.localdomain (85-168-38-217.rev.numericable.fr [85.168.38.217])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id E68A15600AC
-        for <selinux@vger.kernel.org>; Sun, 12 Apr 2020 10:10:12 +0200 (CEST)
-From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-To:     selinux@vger.kernel.org
-Subject: [PATCH 3/3] libselinux: make context_*_set() return -1 when an error occurs
-Date:   Sun, 12 Apr 2020 10:10:01 +0200
-Message-Id: <20200412081001.23246-3-nicolas.iooss@m4x.org>
-X-Mailer: git-send-email 2.26.0
-In-Reply-To: <20200412081001.23246-1-nicolas.iooss@m4x.org>
-References: <20200412081001.23246-1-nicolas.iooss@m4x.org>
+        id S1726837AbgDLIPT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 12 Apr 2020 04:15:19 -0400
+Received: from mail-il1-f194.google.com ([209.85.166.194]:41593 "EHLO
+        mail-il1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725832AbgDLIPT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 12 Apr 2020 04:15:19 -0400
+Received: by mail-il1-f194.google.com with SMTP id f82so2564546ilh.8;
+        Sun, 12 Apr 2020 01:15:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=c/Lb56tGiXdOhLm4M0kNSqw6FPBoSkeoJ2b2tzoaiUg=;
+        b=iRvO0GRYfEo4FFqysv7xd+IiXgg0sCKSfGiHmvfUxmpMGq6KSHM0FgxKyAerPrSXUy
+         ygV2w/l83K4YkNx3WLdTN5oIQSbVKFKsHYjTJY9hCD26mBcf+XPK5/seWl+kUUqcJd/j
+         QNgLhyQHicAa8q182Ay4mCTd7ZSSZnliZHzDse9zKEXKMZThNX93DXxHWMX/xth0KG+P
+         56zSOOcfPOuykxyB3GhIV6/4JGfUgk7FhvHzES9vbVEQCS8p/Or9cogYC7jMTP9Yb3Hf
+         Rw2h1jfTgxVbdwm/lQTETv9ln5tS6086/Vtk9Xmfz8JbkuIecdGuPQauxqD2mMIMQJ6S
+         sSxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=c/Lb56tGiXdOhLm4M0kNSqw6FPBoSkeoJ2b2tzoaiUg=;
+        b=TkiWVOOkzDl+QnJtUDX7cZmJIoknklZH5QjxOWnbIXBGqcPnCweKEFL0HNUyCrQSOG
+         Hz7TgDWZCmbLYMu0Lw1bnlrLORDU7PwCKiqdY0lHQRra7YLK0UXbE+4u3a3fBUaIeZw2
+         +g22leqSBoxqAh7g3UtntcUOxUXmxi25i2WDL2V/273Fp0eTHOBvJY0KV/OrN6dSgcvX
+         oPd5TEk50NcMXbUM45D5aA6ISIrmnMo5P169Xm7W8OLA0hzw7RiiHy+kKQm0T8Ec5b3X
+         D6zUNuPRqI7OJK81MHXk+hRVh+63mDehvd44dcQojWhfLVr4+KULxBP1HcyTgnE/FC/H
+         wPSg==
+X-Gm-Message-State: AGi0PuYUGhMbl1soWbnDuc42eu6nqnvbCB9LqiVrpVXkH5trjmERHoDx
+        dbo/8H8VkiZlxbbHd/UGyoFOA9us4th2NhiFRy2vycru6nk=
+X-Google-Smtp-Source: APiQypLrgetzg3xkZ+c4aa3/NRG/TMq0oNUgTRtFJ+4YwTFwuFx2KOSYw7Q3K9sS6y5hElbohZU31ooLD7r7jKIxFiI=
+X-Received: by 2002:a92:dc43:: with SMTP id x3mr4747407ilq.102.1586679317629;
+ Sun, 12 Apr 2020 01:15:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sun Apr 12 10:10:13 2020 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000001, queueID=2E4DC5600AF
-X-Org-Mail: nicolas.iooss.2010@polytechnique.org
+References: <f92bef0f-eb40-0e07-540c-321134e4b070@linux.microsoft.com> <CAB9W1A1=JyOV3-+6jn3xX-M+GKWBB2cCNh-VWB_kzf+YiR_d2Q@mail.gmail.com>
+In-Reply-To: <CAB9W1A1=JyOV3-+6jn3xX-M+GKWBB2cCNh-VWB_kzf+YiR_d2Q@mail.gmail.com>
+From:   "Lev R. Oshvang ." <levonshe@gmail.com>
+Date:   Sun, 12 Apr 2020 11:15:06 +0300
+Message-ID: <CAP22eLGJbSvUU=W0Jp=gvOFv-nxLC8YTnta3OU2PKbh746MCkQ@mail.gmail.com>
+Subject: Re: [RFC] IMA: New IMA measurements for dm-crypt and selinux
+To:     Stephen Smalley <stephen.smalley@gmail.com>
+Cc:     Tushar Sugandhi <tusharsu@linux.microsoft.com>,
+        linux-integrity@vger.kernel.org, Mimi Zohar <zohar@linux.ibm.com>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        SELinux <selinux@vger.kernel.org>, dm-devel@redhat.com,
+        James Morris <jmorris@namei.org>, chpebeni@linux.microsoft.com,
+        nramas@linux.microsoft.com, balajib@microsoft.com,
+        sashal@kernel.org, suredd@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-In libselinux, most functions set errno and return -1 when an error
-occurs. But some functions return 1 instead, such as context_type_set(),
-context_role_set(), etc. This increases the difficulty of writing Python
-bindings of these functions without much benefit.
+On Sat, Apr 11, 2020 at 10:07 PM Stephen Smalley
+<stephen.smalley@gmail.com> wrote:
+>
+> On Wed, Apr 8, 2020 at 6:28 AM Tushar Sugandhi
+> <tusharsu@linux.microsoft.com> wrote:
+> > Measuring SELinux status and various SELinux policies can help ensure
+> > mandatory access control of the system is not compromised.
+> <snip>
+> > B. Measuring selinux constructs:
+> >      We propose to add an IMA hook in enforcing_set() present under
+> >      security/selinux/include/security.h.
+> >      enforcing_set() sets the selinux state to enforcing/permissive etc.
+> >      and is called from key places like selinux_init(),
+> >      sel_write_enforce() etc.
+> >      The hook will measure various attributes related to selinux status.
+> >      Majority of the attributes are present in the struct selinux_state
+> >      present in security/selinux/include/security.h
+> >      e.g.
+> >      $sestatus
+> >             SELinux status:              enabled
+> >             SELinuxfs mount:             /sys/fs/selinux
+> >             SELinux root directory:      /etc/selinux
+> >             Loaded policy name:          default
+> >             Current mode:                permissive
+> >             Mode from config file:       permissive
+> >             Policy MLS status:           enabled
+> >             Policy deny_unknown status:  allowed
+> >             Memory protection checking:  requested (insecure)
+> >             Max kernel policy version:   32
+> >
+> >      The above attributes will be serialized into a set of key=value
+> >      pairs when passed to IMA for measurement.
+> >
+> >      Proposed Function Signature of the IMA hook:
+> >      void ima_selinux_status(void *selinux_status, int len);
+>
+> This won't detect changes to any of these state variables via a kernel
+> write vulnerability,
+> so it would be good to provide a way to trigger measurement of the
+> current values on
+> demand.
+> You'll also likely want to measure parts of the child structures of
+> selinux_state, e.g. selinux_ss,
+> especially selinux_map and policydb.  You can simplify measurement of
+> the policydb by
+> serializing it first via policydb_write() and hashing the result. I
+> suppose one question is whether you can do all of this
+> already from userspace by just having userspace read
+> /sys/fs/selinux/enforce, /sys/fs/selinux/policy, etc.
 
-Return -1 instead (errno was already set).
-
-Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
----
- libselinux/src/context.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/libselinux/src/context.c b/libselinux/src/context.c
-index 090264a49eb1..ce4258806c53 100644
---- a/libselinux/src/context.c
-+++ b/libselinux/src/context.c
-@@ -151,14 +151,14 @@ static int set_comp(context_private_t * n, int idx, const char *str)
- 	if (str) {
- 		t = (char *)malloc(strlen(str) + 1);
- 		if (!t) {
--			return 1;
-+			return -1;
- 		}
- 		for (p = str; *p; p++) {
- 			if (*p == '\t' || *p == '\n' || *p == '\r' ||
- 			    ((*p == ':' || *p == ' ') && idx != COMP_RANGE)) {
- 				free(t);
- 				errno = EINVAL;
--				return 1;
-+				return -1;
- 			}
- 		}
- 		strcpy(t, str);
--- 
-2.26.0
-
+It sees to me that  LKRG (kernel run time guard)  takes the role of
+measuring kernel structures.  Perhaps you need to consult with LKRG
+guys.
+Lev.

@@ -2,91 +2,108 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40E341ACB33
-	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DB8D1ACE77
+	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 19:12:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410348AbgDPPoi (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Apr 2020 11:44:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2395504AbgDPPoh (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:37 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BDBCC061A10
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:37 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id d17so1830578pgo.0
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=zinydhZTS7ZFQXHDqJakUjvKtN1SGrUoEJDQesMA15w=;
-        b=QD0DRzHIBcHE7omT5f6kNF3zGfQIOuqpd7Z9gXnK/zTyjudBFukP3EfgatWhWuNqFx
-         L9H3Qy4eCj0jHW3RdGvLeCkukZfwLzJ0aZZaDIrAufhYKEIvd3cbu3I8Q/6UShkn5cJK
-         hkjEz3ObQ3yxuhrDJCvkN4o9vnD4EJjaOQPOCAskjJ8zcW5VlhPK9aVMwCxok2wVpTLK
-         LjV0XQbny2B8BKzD3cGLfmQid3m3ElbEY4GhT24Gdlbrp1pGXAVmXL8HIOPoDX0FdC10
-         M52nLvboqJ1sOHXsQAH/CZw10x25I0MEBP6xmNrdvG6EuE4F6YunLn9jYcPlfqnpHj/w
-         QCoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=zinydhZTS7ZFQXHDqJakUjvKtN1SGrUoEJDQesMA15w=;
-        b=Bp51d0HLS3YyAu7W2IHcsVWMVYCyhZRXcIF4wLmFp/OocyAngUEtDvKNnJuqjDTtAo
-         YzLJInESP0MRv161OiID+MwltLOHf7HJ/t9uw8aKhJfRtNshynTUs5QfM4h+hlt7Eyof
-         zpxEAbyzK9w3dwwBqqRR1zcS1fwtzmJa8TYmWaoCwzpDrXHMOAR4bpbD6SquW+1PkdWA
-         cuw6UqPn3uDSd9/m9g/h4IcTVPk7J+ojF/tkX8TH6aVjfd4L9QBHIRvKbIkg9YwYagVn
-         glfS7gFOWEnPINc3Hck6OlJEgzIy70qz8IDyTRDgzJFteEPetBEgAwdLAdF48nYdit8i
-         e3ww==
-X-Gm-Message-State: AGi0Pubvxm22UdyKlFcdLwg2YIvIx57DvKLCGK4rhNdEqrLwf9yVMZJQ
-        y8jP4sXHIlLhZtrGVeaBfcg=
-X-Google-Smtp-Source: APiQypIZUPFvWIgOCHSKSv6883R+fSypE+R3qki0zAO0R3uHduSsq2I9PWusEk1nwt/C+0B1i9IrGA==
-X-Received: by 2002:a62:164d:: with SMTP id 74mr17425796pfw.52.1587051876947;
-        Thu, 16 Apr 2020 08:44:36 -0700 (PDT)
-Received: from localhost.localdomain ([192.55.55.45])
-        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 08:44:36 -0700 (PDT)
-From:   bill.c.roberts@gmail.com
-X-Google-Original-From: william.c.roberts@intel.com
-To:     bill.c.roberts@gmail.com
-Cc:     plautrba@redhat.com, sds@tycho.nsa.gov, selinux@vger.kernel.org,
-        William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH v2 18/18] utils: matchpathcon add deprecated warning
-Date:   Thu, 16 Apr 2020 10:43:52 -0500
-Message-Id: <20200416154352.21619-19-william.c.roberts@intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200416154352.21619-1-william.c.roberts@intel.com>
-References: <20200225200219.6163-1-william.c.roberts@intel.com>
- <20200416154352.21619-1-william.c.roberts@intel.com>
+        id S1728895AbgDPRMS convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Thu, 16 Apr 2020 13:12:18 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:57547 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728731AbgDPRMR (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 13:12:17 -0400
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 5780956122E
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 19:12:14 +0200 (CEST)
+Received: by mail-oi1-f174.google.com with SMTP id r66so3037132oie.5
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 10:12:14 -0700 (PDT)
+X-Gm-Message-State: AGi0PuZ6NSnorzMAig4VyI6pHY6rzIJx4ulQpwwWvxTLDI3OLbqOtG6s
+        VObI55s7Hrvnm4EhNXwqQScS7Iuh/A9o9aKO5Bk=
+X-Google-Smtp-Source: APiQypIxWjVIDZCK8opOoHW1IW6kF/ntUQCcUqH3C3XOhjkhpAjt3KSI6DnqbL7UgSdVwMsmokOC/NBmRbzc05DIV3Y=
+X-Received: by 2002:aca:57d6:: with SMTP id l205mr3464662oib.20.1587057133275;
+ Thu, 16 Apr 2020 10:12:13 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200407115849.41225-1-cgzones@googlemail.com>
+ <20200414100606.14601-1-cgzones@googlemail.com> <CAJfZ7==zGCfimy_JZqNERoZATZvk5SxdcLbw3u6psta4F5q1BQ@mail.gmail.com>
+In-Reply-To: <CAJfZ7==zGCfimy_JZqNERoZATZvk5SxdcLbw3u6psta4F5q1BQ@mail.gmail.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Thu, 16 Apr 2020 19:12:01 +0200
+X-Gmail-Original-Message-ID: <CAJfZ7==6koBgJ0muvuP_RFPhs=vTPUVcCN+tp20Y8QfYv3U-MA@mail.gmail.com>
+Message-ID: <CAJfZ7==6koBgJ0muvuP_RFPhs=vTPUVcCN+tp20Y8QfYv3U-MA@mail.gmail.com>
+Subject: Re: [PATCH v2] tree-wide: use python module importlib instead of the
+ deprecated imp
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Thu Apr 16 19:12:14 2020 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000015, queueID=AAE43561239
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: William Roberts <william.c.roberts@intel.com>
+On Tue, Apr 14, 2020 at 10:43 PM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+>
+> On Tue, Apr 14, 2020 at 12:06 PM Christian Göttsche
+> <cgzones@googlemail.com> wrote:
+> >
+> > Replace
+> >
+> > python3 -c 'import imp;print([s for s,m,t in imp.get_suffixes() if t == imp.C_EXTENSION][0])'
+> > <string>:1: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+> > .cpython-38-x86_64-linux-gnu.so
+> >
+> > with
+> >
+> > python3 -c 'import importlib.machinery;print(importlib.machinery.EXTENSION_SUFFIXES[0])'
+> > .cpython-38-x86_64-linux-gnu.so
+> >
+> > Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+> > ---
+> > v2: use 'import importlib.machinery;' for python 3.5 compatibility
+> >     thanks to Nicolas Iooss
+> >
+> >  libselinux/src/Makefile  | 2 +-
+> >  libsemanage/src/Makefile | 2 +-
+> >  2 files changed, 2 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/libselinux/src/Makefile b/libselinux/src/Makefile
+> > index 2d1c654e..9992221f 100644
+> > --- a/libselinux/src/Makefile
+> > +++ b/libselinux/src/Makefile
+> > @@ -15,7 +15,7 @@ INCLUDEDIR ?= $(PREFIX)/include
+> >  PYINC ?= $(shell $(PKG_CONFIG) --cflags $(PYPREFIX))
+> >  PYLIBS ?= $(shell $(PKG_CONFIG) --libs $(PYPREFIX))
+> >  PYTHONLIBDIR ?= $(shell $(PYTHON) -c "from distutils.sysconfig import *; print(get_python_lib(plat_specific=1, prefix='$(PREFIX)'))")
+> > -PYCEXT ?= $(shell $(PYTHON) -c 'import imp;print([s for s,m,t in imp.get_suffixes() if t == imp.C_EXTENSION][0])')
+> > +PYCEXT ?= $(shell $(PYTHON) -c 'import importlib.machinery;print(importlib.machinery.EXTENSION_SUFFIXES[0])')
+> >  RUBYINC ?= $(shell $(RUBY) -e 'puts "-I" + RbConfig::CONFIG["rubyarchhdrdir"] + " -I" + RbConfig::CONFIG["rubyhdrdir"]')
+> >  RUBYLIBS ?= $(shell $(RUBY) -e 'puts "-L" + RbConfig::CONFIG["libdir"] + " -L" + RbConfig::CONFIG["archlibdir"] + " " + RbConfig::CONFIG["LIBRUBYARG_SHARED"]')
+> >  RUBYINSTALL ?= $(shell $(RUBY) -e 'puts RbConfig::CONFIG["vendorarchdir"]')
+> > diff --git a/libsemanage/src/Makefile b/libsemanage/src/Makefile
+> > index 606ce1c6..a0eb3747 100644
+> > --- a/libsemanage/src/Makefile
+> > +++ b/libsemanage/src/Makefile
+> > @@ -14,7 +14,7 @@ INCLUDEDIR ?= $(PREFIX)/include
+> >  PYINC ?= $(shell $(PKG_CONFIG) --cflags $(PYPREFIX))
+> >  PYLIBS ?= $(shell $(PKG_CONFIG) --libs $(PYPREFIX))
+> >  PYTHONLIBDIR ?= $(shell $(PYTHON) -c "from distutils.sysconfig import *; print(get_python_lib(plat_specific=1, prefix='$(PREFIX)'))")
+> > -PYCEXT ?= $(shell $(PYTHON) -c 'import imp;print([s for s,m,t in imp.get_suffixes() if t == imp.C_EXTENSION][0])')
+> > +PYCEXT ?= $(shell $(PYTHON) -c 'import importlib.machinery;print(importlib.machinery.EXTENSION_SUFFIXES[0])')
+> >  RUBYINC ?= $(shell $(RUBY) -e 'puts "-I" + RbConfig::CONFIG["rubyarchhdrdir"] + " -I" + RbConfig::CONFIG["rubyhdrdir"]')
+> >  RUBYLIBS ?= $(shell $(RUBY) -e 'puts "-L" + RbConfig::CONFIG["libdir"] + " -L" + RbConfig::CONFIG["archlibdir"] + " " + RbConfig::CONFIG["LIBRUBYARG_SHARED"]')
+> >  RUBYINSTALL ?= $(shell $(RUBY) -e 'puts RbConfig::CONFIG["vendorarchdir"]')
+> > --
+> > 2.26.0
+> >
+>
+> Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+>
+> I will merge this tomorrow if nobody complains.
 
-Add a deprecated warning to matchpathcon encouraging users to switch to
-selabel_lookup.
-
-Signed-off-by: William Roberts <william.c.roberts@intel.com>
----
- libselinux/utils/matchpathcon.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/libselinux/utils/matchpathcon.c b/libselinux/utils/matchpathcon.c
-index 3d94af365071..2615a7fd3d25 100644
---- a/libselinux/utils/matchpathcon.c
-+++ b/libselinux/utils/matchpathcon.c
-@@ -76,6 +76,9 @@ int main(int argc, char **argv)
- 	int error = 0;
- 	int quiet = 0;
- 
-+	fprintf(stderr,
-+		"Deprecated, use selabel_lookup\n");
-+
- 	if (argc < 2)
- 		usage(argv[0]);
- 
--- 
-2.17.1
+Merged.
+Nicolas
 

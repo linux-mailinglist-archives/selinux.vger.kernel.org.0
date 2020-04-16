@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC2B91ACB2B
-	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 906DD1ACB2D
+	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2410294AbgDPPo0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Apr 2020 11:44:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48762 "EHLO
+        id S2395482AbgDPPob (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Apr 2020 11:44:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2406241AbgDPPoY (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:24 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60CC1C061A10
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:24 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id d1so1850146pfh.1
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:24 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2409096AbgDPPo0 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:26 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0413CC061A41
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:26 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id a22so1522091pjk.5
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=0wJPvLBd1mr4QlWMA46+l3SN0G/g2cbCdq9C8VJcbe4=;
-        b=WQwu1jqOGhhaSvcMUts1O1a26/8k75RevAV9bYJLum9bNy82vrN8BttCqNKXVD6z1a
-         MMNLjf2O++8Vx36mKX6GVFM+74bzWbfUGOMftEqXSn1sVxUPtHnH1mZFs7pBAQ8c4QW4
-         Wj8PWd7LfSOdejHu61LnrDZSwjZ3T+Mq+WCE23ICcUAHucl0Ci0BHXbQbg0GWsLUMjQL
-         pAhH1NBN4rCAy/1fB9U6IGlwLLdhXHWaCtrresClsCrwCZCNvqjqlgf7LpfSDHxYUJfw
-         XcXAsDi7kpHYsOThB5GHcxLj8NL9dz8pmZXLqDuqggxpGRev7tPiggqxmaRD4JoFozI1
-         oRzQ==
+        bh=Pkf6RDUcM+U9vRmkqya6tgtwe70FQLzaa9VRXRP+Hrs=;
+        b=UQuGgJ+YjXIdwtdKSnfEQshp5BdM7TjNFr5WLe1lYeYzLaXYGrnGp0WV8XrEpIalgi
+         sCpQblFp8njZFRWz69eDdFxYlKw5ZCX99jhvrlJ4IPeINHXoXHRV7eaR6OEZ8V9OnCF3
+         wLDW5BaK5mAd46ZDVPGIpX4rAdi/CIs6eI2i/YuJYjvhIYTzfEvYVOfC5hpaEfnANu6r
+         yp7GSxwrH/8MXEfr5ffemIaRvtzaPDFhyuxqLtA2X+3/4meo6nZoQUxkDv4mk0u/mt0U
+         ft+IEmhcyDRSGTLNMGZs/nyRHjLuDcfmijS8+Wa3pkrue1ukTaDNPR/+x6aUxoievM/C
+         XsOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=0wJPvLBd1mr4QlWMA46+l3SN0G/g2cbCdq9C8VJcbe4=;
-        b=HXT1eDbLtCGZZTB8zO31aqLY8Lmg8E7aw/0L8XIgnb44ON9tGplefKBqfTR/LBZlmm
-         oq3e4KIvjSel40smKv06toYn8v2NjyQCn6EHCzckmIs96IIwEAm69NtI4AVC7luIteSv
-         g8+N614jrv/nkiOpjYhjQZAEFugMKsARyI/KGn9Z8pmxqxEx3qyO5uXLEFt5Q6qSc/4g
-         FFc6GaTFtcmV/XRP+Xtx2G708+09mgqy3SqZMGu2l1LozHQUi3BTGTVgsawtWl8fX524
-         mMqf92Kbq7LzbsEgrGYUe0ZS6Zu9p8vb1HClPkdOVmhktYjJ4FDWdVMyRAwgx/elOSaI
-         BklA==
-X-Gm-Message-State: AGi0PubfdV77BIWNtPenQ0d5UU3v4mkXAKAfWaCrqjCKNevidFErIauh
-        I1eyb+19khsdXP2/jc/6qaM=
-X-Google-Smtp-Source: APiQypIDEY4ZeyJsOUcGvlTfxWEQKOutKFYstskjjhmhorbIeudzQ18VIYNuXy/8/C25WWrKArKshg==
-X-Received: by 2002:a62:fc02:: with SMTP id e2mr6746225pfh.195.1587051863885;
-        Thu, 16 Apr 2020 08:44:23 -0700 (PDT)
+        bh=Pkf6RDUcM+U9vRmkqya6tgtwe70FQLzaa9VRXRP+Hrs=;
+        b=XRhaXR1SY4iNDRqUTbKBikmdUtbZj/0YC7wPyv6x+7kusosSV0Fh8LoXmADXHK1LH+
+         rXuqjdjNWelRkcIK1VRCmIfJM9FFPJGy2ZHsBYPTszYnVQAe7INHkSMAMl04nPj0f64P
+         K0LBw1gOPmvr/tGeNSSAW61gAlxl2Qt8VyUsZn52bZNxPg0rY6gsP7RnOx+IdGLD9PgB
+         vpL3MCM3knK9uOv2FKH3Axo6cOggD8x9/XxKooz3YBEdgwCLUQYS4DkzwlK1Qor65akb
+         2W2YoBuT6zpJ15Q0ROYaKA7jVH5K53J8+MKW7P8vTi2Qa1yQARsZwBrIMRtlnqFbzljE
+         p94Q==
+X-Gm-Message-State: AGi0PuYAKyH4SyeNwH5bxXKhKSO7ce1vWeG7r4nkRaXoT89ZOiz1VmE7
+        Q2emsAu5Z3y5NhUbfK5xiS0=
+X-Google-Smtp-Source: APiQypLkb42Dg6zL821BfypdqqBw7fuvl4X7iTPt9CnslYN9R4ETs/ayWmIFz+U4QQO+kSAmnRUhXQ==
+X-Received: by 2002:a17:90b:4d0b:: with SMTP id mw11mr5957557pjb.45.1587051865467;
+        Thu, 16 Apr 2020 08:44:25 -0700 (PDT)
 Received: from localhost.localdomain ([192.55.55.45])
-        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.22
+        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 08:44:23 -0700 (PDT)
+        Thu, 16 Apr 2020 08:44:25 -0700 (PDT)
 From:   bill.c.roberts@gmail.com
 X-Google-Original-From: william.c.roberts@intel.com
 To:     bill.c.roberts@gmail.com
 Cc:     plautrba@redhat.com, sds@tycho.nsa.gov, selinux@vger.kernel.org,
         William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH v2 10/18] matchpathcon_fini: annotate deprecated
-Date:   Thu, 16 Apr 2020 10:43:44 -0500
-Message-Id: <20200416154352.21619-11-william.c.roberts@intel.com>
+Subject: [PATCH v2 11/18] matchpathcon: annotate deprecated
+Date:   Thu, 16 Apr 2020 10:43:45 -0500
+Message-Id: <20200416154352.21619-12-william.c.roberts@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200416154352.21619-1-william.c.roberts@intel.com>
 References: <20200225200219.6163-1-william.c.roberts@intel.com>
@@ -71,19 +71,19 @@ Signed-off-by: William Roberts <william.c.roberts@intel.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
-index 9e209d2ab75e..96a071a8dea4 100644
+index 96a071a8dea4..5a66fa6f9d78 100644
 --- a/libselinux/include/selinux/selinux.h
 +++ b/libselinux/include/selinux/selinux.h
-@@ -469,7 +469,8 @@ extern int matchpathcon_init(const char *path)
- extern int matchpathcon_init_prefix(const char *path, const char *prefix);
+@@ -484,7 +484,8 @@ extern int realpath_not_final(const char *name, char *resolved_path);
+    If matchpathcon_init has not already been called, then this function
+    will call it upon its first invocation with a NULL path. */
+ extern int matchpathcon(const char *path,
+-			mode_t mode, char ** con);
++			mode_t mode, char ** con)
++	__attribute__ ((deprecated("Use selabel_lookup instead")));
  
- /* Free the memory allocated by matchpathcon_init. */
--extern void matchpathcon_fini(void);
-+extern void matchpathcon_fini(void)
-+   __attribute__ ((deprecated("Use selabel_close")));
- 
- /* Resolve all of the symlinks and relative portions of a pathname, but NOT
-  * the final component (same a realpath() unless the final component is a
+ /* Same as above, but return a specification index for 
+    later use in a matchpathcon_filespec_add() call - see below. */
 -- 
 2.17.1
 

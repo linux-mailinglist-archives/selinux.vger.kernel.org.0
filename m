@@ -2,157 +2,114 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D2491AC8DB
-	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:15:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F07A51ACB25
+	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408796AbgDPPPr (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Apr 2020 11:15:47 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:58238 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2408874AbgDPPPo (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:15:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1587050142;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=+wnmDmQpJmJIUpO0XeelrjPDn9N3wQxkngKISiFx+R4=;
-        b=L4Yf9OHibGAdocXCS6Z1s/Bjp37ph6sy87oz/ZHEAdMbig281Dr7taqmY3wJaZBvMPUoJr
-        f228S3ZIooIbdHVcpKQ7/aEGG9ZAnSrTPgPdt8sEmTHbV04v4Aya0yq07ZecOLAh/cSZh3
-        Pnw4sS9mLAG9EvV3dxAjob5aX2L/WqY=
-Received: from mail-oo1-f71.google.com (mail-yw1-f71.google.com
- [209.85.161.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-160-vZ-dt7_jM6eLAoyJ77DyGA-1; Thu, 16 Apr 2020 11:15:41 -0400
-X-MC-Unique: vZ-dt7_jM6eLAoyJ77DyGA-1
-Received: by mail-oo1-f71.google.com with SMTP id i6so94600oof.21
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:15:41 -0700 (PDT)
+        id S2404563AbgDPPoS (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Apr 2020 11:44:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48700 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2404061AbgDPPoH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:07 -0400
+Received: from mail-pg1-x541.google.com (mail-pg1-x541.google.com [IPv6:2607:f8b0:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69229C061A0C
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:07 -0700 (PDT)
+Received: by mail-pg1-x541.google.com with SMTP id p8so1814294pgi.5
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=N6eo6TXULw2Cdaa2wRWiDXhWuZ85pcTm2cgwF+y4L/I=;
+        b=Evj1NLtcZ97tytSLjaYY0vF7N8Pact6sLAQP0ChHPFV5lxADKkRtbmO43+yQgvpMfQ
+         Xkx6NXyc8lxX10kkAiggov035ouMvk48Jds1NdAPSyHlwvBUa4CjaNNhzfX8Z03j01TS
+         XGPOh+n/sh2QTqqF79UtgH2m10uJ9XZ1WXhw7l7IEoEH+LHktTll2RMfAvUQ3J1jCUWi
+         dQQVpLmzq9jtSv1+zzCbmemOOtga+tduaC+MBskm0SUKR5d9ufeAqWZqFWQNKIPuLn9n
+         6sgZRe8rl3dU/vUwlQe9/eRx0rwcbTXg3AmoP3DN9wpg/Q2h6uzpigXtj+OUC2zt+Epe
+         2phQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+wnmDmQpJmJIUpO0XeelrjPDn9N3wQxkngKISiFx+R4=;
-        b=G3hpJlRSf//uYdDbRbzXreg5smRy5v1dY/fay66RdxrZX/a7xy9T80naeznahdrMQy
-         Hzyjr9GGrQRvk29AQOFAj895Nhi4jI0jV/aUIzDDuEtK2/LSmMRGqD+6sCHDpBFPbqFC
-         Bn3lWnHUvQyM2m8wXD84l/9ZB7HyX0gBVctxnaX47rQcpcVmJ6sAfBZV/i1S9ELH9CRo
-         o3/VC8QOGz/FgQO3aXyO22xQo+1F09rQ4QxaXKtG6G4BwgqsaRzpogDUHNfOEdt8VH5q
-         LFnIgKlVN1wkGltxtiLN/uQRTvd03yfr1PRlNxzePS7qVyUDIKhC0pwVC3TXOsKtR3QE
-         iZNg==
-X-Gm-Message-State: AGi0Pub2v2bkgiGmKvupQK+B8SFQAth82nxPThb6TuP8VFUHTAajklnh
-        sDVDoa/5VPB2F9SlPfPACMRgI8iUaW9KadFJik6VbNWUBS1J9ScjUt24ghdX2B/eON7mBjzcUL6
-        31DNAuIH09pbalxy9sQidaSLiT8BXRsUlRQ==
-X-Received: by 2002:a9d:2d89:: with SMTP id g9mr13309175otb.367.1587050140075;
-        Thu, 16 Apr 2020 08:15:40 -0700 (PDT)
-X-Google-Smtp-Source: APiQypJvSznS+Tm0VWhXbLGx1yKfZk544fbC9Wk8u8iWy3bhoxbSc/Tpb9iCW+FJ5tuNn1sRGOYGa/SL7WzFVcAAUVw=
-X-Received: by 2002:a9d:2d89:: with SMTP id g9mr13309146otb.367.1587050139696;
- Thu, 16 Apr 2020 08:15:39 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=N6eo6TXULw2Cdaa2wRWiDXhWuZ85pcTm2cgwF+y4L/I=;
+        b=aUrqB8HOVvW+GW5MRF0foFtaBnXLCncI4iFs60k4inpdJgvPkhLzx8hqsdLp1cTe2k
+         sqYnnprbGhhF2F0t2BAdbstY9+BNl4GL7z8aNeY8apedrBanz99wsjlGAN/3QDj51Dwe
+         So8Ce5kALgsSrGn/CLc8ex6FK6bR2hJTrpzQF/TOYx5bK5qWQTB/4obycFgdD1/vnn2q
+         q0HuShncMPa62Vk1K5Y3/J2GzW9Dg5YjFnbtoYIm0hOu+dNZg3ZuyG3eLeNNRVaklEsS
+         YKRadBokDVoIPJHbgjZIjf77UIGVbMIg0oP68gy267Hhu6dBKqr1PH2kMZKfAiudsC6b
+         chhA==
+X-Gm-Message-State: AGi0PuYuAeGHChQZAUFd7W/PeEmzmVTgMVRK75Z9ubZCVAuQDz7ZkZyr
+        LmfeA46+JOwTcoFlJ995L+GuT/duoSI=
+X-Google-Smtp-Source: APiQypKtx0ZCgXqCahuX1oen8NvePE5A1Uw1M78xZq15hM3M8D/ala1Stv3kuyZdYEhgD46ww0iIzg==
+X-Received: by 2002:a65:6403:: with SMTP id a3mr33454272pgv.222.1587051846823;
+        Thu, 16 Apr 2020 08:44:06 -0700 (PDT)
+Received: from localhost.localdomain ([192.55.55.45])
+        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Apr 2020 08:44:06 -0700 (PDT)
+From:   bill.c.roberts@gmail.com
+X-Google-Original-From: william.c.roberts@intel.com
+To:     bill.c.roberts@gmail.com
+Cc:     plautrba@redhat.com, sds@tycho.nsa.gov, selinux@vger.kernel.org
+Subject: Annotate Deprecated Functions in libselinux
+Date:   Thu, 16 Apr 2020 10:43:34 -0500
+Message-Id: <20200416154352.21619-1-william.c.roberts@intel.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200225200219.6163-1-william.c.roberts@intel.com>
+References: <20200225200219.6163-1-william.c.roberts@intel.com>
 MIME-Version: 1.0
-References: <20200416124110.541408-1-omosnace@redhat.com> <20200416124110.541408-2-omosnace@redhat.com>
- <CABXk95BhDRd2nDHR4e7Nj3xtF+1RJ-K7jE4N12ciLjZBLywSbQ@mail.gmail.com>
-In-Reply-To: <CABXk95BhDRd2nDHR4e7Nj3xtF+1RJ-K7jE4N12ciLjZBLywSbQ@mail.gmail.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Thu, 16 Apr 2020 17:15:28 +0200
-Message-ID: <CAFqZXNuHNNXXZy+E2WbB7dWGDc0GmL7tHFMT7cfhfKymoEyi9Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] selinux: hash context structure directly
-To:     Jeffrey Vander Stoep <jeffv@google.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <sds@tycho.nsa.gov>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Apr 16, 2020 at 4:22 PM Jeffrey Vander Stoep <jeffv@google.com> wrote:
-> Thanks for fixing this!
->
-> On Thu, Apr 16, 2020 at 2:41 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> >
-> > Always hashing the string representation is inefficient. Just hash the
-> > contents of the structure directly (using jhash). If the context is
-> > invalid (str & len are set), then hash the string as before, otherwise
-> > hash the structured data. Any context that is valid under the given
-> > policy should always be structured, and also any context that is invalid
-> > should be never structured, so the hashes should always match for the
-> > same context. The fact that context_cmp() also follows this logic
-> > further reinforces this assumption.
-> >
-> > Since the context hashing function is now faster (about 10 times), this
-> > patch decreases the overhead of security_transition_sid(), which is
-> > called from many hooks.
-> >
-> > The jhash function seemed as a good choice, since it is used as the
-> > default hashing algorithm in rhashtable.
-> >
-> > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> > ---
-> >  security/selinux/Makefile      |  2 +-
-> >  security/selinux/ss/context.c  | 24 +++++++++++++++++++++++
-> >  security/selinux/ss/context.h  |  6 ++++--
-> >  security/selinux/ss/ebitmap.c  | 14 ++++++++++++++
-> >  security/selinux/ss/ebitmap.h  |  1 +
-> >  security/selinux/ss/mls.h      | 11 +++++++++++
-> >  security/selinux/ss/policydb.c |  7 ++-----
-> >  security/selinux/ss/services.c | 35 ++++------------------------------
-> >  security/selinux/ss/services.h |  3 ---
-> >  9 files changed, 61 insertions(+), 42 deletions(-)
-> >  create mode 100644 security/selinux/ss/context.c
-> >
-> > diff --git a/security/selinux/Makefile b/security/selinux/Makefile
-> > index 0c77ede1cc11..4d8e0e8adf0b 100644
-> > --- a/security/selinux/Makefile
-> > +++ b/security/selinux/Makefile
-> > @@ -8,7 +8,7 @@ obj-$(CONFIG_SECURITY_SELINUX) := selinux.o
-> >  selinux-y := avc.o hooks.o selinuxfs.o netlink.o nlmsgtab.o netif.o \
-> >              netnode.o netport.o status.o \
-> >              ss/ebitmap.o ss/hashtab.o ss/symtab.o ss/sidtab.o ss/avtab.o \
-> > -            ss/policydb.o ss/services.o ss/conditional.o ss/mls.o
-> > +            ss/policydb.o ss/services.o ss/conditional.o ss/mls.o ss/context.o
-> >
-> >  selinux-$(CONFIG_SECURITY_NETWORK_XFRM) += xfrm.o
-> >
-> > diff --git a/security/selinux/ss/context.c b/security/selinux/ss/context.c
-> > new file mode 100644
-> > index 000000000000..cc0895dc7b0f
-> > --- /dev/null
-> > +++ b/security/selinux/ss/context.c
-> > @@ -0,0 +1,24 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +/*
-> > + * Implementations of the security context functions.
-> > + *
-> > + * Author: Ondrej Mosnacek <omosnacek@gmail.com>
-> > + * Copyright (C) 2018 Red Hat, Inc.
-> > + */
-> > +
-> > +#include <linux/jhash.h>
-> > +
-> > +#include "context.h"
-> > +#include "mls.h"
-> > +
-> > +u32 context_compute_hash(const struct context *c)
-> > +{
-> > +       u32 hash = 0;
-> > +
->
-> You describe why this is safe in the commit message.
-> Could that same explanation be a comment here?
-> Otherwise it's not clear when reading the code why
-> this is safe.
+V2:
+- Simplified now that dso.h stuff has been removed.
+- selinux_check_passwd_access has been deprecated and now
+  both selinux_check_passwd_access and checkPasswdAccess
+  are recomending selinux_check_access.
+- matchpathcon is linked statically to get access to deprecated
+  routines and prints a deprecated warning to stderr.
 
-I assume you mean the fact that valid and invalid contexts are hashed
-differently? In that case, yes I agree it deserves a comment.
+V1:
+I went through and annotated deprecated routines we have in
+libselinux that are mentioned to be deprecated either in code
+comments and/or manpages.
 
-> > +       if (c->len)
-> > +               return full_name_hash(NULL, c->str, c->len);
-> > +
-> > +       hash = jhash_3words(c->user, c->role, c->type, hash);
-> > +       hash = mls_range_hash(&c->range, hash);
-> > +       return hash;
-> > +}
+External users, when compiling will see a warning similair to some
+sample output:
 
---
-Ondrej Mosnacek <omosnace at redhat dot com>
-Software Engineer, Security Technologies
-Red Hat, Inc.
+a.c: In function ‘main’:
+a.c:18:2: warning: ‘foo’ is deprecated: foo bar msg [-Wdeprecated-declarations]
+  foo();
+  ^~~
+a.c:5:5: note: declared here
+ int foo(void) {
+     ^~~
+a.c:19:2: warning: ‘boo’ is deprecated [-Wdeprecated-declarations]
+  boo();
+  ^~~
+a.c:11:5: note: declared here
+ int boo(void) {
+
+[PATCH v2 01/18] security_load_booleans: update return comment
+[PATCH v2 02/18] security_load_booleans: annotate deprecated
+[PATCH v2 03/18] selinux_booleans_path: annotate deprecated
+[PATCH v2 04/18] selinux_users_path: annotate deprecated
+[PATCH v2 05/18] rpm_execcon: annotate deprecated
+[PATCH v2 06/18] sidget: annotate deprecated
+[PATCH v2 07/18] sidput: annotate deprecated
+[PATCH v2 08/18] checkPasswdAccess: annotate deprecated
+[PATCH v2 09/18] matchpathcon_init: annotate deprecated
+[PATCH v2 10/18] matchpathcon_fini: annotate deprecated
+[PATCH v2 11/18] matchpathcon: annotate deprecated
+[PATCH v2 12/18] avc_init: annotate deprecated
+[PATCH v2 13/18] avc: create internal avc_init interface
+[PATCH v2 14/18] matchpathcon: create internal matchpathcon_fini
+[PATCH v2 15/18] matchpathcon: create internal matchpathcon interface
+[PATCH v2 16/18] selinux_check_passwd_access: annotate deprecated
+[PATCH v2 17/18] utils: matchpathcon to use interal interfaces
+[PATCH v2 18/18] utils: matchpathcon add deprecated warning
 

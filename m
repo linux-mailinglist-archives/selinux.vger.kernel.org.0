@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D52311ACB27
-	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CDA01ACB28
+	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2395447AbgDPPoV (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Apr 2020 11:44:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48730 "EHLO
+        id S2438976AbgDPPoW (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Apr 2020 11:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2406241AbgDPPoP (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:15 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BC86C061A0C
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:15 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id ay1so1498239plb.0
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:15 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2408887AbgDPPoR (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:17 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92B81C061A10
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:17 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id z6so1481550plk.10
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Bw9tlQSVaapo0Tpj45xIpZF0qK2BZ6nzqw95EBFXPX0=;
-        b=MHn2+5Zdo2dnPm+gJ36/DYK90So4XLaFzj0Q7rv/MXDh0BEmi9v1BMa2+XcW/sU2Fy
-         66mZ+t+vtBS2eqIIDJI+6ugxb2pYEhdwEiGG2vEh0IEecNG5A0H+FdiruK4KKrfy3hNm
-         +67iBVReyye0gfpsj98Xq6+FiMOBw2VMyVu/mrX1l/rdTbHuaGwlWyhak9s8EhnHwWU+
-         m1UcxLsMX7PZ2Z0/lHR6F5xSRMxVAsQIyUM1JIiHm4Tjwwf70MCPUuc5fl5/oDmRYcbv
-         Hd0MxWl9wiMKjcXMeoK97EvJJZdL/jAy0JB6YDIg2OF3lA3GfbHDU3+QnYRF4DLOJfeb
-         raCw==
+        bh=l+nIMu7MVaQt819iJF4TNdRJ3FE4M38+ER7rHwSq2KQ=;
+        b=Rgr9Hp/OA+rK7FH/EbnjYtA/Q9vKdEKEw/5ct65Eqqjh2qZq/eX+8v2ZxtpGI5pnKq
+         lDS2NtK0SfDZ1dFmXXc8cp7rLG9CvOojXxPzQq+CU95uLPym0J6nCnviPp91XvJCkQCN
+         xIlWpS+cHripCsrd9dk6VYaLa/BzF3Oub2tMTLTIXesS0YDokRmuJuIyL+IATWoRqeyl
+         SqMF66pzCbJe7DPulCho8cbeSSBu1OS5DRcKVt/0b97mgNKMP9/xi6TGOvIHqJSvUwQU
+         0DankxyTGizKpMCu4i/OfyKPaass8XiNWaIQ3NvquZTYC1oXkdC0JrUMWNwesnGSR4T9
+         /Njw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Bw9tlQSVaapo0Tpj45xIpZF0qK2BZ6nzqw95EBFXPX0=;
-        b=TsRrZOvaQaYVUq7DTAM9k0WIdMBQdQbV3oMmakOToU9nK5rJJq5G/uhq2c02TFPyxI
-         +j9+5rDt2AeQd8w5K0nf3/syvoi9c5DtfMhDcCF1Yrlab4ZkhTrPWNd4D1isWTO9UYW1
-         kXgarifyAKnGdGDyHaLN5oOvvfyaavnvf2p6IcAZAVuI0Lvu3qoDCjIKCJec0TwdZ3zn
-         xXp1wo/i8uoXfrxvaz43Clm4kcrVMEsaIvSCYb7AOLWDblg63p8kLseLRzELClZSQNbu
-         sSW6k4ityThraeMt5ZZ9Vh53iaYy+s27Ci2Js2U6Omec77V5OOo69eaH68tdPTgyvGx/
-         s/UQ==
-X-Gm-Message-State: AGi0PuYUHTwT0r/MIRCxLeNyokavwFLZm6M2sq23PBpWWukx8bli1vFO
-        GFO0RZy+6NZc2/K0e1NFggU=
-X-Google-Smtp-Source: APiQypIJOcmcGmf71M+6V5GmyN/DLibDhRySrjtk44rKarJVW7F0mqEoCsrr9pIhEPTEuCYGug185g==
-X-Received: by 2002:a17:90a:252f:: with SMTP id j44mr5823493pje.9.1587051855052;
-        Thu, 16 Apr 2020 08:44:15 -0700 (PDT)
+        bh=l+nIMu7MVaQt819iJF4TNdRJ3FE4M38+ER7rHwSq2KQ=;
+        b=tkG9WgYGJH/tVrXMMfSnm91L9HXDaKsqY8+W6GumPrTAmlO8ts2sZ2hbEdhLGmcJH2
+         AYzy+khHTCIhh4DIvCZhazJuWSYsdUW/4ngsqPzIrTal2jdnYTHiBi54kzH8wjUCy34w
+         273+DyvWdaO9QfEPEwV9bVvx5w9R6BII/Ant30rgFFdSqa1JifQb+szaOq1Zmw6or6UB
+         E00yvbHO23n2aS+NVlDKk6EWo39fDT9/BeCCaK1n1SwxrBXc5JkU8WwkBmIk2D0EX33N
+         mO8BQTf3M9dFFWC4B9ZiTC7/3s/AphIRK58XH0hzoSi8K/xL0iOdVAOGLKj8pZDbIj9y
+         XWLA==
+X-Gm-Message-State: AGi0PuZpFCWRbJBkeOJV/I5zT5yC5V5ajhmIms2wPvwaGlp6Oh74PQdx
+        ifh9f3ODrH48wJ50LXyvZ9k=
+X-Google-Smtp-Source: APiQypLOrcJJ8edYGd6GWITSSZhgEvMsrHNq461SLbckg9R0/7ic+T0sM3Icr6TSMblr4l6ZvhA5nA==
+X-Received: by 2002:a17:90a:4a4:: with SMTP id g33mr5723434pjg.81.1587051857045;
+        Thu, 16 Apr 2020 08:44:17 -0700 (PDT)
 Received: from localhost.localdomain ([192.55.55.45])
-        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.13
+        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 08:44:14 -0700 (PDT)
+        Thu, 16 Apr 2020 08:44:16 -0700 (PDT)
 From:   bill.c.roberts@gmail.com
 X-Google-Original-From: william.c.roberts@intel.com
 To:     bill.c.roberts@gmail.com
 Cc:     plautrba@redhat.com, sds@tycho.nsa.gov, selinux@vger.kernel.org,
         William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH v2 05/18] rpm_execcon: annotate deprecated
-Date:   Thu, 16 Apr 2020 10:43:39 -0500
-Message-Id: <20200416154352.21619-6-william.c.roberts@intel.com>
+Subject: [PATCH v2 06/18] sidget: annotate deprecated
+Date:   Thu, 16 Apr 2020 10:43:40 -0500
+Message-Id: <20200416154352.21619-7-william.c.roberts@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200416154352.21619-1-william.c.roberts@intel.com>
 References: <20200225200219.6163-1-william.c.roberts@intel.com>
@@ -67,23 +67,22 @@ From: William Roberts <william.c.roberts@intel.com>
 
 Signed-off-by: William Roberts <william.c.roberts@intel.com>
 ---
- libselinux/include/selinux/selinux.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ libselinux/include/selinux/avc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
-index cf2b81ba3162..0b99850ad23d 100644
---- a/libselinux/include/selinux/selinux.h
-+++ b/libselinux/include/selinux/selinux.h
-@@ -633,7 +633,8 @@ extern int setexecfilecon(const char *filename, const char *fallback_type);
- /* Execute a helper for rpm in an appropriate security context. */
- extern int rpm_execcon(unsigned int verified,
- 		       const char *filename,
--		       char *const argv[], char *const envp[]);
-+		       char *const argv[], char *const envp[])
-+	__attribute__((deprecated("Use setexecfilecon and execve")));
- #endif
+diff --git a/libselinux/include/selinux/avc.h b/libselinux/include/selinux/avc.h
+index 46c51419f588..c5c842a34470 100644
+--- a/libselinux/include/selinux/avc.h
++++ b/libselinux/include/selinux/avc.h
+@@ -64,7 +64,7 @@ extern int avc_context_to_sid_raw(const char * ctx, security_id_t * sid);
+  * reference count).  Note that avc_context_to_sid() also
+  * increments reference counts.
+  */
+-extern int sidget(security_id_t sid);
++extern int sidget(security_id_t sid) __attribute__ ((deprecated));
  
- /* Returns whether a file context is customizable, and should not 
+ /**
+  * sidput - decrement SID reference counter.
 -- 
 2.17.1
 

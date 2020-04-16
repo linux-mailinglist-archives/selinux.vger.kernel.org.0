@@ -2,101 +2,119 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65E771ACB97
-	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:51:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF8901AC583
+	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 16:21:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2442651AbgDPPtE (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Apr 2020 11:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56470 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2896679AbgDPNdD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 09:33:03 -0400
-Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 64C5EC061A0C
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 06:33:03 -0700 (PDT)
-Received: by mail-ed1-x543.google.com with SMTP id e5so8571724edq.5
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 06:33:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hx7hC/N/qPoRhYlHeshI3wMwx2LElhqdwNPJRsoSico=;
-        b=hQ0ubLQXsiijiB9/NieROdPOTi4FfzPaBYYT6oXmgZE11BGTj55hbhlHHK+lcmQW4W
-         kDAh9NWAn7OgT5YYBVXjpogVGjYZfkbdEGYZKqNb7UTH2wCgTR+/vnX0oQSma1694z/2
-         DzVufB2PRi5TlEhm8BDeneqOC97ApC4gxPNXYP3wV4TXAfjX2PFDkSHZXfJrocHH6sSY
-         Vuc5IhyWoR1XqhcBjPMdJojaHwtFgzlsTRfqyB8iBud5LUqObHN4Q/hEbZZVDNyLrE36
-         l6xw/ld/CFFTP7dhvk/rITOE01h7rZkUr4H2a+MCwHmoAS/9qGC6+Agvo++/B04NV1gu
-         GsXA==
+        id S2390192AbgDPOVC (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Apr 2020 10:21:02 -0400
+Received: from us-smtp-1.mimecast.com ([207.211.31.81]:50229 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2390158AbgDPOUt (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 10:20:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1587046847;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=0/CddkJsu3YhrBDw1ge/FZm45Z8ycRLJ1ppjF0Odj/0=;
+        b=PqKpZCU/I0fjwYlTxJQIYNK4BnXFKN6c7hT2PrL7565lOnv0tTy0JfmqxARl6KIYOGO899
+        t0p+CSiDscqYIANK0v0DmnvNSr1E8MDGB5udvkNursZ+loc90E4PwKp14lGn5sscfNKynr
+        mFLL+62Wb7TVCtqYpnobQmDUmXeW0E0=
+Received: from mail-oi1-f199.google.com (mail-oi1-f199.google.com
+ [209.85.167.199]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-25-Q4WnOHDiNrK1QWJjO2we8A-1; Thu, 16 Apr 2020 10:20:45 -0400
+X-MC-Unique: Q4WnOHDiNrK1QWJjO2we8A-1
+Received: by mail-oi1-f199.google.com with SMTP id b21so6227234oie.23
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 07:20:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=hx7hC/N/qPoRhYlHeshI3wMwx2LElhqdwNPJRsoSico=;
-        b=e2xG1/d2WFNnnM75sp6fUqEUd6VQO4xz5hrBjzBT/uAoiERfPCmjrbbnEMVHQlpd/Z
-         LbcMEU3zEu6afM5nG6Gp8NvuWmN19yE5Kum9OQAS5e2KMmjeLkWGL9POkW6gAp/GgfJ0
-         ObT/rbY/uLUx6KuutBOajXXfoBAhvZ2bfW9G4ygSIuZUCnwkeN29s3gAIG0uPG+14tJx
-         uoSxwZCPJeyi+F4brmzCAPw7E4IWE7nrKbWkX8qG3fl9cN3WIbYsu64/m/Wz7KeHIk2r
-         0i4196EZj6YwTdtEsja4lxCN5TfpxAYLqYAzVbaqjyVmvpilI+6d7iojVU+dfyFMfrfI
-         mG8w==
-X-Gm-Message-State: AGi0PuaJfvHhZ44tB1kC/TL1A42opFwzW1lSEoptGkVdJiPk5iq/uub8
-        DBtIutCNb9fKP0qzOeI/kIRNPNSrzFxQU20hAlLclxTjkg==
-X-Google-Smtp-Source: APiQypIFSvRZqJdeTqH9++74gpWvsyBWfzugQnZ4K7oehaSfsMP0MtCTSx5PdmYwgQeznPOo+3T1qaPaHrmo2bKE774=
-X-Received: by 2002:aa7:cf1a:: with SMTP id a26mr29977697edy.12.1587043982018;
- Thu, 16 Apr 2020 06:33:02 -0700 (PDT)
+        bh=0/CddkJsu3YhrBDw1ge/FZm45Z8ycRLJ1ppjF0Odj/0=;
+        b=roYs2iXEMey1x+TR7wrDkZZACzwIZzwtrWXheBn6VzvQi3DdfhL9P3RLP0QxMjtPvz
+         BFY7+nMfRfRbHhlXNEFfVJcutsqM4zGYhZTzorKJLTCTKxfCSkQLElemwyAPEDPemzQ3
+         o0Hx3IxWNEEZ8npQecJwC05H+L7+r+fU2BDEK4xRtoQ0yObHPhzXfK8/lFhS7sUYTNWm
+         cAUcaKSMkF3VDk7C4N+In6/CUqpb64sQn8J2J3TxoXQ9DFUFe+pZP+vgxMfPSsk65D5y
+         U+O8AHKZiuTsl6raifp7Ny+P6HjRmmGQR/CyKWBN0wQCDFfsyUNh/1E/W2SqWwv7GPsI
+         0P5A==
+X-Gm-Message-State: AGi0PuZ9t/+bJ6Pc55v3jMlhy9E0KZovrPeh4IFHx3lZ/LkSiRBIZw76
+        zhRr8tIg0R7eIhpWTdV7VOYzUky9M3NgY5ci3wEiPPkh12EQ5H9Iqq8MryWsfsC125OUHMPDAle
+        5GocqMd1uT/RhqMnb+DCavF434Dz1Q7fy1w==
+X-Received: by 2002:a9d:69d5:: with SMTP id v21mr27295617oto.197.1587046843504;
+        Thu, 16 Apr 2020 07:20:43 -0700 (PDT)
+X-Google-Smtp-Source: APiQypJGq9r+pYJb30wurvfdO/jhQbKwhIAw4iyWBG4DE04/HZAcCHFUgtZxo1ZE1rKFBTawgHFOgl93JR/wLZrTpOo=
+X-Received: by 2002:a9d:69d5:: with SMTP id v21mr27295591oto.197.1587046843173;
+ Thu, 16 Apr 2020 07:20:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <158697587242.118532.14560996990720692395.stgit@chester> <CAFqZXNsTFv14wTc_aim7AZEi17rb562V=FAU8y-E82npF-Hh0g@mail.gmail.com>
-In-Reply-To: <CAFqZXNsTFv14wTc_aim7AZEi17rb562V=FAU8y-E82npF-Hh0g@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 16 Apr 2020 09:32:51 -0400
-Message-ID: <CAHC9VhSnP8MAiRh8sXbEEe=Ei7MdnYni4NN7KgBD8QEneZRJVA@mail.gmail.com>
-Subject: Re: [PATCH] selinux-testsuite: add capability:sys_admin to the bpf()
- related test domains
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+References: <20200327151941.95619-1-omosnace@redhat.com> <CAHC9VhRJ5Vbz+4S_33PHf-X+3tZ-VhLSSEEJ9kRRTtOoxYnSPQ@mail.gmail.com>
+ <CAFqZXNvQ5GTD81E9LZdHFduCuy6gTs6MSqUS4zU4sPTUWtyS1A@mail.gmail.com> <CAHC9VhQD=65CSCFYnPam+R2ZTO_sGKbbh6yyu=smW8Sp8B-3Ew@mail.gmail.com>
+In-Reply-To: <CAHC9VhQD=65CSCFYnPam+R2ZTO_sGKbbh6yyu=smW8Sp8B-3Ew@mail.gmail.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Thu, 16 Apr 2020 16:20:32 +0200
+Message-ID: <CAFqZXNtY=CXv777yat4GwEJEKf+9o-MOBYdU1kLpaic83NoN6A@mail.gmail.com>
+Subject: Re: [PATCH] selinux: implement new format of filename transitions
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Apr 16, 2020 at 6:58 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> On Wed, Apr 15, 2020 at 9:22 PM Paul Moore <paul@paul-moore.com> wrote:
-> > From: Paul Moore <paul@paul-moore.com>
-> >
-> > Historically the Fedora Kernels have been built with the
-> > kernel.unprivileged_bpf_disabled set to 0, which skipped a
-> > CAP_SYS_ADMIN check in the bpf() syscall.  However, starting
-> > with the Fedora Rawhide v5.7-rcX kernel builds this sysctl
-> > is now set to 1 which is triggering a CAP_SYS_ADMIN check
-> > when performing bpf() operations.
-> >
-> > Add the capability:sys_admin to the BPF test domains so they can
-> > pass this newly triggered check.
-> >
-> > Signed-off-by: Paul Moore <paul@paul-moore.com>
-> > ---
-> >  policy/test_binder_bpf.te    |    2 +-
-> >  policy/test_bpf.te           |   12 ++++++------
-> >  policy/test_fdreceive_bpf.te |    6 +++---
-> >  3 files changed, 10 insertions(+), 10 deletions(-)
+On Thu, Apr 16, 2020 at 3:27 PM Paul Moore <paul@paul-moore.com> wrote:
+> On Thu, Apr 16, 2020 at 5:53 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> > On Thu, Apr 16, 2020 at 4:23 AM Paul Moore <paul@paul-moore.com> wrote:
+> > > On Fri, Mar 27, 2020 at 11:19 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> > > >
+> > > > Implement a new, more space-efficient way of storing filename
+> > > > transitions in the binary policy. The internal structures have already
+> > > > been converted to this new representation; this patch just implements
+> > > > reading/writing an equivalent represntation from/to the binary policy.
+> > > >
+> > > > This new format reduces the size of Fedora policy from 7.6 MB to only
+> > > > 3.3 MB (with policy optimization enabled in both cases). With the
+> > > > unconfined module disabled, the size is reduced from 3.3 MB to 2.4 MB.
+> > > >
+> > > > The time to load policy into kernel is also shorter with the new format.
+> > > > On Fedora Rawhide x86_64 it dropped from 157 ms to 106 ms; without the
+> > > > unconfined module from 115 ms to 105 ms.
+> > > >
+> > > > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> > > > ---
+> > > >  security/selinux/include/security.h |   3 +-
+> > > >  security/selinux/ss/policydb.c      | 212 ++++++++++++++++++++++++----
+> > > >  2 files changed, 189 insertions(+), 26 deletions(-)
+> > >
+> > > ...
+> > >
+> > > > diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
+> > > > index d6036c018cf2..b0e02cfe3ce1 100644
+> > > > --- a/security/selinux/include/security.h
+> > > > +++ b/security/selinux/include/security.h
+> > > > @@ -41,10 +41,11 @@
+> > > >  #define POLICYDB_VERSION_XPERMS_IOCTL  30
+> > > >  #define POLICYDB_VERSION_INFINIBAND            31
+> > > >  #define POLICYDB_VERSION_GLBLUB                32
+> > > > +#define POLICYDB_VERSION_COMP_FTRANS   33 /* compressed filename transitions */
+> > > >
+> > > >  /* Range of policy versions we understand*/
+> > > >  #define POLICYDB_VERSION_MIN   POLICYDB_VERSION_BASE
+> > > > -#define POLICYDB_VERSION_MAX   POLICYDB_VERSION_GLBLUB
+> > > > +#define POLICYDB_VERSION_MAX   POcould still help in case of coredump analysisLICYDB_VERSION_COMP_FTRANS
 >
-> I have been applying a similar workaround in our RHEL testing, because
-> I encountered the same setting on RHEL-8. Interesting that Fedora is
-> doing the same thing now... Perhaps this is an unintended consequence
-> of the recent workflow change?
+> Errant middle mouse clicks are always fun :)
 
-I suspect it is due to CVE-2020-8835 and not the Fedora kernel workflow change.
+Hehe :) Weird coincidence that it occurred to me just yesterday how
+easily I could accidentally paste something embarrassing in a reply
+with this lousy touchpad I'm using now... I'm surprised that what
+ended up there was actually somewhat insightful :) (I wanted to say
+that the filename transition count could be useful if you were
+analysing a core dump and looking at the struct values, but later I
+changed my mind and removed it.)
 
-Although the workflow change was annoying enough in its own way,
-unrelated to this issue.  I had to add a bunch of hacks to my
-kernel-secnext automation to get things working again (one of the
-reasons the post-rc1 patch merging was delayed a day or two).
+--
+Ondrej Mosnacek <omosnace at redhat dot com>
+Software Engineer, Security Technologies
+Red Hat, Inc.
 
-> Anyway, it seems better to have the
-> test ready to work regardless of the sysctl value, so:
->
-> Acked-by: Ondrej Mosnacek <omosnace@redhat.com>
-
--- 
-paul moore
-www.paul-moore.com

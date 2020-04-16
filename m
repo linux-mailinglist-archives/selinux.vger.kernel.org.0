@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A361ACB32
-	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACD1E1ACB34
+	for <lists+selinux@lfdr.de>; Thu, 16 Apr 2020 17:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2442475AbgDPPog (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Apr 2020 11:44:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48796 "EHLO
+        id S2395504AbgDPPoj (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Apr 2020 11:44:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2395504AbgDPPoe (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:34 -0400
-Received: from mail-pf1-x442.google.com (mail-pf1-x442.google.com [IPv6:2607:f8b0:4864:20::442])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24822C061A0C
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:34 -0700 (PDT)
-Received: by mail-pf1-x442.google.com with SMTP id b8so1827209pfp.8
-        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:34 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S2442510AbgDPPog (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Apr 2020 11:44:36 -0400
+Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81CFC061A0C
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:35 -0700 (PDT)
+Received: by mail-pf1-x441.google.com with SMTP id c138so1852312pfc.0
+        for <selinux@vger.kernel.org>; Thu, 16 Apr 2020 08:44:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=dIncQSwCNx/aPdpe4r94CQyn+890WYtRiOUFVSN6ZnU=;
-        b=k8P15NllPGZVtnvdmyfUgMOmu4mZCfh/Y3yyJCTO7RQuAI1f6N9gtgVcQptGmD/eY8
-         LAzBjMTG8Rayx3S/3LF7LC2yNYgVsSK8/W9BhMQJl83ZXVw8G27qEK4iq6DsQQLVPOYj
-         N4/V9Bjb27wJ21P6Hs83cXaMlDj52XktykQcqNfxGXKpV3cuLKYqjJpeW9uY7j4Q/Jlw
-         mp/kasqXraMvvyF4RoMUBeNpVdIMUrn07dmxBBWZrTTE1zCwXO+7UU2DbELGEuQ4eVOO
-         jsKFPPmuBeqzM1Ks2Aj0sj3No0RXBJg/b39pf26D9mlAhCK5dnqIkGPQCZs3QlRFbCJV
-         Xf4A==
+        bh=6g4lTpDJfVXb819MiCId1J60ZYOsQkaUzZp2uDWfNMA=;
+        b=sJl8yAagBYU+K8Nf3LrprOYxUYCs6NAAenRQT8rDoKSPWmMTbcegrWMPO2jjNiyzpI
+         4HxXgGCk/0fhSo7wBGjXWCBplXWwNDZ4YNav5q8Dwis+jmyz7Bu4qp8uAY/aF7I+k0lG
+         82cSjozzGE2wxL7s+2CPkUXrQfoTGM+UjDfE3o0Xbk50tLgqWQw7BoQ338gzREstmytB
+         evzjYXYhrciw4qdnzauMtKunXom1wK09JlP+7/VvHVYQJkrCN+15e62Ih6R80vJE4llW
+         fP94xr15nLQaF3O2/QV/wHsTgCiwtK5llCXt+plWgh1lK5S5iYKDtfC8i1dyqycyfplw
+         E9Zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=dIncQSwCNx/aPdpe4r94CQyn+890WYtRiOUFVSN6ZnU=;
-        b=F5QhOVZmSrrFvedQVONc4OmqJSvcHWdzZqwZ8FgyXVWdU7MnBMiIeu3+yEyRp4m/8y
-         IIjvxXGPQ2/VbaOE1U4+OW/YUzrX7LPAQ+Xex3AFavsy95m4tUXiCpwpo9KajGZmbLyP
-         NMX5iBo4/7VLovcFCa9GxqjqR+BO97qS8pwWFEodXBEvaC7XaI9lwEASVW/mpwlzMQR7
-         aS5lH4q12/0xl7nrzqyi1M5YYsBbZfF0hUm27cYCS4KxGXEXw66/6WJ2u7BkGgc3lZ6p
-         8PaeCu4SenfnkhmBtSfmehk2AcqDtOfwIaWSZCzivGTfvI9mz8LefWfBqAQH68PqV79+
-         i5zA==
-X-Gm-Message-State: AGi0PuZ44VB+nUXsZY/vPDWUjrWZv42T8mEc6B0i/FbsT0IktFeBOdgs
-        WSY25nK50BNknPtHgypx1YI=
-X-Google-Smtp-Source: APiQypLvx6hsyPKwUQI9hVNmrS/kEsPt4S/bFuW3TivE7FmB9TnhqHO3RDGoFtOw9cHw6JuwtXEBlA==
-X-Received: by 2002:a63:ea4e:: with SMTP id l14mr32030238pgk.431.1587051873637;
-        Thu, 16 Apr 2020 08:44:33 -0700 (PDT)
+        bh=6g4lTpDJfVXb819MiCId1J60ZYOsQkaUzZp2uDWfNMA=;
+        b=A1Oc8B0gqLTSk43t1dSvCeJ5S6Z3sWcE9mGiNH1Qj9dH8tIz/Obbb8gyzA1BRk55mg
+         PN26iCowdrXrP4EQ2EEjnRVkJYEIshZntIYCLXXhcw3woqVSScd6D8yFuaun+Rucpj7e
+         5pvFXOUOZljEUbM4nthdXsIsIRoBKcaH5Fc9e2uIK7ehQYlWZ/gaKoHhml+5DoNzw/Rg
+         uXfYbwCQloUQSpyN5HY9iAJ70MsAl4ukns4iuIyk3IROcTrYQ3XdZ1+oIPjCdTr7qgSD
+         b4nGxUSMBTOHzXS8QRvCfmZDvDZdEjsNF3mSpovClfK7Kk6+GVriLa3sgwhc2mTLqf9s
+         5mVA==
+X-Gm-Message-State: AGi0PuY9NGTwtLgdEplAtPXnk2fmNgL2WGN668FcqwDB7sca4wBayFx9
+        Zl2kyTGJty10glyioLHlgQM=
+X-Google-Smtp-Source: APiQypIjh0MFrXKDmfdrCPQvfAiFFdU93RnF3eYTy5AMVEi3le9L3F2QIao2w3rvQ5OQEXLZyzMKIw==
+X-Received: by 2002:aa7:9515:: with SMTP id b21mr12245582pfp.226.1587051875271;
+        Thu, 16 Apr 2020 08:44:35 -0700 (PDT)
 Received: from localhost.localdomain ([192.55.55.45])
-        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.32
+        by smtp.gmail.com with ESMTPSA id g25sm16888626pfh.55.2020.04.16.08.44.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Apr 2020 08:44:33 -0700 (PDT)
+        Thu, 16 Apr 2020 08:44:34 -0700 (PDT)
 From:   bill.c.roberts@gmail.com
 X-Google-Original-From: william.c.roberts@intel.com
 To:     bill.c.roberts@gmail.com
 Cc:     plautrba@redhat.com, sds@tycho.nsa.gov, selinux@vger.kernel.org,
         William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH v2 16/18] selinux_check_passwd_access: annotate deprecated
-Date:   Thu, 16 Apr 2020 10:43:50 -0500
-Message-Id: <20200416154352.21619-17-william.c.roberts@intel.com>
+Subject: [PATCH v2 17/18] utils: matchpathcon to use interal interfaces
+Date:   Thu, 16 Apr 2020 10:43:51 -0500
+Message-Id: <20200416154352.21619-18-william.c.roberts@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200416154352.21619-1-william.c.roberts@intel.com>
 References: <20200225200219.6163-1-william.c.roberts@intel.com>
@@ -65,55 +65,106 @@ X-Mailing-List: selinux@vger.kernel.org
 
 From: William Roberts <william.c.roberts@intel.com>
 
-Update the one internal tree caller in the same file to
-call selinux_check_passwd_access2.
+Not that the matchpathcon library interfaces are deprecated,
+matchpathcon needs to use the 2 variants and statically link.
 
 Signed-off-by: William Roberts <william.c.roberts@intel.com>
 ---
- libselinux/include/selinux/selinux.h | 4 +++-
- libselinux/src/checkAccess.c         | 7 +++++--
- 2 files changed, 8 insertions(+), 3 deletions(-)
+ libselinux/src/matchpathcon.c          | 6 +++++-
+ libselinux/src/matchpathcon_internal.h | 2 ++
+ libselinux/utils/Makefile              | 6 ++++++
+ libselinux/utils/matchpathcon.c        | 9 ++++++---
+ 4 files changed, 19 insertions(+), 4 deletions(-)
 
-diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
-index 5a66fa6f9d78..b8d011fa07a7 100644
---- a/libselinux/include/selinux/selinux.h
-+++ b/libselinux/include/selinux/selinux.h
-@@ -609,7 +609,9 @@ extern int selinux_check_access(const char * scon, const char * tcon, const char
- 
- /* Check a permission in the passwd class.
-    Return 0 if granted or -1 otherwise. */
--extern int selinux_check_passwd_access(access_vector_t requested);
-+extern int selinux_check_passwd_access(access_vector_t requested)
-+  __attribute__ ((deprecated("Use selinux_check_access")));
-+
- extern int checkPasswdAccess(access_vector_t requested)
-    __attribute__ ((deprecated("Use selinux_check_access")));
- 
-diff --git a/libselinux/src/checkAccess.c b/libselinux/src/checkAccess.c
-index 677e2ecd7df4..555d7ff3cca5 100644
---- a/libselinux/src/checkAccess.c
-+++ b/libselinux/src/checkAccess.c
-@@ -64,7 +64,7 @@ int selinux_check_access(const char *scon, const char *tcon, const char *class,
-        return avc_has_perm (scon_id, tcon_id, sclass, av, NULL, aux);
+diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
+index 88539e627f5d..d71e792c3f8e 100644
+--- a/libselinux/src/matchpathcon.c
++++ b/libselinux/src/matchpathcon.c
+@@ -352,10 +352,14 @@ int matchpathcon_init_prefix(const char *path, const char *subset)
+ 	return hnd ? 0 : -1;
  }
  
--int selinux_check_passwd_access(access_vector_t requested)
-+static int selinux_check_passwd_access2(access_vector_t requested)
- {
- 	int status = -1;
- 	char *user_context;
-@@ -99,8 +99,11 @@ int selinux_check_passwd_access(access_vector_t requested)
- 	return status;
- }
- 
-+int selinux_check_passwd_access(access_vector_t requested) {
-+	return selinux_check_passwd_access2(requested);
++int matchpathcon_init2(const char *path)
++{
++	return matchpathcon_init_prefix(path, NULL);
 +}
  
- int checkPasswdAccess(access_vector_t requested)
+ int matchpathcon_init(const char *path)
  {
--	return selinux_check_passwd_access(requested);
-+	return selinux_check_passwd_access2(requested);
+-	return matchpathcon_init_prefix(path, NULL);
++	return matchpathcon_init2(path);
+ }
+ 
+ void matchpathcon_fini2(void)
+diff --git a/libselinux/src/matchpathcon_internal.h b/libselinux/src/matchpathcon_internal.h
+index c63bcecfec89..73f0c78fc9d0 100644
+--- a/libselinux/src/matchpathcon_internal.h
++++ b/libselinux/src/matchpathcon_internal.h
+@@ -1,6 +1,8 @@
+ #ifndef SRC_MATCHPATHCON_INTERNAL_H_
+ #define SRC_MATCHPATHCON_INTERNAL_H_
+ 
++int matchpathcon_init2(const char *path);
++
+ void matchpathcon_fini2(void);
+ 
+ int matchpathcon2(const char *path, mode_t mode, char ** con);
+diff --git a/libselinux/utils/Makefile b/libselinux/utils/Makefile
+index a5632b7c38ec..5f16ab957610 100644
+--- a/libselinux/utils/Makefile
++++ b/libselinux/utils/Makefile
+@@ -58,6 +58,12 @@ sefcontext_compile: LDLIBS += $(PCRE_LDLIBS) ../src/libselinux.a -lsepol
+ 
+ sefcontext_compile: sefcontext_compile.o ../src/regex.o
+ 
++matchpathcon: LDLIBS += $(PCRE_LDLIBS) ../src/libselinux.a
++
++matchpathcon: CFLAGS += -I../src
++
++matchpathcon: matchpathcon.o ../src/regex.o
++
+ all: $(TARGETS)
+ 
+ install: all
+diff --git a/libselinux/utils/matchpathcon.c b/libselinux/utils/matchpathcon.c
+index eb39a1881066..3d94af365071 100644
+--- a/libselinux/utils/matchpathcon.c
++++ b/libselinux/utils/matchpathcon.c
+@@ -11,6 +11,9 @@
+ #include <limits.h>
+ #include <stdlib.h>
+ 
++#include "matchpathcon_internal.h"
++
++
+ static __attribute__ ((__noreturn__)) void usage(const char *progname)
+ {
+ 	fprintf(stderr,
+@@ -22,7 +25,7 @@ static __attribute__ ((__noreturn__)) void usage(const char *progname)
+ static int printmatchpathcon(const char *path, int header, int mode)
+ {
+ 	char *buf;
+-	int rc = matchpathcon(path, mode, &buf);
++	int rc = matchpathcon2(path, mode, &buf);
+ 	if (rc < 0) {
+ 		if (errno == ENOENT) {
+ 			buf = strdup("<<none>>");
+@@ -103,7 +106,7 @@ int main(int argc, char **argv)
+ 				exit(1);
+ 			}
+ 			init = 1;
+-			if (matchpathcon_init(optarg)) {
++			if (matchpathcon_init2(optarg)) {
+ 				fprintf(stderr,
+ 					"Error while processing %s:  %s\n",
+ 					optarg,
+@@ -195,6 +198,6 @@ int main(int argc, char **argv)
+ 			error |= printmatchpathcon(path, header, mode);
+ 		}
+ 	}
+-	matchpathcon_fini();
++	matchpathcon_fini2();
+ 	return error;
  }
 -- 
 2.17.1

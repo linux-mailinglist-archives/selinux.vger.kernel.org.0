@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF3871BAF62
+	by mail.lfdr.de (Postfix) with ESMTP id B90BE1BAF63
 	for <lists+selinux@lfdr.de>; Mon, 27 Apr 2020 22:23:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726758AbgD0UXv (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 27 Apr 2020 16:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33704 "EHLO
+        id S1726540AbgD0UXx (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 27 Apr 2020 16:23:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726456AbgD0UXu (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 27 Apr 2020 16:23:50 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 010E7C0610D5
-        for <selinux@vger.kernel.org>; Mon, 27 Apr 2020 13:23:50 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id t7so1491992plr.0
-        for <selinux@vger.kernel.org>; Mon, 27 Apr 2020 13:23:49 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1726364AbgD0UXw (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 27 Apr 2020 16:23:52 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5296EC0610D5
+        for <selinux@vger.kernel.org>; Mon, 27 Apr 2020 13:23:52 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id r4so9191135pgg.4
+        for <selinux@vger.kernel.org>; Mon, 27 Apr 2020 13:23:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Q86dvL0fgMsxhbOXy6t11FAfTgjjVDHq4dE+YOyTIPg=;
-        b=kwXBxSZ/i1/kafp7LZ4D51KQmMxZw/7OeQuMoo7ReEgP8oMANKd0Wl788HL0+v610M
-         8H6UaA1K3Nk9ZF02SPb+6J1zcaGm1fKmOfgIQeSInontbFUwRPZU6BbOH/JfCd8Jpnn7
-         PZKyGJpanWU137B5QihatlC1xkCEfoUefbcbRQHAG1ceZtMczSwRUzb8UaiT6+aszpC7
-         IPjbZ77pg726pxNLGf/zaIvDABDEYeugCSKIErydOgHW9xgLE+/SnEqjBTBtsysBrt5t
-         dPQPO5WedrEU6PFew9O77GdzjhM1gSTXO535dtvm8VxJamMJHWX9CCG0g95DiEV/IY+l
-         Bjhw==
+        bh=qo/M9ma8hAwhDuNMFiAuZ2jdy9oV5PDzurKa+6UdQu8=;
+        b=fN/88/eVLfNxt9P8Hpq2TmaqZWV96IZ9a8xriQR4qF7RyQFgZuNoEpyyuLIWRLqBp/
+         5uiMTjMwfsjr6xgGEpn93mOI1CWcEpZdpIsn2IOcMyaN4jUbxDu9KQTbp+7Ps2RYHuK5
+         uHzAHRVrWMvPzqZ72Z52EMAlLnpbarbS0aSqUItK3Lb2oXK3qlAsmGU+bNnFLp8rRK2z
+         FI4B58fAXnJoRfL654cA5WD7oHz6s/hQLUAVGf1HYDBJBQfX9ZSgOoYPU5CEhhdHTmJA
+         XTg/JA2s+5FBHizOHX6UG2fBeJhCTaUIv8HMzeLGH0aqj/v+N4QF7jkujJP8Ifjkp9K4
+         LopA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Q86dvL0fgMsxhbOXy6t11FAfTgjjVDHq4dE+YOyTIPg=;
-        b=kahligrQb/mr1UnQkSjm4Awk/8/txl8T3KrwAM+N/f/l6PdzYHtU83TXRlyOFmSoNB
-         mM1Uf1bR3LJ2/t1Y/hkC7XPzskFl9o2yosb6mXCMjTmfXxrUzYeuNpotPi1CRMNe1VoT
-         dNvU19vsEB7W3lfRYthanAA2GgHNK7g+RGrSD4PI8DS/sMo+HJjsi1M1+oO6ug4ZnE5/
-         AAkM0XKK+6sJ1dxMduPjThBOrENjvcMpd6HCJzOIMW6QFpvMDzw4xJfkMBv0wqF7c5nq
-         z0vjDK879DJ1qud//ODvMMJQTOVnH3SrNy+U2zjVrfgWbE2wLnVbXeQSJF8rNDLLHBOp
-         3aMA==
-X-Gm-Message-State: AGi0PuZlKOQFjK37pDf0QU7s914jrRlfVXQtHwruUptcQjd6C4hdGxEB
-        70dckM3Gycmq48iaYaaiqaw=
-X-Google-Smtp-Source: APiQypKCq/oBtC+JGz+Yd8mnskrVtqHRNgbrz0Lw61z51Acmxvvj2IeS0HXTsm5jXAQHVXEZqZ1jxQ==
-X-Received: by 2002:a17:902:d697:: with SMTP id v23mr22925193ply.262.1588019029518;
-        Mon, 27 Apr 2020 13:23:49 -0700 (PDT)
+        bh=qo/M9ma8hAwhDuNMFiAuZ2jdy9oV5PDzurKa+6UdQu8=;
+        b=Uuw94ZHX5MlmP2ioI/IctRObneee8MOSpaEmc/WYJrVDnJagIijNs2fPSAyJVH0j7o
+         TbD8Q2NgEoyvavpObpG22Iy2qf6Mio1in5L+CWksn3NNiwiJKcyK3nwdzbEPDZw91hLH
+         ZbcR2O7ywQxR9tO3QP/Md3/4lFhrhIQt93eLWZSv+M3Mn1NrV2dC/ToQxWz72d6sbT6N
+         3UaZ8QeDRNPDofQWQHlcft/hqH9Izy3617ipdcniAZZHpuHCX8iTN5CFz3cPNPcb6N5x
+         QHsSUQ06w0eVkUsoDWJZ8E3178x683DegflABStgCXh1zxOu5bfTSTYzX/oFzGBIQvKn
+         DV5g==
+X-Gm-Message-State: AGi0Puaxa6VBB6ESLEmOHENXZdxGgsToyVjo64YvH3JsXwec/akVB2P7
+        YI4v8hNOD0YNYMymB4UXwrQ=
+X-Google-Smtp-Source: APiQypKUepUI6LtlZuWNh+471rNXZ8BYm066Cg5endivb5o90ehljGYMDGuaFPG5fTfeGv09yUXN7w==
+X-Received: by 2002:a63:f50a:: with SMTP id w10mr23819002pgh.181.1588019031732;
+        Mon, 27 Apr 2020 13:23:51 -0700 (PDT)
 Received: from localhost.localdomain ([134.134.139.76])
-        by smtp.gmail.com with ESMTPSA id n30sm13329438pfq.88.2020.04.27.13.23.48
+        by smtp.gmail.com with ESMTPSA id n30sm13329438pfq.88.2020.04.27.13.23.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Apr 2020 13:23:49 -0700 (PDT)
+        Mon, 27 Apr 2020 13:23:51 -0700 (PDT)
 From:   bill.c.roberts@gmail.com
 X-Google-Original-From: william.c.roberts@intel.com
 To:     bill.c.roberts@gmail.com
 Cc:     plautrba@redhat.com, sds@tycho.nsa.gov, selinux@vger.kernel.org,
         William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH v4 16/18] matchpathcon: allow use of deprecated routines
-Date:   Mon, 27 Apr 2020 15:23:13 -0500
-Message-Id: <20200427202315.4943-17-william.c.roberts@intel.com>
+Subject: [PATCH v4 17/18] utils: matchpathcon add deprecated warning
+Date:   Mon, 27 Apr 2020 15:23:14 -0500
+Message-Id: <20200427202315.4943-18-william.c.roberts@intel.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200427202315.4943-1-william.c.roberts@intel.com>
 References: <20200225200219.6163-1-william.c.roberts@intel.com>
@@ -65,28 +65,28 @@ X-Mailing-List: selinux@vger.kernel.org
 
 From: William Roberts <william.c.roberts@intel.com>
 
-Utility matchpathcon uses the matchpathcon interface which has been
-deprectaed. However, this tool will continue to live on, so allow it to
-use the deprecated interface.
+Add a deprecated warning to matchpathcon encouraging users to switch to
+selabel_lookup.
 
 Signed-off-by: William Roberts <william.c.roberts@intel.com>
 ---
- libselinux/utils/Makefile | 2 ++
- 1 file changed, 2 insertions(+)
+ libselinux/utils/matchpathcon.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/libselinux/utils/Makefile b/libselinux/utils/Makefile
-index b018a08acbe0..aa2d3e1b144f 100644
---- a/libselinux/utils/Makefile
-+++ b/libselinux/utils/Makefile
-@@ -56,6 +56,8 @@ sefcontext_compile: LDLIBS += $(PCRE_LDLIBS) ../src/libselinux.a -lsepol
+diff --git a/libselinux/utils/matchpathcon.c b/libselinux/utils/matchpathcon.c
+index eb39a1881066..cc018d213f4c 100644
+--- a/libselinux/utils/matchpathcon.c
++++ b/libselinux/utils/matchpathcon.c
+@@ -73,6 +73,9 @@ int main(int argc, char **argv)
+ 	int error = 0;
+ 	int quiet = 0;
  
- sefcontext_compile: sefcontext_compile.o ../src/regex.o
- 
-+matchpathcon: CFLAGS += -Wno-deprecated-declarations
++	fprintf(stderr,
++		"Deprecated, use selabel_lookup\n");
 +
- all: $(TARGETS)
+ 	if (argc < 2)
+ 		usage(argv[0]);
  
- install: all
 -- 
 2.17.1
 

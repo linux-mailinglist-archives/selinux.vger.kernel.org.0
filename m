@@ -2,107 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B8C1BCEA1
-	for <lists+selinux@lfdr.de>; Tue, 28 Apr 2020 23:28:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0CD41BD60B
+	for <lists+selinux@lfdr.de>; Wed, 29 Apr 2020 09:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726512AbgD1V22 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 28 Apr 2020 17:28:28 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:49211 "EHLO
-        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726357AbgD1V22 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 28 Apr 2020 17:28:28 -0400
-Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id 319E95648FC
-        for <selinux@vger.kernel.org>; Tue, 28 Apr 2020 23:28:25 +0200 (CEST)
-Received: by mail-ot1-f44.google.com with SMTP id m18so35400146otq.9
-        for <selinux@vger.kernel.org>; Tue, 28 Apr 2020 14:28:25 -0700 (PDT)
-X-Gm-Message-State: AGi0PuZt6i3AKQ1/k1kCeLuoaHFcKVc/A2X2jS/sWPEJF4bif5lU6ONi
-        OdoX4uGCdvDzg7PwubAVHjZFeDPDn9L+56WCQiU=
-X-Google-Smtp-Source: APiQypKUNiKlH38MlJ4aWuD1puBoDXrfzNVOrATDPteuKh5DzasRTsnxMDzNSOZqmP3RqO2N4zDNJOKOxwiUl4RNXXA=
-X-Received: by 2002:a05:6808:3d5:: with SMTP id o21mr4686784oie.40.1588109304168;
- Tue, 28 Apr 2020 14:28:24 -0700 (PDT)
+        id S1726456AbgD2H3r (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 29 Apr 2020 03:29:47 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:3336 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726355AbgD2H3r (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Wed, 29 Apr 2020 03:29:47 -0400
+Received: from DGGEMS404-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 4CF88DE1252FF49D47E6;
+        Wed, 29 Apr 2020 15:29:46 +0800 (CST)
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ DGGEMS404-HUB.china.huawei.com (10.3.19.204) with Microsoft SMTP Server id
+ 14.3.487.0; Wed, 29 Apr 2020 15:29:39 +0800
+From:   Wei Yongjun <weiyongjun1@huawei.com>
+To:     Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        "Ondrej Mosnacek" <omosnace@redhat.com>,
+        Jeff Vander Stoep <jeffv@google.com>
+CC:     Wei Yongjun <weiyongjun1@huawei.com>, <selinux@vger.kernel.org>,
+        <kernel-janitors@vger.kernel.org>
+Subject: [PATCH -next] selinux: fix error return code in policydb_read()
+Date:   Wed, 29 Apr 2020 07:30:53 +0000
+Message-ID: <20200429073053.83660-1-weiyongjun1@huawei.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <CAJfZ7=mv_e7zo2T8MBOmODW8NHc48cr3GB1Jvi8=Gg-qm7QPTQ@mail.gmail.com>
- <20200427153438.17061-1-plautrba@redhat.com>
-In-Reply-To: <20200427153438.17061-1-plautrba@redhat.com>
-From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-Date:   Tue, 28 Apr 2020 23:28:13 +0200
-X-Gmail-Original-Message-ID: <CAJfZ7=mjM5YqgaF0sjibssaj3Jdb03f5HDtXdwg-VQcF7_ygPg@mail.gmail.com>
-Message-ID: <CAJfZ7=mjM5YqgaF0sjibssaj3Jdb03f5HDtXdwg-VQcF7_ygPg@mail.gmail.com>
-Subject: Re: [PATCH v2] python/semanage: Use ipaddress module instead of IPy
-To:     Petr Lautrbach <plautrba@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Tue Apr 28 23:28:25 2020 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=9BE6D564900
-X-Org-Mail: nicolas.iooss.2010@polytechnique.org
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Originating-IP: [10.175.113.25]
+X-CFilter-Loop: Reflected
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Apr 27, 2020 at 5:35 PM Petr Lautrbach <plautrba@redhat.com> wrote:
->
-> ipaddress python module was added to standard library in Python 3.3 -
-> https://docs.python.org/3/library/ipaddress.html
->
-> seobject.py was the only consumer of IPy module so this dependency is not needed
-> anymore.
->
-> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
-> ---
->
-> Based on Nicolas input:
->
-> - improved the check comment
-> - dropped the unnecessary check
+Fix to return negative error code -ENOMEM from the kvcalloc() error
+handling case instead of 0, as done elsewhere in this function.
 
-Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+---
+ security/selinux/ss/policydb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-I will apply this patch tomorrow if nobody else has any comment.
-Thanks,
-Nicolas
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index a0b3dc152468..a51e051df2cc 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -2638,6 +2638,7 @@ int policydb_read(struct policydb *p, void *fp)
+ 	if (rc)
+ 		goto bad;
+ 
++	rc = -ENOMEM;
+ 	p->type_attr_map_array = kvcalloc(p->p_types.nprim,
+ 					  sizeof(*p->type_attr_map_array),
+ 					  GFP_KERNEL);
 
->  python/semanage/seobject.py | 15 ++++++---------
->  1 file changed, 6 insertions(+), 9 deletions(-)
->
-> diff --git a/python/semanage/seobject.py b/python/semanage/seobject.py
-> index f2a139c970bd..6e0b87f2fa3c 100644
-> --- a/python/semanage/seobject.py
-> +++ b/python/semanage/seobject.py
-> @@ -32,7 +32,7 @@ from semanage import *
->  PROGNAME = "policycoreutils"
->  import sepolicy
->  import setools
-> -from IPy import IP
-> +import ipaddress
->
->  try:
->      import gettext
-> @@ -1858,15 +1858,12 @@ class nodeRecords(semanageRecords):
->          if addr == "":
->              raise ValueError(_("Node Address is required"))
->
-> -        # verify valid combination
-> +        # verify that (addr, mask) is either a IP address (without a mask) or a valid network mask
->          if len(mask) == 0 or mask[0] == "/":
-> -            i = IP(addr + mask)
-> -            newaddr = i.strNormal(0)
-> -            newmask = str(i.netmask())
-> -            if newmask == "0.0.0.0" and i.version() == 6:
-> -                newmask = "::"
-> -
-> -            protocol = "ipv%d" % i.version()
-> +            i = ipaddress.ip_network(addr + mask)
-> +            newaddr = str(i.network_address)
-> +            newmask = str(i.netmask)
-> +            protocol = "ipv%d" % i.version
->
->          try:
->              newprotocol = self.protocol.index(protocol)
-> --
-> 2.26.2
->
+
 

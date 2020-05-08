@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D23CB1CB3AE
-	for <lists+selinux@lfdr.de>; Fri,  8 May 2020 17:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E683A1CB3AA
+	for <lists+selinux@lfdr.de>; Fri,  8 May 2020 17:42:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726736AbgEHPmd (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 8 May 2020 11:42:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59382 "EHLO
+        id S1728384AbgEHPmc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 8 May 2020 11:42:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728380AbgEHPm2 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 8 May 2020 11:42:28 -0400
+        with ESMTP id S1728386AbgEHPm3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 8 May 2020 11:42:29 -0400
 Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34F04C061A0C
-        for <selinux@vger.kernel.org>; Fri,  8 May 2020 08:42:28 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id f83so1937974qke.13
-        for <selinux@vger.kernel.org>; Fri, 08 May 2020 08:42:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35945C061A0C
+        for <selinux@vger.kernel.org>; Fri,  8 May 2020 08:42:29 -0700 (PDT)
+Received: by mail-qk1-x742.google.com with SMTP id k81so1972901qke.5
+        for <selinux@vger.kernel.org>; Fri, 08 May 2020 08:42:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FX//iYGmVjDYI77WwacIatMpaEG+MdxVWLMXm8STdGM=;
-        b=ikY03yPHcD6QoKR8kqQKWJRcnePOlQOlpkcI6mkDW7B1oYbppNeeZy97NjMFx/n2i8
-         zDX6LrYaGhvODuj0CRgHICFvvD61dkBKPuah4T3tZmcRzgcaJTfmVhcDGCosCksiE0PJ
-         czNxDWliN+WgVQnDHBJPJSPVVq34ArhaIrlVrzWiB+Dvht6E9ACUhYl/x2sRweuwvqmW
-         HDKGj5dvJ2btdQSU3phE4NSb81VQECLjXGbrShsvj1DnXKdlrZ/VVtpXty34Mn25qlPk
-         NPJl+BdJm6vVilA4NzBndQY0jZMz4NNi0KPLuPjMa3qItkf6jzoEWQNWqrwFHKdWdsbr
-         AmZw==
+        bh=QLk6bzCO68v53IV0tfoA6lxReYaor204Vwv3QlArqY8=;
+        b=SeM4+nnUsDdnV/K2jX9/tkouTYCfmVfuGD97kUcB87X3vsf4hW0AMqgZB/010gPp3s
+         f3vN0+fsAyIZRoCpHs/z6vyh5oye9ZtSiENP/hL3SI/3zfE8SY5VOo1nFB3uKVvtirq0
+         cko7haSSW0zN6S2xjWq1pDpX6yl7clu4+g2zMZ9eNyj1los+ohGijrkC3iML9NY+8xTy
+         l7t0c63aiDlixFB6mWXD5B2ghFwUpJVaEXIcO2QcoXZAmkgNWm/9zGKss5yyZrFyxe2L
+         Bp/bhF2xPbSPpe2N7rlnJ0H3DpkUkTn+lL52GwmNYGG8PczB9tZWxfhlPXMS+f/ukc3e
+         3t4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FX//iYGmVjDYI77WwacIatMpaEG+MdxVWLMXm8STdGM=;
-        b=sJ5MzVXoKPN8k5I/4pTxUEMYqyxjZclWuosSaD1+6kS/1GYg2EVGYVZwOkzM4tawNm
-         7upRm6VlfYA31fafH63Q0i8CrK40Q4VUixOPu7SLE9s/tE++Ve2cTIzW05hsyOISc6m8
-         u6+8doLiSGrgwI2w2bs8Cuayd3AYV3UtVtcbqjrzvBS6nH8nM22/lBjNMEuZasIDJ+Gy
-         31Od6MphyaMfHiG76PDLaMbQV/2eSPCf6ZrpMtng1YDb1+hBqzgvBRDmbvXuJR/jVnuf
-         7hoLA6Eiw/rjqdNDU+0ou9Ro7utC44rdZq9KOe1sr2UyUQNmJXEy8xqewTMIqDNlOUsH
-         9ZZQ==
-X-Gm-Message-State: AGi0PubGWcnQ4HJVxW+eBPzoErXg6/gaq+2pIQysPn1HtaKoWf3vg+S/
-        lDglHnhaF89w4KxwvafACca7XPt1
-X-Google-Smtp-Source: APiQypLiTgvLQWj5AZv4sdPb1KpS5MJbU0uBDfjMektbEXsfhDn3DyvVomQjbUJhynfuOCBfoenyEQ==
-X-Received: by 2002:a05:620a:490:: with SMTP id 16mr3292880qkr.203.1588952547230;
-        Fri, 08 May 2020 08:42:27 -0700 (PDT)
+        bh=QLk6bzCO68v53IV0tfoA6lxReYaor204Vwv3QlArqY8=;
+        b=gbQlPmmWqY9Ep0yF8HwLXy6OTRvHpbGXNIJoJu/QA3KEqedqNkKVQ0KEVBJzfAzJsE
+         VH2qqHomxYsSF1dQBXFoZnfcwuVOgXTOFn+aIEiIeGqq2rgrxdtqo7G5qPz1yAGlVSOs
+         KQwLX0v2CXWSyTXDZZi/mtQ6dGZehpiBzgsJmHsPke913aYah2g4muqg8LDSloKzApz+
+         SmEmkGzEkbd5bH1Yuu4ZV5oOlB5BTMN0l79757XXPjRWgrYTgtxgjtic5M4ADVM82Tyd
+         LJQl0SCrotLUDvzsOpOhffD3rRn76iwYMRgxFPuUWJDL01TBUDmQ6doJaObkvWfstqwu
+         sCzQ==
+X-Gm-Message-State: AGi0PuaaAW58brMJ/3OIcnMfdsRIaWt02OHWRZ6VjOQk40r7zBdpahR5
+        tUfBJ8Xuz328DMXnPGvTXkJtQTad
+X-Google-Smtp-Source: APiQypJFzULxOr0WmYUN4F4pujW2b4VCHP6mvHIiJM3rmDD5rcDTdQHC7Ed89A6eRGYopmKiVENxYQ==
+X-Received: by 2002:ae9:dcc1:: with SMTP id q184mr3236964qkf.365.1588952548184;
+        Fri, 08 May 2020 08:42:28 -0700 (PDT)
 Received: from a-gady2p56i3do.evoforge.org (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id g5sm309055qkl.114.2020.05.08.08.42.26
+        by smtp.gmail.com with ESMTPSA id g5sm309055qkl.114.2020.05.08.08.42.27
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 May 2020 08:42:26 -0700 (PDT)
+        Fri, 08 May 2020 08:42:27 -0700 (PDT)
 From:   Stephen Smalley <stephen.smalley.work@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     omosnace@redhat.com, paul@paul-moore.com,
         Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v4 testsuite 12/15] policy/Makefile: conditionalize setting of allow_domain_fd_use
-Date:   Fri,  8 May 2020 11:41:35 -0400
-Message-Id: <20200508154138.24217-13-stephen.smalley.work@gmail.com>
+Subject: [PATCH v4 testsuite 13/15] tests/cap_userns: set /proc/sys/kernel/unprivileged_userns_clone if needed
+Date:   Fri,  8 May 2020 11:41:36 -0400
+Message-Id: <20200508154138.24217-14-stephen.smalley.work@gmail.com>
 X-Mailer: git-send-email 2.23.1
 In-Reply-To: <20200508154138.24217-1-stephen.smalley.work@gmail.com>
 References: <20200508154138.24217-1-stephen.smalley.work@gmail.com>
@@ -64,37 +64,41 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-allow_domain_fd_use is Fedora-specific so conditionalize the setting
-of it to avoid noise on Debian or other distributions.
+Debian does not allow unprivileged user namespace clones by default,
+so update the test to enable it when running the test to avoid requiring
+sys_admin permission to the capability class during the cap_userns tests.
+The current test is specifically exercising the sys_admin check in the
+separate cap_userns class used for capability checks against non-init
+user namespaces.
 
 Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 ---
- policy/Makefile | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ tests/cap_userns/test | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/policy/Makefile b/policy/Makefile
-index 17e9da3..386bbce 100644
---- a/policy/Makefile
-+++ b/policy/Makefile
-@@ -168,12 +168,16 @@ build: $(TARGETS)
+diff --git a/tests/cap_userns/test b/tests/cap_userns/test
+index 9eafba6..917da00 100755
+--- a/tests/cap_userns/test
++++ b/tests/cap_userns/test
+@@ -6,6 +6,10 @@ BEGIN {
+     $basedir = $0;
+     $basedir =~ s|(.*)/[^/]*|$1|;
  
- load: expand_check all
- 	# General policy load
--	@-/usr/sbin/setsebool allow_domain_fd_use=0
-+	@if /usr/sbin/getsebool allow_domain_fd_use 2> /dev/null; then \
-+		/usr/sbin/setsebool allow_domain_fd_use=0; \
-+	fi
- 	$(SEMODULE) -i test_policy/test_policy.pp $(CIL_TARGETS)
- 
- unload:
- 	# General policy unload
--	@-/usr/sbin/setsebool allow_domain_fd_use=1
-+	@if /usr/sbin/getsebool allow_domain_fd_use 2> /dev/null; then \
-+		/usr/sbin/setsebool allow_domain_fd_use=1; \
-+	fi
- 	$(SEMODULE) -r test_policy $(subst .cil,,$(CIL_TARGETS))
- 
- clean:
++    if ( -e '/proc/sys/kernel/unprivileged_userns_clone' ) {
++        system(
++            "echo 1 > /proc/sys/kernel/unprivileged_userns_clone 2> /dev/null");
++    }
+     if ( system("$basedir/userns_child_exec -t -U > /dev/null 2>&1") == 0 ) {
+         plan tests => 2;
+     }
+@@ -27,3 +31,7 @@ $result = system(
+ "runcon -t test_no_cap_userns_t -- $basedir/userns_child_exec -p -m -U -M '0 0 1' -G '0 0 1' -- true 2>&1"
+ );
+ ok($result);
++
++if ( -e '/proc/sys/kernel/unprivileged_userns_clone' ) {
++    system("echo 0 > /proc/sys/kernel/unprivileged_userns_clone 2> /dev/null");
++}
 -- 
 2.23.1
 

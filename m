@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B3A071CB3AC
-	for <lists+selinux@lfdr.de>; Fri,  8 May 2020 17:42:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95E5C1CB3A7
+	for <lists+selinux@lfdr.de>; Fri,  8 May 2020 17:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727029AbgEHPmh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 8 May 2020 11:42:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59372 "EHLO
+        id S1728282AbgEHPm2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 8 May 2020 11:42:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728307AbgEHPm0 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 8 May 2020 11:42:26 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 772F6C061A0C
-        for <selinux@vger.kernel.org>; Fri,  8 May 2020 08:42:26 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id b1so801788qtt.1
-        for <selinux@vger.kernel.org>; Fri, 08 May 2020 08:42:26 -0700 (PDT)
+        with ESMTP id S1728369AbgEHPm1 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 8 May 2020 11:42:27 -0400
+Received: from mail-qk1-x743.google.com (mail-qk1-x743.google.com [IPv6:2607:f8b0:4864:20::743])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E903C05BD43
+        for <selinux@vger.kernel.org>; Fri,  8 May 2020 08:42:27 -0700 (PDT)
+Received: by mail-qk1-x743.google.com with SMTP id s186so124185qkd.4
+        for <selinux@vger.kernel.org>; Fri, 08 May 2020 08:42:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=0meoboseqO03Hr9Mio+DICdbqDpITH6inUJXkgltF/0=;
-        b=h6Jp5DX74l184KC0sdwmAP7m05WI4SDjhqBeGuBMAdgoAactDrlqeNzYWkzW3zTTHx
-         AMYo7RVNs1dk+lz8FdOhjpEYU7M9PlxU5xhMiYkIfLtJg7z7eeeFPKxd35T45PXEf6RE
-         1XRBWiWf4vgyhAHmkcl+QwAReAn57BmVCx443Xf+bd8+HHiwtOor1s3FWh6gYprLFIOr
-         e45xGq/uPkVxQSlnc5q4BIs5RAjSPPn6ef4O36rR2jmbEYsnAEorlCgmViWUV/ZEaXd1
-         jPZB1IAUjdxlm6gzfqDWGSuoxGggKcXOwp5B/VxPdYNdRmxXelz95FVsft2sHlq723FY
-         58yA==
+        bh=rNGp7buHWc+wi1QzcrQJU2o4gr6vKLi1sx5XT6PNCWo=;
+        b=rdMsCd9erCCgaTRHrnq1tbAKOJ7Lai3TCfk3XR96Zrubf92ulveQhb3DBq/tTXuQRv
+         +G+vmq5hKWGpcK/Z3bcYFyBg3Qf796y1USyrYqHoMJtADW2+asu23/Ilm75x2aQ4Cril
+         qm0qyOrArTDvRKmJ8wz+CxuCFXv5XwBWaxwsgLiHTMkNHMB4H/Xnmu8iazqIDeEQsKyW
+         B+Kt4uAVYX8fyZDY1Aoj4kOMBAni2GivkkVWTlaTpp5l+e6gvlJjL7rRz18PXyuoS9k8
+         Yh4RFW77qoAJTqDHS1vTUD96eAFwlaCzN151Y4g3cMyz3WiKsl786twQk3j1+20HqqgE
+         XDJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=0meoboseqO03Hr9Mio+DICdbqDpITH6inUJXkgltF/0=;
-        b=mJwSWpL9ludxX+iuleXZ6gpuBGuhLL9pYa/S4xGl0ermGKo6NQGpgdgYhRupHol+zx
-         3Df9EssN4N9ap8YyqMvrfNVmMl3BiWGXRtoGTUgg2TxIhgUdS32lBozNAFZzE/Yf6R3m
-         dU2SxK+uSRA208ixrsT1WhSVRfmHIR8WNELVxt+oiEsRuwIz4r8rqg2mBHRZpPU12/Hr
-         Lqiw6x8nbHhxfValFPnJc84euU6caX7jN37m7R0T4vRWzRRUl5vZNo7K+Zr20Xxc/YYm
-         NwD/u2cA892JUhDU8rRU7OZa+lpRv6B3UeRdNPAoItqoCB7zzzlZ6KnW4/ALYvvksZ/7
-         0itw==
-X-Gm-Message-State: AGi0PuZyEpLank4ufIETNFlzRjn1bcyRxgg26aebU+il2GGpnBF5asRu
-        Zxs7EYIBZhJW//WhF9XpnSEo+7a6
-X-Google-Smtp-Source: APiQypJrEKEQFh5HRTGQ62RlkRVS+Oi+B6RyKDcxSZuJI3Oh4LM8R5FdY3CWb/Ay2epHHWMgEGBVnA==
-X-Received: by 2002:ac8:4897:: with SMTP id i23mr3772068qtq.184.1588952545588;
-        Fri, 08 May 2020 08:42:25 -0700 (PDT)
+        bh=rNGp7buHWc+wi1QzcrQJU2o4gr6vKLi1sx5XT6PNCWo=;
+        b=AKqxnfS3k6vwyU/dxQ85q3OXM1LnZjJP9yN4N196TRvrrlOQvKmWVWJq+EJlNQTT43
+         lwJpnkgUj4Lm5YRQBOy5+hGQQRA2i+dp6kOZRE4TR9qvXckzCHjkatdqMkPuIG1mVvVh
+         h/hiuFJdxA8Ggg7zU+QGellwcg9tEeXJgWKyFeeEXp0qv4OrD03fZe5KUlYCtK+WBXJM
+         nzBFNaitDRVB8lhUIGPK61Lu+sRVqrpjaL9bavT8xVDFp98fOQUwN/F0v370SDfJhzby
+         hqnlA3o3iF5KQgrniG2rg/pMEA+2FS6tgdnykPNCU3GW/GVuzT50cIQ8oum1RJ2EksMG
+         6OxQ==
+X-Gm-Message-State: AGi0Pub1ZCM8CPdJHpbPQLtoFBP8Q36q4bakJ+ZWwKiELDO04KCUso83
+        mJAOri+rPGrnUbJDapBb5Q9bEUxk
+X-Google-Smtp-Source: APiQypKPwCsDFVMfHoCP9T0bzpnllfzRdzPhk3LGVQFpN5dZK4a9V14O2hOtlK3GjgJa1zV7Nyf4Nw==
+X-Received: by 2002:a37:b3c1:: with SMTP id c184mr3382136qkf.194.1588952546436;
+        Fri, 08 May 2020 08:42:26 -0700 (PDT)
 Received: from a-gady2p56i3do.evoforge.org (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id g5sm309055qkl.114.2020.05.08.08.42.24
+        by smtp.gmail.com with ESMTPSA id g5sm309055qkl.114.2020.05.08.08.42.25
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 May 2020 08:42:24 -0700 (PDT)
+        Fri, 08 May 2020 08:42:25 -0700 (PDT)
 From:   Stephen Smalley <stephen.smalley.work@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     omosnace@redhat.com, paul@paul-moore.com,
         Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v4 testsuite 10/15] policy: Add defaultrange rules for overlay tests
-Date:   Fri,  8 May 2020 11:41:33 -0400
-Message-Id: <20200508154138.24217-11-stephen.smalley.work@gmail.com>
+Subject: [PATCH v4 testsuite 11/15] test_filesystem.te,tests/{fs_}filesystem: do not force user identity to system_u
+Date:   Fri,  8 May 2020 11:41:34 -0400
+Message-Id: <20200508154138.24217-12-stephen.smalley.work@gmail.com>
 X-Mailer: git-send-email 2.23.1
 In-Reply-To: <20200508154138.24217-1-stephen.smalley.work@gmail.com>
 References: <20200508154138.24217-1-stephen.smalley.work@gmail.com>
@@ -64,45 +64,57 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Some of the overlay tests assume that files inherit their MCS/MLS
-labels from the parent directory rather than the process.  This is
-true on Fedora which defines defaultrange rules for this purpose but
-not in refpolicy.  Add the defaultrange rules explicitly to the test
-policy as a CIL module to provide consistent behavior on Debian.
+Rather than forcing the process user identity to system_u in the
+filesystem tests (which broke in Debian due to not being authorized
+for unconfined_r), grant the test_filesystem_fscontext_t domain
+the ability to create objects in other user identities.  This is
+cleaner.
 
 Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 ---
- policy/Makefile                      | 2 +-
- policy/test_overlay_defaultrange.cil | 7 +++++++
- 2 files changed, 8 insertions(+), 1 deletion(-)
- create mode 100644 policy/test_overlay_defaultrange.cil
+ policy/test_filesystem.te | 1 +
+ tests/filesystem/test     | 2 +-
+ tests/fs_filesystem/test  | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/policy/Makefile b/policy/Makefile
-index 8f43427..17e9da3 100644
---- a/policy/Makefile
-+++ b/policy/Makefile
-@@ -36,7 +36,7 @@ SUPPORTS_CIL = n
- endif
+diff --git a/policy/test_filesystem.te b/policy/test_filesystem.te
+index 7d73cbf..4e27134 100644
+--- a/policy/test_filesystem.te
++++ b/policy/test_filesystem.te
+@@ -350,6 +350,7 @@ allow test_filesystem_fscontext_t test_filesystem_filecon_t:file { getattr open
+ allow test_filesystem_fscontext_t test_filesystem_fscontext_fs_t:dir { add_name search write };
+ allow test_filesystem_fscontext_t test_filesystem_fscontext_fs_t:file { create getattr open relabelfrom write };
+ allow test_filesystem_fscontext_t test_filesystem_fscontext_fs_t:filesystem { mount relabelto unmount };
++domain_obj_id_change_exemption(test_filesystem_fscontext_t)
+ fs_relabelfrom_all_fs(test_filesystem_fscontext_t)
+ files_search_all(test_filesystem_fscontext_t)
+ allow test_filesystem_filecon_t test_filesystem_fscontext_fs_t:filesystem { associate };
+diff --git a/tests/filesystem/test b/tests/filesystem/test
+index 149cc29..7d4654d 100755
+--- a/tests/filesystem/test
++++ b/tests/filesystem/test
+@@ -1116,7 +1116,7 @@ if ( not $nfs_enabled ) {
+         #   system_u:object_r:test_filesystem_context_file_t:s0 from $test_opts
+         print "Creating test file $basedir/mntpoint/mp1/test_file\n";
+         $result = system(
+-"runcon -u system_u -t test_filesystem_fscontext_t $basedir/create_file -f $basedir/mntpoint/mp1/test_file -e test_filesystem_context_file_t $v"
++"runcon -t test_filesystem_fscontext_t $basedir/create_file -f $basedir/mntpoint/mp1/test_file -e test_filesystem_context_file_t $v"
+         );
+         ok( $result eq 0 );
  
- ifeq ($(SUPPORTS_CIL),y)
--CIL_TARGETS = test_mlsconstrain.cil
-+CIL_TARGETS = test_mlsconstrain.cil test_overlay_defaultrange.cil
- ifeq ($(shell [[ $(MAX_KERNEL_POLICY) -ge 32 && $(POL_VERS) -ge 32 ]] && echo true),true)
- # If other MLS tests get written this can be moved outside of the glblub test
- ifeq ($(POL_TYPE), MLS)
-diff --git a/policy/test_overlay_defaultrange.cil b/policy/test_overlay_defaultrange.cil
-new file mode 100644
-index 0000000..d1c18db
---- /dev/null
-+++ b/policy/test_overlay_defaultrange.cil
-@@ -0,0 +1,7 @@
-+(defaultrange file target low)
-+(defaultrange dir target low)
-+(defaultrange lnk_file target low)
-+(defaultrange chr_file target low)
-+(defaultrange blk_file target low)
-+(defaultrange sock_file target low)
-+(defaultrange fifo_file target low)
+diff --git a/tests/fs_filesystem/test b/tests/fs_filesystem/test
+index 5dcc89d..5dedf83 100755
+--- a/tests/fs_filesystem/test
++++ b/tests/fs_filesystem/test
+@@ -1145,7 +1145,7 @@ if ( not $nfs_enabled ) {
+         #   system_u:object_r:test_filesystem_context_file_t:s0 from $test_opts
+         print "Creating test file $basedir/mntpoint/mp1/test_file\n";
+         $result = system(
+-"runcon -u system_u -t test_filesystem_fscontext_t $filesystem_dir/create_file -f $basedir/mntpoint/mp1/test_file -e test_filesystem_context_file_t $v"
++"runcon -t test_filesystem_fscontext_t $filesystem_dir/create_file -f $basedir/mntpoint/mp1/test_file -e test_filesystem_context_file_t $v"
+         );
+         ok( $result eq 0 );
+ 
 -- 
 2.23.1
 

@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A62C1CB3A9
-	for <lists+selinux@lfdr.de>; Fri,  8 May 2020 17:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65E8F1CB3AB
+	for <lists+selinux@lfdr.de>; Fri,  8 May 2020 17:42:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728196AbgEHPmb (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 8 May 2020 11:42:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59394 "EHLO
+        id S1728386AbgEHPmd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 8 May 2020 11:42:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726736AbgEHPmb (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 8 May 2020 11:42:31 -0400
-Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E54C3C05BD43
-        for <selinux@vger.kernel.org>; Fri,  8 May 2020 08:42:30 -0700 (PDT)
-Received: by mail-qt1-x844.google.com with SMTP id q13so1585464qtp.7
-        for <selinux@vger.kernel.org>; Fri, 08 May 2020 08:42:30 -0700 (PDT)
+        with ESMTP id S1726736AbgEHPmc (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 8 May 2020 11:42:32 -0400
+Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FFC0C061A0C
+        for <selinux@vger.kernel.org>; Fri,  8 May 2020 08:42:32 -0700 (PDT)
+Received: by mail-qt1-x841.google.com with SMTP id p12so1560306qtn.13
+        for <selinux@vger.kernel.org>; Fri, 08 May 2020 08:42:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=g3CfCyomGKkI7j5Zij2KCwJJL94XupDKU7TXHJp/Chc=;
-        b=Fdt2fSEgChKPcvNlrtvxBiLd20uKTb3zCZrBqPic6BhxFTIfHgnhNawRnZdcbt4Ait
-         Z8JvRJ5tR8u4gIC8IdOXuB2ElwVTWlRxHPfzhg3CW6PnJlqiGwk19Z7VZTzhb3oHSLsj
-         7Y4XiPk2Z5EmddJBjcEN0ZrcD9Ta0FK1tPC/orx0vWYIFuKBMz1OGmpb93uQuqzSj2jL
-         9Kwo0uldeHclbZyWNOHhXldlkUf/Fzx8kMnaBpXLKQyhxWSWQHPPo4eYZNqZ6X7QA01p
-         dlEffQGBdv75sGK3FFowdnAc0i91oRkpak4BF+GGl/Za4AwyPPsQxOjsMRpMBCAL57JX
-         SoLw==
+        bh=3DV1e4NV0jLhKZDsT4mAclKSFgDpKt8QFl5qn3Sey1E=;
+        b=jiS1LIT+kMaPgqtclnbVm703MlU+/XRkQwDcueVyT3E8gSdZFl/csjuD8Si1AbRe+M
+         GlDtumxsMGcDYXMwRFke7t6E2kpGI5AEjva/0+sQB1/rGXFxxqn/NSVsrPZFsQt7zbNY
+         X5SIt/5xWKbMbs+r0enAD/SStNPqR3I7Xgqsm2M5mEHK7A/SewfYVg7tR3ksAPDFP0CG
+         bFvbQR0W41AvZVKMz1WXkeW7YRxxmqAV7YtUgNAsBIODgnusa5imSVW5/UGnMKkdvXnH
+         BIN2BlC1y4I5M6L4LCMbHRlaAwQNiPWmLPO51BF9/T6EIoVOZ2Sb8WWdNC7zlzpHc5W8
+         QjNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=g3CfCyomGKkI7j5Zij2KCwJJL94XupDKU7TXHJp/Chc=;
-        b=IhW6MCr7mge941twxz2FCDOxPENPyW2uHUrYV1PbqsecmVaO2MB8qA23K0vfl5VtoW
-         AUub9iyPxYWhEhYpKiRIbzCgQEKEeuRFnj3AhLtiJypiFLGssv1Dh6u13wrbGtKDMTvn
-         bPRqZwXhXCiIrpHsBqww3gEAuFCTnWYcSfQeGvv0T6Aj9QfCaiX3yrar9wDl8rbe+GxQ
-         sy49r5ySJl9YUOnLZJEFBELDORimHmaE6xaiMdkFf0zO7dfqaOozGQ9Si3x5deHPwFL3
-         hBR3Pz5ic99ee0+00/22t6TiR+5Dy0/IYr62Qxf/bRnBiXW1a4s+Bx9GM9BLC8rSxvGd
-         KiiA==
-X-Gm-Message-State: AGi0PuY80dZEnunq/jiXwmCYWGpu2eW7uGDPWMZtx276KuztOIWia5ow
-        AvGk6+u4KkO5lPKNCGm3EI6GIzRt
-X-Google-Smtp-Source: APiQypIp/vuN7PnIPusDECQ3zVeSTNpulfsezKhKgQsM+5/VF+UrAUtS5gm+tBp9e0xU/0xwxdDYwQ==
-X-Received: by 2002:aed:308e:: with SMTP id 14mr3680124qtf.146.1588952549885;
-        Fri, 08 May 2020 08:42:29 -0700 (PDT)
+        bh=3DV1e4NV0jLhKZDsT4mAclKSFgDpKt8QFl5qn3Sey1E=;
+        b=KhHXo7JBGjr1xXcJXGmOuYFbZgfkLO2kNy61nVSkjMpbr17H31KGpw5nmbp1kYvKFr
+         LQ4X4ZTZem0bYlgX4BoqBF1qUydhetF9LlvSd0nAqXuCzH5P73sM7ppvXn/su+ZDO7Ih
+         Hxktjt11h8ZjUS6DixzkZ7D3G01Y/xLohzXZX9fNCqOJYxEKYjlRoH8lV5ypuIxHGyYq
+         vwIvswC2wY+qhzcsN7Uqaj9igkTiJoQ6ENbHa/UDjJBj6A98B+tWgMyL6Ni51wArGUtl
+         OR1TbviKS3Hm94WTjnDouKl0g75Ecf17wlyQR1WM9At806vmDNqQ6c2eUYH+bZ3iUfgZ
+         9b8g==
+X-Gm-Message-State: AGi0Puas8P9tqqywJc6lgkTsFqxgeQlhH5+9qj6bvHt+kP7Zp5BA0Sr+
+        ZX7/2sfH87BNBoxQI6Fzzx9DYdmI
+X-Google-Smtp-Source: APiQypIvWqdbdPSUm6t5FGqNrtV7Jv8T9khohi3RKXpgORQPyTiMTOwF+6TSqY3hLvcY3Oqd206Z+g==
+X-Received: by 2002:ac8:44d9:: with SMTP id b25mr3608751qto.77.1588952551060;
+        Fri, 08 May 2020 08:42:31 -0700 (PDT)
 Received: from a-gady2p56i3do.evoforge.org (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id g5sm309055qkl.114.2020.05.08.08.42.28
+        by smtp.gmail.com with ESMTPSA id g5sm309055qkl.114.2020.05.08.08.42.29
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 08 May 2020 08:42:28 -0700 (PDT)
+        Fri, 08 May 2020 08:42:30 -0700 (PDT)
 From:   Stephen Smalley <stephen.smalley.work@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     omosnace@redhat.com, paul@paul-moore.com,
         Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v4 testsuite 14/15] tests/mmap: skip /dev/zero tests if /dev is noexec
-Date:   Fri,  8 May 2020 11:41:37 -0400
-Message-Id: <20200508154138.24217-15-stephen.smalley.work@gmail.com>
+Subject: [PATCH v4 testsuite 15/15] README.md: Add instructions for Debian
+Date:   Fri,  8 May 2020 11:41:38 -0400
+Message-Id: <20200508154138.24217-16-stephen.smalley.work@gmail.com>
 X-Mailer: git-send-email 2.23.1
 In-Reply-To: <20200508154138.24217-1-stephen.smalley.work@gmail.com>
 References: <20200508154138.24217-1-stephen.smalley.work@gmail.com>
@@ -64,97 +64,99 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-If /dev is mounted noexec (as in Debian unstable), then
-we cannot mmap/mprotect PROT_EXEC /dev/zero regardless of SELinux.
-Check for this situation and skip those tests in that case to avoid
-extraneous failures.
+Now that the testsuite builds and runs on Debian, add instructions
+to the README with the necessary dependencies and steps.
 
 Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 ---
- tests/mmap/test | 48 +++++++++++++++++++++++++++++++-----------------
- 1 file changed, 31 insertions(+), 17 deletions(-)
+ README.md | 66 ++++++++++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 65 insertions(+), 1 deletion(-)
 
-diff --git a/tests/mmap/test b/tests/mmap/test
-index fe6f184..b7cd56a 100755
---- a/tests/mmap/test
-+++ b/tests/mmap/test
-@@ -3,10 +3,11 @@
- use Test;
+diff --git a/README.md b/README.md
+index b36494e..1f7e5d9 100644
+--- a/README.md
++++ b/README.md
+@@ -36,6 +36,8 @@ one primary security module may be active at a time.
  
- BEGIN {
--    $test_count         = 34;
--    $test_hugepages     = 0;
--    $test_exec_checking = 0;
--    $test_map_checking  = 0;
-+    $test_count            = 30;
-+    $test_hugepages        = 0;
-+    $test_exec_checking    = 0;
-+    $test_map_checking     = 0;
-+    $test_devzero_checking = 0;
+ ### Userland and Base Policy
  
-     system("echo 1 > /proc/sys/vm/nr_hugepages 2> /dev/null");
-     if ( system("grep -q 1 /proc/sys/vm/nr_hugepages 2> /dev/null") == 0 ) {
-@@ -19,6 +20,12 @@ BEGIN {
-         $test_count += 4;
-     }
- 
-+    if ( system("grep -q '/dev .*noexec' /proc/self/mounts 2> /dev/null") != 0 )
-+    {
-+        $test_devzero_checking = 1;
-+        $test_count += 4;
-+    }
++#### Fedora or RHEL
 +
-     if ( -e '/sys/fs/selinux/class/file/perms/map' ) {
-         $test_map_checking = 1;
-         $test_count += 1;
-@@ -62,13 +69,17 @@ ok( $result, 0 );
- $result = system "runcon -t test_no_execmem_t $basedir/mmap_anon_shared 2>&1";
- ok($result);
+ On a Fedora/RHEL based system the testsuite has the following userspace
+ dependencies beyond a minimal install (other Linux distributions should have
+ similar dependencies):
+@@ -77,8 +79,70 @@ following command:
+ 		xfsprogs-devel \
+ 		libuuid-devel
  
--# Test success and failure for mmap /dev/zero.
--$result =
--  system "runcon -t test_mmap_dev_zero_t $basedir/mmap_file_shared /dev/zero";
--ok( $result, 0 );
--$result = system
--  "runcon -t test_no_mmap_dev_zero_t $basedir/mmap_file_shared /dev/zero 2>&1";
--ok($result);
-+if ($test_devzero_checking) {
++#### Debian
 +
-+    # Test success and failure for mmap /dev/zero.
-+    $result =
-+      system
-+      "runcon -t test_mmap_dev_zero_t $basedir/mmap_file_shared /dev/zero";
-+    ok( $result, 0 );
-+    $result = system
-+"runcon -t test_no_mmap_dev_zero_t $basedir/mmap_file_shared /dev/zero 2>&1";
-+    ok($result);
-+}
- 
- # Test success and failure for mprotect w/ anonymous shared memory.
- # In old kernels, this triggers a tmpfs file execute check.
-@@ -80,13 +91,16 @@ $result = system
-   "runcon -t test_no_mprotect_anon_shared_t $basedir/mprotect_anon_shared 2>&1";
- ok($result);
- 
--# Test success and failure for mprotect /dev/zero.
--$result = system
--  "runcon -t test_mprotect_dev_zero_t $basedir/mprotect_file_shared /dev/zero";
--ok( $result, 0 );
--$result = system
-+if ($test_devzero_checking) {
++On Debian, you must first take steps to install and activate SELinux since
++it is not enabled in the default install.  Make sure to backup your system
++first if you care about any local data.
 +
-+    # Test success and failure for mprotect /dev/zero.
-+    $result = system
-+"runcon -t test_mprotect_dev_zero_t $basedir/mprotect_file_shared /dev/zero";
-+    ok( $result, 0 );
-+    $result = system
- "runcon -t test_no_mprotect_dev_zero_t $basedir/mprotect_file_shared /dev/zero 2>&1";
--ok($result);
-+    ok($result);
-+}
- 
- # Test success and failure for execheap, independent of execmem.
- $result = system "runcon -t test_execheap_t $basedir/mprotect_heap";
++	# apt-get install selinux-basics selinux-policy-default auditd
++	# selinux-activate
++	# reboot
++
++After activating, make sure that your login shell is running in the
++correct context:
++
++	# id -Z
++
++If this shows something other than
++"unconfined_u:unconfined_r:unconfined_t:s0-s0:c0.c1023", you will need
++to first fix labeling or policy problems in your base system before
++proceeding.  Make sure that your shell context is correct and you can
++switch to enforcing mode without breaking your system before
++proceeding.
++
++On Debian, you can install the userspace dependencies with the following
++command:
++
++	# apt-get install perl \
++		gcc \
++		selinux-policy-dev \
++		libselinux1-dev \
++		net-tools \
++		iptables \
++		libsctp-dev \
++		attr \
++		libbpf-dev \
++		libkeyutils-dev \
++		linux-headers-$(uname -r) \
++		quota \
++		xfsprogs \
++		xfslibs-dev \
++		uuid-dev
++
++On Debian, you need to build and install netlabel_tools manually since
++it is not yet packaged for Debian
++(https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=959806):
++
++    # git clone https://github.com/netlabel/netlabel_tools
++    # cd netlabel_tools
++    # sudo apt-get install autotools-dev autoconf automake libtool pkg-config libnl-3-dev libnl-genl-3-dev
++    # ./autogen.sh
++    # ./configure --prefix=/usr
++    # make
++    # sudo make install
++
++Debian further requires reconfiguring the default /bin/sh to be bash
++to support bashisms employed in the testsuite Makefiles and scripts:
++
++    # dpkg-reconfigure dash
++
++Select "No" when asked if you want to use dash as the default system shell.
++
++#### Other Distributions
++
+ The testsuite requires a pre-existing base policy configuration of SELinux,
+-using either the old example policy or the reference policy as the baseline.
++using the reference policy as the baseline.
+ It also requires the core SELinux userland packages (`libsepol`, `checkpolicy`,
+ `libselinux`, `policycoreutils`, and if using modular policy, `libsemanage`)
+ to be installed.  The test scripts also rely upon the SELinux extensions being
 -- 
 2.23.1
 

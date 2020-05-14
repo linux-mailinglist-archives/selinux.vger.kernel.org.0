@@ -2,62 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FC51D40D9
-	for <lists+selinux@lfdr.de>; Fri, 15 May 2020 00:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D12F81D4112
+	for <lists+selinux@lfdr.de>; Fri, 15 May 2020 00:32:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728409AbgENWXv (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 14 May 2020 18:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53274 "EHLO
+        id S1728654AbgENWcI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 14 May 2020 18:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728315AbgENWXv (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 14 May 2020 18:23:51 -0400
-Received: from mail-lj1-x243.google.com (mail-lj1-x243.google.com [IPv6:2a00:1450:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220DFC061A0C
-        for <selinux@vger.kernel.org>; Thu, 14 May 2020 15:23:51 -0700 (PDT)
-Received: by mail-lj1-x243.google.com with SMTP id w10so130856ljo.0
-        for <selinux@vger.kernel.org>; Thu, 14 May 2020 15:23:51 -0700 (PDT)
+        by vger.kernel.org with ESMTP id S1728627AbgENWcI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 14 May 2020 18:32:08 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 736E8C061A0C
+        for <selinux@vger.kernel.org>; Thu, 14 May 2020 15:32:07 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id b6so139945ljj.1
+        for <selinux@vger.kernel.org>; Thu, 14 May 2020 15:32:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4OTrWu06yLV6v/GCnClVZzRudXZzMy6CUTDqOEvhNsg=;
-        b=DgkHrFXng33y2jMUlUfGu5pUCzJpe63+OLT12ImfUNSKR1rDWjG1I+6UGk7mT2rCVQ
-         l9otVjZCxblbSriXcAO+v+s3T7gQV5E8UVPzeV3W7K7B6lj5u9Gea20w8dBNDEwJ+ZoK
-         GHM1PykTNXcj++wB9OwdQjfdZUt7cjOfRNwCEt1Hm/Y7IPQUqtJ6JNMMEUIsYa6jlYP+
-         7b3EreryXf+JkfBeTSnt8m36pntokYg7mwy5mhOPeJ2V8OAqVf/DQHoMeBB/GRnz2tOg
-         9EZ6tWGh2koY58ctY0SwUFcsavEqqO7O81N6jqsBIeNHu+7fbvkItaHNwbTaRHLPUsl3
-         vbcw==
+        bh=zQgal8ytnzXytGJuGIqKsS+BhXInFBcpb3bIGXvjaxs=;
+        b=NcWPccnenciDSM6X741CyBlTtzBL1BwrFzWvVi/Hg/jdHYK1g/BQpkiqBOn5KbL2wb
+         jR6TUU8fmehu1zEleojUmnOxK59xP0kaAXQ6w3qYvW3QsaJvdSruPqRDeTL0jTgLyays
+         A/cieaKyAOgUaajY2/xN7kRL+ZipwbE1iv3sjRyaiD5tvSBxpy1U8nTq5Ea2c/FCT16P
+         4tjiBMcTKYgCqODmRN5/5lPiDhmmf2ZouQeOjCCiaVuqlX/+LPOhFf+TA4L12uVjqZa8
+         YDSDHXwP499XjVayUfK91Zwox7xgvrjYfsqTTFq/xMUQnv/KXxFkOCcbTvijOIjkwSpV
+         RIfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4OTrWu06yLV6v/GCnClVZzRudXZzMy6CUTDqOEvhNsg=;
-        b=I8YLjhnive+i4pW5OKNNulvhVst7zMdRCYTueQEZGJZ8mTOuVCsho4EhI7ZWsHD+gg
-         AXGJMgL16ipq1aeCD1mJbBaMIyRDELhM8N6JAXy7a02TSJG4Xv2O4zBk1tuZ5xxAvGD2
-         MMptY8Nna7RKNe7GwtV05cEVPkO+4mRgYIEs9cCxYmaOib0GOFftBkOAA5X3frV5at4H
-         rpR8EQB+Un2H+mg4/DVNfrQHuKQxA5JLRVGYf4xts/imNzH5ETvr3Xj5m8PTqdSSaJNr
-         9OAyqfeVinuOGUFnjQDTUfltnZ+FTdj+PIYj9sW3r5VCOJl+UFvbFEVBYVf+l8if1PaX
-         07mw==
-X-Gm-Message-State: AOAM532RQLTgHPluE4HENBtFd1HpBPsd/aXAtUI+ZKJXUV7TZ6GrCaQS
-        Nz67ZQvUgh9BpSPTzAqeVQVKFd34NmRrjFFKBB4=
-X-Google-Smtp-Source: ABdhPJwGJBx1Q9ISdMrJqGyZU89faEsXN1XO+1X6yXXlA9TuUCGnksoirgIf3M5sB9RJD4ao74gIKAoAwhDHWOibXG0=
-X-Received: by 2002:a2e:a58e:: with SMTP id m14mr259841ljp.95.1589495029419;
- Thu, 14 May 2020 15:23:49 -0700 (PDT)
+        bh=zQgal8ytnzXytGJuGIqKsS+BhXInFBcpb3bIGXvjaxs=;
+        b=Mb8FpTtB1Ckc5/NI/8sHAalvq5aYCE14elfGfmnIMsZjnVVykaCxv2M0ZRj2GSjSpP
+         4XOljAbtWeDPONfEpclfcjvYEMtriPf7ImvIr2qqOMghC3xbciY/uFu321Ssl3L8KbcB
+         susb0KMUFCnaWOI4oZCtImi/aLmI0m0+jpp4TdC6jK/OjtLIJI2vdsZHrivWhPoBzCL1
+         9q246006tDb4QVUQXSsWWsbG1/QQxUk06oHFuWhQXKasoc6KE1RASgdB/RLLg7afgOAt
+         2rtm5pRp5SDopszuJteHS2ygcGZ/AISDzD0B7UmhDL8pIvNGUmABP7mACisBEAWhgHjc
+         d+zg==
+X-Gm-Message-State: AOAM531EjyPIfSjasuT/nW9rU6KjS025l9LNOT+x9M2oUCFQj10ojK7I
+        oIXEBgXefZLfum30LIQ0yNRoGSNSojd8dttQKus=
+X-Google-Smtp-Source: ABdhPJznpW2TdnPT7F0s1C72nlMbPZY50j43aZw92vChFLuR42kVFr6q9zlxGC9Cm6rL0KKAMFDRhM1qgj6d1mmK8Vc=
+X-Received: by 2002:a2e:a545:: with SMTP id e5mr260068ljn.271.1589495525795;
+ Thu, 14 May 2020 15:32:05 -0700 (PDT)
 MIME-Version: 1.0
 References: <3581425.j52oWYpJar@liv> <20200407085922.GA438349@workstation>
  <20200422065053.GA167999@workstation> <CAHC9VhQUmY=ue3zWdTnE1Ehi90Lj3077sLbu+jyaWoAVKuKyeQ@mail.gmail.com>
  <CAFftDdo1hqbacU2TD6zQp_t_KJq-KS5pWBMr89c4HA3=aUdUbQ@mail.gmail.com>
  <20200423150039.GC204116@workstation> <CAFftDdq_g_rUy=KFh_gOEXoVxkCgz9qWzR17d4Mt1qVChoVLjg@mail.gmail.com>
- <CAJfZ7===ssyARiz=cG73hqRq_+d+tGuNKX9-nOU7VJVZGS=+zQ@mail.gmail.com>
-In-Reply-To: <CAJfZ7===ssyARiz=cG73hqRq_+d+tGuNKX9-nOU7VJVZGS=+zQ@mail.gmail.com>
+ <CAEjxPJ5qm8P0jmRvQNavDsrWCDDf7yCeRQ1orp_S63u-2EfBoA@mail.gmail.com>
+In-Reply-To: <CAEjxPJ5qm8P0jmRvQNavDsrWCDDf7yCeRQ1orp_S63u-2EfBoA@mail.gmail.com>
 From:   William Roberts <bill.c.roberts@gmail.com>
-Date:   Thu, 14 May 2020 17:23:37 -0500
-Message-ID: <CAFftDdqhN8KNrNy69tK7LCgD-WewLN9pJjTt8-v4CiuMFonh0A@mail.gmail.com>
+Date:   Thu, 14 May 2020 17:31:54 -0500
+Message-ID: <CAFftDdopFfNynCNTnzo34XNVc=t49=82NOQP8OFq+fXLC9Ghtw@mail.gmail.com>
 Subject: Re: Fedora VM On Travis for Testing
-To:     Nicolas Iooss <nicolas.iooss@m4x.org>
+To:     Stephen Smalley <stephen.smalley.work@gmail.com>
 Cc:     SElinux list <selinux@vger.kernel.org>,
         Paul Moore <paul@paul-moore.com>,
         Stephen Smalley <sds@tycho.nsa.gov>,
+        Nicolas Iooss <nicolas.iooss@m4x.org>,
         Jason Zaman <jason@perfinion.com>,
         Steve Lawrence <slawrence@tresys.com>,
         Chris PeBenito <pebenito@ieee.org>,
@@ -72,9 +73,10 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, May 14, 2020 at 5:03 PM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+On Thu, May 14, 2020 at 5:21 PM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
 >
-> On Thu, May 14, 2020 at 11:00 PM William Roberts
+> On Thu, May 14, 2020 at 5:03 PM William Roberts
 > <bill.c.roberts@gmail.com> wrote:
 > >
 > > I just wanted to lay out a demo of a Fedora 32 cloud VM image booting
@@ -110,84 +112,29 @@ On Thu, May 14, 2020 at 5:03 PM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
 > > we automate manual steps as much as possible. This way, if we get hit by a bus
 > > releases can occur without much effort.
 >
-> Hi,
-> This sounds like a nice idea :) Also it appears it only takes 5
-> minutes to run the whole Travis CI job of setting the Fedora VM up and
-> booting it, which is more than acceptable in term of delays (and is
-> very quicker than building and testing the project itself). This could
+> I'm amazed travis-ci supports all of that (especially for free).
+> Hopefully you aren't violating their terms of use.
 
-Yeah I was pretty happy with the timing it took to add this. But CI doesn't
-necessarily need to be fast. We run a huge test matrix, Travis only
-spins up a few at a time anyways.
+Not that I am aware of and I read their terms of use.
+https://docs.travis-ci.com/legal/terms-of-service/
 
-> allow to run more tests that require to be able to manage the SELinux
-> policy, automatically at every pull requests.
->
-> By the way I wasn't expecting Travis-CI to easily allow nested
-> virtualization ("nested" because jobs are already run inside VMs,
-> IIRC). If it works, it is great!
+They don't seem to limit what you can do, it seems to be centered
+around availability, liability and support.
 
-I was surprised too, I was expecting that to be disabled, when I cat
-cpuinfo, I was very happy.
+I stumbled into other projects on github that were running virsh commands
 
->
-> Some quick thoughts/suggestions/comments that I have in my head after
-> reading very quickly your changes:
-> - The networking setup of the VM seems to be more complex than needed
-> because you are relying on getting the IP address from DHCP. Would it
-> be possible to configure libvirt with port forwarding, so that "ssh -p
-> 2222 127.0.0.1" always work? (with raw QEMU, the command-line
-> parameters would be something like -net
-> nic,model=virtio,macaddr=52:54:00:12:34:56 -net
-> user,hostfwd=tcp:127.0.0.1:2222-:22)
+> The biggest thing I'd add is to build and install the selinux
+> userspace in place of the stock Fedora versions (sudo make
+> LIBDIR=/usr/lib64 SHLIBDIR=/lib64 install install-pywrap relabel) and
+> then build and run the selinux-testsuite to exercise the SELinux
+> userspace and kernel runtime functionality.  Other things to possibly
 
-I would love something like that (no idea what I am doing),
-but it doesn't get rid of polling for network. We have to wait
-for the sshd to be ready.
+Perfect, that's the info I was looking for.
 
+> add would be rebuilding upstream refpolicy (similar to its
+> .travis.yml) with the latest userspace, rebuilding and running setools
+> (but until we decouple it from libsepol internals this will
+> periodically break).
 
-> - Usually the helper scripts are located in directory scripts/, which
-> make them more easily discovered by people reading the code (hidden
-> files and directories seems more appropriate to store the
-> configuration for different CI platforms that require them ; some
-> projects choose to hide everything that is not useful for the build
-> process but here it does seem to be so). Are there advantages of using
-> .ci/ directory?
-
-No benefit, just did something. They can live wherever....
-
-> - Moreover having a "fedora-test.run" (or "fedora-test.sh", I am more
-> used to .sh extension for shell scripts) enables to easily reproduce
-
-and be named whatever....
-
-> tests on a local development machine using "vagrant init
-> fedora/32-cloud-base && vagrant ssh" + "sudo
-> /vagrant/.../fedora-test.run". Such a command could be documented in
-> the header of the shell script.
-
-That sounds good, I like being able to do that. I have no idea what vagrant
-is. You could say im ignorant to vargrant!
-
-> - Right now, there are many things in .travis.yml. This file could be
-> split in shell script(s) if that reduces duplication.
-
-Yep I agree. Thats how I run all my other projects, I dislike large
-travis.yml files,
-but I don't want to take on that workload right now, ideally get this
-working and then port the other stuff.
-
-> - To verify the download of Fedora cloud image, instead of hard-coding
-> its SHA256 digest, you could download the checksum file which is
-> signed using GnuPG and check its signature, as described on
-> https://alt.fedoraproject.org/cloud/
-
-Yeah I saw that. Thats why I had that verify link in the TODO
-comment:
-https://alt.fedoraproject.org/en/verify.html
-
->
-> Cheers,
-> Nicolas
-
-Thank you, appreciate your feedback
+If it breaks, it breaks, just means we need to merge something or actually
+fix it properly IIUC.

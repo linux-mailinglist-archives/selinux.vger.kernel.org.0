@@ -2,103 +2,56 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AEFD1D87CD
-	for <lists+selinux@lfdr.de>; Mon, 18 May 2020 21:06:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6157F1D8869
+	for <lists+selinux@lfdr.de>; Mon, 18 May 2020 21:45:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726358AbgERTGD (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 18 May 2020 15:06:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44774 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726283AbgERTGD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 18 May 2020 15:06:03 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F055CC05BD09
-        for <selinux@vger.kernel.org>; Mon, 18 May 2020 12:06:01 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id f18so4956617otq.11
-        for <selinux@vger.kernel.org>; Mon, 18 May 2020 12:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=abx037K1ugXVgSaoRSxtO6qSat9FFCwJqIymTxQ7gfU=;
-        b=KFCF30Aqy0ZEJHK6kA9ztDKXETlVd1SCpUxmBjuun+wjGq2TXDuI8lDNvdLGo5MoC8
-         QPa11d9fJzQowiCFEbcmLNKUIdTjDuhhjpIJmi2VMgghsiKkGCDmHpMG6c//bsKa789s
-         byfOwHEyInQ5qXa1bMju2td8cvYEJEz1ZCn/qh+L4UBmddvkvJwHfUlP/ACrBkOxhcXF
-         88IryIFA0JQD2u/F++DQvCsHKF5Kr7pBsax/Ioi1uDDeo+BFH6jYovhwZjFX8/eQAMdU
-         byq4+1IdXflr02e6xhLzEaXI8S4PSqPn9c3/6/xAzQ255JRcDRnETv0OGC0hydApjQik
-         GKZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=abx037K1ugXVgSaoRSxtO6qSat9FFCwJqIymTxQ7gfU=;
-        b=sa73NwVAVsFa96YBkWOIEIQ4Iq6FZbLXDDs6jej1/kjPR8jjkctGK0rijUiCWsRHPZ
-         WiqPgBAXEgfM6wh6Lgr2XgA4+ldlJCHKZfQ0H1iX/fW5IEOb784E/tJjdck4wb++fb2c
-         /evuaVDRgy7r56FzD1LBbGWQyiQWaSs7ieP7pzYVVa9tdlLccukyk1NOfFn3LBrFlFnj
-         npSI6JcjYtKBciYw+fiDvxI570ShsvwCwJUf+ONb58xZD7zMoIq3Z+qS733L1d77CqAY
-         d5Kw9TrXOYOASZ+eyo7Zicxnl63Q2xd3PJZqwcfNqokblPcHXs/Mvvehbmv9dRkB2u/7
-         HnGg==
-X-Gm-Message-State: AOAM533fEp+Q1XmRQSrBgZC/oWatv+DXvFqQW3LCYcGj+wcHu850z8SV
-        Pu/P+q9MUQe0Xmqp0WaFk7fRKsv5ElCNSswQbqM=
-X-Google-Smtp-Source: ABdhPJz29NNq+wHquQKd4CI7xiIE6fTL7SonOSPwR5QtGpER/jtj2QAFeTQzJClzbu3D2Ur0uFqJtGxcu6RmzhZ7x0U=
-X-Received: by 2002:a9d:68d1:: with SMTP id i17mr13654964oto.295.1589828761225;
- Mon, 18 May 2020 12:06:01 -0700 (PDT)
+        id S1728408AbgERTop (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 18 May 2020 15:44:45 -0400
+Received: from sonic307-2.consmr.mail.bf2.yahoo.com ([74.6.134.41]:42099 "EHLO
+        sonic307-2.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728380AbgERToo (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 18 May 2020 15:44:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1589831082; bh=lMwnL/6WltFrTd0TmVnY+7WY/Sq+3khHK9hYAyAunB4=; h=Date:From:Reply-To:Subject:References:From:Subject; b=Fq3akDxXswRYKaOoooyR29wJQd9LT938E3pLiby53zHvEjpd3Hsmt7oQ/77MNG1Lqen+LvT7wvKkWcsPFYSUBI9bqx0lJiwL/0FKLE3MU3jp+ZXthEjEC1jUt9wBJ76qXzfkkvHsE9MSDBt78JK4WWuwVaurkQzUVZXBt/WLclbWWqv9zITB0KPrD6if4IcKByCePMComhP869+enueXZfvC5U4FhKC/jBtajatJJbI9niguUVGZDIZNoPWV6xe3LofESc6h7vB76sdAVyl7CRJUQEF8xr6O1VDcvaSPGx4NAmrjBl6Sfkt4nxDHj3Dn45oE6jvChL+Jn8nV8Wb04Q==
+X-YMail-OSG: W0st_m0VM1mIxs5fcjaOqBHXUTuORP2hQVg22R5wKgzBOGquw5.M_iCbRtiYJgO
+ .PLKBStb1on4xadw5olC6eve0Vp9fQrXghQ7eL5c5H2NEtBr3rvlNpOM_pQ4xn6yMOql3mMcSzgM
+ Q8D.BqDS3fETk0mvYZgmzwYPzjHTXDAl8jVgBhNIG.Zha84C9XcYZSxJ6XDCwseuZFMgLSZ660.O
+ G0a1Tuoeo0Mb8pEDGczbHkUwH9i.kOhuKRXiy7S7LhXnCEM.x_yEn_wZ4LR8hunIYwugP9rErIsS
+ 1QU5v9.9Kncd0eFh5VrJlyy78xu.OmnwCttwCJAH0KWRBPFIv7LpYigQs6jB51eiAI4ynp5azirX
+ 8QGKmFm7uK8lKfJNwpvB1r4fkiEEZyRAFosIa__J3YQiUiWqhT0HokjJODm8qULidO13HSkPASAJ
+ F.61ZR_WXbujDPGylYCvAWfM0ceRxjD1AD2EsQktmFRVFmM4BIXYUOKGMpUxTYZ5vRgGD9ydgEun
+ IbzyRHaIE7oj4kM5qjnZhR0CJxqdTQUMocu9rWQKh3YJ73FDUZFb03rNqOwaX27bTxGwjbc8STGR
+ Us03V4euCNLi3QHIB.y0ozNll1DN0wWGNdcmU_MK4jwhepbL9OW5Ch5Rl1hMYozhr0tXY3WbDbV8
+ 7en3QTHAZY22GYvsgHlT0nGN_Ph_cJFpnk4MzyI6gEgTvLMeOcV28JYoYaaibkxMOOZgmmCZ_iE.
+ gtwxR1_OScRBMm_jVVBr_oIALi2dTbtSwZapIzvXdEp2J4hpZZdc.CZ7nVh4N8zhxt6ry6BqL7x.
+ SZksVudpmIaQt5okvURfzkkHc2Ofo2i_1yvKSUm9ZvJwkNegrlFzpFoW.KOTsw_vqRk1jvWObOIy
+ CYdcmb7CeyY_aImWi4eEG8J5Kkbzctsj3a.bDWoLpKa03RvpKqIeWr3bXqcn36FoNyekcf2zBTPb
+ JLvodHeqD5FmyRp5nSdLj1UohPkl9Lk0A184X40jKBSsFQknUai1F8UMX4mEbHsnc501F88qQGkC
+ zTJpir1NTBt56VgSWkLJtC0R27AkLu9GRqmGISaXWkvZdFf3R6J_KFhtbKCv8gYsAKfyKOYZNzKH
+ XqNatE4ZcpZqF5bo25O0ztASvf7VCwYFGFyDii.UY169WHT_vC_nqjkbfnY8649Wq0YPKdwxrwJY
+ H7OwFReQohbRYwvxBTNiaK3OTJuid5UGd5PTGyFPK3W927ZGI.JnRaV2kZz08gmFKjf7S3wzCU69
+ uQCKe2AL.wd2Ux_SsZ.1fAL8vWwzw6JXtsvOy5NB_1_8OPHcHms2CrPGVTE1Lv2o0LC4oIQgxeCz
+ BsKJ.eg--
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.bf2.yahoo.com with HTTP; Mon, 18 May 2020 19:44:42 +0000
+Date:   Mon, 18 May 2020 19:44:41 +0000 (UTC)
+From:   Rose Gordon <rosegordonor@gmail.com>
+Reply-To: rosegordonor@gmail.com
+Message-ID: <1340666890.737774.1589831081562@mail.yahoo.com>
+Subject: Greetings to you
 MIME-Version: 1.0
-References: <20200518181251.31862-1-jwcart2@gmail.com> <CAEjxPJ7tZNm71eZOOXy55Qw6X4a=HWRw6c8SnotCc6yc_odgKQ@mail.gmail.com>
-In-Reply-To: <CAEjxPJ7tZNm71eZOOXy55Qw6X4a=HWRw6c8SnotCc6yc_odgKQ@mail.gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Mon, 18 May 2020 15:05:49 -0400
-Message-ID: <CAP+JOzRRF67czZzibS5EOXevY0zYPoEZ7S=_EzSxzPK4e686xg@mail.gmail.com>
-Subject: Re: [PATCH] libsepol/cil: Initialize the multiple_decls field of the
- cil db
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+References: <1340666890.737774.1589831081562.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.15960 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, May 18, 2020 at 2:33 PM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
->
-> On Mon, May 18, 2020 at 2:14 PM James Carter <jwcart2@gmail.com> wrote:
-> >
-> > Initialize the multiple_decls field when intializing the structure
-> > cil_db.
-> >
-> > Issue reported by: Topi Miettinen <toiwoton@gmail.com>
-> >
-> > Fixes: fafe4c212bf6c32c ("libsepol: cil: Add ability to redeclare
-> >        types[attributes]")
->
-> I guess this explains the non-deterministic behavior and valgrind
-> warning about uninitialized data, but what about the segfault?
-> Don't we still need to fix the case when multiple_decls is set to TRUE?
+Greetings to you,
+I hope that this letter finds you in the best of health and spirit. My name is Rose Gordan, Please I kindly request for your attention, I have a very important business to discuss with you privately and in a much matured manner but i will give the details upon receipt of your response,
 
-Yes. I am working on that. I believe the segfault occurs when you
-declare something both a type and a typeattribute.
+Thank you in advance!
 
-Jim
-
->
-> >
-> > Signed-off-by: James Carter <jwcart2@gmail.com>
-> > ---
-> >  libsepol/cil/src/cil.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/libsepol/cil/src/cil.c b/libsepol/cil/src/cil.c
-> > index 4a77aa9c..a3c6a293 100644
-> > --- a/libsepol/cil/src/cil.c
-> > +++ b/libsepol/cil/src/cil.c
-> > @@ -459,6 +459,7 @@ void cil_db_init(struct cil_db **db)
-> >         (*db)->preserve_tunables = CIL_FALSE;
-> >         (*db)->handle_unknown = -1;
-> >         (*db)->mls = -1;
-> > +       (*db)->multiple_decls = CIL_FALSE;
-> >         (*db)->target_platform = SEPOL_TARGET_SELINUX;
-> >         (*db)->policy_version = POLICYDB_VERSION_MAX;
-> >  }
-> > --
-> > 2.25.4
+Yours sincerely,
+Rose.

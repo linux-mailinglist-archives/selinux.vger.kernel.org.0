@@ -2,187 +2,102 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2C601DEAB1
-	for <lists+selinux@lfdr.de>; Fri, 22 May 2020 16:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C1C91DECE5
+	for <lists+selinux@lfdr.de>; Fri, 22 May 2020 18:10:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730528AbgEVOzy (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 22 May 2020 10:55:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57902 "EHLO
+        id S1730273AbgEVQKn (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 22 May 2020 12:10:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731376AbgEVOzx (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 22 May 2020 10:55:53 -0400
-Received: from mail-qk1-x742.google.com (mail-qk1-x742.google.com [IPv6:2607:f8b0:4864:20::742])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15435C061A0E
-        for <selinux@vger.kernel.org>; Fri, 22 May 2020 07:55:53 -0700 (PDT)
-Received: by mail-qk1-x742.google.com with SMTP id n11so5473024qkn.8
-        for <selinux@vger.kernel.org>; Fri, 22 May 2020 07:55:53 -0700 (PDT)
+        with ESMTP id S1730195AbgEVQKm (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 22 May 2020 12:10:42 -0400
+Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 051F7C061A0E
+        for <selinux@vger.kernel.org>; Fri, 22 May 2020 09:10:42 -0700 (PDT)
+Received: by mail-ej1-x642.google.com with SMTP id x1so13619273ejd.8
+        for <selinux@vger.kernel.org>; Fri, 22 May 2020 09:10:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=IK7yvVYrYBCnqwQZV3pANWDC3Repl+X0w5xkoElFxNw=;
-        b=K07mGI58OsqsAQ2T1MOVS3Cq78fEfrure1aNp2TzCDKlbUKSAmVlnPAoU+0W1yjDfn
-         aO3lKUQPVdgBWq224DSECX3HrF+3wFc9xct4BEg7Sky7ZH0bwCVK81C1s3N2zgPoLKgn
-         0v1YFR7vzJyJPvsvzu6KD1xllOjWIGq+wWDk3Bs+uLg6bV6WAr6PMtf0vWESRUYBqGnU
-         skWyrly7uCdUgoyd1mc8PSpyRbR4aGaobwDtO6PmXWrfCruCfRf9Gw9mCuywkp4zdbOg
-         Fwykr7Ikp87N33oKJ3r6PpCaeHWb0P9Gpx1ZWPy+/TJhfh9HFj3/XqCQ3DvKJ/bqqliB
-         +84g==
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=t9c1SoynSc571s6g5FqpcXv5A62c5UDAYe/dfm3uHXk=;
+        b=QGJvmDML5jZUBaOFCiF9J6EUIPSJ4USqY5U0qBOPeJRy6hbimL9KQgwPEwsXYQEpW+
+         tLJxJ64B6hUtOB5SWtq3ILu5+EFs3NsjqDmXDyQe+uJEVaR2gns/w77VkibR+w8aD1HZ
+         fQS2VjZnxM+k0lU6ZF6h/V5sELh7mRIlb5i9YKGwQz1OxGhwF7taOa7mFpah0ZY8bjMr
+         y92tcRVTbNj7h7chruoNMgD1JldpoNNkAFs77J5w//T2q5u2em2LlT89/YUuDwKHb1n+
+         LNBrZt6BdPWCO72ITiOch6O89NZLOYzyPS2AQuxVE71axsuAnfE2ZMwb2Exst5zwsATP
+         wBHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=IK7yvVYrYBCnqwQZV3pANWDC3Repl+X0w5xkoElFxNw=;
-        b=WeGHCJVYqBOi95bH1kk4cZFDe+STiKoZpA25SW3Boj2YjDBa4BnEwWjC3nhJ45bZo7
-         uYB29AeFtI65uLgyKJCIibgs7boz1von+vgr46ahB9u6te1JCnm6cribfVxO65tE7qHr
-         mcBiH6zUlD0DSe3J4X+smvFiEiJ8HPbLXCZxVc5d6BIPT6Ienw17NCCYM2U/Krr2GYJy
-         NLu+2nTKi+S0vZit7hTFR03Rq2XLCTlEcXLAXVecsDQ8o7RjW1aS1Hz0wSCo9ZIMGA1L
-         RVhdfAvhPQYt7U6OiwWeWToAVn2XGae+T4bfnny6oqr0ulxVZChqtzH8adgLmqTzoV7j
-         DaNg==
-X-Gm-Message-State: AOAM531E8JU7qMnFK4p4AvipRonviqGOZLaTdQ/PF0OeyTHv4L38N7+C
-        GSy/TlaX75ks/5CKjD9wj9Ic4iCjiqI=
-X-Google-Smtp-Source: ABdhPJyUaGopA+dF+00b2h76oN+emKARB8PxVvMUEEEDoWX3GFY0F/QrL8Cow/YcfHSelS+68myuJA==
-X-Received: by 2002:a37:2711:: with SMTP id n17mr15402699qkn.430.1590159352105;
-        Fri, 22 May 2020 07:55:52 -0700 (PDT)
-Received: from localhost.localdomain (pool-71-166-99-106.bltmmd.east.verizon.net. [71.166.99.106])
-        by smtp.gmail.com with ESMTPSA id 9sm7776479qko.29.2020.05.22.07.55.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2020 07:55:51 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     James Carter <jwcart2@gmail.com>
-Subject: [PATCH v2 3/3] libsepol: Improve writing CIL category rules
-Date:   Fri, 22 May 2020 10:55:13 -0400
-Message-Id: <20200522145513.194440-3-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200522145513.194440-1-jwcart2@gmail.com>
-References: <20200522145513.194440-1-jwcart2@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=t9c1SoynSc571s6g5FqpcXv5A62c5UDAYe/dfm3uHXk=;
+        b=kvgeOj/qtUE0Rfh0HTrZ6zhEWyoCkE5Ms2XP9fAKmsTO+9Ycw+zRY6f31eapLs/aai
+         cwW3bULYIoKjCtHIx6X84dwZHUa4C/terYf/mG6xz4DWyFlO7tYsCbXYtzj5vIX+NSQ9
+         qR38ZxRTmkxB5ZfgWJSYU0sRtUuvHQEe9dr4HIpUyqIMijORl4f78p3Hni/1PoIcb8Br
+         PT5Dg737APrIYOOkzvvhZE5Mg+DirM42JM61JFSbmNEz6HspumfPPlT4SOU77G3snori
+         DhxGrYTt4s3bzixmouEkvh+FUcnjPTrCrRJkFUOR1mvPqEcqa5Lpwxz6/oX2WdF/kGFT
+         HK7g==
+X-Gm-Message-State: AOAM532+epWP8SeBf7bEgFoC5zLrL5WfRrfHLC1WOLRyOq/f7Xi2jrzz
+        iaBd56oNsDhLwFbU6TxKzATJVqkBlUldinbQXCA7uM4=
+X-Google-Smtp-Source: ABdhPJzSW1XRyLhl4eHpiI4YnMh8KPZcxVUJmROcpWNl95yzemRPnSnt/ofZw3OIe6DWXfITP4BkIybgqmMXMkpibpI=
+X-Received: by 2002:a17:906:279a:: with SMTP id j26mr8391756ejc.398.1590163840581;
+ Fri, 22 May 2020 09:10:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAGeouKH0MWHVmo-dFxzn4LViwGNLUoYnYYm6HrKzL5XgfMhd4w@mail.gmail.com>
+ <55ef0d617fa84d72f142ec0fa6492e5c5e1b1e2b.camel@btinternet.com>
+ <CAHC9VhQ5f_h_H=CyunX2tKbCgHP8o2Jp4dyMLzX0t9XkG8TPgQ@mail.gmail.com>
+ <60438e5b407320275932f60bc10936b75c9280aa.camel@btinternet.com>
+ <CAHC9VhTgXU=yLncdXHrZkyo23OGc+aLDcNZinqkTLPLiq81Ycw@mail.gmail.com> <321f492f19164c43104ec1fd9d699e80ad2a7380.camel@btinternet.com>
+In-Reply-To: <321f492f19164c43104ec1fd9d699e80ad2a7380.camel@btinternet.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 22 May 2020 12:10:29 -0400
+Message-ID: <CAHC9VhSWPxODxgPC5JPTAvRbA=HVa9QcE1dYm-x4U0-a8F7_PA@mail.gmail.com>
+Subject: Re: Bad context in PostgreSQL page on SELinux Project wiki?
+To:     Richard Haines <richard_c_haines@btinternet.com>
+Cc:     Peter Whittaker <pww@edgekeep.com>, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Improves writing of CIL category rules when converting MLS kernel
-policy to CIL. No changes to functionality, but eliminate useless
-checks for category aliases when using the p_cat_val_to_name array,
-find the actual number of aliases before allocating memory, and
-skip the category alias rules if there are no aliases.
+On Thu, May 21, 2020 at 4:57 AM Richard Haines
+<richard_c_haines@btinternet.com> wrote:
+> On Tue, 2020-05-19 at 17:40 -0400, Paul Moore wrote:
+> > While I'm happy to host it, I think it might be better if we hosted
+> > it
+> > in the community GitHub repo - what would you think about creating a
+> > new repo under https://github.com/SELinuxProject?  Perhaps
+> > https://github.com/SELinuxProject/notebook?  While it might seem a
+> > bit
+> > odd to host an ODT file in a git repo, it is a good way to keep track
+> > of historical changes and there are other tools such as the issue
+> > tracker and "release" hosting which might be helpful.
+>
+> githubs sounds good, however as the document is quite large I'm
+> splitting into sections like on the wiki as it will make easier editing
+> (should anyone feel the need).
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
-v2: Add "__attribute__((unused))" to unused parameters as suggested by
-    Nicolas Iooss
+That sounds like a good idea.  I imagine it would also help for people
+using it as a reference - something I personally find very helpful.
 
- libsepol/src/kernel_to_cil.c | 59 ++++++++++++++++++------------------
- 1 file changed, 29 insertions(+), 30 deletions(-)
+> I've converted with pandoc using 'markdown_strict', where it converts
+> text to md but most tables into html (as their own md table format will
+> not render in some viewers). With firefox and the Markdown Viewer
+> Webext, the samples I've done look ok.
+>
+> As with all these conversion apps, pandoc leaves a lot of cleaning up
+> to do, so I'll be some time. I'll send you the files once I'm done.
+> Thanks for your support.
 
-diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-index b84da3e5..36c6c682 100644
---- a/libsepol/src/kernel_to_cil.c
-+++ b/libsepol/src/kernel_to_cil.c
-@@ -886,6 +886,17 @@ exit:
- 	return rc;
- }
- 
-+static int map_count_category_aliases(__attribute__((unused)) char *key, void *data, void *args)
-+{
-+	cat_datum_t *cat = data;
-+	unsigned *count = args;
-+
-+	if (cat->isalias)
-+		(*count)++;
-+
-+	return SEPOL_OK;
-+}
-+
- static int map_category_aliases_to_strs(char *key, void *data, void *args)
- {
- 	cat_datum_t *cat = data;
-@@ -903,26 +914,13 @@ static int write_category_rules_to_cil(FILE *out, struct policydb *pdb)
- {
- 	cat_datum_t *cat;
- 	char *prev, *name, *actual;
--	struct strs *strs;
--	unsigned i, num;
-+	struct strs *strs = NULL;
-+	unsigned i, num = 0;
- 	int rc = 0;
- 
--	rc = strs_init(&strs, pdb->p_levels.nprim);
--	if (rc != 0) {
--		goto exit;
--	}
--
- 	/* categories */
- 	for (i=0; i < pdb->p_cats.nprim; i++) {
- 		name = pdb->p_cat_val_to_name[i];
--		if (!name) continue;
--		cat = hashtab_search(pdb->p_cats.table, name);
--		if (!cat) {
--			rc = -1;
--			goto exit;
--		}
--		if (cat->isalias) continue;
--
- 		sepol_printf(out, "(category %s)\n", name);
- 	}
- 
-@@ -931,14 +929,6 @@ static int write_category_rules_to_cil(FILE *out, struct policydb *pdb)
- 	prev = NULL;
- 	for (i=0; i < pdb->p_cats.nprim; i++) {
- 		name = pdb->p_cat_val_to_name[i];
--		if (!name) continue;
--		cat = hashtab_search(pdb->p_cats.table, name);
--		if (!cat) {
--			rc = -1;
--			goto exit;
--		}
--		if (cat->isalias) continue;
--
- 		if (prev) {
- 			sepol_printf(out, "%s ", prev);
- 		}
-@@ -949,6 +939,22 @@ static int write_category_rules_to_cil(FILE *out, struct policydb *pdb)
- 	}
- 	sepol_printf(out, "))\n");
- 
-+	rc = hashtab_map(pdb->p_cats.table, map_count_category_aliases, &num);
-+	if (rc != 0) {
-+		goto exit;
-+	}
-+
-+	if (num == 0) {
-+		/* No aliases, so skip category alias rules */
-+		rc = 0;
-+		goto exit;
-+	}
-+
-+	rc = strs_init(&strs, num);
-+	if (rc != 0) {
-+		goto exit;
-+	}
-+
- 	rc = hashtab_map(pdb->p_cats.table, map_category_aliases_to_strs, strs);
- 	if (rc != 0) {
- 		goto exit;
-@@ -956,16 +962,9 @@ static int write_category_rules_to_cil(FILE *out, struct policydb *pdb)
- 
- 	strs_sort(strs);
- 
--	num = strs_num_items(strs);
--
- 	/* category aliases */
- 	for (i=0; i < num; i++) {
- 		name = strs_read_at_index(strs, i);
--		cat = hashtab_search(pdb->p_cats.table, name);
--		if (!cat) {
--			rc = -1;
--			goto exit;
--		}
- 		sepol_printf(out, "(categoryalias %s)\n", name);
- 	}
- 
+Wow, that would be great!  I was thinking just posting the ODT would
+be a nice win, having it in something like Markdown so that GH can
+render it from the web UI would be a *really* nice thing to have!
+
+Once again, thanks for your help on this - documentation, especially
+good and comprehensive documentation - is so hard to find.
+
 -- 
-2.25.4
-
+paul moore
+www.paul-moore.com

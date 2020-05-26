@@ -2,152 +2,92 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D09931E2A47
-	for <lists+selinux@lfdr.de>; Tue, 26 May 2020 20:51:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2D931E2D34
+	for <lists+selinux@lfdr.de>; Tue, 26 May 2020 21:20:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388499AbgEZSvS (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 26 May 2020 14:51:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59354 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387398AbgEZSvR (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 26 May 2020 14:51:17 -0400
-Received: from mail-qk1-x741.google.com (mail-qk1-x741.google.com [IPv6:2607:f8b0:4864:20::741])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EF1EC03E96D
-        for <selinux@vger.kernel.org>; Tue, 26 May 2020 11:51:16 -0700 (PDT)
-Received: by mail-qk1-x741.google.com with SMTP id c185so7630735qke.7
-        for <selinux@vger.kernel.org>; Tue, 26 May 2020 11:51:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Nh/MkUJcu80DgkPsl7+UP6STksdzuCJhFbxQPscqtPE=;
-        b=gqs3UoZg1ypfLhcE2cmukCmlST9nbqo0uGVi4dJLD4L2CoLt4mXkJaf430GaAk/9Sx
-         g3WhHfzcLKfuoIgC8ZcEOqZIKUQGivpuLE8Fsy7c3JBktIc1ric/sD859TjM8B8wqZzz
-         idIfA20hcF/vVFFtYmywX347QauwtddgEW/QYOUqldmBUj3P5b3/AypK+zx7+NR7JUqS
-         IzWvBe2dMlxJ24emYiShucPKFHeaF1bf8u5z0NUlls9sSswREDCHjQVx9mTPA7ojGzLy
-         P+QiCZfDqVUJPB8CV30l47S558E/ZwwuBdqUpV9Tcx/KT2BBub8pzv0t11oxxUJc6bgV
-         nSGA==
+        id S2391433AbgEZTUa (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 26 May 2020 15:20:30 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:40758 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S2392083AbgEZTM2 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 26 May 2020 15:12:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1590520347;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=4az2Ns9+dWWRUrn/wGIJCYm9Z2ECLPwclq7eITKZ3y8=;
+        b=DiPSMUYO5FyFFEJIduiqRW/U4vLy7o2OVh/JNowTnR51BS1Xu8rg9WHmXgFUkqV+XbPNvd
+        bFL64eRzy+uiTANKdI1GEXK5fPsUUMq7qPAujHx8l+rxLBNpN5nuVqht+lN4vZCbj5t2rg
+        9SAmhH3lMVxjmyZlz+zeoFh20O/vuCE=
+Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
+ [209.85.214.198]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-287-gRYx4SMlOnW67oaMtE-7pw-1; Tue, 26 May 2020 15:12:18 -0400
+X-MC-Unique: gRYx4SMlOnW67oaMtE-7pw-1
+Received: by mail-pl1-f198.google.com with SMTP id d9so16329478pll.12
+        for <selinux@vger.kernel.org>; Tue, 26 May 2020 12:12:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Nh/MkUJcu80DgkPsl7+UP6STksdzuCJhFbxQPscqtPE=;
-        b=ZjZi8ThmFU4oAOsxxWuiksyJxJVPwWLbV3OECMwBxaNmInkTfWw5PDT3kZ56F0Jbjv
-         unsjrst0lIM3oYoZY7IUz/emP+eg4NENfvEI8vdaFBBrnOyP9iI2QjETXlnGpZD4zeem
-         O70UI7cI3U4GnaU4Yr6MJD+/0Rrko/SZq46Js4mWX4+sme7+6e/3bbbKrZli9q65m70Q
-         paeqdqtdaBF/5bjYttJE+jzIft4dRSy2u9icPAC1gkL6zFKBgwlStGLAtWrpYJ+7I7Iv
-         Kcl0aZ8nxdkYUqpL//FL0U5ry32vAAyhbzPiK/uqjKEqetMGejgDaZJOZbmVF76SH18n
-         nbvg==
-X-Gm-Message-State: AOAM533UQx2MLtjIartypIEkkIkrtAJ9txIYHuP6QtG5IN64sqpKLoot
-        4S8aL7hA96SK7A8JU2/Z1R2Rxu3R
-X-Google-Smtp-Source: ABdhPJxT2Ojsz35qWpCup24wmRrV13sTXzSeTr5g/bUpoY0BYhpWMIJixSnB7RMJhdaUaoljP4/80A==
-X-Received: by 2002:a05:620a:1321:: with SMTP id p1mr240025qkj.476.1590519075508;
-        Tue, 26 May 2020 11:51:15 -0700 (PDT)
-Received: from localhost.localdomain (pool-71-166-97-86.bltmmd.east.verizon.net. [71.166.97.86])
-        by smtp.gmail.com with ESMTPSA id n13sm488718qtb.20.2020.05.26.11.51.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2020 11:51:15 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     James Carter <jwcart2@gmail.com>,
-        Topi Miettinen <toiwoton@gmail.com>
-Subject: [PATCH v3 2/2] libsepol/cil: Return error when identifier declared as both type and attribute
-Date:   Tue, 26 May 2020 14:50:58 -0400
-Message-Id: <20200526185058.42827-2-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20200526185058.42827-1-jwcart2@gmail.com>
-References: <20200526185058.42827-1-jwcart2@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=4az2Ns9+dWWRUrn/wGIJCYm9Z2ECLPwclq7eITKZ3y8=;
+        b=d07r7mQ53ZRq3bSeL/JSvhA/Er5xnnvnSFve03UMOx91AgesCfQ+Ti36LD/WSRYsT2
+         dJCGLyxKBCbWjkoUsOy+e9p4JgJjJD6m2uG8hxP72CP2s1Kl0u2Q/FFAIFuo8btQ1BWP
+         7v/lRzZKAME1T9yT93dcwVlmkCr9sWFoZqKtVTD+05A3bJK+Ots6uU3J73tTtX94qA6P
+         zRM8FqpuNZTGo/d6SeTP0IYT4+Nq9Wn92rfsGAQNsYxTOoyfnR1+h2GsmNViNwgzszNb
+         +NOcb9El8iUagH7FBesEpmkNU9HFJd3GvpmUF6nESWhrs28eh5GPhy1X8RsC57Ai0DcM
+         XU2g==
+X-Gm-Message-State: AOAM530n/IkEXXFTN0Iwjb7MesRxOh2rkIfyBXlBPEoH2IF5o4bUmtMz
+        eYgWqBmMVCY5r0cERjVKXnqPWoIGTOM8newDNFLQWaqKPyX687K+5+xhd+vul24+MfM4NL9rEdq
+        FJWuM2e9P1VLCvPCwQgEmhv2SWOXnoEH40A==
+X-Received: by 2002:a62:b40b:: with SMTP id h11mr252195pfn.183.1590520337804;
+        Tue, 26 May 2020 12:12:17 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzSG4uZsjAL/YS/sT4m9ktkGpQPtbmwHJpi/MLlNPVS4Z/5csXAKlMlEeCmhhEdldfwb1kRTNMe9coVb2kh7V0=
+X-Received: by 2002:a62:b40b:: with SMTP id h11mr252183pfn.183.1590520337604;
+ Tue, 26 May 2020 12:12:17 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200523195130.409607-1-jlebon@redhat.com> <CAFqZXNsuJ7S9zFhHBJNJxUr4=_ZGmKdzTU29PrWRuziMfJJkGQ@mail.gmail.com>
+In-Reply-To: <CAFqZXNsuJ7S9zFhHBJNJxUr4=_ZGmKdzTU29PrWRuziMfJJkGQ@mail.gmail.com>
+From:   Jonathan Lebon <jlebon@redhat.com>
+Date:   Tue, 26 May 2020 15:12:05 -0400
+Message-ID: <CACpbjYqBL3a6iVuN9NGzLLHdENC-EXNsNikJZsEhpvCkCGEM2A@mail.gmail.com>
+Subject: Re: [PATCH] selinux: allow reading labels before policy is loaded
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-CIL allows a type to be redeclared when using the multiple declarations
-option ("-m" or "--muliple-decls"), but make it an error for an identifier
-to be declared as both a type and an attribute.
+On Mon, May 25, 2020 at 1:14 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> I might be missing something, but couldn't you achieve the same by
+> simply adding something like this in here:
+>
+> if (!selinux_initialized(&selinux_state))
+>         return -EOPNOTSUPP;
+>
+> (Or by adding it to the condition above.)
+>
+> Then you should hit this condition here and be all set:
+> https://elixir.bootlin.com/linux/v5.7-rc7/source/fs/xattr.c#L337
 
-Change the error message so that it always gives the location and flavor
-of both declarations. The flavors will be the same in all other cases,
-but in this case they explain why there is an error even if multiple
-declartions are allowed.
+Hi Ondrej,
 
-Fixes: Commit fafe4c212bf6c32c ("libsepol: cil: Add ability to redeclare types[attributes]")
-Reported-by: Topi Miettinen <toiwoton@gmail.com>
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
-v2: Added these changes
-v3: Removed the error message about not creating a node
+Yes, that looks promising. Two questions with that approach:
 
- libsepol/cil/src/cil_build_ast.c | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+1. Is there a concern here with transiently returning -EOPNOTSUPP even
+if the SELinux LSM does technically support the inode_getsecurity
+hook? I'm thinking of potential corner-cases down the road where
+somehow this knowledge is cached.
 
-diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-index fcecdc4f..60ecaaff 100644
---- a/libsepol/cil/src/cil_build_ast.c
-+++ b/libsepol/cil/src/cil_build_ast.c
-@@ -87,7 +87,7 @@ exit:
-  * datum, given the new datum and the one already present in a given symtab.
-  */
- int cil_is_datum_multiple_decl(__attribute__((unused)) struct cil_symtab_datum *cur,
--                               __attribute__((unused)) struct cil_symtab_datum *old,
-+                               struct cil_symtab_datum *old,
-                                enum cil_flavor f)
- {
- 	int rc = CIL_FALSE;
-@@ -95,8 +95,12 @@ int cil_is_datum_multiple_decl(__attribute__((unused)) struct cil_symtab_datum *
- 	switch (f) {
- 	case CIL_TYPE:
- 	case CIL_TYPEATTRIBUTE:
--		/* type and typeattribute statements insert empty datums, ret true */
--		rc = CIL_TRUE;
-+		if (!old || f != FLAVOR(old)) {
-+			rc = CIL_FALSE;
-+		} else {
-+			/* type and typeattribute statements insert empty datums */
-+			rc = CIL_TRUE;
-+		}
- 		break;
- 	default:
- 		break;
-@@ -126,19 +130,20 @@ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_s
- 	if (symtab != NULL) {
- 		rc = cil_symtab_insert(symtab, (hashtab_key_t)key, datum, ast_node);
- 		if (rc == SEPOL_EEXIST) {
-+			rc = cil_symtab_get_datum(symtab, (hashtab_key_t)key, &prev);
-+			if (rc != SEPOL_OK) {
-+				cil_log(CIL_ERR, "Re-declaration of %s %s, but previous declaration could not be found\n",cil_node_to_string(ast_node), key);
-+				goto exit;
-+			}
- 			if (!db->multiple_decls ||
--			    cil_symtab_get_datum(symtab, (hashtab_key_t)key, &prev) != SEPOL_OK ||
- 			    !cil_is_datum_multiple_decl(datum, prev, nflavor)) {
--
- 				/* multiple_decls not ok, ret error */
-+				struct cil_tree_node *node = NODE(prev);
- 				cil_log(CIL_ERR, "Re-declaration of %s %s\n",
- 					cil_node_to_string(ast_node), key);
--				if (cil_symtab_get_datum(symtab, key, &datum) == SEPOL_OK) {
--					if (sflavor == CIL_SYM_BLOCKS) {
--						struct cil_tree_node *node = datum->nodes->head->data;
--						cil_tree_log(node, CIL_ERR, "Previous declaration");
--					}
--				}
-+				cil_tree_log(node, CIL_ERR, "Previous declaration of %s",
-+					cil_node_to_string(node));
-+				rc = SEPOL_ERR;
- 				goto exit;
- 			}
- 			/* multiple_decls is enabled and works for this datum type, add node */
-@@ -169,7 +174,6 @@ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_s
- 	return SEPOL_OK;
- 
- exit:
--	cil_log(CIL_ERR, "Failed to create node\n");
- 	return rc;
- }
- 
--- 
-2.25.4
+2. The selinux_inode_getsecurity hook today does somewhat handle the
+uninitialized case. It ends up here:
+
+https://elixir.bootlin.com/linux/v5.7-rc7/source/security/selinux/ss/services.c#L1322.
+
+Specifically, it has support for initial SIDs. The patch I wrote
+purposely tries to allow falling back to that logic. Is there a
+concern with short-circuiting this logic even if the inode SID somehow
+isn't SECINITSID_UNLABELED?
 

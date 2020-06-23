@@ -2,65 +2,95 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F7B5205214
-	for <lists+selinux@lfdr.de>; Tue, 23 Jun 2020 14:12:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D8B20529C
+	for <lists+selinux@lfdr.de>; Tue, 23 Jun 2020 14:37:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732448AbgFWMMU (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 23 Jun 2020 08:12:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33254 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729583AbgFWMMU (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 23 Jun 2020 08:12:20 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B308C061755
-        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 05:12:20 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id c139so642918qkg.12
-        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 05:12:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=Q4GMjI3SACMb8RFaGQNILWKURPJS5DAT0Hx3Ie85yTueO7RBUQvU7beYM8kPidmHhC
-         gm46cwLK73Pb6PLeLTxwQK0nESc3zs43bOYHBluGRR1XKnugv77FwqwUf09MN14V7YRZ
-         XGA/hY5ifQWk19kH1xBh50eusbI9LnHcWs1+VFZgjNFkzXVPPy8jkiFn/kFVntI2//GU
-         wDkBHkbDH5cmgQc+gdpl3uVIKwTaS04KNWVl9J6Q4i2/N5s/c/dmYTY/90YbD6zBBLaX
-         FS6dVxMyKe3Py+A5pI2tZVVmMlOBUoVdx/zwteMGdhM8zq2wxepX33JKI2yTKi9AMrZm
-         dhhA==
+        id S1732597AbgFWMhM (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 23 Jun 2020 08:37:12 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:50167 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729611AbgFWMhM (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 23 Jun 2020 08:37:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1592915831;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=kHORIeKVMeWmbFQpeycFajDeSscrCXP6fR7cB47Zj8M=;
+        b=B3csPU/tzBTMgIp52G67f3KEFo1f14kHyDdVrHobq0zARsmxYOjCRv3jREBCrp0rEdz4yC
+        du8c65cITJvZPB662fUPBqdSiuKlpEwHb0+BxtgVnCSF31yh8fVhVXSC6BoR2CP9F7R3xV
+        bxrUsvQWeGrF3wjiv2MDu2aeJZJTW4w=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-324-oxX-OnomMzu8OSqjIfHoAg-1; Tue, 23 Jun 2020 08:37:06 -0400
+X-MC-Unique: oxX-OnomMzu8OSqjIfHoAg-1
+Received: by mail-wm1-f71.google.com with SMTP id v24so4222348wmh.3
+        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 05:37:06 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7fNnQnFssZCc2Jtw2cUlJB4v7zrpRiQS682aXMZO9+Q=;
-        b=haUQ31+J7GW02+1APpEl/ZdYpzbA9Mv+RmyRKmf/MbY6XPRHE+nF8syK2D3KNkrSGF
-         hFszel7YKLv0NWxoe5ngKPm5XFrRjvG0HmHyzY3lDxcUlddmYqNJBaE7KgDDNf/XJRBY
-         I2394Xd7K2adAmF/q3kTPEC9tLKLdhXqbfekm2nePzlHsgK9yPVwy13brGe2Cn7tAuD2
-         9pQDx12k+68umiJiwlH3jrN3TowM9jD/lBlAtL/hY+mSWAlUFwsfsEGT1b12pmL3i0pF
-         W83c+yhHccm3PDWNXeLyzR50P3l+Ipr06wfOgMUu6lXw/FKhZqRIqOSqvXyauvQ0YTGn
-         uYqQ==
-X-Gm-Message-State: AOAM530U3Pc2sm/ndXZe7SSolf+72gE4PDm65t+ARKAhq5ttX4XMXh6/
-        z5OX3Yt1GFvyKRettoe/9wnJtqwEphLPHIzFhcw=
-X-Google-Smtp-Source: ABdhPJyj70EjzjpfNszv7EgUxHBvLjUMmq8ZWiWmpm3BuwKSKKsDoXxeXlaaAbtPtGpYhKHAg4REDBd6wW4DUcIzWvQ=
-X-Received: by 2002:a37:a18f:: with SMTP id k137mr9440098qke.249.1592914339569;
- Tue, 23 Jun 2020 05:12:19 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=kHORIeKVMeWmbFQpeycFajDeSscrCXP6fR7cB47Zj8M=;
+        b=I30EMyOAXCo8X5gZZUOKHJKDO9Ko7mfMpPvPwpBVyXYovYtA3VlZzamaUyjK1Aqy0H
+         APRj/J159V+A8CKnXxr69/dr5yX4bThalnzHd9eed0Ojz5X6/+HT9QFHTmHwM0QLykPr
+         L1ROulsB8KF5gsKNoPu8aeIqi0fu4qpMd6qrUg1SmlYtN0ScmfkMchz0HSKW1rPFkG6w
+         kdkywj2KjbyPoQ60dP6sA+hoVHfhDY5R6PUqH/+D1B0pxadQvCrCtL474eEYsxPLv2g5
+         CtDBV5vrRdUTTIcqt0pKiSw3cRGx6HfNGDOJzvNEsNu1bC3ajSD9vxsZhEHuOvZt+GMM
+         H8mg==
+X-Gm-Message-State: AOAM530KgXAN1Qh+l5UwKkrBiqn7RFl9ePPPQOFOPx3DjG7JFeVc7eIa
+        EDCcWruxt6fK9X0G109ZTsLn0A56upRDuvBBbgvKGDKkjkQlEiUc+3sIFugpFsec/VlBrV90w21
+        7jQ6Okr7/z1hwS66jGw==
+X-Received: by 2002:adf:e38b:: with SMTP id e11mr8057380wrm.65.1592915825101;
+        Tue, 23 Jun 2020 05:37:05 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyfxP7ewxwdCnNTUG7h/XHhLIrWLDKTEQ5JDOPA9OpQD47GpOfjIeqy3O60FMVhY8WdeaGPTQ==
+X-Received: by 2002:adf:e38b:: with SMTP id e11mr8057365wrm.65.1592915824871;
+        Tue, 23 Jun 2020 05:37:04 -0700 (PDT)
+Received: from omos.redhat.com ([2a02:8308:b13f:2100:f695:3ae5:c8bf:2f57])
+        by smtp.gmail.com with ESMTPSA id p9sm3449729wma.48.2020.06.23.05.37.04
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Jun 2020 05:37:04 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH testsuite 0/4] Various CI-related testsuite fixes
+Date:   Tue, 23 Jun 2020 14:36:58 +0200
+Message-Id: <20200623123702.401338-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Received: by 2002:ac8:47c2:0:0:0:0:0 with HTTP; Tue, 23 Jun 2020 05:12:19
- -0700 (PDT)
-Reply-To: bektery@outlook.com
-From:   YAVUZ BEKTER <bakert.jg@gmail.com>
-Date:   Tue, 23 Jun 2020 05:12:19 -0700
-Message-ID: <CAAUSuTWjDUYTh9Ljy_LAkJO-ncdoAW85Z-VPk3BH-0M6LK2qKg@mail.gmail.com>
-Subject: Hello.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-I am the foreign operations director of Bank of Turkey.
-My name is Mr, Yavuz. I have a sensitive investment project to discuss
-with you, please reply now.
-________________________
-Ik ben de directeur buitenlandse activiteiten van de Bank of Turkey.
-Mijn naam is meneer Yavuz. Ik moet een gevoelig investeringsproject bespreken
-met u, antwoord dan nu.
+There are some warnings and non-fatal errors reported during CI runs.
+Additionally, the CI gets stuck when there is a force-push on some
+upstream repo that is cached. This series fixes these issues.
+
+Testing Travis run:
+https://travis-ci.org/github/WOnder93/selinux-testsuite/builds/698848141
+
+Ondrej Mosnacek (4):
+  Makefiles: remove bashisms
+  travis: add missing node to fake selinuxfs
+  travis: fix git/cache handling
+  tests: stop using deprecated security_context_t
+
+ .travis.yml                         |  2 ++
+ policy/Makefile                     |  4 +++-
+ tests/Makefile                      |  8 ++++++--
+ tests/bounds/thread.c               |  4 ++--
+ tests/dyntrace/parent.c             |  2 +-
+ tests/dyntrans/parent.c             |  2 +-
+ tests/execshare/parent.c            |  2 +-
+ tests/exectrace/parent.c            |  2 +-
+ tests/inherit/parent.c              |  2 +-
+ tests/prlimit/parent.c              |  2 +-
+ tests/setnice/parent.c              |  2 +-
+ travis-ci/setup-policy-fedora.sh    | 10 ++++++----
+ travis-ci/setup-policy-refpolicy.sh |  4 +++-
+ 13 files changed, 29 insertions(+), 17 deletions(-)
+
+-- 
+2.26.2
+

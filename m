@@ -2,54 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2007320531A
-	for <lists+selinux@lfdr.de>; Tue, 23 Jun 2020 15:13:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9035720533B
+	for <lists+selinux@lfdr.de>; Tue, 23 Jun 2020 15:15:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732627AbgFWNNt (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 23 Jun 2020 09:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42840 "EHLO
+        id S1732697AbgFWNPT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 23 Jun 2020 09:15:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1732626AbgFWNNt (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 23 Jun 2020 09:13:49 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57CF5C061573
-        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 06:13:48 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id p70so18723490oic.12
-        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 06:13:48 -0700 (PDT)
+        with ESMTP id S1732662AbgFWNPS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 23 Jun 2020 09:15:18 -0400
+Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E873CC061573
+        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 06:15:18 -0700 (PDT)
+Received: by mail-ot1-x343.google.com with SMTP id g7so16474094oti.13
+        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 06:15:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Zt04EgZdJjuPmIh3vn5fi+dkxDflt8CBp0huVSSUyCg=;
-        b=Py7lufHpZiLwhJWxAIkBTBPoSczVJrVRKILEsvKuG46Tm0XN74Q2L0JxRHwDA7uDRC
-         qyaEJlBV44mIfZ2Ru9vQiyc+BfNcWUtZIAL5/MneVK7Hh/iSsph/zUgimvFTb+VLRr4d
-         Ac8qhFoq1LXj9YvuiQBnefEYv1qMyXvoz+/nHsVRqSCv0HrqBiM1xEUz4V8E+nfjTCQK
-         aLUlQ3U6Y2HKrOr+LTG5zcVO3GBzz4Sbvvl4jOtVs3Efs98t4eq9nEZ3pyv3CifT7UhB
-         lLgSxaSdC7wx+jhnYsFO5iQ4YQOrJS293/TBrfa+aRSr6X9A2yuUAAaxxcouljSLJZnr
-         9PnQ==
+        bh=klXMq9NPLFIW0GPQwWSKwfvpoYhiAxb0mG+oIrMT1Dk=;
+        b=kIlqst66uHqurWGseabFnYNrXbBry2VYaiUHzGWqZoCin4lPTZxl1omUkzC3Al9wOO
+         cMXHqqbBg1/0Cf68IuHJd/kDt1ToKSolYrAgjLxszG9gZy7DFRXeF9lH9sPBsrgjLQ64
+         0zffnd9pUKnQLyB0yWL+TijQufwVzpfoFVjjqdOR9pKk0RLo+XG8xzaiIBXwTjHUZ2mq
+         9FBYWlb1rd0FtVj+v4P/HgoaDFQNbJbYf3Au/79a7Dk9L/juQxCCFzDGfrNTbKeN9gjk
+         iCvqXDanErTR2XieL3Lgg8PXxepGHtG2m0ojJDZLBrO70PsTU5P1PhbW4eAFz6QXRSm2
+         /FFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Zt04EgZdJjuPmIh3vn5fi+dkxDflt8CBp0huVSSUyCg=;
-        b=pFZccZ220UNryDwaSE4zrFNWl3fzw9/9BvIKpZ3DzmWW7oGuEkSc1Fag3J5G5tdAi8
-         rJt7iVrE2dCbGBFIi+FLGnxKW+jWuiU1iRhte1Uxf7V1NvruPXRUjuCLpvoX+tOxlqWh
-         RQhe0TiJqxjUn3DiKXn7gqUuIhEZhQ1gi5bEzqdRnAzzh9RLw294OIsvJcUhawzpZ+M8
-         iuoulAPLo17WdVZEwrW7gzKIBlsRn7dzsKmqn59Bc3mvSs+5BFxM8QUkcJCIBMdoVHpp
-         aF6+EOkr95jJ4CjYziv/NB9qMbUocdpA1J4mEjnBUUiI03PtF0sSUCDSMrdpsqJQOsSA
-         aWMg==
-X-Gm-Message-State: AOAM532W9BDmi88yFXyFxmMJwneRwxRWBhy4rELR1MitBKgicBefgqyy
-        95mi2SKa5lwTV6hoh1eWxwD6+uYy44zxij7tNQB4mFIkNGg=
-X-Google-Smtp-Source: ABdhPJzVoa+6eaEDiC49KnX+1GYhjdtfltmlLEqb1FwO6rzn3ggrObQt/3IzViO5T1gnve8P2fkSJmJZ35di2CrQJxk=
-X-Received: by 2002:aca:3283:: with SMTP id y125mr16316798oiy.140.1592918027805;
- Tue, 23 Jun 2020 06:13:47 -0700 (PDT)
+        bh=klXMq9NPLFIW0GPQwWSKwfvpoYhiAxb0mG+oIrMT1Dk=;
+        b=mstGZLm+tgz7CcMS3lN01F0XE+pWVVM2MHFc+q9AcCpoQ/zoRE9TGwfGNkUJjK9Y4h
+         4k4z7dX9qSGqukk88SPD38+g/4RAVv9sr7EsZ9tcrv3eUiXUQgVonA1+Rz7cJho6iXum
+         KWWGjR2uFUCzYKoXXnF12kIQPsaLaZN7y+jsvCmZieAKUGHLrozqtFX/oIhLfPWyVH/y
+         PndwkEG4RsnwiFGUIQ50smC7qn7jHu7htNe5FHLgMuYv8JrD4WoTKHTU7ni8A2dyjJMd
+         8mPDdkY+YlB9cQXAHCNdNDZ2Evm20ntQ3LVmmN+gYxpQsLIbz84NjAX3k8YLIbVcF69J
+         DXHA==
+X-Gm-Message-State: AOAM532zCdEBM0S8CxIOpQwVkzdhSy4ehX4oHuahTyXG/Oo0FsWl6ptN
+        Urfh+KIJcT/CMYWtEPmmACcRJVqBEcWzOOZuQwg=
+X-Google-Smtp-Source: ABdhPJy8+OFJljcK405HFjnlsrjevtitClqMc55YZXMHfSKA5UIqdQKU7xu59nLXPKEego5njQQdjdwbUmt+1kCzUxg=
+X-Received: by 2002:a9d:5786:: with SMTP id q6mr4121605oth.135.1592918118393;
+ Tue, 23 Jun 2020 06:15:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200623123702.401338-1-omosnace@redhat.com> <20200623123702.401338-3-omosnace@redhat.com>
-In-Reply-To: <20200623123702.401338-3-omosnace@redhat.com>
+References: <20200623123702.401338-1-omosnace@redhat.com> <20200623123702.401338-4-omosnace@redhat.com>
+In-Reply-To: <20200623123702.401338-4-omosnace@redhat.com>
 From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Tue, 23 Jun 2020 09:13:37 -0400
-Message-ID: <CAEjxPJ6OPt0r2Dv2u2Skt=ojKTVpNMcvDFKkoyw50naHetLC7Q@mail.gmail.com>
-Subject: Re: [PATCH testsuite 2/4] travis: add missing node to fake selinuxfs
+Date:   Tue, 23 Jun 2020 09:15:07 -0400
+Message-ID: <CAEjxPJ6icR4UdMsameoRXr1C_X7jzCwqYUCXsNLSrJZ4W=Mfbw@mail.gmail.com>
+Subject: Re: [PATCH testsuite 3/4] travis: fix git/cache handling
 To:     Ondrej Mosnacek <omosnace@redhat.com>
 Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
@@ -60,23 +60,10 @@ X-Mailing-List: selinux@vger.kernel.org
 
 On Tue, Jun 23, 2020 at 8:37 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
 >
-> Since commit e95fe9503816 ("Add tests for default_range glblub") we look
-> at $(SELINUXFS)/initial_contexts/kernel to determine the type of the
-> policy. However, this node is not provided by the fake selinuxfs created
-> by our CI scripts, leading to non-fatal errors like this:
->
-> [...]
-> make[1]: Entering directory '/home/travis/build/WOnder93/selinux-testsuite/policy'
-> cat: /tmp/fake-selinuxfs/initial_contexts/kernel: No such file or directory
-> [...]
->
-> Create that node and fill it with the ussual kernel context to silence
-> the errors.
+> The current way of fetching new changes from git blows up when there has
+> been a force-push. Switch to just fetching and then checking out the
+> remote branch directly rather than using git pull.
 >
 > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-
-Not objecting to fixing this but wondered if you had considered
-extending the .travis.yml to actually run the testsuite in a
-SELinux-enabled VM as per the selinux .travis.yml.
 
 Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>

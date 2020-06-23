@@ -2,60 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D8B20529C
-	for <lists+selinux@lfdr.de>; Tue, 23 Jun 2020 14:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C8520529A
+	for <lists+selinux@lfdr.de>; Tue, 23 Jun 2020 14:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732597AbgFWMhM (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 23 Jun 2020 08:37:12 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:50167 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1729611AbgFWMhM (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 23 Jun 2020 08:37:12 -0400
+        id S1732618AbgFWMhL (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 23 Jun 2020 08:37:11 -0400
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:57425 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1729611AbgFWMhK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 23 Jun 2020 08:37:10 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1592915831;
+        s=mimecast20190719; t=1592915829;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=kHORIeKVMeWmbFQpeycFajDeSscrCXP6fR7cB47Zj8M=;
-        b=B3csPU/tzBTMgIp52G67f3KEFo1f14kHyDdVrHobq0zARsmxYOjCRv3jREBCrp0rEdz4yC
-        du8c65cITJvZPB662fUPBqdSiuKlpEwHb0+BxtgVnCSF31yh8fVhVXSC6BoR2CP9F7R3xV
-        bxrUsvQWeGrF3wjiv2MDu2aeJZJTW4w=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-324-oxX-OnomMzu8OSqjIfHoAg-1; Tue, 23 Jun 2020 08:37:06 -0400
-X-MC-Unique: oxX-OnomMzu8OSqjIfHoAg-1
-Received: by mail-wm1-f71.google.com with SMTP id v24so4222348wmh.3
-        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 05:37:06 -0700 (PDT)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=c5P+U8IcWcn+FoMRhSlbLGo4kHHroRUUqScou366eC4=;
+        b=W2GqVzW0Gz05pLXUs6Ewkrse/g/DwgPHqt/dpCR+sujPGzwzIso2H5c+2PhvPNLQdV35Nx
+        8Nzy/0+nHRF+aHcLXG3z4E0CYcyp22bcoq9pBa2v+P8CoHIananAYHpSyLkQQ7/FY5jEDD
+        gP8pP5ITfvRi7lF3Xw21d374CU3loBY=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-135-ef2WL2heMzqDvgzjod6C_g-1; Tue, 23 Jun 2020 08:37:07 -0400
+X-MC-Unique: ef2WL2heMzqDvgzjod6C_g-1
+Received: by mail-wr1-f69.google.com with SMTP id r5so15513201wrt.9
+        for <selinux@vger.kernel.org>; Tue, 23 Jun 2020 05:37:07 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=kHORIeKVMeWmbFQpeycFajDeSscrCXP6fR7cB47Zj8M=;
-        b=I30EMyOAXCo8X5gZZUOKHJKDO9Ko7mfMpPvPwpBVyXYovYtA3VlZzamaUyjK1Aqy0H
-         APRj/J159V+A8CKnXxr69/dr5yX4bThalnzHd9eed0Ojz5X6/+HT9QFHTmHwM0QLykPr
-         L1ROulsB8KF5gsKNoPu8aeIqi0fu4qpMd6qrUg1SmlYtN0ScmfkMchz0HSKW1rPFkG6w
-         kdkywj2KjbyPoQ60dP6sA+hoVHfhDY5R6PUqH/+D1B0pxadQvCrCtL474eEYsxPLv2g5
-         CtDBV5vrRdUTTIcqt0pKiSw3cRGx6HfNGDOJzvNEsNu1bC3ajSD9vxsZhEHuOvZt+GMM
-         H8mg==
-X-Gm-Message-State: AOAM530KgXAN1Qh+l5UwKkrBiqn7RFl9ePPPQOFOPx3DjG7JFeVc7eIa
-        EDCcWruxt6fK9X0G109ZTsLn0A56upRDuvBBbgvKGDKkjkQlEiUc+3sIFugpFsec/VlBrV90w21
-        7jQ6Okr7/z1hwS66jGw==
-X-Received: by 2002:adf:e38b:: with SMTP id e11mr8057380wrm.65.1592915825101;
-        Tue, 23 Jun 2020 05:37:05 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyfxP7ewxwdCnNTUG7h/XHhLIrWLDKTEQ5JDOPA9OpQD47GpOfjIeqy3O60FMVhY8WdeaGPTQ==
-X-Received: by 2002:adf:e38b:: with SMTP id e11mr8057365wrm.65.1592915824871;
-        Tue, 23 Jun 2020 05:37:04 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=c5P+U8IcWcn+FoMRhSlbLGo4kHHroRUUqScou366eC4=;
+        b=gxIIg0wkV5Nt3TMldYhSPumh8sxAsVbVTVa2PyXlGCBRngaAAQE2L7s7HRJ6Qt6Doj
+         bFxZ9f6cUC7bWauWEmm0hkX9IzrFfxtKNhmJxyFgKm2uopRn9aVteOIUffvm46zXJnhI
+         kWilFhEq31Rjx9VuN34nfO6Xel/1vDoHZlv3y3imx54FU8shuioV4GI0DYAXa2cCFt84
+         N5/SJ62JSgn2jzz1wTVHVlxhw1/1v6C2qqf5IsYfpmIl9W2JXHcK+/3Z7T4r60fEuR4L
+         G1pS8ulkp82PWjEZho+xI/xgj1lgqbNF1gw7M/n/mLqUEoWZms9B1sZMH2tBP29myoUW
+         +k2g==
+X-Gm-Message-State: AOAM533hliNduIof5XkMHJjLNSu5HoImCw6PTXQgEzbrOYykoITipl3F
+        vE5LK0L8jo6mDpl3wUiutm2x6exUcabVrqkX8r8v6E/euF/sgDCo/vgyOH3iXVhXCCk4Iui6CTN
+        jCC4xHQtgOYC2sq3MLA==
+X-Received: by 2002:adf:fa8b:: with SMTP id h11mr22972636wrr.391.1592915826277;
+        Tue, 23 Jun 2020 05:37:06 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwb0dHatkxbMbVS/yoyMp6nbAMKJhKngPuTcbSiHs92FLnQhmR1sEaKS4Jzjn6imMaXGj4V5Q==
+X-Received: by 2002:adf:fa8b:: with SMTP id h11mr22972619wrr.391.1592915826082;
+        Tue, 23 Jun 2020 05:37:06 -0700 (PDT)
 Received: from omos.redhat.com ([2a02:8308:b13f:2100:f695:3ae5:c8bf:2f57])
         by smtp.gmail.com with ESMTPSA id p9sm3449729wma.48.2020.06.23.05.37.04
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jun 2020 05:37:04 -0700 (PDT)
+        Tue, 23 Jun 2020 05:37:05 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite 0/4] Various CI-related testsuite fixes
-Date:   Tue, 23 Jun 2020 14:36:58 +0200
-Message-Id: <20200623123702.401338-1-omosnace@redhat.com>
+Subject: [PATCH testsuite 1/4] Makefiles: remove bashisms
+Date:   Tue, 23 Jun 2020 14:36:59 +0200
+Message-Id: <20200623123702.401338-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200623123702.401338-1-omosnace@redhat.com>
+References: <20200623123702.401338-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -63,34 +66,57 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-There are some warnings and non-fatal errors reported during CI runs.
-Additionally, the CI gets stuck when there is a force-push on some
-upstream repo that is cached. This series fixes these issues.
+In Travis CI (Ubuntu), the shell used by Make doesn't understand
+bashisms like [[ ... ]]. Replace them with plain [ ... ] and also break
+up the conditionals for better readabilty.
 
-Testing Travis run:
-https://travis-ci.org/github/WOnder93/selinux-testsuite/builds/698848141
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ policy/Makefile | 4 +++-
+ tests/Makefile  | 8 ++++++--
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-Ondrej Mosnacek (4):
-  Makefiles: remove bashisms
-  travis: add missing node to fake selinuxfs
-  travis: fix git/cache handling
-  tests: stop using deprecated security_context_t
-
- .travis.yml                         |  2 ++
- policy/Makefile                     |  4 +++-
- tests/Makefile                      |  8 ++++++--
- tests/bounds/thread.c               |  4 ++--
- tests/dyntrace/parent.c             |  2 +-
- tests/dyntrans/parent.c             |  2 +-
- tests/execshare/parent.c            |  2 +-
- tests/exectrace/parent.c            |  2 +-
- tests/inherit/parent.c              |  2 +-
- tests/prlimit/parent.c              |  2 +-
- tests/setnice/parent.c              |  2 +-
- travis-ci/setup-policy-fedora.sh    | 10 ++++++----
- travis-ci/setup-policy-refpolicy.sh |  4 +++-
- 13 files changed, 29 insertions(+), 17 deletions(-)
-
+diff --git a/policy/Makefile b/policy/Makefile
+index 672733e..6c49091 100644
+--- a/policy/Makefile
++++ b/policy/Makefile
+@@ -37,13 +37,15 @@ endif
+ 
+ ifeq ($(SUPPORTS_CIL),y)
+ CIL_TARGETS = test_mlsconstrain.cil test_overlay_defaultrange.cil
+-ifeq ($(shell [[ $(MAX_KERNEL_POLICY) -ge 32 && $(POL_VERS) -ge 32 ]] && echo true),true)
++ifeq ($(shell [ $(MAX_KERNEL_POLICY) -ge 32 ] && echo true),true)
++ifeq ($(shell [ $(POL_VERS) -ge 32 ] && echo true),true)
+ # If other MLS tests get written this can be moved outside of the glblub test
+ ifeq ($(POL_TYPE), MLS)
+ CIL_TARGETS += test_glblub.cil
+ else ifeq ($(POL_TYPE), MCS)
+ CIL_TARGETS += test_add_levels.cil test_glblub.cil
+ endif # POL_TYPE
++endif # POL_VERS
+ endif # MAX_KERNEL_POLICY
+ endif # SUPPORTS_CIL
+ 
+diff --git a/tests/Makefile b/tests/Makefile
+index bdbdf3e..919335b 100644
+--- a/tests/Makefile
++++ b/tests/Makefile
+@@ -68,9 +68,13 @@ ifeq ($(shell grep -q key_socket $(POLDEV)/include/support/all_perms.spt && test
+ SUBDIRS += key_socket
+ endif
+ 
+-ifeq ($(shell [[ $(MAX_KERNEL_POLICY) -ge 32 && ( $(POL_TYPE) == 'MLS' || $(POL_TYPE) == 'MCS' ) && $(POL_VERS) -ge 32 ]]  && echo true),true)
++ifeq ($(shell [ $(MAX_KERNEL_POLICY) -ge 32 ] && echo true),true)
++ifeq ($(shell [ $(POL_TYPE) = 'MLS' ] || [ $(POL_TYPE) = 'MCS' ] && echo true),true)
++ifeq ($(shell [ $(POL_VERS) -ge 32 ] && echo true),true)
+ SUBDIRS += glblub
+-endif
++endif # POL_VERS
++endif # POL_TYPE
++endif # MAX_KERNEL_POLICY
+ 
+ ifeq ($(shell grep "^SELINUX_INFINIBAND_ENDPORT_TEST=" infiniband_endport/ibendport_test.conf | cut -d'=' -f 2),1)
+ SUBDIRS += infiniband_endport
 -- 
 2.26.2
 

@@ -2,90 +2,72 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3587D20E5CA
-	for <lists+selinux@lfdr.de>; Tue, 30 Jun 2020 00:07:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE2DB20E5F8
+	for <lists+selinux@lfdr.de>; Tue, 30 Jun 2020 00:08:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726169AbgF2Vlx (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 29 Jun 2020 17:41:53 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:56831 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726560AbgF2SjU (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 29 Jun 2020 14:39:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1593455959;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=gu279wuxQ+5mqY38We44kKjpbnmRFaU4VOfe0z0EkIw=;
-        b=OHInT9fC9PXcxmUGFIohzRV+6fXoH0XPxvvo/uBcKffesJpOhpl5szQ70RpfL3JWcETVoe
-        H9uw9r/BsvFUdmXtbvnSfBYGzkQBm9Lodlkp4x+BWe5qFf78V2qdPV5fD1y5tJGbmQ3S0a
-        b2ZDB7OV3XXQLE+S6zH7W2g5phZWIhs=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-249-oUQtGrX8MT6FFC9JcYgeIg-1; Mon, 29 Jun 2020 08:38:01 -0400
-X-MC-Unique: oUQtGrX8MT6FFC9JcYgeIg-1
-Received: by mail-lf1-f71.google.com with SMTP id t184so9760945lff.13
-        for <selinux@vger.kernel.org>; Mon, 29 Jun 2020 05:38:01 -0700 (PDT)
+        id S1726779AbgF2Vn0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 29 Jun 2020 17:43:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37562 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727870AbgF2Shu (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 29 Jun 2020 14:37:50 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37511C031417
+        for <selinux@vger.kernel.org>; Mon, 29 Jun 2020 10:20:54 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id e8so8612051pgc.5
+        for <selinux@vger.kernel.org>; Mon, 29 Jun 2020 10:20:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=ROPtn0qq0LxklRTYLuQuoyXL/8AJoDKgu0rBa2BwsLUX/fM0nYuRYWb5BPfFrmyY8m
+         TEszH7FAl6rVGR/9/UrlQxVJV2ajHzJkiV79HuJIl9kPN6EXRcvFPFeRGlunpvoQsjvU
+         kqULY5xmJJfuou8USpEn8tOm2BinuUW+JOEgyDD6MO42mt+MHmsBjm8H+JXt6QOKZAqP
+         zeYxuJ9osEGnBI1EVE3FDigGpA340uzenZ0lFhxtrShHN3wHWrq4StURMcrlysyjY78u
+         FR4qiM8vJZTEoMEijjvF8rgPv1OeKYa90ISw31v1WIGTqiMCcpmyTufYmE7mYZgOVYri
+         cT3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=gu279wuxQ+5mqY38We44kKjpbnmRFaU4VOfe0z0EkIw=;
-        b=ZfO/g5t4aDVuO+Tz4PiG+6L4j5+lVbQKQCBwNoj4FDrTQgufJU3tbWO0oArMMAnpDJ
-         pUooguLHpFDcvbeU6FVDoLq3mhXj57H/wGoOtvbTPC7FvN39+20rjJHNdZaYxKotzdLQ
-         9dL2m4BnsamRo9tNnvESTMKlQAKb+nlsNiv2fbUF4yfWYbr/mvfYDHcbpNBIAEYvicvT
-         vNjEx1O+GE26Ez7oL3e5aom30t3dsaEEIzwEoY+w7TL2qiDtTV/Hr10a65HuopVGRUfG
-         m43iu09+VCFYxuLl/b6dVJMoVReDXUZSvet6Rc+YVBjzBmqE++7BohmZi+x5JhA0/vc6
-         IBwg==
-X-Gm-Message-State: AOAM532cmVvSu4xXxDfQGhw/0z9piSRIlBGdWjFkeLRmGRADga50bB5t
-        HpefIBcZZ0qBZkho+0EJK9bN3nV2Cy1iTeIwfkDc5Rfep86MTb0LNAbbg/qSFQQu4LuYhEEc7l2
-        cNfw8ee/tyr85TqkT7tlTi5wCQK8Il8JHoQ==
-X-Received: by 2002:a2e:b5c8:: with SMTP id g8mr1144855ljn.38.1593434279660;
-        Mon, 29 Jun 2020 05:37:59 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJx6Iyjxkbn+6HN4nTwcz6bwk0M4+wMs8KpTjyGs7yCoOMCADjJtrmxOS/Jxf6d1aehOJ1n/ljMZOx8/BLEWBrc=
-X-Received: by 2002:a2e:b5c8:: with SMTP id g8mr1144848ljn.38.1593434279371;
- Mon, 29 Jun 2020 05:37:59 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
+        b=obgfHeM9aAoWhnOMAB4a4Be2CTl4p3Ub+ztNXiC6Jk1LXOvBLgx0m7+7BF7GKzSQ0A
+         aIjJz+O4m6tLCpWc3kjtsGYg37W8JK1fwk4mbFUdIzFFfTzV5RD9U6e7wDkzAMucBfZ7
+         rNDkSyMkznqOBIIaufyFn6O3aB5iRjlfcWCi9xhB0sOPecMRqIDzjuZj3GANOi8neC38
+         bekvtrc+E76/TewZPDF4WUuiFyE6LrjjJ5kOiM0qN2mqwTuL8lFTnVjKf4eYDWl2PFAy
+         eNiYulmmrH7Quay9ULqNkWJPbsR6ttYqf+d+GZKjAOIPyJXCGfQmxPSP0uFnH+09tXcr
+         Pz0w==
+X-Gm-Message-State: AOAM531bNnIR7zyArcsl4cIjI9ICXXrbtb+RrjRk0uuZq6Tl0FXD+vQY
+        qx3oNKfEsRLAGmCHcnThOm/qLvpAO72Rr0+/+E4=
+X-Google-Smtp-Source: ABdhPJydK6e2a+YkF3l2oFS0k9vxVIchQ1JJt/wNLCzQ6urdL2hE2VeB5jKzDjL9k3reVpyWT8lYI4aBBi/2fUnQsaw=
+X-Received: by 2002:aa7:8283:: with SMTP id s3mr15611742pfm.90.1593451253662;
+ Mon, 29 Jun 2020 10:20:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200626114359.80134-1-omosnace@redhat.com> <CAEjxPJ5+FhHLp01JWaALV6TCwkFP4PO=Y9KrjhKJCS-potV1TQ@mail.gmail.com>
-In-Reply-To: <CAEjxPJ5+FhHLp01JWaALV6TCwkFP4PO=Y9KrjhKJCS-potV1TQ@mail.gmail.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Mon, 29 Jun 2020 14:37:48 +0200
-Message-ID: <CAFqZXNuDuj2VVpWiUp5FbFtEVRpK0n=_KqdZmBkx2kwV-t0_9w@mail.gmail.com>
-Subject: Re: [PATCH testsuite] travis: fix `make conf` invocation
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+Received: by 2002:a17:90b:3545:0:0:0:0 with HTTP; Mon, 29 Jun 2020 10:20:52
+ -0700 (PDT)
+Reply-To: mrs.victoria.alexander2@gmail.com
+From:   " Mrs. Victoria Alexander  " <maj.melissajohnson3@gmail.com>
+Date:   Mon, 29 Jun 2020 10:20:52 -0700
+Message-ID: <CAK_mDMWVZeBrno-LVfMM7fcM8jGfUBmsDScpyqGrHZmOzenO+Q@mail.gmail.com>
+Subject: Hello,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Jun 26, 2020 at 2:49 PM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
-> On Fri, Jun 26, 2020 at 7:44 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> >
-> > In refpolicy when a module is added/removed, the policy build config
-> > may need to be rebuilt. Currently we run `make conf` just once and then
-> > reuse it via cache. Instead, we need to run it unconditionally, since
-> > the other targets won't trigger that implictly.
-> >
-> > In Fedora policy the default module config is included and maintained in
-> > git, so we don't need to (and must not) call make conf at all.
-> >
-> > Reported-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
->
-> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
->
-> Feel free to apply whenever; I will not be around next week to do so.
+Dear friend,
 
-(Take 2, since the vger server seems to have been down when I sent the reply...)
 
-Thanks, it is applied now and the Travis build passed:
-https://travis-ci.org/github/SELinuxProject/selinux-testsuite/builds/703080617
+I have a business container transaction what that some of( $13million dollars)
 
--- 
-Ondrej Mosnacek
-Software Engineer, Platform Security - SELinux kernel
-Red Hat, Inc.
+ I would like to discuss with you. If you are interested, please
+contact my email
 
+address (mrs.victoria.alexander2@gmail.com)
+
+My WhatsApp number but only message (+19293737780)
+
+Please do not reply if you are not ready
+Thanks

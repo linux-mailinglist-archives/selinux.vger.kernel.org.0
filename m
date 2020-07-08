@@ -2,60 +2,60 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 078D6218606
-	for <lists+selinux@lfdr.de>; Wed,  8 Jul 2020 13:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39F7A218608
+	for <lists+selinux@lfdr.de>; Wed,  8 Jul 2020 13:25:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728679AbgGHLY6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 8 Jul 2020 07:24:58 -0400
-Received: from us-smtp-1.mimecast.com ([207.211.31.81]:41716 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728666AbgGHLY6 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jul 2020 07:24:58 -0400
+        id S1728706AbgGHLZC (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 8 Jul 2020 07:25:02 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:31060 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1728592AbgGHLZB (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jul 2020 07:25:01 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594207495;
+        s=mimecast20190719; t=1594207498;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=x40jrShvEc/ZeH6VEVycY8nJpYJ5g8JNud1VbHtkvIQ=;
-        b=EmKfdkFNFxbcxQs/erh7Tn8Mlo9eE5DZjXA7StGXd0dHQYLcO7GXqhVqKUQHDaoXOaBc+D
-        5sQEcLxzdLA1b0ONN9wlB4hlLNU/LWOoFZVa1QSDx1gyEUFd2KdL2ISbs4BLWpAtiNx1HS
-        I/tYsXq/colI6IFrBdhtsVC27oeJ/eI=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-513-jZBON10SPmWk3UgWTyZAQg-1; Wed, 08 Jul 2020 07:24:53 -0400
-X-MC-Unique: jZBON10SPmWk3UgWTyZAQg-1
-Received: by mail-ej1-f72.google.com with SMTP id q11so43317128eja.3
-        for <selinux@vger.kernel.org>; Wed, 08 Jul 2020 04:24:53 -0700 (PDT)
+        bh=tQLWHxTslJ/2yK34zSBqUXcF24RQr8DQRLFsQkkdXgM=;
+        b=a1QA9XeQLBHm6o5OqxByuM7SBOzp/paCKykPt0QCFY7O5reOCIORpIGLVP2ufki5/UIIYy
+        zm7eP9ZTh5OMWzLu1wnHyFfnhfdp1cM7WC9tbAi4ZKbXmHZaUVNm1CL4AoB+AipcaNp0ZL
+        52uyb/7kMhSsfg2u4mS7RkuBpwM8wGA=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-248-hwbxaO46MC63GWdrs-aVHw-1; Wed, 08 Jul 2020 07:24:54 -0400
+X-MC-Unique: hwbxaO46MC63GWdrs-aVHw-1
+Received: by mail-ej1-f70.google.com with SMTP id f11so32870447ejb.0
+        for <selinux@vger.kernel.org>; Wed, 08 Jul 2020 04:24:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=x40jrShvEc/ZeH6VEVycY8nJpYJ5g8JNud1VbHtkvIQ=;
-        b=ZwXFBVSKMuIhyUXO6EQjni0DwGT4GkmAzdX8acxj3ir9e7tjwdFqEwzSYv7WdR9mbI
-         l4HnlMTnqSyTQ0IVf6rNtSe+wDjeNmHvGyLVKmiwaHPhhivEMKPz7J4qK+yrq/vZP9Q1
-         VgK1oPv4LxgIMystpO0DDY0M6hlTGB6WzI/D/X+7U+BnXi1iZ53f+5XNRj/OiLogJUKB
-         W8NBaKfujfkvqrQImSK7pdl6rX8F02EYg5+o8zWo+FpiHqqhcJ0zVbzaW2sL0qfSEDmr
-         4vEM9Y3S9/thF29p1rZS9uOVNoMn1fexc2PvSb3yMgsgXeXfP1E6AoS9Z6dbIIImv/cV
-         yq/A==
-X-Gm-Message-State: AOAM53086ElotLm+5/nFIptUwufAQ6kahf/5caySU1l3wbVn3KzPLhaV
-        iCxSb6Mat4df6loOnixlhrdi6wxsGwGMObQuku/RkqxbHO1145fNCwxznsVqnlaoQ2L+wa8/7qn
-        KW6QJlPoKRlTkJiV5lg==
-X-Received: by 2002:a17:907:7245:: with SMTP id ds5mr54231968ejc.67.1594207491695;
-        Wed, 08 Jul 2020 04:24:51 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJw6MZ/kr/Q4r4NhDtsc140shOGqHFVPHuq6rvzSEu4bb4PRfeEONwol2W2Wewu/3d7eBwZbiw==
-X-Received: by 2002:a17:907:7245:: with SMTP id ds5mr54231950ejc.67.1594207491378;
-        Wed, 08 Jul 2020 04:24:51 -0700 (PDT)
+        bh=tQLWHxTslJ/2yK34zSBqUXcF24RQr8DQRLFsQkkdXgM=;
+        b=C6S3s8MmKvLzAbeNjyxE6iHC8FR+BGc5ucIX0HiDcmHa3JsuCsKt4kIKbWqAx9fVjK
+         +AV/2ozpNMuQzcbaFShAXFGsWCFt7s8t9EAFRoLSYMyuZNieaS+wMeW8yNzjQkdqtK1c
+         BhieyGdtkKKSUeU1gpFmhiUlUZ+8xDuvLKn/WphinDwAEK6xC4fOFhDd0p+VptJXHt+r
+         tXxVM7UJBMp++MT4C9sBQv3bKDezWCb50XVwhNYUvqW4miFR+3n2i0vQir5tYsW+d8EU
+         wqgYbcaRd8Syi5oItU2iTlkYs90/3HS1ps3PdHw2G42iyQIvGQDKV4N9OmQKjdSkURFj
+         8VcQ==
+X-Gm-Message-State: AOAM531Mxkm0hrlJOym0+OK4E6vdubPtFKemH10TPgqVtY2BRlNw7toW
+        x6PTh4FBpXBFU8osbbJeu8A2aHWnJ16iFuAvvoaEcPIynEnhakjPggJnMdm0V475FRnz3HkUS51
+        kZEEuZpWBsPz5KOf6vA==
+X-Received: by 2002:a17:906:4dcc:: with SMTP id f12mr52894820ejw.401.1594207492671;
+        Wed, 08 Jul 2020 04:24:52 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxPS0/RWB2kpsE0eGszakrsyw8Wm8j91tcEa2667KYUDBW0JOh+0BkA6J+D8/2rSTjS9mSWrw==
+X-Received: by 2002:a17:906:4dcc:: with SMTP id f12mr52894799ejw.401.1594207492308;
+        Wed, 08 Jul 2020 04:24:52 -0700 (PDT)
 Received: from omos.redhat.com ([2a02:8308:b13f:2100:f695:3ae5:c8bf:2f57])
-        by smtp.gmail.com with ESMTPSA id p9sm1839374ejd.50.2020.07.08.04.24.50
+        by smtp.gmail.com with ESMTPSA id p9sm1839374ejd.50.2020.07.08.04.24.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jul 2020 04:24:50 -0700 (PDT)
+        Wed, 08 Jul 2020 04:24:51 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
 Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v3 1/3] selinux: specialize symtab insert and search functions
-Date:   Wed,  8 Jul 2020 13:24:45 +0200
-Message-Id: <20200708112447.292321-2-omosnace@redhat.com>
+Subject: [PATCH v3 2/3] selinux: prepare for inlining of hashtab functions
+Date:   Wed,  8 Jul 2020 13:24:46 +0200
+Message-Id: <20200708112447.292321-3-omosnace@redhat.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200708112447.292321-1-omosnace@redhat.com>
 References: <20200708112447.292321-1-omosnace@redhat.com>
@@ -66,495 +66,494 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This encapsulates symtab a little better and will help with further
-refactoring later.
+Refactor searching and inserting into hashtabs to pave the way for
+converting hashtab_search() and hashtab_insert() to inline functions in
+the next patch. This will avoid indirect calls and allow the compiler to
+better optimize individual callers, leading to a significant performance
+improvement.
+
+In order to avoid the indirect calls, the key hashing and comparison
+callbacks need to be extracted from the hashtab struct and passed
+directly to hashtab_search()/_insert() by the callers so that the
+callback address is always known at compile time. The kernel's
+rhashtable library (<linux/rhashtable*.h>) does the same thing.
+
+This of course makes the hashtab functions slightly easier to misuse by
+passing a wrong callback set, but unfortunately there is no better way
+to implement a hash table that is both generic and efficient in C. This
+patch tries to somewhat mitigate this by only calling the hashtab
+functions in the same file where the corresponding callbacks are
+defined (wrapping them into more specialized functions as needed).
+
+Note that this patch doesn't bring any benefit without also moving the
+definitions of hashtab_search() and -_insert() to the header file, which
+is done in a follow-up patch for easier review of the hashtab.c changes
+in this patch.
 
 Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- security/selinux/ss/conditional.c |  4 +--
- security/selinux/ss/conditional.h |  2 +-
- security/selinux/ss/mls.c         | 21 +++++++------
- security/selinux/ss/policydb.c    | 52 +++++++++++++++----------------
- security/selinux/ss/services.c    | 34 ++++++++++----------
- security/selinux/ss/symtab.c      |  9 ++++++
- security/selinux/ss/symtab.h      |  3 ++
- 7 files changed, 69 insertions(+), 56 deletions(-)
+ security/selinux/ss/hashtab.c  | 44 ++++++++++----------
+ security/selinux/ss/hashtab.h  | 22 +++++-----
+ security/selinux/ss/mls.c      |  2 +-
+ security/selinux/ss/policydb.c | 76 ++++++++++++++++++++++++----------
+ security/selinux/ss/policydb.h |  9 ++++
+ security/selinux/ss/services.c |  4 +-
+ security/selinux/ss/symtab.c   | 16 ++++---
+ 7 files changed, 110 insertions(+), 63 deletions(-)
 
-diff --git a/security/selinux/ss/conditional.c b/security/selinux/ss/conditional.c
-index 25850c9ea6fae..e68dd2e4cac1d 100644
---- a/security/selinux/ss/conditional.c
-+++ b/security/selinux/ss/conditional.c
-@@ -200,7 +200,7 @@ static int bool_isvalid(struct cond_bool_datum *b)
- 	return 1;
+diff --git a/security/selinux/ss/hashtab.c b/security/selinux/ss/hashtab.c
+index 5ee868116d706..8126b909a7574 100644
+--- a/security/selinux/ss/hashtab.c
++++ b/security/selinux/ss/hashtab.c
+@@ -29,16 +29,10 @@ static u32 hashtab_compute_size(u32 nel)
+ 	return nel == 0 ? 0 : roundup_pow_of_two(nel);
  }
  
--int cond_read_bool(struct policydb *p, struct hashtab *h, void *fp)
-+int cond_read_bool(struct policydb *p, struct symtab *s, void *fp)
+-int hashtab_init(struct hashtab *h,
+-		 u32 (*hash_value)(struct hashtab *h, const void *key),
+-		 int (*keycmp)(struct hashtab *h, const void *key1,
+-			       const void *key2),
+-		 u32 nel_hint)
++int hashtab_init(struct hashtab *h, u32 nel_hint)
  {
- 	char *key = NULL;
- 	struct cond_bool_datum *booldatum;
-@@ -235,7 +235,7 @@ int cond_read_bool(struct policydb *p, struct hashtab *h, void *fp)
- 	if (rc)
- 		goto err;
- 	key[len] = '\0';
--	rc = hashtab_insert(h, key, booldatum);
-+	rc = symtab_insert(s, key, booldatum);
- 	if (rc)
- 		goto err;
+ 	h->size = hashtab_compute_size(nel_hint);
+ 	h->nel = 0;
+-	h->hash_value = hash_value;
+-	h->keycmp = keycmp;
+ 	if (!h->size)
+ 		return 0;
  
-diff --git a/security/selinux/ss/conditional.h b/security/selinux/ss/conditional.h
-index 90c9c964f5f55..79e7e03db8594 100644
---- a/security/selinux/ss/conditional.h
-+++ b/security/selinux/ss/conditional.h
-@@ -69,7 +69,7 @@ int cond_destroy_bool(void *key, void *datum, void *p);
+@@ -46,7 +40,8 @@ int hashtab_init(struct hashtab *h,
+ 	return h->htable ? 0 : -ENOMEM;
+ }
  
- int cond_index_bool(void *key, void *datum, void *datap);
+-int hashtab_insert(struct hashtab *h, void *key, void *datum)
++int hashtab_insert(struct hashtab *h, void *key, void *datum,
++		   struct hashtab_key_params key_params)
+ {
+ 	u32 hvalue;
+ 	struct hashtab_node *prev, *cur, *newnode;
+@@ -56,17 +51,20 @@ int hashtab_insert(struct hashtab *h, void *key, void *datum)
+ 	if (!h->size || h->nel == HASHTAB_MAX_NODES)
+ 		return -EINVAL;
  
--int cond_read_bool(struct policydb *p, struct hashtab *h, void *fp);
-+int cond_read_bool(struct policydb *p, struct symtab *s, void *fp);
- int cond_read_list(struct policydb *p, void *fp);
- int cond_write_bool(void *key, void *datum, void *ptr);
- int cond_write_list(struct policydb *p, void *fp);
+-	hvalue = h->hash_value(h, key);
++	hvalue = key_params.hash(key) & (h->size - 1);
+ 	prev = NULL;
+ 	cur = h->htable[hvalue];
+-	while (cur && h->keycmp(h, key, cur->key) > 0) {
++	while (cur) {
++		int cmp = key_params.cmp(key, cur->key);
++
++		if (cmp == 0)
++			return -EEXIST;
++		if (cmp < 0)
++			break;
+ 		prev = cur;
+ 		cur = cur->next;
+ 	}
+ 
+-	if (cur && (h->keycmp(h, key, cur->key) == 0))
+-		return -EEXIST;
+-
+ 	newnode = kmem_cache_zalloc(hashtab_node_cachep, GFP_KERNEL);
+ 	if (!newnode)
+ 		return -ENOMEM;
+@@ -84,7 +82,8 @@ int hashtab_insert(struct hashtab *h, void *key, void *datum)
+ 	return 0;
+ }
+ 
+-void *hashtab_search(struct hashtab *h, const void *key)
++void *hashtab_search(struct hashtab *h, const void *key,
++		     struct hashtab_key_params key_params)
+ {
+ 	u32 hvalue;
+ 	struct hashtab_node *cur;
+@@ -92,15 +91,18 @@ void *hashtab_search(struct hashtab *h, const void *key)
+ 	if (!h->size)
+ 		return NULL;
+ 
+-	hvalue = h->hash_value(h, key);
++	hvalue = key_params.hash(key) & (h->size - 1);
+ 	cur = h->htable[hvalue];
+-	while (cur && h->keycmp(h, key, cur->key) > 0)
+-		cur = cur->next;
++	while (cur) {
++		int cmp = key_params.cmp(key, cur->key);
+ 
+-	if (!cur || (h->keycmp(h, key, cur->key) != 0))
+-		return NULL;
+-
+-	return cur->datum;
++		if (cmp == 0)
++			return cur->datum;
++		if (cmp < 0)
++			break;
++		cur = cur->next;
++	}
++	return NULL;
+ }
+ 
+ void hashtab_destroy(struct hashtab *h)
+diff --git a/security/selinux/ss/hashtab.h b/security/selinux/ss/hashtab.h
+index 31c11511fe100..4885234257d40 100644
+--- a/security/selinux/ss/hashtab.h
++++ b/security/selinux/ss/hashtab.h
+@@ -13,6 +13,12 @@
+ 
+ #define HASHTAB_MAX_NODES	0xffffffff
+ 
++struct hashtab_key_params {
++	u32 (*hash)(const void *key);	/* hash function */
++	int (*cmp)(const void *key1, const void *key2);
++					/* key comparison function */
++};
++
+ struct hashtab_node {
+ 	void *key;
+ 	void *datum;
+@@ -23,10 +29,6 @@ struct hashtab {
+ 	struct hashtab_node **htable;	/* hash table */
+ 	u32 size;			/* number of slots in hash table */
+ 	u32 nel;			/* number of elements in hash table */
+-	u32 (*hash_value)(struct hashtab *h, const void *key);
+-					/* hash function */
+-	int (*keycmp)(struct hashtab *h, const void *key1, const void *key2);
+-					/* key comparison function */
+ };
+ 
+ struct hashtab_info {
+@@ -39,11 +41,7 @@ struct hashtab_info {
+  *
+  * Returns -ENOMEM if insufficient space is available or 0 otherwise.
+  */
+-int hashtab_init(struct hashtab *h,
+-		 u32 (*hash_value)(struct hashtab *h, const void *key),
+-		 int (*keycmp)(struct hashtab *h, const void *key1,
+-			       const void *key2),
+-		 u32 nel_hint);
++int hashtab_init(struct hashtab *h, u32 nel_hint);
+ 
+ /*
+  * Inserts the specified (key, datum) pair into the specified hash table.
+@@ -53,7 +51,8 @@ int hashtab_init(struct hashtab *h,
+  * -EINVAL for general errors or
+   0 otherwise.
+  */
+-int hashtab_insert(struct hashtab *h, void *k, void *d);
++int hashtab_insert(struct hashtab *h, void *k, void *d,
++		   struct hashtab_key_params key_params);
+ 
+ /*
+  * Searches for the entry with the specified key in the hash table.
+@@ -61,7 +60,8 @@ int hashtab_insert(struct hashtab *h, void *k, void *d);
+  * Returns NULL if no entry has the specified key or
+  * the datum of the entry otherwise.
+  */
+-void *hashtab_search(struct hashtab *h, const void *k);
++void *hashtab_search(struct hashtab *h, const void *k,
++		     struct hashtab_key_params key_params);
+ 
+ /*
+  * Destroys the specified hash table.
 diff --git a/security/selinux/ss/mls.c b/security/selinux/ss/mls.c
-index cd8734f25b39b..5be241b6b1900 100644
+index 5be241b6b1900..408d306895f8f 100644
 --- a/security/selinux/ss/mls.c
 +++ b/security/selinux/ss/mls.c
-@@ -165,8 +165,8 @@ int mls_level_isvalid(struct policydb *p, struct mls_level *l)
+@@ -507,7 +507,7 @@ int mls_compute_sid(struct policydb *p,
+ 		rtr.source_type = scontext->type;
+ 		rtr.target_type = tcontext->type;
+ 		rtr.target_class = tclass;
+-		r = hashtab_search(&p->range_tr, &rtr);
++		r = policydb_rangetr_search(p, &rtr);
+ 		if (r)
+ 			return mls_range_set(newcontext, r);
  
- 	if (!l->sens || l->sens > p->p_levels.nprim)
- 		return 0;
--	levdatum = hashtab_search(&p->p_levels.table,
--				  sym_name(p, SYM_LEVELS, l->sens - 1));
-+	levdatum = symtab_search(&p->p_levels,
-+				 sym_name(p, SYM_LEVELS, l->sens - 1));
- 	if (!levdatum)
- 		return 0;
- 
-@@ -293,7 +293,7 @@ int mls_context_to_sid(struct policydb *pol,
- 			*(next_cat++) = '\0';
- 
- 		/* Parse sensitivity. */
--		levdatum = hashtab_search(&pol->p_levels.table, sensitivity);
-+		levdatum = symtab_search(&pol->p_levels, sensitivity);
- 		if (!levdatum)
- 			return -EINVAL;
- 		context->range.level[l].sens = levdatum->level->sens;
-@@ -312,7 +312,7 @@ int mls_context_to_sid(struct policydb *pol,
- 				*rngptr++ = '\0';
- 			}
- 
--			catdatum = hashtab_search(&pol->p_cats.table, cur_cat);
-+			catdatum = symtab_search(&pol->p_cats, cur_cat);
- 			if (!catdatum)
- 				return -EINVAL;
- 
-@@ -325,7 +325,7 @@ int mls_context_to_sid(struct policydb *pol,
- 			if (rngptr == NULL)
- 				continue;
- 
--			rngdatum = hashtab_search(&pol->p_cats.table, rngptr);
-+			rngdatum = symtab_search(&pol->p_cats, rngptr);
- 			if (!rngdatum)
- 				return -EINVAL;
- 
-@@ -458,9 +458,10 @@ int mls_convert_context(struct policydb *oldp,
- 		return 0;
- 
- 	for (l = 0; l < 2; l++) {
--		levdatum = hashtab_search(&newp->p_levels.table,
--					  sym_name(oldp, SYM_LEVELS,
--						   oldc->range.level[l].sens - 1));
-+		char *name = sym_name(oldp, SYM_LEVELS,
-+				      oldc->range.level[l].sens - 1);
-+
-+		levdatum = symtab_search(&newp->p_levels, name);
- 
- 		if (!levdatum)
- 			return -EINVAL;
-@@ -470,8 +471,8 @@ int mls_convert_context(struct policydb *oldp,
- 					      node, i) {
- 			int rc;
- 
--			catdatum = hashtab_search(&newp->p_cats.table,
--						  sym_name(oldp, SYM_CATS, i));
-+			catdatum = symtab_search(&newp->p_cats,
-+						 sym_name(oldp, SYM_CATS, i));
- 			if (!catdatum)
- 				return -EINVAL;
- 			rc = ebitmap_set_bit(&newc->range.level[l].cat,
 diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-index 6f81152248524..02b722c5c189d 100644
+index 02b722c5c189d..ae78f66e85d29 100644
 --- a/security/selinux/ss/policydb.c
 +++ b/security/selinux/ss/policydb.c
-@@ -400,7 +400,7 @@ static int roles_init(struct policydb *p)
- 	if (!key)
- 		goto out;
- 
--	rc = hashtab_insert(&p->p_roles.table, key, role);
-+	rc = symtab_insert(&p->p_roles, key, role);
- 	if (rc)
- 		goto out;
- 
-@@ -1065,7 +1065,7 @@ static int str_read(char **strp, gfp_t flags, void *fp, u32 len)
- 	return 0;
- }
- 
--static int perm_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int perm_read(struct policydb *p, struct symtab *s, void *fp)
- {
- 	char *key = NULL;
- 	struct perm_datum *perdatum;
-@@ -1088,7 +1088,7 @@ static int perm_read(struct policydb *p, struct hashtab *h, void *fp)
- 	if (rc)
- 		goto bad;
- 
--	rc = hashtab_insert(h, key, perdatum);
-+	rc = symtab_insert(s, key, perdatum);
- 	if (rc)
- 		goto bad;
- 
-@@ -1098,7 +1098,7 @@ bad:
+@@ -411,7 +411,7 @@ out:
  	return rc;
  }
  
--static int common_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int common_read(struct policydb *p, struct symtab *s, void *fp)
+-static u32 filenametr_hash(struct hashtab *h, const void *k)
++static u32 filenametr_hash(const void *k)
  {
- 	char *key = NULL;
- 	struct common_datum *comdatum;
-@@ -1128,12 +1128,12 @@ static int common_read(struct policydb *p, struct hashtab *h, void *fp)
- 		goto bad;
- 
- 	for (i = 0; i < nel; i++) {
--		rc = perm_read(p, &comdatum->permissions.table, fp);
-+		rc = perm_read(p, &comdatum->permissions, fp);
- 		if (rc)
- 			goto bad;
- 	}
- 
--	rc = hashtab_insert(h, key, comdatum);
-+	rc = symtab_insert(s, key, comdatum);
- 	if (rc)
- 		goto bad;
- 	return 0;
-@@ -1262,7 +1262,7 @@ static int read_cons_helper(struct policydb *p,
- 	return 0;
+ 	const struct filename_trans_key *ft = k;
+ 	unsigned long hash;
+@@ -423,10 +423,10 @@ static u32 filenametr_hash(struct hashtab *h, const void *k)
+ 	byte_num = 0;
+ 	while ((focus = ft->name[byte_num++]))
+ 		hash = partial_name_hash(focus, hash);
+-	return hash & (h->size - 1);
++	return hash;
  }
  
--static int class_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int class_read(struct policydb *p, struct symtab *s, void *fp)
+-static int filenametr_cmp(struct hashtab *h, const void *k1, const void *k2)
++static int filenametr_cmp(const void *k1, const void *k2)
  {
- 	char *key = NULL;
- 	struct class_datum *cladatum;
-@@ -1300,8 +1300,8 @@ static int class_read(struct policydb *p, struct hashtab *h, void *fp)
- 			goto bad;
+ 	const struct filename_trans_key *ft1 = k1;
+ 	const struct filename_trans_key *ft2 = k2;
+@@ -444,15 +444,26 @@ static int filenametr_cmp(struct hashtab *h, const void *k1, const void *k2)
  
- 		rc = -EINVAL;
--		cladatum->comdatum = hashtab_search(&p->p_commons.table,
--						    cladatum->comkey);
-+		cladatum->comdatum = symtab_search(&p->p_commons,
-+						   cladatum->comkey);
- 		if (!cladatum->comdatum) {
- 			pr_err("SELinux:  unknown common %s\n",
- 			       cladatum->comkey);
-@@ -1309,7 +1309,7 @@ static int class_read(struct policydb *p, struct hashtab *h, void *fp)
- 		}
- 	}
- 	for (i = 0; i < nel; i++) {
--		rc = perm_read(p, &cladatum->permissions.table, fp);
-+		rc = perm_read(p, &cladatum->permissions, fp);
- 		if (rc)
- 			goto bad;
- 	}
-@@ -1347,7 +1347,7 @@ static int class_read(struct policydb *p, struct hashtab *h, void *fp)
- 		cladatum->default_type = le32_to_cpu(buf[0]);
- 	}
- 
--	rc = hashtab_insert(h, key, cladatum);
-+	rc = symtab_insert(s, key, cladatum);
- 	if (rc)
- 		goto bad;
- 
-@@ -1357,7 +1357,7 @@ bad:
- 	return rc;
  }
  
--static int role_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int role_read(struct policydb *p, struct symtab *s, void *fp)
+-static u32 rangetr_hash(struct hashtab *h, const void *k)
++static const struct hashtab_key_params filenametr_key_params = {
++	.hash = filenametr_hash,
++	.cmp = filenametr_cmp,
++};
++
++struct filename_trans_datum *policydb_filenametr_search(
++	struct policydb *p, struct filename_trans_key *key)
++{
++	return hashtab_search(&p->filename_trans, key, filenametr_key_params);
++}
++
++static u32 rangetr_hash(const void *k)
  {
- 	char *key = NULL;
- 	struct role_datum *role;
-@@ -1404,7 +1404,7 @@ static int role_read(struct policydb *p, struct hashtab *h, void *fp)
- 		goto bad;
- 	}
+ 	const struct range_trans *key = k;
  
--	rc = hashtab_insert(h, key, role);
-+	rc = symtab_insert(s, key, role);
- 	if (rc)
- 		goto bad;
- 	return 0;
-@@ -1413,7 +1413,7 @@ bad:
- 	return rc;
+-	return (key->source_type + (key->target_type << 3) +
+-		(key->target_class << 5)) & (h->size - 1);
++	return key->source_type + (key->target_type << 3) +
++		(key->target_class << 5);
  }
  
--static int type_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int type_read(struct policydb *p, struct symtab *s, void *fp)
+-static int rangetr_cmp(struct hashtab *h, const void *k1, const void *k2)
++static int rangetr_cmp(const void *k1, const void *k2)
  {
- 	char *key = NULL;
- 	struct type_datum *typdatum;
-@@ -1451,7 +1451,7 @@ static int type_read(struct policydb *p, struct hashtab *h, void *fp)
- 	if (rc)
- 		goto bad;
- 
--	rc = hashtab_insert(h, key, typdatum);
-+	rc = symtab_insert(s, key, typdatum);
- 	if (rc)
- 		goto bad;
- 	return 0;
-@@ -1487,7 +1487,7 @@ static int mls_read_level(struct mls_level *lp, void *fp)
- 	return 0;
+ 	const struct range_trans *key1 = k1, *key2 = k2;
+ 	int v;
+@@ -470,15 +481,25 @@ static int rangetr_cmp(struct hashtab *h, const void *k1, const void *k2)
+ 	return v;
  }
  
--static int user_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int user_read(struct policydb *p, struct symtab *s, void *fp)
+-static u32 role_trans_hash(struct hashtab *h, const void *k)
++static const struct hashtab_key_params rangetr_key_params = {
++	.hash = rangetr_hash,
++	.cmp = rangetr_cmp,
++};
++
++struct mls_range *policydb_rangetr_search(struct policydb *p,
++					  struct range_trans *key)
++{
++	return hashtab_search(&p->range_tr, key, rangetr_key_params);
++}
++
++static u32 role_trans_hash(const void *k)
  {
- 	char *key = NULL;
- 	struct user_datum *usrdatum;
-@@ -1528,7 +1528,7 @@ static int user_read(struct policydb *p, struct hashtab *h, void *fp)
- 			goto bad;
- 	}
+ 	const struct role_trans_key *key = k;
  
--	rc = hashtab_insert(h, key, usrdatum);
-+	rc = symtab_insert(s, key, usrdatum);
- 	if (rc)
- 		goto bad;
- 	return 0;
-@@ -1537,7 +1537,7 @@ bad:
- 	return rc;
+-	return (key->role + (key->type << 3) + (key->tclass << 5)) &
+-		(h->size - 1);
++	return key->role + (key->type << 3) + (key->tclass << 5);
  }
  
--static int sens_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int sens_read(struct policydb *p, struct symtab *s, void *fp)
+-static int role_trans_cmp(struct hashtab *h, const void *k1, const void *k2)
++static int role_trans_cmp(const void *k1, const void *k2)
  {
- 	char *key = NULL;
- 	struct level_datum *levdatum;
-@@ -1569,7 +1569,7 @@ static int sens_read(struct policydb *p, struct hashtab *h, void *fp)
- 	if (rc)
- 		goto bad;
- 
--	rc = hashtab_insert(h, key, levdatum);
-+	rc = symtab_insert(s, key, levdatum);
- 	if (rc)
- 		goto bad;
- 	return 0;
-@@ -1578,7 +1578,7 @@ bad:
- 	return rc;
+ 	const struct role_trans_key *key1 = k1, *key2 = k2;
+ 	int v;
+@@ -494,6 +515,17 @@ static int role_trans_cmp(struct hashtab *h, const void *k1, const void *k2)
+ 	return key1->tclass - key2->tclass;
  }
  
--static int cat_read(struct policydb *p, struct hashtab *h, void *fp)
-+static int cat_read(struct policydb *p, struct symtab *s, void *fp)
- {
- 	char *key = NULL;
- 	struct cat_datum *catdatum;
-@@ -1602,7 +1602,7 @@ static int cat_read(struct policydb *p, struct hashtab *h, void *fp)
++static const struct hashtab_key_params roletr_key_params = {
++	.hash = role_trans_hash,
++	.cmp = role_trans_cmp,
++};
++
++struct role_trans_datum *policydb_roletr_search(struct policydb *p,
++						struct role_trans_key *key)
++{
++	return hashtab_search(&p->role_tr, key, roletr_key_params);
++}
++
+ /*
+  * Initialize a policy database structure.
+  */
+@@ -1796,7 +1828,7 @@ static int range_read(struct policydb *p, void *fp)
+ 
+ 	nel = le32_to_cpu(buf[0]);
+ 
+-	rc = hashtab_init(&p->range_tr, rangetr_hash, rangetr_cmp, nel);
++	rc = hashtab_init(&p->range_tr, nel);
  	if (rc)
- 		goto bad;
+ 		return rc;
  
--	rc = hashtab_insert(h, key, catdatum);
-+	rc = symtab_insert(s, key, catdatum);
- 	if (rc)
- 		goto bad;
- 	return 0;
-@@ -1611,7 +1611,7 @@ bad:
- 	return rc;
- }
- 
--static int (*read_f[SYM_NUM]) (struct policydb *p, struct hashtab *h, void *fp) =
-+static int (*read_f[SYM_NUM]) (struct policydb *p, struct symtab *s, void *fp) =
- {
- 	common_read,
- 	class_read,
-@@ -1751,7 +1751,7 @@ u16 string_to_security_class(struct policydb *p, const char *name)
- {
- 	struct class_datum *cladatum;
- 
--	cladatum = hashtab_search(&p->p_classes.table, name);
-+	cladatum = symtab_search(&p->p_classes, name);
- 	if (!cladatum)
- 		return 0;
- 
-@@ -1770,9 +1770,9 @@ u32 string_to_av_perm(struct policydb *p, u16 tclass, const char *name)
- 	cladatum = p->class_val_to_struct[tclass-1];
- 	comdatum = cladatum->comdatum;
- 	if (comdatum)
--		perdatum = hashtab_search(&comdatum->permissions.table, name);
-+		perdatum = symtab_search(&comdatum->permissions, name);
- 	if (!perdatum)
--		perdatum = hashtab_search(&cladatum->permissions.table, name);
-+		perdatum = symtab_search(&cladatum->permissions, name);
- 	if (!perdatum)
- 		return 0;
- 
-@@ -2509,7 +2509,7 @@ int policydb_read(struct policydb *p, void *fp)
+@@ -1841,7 +1873,7 @@ static int range_read(struct policydb *p, void *fp)
+ 			goto out;
  		}
  
- 		for (j = 0; j < nel; j++) {
--			rc = read_f[i](p, &p->symtab[i].table, fp);
-+			rc = read_f[i](p, &p->symtab[i], fp);
+-		rc = hashtab_insert(&p->range_tr, rt, r);
++		rc = hashtab_insert(&p->range_tr, rt, r, rangetr_key_params);
+ 		if (rc)
+ 			goto out;
+ 
+@@ -1888,7 +1920,7 @@ static int filename_trans_read_helper_compat(struct policydb *p, void *fp)
+ 	otype = le32_to_cpu(buf[3]);
+ 
+ 	last = NULL;
+-	datum = hashtab_search(&p->filename_trans, &key);
++	datum = hashtab_search(&p->filename_trans, &key, filenametr_key_params);
+ 	while (datum) {
+ 		if (unlikely(ebitmap_get_bit(&datum->stypes, stype - 1))) {
+ 			/* conflicting/duplicate rules are ignored */
+@@ -1918,7 +1950,8 @@ static int filename_trans_read_helper_compat(struct policydb *p, void *fp)
+ 			if (!ft)
+ 				goto out;
+ 
+-			rc = hashtab_insert(&p->filename_trans, ft, datum);
++			rc = hashtab_insert(&p->filename_trans, ft, datum,
++					    filenametr_key_params);
  			if (rc)
- 				goto bad;
+ 				goto out;
+ 			name = NULL;
+@@ -2006,7 +2039,8 @@ static int filename_trans_read_helper(struct policydb *p, void *fp)
+ 	ft->tclass = tclass;
+ 	ft->name = name;
+ 
+-	rc = hashtab_insert(&p->filename_trans, ft, first);
++	rc = hashtab_insert(&p->filename_trans, ft, first,
++			    filenametr_key_params);
+ 	if (rc == -EEXIST)
+ 		pr_err("SELinux:  Duplicate filename transition key\n");
+ 	if (rc)
+@@ -2044,8 +2078,7 @@ static int filename_trans_read(struct policydb *p, void *fp)
+ 	if (p->policyvers < POLICYDB_VERSION_COMP_FTRANS) {
+ 		p->compat_filename_trans_count = nel;
+ 
+-		rc = hashtab_init(&p->filename_trans, filenametr_hash,
+-				  filenametr_cmp, (1 << 11));
++		rc = hashtab_init(&p->filename_trans, (1 << 11));
+ 		if (rc)
+ 			return rc;
+ 
+@@ -2055,8 +2088,7 @@ static int filename_trans_read(struct policydb *p, void *fp)
+ 				return rc;
  		}
+ 	} else {
+-		rc = hashtab_init(&p->filename_trans, filenametr_hash,
+-				  filenametr_cmp, nel);
++		rc = hashtab_init(&p->filename_trans, nel);
+ 		if (rc)
+ 			return rc;
+ 
+@@ -2539,7 +2571,7 @@ int policydb_read(struct policydb *p, void *fp)
+ 		goto bad;
+ 	nel = le32_to_cpu(buf[0]);
+ 
+-	rc = hashtab_init(&p->role_tr, role_trans_hash, role_trans_cmp, nel);
++	rc = hashtab_init(&p->role_tr, nel);
+ 	if (rc)
+ 		goto bad;
+ 	for (i = 0; i < nel; i++) {
+@@ -2576,7 +2608,7 @@ int policydb_read(struct policydb *p, void *fp)
+ 		    !policydb_role_isvalid(p, rtd->new_role))
+ 			goto bad;
+ 
+-		rc = hashtab_insert(&p->role_tr, rtk, rtd);
++		rc = hashtab_insert(&p->role_tr, rtk, rtd, roletr_key_params);
+ 		if (rc)
+ 			goto bad;
+ 
+diff --git a/security/selinux/ss/policydb.h b/security/selinux/ss/policydb.h
+index 9591c9587cb69..c24d4e1063ea0 100644
+--- a/security/selinux/ss/policydb.h
++++ b/security/selinux/ss/policydb.h
+@@ -324,6 +324,15 @@ extern int policydb_role_isvalid(struct policydb *p, unsigned int role);
+ extern int policydb_read(struct policydb *p, void *fp);
+ extern int policydb_write(struct policydb *p, void *fp);
+ 
++extern struct filename_trans_datum *policydb_filenametr_search(
++	struct policydb *p, struct filename_trans_key *key);
++
++extern struct mls_range *policydb_rangetr_search(
++	struct policydb *p, struct range_trans *key);
++
++extern struct role_trans_datum *policydb_roletr_search(
++	struct policydb *p, struct role_trans_key *key);
++
+ #define POLICYDB_CONFIG_MLS    1
+ 
+ /* the config flags related to unknown classes/perms are bits 2 and 3 */
 diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index 313919bd42f8c..1d12bb9ff3dd6 100644
+index 1d12bb9ff3dd6..9e76a80db6e1f 100644
 --- a/security/selinux/ss/services.c
 +++ b/security/selinux/ss/services.c
-@@ -1441,7 +1441,7 @@ static int string_to_context_struct(struct policydb *pol,
+@@ -1671,7 +1671,7 @@ static void filename_compute_type(struct policydb *policydb,
+ 	ft.tclass = tclass;
+ 	ft.name = objname;
  
- 	*p++ = 0;
+-	datum = hashtab_search(&policydb->filename_trans, &ft);
++	datum = policydb_filenametr_search(policydb, &ft);
+ 	while (datum) {
+ 		if (ebitmap_get_bit(&datum->stypes, stype - 1)) {
+ 			newcontext->type = datum->otype;
+@@ -1834,7 +1834,7 @@ static int security_compute_sid(struct selinux_state *state,
+ 			.tclass = tclass,
+ 		};
  
--	usrdatum = hashtab_search(&pol->p_users.table, scontextp);
-+	usrdatum = symtab_search(&pol->p_users, scontextp);
- 	if (!usrdatum)
- 		goto out;
- 
-@@ -1457,7 +1457,7 @@ static int string_to_context_struct(struct policydb *pol,
- 
- 	*p++ = 0;
- 
--	role = hashtab_search(&pol->p_roles.table, scontextp);
-+	role = symtab_search(&pol->p_roles, scontextp);
- 	if (!role)
- 		goto out;
- 	ctx->role = role->value;
-@@ -1469,7 +1469,7 @@ static int string_to_context_struct(struct policydb *pol,
- 	oldc = *p;
- 	*p++ = 0;
- 
--	typdatum = hashtab_search(&pol->p_types.table, scontextp);
-+	typdatum = symtab_search(&pol->p_types, scontextp);
- 	if (!typdatum || typdatum->attribute)
- 		goto out;
- 
-@@ -2024,26 +2024,26 @@ static int convert_context(struct context *oldc, struct context *newc, void *p)
- 
- 	/* Convert the user. */
- 	rc = -EINVAL;
--	usrdatum = hashtab_search(&args->newp->p_users.table,
--				  sym_name(args->oldp,
--					   SYM_USERS, oldc->user - 1));
-+	usrdatum = symtab_search(&args->newp->p_users,
-+				 sym_name(args->oldp,
-+					  SYM_USERS, oldc->user - 1));
- 	if (!usrdatum)
- 		goto bad;
- 	newc->user = usrdatum->value;
- 
- 	/* Convert the role. */
- 	rc = -EINVAL;
--	role = hashtab_search(&args->newp->p_roles.table,
--			      sym_name(args->oldp, SYM_ROLES, oldc->role - 1));
-+	role = symtab_search(&args->newp->p_roles,
-+			     sym_name(args->oldp, SYM_ROLES, oldc->role - 1));
- 	if (!role)
- 		goto bad;
- 	newc->role = role->value;
- 
- 	/* Convert the type. */
- 	rc = -EINVAL;
--	typdatum = hashtab_search(&args->newp->p_types.table,
--				  sym_name(args->oldp,
--					   SYM_TYPES, oldc->type - 1));
-+	typdatum = symtab_search(&args->newp->p_types,
-+				 sym_name(args->oldp,
-+					  SYM_TYPES, oldc->type - 1));
- 	if (!typdatum)
- 		goto bad;
- 	newc->type = typdatum->value;
-@@ -2623,7 +2623,7 @@ int security_get_user_sids(struct selinux_state *state,
- 		goto out_unlock;
- 
- 	rc = -EINVAL;
--	user = hashtab_search(&policydb->p_users.table, username);
-+	user = symtab_search(&policydb->p_users, username);
- 	if (!user)
- 		goto out_unlock;
- 
-@@ -2975,7 +2975,7 @@ static int security_preserve_bools(struct selinux_state *state,
- 	if (rc)
- 		goto out;
- 	for (i = 0; i < nbools; i++) {
--		booldatum = hashtab_search(&policydb->p_bools.table, bnames[i]);
-+		booldatum = symtab_search(&policydb->p_bools, bnames[i]);
- 		if (booldatum)
- 			booldatum->state = bvalues[i];
+-		rtd = hashtab_search(&policydb->role_tr, &rtk);
++		rtd = policydb_roletr_search(policydb, &rtk);
+ 		if (rtd)
+ 			newcontext.role = rtd->new_role;
  	}
-@@ -3226,7 +3226,7 @@ int security_get_permissions(struct selinux_state *state,
- 	read_lock(&state->ss->policy_rwlock);
- 
- 	rc = -EINVAL;
--	match = hashtab_search(&policydb->p_classes.table, class);
-+	match = symtab_search(&policydb->p_classes, class);
- 	if (!match) {
- 		pr_err("SELinux: %s:  unrecognized class %s\n",
- 			__func__, class);
-@@ -3365,7 +3365,7 @@ int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
- 	case AUDIT_SUBJ_USER:
- 	case AUDIT_OBJ_USER:
- 		rc = -EINVAL;
--		userdatum = hashtab_search(&policydb->p_users.table, rulestr);
-+		userdatum = symtab_search(&policydb->p_users, rulestr);
- 		if (!userdatum)
- 			goto out;
- 		tmprule->au_ctxt.user = userdatum->value;
-@@ -3373,7 +3373,7 @@ int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
- 	case AUDIT_SUBJ_ROLE:
- 	case AUDIT_OBJ_ROLE:
- 		rc = -EINVAL;
--		roledatum = hashtab_search(&policydb->p_roles.table, rulestr);
-+		roledatum = symtab_search(&policydb->p_roles, rulestr);
- 		if (!roledatum)
- 			goto out;
- 		tmprule->au_ctxt.role = roledatum->value;
-@@ -3381,7 +3381,7 @@ int selinux_audit_rule_init(u32 field, u32 op, char *rulestr, void **vrule)
- 	case AUDIT_SUBJ_TYPE:
- 	case AUDIT_OBJ_TYPE:
- 		rc = -EINVAL;
--		typedatum = hashtab_search(&policydb->p_types.table, rulestr);
-+		typedatum = symtab_search(&policydb->p_types, rulestr);
- 		if (!typedatum)
- 			goto out;
- 		tmprule->au_ctxt.type = typedatum->value;
 diff --git a/security/selinux/ss/symtab.c b/security/selinux/ss/symtab.c
-index 92d7a948070ed..48f523ef93aae 100644
+index 48f523ef93aae..c42a6648a07df 100644
 --- a/security/selinux/ss/symtab.c
 +++ b/security/selinux/ss/symtab.c
-@@ -39,3 +39,12 @@ int symtab_init(struct symtab *s, unsigned int size)
- 	return hashtab_init(&s->table, symhash, symcmp, size);
+@@ -9,7 +9,7 @@
+ #include <linux/errno.h>
+ #include "symtab.h"
+ 
+-static unsigned int symhash(struct hashtab *h, const void *key)
++static unsigned int symhash(const void *key)
+ {
+ 	const char *p, *keyp;
+ 	unsigned int size;
+@@ -20,10 +20,10 @@ static unsigned int symhash(struct hashtab *h, const void *key)
+ 	size = strlen(keyp);
+ 	for (p = keyp; (p - keyp) < size; p++)
+ 		val = (val << 4 | (val >> (8*sizeof(unsigned int)-4))) ^ (*p);
+-	return val & (h->size - 1);
++	return val;
  }
  
-+int symtab_insert(struct symtab *s, char *name, void *datum)
-+{
-+	return hashtab_insert(&s->table, name, datum);
-+}
-+
-+void *symtab_search(struct symtab *s, const char *name)
-+{
-+	return hashtab_search(&s->table, name);
-+}
-diff --git a/security/selinux/ss/symtab.h b/security/selinux/ss/symtab.h
-index f145301b9d9f7..f2614138d0cd8 100644
---- a/security/selinux/ss/symtab.h
-+++ b/security/selinux/ss/symtab.h
-@@ -19,6 +19,9 @@ struct symtab {
+-static int symcmp(struct hashtab *h, const void *key1, const void *key2)
++static int symcmp(const void *key1, const void *key2)
+ {
+ 	const char *keyp1, *keyp2;
  
- int symtab_init(struct symtab *s, unsigned int size);
+@@ -32,19 +32,23 @@ static int symcmp(struct hashtab *h, const void *key1, const void *key2)
+ 	return strcmp(keyp1, keyp2);
+ }
  
-+int symtab_insert(struct symtab *s, char *name, void *datum);
-+void *symtab_search(struct symtab *s, const char *name);
-+
- #endif	/* _SS_SYMTAB_H_ */
++static const struct hashtab_key_params symtab_key_params = {
++	.hash = symhash,
++	.cmp = symcmp,
++};
  
+ int symtab_init(struct symtab *s, unsigned int size)
+ {
+ 	s->nprim = 0;
+-	return hashtab_init(&s->table, symhash, symcmp, size);
++	return hashtab_init(&s->table, size);
+ }
  
+ int symtab_insert(struct symtab *s, char *name, void *datum)
+ {
+-	return hashtab_insert(&s->table, name, datum);
++	return hashtab_insert(&s->table, name, datum, symtab_key_params);
+ }
+ 
+ void *symtab_search(struct symtab *s, const char *name)
+ {
+-	return hashtab_search(&s->table, name);
++	return hashtab_search(&s->table, name, symtab_key_params);
+ }
 -- 
 2.26.2
 

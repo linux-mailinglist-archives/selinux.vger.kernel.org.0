@@ -2,118 +2,233 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F503219534
-	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 02:35:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2C4D2195AD
+	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 03:30:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726122AbgGIAfy (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 8 Jul 2020 20:35:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59438 "EHLO
+        id S1726251AbgGIBav (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 8 Jul 2020 21:30:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726081AbgGIAfy (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jul 2020 20:35:54 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30A7AC061A0B
-        for <selinux@vger.kernel.org>; Wed,  8 Jul 2020 17:35:54 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id w6so376146ejq.6
-        for <selinux@vger.kernel.org>; Wed, 08 Jul 2020 17:35:54 -0700 (PDT)
+        with ESMTP id S1726220AbgGIBau (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jul 2020 21:30:50 -0400
+Received: from mail-lj1-x241.google.com (mail-lj1-x241.google.com [IPv6:2a00:1450:4864:20::241])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46BD3C08C5C1
+        for <selinux@vger.kernel.org>; Wed,  8 Jul 2020 18:30:50 -0700 (PDT)
+Received: by mail-lj1-x241.google.com with SMTP id j11so462775ljo.7
+        for <selinux@vger.kernel.org>; Wed, 08 Jul 2020 18:30:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        d=google.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=z5j7F5HBPalYnTbZ3R6FCR8nT5FQJTZinI3mHoYgl+Y=;
-        b=dUnlv7Co9d6+n6qcKnR/S4Pd99qTwxsIXn6MUCVw/jAeCkztoj/k11L3dLrvPMGpRK
-         ALdmlml9dDXddOL/ocAG+gYp55XTrhPY90Bwpfi+vwoFyh/3QgWDhq17PAeSrgFJlsbQ
-         W+mS6Pl53yfd8DC4tsQbONAz3W2cGCU3ZVTntZrhjV2eUgPC4zDGguwQQiAKHu+KHOST
-         fTMaucOxJkYmV1Yrva8WkFxfmNPQwayDtlJDv1dJbsNTYUEIreMGm9FdPyStaC0uclDw
-         caES66HkLveomTr9+XJe7Op01Q+fIA1tlLOT82+8ZirlZLbcjsm+P0RoKBlM2JaDvKbh
-         cHXA==
+        bh=QPNtScbUbSRtloFQsQJiTlDDQ8S8R6akF2kOh4+CkmE=;
+        b=QFefWuReDB6ARXYxjV3aJULDqLueCAYxDEuvLKmcmD0M9Z38VCD2AZR6NgqOko90Bn
+         qZSN2Ps6VpOLK+1zRUOx9NbBh9sSblnQp7mITAtH6qi9NSGiRbM6v+niJ0LZyPHUCYDw
+         kTBaELhyttAwZ4CTFfo8P5B51A8UYlc+d8lnQnIFT5ns9IG/BK9ytR5GyLmztutj4CIT
+         Z7q4UwHTG5j5xlMObjZvmybnvDF3d/nvgBYAYHEK9KI4VKTK3WpGhAg5c/7+ALUhZ1FX
+         Yj6zUKf85x9p5HQot5FiMnSK9SyC1wp/q1FGrbHKnNioEEykyUvnDqCMIZNTQKWzYhnQ
+         PeWw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=z5j7F5HBPalYnTbZ3R6FCR8nT5FQJTZinI3mHoYgl+Y=;
-        b=oNhZldTpglSOaMt0K3vhp+lfpv9zN+CeGKl6MK674vmNv8scQr9TeWMRvvOmDlWI2j
-         2WkTIGuYeZ0Hweld3m0utIJy57DXED0cLM1rulOECf9zXRZ5guODGC/0dJYkHX+31jm5
-         aMRsUOUVTQ+Qk926tLCqx7o/O0s3qGpTZ7dAkj/AHhOtwRw9DEBndmmeQxHxlugafEgg
-         4zE85I5o+iF7eaJSurMlvLXKIXjmQ+WJzNyAVlTwuiU6UQ8wBGDzzT35DLolBbeq5A94
-         NjGf376mRTxZu6BY9K0V5FUu4wPlaC7udaD8KTa8NAr6UhIVWgIx/XRRTlU63BIVt5Vp
-         SItA==
-X-Gm-Message-State: AOAM533+VA860sOafsPKPGTMbC8K8WIZEXxjUZPR/gghwe6qxXboeCWX
-        iZoE9Tg49Gwhtl/0VtNGAhxM+vd9zZ5ZT6KXnGiA
-X-Google-Smtp-Source: ABdhPJwceHdKn0h1vxNKSqjqzy3/uvvkhYXNDiQhLcD+UrcybCZE6wDiL3ACpABps6zm524c4B3JxPXEvOJhYd4xSvc=
-X-Received: by 2002:a17:906:1a59:: with SMTP id j25mr51286545ejf.398.1594254952853;
- Wed, 08 Jul 2020 17:35:52 -0700 (PDT)
+        bh=QPNtScbUbSRtloFQsQJiTlDDQ8S8R6akF2kOh4+CkmE=;
+        b=ApM14W3K/Wy6CQmo/xBWniw4CtstMuM01WOTXkj2m3wxZYqIVnx32Ydn8yexmTxn/p
+         IhaC5jEXtt/aiUCPF5isRuMCR+m1xJVUIhHkWW8SisPMwFOV66vaTOoKvu3IqQmHB1sN
+         LeRNVGapKvXumrRW8dZMSWLN1dIRYPkTnbPRI00jR16hdG73qST0KQOJFJb59kaeqcPS
+         g+839nTc3yPIksKDIZuCpP5vsmYc77R1WnC9o1Qh48Xagqmldlx+qPIVrORf6BTxXldL
+         3PKgvtroPuDfJEbN88C04CBNJaI6Xd7CxGhIsg0St9QDJSCYkbnw5sCrqN+Xw2SKa4x2
+         ijnA==
+X-Gm-Message-State: AOAM533rxAk9xXKjQoiv2wuPRJXtdpRdS+b2+7Njqm1mwAEgJy5Clyw0
+        5AX0q90Q9KFDHJUBnIR98xaGwwRRZWrdcxz+D07Vnw==
+X-Google-Smtp-Source: ABdhPJw5iEpHZ7bFZQ5RpaIleEL++5aG0ddfsKQt+UFadBtBJKZajidd/I5GT4jN3gkA0zuWJcxXJON2a5i+go8mvpI=
+X-Received: by 2002:a05:651c:111:: with SMTP id a17mr13339981ljb.265.1594258248264;
+ Wed, 08 Jul 2020 18:30:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200708112447.292321-1-omosnace@redhat.com> <20200708112447.292321-3-omosnace@redhat.com>
- <CAEjxPJ6HptedbTxrSKi3sYk+7PZ7-JHiNqa9eti86+BWm=Z6pg@mail.gmail.com> <CAFqZXNv9k76BP5Qb0WHsJwMipfkB_Ukc6YpDHV=PAu=jkROuqw@mail.gmail.com>
-In-Reply-To: <CAFqZXNv9k76BP5Qb0WHsJwMipfkB_Ukc6YpDHV=PAu=jkROuqw@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Wed, 8 Jul 2020 20:35:41 -0400
-Message-ID: <CAHC9VhQ+CTR=Vp_1SKJYeWzCEDHVCtwfdhrgePMxLjTLczRcXQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/3] selinux: prepare for inlining of hashtab functions
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        SElinux list <selinux@vger.kernel.org>
+References: <20200709001234.9719-1-casey@schaufler-ca.com> <20200709001234.9719-23-casey@schaufler-ca.com>
+In-Reply-To: <20200709001234.9719-23-casey@schaufler-ca.com>
+From:   Jann Horn <jannh@google.com>
+Date:   Thu, 9 Jul 2020 03:30:21 +0200
+Message-ID: <CAG48ez36_+0k4ubaHRq=9gVDQspUh6yXkAeMRV=cEy-oyOr-sg@mail.gmail.com>
+Subject: Re: [PATCH v18 22/23] LSM: Add /proc attr entry for full LSM context
+To:     Casey Schaufler <casey@schaufler-ca.com>
+Cc:     Casey Schaufler <casey.schaufler@intel.com>,
+        James Morris <jmorris@namei.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        SElinux list <selinux@vger.kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        John Johansen <john.johansen@canonical.com>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        Linux API <linux-api@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jul 8, 2020 at 10:37 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+On Thu, Jul 9, 2020 at 2:42 AM Casey Schaufler <casey@schaufler-ca.com> wrote:
+> Add an entry /proc/.../attr/context which displays the full
+> process security "context" in compound format:
+>         lsm1\0value\0lsm2\0value\0...
+> This entry is not writable.
 >
-> On Wed, Jul 8, 2020 at 3:38 PM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
-> > On Wed, Jul 8, 2020 at 7:24 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > >
-> > > Refactor searching and inserting into hashtabs to pave the way for
-> > > converting hashtab_search() and hashtab_insert() to inline functions in
-> > > the next patch. This will avoid indirect calls and allow the compiler to
-> > > better optimize individual callers, leading to a significant performance
-> > > improvement.
-> > >
-> > > In order to avoid the indirect calls, the key hashing and comparison
-> > > callbacks need to be extracted from the hashtab struct and passed
-> > > directly to hashtab_search()/_insert() by the callers so that the
-> > > callback address is always known at compile time. The kernel's
-> > > rhashtable library (<linux/rhashtable*.h>) does the same thing.
-> > >
-> > > This of course makes the hashtab functions slightly easier to misuse by
-> > > passing a wrong callback set, but unfortunately there is no better way
-> > > to implement a hash table that is both generic and efficient in C. This
-> > > patch tries to somewhat mitigate this by only calling the hashtab
-> > > functions in the same file where the corresponding callbacks are
-> > > defined (wrapping them into more specialized functions as needed).
-> > >
-> > > Note that this patch doesn't bring any benefit without also moving the
-> > > definitions of hashtab_search() and -_insert() to the header file, which
-> > > is done in a follow-up patch for easier review of the hashtab.c changes
-> > > in this patch.
-> > >
-> > > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> > > ---
-> >
-> > > diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
-> > > index 02b722c5c189d..ae78f66e85d29 100644
-> > > --- a/security/selinux/ss/policydb.c
-> > > +++ b/security/selinux/ss/policydb.c
-> > > @@ -1888,7 +1920,7 @@ static int filename_trans_read_helper_compat(struct policydb *p, void *fp)
-> > >         otype = le32_to_cpu(buf[3]);
-> > >
-> > >         last = NULL;
-> > > -       datum = hashtab_search(&p->filename_trans, &key);
-> > > +       datum = hashtab_search(&p->filename_trans, &key, filenametr_key_params);
-> >
-> > Why aren't you using the helper/wrapper function here?
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+> Cc: linux-api@vger.kernel.org
+[...]
+> diff --git a/security/security.c b/security/security.c
+[...]
+> +/**
+> + * append_ctx - append a lsm/context pair to a compound context
+> + * @ctx: the existing compound context
+> + * @ctxlen: size of the old context, including terminating nul byte
+> + * @lsm: new lsm name, nul terminated
+> + * @new: new context, possibly nul terminated
+> + * @newlen: maximum size of @new
+> + *
+> + * replace @ctx with a new compound context, appending @newlsm and @new
+> + * to @ctx. On exit the new data replaces the old, which is freed.
+> + * @ctxlen is set to the new size, which includes a trailing nul byte.
+> + *
+> + * Returns 0 on success, -ENOMEM if no memory is available.
+> + */
+> +static int append_ctx(char **ctx, int *ctxlen, const char *lsm, char *new,
+> +                     int newlen)
+> +{
+> +       char *final;
+> +       int llen;
+
+Please use size_t to represent object sizes, instead of implicitly
+truncating them and assuming that that doesn't wrap. Using "int" here
+not only makes it harder to statically reason about this code, it
+actually can also make the generated code worse:
+
+
+$ cat numtrunc.c
+#include <stddef.h>
+
+size_t my_strlen(char *p);
+void *my_alloc(size_t len);
+
+void *blah_trunc(char *p) {
+  int len = my_strlen(p) + 1;
+  return my_alloc(len);
+}
+
+void *blah_notrunc(char *p) {
+  size_t len = my_strlen(p) + 1;
+  return my_alloc(len);
+}
+$ gcc -O2 -c -o numtrunc.o numtrunc.c
+$ objdump -d numtrunc.o
+[...]
+0000000000000000 <blah_trunc>:
+   0: 48 83 ec 08          sub    $0x8,%rsp
+   4: e8 00 00 00 00        callq  9 <blah_trunc+0x9>
+   9: 48 83 c4 08          add    $0x8,%rsp
+   d: 8d 78 01              lea    0x1(%rax),%edi
+  10: 48 63 ff              movslq %edi,%rdi    <<<<<<<<unnecessary instruction
+  13: e9 00 00 00 00        jmpq   18 <blah_trunc+0x18>
+[...]
+0000000000000020 <blah_notrunc>:
+  20: 48 83 ec 08          sub    $0x8,%rsp
+  24: e8 00 00 00 00        callq  29 <blah_notrunc+0x9>
+  29: 48 83 c4 08          add    $0x8,%rsp
+  2d: 48 8d 78 01          lea    0x1(%rax),%rdi
+  31: e9 00 00 00 00        jmpq   36 <blah_notrunc+0x16>
+$
+
+This is because GCC documents
+(https://gcc.gnu.org/onlinedocs/gcc/Integers-implementation.html) that
+for integer conversions where the value does not fit into the signed
+target type, "the value is reduced modulo 2^N to be within range of
+the type"; so the compiler has to assume that you are actually
+intentionally trying to truncate the more significant bits from the
+length, and therefore may have to insert extra code to ensure that
+this truncation happens.
+
+
+> +       llen = strlen(lsm) + 1;
+> +       newlen = strnlen(new, newlen) + 1;
+
+This strnlen() call seems dodgy. If an LSM can return a string that
+already contains null bytes, shouldn't that be considered a bug, given
+that it can't be displayed properly? Would it be more appropriate to
+have a WARN_ON(memchr(new, '\0', newlen)) check here and bail out if
+that happens?
+
+> +       final = kzalloc(*ctxlen + llen + newlen, GFP_KERNEL);
+> +       if (final == NULL)
+> +               return -ENOMEM;
+> +       if (*ctxlen)
+> +               memcpy(final, *ctx, *ctxlen);
+> +       memcpy(final + *ctxlen, lsm, llen);
+> +       memcpy(final + *ctxlen + llen, new, newlen);
+> +       kfree(*ctx);
+> +       *ctx = final;
+> +       *ctxlen = *ctxlen + llen + newlen;
+> +       return 0;
+> +}
+> +
+>  /*
+>   * The default value of the LSM hook is defined in linux/lsm_hook_defs.h and
+>   * can be accessed with:
+> @@ -2109,6 +2145,10 @@ int security_getprocattr(struct task_struct *p, const char *lsm, char *name,
+>                                 char **value)
+>  {
+>         struct security_hook_list *hp;
+> +       char *final = NULL;
+> +       char *cp;
+> +       int rc = 0;
+> +       int finallen = 0;
+>         int display = lsm_task_display(current);
+>         int slot = 0;
 >
-> Oversight on my part, thanks for spotting it! I'll wait for Paul's
-> feedback and send a fixed v4 if needed.
+[...]
+>                 return -ENOMEM;
+>         }
+>
+> +       if (!strcmp(name, "context")) {
+> +               hlist_for_each_entry(hp, &security_hook_heads.getprocattr,
+> +                                    list) {
+> +                       rc = hp->hook.getprocattr(p, "context", &cp);
+> +                       if (rc == -EINVAL)
+> +                               continue;
+> +                       if (rc < 0) {
+> +                               kfree(final);
+> +                               return rc;
+> +                       }
 
-I remain not overly excited about these patches as I fear they make
-the code more prone to error, but they are in a reasonably important
-code path so I'll turn a deaf ear to my objections once you make the
-changes Stephen is requesting.
+This means that if SELinux refuses to give the caller PROCESS__GETATTR
+access to the target process, the entire "context" file will refuse to
+show anything, even if e.g. an AppArmor label would be visible through
+the LSM-specific attribute directory, right? That seems awkward. Can
+you maybe omit context elements for which the access check failed
+instead, or embed an extra flag byte to signal for each element
+whether the lookup failed, or something along those lines?
 
--- 
-paul moore
-www.paul-moore.com
+If this is an intentional design limitation, it should probably be
+documented in the commit message or so.
+
+> +                       rc = append_ctx(&final, &finallen, hp->lsmid->lsm,
+> +                                       cp, rc);
+> +                       if (rc < 0) {
+> +                               kfree(final);
+> +                               return rc;
+> +                       }
+
+Isn't there a memory leak here? `cp` points to memory that was
+allocated by hp->hook.getprocattr(), and you're not freeing it after
+append_ctx(). (And append_ctx() also doesn't free it.)
+
+> +               }
+> +               if (final == NULL)
+> +                       return -EINVAL;
+> +               *value = final;
+> +               return finallen;
+> +       }
+> +
+>         hlist_for_each_entry(hp, &security_hook_heads.getprocattr, list) {
+>                 if (lsm != NULL && strcmp(lsm, hp->lsmid->lsm))
+>                         continue;

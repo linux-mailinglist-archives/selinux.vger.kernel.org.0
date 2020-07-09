@@ -2,197 +2,121 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09551219C8B
-	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 11:45:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B02219F35
+	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 13:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726140AbgGIJpb (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Jul 2020 05:45:31 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:29003 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726339AbgGIJpb (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Jul 2020 05:45:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594287929;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Yo+96MnmtJIkt+z1a2bBIsRJZY8qMe1NGKnqoY9opLE=;
-        b=BL2ABdM1HZOabUrbXouQQmmxOLg4xhmQfTCDaStVpbRWY31hlU/nH+AQ1jnvVi7FL4TV3g
-        Q0RRjpVTr2UhgF8VZ1kS3WD/1KSsJLWwmD3EMkkWXjXi6ANC6+J9ulcWcFEbDLx/TvIgnV
-        G6yX4W80H90lsndTkXEfEFs7xkXH+8I=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-469-ZocrNHjwNQyjPG8Yfow54Q-1; Thu, 09 Jul 2020 05:45:27 -0400
-X-MC-Unique: ZocrNHjwNQyjPG8Yfow54Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 98712108BD0B
-        for <selinux@vger.kernel.org>; Thu,  9 Jul 2020 09:45:26 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.40.194.10])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id C02B727CDF;
-        Thu,  9 Jul 2020 09:45:25 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
+        id S1726387AbgGILmI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Jul 2020 07:42:08 -0400
+Received: from agnus.defensec.nl ([80.100.19.56]:57558 "EHLO agnus.defensec.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726433AbgGILmI (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Thu, 9 Jul 2020 07:42:08 -0400
+Received: from localhost.localdomain (brutus [IPv6:2001:985:d55d::438])
+        by agnus.defensec.nl (Postfix) with ESMTPSA id 601462A0FFA;
+        Thu,  9 Jul 2020 13:42:05 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 601462A0FFA
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
+        s=default; t=1594294925;
+        bh=zhU8mDuZwr94tBZjQ1k3s9fQsIqpwfb62seaBmKjJLI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=H9ENEmM0gejoeFrkdLwr0Hd5fZoobyWsgBjdotH/N0s9saIrl1xAYUHGyMh7MUc7F
+         4xqBUKtvxcsFK7ebLMPOePvzBNOR4jUFMNZ1LAVF5Zq+ovsLYodM+4hztFMCud0ScR
+         yJCWIjzPybTp0/kiGWL0bQ3LO9VowaRPR4DqoYJk=
+From:   Dominick Grift <dominick.grift@defensec.nl>
 To:     selinux@vger.kernel.org
-Cc:     Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH] Update VERSIONs and Python bindings version to 3.1 for release
-Date:   Thu,  9 Jul 2020 11:45:09 +0200
-Message-Id: <20200709094509.1620563-2-plautrba@redhat.com>
-In-Reply-To: <20200709094509.1620563-1-plautrba@redhat.com>
-References: <20200709094509.1620563-1-plautrba@redhat.com>
+Cc:     Dominick Grift <dominick.grift@defensec.nl>
+Subject: [SELinux-notebook PATCH] pam_login.md: pam_selinux_permit is known as pam_sepermit upstream
+Date:   Thu,  9 Jul 2020 13:41:49 +0200
+Message-Id: <20200709114149.1705657-1-dominick.grift@defensec.nl>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
----
- checkpolicy/VERSION      | 2 +-
- dbus/VERSION             | 2 +-
- gui/VERSION              | 2 +-
- libselinux/VERSION       | 2 +-
- libselinux/src/setup.py  | 2 +-
- libsemanage/VERSION      | 2 +-
- libsepol/VERSION         | 2 +-
- mcstrans/VERSION         | 2 +-
- policycoreutils/VERSION  | 2 +-
- python/VERSION           | 2 +-
- python/sepolgen/VERSION  | 2 +-
- python/sepolicy/setup.py | 2 +-
- restorecond/VERSION      | 2 +-
- sandbox/VERSION          | 2 +-
- secilc/VERSION           | 2 +-
- semodule-utils/VERSION   | 2 +-
- 16 files changed, 16 insertions(+), 16 deletions(-)
+Change references to pam_selinux_permit to pam_sepermit
+Replace gdm-password with sshd PAM configuration (from Fedora 33) as
+pam_sepermit in the existing example might not always work correctly
+when called from the auth section:
+https://bugzilla.redhat.com/show_bug.cgi?id=1492313
+Reference the pam_selinux(8) and pam_sepermit(8) manuals
 
-diff --git a/checkpolicy/VERSION b/checkpolicy/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/checkpolicy/VERSION
-+++ b/checkpolicy/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/dbus/VERSION b/dbus/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/dbus/VERSION
-+++ b/dbus/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/gui/VERSION b/gui/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/gui/VERSION
-+++ b/gui/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/libselinux/VERSION b/libselinux/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/libselinux/VERSION
-+++ b/libselinux/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/libselinux/src/setup.py b/libselinux/src/setup.py
-index c8270bdc1c53..1b97ed8c0434 100644
---- a/libselinux/src/setup.py
-+++ b/libselinux/src/setup.py
-@@ -4,7 +4,7 @@ from distutils.core import Extension, setup
+Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
+---
+ src/pam_login.md | 50 ++++++++++++++++++++++--------------------------
+ 1 file changed, 23 insertions(+), 27 deletions(-)
+
+diff --git a/src/pam_login.md b/src/pam_login.md
+index 0c5a256..213a9f3 100644
+--- a/src/pam_login.md
++++ b/src/pam_login.md
+@@ -68,41 +68,37 @@ consist of multiple lines of information that are formatted as follows:
+ </tbody>
+ </table>
  
- setup(
-     name="selinux",
--    version="3.0",
-+    version="3.1",
-     description="SELinux python 3 bindings",
-     author="SELinux Project",
-     author_email="selinux@vger.kernel.org",
-diff --git a/libsemanage/VERSION b/libsemanage/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/libsemanage/VERSION
-+++ b/libsemanage/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/libsepol/VERSION b/libsepol/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/libsepol/VERSION
-+++ b/libsepol/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/mcstrans/VERSION b/mcstrans/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/mcstrans/VERSION
-+++ b/mcstrans/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/policycoreutils/VERSION b/policycoreutils/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/policycoreutils/VERSION
-+++ b/policycoreutils/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/python/VERSION b/python/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/python/VERSION
-+++ b/python/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/python/sepolgen/VERSION b/python/sepolgen/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/python/sepolgen/VERSION
-+++ b/python/sepolgen/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/python/sepolicy/setup.py b/python/sepolicy/setup.py
-index fa60ef6ce386..b943e14621c7 100644
---- a/python/sepolicy/setup.py
-+++ b/python/sepolicy/setup.py
-@@ -6,7 +6,7 @@ from distutils.core import setup
+-The */etc/pam.d/gdm-password* PAM configuration file for the Gnome login
++The */etc/pam.d/sshd* PAM configuration file for the OpenSSH
+ service is as follows:
  
- setup(
-     name="sepolicy",
--    version="3.0",
-+    version="3.1",
-     description="Python SELinux Policy Analyses bindings",
-     author="Daniel Walsh",
-     author_email="dwalsh@redhat.com",
-diff --git a/restorecond/VERSION b/restorecond/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/restorecond/VERSION
-+++ b/restorecond/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/sandbox/VERSION b/sandbox/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/sandbox/VERSION
-+++ b/sandbox/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/secilc/VERSION b/secilc/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/secilc/VERSION
-+++ b/secilc/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
-diff --git a/semodule-utils/VERSION b/semodule-utils/VERSION
-index 0ff4b45d1bf9..8c50098d8aed 100644
---- a/semodule-utils/VERSION
-+++ b/semodule-utils/VERSION
-@@ -1 +1 @@
--3.1-rc2
-+3.1
+ ```
+-auth     [success=done ignore=ignore default=bad] pam_selinux_permit.so
+-auth        substack      password-auth
+-auth        optional      pam_gnome_keyring.so
+-auth        include       postlogin
+-
+-account     required      pam_nologin.so
+-account     include       password-auth
+-
+-password    substack       password-auth
+--password   optional       pam_gnome_keyring.so use_authtok
+-
+-session     required      pam_selinux.so close
+-session     required      pam_loginuid.so
+-session     optional      pam_console.so
+-session     required      pam_selinux.so open
+-session     optional      pam_keyinit.so force revoke
+-session     required      pam_namespace.so
+-session     include       password-auth
+-session     optional      pam_gnome_keyring.so auto_start
+-session     include       postlogin
++#%PAM-1.0
++
++auth       substack     password-auth
++auth       include      postlogin
++account    required     pam_sepermit.so
++account    required     pam_nologin.so
++account    include      password-auth
++password   include      password-auth
++session    required     pam_selinux.so close
++session    required     pam_loginuid.so
++session    required     pam_selinux.so open
++session    required     pam_namespace.so
++session    optional     pam_keyinit.so force revoke
++session    optional     pam_motd.so
++session    include      password-auth
++session    include      postlogin
+ ```
+ 
+ The core services are provided by PAM, however other library modules can
+ be written to manage specific services such as support for SELinux. The
+-SELinux PAM modules use the *libselinux* API to obtain its configuration
+-information and the three SELinux PAM entries highlighted in the above
+-configuration file perform the following functions:
++***pam_sepermit**(8)* and ***pam_selinux**(8)* SELinux PAM modules use
++the *libselinux* API to obtain its configuration information and the
++three SELinux PAM entries highlighted in the above configuration file
++perform the following functions:
+ 
+--   ***pam_selinux_permit.so*** - Allows pre-defined users the ability to
+-    logon without a password provided that SELinux is in enforcing mode (see
+-    the
++-   ***pam_sepermit.so*** - Allows pre-defined users the ability to
++    logon provided that SELinux is in enforcing mode (see the
+     [*/etc/security/sepermit.conf*](global_config_files.md#etcsecuritysepermit.conf)
+     section).
+ -   ***pam_selinux.so open*** - Allows a security context to be set up for
 -- 
-2.26.2
+2.27.0
 

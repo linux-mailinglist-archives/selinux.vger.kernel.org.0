@@ -2,118 +2,82 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98FF0219553
-	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 02:43:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 318972194FF
+	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 02:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726129AbgGIAnO (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 8 Jul 2020 20:43:14 -0400
-Received: from sonic311-23.consmr.mail.bf2.yahoo.com ([74.6.131.197]:43504
-        "EHLO sonic311-23.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726151AbgGIAnO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jul 2020 20:43:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1594255393; bh=P0P3phkgM+q4+dCSn6fYmPJId8J/SlEaW2WbbitI8v4=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject; b=ccit/g8coZBMQU0/zN/nj9Q5GsueNFkwXq9BEEbOfieVRGUw3Wwzna6haVFkA3xmW8Dtx1rvd4rqrcBc47ZYCaMxfo1Z1ZsSKz1fR6r87AJtWD1qcGCZ0zsG8rMr3nwiDqXr/RqX81vRPM8Oc4rHsfGWdyNahDq8JO+TGynolQ8Z2bhMamf3WFA4npdqS318xMw39Go7SthRR3cf9gZn7O+2oBH84ESIcv3DIT8BJSai/6iPkljb2WYjxiI4t+fERlToyNnERnJhI9CUAl2K9ADKv5sAMNmuBmFZVGFbgepaKaM646ukotjoLF6ekHJJVuyBLFFTKVdPE8/XDYLm1A==
-X-YMail-OSG: 6eUUNxQVM1nBpz1KitWX1LRDuA06HV7vFxgcgNpZIbQsnxCd8SCgY.1MWyYvyyN
- 9sQshsoQvq7IwAYfL5ZRH1XSfych1A9xstQGNjt9PMLdiKUOIjcLEgnEY32CDP136.4UwadzWecf
- WB7zmAkzz1mgVFOI39Hf36DAxM4J37TM7950c88TkJ5biMFrQUrAZgyWbZCGi1nS_QF4s3mz_SEo
- _YzgL_ocdOI8_tgSgsoSQ1NqbqgjArCApI8xyxtNPCiuhAJpDaQRdgv_lT.H4AY.RZvuO9yDSSxC
- tSMkX2E72n4t269gUVaq.PgPcFSuj8A9kXKuMDzK1YFb72GaRao8CbbSi6WJLcPSA25MYMT_TEYX
- SRpOfrZQDR.xdzgiYqtHk6v2ZEgETrrLeOALI7nDamqWUv5NJ2KxX8L1jSSLxUPbKVXwuDBxIJzz
- IvBVaHS3LullaXQfUWAcknjGHJZ3OPZYyPFv_ac_2G.mDPQU3Ap2XaLFPjVrwCGkeCGCg6urlA9k
- Gd4cDz36xkFCHr9XJ1msJBeApnobNZuh1f4gwJ2KgQhVrvs9vFJqt6OxdUsHzMptxv_6iGIC78co
- OXnKcm_5FXtR6zy4wMWpIzaIkvkjK6Asd0AtJfHMBUP0m.3QDF1vyBpKyOi3fVlmkT07VS3ltd1p
- lCt665tfB0k_6tJ2mj.i_sfmhJi2gR1BF0jnM3FYWz3p9IYZ5.rRX5MlL3j9Ib41V9mYRL.MMrHF
- Cg471u4dQ9.V3rmJBLhiQMDICE1lP_EpbgANm4Gof58cHvgwLcMHo7bz7gyIDLqQ7dJACLz6pXuZ
- ZLP67j7vn6rRXIKf72C9089FKeVWWVs2txyvmqqWy39htMOoiRF_8RpFgRml_6boVA1W7AipuC3m
- 7Bf2_rvswTIH_Uie7mVvmr2d3evugS7Eq6z7IwVgYUu_9p.VZhI_ANDtOMDLFGThZuMxePyRRUxE
- ECopkEcRiM3sHMr.8pvatR7hw9TvRPAD1UW.RD_fSXqC_Nx.kGmTjwcN3rCiIK5MtRrRkZMAjVpD
- 1TJxUPddgE_q3On5xyWD87KJz0opOEZo9PsXYnxlw0x4ZjgSZgoWKJifYZTUtYsUHZOiZyHDbOtu
- 4JG3nSSp1wRHaqom_TPx_rEXzTOvO7xDsG9K9pva37jUJMs6OTUhbWYPu7SJ47Uyh.53l9EZdW2G
- ck7L1THR0RDY6l11t5CLEAFKxPRXK4I7AB8xogz2jEHZQzQFcfSbOkmw4KmyTVPP.y8BM5yil3Wy
- aB0rHU31_bBp6IYl29M3X6_ZaK_rR5kI6zJpMcm9w19cUROIqieX2U9t.i5TTTJA2jB3uNupBJKV
- lo6nRiIz2SELnH7_.9Sc_Fckm5ydIsy4at9P0YhZtF9KBKLxP4GN89zaR2VNXwXp9QCM6ERZMV3D
- awXeFpxhD8NvAHU4bk6b_Ax0.CtA7uaWeng--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.bf2.yahoo.com with HTTP; Thu, 9 Jul 2020 00:43:13 +0000
-Received: by smtp412.mail.bf1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 9bdf81a05f141ab84b80c4af1dc1ea58;
-          Thu, 09 Jul 2020 00:43:08 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, keescook@chromium.org,
-        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
-        paul@paul-moore.com, sds@tycho.nsa.gov
-Subject: [PATCH v18 23/23] AppArmor: Remove the exclusive flag
-Date:   Wed,  8 Jul 2020 17:12:34 -0700
-Message-Id: <20200709001234.9719-24-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200709001234.9719-1-casey@schaufler-ca.com>
-References: <20200709001234.9719-1-casey@schaufler-ca.com>
+        id S1726193AbgGIAY6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 8 Jul 2020 20:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57768 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726100AbgGIAY6 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jul 2020 20:24:58 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C56F7C061A0B
+        for <selinux@vger.kernel.org>; Wed,  8 Jul 2020 17:24:57 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id e22so418844edq.8
+        for <selinux@vger.kernel.org>; Wed, 08 Jul 2020 17:24:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jVt5r0rW7b4VNRPLMeQzqBVn/dTpVnT+sAfbgX3+7y0=;
+        b=qPsMSuAT0T3NHfOEKAPPh6KEECewIANO1r5kEMykIrQzLqLcVLO82i45mJ3Iq3QEwd
+         yoeK9YRQxtJacPiZIbVKcAfSSWtZ8H00pqlnqmKTJrzhnfQCbyyAKvD0v2ssx1Gy55PQ
+         ijScXXoB/CdxHv0kZqFrCXyzwn4KTW2xjIZoZ2mrpDvZNgbxvJxClb8B+RHewzZoGUN0
+         Y+nqSejZRZNdBOT4H9T6I2E1a9UVav8+FYN6QGMaxgE5o3rvPw5gz2p271Gf2numBWus
+         GBXKZMHjGoevINE7Ck5A2peYt2/oPRKNXu+Iok6u2o5IDeuSJiz15eKmEdDH7BATgMHp
+         WbxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=jVt5r0rW7b4VNRPLMeQzqBVn/dTpVnT+sAfbgX3+7y0=;
+        b=R2oCMn2wyCGC6osjCQ5n6E0RBmhT0H6o9p3Qeim2xIVbHOOyjML1Y/1YNrWmOhxvVn
+         VnYPjKElgAFx/AoR7zQWNqF89TstufaMMc45ks7nwEfSwuta+SbzsjkrNFciUFphHH3e
+         mAIlUJI89fRYJy8BAt9JnVBExVoGWeZE7ntuu7Y3od6Q3Iu+puDoS64nqhPGD7WJsZ0L
+         NmNganXcxq7V8f2Zlo4w1PfNtHPVmFqiuWit1cdNUJ3XSm/10iYOtZiO3rH4GYq40TT5
+         k4fzc2xapXg/f8Y7BDMObgbFTTKfSY4N3SR4p2Fr9JT2nFmQBDOAmUhVpJ64Dxjh5Wnc
+         v+uA==
+X-Gm-Message-State: AOAM532ia2i/OiuwbhVk0GdGF7vVgU1neVNQPt+pW/r9fEY2quw9+M/v
+        VziLxuzz0vrmWD9lu+iW95Yrwg9Gj/sFFbvhQ/3T
+X-Google-Smtp-Source: ABdhPJxFhjlmM3crUSfOAQ3SFwGHIcXXiDm2b12kEWsZbrErobfo9LG0KYERSzR02zK4UJk7uB3bFTeKXbfVDLSKemM=
+X-Received: by 2002:a05:6402:1d89:: with SMTP id dk9mr57857067edb.31.1594254296376;
+ Wed, 08 Jul 2020 17:24:56 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200708112447.292321-1-omosnace@redhat.com> <20200708112447.292321-2-omosnace@redhat.com>
+In-Reply-To: <20200708112447.292321-2-omosnace@redhat.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 8 Jul 2020 20:24:45 -0400
+Message-ID: <CAHC9VhSZz=y6LWTvMH3fACdvgVPOSqGZYX0U9YZGyidP9n-3mw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] selinux: specialize symtab insert and search functions
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     selinux@vger.kernel.org,
+        Stephen Smalley <stephen.smalley.work@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-With the inclusion of the "display" process attribute
-mechanism AppArmor no longer needs to be treated as an
-"exclusive" security module. Remove the flag that indicates
-it is exclusive. Remove the stub getpeersec_dgram AppArmor
-hook as it has no effect in the single LSM case and
-interferes in the multiple LSM case.
+On Wed, Jul 8, 2020 at 7:24 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>
+> This encapsulates symtab a little better and will help with further
+> refactoring later.
+>
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> ---
+>  security/selinux/ss/conditional.c |  4 +--
+>  security/selinux/ss/conditional.h |  2 +-
+>  security/selinux/ss/mls.c         | 21 +++++++------
+>  security/selinux/ss/policydb.c    | 52 +++++++++++++++----------------
+>  security/selinux/ss/services.c    | 34 ++++++++++----------
+>  security/selinux/ss/symtab.c      |  9 ++++++
+>  security/selinux/ss/symtab.h      |  3 ++
+>  7 files changed, 69 insertions(+), 56 deletions(-)
 
-Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
----
- security/apparmor/lsm.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+Regardless of the other patches in this series, I like the changes
+here so I've gone ahead and merged it into selinux/next.  Thanks.
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 7ce570b0f491..4b7cbe9bb1be 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1129,22 +1129,6 @@ static int apparmor_socket_getpeersec_stream(struct socket *sock,
- 	return error;
- }
- 
--/**
-- * apparmor_socket_getpeersec_dgram - get security label of packet
-- * @sock: the peer socket
-- * @skb: packet data
-- * @secid: pointer to where to put the secid of the packet
-- *
-- * Sets the netlabel socket state on sk from parent
-- */
--static int apparmor_socket_getpeersec_dgram(struct socket *sock,
--					    struct sk_buff *skb, u32 *secid)
--
--{
--	/* TODO: requires secid support */
--	return -ENOPROTOOPT;
--}
--
- /**
-  * apparmor_sock_graft - Initialize newly created socket
-  * @sk: child sock
-@@ -1248,8 +1232,6 @@ static struct security_hook_list apparmor_hooks[] __lsm_ro_after_init = {
- #endif
- 	LSM_HOOK_INIT(socket_getpeersec_stream,
- 		      apparmor_socket_getpeersec_stream),
--	LSM_HOOK_INIT(socket_getpeersec_dgram,
--		      apparmor_socket_getpeersec_dgram),
- 	LSM_HOOK_INIT(sock_graft, apparmor_sock_graft),
- #ifdef CONFIG_NETWORK_SECMARK
- 	LSM_HOOK_INIT(inet_conn_request, apparmor_inet_conn_request),
-@@ -1918,7 +1900,7 @@ static int __init apparmor_init(void)
- 
- DEFINE_LSM(apparmor) = {
- 	.name = "apparmor",
--	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
-+	.flags = LSM_FLAG_LEGACY_MAJOR,
- 	.enabled = &apparmor_enabled,
- 	.blobs = &apparmor_blob_sizes,
- 	.init = apparmor_init,
 -- 
-2.24.1
-
+paul moore
+www.paul-moore.com

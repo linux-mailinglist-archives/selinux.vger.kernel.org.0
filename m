@@ -2,113 +2,119 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C2C3E21A741
-	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 20:49:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6594221A7AB
+	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 21:20:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726289AbgGIStL (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Jul 2020 14:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58800 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726116AbgGIStL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Jul 2020 14:49:11 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A92BAC08C5CE
-        for <selinux@vger.kernel.org>; Thu,  9 Jul 2020 11:49:10 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id dg28so2657876edb.3
-        for <selinux@vger.kernel.org>; Thu, 09 Jul 2020 11:49:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=9jrKdB1uD47S7y9RXxxETYM9KPAYskYrA0djubSHm+I=;
-        b=VmEG+VpXPvc0lOjsb/vjYk+4qVcV0wNkRDvTL1QPpeOF8RhVLUmBizvHKDjyrBBEU/
-         zAjExW80lfdHOUIqK67aTufGwdj5VTl/J7EPJo7ncOMNZKfEaRnSMbAOnP+v9wssJSd/
-         Kt8y7asFGE6Em+p5rVU+KuKjDTB27pMHAeTlALP4GmLb6+/krP6VqcIgrb+XpQ1MClzW
-         3Hu/Yg7uWEFFoF+zBuemTRSsP+vNPDiIXsb913CPgbbl27LW1Gi20KEev9zJ5rYi7AVx
-         /wJIru8pG0FL0LvOxIQlUbeUVkv2KWGXMxEX1KxoSM0cdsgGoQJEVp19rVNRSz3vaj40
-         gFKw==
+        id S1726196AbgGITUJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Jul 2020 15:20:09 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:37657 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726116AbgGITUI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Jul 2020 15:20:08 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594322407;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=2ALKj2fQRMNBb+QQfWcN9ZRGgllOb6YVqQrsNDO64/s=;
+        b=JMnzdTYTwpB/5TUzeQZ1mY9oEvJfg3uivxz9eQca50sZdmyO9hvvF7tXSMvXUtcVlV179p
+        Dg8BDohzmOkWhvcE9rREuHFMYSaKM4GxDaW8jB43tKj5vGIM2FMWjHBjx65s9rAYyzIKbx
+        ZLD5crX9nFJJLADI+1bWhCcnKDEPmGo=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-18-oF6W3E9HNbKK384IePLfSQ-1; Thu, 09 Jul 2020 15:20:00 -0400
+X-MC-Unique: oF6W3E9HNbKK384IePLfSQ-1
+Received: by mail-wm1-f71.google.com with SMTP id o138so3178583wme.4
+        for <selinux@vger.kernel.org>; Thu, 09 Jul 2020 12:20:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=9jrKdB1uD47S7y9RXxxETYM9KPAYskYrA0djubSHm+I=;
-        b=OZJrOERMw4YEtoGUOst3UUrkVqUMC7TGnJaIj99BXN6LFbZzq8JxkiGYzlfxgJvkRQ
-         0vXqLBNCSwFh8S0eoFtSNYx+YduydZaczgy9PvW3bC50HSQCt+MR7kAx/hzxIq2XedTt
-         ihNwZ/2bGulMzGfuAbdIHXmD2IOfaKv2GS+00/oESbZxCJkm+RpuqhhQywUqt+difPl4
-         LbFfF9LaVd9nv78nKi1F4QTPdcAFl1RpDyK8m8AY4tl90mRSBSML/ICgV5U9LJ5mN3wV
-         sk1qmQzIpOIq7ONPi+zD+AsQ2d+RNbfTAtfUCtVCNi+ICohDqr1VMuhw0CyzQy+7FoEP
-         yb5A==
-X-Gm-Message-State: AOAM5333lU/qaWzFIYMNCay9UXZXfBO7SofXQtp41+gI4RFkbibD2urL
-        dZNOUxDOSGrjGzSzJxyJNFgaSLMHvNnU48b8Na6niuc=
-X-Google-Smtp-Source: ABdhPJwx3oivhxkR0vgo0rtdGb1WqbIXmrIeRLU+1oSNfD7YPD/TAS6M9F352Ieb4/JKBfWD6s6gBQK1kv6SAA45W1M=
-X-Received: by 2002:aa7:d6cf:: with SMTP id x15mr71698707edr.164.1594320549307;
- Thu, 09 Jul 2020 11:49:09 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2ALKj2fQRMNBb+QQfWcN9ZRGgllOb6YVqQrsNDO64/s=;
+        b=j1wg0hoyEUBUrBGQj1XFqAlCTOyObMgSDNt4+6GmfyneLvuIMuwRvjKY4hEnyF8Wsy
+         UPsD0eOrbuJaQkyX7Edc+Bg2nABa2jAxkooTkUR6j5YnaXC+M6jDlcU4hhUnaWhmw+t4
+         D35xRDG+CqqKrrZlmbbca07oTCCRMKJRtadGjKRGZ7clT6uBFqf/9wIwIzzDmkJC0eEw
+         PhFXYDrTs5LHw1QW9/M2+VYu9DrGbwZJqs5D46jbSlGH4wRWrwETguqjJoxlwecO0a7K
+         WBXfHytR8FQU56sQJh0sTo3l3Tg30HUsunIs0gPDovBiA4Ya11vkPlVzGp2HZG7zhf0X
+         qykA==
+X-Gm-Message-State: AOAM530gyygzYQuPSuPtjwW0DpiK0GSgXEpU38UTxcxkEHknSpe/q2Hb
+        64UgOASCTn4SK3OUT3/bQCoEbImxanA1CF5G0mFwq2MSVptHJy/sLacKHKAikPlhWPWchUORl1z
+        aW+IkKWpG1uy4wVEf0Q==
+X-Received: by 2002:a1c:4406:: with SMTP id r6mr1380438wma.161.1594322394953;
+        Thu, 09 Jul 2020 12:19:54 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJynpYjROIQdclX6EAYxP0OsVUhR9xYjR7eeYNNk+O512jmsS50jLhLH5XtjM32/Z9y7iGzxtA==
+X-Received: by 2002:a1c:4406:: with SMTP id r6mr1380422wma.161.1594322394656;
+        Thu, 09 Jul 2020 12:19:54 -0700 (PDT)
+Received: from omos.redhat.com ([2a02:8308:b13f:2100:f695:3ae5:c8bf:2f57])
+        by smtp.gmail.com with ESMTPSA id f14sm7205086wro.90.2020.07.09.12.19.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Jul 2020 12:19:54 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
+Subject: [PATCH v4 0/2] Inline some hashtab functions to improve performance
+Date:   Thu,  9 Jul 2020 21:19:50 +0200
+Message-Id: <20200709191952.435970-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <ecf085b6139f40fa9b8dfa3277f8c598d697387d.camel@btinternet.com> <20200709181015.3687-1-dominick.grift@defensec.nl>
-In-Reply-To: <20200709181015.3687-1-dominick.grift@defensec.nl>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 9 Jul 2020 14:48:58 -0400
-Message-ID: <CAHC9VhTZaXcduhT5Fx9BW0ng9FWOVvmqXfAaWSLcB4Vaa0wJXw@mail.gmail.com>
-Subject: Re: [PATCH] avc_rules.md: mention secilc with the neverallow statement
-To:     Dominick Grift <dominick.grift@defensec.nl>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jul 9, 2020 at 2:10 PM Dominick Grift
-<dominick.grift@defensec.nl> wrote:
->
-> I was unable to determine whether checkpolicy can be told to disable
-> neverallow checking.
->
-> v2: As the footnote is HTML, to render the man page entry it needs to be:
-> <em><strong>secilc</strong>(8)</em>
->
-> Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
-> ---
->  src/avc_rules.md | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+Right now, hashtab_search() and hashtab_insert() are defined in
+hashtab.c and need to call functions indirectly via function
+pointers. It turns out that defining (the relevent parts of) these
+functions inline in the header and passing the function pointers as
+arguments makes them significantly faster.
 
-Merged, thanks for the quick revision.
+The first patch modifies the hashtab interface so that callbacks are
+always passed directly. The second patch finishes the job by moving some
+of the function definitions to the header.These could be also just one
+patch, but are kept separate for easier review of changes in the
+functions that are being moved around.
 
-> diff --git a/src/avc_rules.md b/src/avc_rules.md
-> index a9dead5..5c2a491 100644
-> --- a/src/avc_rules.md
-> +++ b/src/avc_rules.md
-> @@ -182,8 +182,9 @@ auditallow ada_t self:process execstack;
->
->  This rule specifies that an `allow` rule must not be generated for the
->  operation, even if it has been previously allowed. The `neverallow`
-> -statement is a compiler enforced action, where the ***checkpolicy**(8)* =
-or
-> +statement is a compiler enforced action, where the ***checkpolicy**(8)*,
->  ***checkmodule**(8)* <a href=3D"#fna1" class=3D"footnote-ref" id=3D"fnav=
-c1"><sup>1</sup></a>
-> +or ***secilc**(8)* <a href=3D"#fna2" class=3D"footnote-ref" id=3D"fnavc2=
-"><sup>2</sup></a>
->  compiler checks if any allow rules have been generated in the policy sou=
-rce,
->  if so it will issue a warning and stop.
->
-> @@ -211,6 +212,7 @@ neverallow { domain -mmap_low_domain_type } self:memp=
-rotect mmap_zero;
->  <section class=3D"footnotes">
->  <ol>
->  <li id=3D"fna1"><p><code>neverallow</code> statements are allowed in mod=
-ules, however to detect these the <em>semanage.conf</em> file must have the=
- 'expand-check=3D1' entry present.<a href=3D"#fnavc1" class=3D"footnote-bac=
-k">=E2=86=A9</a></p></li>
-> +<li id=3D"fna2"><p>The `--disable-neverallow` option can be used with <e=
-m></strong>secilc</strong>(8)</em> to disable <code>neverallow</code> rule =
-checking.<a href=3D"#fnavc2" class=3D"footnote-back">=E2=86=A9</a></p></li>
->  </ol>
->  </section>
->
+For more details, please refer to the respective patch descriptions.
 
---=20
-paul moore
-www.paul-moore.com
+Changes in v4:
+ - drop patch 1 which is now applied
+ - add ACK from Stephen to the last patch
+ - use policydb_filenametr_search() in
+   filename_trans_read_helper_compat()
+
+Changes in v3:
+ - add perf numbers for two more use cases positively affected: policy
+   load and MCS relabeling
+ - drop inlining of hashtab_map() (perf-testing that change alone showed
+   zero difference in both policy load and relabeling time)
+ - reword the commit message of patch 2
+
+I intended to refactor the code to hide the awkward hashtab funcions
+away, but it turned out the result would be even more messy than the
+current version, so I left the other code unchanged from v2. I do
+believe the performance gain is worth making the hashtab interface more
+low-level.
+
+Changes in v2:
+ - drop already applied v1 patches 1 and 2
+ - reword patch descriptions to better explain what is going on and why
+ - split out some of the symtab changes into a separate patch
+ - tweak the signature and argument names of symtab_insert()
+
+Ondrej Mosnacek (2):
+  selinux: prepare for inlining of hashtab functions
+  selinux: complete the inlining of hashtab functions
+
+ security/selinux/ss/hashtab.c  | 59 +++-----------------------
+ security/selinux/ss/hashtab.h  | 77 ++++++++++++++++++++++++++++------
+ security/selinux/ss/mls.c      |  2 +-
+ security/selinux/ss/policydb.c | 76 +++++++++++++++++++++++----------
+ security/selinux/ss/policydb.h |  9 ++++
+ security/selinux/ss/services.c |  4 +-
+ security/selinux/ss/symtab.c   | 16 ++++---
+ 7 files changed, 147 insertions(+), 96 deletions(-)
+
+-- 
+2.26.2
+

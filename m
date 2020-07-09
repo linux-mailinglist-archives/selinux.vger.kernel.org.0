@@ -2,72 +2,141 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D12A219BA1
-	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 11:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13633219C8C
+	for <lists+selinux@lfdr.de>; Thu,  9 Jul 2020 11:45:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726313AbgGIJEF (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Jul 2020 05:04:05 -0400
-Received: from agnus.defensec.nl ([80.100.19.56]:57506 "EHLO agnus.defensec.nl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726006AbgGIJEE (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Thu, 9 Jul 2020 05:04:04 -0400
-Received: from localhost.localdomain (brutus [IPv6:2001:985:d55d::438])
-        by agnus.defensec.nl (Postfix) with ESMTPSA id BE9CA2A1007;
-        Thu,  9 Jul 2020 11:04:02 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl BE9CA2A1007
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
-        s=default; t=1594285443;
-        bh=JeE3CjGJa6i0ovgAQyMewMYnht8q6g7hybg0at/+W0w=;
-        h=From:To:Cc:Subject:Date:From;
-        b=dJdKkaxl8NmzdjPJ3RuZVqGY04fn1x7Yod7msMeTY6lths5BRdFV+PLezjGyRj4Gi
-         mwfp2dejgCAzf3s5vR9nhgtLNPKxZ9Vpck4wVzoHwAF/p8vTXPbHooGJjbFr5rQJi3
-         xkJBkd9GOfRqTGlhMPShmO66CimntOKWaqWPptZI=
-From:   Dominick Grift <dominick.grift@defensec.nl>
+        id S1726477AbgGIJpd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Jul 2020 05:45:33 -0400
+Received: from us-smtp-2.mimecast.com ([205.139.110.61]:20800 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726339AbgGIJpd (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Jul 2020 05:45:33 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1594287931;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=rNW46gvj45HeI14DOE5vuOy7mEvp/ARmC8VjZJ+haQo=;
+        b=YXC2vpwGbOfZ+FJ4UKDosW/CecOzdfCPJxh93wJshPZpBJAOIGR9PxUmJWYnY2G5CWRNw+
+        tXQxck6N9JoWn/6sN0NNWVBznIWN/HWAbKbqp4KREWbf3g/jU+nGZ72ny070bhXdy5sFSC
+        FVOm+ZbNxFuj2OEKMPgUFAtlarsDUN4=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-226-rRkJotCgNta59KFjP6gs2w-1; Thu, 09 Jul 2020 05:45:26 -0400
+X-MC-Unique: rRkJotCgNta59KFjP6gs2w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 671F8800401
+        for <selinux@vger.kernel.org>; Thu,  9 Jul 2020 09:45:25 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.40.194.10])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CDF1D2B6D9
+        for <selinux@vger.kernel.org>; Thu,  9 Jul 2020 09:45:24 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
 To:     selinux@vger.kernel.org
-Cc:     Dominick Grift <dominick.grift@defensec.nl>
-Subject: [SELinux-notebook PATCH] avc_rules.md: mention secilc with the neverallow statement
-Date:   Thu,  9 Jul 2020 11:03:52 +0200
-Message-Id: <20200709090352.1681563-1-dominick.grift@defensec.nl>
-X-Mailer: git-send-email 2.27.0
+Subject: 3.1 release notes draft
+Date:   Thu,  9 Jul 2020 11:45:08 +0200
+Message-Id: <20200709094509.1620563-1-plautrba@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-I was unable to determine whether checkpolicy can be told to disable
-neverallow checking.
 
-Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
----
- src/avc_rules.md | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+I'd like to release 3.1 today/tommorow to open the development of other
+performance related improvemenets which which postponed. This is release notes
+draft which is based on RELEASE-20200518.txt and RELEASE-20200619.txt:
 
-diff --git a/src/avc_rules.md b/src/avc_rules.md
-index a9dead5..7e62d04 100644
---- a/src/avc_rules.md
-+++ b/src/avc_rules.md
-@@ -182,8 +182,9 @@ auditallow ada_t self:process execstack;
- 
- This rule specifies that an `allow` rule must not be generated for the
- operation, even if it has been previously allowed. The `neverallow`
--statement is a compiler enforced action, where the ***checkpolicy**(8)* or
-+statement is a compiler enforced action, where the ***checkpolicy**(8)*,
- ***checkmodule**(8)* <a href="#fna1" class="footnote-ref" id="fnavc1"><sup>1</sup></a>
-+or ***secilc**(8)* <a href="#fna2" class="footnote-ref" id="fnavc2"><sup>2</sup></a>
- compiler checks if any allow rules have been generated in the policy source,
- if so it will issue a warning and stop.
- 
-@@ -211,6 +212,7 @@ neverallow { domain -mmap_low_domain_type } self:memprotect mmap_zero;
- <section class="footnotes">
- <ol>
- <li id="fna1"><p><code>neverallow</code> statements are allowed in modules, however to detect these the <em>semanage.conf</em> file must have the 'expand-check=1' entry present.<a href="#fnavc1" class="footnote-back">↩</a></p></li>
-+<li id="fna2"><p>The `--disable-neverallow` option can be used with ***secilc**(8)* to disable <code>neverallow</code> rule checking.<a href="#fnavc2" class="footnote-back">↩</a></p></li>
- </ol>
- </section>
- 
--- 
-2.27.0
+RELEASE 202007XX (3.1)
+
+User-visible changes:
+
+* selinux/flask.h and selinux/av_permissions.h were removed
+
+  The flask.h and av_permissions.h header files were deprecated and
+  all selinux userspace references to them were removed in
+  commit 76913d8adb61b5 ("Deprecate use of flask.h and av_permissions.h.")
+  back in 2014 and included in the 20150202 / 2.4 release.
+  All userspace object managers should have been updated
+  to use the dynamic class/perm mapping support since that time.
+  Remove these headers finally to ensure that no users remain and
+  that no future uses are ever introduced.
+
+  Use string_to_security_class(3) and string_to_av_perm(3) to map the class and
+  permission names to their policy values, or selinux_set_mapping(3) to create a
+  mapping from class and permission index values used by the application to the
+  policy values.
+
+* Support for new polcap genfs_seclabel_symlinks
+
+* New `setfiles -E` option - treat conflicting specifications as errors, such
+as where two hardlinks for the same inode have different contexts.
+
+* `restorecond_user.service` - new systemd user service which runs `restorecond -u`
+
+* `setsebool -V` reports errors from commit phase
+
+* Improved man pages
+
+* `semanage` uses ipaddress Python module instead of IPy
+
+* matchpathcon related interfaces are deprecated
+
+* selinuxfs is mounted with noexec and nosuid
+
+* Improved README which was renamed to README.md and converted to markdown.
+
+* `setup.py` builds can be customized using PYTHON_SETUP_ARGS, e.g. to for
+  Debian Python layout use: `make PYTHON_SETUP_ARGS=--install-layout=deb ...`
+
+* the dso wrappers for internal calls were removed and it is now strongly recommended to CFLAGS with
+  `-fno-semantic-interposition`
+
+* `security_compute_user()` was deprecated - usage of /sys/fs/selinux/user { security:compute_user } might be revisited
+
+* checkpolicy treats invalid characters as an error - it might break (but intentional) rare use cases
+
+* New `restorecon -x` option - prevent `restorecon` from crossing file system
+  boundaries.
+
+* Handle `semanage module` in semanage bash completion
+
+* Added section about CFLAGS to README.md, see Packaging-relevant changes
+
+* Improved man pages
+
+* Add Travis CI job to run SELinux kernel testsuite on latest Fedora cloud image
+
+* `sepolgen-ifgen` parses a gen_tunable statement as bool
+
+* `semanage` handles getprotobyname() failure case on Debian where /etc/protocols does not contain an entry for "ipv4"
+
+Packaging-relevant changes:
+
+* Setting CFLAGS during the make process will cause the omission of many defaults. While the project strives
+  to provide a reasonable set of default flags, custom CFLAGS could break the build, or have other undesired
+  changes on the build output. Thus, be very careful when setting CFLAGS. CFLAGS that are encouraged to be
+  set when overriding are:
+
+  - -fno-semantic-interposition for gcc or compilers that do not do this. clang does this by default. clang-10 and up
+    will support passing this flag, but ignore it. Previous clang versions fail.
+
+Issues fixed:
+
+* https://github.com/SELinuxProject/selinux/issues/248
+* https://github.com/SELinuxProject/selinux/issues/239
+* https://github.com/SELinuxProject/selinux/issues/237
+* https://github.com/SELinuxProject/selinux/issues/225
+* https://github.com/SELinuxProject/selinux/issues/217
+* https://github.com/SELinuxProject/selinux/issues/208
+* https://github.com/SELinuxProject/selinux/issues/204
+* https://github.com/SELinuxProject/selinux/issues/187
+* https://github.com/SELinuxProject/selinux/issues/179
+* https://github.com/SELinuxProject/selinux/issues/164
+* https://github.com/SELinuxProject/selinux/issues/70
+* https://github.com/SELinuxProject/selinux/issues/28
+
 

@@ -2,33 +2,35 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3CEB21AFE3
-	for <lists+selinux@lfdr.de>; Fri, 10 Jul 2020 09:09:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B86821AFE7
+	for <lists+selinux@lfdr.de>; Fri, 10 Jul 2020 09:14:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725966AbgGJHJV (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 10 Jul 2020 03:09:21 -0400
-Received: from agnus.defensec.nl ([80.100.19.56]:42426 "EHLO agnus.defensec.nl"
+        id S1725966AbgGJHOo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 10 Jul 2020 03:14:44 -0400
+Received: from agnus.defensec.nl ([80.100.19.56]:42430 "EHLO agnus.defensec.nl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725943AbgGJHJV (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Fri, 10 Jul 2020 03:09:21 -0400
+        id S1725943AbgGJHOn (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Fri, 10 Jul 2020 03:14:43 -0400
 Received: from localhost.localdomain (brutus.lan [IPv6:2001:985:d55d::438])
-        by agnus.defensec.nl (Postfix) with ESMTPSA id 704332A0CEF;
-        Fri, 10 Jul 2020 09:09:18 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 704332A0CEF
+        by agnus.defensec.nl (Postfix) with ESMTPSA id 192202A0CEF;
+        Fri, 10 Jul 2020 09:14:41 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 192202A0CEF
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
-        s=default; t=1594364958;
-        bh=gb4PM5SDHNnsn7PLH0U8ERHopcirbxgROVvJPPjOAEQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=q9xPrNlHlhSP5WjL6ItezRLy1DfqWf6vzhp/GdtCCKgoKDYoihyYxaIPUPfarLYof
-         gcadX3xC9IWTdrE5K+0QbhknprhCjamRbHJqev6U+kgXqMN8jOes+py/pfrvhmvhSd
-         GGhU26QMrjmXWkDVyl8NyEE8EoCi1V7RFJx4kghY=
+        s=default; t=1594365282;
+        bh=ZTc2LdoEY7HERzjXSbHuDUZ7NAZjJVrTItW14KdWWsM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=D8p4dS61ez96PiGD5zv/BGB/c7IFULB0Lr3YFgL8bfPq4R3RsD+E9kdl5TZkZT5oH
+         XDfqn98hS43vmDuBf5Kd0Nh/6xaDJP7b7jEYW7m6xY6xMRtabxzEYIga/LAprHv0v8
+         O/KmpFjtmOs1xVAuvU11lBTNCp0hzPvozw47seRk=
 From:   Dominick Grift <dominick.grift@defensec.nl>
 To:     selinux@vger.kernel.org
 Cc:     Dominick Grift <dominick.grift@defensec.nl>
-Subject: [SELinux-notebook PATCH] onjects.md: some clarifications
-Date:   Fri, 10 Jul 2020 09:09:03 +0200
-Message-Id: <20200710070903.106482-1-dominick.grift@defensec.nl>
+Subject: [SELinux-notebook PATCH v2] objects.md: some clarifications
+Date:   Fri, 10 Jul 2020 09:14:31 +0200
+Message-Id: <20200710071431.107444-1-dominick.grift@defensec.nl>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20200710070903.106482-1-dominick.grift@defensec.nl>
+References: <20200710070903.106482-1-dominick.grift@defensec.nl>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -36,6 +38,7 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+v2: fixes patch description
 Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
 ---
  src/objects.md | 24 ++++++++++++++++++++++--

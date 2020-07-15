@@ -2,88 +2,98 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E5D6221106
-	for <lists+selinux@lfdr.de>; Wed, 15 Jul 2020 17:30:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6FE6B221187
+	for <lists+selinux@lfdr.de>; Wed, 15 Jul 2020 17:50:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725854AbgGOPak (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 15 Jul 2020 11:30:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60930 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725770AbgGOPak (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 15 Jul 2020 11:30:40 -0400
-Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37D96C061755
-        for <selinux@vger.kernel.org>; Wed, 15 Jul 2020 08:30:40 -0700 (PDT)
-Received: by mail-ua1-x944.google.com with SMTP id h18so744862uao.6
-        for <selinux@vger.kernel.org>; Wed, 15 Jul 2020 08:30:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BdVwkAlUW1p7VhiCe+b3Ku1rafZbjRctj6QmLvuTaSs=;
-        b=oD1YssjxT0wSTzAz4U+bFbW6K0n+zHtujfs5dONcw5/kUNr9H/JKTyV83E6XttN1c7
-         uMMWGYn3Gb7hKcKNj5HGMRfcL7s+9loPkOMgLRsAFsUPppB2kD/xZIruTkShwbodqd+5
-         IGuBymLEXjlAnd4gHMZU4mHEhptEueUwZ6L4U45VBXifXJxVtBjGilMbVIsWIEhtkyfl
-         qSI82/ViVg6y5CMw9MDeUmtVX3injiPqVGqge5NdXA1RykHnOtjpGM4QoMgWWwndAbX0
-         0OgYvEFHsbaIIsevPONf6eBo0x2xpdTK7xvi75ipN2TBKm1Vz8itl7H5GT24H5Noy8F5
-         Fakg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BdVwkAlUW1p7VhiCe+b3Ku1rafZbjRctj6QmLvuTaSs=;
-        b=svZlfY1jPyDLdr4ji9iWuf/jKVjEclnUbEtNFo0Mq0ksCYzcrI9bgS3ZIkY0oyLZ/6
-         uikr8X1xodApChkyPFsFY3+bO+FoN0e7lbQap3unUzc0EQKofVwNZjIHARlFRIPxVl4N
-         aVjg83xSwDG+3i5emwQbB9XLSICEf/Eet3s2DK/2PIGR2faSk6szmUp83E16Xa2Hir66
-         R1ga5JBa9WzGJtanW9K+7V/PTDVnNyoVAnG8LUitg/xw6jfzBUugwwOy/GiYEGsylwxj
-         ocB1p9kiMvfcEOpzCe5mB5/bNZY1x/nyMkpNVC3Vv8tR8Y0wufFywm2+wVChZzlLVT1o
-         gXZw==
-X-Gm-Message-State: AOAM531j1eApAYVUN/bjtdS8WyTQ2IahxQtojJA9Qfq8mKncJaxWgwXU
-        eak2spTUwym7AD0H4C5QEf6K2H1mFh6KitcNMAVY
-X-Google-Smtp-Source: ABdhPJzx/uUStPvJzB/mAlIDLgCQX/I3Gnhd6zJfKW+PIdkfG5UxJpvIWx14bWhRm650rPI21pJejV6A7v1vFblskiA=
-X-Received: by 2002:ab0:45ea:: with SMTP id u97mr7723314uau.54.1594827039438;
- Wed, 15 Jul 2020 08:30:39 -0700 (PDT)
+        id S1726546AbgGOPs7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 Jul 2020 11:48:59 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:45890 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725798AbgGOPs7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 15 Jul 2020 11:48:59 -0400
+Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net [73.42.176.67])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 8F42B20B4908;
+        Wed, 15 Jul 2020 08:48:58 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8F42B20B4908
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1594828138;
+        bh=C4/E8JNB5AGVSfylzYPa4jC34oZsHrstt0THO4s6tdI=;
+        h=From:To:Cc:Subject:Date:From;
+        b=EXbT+s3MH1MIceREsHn214EN/fXoE9b9txDuAbUOZ+eQ5j9yjj8Ovt7t8e9t7VmEh
+         cnhp3VdUEEGJipFdUyab7pifn//OZJXByv/h3LL6wgcciMo1fqx2HSoF7ZCW6s6ckm
+         In6Ay/Uwu+/iYXsoUUUtzfHHX5k2PB8iPMOfPoBs=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, stephen.smalley.work@gmail.com,
+        casey@schaufler-ca.com
+Cc:     jmorris@namei.org, linux-integrity@vger.kernel.org,
+        selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/5] LSM: Measure security module state
+Date:   Wed, 15 Jul 2020 08:48:48 -0700
+Message-Id: <20200715154853.23374-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-References: <CAD_biAy5VRxJEqnTj8HkToQQb_9kVytRXeeCp2iR4hpnNUd71A@mail.gmail.com>
- <CAD_biAwttUbrVP=VyVKCAuUHsBn2ZyT8vB76OWfvhC9+tyQuWQ@mail.gmail.com> <CAHC9VhTwerXKHCpJ_qO_yJEhK-gP=2Nd3B+AW5RDS8u3yhCO-A@mail.gmail.com>
-In-Reply-To: <CAHC9VhTwerXKHCpJ_qO_yJEhK-gP=2Nd3B+AW5RDS8u3yhCO-A@mail.gmail.com>
-From:   Jason Strauss <jpstrauss1201@gmail.com>
-Date:   Wed, 15 Jul 2020 11:30:28 -0400
-Message-ID: <CAD_biAxmdvsHLaysByg4a9RnSanhXvqre_h0VOyR=d-Jv34bWQ@mail.gmail.com>
-Subject: Re: RedHat 8 Default Context mismatch
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Thanks, I will do that. I apologize for the mispost
+Critical data structures of security modules are currently not measured.
+Therefore an attestation service, for instance, would not be able to
+attest whether the security modules are always operating with the policies
+and configuration that the system administrator had setup. The policies
+and configuration for the security modules could be tampered with by
+malware by exploiting Kernel vulnerabilities or modified through some
+inadvertent actions on the system. Measuring such critical data would
+enable an attestation service to better assess the state of the system.
 
-On Wed, Jul 15, 2020 at 11:25 AM Paul Moore <paul@paul-moore.com> wrote:
->
-> On Wed, Jul 15, 2020 at 10:09 AM Jason Strauss <jpstrauss1201@gmail.com> wrote:
-> > I am starting this post to have any confusion I may have as to how a
-> > context is applied, cleared up. I am currently trying to work off of
-> > the RHEL 8 selinux source rpm to apply an MLS type policy. I have
-> > noticed that upon compiling and installing the rpm on a new system
-> > install there are files that do not get correct syntax. When I look at
-> > the file_contexts file the context is correctly listed for example
-> > /usr/bin/sudo, but never correctly applied during a touch
-> > /.autorelabel on first system boot. However if i do a restorecon -RF
-> > on /usr/bin/sudo it matches what is in the file_context folder but
-> > appears to break sudo stating it can't find file libsudo_util.so.0. I
-> > have noticed this happening with several other files during system
-> > installation and would like to understand why the system isn't
-> > properly labeled upon rpm installation and a relabel.
->
-> Just a reminder that this mailing list exists primarily for the
-> development and support of the upstream SELinux components.  While a
-> number of RH employees participate in discussions on this mailing
-> list, this is not a Red Hat or RHEL support forum.  I would encourage
-> you to contact your RH support contact for RHEL specific issues.
->
-> --
-> paul moore
-> www.paul-moore.com
+IMA subsystem measures system files, command line arguments passed to
+kexec, boot aggregate, keys, etc. It can be used to measure critical
+data structures of security modules as well.
+
+This change aims to address measuring critical data structures
+of security modules when they are initialized, when they are updated
+at runtime, and also periodically to detect any tampering.
+
+This change set is based off of Linux Kernel version 5.8-rc5.
+
+The following patch needs to be applied first before applying
+the patches in this patch set:
+
+    https://patchwork.kernel.org/patch/11612989/
+
+Change log:
+  v1:
+      => Per Stephen Smalley's suggestion added selinux_state booleans
+         and hash of SELinux policy in the measured data for SELinux.
+      => Call IMA hook from the security module directly instead of
+         redirecting through the LSM.
+
+Lakshmi Ramasubramanian (5):
+  IMA: Add LSM_STATE func to measure LSM data
+  IMA: Define an IMA hook to measure LSM data
+  LSM: Add security_state function pointer in lsm_info struct
+  LSM: Define SELinux function to measure security state
+  LSM: Define workqueue for measuring security module state
+
+ Documentation/ABI/testing/ima_policy |   6 +-
+ include/linux/ima.h                  |   4 +
+ include/linux/lsm_hooks.h            |   3 +
+ security/integrity/ima/ima.h         |   1 +
+ security/integrity/ima/ima_api.c     |   2 +-
+ security/integrity/ima/ima_main.c    |  17 ++++
+ security/integrity/ima/ima_policy.c  |  29 +++++--
+ security/security.c                  |  74 +++++++++++++++-
+ security/selinux/Makefile            |   2 +
+ security/selinux/hooks.c             |   2 +
+ security/selinux/include/security.h  |  19 +++++
+ security/selinux/measure.c           | 122 +++++++++++++++++++++++++++
+ security/selinux/selinuxfs.c         |   1 +
+ security/selinux/ss/services.c       |  23 ++++-
+ 14 files changed, 293 insertions(+), 12 deletions(-)
+ create mode 100644 security/selinux/measure.c
+
+-- 
+2.27.0
+

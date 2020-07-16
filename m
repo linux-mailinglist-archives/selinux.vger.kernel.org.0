@@ -2,756 +2,481 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7674E222D00
-	for <lists+selinux@lfdr.de>; Thu, 16 Jul 2020 22:35:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 640DF222D5B
+	for <lists+selinux@lfdr.de>; Thu, 16 Jul 2020 23:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726873AbgGPUfq (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Jul 2020 16:35:46 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:60094 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726859AbgGPUfp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Jul 2020 16:35:45 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594931741;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=CM9kHczG1mejpXizrOwMr6oWo17vjufOqFWL/O/dWtM=;
-        b=EpojZllzLUu6XnG/MSPtjebGim3JiWZBOX5GZzo87HNKvghKtkK/Psfeo3DgndurR9ousw
-        PmCKgXLMvTkfgLWQeAbCv/ct67rfq8zhCGQ3AJ5xVrdxh8oeZBDQRknCAxNducgie2ufTI
-        wcUmFnZUTLpa4E8wZo3HDScAqzj5QOg=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-512-KSUnhjn5M26KUAQU12vR8Q-1; Thu, 16 Jul 2020 16:35:40 -0400
-X-MC-Unique: KSUnhjn5M26KUAQU12vR8Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 301BD18A1DE8;
-        Thu, 16 Jul 2020 20:35:38 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-112-113.rdu2.redhat.com [10.10.112.113])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E4D3B19D7B;
-        Thu, 16 Jul 2020 20:35:34 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-Subject: [RFC PATCH 5/5] keys: Implement a 'container' keyring
-From:   David Howells <dhowells@redhat.com>
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>
-Cc:     dhowells@redhat.com,
-        Jarkko Sakkinen <jarkko.sakkinen@linux.intel.com>,
-        Eric Biederman <ebiederm@xmission.com>, jlayton@redhat.com,
-        christian@brauner.io, selinux@vger.kernel.org,
-        linux-afs@lists.infradead.org, linux-nfs@vger.kernel.org,
-        linux-cifs@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, containers@lists.linux-foundation.org
-Date:   Thu, 16 Jul 2020 21:35:34 +0100
-Message-ID: <159493173410.3249370.17990149429251969645.stgit@warthog.procyon.org.uk>
-In-Reply-To: <159493167778.3249370.8145886688150701997.stgit@warthog.procyon.org.uk>
-References: <159493167778.3249370.8145886688150701997.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/0.22
+        id S1726201AbgGPVFt (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Jul 2020 17:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52560 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725926AbgGPVFt (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Jul 2020 17:05:49 -0400
+Received: from mail-qt1-x843.google.com (mail-qt1-x843.google.com [IPv6:2607:f8b0:4864:20::843])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D68EBC061755
+        for <selinux@vger.kernel.org>; Thu, 16 Jul 2020 14:05:48 -0700 (PDT)
+Received: by mail-qt1-x843.google.com with SMTP id d27so6085463qtg.4
+        for <selinux@vger.kernel.org>; Thu, 16 Jul 2020 14:05:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=crunchydata-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sITJvz1BJLYluW4/+GlQ8/1nHLAdfvW+MNNSdnZlSrI=;
+        b=teV3U1oqp176pgvGPQBb/maMl0yHaB2vl/mpedFzXl9KRlSmVYivs+C5CTi3Au5ZWr
+         oNrSw1s23+/ArcIRFYM9p0EHtrGGZZACcVX4K/mOaparQK//LRM1DYEa+vxxPZz8MFAA
+         9P1KSth72j9LLIO27jXA1Pn+BAZxSv5DDNHm515rh39Fua7bBd6PaN3kv0Krg2oovgr+
+         9iCkBgEzls7UxAdlOudgKmAwE3KCBKS8+fNT9DsWLzc39dDTyDr1RdB8b0VGZSbBvYXV
+         TeF0pPQ6DERuv2x6Qn2scCjQuPCqMkzvtaszibornQAszciQ5nWmA4n0LvtxjAPutWG/
+         d31Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sITJvz1BJLYluW4/+GlQ8/1nHLAdfvW+MNNSdnZlSrI=;
+        b=BGKIOTtA+qvnMgZkiytNMXCVLZ1z07jKfHhrNhvw55w5TjNvvpbps5IPH8ffRHjob7
+         Be8YtJ9rcvpxoHO3rJmgM3szeGJNgQERYiw1eQStH04KFrihjqMWI76BcsX+XPRrNmCS
+         3/+pQDTaGSTuJ+x0KOdbhxcidQ9xtPeJzf51UPGlAjS8alBXWnsRU0jAr4tJDzjNTk7l
+         3fVCpgsEsAFwsfrydELKzix67IL5Wtt+fiX/4PdYH1FdH1Btx3G6LO2Pj6t8Nsl1GqTX
+         DHH8TbkWlRAVRgIe/ib8bm0PIlFqfORWapmpW3c0rJg4ZgosD7+cUFtAM8ds07IzfM54
+         0PbA==
+X-Gm-Message-State: AOAM532fCrR2TXqhTmv8s1hOkMLf0Z+5fwWQ+SbY67tETtniu1FuZgUW
+        ROUihdlGQgV5mhJeFvHs9kjxfUXkw8PTVA==
+X-Google-Smtp-Source: ABdhPJw+l8UVnCE4wJvRDQiSGDZGOT1ejWL7ulyjCU5yNsHb40qogyP6yrZs3jJusmw3KL2NHv09Dg==
+X-Received: by 2002:ac8:40da:: with SMTP id f26mr7446250qtm.9.1594933547251;
+        Thu, 16 Jul 2020 14:05:47 -0700 (PDT)
+Received: from localhost.localdomain (c-69-250-100-181.hsd1.md.comcast.net. [69.250.100.181])
+        by smtp.gmail.com with ESMTPSA id j7sm8853278qtd.53.2020.07.16.14.05.46
+        for <selinux@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 16 Jul 2020 14:05:46 -0700 (PDT)
+From:   Mike Palmiotto <mike.palmiotto@crunchydata.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH v2] libselinux: Use sestatus if open
+Date:   Thu, 16 Jul 2020 17:03:15 -0400
+Message-Id: <20200716210315.19907-1-mike.palmiotto@crunchydata.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Implement a per-container keyring, dangling it off of a user_namespace.
-The properties of this keyring are such that it's searched by request_key()
-selectively before or after the other keyrings have been searched, but the
-keys in it don't grant possession to the denizens of the container, and so
-the denizens can't see such keys unless those keys grant direct access
-through the ACL.  The kernel recurses up the user_namespace stack looking
-for keyrings.
+Commit bc2a8f418e3b ("libselinux: add selinux_status_* interfaces for
+/selinux/status") introduced the sestatus mechanism, which allows for
+mmap()'ing of the kernel status page as a replacement for avc_netlink.
 
-The container manager, however, can access the keyring, and can add, update
-and remove keys therein.
+The mechanism was initially intended for use by userspace object
+managers which were calculating access decisions within their
+application and did not rely on the libselinux AVC implementation. In
+order to properly make use of sestatus within avc_has_perm(), the status
+mechanism needs to properly set avc internals during status events;
+else, avc_enforcing is never updated upon sestatus changes.
 
-This allows the container manager to push filesystem authentication keys,
-for example, into the container and to keep them refreshed without the
-denizens of the container needing to know anything about it.
+This commit introduces a new selinux_status_loop() function, which
+replaces the default netlink-equivalent, avc_netlink_loop(). The
+function watches the kernel status page until an error occurs, at which
+point it will close the status page and exit the thread.In the event
+that the status page cannot be opened, the thread will continue to
+function as before by using a fallback netlink socket.
 
-To this end, the following pieces are also added:
+This allows us to replace the call to avc_netlink_open() in
+avc_init_internal() with a call to selinux_status_open() and remove the
+avc_netlink_check_nb() call from the critical code path in
+avc_has_perm_noaudit(), as well as selinux_check_access().
 
- (1) A new keyctl function, KEYCTL_GET_CONTAINER_KEYRING, to get the
-     container keyring from a user namespace:
+Userspace object managers wanting a netlink socket can call
+avc_netlink_acquire_fd() to open a netlink socket if there is not one
+open already.
 
-	keyring = keyctl_get_userns_keyring(int userns_fd,
-					    key_serial_t dest_keyring);
+Update the manpage to reflect the new selinux_status_loop() and
+avc_netlink_acquire_fd() functionality.
 
-     Get the container keyring attached to a user namespace, creating it if
-     it doesn't exist.  A file descriptor pointing to the user namespace
-     must be supplied.  The keyring will be linked into the destination
-     keyring if one is supplied (ie. not 0).  The keyring will be owned by
-     the user_namespace's owner and will grant various permissions to the
-     possessor.
-
- (2) An ACL ACE type that allows access to a key by a container:
-
-	keyctl_grant_acl(key_serial_t key,
-			 KEY_ACE_SUBJ_CONTAINER,
-			 int userns_fd,
-			 KEY_ACE_SEARCH);
-
-     This grants the kernel the ability to use a key on behalf of the
-     denizens of a container, but doesn't grant any other rights, including
-     the ability of the denizens see the key even exists.
-
-This can then be tested with something like the following from the command
-line:
-
- (1) Get the container keyring for a user namespace and link it to the
-     session keyring.  The container is referenced as file descriptor 5.
-
-	# keyctl get_container 5 @s 5</proc/self/ns/user
-	197321290
-
- (2) Get a key that should be placed into the container, e.g.:
-
-	# kinit foo@EXAMPLE.COM
-	# aklog-kafs example.com
-
-     This, say, adds key 748104263 to the session keyring.
-
- (3) Grant permission to the container to use the key:
-
-	# keyctl grant 748104263 cont:5 s 5</proc/self/ns/user
-
- (4) Move (or link) the key into the container keyring:
-
-	# keyctl move 748104263 @s 197321290
-
- (5) View the resultant keyrings:
-
-	# keyctl show
-	Session Keyring
-	 711486290 --alswrv      0     0  keyring: _ses
-	 468790230 ---lswrv      0 65534   \_ keyring: _uid.0
-	 197321290 ----swrv      0 65534   \_ keyring: .container
-	 748104263 --alswrv      0     0       \_ rxrpc: afs@example.com
-
-Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Mike Palmiotto <mike.palmiotto@crunchydata.com>
 ---
+Tested against dbus-daemon v1.12.8 on RHEL8.2 for legacy support.
+Patch V2 Changes:
+- Added selinux_status_loop function for watcher threads.
+- Replaced avc_netlink_open with selinux_status_open.
+- Moved avc_netlink_open into avc_netlink_acquire_fd.
+- Replaced avc_netlink_check_nb() call in selinux_check_access with sestatus
+equivalent.
+- Updated manpage and mapfile.
 
- include/linux/key.h            |   13 +++-
- include/linux/user_namespace.h |    7 ++
- include/uapi/linux/keyctl.h    |    3 +
- security/keys/Kconfig          |   11 +++
- security/keys/compat.c         |    3 +
- security/keys/internal.h       |   10 +++
- security/keys/key.c            |    2 -
- security/keys/keyctl.c         |  128 ++++++++++++++++++++++++++++++++++++++++
- security/keys/keyring.c        |    7 ++
- security/keys/permission.c     |   94 +++++++++++++++++++++++++++--
- security/keys/proc.c           |    2 -
- security/keys/process_keys.c   |   36 +++++++++++
- 12 files changed, 302 insertions(+), 14 deletions(-)
+ libselinux/include/selinux/avc.h          |  6 ++
+ libselinux/man/man3/avc_netlink_loop.3    |  8 +++
+ libselinux/man/man3/selinux_status_loop.3 |  1 +
+ libselinux/man/man3/selinux_status_open.3 | 12 ++++
+ libselinux/src/avc.c                      | 15 +++--
+ libselinux/src/avc_internal.c             | 82 ++++++++++++++++-------
+ libselinux/src/avc_internal.h             |  4 ++
+ libselinux/src/checkAccess.c              |  2 +-
+ libselinux/src/libselinux.map             |  1 +
+ libselinux/src/sestatus.c                 | 32 ++++++++-
+ 10 files changed, 126 insertions(+), 37 deletions(-)
+ create mode 100644 libselinux/man/man3/selinux_status_loop.3
 
-diff --git a/include/linux/key.h b/include/linux/key.h
-index 0db5539366e7..810ea1ce01f4 100644
---- a/include/linux/key.h
-+++ b/include/linux/key.h
-@@ -112,7 +112,8 @@ struct key_ace {
- 	union {
- 		kuid_t		uid;
- 		kgid_t		gid;
--		unsigned int	subject_id;
-+		unsigned long	subject_id;
-+		struct key_tag	*subject_tag;
- 	};
- };
- 
-@@ -124,13 +125,13 @@ struct key_acl {
- 	struct key_ace		aces[];
- };
- 
--#define KEY_POSSESSOR_ACE(perms) {			\
-+#define KEY_POSSESSOR_ACE(perms) (struct key_ace){	\
- 		.type = KEY_ACE_SUBJ_STANDARD,		\
- 		.perm = perms,				\
- 		.subject_id = KEY_ACE_POSSESSOR		\
- 	}
- 
--#define KEY_OWNER_ACE(perms) {				\
-+#define KEY_OWNER_ACE(perms) (struct key_ace){		\
- 		.type = KEY_ACE_SUBJ_STANDARD,		\
- 		.perm = perms,				\
- 		.subject_id = KEY_ACE_OWNER		\
-@@ -320,6 +321,12 @@ static inline void key_ref_put(key_ref_t key_ref)
- 	key_put(key_ref_to_ptr(key_ref));
- }
- 
-+static inline struct key_tag *key_get_tag(struct key_tag *tag)
-+{
-+	refcount_inc(&tag->usage);
-+	return tag;
-+}
-+
- extern struct key *request_key_tag(struct key_type *type,
- 				   const char *description,
- 				   struct key_tag *domain_tag,
-diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
-index 6ef1c7109fc4..f007258bd3d9 100644
---- a/include/linux/user_namespace.h
-+++ b/include/linux/user_namespace.h
-@@ -79,6 +79,13 @@ struct user_namespace {
- 	/* Register of per-UID persistent keyrings for this namespace */
- #ifdef CONFIG_PERSISTENT_KEYRINGS
- 	struct key		*persistent_keyring_register;
-+#endif
-+	/* Ring of keys that the namespace owner can insert into the
-+	 * namespace for transparent access by the denizens.
-+	 */
-+#ifdef CONFIG_CONTAINER_KEYRINGS
-+	struct key		*container_keyring;
-+	struct key_tag		*container_subj;	/* The ACE subject to match */
- #endif
- 	struct work_struct	work;
- #ifdef CONFIG_SYSCTL
-diff --git a/include/uapi/linux/keyctl.h b/include/uapi/linux/keyctl.h
-index a5938f2c3e66..2579fe75b93f 100644
---- a/include/uapi/linux/keyctl.h
-+++ b/include/uapi/linux/keyctl.h
-@@ -20,6 +20,7 @@
+diff --git a/libselinux/include/selinux/avc.h b/libselinux/include/selinux/avc.h
+index 9b23357a..fd681df4 100644
+--- a/libselinux/include/selinux/avc.h
++++ b/libselinux/include/selinux/avc.h
+@@ -487,6 +487,12 @@ extern int avc_netlink_check_nb(void);
   */
- enum key_ace_subject_type {
- 	KEY_ACE_SUBJ_STANDARD	= 0,	/* subject is one of key_ace_standard_subject */
-+	KEY_ACE_SUBJ_CONTAINER	= 1,	/* Subject is an fd referring to a container (eg. userns) */
- 	nr__key_ace_subject_type
- };
+ extern int selinux_status_open(int fallback);
  
-@@ -134,6 +135,7 @@ enum key_ace_standard_subject {
- #define KEYCTL_CAPABILITIES		31	/* Find capabilities of keyrings subsystem */
- #define KEYCTL_WATCH_KEY		32	/* Watch a key or ring of keys for changes */
- #define KEYCTL_GRANT_PERMISSION		33	/* Grant a permit to a key */
-+#define KEYCTL_GET_CONTAINER_KEYRING	34	/* Get a container keyring */
- 
- /* keyctl structures */
- struct keyctl_dh_params {
-@@ -198,5 +200,6 @@ struct keyctl_pkey_params {
- #define KEYCTL_CAPS1_NOTIFICATIONS	0x04 /* Keys generate watchable notifications */
- #define KEYCTL_CAPS1_ACL		0x08 /* Keys have ACLs rather than a p-u-g-o bitmask */
- #define KEYCTL_CAPS1_GRANT_PERMISSION	0x10 /* KEYCTL_GRANT_PERMISSION is supported */
-+#define KEYCTL_CAPS1_CONTAINER_KEYRINGS	0x20 /* Container keyrings are supported */
- 
- #endif /*  _LINUX_KEYCTL_H */
-diff --git a/security/keys/Kconfig b/security/keys/Kconfig
-index 83bc23409164..df138027942e 100644
---- a/security/keys/Kconfig
-+++ b/security/keys/Kconfig
-@@ -123,3 +123,14 @@ config KEY_NOTIFICATIONS
- 	  and keyrings on which the caller has View permission.  This makes use
- 	  of the /dev/watch_queue misc device to handle the notification
- 	  buffer and provides KEYCTL_WATCH_KEY to enable/disable watches.
-+
-+config CONTAINER_KEYRINGS
-+	bool "Provide per-container keyrings"
-+	depends on KEYS && USER_NS
-+	help
-+	  This option provides a keyring on each user_namespace that is
-+	  searched by request_key() after it has searched the normal process
-+	  keyrings.  This is a place that the container manager can insert
-+	  filesystem authentication keys into a container so that the denizens
-+	  can use authenticated storage without having to do anything for
-+	  themselves - the manager can take care of that.
-diff --git a/security/keys/compat.c b/security/keys/compat.c
-index 2b675f9a6162..3c9eecb43bba 100644
---- a/security/keys/compat.c
-+++ b/security/keys/compat.c
-@@ -161,6 +161,9 @@ COMPAT_SYSCALL_DEFINE5(keyctl, u32, option,
- 	case KEYCTL_WATCH_KEY:
- 		return keyctl_watch_key(arg2, arg3, arg4);
- 
-+	case KEYCTL_GET_CONTAINER_KEYRING:
-+		return keyctl_get_container_keyring(arg2, arg3);
-+
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index d0d1bce95674..e3218aa72d4c 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -144,6 +144,7 @@ struct keyring_search_context {
- 	int (*iterator)(const void *object, void *iterator_data);
- 
- 	/* Internal stuff */
-+	const struct key_tag	*container_subj; /* The ACE container subject or NULL */
- 	int			skipped_ret;
- 	bool			possessed;
- 	key_ref_t		result;
-@@ -386,6 +387,15 @@ extern long keyctl_grant_permission(key_serial_t keyid,
- 				    unsigned int subject,
- 				    unsigned int perm);
- 
-+#ifdef CONFIG_KEY_NOTIFICATIONS
-+extern long keyctl_get_container_keyring(int container_fd, key_serial_t destringid);
-+#else
-+static inline long keyctl_get_container_keyring(int container_fd, key_serial_t destringid)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif
-+
- /*
-  * Debugging key validation
-  */
-diff --git a/security/keys/key.c b/security/keys/key.c
-index 51491c07d7b9..17da784de9e8 100644
---- a/security/keys/key.c
-+++ b/security/keys/key.c
-@@ -318,7 +318,7 @@ struct key *key_alloc(struct key_type *type, const char *desc,
- 		goto security_error;
- 
- 	/* publish the key by giving it a serial number */
--	refcount_inc(&key->domain_tag->usage);
-+	key_get_tag(key->domain_tag);
- 	atomic_inc(&user->nkeys);
- 	key_alloc_serial(key);
- 
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 54a2bfff9af2..786da7382b7a 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -21,6 +21,10 @@
- #include <linux/security.h>
- #include <linux/uio.h>
- #include <linux/uaccess.h>
-+#include <linux/file.h>
-+#include <linux/proc_fs.h>
-+#include <linux/proc_ns.h>
-+#include <linux/user_namespace.h>
- #include <keys/request_key_auth-type.h>
- #include "internal.h"
- 
-@@ -40,7 +44,8 @@ static const unsigned char keyrings_capabilities[2] = {
- 	       KEYCTL_CAPS1_NS_KEY_TAG |
- 	       (IS_ENABLED(CONFIG_KEY_NOTIFICATIONS)	? KEYCTL_CAPS1_NOTIFICATIONS : 0) |
- 	       KEYCTL_CAPS1_ACL |
--	       KEYCTL_CAPS1_GRANT_PERMISSION
-+	       KEYCTL_CAPS1_GRANT_PERMISSION |
-+	       (IS_ENABLED(CONFIG_CONTAINER_KEYRINGS)	? KEYCTL_CAPS1_CONTAINER_KEYRINGS : 0)
- 	       ),
- };
- 
-@@ -1758,6 +1763,124 @@ long keyctl_watch_key(key_serial_t id, int watch_queue_fd, int watch_id)
- }
- #endif /* CONFIG_KEY_NOTIFICATIONS */
- 
-+#ifdef CONFIG_CONTAINER_KEYRINGS
-+/*
-+ * Create a container keyring for a user namespace and add it.
++/**
++ * selinux_status_loop - Watch kernel status page
++ *
 + */
-+static struct key *key_create_container_keyring(struct user_namespace *user_ns)
-+{
-+	struct key_tag *tag;
-+	struct key_acl *acl;
-+	struct key *keyring;
++extern void selinux_status_loop(void);
 +
-+	keyring = key_get(user_ns->container_keyring);
-+	if (keyring)
-+		return keyring;
-+
-+	/* We're going to need a subject tag... */
-+	tag = user_ns->container_subj;
-+	if (!tag) {
-+		tag = kzalloc(sizeof(struct key_tag), GFP_KERNEL);
-+		if (!tag)
-+			return ERR_PTR(-ENOMEM);
-+		refcount_set(&tag->usage, 1);
-+		user_ns->container_subj = tag;
-+	}
-+
-+	/* ...  so that we can grant the container denizens search permission
-+	 * on the keyring.
-+	 */
-+	acl = kzalloc(struct_size(acl, aces, 3), GFP_KERNEL);
-+	if (!acl)
-+		return ERR_PTR(-ENOMEM);
-+
-+	refcount_set(&acl->usage, 1);
-+	acl->possessor_viewable = true;
-+	acl->nr_ace		= 3;
-+
-+	acl->aces[0] = KEY_POSSESSOR_ACE(KEY_ACE_VIEW | KEY_ACE_READ | KEY_ACE_WRITE |
-+					 KEY_ACE_CLEAR | KEY_ACE_SEARCH);
-+	acl->aces[1] = KEY_OWNER_ACE(KEY_ACE_VIEW | KEY_ACE_READ);
-+
-+	acl->aces[2].type = KEY_ACE_SUBJ_CONTAINER;
-+	acl->aces[2].subject_tag = key_get_tag(tag);
-+	acl->aces[2].perm = KEY_ACE_SEARCH;
-+
-+	keyring = keyring_alloc(".container", user_ns->owner, INVALID_GID,
-+				current_cred(), acl, 0, NULL, NULL);
-+	key_put_acl(acl);
-+	if (IS_ERR(keyring))
-+		return keyring;
-+
-+	smp_store_release(&user_ns->container_keyring, key_get(keyring));
-+	return keyring;
-+}
-+
-+/*
-+ * Get the container keyring attached to a container.  The container is
-+ * referenced by a file descriptor referring to, say, a user_namespace.
-+ */
-+long keyctl_get_container_keyring(int container_fd, key_serial_t destringid)
-+{
-+	struct user_namespace *user_ns;
-+	struct ns_common *ns;
-+	struct file *f;
-+	struct key *keyring;
-+	key_ref_t dest_ref;
-+	int ret = -EINVAL;
-+
-+	f = fget(container_fd);
-+	if (!f)
-+		return -EBADF;
-+
-+	if (!proc_ns_file(f))
-+		goto error_file;
-+	ns = get_proc_ns(file_inode(f));
-+	if (ns->ops->type != CLONE_NEWUSER)
-+		goto error_file;
-+	user_ns = container_of(ns, struct user_namespace, ns);
-+
-+	keyring = key_get(READ_ONCE(user_ns->container_keyring));
-+	if (!keyring) {
-+		down_write(&user_ns->keyring_sem);
-+		keyring = key_create_container_keyring(user_ns);
-+		up_write(&user_ns->keyring_sem);
-+		if (IS_ERR(keyring)) {
-+			ret = PTR_ERR(keyring);
-+			goto error_file;
-+		}
-+	}
-+
-+	/* Get the destination keyring if specified.  We don't need LINK
-+	 * permission on the container keyring as having the container fd is
-+	 * sufficient to grant us that.
-+	 */
-+	dest_ref = NULL;
-+	if (destringid) {
-+		dest_ref = lookup_user_key(destringid, KEY_LOOKUP_CREATE,
-+					   KEY_NEED_KEYRING_ADD);
-+		if (IS_ERR(dest_ref)) {
-+			ret = PTR_ERR(dest_ref);
-+			goto error_keyring;
-+		}
-+
-+		ret = key_link(key_ref_to_ptr(dest_ref), keyring);
-+		if (ret < 0)
-+			goto error_dest;
-+	}
-+
-+	ret = key_serial(keyring);
-+
-+error_dest:
-+	key_ref_put(dest_ref);
-+error_keyring:
-+	key_put(keyring);
-+error_file:
-+	fput(f);
-+	return ret;
-+}
-+#endif
-+
- /*
-  * Get keyrings subsystem capabilities.
-  */
-@@ -1935,6 +2058,9 @@ SYSCALL_DEFINE5(keyctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 	case KEYCTL_WATCH_KEY:
- 		return keyctl_watch_key((key_serial_t)arg2, (int)arg3, (int)arg4);
+ /**
+  * selinux_status_close - Unmap and close SELinux kernel status page
+  *
+diff --git a/libselinux/man/man3/avc_netlink_loop.3 b/libselinux/man/man3/avc_netlink_loop.3
+index c8268a12..f03d7813 100644
+--- a/libselinux/man/man3/avc_netlink_loop.3
++++ b/libselinux/man/man3/avc_netlink_loop.3
+@@ -54,6 +54,11 @@ closes the netlink socket.  This function is called automatically by
+ returns the netlink socket descriptor number and informs the userspace AVC
+ not to check the socket descriptor automatically on calls to
+ .BR avc_has_perm (3).
++If no such socket descriptor exists,
++.BR avc_netlink_acquire_fd (3)
++will first call
++.BR avc_netlink_open (3)
++and then return the resulting fd.
  
-+	case KEYCTL_GET_CONTAINER_KEYRING:
-+		return keyctl_get_container_keyring((int)arg2, (key_serial_t)arg3);
-+
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 1779c95b428c..eb311987bb9b 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -64,6 +64,13 @@ void key_free_user_ns(struct user_namespace *ns)
- #ifdef CONFIG_PERSISTENT_KEYRINGS
- 	key_put(ns->persistent_keyring_register);
- #endif
-+#ifdef CONFIG_CONTAINER_KEYRINGS
-+	if (ns->container_subj) {
-+		ns->container_subj->removed = true;
-+		key_put_tag(ns->container_subj);
-+	}
-+	key_put(ns->container_keyring);
-+#endif
- }
+ .BR avc_netlink_release_fd ()
+ returns control of the netlink socket to the userspace AVC, re-enabling
+@@ -78,6 +83,9 @@ with a return value return zero on success.  On error, \-1 is returned and
+ .I errno
+ is set appropriately.
+ .
++.SH "AUTHOR"
++Originally KaiGai Kohei. Updated by Mike Palmiotto <mike.palmiotto@crunchydata.com>
++.
+ .SH "SEE ALSO"
+ .BR avc_open (3),
+ .BR selinux_set_callback (3),
+diff --git a/libselinux/man/man3/selinux_status_loop.3 b/libselinux/man/man3/selinux_status_loop.3
+new file mode 100644
+index 00000000..52a41690
+--- /dev/null
++++ b/libselinux/man/man3/selinux_status_loop.3
+@@ -0,0 +1 @@
++.so man3/selinux_status_open.3
+diff --git a/libselinux/man/man3/selinux_status_open.3 b/libselinux/man/man3/selinux_status_open.3
+index 2d44be57..c7f2eb6c 100644
+--- a/libselinux/man/man3/selinux_status_open.3
++++ b/libselinux/man/man3/selinux_status_open.3
+@@ -10,6 +10,8 @@ without invocation of system calls
+ .sp
+ .BI "int selinux_status_open(int " fallback ");"
+ .sp
++.BI "void selinux_status_loop(void);"
++.sp
+ .BI "void selinux_status_close(void);"
+ .sp
+ .BI "int selinux_status_updated(void);"
+@@ -52,6 +54,16 @@ and overwrite corresponding callbacks ( setenforce and policyload).
+ Thus, we need to pay attention to the interaction with these interfaces,
+ when fallback mode is enabled.
+ .sp
++.BR selinux_status_loop ()
++enters a loop which processes messages by continually checking the kernel
++status page via calls to
++.BR selinux_status_updated (3).
++If the kernel status page was not opened and
++.BR selinux_status_open (3)
++instead opened the fallback netlink socket, that socket will be checked and
++processed. On error, the function exits and unmaps the status page, or closes
++the fallback netlink socket.
++.sp
+ .BR selinux_status_close ()
+ unmap the kernel status page and close its file descriptor, or close the
+ netlink socket if fallbacked.
+diff --git a/libselinux/src/avc.c b/libselinux/src/avc.c
+index b4648b2d..e36a9a53 100644
+--- a/libselinux/src/avc.c
++++ b/libselinux/src/avc.c
+@@ -50,7 +50,7 @@ struct avc_callback_node {
+ 	struct avc_callback_node *next;
+ };
  
- /*
-diff --git a/security/keys/permission.c b/security/keys/permission.c
-index 3ae4d9aedc3a..b984e1ce7e5d 100644
---- a/security/keys/permission.c
-+++ b/security/keys/permission.c
-@@ -7,6 +7,10 @@
- 
- #include <linux/export.h>
- #include <linux/security.h>
-+#include <linux/file.h>
-+#include <linux/proc_fs.h>
-+#include <linux/proc_ns.h>
-+#include <linux/user_namespace.h>
- #include <keys/request_key_auth-type.h>
- #include "internal.h"
- 
-@@ -177,7 +181,9 @@ static int check_key_permission(const key_ref_t key_ref, const struct cred *cred
- /*
-  * Resolve an ACL to a mask.
-  */
--static unsigned int key_resolve_acl(const key_ref_t key_ref, const struct cred *cred)
-+static unsigned int key_resolve_acl(const key_ref_t key_ref,
-+				    const struct cred *cred,
-+				    const struct key_tag *tag)
- {
- 	const struct key *key = key_ref_to_ptr(key_ref);
- 	const struct key_acl *acl;
-@@ -215,6 +221,11 @@ static unsigned int key_resolve_acl(const key_ref_t key_ref, const struct cred *
- 				break;
- 			}
- 			break;
-+
-+		case KEY_ACE_SUBJ_CONTAINER:
-+			if (ace->subject_tag == tag)
-+				allow |= ace->perm;
-+			break;
- 		}
+-static void *avc_netlink_thread = NULL;
++static void *avc_status_thread = NULL;
+ static void *avc_lock = NULL;
+ static void *avc_log_lock = NULL;
+ static struct avc_node *avc_node_freelist = NULL;
+@@ -215,15 +215,15 @@ static int avc_init_internal(const char *prefix,
+ 		avc_enforcing = rc;
  	}
  
-@@ -242,7 +253,7 @@ int key_task_permission(const key_ref_t key_ref, const struct cred *cred,
- 	int ret;
+-	rc = avc_netlink_open(0);
++	rc = selinux_status_open(1);
+ 	if (rc < 0) {
+ 		avc_log(SELINUX_ERROR,
+-			"%s:  can't open netlink socket: %d (%s)\n",
++			"%s: could not open selinux status page: %d (%s)\n",
+ 			avc_prefix, errno, strerror(errno));
+ 		goto out;
+ 	}
+ 	if (avc_using_threads) {
+-		avc_netlink_thread = avc_create_thread(&avc_netlink_loop);
++		avc_status_thread = avc_create_thread(&selinux_status_loop);
+ 		avc_netlink_trouble = 0;
+ 	}
+ 	avc_running = 1;
+@@ -557,9 +557,10 @@ void avc_destroy(void)
  
- 	rcu_read_lock();
--	allow = key_resolve_acl(key_ref, cred);
-+	allow = key_resolve_acl(key_ref, cred, NULL);
- 	rcu_read_unlock();
+ 	avc_get_lock(avc_lock);
  
- 	ret = check_key_permission(key_ref, cred, allow, need_perm, &notes);
-@@ -274,7 +285,7 @@ int key_search_permission(const key_ref_t key_ref,
- 	unsigned int allow, notes = 0;
- 	int ret;
++	selinux_status_close();
++
+ 	if (avc_using_threads)
+-		avc_stop_thread(avc_netlink_thread);
+-	avc_netlink_close();
++		avc_stop_thread(avc_status_thread);
  
--	allow = key_resolve_acl(key_ref, ctx->cred);
-+	allow = key_resolve_acl(key_ref, ctx->cred, ctx->container_subj);
+ 	for (i = 0; i < AVC_CACHE_SLOTS; i++) {
+ 		node = avc_cache.slots[i];
+@@ -766,7 +767,7 @@ int avc_has_perm_noaudit(security_id_t ssid,
+ 		avd_init(avd);
  
- 	ret = check_key_permission(key_ref, ctx->cred, allow, need_perm, &notes);
- 	if (ret < 0)
-@@ -374,13 +385,24 @@ unsigned int key_acl_to_perm(const struct key_acl *acl)
- 	return perm;
- }
+ 	if (!avc_using_threads && !avc_app_main_loop) {
+-		(void)avc_netlink_check_nb();
++		(void)selinux_status_updated();
+ 	}
  
-+static void key_free_acl(struct rcu_head *rcu)
+ 	if (!aeref) {
+diff --git a/libselinux/src/avc_internal.c b/libselinux/src/avc_internal.c
+index 568a3d92..4ef92452 100644
+--- a/libselinux/src/avc_internal.c
++++ b/libselinux/src/avc_internal.c
+@@ -53,6 +53,49 @@ int avc_enforcing = 1;
+ int avc_setenforce = 0;
+ int avc_netlink_trouble = 0;
+ 
++/* process setenforce events for netlink and sestatus */
++int avc_process_setenforce(int enforcing)
 +{
-+	struct key_acl *acl = container_of(rcu, struct key_acl, rcu);
-+	unsigned int i;
++	int rc = 0;
 +
-+	for (i = 0; i < acl->nr_ace; i++)
-+		if (acl->aces[i].type == KEY_ACE_SUBJ_CONTAINER)
-+			key_put_tag(acl->aces[i].subject_tag);
-+	kfree(acl);
-+}
-+
- /*
-  * Destroy a key's ACL.
-  */
- void key_put_acl(struct key_acl *acl)
- {
- 	if (acl && refcount_dec_and_test(&acl->usage))
--		kfree_rcu(acl, rcu);
-+		call_rcu(&acl->rcu, key_free_acl);
- }
- 
- /*
-@@ -440,7 +462,8 @@ static struct key_acl *key_alloc_acl(const struct key_acl *old_acl, int nr, int
- }
- 
- /*
-- * Generate the revised ACL.
-+ * Generate the revised ACL.  If the new ACE contains a key_tag and we don't
-+ * have the tag in ACL yet, we steal the tag and clear the caller's pointer.
-  */
- static long key_change_acl(struct key *key, struct key_ace *new_ace)
- {
-@@ -461,6 +484,7 @@ static long key_change_acl(struct key *key, struct key_ace *new_ace)
- 	if (IS_ERR(acl))
- 		return PTR_ERR(acl);
- 	acl->aces[i] = *new_ace;
-+	new_ace->subject_tag = NULL; /* Stole the tag */
- 	goto change;
- 
- found_match:
-@@ -484,6 +508,49 @@ static long key_change_acl(struct key *key, struct key_ace *new_ace)
- 	return key_set_acl(key, acl);
- }
- 
-+/*
-+ * Look up the user namespace tag associated with a fd.
-+ */
-+static struct key_tag *key_get_ns_tag(int fd)
-+{
-+#ifdef CONFIG_CONTAINER_KEYRINGS
-+	struct user_namespace *userns;
-+	struct ns_common *ns;
-+	struct key_tag *tag = ERR_PTR(-EINVAL), *candidate;
-+	struct file *f;
-+
-+	f = fget(fd);
-+	if (!f)
-+		return ERR_PTR(-EBADF);
-+
-+	if (!proc_ns_file(f))
-+		goto error;
-+	ns = get_proc_ns(file_inode(f));
-+	if (ns->ops->type != CLONE_NEWUSER)
-+		goto error;
-+
-+	userns = container_of(ns, struct user_namespace, ns);
-+	if (!userns->container_subj) {
-+		candidate = kzalloc(sizeof(struct key_tag), GFP_KERNEL);
-+		refcount_set(&candidate->usage, 1);
-+		down_write(&userns->keyring_sem);
-+		if (!userns->container_subj) {
-+			userns->container_subj = candidate;
-+			candidate = NULL;
-+		}
-+		up_write(&userns->keyring_sem);
-+		kfree(candidate);
++	avc_log(SELINUX_INFO,
++		"%s:  received setenforce notice (enforcing=%d)\n",
++		avc_prefix, enforcing);
++	if (avc_setenforce)
++		goto out;
++	avc_enforcing = enforcing;
++	if (avc_enforcing && (rc = avc_ss_reset(0)) < 0) {
++		avc_log(SELINUX_ERROR,
++			"%s:  cache reset returned %d (errno %d)\n",
++			avc_prefix, rc, errno);
++		return rc;
 +	}
 +
-+	tag = key_get_tag(userns->container_subj);
-+error:
-+	fput(f);
-+	return tag;
-+#else
-+	return ERR_PTR(-EOPNOTSUPP);
-+#endif
++out:
++	return selinux_netlink_setenforce(enforcing);
 +}
 +
- /*
-  * Add, alter or remove (if perm == 0) an ACE in a key's ACL.
-  */
-@@ -492,13 +559,15 @@ long keyctl_grant_permission(key_serial_t keyid,
- 			     unsigned int subject,
- 			     unsigned int perm)
- {
--	struct key_ace new_ace;
-+	struct key_tag *tag;
- 	struct key *key;
- 	key_ref_t key_ref;
- 	long ret;
++/* process policyload events for netlink and sestatus */
++int avc_process_policyload(uint32_t seqno)
++{
++	int rc = 0;
++
++	avc_log(SELINUX_INFO,
++		"%s:  received policyload notice (seqno=%u)\n",
++		avc_prefix, seqno);
++	rc = avc_ss_reset(seqno);
++	if (rc < 0) {
++		avc_log(SELINUX_ERROR,
++			"%s:  cache reset returned %d (errno %d)\n",
++			avc_prefix, rc, errno);
++		return rc;
++	}
++
++	selinux_flush_class_cache();
++
++	return selinux_netlink_policyload(seqno);
++}
++
+ /* netlink socket code */
+ static int fd = -1;
  
--	new_ace.type = type;
--	new_ace.perm = perm;
-+	struct key_ace new_ace = {
-+		.type = type,
-+		.perm = perm,
-+	};
+@@ -177,20 +220,7 @@ static int avc_netlink_process(void *buf)
  
- 	switch (type) {
- 	case KEY_ACE_SUBJ_STANDARD:
-@@ -507,6 +576,13 @@ long keyctl_grant_permission(key_serial_t keyid,
- 		new_ace.subject_id = subject;
+ 	case SELNL_MSG_SETENFORCE:{
+ 		struct selnl_msg_setenforce *msg = NLMSG_DATA(nlh);
+-		msg->val = !!msg->val;
+-		avc_log(SELINUX_INFO,
+-			"%s:  received setenforce notice (enforcing=%d)\n",
+-			avc_prefix, msg->val);
+-		if (avc_setenforce)
+-			break;
+-		avc_enforcing = msg->val;
+-		if (avc_enforcing && (rc = avc_ss_reset(0)) < 0) {
+-			avc_log(SELINUX_ERROR,
+-				"%s:  cache reset returned %d (errno %d)\n",
+-				avc_prefix, rc, errno);
+-			return rc;
+-		}
+-		rc = selinux_netlink_setenforce(msg->val);
++		rc = avc_process_setenforce(!!msg->val);
+ 		if (rc < 0)
+ 			return rc;
  		break;
+@@ -198,18 +228,7 @@ static int avc_netlink_process(void *buf)
  
-+	case KEY_ACE_SUBJ_CONTAINER:
-+		tag = key_get_ns_tag(subject);
-+		if (IS_ERR(tag))
-+			return PTR_ERR(tag);
-+		new_ace.subject_tag = tag;
-+		break;
-+
- 	default:
- 		return -ENOENT;
- 	}
-@@ -529,5 +605,7 @@ long keyctl_grant_permission(key_serial_t keyid,
- 	up_write(&key->sem);
- 	key_put(key);
- error:
-+	if (new_ace.type == KEY_ACE_SUBJ_CONTAINER && new_ace.subject_tag)
-+		key_put_tag(new_ace.subject_tag);
- 	return ret;
- }
-diff --git a/security/keys/proc.c b/security/keys/proc.c
-index a6b349ee1759..ba3be0e9c97d 100644
---- a/security/keys/proc.c
-+++ b/security/keys/proc.c
-@@ -183,7 +183,7 @@ static int proc_keys_show(struct seq_file *m, void *v)
- 	check_pos = acl->possessor_viewable;
+ 	case SELNL_MSG_POLICYLOAD:{
+ 		struct selnl_msg_policyload *msg = NLMSG_DATA(nlh);
+-		avc_log(SELINUX_INFO,
+-			"%s:  received policyload notice (seqno=%u)\n",
+-			avc_prefix, msg->seqno);
+-		rc = avc_ss_reset(msg->seqno);
+-		if (rc < 0) {
+-			avc_log(SELINUX_ERROR,
+-				"%s:  cache reset returned %d (errno %d)\n",
+-				avc_prefix, rc, errno);
+-			return rc;
+-		}
+-		selinux_flush_class_cache();
+-		rc = selinux_netlink_policyload(msg->seqno);
++		rc = avc_process_policyload(msg->seqno);
+ 		if (rc < 0)
+ 			return rc;
+ 		break;
+@@ -284,6 +303,17 @@ void avc_netlink_loop(void)
  
- 	/* determine if the key is possessed by this process (a test we can
--	 * skip if the key does not indicate the possessor can view it
-+	 * skip if the key does not indicate the possessor can view it)
- 	 */
- 	key_ref = make_key_ref(key, 0);
- 	if (check_pos) {
-diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
-index 3721f96dd6fb..af09db1e5984 100644
---- a/security/keys/process_keys.c
-+++ b/security/keys/process_keys.c
-@@ -458,6 +458,7 @@ void key_fsgid_changed(struct cred *new_cred)
-  */
- key_ref_t search_cred_keyrings_rcu(struct keyring_search_context *ctx)
+ int avc_netlink_acquire_fd(void)
  {
-+	struct user_namespace *userns;
- 	struct key *user_session;
- 	key_ref_t key_ref, ret, err;
- 	const struct cred *cred = ctx->cred;
-@@ -556,6 +557,41 @@ key_ref_t search_cred_keyrings_rcu(struct keyring_search_context *ctx)
- 		}
- 	}
- 
-+#ifdef CONFIG_CONTAINER_KEYRINGS
-+	for (userns = cred->user_ns; userns; userns = userns->parent) {
-+		if (!userns->container_keyring || !userns->container_subj)
-+			continue;
-+
-+		/* The denizens of the container don't possess the key
-+		 * and have a special subject to match.
-+		 */
-+		ctx->container_subj = userns->container_subj;
-+		key_ref = keyring_search_rcu(make_key_ref(userns->container_keyring,
-+							  false), ctx);
-+		ctx->container_subj = NULL;
-+
-+		if (!IS_ERR(key_ref))
-+			goto found;
-+
-+		switch (PTR_ERR(key_ref)) {
-+		case -EAGAIN: /* no key */
-+			if (ret)
-+				break;
-+			/* fall through */
-+		case -ENOKEY: /* negative key */
-+			ret = key_ref;
-+			break;
-+		default:
-+			/* Hmmm...  should we admit to the denizens of
-+			 * the container that a key exists?
-+			 */
-+			err = key_ref;
-+			break;
++	if (fd < 0) {
++		int rc = 0;
++		rc = avc_netlink_open(0);
++		if (rc < 0) {
++			avc_log(SELINUX_ERROR,
++				"%s: could not open netlink socket: %d (%s)\n",
++				avc_prefix, errno, strerror(errno));
++			return rc;
 +		}
 +	}
 +
-+#endif
-+
- 	/* no key - decide on the error we're going to go for */
- 	key_ref = ret ? ret : err;
+     avc_app_main_loop = 1;
  
-
+     return fd;
+diff --git a/libselinux/src/avc_internal.h b/libselinux/src/avc_internal.h
+index 3f8a6bb1..da67affc 100644
+--- a/libselinux/src/avc_internal.h
++++ b/libselinux/src/avc_internal.h
+@@ -32,6 +32,10 @@ extern void (*avc_func_get_lock) (void *);
+ extern void (*avc_func_release_lock) (void *);
+ extern void (*avc_func_free_lock) (void *);
+ 
++/* selinux status processing for netlink and sestatus */
++extern int avc_process_setenforce(int enforcing);
++extern int avc_process_policyload(uint32_t seqno);
++
+ static inline void set_callbacks(const struct avc_memory_callback *mem_cb,
+ 				 const struct avc_log_callback *log_cb,
+ 				 const struct avc_thread_callback *thread_cb,
+diff --git a/libselinux/src/checkAccess.c b/libselinux/src/checkAccess.c
+index 3491fded..b337ea64 100644
+--- a/libselinux/src/checkAccess.c
++++ b/libselinux/src/checkAccess.c
+@@ -39,7 +39,7 @@ int selinux_check_access(const char *scon, const char *tcon, const char *class,
+ 	if (rc < 0)
+ 		return rc;
+ 
+-	(void) avc_netlink_check_nb();
++	(void) selinux_status_updated();
+ 
+        sclass = string_to_security_class(class);
+        if (sclass == 0) {
+diff --git a/libselinux/src/libselinux.map b/libselinux/src/libselinux.map
+index 2a368e93..8d8d8fd2 100644
+--- a/libselinux/src/libselinux.map
++++ b/libselinux/src/libselinux.map
+@@ -203,6 +203,7 @@ LIBSELINUX_1.0 {
+     selinux_status_close;
+     selinux_status_deny_unknown;
+     selinux_status_getenforce;
++    selinux_status_loop;
+     selinux_status_open;
+     selinux_status_policyload;
+     selinux_status_updated;
+diff --git a/libselinux/src/sestatus.c b/libselinux/src/sestatus.c
+index 86267ff8..6ecb6337 100644
+--- a/libselinux/src/sestatus.c
++++ b/libselinux/src/sestatus.c
+@@ -39,6 +39,7 @@ struct selinux_status_t
+ static struct selinux_status_t *selinux_status = NULL;
+ static int			selinux_status_fd;
+ static uint32_t			last_seqno;
++static uint32_t			last_policyload;
+ 
+ static uint32_t			fallback_sequence;
+ static int			fallback_enforcing;
+@@ -116,6 +117,15 @@ int selinux_status_updated(void)
+ 
+ 	if (last_seqno != curr_seqno)
+ 	{
++		if (avc_enforcing != (int) selinux_status->enforcing) {
++			if (avc_process_setenforce(selinux_status->enforcing) < 0)
++				return -1;
++		}
++		if (last_policyload != selinux_status->policyload) {
++			if (avc_process_policyload(selinux_status->policyload) < 0)
++				return -1;
++			last_policyload = selinux_status->policyload;
++		}
+ 		last_seqno = curr_seqno;
+ 		result = 1;
+ 	}
+@@ -131,7 +141,6 @@ int selinux_status_updated(void)
+ int selinux_status_getenforce(void)
+ {
+ 	uint32_t	seqno;
+-	uint32_t	enforcing;
+ 
+ 	if (selinux_status == NULL) {
+ 		errno = EINVAL;
+@@ -149,11 +158,11 @@ int selinux_status_getenforce(void)
+ 	do {
+ 		seqno = read_sequence(selinux_status);
+ 
+-		enforcing = selinux_status->enforcing;
++		avc_enforcing = selinux_status->enforcing;
+ 
+ 	} while (seqno != read_sequence(selinux_status));
+ 
+-	return enforcing ? 1 : 0;
++	return avc_enforcing;
+ }
+ 
+ /*
+@@ -316,6 +325,23 @@ error:
+ 	return -1;
+ }
+ 
++/*
++ * selinux_status_loop
++ *
++ * Run routine for checking kernel status page in a listening thread.
++ * Falls back on netlink socket in the event of failure to open status page.
++ */
++void selinux_status_loop(void)
++{
++	/* Check kernel status page until error occurs */
++	while(selinux_status_updated() >= 0);
++
++	avc_log(SELINUX_ERROR,
++		"%s: status thread terminating due to error: %d (%s)\n",
++		avc_prefix, errno, strerror(errno));
++	selinux_status_close();
++}
++
+ /*
+  * selinux_status_close
+  *
+-- 
+2.27.0
 

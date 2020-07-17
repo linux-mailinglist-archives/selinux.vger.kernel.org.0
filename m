@@ -2,66 +2,84 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C903E223ACA
-	for <lists+selinux@lfdr.de>; Fri, 17 Jul 2020 13:48:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224A4224270
+	for <lists+selinux@lfdr.de>; Fri, 17 Jul 2020 19:44:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726079AbgGQLsP (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 Jul 2020 07:48:15 -0400
-Received: from us-smtp-2.mimecast.com ([205.139.110.61]:21996 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726013AbgGQLsO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jul 2020 07:48:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594986492;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=zwfcwDp/reOTKziGyU5Ea7ty4EeMX1oommsRqtNmyeU=;
-        b=MM4RIXgw1YxlWCOixMeTEKsri1ig/aS1d3S9ai/NsC4WJVKvh1Dky3rFC7erg6Q/eDMqWk
-        9LbpDvrKtUgsfgpWItOYwiWSepcpBI3+Cpg2BRRWRc/pnm6Kpc0bg5oDItEyoPZpTRAMmc
-        ExOZV5Fr0p2oEs1N63kMYUX3VD73lSo=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-512-FaRtsDZoMWazodYttbRH-w-1; Fri, 17 Jul 2020 07:48:10 -0400
-X-MC-Unique: FaRtsDZoMWazodYttbRH-w-1
-Received: by mail-ed1-f70.google.com with SMTP id d3so5603585edq.14
-        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 04:48:10 -0700 (PDT)
+        id S1727961AbgGQRnP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 Jul 2020 13:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45878 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726104AbgGQRnP (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jul 2020 13:43:15 -0400
+Received: from mail-pl1-x642.google.com (mail-pl1-x642.google.com [IPv6:2607:f8b0:4864:20::642])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D5C9C0619D3
+        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 10:43:14 -0700 (PDT)
+Received: by mail-pl1-x642.google.com with SMTP id x8so5753276plm.10
+        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 10:43:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wV1gvV23mO4MSWHgMeM+r7999nuQAFQGTkfq3zyvhrU=;
+        b=TkI+hwhyWG7WZvnJTwRRMikLIXphh/PU89bCIE8P6SFs0SaHpCf4VAcMkSYIWejrmC
+         UHjYj/pWqealOdMvuvGnbGyDGiR092Y/coL6eRwohd6FSkw/1x0lTSsWwdlxAmTbJF9z
+         MG+bnlBW3Pz3hPqkiZYjpkgP2T6E3WFs4nd00=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zwfcwDp/reOTKziGyU5Ea7ty4EeMX1oommsRqtNmyeU=;
-        b=D7yTWPQbgrRRivkzapbyo7rnGzvFyHE8K69yeX6AXyVnludSt81b3ej0OVoPT9KbH8
-         lwqA1gScc3fkRiJy8wyfL/H9r3sF0nWxLgHDFO0oFykdOyql2p4rMET6lcSfI9vOgH64
-         5TvDb1hS3OGx2BNGZ0TlGpG4OZdrHUjtR92WSk3j/nTqPBpcyi3ZdsJpv1BxMXh10kSP
-         Q0oAYuqqAlSoT3S+59KTj6Qd3SerqC4MAEwObTlB3HX8q265tVt0LnFFeb5+gn+J28x5
-         91/J5TNdJzZXtATXHX+35uzQDDS6Ua+D5UCKCfzRFvXrM2JyJXg066vdQ9H5Sh5o0jqg
-         dopg==
-X-Gm-Message-State: AOAM5331zUeK2pBCi/Mi6T5hM3a5E8tjpaKDnKyUMz7aGImyPnwRg3EX
-        06N9a388/FXGk5fmVufGxsT1sy0aQOEXj6d9DbyeZim7b6Pj+oKkBAoDfIQKyr5Hqv0gPUs/uRd
-        h6BUs7Cvea91abhXidA==
-X-Received: by 2002:a05:6402:16c7:: with SMTP id r7mr8976117edx.288.1594986488598;
-        Fri, 17 Jul 2020 04:48:08 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwQQ/5ol4fZKXFQSSd8LeCTH9mkCZzcFPDH2+YclfFdSMqvSqglZw/MuYXwq3gTDs0VfO2kXQ==
-X-Received: by 2002:a05:6402:16c7:: with SMTP id r7mr8976094edx.288.1594986488205;
-        Fri, 17 Jul 2020 04:48:08 -0700 (PDT)
-Received: from omos.redhat.com ([2a02:8308:b13f:2100:8a6a:ec88:3ed7:44b3])
-        by smtp.gmail.com with ESMTPSA id x11sm7800957ejv.81.2020.07.17.04.48.07
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wV1gvV23mO4MSWHgMeM+r7999nuQAFQGTkfq3zyvhrU=;
+        b=p+MkfydSAqrDO6A5qTxxldf0qJJo0DZOP60RA8iNhyw1fd1OEpRtm1qo4n+GziPuTX
+         2xvE7Q0utfPNEV3nSmp1KWSBu8dQp+nbRiGb3Xd1wQ0B8jcppLOj4pVAcCwWHCeKo3gi
+         KbbDOyxBn3hh1xAjWHCTKtkIhFfeRmqI5+pjSexYsb2AvmKVoaD0Yp815aIECC0JZ96U
+         /MeRo3RW0+ZKk5zpCYj8tatbOdkGfVcb0EK0vWJtUcU/j1WauyUJQ2Jejw4Zyq1kQL2M
+         pPUq3jnLYgiplwKyarXqBW4NESXn+QdCzIjR37mAc8yCPih+88Ct9wUFc8zoo2dMtXY0
+         qV6A==
+X-Gm-Message-State: AOAM533PrBJvAb5dywKMbK6fpCMW/bcYNcEtAfhLVqmmUTOgdxCAxDJa
+        QGNN5N/rIqU6C4F8HJ6BvLBS0w==
+X-Google-Smtp-Source: ABdhPJxKZBG7RqgWoCxDb3CWPD97sCGFFzSrqXIIWjriKiDJA4WPNj/7bJe6bdbUYimvfgj8GzzH+g==
+X-Received: by 2002:a17:90b:1386:: with SMTP id hr6mr10767858pjb.93.1595007794310;
+        Fri, 17 Jul 2020 10:43:14 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 21sm8245611pfu.124.2020.07.17.10.43.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2020 04:48:07 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Cc:     James Carter <jwcart2@gmail.com>,
+        Fri, 17 Jul 2020 10:43:13 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Scott Branden <scott.branden@broadcom.com>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        James Morris <jmorris@namei.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jessica Yu <jeyu@kernel.org>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        David Howells <dhowells@redhat.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        KP Singh <kpsingh@google.com>, Dave Olsthoorn <dave@bewaar.me>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Peter Jones <pjones@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Boyd <stephen.boyd@linaro.org>,
+        Paul Moore <paul@paul-moore.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Chris PeBenito <pebenito@ieee.org>,
-        Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH v4 2/2] libsepol: implement POLICYDB_VERSION_COMP_FTRANS
-Date:   Fri, 17 Jul 2020 13:48:04 +0200
-Message-Id: <20200717114804.762125-3-omosnace@redhat.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200717114804.762125-1-omosnace@redhat.com>
-References: <20200717114804.762125-1-omosnace@redhat.com>
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 00/13] Introduce partial kernel_read_file() support
+Date:   Fri, 17 Jul 2020 10:42:55 -0700
+Message-Id: <20200717174309.1164575-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -69,385 +87,68 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Implement a new, more space-efficient form of storing filename
-transitions in the binary policy. The internal structures have already
-been converted to this new representation; this patch just implements
-reading/writing an equivalent representation from/to the binary policy.
+Hi,
 
-This new format reduces the size of Fedora policy from 7.6 MB to only
-3.3 MB (with policy optimization enabled in both cases). With the
-unconfined module disabled, the size is reduced from 3.3 MB to 2.4 MB.
+Here's my attempt at clearing the path to partial read support in
+kernel_read_file(), which fixes a number of issues along the way. I'm
+still fighting with the firmware test suite (it doesn't seem to pass
+for me even in stock v5.7... ?) But I don't want to block Scott's work[1]
+any this week, so here's the series as it is currently.
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- libsepol/include/sepol/policydb/policydb.h |   3 +-
- libsepol/src/policydb.c                    | 202 +++++++++++++++++----
- libsepol/src/write.c                       |  73 +++++++-
- 3 files changed, 235 insertions(+), 43 deletions(-)
+The primary difference to Scott's approach is to avoid adding a new set of
+functions and just adapt the existing APIs to deal with "offset". Also,
+the fixes for the enum are first in the series so they can be backported
+without the header file relocation.
 
-diff --git a/libsepol/include/sepol/policydb/policydb.h b/libsepol/include/sepol/policydb/policydb.h
-index c3180c61..9ef43abc 100644
---- a/libsepol/include/sepol/policydb/policydb.h
-+++ b/libsepol/include/sepol/policydb/policydb.h
-@@ -755,10 +755,11 @@ extern int policydb_set_target_platform(policydb_t *p, int platform);
- #define POLICYDB_VERSION_XPERMS_IOCTL	30 /* Linux-specific */
- #define POLICYDB_VERSION_INFINIBAND		31 /* Linux-specific */
- #define POLICYDB_VERSION_GLBLUB		32
-+#define POLICYDB_VERSION_COMP_FTRANS	33 /* compressed filename transitions */
- 
- /* Range of policy versions we understand*/
- #define POLICYDB_VERSION_MIN	POLICYDB_VERSION_BASE
--#define POLICYDB_VERSION_MAX	POLICYDB_VERSION_GLBLUB
-+#define POLICYDB_VERSION_MAX	POLICYDB_VERSION_COMP_FTRANS
- 
- /* Module versions and specific changes*/
- #define MOD_POLICYDB_VERSION_BASE		4
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index e9409a41..659f4308 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -200,6 +200,13 @@ static struct policydb_compat_info policydb_compat[] = {
- 	 .ocon_num = OCON_IBENDPORT + 1,
- 	 .target_platform = SEPOL_TARGET_SELINUX,
- 	},
-+	{
-+	 .type = POLICY_KERN,
-+	 .version = POLICYDB_VERSION_COMP_FTRANS,
-+	 .sym_num = SYM_NUM,
-+	 .ocon_num = OCON_IBENDPORT + 1,
-+	 .target_platform = SEPOL_TARGET_SELINUX,
-+	},
- 	{
- 	 .type = POLICY_BASE,
- 	 .version = MOD_POLICYDB_VERSION_BASE,
-@@ -2661,65 +2668,194 @@ int policydb_filetrans_insert(policydb_t *p, uint32_t stype, uint32_t ttype,
- 	return ebitmap_set_bit(&datum->stypes, stype - 1, 1);
- }
- 
--int filename_trans_read(policydb_t *p, struct policy_file *fp)
-+static int filename_trans_read_one_compat(policydb_t *p, struct policy_file *fp)
- {
--	unsigned int i;
--	uint32_t buf[4], nel, len, stype, ttype, tclass, otype;
-+	uint32_t buf[4], len, stype, ttype, tclass, otype;
-+	char *name = NULL;
- 	int rc;
--	char *name;
- 
- 	rc = next_entry(buf, fp, sizeof(uint32_t));
- 	if (rc < 0)
- 		return -1;
--	nel = le32_to_cpu(buf[0]);
-+	len = le32_to_cpu(buf[0]);
-+	if (zero_or_saturated(len))
-+		return -1;
- 
--	for (i = 0; i < nel; i++) {
--		name = NULL;
-+	name = calloc(len + 1, sizeof(*name));
-+	if (!name)
-+		return -1;
- 
--		rc = next_entry(buf, fp, sizeof(uint32_t));
--		if (rc < 0)
--			goto err;
--		len = le32_to_cpu(buf[0]);
--		if (zero_or_saturated(len))
-+	rc = next_entry(name, fp, len);
-+	if (rc < 0)
-+		goto err;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t) * 4);
-+	if (rc < 0)
-+		goto err;
-+
-+	stype  = le32_to_cpu(buf[0]);
-+	ttype  = le32_to_cpu(buf[1]);
-+	tclass = le32_to_cpu(buf[2]);
-+	otype  = le32_to_cpu(buf[3]);
-+
-+	rc = policydb_filetrans_insert(p, stype, ttype, tclass, name, &name,
-+				       otype, NULL);
-+	if (rc) {
-+		if (rc != SEPOL_EEXIST)
- 			goto err;
-+		/*
-+		 * Some old policies were wrongly generated with
-+		 * duplicate filename transition rules.  For backward
-+		 * compatibility, do not reject such policies, just
-+		 * issue a warning and ignore the duplicate.
-+		 */
-+	}
-+	free(name);
-+	return 0;
-+err:
-+	free(name);
-+	return -1;
-+}
-+
-+static int filename_trans_check_datum(filename_trans_datum_t *datum)
-+{
-+	ebitmap_t stypes, otypes;
-+
-+	ebitmap_init(&stypes);
-+	ebitmap_init(&otypes);
-+
-+	while (datum) {
-+		if (ebitmap_get_bit(&otypes, datum->otype))
-+			return -1;
-+
-+		if (ebitmap_set_bit(&otypes, datum->otype, 1))
-+			return -1;
- 
--		name = calloc(len + 1, sizeof(*name));
--		if (!name)
-+		if (ebitmap_match_any(&stypes, &datum->stypes))
-+			return -1;
-+
-+		if (ebitmap_union(&stypes, &datum->stypes))
-+			return -1;
-+	}
-+	return 0;
-+}
-+
-+static int filename_trans_read_one(policydb_t *p, struct policy_file *fp)
-+{
-+	filename_trans_key_t *ft = NULL;
-+	filename_trans_datum_t **dst, *datum, *first = NULL;
-+	unsigned int i;
-+	uint32_t buf[3], len, ttype, tclass, ndatum;
-+	char *name = NULL;
-+	int rc;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t));
-+	if (rc < 0)
-+		return -1;
-+	len = le32_to_cpu(buf[0]);
-+	if (zero_or_saturated(len))
-+		return -1;
-+
-+	name = calloc(len + 1, sizeof(*name));
-+	if (!name)
-+		return -1;
-+
-+	rc = next_entry(name, fp, len);
-+	if (rc < 0)
-+		goto err;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t) * 3);
-+	if (rc < 0)
-+		goto err;
-+
-+	ttype = le32_to_cpu(buf[0]);
-+	tclass = le32_to_cpu(buf[1]);
-+	ndatum = le32_to_cpu(buf[2]);
-+	if (ndatum == 0)
-+		goto err;
-+
-+	dst = &first;
-+	for (i = 0; i < ndatum; i++) {
-+		datum = malloc(sizeof(*datum));
-+		if (!datum)
- 			goto err;
- 
--		rc = next_entry(name, fp, len);
-+		*dst = datum;
-+
-+		/* ebitmap_read() will at least init the bitmap */
-+		rc = ebitmap_read(&datum->stypes, fp);
- 		if (rc < 0)
- 			goto err;
- 
--		rc = next_entry(buf, fp, sizeof(uint32_t) * 4);
-+		rc = next_entry(buf, fp, sizeof(uint32_t));
- 		if (rc < 0)
- 			goto err;
- 
--		stype  = le32_to_cpu(buf[0]);
--		ttype  = le32_to_cpu(buf[1]);
--		tclass = le32_to_cpu(buf[2]);
--		otype  = le32_to_cpu(buf[3]);
-+		datum->otype = le32_to_cpu(buf[0]);
- 
--		rc = policydb_filetrans_insert(p, stype, ttype, tclass, name,
--					       &name, otype, NULL);
--		if (rc) {
--			if (rc != SEPOL_EEXIST)
--				goto err;
--			/*
--			 * Some old policies were wrongly generated with
--			 * duplicate filename transition rules.  For backward
--			 * compatibility, do not reject such policies, just
--			 * ignore the duplicate.
--			 */
--		}
--		free(name);
-+		p->filename_trans_count += ebitmap_cardinality(&datum->stypes);
-+
-+		dst = &datum->next;
- 	}
-+	*dst = NULL;
-+
-+	if (ndatum > 1 && filename_trans_check_datum(first))
-+		goto err;
-+
-+	ft = malloc(sizeof(*ft));
-+	if (!ft)
-+		goto err;
-+
-+	ft->ttype = ttype;
-+	ft->tclass = tclass;
-+	ft->name = name;
-+
-+	rc = hashtab_insert(p->filename_trans, (hashtab_key_t)ft,
-+			    (hashtab_datum_t)first);
-+	if (rc)
-+		goto err;
-+
- 	return 0;
- err:
-+	free(ft);
- 	free(name);
-+	while (first) {
-+		datum = first;
-+		first = first->next;
-+
-+		ebitmap_destroy(&datum->stypes);
-+		free(datum);
-+	}
- 	return -1;
- }
- 
-+int filename_trans_read(policydb_t *p, struct policy_file *fp)
-+{
-+	unsigned int i;
-+	uint32_t buf[1], nel;
-+	int rc;
-+
-+	rc = next_entry(buf, fp, sizeof(uint32_t));
-+	if (rc < 0)
-+		return -1;
-+	nel = le32_to_cpu(buf[0]);
-+
-+	if (p->policyvers < POLICYDB_VERSION_COMP_FTRANS) {
-+		for (i = 0; i < nel; i++) {
-+			rc = filename_trans_read_one_compat(p, fp);
-+			if (rc < 0)
-+				return -1;
-+		}
-+	} else {
-+		for (i = 0; i < nel; i++) {
-+			rc = filename_trans_read_one(p, fp);
-+			if (rc < 0)
-+				return -1;
-+		}
-+	}
-+	return 0;
-+}
-+
- static int ocontext_read_xen(struct policydb_compat_info *info,
- 	policydb_t *p, struct policy_file *fp)
- {
-diff --git a/libsepol/src/write.c b/libsepol/src/write.c
-index d3aee8d5..84bcaf3f 100644
---- a/libsepol/src/write.c
-+++ b/libsepol/src/write.c
-@@ -569,7 +569,7 @@ static int role_allow_write(role_allow_t * r, struct policy_file *fp)
- 	return POLICYDB_SUCCESS;
- }
- 
--static int filename_write_helper(hashtab_key_t key, void *data, void *ptr)
-+static int filename_write_one_compat(hashtab_key_t key, void *data, void *ptr)
- {
- 	uint32_t bit, buf[4];
- 	size_t items, len;
-@@ -605,6 +605,54 @@ static int filename_write_helper(hashtab_key_t key, void *data, void *ptr)
- 	return 0;
- }
- 
-+static int filename_write_one(hashtab_key_t key, void *data, void *ptr)
-+{
-+	uint32_t buf[3];
-+	size_t items, len, ndatum;
-+	filename_trans_key_t *ft = (filename_trans_key_t *)key;
-+	filename_trans_datum_t *datum;
-+	void *fp = ptr;
-+
-+	len = strlen(ft->name);
-+	buf[0] = cpu_to_le32(len);
-+	items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+	if (items != 1)
-+		return POLICYDB_ERROR;
-+
-+	items = put_entry(ft->name, sizeof(char), len, fp);
-+	if (items != len)
-+		return POLICYDB_ERROR;
-+
-+	ndatum = 0;
-+	datum = data;
-+	do {
-+		ndatum++;
-+		datum = datum->next;
-+	} while (datum);
-+
-+	buf[0] = cpu_to_le32(ft->ttype);
-+	buf[1] = cpu_to_le32(ft->tclass);
-+	buf[2] = cpu_to_le32(ndatum);
-+	items = put_entry(buf, sizeof(uint32_t), 3, fp);
-+	if (items != 3)
-+		return POLICYDB_ERROR;
-+
-+	datum = data;
-+	do {
-+		if (ebitmap_write(&datum->stypes, fp))
-+			return POLICYDB_ERROR;
-+
-+		buf[0] = cpu_to_le32(datum->otype);
-+		items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+		if (items != 1)
-+			return POLICYDB_ERROR;
-+
-+		datum = datum->next;
-+	} while (datum);
-+
-+	return 0;
-+}
-+
- static int filename_trans_write(struct policydb *p, void *fp)
- {
- 	size_t items;
-@@ -614,16 +662,23 @@ static int filename_trans_write(struct policydb *p, void *fp)
- 	if (p->policyvers < POLICYDB_VERSION_FILENAME_TRANS)
- 		return 0;
- 
--	buf[0] = cpu_to_le32(p->filename_trans_count);
--	items = put_entry(buf, sizeof(uint32_t), 1, fp);
--	if (items != 1)
--		return POLICYDB_ERROR;
-+	if (p->policyvers < POLICYDB_VERSION_COMP_FTRANS) {
-+		buf[0] = cpu_to_le32(p->filename_trans_count);
-+		items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+		if (items != 1)
-+			return POLICYDB_ERROR;
- 
--	rc = hashtab_map(p->filename_trans, filename_write_helper, fp);
--	if (rc)
--		return rc;
-+		rc = hashtab_map(p->filename_trans, filename_write_one_compat,
-+				 fp);
-+	} else {
-+		buf[0] = cpu_to_le32(p->filename_trans->nel);
-+		items = put_entry(buf, sizeof(uint32_t), 1, fp);
-+		if (items != 1)
-+			return POLICYDB_ERROR;
- 
--	return 0;
-+		rc = hashtab_map(p->filename_trans, filename_write_one, fp);
-+	}
-+	return rc;
- }
- 
- static int role_set_write(role_set_t * x, struct policy_file *fp)
+I'll keep poking at the firmware tests...
+
+-Kees
+
+[1] https://lore.kernel.org/lkml/202007161415.10D015477@keescook/
+
+Kees Cook (12):
+  firmware_loader: EFI firmware loader must handle pre-allocated buffer
+  fs/kernel_read_file: Remove FIRMWARE_PREALLOC_BUFFER enum
+  fs/kernel_read_file: Remove FIRMWARE_EFI_EMBEDDED enum
+  fs/kernel_read_file: Split into separate source file
+  fs/kernel_read_file: Remove redundant size argument
+  fs/kernel_read_file: Switch buffer size arg to size_t
+  fs/kernel_read_file: Add file_size output argument
+  LSM: Introduce kernel_post_load_data() hook
+  firmware_loader: Use security_post_load_data()
+  module: Call security_kernel_post_load_data()
+  LSM: Add "contents" flag to kernel_read_file hook
+  fs/kernel_file_read: Add "offset" arg for partial reads
+
+Scott Branden (1):
+  fs/kernel_read_file: Split into separate include file
+
+ drivers/base/firmware_loader/fallback.c       |   8 +-
+ .../base/firmware_loader/fallback_platform.c  |  12 +-
+ drivers/base/firmware_loader/main.c           |  13 +-
+ fs/Makefile                                   |   3 +-
+ fs/exec.c                                     | 132 +-----------
+ fs/kernel_read_file.c                         | 189 ++++++++++++++++++
+ include/linux/fs.h                            |  39 ----
+ include/linux/ima.h                           |  19 +-
+ include/linux/kernel_read_file.h              |  55 +++++
+ include/linux/lsm_hook_defs.h                 |   6 +-
+ include/linux/lsm_hooks.h                     |  12 ++
+ include/linux/security.h                      |  19 +-
+ kernel/kexec.c                                |   2 +-
+ kernel/kexec_file.c                           |  18 +-
+ kernel/module.c                               |  24 ++-
+ security/integrity/digsig.c                   |   8 +-
+ security/integrity/ima/ima_fs.c               |   9 +-
+ security/integrity/ima/ima_main.c             |  58 ++++--
+ security/integrity/ima/ima_policy.c           |   1 +
+ security/loadpin/loadpin.c                    |  17 +-
+ security/security.c                           |  26 ++-
+ security/selinux/hooks.c                      |   8 +-
+ 22 files changed, 432 insertions(+), 246 deletions(-)
+ create mode 100644 fs/kernel_read_file.c
+ create mode 100644 include/linux/kernel_read_file.h
+
 -- 
-2.26.2
+2.25.1
 

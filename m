@@ -2,63 +2,66 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1A35223AC9
-	for <lists+selinux@lfdr.de>; Fri, 17 Jul 2020 13:48:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD9C223ACB
+	for <lists+selinux@lfdr.de>; Fri, 17 Jul 2020 13:48:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726040AbgGQLsM (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 Jul 2020 07:48:12 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:35280 "EHLO
+        id S1726013AbgGQLsR (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 Jul 2020 07:48:17 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:25715 "EHLO
         us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726013AbgGQLsL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jul 2020 07:48:11 -0400
+        with ESMTP id S1726056AbgGQLsQ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jul 2020 07:48:16 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1594986489;
+        s=mimecast20190719; t=1594986493;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=B6xzuQ/IjNCWLpEq95uKxqTeMSgxYBryJkULbvZDZXA=;
-        b=IIBvYxt2QnIwE3N+T7A/j5z/bKizZNqCH0R6yGpZJRcHUKxU7COq+ksddfdYd4JWCMyheA
-        VRcdzW7r9iiFd0daErc6Jzx3b6QTtxc/DKyI8eo+z08bdm3T1WdUzKHQvuVygZZ8vwsbUa
-        Hv7v0Xdul/8crVzQoF5o8Y6rUo0K1cE=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-23-N8NGE20POMK_e1aL2oCkfQ-1; Fri, 17 Jul 2020 07:48:07 -0400
-X-MC-Unique: N8NGE20POMK_e1aL2oCkfQ-1
-Received: by mail-ej1-f72.google.com with SMTP id q11so5492619eja.3
-        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 04:48:07 -0700 (PDT)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4oUrTAu9zBLaveA6E86erD2ib6tboBu4C4de9Vx6RgQ=;
+        b=A5z3GvmNE89j1w9gM1DJtpwUOkWe/49H1UjzW4iDx3mn6wKrodfrDrOEJUg/eSglTpSl8w
+        FLHtRz1JCVeprxuHcwUKZ1Pmc1cl5JkwA4ooc4qk6UCmCetEhMV8Y3UqmsFFLiGyXJdII4
+        NZhHq3c+sP56nCWGnEWiCiHRhK5/rh4=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-176-88mfSTaqMFu6yT2HKyx_aA-1; Fri, 17 Jul 2020 07:48:09 -0400
+X-MC-Unique: 88mfSTaqMFu6yT2HKyx_aA-1
+Received: by mail-ej1-f70.google.com with SMTP id e21so5493405ejr.9
+        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 04:48:09 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=B6xzuQ/IjNCWLpEq95uKxqTeMSgxYBryJkULbvZDZXA=;
-        b=IG7j4yPc8pBkJkvGrcAPQIP+fAxagsiHwlFQcultRdBKvYTF4v0lM5MfWEfoyjHQT+
-         v+Jcmi8jIxRkp1zCbn2iJ3eVHbLlCfA2BWD2hZmpGWtejgeSzeVApVyXWTaXTSsHxIvr
-         eF/AE9n+/a5IsZOcZofMo4jGK6WD+VSdG1BDm7PQf5I/GH1uetB9G1kQPSyXlHlE+rYx
-         lttYCbtcckIKfWi/uKRzqEzQMt07Vw+ICkvLIV7sHaE6QY6oEOID29/dWatmzuvH+txa
-         u0jmTDuwJBEkfnHHFkWBQ4Uk6DiRlwPtkIxXCI/jpf4oQl1efq0QqJPs6ggxW3SHLyuN
-         pJYg==
-X-Gm-Message-State: AOAM530esLCXlV4f8/UUPHMYT4tFDLRxUVmsk5nlmxjptdk96vqcnra/
-        B4U2H8Vd+9PHWWuewr79LQeHsyH2CU+7oeDyBPHOEHDXD+yyPYiAK0xT2+snnBk+oPyF27v8JbI
-        dU1X+nTs6PH6KzMvOKQ==
-X-Received: by 2002:a05:6402:3048:: with SMTP id bu8mr9126435edb.367.1594986486340;
-        Fri, 17 Jul 2020 04:48:06 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJykXgixGLRKFCg/3401sEbnEoXH8OPqpuPL5+oeX/2Y9zO2FoBp4DkMypjUr7/EWud/JwDYaA==
-X-Received: by 2002:a05:6402:3048:: with SMTP id bu8mr9126417edb.367.1594986486102;
-        Fri, 17 Jul 2020 04:48:06 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=4oUrTAu9zBLaveA6E86erD2ib6tboBu4C4de9Vx6RgQ=;
+        b=FG+nFFi3FggmawzV/n7n9xuWCYYVB/THoioJZjy+qyFnPwQkjIna7csp4pIelLJYzt
+         wBjhPvIRTwqgGxniztPSePi1IslY4n08d9Ysk4v8l1orQBn7IiJiZUjL1ZERIASvwMt9
+         kswtGI7LhBL78vXqQLNzpoB3qVCiCK8LmxYIpcpQPYZMbggd/u110zmqVUdTtQ+S3M3P
+         Izl/pIkfR3gAkuSzFUtU+6fMgOZrQMYBrTB2An6VBlRfBE553VqZ5CEt9W6KzF/5Ejcl
+         W6NeNU3/zkOa4xNgVILCDyP51N6MF9eUfYC/OrMXletyOzKBSAdM2coy/upsYVyYhRnO
+         n+ug==
+X-Gm-Message-State: AOAM530DnaOJd/6JeaEgjXdDafTCC7SqnlFG0g/qzLNOhfUJcJZx/nBh
+        A2vVaXzAIOcCKzqA+aLiGSZgidKzxrsZNykkD+vqSITvO6wQK9ypMlkE/VA9NA631a6DcOpX9aK
+        yBid/klMv8njJ1dSkAw==
+X-Received: by 2002:a17:906:f98e:: with SMTP id li14mr7997461ejb.174.1594986487623;
+        Fri, 17 Jul 2020 04:48:07 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJykzdydONRvcvF+j1yTnGaIOxGBmGyGzjQohSPbzWgoqcgzUG1YDHXRU08EneJDrYnT25rYyg==
+X-Received: by 2002:a17:906:f98e:: with SMTP id li14mr7997431ejb.174.1594986487265;
+        Fri, 17 Jul 2020 04:48:07 -0700 (PDT)
 Received: from omos.redhat.com ([2a02:8308:b13f:2100:8a6a:ec88:3ed7:44b3])
-        by smtp.gmail.com with ESMTPSA id x11sm7800957ejv.81.2020.07.17.04.48.05
+        by smtp.gmail.com with ESMTPSA id x11sm7800957ejv.81.2020.07.17.04.48.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2020 04:48:05 -0700 (PDT)
+        Fri, 17 Jul 2020 04:48:06 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     James Carter <jwcart2@gmail.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
         Chris PeBenito <pebenito@ieee.org>,
         Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH v4 0/2] userspace: Implement new format of filename trans rules
-Date:   Fri, 17 Jul 2020 13:48:02 +0200
-Message-Id: <20200717114804.762125-1-omosnace@redhat.com>
+Subject: [PATCH v4 1/2] libsepol,checkpolicy: optimize storage of filename transitions
+Date:   Fri, 17 Jul 2020 13:48:03 +0200
+Message-Id: <20200717114804.762125-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200717114804.762125-1-omosnace@redhat.com>
+References: <20200717114804.762125-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -66,57 +69,700 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-These patches are the userspace side of the kernel change posted at [1].
+In preparation to support a new policy format with a more optimal
+representation of filename transition rules, this patch applies an
+equivalent change from kernel commit c3a276111ea2 ("selinux: optimize
+storage of filename transitions").
 
-The first patch changes libsepol's internal representation of filename
-transition rules in a way similar to kernel commit c3a276111ea2
-("selinux: optimize storage of filename transitions") [2].
+See the kernel commit's description [1] for the rationale behind this
+representation. This change doesn't bring any measurable difference of
+policy build performance (semodule -B) on Fedora.
 
-The second patch then builds upon that and implements reading and
-writing of a new binary policy format that uses this representation also
-in the data layout.
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git/commit/?id=c3a276111ea2572399281988b3129683e2a6b60b
 
-See individual patches for more details.
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ checkpolicy/policy_define.c                |  52 +++------
+ checkpolicy/test/dispol.c                  |  20 ++--
+ libsepol/cil/src/cil_binary.c              |  29 ++---
+ libsepol/include/sepol/policydb/policydb.h |  15 ++-
+ libsepol/src/expand.c                      |  60 +++--------
+ libsepol/src/kernel_to_cil.c               |  24 ++++-
+ libsepol/src/kernel_to_conf.c              |  24 ++++-
+ libsepol/src/policydb.c                    | 117 +++++++++++++++------
+ libsepol/src/write.c                       |  46 ++++----
+ 9 files changed, 212 insertions(+), 175 deletions(-)
 
-NOTE: This series unfortunately breaks the build of setools. Moreover,
-when an existing build of setools dynamically links against the new
-libsepol, it segfaults. Sadly, there doesn't seem to be a nice way of
-handling this, since setools relies on non-public libsepol policydb
-API/ABI. I have prepared a preliminary patch to adapt setools to these
-changes - I'll open a WIP pull request for it soon...
-
-See also this discussion about the setools impact:
-https://lore.kernel.org/selinux/daeae1d9-de29-aae0-6bde-3ad3427a5d42@tycho.nsa.gov/
-
-Changes in v4:
- - rebased on top of latest master branch
-
-Changes in v3:
- - fixed the change in dispol.c to match the rest of the code
- - renamed the helper functions to use the "_compat" suffix rather than
-   "_old" and "_new"
-
-Changes in v2:
- - fixed counting rules when reading the new policy format
-
-[1] https://lore.kernel.org/selinux/20200327151941.95619-1-omosnace@redhat.com/T/
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git/commit/?id=c3a276111ea2572399281988b3129683e2a6b60b
-
-Ondrej Mosnacek (2):
-  libsepol,checkpolicy: optimize storage of filename transitions
-  libsepol: implement POLICYDB_VERSION_COMP_FTRANS
-
- checkpolicy/policy_define.c                |  52 ++--
- checkpolicy/test/dispol.c                  |  20 +-
- libsepol/cil/src/cil_binary.c              |  29 +-
- libsepol/include/sepol/policydb/policydb.h |  18 +-
- libsepol/src/expand.c                      |  60 +----
- libsepol/src/kernel_to_cil.c               |  24 +-
- libsepol/src/kernel_to_conf.c              |  24 +-
- libsepol/src/policydb.c                    | 299 +++++++++++++++++----
- libsepol/src/write.c                       | 101 +++++--
- 9 files changed, 428 insertions(+), 199 deletions(-)
-
+diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+index c6733fa4..01a90438 100644
+--- a/checkpolicy/policy_define.c
++++ b/checkpolicy/policy_define.c
+@@ -3303,10 +3303,9 @@ int define_filename_trans(void)
+ 	ebitmap_t e_stypes, e_ttypes;
+ 	ebitmap_t e_tclasses;
+ 	ebitmap_node_t *snode, *tnode, *cnode;
+-	filename_trans_t *ft;
+-	filename_trans_datum_t *ftdatum;
+ 	filename_trans_rule_t *ftr;
+ 	type_datum_t *typdatum;
++	char *dup_name;
+ 	uint32_t otype;
+ 	unsigned int c, s, t;
+ 	int add, rc;
+@@ -3388,40 +3387,21 @@ int define_filename_trans(void)
+ 	ebitmap_for_each_positive_bit(&e_tclasses, cnode, c) {
+ 		ebitmap_for_each_positive_bit(&e_stypes, snode, s) {
+ 			ebitmap_for_each_positive_bit(&e_ttypes, tnode, t) {
+-				ft = calloc(1, sizeof(*ft));
+-				if (!ft) {
+-					yyerror("out of memory");
+-					goto bad;
+-				}
+-				ft->stype = s+1;
+-				ft->ttype = t+1;
+-				ft->tclass = c+1;
+-				ft->name = strdup(name);
+-				if (!ft->name) {
+-					yyerror("out of memory");
+-					goto bad;
+-				}
+-
+-				ftdatum = hashtab_search(policydbp->filename_trans,
+-							 (hashtab_key_t)ft);
+-				if (ftdatum) {
+-					yyerror2("duplicate filename transition for: filename_trans %s %s %s:%s",
+-						 name,
+-						 policydbp->p_type_val_to_name[s],
+-						 policydbp->p_type_val_to_name[t],
+-						 policydbp->p_class_val_to_name[c]);
+-					goto bad;
+-				}
+-
+-				ftdatum = calloc(1, sizeof(*ftdatum));
+-				if (!ftdatum) {
+-					yyerror("out of memory");
+-					goto bad;
+-				}
+-				rc = hashtab_insert(policydbp->filename_trans,
+-						    (hashtab_key_t)ft,
+-						    ftdatum);
+-				if (rc) {
++				dup_name = NULL;
++				rc = policydb_filetrans_insert(
++					policydbp, s+1, t+1, c+1, name,
++					&dup_name, otype, NULL
++				);
++				free(dup_name);
++				if (rc != SEPOL_OK) {
++					if (rc == SEPOL_EEXIST) {
++						yyerror2("duplicate filename transition for: filename_trans %s %s %s:%s",
++							name,
++							policydbp->p_type_val_to_name[s],
++							policydbp->p_type_val_to_name[t],
++							policydbp->p_class_val_to_name[c]);
++						goto bad;
++					}
+ 					yyerror("out of memory");
+ 					goto bad;
+ 				}
+diff --git a/checkpolicy/test/dispol.c b/checkpolicy/test/dispol.c
+index d72d9fb3..8785b725 100644
+--- a/checkpolicy/test/dispol.c
++++ b/checkpolicy/test/dispol.c
+@@ -335,17 +335,25 @@ static int filenametr_display(hashtab_key_t key,
+ 			      hashtab_datum_t datum,
+ 			      void *ptr)
+ {
+-	struct filename_trans *ft = (struct filename_trans *)key;
++	struct filename_trans_key *ft = (struct filename_trans_key *)key;
+ 	struct filename_trans_datum *ftdatum = datum;
+ 	struct filenametr_display_args *args = ptr;
+ 	policydb_t *p = args->p;
+ 	FILE *fp = args->fp;
++	ebitmap_node_t *node;
++	uint32_t bit;
++
++	do {
++		ebitmap_for_each_positive_bit(&ftdatum->stypes, node, bit) {
++			display_id(p, fp, SYM_TYPES, bit, "");
++			display_id(p, fp, SYM_TYPES, ft->ttype - 1, "");
++			display_id(p, fp, SYM_CLASSES, ft->tclass - 1, ":");
++			display_id(p, fp, SYM_TYPES, ftdatum->otype - 1, "");
++			fprintf(fp, " %s\n", ft->name);
++		}
++		ftdatum = ftdatum->next;
++	} while (ftdatum);
+ 
+-	display_id(p, fp, SYM_TYPES, ft->stype - 1, "");
+-	display_id(p, fp, SYM_TYPES, ft->ttype - 1, "");
+-	display_id(p, fp, SYM_CLASSES, ft->tclass - 1, ":");
+-	display_id(p, fp, SYM_TYPES, ftdatum->otype - 1, "");
+-	fprintf(fp, " %s\n", ft->name);
+ 	return 0;
+ }
+ 
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index 62178d99..bedff628 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -1131,13 +1131,13 @@ int __cil_typetransition_to_avtab(policydb_t *pdb, const struct cil_db *db, stru
+ 	class_datum_t *sepol_obj = NULL;
+ 	struct cil_list *class_list;
+ 	type_datum_t *sepol_result = NULL;
+-	filename_trans_t *newkey = NULL;
+-	filename_trans_datum_t *newdatum = NULL, *otype = NULL;
+ 	ebitmap_t src_bitmap, tgt_bitmap;
+ 	ebitmap_node_t *node1, *node2;
+ 	unsigned int i, j;
++	uint32_t otype;
+ 	struct cil_list_item *c;
+ 	char *name = DATUM(typetrans->name)->name;
++	char *dup_name;
+ 
+ 	if (name == CIL_KEY_STAR) {
+ 		struct cil_type_rule trans;
+@@ -1176,22 +1176,16 @@ int __cil_typetransition_to_avtab(policydb_t *pdb, const struct cil_db *db, stru
+ 				rc = __cil_get_sepol_class_datum(pdb, DATUM(c->data), &sepol_obj);
+ 				if (rc != SEPOL_OK) goto exit;
+ 
+-				newkey = cil_calloc(1, sizeof(*newkey));
+-				newdatum = cil_calloc(1, sizeof(*newdatum));
+-				newkey->stype = sepol_src->s.value;
+-				newkey->ttype = sepol_tgt->s.value;
+-				newkey->tclass = sepol_obj->s.value;
+-				newkey->name = cil_strdup(name);
+-				newdatum->otype = sepol_result->s.value;
+-
+-				rc = hashtab_insert(pdb->filename_trans,
+-						    (hashtab_key_t)newkey,
+-						    newdatum);
++				dup_name = NULL;
++				rc = policydb_filetrans_insert(
++					pdb, sepol_src->s.value, sepol_tgt->s.value,
++					sepol_obj->s.value, name, &dup_name,
++					sepol_result->s.value, &otype
++				);
++				free(dup_name);
+ 				if (rc != SEPOL_OK) {
+ 					if (rc == SEPOL_EEXIST) {
+-						otype = hashtab_search(pdb->filename_trans,
+-								(hashtab_key_t)newkey);
+-						if (newdatum->otype != otype->otype) {
++						if (sepol_result->s.value!= otype) {
+ 							cil_log(CIL_ERR, "Conflicting name type transition rules\n");
+ 						} else {
+ 							rc = SEPOL_OK;
+@@ -1199,9 +1193,6 @@ int __cil_typetransition_to_avtab(policydb_t *pdb, const struct cil_db *db, stru
+ 					} else {
+ 						cil_log(CIL_ERR, "Out of memory\n");
+ 					}
+-					free(newkey->name);
+-					free(newkey);
+-					free(newdatum);
+ 					if (rc != SEPOL_OK) {
+ 						goto exit;
+ 					}
+diff --git a/libsepol/include/sepol/policydb/policydb.h b/libsepol/include/sepol/policydb/policydb.h
+index 81b63fef..c3180c61 100644
+--- a/libsepol/include/sepol/policydb/policydb.h
++++ b/libsepol/include/sepol/policydb/policydb.h
+@@ -162,15 +162,16 @@ typedef struct role_allow {
+ } role_allow_t;
+ 
+ /* filename_trans rules */
+-typedef struct filename_trans {
+-	uint32_t stype;
++typedef struct filename_trans_key {
+ 	uint32_t ttype;
+ 	uint32_t tclass;
+ 	char *name;
+-} filename_trans_t;
++} filename_trans_key_t;
+ 
+ typedef struct filename_trans_datum {
+-	uint32_t otype;		/* expected of new object */
++	ebitmap_t stypes;
++	uint32_t otype;
++	struct filename_trans_datum *next;
+ } filename_trans_datum_t;
+ 
+ /* Type attributes */
+@@ -591,6 +592,7 @@ typedef struct policydb {
+ 
+ 	/* file transitions with the last path component */
+ 	hashtab_t filename_trans;
++	uint32_t filename_trans_count;
+ 
+ 	ebitmap_t *type_attr_map;
+ 
+@@ -650,6 +652,11 @@ extern int policydb_load_isids(policydb_t * p, sidtab_t * s);
+ 
+ extern int policydb_sort_ocontexts(policydb_t *p);
+ 
++extern int policydb_filetrans_insert(policydb_t *p, uint32_t stype,
++				     uint32_t ttype, uint32_t tclass,
++				     const char *name, char **name_alloc,
++				     uint32_t otype, uint32_t *present_otype);
++
+ /* Deprecated */
+ extern int policydb_context_isvalid(const policydb_t * p,
+ 				    const context_struct_t * c);
+diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
+index 529e1d35..28f93acb 100644
+--- a/libsepol/src/expand.c
++++ b/libsepol/src/expand.c
+@@ -1371,16 +1371,15 @@ static int copy_role_trans(expand_state_t * state, role_trans_rule_t * rules)
+ static int expand_filename_trans(expand_state_t *state, filename_trans_rule_t *rules)
+ {
+ 	unsigned int i, j;
+-	filename_trans_t key, *new_trans;
+-	filename_trans_datum_t *otype;
+ 	filename_trans_rule_t *cur_rule;
+ 	ebitmap_t stypes, ttypes;
+ 	ebitmap_node_t *snode, *tnode;
++	char *name;
+ 	int rc;
+ 
+ 	cur_rule = rules;
+ 	while (cur_rule) {
+-		uint32_t mapped_otype;
++		uint32_t mapped_otype, present_otype;
+ 
+ 		ebitmap_init(&stypes);
+ 		ebitmap_init(&ttypes);
+@@ -1401,15 +1400,17 @@ static int expand_filename_trans(expand_state_t *state, filename_trans_rule_t *r
+ 
+ 		ebitmap_for_each_positive_bit(&stypes, snode, i) {
+ 			ebitmap_for_each_positive_bit(&ttypes, tnode, j) {
+-				key.stype = i + 1;
+-				key.ttype = j + 1;
+-				key.tclass = cur_rule->tclass;
+-				key.name = cur_rule->name;
+-				otype = hashtab_search(state->out->filename_trans,
+-						       (hashtab_key_t) &key);
+-				if (otype) {
++				name = NULL;
++
++				rc = policydb_filetrans_insert(
++					state->out, i + 1, j + 1,
++					cur_rule->tclass, cur_rule->name,
++					&name, mapped_otype, &present_otype
++				);
++				free(name);
++				if (rc == SEPOL_EEXIST) {
+ 					/* duplicate rule, ignore */
+-					if (otype->otype == mapped_otype)
++					if (present_otype == mapped_otype)
+ 						continue;
+ 
+ 					ERR(state->handle, "Conflicting name-based type_transition %s %s:%s \"%s\":  %s vs %s",
+@@ -1417,44 +1418,11 @@ static int expand_filename_trans(expand_state_t *state, filename_trans_rule_t *r
+ 					    state->out->p_type_val_to_name[j],
+ 					    state->out->p_class_val_to_name[cur_rule->tclass - 1],
+ 					    cur_rule->name,
+-					    state->out->p_type_val_to_name[otype->otype - 1],
++					    state->out->p_type_val_to_name[present_otype - 1],
+ 					    state->out->p_type_val_to_name[mapped_otype - 1]);
+ 					return -1;
+-				}
+-
+-				new_trans = calloc(1, sizeof(*new_trans));
+-				if (!new_trans) {
+-					ERR(state->handle, "Out of memory!");
+-					return -1;
+-				}
+-
+-				new_trans->name = strdup(cur_rule->name);
+-				if (!new_trans->name) {
+-					ERR(state->handle, "Out of memory!");
+-					free(new_trans);
+-					return -1;
+-				}
+-				new_trans->stype = i + 1;
+-				new_trans->ttype = j + 1;
+-				new_trans->tclass = cur_rule->tclass;
+-
+-				otype = calloc(1, sizeof(*otype));
+-				if (!otype) {
+-					ERR(state->handle, "Out of memory!");
+-					free(new_trans->name);
+-					free(new_trans);
+-					return -1;
+-				}
+-				otype->otype = mapped_otype;
+-
+-				rc = hashtab_insert(state->out->filename_trans,
+-						    (hashtab_key_t)new_trans,
+-						    otype);
+-				if (rc) {
++				} else if (rc < 0) {
+ 					ERR(state->handle, "Out of memory!");
+-					free(otype);
+-					free(new_trans->name);
+-					free(new_trans);
+ 					return -1;
+ 				}
+ 			}
+diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
+index 958adc4c..c247b32f 100644
+--- a/libsepol/src/kernel_to_cil.c
++++ b/libsepol/src/kernel_to_cil.c
+@@ -1841,21 +1841,35 @@ struct map_filename_trans_args {
+ 
+ static int map_filename_trans_to_str(hashtab_key_t key, void *data, void *arg)
+ {
+-	filename_trans_t *ft = (filename_trans_t *)key;
++	filename_trans_key_t *ft = (filename_trans_key_t *)key;
+ 	filename_trans_datum_t *datum = data;
+ 	struct map_filename_trans_args *map_args = arg;
+ 	struct policydb *pdb = map_args->pdb;
+ 	struct strs *strs = map_args->strs;
+ 	char *src, *tgt, *class, *filename, *new;
++	struct ebitmap_node *node;
++	uint32_t bit;
++	int rc;
+ 
+-	src = pdb->p_type_val_to_name[ft->stype - 1];
+ 	tgt = pdb->p_type_val_to_name[ft->ttype - 1];
+ 	class = pdb->p_class_val_to_name[ft->tclass - 1];
+ 	filename = ft->name;
+-	new =  pdb->p_type_val_to_name[datum->otype - 1];
++	do {
++		new = pdb->p_type_val_to_name[datum->otype - 1];
++
++		ebitmap_for_each_positive_bit(&datum->stypes, node, bit) {
++			src = pdb->p_type_val_to_name[bit];
++			rc = strs_create_and_add(strs,
++						 "(typetransition %s %s %s %s %s)",
++						 5, src, tgt, class, filename, new);
++			if (rc)
++				return rc;
++		}
++
++		datum = datum->next;
++	} while (datum);
+ 
+-	return strs_create_and_add(strs, "(typetransition %s %s %s %s %s)", 5,
+-				   src, tgt, class, filename, new);
++	return 0;
+ }
+ 
+ static int write_filename_trans_rules_to_cil(FILE *out, struct policydb *pdb)
+diff --git a/libsepol/src/kernel_to_conf.c b/libsepol/src/kernel_to_conf.c
+index 7cc91eb3..62bf706c 100644
+--- a/libsepol/src/kernel_to_conf.c
++++ b/libsepol/src/kernel_to_conf.c
+@@ -1822,21 +1822,35 @@ struct map_filename_trans_args {
+ 
+ static int map_filename_trans_to_str(hashtab_key_t key, void *data, void *arg)
+ {
+-	filename_trans_t *ft = (filename_trans_t *)key;
++	filename_trans_key_t *ft = (filename_trans_key_t *)key;
+ 	filename_trans_datum_t *datum = data;
+ 	struct map_filename_trans_args *map_args = arg;
+ 	struct policydb *pdb = map_args->pdb;
+ 	struct strs *strs = map_args->strs;
+ 	char *src, *tgt, *class, *filename, *new;
++	struct ebitmap_node *node;
++	uint32_t bit;
++	int rc;
+ 
+-	src = pdb->p_type_val_to_name[ft->stype - 1];
+ 	tgt = pdb->p_type_val_to_name[ft->ttype - 1];
+ 	class = pdb->p_class_val_to_name[ft->tclass - 1];
+ 	filename = ft->name;
+-	new =  pdb->p_type_val_to_name[datum->otype - 1];
++	do {
++		new = pdb->p_type_val_to_name[datum->otype - 1];
++
++		ebitmap_for_each_positive_bit(&datum->stypes, node, bit) {
++			src = pdb->p_type_val_to_name[bit];
++			rc = strs_create_and_add(strs,
++						 "type_transition %s %s:%s %s \"%s\";",
++						 5, src, tgt, class, new, filename);
++			if (rc)
++				return rc;
++		}
++
++		datum = datum->next;
++	} while (datum);
+ 
+-	return strs_create_and_add(strs, "type_transition %s %s:%s %s \"%s\";", 5,
+-				   src, tgt, class, new, filename);
++	return 0;
+ }
+ 
+ static int write_filename_trans_rules_to_conf(FILE *out, struct policydb *pdb)
+diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
+index 3992ea56..e9409a41 100644
+--- a/libsepol/src/policydb.c
++++ b/libsepol/src/policydb.c
+@@ -789,12 +789,12 @@ partial_name_hash(unsigned long c, unsigned long prevhash)
+ 
+ static unsigned int filenametr_hash(hashtab_t h, const_hashtab_key_t k)
+ {
+-	const struct filename_trans *ft = (const struct filename_trans *)k;
++	const filename_trans_key_t *ft = (const filename_trans_key_t *)k;
+ 	unsigned long hash;
+ 	unsigned int byte_num;
+ 	unsigned char focus;
+ 
+-	hash = ft->stype ^ ft->ttype ^ ft->tclass;
++	hash = ft->ttype ^ ft->tclass;
+ 
+ 	byte_num = 0;
+ 	while ((focus = ft->name[byte_num++]))
+@@ -805,14 +805,10 @@ static unsigned int filenametr_hash(hashtab_t h, const_hashtab_key_t k)
+ static int filenametr_cmp(hashtab_t h __attribute__ ((unused)),
+ 			  const_hashtab_key_t k1, const_hashtab_key_t k2)
+ {
+-	const struct filename_trans *ft1 = (const struct filename_trans *)k1;
+-	const struct filename_trans *ft2 = (const struct filename_trans *)k2;
++	const filename_trans_key_t *ft1 = (const filename_trans_key_t *)k1;
++	const filename_trans_key_t *ft2 = (const filename_trans_key_t *)k2;
+ 	int v;
+ 
+-	v = ft1->stype - ft2->stype;
+-	if (v)
+-		return v;
+-
+ 	v = ft1->ttype - ft2->ttype;
+ 	if (v)
+ 		return v;
+@@ -1409,9 +1405,12 @@ common_destroy, class_destroy, role_destroy, type_destroy, user_destroy,
+ static int filenametr_destroy(hashtab_key_t key, hashtab_datum_t datum,
+ 			      void *p __attribute__ ((unused)))
+ {
+-	struct filename_trans *ft = (struct filename_trans *)key;
++	filename_trans_key_t *ft = (filename_trans_key_t *)key;
++	filename_trans_datum_t *fd = datum;
++
+ 	free(ft->name);
+ 	free(key);
++	ebitmap_destroy(&fd->stypes);
+ 	free(datum);
+ 	return 0;
+ }
+@@ -2595,12 +2594,77 @@ int role_allow_read(role_allow_t ** r, struct policy_file *fp)
+ 	return 0;
+ }
+ 
++int policydb_filetrans_insert(policydb_t *p, uint32_t stype, uint32_t ttype,
++			      uint32_t tclass, const char *name,
++			      char **name_alloc, uint32_t otype,
++			      uint32_t *present_otype)
++{
++	filename_trans_key_t *ft, key;
++	filename_trans_datum_t *datum, *last;
++
++	key.ttype = ttype;
++	key.tclass = tclass;
++	key.name = (char *)name;
++
++	last = NULL;
++	datum = hashtab_search(p->filename_trans, (hashtab_key_t)&key);
++	while (datum) {
++		if (ebitmap_get_bit(&datum->stypes, stype - 1)) {
++			if (present_otype)
++				*present_otype = datum->otype;
++			return SEPOL_EEXIST;
++		}
++		if (datum->otype == otype)
++			break;
++		last = datum;
++		datum = datum->next;
++	}
++	if (!datum) {
++		if (!*name_alloc) {
++			*name_alloc = strdup(name);
++			if (!*name_alloc)
++				return SEPOL_ENOMEM;
++		}
++
++		datum = malloc(sizeof(*datum));
++		if (!datum)
++			return SEPOL_ENOMEM;
++
++		ebitmap_init(&datum->stypes);
++		datum->otype = otype;
++		datum->next = NULL;
++
++		if (last) {
++			last->next = datum;
++		} else {
++			ft = malloc(sizeof(*ft));
++			if (!ft) {
++				free(datum);
++				return SEPOL_ENOMEM;
++			}
++
++			ft->ttype = ttype;
++			ft->tclass = tclass;
++			ft->name = *name_alloc;
++
++			if (hashtab_insert(p->filename_trans, (hashtab_key_t)ft,
++					   (hashtab_datum_t)datum)) {
++				free(datum);
++				free(ft);
++				return SEPOL_ENOMEM;
++			}
++			*name_alloc = NULL;
++		}
++	}
++
++	p->filename_trans_count++;
++	return ebitmap_set_bit(&datum->stypes, stype - 1, 1);
++}
++
+ int filename_trans_read(policydb_t *p, struct policy_file *fp)
+ {
+ 	unsigned int i;
+-	uint32_t buf[4], nel, len;
+-	filename_trans_t *ft;
+-	filename_trans_datum_t *otype;
++	uint32_t buf[4], nel, len, stype, ttype, tclass, otype;
+ 	int rc;
+ 	char *name;
+ 
+@@ -2610,16 +2674,8 @@ int filename_trans_read(policydb_t *p, struct policy_file *fp)
+ 	nel = le32_to_cpu(buf[0]);
+ 
+ 	for (i = 0; i < nel; i++) {
+-		ft = NULL;
+-		otype = NULL;
+ 		name = NULL;
+ 
+-		ft = calloc(1, sizeof(*ft));
+-		if (!ft)
+-			goto err;
+-		otype = calloc(1, sizeof(*otype));
+-		if (!otype)
+-			goto err;
+ 		rc = next_entry(buf, fp, sizeof(uint32_t));
+ 		if (rc < 0)
+ 			goto err;
+@@ -2631,8 +2687,6 @@ int filename_trans_read(policydb_t *p, struct policy_file *fp)
+ 		if (!name)
+ 			goto err;
+ 
+-		ft->name = name;
+-
+ 		rc = next_entry(name, fp, len);
+ 		if (rc < 0)
+ 			goto err;
+@@ -2641,13 +2695,13 @@ int filename_trans_read(policydb_t *p, struct policy_file *fp)
+ 		if (rc < 0)
+ 			goto err;
+ 
+-		ft->stype = le32_to_cpu(buf[0]);
+-		ft->ttype = le32_to_cpu(buf[1]);
+-		ft->tclass = le32_to_cpu(buf[2]);
+-		otype->otype = le32_to_cpu(buf[3]);
++		stype  = le32_to_cpu(buf[0]);
++		ttype  = le32_to_cpu(buf[1]);
++		tclass = le32_to_cpu(buf[2]);
++		otype  = le32_to_cpu(buf[3]);
+ 
+-		rc = hashtab_insert(p->filename_trans, (hashtab_key_t) ft,
+-				    otype);
++		rc = policydb_filetrans_insert(p, stype, ttype, tclass, name,
++					       &name, otype, NULL);
+ 		if (rc) {
+ 			if (rc != SEPOL_EEXIST)
+ 				goto err;
+@@ -2657,16 +2711,11 @@ int filename_trans_read(policydb_t *p, struct policy_file *fp)
+ 			 * compatibility, do not reject such policies, just
+ 			 * ignore the duplicate.
+ 			 */
+-			free(ft);
+-			free(name);
+-			free(otype);
+-			/* continue, ignoring this one */
+ 		}
++		free(name);
+ 	}
+ 	return 0;
+ err:
+-	free(ft);
+-	free(otype);
+ 	free(name);
+ 	return -1;
+ }
+diff --git a/libsepol/src/write.c b/libsepol/src/write.c
+index 1fd6a16a..d3aee8d5 100644
+--- a/libsepol/src/write.c
++++ b/libsepol/src/write.c
+@@ -571,44 +571,50 @@ static int role_allow_write(role_allow_t * r, struct policy_file *fp)
+ 
+ static int filename_write_helper(hashtab_key_t key, void *data, void *ptr)
+ {
+-	uint32_t buf[4];
++	uint32_t bit, buf[4];
+ 	size_t items, len;
+-	struct filename_trans *ft = (struct filename_trans *)key;
+-	struct filename_trans_datum *otype = data;
++	filename_trans_key_t *ft = (filename_trans_key_t *)key;
++	filename_trans_datum_t *datum = data;
++	ebitmap_node_t *node;
+ 	void *fp = ptr;
+ 
+ 	len = strlen(ft->name);
+-	buf[0] = cpu_to_le32(len);
+-	items = put_entry(buf, sizeof(uint32_t), 1, fp);
+-	if (items != 1)
+-		return POLICYDB_ERROR;
++	do {
++		ebitmap_for_each_positive_bit(&datum->stypes, node, bit) {
++			buf[0] = cpu_to_le32(len);
++			items = put_entry(buf, sizeof(uint32_t), 1, fp);
++			if (items != 1)
++				return POLICYDB_ERROR;
+ 
+-	items = put_entry(ft->name, sizeof(char), len, fp);
+-	if (items != len)
+-		return POLICYDB_ERROR;
++			items = put_entry(ft->name, sizeof(char), len, fp);
++			if (items != len)
++				return POLICYDB_ERROR;
+ 
+-	buf[0] = cpu_to_le32(ft->stype);
+-	buf[1] = cpu_to_le32(ft->ttype);
+-	buf[2] = cpu_to_le32(ft->tclass);
+-	buf[3] = cpu_to_le32(otype->otype);
+-	items = put_entry(buf, sizeof(uint32_t), 4, fp);
+-	if (items != 4)
+-		return POLICYDB_ERROR;
++			buf[0] = cpu_to_le32(bit + 1);
++			buf[1] = cpu_to_le32(ft->ttype);
++			buf[2] = cpu_to_le32(ft->tclass);
++			buf[3] = cpu_to_le32(datum->otype);
++			items = put_entry(buf, sizeof(uint32_t), 4, fp);
++			if (items != 4)
++				return POLICYDB_ERROR;
++		}
++
++		datum = datum->next;
++	} while (datum);
+ 
+ 	return 0;
+ }
+ 
+ static int filename_trans_write(struct policydb *p, void *fp)
+ {
+-	size_t nel, items;
++	size_t items;
+ 	uint32_t buf[1];
+ 	int rc;
+ 
+ 	if (p->policyvers < POLICYDB_VERSION_FILENAME_TRANS)
+ 		return 0;
+ 
+-	nel =  p->filename_trans->nel;
+-	buf[0] = cpu_to_le32(nel);
++	buf[0] = cpu_to_le32(p->filename_trans_count);
+ 	items = put_entry(buf, sizeof(uint32_t), 1, fp);
+ 	if (items != 1)
+ 		return POLICYDB_ERROR;
 -- 
 2.26.2
 

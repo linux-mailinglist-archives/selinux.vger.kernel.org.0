@@ -2,51 +2,51 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0FC19224246
-	for <lists+selinux@lfdr.de>; Fri, 17 Jul 2020 19:44:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EBB7224235
+	for <lists+selinux@lfdr.de>; Fri, 17 Jul 2020 19:44:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728194AbgGQRnx (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 Jul 2020 13:43:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45938 "EHLO
+        id S1728234AbgGQRnb (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 Jul 2020 13:43:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728178AbgGQRnZ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jul 2020 13:43:25 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E26DFC0619E6
-        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 10:43:24 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id f16so6751289pjt.0
-        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 10:43:24 -0700 (PDT)
+        with ESMTP id S1728186AbgGQRn0 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jul 2020 13:43:26 -0400
+Received: from mail-pg1-x543.google.com (mail-pg1-x543.google.com [IPv6:2607:f8b0:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D018FC05BD0F
+        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 10:43:25 -0700 (PDT)
+Received: by mail-pg1-x543.google.com with SMTP id o13so7046112pgf.0
+        for <selinux@vger.kernel.org>; Fri, 17 Jul 2020 10:43:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=dge98+d3xjbY9IP5mQNDSECkvDjG9MOM+lU6BMHPuiA=;
-        b=FIEdSq+os1RQYo1j6lO7pjZ3jMBtG28mLYrbuzqeHPfbVIrWIptcWrieHMB8fCejIJ
-         Y4mij+osFygA+kU9tYqnPE6O++KWZQh2XmtnzHWw4senrXgI0n3D6Xk/4wwu/y/B384q
-         rsvF0pXvTGIfw2KYvKrJjaNM/C8x/Ut9/MPx4=
+        bh=snum0LDOOmwoCERcfxqLkgilyaEMJiIllHC/Y59Q/IE=;
+        b=UNF+N5tGImRXK7U8tW7Qt2o9FhuhZJSQ7KG3fVlP2CQ6VrEJi7uXvLxkYsb5D3GAbE
+         GJmS1WNe9406vs8ug4lR/fhP3HZT3NvzCd6AL6BzxcMsVwi38lSG8yFN/BvHOc+G+SvL
+         Vt88Tb179Kyjrl+HpGQoMdwuRxJV4oP68QdHA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=dge98+d3xjbY9IP5mQNDSECkvDjG9MOM+lU6BMHPuiA=;
-        b=mIFt8Q6uxF30BTb4QUku/TiOSAwoy1XLjT+H33ep4LPU03i2wpfP/BPWZA8tmh6Lhe
-         aEqkdmFzPuN2FBIbVd/VSMjXVXx9KL0AJ/cr8prAqfyDiLUDCAI380TYzAREUl3Y5G8J
-         90TvibrfXi+nZln272E9LUvtNk0zCf/1ne3OoW6tl/lhx4tkMGhsjqBjNm2vCz4Kur66
-         Dy+4xUnCd4h9zUiUfyQc3l/FVzdbFNhIaAZpqSGTZ/1i4Qy+xF00WdNiMN82zlJFv987
-         TAGTOhzjjI57cJuIU9Y5No8XQmB1/Akrw46vaf1VNYuWbny8E4lz1eeE4xltnRV3CxOS
-         O3gA==
-X-Gm-Message-State: AOAM532FPmtsAGLjEmZCw1O5ee6yl5/sIVZ5XIHNbuRO0qnDvE8vvi2e
-        3H4VFrCJh6GhH7M2Knm0Qkdldw==
-X-Google-Smtp-Source: ABdhPJyFhqZXp1JBdorzif8lXh968rXzpYc2MEjN6oVj3wIxSbTT5ehZYmnMBONUmuhCz5DsIB4q1A==
-X-Received: by 2002:a17:90a:ed87:: with SMTP id k7mr11358586pjy.31.1595007804426;
-        Fri, 17 Jul 2020 10:43:24 -0700 (PDT)
+        bh=snum0LDOOmwoCERcfxqLkgilyaEMJiIllHC/Y59Q/IE=;
+        b=UtKYvgzeY/D38qCUGQnt85sxHU3ODBwRP1oHm7lY+az6H6a7P385HK18/E4vIDNO2k
+         sUruQDrXOM/uMUCiBoIp0FHfpLfrAW4dTtAjTach6onreoF6VwfWLXaDu3QsuxBI7GWG
+         2T48FMw1DcUlkOqQPJqLwgUWckzi/kFqPyWefFdQ/7iFKSIJKwNb+KE4DWXVCPJpamWb
+         CZkDSw5jFPeIyciDfXar85BOs8QTNxrInvj4uFzWtS/U3KNjS7s6cUoXrYbrJBtC2H43
+         F5YIIJYXTGaq6POFqzrA3JwlyV5IHpsCc15ohvtukgrRav/IgJ7PHwE3l6m9gXYOWTDy
+         9uog==
+X-Gm-Message-State: AOAM531bOM6e1hjrU1eROUTPVHsHLfLyW3DmSFnG3aPZ+lSBQf68Z37q
+        w9su1zDn2cR83AT/pfNnEOGOJA==
+X-Google-Smtp-Source: ABdhPJxwiYy1pNbGhgekK71siqfw6L7iDLfIXzNjN1uAiDqjIEPDjHUjJYYFf3Ape9IP20AJboNQYg==
+X-Received: by 2002:aa7:858c:: with SMTP id w12mr9691555pfn.143.1595007805407;
+        Fri, 17 Jul 2020 10:43:25 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id m68sm3644438pje.24.2020.07.17.10.43.16
+        by smtp.gmail.com with ESMTPSA id u23sm8311155pgn.26.2020.07.17.10.43.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2020 10:43:18 -0700 (PDT)
+        Fri, 17 Jul 2020 10:43:21 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
 To:     Scott Branden <scott.branden@broadcom.com>
-Cc:     Kees Cook <keescook@chromium.org>,
+Cc:     Kees Cook <keescook@chromium.org>, Jessica Yu <jeyu@kernel.org>,
         Mimi Zohar <zohar@linux.ibm.com>,
         Matthew Wilcox <willy@infradead.org>,
         James Morris <jmorris@namei.org>,
@@ -54,7 +54,6 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Rafael J. Wysocki" <rafael@kernel.org>,
         Alexander Viro <viro@zeniv.linux.org.uk>,
-        Jessica Yu <jeyu@kernel.org>,
         Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
         "Serge E. Hallyn" <serge@hallyn.com>,
         Casey Schaufler <casey@schaufler-ca.com>,
@@ -76,9 +75,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
         linux-fsdevel@vger.kernel.org, kexec@lists.infradead.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 10/13] firmware_loader: Use security_post_load_data()
-Date:   Fri, 17 Jul 2020 10:43:05 -0700
-Message-Id: <20200717174309.1164575-11-keescook@chromium.org>
+Subject: [PATCH 11/13] module: Call security_kernel_post_load_data()
+Date:   Fri, 17 Jul 2020 10:43:06 -0700
+Message-Id: <20200717174309.1164575-12-keescook@chromium.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20200717174309.1164575-1-keescook@chromium.org>
 References: <20200717174309.1164575-1-keescook@chromium.org>
@@ -89,122 +88,49 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Now that security_post_load_data() is wired up, use it instead
-of the NULL file argument style of security_post_read_file(),
-and update the security_kernel_load_data() call to indicate that a
-security_kernel_post_load_data() call is expected.
+Now that there is an API for checking loaded contents for modules
+loaded without a file, call into the LSM hooks.
 
-Wire up the IMA check to match earlier logic. Perhaps a generalized
-change to ima_post_load_data() might look something like this:
-
-    return process_buffer_measurement(buf, size,
-                                      kernel_load_data_id_str(load_id),
-                                      read_idmap[load_id] ?: FILE_CHECK,
-                                      0, NULL);
-
+Cc: Jessica Yu <jeyu@kernel.org>
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- drivers/base/firmware_loader/fallback.c       |  8 ++++----
- .../base/firmware_loader/fallback_platform.c  |  7 ++++++-
- security/integrity/ima/ima_main.c             | 20 +++++++++----------
- 3 files changed, 20 insertions(+), 15 deletions(-)
+ kernel/module.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/firmware_loader/fallback.c b/drivers/base/firmware_loader/fallback.c
-index a196aacce22c..7cfdfdcb819c 100644
---- a/drivers/base/firmware_loader/fallback.c
-+++ b/drivers/base/firmware_loader/fallback.c
-@@ -272,9 +272,9 @@ static ssize_t firmware_loading_store(struct device *dev,
- 				dev_err(dev, "%s: map pages failed\n",
- 					__func__);
- 			else
--				rc = security_kernel_post_read_file(NULL,
--						fw_priv->data, fw_priv->size,
--						READING_FIRMWARE);
-+				rc = security_kernel_post_load_data(fw_priv->data,
-+						fw_priv->size,
-+						LOADING_FIRMWARE);
+diff --git a/kernel/module.c b/kernel/module.c
+index d56cb34d9a2f..90a4788dff9d 100644
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -2967,7 +2967,7 @@ static int copy_module_from_user(const void __user *umod, unsigned long len,
+ 	if (info->len < sizeof(*(info->hdr)))
+ 		return -ENOEXEC;
  
- 			/*
- 			 * Same logic as fw_load_abort, only the DONE bit
-@@ -613,7 +613,7 @@ static bool fw_run_sysfs_fallback(u32 opt_flags)
- 		return false;
+-	err = security_kernel_load_data(LOADING_MODULE, false);
++	err = security_kernel_load_data(LOADING_MODULE, true);
+ 	if (err)
+ 		return err;
  
- 	/* Also permit LSMs and IMA to fail firmware sysfs fallback */
--	ret = security_kernel_load_data(LOADING_FIRMWARE, false);
-+	ret = security_kernel_load_data(LOADING_FIRMWARE, true);
- 	if (ret < 0)
- 		return false;
- 
-diff --git a/drivers/base/firmware_loader/fallback_platform.c b/drivers/base/firmware_loader/fallback_platform.c
-index a12c79d47efc..4d1157af0e86 100644
---- a/drivers/base/firmware_loader/fallback_platform.c
-+++ b/drivers/base/firmware_loader/fallback_platform.c
-@@ -17,7 +17,7 @@ int firmware_fallback_platform(struct fw_priv *fw_priv, u32 opt_flags)
- 	if (!(opt_flags & FW_OPT_FALLBACK_PLATFORM))
- 		return -ENOENT;
- 
--	rc = security_kernel_load_data(LOADING_FIRMWARE, false);
-+	rc = security_kernel_load_data(LOADING_FIRMWARE, true);
- 	if (rc)
- 		return rc;
- 
-@@ -27,6 +27,11 @@ int firmware_fallback_platform(struct fw_priv *fw_priv, u32 opt_flags)
- 
- 	if (fw_priv->data && size > fw_priv->allocated_size)
+@@ -2977,11 +2977,17 @@ static int copy_module_from_user(const void __user *umod, unsigned long len,
  		return -ENOMEM;
-+
-+	rc = security_kernel_post_load_data((u8 *)data, size, LOADING_FIRMWARE);
-+	if (rc)
-+		return rc;
-+
- 	if (!fw_priv->data)
- 		fw_priv->data = vmalloc(size);
- 	if (!fw_priv->data)
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 85000dc8595c..1a7bc4c7437d 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -648,15 +648,6 @@ int ima_post_read_file(struct file *file, void *buf, loff_t size,
- 	enum ima_hooks func;
- 	u32 secid;
  
--	if (!file && read_id == READING_FIRMWARE) {
--		if ((ima_appraise & IMA_APPRAISE_FIRMWARE) &&
--		    (ima_appraise & IMA_APPRAISE_ENFORCE)) {
--			pr_err("Prevent firmware loading_store.\n");
--			return -EACCES;	/* INTEGRITY_UNKNOWN */
--		}
--		return 0;
--	}
--
- 	/* permit signed certs */
- 	if (!file && read_id == READING_X509_CERTIFICATE)
- 		return 0;
-@@ -706,7 +697,7 @@ int ima_load_data(enum kernel_load_data_id id, bool contents)
- 		}
- 		break;
- 	case LOADING_FIRMWARE:
--		if (ima_enforce && (ima_appraise & IMA_APPRAISE_FIRMWARE)) {
-+		if (ima_enforce && (ima_appraise & IMA_APPRAISE_FIRMWARE) && !contents) {
- 			pr_err("Prevent firmware sysfs fallback loading.\n");
- 			return -EACCES;	/* INTEGRITY_UNKNOWN */
- 		}
-@@ -739,6 +730,15 @@ int ima_load_data(enum kernel_load_data_id id, bool contents)
-  */
- int ima_post_load_data(char *buf, loff_t size, enum kernel_load_data_id load_id)
- {
-+	if (load_id == LOADING_FIRMWARE) {
-+		if ((ima_appraise & IMA_APPRAISE_FIRMWARE) &&
-+		    (ima_appraise & IMA_APPRAISE_ENFORCE)) {
-+			pr_err("Prevent firmware loading_store.\n");
-+			return -EACCES; /* INTEGRITY_UNKNOWN */
-+		}
-+		return 0;
-+	}
+ 	if (copy_chunked_from_user(info->hdr, umod, info->len) != 0) {
+-		vfree(info->hdr);
+-		return -EFAULT;
++		err = -EFAULT;
++		goto out;
+ 	}
+ 
+-	return 0;
++	err = security_kernel_post_load_data((char *)info->hdr, info->len,
++					     LOADING_MODULE);
++out:
++	if (err)
++		vfree(info->hdr);
 +
- 	return 0;
++	return err;
  }
  
+ static void free_copy(struct load_info *info)
 -- 
 2.25.1
 

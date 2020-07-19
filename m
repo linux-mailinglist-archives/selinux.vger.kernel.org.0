@@ -2,85 +2,98 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2DFB2252DF
-	for <lists+selinux@lfdr.de>; Sun, 19 Jul 2020 18:51:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F9B82252DB
+	for <lists+selinux@lfdr.de>; Sun, 19 Jul 2020 18:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726073AbgGSQvo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 19 Jul 2020 12:51:44 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:47106 "EHLO
-        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725783AbgGSQvn (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 19 Jul 2020 12:51:43 -0400
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id 99E825646A3
-        for <selinux@vger.kernel.org>; Sun, 19 Jul 2020 18:43:46 +0200 (CEST)
-Received: by mail-ot1-f43.google.com with SMTP id t18so10423226otq.5
-        for <selinux@vger.kernel.org>; Sun, 19 Jul 2020 09:43:46 -0700 (PDT)
-X-Gm-Message-State: AOAM530wmf0VWnfNJWLRcxkBz1QSGBDjmobZXa9hzUr0Xe941OPy3DG+
-        wT7DTkTnVfBpGVZN9hz4ZQIBeGbdl6m9gvUcuEI=
-X-Google-Smtp-Source: ABdhPJwzVE0GOt+0UkT0VVpr70QTGAqUF+SwmMm7rjlo488uICghTcfEZ4b6Vjy5i72msaLnBX4SYUY1advWKKFI06o=
-X-Received: by 2002:a9d:855:: with SMTP id 79mr16211081oty.361.1595177025559;
- Sun, 19 Jul 2020 09:43:45 -0700 (PDT)
+        id S1726159AbgGSQu5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 19 Jul 2020 12:50:57 -0400
+Received: from mail.hallyn.com ([178.63.66.53]:52818 "EHLO mail.hallyn.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725783AbgGSQu5 (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Sun, 19 Jul 2020 12:50:57 -0400
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+        id E91F9E93; Sun, 19 Jul 2020 11:50:54 -0500 (CDT)
+Date:   Sun, 19 Jul 2020 11:50:54 -0500
+From:   "Serge E. Hallyn" <serge@hallyn.com>
+To:     Adrian Reber <areber@redhat.com>
+Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Pavel Emelyanov <ovzxemul@gmail.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Dmitry Safonov <0x7f454c46@gmail.com>,
+        Andrei Vagin <avagin@gmail.com>,
+        Nicolas Viennot <Nicolas.Viennot@twosigma.com>,
+        =?utf-8?B?TWljaGHFgiBDxYJhcGnFhHNraQ==?= <mclapinski@google.com>,
+        Kamil Yurtsever <kyurtsever@google.com>,
+        Dirk Petersen <dipeit@gmail.com>,
+        Christine Flood <chf@redhat.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Radostin Stoyanov <rstoyanov1@gmail.com>,
+        Cyrill Gorcunov <gorcunov@openvz.org>,
+        Serge Hallyn <serge@hallyn.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Sargun Dhillon <sargun@sargun.me>,
+        Arnd Bergmann <arnd@arndb.de>,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
+        Eric Paris <eparis@parisplace.org>,
+        Jann Horn <jannh@google.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH v6 4/7] proc: allow access in init userns for map_files
+ with CAP_CHECKPOINT_RESTORE
+Message-ID: <20200719165054.GA3936@mail.hallyn.com>
+References: <20200719100418.2112740-1-areber@redhat.com>
+ <20200719100418.2112740-5-areber@redhat.com>
 MIME-Version: 1.0
-References: <51d7bd5e067978ea5340ee408a7329e8b921b372.camel@flyn.org>
-In-Reply-To: <51d7bd5e067978ea5340ee408a7329e8b921b372.camel@flyn.org>
-From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-Date:   Sun, 19 Jul 2020 18:43:34 +0200
-X-Gmail-Original-Message-ID: <CAJfZ7=kxW1zaROh_9rC8-CCafBciFXmFfKFh0B0fwwGYCTp6Lg@mail.gmail.com>
-Message-ID: <CAJfZ7=kxW1zaROh_9rC8-CCafBciFXmFfKFh0B0fwwGYCTp6Lg@mail.gmail.com>
-Subject: Re: [PATCH] python/audit2allow: add #include <limits.h> to sepolgen-ifgen-attr-helper.c
-To:     "W. Michael Petullo" <mike@flyn.org>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sun Jul 19 18:43:47 2020 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=1F9DD5646B1
-X-Org-Mail: nicolas.iooss.2010@polytechnique.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200719100418.2112740-5-areber@redhat.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jul 16, 2020 at 10:39 PM W. Michael Petullo <mike@flyn.org> wrote:
->
-> I found that building on OpenWrt/musl failed with:
->
->   sepolgen-ifgen-attr-helper.c:152:16: error: 'PATH_MAX' undeclared ...
->
-> Musl is less "generous" than glibc in recursively including header
-> files, and I suspect this is the reason for this error. Explicitly
-> including limits.h fixes the problem.
->
-> Signed-off-by: W. Michael Petullo <mike@flyn.org>
+On Sun, Jul 19, 2020 at 12:04:14PM +0200, Adrian Reber wrote:
+> Opening files in /proc/pid/map_files when the current user is
+> CAP_CHECKPOINT_RESTORE capable in the root namespace is useful for
+> checkpointing and restoring to recover files that are unreachable via
+> the file system such as deleted files, or memfd files.
+> 
+> Signed-off-by: Adrian Reber <areber@redhat.com>
+
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
+
+> Signed-off-by: Nicolas Viennot <Nicolas.Viennot@twosigma.com>
+> Reviewed-by: Cyrill Gorcunov <gorcunov@gmail.com>
 > ---
->  python/audit2allow/sepolgen-ifgen-attr-helper.c | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/python/audit2allow/sepolgen-ifgen-attr-helper.c
-> b/python/audit2allow/sepolgen-ifgen-attr-helper.c
-> index 53f20818..f010c958 100644
-> --- a/python/audit2allow/sepolgen-ifgen-attr-helper.c
-> +++ b/python/audit2allow/sepolgen-ifgen-attr-helper.c
-> @@ -28,6 +28,7 @@
->
->  #include <selinux/selinux.h>
->
-> +#include <limits.h>
->  #include <stdio.h>
->  #include <sys/types.h>
->  #include <sys/stat.h>
-> --
+>  fs/proc/base.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index 65893686d1f1..b824a8c89011 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -2194,16 +2194,16 @@ struct map_files_info {
+>  };
+>  
+>  /*
+> - * Only allow CAP_SYS_ADMIN to follow the links, due to concerns about how the
+> - * symlinks may be used to bypass permissions on ancestor directories in the
+> - * path to the file in question.
+> + * Only allow CAP_SYS_ADMIN and CAP_CHECKPOINT_RESTORE to follow the links, due
+> + * to concerns about how the symlinks may be used to bypass permissions on
+> + * ancestor directories in the path to the file in question.
+>   */
+>  static const char *
+>  proc_map_files_get_link(struct dentry *dentry,
+>  			struct inode *inode,
+>  		        struct delayed_call *done)
+>  {
+> -	if (!capable(CAP_SYS_ADMIN))
+> +	if (!checkpoint_restore_ns_capable(&init_user_ns))
+>  		return ERR_PTR(-EPERM);
+>  
+>  	return proc_pid_get_link(dentry, inode, done);
+> -- 
 > 2.26.2
-
-Looks good to me. Nevertheless I had some trouble applying your patch
-using "git am" because your message contained
-"b/python/audit2allow/sepolgen-ifgen-attr-helper.c" on a new line. Did
-you use "git send-email" or something similar, to send your patch?
-
-Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
-
-If nobody complains, I will apply this patch tomorrow.
-Thanks,
-Nicolas
-

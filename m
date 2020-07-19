@@ -2,97 +2,76 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 655922251A3
-	for <lists+selinux@lfdr.de>; Sun, 19 Jul 2020 13:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 212982252D7
+	for <lists+selinux@lfdr.de>; Sun, 19 Jul 2020 18:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726024AbgGSLcI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 19 Jul 2020 07:32:08 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:30843 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726012AbgGSLcI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 19 Jul 2020 07:32:08 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1595158326;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=V2fotOfgPHcQiNV1pWoz+S/xzFYGLOmYS9ahE+I7Qxo=;
-        b=LU9T0yY6rLNj4I/NvJI2AV4BvgZwVzW60Nlr6A08NTXYHksEpYfth6+Gq7u1GJk1/s9aCy
-        Rv7K77almJgAK+XK7gGDXXchH/ZTN0ZAYxJCC85JLUod0vGdJb7iC+3pev1OgVS5wNIeRe
-        FPaMItQmYeW/gdUdZbiI+dX1wIrbShA=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-299-R3n5vsGJMtuXfP31UdB7tw-1; Sun, 19 Jul 2020 07:32:03 -0400
-X-MC-Unique: R3n5vsGJMtuXfP31UdB7tw-1
-Received: by mail-lf1-f69.google.com with SMTP id t18so6734032lfe.7
-        for <selinux@vger.kernel.org>; Sun, 19 Jul 2020 04:32:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V2fotOfgPHcQiNV1pWoz+S/xzFYGLOmYS9ahE+I7Qxo=;
-        b=psTyjEPH+X8BifBFF2fXRKqIZvldwp03mTb8EVPegbLqrlUN1PEzdivcNua6KVFWRs
-         Ds01JtmgD3qtPZzkF3eaz9oiUpnjar8Zu9TDN+S8jNOqNfj6GYnYEQDT/x2fhvJNA7+B
-         Yn3Q+WnQ0xCj5qHkV3aMD9Vp2KrC+ZRw0MTSfVX4ey6Lu4lFp23XoTD+BeZ8Rs1xDk25
-         GJ2hnNoc2ovPFs9/djM+A1YQsSmj1NKQMRhD9mbtfW6Q/7petQdGkR7IgvhhZD7LKv4L
-         DPjRjTw176TupH/g+/Vqg7Du1vMinEX6Qq3ZgKVwY+KfUz5fzYgmocSVrKk6/6FUXClU
-         7UEg==
-X-Gm-Message-State: AOAM530hlYVumP1/lB+SBLPUYtf1s57K73yVg3m1Iy15EYkJbmlDkiwb
-        13R9y8ckKUXSgG7XI1ABgEQTH/2FweqHjbbCv5TCKCrjHg8KCpV1k/FVQ2AAwck1M70g10nxt53
-        qgs7PoYnr0oQgIp9bxiKbwUxk6V4KhwaEVg==
-X-Received: by 2002:a19:be53:: with SMTP id o80mr8512628lff.33.1595158321690;
-        Sun, 19 Jul 2020 04:32:01 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxzQfn5uNvbVUdEm4B79Rea4u9L7kH9gVeRzo1c8A44X8ygWQDqTixvpc2gnHT7hEC5YLrKzNHEcVrY6Rn/9l4=
-X-Received: by 2002:a19:be53:: with SMTP id o80mr8512618lff.33.1595158321474;
- Sun, 19 Jul 2020 04:32:01 -0700 (PDT)
+        id S1726009AbgGSQqo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 19 Jul 2020 12:46:44 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:59603 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725783AbgGSQqn (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 19 Jul 2020 12:46:43 -0400
+X-Greylist: delayed 342 seconds by postgrey-1.27 at vger.kernel.org; Sun, 19 Jul 2020 12:46:42 EDT
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 4D9CB5646A3
+        for <selinux@vger.kernel.org>; Sun, 19 Jul 2020 18:40:47 +0200 (CEST)
+Received: by mail-oo1-f48.google.com with SMTP id d125so2746429oob.0
+        for <selinux@vger.kernel.org>; Sun, 19 Jul 2020 09:40:47 -0700 (PDT)
+X-Gm-Message-State: AOAM532pAoHFE+RFa0YlvWsemZkACa2O/M+xQ40y0NJszX5nFVbige/s
+        EayqcPE3Bsb9v8C3AJ1WzwxLZBXFWlVDSDqiQm0=
+X-Google-Smtp-Source: ABdhPJzUwelN9idHDY2EB+GHffi76nv+CeF+uridqdThsfWWJjSXO0xbKUy2ILdVlIwYSkZHkS9yE0axFx2AfXAUfhY=
+X-Received: by 2002:a4a:c213:: with SMTP id z19mr16439928oop.46.1595176846290;
+ Sun, 19 Jul 2020 09:40:46 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200719103506.865962-1-omosnace@redhat.com>
-In-Reply-To: <20200719103506.865962-1-omosnace@redhat.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Sun, 19 Jul 2020 13:31:50 +0200
-Message-ID: <CAFqZXNtJziNtxG-yrTiBPq3Z0H7zOYX62ydmJ0SneJCsLMiMtg@mail.gmail.com>
-Subject: Re: [PATCH v5 0/2] userspace: Implement new format of filename trans rules
-To:     SElinux list <selinux@vger.kernel.org>
-Cc:     James Carter <jwcart2@gmail.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Chris PeBenito <pebenito@ieee.org>,
-        Petr Lautrbach <plautrba@redhat.com>
+References: <20200716122213.454087-1-bigon@debian.org>
+In-Reply-To: <20200716122213.454087-1-bigon@debian.org>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Sun, 19 Jul 2020 18:40:35 +0200
+X-Gmail-Original-Message-ID: <CAJfZ7=nZY+DFwVT9X7mJVTBG1=p3ZgR-aX4DNuK02qzVTT_g4Q@mail.gmail.com>
+Message-ID: <CAJfZ7=nZY+DFwVT9X7mJVTBG1=p3ZgR-aX4DNuK02qzVTT_g4Q@mail.gmail.com>
+Subject: Re: [PATCH] restorecond: Set X-GNOME-HiddenUnderSystemd=true in
+ restorecond.desktop file
+To:     Laurent Bigonville <bigon@debian.org>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sun Jul 19 18:40:47 2020 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000277, queueID=98D1A5646B1
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Sun, Jul 19, 2020 at 12:35 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> These patches are the userspace side of the following kernel commits:
-> c3a276111ea2 ("selinux: optimize storage of filename transitions") [1]
-> 430059024389 ("selinux: implement new format of filename transitions") [2].
+On Thu, Jul 16, 2020 at 2:28 PM Laurent Bigonville <bigon@debian.org> wrote:
 >
-> The first patch changes libsepol's internal representation of filename
-> transition rules in a way similar to the kernel commit.
+> From: Laurent Bigonville <bigon@bigon.be>
 >
-> The second patch then builds upon that and implements reading and
-> writing of the new binary policy format that uses this representation
-> also in the data layout.
+> This completely inactivate the .desktop file incase the user session is
+> managed by systemd as restorecond also provide a service file
 >
-> See individual patches for more details.
+> Signed-off-by: Laurent Bigonville <bigon@bigon.be>
+> ---
+>  restorecond/restorecond.desktop | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> NOTE: This series unfortunately breaks the build of setools. Moreover,
-> when an existing build of setools dynamically links against the new
-> libsepol, it segfaults. Sadly, there doesn't seem to be a nice way of
-> handling this, since setools relies on non-public libsepol policydb
-> API/ABI. I have prepared a preliminary patch to adapt setools to these
-> changes - I'll open a WIP pull request for it soon...
+> diff --git a/restorecond/restorecond.desktop b/restorecond/restorecond.desktop
+> index af728680..7df85472 100644
+> --- a/restorecond/restorecond.desktop
+> +++ b/restorecond/restorecond.desktop
+> @@ -5,3 +5,4 @@ Comment=Fix file context in owned by the user
+>  Type=Application
+>  StartupNotify=false
+>  X-GNOME-Autostart-enabled=false
+> +X-GNOME-HiddenUnderSystemd=true
+> --
+> 2.28.0.rc0
 
-And the setools PR is here:
-https://github.com/SELinuxProject/setools/pull/50
+I was not aware of this option, but it makes sense. Thanks!
 
->
-> See also this discussion about the setools impact:
-> https://lore.kernel.org/selinux/daeae1d9-de29-aae0-6bde-3ad3427a5d42@tycho.nsa.gov/
+Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
 
--- 
-Ondrej Mosnacek
-Software Engineer, Platform Security - SELinux kernel
-Red Hat, Inc.
+If nobody complains, I will apply this patch tomorrow.
+Nicolas
 

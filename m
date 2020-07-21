@@ -2,124 +2,150 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFA63228A5B
-	for <lists+selinux@lfdr.de>; Tue, 21 Jul 2020 23:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 243D3228B91
+	for <lists+selinux@lfdr.de>; Tue, 21 Jul 2020 23:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730214AbgGUVJI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 21 Jul 2020 17:09:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60290 "EHLO
+        id S1731209AbgGUVnT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 21 Jul 2020 17:43:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728893AbgGUVJI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 21 Jul 2020 17:09:08 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D339CC061794
-        for <selinux@vger.kernel.org>; Tue, 21 Jul 2020 14:09:07 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id o18so23026115eje.7
-        for <selinux@vger.kernel.org>; Tue, 21 Jul 2020 14:09:07 -0700 (PDT)
+        with ESMTP id S1731001AbgGUVnS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 21 Jul 2020 17:43:18 -0400
+Received: from mail-wm1-x343.google.com (mail-wm1-x343.google.com [IPv6:2a00:1450:4864:20::343])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 830DCC061794
+        for <selinux@vger.kernel.org>; Tue, 21 Jul 2020 14:43:18 -0700 (PDT)
+Received: by mail-wm1-x343.google.com with SMTP id c80so45680wme.0
+        for <selinux@vger.kernel.org>; Tue, 21 Jul 2020 14:43:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=koqnpq71lELoZUB+C8QrauRsNakWYE+XcWergaee6j4=;
-        b=ZpwLdWR7kurwdKTTCBRyXGgkznnCQ1Tg1vY+JvC9gAdj9yvbdJwKcbQAe28vc/51z5
-         RZVCFoQcpp339NeG+LCuJ09NEPE6E/HwPCPQkHxDL/yB/Nq2s248sdUe5sx7DT81fxXW
-         ZO35fXPT4u6UlxZkHxZXBO4Q0ieymtqFeKcwsT2+aMnvWoVXf8uttI7oIuensA54BNf/
-         Jv6daVaEntgbyciYnoXZsVdjoX6b87e/HTXkonE2huORRhdrsLVhRZ35NVLjHBLHOkuB
-         qh4u2d5/qVoqyIkY8CoB2cVoP5iAEUVpvsavLzSBD7g1Jplp47EH03yat4A7uxcKlsQH
-         pcZw==
+        d=broadcom.com; s=google;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=xi0hCpRkmcf6gK8tASFxK3aaOMPZtOr07eR1uGQZQ3Q=;
+        b=WyitzgLCPTotTvFyXBjJCUBLv9LTVIGuV0BLXP/t+rNxyFRvxJQhiYjVQxrxFWakWu
+         49H70+HEYP6PnW9KhlJ465HMbNOR6C7Be16Ag+Ttve3BCJ0H/uLHpyc9JTOy696ifuKV
+         FDhgso1RDz81jzni2fNhhGBmN+KDfYXTEOgY4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=koqnpq71lELoZUB+C8QrauRsNakWYE+XcWergaee6j4=;
-        b=NGvgqW449Wsz5LaYf+CjiErudOrY7k2J6GFztFP+3zQV7nR3EiYmLsOtssGYEoS2ww
-         jC3QjIyZ/2Qwx+5AMQWxPe+c0WhJWnPFEpfxoc7npzRHhB0TcUjzbcesNPSXGije21Mj
-         Qna6As+Z+HErFO1yW75T3n5qq2Bs1/t2G6Lu1YlHwF02aJhCuBqWd+7Z6ddvCHSa0zYk
-         C0LLKdRW5/EVpeqI9YSC+YJ1cEQaST3o5aPS9xt4/tft9lq+F0OuDCuxl6znHa2eaKW+
-         87dPZR8LRKGotouLgfcN6G7tj0k8+aT2S0bc0imr0IhZiKIXuUaizTWGfv0da1nWTJDV
-         6HFw==
-X-Gm-Message-State: AOAM5319H4TVbZ95bqLSgH3zT/AGP1Ta8psA7jJtYrpYGBdPK2Y2TCyU
-        48qNNjoDWv9vxSzOYeEkb3Yp5l9t9ns5RYENlM6f
-X-Google-Smtp-Source: ABdhPJx6gUj/9ZMNwWUxkDP5/EdShD5nBDxYSST73AO4wiA6UQcMkN+Z8Ixe7o18bMMXAFUwW+BpdN+Ca8S5Z+iMiUE=
-X-Received: by 2002:a17:906:1a59:: with SMTP id j25mr25571829ejf.398.1595365746465;
- Tue, 21 Jul 2020 14:09:06 -0700 (PDT)
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=xi0hCpRkmcf6gK8tASFxK3aaOMPZtOr07eR1uGQZQ3Q=;
+        b=DYVM2TCzZbnID6pWNJ0Ll1VW+4PYDuEddwQnK5GQk1hG0ztUwI6ioGa3/9UKgCfinh
+         vtFrK2NSHSRJ8Pkd7cbwx+qTRoS+tcO9wQM0w1kxXiDCGRZzI0JMRSEaaFgsUucSXs4q
+         dCk4RpXwrxXFzT9PrwHDCZ+BwKuUu0z6hTvYDM1fwMAhGP6DbI4pe+O6PoG4Idvijbzm
+         WTkg+PdgQjQxubbYwh33pJVeUnj5YpIUuUY2Pr9EeDqGuPEtdgYkwcF//HDNA3Hrdz9d
+         cUUYfNDssH5b9d9zseKvL67NHs0QJisd3AaVRf8OlktrdaKp3loW1B4GR9dp/rXMEC48
+         f7RQ==
+X-Gm-Message-State: AOAM5321SbyReTYJYxt9yWxu/47kgb1exG5vVeKs3FucLsU7d3echuT+
+        MCD7WB5Vza3eVZcm1+GlZci9Wg==
+X-Google-Smtp-Source: ABdhPJylo9oBD0Nkc2IZhuODZGWhVfU7dT9PhCcECwJI5ehMiPxyWlzltkQd49Y0rX47zJzR6OdmzA==
+X-Received: by 2002:a1c:2402:: with SMTP id k2mr5758664wmk.138.1595367797160;
+        Tue, 21 Jul 2020 14:43:17 -0700 (PDT)
+Received: from [10.136.13.65] ([192.19.228.250])
+        by smtp.gmail.com with ESMTPSA id y11sm23591601wrs.80.2020.07.21.14.43.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 21 Jul 2020 14:43:16 -0700 (PDT)
+Subject: Re: [PATCH 06/13] fs/kernel_read_file: Remove redundant size argument
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Mimi Zohar <zohar@linux.ibm.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        James Morris <jmorris@namei.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jessica Yu <jeyu@kernel.org>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        David Howells <dhowells@redhat.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        KP Singh <kpsingh@google.com>, Dave Olsthoorn <dave@bewaar.me>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Peter Jones <pjones@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Stephen Boyd <stephen.boyd@linaro.org>,
+        Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20200717174309.1164575-1-keescook@chromium.org>
+ <20200717174309.1164575-7-keescook@chromium.org>
+From:   Scott Branden <scott.branden@broadcom.com>
+Message-ID: <ec326654-c43b-259c-409c-63929ad5b217@broadcom.com>
+Date:   Tue, 21 Jul 2020 14:43:07 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20200718104842.1333101-1-dominick.grift@defensec.nl>
- <20200719181704.1583398-1-dominick.grift@defensec.nl> <CAHC9VhTS0hr+i3GvMJPhs3WQd48fOdz3xbZBUSJDJD=XAfNQvQ@mail.gmail.com>
- <d37dcc1e21d3292c4112810c7d398d5590e14d14.camel@btinternet.com> <CAP+JOzSrGLc3i=P-rPOnsLSLQnaZm+W7Xb4oNwjNDz4AquJpNA@mail.gmail.com>
-In-Reply-To: <CAP+JOzSrGLc3i=P-rPOnsLSLQnaZm+W7Xb4oNwjNDz4AquJpNA@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 21 Jul 2020 17:08:55 -0400
-Message-ID: <CAHC9VhSuUev17p_kEJKvo2qs8tOvpZ0=Fp2v8puPMoZ06tPi4g@mail.gmail.com>
-Subject: Re: [SELinux-notebook PATCH v5] adds CIL policy with makefile
-To:     James Carter <jwcart2@gmail.com>
-Cc:     Richard Haines <richard_c_haines@btinternet.com>,
-        Dominick Grift <dominick.grift@defensec.nl>,
-        SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200717174309.1164575-7-keescook@chromium.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Jul 21, 2020 at 2:35 PM James Carter <jwcart2@gmail.com> wrote:
-> On Tue, Jul 21, 2020 at 12:56 PM Richard Haines
-> <richard_c_haines@btinternet.com> wrote:
-> >
-> > On Tue, 2020-07-21 at 12:42 -0400, Paul Moore wrote:
-> > > On Sun, Jul 19, 2020 at 2:17 PM Dominick Grift
-> > > <dominick.grift@defensec.nl> wrote:
-> > > > This example CIL policy takes a different approach:
-> > > >
-> > > > 1. Leverages CIL
-> > > > 2. Installs using semodule to make it tunable at runtime (but you
-> > > > can obviously also use secilc to build a monolithic version and
-> > > > deploy that)
-> > > > 3. Makes few assumptions about variables
-> > > > 4. Leverages handleunknown allow and declares least required access
-> > > > vectors so that you can pick and choose which access vectors you
-> > > > want to use and ignore the remainder
-> > > > 5. Leverages unlabeled and file ISID and makes no assumptions about
-> > > > any volatile filesystems you may or may not use
-> > > > 6. As small and simple as reasonably possible, heavily documented
-> > > > 7. Modern, Requires SELinux 3.1
-> > > >
-> > > > Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
-> > > > ---
-> > > > v2: rename XWAYLAND.md to XSERVER_XWAYLAND.md and cover both
-> > > > Xserver as well as Xwayland
-> > > > V3: fix typo in XSERVER_XWAYLAND.md and exclude x_contexts
-> > > > altogether
-> > > > v4: remove XSERVER_XWAYLAND and add the note to README.md, redo
-> > > > README.md and clean up cil-policy.cil
-> > > > v5: add -F to fixfiles onboot (onboot should probably just imply
-> > > > -F)
-> > > >
-> > > >  src/cil_overview.md                           |  11 +
-> > > >  src/notebook-examples/README.md               |   2 +
-> > > >  src/notebook-examples/cil-policy/Makefile     |  31 ++
-> > > >  src/notebook-examples/cil-policy/README.md    |  90 ++++
-> > > >  .../cil-policy/cil-policy.cil                 | 448
-> > > > ++++++++++++++++++
-> > > >  5 files changed, 582 insertions(+)
-> > > >  create mode 100644 src/notebook-examples/cil-policy/Makefile
-> > > >  create mode 100644 src/notebook-examples/cil-policy/README.md
-> > > >  create mode 100644 src/notebook-examples/cil-policy/cil-policy.cil
-> > >
-> > > James, Richard, you both had comments on previous drafts, does v3
-> > > look
-> > > good to you guys?
-> >
-> > Yes I've tested this (v4 & V5) a few times and okay on Fedora 32 WS.
-> >
-> > Acked-by: Richard Haines <richard_c_haines@btinternet.com>
->
-> Looks good.
->
-> Acked-by: James Carter <jwcart2@gmail.com>
+Hi Kees,
 
-Great, I'll merge this into main.  Thank you everyone!
+On 2020-07-17 10:43 a.m., Kees Cook wrote:
+> In preparation for refactoring kernel_read_file*(), remove the redundant
+> "size" argument which is not needed: it can be included in the return
+> code, with callers adjusted. (VFS reads already cannot be larger than
+> INT_MAX.)
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>   drivers/base/firmware_loader/main.c |  8 ++++----
+>   fs/kernel_read_file.c               | 20 +++++++++-----------
+>   include/linux/kernel_read_file.h    |  8 ++++----
+>   kernel/kexec_file.c                 | 13 ++++++-------
+>   kernel/module.c                     |  7 +++----
+>   security/integrity/digsig.c         |  5 +++--
+>   security/integrity/ima/ima_fs.c     |  5 +++--
+>   7 files changed, 32 insertions(+), 34 deletions(-)
+>
+> diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
+> index d4a413ea48ce..ea419c7d3d34 100644
+> --- a/drivers/base/firmware_loader/main.c
+> +++ b/drivers/base/firmware_loader/main.c
+> @@ -462,7 +462,7 @@ fw_get_filesystem_firmware(struct device *device, struct fw_priv *fw_priv,
+>   					     size_t in_size,
+>   					     const void *in_buffer))
+>   {
+> -	loff_t size;
+> +	size_t size;
+>   	int i, len;
+>   	int rc = -ENOENT;
+>   	char *path;
+> @@ -494,10 +494,9 @@ fw_get_filesystem_firmware(struct device *device, struct fw_priv *fw_priv,
+>   		fw_priv->size = 0;
+>   
+>   		/* load firmware files from the mount namespace of init */
+> -		rc = kernel_read_file_from_path_initns(path, &buffer,
+> -						       &size, msize,
+> +		rc = kernel_read_file_from_path_initns(path, &buffer, msize,
+>   						       READING_FIRMWARE);
+> -		if (rc) {
+> +		if (rc < 0) {
+>   			if (rc != -ENOENT)
+>   				dev_warn(device, "loading %s failed with error %d\n",
+>   					 path, rc);
+> @@ -506,6 +505,7 @@ fw_get_filesystem_firmware(struct device *device, struct fw_priv *fw_priv,
+>   					 path);
+>   			continue;
+>   		}
+> +		size = rc;
+Change fails to return 0.  Need rc = 0; here.
+>   		dev_dbg(device, "Loading firmware from %s\n", path);
+>   		if (decompress) {
+>   			dev_dbg(device, "f/w decompressing %s\n",
+>
 
--- 
-paul moore
-www.paul-moore.com

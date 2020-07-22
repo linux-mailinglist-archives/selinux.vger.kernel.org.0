@@ -2,26 +2,26 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 36934229D9A
-	for <lists+selinux@lfdr.de>; Wed, 22 Jul 2020 18:57:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DE85229E84
+	for <lists+selinux@lfdr.de>; Wed, 22 Jul 2020 19:29:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726736AbgGVQ5f (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 22 Jul 2020 12:57:35 -0400
-Received: from agnus.defensec.nl ([80.100.19.56]:56496 "EHLO agnus.defensec.nl"
+        id S1726349AbgGVR3z (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 22 Jul 2020 13:29:55 -0400
+Received: from agnus.defensec.nl ([80.100.19.56]:56506 "EHLO agnus.defensec.nl"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726157AbgGVQ5f (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Wed, 22 Jul 2020 12:57:35 -0400
-Received: from [IPv6:2001:985:d55d::438] (brutus.lan [IPv6:2001:985:d55d::438])
-        by agnus.defensec.nl (Postfix) with ESMTPSA id 515932A1010;
-        Wed, 22 Jul 2020 18:57:32 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 515932A1010
+        id S1726157AbgGVR3y (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Wed, 22 Jul 2020 13:29:54 -0400
+Received: from [IPv6:2001:985:d55d::438] (brutus [IPv6:2001:985:d55d::438])
+        by agnus.defensec.nl (Postfix) with ESMTPSA id 2CA582A06FB;
+        Wed, 22 Jul 2020 19:29:51 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 2CA582A06FB
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
-        s=default; t=1595437053;
-        bh=TZ37PNcqpsl4lQFIfwPo29+NxB4A8PtNyzar0nJtv34=;
+        s=default; t=1595438992;
+        bh=XoUeG53ZYYERU1nSyBH0n1ARK2mdhF76j+xXAuHFFEY=;
         h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=MkLDOWU3+nEAYsO6CzRmnD6TZKDuk9bd0m9g6GuYU+V85TySc2I0qaUwl9StKiVF4
-         6cokkgwmL0SXXhwrX2jTXIPFZwJw66Ejbhi/OxNpJ6341Q2+p8ItP1xpDePB7zc3CF
-         +IF8Lut8s911UnQkQzwXxpPCazEBkYMSArfZ4RAI=
+        b=fmPqgLTtXLIKmW/bN0vwM2U+LBuF70ITwTRXqMMAWn652aY1HT2AkQAHQDEgNhT7e
+         LmEwtnS6JHoHB39/Y7a47aAnz646FUvN1SKI6I5tRNrFV/e232c6HJsXduuFhW15yO
+         x1gPsmMJsfnySvZ9S2c1qVViTB66beX0aqhMEsmE=
 Subject: Re: [SELinux-notebook PATCH v8] objects.md: some clarifications
 To:     Stephen Smalley <stephen.smalley.work@gmail.com>
 Cc:     SElinux list <selinux@vger.kernel.org>
@@ -40,8 +40,8 @@ Autocrypt: addr=dominick.grift@defensec.nl; keydata=
  JbkJPwIOqdoAaTu+GpgJBQJelq2pAhsMBQkJZgGAAAoJENoAaTu+GpgJhmYA/0NnwIlVEgyd
  6NRnjqrpkSZTiGVGIItP3ukxXYQ424drAP9LVU1SyOTNIL+S6OYYEIMosEFDjffjz6jXmsv7
  WXFbDA==
-Message-ID: <39629738-f5db-e784-1f57-e6b8958b73ac@defensec.nl>
-Date:   Wed, 22 Jul 2020 18:57:27 +0200
+Message-ID: <0f80d70d-2add-a00f-608b-d6f2f048234c@defensec.nl>
+Date:   Wed, 22 Jul 2020 19:29:47 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.8.0
 MIME-Version: 1.0
@@ -84,18 +84,6 @@ On 7/22/20 6:48 PM, Stephen Smalley wrote:
 > refuses to accept invalid contexts. So a context previously used by
 > userspace that is invalidated by a policy reload and then later passed
 > in again to a kernel interface will produce an error.  IIRC, the
-
-Can we not just assume that if that happens, that the kernel should just
-treat the context as if it were the context of the unlabeled isid.
-
-I mean that is what it boils down to anyway: everything always needs a
-valid context. so might as well treat invalid contexts as unlabeled
-isids? Not sure how "state" is relevant here as invalid is invalid.
-
-Regardless, this current behavior makes things less robust. I wont
-pretent that I am qualified to judge whether addressing this is
-technically possible or not.
-
 > security_get_initial_context() and avc_get_initial_sid() interfaces
 > were added to allow userspace object managers like SEPostgreSQL to get
 > the context associated with an initial SID like the unlabeled SID for
@@ -103,3 +91,13 @@ technically possible or not.
 > like that internally and it wouldn't always know whether the context
 > was previously valid unless it maintained state on all calls.
 > 
+
+This issue will also, in some cases, cause selinux-autorelabel to fail.
+
+
+systemd can't compute the contexts for socket activated daemons, and so
+these daemons fail to start. device mapper seems to be one of them, and
+so partitions might not get mounted in the autorelabel target
+effectively that means that autorelabel wont be able to relabel
+everything (because its not mounted because device-mapper failed to
+start, because systemd was unable to compute.

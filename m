@@ -2,52 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D210322D01A
-	for <lists+selinux@lfdr.de>; Fri, 24 Jul 2020 22:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3850022D11E
+	for <lists+selinux@lfdr.de>; Fri, 24 Jul 2020 23:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726455AbgGXU6K (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 24 Jul 2020 16:58:10 -0400
-Received: from sonic317-32.consmr.mail.bf2.yahoo.com ([74.6.129.87]:44459 "EHLO
-        sonic317-32.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726411AbgGXU6K (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 24 Jul 2020 16:58:10 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1595624288; bh=P0P3phkgM+q4+dCSn6fYmPJId8J/SlEaW2WbbitI8v4=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject; b=AS1UUu2YBRuyTUUmg0S9Qpp1i5bTMbCtzsSF3xVsMoSAS1SEmIXOBdhvsWbdP+WbsN3Wi051zmYVHo33yIf8oPvBDz2SSBnZo/51l5X5pcLsn8Zsnvfl6Y0gORfkc43xd+HpKGT8h3/eGVGOEqCIhbBOP9TKrbqH30FeUkS3AKkvIec8m1IVyjV2JFEtRrkhhrAHzGBv/VXi7czR0oR3OgUPt+7bXkiSaM8vTDXbwN7DgqE4DwcWwF4kNAAEcE84AJWKDfsV8omrMvT2L2kGpEectKlijQnyQJSOCHBO/lrUlLArAqcUZTCy750CI21wxzhjrXJJvUpICohuDaALYQ==
-X-YMail-OSG: i36vbAgVM1k0e8FkdtI7vJlDGE2OWFzAhXMIIrvdwr2d5WKOazZzCwh.YGlI8dC
- L_AbkISGc144gyCRUW3S4LlXKaY5PnnHtjA1vVxMerOyG50hWbftTmoc3f_pcFFggtRZQan1Ja7N
- 8RsEftng5hXRF_doQLGo8JiAtsu.d9owk2aybDj_QhsxWc3.JPcSL26RAdkg8vpGUR9qpPDc2v72
- 5LynQQAA_MMLBSujmohvUQ_RNybiBB.uDbeiK0HU4tS7yEtFQOi.0ASPrPVxKH5GjrvCqAlUSK13
- KKZbAWr_jZqqRhSefR9didWOs7Iq39A3c3F1Ssva01egX8myw_RzfmIbLhCHje4n1I03BCy.zmrU
- pg5FdZFdbfgdBhRqR9f.F2x3.XGwb7ubNb52U9.fVnizFgua8IRba3q9x3hbHWM3ZlZ4_Uk8xjW.
- IpYOg03rtUCmW.UH4Vp3znf4qbHXEjAySKz51XSMayWc8A8uqh35t_cWJQSEXhw5Y2iMgkvMV_kw
- 4cfKKQU_1wr3xp6Tzsz3UZaUSO0iPBv15c8aHz2UETg64yGb7jq9VNU3NOj_mi.Zvp3y0gSeljy4
- 7X8yO2C_mQW_oMC7_3RmkBdZNSmRaCZ0nXJBtoweQoKX.sYKI6KHUpjpDrTlXisb3bnzTV9pweN0
- WFPin2xJ9VMwqjCrEGYtl7DRyEYV8LWs.9JxAYhApsOYeV1I_JYEMcS.toygaJsAmiifF9d02GZA
- T0FZLJvevFOw7pmIxS65LwSYh55dKB25e09yTkWID3O.4VO_MyzUEWhQpWnqaRfoj1teJTtFsHdZ
- j6zxQXmJ2mfxOoi0ZeLaMjJctjZOyIzqrB..JBNmcEvZnAvP669SX0PTp7owAzYKspFZeSvCYVs2
- 9sqVBIugaamfJe2RPZoc_XzR70N8rrUgFxAbm0jetOdTJbxeCOwQcdX4nm0YldRaX4cQQcaHbbET
- gNZXjSyoM8ynLpsKXpYQV3KNhRPSe2P8D5VwzwQz6t5H69TincaS6wbRi_csG6I47tjaa2DsjEnW
- UhHCWB2S7yGPHibnOKi5iP4Sq4jg1_An8wsPP9sqdgtlrnStt9s8HyebhmK.nxtYXkZHbSzGwBiD
- wjyYHkq2sk_xVS1LrIsP5XPOBkwea_fotmYQpYkpkPSLJISTPlYQSMyOZtVg8yDiCrr7nex7.sKc
- PT7y4.Rh4C9mjwTb_ueOZKYrxFwRQ1JqTdIO3gXqYwwxR7fOueKODkiw9s1qu.GRRf8ZOUxW3SjR
- PrItOxXi9GPJwDLBBAoadevijbACeUrj6yb4NLZG7Tn1Fz9BjIF2Aik1LyA3t8kqv9uAhJF7U_uY
- w5UnZTtnIreBcJsPZi.I_OqY3C5QKJCNs9PyKBblIXmrRG9fhY2Gd6w4zLnIOYCM0_.r_CswDxNT
- Cx8Hc_J697ay0yD0jsQbIkFocCbKOZBGbww--
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic317.consmr.mail.bf2.yahoo.com with HTTP; Fri, 24 Jul 2020 20:58:08 +0000
-Received: by smtp414.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 92e26b0705a6d44aa7f9311a94da2678;
-          Fri, 24 Jul 2020 20:58:05 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, linux-audit@redhat.com,
-        keescook@chromium.org, john.johansen@canonical.com,
-        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com,
-        sds@tycho.nsa.gov
-Subject: [PATCH v19 23/23] AppArmor: Remove the exclusive flag
-Date:   Fri, 24 Jul 2020 13:32:26 -0700
-Message-Id: <20200724203226.16374-24-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20200724203226.16374-1-casey@schaufler-ca.com>
-References: <20200724203226.16374-1-casey@schaufler-ca.com>
+        id S1726643AbgGXViq (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 24 Jul 2020 17:38:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57764 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726801AbgGXVgp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 24 Jul 2020 17:36:45 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3204C0619E6
+        for <selinux@vger.kernel.org>; Fri, 24 Jul 2020 14:36:45 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id m22so6132206pgv.9
+        for <selinux@vger.kernel.org>; Fri, 24 Jul 2020 14:36:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QuSR5OKebfZG9zBTcnsVSNOUx+p1wthou5r7P45Dqng=;
+        b=e2g/T7ESZvOK2o3dhi05Vn3Jsik1P7GtuHpRHV97nJhR9chmHD3goRnMyfoRIvXkpJ
+         NotPjBIoK9R7ayTLCq5EVGqMimLDdpJZE8JgRudIQ2sj3I259P0AVctQODLLRz2Z1kAe
+         FBmH2mq4JZ0WMzHPmHsazvYGXFK3T17zub/5o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=QuSR5OKebfZG9zBTcnsVSNOUx+p1wthou5r7P45Dqng=;
+        b=E3PQQLLOli4dooaLGaIT9V1zHFj4jj9XL2DgJsMZJrX8/Be7DxMXBFFqKg1BmVWLxQ
+         B6Tk3TdZzJJ1GGiUujUmZa3LocM7bGQD3WGjReFFYcCkX2NNEPLNNCckcjEWC7RBhEEc
+         sTV5pCxp+fPMwhmuZ5U+6rkVrCPb5A2DXLvvY6zkt+bJVUjumr4Nw+LVbyw0ov7Lftno
+         bGNr4GNJImUm9/a5LXYSSJHLlowtWChrT2SPln+w9nV+16whsKWNy1UOxrz64HVQ5pqw
+         JQKr/QZg3HmKNdW/FBM/0X06FZxM7rcrdgrZPMtGkGvVtB8N8gQPxxJrj1mTJe92igXQ
+         OoOA==
+X-Gm-Message-State: AOAM533qXqkM6pwLNuN0rF+lK0oRmWqi3r6YUF6tGptQpeeaRHrdg9vT
+        IKd6Mn8DfsfXa5F7VUi3Iko2DA==
+X-Google-Smtp-Source: ABdhPJxK435CF+iz91hGK+5NgHvqqee3eWSsmt07ckHJqnxWEFT9dhACW0dihJg65rKzTr+cdKdf2g==
+X-Received: by 2002:a65:6119:: with SMTP id z25mr10602187pgu.52.1595626605323;
+        Fri, 24 Jul 2020 14:36:45 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id 19sm7331534pfy.193.2020.07.24.14.36.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Jul 2020 14:36:43 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Scott Branden <scott.branden@broadcom.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Jessica Yu <jeyu@kernel.org>, SeongJae Park <sjpark@amazon.de>,
+        KP Singh <kpsingh@chromium.org>, linux-efi@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 00/19] Introduce partial kernel_read_file() support
+Date:   Fri, 24 Jul 2020 14:36:21 -0700
+Message-Id: <20200724213640.389191-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -55,66 +66,92 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-With the inclusion of the "display" process attribute
-mechanism AppArmor no longer needs to be treated as an
-"exclusive" security module. Remove the flag that indicates
-it is exclusive. Remove the stub getpeersec_dgram AppArmor
-hook as it has no effect in the single LSM case and
-interferes in the multiple LSM case.
+v3:
+- add reviews/acks
+- add "IMA: Add support for file reads without contents" patch
+- trim CC list, in case that's why vger ignored v2
+v2: [missing from lkml archives! (CC list too long?) repeating changes here]
+- fix issues in firmware test suite
+- add firmware partial read patches
+- various bug fixes/cleanups
+v1: https://lore.kernel.org/lkml/20200717174309.1164575-1-keescook@chromium.org/
 
-Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
----
- security/apparmor/lsm.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+Hi,
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 7ce570b0f491..4b7cbe9bb1be 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1129,22 +1129,6 @@ static int apparmor_socket_getpeersec_stream(struct socket *sock,
- 	return error;
- }
- 
--/**
-- * apparmor_socket_getpeersec_dgram - get security label of packet
-- * @sock: the peer socket
-- * @skb: packet data
-- * @secid: pointer to where to put the secid of the packet
-- *
-- * Sets the netlabel socket state on sk from parent
-- */
--static int apparmor_socket_getpeersec_dgram(struct socket *sock,
--					    struct sk_buff *skb, u32 *secid)
--
--{
--	/* TODO: requires secid support */
--	return -ENOPROTOOPT;
--}
--
- /**
-  * apparmor_sock_graft - Initialize newly created socket
-  * @sk: child sock
-@@ -1248,8 +1232,6 @@ static struct security_hook_list apparmor_hooks[] __lsm_ro_after_init = {
- #endif
- 	LSM_HOOK_INIT(socket_getpeersec_stream,
- 		      apparmor_socket_getpeersec_stream),
--	LSM_HOOK_INIT(socket_getpeersec_dgram,
--		      apparmor_socket_getpeersec_dgram),
- 	LSM_HOOK_INIT(sock_graft, apparmor_sock_graft),
- #ifdef CONFIG_NETWORK_SECMARK
- 	LSM_HOOK_INIT(inet_conn_request, apparmor_inet_conn_request),
-@@ -1918,7 +1900,7 @@ static int __init apparmor_init(void)
- 
- DEFINE_LSM(apparmor) = {
- 	.name = "apparmor",
--	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
-+	.flags = LSM_FLAG_LEGACY_MAJOR,
- 	.enabled = &apparmor_enabled,
- 	.blobs = &apparmor_blob_sizes,
- 	.init = apparmor_init,
+Here's my tree for adding partial read support in kernel_read_file(),
+which fixes a number of issues along the way. It's got Scott's firmware
+and IMA patches ported and everything tests cleanly for me (even with
+CONFIG_IMA_APPRAISE=y).
+
+I think the intention is for this to go via Greg's tree since Scott's
+driver code will depend on it?
+
+Thanks,
+
+-Kees
+
+
+Kees Cook (15):
+  test_firmware: Test platform fw loading on non-EFI systems
+  selftest/firmware: Add selftest timeout in settings
+  firmware_loader: EFI firmware loader must handle pre-allocated buffer
+  fs/kernel_read_file: Remove FIRMWARE_PREALLOC_BUFFER enum
+  fs/kernel_read_file: Remove FIRMWARE_EFI_EMBEDDED enum
+  fs/kernel_read_file: Split into separate source file
+  fs/kernel_read_file: Remove redundant size argument
+  fs/kernel_read_file: Switch buffer size arg to size_t
+  fs/kernel_read_file: Add file_size output argument
+  LSM: Introduce kernel_post_load_data() hook
+  firmware_loader: Use security_post_load_data()
+  module: Call security_kernel_post_load_data()
+  LSM: Add "contents" flag to kernel_read_file hook
+  fs/kernel_file_read: Add "offset" arg for partial reads
+  firmware: Store opt_flags in fw_priv
+
+Scott Branden (4):
+  fs/kernel_read_file: Split into separate include file
+  IMA: Add support for file reads without contents
+  firmware: Add request_partial_firmware_into_buf()
+  test_firmware: Test partial read support
+
+ drivers/base/firmware_loader/fallback.c       |  19 +-
+ drivers/base/firmware_loader/fallback.h       |   5 +-
+ .../base/firmware_loader/fallback_platform.c  |  16 +-
+ drivers/base/firmware_loader/firmware.h       |   7 +-
+ drivers/base/firmware_loader/main.c           | 143 ++++++++++---
+ drivers/firmware/efi/embedded-firmware.c      |  21 +-
+ drivers/firmware/efi/embedded-firmware.h      |  19 ++
+ fs/Makefile                                   |   3 +-
+ fs/exec.c                                     | 132 +-----------
+ fs/kernel_read_file.c                         | 189 ++++++++++++++++++
+ include/linux/efi_embedded_fw.h               |  13 --
+ include/linux/firmware.h                      |  12 ++
+ include/linux/fs.h                            |  39 ----
+ include/linux/ima.h                           |  19 +-
+ include/linux/kernel_read_file.h              |  55 +++++
+ include/linux/lsm_hook_defs.h                 |   6 +-
+ include/linux/lsm_hooks.h                     |  12 ++
+ include/linux/security.h                      |  19 +-
+ kernel/kexec.c                                |   2 +-
+ kernel/kexec_file.c                           |  19 +-
+ kernel/module.c                               |  24 ++-
+ lib/test_firmware.c                           | 159 +++++++++++++--
+ security/integrity/digsig.c                   |   8 +-
+ security/integrity/ima/ima_fs.c               |  10 +-
+ security/integrity/ima/ima_main.c             |  70 +++++--
+ security/integrity/ima/ima_policy.c           |   1 +
+ security/loadpin/loadpin.c                    |  17 +-
+ security/security.c                           |  26 ++-
+ security/selinux/hooks.c                      |   8 +-
+ .../selftests/firmware/fw_filesystem.sh       |  91 +++++++++
+ tools/testing/selftests/firmware/settings     |   8 +
+ tools/testing/selftests/kselftest/runner.sh   |   6 +-
+ 32 files changed, 860 insertions(+), 318 deletions(-)
+ create mode 100644 drivers/firmware/efi/embedded-firmware.h
+ create mode 100644 fs/kernel_read_file.c
+ create mode 100644 include/linux/kernel_read_file.h
+ create mode 100644 tools/testing/selftests/firmware/settings
+
 -- 
-2.24.1
+2.25.1
 

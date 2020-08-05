@@ -2,178 +2,168 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AFBF423CAA8
-	for <lists+selinux@lfdr.de>; Wed,  5 Aug 2020 14:42:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6891D23CC25
+	for <lists+selinux@lfdr.de>; Wed,  5 Aug 2020 18:27:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728463AbgHEMlN (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 5 Aug 2020 08:41:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35710 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728355AbgHEMgj (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 5 Aug 2020 08:36:39 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF433C034617
-        for <selinux@vger.kernel.org>; Wed,  5 Aug 2020 05:35:28 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id a19so14622348qvy.3
-        for <selinux@vger.kernel.org>; Wed, 05 Aug 2020 05:35:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=m2d+C57lAiG6bL8T9Mp4uI3V1kykEd/A23ppTi7YgsA=;
-        b=ZQz4D+WNjmsLLzlFBM7QzLg1l7n3fyPWY2Lc9sjf0oWkIgaRSkips2fXYD2KpsURa6
-         38ILvMptlfDEBpQBfqTiNhgIIcGwyn5Xzd+nvfaOwiY/Caim3bBFLBo9INYw+pFnHwQP
-         bPc1EZ6T02iR2/CDcmSMwt5qT5bNVSrqC3XFmfnI0ltgNL1paMQ1ClJPbraLD2FjxTUm
-         9E+p7IvMJ6d4C6vsI4MZrzD48JybZyx+WapbANMwVVHyZVwAm137JZ03/pkRdonW7Vba
-         Z8u6h69NLOQAU5KCuBonyZGFK0E6l5IBeNFYjLbaB1lrQHvEWTp3zbVwIcztHfXSvJIX
-         CQBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=m2d+C57lAiG6bL8T9Mp4uI3V1kykEd/A23ppTi7YgsA=;
-        b=RVuRD2G974ako2azkD5oWjYRDr5cmOSS/ufu/XTaxBEpO4oUnA6o3FKxQYSqnQ+P7a
-         AQ/7pJJ4qE/hvfBsj503uO+1YizJgvRvJavM6Kj7YdRc1772X67QZ4dyRHDUcSMPOwCw
-         onFlg1lhF2czkPETdJl3p1Jl39ydSxzZitofm3H8SIkZy8b0SHqMG6+50h2VWNuXoEc4
-         sfaksYkk2moPnw5GETr14PWWFAnPN9m4YkRwz5Avt8nyMskNZjs5XuwSx8H0LuGyZwAl
-         4GqbwXTkrfBPJFhutv/2dRc0L7e7Msv5+niuGwKwoEg/cjdiNGigfR/9WB+JWi1+2BEE
-         gbfg==
-X-Gm-Message-State: AOAM532b0DHFLifc2h/6VFXbnJF4BYbFhnjGolFsLIigFiWzj4+J2rQR
-        fAseQnhwYNS24W0HSVlpPIkUVM72uhA=
-X-Google-Smtp-Source: ABdhPJwBUlw9UtsAVoaegaHFmZ420mdLHesXFnVk++hX5Ix3i4Ybn0EIPnLdK9rP8FT91x1fo7D0mQ==
-X-Received: by 2002:ad4:470f:: with SMTP id k15mr3356723qvz.216.1596630927549;
-        Wed, 05 Aug 2020 05:35:27 -0700 (PDT)
-Received: from [192.168.1.190] (pool-96-244-118-111.bltmmd.fios.verizon.net. [96.244.118.111])
-        by smtp.gmail.com with ESMTPSA id g136sm1520539qke.82.2020.08.05.05.35.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Aug 2020 05:35:27 -0700 (PDT)
-Subject: Re: [RFC PATCH] selinux: move policy commit after updating selinuxfs
-To:     Daniel Burgener <dburgener@linux.microsoft.com>,
-        paul@paul-moore.com
-Cc:     omosnace@redhat.com, selinux@vger.kernel.org
-References: <20200804135352.5650-1-stephen.smalley.work@gmail.com>
- <88c312b3-0abd-96ed-35c3-a80ab57a9fe3@linux.microsoft.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Message-ID: <685a0fd4-d5a2-0cc8-4b9d-ad39cf916b16@gmail.com>
-Date:   Wed, 5 Aug 2020 08:35:26 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <88c312b3-0abd-96ed-35c3-a80ab57a9fe3@linux.microsoft.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+        id S1726338AbgHEQ1i (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 5 Aug 2020 12:27:38 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:51340 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726854AbgHEQZf (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 5 Aug 2020 12:25:35 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 075FCMQe159374;
+        Wed, 5 Aug 2020 11:17:32 -0400
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 32qvn5wm3h-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Aug 2020 11:17:31 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 075FCTrZ160219;
+        Wed, 5 Aug 2020 11:17:31 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 32qvn5wm26-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Aug 2020 11:17:31 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 075FG2rA017045;
+        Wed, 5 Aug 2020 15:17:29 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 32n0184h78-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Wed, 05 Aug 2020 15:17:28 +0000
+Received: from d06av23.portsmouth.uk.ibm.com (d06av23.portsmouth.uk.ibm.com [9.149.105.59])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 075FHQA927722030
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 5 Aug 2020 15:17:26 GMT
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 65909A404D;
+        Wed,  5 Aug 2020 15:17:26 +0000 (GMT)
+Received: from d06av23.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D9037A4040;
+        Wed,  5 Aug 2020 15:17:24 +0000 (GMT)
+Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.95.205])
+        by d06av23.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Wed,  5 Aug 2020 15:17:24 +0000 (GMT)
+Message-ID: <27b7772ef645e10d1fe3cbe56a02d02f42f75db5.camel@linux.ibm.com>
+Subject: Re: [PATCH v6 1/4] IMA: Add func to measure LSM state and policy
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Tyler Hicks <tyhicks@linux.microsoft.com>, sashal@kernel.org,
+        James Morris <jmorris@namei.org>,
+        linux-integrity@vger.kernel.org,
+        SElinux list <selinux@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Date:   Wed, 05 Aug 2020 11:17:24 -0400
+In-Reply-To: <CAEjxPJ7d1yg659OCU6diXXGqegc_jSzO4ZPhkRqQtJnRn-kC0g@mail.gmail.com>
+References: <20200805004331.20652-1-nramas@linux.microsoft.com>
+         <20200805004331.20652-2-nramas@linux.microsoft.com>
+         <4b9d2715d3ef3c8f915ef03867cfb1a39c0abc54.camel@linux.ibm.com>
+         <f88bf25e-37ef-7f00-6162-215838961bb0@gmail.com>
+         <31d00876438d2652890ab8bf6ba2e80f554ca7a4.camel@linux.ibm.com>
+         <CAEjxPJ6X+Cqd5QtZBmNm2cujwbg-STfRF7_8i=Ny8yuc6z9BwQ@mail.gmail.com>
+         <b7df114e8e0d276e66575b6970a1e459d1dd4196.camel@linux.ibm.com>
+         <CAEjxPJ7d1yg659OCU6diXXGqegc_jSzO4ZPhkRqQtJnRn-kC0g@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-12.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-05_10:2020-08-03,2020-08-05 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ priorityscore=1501 lowpriorityscore=0 phishscore=0 malwarescore=0
+ adultscore=0 suspectscore=0 impostorscore=0 mlxlogscore=999 bulkscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008050124
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 8/4/20 4:51 PM, Daniel Burgener wrote:
+On Wed, 2020-08-05 at 10:27 -0400, Stephen Smalley wrote:
+> On Wed, Aug 5, 2020 at 9:20 AM Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > On Wed, 2020-08-05 at 09:03 -0400, Stephen Smalley wrote:
+> > > On Wed, Aug 5, 2020 at 8:57 AM Mimi Zohar <zohar@linux.ibm.com> wrote:
+> > > > On Wed, 2020-08-05 at 08:46 -0400, Stephen Smalley wrote:
+> > > > > On 8/4/20 11:25 PM, Mimi Zohar wrote:
+> > > > > 
+> > > > > > Hi Lakshmi,
+> > > > > > 
+> > > > > > There's still  a number of other patch sets needing to be reviewed
+> > > > > > before my getting to this one.  The comment below is from a high level.
+> > > > > > 
+> > > > > > On Tue, 2020-08-04 at 17:43 -0700, Lakshmi Ramasubramanian wrote:
+> > > > > > > Critical data structures of security modules need to be measured to
+> > > > > > > enable an attestation service to verify if the configuration and
+> > > > > > > policies for the security modules have been setup correctly and
+> > > > > > > that they haven't been tampered with at runtime. A new IMA policy is
+> > > > > > > required for handling this measurement.
+> > > > > > > 
+> > > > > > > Define two new IMA policy func namely LSM_STATE and LSM_POLICY to
+> > > > > > > measure the state and the policy provided by the security modules.
+> > > > > > > Update ima_match_rules() and ima_validate_rule() to check for
+> > > > > > > the new func and ima_parse_rule() to handle the new func.
+> > > > > > I can understand wanting to measure the in kernel LSM memory state to
+> > > > > > make sure it hasn't changed, but policies are stored as files.  Buffer
+> > > > > > measurements should be limited  to those things that are not files.
+> > > > > > 
+> > > > > > Changing how data is passed to the kernel has been happening for a
+> > > > > > while.  For example, instead of passing the kernel module or kernel
+> > > > > > image in a buffer, the new syscalls - finit_module, kexec_file_load -
+> > > > > > pass an open file descriptor.  Similarly, instead of loading the IMA
+> > > > > > policy data, a pathname may be provided.
+> > > > > > 
+> > > > > > Pre and post security hooks already exist for reading files.   Instead
+> > > > > > of adding IMA support for measuring the policy file data, update the
+> > > > > > mechanism for loading the LSM policy.  Then not only will you be able
+> > > > > > to measure the policy, you'll also be able to require the policy be
+> > > > > > signed.
+> > > > > 
+> > > > > To clarify, the policy being measured by this patch series is a
+> > > > > serialized representation of the in-memory policy data structures being
+> > > > > enforced by SELinux.  Not the file that was loaded.  Hence, this
+> > > > > measurement would detect tampering with the in-memory policy data
+> > > > > structures after the policy has been loaded.  In the case of SELinux,
+> > > > > one can read this serialized representation via /sys/fs/selinux/policy.
+> > > > > The result is not byte-for-byte identical to the policy file that was
+> > > > > loaded but can be semantically compared via sediff and other tools to
+> > > > > determine whether it is equivalent.
+> > > > 
+> > > > Thank you for the clarification.   Could the policy hash be included
+> > > > with the other critical data?  Does it really need to be measured
+> > > > independently?
+> > > 
+> > > They were split into two separate functions because we wanted to be
+> > > able to support using different templates for them (ima-buf for the
+> > > state variables so that the measurement includes the original buffer,
+> > > which is small and relatively fixed-size, and ima-ng for the policy
+> > > because it is large and we just want to capture the hash for later
+> > > comparison against known-good).  Also, the state variables are
+> > > available for measurement always from early initialization, whereas
+> > > the policy is only available for measurement once we have loaded an
+> > > initial policy.
+> > 
+> > Ok, measuring the policy separately from other critical data makes
+> > sense.  Instead of measuring the policy, which is large, measure the
+> > policy hash.
+> 
+> I think that was the original approach.  However, I had concerns with
+> adding code to SELinux to compute a hash over the policy versus
+> leaving that to IMA's existing policy and mechanism.  If that's
+> preferred I guess we can do it that way but seems less flexible and
+> duplicative.
 
-> On 8/4/20 9:53 AM, Stephen Smalley wrote:
->> With the refactoring of the policy load logic in the security
->> server from the previous change, it is now possible to split out
->> the committing of the new policy from security_load_policy() and
->> perform it only after successful updating of selinuxfs.  Change
->> security_load_policy() to return the newly populated policy
->> data structures to the caller, export selinux_policy_commit()
->> for external callers, and introduce selinux_policy_cancel() to
->> provide a way to cancel the policy load in the event of an error
->> during updating of the selinuxfs directory tree.  Further, rework
->> the interfaces used by selinuxfs to get information from the policy
->> when creating the new directory tree to take and act upon the
->> new policy data structure rather than the current/active policy.
->> Update selinuxfs to use these updated and new interfaces.  While
->> we are here, stop re-creating the policy_capabilities directory
->> on each policy load since it does not depend on the policy, and
->> stop trying to create the booleans and classes directories during
->> the initial creation of selinuxfs since no information is available
->> until first policy load.
->>
->> After this change, a failure while updating the booleans and class
->> directories will cause the entire policy load to be canceled, leaving
->> the original policy intact, and policy load notifications to userspace
->> will only happen after a successful completion of updating those
->> directories.  This does not (yet) provide full atomicity with respect
->> to the updating of the directory trees themselves.
->
-> I have a patch series to perform the atomic updates very close to 
-> done, using vfs_rename with RENAME_EXCHANGE to update the directories 
-> out of tree and then swap them in as discussed earlier.  I've just 
-> been doing some final style cleanup before sending to the list.  I'll 
-> need to rebase on top of these changes of course.  I didn't touch any 
-> of the error recovery portions, so I hope my series will complement 
-> this patch nicely.
+Whether IMA or SELinux calculates the in memory policy hash, it should
+not impact the original purpose of this patch set - measuring critical
+state.  It's unclear whether this patch set needs to be limited to LSM
+critical state.
 
-Great, I was trying to ensure that we wouldn't conflict/overlap 
-significantly.
+Measuring the in memory policy, if needed, should be a separate patch
+set.
 
->> This patch is relative to my previous one,
->> https://patchwork.kernel.org/patch/11698505/. Although this does
->> not ensure atomicity when updating the selinuxfs directoty tree,
->> I suspect it will solve Daniel's original bug because systemd/dbusd
->> won't get the policy load notifications until the kernel is done
->> updating selinuxfs and therefore won't try to re-read selinuxfs
->> in the middle of it (because libselinux caches the class/perm
->> mappings and only flushes on a reload).
-> I agree with your suspicion that this will resolve the bug we've been 
-> seeing (although only as a result of changing the timing, as you point 
-> out).  Thanks for your work on this!
-
-If you can easily test that my patches resolve that bug for you, you 
-could add a Tested-by tag.  One caveat is that it sounds like I'll be 
-making one more change to the previous patch per Ondrej's request to 
-avoid taking the read lock around sidtab_convert().
-
->>   @@ -563,15 +560,19 @@ static ssize_t sel_write_load(struct file 
->> *file, const char __user *buf,
->>       if (copy_from_user(data, buf, count) != 0)
->>           goto out;
->>   -    length = security_load_policy(fsi->state, data, count);
->> +    length = security_load_policy(fsi->state, data, count, &newpolicy);
->>       if (length) {
->>           pr_warn_ratelimited("SELinux: failed to load policy\n");
->>           goto out;
->>       }
->>   -    length = sel_make_policy_nodes(fsi);
->> -    if (length)
->> +    length = sel_make_policy_nodes(fsi, newpolicy);
->> +    if (length) {
->> +        selinux_policy_cancel(fsi->state, newpolicy);
->>           goto out1;
-> As things stand as of this patch, I think that this means that in the 
-> event of a failure in recreating the directories, that directory will 
-> be left unpopulated or partially populated.  We could even get in a 
-> state where the booleans directory has already been updated to the new 
-> policy and the class directory has not. The full solution is of course 
-> atomic swapover, which as I mentioned above I hope to submit a series 
-> for soon, but I wonder if recreating the directories on the old policy 
-> would be a better interim state?  That probably depends on what sorts 
-> of errors are possible.  If we've failed because of something about 
-> the new policy, recreating the old directories should get us back to a 
-> good state.  If we can't create new directories at all for whatever 
-> reason, trying to recreate might leave us worse off than before we 
-> started.
-
-I deliberately avoided any changes to the error handling during 
-re-creation of the booleans and class directories because I viewed that 
-as logically separate from my change and likely to conflict with your 
-changes.  So I expect to revisit that issue after both my patches and 
-yours land. I think the only scenario where sel_make_bools/classes() can 
-fail is an out-of-memory condition and if we are out of memory then we 
-are unlikely to be able to re-create the old directories/files again.  
-Hence, I don't think there is anything useful we can do without the 
-atomic swapover. At most, we can delete everything under booleans and 
-class on any failure while re-creating so that we aren't left with the 
-partial set of booleans/classes.
-
-The other possibility I considered is explicitly checking whether there 
-are any changes to booleans or classes between the old and new policies 
-and if not, skipping that part of the selinuxfs update.  That however 
-would require a new security server function to iterate over all of the 
-booleans and classes in two selinux_policy structures and compare them 
-for equality.  Didn't seem worth it if the atomic swapover support was 
-coming anyway.
-
+Mimi
 

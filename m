@@ -2,54 +2,139 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8D123C1A5
-	for <lists+selinux@lfdr.de>; Tue,  4 Aug 2020 23:40:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1BA123C2AD
+	for <lists+selinux@lfdr.de>; Wed,  5 Aug 2020 02:44:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728344AbgHDVkR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 4 Aug 2020 17:40:17 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52070 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728302AbgHDVkN (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Tue, 4 Aug 2020 17:40:13 -0400
-Subject: Re: [GIT PULL] SELinux patches for v5.9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1596577212;
-        bh=LGM8VL8I37A2Tt5HGk6cHGMdfAs9oQQmcuhSNVg+lD4=;
-        h=From:In-Reply-To:References:Date:To:Cc:From;
-        b=Iv5gcQ/XuHG5yU135Z3eQpv6HSYZMHaNnUU7sKKLMi2b27GgUdb68KPGJs4rqsRZX
-         74Xq5UhZHtjxuPRe1NWvHOV+mlU3Hpe7DSFri4YQk1PHwFiXe99NSpMVWCGAWMhs/V
-         m91g3GoorwrthpgfepEgJxZrP3dFGuLCAQdmtlWo=
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAHC9VhTy5xcOqx2SRjsyC-H-xvj3vvbHDt7O-S7TLYhXjANZGw@mail.gmail.com>
-References: <CAHC9VhTy5xcOqx2SRjsyC-H-xvj3vvbHDt7O-S7TLYhXjANZGw@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAHC9VhTy5xcOqx2SRjsyC-H-xvj3vvbHDt7O-S7TLYhXjANZGw@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git
- tags/selinux-pr-20200803
-X-PR-Tracked-Commit-Id: 54b27f9287a7b3dfc85549f01fc9d292c92c68b9
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 49e917deeb81e263bcdb4b20e61ca18111995ffe
-Message-Id: <159657721266.17686.17285046647020246350.pr-tracker-bot@kernel.org>
-Date:   Tue, 04 Aug 2020 21:40:12 +0000
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        id S1726634AbgHEAnh (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 4 Aug 2020 20:43:37 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:38356 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726166AbgHEAnh (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 4 Aug 2020 20:43:37 -0400
+Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net [73.42.176.67])
+        by linux.microsoft.com (Postfix) with ESMTPSA id A3C9E20B4908;
+        Tue,  4 Aug 2020 17:43:35 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A3C9E20B4908
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1596588215;
+        bh=witi/8JgEwCGp4a82OugmSroOHn6fU6ZrDmuPHmc6HA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mbl18OTNOVFV4KGyTveIpOvWT76NAPgnoQTp+HNsvL+V1Wh93+uDm/iPpGQQx4MOP
+         mvnPqk3lk3OLjyRIS86q00dUrKxDoFOJeS4pkvu5Ai18R5SgpHZCWwhZbg9hotxR2x
+         raeuw5fP19jFqOUzgBbpWlpWXXCY0ibLeoVokZ5w=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, stephen.smalley.work@gmail.com,
+        casey@schaufler-ca.com
+Cc:     tyhicks@linux.microsoft.com, sashal@kernel.org, jmorris@namei.org,
+        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v6 0/4] LSM: Measure security module data
+Date:   Tue,  4 Aug 2020 17:43:27 -0700
+Message-Id: <20200805004331.20652-1-nramas@linux.microsoft.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The pull request you sent on Mon, 3 Aug 2020 19:16:10 -0400:
+Critical data structures of security modules are currently not measured.
+Therefore an attestation service, for instance, would not be able to
+attest whether the security modules are always operating with the policies
+and configuration that the system administrator had setup. The policies
+and configuration for the security modules could be tampered with by
+malware by exploiting kernel vulnerabilities or modified through some
+inadvertent actions on the system. Measuring such critical data would
+enable an attestation service to better assess the state of the system.
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git tags/selinux-pr-20200803
+IMA subsystem measures system files, command line arguments passed to
+kexec, boot aggregate, keys, etc. It can be used to measure critical
+data structures of security modules as well.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/49e917deeb81e263bcdb4b20e61ca18111995ffe
+This change aims to address measuring critical data structures
+of security modules when they are initialized and when they are
+updated at runtime.
 
-Thank you!
+This series is based on commit 3db0d0c276a7 ("integrity: remove
+redundant initialization of variable ret") in next-integrity
+
+Change log:
+
+  v6:
+      => Use kvmalloc for payload data for early boot data measurement
+         since payload size may exceed the limit supported by kmalloc.
+      => Fixed IMA policy rule match error when checking for IMA hook
+         func LSM_STATE and LSM_POLICY.
+      => Enable early boot data measurement and IMA hook func
+         LSM_STATE and LSM_POLICY when SELinux is enabled.
+
+  v5:
+      => Append timestamp to "event name" string in the call to
+         the IMA hooks so that LSM data is always measured by IMA.
+      => Removed workqueue patch that was handling periodic checking
+         of the LSM data. This change will be introduced as a separate
+         patch set while keeping this patch set focussed on measuring
+         the LSM data on initialization and on updates at runtime.
+      => Handle early boot measurement of LSM data.
+
+  v4:
+      => Added LSM_POLICY func and IMA hook to measure LSM policy.
+      => Pass SELinux policy data, instead of the hash of the policy,
+         to the IMA hook to measure.
+      => Include "initialized" flag in SELinux measurement.
+         Also, measure SELinux state even when initialization is not yet
+         completed. But measure SELinux policy only after initialization.
+
+  v3:
+      => Loop through policy_capabilities to build the state data
+         to measure instead of hardcoding to current set of
+         policy capabilities.
+      => Added error log messages for failure conditions.
+
+  v2:
+      => Pass selinux_state struct as parameter to the function
+         that measures SELinux data.
+      => Use strings from selinux_policycap_names array for SELinux
+         state measurement.
+      => Refactored security_read_policy() to alloc kernel or user
+         virtual memory and then read the SELinux policy.
+
+  v1:
+      => Per Stephen Smalley's suggestion added selinux_state booleans
+         and hash of SELinux policy in the measured data for SELinux.
+      => Call IMA hook from the security module directly instead of
+         redirecting through the LSM.
+
+Lakshmi Ramasubramanian (4):
+  IMA: Add func to measure LSM state and policy
+  IMA: Define IMA hooks to measure LSM state and policy
+  LSM: Define SELinux function to measure state and policy
+  IMA: Handle early boot data measurement
+
+ Documentation/ABI/testing/ima_policy         |   9 +
+ include/linux/ima.h                          |  14 ++
+ security/integrity/ima/Kconfig               |   5 +-
+ security/integrity/ima/Makefile              |   2 +-
+ security/integrity/ima/ima.h                 |  45 +++--
+ security/integrity/ima/ima_api.c             |   2 +-
+ security/integrity/ima/ima_asymmetric_keys.c |   6 +-
+ security/integrity/ima/ima_init.c            |   2 +-
+ security/integrity/ima/ima_main.c            |  64 ++++++-
+ security/integrity/ima/ima_policy.c          |  36 +++-
+ security/integrity/ima/ima_queue_data.c      | 190 +++++++++++++++++++
+ security/integrity/ima/ima_queue_keys.c      | 174 -----------------
+ security/selinux/Makefile                    |   2 +
+ security/selinux/hooks.c                     |   1 +
+ security/selinux/include/security.h          |  15 ++
+ security/selinux/measure.c                   | 150 +++++++++++++++
+ security/selinux/selinuxfs.c                 |   3 +
+ security/selinux/ss/services.c               |  71 ++++++-
+ 18 files changed, 569 insertions(+), 222 deletions(-)
+ create mode 100644 security/integrity/ima/ima_queue_data.c
+ delete mode 100644 security/integrity/ima/ima_queue_keys.c
+ create mode 100644 security/selinux/measure.c
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.wiki.kernel.org/userdoc/prtracker
+2.27.0
+

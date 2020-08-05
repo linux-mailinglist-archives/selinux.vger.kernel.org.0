@@ -2,129 +2,128 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FADE23D071
-	for <lists+selinux@lfdr.de>; Wed,  5 Aug 2020 21:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57CFC23D185
+	for <lists+selinux@lfdr.de>; Wed,  5 Aug 2020 22:02:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728616AbgHETst (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 5 Aug 2020 15:48:49 -0400
-Received: from agnus.defensec.nl ([80.100.19.56]:54472 "EHLO agnus.defensec.nl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728339AbgHETsq (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Wed, 5 Aug 2020 15:48:46 -0400
-Received: from localhost.localdomain (brutus.lan [IPv6:2001:985:d55d::438])
-        by agnus.defensec.nl (Postfix) with ESMTPSA id 25F412A0EFE;
-        Wed,  5 Aug 2020 21:48:42 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 25F412A0EFE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
-        s=default; t=1596656923;
-        bh=m3d3pVTrYd7bq7Mvf/eOq7F/zTGTszxauEvMZqcXBn4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i8Ban5+aCrwI7Md2H3zsYaUYEuJedGy2X4qCtHpXIyEVk/fTK8lx9l8X4k1mq+uWS
-         VPOkJ/GeB2Cq66jGjGsNlNBwelPe7s10FN0orQ2ddoi8TEN7bvHYFJArmz6xl9S40j
-         VDL76N+EUpO38vKW+nEd4HxhPkW3gDN8eiUMZHVw=
-From:   Dominick Grift <dominick.grift@defensec.nl>
-To:     selinux@vger.kernel.org
-Cc:     Dominick Grift <dominick.grift@defensec.nl>
-Subject: [PATCH v5] secilc/docs: document expandtypeattribute
-Date:   Wed,  5 Aug 2020 21:48:23 +0200
-Message-Id: <20200805194823.492092-1-dominick.grift@defensec.nl>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <CAP+JOzQe8Q0GKtm9aavEQTzFWCT8sUi8shjw=TmgJYm5XkaN_w@mail.gmail.com>
-References: <CAP+JOzQe8Q0GKtm9aavEQTzFWCT8sUi8shjw=TmgJYm5XkaN_w@mail.gmail.com>
+        id S1727990AbgHEUB4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 5 Aug 2020 16:01:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45404 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726958AbgHEQkG (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 5 Aug 2020 12:40:06 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8674C034610
+        for <selinux@vger.kernel.org>; Wed,  5 Aug 2020 05:19:20 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id h7so41364992qkk.7
+        for <selinux@vger.kernel.org>; Wed, 05 Aug 2020 05:19:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=ZO7+nyp4YY7ibrCK0MQdSOA+W/eh67jKd5ubJU4pRCg=;
+        b=ElW1kVDbQhSPKk2tNR6TCSu34NU5jIAv9RaztXUayFttHPCE+tBCMZK1YFpQrwfztf
+         7azfTEy7Wn26YwpwgCziVAk7pjUHKO6J/pNQpjndk0KO9Kth+PWUXt/Z4lGkqIQje/86
+         UCApd3kR94jVZM81GtCK1NM/jxAV0X+UjjxfrIuq/VtbEtMx8yLqMV+uRAtgDacIyZym
+         zGhLi6MIwJ/1/QZIrfXDaHBJxb7MO4G4r4c80uQ3KIOlpz5ivDWKXtNTm43qD1rKnMoJ
+         fhRu3Mx08RlvVGpWmXJgcfa1lNpZ819ILe04XLEoWRQMJ2qouNVHZH74LzH/s3XXzZyU
+         kcyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=ZO7+nyp4YY7ibrCK0MQdSOA+W/eh67jKd5ubJU4pRCg=;
+        b=qZAM7qcx1rFbdIpcho5TZxssxNo+Zz2EWKUuWlvbejNR1xc5Zm11UXVaVPK5JpXQfD
+         luJiHVy5/E1RroUoiyfM+oicARH3UjnC/IZMqog8N4YkRwAcY7lEoqDuZTrnwRabeGeL
+         iiOenjYawLIYpZ70XJNEwDSvXapVZDnoTgnD0smEPfDGdLKQrfl3KLECjfur1iuVAcc4
+         PzWlIYAd2NGNL5v+HJneq3h8EmE4+cakARDVePkOD9d2aTHX7ficmEm1s+g6AzS3PIQh
+         q7uQl5IPl3BTuW4ETaf7PSVCrWvhA9cMUDwmNpR6/fJDkdXyJjKcmrBFy8ku8jJFN2BJ
+         skxw==
+X-Gm-Message-State: AOAM53212/KIFl3dYtLQvpZWkNH0xO2gIQAE+CVfwvr10OkxxiNoxCI9
+        +a3lYiOcAAFACo7iyFWiHVIfoAxlj7g=
+X-Google-Smtp-Source: ABdhPJy9ZK70IaeCITbKOBHgSDsLzmOOkqFF90VCajO1SvqN91byIk9VhGMp4AKcuuz8ptuCQFcOiA==
+X-Received: by 2002:a37:ad04:: with SMTP id f4mr2856314qkm.302.1596629951491;
+        Wed, 05 Aug 2020 05:19:11 -0700 (PDT)
+Received: from [192.168.1.190] (pool-96-244-118-111.bltmmd.fios.verizon.net. [96.244.118.111])
+        by smtp.gmail.com with ESMTPSA id r188sm1419879qkb.122.2020.08.05.05.19.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Aug 2020 05:19:11 -0700 (PDT)
+Subject: Re: [RFC PATCH v3] selinux: encapsulate policy state, refactor policy
+ load
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     Paul Moore <paul@paul-moore.com>,
+        SElinux list <selinux@vger.kernel.org>
+References: <20200803173948.17118-1-stephen.smalley.work@gmail.com>
+ <CAFqZXNs5RjGkifBBVZm8zONx5fube4NZe6xFVAtZpuJjEePw+g@mail.gmail.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Message-ID: <b4333d41-de9e-96a7-7ef8-39e14513c370@gmail.com>
+Date:   Wed, 5 Aug 2020 08:19:10 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
+In-Reply-To: <CAFqZXNs5RjGkifBBVZm8zONx5fube4NZe6xFVAtZpuJjEePw+g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This was added for Androids Treble in 2017.
+On 8/5/20 4:29 AM, Ondrej Mosnacek wrote:
 
-Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
----
-v2: overriden is overridden
-v3: add link to README.md
-v4: rephrase and add another example
-v5: use description from James Carter
-
- secilc/docs/README.md              |  1 +
- secilc/docs/cil_type_statements.md | 51 ++++++++++++++++++++++++++++++
- 2 files changed, 52 insertions(+)
-
-diff --git a/secilc/docs/README.md b/secilc/docs/README.md
-index 3f1838e6..efab2a71 100644
---- a/secilc/docs/README.md
-+++ b/secilc/docs/README.md
-@@ -126,6 +126,7 @@ CIL (Common Intermediate Language)
-   * [typealiasactual](cil_type_statements.md#typealiasactual)
-   * [typeattribute](cil_type_statements.md#typeattribute)
-   * [typeattributeset](cil_type_statements.md#typeattributeset)
-+  * [expandtypeattribute](cil_type_statements.md#expandtypeattribute)
-   * [typebounds](cil_type_statements.md#typebounds)
-   * [typechange](cil_type_statements.md#typechange)
-   * [typemember](cil_type_statements.md#typemember)
-diff --git a/secilc/docs/cil_type_statements.md b/secilc/docs/cil_type_statements.md
-index f9dd3a76..432cede5 100644
---- a/secilc/docs/cil_type_statements.md
-+++ b/secilc/docs/cil_type_statements.md
-@@ -213,6 +213,57 @@ This example is equivalent to `{ domain -kernel.process -ueventd.process -init.p
-         )
-     )
- 
-+expandtypeattribute
-+-------------------
-+
-+Overrides the compiler defaults for the expansion of one or more
-+previously declared [`typeattribute`](cil_type_statements.md#typeattribute)
-+identifiers.
-+
-+This rule gives more control over type attribute expansion and
-+removal. When the value is true, all rules involving the type
-+attribute will be expanded and the type attribute will be removed from
-+the policy. When the value is false, the type attribute will not be
-+removed from the policy, even if the default expand rules or "-X"
-+option cause the rules involving the type attribute to be expanded.
-+
-+**Statement definition:**
-+
-+    (expandtypeattribute typeattribute_id expand_value)
-+
-+**Where:**
-+
-+<table>
-+<colgroup>
-+<col width="25%" />
-+<col width="75%" />
-+</colgroup>
-+<tbody>
-+<tr class="odd">
-+<td align="left"><p><code>expandtypeattribute</code></p></td>
-+<td align="left"><p>The <code>expandtypeattribute</code> keyword.</p></td>
-+</tr>
-+<tr class="even">
-+<td align="left"><p><code>typeattribute_id</code></p></td>
-+<td align="left"><p>One or more previously declared <code>typeattribute</code> identifiers. Multiple entries consist of a space separated list enclosed in parentheses '()'.</p></td>
-+</tr>
-+<tr class="odd">
-+<td align="left"><p><code>expand_value</code></p></td>
-+<td align="left"><p>Either true or false.</p></td>
-+</tr>
-+</tbody>
-+</table>
-+
-+**Examples:**
-+
-+This example uses the expandtypeattribute statement to forcibly expand a previously declared `domain` type attribute.
-+
-+    (expandtypeattribute domain true)
-+
-+This example uses the expandtypeattribute statement to not expand previously declared `file_type` and `port_type` type attributes regardless of compiler defaults.
-+
-+    (expandtypeattribute (file_type port_type) false)
-+
- typebounds
- ----------
- 
--- 
-2.28.0
-
+> On Mon, Aug 3, 2020 at 7:40 PM Stephen Smalley
+> <stephen.smalley.work@gmail.com> wrote:
+>> Encapsulate the policy state in its own structure (struct
+>> selinux_policy) that is separately allocated but referenced from the
+>> selinux_ss structure.  The policy state includes the SID table
+>> (particularly the context structures), the policy database, and the
+>> mapping between the kernel classes/permissions and the policy values.
+>> Refactor the security server portion of the policy load logic to
+>> cleanly separate loading of the new structures from committing the new
+>> policy.  Unify the initial policy load and reload code paths as much
+>> as possible, avoiding duplicated code.  Make sure we are taking the
+>> policy read-lock prior to any dereferencing of the policy.  Move the
+>> copying of the policy capability booleans into the state structure
+>> outside of the policy write-lock because they are separate from the
+>> policy and are read outside of any policy lock; possibly they should
+>> be using at least READ_ONCE/WRITE_ONCE or smp_load_acquire/store_release.
+>>
+>> These changes simplify the policy loading logic, reduce the size of
+>> the critical section while holding the policy write-lock, and should
+>> facilitate future changes to e.g. refactor the entire policy reload
+>> logic including the selinuxfs code to make the updating of the policy
+>> and the selinuxfs directory tree atomic and/or to convert the policy
+>> read-write lock to RCU.
+>>
+>> Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+>> ---
+>> v3 fixes a couple of instances where we should take the read-lock for
+>> consistency prior to dereferencing state->ss->policy, and updates
+>> sidtab_convert() and its helpers/callbacks to use GFP_ATOMIC
+>> allocations instead of GFP_KERNEL and to remove a call to
+>> cond_resched() since it is now called with the read-lock held and
+>> therefore cannot call sleeping functions.  Technically we know that
+>> state->ss->policy cannot be modified since selinuxfs is taking
+>> fsi->mutex for all policy-modifying operations (both
+>> security_load_policy and security_set_bools) but this provides
+>> consistency in the handling of the policy rwlock.
+> I must say I'm a little concerned about switching to GFP_ATOMIC here.
+> The sidtab table can become quite large on long-running systems (since
+> it's grow-only currently) and in such case the kernel could have a
+> hard time allocating everything atomically. Maybe we could instead
+> pass the fsi->mutex's lockdep_map to security_load_policy() and call
+> lockdep_is_held() inside as a sanity check? This would document that
+> the function is expected to be called in mutual exclusion and also
+> detect at runtime if someone accidentally moves the call outside of
+> the mutex's critical section. It's not perfect, since a careless
+> programmer can still abuse it, but at least the lockdep_map argument
+> would warn anyone calling that function (or reviewing a related patch)
+> that there is some locking constraint that needs to be respected.
+Is that done anywhere else in the kernel currently?  If so, then I have 
+no problem with doing so. Otherwise, I'd rather just drop the 
+read_lock() here and add a comment explaining why it is currently safe 
+without it.
+>
+> Otherwise the patch looks good to me after a brief look.
+>

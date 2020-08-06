@@ -2,181 +2,92 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C65CA23DCF7
-	for <lists+selinux@lfdr.de>; Thu,  6 Aug 2020 18:58:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3937F23DEB6
+	for <lists+selinux@lfdr.de>; Thu,  6 Aug 2020 19:29:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729136AbgHFQ6p (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 6 Aug 2020 12:58:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41660 "EHLO
+        id S1729725AbgHFR3B (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 6 Aug 2020 13:29:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728829AbgHFQkm (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 6 Aug 2020 12:40:42 -0400
-Received: from mail-oi1-x243.google.com (mail-oi1-x243.google.com [IPv6:2607:f8b0:4864:20::243])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EA91C0A8935;
-        Thu,  6 Aug 2020 08:03:42 -0700 (PDT)
-Received: by mail-oi1-x243.google.com with SMTP id 25so19562700oir.0;
-        Thu, 06 Aug 2020 08:03:42 -0700 (PDT)
+        with ESMTP id S1728862AbgHFRA4 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 6 Aug 2020 13:00:56 -0400
+Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98AFDC061A13
+        for <selinux@vger.kernel.org>; Thu,  6 Aug 2020 05:03:07 -0700 (PDT)
+Received: by mail-qv1-xf42.google.com with SMTP id t6so17309996qvw.1
+        for <selinux@vger.kernel.org>; Thu, 06 Aug 2020 05:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=QmBAkio3HqZXyLXzZvG0W5rZ+32Ncd4SFfX8CWNZXqo=;
-        b=d7q0pe2LphFy3tVHJjI9V+nKk9i6A77hOJYbtyZtPx11pAdOqRtnIZWNEhzbbqzITV
-         fOGz1xnFeeELtvrdZcDd6hthIcK7MLUCtyEHTZlMCfM1xtVnAcjSnMvni+uiQBmQZHEI
-         4n7BWzq7sIB0IcNUmHT7PVfYhJ8YCQtnxsXcfAkwfIuDQD3/1GT2qkte991aPf1MBM+u
-         FdRNdytGVqkdnuz9kOyLpjDy/DFsQybVNgEvQJxMOvArmDM2OX9jIenU5ivx9flJWXsU
-         TZfMRFrskK+ByYnY7BCrrYXTPdLHYgpOf53HpqdRzlm+iWA+IPPk8iqsvnBB/LOO8sHJ
-         Xh0A==
+        h=subject:from:to:cc:references:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=zX/fCw+K58Pdu4L95m8RQj3cCMHyHCuRDrv3Bd1QWi8=;
+        b=mu45qcuswXTIMhOV553W1f0QQE7KDuVOnXGyNqb80s+LJEVayMvzGEr+u5Uw7wu0if
+         h5B6wyQnmYAPCDid3SVQeDdX1NeQGCd52zA+AM7keWswPb4EZ/FdlsLqWEdM02mXeTuX
+         Wwd31RMKVLUlzH2yo8uj4KsHqJh6zHkwwt7tfC/OVYKreezReaoy+kigcvpnkrmDIiXa
+         A6lTDeNYqtNB5ZiWFzPQB+OJQx3dHmaqi4IsA28PnngpcRNFL8MILLwDUjAikfAX0nTx
+         Y/bLj4gBgaxG5fcsJnGOq7T94pIf1G4hBFLZy+sbuDccAX1a5kFOYUm9FeDDq30ZhJ3r
+         z4nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=QmBAkio3HqZXyLXzZvG0W5rZ+32Ncd4SFfX8CWNZXqo=;
-        b=aUrxjRq0F8TfbSyBpopV/bCPgkJSJ32182S+hbM4ntnW2gw9Gbp52zriybz5NYBoGt
-         tuvbYLKdqCU+AfcdVz0o11mxbGd31/9TLtQJaaHtKt+pfEWVGm4AbWcKuKoXjeYASuTt
-         QY38JCd5/BV/Wv94hAeRgviQsbMrYMs0gZKJvItrCHaFJjGK5VuPlgDyR6M31stCR66d
-         ln0OEMlkMRcF8bgg/LSLmT2+MpBRzVcCn2hXYvKf3Y49KN4+FDpWHnnApk/cVWqg0MOJ
-         w2EeFz3LXcZCeQQ09vAni8FUcC2pxkpP6cXgsub/Jsv/E1y/vCnue+xS3y+zezYzgChe
-         jMqA==
-X-Gm-Message-State: AOAM531OgAqA54gJ3mCofbJgV2TLirunqkaR6r4OGeogXuYARuGCwMcX
-        k/n2pcht7faP3gGRvKNrR4IiyUfq9vlmzUrXHTA=
-X-Google-Smtp-Source: ABdhPJw/dtcEyn/5MkeX+6B9hKzdwerGRcmnrQpewRREzYTtjCtgDu/mN4S+X6UK9uqoV0cCtIuaDaCeVFm7gfjYDIw=
-X-Received: by 2002:a05:6808:1d9:: with SMTP id x25mr7145834oic.92.1596726216077;
- Thu, 06 Aug 2020 08:03:36 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200806080358.3124505-1-tweek@google.com> <20200806080358.3124505-2-tweek@google.com>
- <89d23362-39b9-79e5-84f1-d7b89204ef38@gmail.com> <8627d780-0e19-6755-0de5-c686deb0f5de@sony.com>
- <971592b6-5d5f-05d8-d243-b521fe65577d@gmail.com> <07e2c48d-3918-6ceb-a6b2-4e2f18f9ea01@gmail.com>
- <CAEjxPJ4no_GqMp8aw43zpwmwq42Wi_1dvP+ZBs1a-mnReDt5Og@mail.gmail.com> <dfeac808-b40d-77fd-0d31-f66f279083eb@sony.com>
-In-Reply-To: <dfeac808-b40d-77fd-0d31-f66f279083eb@sony.com>
+        h=x-gm-message-state:subject:from:to:cc:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=zX/fCw+K58Pdu4L95m8RQj3cCMHyHCuRDrv3Bd1QWi8=;
+        b=p1+xOBk9188IU6hBPK/tUVDpExZ3NdiN2nyq48Hlmn9Q41aZMZBPihrTwt842yEst7
+         YohPmzMvWN8qow9h3Xu/FCaSUNqukRjrGp4B625qOFVM9c607w3jt1w7gf/3ZrM74dq3
+         PG+u4kwYXlGyyTG9qndFwwYLtpuG/ems7jiY+CVMLHFadSFtPGoAzJs9aR04/NFD1anf
+         H4NnLEv8FBsPmIHtpGaW5dIMmLq14aBhwBVWhte905/KzWPDju/TCJFaJ2foq6s+XfPJ
+         KCDOSCjGXhY4jcvmAJlUW0NElnEyaRCM1HUtlUnvZeQFR0nkDBOiIDH1IFzOIPCbrSB1
+         N9Eg==
+X-Gm-Message-State: AOAM532Sn0PwJvUHdV8X+GKAqYugPXCkCvDRhXD7kXmiV38TSukkPTNv
+        4HsvclvAwsZs8azz2/rjp/4=
+X-Google-Smtp-Source: ABdhPJxLEiuH283FiTzbMXa6eWQOAmcvO5w5f0cGp4Z8VBoXzxdoVfesfIX0P83YVcHYaeRvxA07UQ==
+X-Received: by 2002:a0c:e844:: with SMTP id l4mr8161459qvo.154.1596715379083;
+        Thu, 06 Aug 2020 05:02:59 -0700 (PDT)
+Received: from [192.168.1.190] (pool-68-134-6-11.bltmmd.fios.verizon.net. [68.134.6.11])
+        by smtp.gmail.com with ESMTPSA id n184sm4078718qkn.49.2020.08.06.05.02.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Aug 2020 05:02:57 -0700 (PDT)
+Subject: Re: [PATCH v6 1/2] libsepol,checkpolicy: optimize storage of filename
+ transitions
 From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Thu, 6 Aug 2020 11:03:25 -0400
-Message-ID: <CAEjxPJ4EaXJ88-hT=jgfn0d1WVP9QQb0w2XQi7U2YVuqN2oMsg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] selinux: add attributes to avc tracepoint
-To:     peter enderborg <peter.enderborg@sony.com>
-Cc:     =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Nick Kralevich <nnk@google.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Rob Herring <robh@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
+Cc:     James Carter <jwcart2@gmail.com>,
+        Chris PeBenito <pebenito@ieee.org>,
+        Petr Lautrbach <plautrba@redhat.com>
+References: <20200731111035.498656-1-omosnace@redhat.com>
+ <20200731111035.498656-2-omosnace@redhat.com>
+ <e57f8b36-6134-bc19-35a7-f03a6f7b7bb2@gmail.com>
+Message-ID: <32928866-c2a9-6167-b897-4c54c2940b3f@gmail.com>
+Date:   Thu, 6 Aug 2020 08:02:56 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <e57f8b36-6134-bc19-35a7-f03a6f7b7bb2@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Aug 6, 2020 at 10:51 AM peter enderborg
-<peter.enderborg@sony.com> wrote:
->
-> On 8/6/20 3:49 PM, Stephen Smalley wrote:
-> > On Thu, Aug 6, 2020 at 9:45 AM Stephen Smalley
-> > <stephen.smalley.work@gmail.com> wrote:
-> >> On 8/6/20 8:32 AM, Stephen Smalley wrote:
-> >>
-> >>> On 8/6/20 8:24 AM, peter enderborg wrote:
-> >>>
-> >>>> On 8/6/20 2:11 PM, Stephen Smalley wrote:
-> >>>>> On 8/6/20 4:03 AM, Thi=C3=A9baud Weksteen wrote:
-> >>>>>
-> >>>>>> From: Peter Enderborg <peter.enderborg@sony.com>
-> >>>>>>
-> >>>>>> Add further attributes to filter the trace events from AVC.
-> >>>>> Please include sample usage and output in the description.
-> >>>>>
-> >>>>>
-> >>>> Im not sure where you want it to be.
-> >>>>
-> >>>> In the commit message or in a Documentation/trace/events-avc.rst ?
-> >>> I was just asking for it in the commit message / patch description.  =
-I
-> >>> don't know what is typical for Documentation/trace.
-> >> For example, I just took the patches for a spin, running the
-> >> selinux-testsuite under perf like so:
-> >>
-> >> sudo perf record -e avc:selinux_audited -g make test
-> >>
-> >> and then ran:
-> >>
-> >> sudo perf report -g
-> >>
-> >> and a snippet of sample output included:
-> >>
-> >>       6.40%     6.40%  requested=3D0x800000 denied=3D0x800000
-> >> audited=3D0x800000 result=3D-13 ssid=3D922 tsid=3D922
-> >> scontext=3Dunconfined_u:unconfined_r:test_binder_mgr_t:s0-s0:c0.c1023
-> >> tcontext=3Dunconfined_u:unconfined_r:test_binder_mgr_t:s0-s0:c0.c1023
-> >> tclass=3Dcapability
-> > So then the question becomes how do you use the above information,
-> > e.g. is that sufficient to correlate it to an actual avc: denied
-> > message, how do you decode the requested/denied/audited fields (or
-> > should the code do that for you and just report the string name(s) of
-> > the permission(s), do you need all three of those fields separately,
-> > is it useful to log the ssid/tsid at all given that you have the
-> > contexts and sids are dynamically assigned, etc.
-> >
-> >>              |
-> >>              ---0x495641000028933d
-> >>                 __libc_start_main
-> >>                 |
-> >>                 |--4.60%--__GI___ioctl
-> >>                 |          entry_SYSCALL_64
-> >>                 |          do_syscall_64
-> >>                 |          __x64_sys_ioctl
-> >>                 |          ksys_ioctl
-> >>                 |          binder_ioctl
-> >>                 |          binder_set_nice
-> >>                 |          can_nice
-> >>                 |          capable
-> >>                 |          security_capable
-> >>                 |          cred_has_capability.isra.0
-> >>                 |          slow_avc_audit
-> >>                 |          common_lsm_audit
-> >>                 |          avc_audit_post_callback
-> >>                 |          avc_audit_post_callback
->
-> The real cool thing happen when you enable "user-stack-trace" too.
->
->            <...>-4820  [007] .... 85878.897553: selinux_audited: requeste=
-d=3D0x4000000 denied=3D0x4000000 audited=3D0x4000000 result=3D-13 ssid=3D34=
-1 tsid=3D61 scontext=3Dsystem_u:system_r:ntpd_t:s0 tcontext=3Dsystem_u:obje=
-ct_r:bin_t:s0 tclass=3Dfile
->            <...>-4820  [007] .... 85878.897572: <user stack trace>
->  =3D>  <00007f07d99bb45b>
->  =3D>  <0000555ecd89ca57>
->
-> The fields are useful for filter what you what to see and what you can ig=
-nore.  Having the ssid and text was from the part where it is called.
-> The numeric can be used for two things. When you dont have any context. S=
-ame same reason as in post_callback. We need to be static
-> in format so it need  be there if it ever can happen. And it is also usef=
-ul for faster filtering.
->
-> You can do "ssid!=3D42 && ssid!=3D43 && tsid=3D=3D666".  From my view it =
-would be good to have all fields there. But they need to right typed to be =
-able
-> to use the filter mechanism. There must me some trade-off too where the a=
-rgument filtering get bigger than the processing, but I think we can
-> add a lot more before we reach that threshold.
+On 8/3/20 9:56 AM, Stephen Smalley wrote:
 
-I don't think the SIDs are useful because they are dynamically
-assigned (aside from the initial SIDs for bootstrapping before policy
-load) and are not exported to userspace (userspace has no way to look
-them up).  It is probably a mistake that we even fall back to logging
-them in the existing code and may just be a legacy of when SIDs were
-exported to userspace (ancient history, before mainline merge of
-SELinux).
-
-In any event, if you were to include the sample usage and output I
-provided as part of the commit message / patch description (or replace
-with your own example), that would be helpful I think.  Even better
-would be to also provide some hint as to how people are expected to
-decode the requested/denied/audited fields (I know how to do that but
-not everyone will, and ideally one would have a script or something
-for doing so).
+> On 7/31/20 7:10 AM, Ondrej Mosnacek wrote:
+>
+>> In preparation to support a new policy format with a more optimal
+>> representation of filename transition rules, this patch applies an
+>> equivalent change from kernel commit c3a276111ea2 ("selinux: optimize
+>> storage of filename transitions").
+>>
+>> See the kernel commit's description [1] for the rationale behind this
+>> representation. This change doesn't bring any measurable difference of
+>> policy build performance (semodule -B) on Fedora.
+>>
+>> [1] 
+>> https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git/commit/?id=c3a276111ea2572399281988b3129683e2a6b60b
+>>
+>> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Thanks, applied.

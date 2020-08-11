@@ -2,94 +2,76 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DE69E24201E
-	for <lists+selinux@lfdr.de>; Tue, 11 Aug 2020 21:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7193B242026
+	for <lists+selinux@lfdr.de>; Tue, 11 Aug 2020 21:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725901AbgHKTKn (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 11 Aug 2020 15:10:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37774 "EHLO
+        id S1726085AbgHKTQO (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 11 Aug 2020 15:16:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725889AbgHKTKn (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 11 Aug 2020 15:10:43 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B16EC06174A
-        for <selinux@vger.kernel.org>; Tue, 11 Aug 2020 12:10:43 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id mt12so2344848pjb.4
-        for <selinux@vger.kernel.org>; Tue, 11 Aug 2020 12:10:43 -0700 (PDT)
+        with ESMTP id S1725889AbgHKTQN (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 11 Aug 2020 15:16:13 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CD2BC06174A
+        for <selinux@vger.kernel.org>; Tue, 11 Aug 2020 12:16:13 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id c4so10984970otf.12
+        for <selinux@vger.kernel.org>; Tue, 11 Aug 2020 12:16:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=9JfNN7o2N6/Rx7VmkunATb9Ya9auxljuCP17cdW98lY=;
-        b=vexFBpKrlJWCLehdCMISIr9eZkBPwyG4fhNtHoCDLjHksF7mHy6SUaELCWmBo6VUhR
-         we5sLTi256vKVz0hyq8Mbn6fi8emFTMJSmu+N59upkBT1R7cmBVURlDnboTfA+Nvpurp
-         3NC5xYIEyhzvpjrPpRP7/Ht0Tc4OThKPdHvazqi+D9kL7j8KEImXjz1D/IDTbfAzbYcW
-         ctYnkVAKFI740z1JMbdo5kiGNfQEQqO9M9swyTaI7H9WqJ1AkmhX5aVYpcs+10IdG8rN
-         7k6YRp2iVdmWez0xTJTZQN11o/CbNZbjRsm5kvl/q0lX4X8xKZZne2mvH04YQwFCZ3Q/
-         VnCg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZbIw98MudyG9+GMFBBw5zhC5u/A4RSA0VHj0o7CKIRE=;
+        b=Y7Tnj3V4ip4HmqsWSTi0pPKp+wWsNvpCRlxh5/WaX+7hS/w++R9Yn+bpl8nnossXvm
+         7xtA3cLQfNZpzk6g2XzFU/pZi0sLG/xIk6uLIaAmwZrGPZLWNd8Wot1ON/gIUqaIOKu9
+         /TbMmsCUVLNIJqV2KmK8jkNSWp96uw5iU6tcKOgDnTscdRNhzJkR/GBwzrKSTYaWtzdp
+         kOwPDWyeKfzNOlZpVcnRl+lkIlMeO4CfRucT7aGEdh8y5kxkYuGaRrFeelx0g3L3tu1O
+         bPqw4TQltdftTVbuTTwSQL2fTQpJ5nWvlO35dDhJWDedCNcU1hT0P2hS9wqis+5bMl2k
+         /CEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=9JfNN7o2N6/Rx7VmkunATb9Ya9auxljuCP17cdW98lY=;
-        b=fPICnpPzWC37V+nTBaPZnk/F1gvmgLyWJ1hF+4o72GzQXXrGfEUOMttdrlGiXoNmCd
-         RrJZ62oicc0jkAhz1PDd98GUvTyy8HsqyrgFS1ZZbQOUzzRsr1yWW1P2/duV2od3ynYm
-         WOfVpvmHu2ggnFaYyM/Z/ttbTDN+y9KSdpmVCi9UrTxuCs//YAGcD0rDZeYXSKPCSbr9
-         cBfsuFmOApayR7HeTYVPkQ820SGX2WvZN92XztxspG3dqBI/rEfjp6bMnCwNB0TxoPq6
-         AnbK6fvvdNKpcxPlMHxkXWZC1WvRxgqtqyGiTjPg9SMYmJ+fy/FY5+xb3EPWT/0g6WA5
-         t/yg==
-X-Gm-Message-State: AOAM530p7toOBD2p3BfqTTCiVEV3Lojru7epVLzJ4zXC2cKSd98/R5jh
-        IDu/LiaffO+bbfSg6ao01zvSuKKoAtk=
-X-Google-Smtp-Source: ABdhPJyhGEdFsDfzZtvVh8FhWQjv68CWkpBj9E3Yz+UWD2zmxId82Sg3id036ncJBrsPQSRA2ZtKNA==
-X-Received: by 2002:a17:90a:d249:: with SMTP id o9mr2447862pjw.233.1597173042431;
-        Tue, 11 Aug 2020 12:10:42 -0700 (PDT)
-Received: from wcrobert-MOBL1.netgear.com (jfdmzpr04-ext.jf.intel.com. [134.134.137.73])
-        by smtp.gmail.com with ESMTPSA id e23sm12172102pgb.79.2020.08.11.12.10.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Aug 2020 12:10:41 -0700 (PDT)
-From:   bill.c.roberts@gmail.com
-X-Google-Original-From: william.c.roberts@intel.com
-To:     selinux@vger.kernel.org
-Cc:     omosnace@redhat.com, plautrba@redhat.com,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ZbIw98MudyG9+GMFBBw5zhC5u/A4RSA0VHj0o7CKIRE=;
+        b=EUooESvU3PvgYaFyMkz1xtdK+16L7xpJiY7IOvgif3UxEYyXTWs1LaXHqHOg+czDGR
+         sT/M2WZpKLdlrfEZeBwyRSYiOZIIUYO+NKgjxqDwpdWxrBcvqFVPttrubMonBgkpKGwF
+         vyhP7/R0DuBp4tur/oO4zGT9hG2Ro35HiRnpGPnnWDrrWYKqlhJtC4uIe5Yj87vKHGmA
+         nXyXSHe8taw4jXrjEymb0VWsptZHQMzFiqnCr1GCTk2ltLjVRrtTQCfflCA6YUXr2GqD
+         XESgOWU99xOYKnw4OAo67HPmJXjusjt4dQXPyjz0jAgWFqkhx9naXN2m0tOrsquh1AtR
+         YMdw==
+X-Gm-Message-State: AOAM530Jvj88AENGF0S+5gNJi+IPWKMlbN0+X6655liAHB5A14AFTsoB
+        fkBqFk3OOWe2dm4gufJNfRmeIWJMdf5FUBAWpiXkw70N
+X-Google-Smtp-Source: ABdhPJwsYNIdWV2BVhjOHlDlp1tOHDppR7Hr4SMM/WfeGn1n3vjYWXq5sCi1FNGx0PSM/4w0/1FL1JN4SpPCgGWOKnE=
+X-Received: by 2002:a05:6830:1305:: with SMTP id p5mr6529719otq.135.1597173372695;
+ Tue, 11 Aug 2020 12:16:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200811191035.13948-1-william.c.roberts@intel.com>
+In-Reply-To: <20200811191035.13948-1-william.c.roberts@intel.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Tue, 11 Aug 2020 15:16:01 -0400
+Message-ID: <CAEjxPJ6sLaiVrh59AYonbDNi2jsY6YTGd5ygYx=QBGaTC7rdSg@mail.gmail.com>
+Subject: Re: [PATCH] ci: fix stall on git log -1
+To:     William Roberts <bill.c.roberts@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        Petr Lautrbach <plautrba@redhat.com>,
         William Roberts <william.c.roberts@intel.com>
-Subject: [PATCH] ci: fix stall on git log -1
-Date:   Tue, 11 Aug 2020 14:10:35 -0500
-Message-Id: <20200811191035.13948-1-william.c.roberts@intel.com>
-X-Mailer: git-send-email 2.17.1
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: William Roberts <william.c.roberts@intel.com>
+On Tue, Aug 11, 2020 at 3:11 PM <bill.c.roberts@gmail.com> wrote:
+>
+> From: William Roberts <william.c.roberts@intel.com>
+>
+> git log -1 may use a pager to output long messages, and when the pager
+> is invoked, leads to stalls on the ci system waiting for user input.
+> Use --oneline to print the short part of the commit message and
+> the digest. This information is for debug/informational purposes only,
+> so truncating the output is sufficient.
+>
+> Reported-by: Stephen Smalley <sds@tycho.nsa.gov>
+> Signed-off-by: William Roberts <william.c.roberts@intel.com>
 
-git log -1 may use a pager to output long messages, and when the pager
-is invoked, leads to stalls on the ci system waiting for user input.
-Use --oneline to print the short part of the commit message and
-the digest. This information is for debug/informational purposes only,
-so truncating the output is sufficient.
-
-Reported-by: Stephen Smalley <sds@tycho.nsa.gov>
-Signed-off-by: William Roberts <william.c.roberts@intel.com>
----
-
-Thanks Ondrej for pointing out that the culprit was the pager, many
-thanks for triaging this.
-
- scripts/ci/fedora-test-runner.sh | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/scripts/ci/fedora-test-runner.sh b/scripts/ci/fedora-test-runner.sh
-index 0aaba87c421b..782189630569 100755
---- a/scripts/ci/fedora-test-runner.sh
-+++ b/scripts/ci/fedora-test-runner.sh
-@@ -67,7 +67,7 @@ dnf install -y \
- cd "$SELINUX_DIR"
- 
- # Show HEAD commit for sanity checking
--git log -1
-+git log --oneline -1
- 
- #
- # Build and replace userspace components
--- 
-2.17.1
-
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>

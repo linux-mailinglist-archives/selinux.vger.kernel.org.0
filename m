@@ -2,128 +2,92 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F1824706F
-	for <lists+selinux@lfdr.de>; Mon, 17 Aug 2020 20:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CABAA24723E
+	for <lists+selinux@lfdr.de>; Mon, 17 Aug 2020 20:41:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388257AbgHQSIz (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 17 Aug 2020 14:08:55 -0400
-Received: from agnus.defensec.nl ([80.100.19.56]:51158 "EHLO agnus.defensec.nl"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388357AbgHQSIc (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Mon, 17 Aug 2020 14:08:32 -0400
-Received: from brutus (brutus.lan [IPv6:2001:985:d55d::438])
-        by agnus.defensec.nl (Postfix) with ESMTPSA id 4F9762A1283;
-        Mon, 17 Aug 2020 20:08:28 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 4F9762A1283
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
-        s=default; t=1597687708;
-        bh=ODXlLwlyZfOT/21dD0lIV/M8ir2mHqlZ8gSYC1WPJZU=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=YaW26ngENK8pksBxr+0saWOcFcKJfu8M5EA2G59tKZQUjL7JI6iWu7gSI4+Ka5u5j
-         vHrSbQ0mAlWhblTEJxD1wErUHQ/HS74hM0yP3AgVosiFScRy0TSEcA8K9X4QjlJtmG
-         IGUXsFovIVqbvZUk6jEz0PYMpzl+c0/7Nx28ItfI=
-From:   Dominick Grift <dominick.grift@defensec.nl>
-To:     James Carter <jwcart2@gmail.com>
-Cc:     bauen1 <j2468h@googlemail.com>, selinux <selinux@vger.kernel.org>
-Subject: Re: Resource usage of CIL compared to HLL
-References: <2ce8defb-523c-01c0-560c-7881d0a99416@gmail.com>
-        <CAP+JOzStOhn92uN_04R8JbVy1_5noQUVfoG-O6+2WnsKG8tcdw@mail.gmail.com>
-Date:   Mon, 17 Aug 2020 20:08:23 +0200
-In-Reply-To: <CAP+JOzStOhn92uN_04R8JbVy1_5noQUVfoG-O6+2WnsKG8tcdw@mail.gmail.com>
-        (James Carter's message of "Mon, 17 Aug 2020 13:49:41 -0400")
-Message-ID: <ypjlo8n9p2lk.fsf@defensec.nl>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+        id S1731445AbgHQSkP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 17 Aug 2020 14:40:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38198 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387968AbgHQP6A (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 17 Aug 2020 11:58:00 -0400
+Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BBD7DC061389
+        for <selinux@vger.kernel.org>; Mon, 17 Aug 2020 08:58:00 -0700 (PDT)
+Received: by mail-qk1-x744.google.com with SMTP id x69so15416080qkb.1
+        for <selinux@vger.kernel.org>; Mon, 17 Aug 2020 08:58:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:from:to:references:message-id:date:user-agent:mime-version
+         :in-reply-to:content-transfer-encoding:content-language;
+        bh=v1ikipruLir8f3QQPoH5hDUDdC1rkEYVy0NWJEQ4GxY=;
+        b=rU9LoHbl4bg72p/b4N8InrxgGGdfLPw2P2neUcoU1ok6vRL/tSo9kFYT5vqXqPxfGy
+         kLZS+fSga5bmbVokE0vqOq0leaUzj1iVXu8HYvJWPKIOcPA3O30QeSuwNoYOn3IvBd9O
+         MaNpMc4Jq7zE9IjJ+fb+r2sH5yvj6y4mT+EVySOo3WIFGqHEvknH8b1/pCPxzAUDBaxy
+         kKP0BcMvEPb52YmlWwlE0fhqmFMuRDERkmfKBBfTc5IOI51/UcZwmoPT955YjK+6sPx0
+         JIJ1jGAojmWYiBUQkFezUzghKHzfPXMmI5eSRLNphiNoZUo8zj84nIFdlnZjwWq86uB5
+         0Wig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:references:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=v1ikipruLir8f3QQPoH5hDUDdC1rkEYVy0NWJEQ4GxY=;
+        b=qGkC+Q4FZv9RU6J42GBTjbM4rdyMyEALeJRh9GzrieT17+a2w4aVX0VGJqgcihiyH3
+         P2DBuwl+BwLJ98YXng/lWqvrPPB2SzhZik2Z64zRNzx263qYNG6H9I3qJaZI0SdYPkJE
+         9wY/VNYHrhIvSoxrHkyNwM35HeUQM5MVIAW4krACjRIdP3mEAx2Kq+AKsKBQ/67gUhhJ
+         sNBedZRrcbIK91mJuyqwpn1qK3gLnuDF4k/yVW8+06CSc6QVJaGIKa3Lar6Hdc3cRo91
+         Dr7j/EYpxQmq9R7Trpl88fKDH2QFxEkbd4qZpx5J0aMFtSuw+4TLrvGhs/KgF2O5iFRu
+         oY9w==
+X-Gm-Message-State: AOAM533t5LIzow0DNcp7dx0+7QJ00nE3ArCudlxSVFgvn/ac940Myfz3
+        +fl7mitVy9H6OjZ+eOq3lBv9E1Qt75Q=
+X-Google-Smtp-Source: ABdhPJxOk+iU1o/4OWBQHqGbB2+fg5wFMNkwo2fiY9TrtRDCMs2W2W0PHpGYAtLU/OFiFKbNhpXHmA==
+X-Received: by 2002:a37:9382:: with SMTP id v124mr13085354qkd.391.1597679877095;
+        Mon, 17 Aug 2020 08:57:57 -0700 (PDT)
+Received: from [192.168.1.190] (pool-68-134-6-11.bltmmd.fios.verizon.net. [68.134.6.11])
+        by smtp.gmail.com with ESMTPSA id 20sm18098089qkh.110.2020.08.17.08.57.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Aug 2020 08:57:56 -0700 (PDT)
+Subject: Re: [RFC PATCH v2] fixfiles: correctly restore context of mountpoints
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+To:     bauen1 <j2468h@googlemail.com>, selinux@vger.kernel.org
+References: <CAEjxPJ67MVocx8MO51VcpHRmwZzxANa8Q+-iZFgxPrdwXk5i3g@mail.gmail.com>
+ <85917790-f0a6-0d57-face-58a6536b1793@gmail.com>
+ <c123b432-07e6-c26a-6d08-2b88863c2432@gmail.com>
+Message-ID: <d8630b0c-3a43-8295-9903-f21746c37539@gmail.com>
+Date:   Mon, 17 Aug 2020 11:57:55 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <c123b432-07e6-c26a-6d08-2b88863c2432@gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-James Carter <jwcart2@gmail.com> writes:
+On 8/7/20 11:05 AM, Stephen Smalley wrote:
 
-> On Mon, Aug 17, 2020 at 9:48 AM bauen1 <j2468h@googlemail.com> wrote:
->>
->> Hi,
->>
->> I usually test all my patches against refpolicy and my own cil
->> policy (https://gitlab.com/bauen1/bauen1-policy/) on small VMs in
->> the range of 1 vcpu, 512mb memory and a few gb of disk space
->> (Comparable to the cheapest VPS plan you can get and still run
->> reasonable stuff on).
->> Recently I've started hitting the memory limit while building my cil policy using semodule / secilc.
->>
->> I've found that secilc can easily hit ~400mb memory usage while building dssp3 or ~260mb while building my policy.
->> semodule invokes the same functions as secilc to build the policy
->> but requires somewhere between 100mb - 200mb for whatever it is
->> doing.
->> Running semodule against a normal refpolicy installation only requires ~160mb memory total.
->> This means that installing refpolicy on my VMs is not an issue, but
->> even my CIL policy that is far from complete will easily OOM the
->> machine.
->> While adding additional memory isn't really an issue, I'm a bit
->> annoyed that building an incomplete CIL policy requires ~2.8 times
->> the memory that a complete refpolicy requires.
->>
->> After a bit of testing using valgrind, I believe this is mostly due
->> to the way CIL handles blockinherit by duplicating the entire AST of
->> the original block into the target.
->> This works very well and is very simple, but also doesn't scale very well.
->> For example my policy has a few "base templates",
->> e.g. `file.template` that contain a lot of general use macros,
->> e.g. `relabel_files`, `manage_blk_files`. A similar approach is
->> taken by grift in dssp3.
->> All of these macros (~130) are copied to every block containing a file type (only ~470) resulting in a lot of duplicate memory.
->>
->> Is it even possible to change libsepol, e.g. to use a COW for
->> copy_ast_tree (and similiar) or is this behavior required e.g. for
->> `in` or would a change not be worth it due to additional complexity
->> ?
->>
+> On 8/6/20 10:48 AM, bauen1 wrote:
 >
-> Long before we developed CIL I had experimented with parsing Refpolicy
-> with a lua program that I created. I was really worried about memory
-> usage when developing that, so I did not copy anything. When it was
-> proposed to copy the AST for CIL I was sceptical and reworked my lua
-> program to see what the impact would be. It turned out to be easier to
-> do, faster, and did not require any more memory. The memory lost due
-> to copying the AST was made up by not having as many symbol tables.
+>> By bind mounting every filesystem we want to relabel we can access all
+>> files without anything hidden due to active mounts.
+>>
+>> This comes at the cost of user experience, because setfiles only
+>> displays the percentage if no path is given or the path is /
+>>
+>> Signed-off-by: Jonathan Hettwer <j2468h@gmail.com>
 >
-> If a lot of the macros that are being inherited are not used, then it
-> might be worthwhile to add a step to remove unused macros. Of course,
-> to really save the memory usage only the macros that are going to be
-> used should be copied, but I don't think that would be easy to do.
+> This looks good to me and running fixfiles -vM relabel appeared to 
+> work as expected, and a subsequent fixfiles -v relabel didn't show any 
+> changes so it seems to yield a consistent result.  Would welcome 
+> comments from others though since fixfiles has always been somewhat 
+> magical / obscure to me and I am not much of a shell programmer.
 >
-> I will admit that I am not a big user of inheritance. What is gained
-> from inheriting all of the macros like that?
+> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-consistency and comprehensiveness.
+Applied.
 
-In reffpolicy based policy its tempting to quickly copy and paste macros
-when you need them, leading to all kinds of inconsistencies ranging from
-descriptions that are wrong because one forgot to edit it after a copy
-paste to inconsistent macro names because it can be hard to be
-consistent with naming. Consistency is very important as there is almost
-nothing as annoying as guessing an interface/macro name wrong time after
-time because of an inconsistency.
 
-Having a comphrensive collection of inherited macros means that most of
-the time you dont have to deal with/worry about creating macros. It might also come
-in handy later if at some point an CIL-aware audit2allow -R type
-functionality arrives.
-
-That at one point was a pain point with refpolicy I believe were
-audit2allow -R wouldnt suggest an interface to use because the interface did not
-exist. By predefining all macros you ensure that audit2allow -R finds
-something.
-
->
-> Thanks for the report. I will take a look to see if there might be a
-> fairly easy way to improve the situation.
-> Jim
-
--- 
-gpg --locate-keys dominick.grift@defensec.nl
-Key fingerprint = FCD2 3660 5D6B 9D27 7FC6  E0FF DA7E 521F 10F6 4098
-https://sks-keyservers.net/pks/lookup?op=get&search=0xDA7E521F10F64098
-Dominick Grift

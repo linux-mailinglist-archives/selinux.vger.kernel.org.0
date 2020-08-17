@@ -2,83 +2,99 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4DF9246B88
-	for <lists+selinux@lfdr.de>; Mon, 17 Aug 2020 17:58:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51ABC246E66
+	for <lists+selinux@lfdr.de>; Mon, 17 Aug 2020 19:29:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2387503AbgHQP54 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 17 Aug 2020 11:57:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38126 "EHLO
+        id S2389418AbgHQR2t (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 17 Aug 2020 13:28:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730748AbgHQP5d (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 17 Aug 2020 11:57:33 -0400
-Received: from mail-qt1-x841.google.com (mail-qt1-x841.google.com [IPv6:2607:f8b0:4864:20::841])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCCD0C061389
-        for <selinux@vger.kernel.org>; Mon, 17 Aug 2020 08:57:31 -0700 (PDT)
-Received: by mail-qt1-x841.google.com with SMTP id e5so12752559qth.5
-        for <selinux@vger.kernel.org>; Mon, 17 Aug 2020 08:57:31 -0700 (PDT)
+        with ESMTP id S2389330AbgHQRIS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 17 Aug 2020 13:08:18 -0400
+Received: from mail-ed1-x549.google.com (mail-ed1-x549.google.com [IPv6:2a00:1450:4864:20::549])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE0B1C061343
+        for <selinux@vger.kernel.org>; Mon, 17 Aug 2020 10:08:12 -0700 (PDT)
+Received: by mail-ed1-x549.google.com with SMTP id v11so6670749edr.13
+        for <selinux@vger.kernel.org>; Mon, 17 Aug 2020 10:08:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=WCdH1RKBa+jnqdv9vsyfL8aLryG68b77WbxDgtwx9l8=;
-        b=nwVqgRH+EFKXJU383OKdqaxK/+HDESmQfZDgW3ytyDzUQk2wDqkyniJ0SOkBruExjW
-         r7GnrXSlAvxRg8rP41MwuGMEw5aihl8OM3G7irJeC1KD0Kmratw1cmnfZEsBfjfx+kug
-         KCFekjufuEE4oKiacB5TYdBfMPQRaDx3cxhIQTbK/L42cVzbIvx6EZOxcIg7jH8M+Iba
-         G9CPoj14sak+s9S3DJSflbXruC4PiSwdwcDiQYAaFfjvlTLtqiMznuYOvAffmVcVuMc6
-         yEmeTrhzLbkT2Lv7OE17ySOiA+UIMwJg8Nbw1FSRLJSCDyifIUIikcoTBQo2V6we88l3
-         iZNw==
+        d=google.com; s=20161025;
+        h=date:message-id:mime-version:subject:from:to:cc
+         :content-transfer-encoding;
+        bh=+mx9UxHE8cqJm7GTmmUZEZc8F7xX2W2IqrfBBB9QOjA=;
+        b=OmPMU5wRtJr+HOk95BLGxFsNz4Cn3KmNyYv+uJZ+XR/MdMjBb59LsNutLnfizNc3vY
+         i4y5vMl2ZW3v4GtYM+f6YW2TNsLwkAG28WvG+fHwEkI5wwFSBoSyx2CYSTJq1BsNOZRP
+         w/rIfsUFhj/RjkiSGfCnMOEenaZbyXoaR/72XgYoOYUA0nmxTgC/a6nAwVMDmsTdrWy8
+         IapaImnbz2PzIHNUup3aCaZcrLoAzk5FwU3YHglWobL75Y/Q4Dc2l1BvE6I+oIenfoB+
+         qY3mijGoVdpWQgd2BOL5+mbYkqU1ibOwbdc09vKwMajczltIvd61yViW6/iX6Oq06vfS
+         5nHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=WCdH1RKBa+jnqdv9vsyfL8aLryG68b77WbxDgtwx9l8=;
-        b=kjb/GRn8XBxRz6teh3nnsDEDH+VF1EvB2OlvSVgI6nAbGM1gX/MOsWwJOGtEXnB2Rc
-         aX3MKEdA2sIFsIp5wqsGFHrVkfMTFU1WbRgWCwSVmGBnmJdeU9OwcH0YF/i77+8pX8vE
-         /5pBSL8hMUho6suaFQ1lkgszR0btTQ2mIDQEPZJwO0WYhslfrElt5wiWM4x07ME9K6Eh
-         6dz8c7O6Jb751Hv1PJXOxMznqgPHaHqQiXb5C/VGifM55u1dtL8gEvB8T4K9BuN3DJ+e
-         4P8/cYkbopO58IXpSYhHLHoqUwDwX5LCouMSVzFXcYYCGSrVNkYgORSAd93JO149ZIE0
-         loNA==
-X-Gm-Message-State: AOAM533R1vkubCULxvj3UaSUXgy72RzU1uVhzPpPj7ydtOATe/JzcaLO
-        aGTkuYm3TboX+Aloxt+zKKX5Od4VMHI=
-X-Google-Smtp-Source: ABdhPJzG0BwAzmznFjYbXJMTvUwJrSioGmLaT1lbTcwru5KdKZD3L4as1cQ/pwiHid+5MaGGBLCgiQ==
-X-Received: by 2002:aed:3b7a:: with SMTP id q55mr14078755qte.78.1597679850916;
-        Mon, 17 Aug 2020 08:57:30 -0700 (PDT)
-Received: from [192.168.1.190] (pool-68-134-6-11.bltmmd.fios.verizon.net. [68.134.6.11])
-        by smtp.gmail.com with ESMTPSA id b23sm19788644qtp.41.2020.08.17.08.57.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Aug 2020 08:57:30 -0700 (PDT)
-Subject: Re: [PATCH v5] secilc/docs: document expandtypeattribute
-To:     James Carter <jwcart2@gmail.com>,
-        Dominick Grift <dominick.grift@defensec.nl>
-Cc:     SElinux list <selinux@vger.kernel.org>
-References: <CAP+JOzQe8Q0GKtm9aavEQTzFWCT8sUi8shjw=TmgJYm5XkaN_w@mail.gmail.com>
- <20200805194823.492092-1-dominick.grift@defensec.nl>
- <CAP+JOzRy+UxEAjJjuKy3NkDq-1S6tSvjEYAF+TpEcyHpUPPnTw@mail.gmail.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Message-ID: <5c31e28b-7e55-9725-4276-d23a816ed3d9@gmail.com>
-Date:   Mon, 17 Aug 2020 11:57:29 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-MIME-Version: 1.0
-In-Reply-To: <CAP+JOzRy+UxEAjJjuKy3NkDq-1S6tSvjEYAF+TpEcyHpUPPnTw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
+         :content-transfer-encoding;
+        bh=+mx9UxHE8cqJm7GTmmUZEZc8F7xX2W2IqrfBBB9QOjA=;
+        b=UV1vUwqke4gIlR49idQZI2KhDnscCIK1tFslpvrNkrOfBwOH4XDIvBc67k0QawnjON
+         TVrgCy8T3OuDvhpnQCCOjVtK2BXITiAeBuQgrL2a5wj51EHmkoA1hESFSsXHX6D3jJsk
+         J3JnFc64z5wMI0cAyNwV6tMI8lpUFRUTOkamU9Q6WtxmnLp6OaEaDih690mwO+8etKzP
+         7oFYhXdqGUnujUS9a/988wz9qUQ+88b1N0MUNeSl9VR0h6gXkbvb2zkrX6Uz22bgvY9C
+         26T7oIadQXYpP1/LLCab0Rru/Mjadar7+31VT1MHmMfrJfAauBd1gFcwGkSHBeFMk/rl
+         VPBg==
+X-Gm-Message-State: AOAM530Csr6TsNarqNYN5Mw9UxespwTwXWtgd8ppTaD2jNVtt1WZWATX
+        XYvlIOn1t+eIIqB7mMfg+TAvyjv7yA==
+X-Google-Smtp-Source: ABdhPJxjAsuqao+UCz19iDD3cRE1iqvUGgTUQRad5H4MDtyJjPX7rpcmAKVbSQMgky/6d8On1nKk8jFgug==
+X-Received: by 2002:a05:6402:22d9:: with SMTP id dm25mr15617460edb.2.1597684089211;
+ Mon, 17 Aug 2020 10:08:09 -0700 (PDT)
+Date:   Mon, 17 Aug 2020 19:07:11 +0200
+Message-Id: <20200817170729.2605279-1-tweek@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.28.0.220.ged08abb693-goog
+Subject: [PATCH v3 0/3] selinux: add detailed tracepoint on audited events
+From:   "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Nick Kralevich <nnk@google.com>,
+        "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org,
+        selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 8/5/20 4:22 PM, James Carter wrote:
+The audit data currently captures which process and which target
+is responsible for a denial. There is no data on where exactly in the
+process that call occurred. Debugging can be made easier by adding a
+trace point when an event is audited.
 
-> On Wed, Aug 5, 2020 at 3:50 PM Dominick Grift
-> <dominick.grift@defensec.nl> wrote:
->> This was added for Androids Treble in 2017.
->>
->> Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
-> Acked-by: James Carter <jwcart2@gmail.com>
+This series of patch defines this new trace point and extra attributes
+to easily match the tracepoint event with the audit event. It is also
+possible to filter the events based on these attributes.
 
-Applied.
+Changes since v2
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+- Add patch to include decoded permissions.
+- Remove ssid and tsid from attributes list.
+- Update commit log with more context.
 
+Peter Enderborg (2):
+  selinux: add basic filtering for audit trace events
+  selinux: add permission names to trace event
+
+Thi=C3=A9baud Weksteen (1):
+  selinux: add tracepoint on denials
+
+ MAINTAINERS                |  1 +
+ include/trace/events/avc.h | 60 ++++++++++++++++++++++++++++++++++++++
+ security/selinux/avc.c     | 59 ++++++++++++++++++++++++++++++++-----
+ 3 files changed, 113 insertions(+), 7 deletions(-)
+ create mode 100644 include/trace/events/avc.h
+
+--=20
+2.28.0.220.ged08abb693-goog
 

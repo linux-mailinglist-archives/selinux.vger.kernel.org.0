@@ -2,15 +2,15 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6840F2497F7
-	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 10:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1EE8E249860
+	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 10:42:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726719AbgHSIJZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 19 Aug 2020 04:09:25 -0400
-Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:8853 "EHLO
+        id S1726531AbgHSImg (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 19 Aug 2020 04:42:36 -0400
+Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:9767 "EHLO
         SELDSEGREL01.sonyericsson.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726745AbgHSIJQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 04:09:16 -0400
+        by vger.kernel.org with ESMTP id S1725997AbgHSIme (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 04:42:34 -0400
 Subject: Re: [RFC PATCH v2] selinux: convert policy read-write lock to RCU
 To:     Stephen Smalley <stephen.smalley.work@gmail.com>,
         <paul@paul-moore.com>

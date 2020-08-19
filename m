@@ -2,78 +2,166 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9996824A275
-	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 17:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E45D24A278
+	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 17:05:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728610AbgHSPFq convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Wed, 19 Aug 2020 11:05:46 -0400
-Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:18544 "EHLO
-        SELDSEGREL01.sonyericsson.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728700AbgHSPFk (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 11:05:40 -0400
-Subject: Re: [RFC PATCH] selinux: Use call_rcu for policydb and booleans
-To:     <paulmck@kernel.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>
-CC:     <paul@paul-moore.com>, <omosnace@redhat.com>,
-        <selinux@vger.kernel.org>
-References: <20200818221718.35655-1-stephen.smalley.work@gmail.com>
- <e9c1967d-170f-86f0-2762-7ca36ea08e40@sony.com>
- <7fe5f8e9-1fd9-2a65-4117-5b0d35c3973e@gmail.com>
- <20200819131511.GS27891@paulmck-ThinkPad-P72>
-From:   peter enderborg <peter.enderborg@sony.com>
-Message-ID: <15a4ba37-e5ac-6247-814b-d86c4c3c85eb@sony.com>
-Date:   Wed, 19 Aug 2020 17:05:28 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1728480AbgHSPFz (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 19 Aug 2020 11:05:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56092 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728660AbgHSPFs (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 11:05:48 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB504C061383
+        for <selinux@vger.kernel.org>; Wed, 19 Aug 2020 08:05:47 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id m20so18395102eds.2
+        for <selinux@vger.kernel.org>; Wed, 19 Aug 2020 08:05:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MtGpYyGp/kpRk+QtQyP/L47DdXNqhkrRCAomMgBgGAg=;
+        b=o9/YzJzYwIeIcFDBYQRVnqzG4EY05d6PBrceTlLQ0I8IqEMFK5wIq8noWErQFbKNgS
+         bwQbKEhiorfkdohQ5WmFugb6nGRPH5AvpIcCY/UkCBvbZpv6N6e8sAfNJ+Q8TBO7fv0H
+         jqO+wZpj+fj3vXh7w/ho/4ZhFs/eo5T66wVPeNnVO16oMerwkLsBYIEZ3e75wC4Vylvj
+         ZE+SJKp50s2Tn7nOAgKqwltqEAbxXnM8i96rU7PZOcN64EkFZds621PSSmJtMBR4nzxx
+         QqlIhB/lOz0E8IV5DZtlmvSHYtJnVkM+mvyZroF1pqGXUEW6zh5ejiGzR7ZCp4MUzCXX
+         bI4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=MtGpYyGp/kpRk+QtQyP/L47DdXNqhkrRCAomMgBgGAg=;
+        b=aKOWRtehCnrO/sskJ5cDJ7faKXOOYpLYX1s0Fpi0YN9/DrYBwFXrUMdpp3dQP0zwit
+         opCcHao9gmrMoG61XDpMOnVfS6NAz89W3hpzM5i1hbHQmR86CC+pRKtnRkjOn2Ofl5WA
+         zb0dOhd4RaisJCd6RhE/bXZ1E8d58r925s+z5E0/coMZD92mCGqwcLErwM8kIBnV693a
+         Dht+ZUgdLeehbzr69uwED/Sk45yqhRSC8CbfCHg6CHOu3/wklpk87R/dnDCZYJMQvUEF
+         xWlfVCFhld4BwngaQKDw05lPoUsA5PR2Qnht+AeZyTdfpg/3a9fuym8IIp86CRt5zzd9
+         yGFA==
+X-Gm-Message-State: AOAM533wFQLyLVv9nRygLbfnpxUQYem2WsTTHAc1TvHKWkpFdy0Mln8f
+        siAKIp7o37XYj4ANx5sONmkC7pnMB9U=
+X-Google-Smtp-Source: ABdhPJwGdxvIaAakn8MR+2aTNs0GKitQ/tAzvEIe/LlA2W+cumjo2TjUq/q3hnn+TcFkQyhjYjgkTg==
+X-Received: by 2002:a50:ec90:: with SMTP id e16mr25796223edr.234.1597849542092;
+        Wed, 19 Aug 2020 08:05:42 -0700 (PDT)
+Received: from debianHome.localdomain (x4d018a81.dyn.telefonica.de. [77.1.138.129])
+        by smtp.gmail.com with ESMTPSA id k6sm18932921ejj.41.2020.08.19.08.05.41
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Aug 2020 08:05:41 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH 1/2] sepolgen: print extended permissions in hexadecimal
+Date:   Wed, 19 Aug 2020 17:05:33 +0200
+Message-Id: <20200819150534.18026-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <20200819131511.GS27891@paulmck-ThinkPad-P72>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8BIT
-Content-Language: en-GB
-X-SEG-SpamProfiler-Analysis: v=2.3 cv=frmim2wf c=1 sm=1 tr=0 a=Jtaq2Av1iV2Yg7i8w6AGMw==:117 a=IkcTkHD0fZMA:10 a=y4yBn9ojGxQA:10 a=z6gsHLkEAAAA:8 a=0OuJUApU1U2SYywe4NQA:9 a=QEXdDO2ut3YA:10 a=d-OLMTCWyvARjPbQ-enb:22
-X-SEG-SpamProfiler-Score: 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 8/19/20 3:15 PM, Paul E. McKenney wrote:
-> On Wed, Aug 19, 2020 at 08:06:25AM -0400, Stephen Smalley wrote:
->> On 8/19/20 4:32 AM, peter enderborg wrote:
->>
->>>  From 8184ea3648b18718fdb460a30dfc7f848b7bc6a2 Mon Sep 17 00:00:00 2001
->>> From: Peter Enderborg <peter.enderborg@sony.com>
->>> Date: Wed, 19 Aug 2020 10:20:28 +0200
->>> Subject: [RFC PATCH] selinux: Use call_rcu for policydb and booleans
->>>
->>> This patch adds call_rcu that moves sycronize out
->>> out call path. In the callback we can no call
->>> cond_resched so they have to be remvoed.
->> If you look at the first version of my patch, I used call_rcu() but in a
->> manner that avoided the need to remove cond_resched() or kvfree() calls from
->> the freeing code by having the rcu callback just schedule_work() to free it
->> later.  That follows the pattern used for freeing user namespaces, for
->> example.  However, in re-reading the RCU documentation, my understanding is
->> that one should use synchronize_rcu() followed by direct freeing whenever
->> possible and this is possible from both the policy load and setting
->> booleans.  Neither of them are very frequent operations nor so
->> performance-critical that the cost of synchronize_rcu() would be considered
->> unacceptable IMHO.  Thus, I don't believe we need to do this.
-> Indeed, synchronize_rcu() avoids things like callback flooding.
-> There are nevertheless cases where synchronize_rcu() can be a problem,
-> for example due to its relatively long latency (milliseconds at best).
-> But if this is an infrequent operation, that should not be an issue.
->
-> If there nevertheless is a reason to avoid synchronize_rcu(), then
-> queue_rcu_work() gets you directly to a sleepable workqueue context
-> where cond_resched() can be used.
->
-> 							Thnax, Paul
+All tools like ausearch(8) or sesearch(1) and online documentation[1]
+use hexadecimal values for extended permissions.
+Hence use them, e.g. for audit2allow output, as well.
 
-From what I have seen in usage of booleans the usage is
+[1]: https://github.com/strace/strace/blob/master/linux/64/ioctls_inc.h
 
-switch-state, do-something, switch-back. So if there is anything
-security related you want switch time to be fast. But when I measured
-it was faster with synchronize_rcu than call_rcu.  booleans  work are
-smaller than a total policy load.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ python/sepolgen/src/sepolgen/refpolicy.py |  5 ++---
+ python/sepolgen/tests/test_access.py      | 10 +++++-----
+ python/sepolgen/tests/test_refpolicy.py   | 12 ++++++------
+ 3 files changed, 13 insertions(+), 14 deletions(-)
+
+diff --git a/python/sepolgen/src/sepolgen/refpolicy.py b/python/sepolgen/src/sepolgen/refpolicy.py
+index 43cecfc7..74763687 100644
+--- a/python/sepolgen/src/sepolgen/refpolicy.py
++++ b/python/sepolgen/src/sepolgen/refpolicy.py
+@@ -407,10 +407,9 @@ class XpermSet():
+ 
+         # print single value without braces
+         if len(self.ranges) == 1 and self.ranges[0][0] == self.ranges[0][1]:
+-            return compl + str(self.ranges[0][0])
++            return compl + hex(self.ranges[0][0])
+ 
+-        vals = map(lambda x: str(x[0]) if x[0] == x[1] else "%s-%s" % x,
+-                   self.ranges)
++        vals = map(lambda x: hex(x[0]) if x[0] == x[1] else "%s-%s" % (hex(x[0]), hex(x[1]), ), self.ranges)
+ 
+         return "%s{ %s }" % (compl, " ".join(vals))
+ 
+diff --git a/python/sepolgen/tests/test_access.py b/python/sepolgen/tests/test_access.py
+index 73a5407d..623588e0 100644
+--- a/python/sepolgen/tests/test_access.py
++++ b/python/sepolgen/tests/test_access.py
+@@ -171,7 +171,7 @@ class TestAccessVector(unittest.TestCase):
+         a.merge(b)
+         self.assertEqual(sorted(list(a.perms)), ["append", "read", "write"])
+         self.assertEqual(list(a.xperms.keys()), ["ioctl"])
+-        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 42 12345 }")
++        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 0x2a 0x3039 }")
+ 
+     def text_merge_xperm2(self):
+         """Test merging AV that does not contain xperms with AV that does"""
+@@ -185,7 +185,7 @@ class TestAccessVector(unittest.TestCase):
+         a.merge(b)
+         self.assertEqual(sorted(list(a.perms)), ["append", "read", "write"])
+         self.assertEqual(list(a.xperms.keys()), ["ioctl"])
+-        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 42 12345 }")
++        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 0x2a 0x3039 }")
+ 
+     def test_merge_xperm_diff_op(self):
+         """Test merging two AVs that contain xperms with different operation"""
+@@ -203,8 +203,8 @@ class TestAccessVector(unittest.TestCase):
+         a.merge(b)
+         self.assertEqual(list(a.perms), ["read"])
+         self.assertEqual(sorted(list(a.xperms.keys())), ["asdf", "ioctl"])
+-        self.assertEqual(a.xperms["asdf"].to_string(), "23")
+-        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 42 12345 }")
++        self.assertEqual(a.xperms["asdf"].to_string(), "0x17")
++        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 0x2a 0x3039 }")
+                          
+     def test_merge_xperm_same_op(self):
+         """Test merging two AVs that contain xperms with same operation"""
+@@ -222,7 +222,7 @@ class TestAccessVector(unittest.TestCase):
+         a.merge(b)
+         self.assertEqual(list(a.perms), ["read"])
+         self.assertEqual(list(a.xperms.keys()), ["ioctl"])
+-        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 23 42 12345 }")
++        self.assertEqual(a.xperms["ioctl"].to_string(), "{ 0x17 0x2a 0x3039 }")
+ 
+ class TestUtilFunctions(unittest.TestCase):
+     def test_is_idparam(self):
+diff --git a/python/sepolgen/tests/test_refpolicy.py b/python/sepolgen/tests/test_refpolicy.py
+index 4b50c8aa..c7219fd5 100644
+--- a/python/sepolgen/tests/test_refpolicy.py
++++ b/python/sepolgen/tests/test_refpolicy.py
+@@ -90,17 +90,17 @@ class TestXpermSet(unittest.TestCase):
+         a.complement = True
+         self.assertEqual(a.to_string(), "")
+         a.add(1234)
+-        self.assertEqual(a.to_string(), "~ 1234")
++        self.assertEqual(a.to_string(), "~ 0x4d2")
+         a.complement = False
+-        self.assertEqual(a.to_string(), "1234")
++        self.assertEqual(a.to_string(), "0x4d2")
+         a.add(2345)
+-        self.assertEqual(a.to_string(), "{ 1234 2345 }")
++        self.assertEqual(a.to_string(), "{ 0x4d2 0x929 }")
+         a.complement = True
+-        self.assertEqual(a.to_string(), "~ { 1234 2345 }")
++        self.assertEqual(a.to_string(), "~ { 0x4d2 0x929 }")
+         a.add(42,64)
+-        self.assertEqual(a.to_string(), "~ { 42-64 1234 2345 }")
++        self.assertEqual(a.to_string(), "~ { 0x2a-0x40 0x4d2 0x929 }")
+         a.complement = False
+-        self.assertEqual(a.to_string(), "{ 42-64 1234 2345 }")
++        self.assertEqual(a.to_string(), "{ 0x2a-0x40 0x4d2 0x929 }")
+ 
+ class TestSecurityContext(unittest.TestCase):
+     def test_init(self):
+-- 
+2.28.0
 

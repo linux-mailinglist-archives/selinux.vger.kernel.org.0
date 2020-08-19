@@ -2,24 +2,23 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E13724997C
-	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 11:38:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4BE9249A1D
+	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 12:20:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727055AbgHSJia convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Wed, 19 Aug 2020 05:38:30 -0400
-Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:11548 "EHLO
+        id S1727114AbgHSKUC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Wed, 19 Aug 2020 06:20:02 -0400
+Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:12536 "EHLO
         SELDSEGREL01.sonyericsson.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726634AbgHSJiD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 05:38:03 -0400
-Subject: Re: [RFC PATCH v2] selinux: convert policy read-write lock to RCU
+        by vger.kernel.org with ESMTP id S1726642AbgHSKUC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 06:20:02 -0400
+Subject: [RFC PATCH] selinux: Use call_rcu for policydb and booleans
 To:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        <paul@paul-moore.com>
-CC:     <omosnace@redhat.com>, <selinux@vger.kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>
+        <paul@paul-moore.com>, "Paul E. McKenney" <paulmck@kernel.org>
+CC:     <omosnace@redhat.com>, <selinux@vger.kernel.org>
 References: <20200818221718.35655-1-stephen.smalley.work@gmail.com>
 From:   peter enderborg <peter.enderborg@sony.com>
-Message-ID: <75fe3624-3a03-c11a-41aa-97f9aeda8161@sony.com>
-Date:   Wed, 19 Aug 2020 10:42:46 +0200
+Message-ID: <e9c1967d-170f-86f0-2762-7ca36ea08e40@sony.com>
+Date:   Wed, 19 Aug 2020 10:32:19 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
@@ -27,12 +26,166 @@ In-Reply-To: <20200818221718.35655-1-stephen.smalley.work@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8BIT
 Content-Language: en-GB
-X-SEG-SpamProfiler-Analysis: v=2.3 cv=frmim2wf c=1 sm=1 tr=0 a=kIrCkORFHx6JeP9rmF/Kww==:117 a=IkcTkHD0fZMA:10 a=y4yBn9ojGxQA:10 a=RpNjiQI2AAAA:8 a=pGLkceISAAAA:8 a=G2n1RxoRV8L1VZGYj4UA:9 a=jpIH26JlB8aEU1M81S3jpgcb7nU=:19 a=o5cvrlFhfeLv3N56:21 a=jY4UmUS9bSGof2Xv:21 a=QEXdDO2ut3YA:10
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=frmim2wf c=1 sm=1 tr=0 a=kIrCkORFHx6JeP9rmF/Kww==:117 a=IkcTkHD0fZMA:10 a=y4yBn9ojGxQA:10 a=z6gsHLkEAAAA:8 a=RpNjiQI2AAAA:8 a=pGLkceISAAAA:8 a=c5mL6sUh8Ydjx7kqqyIA:9 a=jpIH26JlB8aEU1M81S3jpgcb7nU=:19 a=sT9HO2F_TqqIS-l-:21 a=tdzvYGQUfG5Hw_iW:21 a=QEXdDO2ut3YA:10 a=d-OLMTCWyvARjPbQ-enb:22 a=pHzHmUro8NiASowvMSCR:22 a=Ew2E2A-JSTLzCXPT_086:22
 X-SEG-SpamProfiler-Score: 0
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
+
+From 8184ea3648b18718fdb460a30dfc7f848b7bc6a2 Mon Sep 17 00:00:00 2001
+From: Peter Enderborg <peter.enderborg@sony.com>
+Date: Wed, 19 Aug 2020 10:20:28 +0200
+Subject: [RFC PATCH] selinux: Use call_rcu for policydb and booleans
+
+This patch adds call_rcu that moves sycronize out
+out call path. In the callback we can no call
+cond_resched so they have to be remvoed.
+
+Signed-off-by: Peter Enderborg <peter.enderborg@sony.com>
+---
+ security/selinux/ss/policydb.c |  6 -----
+ security/selinux/ss/services.c | 43 ++++++++++++++++++++++++++++++----
+ 2 files changed, 39 insertions(+), 10 deletions(-)
+
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 9fccf417006b..bcf49da4d7b2 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -341,7 +341,6 @@ static int filenametr_destroy(void *key, void *datum, void *p)
+                kfree(d);
+                d = next;
+        } while (unlikely(d));
+-       cond_resched();
+        return 0;
+ }
+ 
+@@ -353,7 +352,6 @@ static int range_tr_destroy(void *key, void *datum, void *p)
+        ebitmap_destroy(&rt->level[0].cat);
+        ebitmap_destroy(&rt->level[1].cat);
+        kfree(datum);
+-       cond_resched();
+        return 0;
+ }
+ 
+@@ -791,7 +789,6 @@ void policydb_destroy(struct policydb *p)
+        struct role_allow *ra, *lra = NULL;
+ 
+        for (i = 0; i < SYM_NUM; i++) {
+-               cond_resched();
+                hashtab_map(&p->symtab[i].table, destroy_f[i], NULL);
+                hashtab_destroy(&p->symtab[i].table);
+        }
+@@ -807,7 +804,6 @@ void policydb_destroy(struct policydb *p)
+        avtab_destroy(&p->te_avtab);
+ 
+        for (i = 0; i < OCON_NUM; i++) {
+-               cond_resched();
+                c = p->ocontexts[i];
+                while (c) {
+                        ctmp = c;
+@@ -819,7 +815,6 @@ void policydb_destroy(struct policydb *p)
+ 
+        g = p->genfs;
+        while (g) {
+-               cond_resched();
+                kfree(g->fstype);
+                c = g->head;
+                while (c) {
+@@ -839,7 +834,6 @@ void policydb_destroy(struct policydb *p)
+        hashtab_destroy(&p->role_tr);
+ 
+        for (ra = p->role_allow; ra; ra = ra->next) {
+-               cond_resched();
+                kfree(lra);
+                lra = ra;
+        }
+diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
+index ba9347517e5b..11eff3a98ef8 100644
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -2184,11 +2184,29 @@ static void selinux_notify_policy_change(struct selinux_state *state,
+        selinux_xfrm_notify_policyload();
+ }
+ 
++struct deprecated_policy {
++       struct selinux_policy *policy;
++       int partial;
++       struct rcu_head rcu;
++};
++
++void policy_reclaim(struct rcu_head *rp)
++{
++       struct deprecated_policy *dep = container_of(rp, struct dep_policy, rcu);
++
++       if (dep->partial)
++               selinux_policy_cond_free(dep->policy);
++       else
++               selinux_policy_free(dep->policy);
++       kfree(dep);
++}
++
+ void selinux_policy_commit(struct selinux_state *state,
+                        struct selinux_policy *newpolicy)
+ {
+        struct selinux_policy *oldpolicy;
+        u32 seqno;
++       struct deprecated_policy *dep;
+ 
+        /*
+         * NOTE: We do not need to take the rcu read lock
+@@ -2231,8 +2249,16 @@ void selinux_policy_commit(struct selinux_state *state,
+        }
+ 
+        /* Free the old policy */
+-       synchronize_rcu();
+-       selinux_policy_free(oldpolicy);
++       /* if cant alloc we need to it the slow way */
++       dep  = kzalloc(sizeof(struct deprecated_policy), GFP_KERNEL);
++       if (dep) {
++               dep->policy = oldpolicy;
++               dep->partial = 0;
++               call_rcu(&dep->rcu, policy_reclaim);
++       } else {
++               synchronize_rcu();
++               selinux_policy_free(oldpolicy);
++       }
+ 
+        /* Notify others of the policy change */
+        selinux_notify_policy_change(state, seqno);
+@@ -2956,6 +2982,7 @@ int security_set_bools(struct selinux_state *state, u32 len, int *values)
+        struct selinux_policy *newpolicy, *oldpolicy;
+        int rc;
+        u32 i, seqno = 0;
++       struct deprecated_policy *dep;
+ 
+        if (!selinux_initialized(state))
+                return -EINVAL;
+@@ -3020,8 +3047,16 @@ int security_set_bools(struct selinux_state *state, u32 len, int *values)
+         * that were copied for the new policy, and the oldpolicy
+         * structure itself but not what it references.
+         */
+-       synchronize_rcu();
+-       selinux_policy_cond_free(oldpolicy);
++       /* if we can not alloc do it the slow way */
++       dep  = kzalloc(sizeof(struct deprecated_policy), GFP_KERNEL);
++       if (dep) {
++               dep->policy = oldpolicy;
++               dep->partial = 1;
++               call_rcu(&dep->rcu, policy_reclaim);
++       } else {
++               synchronize_rcu();
++               selinux_policy_cond_free(oldpolicy);
++       }
+ 
+        /* Notify others of the policy change */
+        selinux_notify_policy_change(state, seqno);
+-- 
+2.17.1
+
+23059638@seldlx10744:/mnt/lb/nfs/kernel/moore/selinux$
+
+
 
 On 8/19/20 12:17 AM, Stephen Smalley wrote:
 > Convert the policy read-write lock to RCU.  This is significantly
@@ -619,14 +772,6 @@ On 8/19/20 12:17 AM, Stephen Smalley wrote:
 >  
 >  	/* Free the old policy */
 > +	synchronize_rcu();
-
-
-I tested this with call_rcu(), it is good way to get it fast. However im not sure if call_rcu is right
-for this huge free task.  I think synchronize_rcu() is safe with cond_resched().
-
-Added Paul E. McKenney for his view on call_rcu or not for this case. I think he suggested that some time.
-
-
 >  	selinux_policy_free(oldpolicy);
 >  
 >  	/* Notify others of the policy change */

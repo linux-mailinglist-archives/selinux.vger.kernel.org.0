@@ -2,15 +2,15 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4BE9249A1D
-	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 12:20:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6F72499D3
+	for <lists+selinux@lfdr.de>; Wed, 19 Aug 2020 12:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727114AbgHSKUC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Wed, 19 Aug 2020 06:20:02 -0400
-Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:12536 "EHLO
+        id S1726495AbgHSKDo convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Wed, 19 Aug 2020 06:03:44 -0400
+Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:11569 "EHLO
         SELDSEGREL01.sonyericsson.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726642AbgHSKUC (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 06:20:02 -0400
+        by vger.kernel.org with ESMTP id S1726702AbgHSKDo (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 19 Aug 2020 06:03:44 -0400
 Subject: [RFC PATCH] selinux: Use call_rcu for policydb and booleans
 To:     Stephen Smalley <stephen.smalley.work@gmail.com>,
         <paul@paul-moore.com>, "Paul E. McKenney" <paulmck@kernel.org>

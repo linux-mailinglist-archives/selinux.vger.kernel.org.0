@@ -2,60 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB70924B140
-	for <lists+selinux@lfdr.de>; Thu, 20 Aug 2020 10:45:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F133F24B13E
+	for <lists+selinux@lfdr.de>; Thu, 20 Aug 2020 10:45:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726751AbgHTIpR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 20 Aug 2020 04:45:17 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:47158 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726815AbgHTIpE (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 20 Aug 2020 04:45:04 -0400
+        id S1726817AbgHTIpH (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 20 Aug 2020 04:45:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30760 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726701AbgHTIo7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 20 Aug 2020 04:44:59 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1597913102;
+        s=mimecast20190719; t=1597913097;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=vqodWod3gycJmurMFR0UqNijUlyqJHcoirWHJIQa7SA=;
-        b=gL+oASgpwq4SmxVEocoFIGtS0ogAK6SsSNuRH1fq1KmZ8mkjJU77Y1zMxr+izIUAXueZMy
-        ITxupRhKnDQMF/rlyeeAvunUmqtMCRQXRj6xntllCfvzyBr6TaX4Sp9jOzNCFEac0JdeUE
-        9cRK5+llIrPLVej8op9ftew6lIof/x4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-225-syiC6mPZOk2Tj3fh5HBhbw-1; Thu, 20 Aug 2020 04:44:51 -0400
-X-MC-Unique: syiC6mPZOk2Tj3fh5HBhbw-1
-Received: by mail-wr1-f72.google.com with SMTP id e12so399939wra.13
-        for <selinux@vger.kernel.org>; Thu, 20 Aug 2020 01:44:51 -0700 (PDT)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gcUBATCRJiYnNMlPKV4JFjDwk+9Rl7SbYwmWwCzBlWQ=;
+        b=GcrzperFCpQkZzwKJvVE8Me5WRW290+e+Wl/Yh4yIXGC36WVLjmNLlDrZZdiaEgmwOc5oF
+        GZKID4NuDv0zoj1jKWWLZmjOIe9wkC4Mpg96P7arpmFY/T+ZC3kaRlimClUcX7jvLAR2IY
+        9FOsovRPTuTNTh7//a97/RmqFl27/2c=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-271-ESVVHSmsMaKqxaJ5lGlhjw-1; Thu, 20 Aug 2020 04:44:52 -0400
+X-MC-Unique: ESVVHSmsMaKqxaJ5lGlhjw-1
+Received: by mail-wr1-f71.google.com with SMTP id t12so403078wrp.0
+        for <selinux@vger.kernel.org>; Thu, 20 Aug 2020 01:44:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=vqodWod3gycJmurMFR0UqNijUlyqJHcoirWHJIQa7SA=;
-        b=OuD1Qe5hvgbQMoOpykg/F2J9VxPzdBxfjOUOZL6UfP/gwbsjEhabbcSiquZwO9U6Z1
-         QJ7awChwXCGyp9m6RiDDhKn6Fj+W3KwnMUnoR8CbooDVZCMyiSemIfacKydX3DIXZe/Q
-         7mmV3Yl9iaj86M/P7IYcKGfiTb9hZnfFiTPG7NrQcQhXNEq3mEy7YEUtf4caKcKvlSii
-         nFXLvYxwjg19tdjqFR1nDS28GG9RCOQl97MPu/0Q2WwQkLDKbF2Zcw1pEq1eRKF6U0sJ
-         PbiAxqMBf7CeobA7NbuiyXmt9ONyzoPY6MFD8LfCdJOJ9MRabS8rgD+q4RZZd0nSxr7p
-         To1Q==
-X-Gm-Message-State: AOAM532nFlxNPwoMuRDavIHBEcrErZDsw6GNU79dK0DI3rbrnB+E4RWw
-        xzaP9gDZHLZQv/r9z6qNeqHrIPtINIVyG66qToy3TJhgWgCX4Qd+JdBpar5tsXpK8JxqC+8ipiJ
-        zRIieHcb9Ylle9TBvyg==
-X-Received: by 2002:a5d:55c9:: with SMTP id i9mr2021416wrw.31.1597913090122;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=gcUBATCRJiYnNMlPKV4JFjDwk+9Rl7SbYwmWwCzBlWQ=;
+        b=N1Rf1k9bsPYIRwoLkNwn5Wy2z6+fB9ySpUNU0CDeWeHmyfATt+Di43DIMKOuSw65Zu
+         c0aMYIE1NAejpTQpfqb6qHlLtXEkGfzd+fgbUn2MP/TBaFiCbjziBdo4YUv8sh6W2nlw
+         tBlkRGMSvDyfaA3DEqIgmV0qxNyp9/0YI+Ty+J6IaNtGriI70nW3j+wl7BXAmJ0R8FsV
+         VB6/bm921aLWeukEFZAiWQTA1NcvzIXRLd7mtpTdWCu8WB1q0FrVCuuko/LmKqz/4pWl
+         t+h1TbI6IkxD57jmkP/aOO/zijnbd4nVeULCcJy5PkTiXnratopsp9m7fDwiPEAAUUPq
+         M6uA==
+X-Gm-Message-State: AOAM530DJTpwnGQzmT1HzTGFah/77+X1dxb0UE/+e2RCiM5q40+bxknx
+        JU/XHaTBI6ikojqS97rt5EX5EM5v2ISSei1LzCP6UakpWbaLkC/3ynKTCj3UnI3uVxkyc7aKqtE
+        c3Ra+VxWeTf7WFGe+DQ==
+X-Received: by 2002:adf:f806:: with SMTP id s6mr2167757wrp.252.1597913090839;
         Thu, 20 Aug 2020 01:44:50 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJwLhRRg4uTaE9x/DyHiS7dZhEG/GiZC9vXiJ9kjoKiha4FzAXs5X7/CI5M9OJ9yK9Ofvbpkxg==
-X-Received: by 2002:a5d:55c9:: with SMTP id i9mr2021401wrw.31.1597913089906;
-        Thu, 20 Aug 2020 01:44:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzd4Qz9mq53U82qkC8uhvkm7Q02w2UXrS/lbOH+PiFY5kuIqiDTIURQ9mvOZ6YjSlvVCDJ5vg==
+X-Received: by 2002:adf:f806:: with SMTP id s6mr2167745wrp.252.1597913090641;
+        Thu, 20 Aug 2020 01:44:50 -0700 (PDT)
 Received: from omos.redhat.com ([2a02:8308:b103:4000:e83d:a4fb:e589:6902])
-        by smtp.gmail.com with ESMTPSA id o66sm3110856wmb.27.2020.08.20.01.44.48
+        by smtp.gmail.com with ESMTPSA id o66sm3110856wmb.27.2020.08.20.01.44.49
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Aug 2020 01:44:49 -0700 (PDT)
+        Thu, 20 Aug 2020 01:44:50 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite v3 0/2] Run full testsuite on Fedora in Travis CI
-Date:   Thu, 20 Aug 2020 10:44:45 +0200
-Message-Id: <20200820084447.1030353-1-omosnace@redhat.com>
+Subject: [PATCH testsuite v3 1/2] README: add perl-lib as a dependency
+Date:   Thu, 20 Aug 2020 10:44:46 +0200
+Message-Id: <20200820084447.1030353-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200820084447.1030353-1-omosnace@redhat.com>
+References: <20200820084447.1030353-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -63,35 +66,42 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This series converts the CI scripts to run the full testsuite in Fedora
-VMs instead of build-testing it directly in the Ubuntu CI environment.
+The `lib` perl module has been split out of the `perl-interpreter`
+package in Fedora 33 into `perl-lib`. It is needed for the filesystem
+tests. Add it to the dependencies.
 
-v3: add a more explicit note about perl-lib on Fedora <=32
-v2: run also on Rawhide in addition to the current stable release
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ README.md | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-Demo Travis run:
-https://travis-ci.org/github/WOnder93/selinux-testsuite/builds/716827281
-
-Ondrej Mosnacek (2):
-  README: add perl-lib as a dependency
-  travis: run the full testsuite on a Fedora VM
-
- .travis.yml                         |  68 +++++----------
- README.md                           |   5 +-
- travis-ci/LICENSE                   |   5 ++
- travis-ci/enable-policy.sh          |  10 ---
- travis-ci/run-kvm-test.sh           | 124 ++++++++++++++++++++++++++++
- travis-ci/run-testsuite.sh          |  55 ++++++++++++
- travis-ci/setup-policy-fedora.sh    |  33 --------
- travis-ci/setup-policy-refpolicy.sh |  21 -----
- 8 files changed, 207 insertions(+), 114 deletions(-)
- create mode 100644 travis-ci/LICENSE
- delete mode 100644 travis-ci/enable-policy.sh
- create mode 100755 travis-ci/run-kvm-test.sh
- create mode 100755 travis-ci/run-testsuite.sh
- delete mode 100644 travis-ci/setup-policy-fedora.sh
- delete mode 100644 travis-ci/setup-policy-refpolicy.sh
-
+diff --git a/README.md b/README.md
+index ff0a0dc..838a082 100644
+--- a/README.md
++++ b/README.md
+@@ -45,6 +45,7 @@ similar dependencies):
+ * perl-Test  _(test harness used by the testsuite)_
+ * perl-Test-Harness _(test harness used by the testsuite)_
+ * perl-Test-Simple _(for `Test::More`)_
++* perl-lib _(for `lib`; split out from `perl-interpreter` since Fedora 33)_
+ * selinux-policy-devel _(to build the test policy)_
+ * gcc _(to build the test programs)_
+ * libselinux-devel _(to build some of the test programs)_
+@@ -60,11 +61,13 @@ similar dependencies):
+ * nftables _(used by inet_socket and sctp tests if ver >= 9.3 for secmark testing )_
+ 
+ On a modern Fedora system you can install these dependencies with the
+-following command:
++following command (NOTE: On Fedora 32 and below you need to remove
++`perl-lib` from the package list):
+ 
+ 	# dnf install perl-Test \
+ 		perl-Test-Harness \
+ 		perl-Test-Simple \
++		perl-lib \
+ 		selinux-policy-devel \
+ 		gcc \
+ 		libselinux-devel \
 -- 
 2.26.2
 

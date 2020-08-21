@@ -2,54 +2,55 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F46924D679
-	for <lists+selinux@lfdr.de>; Fri, 21 Aug 2020 15:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFC5124D666
+	for <lists+selinux@lfdr.de>; Fri, 21 Aug 2020 15:46:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728857AbgHUNqp (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 21 Aug 2020 09:46:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37280 "EHLO
+        id S1728947AbgHUNqE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 21 Aug 2020 09:46:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728834AbgHUNoS (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 21 Aug 2020 09:44:18 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 778EEC0617BA
-        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:43:58 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id w2so1446309edv.7
-        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:43:58 -0700 (PDT)
+        with ESMTP id S1728633AbgHUNoi (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 21 Aug 2020 09:44:38 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89EF0C061573
+        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:44:20 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id m22so2311298eje.10
+        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:44:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=ThqvJPVAt1k40pAXNs/4MJKb4e62gPXaTQ23UtAvrFU=;
-        b=zoXS+GZHOSUhxBOaFtvSm0cRAQyQWOAk0zO78DhJxL4g7QbXnVliajOCWf6dc1d1bl
-         x+oK2pRZ/VTVTZuSbWnFciazhGq+8ZgoNE04pdkiSIsozjkfWSmIgLn7/vZ5IOu3GjYf
-         db7LJWCE36bApiJXHmhknJ0IKOhI5o4jT/EUK9uYZfCKfn5nmOwwFd70zjXtmakG91tl
-         /p8dsffnqTwZAotrhotLd2mV6Yr/4twEKwTMaoXh03IlnvYl485e2qtoMkVlPXUNtXAb
-         T9XvR9RWx3UVLTltIvce1tIopRFMtkpfC8vdo4gfEamXcHnv86IhgOqxQrpXry+aXaF3
-         mMZg==
+        bh=bXXPJydGYLxVLAnND9+MkrJY76llbSccxUgNW+Lv5wU=;
+        b=P3tFgwbNyM317sHhrjtKjK2APvK6lQs+3oKvUqo69/wpQAOZVAw8lE6cGolXn6bX2x
+         kt0u9Fghb2r+lgs/kHUS3fcv/ToVWdWF3lB1L39XwhiJBA/ATZSfAaP2QXAy8TMZ/2fP
+         ta5yZ2CmH1CwVy2OLH9tO/kLw/f8AAiw+B74R+08yUeQPrUoDVawlEUTdgu2vmaQgOOK
+         QiVayDVtIv60YvuEczLcA/uiNx/AHTmtCfPoD46JhR7ILWQ5NWPFKBtKkwQRz9dZm/AP
+         BcACyQzAvxSwefGCpBW6RYHLCAIJLsy6UuyKHgUP/5rpMUZQBYJTwILeG/wuqlh3Qn7W
+         CKqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=ThqvJPVAt1k40pAXNs/4MJKb4e62gPXaTQ23UtAvrFU=;
-        b=PmgVGEJlW8dL+fp4z5MsNthdMuPlEq1W0WVbaphdvMjuXROVj2AqMHvkVigCrZ/ddt
-         HLmCuwKqTcPfbQQg2EOvE5ktjEbBRSB6Yx3M4ukZVofEOe6PbcffISwYoNJIi9RNQIYG
-         5szeEJ6NY7RXjGaAjEnFFpxxPMlh3T/nU+o+O5hWrEcFRrMibzWt8C9Hlze3EaHzDOtm
-         pg1hhqNehs69md6s3l7h1IVfFNVSwGAMy4ZGsk0ZE7AvbcOfFAvMoDa6oa1CAog6OCsS
-         B+SgCUVQvQmK0Vxa9ptduwoQdHaAAzvIKYUsdu+GdCf4lWL7yf9+vzUNESMsaMWZpWwW
-         VgIQ==
-X-Gm-Message-State: AOAM530u+bzE3Mzlsmjho4D9EetAKSb7sJE1ayXs4IFnVxHGMbcahsUG
-        SQEskqRGy+nWNed/K4Ji8ztV2BrGnpp/4S+YDng8
-X-Google-Smtp-Source: ABdhPJzfXGGBBlnrtjP+kIEMmpJM+BHFPNrRyhFTTHkds09zaAYZz0htWNuYUb0v7KEh1R7P4qnO6LqobkBFlB+IVFc=
-X-Received: by 2002:a50:d809:: with SMTP id o9mr2799575edj.12.1598017437083;
- Fri, 21 Aug 2020 06:43:57 -0700 (PDT)
+        bh=bXXPJydGYLxVLAnND9+MkrJY76llbSccxUgNW+Lv5wU=;
+        b=Z99d5k/0bWGIhvEZbya6AWzxNTl8OFunfg2UUvjoUtdti8t/mAdjJ9gOtRvuln3LN7
+         wID8nDlblP+Zs9PgcNnbAfYrUSQ7rKTXGaoAM+7ephjrROC2OEQSPLnG9dnsc7zJaqBd
+         Y8U74IFCCeD7iuoe2GPkFIItjBwBjUZrkpLyC22VM5LihN0HeQz+7jvkwyiUdVIOBH2x
+         ehBhI0B1ReodC1uZDqGAO5EApQPC3/rhOR5b+uu4nBK1g0hCPbkDz+L22P7RWUDR9vYB
+         GSRaHT5bVO44tmPnPwCha3SSOgQETjwSnTRsbQeuWfLbTe6iusND7xDTUG8qnfkMHiqL
+         1CDg==
+X-Gm-Message-State: AOAM530GR1tRcHnljM4P9syuupyZ7yvFnKKEbvoJcvsRXDqTjlxADMrT
+        bZlsIDuy3RW4D4v3qUdgsXBjzsV2IKBl7WQ6N96S
+X-Google-Smtp-Source: ABdhPJwQg1C4vsXTA8yCZ8ot4n1xI46WPhXkaJY6J1PpBsCXA4+Yw6nwT2uG1SK5HAi+3s4lVb3+5O9gUzM1A+/+pwY=
+X-Received: by 2002:a17:906:43c9:: with SMTP id j9mr2902076ejn.542.1598017459107;
+ Fri, 21 Aug 2020 06:44:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200819195935.1720168-1-dburgener@linux.microsoft.com> <20200819195935.1720168-3-dburgener@linux.microsoft.com>
-In-Reply-To: <20200819195935.1720168-3-dburgener@linux.microsoft.com>
+References: <20200819195935.1720168-1-dburgener@linux.microsoft.com> <20200819195935.1720168-4-dburgener@linux.microsoft.com>
+In-Reply-To: <20200819195935.1720168-4-dburgener@linux.microsoft.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 21 Aug 2020 09:43:46 -0400
-Message-ID: <CAHC9VhRR732OE7rkQ+QQe4J-z9ygfS=GD+U_5=9Pj2CykuAr1w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/4] selinux: Refactor selinuxfs directory populating functions
+Date:   Fri, 21 Aug 2020 09:44:08 -0400
+Message-ID: <CAHC9VhRD7ZCK6ovxp4odCMphT-QWj4qV8d2oSmaormKTsYrWww@mail.gmail.com>
+Subject: Re: [PATCH v3 3/4] selinux: Standardize string literal usage for
+ selinuxfs directory names
 To:     Daniel Burgener <dburgener@linux.microsoft.com>
 Cc:     selinux@vger.kernel.org,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
@@ -64,17 +65,14 @@ X-Mailing-List: selinux@vger.kernel.org
 On Wed, Aug 19, 2020 at 3:59 PM Daniel Burgener
 <dburgener@linux.microsoft.com> wrote:
 >
-> Make sel_make_bools and sel_make_classes take the specific elements of
-> selinux_fs_info that they need rather than the entire struct.
->
-> This will allow a future patch to pass temporary elements that are not in
-> the selinux_fs_info struct to these functions so that the original elements
-> can be preserved until we are ready to perform the switch over.
+> Switch class and policy_capabilities directory names to be referred to with
+> global constants, consistent with booleans directory name.  This will allow
+> for easy consistency of naming in future development.
 >
 > Signed-off-by: Daniel Burgener <dburgener@linux.microsoft.com>
 > ---
->  security/selinux/selinuxfs.c | 45 ++++++++++++++++++++----------------
->  1 file changed, 25 insertions(+), 20 deletions(-)
+>  security/selinux/selinuxfs.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 
 Merged into selinux/next, thanks!
 

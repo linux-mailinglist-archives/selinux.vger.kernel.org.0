@@ -2,109 +2,89 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CB5524D66F
-	for <lists+selinux@lfdr.de>; Fri, 21 Aug 2020 15:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9E0724D67C
+	for <lists+selinux@lfdr.de>; Fri, 21 Aug 2020 15:47:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728736AbgHUNqX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 21 Aug 2020 09:46:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
+        id S1729018AbgHUNrI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 21 Aug 2020 09:47:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728917AbgHUNpE (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 21 Aug 2020 09:45:04 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE78EC061755
-        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:44:46 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id b2so1464089edw.5
-        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:44:46 -0700 (PDT)
+        with ESMTP id S1729009AbgHUNrG (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 21 Aug 2020 09:47:06 -0400
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0B9AC061574
+        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:47:05 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id bo3so2314914ejb.11
+        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:47:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=8B/t7yTfV4aCXW44FXG3bmocf9Ja1nIvTptUmAoLk2I=;
-        b=YiqeFGCovK2Atgj4oFwpmSaAaQzsRXTNOncyOK7+loEAS8Yprvb6vpPe2NHQ1O9pz9
-         5KCxqDUScjc2LRr/Q5cMDuahQ3HYxaaT5wVUI/NaBnwbQGSlFtF3x9PUjiYBnba1J/56
-         2JJiq4ggd993EpoQm94myFrbzzl/0XKVhTEiqZiM/T79IZlLiwyLcdphYNpXQXUoBNKC
-         rX/164ay6LJhaX+Pt8NaUV+ZXDqGIcwionSdxp6gfvmt4oW6vrF0EsjYkDFzrS3wvwsD
-         6PJFXe/Yz5br/5iLQkWD0r1qzdo3Z45Dif2cssxIW2wgnOx5dS9q3/85aI+o39comYUo
-         9rSA==
+         :cc:content-transfer-encoding;
+        bh=OCNzDue0d+9gLeuNDZrCDBO7b3B7dWV+FryyxTem/wM=;
+        b=BDf9azafY0usvDzD6SWESmOB5PViNnJj/9/rufIn6pIb+SY+E3IMtw8WgrrAe16c4D
+         4N8dFgKM6uDJ5zMAeHRHVh2MspW7Vyqt4+RMuWrtXCAaCTzuLDaaynS6Xh7n16Druirz
+         jcpfkpFlm4VZpqGAv6FeR4sQcbKFoxcUoI9PiSQp2IX8EAvR6ej9RtSNHVACLazukIfV
+         nmyeHO03NRVFJEKHpywQOu/goM180NbO31Wc3qb2ZZwR3x3+nzZBtDf2svECy09qT82G
+         mwkkIc7GZ9nPEBr821KMJE0RuuapIE4o0Co9wpwdrldJBb6eTDutPhyuviqb3sI1SyIC
+         7SaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=8B/t7yTfV4aCXW44FXG3bmocf9Ja1nIvTptUmAoLk2I=;
-        b=p4rCki0Cb08Z1EUbGhb6V/YFFmHYi0jv0Dm+SmdLWzH1v20VwJYcPZrupwHusF8brs
-         RsZUWuVEpWnNN+NIMyWHDNSNIZFAmgWZa1pOCPdJtu/jaxnWkFGoxeX/p9sM0a6Hphf6
-         wjqUsJOya1u5u0bpoBOntVT27fU+4wDt4YMGhIF9IZj9zJiu/PUGJUGuFQt/Ouh2+t7f
-         L5MMmPF+3KClxYz9iSsfz5OIA5hEAOQ539Y26/HojObBnSR6unFSSzG9wIiydAt/0Oao
-         TDQlKKN9uVsJVuQ68Fhsl48aaZ73d5dfs3XhoxgSh52Q7MQEH0JAjH4PLMPGTIhGxJ4i
-         Qv+w==
-X-Gm-Message-State: AOAM530BF15jb1T9vTfGR6ikphHsOcz74dWF4W8xqKjCvzSGgAvUUGXC
-        badMuTBu2U0QwtJGnrlhB0CKK/LpTYoXCYKexoLk
-X-Google-Smtp-Source: ABdhPJw72UFC+QGQjFeIKXNk4CuUdgr6pCtdnpiWCmvvQyryv2srY1rZ+SRz75W64EYTltMcVNFALFvY7OE3RBlAT5c=
-X-Received: by 2002:aa7:c353:: with SMTP id j19mr2957479edr.128.1598017485328;
- Fri, 21 Aug 2020 06:44:45 -0700 (PDT)
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=OCNzDue0d+9gLeuNDZrCDBO7b3B7dWV+FryyxTem/wM=;
+        b=fgGXh2CK3HGBshPG5mwZaTxm4kiSxVRu56CfwzQWUr6sDfl6KlSieYO6vcyzHWC82H
+         IMzq+o8+DNvaP8lP5gQNM2G49kXqgbpBMI1L55+RR5SW7NJPPuMrT7CEtwylv+paYUjp
+         lpy6mhXgCfNVLJAtFMtY0erAAS61Ns3Hx/q+Fo+UVB5Xv89btwvRdwcqmK1z4x9dDexP
+         +bsIF8kGQ7UZ2b2qk5tMx5NIV9mU2sUEQFt4a4k4VQBs7TajeFjaSVueHV4DXEXvT+gG
+         bazLOUygpS9AgAB4fTPMXEaIZbqSKB6xEz5gQ8nBjxmcjI6+PBUa/irtee+JBP2tVO2M
+         1Vcg==
+X-Gm-Message-State: AOAM532+Ej94kbl7eI45WWtOZJ5qJYjiEPQaRyKKljPjgoX1pkqCj/Ek
+        SZtzja4LFYF5q6ZTrND9bl6ZY8TohZ38EeVkfQL/
+X-Google-Smtp-Source: ABdhPJy6zIIVIwF1GHspiGxBu6rQjz/cqHvYRzEm2Z4xJYFQGvRzpYb/UmjUqCMgmnE906lKpJCPOKo+BUF7LdsX8Lo=
+X-Received: by 2002:a17:906:e0e:: with SMTP id l14mr2792528eji.398.1598017621287;
+ Fri, 21 Aug 2020 06:47:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200819195935.1720168-1-dburgener@linux.microsoft.com> <20200819195935.1720168-5-dburgener@linux.microsoft.com>
-In-Reply-To: <20200819195935.1720168-5-dburgener@linux.microsoft.com>
+References: <20200817170729.2605279-1-tweek@google.com> <20200817170729.2605279-4-tweek@google.com>
+ <0bb62de9-1020-a7c4-3a7f-48ae2f78e3b7@gmail.com> <20200817162933.79f69c66@oasis.local.home>
+ <20200818120948.1a428da9@oasis.local.home> <66e6d84e-20b5-1bd3-e107-322f42ce35d3@gmail.com>
+ <20200820223136.162850ce@oasis.local.home> <CAEjxPJ7-6PaHjPzB7vN=nh+VMNV-T2bnKM-YrXdQwOzNtG+9zg@mail.gmail.com>
+ <CAHC9VhTLOWsD9LbVGBj=o3N3SPe-uJDvrdQAySy6MmE4uyuzng@mail.gmail.com> <CA+zpnLfNjDwxgoG2p3W8YfXxYVQDum4Eh_MJQvKP4rGLqsqACA@mail.gmail.com>
+In-Reply-To: <CA+zpnLfNjDwxgoG2p3W8YfXxYVQDum4Eh_MJQvKP4rGLqsqACA@mail.gmail.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 21 Aug 2020 09:44:34 -0400
-Message-ID: <CAHC9VhQDjN=hcyHewNGZhdakNQBKBav3TsnuqJ-jV_uCdzJL1A@mail.gmail.com>
-Subject: Re: [PATCH v3 4/4] selinux: Create new booleans and class dirs out of tree
-To:     Daniel Burgener <dburgener@linux.microsoft.com>
-Cc:     selinux@vger.kernel.org,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        linux-fsdevel@vger.kernel.org, viro@zeniv.linux.org.uk
+Date:   Fri, 21 Aug 2020 09:46:50 -0400
+Message-ID: <CAHC9VhRXZXiYFX20wtMt9bTv-6sAer91gY1x5ueJv4fa-i5jPA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/3] selinux: add permission names to trace event
+To:     =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Nick Kralevich <nnk@google.com>,
+        Peter Enderborg <peter.enderborg@sony.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Rob Herring <robh@kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 3:59 PM Daniel Burgener
-<dburgener@linux.microsoft.com> wrote:
+On Fri, Aug 21, 2020 at 9:21 AM Thi=C3=A9baud Weksteen <tweek@google.com> w=
+rote:
+>>
+>> I'm okay with merging patches 1/3 and 2/3 wth the changes Stephen
+>> suggested, but I think we will need to leave patch 3/3 out of this for
+>> now.
 >
-> In order to avoid concurrency issues around selinuxfs resource availability
-> during policy load, we first create new directories out of tree for
-> reloaded resources, then swap them in, and finally delete the old versions.
->
-> This fix focuses on concurrency in each of the two subtrees swapped, and
-> not concurrency between the trees.  This means that it is still possible
-> that subsequent reads to eg the booleans directory and the class directory
-> during a policy load could see the old state for one and the new for the other.
-> The problem of ensuring that policy loads are fully atomic from the perspective
-> of userspace is larger than what is dealt with here.  This commit focuses on
-> ensuring that the directories contents always match either the new or the old
-> policy state from the perspective of userspace.
->
-> In the previous implementation, on policy load /sys/fs/selinux is updated
-> by deleting the previous contents of
-> /sys/fs/selinux/{class,booleans} and then recreating them.  This means
-> that there is a period of time when the contents of these directories do not
-> exist which can cause race conditions as userspace relies on them for
-> information about the policy.  In addition, it means that error recovery in
-> the event of failure is challenging.
->
-> In order to demonstrate the race condition that this series fixes, you
-> can use the following commands:
->
-> while true; do cat /sys/fs/selinux/class/service/perms/status
-> >/dev/null; done &
-> while true; do load_policy; done;
->
-> In the existing code, this will display errors fairly often as the class
-> lookup fails.  (In normal operation from systemd, this would result in a
-> permission check which would be allowed or denied based on policy settings
-> around unknown object classes.) After applying this patch series you
-> should expect to no longer see such error messages.
->
-> Signed-off-by: Daniel Burgener <dburgener@linux.microsoft.com>
-> ---
->  security/selinux/selinuxfs.c | 113 ++++++++++++++++++++++++++++-------
->  1 file changed, 90 insertions(+), 23 deletions(-)
+> That works for me.
 
-Merged into selinux/next, thanks!
+Can you respin patches 1 and two with those changes and repost?  I try
+to refrain from making non-merge-fuzz changes when merging patches.
 
--- 
+--=20
 paul moore
 www.paul-moore.com

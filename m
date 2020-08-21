@@ -2,54 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B48F24D64B
-	for <lists+selinux@lfdr.de>; Fri, 21 Aug 2020 15:43:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F46924D679
+	for <lists+selinux@lfdr.de>; Fri, 21 Aug 2020 15:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726975AbgHUNnh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 21 Aug 2020 09:43:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37198 "EHLO
+        id S1728857AbgHUNqp (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 21 Aug 2020 09:46:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727843AbgHUNna (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 21 Aug 2020 09:43:30 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 365A3C061573
-        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:43:30 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id a26so2348518ejc.2
-        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:43:30 -0700 (PDT)
+        with ESMTP id S1728834AbgHUNoS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 21 Aug 2020 09:44:18 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 778EEC0617BA
+        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:43:58 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id w2so1446309edv.7
+        for <selinux@vger.kernel.org>; Fri, 21 Aug 2020 06:43:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=NwPYAaAyjgcgcGgiOAPq785/sNM+j+6uNMAeEOCCIYQ=;
-        b=C2OOoRUPg5JdyGi7R5v6jL/8I86rGRKKmib3ykTZ0jPM0l/xCiP70gNgQ8B4g5hHQv
-         ZFzl2WMy1xx/1z6vsSe8+7aqo2+QIg4gzsHK8sYUsUL+cGrp3U1eXJKXa37HkA4maezX
-         j0E49FnfY0OH1MBnWAPtpyJcFN4V7/Db3nLRO07/8qxfyU2fySzHPgYhm9fAxxUVA/lM
-         /sExE5yM4HxU04sB6tro+bFD3+YgcsCT2E5nS3gXC5eafDZwCXtQsGAV9jCGIRvL83Wv
-         PE/SNyEJrs5HzxVh7NoSNIp0067uwpbq3tLIsX5v5drqTXc3OSXg07nZl6jS1akSqkw7
-         OVBA==
+        bh=ThqvJPVAt1k40pAXNs/4MJKb4e62gPXaTQ23UtAvrFU=;
+        b=zoXS+GZHOSUhxBOaFtvSm0cRAQyQWOAk0zO78DhJxL4g7QbXnVliajOCWf6dc1d1bl
+         x+oK2pRZ/VTVTZuSbWnFciazhGq+8ZgoNE04pdkiSIsozjkfWSmIgLn7/vZ5IOu3GjYf
+         db7LJWCE36bApiJXHmhknJ0IKOhI5o4jT/EUK9uYZfCKfn5nmOwwFd70zjXtmakG91tl
+         /p8dsffnqTwZAotrhotLd2mV6Yr/4twEKwTMaoXh03IlnvYl485e2qtoMkVlPXUNtXAb
+         T9XvR9RWx3UVLTltIvce1tIopRFMtkpfC8vdo4gfEamXcHnv86IhgOqxQrpXry+aXaF3
+         mMZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=NwPYAaAyjgcgcGgiOAPq785/sNM+j+6uNMAeEOCCIYQ=;
-        b=JP1e/dLb/1sPn4EGcg5l0eDXKnf/CNak+zmvvu7H3I+HR0AL3eq8rhVjsUrUGhs781
-         JvpRvVfJF/sm7R9k2CmSbsTMsteX+AlcIjn2+QgN7jkcOoOOhqkgGiz5SUR3iu1WiwSM
-         T/cIG4mzGfyhywnkn0CQv6uhWzsVw4Wg4tUXPLhJb9JJfK7uQ47vZK8p5MYtDUKPRMoc
-         6re88mJw3PfHZDBnaD8xe+NbmdoT8Oil8z5Cl8TEkuDhl7YW3D8huJpRtC3B463wnRIF
-         uHnaFIS9mAJbTP+f7XB6S4Z3HEKeVxAJJdTp21eCDvP3w0MiAD8w41BsRg0+o/KBCH4B
-         1b4A==
-X-Gm-Message-State: AOAM533IYt9x8+4hvzsWnjstx+EG5W9/tHF3cuzx/tR/T5gWtDiA4pSr
-        4E8sAZsnLaWtzphHxmuqoD/VobZK7cJCo78B9bzyVnKJRbDX
-X-Google-Smtp-Source: ABdhPJx/JW++1YCyrYu7jShC9KtWQ5VmMfCwSPJyKTJ5baRc9q/Nu4UyhcADgnYRthpWL2h2Cv6KRIuFOvH/lc/C7mI=
-X-Received: by 2002:a17:906:c1d8:: with SMTP id bw24mr2924861ejb.91.1598017408415;
- Fri, 21 Aug 2020 06:43:28 -0700 (PDT)
+        bh=ThqvJPVAt1k40pAXNs/4MJKb4e62gPXaTQ23UtAvrFU=;
+        b=PmgVGEJlW8dL+fp4z5MsNthdMuPlEq1W0WVbaphdvMjuXROVj2AqMHvkVigCrZ/ddt
+         HLmCuwKqTcPfbQQg2EOvE5ktjEbBRSB6Yx3M4ukZVofEOe6PbcffISwYoNJIi9RNQIYG
+         5szeEJ6NY7RXjGaAjEnFFpxxPMlh3T/nU+o+O5hWrEcFRrMibzWt8C9Hlze3EaHzDOtm
+         pg1hhqNehs69md6s3l7h1IVfFNVSwGAMy4ZGsk0ZE7AvbcOfFAvMoDa6oa1CAog6OCsS
+         B+SgCUVQvQmK0Vxa9ptduwoQdHaAAzvIKYUsdu+GdCf4lWL7yf9+vzUNESMsaMWZpWwW
+         VgIQ==
+X-Gm-Message-State: AOAM530u+bzE3Mzlsmjho4D9EetAKSb7sJE1ayXs4IFnVxHGMbcahsUG
+        SQEskqRGy+nWNed/K4Ji8ztV2BrGnpp/4S+YDng8
+X-Google-Smtp-Source: ABdhPJzfXGGBBlnrtjP+kIEMmpJM+BHFPNrRyhFTTHkds09zaAYZz0htWNuYUb0v7KEh1R7P4qnO6LqobkBFlB+IVFc=
+X-Received: by 2002:a50:d809:: with SMTP id o9mr2799575edj.12.1598017437083;
+ Fri, 21 Aug 2020 06:43:57 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200819195935.1720168-1-dburgener@linux.microsoft.com> <20200819195935.1720168-2-dburgener@linux.microsoft.com>
-In-Reply-To: <20200819195935.1720168-2-dburgener@linux.microsoft.com>
+References: <20200819195935.1720168-1-dburgener@linux.microsoft.com> <20200819195935.1720168-3-dburgener@linux.microsoft.com>
+In-Reply-To: <20200819195935.1720168-3-dburgener@linux.microsoft.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 21 Aug 2020 09:43:16 -0400
-Message-ID: <CAHC9VhTi1F9XgZvOkRgx7zTXLQx8mN8oEBLKdDfTKRntiRx0Fg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] selinux: Create function for selinuxfs directory cleanup
+Date:   Fri, 21 Aug 2020 09:43:46 -0400
+Message-ID: <CAHC9VhRR732OE7rkQ+QQe4J-z9ygfS=GD+U_5=9Pj2CykuAr1w@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] selinux: Refactor selinuxfs directory populating functions
 To:     Daniel Burgener <dburgener@linux.microsoft.com>
 Cc:     selinux@vger.kernel.org,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
@@ -64,17 +64,17 @@ X-Mailing-List: selinux@vger.kernel.org
 On Wed, Aug 19, 2020 at 3:59 PM Daniel Burgener
 <dburgener@linux.microsoft.com> wrote:
 >
-> Separating the cleanup from the creation will simplify two things in
-> future patches in this series.  First, the creation can be made generic,
-> to create directories not tied to the selinux_fs_info structure.  Second,
-> we will ultimately want to reorder creation and deletion so that the
-> deletions aren't performed until the new directory structures have already
-> been moved into place.
+> Make sel_make_bools and sel_make_classes take the specific elements of
+> selinux_fs_info that they need rather than the entire struct.
+>
+> This will allow a future patch to pass temporary elements that are not in
+> the selinux_fs_info struct to these functions so that the original elements
+> can be preserved until we are ready to perform the switch over.
 >
 > Signed-off-by: Daniel Burgener <dburgener@linux.microsoft.com>
 > ---
->  security/selinux/selinuxfs.c | 39 +++++++++++++++++++++++-------------
->  1 file changed, 25 insertions(+), 14 deletions(-)
+>  security/selinux/selinuxfs.c | 45 ++++++++++++++++++++----------------
+>  1 file changed, 25 insertions(+), 20 deletions(-)
 
 Merged into selinux/next, thanks!
 

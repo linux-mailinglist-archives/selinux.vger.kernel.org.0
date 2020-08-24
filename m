@@ -2,87 +2,79 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B00502500D6
-	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 17:23:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F5D3250181
+	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 17:52:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726631AbgHXPWw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Aug 2020 11:22:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41580 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727878AbgHXPSq (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 11:18:46 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0804CC061573
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 08:18:45 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id m22so12384397eje.10
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 08:18:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=hRgxx3tSppOhQm2AF9dKudiK1eoIPsBzHjrzxWNccQc=;
-        b=daYf3/dPe/PnYYkrooX/rVmS45t4DA1QFjn9WvpYZOaB8t57g+JFujh8yuBib99jR4
-         vIzEO8EqlnsRyjNE722w2uOeme8bRViAs//bphEqVnkGvOB+DgBmQyrQI1/9+x879wL4
-         bADN+z6UF5CuSKuZR8GVYupOcvSR6uTSfO12ISaYS5IkOdjgE+v2sNl3rmK2F/9tP613
-         iDdTyq2Dc+evvSRTGjW1qNGLY4NdTOhfH8g8HLKrlktkavSzDuxdAIAj4stgjSYFBjKA
-         t/pX/pU6F98XXnweKZqDNkuQFqq00RPBPdzjxeUAY1nYrefcfHVv7Hv7wk7ooijsVycC
-         v8Fg==
+        id S1727924AbgHXPwa (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Aug 2020 11:52:30 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:26925 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728057AbgHXPwY (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 11:52:24 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1598284343;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=nY4WAncEcTrbMZSUyLSIZD/YApYuNoFcgRDNbZMUPkc=;
+        b=QBT3QkzSu8uOg4qqDAqsqQxYPG7MB6IByFzwrs0Z/UlZxBcM6ktALKth1ScuEjM6kMs6pz
+        t0wmy1cGYQ1h6jTqO4KKODm9NE9ZjaySqNhWs9mg2HFxcl+yXli0Z94an+wiq/tB0ZX4xJ
+        4HTPTksRH44jypjZkOc4Ui8Cvkdp3kE=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-430-FM3ZGAnOMAeyHcC0bwnJkA-1; Mon, 24 Aug 2020 11:52:14 -0400
+X-MC-Unique: FM3ZGAnOMAeyHcC0bwnJkA-1
+Received: by mail-wr1-f70.google.com with SMTP id m7so4098055wrb.20
+        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 08:52:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=hRgxx3tSppOhQm2AF9dKudiK1eoIPsBzHjrzxWNccQc=;
-        b=dVoOPZIlC+/oaP0+9dnp+4oLZzshZYVEvXfk5ELmqiQYpY0i2D1vNvwONCfgUkx1eP
-         zXYsO8tbd2VW10L/CwanfCaiU/+nhtWzbfY3k5MzDt68L4W2c3PDRSPfbf2K/qNGP2fg
-         sc5cfW4aWxyaRAGlHRauwsXO0D7M1mY4D6YKeCgUakXt89e0VJG7jr1cMhCig5pISAh4
-         7AKpfihxgnKt8ln1NbpIokMJlAytHE6eiP7ohZw8m7kK4cd8VcjJSXf+hYtlfRpAOiGV
-         wf0yeCh3AMl3evS/H8o3nvu93NrSo7sKpkkbqYkyZ6bQN2n7sc7hki1LsBY5vHnY+GQp
-         GUVA==
-X-Gm-Message-State: AOAM532Wetk/zR8YQQZzjEcOMx7bal0yNGVAe7s1HQEqh6WXeNOJVBbY
-        0Qc1SA8dkNT2mHFd23/ndmEJODV6+wO2cEzlyGP5
-X-Google-Smtp-Source: ABdhPJzEcj2wnnrEKoEv1PPbTejxVV5BfnUX9z1HWRRCCDAss73M+rPmLz2mKoZoQ9jbxRk7R0BEPxTD5pf7AG6nhCs=
-X-Received: by 2002:a17:906:5205:: with SMTP id g5mr5890079ejm.488.1598282323578;
- Mon, 24 Aug 2020 08:18:43 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nY4WAncEcTrbMZSUyLSIZD/YApYuNoFcgRDNbZMUPkc=;
+        b=DHEO42Ez4WXqt9ZrRennjCzrpIaqRjTqU1hCbZzQ76Jnthy0noROi8uRfyujMv4O5A
+         U6GB0mO/SYUDZuQjR7CZWnujN7/a9wCo25mTimld1x30HhUbsoBwJ0okPdgF32LJXbs/
+         Bh2FRCxbYLS0u3sjGoMR+ee+Kj6zSDW3ugeiWg8Pgn9HCFQfPT0wXFdANZL9LPIcy2n0
+         AsN8wks0vgBrB1ykkyIGQ46KlmymtKfaO8UIBqfiIRZRo83P5B4efS4+0I1HAPca1I9r
+         +Q/7Xky3gV78PKHzm/vbvTR6rhKPZvnZhjfIcNSC9oju30y0Q1sorRZH50lpsFcV+ZFA
+         eVLA==
+X-Gm-Message-State: AOAM533ohHJXy4qpp0k0Z0/Pqbwka2Hc5zQbWCVPfgnPRaZEj1/olnX6
+        KPc4NZFc0xhMu3t+avcU7DitxZzfo+JzHPFeioJOPEx9aTxz33vEvgbFSF9SR8zPUFFRWemZk/R
+        uCS6b6/TM8C/7vnidZA==
+X-Received: by 2002:a5d:4145:: with SMTP id c5mr6592719wrq.18.1598284333168;
+        Mon, 24 Aug 2020 08:52:13 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy33SxKimsrBovM00jN1j0dAs0aC6PiPWoQcHv92DXJvKNBYRSupXKty2rUyUzK4XJtD3yTjA==
+X-Received: by 2002:a5d:4145:: with SMTP id c5mr6592691wrq.18.1598284332849;
+        Mon, 24 Aug 2020 08:52:12 -0700 (PDT)
+Received: from omos.redhat.com ([2a02:8308:b103:4000:e83d:a4fb:e589:6902])
+        by smtp.gmail.com with ESMTPSA id x133sm25684215wmg.39.2020.08.24.08.52.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Aug 2020 08:52:12 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
+Subject: [PATCH 0/2] selinux: Clean up GFP flag usage
+Date:   Mon, 24 Aug 2020 17:52:08 +0200
+Message-Id: <20200824155210.1481720-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200809162212.193739-1-richard_c_haines@btinternet.com>
- <CAHC9VhTP+A3mGO_1nVz4Q-WtEBNubAGO_gysR7L-_OOqFRazZw@mail.gmail.com> <4588336e487610f41187718629369aeadbd651d3.camel@btinternet.com>
-In-Reply-To: <4588336e487610f41187718629369aeadbd651d3.camel@btinternet.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 24 Aug 2020 11:18:32 -0400
-Message-ID: <CAHC9VhStYMc0KMo9hQat8GF64ToK+j7=5603gd=T62oXTd9Brg@mail.gmail.com>
-Subject: Re: [PATCH] selinux-notebook: Convert terminology.md to markdown
-To:     Richard Haines <richard_c_haines@btinternet.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Aug 24, 2020 at 11:17 AM Richard Haines
-<richard_c_haines@btinternet.com> wrote:
-> On Mon, 2020-08-24 at 09:40 -0400, Paul Moore wrote:
-> > On Sun, Aug 9, 2020 at 12:22 PM Richard Haines
-> > <richard_c_haines@btinternet.com> wrote:
-> > > Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
-> > > ---
-> > >  src/terminology.md | 349 +++++++++++++++++++++++++++++++--------
-> > > ------
-> > >  1 file changed, 243 insertions(+), 106 deletions(-)
-> >
-> > Merged.
-> >
-> > I wasn't sure how I was going to like the changes to the
-> > abbreviations
-> > table, but I think it still looks okay and it's more consistent with
-> > the rest of the doc.  Thanks Richard.
->
-> Just to let you all know that I've converted the remaining sections to
-> markdown. I'll send the updates in small batches (A-Z) over the next
-> week or so.
+This series corrects a few places where GFP_ATOMIC was used instead of
+GFP_KERNEL for no reason and removes the no longer needed GFP flag
+argument from str_read().
 
-Thanks!
+Ondrej Mosnacek (2):
+  selinux: switch unnecessary GFP_ATOMIC allocs to GFP_KERNEL
+  selinux: drop the gfp_t argument from str_read()
+
+ security/selinux/hooks.c       |  6 ++---
+ security/selinux/ss/policydb.c | 42 +++++++++++++++++-----------------
+ 2 files changed, 24 insertions(+), 24 deletions(-)
 
 -- 
-paul moore
-www.paul-moore.com
+2.26.2
+

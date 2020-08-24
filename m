@@ -2,58 +2,60 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C372824FEAD
-	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 15:19:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 987BC24FEB0
+	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 15:19:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726765AbgHXNTB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Aug 2020 09:19:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50882 "EHLO
+        id S1726449AbgHXNTQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Aug 2020 09:19:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725780AbgHXNS6 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 09:18:58 -0400
-Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6097C061573
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:18:57 -0700 (PDT)
-Received: by mail-ej1-x643.google.com with SMTP id m22so11838662eje.10
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:18:57 -0700 (PDT)
+        with ESMTP id S1726723AbgHXNTB (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 09:19:01 -0400
+Received: from mail-ej1-x644.google.com (mail-ej1-x644.google.com [IPv6:2a00:1450:4864:20::644])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF694C061574
+        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:18:59 -0700 (PDT)
+Received: by mail-ej1-x644.google.com with SMTP id oz20so6912624ejb.5
+        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:18:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oxvgtkKW4r0x00FcaoXHLfF4wc6Z9Lp/MFZ0+yWzC4M=;
-        b=Ivnm1/tThjx+Hegi78vsdTLa4Wqygf70OW8eh5zhyZ8Ux7BI2hIAjYc/ycFRTkuN5v
-         G41RtaVzCjtpGDGKlr1dClcjhxPqL52CIP7yET0+iitdDknUxrOYSKwpdcQ+Dd8gcwIv
-         ghcnk5JcEaJGOQmX0RfRevVngzh0mExZqONQC2YGPoHqiJ7R6tBVr3D6ja97E+kvVfin
-         H+xOIDSernqvIr6fdp+BfpcSSO/HPBqkMrCykdgtz541cB39nq4QD8BNOWncoVP9/QfG
-         tTAjNFZaeBgxR3sVWjPaXaZVIyt8A1Uyq2pbnwIwc291YiHuYs/kngacsSPoLmnVVffK
-         j2cA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=6q5XKoaQZAkstNVrR2O1cS6kbEUSS03/ZJ5oenvzs2k=;
+        b=uj69UXiGByywxIzxGaDuOkTHG2AfCZclTPIIIp48hcaF6iHucDz9ySpqCGIOhn5x1K
+         +tU7fiWvSY3euWIE/pujq2VVSU3uvm4ERhfsXnCJYesoHQND+JSmbvZ149FhyjHBlAQa
+         8h3lnp07gGCs42ujqYfsLeZAOFs/PubZzo4952+MY4P2QVFtNNVKjrumlyr81O47btA/
+         n6EZTWs31KAz3W7jNh53qeoMUFPBgyTuqDH9euZ4F2aL6YY/oOjyNeaV70fxHJXNQbT6
+         oysoBvOa/NUW/NyyoPbIAAQfxI9U8ukTb+lXmDCzn/pfuFJEm/Nz+3avyu5Pdspt6MWY
+         ZoWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=oxvgtkKW4r0x00FcaoXHLfF4wc6Z9Lp/MFZ0+yWzC4M=;
-        b=ZjNBClD19ym6MRnLwIp1Y++/6FGbV62yVwlN074NRyIFaC+ihCOBahRrctKbnhUTD3
-         5a1BglEkqs97/4L21pJGftAxchn3a8IQjyRXaQw9PON7mrTx9vOD0iB0gX4C+J+rMXEN
-         o5AJlRY5jrzFwj6nef+z0SFcoR1Wn7HRtzsF29g4gQwRRdRmT7ziyuOK+Up1NWVAxY0f
-         Q76KoqQ7Afy1ifGe3uz1FnTjtyhUvpEci7RjdIGB33+1TE4XAB+7QX8+HLK74NyscCrW
-         i7ZM2ox4PxQ6GDBgubE3gD7HxKw98phXKOr/XRekdT2Bf8glhqds7wQ3VlUw3EufRiUM
-         XM3A==
-X-Gm-Message-State: AOAM531by7Of5T5ARgkZ91H0Gej36yuKyZOQZeQ3JoO2l5y9heqIQKcj
-        DQkt9IIzAT3rpmipHIdMwJiIW1rM6EQ=
-X-Google-Smtp-Source: ABdhPJyB6ncUHgMAQa++sy2Ak61H1TMlsMr6URneNzabB8vgrAnT20T+1bWAsqm8p89204E59ATYsg==
-X-Received: by 2002:a17:907:41dc:: with SMTP id og20mr5723284ejb.183.1598275136436;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=6q5XKoaQZAkstNVrR2O1cS6kbEUSS03/ZJ5oenvzs2k=;
+        b=Ba1jL97l2bFRSad0bQlGSY18CVrFEBe5zxRb7WEkypWm45eb2mp7p5ae5lXs6ydUx9
+         U/pjkKumdekTikbL6cypcoj2XOYWUTQyq9jC1lop1ZKhVspqi2fPk25/+q6M7RDvi5eJ
+         ieenKV4O8FktmKECqfkn3wPQT7BGq2rUe3MVW3IboanulRkQUTeiQWYc6NRcPiJs9X4d
+         p0i1dlyDBjncLboFQL8vi6X23KKJsRVAQYkSbEFZTdpvq2mHEygxI9GKC047h6W2so40
+         UocD110H0WUBuIEOIcdEbQwt5UBhltYpJZWIjAw+Oxpz4bf5MrhFXOraCGd5eUr7HQ8W
+         DlMQ==
+X-Gm-Message-State: AOAM532IzftTOUC16JqFiGgS2LDrqVj7aw0IORPtc/WiSacvWnejLar1
+        K7WREcPFLddVliuVtYd5T3q2FO+r0s0=
+X-Google-Smtp-Source: ABdhPJyXzXcL028T5CYW5McCSluUKjVqHAV62m51V3Vk+YEUEUBFhFWuUf+O5QBvgi3ikxuXAM/L1A==
+X-Received: by 2002:a17:907:aa2:: with SMTP id bz2mr5363242ejc.521.1598275136899;
         Mon, 24 Aug 2020 06:18:56 -0700 (PDT)
 Received: from debianHome.localdomain (x4d01ad51.dyn.telefonica.de. [77.1.173.81])
-        by smtp.gmail.com with ESMTPSA id p3sm9369834edx.75.2020.08.24.06.18.55
+        by smtp.gmail.com with ESMTPSA id p3sm9369834edx.75.2020.08.24.06.18.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 24 Aug 2020 06:18:56 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
 Cc:     Mike Palmiotto <mike.palmiotto@crunchydata.com>
-Subject: [PATCH 1/3] libselinux: refactor wrapper in sestatus.c for safe shared memory access
-Date:   Mon, 24 Aug 2020 15:18:39 +0200
-Message-Id: <20200824131841.55687-1-cgzones@googlemail.com>
+Subject: [PATCH 2/3] libselinux: safely access shared memory in selinux_status_updated()
+Date:   Mon, 24 Aug 2020 15:18:40 +0200
+Message-Id: <20200824131841.55687-2-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <20200824131841.55687-1-cgzones@googlemail.com>
+References: <20200824131841.55687-1-cgzones@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -64,97 +66,67 @@ X-Mailing-List: selinux@vger.kernel.org
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/sestatus.c | 35 +++++++++++------------------------
- 1 file changed, 11 insertions(+), 24 deletions(-)
+ libselinux/src/sestatus.c | 39 ++++++++++++++++++++++++---------------
+ 1 file changed, 24 insertions(+), 15 deletions(-)
 
 diff --git a/libselinux/src/sestatus.c b/libselinux/src/sestatus.c
-index 814e86ee..925e6079 100644
+index 925e6079..62a864b1 100644
 --- a/libselinux/src/sestatus.c
 +++ b/libselinux/src/sestatus.c
-@@ -80,6 +80,14 @@ static inline uint32_t read_sequence(struct selinux_status_t *status)
- 	return seqno;
- }
+@@ -99,7 +99,9 @@ static inline uint32_t read_sequence(struct selinux_status_t *status)
+ int selinux_status_updated(void)
+ {
+ 	uint32_t	curr_seqno;
+-	int		result = 0;
++	uint32_t	tmp_seqno;
++	uint32_t	enforcing;
++	uint32_t	policyload;
  
-+/* sequence must not be changed during references */
-+#define sestatus_save_access(name, result)                          \
-+	uint32_t _seqno;                                            \
-+	do {                                                        \
-+		_seqno = read_sequence(selinux_status);             \
-+		(result) = selinux_status->name;                    \
-+	} while (_seqno != read_sequence(selinux_status))           \
+ 	if (selinux_status == NULL) {
+ 		errno = EINVAL;
+@@ -125,21 +127,28 @@ int selinux_status_updated(void)
+ 	if (last_seqno & 0x0001)
+ 		last_seqno = curr_seqno;
+ 
+-	if (last_seqno != curr_seqno)
+-	{
+-		if (avc_enforcing != (int) selinux_status->enforcing) {
+-			if (avc_process_setenforce(selinux_status->enforcing) < 0)
+-				return -1;
+-		}
+-		if (last_policyload != selinux_status->policyload) {
+-			if (avc_process_policyload(selinux_status->policyload) < 0)
+-				return -1;
+-			last_policyload = selinux_status->policyload;
+-		}
+-		last_seqno = curr_seqno;
+-		result = 1;
++	if (last_seqno == curr_seqno)
++		return 0;
 +
++	do {
++		enforcing = selinux_status->enforcing;
++		policyload = selinux_status->policyload;
++		tmp_seqno = curr_seqno;
++		curr_seqno = read_sequence(selinux_status);
++	} while (tmp_seqno != curr_seqno);
++
++	if (avc_enforcing != (int) enforcing) {
++		if (avc_process_setenforce(enforcing) < 0)
++			return -1;
+ 	}
+-	return result;
++	if (last_policyload != policyload) {
++		if (avc_process_policyload(policyload) < 0)
++			return -1;
++		last_policyload = policyload;
++	}
++	last_seqno = curr_seqno;
++
++	return 1;
+ }
+ 
  /*
-  * selinux_status_updated
-  *
-@@ -142,7 +150,6 @@ int selinux_status_updated(void)
-  */
- int selinux_status_getenforce(void)
- {
--	uint32_t	seqno;
- 	uint32_t	enforcing;
- 
- 	if (selinux_status == NULL) {
-@@ -157,13 +164,7 @@ int selinux_status_getenforce(void)
- 		return fallback_enforcing;
- 	}
- 
--	/* sequence must not be changed during references */
--	do {
--		seqno = read_sequence(selinux_status);
--
--		enforcing = selinux_status->enforcing;
--
--	} while (seqno != read_sequence(selinux_status));
-+	sestatus_save_access(enforcing, enforcing);
- 
- 	return enforcing ? 1 : 0;
- }
-@@ -179,7 +180,6 @@ int selinux_status_getenforce(void)
-  */
- int selinux_status_policyload(void)
- {
--	uint32_t	seqno;
- 	uint32_t	policyload;
- 
- 	if (selinux_status == NULL) {
-@@ -194,13 +194,7 @@ int selinux_status_policyload(void)
- 		return fallback_policyload;
- 	}
- 
--	/* sequence must not be changed during references */
--	do {
--		seqno = read_sequence(selinux_status);
--
--		policyload = selinux_status->policyload;
--
--	} while (seqno != read_sequence(selinux_status));
-+	sestatus_save_access(policyload, policyload);
- 
- 	return policyload;
- }
-@@ -214,7 +208,6 @@ int selinux_status_policyload(void)
-  */
- int selinux_status_deny_unknown(void)
- {
--	uint32_t	seqno;
- 	uint32_t	deny_unknown;
- 
- 	if (selinux_status == NULL) {
-@@ -225,13 +218,7 @@ int selinux_status_deny_unknown(void)
- 	if (selinux_status == MAP_FAILED)
- 		return security_deny_unknown();
- 
--	/* sequence must not be changed during references */
--	do {
--		seqno = read_sequence(selinux_status);
--
--		deny_unknown = selinux_status->deny_unknown;
--
--	} while (seqno != read_sequence(selinux_status));
-+	sestatus_save_access(deny_unknown, deny_unknown);
- 
- 	return deny_unknown ? 1 : 0;
- }
 -- 
 2.28.0
 

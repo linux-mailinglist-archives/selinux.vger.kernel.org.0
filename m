@@ -2,75 +2,38 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FA5D24FEB4
-	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 15:20:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F67E24FEC2
+	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 15:23:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725780AbgHXNUe (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Aug 2020 09:20:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51120 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725958AbgHXNU3 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 09:20:29 -0400
-Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150BEC061573
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:20:29 -0700 (PDT)
-Received: by mail-ed1-x542.google.com with SMTP id b2so8016441edw.5
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:20:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ovutwx82aMiCT5WAboMDBPjEdONVTMYW2cB4po8ZcNg=;
-        b=wud7QFiz7lyZDqPxWQS1LI9uClSoHD2tnWJFZhMv8qTdTW6x0X/Av+2iXo7HkztPmh
-         fEbi2mHge49FELsA4RK2bp8L4tJila6XnRSEcc08EPhKEX1qMNnfU75/HFOng9Ak8Dl7
-         kmeUrYNQVnHe/BiLWc5iGAzQmmomDAJyApCVw+UAwDceec/QBS/AVwhQhjwl/Njvuj9L
-         Po/4gBTwJuB8xTMWAdMZwN8yH5hV0FzEqBcU8GxF2dc4+GC7OoHbZlPmGNilQlxzmoDX
-         4CZQoK2WJgL5p5DGhvBWBAuk4yv/XeVLUKlFoYxE52WYaXesIVCV0guPeuq+TlJz9Q+x
-         5XMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ovutwx82aMiCT5WAboMDBPjEdONVTMYW2cB4po8ZcNg=;
-        b=r92jejTKBuWhaW069bUf3BHSjN5Gtm/76Nnzy+RJQx1EYbCZ0K2yaI0ZuqpQ8EDdCL
-         iz1f+Y3U7IgE/TlZ4XAS1EsUeSBvAiw6l9Y44ogs5YN/wsmZYZ/QElJIq0i4faXSllZS
-         W9jqUsl57GJ2EwS3MTE7fy6n6Uz1JQK1iQkbNMAxSYGX3100LA3nmrEesUS42Mmx46v9
-         rHUc9vDmoY2Vxk6uCzkV04GoeJZNjBTotyOpv9K1F171q4PoGyP05w4VfKa/PS1vaQal
-         g+BraeUNVghbBU/7xceQAKuzvEsiJt2xsONjfTzUav8Gq0PXo4eic5Mk3h5T/w0PfzQY
-         r1mQ==
-X-Gm-Message-State: AOAM531VwxcLXz8RP67yI9a2skFZG7vNEN8dYeCujQWDIJJtfqqsGHGU
-        862S6JQ/0q/a+MV6b01zKaZuovPXijUB2Z4vCeZ/o+PyIrBB
-X-Google-Smtp-Source: ABdhPJy5hyWlJ/fwKTTG0g3OdIQVmfXoJa5BTayAOyU2347ZXRW7Xt+fI/pQQzTSaFbXfWwsdRjxD2XiNnv1O8b3de0=
-X-Received: by 2002:aa7:de8f:: with SMTP id j15mr5160071edv.135.1598275227717;
- Mon, 24 Aug 2020 06:20:27 -0700 (PDT)
+        id S1726218AbgHXNXo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Aug 2020 09:23:44 -0400
+Received: from seldsegrel01.sonyericsson.com ([37.139.156.29]:14650 "EHLO
+        SELDSEGREL01.sonyericsson.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725921AbgHXNXo (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 09:23:44 -0400
+From:   Peter Enderborg <peter.enderborg@sony.com>
+To:     <linux-kernel@vger.kernel.org>,
+        SElinux list <selinux@vger.kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Paul Moore <paul@paul-moore.com>
+Subject: 
+Date:   Mon, 24 Aug 2020 15:22:51 +0200
+Message-ID: <20200824132252.31261-1-peter.enderborg@sony.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <CAHC9VhRuvK55JVyHOxckThbRQ7sCwkeZsudwCaBo2f5G4g11VA@mail.gmail.com>
+References: <CAHC9VhRuvK55JVyHOxckThbRQ7sCwkeZsudwCaBo2f5G4g11VA@mail.gmail.com>
 MIME-Version: 1.0
-References: <20200807151722.12114-1-richard_c_haines@btinternet.com>
-In-Reply-To: <20200807151722.12114-1-richard_c_haines@btinternet.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 24 Aug 2020 09:20:16 -0400
-Message-ID: <CAHC9VhScvQ+ueA0bwjstrivqMGZV--fD3MxFcJOBpeGZvu3dxA@mail.gmail.com>
-Subject: Re: [PATCH] selinux-notebook: kernel_policy_language.md convert to markdown
-To:     Richard Haines <richard_c_haines@btinternet.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=dtal9Go4 c=1 sm=1 tr=0 a=Jtaq2Av1iV2Yg7i8w6AGMw==:117 a=y4yBn9ojGxQA:10 a=mwHY768SaIQJHNsRposA:9 a=xo5jKAKm-U-Zyk2_beg_:22
+X-SEG-SpamProfiler-Score: 0
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Aug 7, 2020 at 11:17 AM Richard Haines
-<richard_c_haines@btinternet.com> wrote:
->
-> Add a TOC to aid navigation and convert HTML tables to either pipe tables
-> or markdown unordered lists.
->
-> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
-> ---
->  src/kernel_policy_language.md | 1016 ++++++---------------------------
->  1 file changed, 182 insertions(+), 834 deletions(-)
 
-Merged, thanks for your patience!
+This is other solution. I dont think needs any plugin support. It will generate one
+event for eatch denial and there is possible to filter on permission.
+.
 
--- 
-paul moore
-www.paul-moore.com

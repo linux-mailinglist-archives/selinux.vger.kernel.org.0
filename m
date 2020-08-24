@@ -2,60 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F5D3250181
-	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 17:52:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6857F25017E
+	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 17:52:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727924AbgHXPwa (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Aug 2020 11:52:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:26925 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728057AbgHXPwY (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 11:52:24 -0400
+        id S1727901AbgHXPwV (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Aug 2020 11:52:21 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:42467 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726631AbgHXPwS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 11:52:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1598284343;
+        s=mimecast20190719; t=1598284337;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=nY4WAncEcTrbMZSUyLSIZD/YApYuNoFcgRDNbZMUPkc=;
-        b=QBT3QkzSu8uOg4qqDAqsqQxYPG7MB6IByFzwrs0Z/UlZxBcM6ktALKth1ScuEjM6kMs6pz
-        t0wmy1cGYQ1h6jTqO4KKODm9NE9ZjaySqNhWs9mg2HFxcl+yXli0Z94an+wiq/tB0ZX4xJ
-        4HTPTksRH44jypjZkOc4Ui8Cvkdp3kE=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-430-FM3ZGAnOMAeyHcC0bwnJkA-1; Mon, 24 Aug 2020 11:52:14 -0400
-X-MC-Unique: FM3ZGAnOMAeyHcC0bwnJkA-1
-Received: by mail-wr1-f70.google.com with SMTP id m7so4098055wrb.20
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 08:52:14 -0700 (PDT)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=whqo+s0PpYj6VGwaYxQ+CFJW6HvZcuDlPKqXnIk8v2w=;
+        b=bJrTQUPH8idp+57a9eQWAhUO6jCfZPtIEmmX8OEgLOuIwK/lc33uCcId/y/qqO0fNpiZ40
+        tST4k1eQbtUDTvRXlyiYFzsUQNNNiIGbuXVDYoEZHSLWICddxnM2sUKGnIIQs+fCMejoTK
+        zzzjbv0NCFZHrfkQIF4ghiSHG9nmVgs=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-374-PJMMCgAEMBmKogSDtbVeMQ-1; Mon, 24 Aug 2020 11:52:15 -0400
+X-MC-Unique: PJMMCgAEMBmKogSDtbVeMQ-1
+Received: by mail-wm1-f72.google.com with SMTP id z25so812500wmk.4
+        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 08:52:15 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=nY4WAncEcTrbMZSUyLSIZD/YApYuNoFcgRDNbZMUPkc=;
-        b=DHEO42Ez4WXqt9ZrRennjCzrpIaqRjTqU1hCbZzQ76Jnthy0noROi8uRfyujMv4O5A
-         U6GB0mO/SYUDZuQjR7CZWnujN7/a9wCo25mTimld1x30HhUbsoBwJ0okPdgF32LJXbs/
-         Bh2FRCxbYLS0u3sjGoMR+ee+Kj6zSDW3ugeiWg8Pgn9HCFQfPT0wXFdANZL9LPIcy2n0
-         AsN8wks0vgBrB1ykkyIGQ46KlmymtKfaO8UIBqfiIRZRo83P5B4efS4+0I1HAPca1I9r
-         +Q/7Xky3gV78PKHzm/vbvTR6rhKPZvnZhjfIcNSC9oju30y0Q1sorRZH50lpsFcV+ZFA
-         eVLA==
-X-Gm-Message-State: AOAM533ohHJXy4qpp0k0Z0/Pqbwka2Hc5zQbWCVPfgnPRaZEj1/olnX6
-        KPc4NZFc0xhMu3t+avcU7DitxZzfo+JzHPFeioJOPEx9aTxz33vEvgbFSF9SR8zPUFFRWemZk/R
-        uCS6b6/TM8C/7vnidZA==
-X-Received: by 2002:a5d:4145:: with SMTP id c5mr6592719wrq.18.1598284333168;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=whqo+s0PpYj6VGwaYxQ+CFJW6HvZcuDlPKqXnIk8v2w=;
+        b=Bq0EXmtGqQHF36slEO97+XicOT2E+wNv3xky1j1/ZiRUlhMLl4AA/+Fcr0Hb5cQzNe
+         0kdnd+RKAxjulwVsLlWGJRoEGnis1cA4N3ok+zRp521ixHsticUMnaJQq8ksxLmP9u7O
+         RiwU+uXozNosi90iagph8rELQTOqTYfbcNazLxgr3rJ8XymrkoHT8MS3f9+qFkP1t8UE
+         BXX6+ewKyzr5lGx/7WLlvPYxV7EMmcIOdEPMdl/vYbJr8OOpSl7XM1hklPY1gC4fSxLP
+         d4u6Yd4ixLCIaw/RF6qe1fU7YiIEXUXVXIOn2lIappwMg5FlmunIcVy39buWRTuS3Bql
+         bXIw==
+X-Gm-Message-State: AOAM531KeO9Mq8OwI1rp+sglRBMdCxuekUCIL3ogFXruDkFzEyhDbsx5
+        Npbk8QlvL11KwplobRsG7WheUqg4dzzJetGy0EFIzufeMFkm7/zivEX9JeDEWWQRCdL4gMa1Dv1
+        DYN5m5PcnqgKfUBgnyA==
+X-Received: by 2002:a5d:5151:: with SMTP id u17mr6518687wrt.154.1598284333986;
         Mon, 24 Aug 2020 08:52:13 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJy33SxKimsrBovM00jN1j0dAs0aC6PiPWoQcHv92DXJvKNBYRSupXKty2rUyUzK4XJtD3yTjA==
-X-Received: by 2002:a5d:4145:: with SMTP id c5mr6592691wrq.18.1598284332849;
-        Mon, 24 Aug 2020 08:52:12 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxET3wyDwX+hEKfaY6JolTHURUAjey00zicF2izXypfInmg/GbEAJ5ZIvq3fbFlSQUXDxrSDw==
+X-Received: by 2002:a5d:5151:: with SMTP id u17mr6518670wrt.154.1598284333753;
+        Mon, 24 Aug 2020 08:52:13 -0700 (PDT)
 Received: from omos.redhat.com ([2a02:8308:b103:4000:e83d:a4fb:e589:6902])
-        by smtp.gmail.com with ESMTPSA id x133sm25684215wmg.39.2020.08.24.08.52.11
+        by smtp.gmail.com with ESMTPSA id x133sm25684215wmg.39.2020.08.24.08.52.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2020 08:52:12 -0700 (PDT)
+        Mon, 24 Aug 2020 08:52:13 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
 Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH 0/2] selinux: Clean up GFP flag usage
-Date:   Mon, 24 Aug 2020 17:52:08 +0200
-Message-Id: <20200824155210.1481720-1-omosnace@redhat.com>
+Subject: [PATCH 1/2] selinux: switch unnecessary GFP_ATOMIC allocs to GFP_KERNEL
+Date:   Mon, 24 Aug 2020 17:52:09 +0200
+Message-Id: <20200824155210.1481720-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200824155210.1481720-1-omosnace@redhat.com>
+References: <20200824155210.1481720-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
@@ -63,18 +66,91 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This series corrects a few places where GFP_ATOMIC was used instead of
-GFP_KERNEL for no reason and removes the no longer needed GFP flag
-argument from str_read().
+There seems to be no reason to use GFP_ATOMIC in these cases.
 
-Ondrej Mosnacek (2):
-  selinux: switch unnecessary GFP_ATOMIC allocs to GFP_KERNEL
-  selinux: drop the gfp_t argument from str_read()
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ security/selinux/hooks.c       |  6 +++---
+ security/selinux/ss/policydb.c | 10 +++++-----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
- security/selinux/hooks.c       |  6 ++---
- security/selinux/ss/policydb.c | 42 +++++++++++++++++-----------------
- 2 files changed, 24 insertions(+), 24 deletions(-)
-
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 89d3753b7bd5d..4de962daffbde 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -3171,7 +3171,7 @@ static int selinux_inode_setxattr(struct dentry *dentry, const char *name,
+ 				audit_size = 0;
+ 			}
+ 			ab = audit_log_start(audit_context(),
+-					     GFP_ATOMIC, AUDIT_SELINUX_ERR);
++					     GFP_KERNEL, AUDIT_SELINUX_ERR);
+ 			audit_log_format(ab, "op=setxattr invalid_context=");
+ 			audit_log_n_untrustedstring(ab, value, audit_size);
+ 			audit_log_end(ab);
+@@ -6388,7 +6388,7 @@ static int selinux_setprocattr(const char *name, void *value, size_t size)
+ 				else
+ 					audit_size = size;
+ 				ab = audit_log_start(audit_context(),
+-						     GFP_ATOMIC,
++						     GFP_KERNEL,
+ 						     AUDIT_SELINUX_ERR);
+ 				audit_log_format(ab, "op=fscreate invalid_context=");
+ 				audit_log_n_untrustedstring(ab, value, audit_size);
+@@ -6854,7 +6854,7 @@ static int selinux_lockdown(enum lockdown_reason what)
+ 
+ 	if (WARN(invalid_reason, "Invalid lockdown reason")) {
+ 		audit_log(audit_context(),
+-			  GFP_ATOMIC, AUDIT_SELINUX_ERR,
++			  GFP_KERNEL, AUDIT_SELINUX_ERR,
+ 			  "lockdown_reason=invalid");
+ 		return -EINVAL;
+ 	}
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 9fccf417006b0..c1437de04e1d9 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -1577,7 +1577,7 @@ static int sens_read(struct policydb *p, struct symtab *s, void *fp)
+ 	__le32 buf[2];
+ 	u32 len;
+ 
+-	levdatum = kzalloc(sizeof(*levdatum), GFP_ATOMIC);
++	levdatum = kzalloc(sizeof(*levdatum), GFP_KERNEL);
+ 	if (!levdatum)
+ 		return -ENOMEM;
+ 
+@@ -1588,12 +1588,12 @@ static int sens_read(struct policydb *p, struct symtab *s, void *fp)
+ 	len = le32_to_cpu(buf[0]);
+ 	levdatum->isalias = le32_to_cpu(buf[1]);
+ 
+-	rc = str_read(&key, GFP_ATOMIC, fp, len);
++	rc = str_read(&key, GFP_KERNEL, fp, len);
+ 	if (rc)
+ 		goto bad;
+ 
+ 	rc = -ENOMEM;
+-	levdatum->level = kmalloc(sizeof(*levdatum->level), GFP_ATOMIC);
++	levdatum->level = kmalloc(sizeof(*levdatum->level), GFP_KERNEL);
+ 	if (!levdatum->level)
+ 		goto bad;
+ 
+@@ -1618,7 +1618,7 @@ static int cat_read(struct policydb *p, struct symtab *s, void *fp)
+ 	__le32 buf[3];
+ 	u32 len;
+ 
+-	catdatum = kzalloc(sizeof(*catdatum), GFP_ATOMIC);
++	catdatum = kzalloc(sizeof(*catdatum), GFP_KERNEL);
+ 	if (!catdatum)
+ 		return -ENOMEM;
+ 
+@@ -1630,7 +1630,7 @@ static int cat_read(struct policydb *p, struct symtab *s, void *fp)
+ 	catdatum->value = le32_to_cpu(buf[1]);
+ 	catdatum->isalias = le32_to_cpu(buf[2]);
+ 
+-	rc = str_read(&key, GFP_ATOMIC, fp, len);
++	rc = str_read(&key, GFP_KERNEL, fp, len);
+ 	if (rc)
+ 		goto bad;
+ 
 -- 
 2.26.2
 

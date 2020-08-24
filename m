@@ -2,88 +2,75 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B9E224FEAF
-	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 15:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FA5D24FEB4
+	for <lists+selinux@lfdr.de>; Mon, 24 Aug 2020 15:20:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725780AbgHXNTI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Aug 2020 09:19:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50892 "EHLO
+        id S1725780AbgHXNUe (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Aug 2020 09:20:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726599AbgHXNTB (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 09:19:01 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF71EC061575
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:18:59 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id w14so7508420eds.0
-        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:18:59 -0700 (PDT)
+        with ESMTP id S1725958AbgHXNU3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Aug 2020 09:20:29 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 150BEC061573
+        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:20:29 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id b2so8016441edw.5
+        for <selinux@vger.kernel.org>; Mon, 24 Aug 2020 06:20:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=bJWErSjc52UoeFEQkRSKVNZc4I4fzP79JfPH731UsnE=;
-        b=hIRKJ6DwuWlq4T7J443eRGx9eUQOQpmSBxukbG0DEASvvZCedw8IslaCccGWQwrgEH
-         AwyM2l8bp5YvoliWedJgPR8BeEOf2U6jZEymYy0EbBfl0DcjcRRUrKuFDjfOf37Bo+7t
-         sAgToAIY+V8khaWFnLFupoSl+rpRRjtslV18QvZ/LQYpT6awykOdV05okqYHQMDlmjED
-         i4/mFJrrChLk4k1+A4D995tsRp/OkbPDDRiE1q2zQ1Jb0NAD8B/V9qhnIJb7mMC/KfK1
-         W36ZPIoVAB+j1iNs+eTQr+RKknPP8FB9tBN+IDYBxUbD9AsYdPmAmrcCENII0uwUIh/p
-         ElZg==
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ovutwx82aMiCT5WAboMDBPjEdONVTMYW2cB4po8ZcNg=;
+        b=wud7QFiz7lyZDqPxWQS1LI9uClSoHD2tnWJFZhMv8qTdTW6x0X/Av+2iXo7HkztPmh
+         fEbi2mHge49FELsA4RK2bp8L4tJila6XnRSEcc08EPhKEX1qMNnfU75/HFOng9Ak8Dl7
+         kmeUrYNQVnHe/BiLWc5iGAzQmmomDAJyApCVw+UAwDceec/QBS/AVwhQhjwl/Njvuj9L
+         Po/4gBTwJuB8xTMWAdMZwN8yH5hV0FzEqBcU8GxF2dc4+GC7OoHbZlPmGNilQlxzmoDX
+         4CZQoK2WJgL5p5DGhvBWBAuk4yv/XeVLUKlFoYxE52WYaXesIVCV0guPeuq+TlJz9Q+x
+         5XMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=bJWErSjc52UoeFEQkRSKVNZc4I4fzP79JfPH731UsnE=;
-        b=jY/IvfBQaBYTHqAy3WZmTSnqpNV2NN3jydIFsrgt1rgnBIvOhcHh8gyPKs640VHZSN
-         ICoi24BT/wAEmsa1XUBcIonVkPcY+aO/v+8bpv6SJmEUJ/pcOJKmkU4M17/Kt/Kvpu2d
-         GQ1dXDMCJ3KXT+zqdy02gXcSJmzg3r4SKVYqQPaHd3uz3aOZw1E88IIQxuAR5T2cjsv1
-         niAjHLHPNrMtykmHXAExru8xsUsQIvusM1meyafu/e8nV8l/IjwbxR8UyMFV38xZuZbr
-         3M92Eze33yYGKcEJ3i2ieEBdNOhvUFYhZWZJI74p/IWAGTPaupEpSqSchYY/sUS8lsCb
-         yDUA==
-X-Gm-Message-State: AOAM533NOrzNeosgfB66l8ccO5i9QSTKRV5qpjx/8ZA7qmV5uerpVPNW
-        5FUgpdjbazFNkvsaY0ApdHFq7D1BHAc=
-X-Google-Smtp-Source: ABdhPJyA7A1wzwubY88LN31N076a3k8DDLbMDGL+gYps+op3jtU/0SREF3b1DM7mmJnf5VpAPEbh1w==
-X-Received: by 2002:a50:ec90:: with SMTP id e16mr5442232edr.234.1598275137676;
-        Mon, 24 Aug 2020 06:18:57 -0700 (PDT)
-Received: from debianHome.localdomain (x4d01ad51.dyn.telefonica.de. [77.1.173.81])
-        by smtp.gmail.com with ESMTPSA id p3sm9369834edx.75.2020.08.24.06.18.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Aug 2020 06:18:57 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Cc:     Mike Palmiotto <mike.palmiotto@crunchydata.com>
-Subject: [PATCH 3/3] libselinux: initialize last_policyload in selinux_status_open()
-Date:   Mon, 24 Aug 2020 15:18:41 +0200
-Message-Id: <20200824131841.55687-3-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200824131841.55687-1-cgzones@googlemail.com>
-References: <20200824131841.55687-1-cgzones@googlemail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=ovutwx82aMiCT5WAboMDBPjEdONVTMYW2cB4po8ZcNg=;
+        b=r92jejTKBuWhaW069bUf3BHSjN5Gtm/76Nnzy+RJQx1EYbCZ0K2yaI0ZuqpQ8EDdCL
+         iz1f+Y3U7IgE/TlZ4XAS1EsUeSBvAiw6l9Y44ogs5YN/wsmZYZ/QElJIq0i4faXSllZS
+         W9jqUsl57GJ2EwS3MTE7fy6n6Uz1JQK1iQkbNMAxSYGX3100LA3nmrEesUS42Mmx46v9
+         rHUc9vDmoY2Vxk6uCzkV04GoeJZNjBTotyOpv9K1F171q4PoGyP05w4VfKa/PS1vaQal
+         g+BraeUNVghbBU/7xceQAKuzvEsiJt2xsONjfTzUav8Gq0PXo4eic5Mk3h5T/w0PfzQY
+         r1mQ==
+X-Gm-Message-State: AOAM531VwxcLXz8RP67yI9a2skFZG7vNEN8dYeCujQWDIJJtfqqsGHGU
+        862S6JQ/0q/a+MV6b01zKaZuovPXijUB2Z4vCeZ/o+PyIrBB
+X-Google-Smtp-Source: ABdhPJy5hyWlJ/fwKTTG0g3OdIQVmfXoJa5BTayAOyU2347ZXRW7Xt+fI/pQQzTSaFbXfWwsdRjxD2XiNnv1O8b3de0=
+X-Received: by 2002:aa7:de8f:: with SMTP id j15mr5160071edv.135.1598275227717;
+ Mon, 24 Aug 2020 06:20:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20200807151722.12114-1-richard_c_haines@btinternet.com>
+In-Reply-To: <20200807151722.12114-1-richard_c_haines@btinternet.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 24 Aug 2020 09:20:16 -0400
+Message-ID: <CAHC9VhScvQ+ueA0bwjstrivqMGZV--fD3MxFcJOBpeGZvu3dxA@mail.gmail.com>
+Subject: Re: [PATCH] selinux-notebook: kernel_policy_language.md convert to markdown
+To:     Richard Haines <richard_c_haines@btinternet.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-If not initialized to the current policyload count, an enforcing change
-will trigger policyload-callbacks in selinux_status_updated().
+On Fri, Aug 7, 2020 at 11:17 AM Richard Haines
+<richard_c_haines@btinternet.com> wrote:
+>
+> Add a TOC to aid navigation and convert HTML tables to either pipe tables
+> or markdown unordered lists.
+>
+> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+> ---
+>  src/kernel_policy_language.md | 1016 ++++++---------------------------
+>  1 file changed, 182 insertions(+), 834 deletions(-)
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libselinux/src/sestatus.c | 1 +
- 1 file changed, 1 insertion(+)
+Merged, thanks for your patience!
 
-diff --git a/libselinux/src/sestatus.c b/libselinux/src/sestatus.c
-index 62a864b1..dcd7f2dc 100644
---- a/libselinux/src/sestatus.c
-+++ b/libselinux/src/sestatus.c
-@@ -289,6 +289,7 @@ int selinux_status_open(int fallback)
- 	}
- 	selinux_status_fd = fd;
- 	last_seqno = (uint32_t)(-1);
-+	sestatus_save_access(policyload, last_policyload);
- 
- 	/* No need to use avc threads if the kernel status page is available */
- 	avc_using_threads = 0;
 -- 
-2.28.0
-
+paul moore
+www.paul-moore.com

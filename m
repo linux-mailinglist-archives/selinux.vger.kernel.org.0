@@ -2,23 +2,23 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A40B25145F
-	for <lists+selinux@lfdr.de>; Tue, 25 Aug 2020 10:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E895251466
+	for <lists+selinux@lfdr.de>; Tue, 25 Aug 2020 10:38:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728087AbgHYIiS (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 25 Aug 2020 04:38:18 -0400
-Received: from mailomta30-sa.btinternet.com ([213.120.69.36]:23248 "EHLO
-        sa-prd-fep-042.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725936AbgHYIiQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 25 Aug 2020 04:38:16 -0400
+        id S1728109AbgHYIiZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 25 Aug 2020 04:38:25 -0400
+Received: from mailomta31-sa.btinternet.com ([213.120.69.37]:46271 "EHLO
+        sa-prd-fep-044.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728975AbgHYIiR (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 25 Aug 2020 04:38:17 -0400
 Received: from sa-prd-rgout-005.btmx-prd.synchronoss.net ([10.2.38.8])
-          by sa-prd-fep-042.btinternet.com with ESMTP
-          id <20200825083812.IOUU26396.sa-prd-fep-042.btinternet.com@sa-prd-rgout-005.btmx-prd.synchronoss.net>;
-          Tue, 25 Aug 2020 09:38:12 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1598344692; 
-        bh=QC+svJEAdzLwdQSNt57fEKYeJFgYUGtdD+UBOXyr2J0=;
+          by sa-prd-fep-044.btinternet.com with ESMTP
+          id <20200825083813.GKOM3440.sa-prd-fep-044.btinternet.com@sa-prd-rgout-005.btmx-prd.synchronoss.net>;
+          Tue, 25 Aug 2020 09:38:13 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1598344693; 
+        bh=6O1rdI9AbGRZpTFs7nv0iB+4xDi2UYizI4rae+4FTZk=;
         h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=QJ7XtE51QpPpbxWEUj/MTGQ/rBtb8k+uDaibvc1nS6tdfoord794FSQ4NALfnMx5sttS3yv2a/H7SC0UfCBPZ1EveAqSpUiygUipixFtX2GNHybgHqf86ppEMuQqcn8bTBHy7yeoO+YPiGkWEOgApEJNOrp/iIxi1ZVuxKSBWH5/E8S4i8wkYP29idYNKIarMoQSMISK8m1QRY65sKJ523V7TB+GTiVKz/UZ8UL5rH9rO6Qp+wJAUqZpRjB6NsWs4ccwrKJsLUqkBPqP/PHpMyoEjpIPLXwg62yKKwv4e3+IKeVzoiLY725Wdcz/gFS7a45mhIDYzRI9i568YZ1EWw==
+        b=hKqVTSmbvH5zVhRagIENPlGK/c6WjMXa0iCVsCrKlNqtjqE062hg3RT3hTTgyB8sh7p+ccadxf/l1a7JWyI+SUY2Wzc5t7G2SDvwvUZbKO73i68DpNFr5RGcgeXO3nCYjcyDfqaCMFyXdZxPNsLm0cD4DmvK6YDw9DBfUA9244aeSrnHQI+Hs4TZRrQZggmTd7d647OvXLCruNnlR5/UEMCjRAP4WjGfd42dHtlsA224KBzyP19vhkddMB2pPPQnv31NF+PyVbX93CJwK7H+dKrZkhidfS5uKtSVhe5DPyQmnixMsvscjDzDxEnBf5ggN15O0Ixw43eJDnH/n7khBQ==
 Authentication-Results: btinternet.com; none
 X-Originating-IP: [109.155.130.160]
 X-OWM-Source-IP: 109.155.130.160 (GB)
@@ -29,13 +29,13 @@ X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
 X-SNCR-hdrdom: btinternet.com
 Received: from localhost.localdomain (109.155.130.160) by sa-prd-rgout-005.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
-        id 5ED9B8A70D599E55; Tue, 25 Aug 2020 09:38:12 +0100
+        id 5ED9B8A70D599E5F; Tue, 25 Aug 2020 09:38:12 +0100
 From:   Richard Haines <richard_c_haines@btinternet.com>
 To:     paul@paul-moore.com, selinux@vger.kernel.org
 Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH 14/18] domain_object_transitions: Convert to markdown
-Date:   Tue, 25 Aug 2020 09:37:39 +0100
-Message-Id: <20200825083743.6508-15-richard_c_haines@btinternet.com>
+Subject: [PATCH 15/18] file_labeling_statements: Convert to markdown
+Date:   Tue, 25 Aug 2020 09:37:40 +0100
+Message-Id: <20200825083743.6508-16-richard_c_haines@btinternet.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200825083743.6508-1-richard_c_haines@btinternet.com>
 References: <20200825083743.6508-1-richard_c_haines@btinternet.com>
@@ -50,240 +50,319 @@ Add a TOC to aid navigation and convert to markdown.
 
 Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
 ---
- src/domain_object_transitions.md | 121 ++++++++++++++++---------------
- 1 file changed, 62 insertions(+), 59 deletions(-)
+ src/file_labeling_statements.md | 260 ++++++++++++--------------------
+ 1 file changed, 96 insertions(+), 164 deletions(-)
 
-diff --git a/src/domain_object_transitions.md b/src/domain_object_transitions.md
-index 030d866..f897c3b 100644
---- a/src/domain_object_transitions.md
-+++ b/src/domain_object_transitions.md
-@@ -1,9 +1,13 @@
- # Domain and Object Transitions
+diff --git a/src/file_labeling_statements.md b/src/file_labeling_statements.md
+index 34c2ca8..47d0309 100644
+--- a/src/file_labeling_statements.md
++++ b/src/file_labeling_statements.md
+@@ -1,5 +1,10 @@
+ # File System Labeling Statements
  
-+- [Domain Transition](#domain-transition)
-+  - [Type Enforcement Rules](#type-enforcement-rules)
-+- [Object Transition](#object-transition)
++- [*fs_use_xattr*](#fs_use_xattr)
++- [*fs_use_task*](#fs_use_task)
++- [*fs_use_trans*](#fs_use_trans)
++- [*genfscon*](#genfscon)
 +
- This section discusses the *type_transition* statement that is used to:
+ There are four types of file labeling statements: *fs_use_xattr*,
+ *fs_use_task*, *fs_use_trans* and *genfscon* that are explained below.
  
--1.  Transition a process from one domain to another (a domain transition).
--2.  Transition an object from one type to another (an object transition).
-+- Transition a process from one domain to another (a domain transition).
-+- Transition an object from one type to another (an object transition).
+@@ -30,49 +35,33 @@ fs_use_xattr fs_name fs_context;
  
- These transitions can also be achieved using the **libselinux** API
- functions for SELinux-aware applications.
-@@ -14,19 +18,19 @@ A domain transition is where a process in one domain starts a new
- process in another domain under a different security context. There are
- two ways a process can define a domain transition:
+ **Where:**
  
--1.  Using a *type_transition* statement, where the ***exec**(2)* system call
--    will automatically perform a domain transition for programs that are not
--    themselves SELinux-aware. This is the most common method and would
--    be in the form of the following statement:
-+- Using a *type_transition* statement, where the ***exec**(2)* system call
-+  will automatically perform a domain transition for programs that are not
-+  themselves SELinux-aware. This is the most common method and would
-+  be in the form of the following statement:
- 
- ```
- type_transition unconfined_t secure_services_exec_t : process ext_gateway_t;
- ```
- 
--1.  SELinux-aware applications can specify the domain of the new process
--    using the **libselinux** API call ***setexeccon**(3)*. To achieve
--    this the SELinux-aware application must also have the setexec
--    permission, for example:
-+- SELinux-aware applications can specify the domain of the new process
-+  using the **libselinux** API call ***setexeccon**(3)*. To achieve
-+  this the SELinux-aware application must also have the setexec
-+  permission, for example:
- 
- ```
- allow crond_t self:process setexec;
-@@ -35,12 +39,12 @@ allow crond_t self:process setexec;
- However, before any domain transition can take place the policy must
- specify that:
- 
--1.  The source *domain* has permission to *transition* into the target
--    domain.
--2.  The application binary file needs to be *executable* in the source
--    domain.
--3.  The application binary file needs an *entry point* into the target
--    domain.
-+1. The source *domain* has permission to *transition* into the target
-+   domain.
-+2. The application binary file needs to be *executable* in the source
-+   domain.
-+3. The application binary file needs an *entry point* into the target
-+   domain.
- 
- The following is a *type_transition* statement taken an example
- loadable module message filter *ext_gateway.conf* that will be used to explain
-@@ -59,27 +63,26 @@ the *unconfined_t* domain (the source domain) executes a file labeled
- transition from the *unconfined_t* domain to the *ext_gateway_t* domain).
- 
- However as stated above, to be able to *transition* to the
--*ext_gateway_t* domain, the following minimum permissions must be
--granted in the policy using *allow* rules, where (note that the
--bullet numbers correspond to the numbers shown in **Figure 7: Domain Transition**:
-+*ext_gateway_t* domain, the following minimum permissions must be granted in
-+the policy using *allow* rules, where (the bullet numbers correspond to those
-+in **Figure 7: Domain Transition**):
- 
--1.  The *domain* needs permission to *transition* into the
--    *ext_gateway_t* (target) domain:
-+**(1)** The *domain* needs permission to *transition* into the *ext_gateway_t*
-+(target) domain:
- 
- ```
- allow unconfined_t ext_gateway_t : process transition;
- ```
- 
--2.  The executable file needs to be *executable* in the *unconfined_t*
--    (source) domain, and therefore also requires that the file is
--    readable:
-+**(2)** The executable file needs to be *executable* in the *unconfined_t*
-+(source) domain, and therefore also requires that the file is readable:
- 
- ```
- allow unconfined_t secure_services_exec_t : file { execute read getattr };
- ```
- 
--3.  The executable file needs an *entry point* into the
--    *ext_gateway_t* (target) domain:
-+**(3)** The executable file needs an *entry point* into the *ext_gateway_t*
-+(target) domain:
- 
- ```
- allow ext_gateway_t secure_services_exec_t : file entrypoint;
-@@ -94,7 +97,7 @@ SELinux enabled kernel.
- ![](./images/7-domain-transition.png)
- 
- **Figure 7: Domain Transition** - *Where the secure_server is executed
--within the *unconfined_t* domain and then transitioned to the *ext_gateway_t*
-+within the unconfined_t domain and then transitioned to the ext_gateway_t
- domain.*
- 
- ### Type Enforcement Rules
-@@ -164,10 +167,10 @@ target domains), that breaks the type enforcement rule.
- 
- It was decided to resolve this by:
- 
--1.  Keeping the *type_transition* rule for the 'default' type of
--    *ext_gateway_t* and allow the secure server process to be exec'd
--    from *unconfined_t* as shown in **Figure 7: Domain Transition**, by simply
--    running the command from the prompt as follows:
-+- Keeping the *type_transition* rule for the 'default' type of
-+  *ext_gateway_t* and allow the secure server process to be exec'd
-+  from *unconfined_t* as shown in **Figure 7: Domain Transition**, by simply
-+  running the command from the prompt as follows:
- 
- ```
- # Run the external gateway 'secure server' application on port 9999 and
-@@ -176,9 +179,9 @@ It was decided to resolve this by:
- secure_server 99999
- ```
- 
--1.  Use the SELinux ***runcon**(1)* command to ensure that the internal
--    gateway runs in the correct domain by running runcon from the prompt
--    as follows:
-+- Use the SELinux ***runcon**(1)* command to ensure that the internal
-+  gateway runs in the correct domain by running *runcon* from the prompt
-+  as follows:
- 
- ```
- # Run the internal gateway 'secure server' application on port 1111 and
-@@ -189,34 +192,34 @@ runcon -t int_gateway_t -r message_filter_r secure_server 1111
- # Note: The role is required as a role transition is defined in the policy.
- ```
- 
--The runcon command makes use of a number of **libselinux** API
-+The ***runcon**(1)* command makes use of a number of **libselinux** API
- functions to check the current context and set up the new context (for
- example ***getfilecon**(3)* is used to get the executable files context
- and ***setexeccon**(3)* is used to set the new process context). If all
- contexts are correct, then the ***execvp**(2)* system call is executed
- that exec's the secure_server application with the argument of '1111'
- into the *int_gateway_t* domain with the *message_filter_r* role. The
--runcon source can be found in the coreutils package.
-+*runcon* source can be found in the coreutils package.
- 
- Other ways to resolve this issue are:
- 
--1.  Use the runcon command for both gateways to transition to their
--    respective domains. The *type_transition* statements are therefore
--    not required.
--2.  Use different names for the secure server executable files and
--    ensure they have a different type (i.e. instead of
--    *secure_service_exec_t* label the external gateway
--    *ext_gateway_exec_t* and the internal gateway
--    *int_gateway_exec_t*. This would involve making a copy of the
--    application binary (which has already been done as part of the
--    **module testing** by calling the server 'server' and labeling it
--    *unconfined_t* and then making a copy called secure_server and
--    labeling it *secure_services_exec_t*).
--3.  Implement the policy using the Reference Policy utilising the
--    template interface principles discussed in the
--    [**template**](reference_policy.md#template-macro) section.
--
--It was decided to use runcon as it demonstrates the command usage better
-+1. Use the *runcon* command for both gateways to transition to their
-+   respective domains. The *type_transition* statements are therefore
-+   not required.
-+2. Use different names for the secure server executable files and
-+   ensure they have a different type (i.e. instead of
-+   *secure_service_exec_t* label the external gateway
-+   *ext_gateway_exec_t* and the internal gateway
-+   *int_gateway_exec_t*. This would involve making a copy of the
-+   application binary (which has already been done as part of the
-+   **module testing** by calling the server 'server' and labeling it
-+   *unconfined_t* and then making a copy called secure_server and
-+   labeling it *secure_services_exec_t*).
-+3. Implement the policy using the Reference Policy utilising the
-+   template interface principles discussed in the
-+   [**template**](reference_policy.md#template-macro) section.
+-<table>
+-<tbody>
+-<tr>
+-<td><code>fs_use_xattr</code></td>
+-<td>The <code>fs_use_xattr</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>fs_name</code></td>
+-<td>The filesystem name that supports extended attributes. Example names are: encfs, ext2, ext3, ext4, ext4dev, gfs, gfs2, jffs2, jfs, lustre and xfs.</td>
+-</tr>
+-<tr>
+-<td><code>fs_context</code></td>
+-<td>The security context allocated to the filesystem.</td>
+-</tr>
+-</tbody>
+-</table>
++*fs_use_xattr*
 +
-+It was decided to use *runcon* as it demonstrates the command usage better
- than reading the man pages.
++The *fs_use_xattr* keyword.
++
++*fs_name*
++
++The filesystem name that supports extended attributes. Example names are:
++*encfs*, *ext2*, *ext3*, *ext4*, *ext4dev*, *gfs*, *gfs2*, *jffs2*, *jfs*,
++*lustre* and *xfs*.
++
++*fs_context*
++
++The security context allocated to the filesystem.
  
- ## Object Transition
-@@ -230,7 +233,7 @@ automatically using a *type_transition* statement as follows:
- type_transition ext_gateway_t in_queue_t:file in_file_t;
- ```
+ **The statement is valid in:**
  
--The following details an object transition used in n example
-+The following details an object transition used in an example
- *ext_gateway.conf* loadable module where by default, files would be labeled
- *in_queue_t* when created by the gateway application as this is the label
- attached to the parent directory as shown:
-@@ -261,21 +264,21 @@ However as stated above to be able to create the file, the following
- minimum permissions need to be granted in the policy using *allow*
- rules, where:
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | No                      |
  
--1.  The source domain needs permission to *add file entries into the
--    directory*:
-+- The source domain needs permission to *add file entries into the
-+  directory*:
+ **Example:**
  
- ```
- allow ext_gateway_t in_queue_t : dir { write search add_name };
- ```
+@@ -99,49 +88,30 @@ fs_use_task fs_name fs_context;
  
--2.  The source domain needs permission to *create file entries*:
-+- The source domain needs permission to *create file entries*:
+ **Where:**
  
- ```
- allow ext_gateway_t in_file_t : file { write create getattr };
- ```
+-<table>
+-<tbody>
+-<tr>
+-<td><code>fs_use_task</code></td>
+-<td>The <code>fs_use_task</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>fs_name</code></td>
+-<td>Filesystem name that supports task related services. Example valid names are: eventpollfs, pipefs and sockfs.</td>
+-</tr>
+-<tr>
+-<td><code>fs_context</code></td>
+-<td>The security context allocated to the task based filesystem.</td>
+-</tr>
+-</tbody>
+-</table>
++*fs_use_task*
++
++The *fs_use_task* keyword.
++
++*fs_name*
++
++Filesystem name that supports task related services. Example valid names are:
++*eventpollfs*, *pipefs* and *sockfs*.
++
++*fs_context*
++
++The security context allocated to the task based filesystem.
  
--3.  The policy can then ensure (via the SELinux kernel services) that
--    files created in the *in_queue* are relabeled:
-+- The policy can then ensure (via the SELinux kernel services) that
-+  files created in the *in_queue* are relabeled:
+ **The statement is valid in:**
  
- ```
- type_transition ext_gateway_t in_queue_t : file in_file_t;
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | No                      |
+ 
+ **Example:**
+ 
+@@ -171,49 +141,30 @@ fs_use_trans fs_name fs_context;
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>fs_use_trans</code></td>
+-<td>The <code>fs_use_trans</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>fs_name</code></td>
+-<td>Filesystem name that supports transition rules. Example names are: mqueue, shm, tmpfs and devpts.</td>
+-</tr>
+-<tr>
+-<td><code>fs_context</code></td>
+-<td>The security context allocated to the transition based on that of the filesystem.</td>
+-</tr>
+-</tbody>
+-</table>
++*fs_use_trans*
++
++The *fs_use_trans* keyword.
++
++*fs_name*
++
++Filesystem name that supports transition rules. Example names are:
++*mqueue*, *shm*, *tmpfs* and *devpts*.
++
++*fs_context*
++
++The security context allocated to the transition based on that of the filesystem.
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | No                      |
+ 
+ **Example:**
+ 
+@@ -247,53 +198,34 @@ genfscon fs_name partial_path fs_context
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>genfscon</code></td>
+-<td>The <code>genfscon</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>fs_name</code></td>
+-<td>The filesystem name.</td>
+-</tr>
+-<tr>
+-<td><code>partial_path</code></td>
+-<td>If <code>fs_name</code> is <code>proc</code>, then the partial path (see the examples). For all other types, this must be <code>/</code>.</td>
+-</tr>
+-<tr>
+-<td><code>fs_context</code></td>
+-<td>The security context allocated to the filesystem</td>
+-</tr>
+-</tbody>
+-</table>
++*genfscon*
++
++The *genfscon* keyword.
++
++*fs_name*
++
++The filesystem name.
++
++*partial_path*
++
++If *fs_name* is *proc*, then the partial path (see the examples). For all other
++types, this must be */*.
++
++*fs_context*
++
++The security context allocated to the filesystem
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | No                      |
+ 
+ **MLS Examples:**
+ 
 -- 
 2.26.2
 

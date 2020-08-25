@@ -2,270 +2,174 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7FC55251468
-	for <lists+selinux@lfdr.de>; Tue, 25 Aug 2020 10:38:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E2D625190D
+	for <lists+selinux@lfdr.de>; Tue, 25 Aug 2020 14:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728951AbgHYIiZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 25 Aug 2020 04:38:25 -0400
-Received: from mailomta9-sa.btinternet.com ([213.120.69.15]:35166 "EHLO
-        sa-prd-fep-046.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729003AbgHYIiS (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 25 Aug 2020 04:38:18 -0400
-Received: from sa-prd-rgout-005.btmx-prd.synchronoss.net ([10.2.38.8])
-          by sa-prd-fep-046.btinternet.com with ESMTP
-          id <20200825083814.RNYH4114.sa-prd-fep-046.btinternet.com@sa-prd-rgout-005.btmx-prd.synchronoss.net>;
-          Tue, 25 Aug 2020 09:38:14 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1598344694; 
-        bh=Q88WSTdQzGbFHlFMHrp2oR2+T9Wza1NWJzWqze3a3Bg=;
-        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=TL/N9EikDQCHhnmr65fVSD8hXLazN1GGIW4RCRD5qxEJza9t8ua3z+B2NW1sriVQ7W1bgQGk8SQHD3yNzNBrBoKxTADAtLRpZF7AMOTWgObiLOwM8slpOEVzSRPkV9RfJoibLNPxKlnG7zy+vq8LDeLUrtm5Lg4k0SJsdfRsH07qxMbIGym9OYdDwPYAf+eDpCsbSxhGe+Jr9c9hAvEMI/CGQNRnEWgEbbKOYJXLLuqwlkTIW/B/z0XevVcLDScVNm8i4k7MSTT+9RSAx9KNt+5Y/dXuuvlSPRjO8GspVvcImkssZxYjfyXOf+k1ZQryZHdoDoD9bnV0q2+et04EvQ==
-Authentication-Results: btinternet.com; none
-X-Originating-IP: [109.155.130.160]
-X-OWM-Source-IP: 109.155.130.160 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedruddvtddgtdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeeutddtleelheeugefgiefhiedtheeukeffveeitdffgeffieeugeeljeegvefgieenucfkphepuddtledrudehhedrudeftddrudeitdenucevlhhushhtvghrufhiiigvpeduudenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpedutdelrdduheehrddufedtrdduiedtpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeophgruhhlsehprghulhdqmhhoohhrvgdrtghomheqpdhrtghpthhtohepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuqfftvefrvfeprhhftgekvddvnehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqe
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-SNCR-hdrdom: btinternet.com
-Received: from localhost.localdomain (109.155.130.160) by sa-prd-rgout-005.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
-        id 5ED9B8A70D599E8B; Tue, 25 Aug 2020 09:38:14 +0100
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     paul@paul-moore.com, selinux@vger.kernel.org
-Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH 18/18] infiniband_statements: Convert to markdown
-Date:   Tue, 25 Aug 2020 09:37:43 +0100
-Message-Id: <20200825083743.6508-19-richard_c_haines@btinternet.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200825083743.6508-1-richard_c_haines@btinternet.com>
-References: <20200825083743.6508-1-richard_c_haines@btinternet.com>
+        id S1726752AbgHYMvl (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 25 Aug 2020 08:51:41 -0400
+Received: from userp2130.oracle.com ([156.151.31.86]:47946 "EHLO
+        userp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726336AbgHYMvk (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 25 Aug 2020 08:51:40 -0400
+Received: from pps.filterd (userp2130.oracle.com [127.0.0.1])
+        by userp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PCilxX112615;
+        Tue, 25 Aug 2020 12:51:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : mime-version : content-type; s=corp-2020-01-29;
+ bh=ixHxOsosoizUbLpQlj1KssPo9vyrR+f5BtYiUgnA3Rw=;
+ b=yGKnSTMZ4Vi0uGfJTR0ifczqf592Z8LnAWy3gVhqPo2GtKgKIdUejYFfUIcXL5+JYtGs
+ O/XcXVJ9JIGUmYy6WUrV10Nv8e1Nr0fK6DHV6TDmA7/M7LPsVDwK3VQiCftjwKmdjtrq
+ lwDgl1/7Ytqcth3f/fXJ/Ft61+OFM/+dNL3xkLGQF5v3Iyf4TPcUd/V6K9TSVesL3R7c
+ deIMrQyF/WVBAtmPl73Aq99P7Scnzvl1t6iocYvdIC8AXDGKFIJ8ufZvV9+hueQq5YTf
+ u1S0OJ3fxIg9Und5JUEVFW4lF2Nzdb2pzIcwamp3s6gsfChaa2lxvPu9LYkqJtsO0shX hw== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by userp2130.oracle.com with ESMTP id 333csj2a90-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+        Tue, 25 Aug 2020 12:51:38 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 07PCils2083086;
+        Tue, 25 Aug 2020 12:51:37 GMT
+Received: from userv0122.oracle.com (userv0122.oracle.com [156.151.31.75])
+        by aserp3030.oracle.com with ESMTP id 333r9juaj5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 25 Aug 2020 12:51:37 +0000
+Received: from abhmp0010.oracle.com (abhmp0010.oracle.com [141.146.116.16])
+        by userv0122.oracle.com (8.14.4/8.14.4) with ESMTP id 07PCpaxj003005;
+        Tue, 25 Aug 2020 12:51:36 GMT
+Received: from mwanda (/41.57.98.10)
+        by default (Oracle Beehive Gateway v4.0)
+        with ESMTP ; Tue, 25 Aug 2020 05:51:35 -0700
+Date:   Tue, 25 Aug 2020 15:51:30 +0300
+From:   Dan Carpenter <dan.carpenter@oracle.com>
+To:     stephen.smalley.work@gmail.com
+Cc:     selinux@vger.kernel.org
+Subject: [bug report] selinux: encapsulate policy state, refactor policy load
+Message-ID: <20200825125130.GA304650@mwanda>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxscore=0 bulkscore=0
+ adultscore=0 spamscore=0 mlxlogscore=999 phishscore=0 suspectscore=11
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2006250000
+ definitions=main-2008250097
+X-Proofpoint-Virus-Version: vendor=nai engine=6000 definitions=9723 signatures=668679
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 bulkscore=0 clxscore=1011
+ spamscore=0 priorityscore=1501 impostorscore=0 adultscore=0
+ lowpriorityscore=0 suspectscore=11 mlxlogscore=999 phishscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008250097
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add a TOC to aid navigation and convert to markdown.
+Hello Stephen Smalley,
 
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
----
- src/infiniband_statements.md | 155 ++++++++++++++---------------------
- 1 file changed, 61 insertions(+), 94 deletions(-)
+The patch 461698026ffa: "selinux: encapsulate policy state, refactor
+policy load" from Aug 7, 2020, leads to the following static checker
+warning:
 
-diff --git a/src/infiniband_statements.md b/src/infiniband_statements.md
-index 492bdb6..943cee6 100644
---- a/src/infiniband_statements.md
-+++ b/src/infiniband_statements.md
-@@ -1,5 +1,8 @@
- # InfiniBand Labeling Statements
- 
-+- [*ibpkeycon*](#ibpkeycon)
-+- [*ibendportcon*](#ibendportcon)
-+
- To support access control for InfiniBand (IB) partitions and subnet
- management, security contexts are provided for: Partition Keys (Pkey)
- that are 16 bit numbers assigned to subnets and their IB end ports. An
-@@ -13,7 +16,7 @@ Note that there are no terminating semi-colons ';' on these statements.
- The *ibpkeycon* statement is used to label IB partition keys.
- 
- It is also possible to add a security context to partition keys outside
--the policy using the ***semanage ibpkey*** command that will associate the
-+the policy using the *semanage ibpkey* command that will associate the
- *pkey* (or range of pkeys) to a security context.
- 
- **The statement definition is:**
-@@ -24,53 +27,35 @@ ibpkeycon subnet pkey pkey_context
- 
- **Where:**
- 
--<table>
--<tbody>
--<tr>
--<td><code>ibpkeycon</code></td>
--<td>The <code>ibpkeycon</code> keyword.</td>
--</tr>
--<tr>
--<td><code>subnet</code></td>
--<td>IP address in IPv6 format.</td>
--</tr>
--<tr>
--<td><code>pkey</code></td>
--<td>Partition key number or range. The range is separated by a hyphen '-'.</td>
--</tr>
--<tr>
--<td><code>pkey_context</code></td>
--<td>The security context for the pkey(s).</td>
--</tr>
--</tbody>
--</table>
-+*ibpkeycon*
-+
-+The *ibpkeycon* keyword.
-+
-+*subnet*
-+
-+IP address in IPv6 format.
-+
-+*pkey*
-+
-+Partition key number or range. The range is separated by a hyphen \'\-\'.
-+
-+*pkey_context*
-+
-+The security context for the pkey(s).
- 
- **The statement is valid in:**
- 
--<table style="text-align:center">
--<tbody>
--<tr style="background-color:#D3D3D3;">
--<td><strong>Monolithic Policy</strong></td>
--<td><strong>Base Policy</strong></td>
--<td><strong>Module Policy</strong></td>
--</tr>
--<tr>
--<td>Yes</td>
--<td>Yes</td>
--<td>Yes</td>
--</tr>
--<tr style="background-color:#D3D3D3;">
--<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
--<td><strong><code>optional</code> Statement</strong></td>
--<td><strong><code>require</code> Statement</strong></td>
--</tr>
--<tr>
--<td>No</td>
--<td>No</td>
--<td>No</td>
--</tr>
--</tbody>
--</table>
-+Policy Type
-+
-+| Monolithic Policy       | Base Policy             | Module Policy           |
-+| ----------------------- | ----------------------- | ----------------------- |
-+| Yes                     | Yes                     | Yes                     |
-+
-+Conditional Policy Statements
-+
-+| *if* Statement          | *optional* Statement    | *require* Statement     |
-+| ----------------------- | ----------------------- | ----------------------- |
-+| No                      | No                      | No                      |
- 
- **Examples:**
- 
-@@ -86,8 +71,8 @@ semanage ibpkey -a -t default_ibpkey_t -x fe80:: 0xFFFF
- ```
- 
- The above command will produce the following file:
--*/var/lib/selinux/&lt;SELINUXTYPE&gt;/active/ibpkeys.local*
--in the default *<SELINUXTYPE>* policy store and then activate the policy:
-+*/var/lib/selinux/\<SELINUXTYPE\>/active/ibpkeys.local*
-+in the default *\<SELINUXTYPE\>* policy store and then activate the policy:
- 
- ```
- # This file is auto-generated by libsemanage
-@@ -101,7 +86,7 @@ ibpkeycon fe80:: 0xFFFF system_u:object_r:default_ibpkey_t:s0
- The *ibendportcon* statement is used to label IB end ports.
- 
- It is also possible to add a security context to ports outside the
--policy using the 'semanage ibendport' command that will associate the
-+policy using the *semanage ibendport* command that will associate the
- end port to a security context.
- 
- **The statement definition is:**
-@@ -112,53 +97,35 @@ ibendportcon device_id port_number port_context
- 
- **Where:**
- 
--<table>
--<tbody>
--<tr>
--<td><code>ibendportcon</code></td>
--<td>The <code>ibendportcon</code> keyword.</td>
--</tr>
--<tr>
--<td><code>device_id</code></td>
--<td>Device name</td>
--</tr>
--<tr>
--<td><code>port_number</code></td>
--<td>Single port number.</td>
--</tr>
--<tr>
--<td><code>port_context</code></td>
--<td>The security context for the port.</td>
--</tr>
--</tbody>
--</table>
-+*ibendportcon*
-+
-+The *ibendportcon* keyword.
-+
-+*device_id*
-+
-+Device name
-+
-+*port_number*
-+
-+Single port number.
-+
-+*port_context*
-+
-+The security context for the port.
- 
- **The statement is valid in:**
- 
--<table style="text-align:center">
--<tbody>
--<tr style="background-color:#D3D3D3;">
--<td><strong>Monolithic Policy</strong></td>
--<td><strong>Base Policy</strong></td>
--<td><strong>Module Policy</strong></td>
--</tr>
--<tr>
--<td>Yes</td>
--<td>Yes</td>
--<td>Yes</td>
--</tr>
--<tr style="background-color:#D3D3D3;">
--<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
--<td><strong><code>optional</code> Statement</strong></td>
--<td><strong><code>require</code> Statement</strong></td>
--</tr>
--<tr>
--<td>No</td>
--<td>No</td>
--<td>No</td>
--</tr>
--</tbody>
--</table>
-+Policy Type
-+
-+| Monolithic Policy       | Base Policy             | Module Policy           |
-+| ----------------------- | ----------------------- | ----------------------- |
-+| Yes                     | Yes                     | Yes                     |
-+
-+Conditional Policy Statements
-+
-+| *if* Statement          | *optional* Statement    | *require* Statement     |
-+| ----------------------- | ----------------------- | ----------------------- |
-+| No                      | No                      | No                      |
- 
- **Examples:**
- 
-@@ -174,8 +141,8 @@ semanage ibendport -a -t opensm_ibendport_t -z mlx4_0 2
- ```
- 
- This command will produce the following file
--*/var/lib/selinux/&lt;SELINUXTYPE&gt;/active/ibendports.local* in the default
--*<SELINUXTYPE>* policy store and then activate the policy:
-+*/var/lib/selinux/\<SELINUXTYPE\>/active/ibendports.local* in the default
-+*\<SELINUXTYPE\>* policy store and then activate the policy:
- 
- ```
- # This file is auto-generated by libsemanage
--- 
-2.26.2
+	security/selinux/ss/services.c:2288 security_load_policy()
+	error: we previously assumed 'newpolicy->sidtab' could be null (see line 2227)
 
+security/selinux/ss/services.c
+  2221  
+  2222          newpolicy = kzalloc(sizeof(*newpolicy), GFP_KERNEL);
+  2223          if (!newpolicy)
+  2224                  return -ENOMEM;
+  2225  
+  2226          newpolicy->sidtab = kzalloc(sizeof(*newpolicy->sidtab), GFP_KERNEL);
+  2227          if (!newpolicy->sidtab)
+  2228                  goto err;
+  2229  
+  2230          rc = policydb_read(&newpolicy->policydb, fp);
+  2231          if (rc)
+  2232                  goto err;
+  2233  
+  2234          newpolicy->policydb.len = len;
+  2235          rc = selinux_set_mapping(&newpolicy->policydb, secclass_map,
+  2236                                  &newpolicy->map);
+  2237          if (rc)
+  2238                  goto err;
+  2239  
+  2240          rc = policydb_load_isids(&newpolicy->policydb, newpolicy->sidtab);
+  2241          if (rc) {
+  2242                  pr_err("SELinux:  unable to load the initial SIDs\n");
+  2243                  goto err;
+  2244          }
+  2245  
+  2246  
+  2247          if (!selinux_initialized(state)) {
+  2248                  /* First policy load, so no need to preserve state from old policy */
+  2249                  *newpolicyp = newpolicy;
+  2250                  return 0;
+  2251          }
+  2252  
+  2253          /* Preserve active boolean values from the old policy */
+  2254          rc = security_preserve_bools(state, &newpolicy->policydb);
+  2255          if (rc) {
+  2256                  pr_err("SELinux:  unable to preserve booleans\n");
+  2257                  goto err;
+  2258          }
+  2259  
+  2260          /*
+  2261           * Convert the internal representations of contexts
+  2262           * in the new SID table.
+  2263           *
+  2264           * NOTE: We do not need to take the policy read-lock
+  2265           * around the code below because other policy-modifying
+  2266           * operations are already excluded by selinuxfs via
+  2267           * fsi->mutex.
+  2268           */
+  2269          args.state = state;
+  2270          args.oldp = &state->ss->policy->policydb;
+  2271          args.newp = &newpolicy->policydb;
+  2272  
+  2273          convert_params.func = convert_context;
+  2274          convert_params.args = &args;
+  2275          convert_params.target = newpolicy->sidtab;
+  2276  
+  2277          rc = sidtab_convert(state->ss->policy->sidtab, &convert_params);
+  2278          if (rc) {
+  2279                  pr_err("SELinux:  unable to convert the internal"
+  2280                          " representation of contexts in the new SID"
+  2281                          " table\n");
+  2282                  goto err;
+  2283          }
+  2284  
+  2285          *newpolicyp = newpolicy;
+  2286          return 0;
+  2287  err:
+  2288          selinux_policy_free(newpolicy);
+
+This style of "one function frees everything" error handling is the
+most bug prone style of error handling.  Typical bugs are:
+
+1) Free uninitalized memory.
+
+2) Decrement reference counts which weren't incremented.
+
+3) Rely on things to be allocated like this example where
+   "newpolicy->sidtab" is NULL.
+
+4) Double free things because other code is written in the style where
+   each function cleans up its own allocations.  For example, in this
+   case policydb_read() calls policydb_destroy(p); and
+   selinux_policy_free() calls it as well so it is a double free.
+   There are some other double frees on this path as well.
+
+5) Leaks because the code is hard/impossible to audit.
+
+The best way to write error handling is to use "Free the most recent
+allocation" style.  Use good label names, like "err_free_foo: kfree(foo);"
+which say what the goto frees.  That way we never free uninitialized
+memory.  It's easy to audit because we just have to mentally keep
+track of the most recent allocation and we check that "goto free_foo;"
+matches that foo is the recentest allocation.
+
+  2289          return rc;
+  2290  }
+
+regards,
+dan carpenter

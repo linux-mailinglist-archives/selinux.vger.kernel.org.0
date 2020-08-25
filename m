@@ -2,41 +2,40 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E06FE25145E
-	for <lists+selinux@lfdr.de>; Tue, 25 Aug 2020 10:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7489251465
+	for <lists+selinux@lfdr.de>; Tue, 25 Aug 2020 10:38:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728061AbgHYIiR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 25 Aug 2020 04:38:17 -0400
-Received: from mailomta8-sa.btinternet.com ([213.120.69.14]:24199 "EHLO
-        sa-prd-fep-045.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1728087AbgHYIiP (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 25 Aug 2020 04:38:15 -0400
+        id S1728115AbgHYIiY (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 25 Aug 2020 04:38:24 -0400
+Received: from mailomta10-sa.btinternet.com ([213.120.69.16]:21504 "EHLO
+        sa-prd-fep-041.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728109AbgHYIiR (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 25 Aug 2020 04:38:17 -0400
 Received: from sa-prd-rgout-005.btmx-prd.synchronoss.net ([10.2.38.8])
-          by sa-prd-fep-045.btinternet.com with ESMTP
-          id <20200825083808.HLWA4112.sa-prd-fep-045.btinternet.com@sa-prd-rgout-005.btmx-prd.synchronoss.net>;
-          Tue, 25 Aug 2020 09:38:08 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1598344688; 
-        bh=L3j/8ZLx2LOTL6IaLpkY5WKc4iBNLyiGz8srqIFRtF4=;
+          by sa-prd-fep-041.btinternet.com with ESMTP
+          id <20200825083809.MJXX19995.sa-prd-fep-041.btinternet.com@sa-prd-rgout-005.btmx-prd.synchronoss.net>;
+          Tue, 25 Aug 2020 09:38:09 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1598344689; 
+        bh=WAke2q5HIFSVAmCRcXhPKk31kmXXju7pzkqUUlE2JGw=;
         h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=aH0WwE0zTKvpadY1xOq7HU4TWRNOEL/luQPmC+FgCQwnLUvbS15GrZDHp2fZwJKxF8fQV2YAIaGXllJItHGeWmvAu4O77wWkYjYM8eEarlnNBspUuxa9GNrBDbo1iynhWaDSpv/lUDrqGyTh/l6y5gHgRCQ7oI9rWNOMuO4jR6PZPyNM3B2zhrKSEoOZR7TcLR1cJs6eUyh2C8sNMI39j3+UZ2Z4VuhOnDEEEVmMBvswTjRp2NmY49tO8QwerQcjW0w/XUcn1rtVp+eaxWHQaa3XyOX0Nyh/JCkoXVT6WDADE8diZkrAUGNPbuhqo2YsixaLW5xNKSPzdsrNVW6j2A==
+        b=U/LoWXsFkAFsBX2DDgsbbJnimt0AHQRdboMQcs+9smjOIyn12n/e/Cv5hDfrhfmhxu5DdjK8bCIrqZ5Uq3OZNyjejHBj8Ja7Zq6o8Kd5D/nXbaAlfQQeDna7LIgCF0hL+MntAPiCfWU9P5hu/jwZx88fAAXcI0KFBloYfT48DOHSziWkmFa33vhMF9CMZspWd2E2227OyLaFygZFomlyd+5FFJ9XRRI5LwuSNBn2T+ztQUD5sNQvtrAhjHHvsHEHsWe7GFbeeLh0cqIesrUtgqVHFnzBI92OdEPB8CfqoANHExOgouaI+VPqL25eqXoB2p4mgLs5p+6g4UmpTGzOlw==
 Authentication-Results: btinternet.com; none
 X-Originating-IP: [109.155.130.160]
 X-OWM-Source-IP: 109.155.130.160 (GB)
 X-OWM-Env-Sender: richard_c_haines@btinternet.com
 X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedruddvtddgtdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeeujeduvdejkeevtddtgfejiedtvefggfekgeehudetjeefffekteelgeefkeevieenucffohhmrghinhepghhithhhuhgsrdgtohhmnecukfhppedutdelrdduheehrddufedtrdduiedtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpedutdelrdduheehrddufedtrdduiedtpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeophgruhhlsehprghulhdqmhhoohhrvgdrtghomheqpdhrtghpthhtohepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuqfftvefrvfeprhhftgekvddvnehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmpdhrtghpthhtohepoehsvghlihhnuhigsehvghgv
-        rhdrkhgvrhhnvghlrdhorhhgqe
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedruddvtddgtdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeeutddtleelheeugefgiefhiedtheeukeffveeitdffgeffieeugeeljeegvefgieenucfkphepuddtledrudehhedrudeftddrudeitdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepuddtledrudehhedrudeftddrudeitddpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehprghulhesphgruhhlqdhmohhorhgvrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheq
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
 X-SNCR-hdrdom: btinternet.com
 Received: from localhost.localdomain (109.155.130.160) by sa-prd-rgout-005.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
-        id 5ED9B8A70D599D9F; Tue, 25 Aug 2020 09:38:08 +0100
+        id 5ED9B8A70D599DAC; Tue, 25 Aug 2020 09:38:09 +0100
 From:   Richard Haines <richard_c_haines@btinternet.com>
 To:     paul@paul-moore.com, selinux@vger.kernel.org
 Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH 05/18] cil_overview: Convert to markdown
-Date:   Tue, 25 Aug 2020 09:37:30 +0100
-Message-Id: <20200825083743.6508-6-richard_c_haines@btinternet.com>
+Subject: [PATCH 06/18] class_permission_statements: Convert to markdown
+Date:   Tue, 25 Aug 2020 09:37:31 +0100
+Message-Id: <20200825083743.6508-7-richard_c_haines@btinternet.com>
 X-Mailer: git-send-email 2.26.2
 In-Reply-To: <20200825083743.6508-1-richard_c_haines@btinternet.com>
 References: <20200825083743.6508-1-richard_c_haines@btinternet.com>
@@ -47,97 +46,309 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Convert to markdown
+Add a TOC to aid navigation and convert to markdown.
 
 Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
 ---
- src/cil_overview.md | 63 ++++++++++++++++++++-------------------------
- 1 file changed, 28 insertions(+), 35 deletions(-)
+ src/class_permission_statements.md | 231 ++++++++++++-----------------
+ 1 file changed, 93 insertions(+), 138 deletions(-)
 
-diff --git a/src/cil_overview.md b/src/cil_overview.md
-index aa22bff..ddb70f6 100644
---- a/src/cil_overview.md
-+++ b/src/cil_overview.md
-@@ -11,19 +11,17 @@ A PDF version is included in this documentation:
- The CIL compiler source can be found at:
- <https://github.com/SELinuxProject/selinux.git> within the *secilc* and
- *libsepol* sections and can be cloned via:
---    *git clone https://github.com/SELinuxProject/selinux.git*
-+- *git clone https://github.com/SELinuxProject/selinux.git*
+diff --git a/src/class_permission_statements.md b/src/class_permission_statements.md
+index 4090fa0..b1ef36a 100644
+--- a/src/class_permission_statements.md
++++ b/src/class_permission_statements.md
+@@ -1,5 +1,10 @@
+ # Object Class and Permission Statements
  
- While the CIL design web pages give the main objectives of CIL, from a
- language perspective it will:
++- [*class* (1)](#class-1)
++  - [Associating Permissions to a Class](#associating-permissions-to-a-class)
++- [*common*](#common)
++- [*class* (2)](#class-2)
++
+ For those who write or manager SELinux policy, there is no need to
+ define new objects and their associated permissions as these would be
+ done by those who actually design and/or write object managers.
+@@ -9,14 +14,14 @@ in the *./policy/flask/security\_classes* file.
  
--1.  Apply name and usage consistency to the current kernel language
--    statements. For example the kernel language uses *attribute* and
--    *attribute_role* to declare identifiers, whereas CIL uses
--    *typeattribute* and *roleattribute*. Also statements to associate
--    types or roles have been made consistent and enhanced to allow
--    expressions to be defined.
--
---   Examples:
-+- Apply name and usage consistency to the current kernel language
-+  statements. For example the kernel language uses *attribute* and
-+  *attribute_role* to declare identifiers, whereas CIL uses
-+  *typeattribute* and *roleattribute*. Also statements to associate
-+  types or roles have been made consistent and enhanced to allow
-+  expressions to be defined. Some examples are:
+ There are two variants of the *class* statement for writing policy:
  
- |    Kernel        |      CIL           |
- | ---------------- | ------------------ |
-@@ -35,32 +33,27 @@ language perspective it will:
- | *allow* (role)   | *roleallow*        |
- | *dominance*      | *sensitivityorder* |
+-1.  There is the *class* statement that declares the actual class
+-    identifier or name.
+-2.  There is a further refinement of the *class* statement that
+-    associates permissions to the class as discussed in the
+-    [**Associating Permissions to a Class**](#associating-permissions-to-a-class)
+-    section.
++1. There is the *class* statement that declares the actual class
++   identifier or name.
++2. There is a further refinement of the *class* statement that
++   associates permissions to the class as discussed in the
++   [**Associating Permissions to a Class**](#associating-permissions-to-a-class)
++   section.
  
--2.  Additional CIL statements have been defined to enhance
--    functionality:
--
---   *classpermission* - Declare a *classpermissionset* identifier.
--
---   *classpermissionset* - Associate class / permissions also supporting
--expressions.
--
---   *classmap* / *classmapping* - Statements to support declaration and
--association of multiple *classpermissionset*'s. Useful when defining an
--*allow* rule with multiple class/permissions.
--
---   *context* - Statement to declare security context.
--
--3.  Allow named and anonymous definitions to be supported.
--4.  Support namespace features allowing policy modules to be defined
--    within blocks with inheritance and template features.
--5.  Remove the order dependency in that policy statements can be
--    anywhere within the source (i.e. remove dependency of class, sid
--    etc. being within a base module).
--6.  Able to define macros and calls that will remove any dependency on
--    M4 macro support.
--7.  Directly generate the binary policy file and other configuration
--    files - currently the *file_contexts* file.
--8.  Support transformation services such as delete, transform and
--    inherit with exceptions.
-+- Additional CIL statements have been defined to enhance
-+  functionality:
-+  - *classpermission* - Declare a *classpermissionset* identifier.
-+  - *classpermissionset* - Associate class / permissions also supporting
-+    expressions.
-+  - *classmap* / *classmapping* - Statements to support declaration and
-+    association of multiple *classpermissionset*'s. Useful when defining an
-+    *allow* rule with multiple class/permissions.
-+  - *context* - Statement to declare security context.
-+- Allow named and anonymous definitions to be supported.
-+- Support namespace features allowing policy modules to be defined
-+  within blocks with inheritance and template features.
-+- Remove the order dependency in that policy statements can be
-+  anywhere within the source (i.e. remove dependency of class, sid
-+  etc. being within a base module).
-+- Able to define macros and calls that will remove any dependency on
-+  M4 macro support.
-+- Directly generate the binary policy file and other configuration
-+  files - currently the *file_contexts* file.
-+- Support transformation services such as delete, transform and
-+  inherit with exceptions.
+-## *class*
++## *class* (1)
  
- An simple CIL policy is as follows:
+ Object classes are declared within a policy with the following statement
+ definition:
+@@ -27,45 +32,27 @@ class class_id
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>class</code></td>
+-<td>The <code>class</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>class_id</code></td>
+-<td>The <code>class</code> identifier. </td>
+-</tr>
+-</tbody>
+-</table>
++*class*
++
++The *class* keyword.
++
++*class_id*
++
++The *class* identifier.
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>Yes</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | Yes                     |
+ 
+ **Example:**
+ 
+@@ -79,11 +66,11 @@ class db_tuple
+ 
+ Permissions can be defined within policy in two ways:
+ 
+-1.  Define a set of common permissions that can then be inherited by one
+-    or more object classes using further *class* statements.
+-2.  Define *class* specific permissions. This is where permissions are
+-    declared for a specific object class only (i.e. the permission is
+-    not inherited by any other object class).
++1. Define a set of common permissions that can then be inherited by one
++   or more object classes using further *class* statements.
++2. Define *class* specific permissions. This is where permissions are
++   declared for a specific object class only (i.e. the permission is
++   not inherited by any other object class).
+ 
+ A list of classes and their permissions used by the **Reference Policy**
+ can be found in the *./policy/flask/access_vectors* file.
+@@ -100,49 +87,32 @@ common common_id { perm_set }
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>common</code></td>
+-<td>The <code>common</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>common_id</code></td>
+-<td>The <code>common</code> identifier. </td>
+-</tr>
+-<tr>
+-<td><code>perm_set</code></td>
+-<td>One or more permission identifiers in a space separated list enclosed within braces '{}'.</td>
+-</tr>
+-</tbody>
+-</table>
++*common*
++
++The *common* keyword.
++
++*common_id*
++
++The *common* identifier.
++
++*perm_set*
++
++One or more permission identifiers in a space separated list enclosed within
++braces \'\{\}\'.
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | No                      |
+ 
+ **Example:**
+ 
+@@ -152,9 +122,10 @@ common common_id { perm_set }
+ common database { create drop getattr setattr relabelfrom relabelto }
+ ```
+ 
+-## *class*
++## *class* (2)
+ 
+-Inherit and / or associate permissions to a perviously declared *class* identifier.
++Inherit and / or associate permissions to a perviously declared *class*
++identifier.
+ 
+ **The statement definition is:**
+ 
+@@ -164,60 +135,44 @@ class class_id [ inherits common_set ] [ { perm_set } ]
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>class</code></td>
+-<td>The <code>class</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>class_id</code></td>
+-<td>The previously declared <code>class</code> identifier. </td>
+-</tr>
+-<tr>
+-<td><code>inherits</code></td>
+-<td>The optional <code>inherits</code> keyword that allows a set of common permissions to be inherited.</td>
+-</tr>
+-<tr>
+-<td><code>common_set</code></td>
+-<td>A previously declared <code>common</code> identifier.</td>
+-</tr>
+-<tr>
+-<td><code>perm_set</code></td>
+-<td>One or more optional permission identifiers in a space separated list enclosed within braces '{}'.</td>
+-</tr>
+-</tbody>
+-</table>
++*class*
++
++The *class* keyword.
++
++*class_id*
++
++The previously declared *class* identifier.
++
++*inherits*
++
++The optional *inherits* keyword that allows a set of common permissions to be
++inherited.
++
++*common_set*
++
++A previously declared *common* identifier.
++
++*perm_set*
++
++One or more optional permission identifiers in a space separated list enclosed
++within braces \'\{\}\'.</td>
+ 
+ Note: There must be at least one *common_set* or one *perm_set* defined within
+ the statement.
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>Yes</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | Yes                     |
+ 
+ **Examples:**
  
 -- 
 2.26.2

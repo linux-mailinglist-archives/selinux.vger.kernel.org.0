@@ -2,173 +2,139 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0BA2530D7
-	for <lists+selinux@lfdr.de>; Wed, 26 Aug 2020 16:05:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C99912530DC
+	for <lists+selinux@lfdr.de>; Wed, 26 Aug 2020 16:05:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726514AbgHZOFZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 26 Aug 2020 10:05:25 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:60529 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726187AbgHZOFV (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 26 Aug 2020 10:05:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1598450719;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=l655GAyOHBeTwpCXtasjAikdbXD6mqUcm1R/KoxGFRY=;
-        b=KJL7XzxIGx1f9Ywxqf3CozzuV3KC6lhd/5DUywc62MEHZmybvEB+o1RKL/BXsLXtioJu8i
-        VifoFp8hTOeCk2UTZFcNDaVhVca05wWvCYEmAvuDKJ0b2SO/lL2TFW2ePFf2H8zos0omq4
-        xVY6Uome4tDpcxEZXorjGM40zScPcAM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-421-P-b8DKVyNbqOF2l_zroiUQ-1; Wed, 26 Aug 2020 09:59:12 -0400
-X-MC-Unique: P-b8DKVyNbqOF2l_zroiUQ-1
-Received: by mail-wm1-f69.google.com with SMTP id f125so813766wma.3
-        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 06:59:12 -0700 (PDT)
+        id S1726125AbgHZOFq (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 26 Aug 2020 10:05:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726753AbgHZOFo (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 26 Aug 2020 10:05:44 -0400
+Received: from mail-ed1-x542.google.com (mail-ed1-x542.google.com [IPv6:2a00:1450:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98BF9C061371
+        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 07:05:43 -0700 (PDT)
+Received: by mail-ed1-x542.google.com with SMTP id q21so637002edv.1
+        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 07:05:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=li8UpKpsGyV3l189MXyJIaQ4CrgJme43rMUDZKsgeOw=;
+        b=bW/rocNXJBz9MaeSL4chEYYe8PQH7YgZFhUoC4WJV2mvmZDUWFS4519X6NfkrbbIKj
+         4r5XigjZyVQxxQt8782dzvFb2dOChjNT+QRqCtxObpsVvBNd8w+oxDpvtH7eRTEj5KIU
+         Vw4aefMUZRkRW4xJejt5Ggp54eCqZhJBLFTCdwF+HZoQDDYPnKENuS42m7oRc6f7OfRF
+         qeVP5cydSU1fWidy0XUJud2ZaP/GCYZnTzJWVANhjeGCsQzpcoEJHmtcC+xyUQjNnszZ
+         D4Q+tQlL+L5rN0T4z39qknEKHl0hrSqRXUq6+T9D1loBhJxGwbu6o2aRqIvxt9q222Rw
+         kdZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=l655GAyOHBeTwpCXtasjAikdbXD6mqUcm1R/KoxGFRY=;
-        b=ATv5kyReRgw4sYa9OIHATZpWHm/ugHctMCM+JVKAp301Z5+BvX84wgKDi9KbVm4jV/
-         QpdFmHRfJNm/uVBuFs2hxPg0oL0qC2VLfjfCBYsTV+0LjfjS69OfNriGSz21P6zD0Fmn
-         i+7LOvfhupmYJkR4ZbXW1tXtsm0tPySqKGQuSAHo8+p3of5rFH4ePc7ZFhEyY2FTDHPj
-         ArmU7Wc86lQuBwDkAZrkH0MWGpZ1+l7GgmY2wGrJjm0HRNhDvdg+bVVab6D4Zf4wJXPR
-         0P35EDsG7MOUvq+JCR9h5/1jwHpqsJvXbP0tVs6UbQBluRBPpcsNH4wG9OyShU+aZ6Ej
-         y8gQ==
-X-Gm-Message-State: AOAM532i9FCXUA0jzEl3CE+meBs1zGutx7PMpJzOZYLYHgoi8O7HFE1H
-        T9REtL+TMzSp0p7vASdZCLoYtUEzRMZFjSceEEfTl54+eTGsW/gPby8yQMtabUMP5bWHZiu2H8S
-        +Ef5pmuJzpcLpZlHWwQ==
-X-Received: by 2002:a1c:7c0d:: with SMTP id x13mr7002780wmc.14.1598450351201;
-        Wed, 26 Aug 2020 06:59:11 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzYmh5Vlj6euprpTFSDwOJuMI8kABwjevNrabVqh3H+bX1LbeSKpIPqL4WUmay8QavSdWV2KA==
-X-Received: by 2002:a1c:7c0d:: with SMTP id x13mr7002754wmc.14.1598450350871;
-        Wed, 26 Aug 2020 06:59:10 -0700 (PDT)
-Received: from omos.redhat.com ([2a02:8308:b103:4000:e83d:a4fb:e589:6902])
-        by smtp.gmail.com with ESMTPSA id y24sm5622325wmi.17.2020.08.26.06.59.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Aug 2020 06:59:10 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v2 3/3] selinux: remove the 'initialized' flag from selinux_state
-Date:   Wed, 26 Aug 2020 15:59:06 +0200
-Message-Id: <20200826135906.1912186-4-omosnace@redhat.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200826135906.1912186-1-omosnace@redhat.com>
-References: <20200826135906.1912186-1-omosnace@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=li8UpKpsGyV3l189MXyJIaQ4CrgJme43rMUDZKsgeOw=;
+        b=mckRAMtRPww4w9ZliM2/qa67p9nPkLojIwuPXtu678ZUf7PMHsBuxXir5BuJNM3+mS
+         1p4HSqRvmMmCfn/VMrUrJIXIfKSQu/edE9oq487xywaXRxGiFUwecKMZke1tg8D6ieOV
+         h65iichc/gdptU81OA8D73x9QXL6DtB9wlzgGqPsA71FZbzAJaffaC0A3p3xzZSvVDa5
+         aYYsmf85wR4s7W9kKqXrPmbWikNjzlxVyJipbyOa9q0vQXEgRpyRk+hjgvlADu/SGXdG
+         7iT44INipo2Id8InsPx2V+nRDthrIE0TKxmoj8veGjq+jfPfvg+el7oZNW3ZkVQ+whBq
+         KUaQ==
+X-Gm-Message-State: AOAM530BMfNVTq6IH1HWkJ94zZKVuncjFolxpjwPp6yasmhBLHfDs/i5
+        D3LsZyC2xBBgxbTLYOLfLmix35WnxLygcXZ7Qsz+
+X-Google-Smtp-Source: ABdhPJz9kHOeq9jlSxZOBbfhAafHcFuR/D5Q/yDc8vDgB6pQ0YjLkFlo3kcjH0vL3/mKL9dUAbKhlJjVqM2g1KgAVcQ=
+X-Received: by 2002:aa7:c6ca:: with SMTP id b10mr6945883eds.269.1598450741279;
+ Wed, 26 Aug 2020 07:05:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200820141850.60244-1-stephen.smalley.work@gmail.com>
+ <CAFqZXNupb9Pk636Q=DB7zmRykdetWA0Ng7rh8KNS4f8QUpSLqg@mail.gmail.com>
+ <CAEjxPJ5NhStOyzA9ea4HoGDAj1Y93T=f5iqdpbB8K_-kh3Ck+w@mail.gmail.com>
+ <CAHC9VhSomY6oUG2q-w9ek1iuDcQymOsye4-VKH+n3sr4qPdX9g@mail.gmail.com> <CAEjxPJ4qzHVh2cTTo-8jhO7G+zZ5DfFPbQEs4pNZJ7zJ2cohCQ@mail.gmail.com>
+In-Reply-To: <CAEjxPJ4qzHVh2cTTo-8jhO7G+zZ5DfFPbQEs4pNZJ7zJ2cohCQ@mail.gmail.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 26 Aug 2020 10:05:30 -0400
+Message-ID: <CAHC9VhT-BB-yWjeUzhn8f9ecS0iFSjFWZ4Wc+P558sgswUkd7Q@mail.gmail.com>
+Subject: Re: [RFC PATCH] selinux: enable proper lockdep checking for policy
+ rcu access
+To:     Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
+        SElinux list <selinux@vger.kernel.org>,
+        peter enderborg <peter.enderborg@sony.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-After the RCU conversion, it is possible to simply check the policy
-pointer against NULL instead.
+On Tue, Aug 25, 2020 at 10:06 AM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
+>
+> On Tue, Aug 25, 2020 at 9:15 AM Paul Moore <paul@paul-moore.com> wrote:
+> >
+> > On Fri, Aug 21, 2020 at 8:22 AM Stephen Smalley
+> > <stephen.smalley.work@gmail.com> wrote:
+> > > On Fri, Aug 21, 2020 at 4:36 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> > > > On Thu, Aug 20, 2020 at 4:19 PM Stephen Smalley
+> > > > <stephen.smalley.work@gmail.com> wrote:
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- security/selinux/include/security.h | 10 +---------
- security/selinux/ss/services.c      | 26 ++++++++++----------------
- 2 files changed, 11 insertions(+), 25 deletions(-)
+...
 
-diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
-index 9ab8f8da47812..714c389cc72a0 100644
---- a/security/selinux/include/security.h
-+++ b/security/selinux/include/security.h
-@@ -95,7 +95,6 @@ struct selinux_state {
- 	bool enforcing;
- #endif
- 	bool checkreqprot;
--	bool initialized;
- 
- 	struct page *status_page;
- 	struct mutex status_lock;
-@@ -110,14 +109,7 @@ extern struct selinux_state selinux_state;
- 
- static inline bool selinux_initialized(const struct selinux_state *state)
- {
--	/* do a synchronized load to avoid race conditions */
--	return smp_load_acquire(&state->initialized);
--}
--
--static inline void selinux_mark_initialized(struct selinux_state *state)
--{
--	/* do a synchronized write to avoid race conditions */
--	smp_store_release(&state->initialized, true);
-+	return rcu_access_pointer(state->policy) != NULL;
- }
- 
- #ifdef CONFIG_SECURITY_SELINUX_DEVELOP
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index e82a2cfe171f3..112ca3d9834d7 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -2118,9 +2118,6 @@ static int security_preserve_bools(struct selinux_policy *oldpolicy,
- 
- static void selinux_policy_free(struct selinux_policy *policy)
- {
--	if (!policy)
--		return;
--
- 	policydb_destroy(&policy->policydb);
- 	sidtab_destroy(policy->sidtab);
- 	kfree(policy->sidtab);
-@@ -2194,20 +2191,19 @@ void selinux_policy_commit(struct selinux_state *state,
- 	/* Install the new policy. */
- 	rcu_assign_pointer(state->policy, newpolicy);
- 
--	if (!selinux_initialized(state)) {
-+	if (!oldpolicy) {
- 		/*
- 		 * After first policy load, the security server is
- 		 * marked as initialized and ready to handle requests and
- 		 * any objects created prior to policy load are then labeled.
- 		 */
--		selinux_mark_initialized(state);
- 		selinux_complete_init();
-+	} else {
-+		/* Free the old policy */
-+		synchronize_rcu();
-+		selinux_policy_free(oldpolicy);
- 	}
- 
--	/* Free the old policy */
--	synchronize_rcu();
--	selinux_policy_free(oldpolicy);
--
- 	/* Notify others of the policy change */
- 	selinux_notify_policy_change(state, seqno);
- }
-@@ -2255,13 +2251,6 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len,
- 		goto err;
- 	}
- 
--
--	if (!selinux_initialized(state)) {
--		/* First policy load, so no need to preserve state from old policy */
--		*newpolicyp = newpolicy;
--		return 0;
--	}
--
- 	/*
- 	 * NOTE: We do not need to take the rcu read lock
- 	 * around the code below because other policy-modifying
-@@ -2269,6 +2258,11 @@ int security_load_policy(struct selinux_state *state, void *data, size_t len,
- 	 * fsi->mutex.
- 	 */
- 	oldpolicy = rcu_dereference_check(state->policy, 1);
-+	if (!oldpolicy) {
-+		/* First policy load, so no need to preserve state from old policy */
-+		*newpolicyp = newpolicy;
-+		return 0;
-+	}
- 
- 	/* Preserve active boolean values from the old policy */
- 	rc = security_preserve_bools(oldpolicy, newpolicy);
+> > As I mentioned in the RCU patch thread, my preference at this point in
+> > time is to address this with comments and not pass the mutex into the
+> > security server.
+>
+> One alternative would be to move the mutex from selinux_fs_info to
+> selinux_state, at which point the mutex would already be accessible to
+> the security server code through the state parameters.  This also
+> makes sense from the perspective that the mutex is already used to
+> synchronize not only selinuxfs-private state (e.g. pending bools) but
+> also policy changes.  I think this will be needed anyway for the
+> patches to measure SELinux state because that call chain does not go
+> through selinuxfs and thus has no access to selinux_fs_info.
+
+That seems reasonable to me.
+
+> > > > Speaking about wrapping lines... I noticed only now that in this and
+> > > > earlier patches you align wrapped argument lists only by tabs (without
+> > > > extra spaces to align to the first argument). I'm not sure what is the
+> > > > preferred kernel style in this case, but I personally find the finely
+> > > > aligned argument lists much nicer to read (and I have always been
+> > > > aligning them like this in my patches). Obviously, I can't enforce my
+> > > > preferred style here, but I thought I'd raise this, since I had the
+> > > > impression we were trying to follow this style previously for new code
+> > > > (could be just confirmation bias on my part, though) and it might not
+> > > > have been your intention to change it (changed editor/settings?).
+> > >
+> > > I'm using the emacs mode settings from
+> > > Documentation/process/codingstyle.rst.  I don't see anything in the
+> > > coding style document to suggest use of extra spaces for aligned
+> > > argument lists; if anything use of spaces rather than tabs for
+> > > indentation seems discouraged.  I don't really care either way but
+> > > would like editor settings to ensure consistency.
+> >
+> > FWIW, my preference is for aligned argument lists, for example:
+> >
+> >   void write_program(char *language,
+> >                      char *description);
+> >
+> > ... with the understanding that tabs are used as much as possible and
+> > that spaces are only used to make up the difference when the gap is
+> > less than a tab (8 chars).
+>
+> I don't suppose you have editor settings to help automate this?
+
+Not really, but some of that is simply because I tend to bounce around
+between editors depending on what type of work I'm doing.  My fingers
+have more or less gotten used to it and do the right thing as a matter
+of habit these days.
+
+In the non-kernel projects I maintain there is a script which you can
+run that checks the formatting/style, and optionally fixes it for you
+(in the case of C, it's a wrapper around astyle); I lean on that a lot
+for those projects.  It would be nice to have something like that
+here, but we would need to do a lot of style fixes first.  I keep
+threatening to do that, but it never quite seems worth it; perhaps I
+should start doing that slowly.
+
 -- 
-2.26.2
-
+paul moore
+www.paul-moore.com

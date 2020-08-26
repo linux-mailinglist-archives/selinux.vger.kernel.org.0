@@ -2,100 +2,64 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 576B82530DB
-	for <lists+selinux@lfdr.de>; Wed, 26 Aug 2020 16:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 66B282530DF
+	for <lists+selinux@lfdr.de>; Wed, 26 Aug 2020 16:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726757AbgHZOFo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 26 Aug 2020 10:05:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54722 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726125AbgHZOFn (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 26 Aug 2020 10:05:43 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27CAAC061370
-        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 07:05:43 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id b9so1619852oiy.3
-        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 07:05:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NoMQsABQYvZW8MkmKp+Lw7RmQTwsG2ci/iUF86nWlNk=;
-        b=aOGtsbGzXtZnRK3sEBhEK1NP5BbcFs00XmIBiMpMlsQ+nvBdXBTsRg5sNDmCk+INNJ
-         X/J5gzrBmV8m/mNwVgJPRGV6XObYWCKeW7eJtDG9tIEdXcAXdm52noGUJ6eA9EZ/UfyS
-         Arr2pUO3qCqOx/10hwbyFTGlFW0xQCK/TdQV3Y6ihE/73UxmGDORnmW2qz71Uda3j4+1
-         eLBHYc9XONHglnyxQD/N/1GyWgqc4ZqZEdiYmEph5OtnhqVh/StEdwHLWfDiGm+7kQOq
-         0hO9mbnU+Ojw1qIfXw98xP1hB9urT7fbTFxqClqOjxeBK6FjlLt9rqi/B9VZt8ubAXzU
-         zTtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NoMQsABQYvZW8MkmKp+Lw7RmQTwsG2ci/iUF86nWlNk=;
-        b=lF+UHfBf4a4dKe8cIo2+K9K8b/9nRpLEEhpeP2R5BnNwooprS9JYjoYqD7vDQyT0mO
-         5JYYDOZ0e8OaiVyMPrqjwBkiwCC+EGXDgWoGf/Odl2eM38vAiVIr/B92kIH8KYfsQE5t
-         24XSHDQAD9Lenzz5FWoFq6KeAOnN61SLWe1h/5RRC5hbbXUTqfDeTtZREgKT4d7Eltgg
-         u7jS9X5n+CyjmmOVkv62F7l0Pznf13Bu4o2ig3AKsSBlQtUk0ZzQwFUgxWonpeM1Q7p3
-         isg/XrT5sh3R16fsbxHBqAZS/tUiDZAheCDoSllakgACZH2W1sWvJwa/Ag8yKni/MvxT
-         cMzg==
-X-Gm-Message-State: AOAM5300LLG4vS14J/d9f5gU7tYl5RYCrpkxMj9YHlVFwfIiiI/mV+Do
-        PfVaoG6hUgup94Od/l0uzVqqget3l2vmXMcjKcq/h/il
-X-Google-Smtp-Source: ABdhPJxhsfgJJQyfGzr3U0aPXxGsLbmbSyDu0x7la+EqLZPZnpePbnCBdha3LQY/tz0m0zO8v+KRjey3iFRM1/QhyKQ=
-X-Received: by 2002:a54:4817:: with SMTP id j23mr4009858oij.140.1598450742612;
- Wed, 26 Aug 2020 07:05:42 -0700 (PDT)
+        id S1726793AbgHZOG3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 26 Aug 2020 10:06:29 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:46594 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726753AbgHZOG3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 26 Aug 2020 10:06:29 -0400
+Received: from chpebeni.northamerica.corp.microsoft.com (pool-108-15-23-247.bltmmd.fios.verizon.net [108.15.23.247])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 849D920B4908
+        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 07:06:28 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 849D920B4908
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1598450788;
+        bh=RZC5tKFGJ+JJLRF5u1x2oap2mVph+EM0WrQPRdwMwgY=;
+        h=Subject:From:To:References:Date:In-Reply-To:From;
+        b=pW7TGgQweurmYeTsF8vrUF8SvT5aqn+8UIJOZFgefNbqQ050U0/rxO3kW1d7vvkHW
+         cq/ddYcxA8682boouNdb8RDviPDGdwLlIL38JCnP7y4MabT16aAALwuEWKeyabE6CW
+         7as9kw0h8hUDj+fg1vqur7NIrX9VpG4zy9Y9Bx7I=
+Subject: Re: Userspace AVC auditing on policy load
+From:   Chris PeBenito <chpebeni@linux.microsoft.com>
+To:     selinux@vger.kernel.org
+References: <cb7451da-24d3-4a0c-e4f8-205e6539ed54@linux.microsoft.com>
+Message-ID: <e4cdec2a-8c01-fbe4-cba3-3468b4ebea2e@linux.microsoft.com>
+Date:   Wed, 26 Aug 2020 10:06:27 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-References: <20200826135906.1912186-1-omosnace@redhat.com> <20200826135906.1912186-2-omosnace@redhat.com>
-In-Reply-To: <20200826135906.1912186-2-omosnace@redhat.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Wed, 26 Aug 2020 10:05:31 -0400
-Message-ID: <CAEjxPJ4LL022dtKyqs+YB-gKVuJqRNQu0dafjgzZLqStqn-zSA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] selinux: simplify away security_policydb_len()
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <cb7451da-24d3-4a0c-e4f8-205e6539ed54@linux.microsoft.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 9:59 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> Remove the security_policydb_len() calls from sel_open_policy() and
-> instead update the inode size from the size returned from
-> security_read_policy().
->
-> Since after this change security_policydb_len() is only called from
-> security_load_policy(), remove it entirely and just open-code it there.
->
-> Also, since security_load_policy() is always called with fsi->mutex
-> held, make it dereference the policy pointer directly and drop the
-> unnecessary RCU locking.
->
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+On 8/26/20 9:25 AM, Chris PeBenito wrote:
+> I was looking into this dbus-broker audit message, which has the wrong audit type:
+> 
+> audit[422]: USER_AVC pid=422 uid=999 auid=4294967295 ses=4294967295 
+> subj=system_u:system_r:system_dbusd_t msg='avc:  received policyload notice 
+> (seqno=2)
+> 
+> This is due to dbus-broker setting their avc log callback to send USER_AVC audit 
+> messages for everything that comes to the libselinux log callback. I think the 
+> right thing to do there is to change it to emit USER_SELINUX_ERR audit messages 
+> if the log message is SELINUX_ERROR, otherwise log the message using their 
+> regular method (stderr I think).
+> 
+> But the question became, why is the userspace AVC not simply emitting its own 
+> USER_MAC_POLICY_LOAD audit message instead of sending a message to the log 
+> callback?
 
-One comment below but nonetheless:
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Ok, I missed that there is a SELINUX_AVC log type and that's how the userspace 
+denial messages are sent out. How about adding SELINUX_POLICYLOAD and 
+SELINUX_ENFORCE log types so that callers can emit appropriate audit messages?
 
-> diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-> index 8381614627569..7cc2f7486c18f 100644
-> --- a/security/selinux/ss/services.c
-> +++ b/security/selinux/ss/services.c
-> @@ -3912,11 +3896,17 @@ int security_read_policy(struct selinux_state *state,
->         int rc;
->         struct policy_file fp;
->
-> -       if (!selinux_initialized(state))
-> +       /*
-> +        * NOTE: We do not need to take the rcu read lock
-> +        * around the code below because other policy-modifying
-> +        * operations are already excluded by selinuxfs via
-> +        * fsi->mutex.
-> +        */
-> +       policy = rcu_dereference_check(state->policy, 1);
-> +       if (!policy)
->                 return -EINVAL;
-
-If/when my patch to move the mutex to selinux_state and use it in
-rcu_dereference_protected() lands, we'll want to change this one over
-too.
+-- 
+Chris PeBenito

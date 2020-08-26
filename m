@@ -2,111 +2,56 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F8AB252F3F
-	for <lists+selinux@lfdr.de>; Wed, 26 Aug 2020 15:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15B0C252FA1
+	for <lists+selinux@lfdr.de>; Wed, 26 Aug 2020 15:25:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730132AbgHZNCh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 26 Aug 2020 09:02:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44950 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730137AbgHZNCf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 26 Aug 2020 09:02:35 -0400
-Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 715C6C061574
-        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 06:02:35 -0700 (PDT)
-Received: by mail-ot1-x341.google.com with SMTP id k2so1399147ots.4
-        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 06:02:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=NpKVR4S+imAZuQGf8A4QbvA3spb9nVKsNqcPyk44Ees=;
-        b=n+klA8PGmH9glBDs3/z9qFkjEpKpK1EKurWrq6XQbtmQDI0QE3UclOyEH1d6cgGOif
-         Rou7aadWRDA1Fg9zRI70ejorEX6JWMA7LKwbIVo3ZGR3QTpiOGBHmokPwEOPltKU41b/
-         Ub05Z3Z2BstphMcRPLjJ6BBf9JzOymCF+FMxbb0HDZyOgXJxEUNu1LIULNkgXCi3X3U6
-         UdzPrGLUUgGZTSl6Uz6uGuaInHrB2Kn9m3YVOJbpx61QNBcaqJzJy9Cxw/+eXg/VnPWz
-         aZCfKyWH30AFSCDoSaBfRV4nRrcxYuDLlRvw1gun4YbMCvIiMYaDxShfoz/juJUP+dJR
-         XAiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=NpKVR4S+imAZuQGf8A4QbvA3spb9nVKsNqcPyk44Ees=;
-        b=LzS5wt6gUs2lT908GcYHp8kxIBjbrSa7wGgmlbqlLGCYc+r5fpBjo/yWDWhQphNf4K
-         QT9zlZSRonW+DINAd5eMvcg82k8LRZPQSvv+gvtgrS4S/DLjH6uxnVM6LY4EwAYT53v8
-         GU5gx/S2MMy+VJzau941N23TI+yUrk/4DBShENaNHHbAdpM8PjgfRBsefUhaPE8jA6nA
-         bJNPTN5HWK/nnOzDtgM8mcYCLJYCdTS0uZBgtkvkOO5BUP+ApeqNiiVRSW4JyUhp5ENm
-         UBlduSVPbpomb98ma8UiJGYJA74R3ZBvAX9X+BMVt6LtExee/H0+JXwUtxcU65SKYf3i
-         GN3w==
-X-Gm-Message-State: AOAM530k3zYeDxKvXyywxZoT0OKR9lR4XACo/6jfHPXHdg/O4P05zbA3
-        JgVGL8GQVM6E0DSQgovLfW2I0vp48vsiEi1hMxA=
-X-Google-Smtp-Source: ABdhPJyxclbg0t4a0+xTj0ZThpxQQX6QY9MgAi3Vs1hEAag3WAnTUBqP26b1qrHreTIbs/fFx/pfEK/Aedk4EGY6ZKI=
-X-Received: by 2002:a9d:25:: with SMTP id 34mr7883670ota.135.1598446953089;
- Wed, 26 Aug 2020 06:02:33 -0700 (PDT)
+        id S1730232AbgHZNZU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 26 Aug 2020 09:25:20 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:41690 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730186AbgHZNZU (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 26 Aug 2020 09:25:20 -0400
+Received: from chpebeni.northamerica.corp.microsoft.com (pool-108-15-23-247.bltmmd.fios.verizon.net [108.15.23.247])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 8D9CE20B4908
+        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 06:25:19 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8D9CE20B4908
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1598448319;
+        bh=G8LpQPPiUKG7GaL7k97WPQSlCpd3TP7pVtA+sPceO2Q=;
+        h=To:From:Subject:Date:From;
+        b=KZ9Xi4HhqkcOkQQOyWllcFQPARsXxeJ/Bj3Ut2MZk3GnP+eR7Wx/yt+83eyWTwsRl
+         rPUgxjB3odpFFz1+JiUvgw0yMKG28NBLsLHyu/iS0oEXFUVm1iLbYKA9aFm17mFAaw
+         4LACoKVGcLmAefAhh8hUw0WGOhl80MEmTHcE29eI=
+To:     selinux@vger.kernel.org
+From:   Chris PeBenito <chpebeni@linux.microsoft.com>
+Subject: Userspace AVC auditing on policy load
+Message-ID: <cb7451da-24d3-4a0c-e4f8-205e6539ed54@linux.microsoft.com>
+Date:   Wed, 26 Aug 2020 09:25:18 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.11.0
 MIME-Version: 1.0
-References: <20200825065953.1566718-1-omosnace@redhat.com> <20200825065953.1566718-2-omosnace@redhat.com>
- <CAEjxPJ4JKHKFgF9VobJTrMBDhaqC0EKorC=qfm=t77Krd-Npsw@mail.gmail.com> <CAFqZXNtOd7VXQWh9B3fnmY0MUy0HLHh75u_=6UE7UaTO2ZjYSw@mail.gmail.com>
-In-Reply-To: <CAFqZXNtOd7VXQWh9B3fnmY0MUy0HLHh75u_=6UE7UaTO2ZjYSw@mail.gmail.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Wed, 26 Aug 2020 09:02:21 -0400
-Message-ID: <CAEjxPJ7_zk63cyHEPeyrhPgDRJ_jzzx8kyQACvWiNoC3-KzLsA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] selinux: switch unnecessary GFP_ATOMIC allocs to GFP_KERNEL
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Aug 25, 2020 at 12:45 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> On Tue, Aug 25, 2020 at 5:01 PM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
-> > On Tue, Aug 25, 2020 at 3:00 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > >
-> > > There seems to be no reason to use GFP_ATOMIC in these cases.
-> > >
-> > > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> > > ---
-> > >  security/selinux/hooks.c       |  6 +++---
-> > >  security/selinux/ss/policydb.c | 10 +++++-----
-> > >  security/selinux/ss/services.c |  4 ++--
-> > >  3 files changed, 10 insertions(+), 10 deletions(-)
-> > >
-> > > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> > > index 89d3753b7bd5d..4de962daffbde 100644
-> > > --- a/security/selinux/hooks.c
-> > > +++ b/security/selinux/hooks.c
-> > > @@ -6854,7 +6854,7 @@ static int selinux_lockdown(enum lockdown_reason what)
-> > >
-> > >         if (WARN(invalid_reason, "Invalid lockdown reason")) {
-> > >                 audit_log(audit_context(),
-> > > -                         GFP_ATOMIC, AUDIT_SELINUX_ERR,
-> > > +                         GFP_KERNEL, AUDIT_SELINUX_ERR,
-> > >                           "lockdown_reason=invalid");
-> > >                 return -EINVAL;
-> > >         }
-> >
-> > Have you audited all callers of security_locked_down() to ensure that
-> > they are never holding any locks around the call?  That's the only one
-> > I saw that might be a problem now or in the future.
->
-> Hm... didn't realize there were so many :) I'll try to go over them.
->
-> As a side note, it would be nice if we had the may (not) sleep
-> requirements documented somehow for each hook at the LSM level,
-> ideally with a might_sleep() check at the beginning of each
-> secuity_*() function that is expected to be called only from a
-> non-atomic context... Some hooks already have arguments that specify
-> this (inode_permission, inode_follow_link), but for others it is just
-> implicit. I'll put this on my long-term TODO list...
+I was looking into this dbus-broker audit message, which has the wrong audit type:
 
-Generally the core SELinux permission checking code assumes it can be
-called from any context (including hardirq) and under any locking
-conditions, and hooks that are for permission checking (not security
-blob allocation/management) do the same.  This allows permission
-checks to be performed while locks are held by the caller. and from
-arbitrary contexts  I'd be inclined to just leave selinux_lockdown
-unchanged given that it might be called anywhere much like capable().
+audit[422]: USER_AVC pid=422 uid=999 auid=4294967295 ses=4294967295 
+subj=system_u:system_r:system_dbusd_t msg='avc:  received policyload notice 
+(seqno=2)
+
+This is due to dbus-broker setting their avc log callback to send USER_AVC audit 
+messages for everything that comes to the libselinux log callback. I think the 
+right thing to do there is to change it to emit USER_SELINUX_ERR audit messages 
+if the log message is SELINUX_ERROR, otherwise log the message using their 
+regular method (stderr I think).
+
+But the question became, why is the userspace AVC not simply emitting its own 
+USER_MAC_POLICY_LOAD audit message instead of sending a message to the log callback?
+
+-- 
+Chris PeBenito

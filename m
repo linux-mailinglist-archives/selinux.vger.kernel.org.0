@@ -2,180 +2,97 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCE59253DE0
-	for <lists+selinux@lfdr.de>; Thu, 27 Aug 2020 08:35:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03B29253F1F
+	for <lists+selinux@lfdr.de>; Thu, 27 Aug 2020 09:29:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727849AbgH0Gfj (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 27 Aug 2020 02:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40128 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727850AbgH0Gfh (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 27 Aug 2020 02:35:37 -0400
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B7BCC061263
-        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 23:35:37 -0700 (PDT)
-Received: by mail-pg1-x54a.google.com with SMTP id c3so3330935pgq.9
-        for <selinux@vger.kernel.org>; Wed, 26 Aug 2020 23:35:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:in-reply-to:message-id:mime-version:references:subject
-         :from:to:cc;
-        bh=lkHCdyUCoYESq4ydKmSA3luAljvjaC05ZtWKhPqbttA=;
-        b=lH5QjRA529S75RW4bSniVCizDiNNSpKEz0PmVdWlxTn84QYaF1hEMSjEIWN1cH47DD
-         7l/tY7AMLYoFIj11e0U3U1ld0Zw2WhdDw3WdHPeYDwOIVEz2BxJFOFhrzvEP8DYmpGYV
-         5/xAaIfRWJ+Ouq3LcIujpv+1vXIDqbL7EUD8ooqeIs3is7N/MH0CgbKIoqM4Mdch2wJk
-         Cf6cpACb3bdOBpn/HSpPuxDceC4j35ICSOG6g2GbnPw+6F5rDoaH6GHoMXGo0HjKmFx7
-         YBTbj2mZh/AIIUW0cg9TQ6WPc0k9FCtyWw2pexEhyJPMNBw9X7cmM3ZXVmOekOdLFEWl
-         vqqQ==
+        id S1728033AbgH0H3N (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 27 Aug 2020 03:29:13 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:26213 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727991AbgH0H3L (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 27 Aug 2020 03:29:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1598513350;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=XypXWW4qnP5dcgVRUj04HisoZ5jG/ZpKSpwA6C09LzM=;
+        b=Nz+QKKmalUdj52SAtbP3NGbOaSY+N7msnPLKlKsNJ3jUIyp6DUKM8cklE4/LlBsT9Y2GCL
+        ZJV7V2zbojLMumopIJhYvhHdjiHxoDLMk5B5hrUxrtEN5LvfZMB9neBQgMq1WxBeGhav8Z
+        nfrFf9ibYWRr5hp+NMZYHqHzr7+lshs=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-23-g4DVvVJ6NXWG44ZtxXix_g-1; Thu, 27 Aug 2020 03:29:08 -0400
+X-MC-Unique: g4DVvVJ6NXWG44ZtxXix_g-1
+Received: by mail-lj1-f200.google.com with SMTP id a12so457060ljn.12
+        for <selinux@vger.kernel.org>; Thu, 27 Aug 2020 00:29:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=lkHCdyUCoYESq4ydKmSA3luAljvjaC05ZtWKhPqbttA=;
-        b=KCFCGtT2/vrzAAwhAXKnf4C0Dh2JnBNNPWZmDiRf9sfxUl1wadVruH4ezpnAuQvr8t
-         6xHrPf/oueowSiCSaXuS2zjXTNufjTwKtu9pgKCpmi5tdz55kUgpRSssJBCy14J/hMPW
-         X201NFdF9a7qNPcnShpNQiyXGnd1uGS/K6j+rJxBsbiEZBFTLIPPd2xiGb8wf/5laH2h
-         27w+y5SF38q2TKh+fQ53IDx1RjqkfFC8RV1bwa/8njLZHcUQRDItpppgwIo7LIjqB5PU
-         IpKJeu8ewMsl+95GrZj3Oo/KvkJuah4JbLjIFHdxmCbFGIzPQo7zFghER6ovcyllDfah
-         s4Ew==
-X-Gm-Message-State: AOAM5337tX8MPRHmAr5/PaBDq7O1eFayeeagiNuztffkacj7vzGAU8ZS
-        xyn4Qu9g9cl4Yxz2bfWtoCUfqGa1jBHupbbOjQ==
-X-Google-Smtp-Source: ABdhPJxakHWg/OtPk5j44JS+o/b4GsQIJGuJXcOZoEJmcltSxBtpQP1TagnimX/oqC8Rh6bkvvzNLkNwZKTVaxm5VQ==
-X-Received: from lg.mtv.corp.google.com ([100.89.4.209]) (user=lokeshgidra
- job=sendgmr) by 2002:a17:902:a58c:: with SMTP id az12mr1482711plb.109.1598510135698;
- Wed, 26 Aug 2020 23:35:35 -0700 (PDT)
-Date:   Wed, 26 Aug 2020 23:35:22 -0700
-In-Reply-To: <20200827063522.2563293-1-lokeshgidra@google.com>
-Message-Id: <20200827063522.2563293-4-lokeshgidra@google.com>
-Mime-Version: 1.0
-References: <20200827063522.2563293-1-lokeshgidra@google.com>
-X-Mailer: git-send-email 2.28.0.297.g1956fa8f8d-goog
-Subject: [PATCH v8 3/3] Wire UFFD up to SELinux
-From:   Lokesh Gidra <lokeshgidra@google.com>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        James Morris <jmorris@namei.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Eric Biggers <ebiggers@kernel.org>
-Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Lokesh Gidra <lokeshgidra@google.com>,
-        Daniel Colascione <dancol@dancol.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        KP Singh <kpsingh@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Thomas Cedeno <thomascedeno@google.com>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Aaron Goidel <acgoide@tycho.nsa.gov>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Adrian Reber <areber@redhat.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        kaleshsingh@google.com, calin@google.com, surenb@google.com,
-        nnk@google.com, jeffv@google.com, kernel-team@android.com,
-        Daniel Colascione <dancol@google.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=XypXWW4qnP5dcgVRUj04HisoZ5jG/ZpKSpwA6C09LzM=;
+        b=A0OsbeMpnclPDKpmCKrGWd5qpmAU/F2Yz3nR8mK66zgD2MYPUY1uZoj9yePsVrXOnS
+         bAEOaRlwDhtX4aDJLuvufuuGfDr8ikBVlXwApPQErlH4zKc20D9Sh19CKbEimrgHKKSx
+         hDn7kfxrLNnOlgwIUXYlGwilYzMhpr4fEd5rLz26uIUjqSCezT86WWxI8752lW0I/WmG
+         Yv09C8V8yA2JB+2TD5HclDLm+V3Lu6IrnlUfREYqt1VJbzHHEyRMJKZKQzRK/Zp7REA1
+         PKh+sdFutz9P0aVvrd9VikZAzqq5EDoTeYDNEkeDrvuLxZ4VvWYrNBSPp2UL6CqY5/HO
+         howQ==
+X-Gm-Message-State: AOAM532lj6OuwpRZ2jhPSP8FjWQz3itS03dipZ/d8UOV+JQn20leIKfz
+        fDlxJ0uCHJvAQCA3pLlMhZzWi5qEiB39+XIUY3lh8Nv31gJtpAgqA/LnCO2CqdTptqF3n/D0LWJ
+        DF7rXaLKKt4Pm5A4qx/32s1Dqi0vyZ/TUYA==
+X-Received: by 2002:a05:6512:3206:: with SMTP id d6mr5034442lfe.87.1598513347055;
+        Thu, 27 Aug 2020 00:29:07 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJy34jZtQEwKPu3gZrrR/Uo88ZBEEiQJAGO1TJ1HowfhPchfnzttqkZyx3MLFU6QG/pT9RsIw2ZiwkoIXUTO6jQ=
+X-Received: by 2002:a05:6512:3206:: with SMTP id d6mr5034434lfe.87.1598513346756;
+ Thu, 27 Aug 2020 00:29:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <20200826172853.49426-1-stephen.smalley.work@gmail.com>
+In-Reply-To: <20200826172853.49426-1-stephen.smalley.work@gmail.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Thu, 27 Aug 2020 09:28:55 +0200
+Message-ID: <CAFqZXNsBE=PAwfyE3=D35VG+yDdg2UXhNUq_vF_4f8yojoZSdg@mail.gmail.com>
+Subject: Re: [PATCH v2] selinux: move policy mutex to selinux_state, use in
+ lockdep checks
+To:     Stephen Smalley <stephen.smalley.work@gmail.com>
+Cc:     Paul Moore <paul@paul-moore.com>,
+        SElinux list <selinux@vger.kernel.org>,
+        peter enderborg <peter.enderborg@sony.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: Daniel Colascione <dancol@google.com>
+On Wed, Aug 26, 2020 at 7:29 PM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
+> Move the mutex used to synchronize policy changes (reloads and setting
+> of booleans) from selinux_fs_info to selinux_state and use it in
+> lockdep checks for rcu_dereference_protected() calls in the security
+> server functions.  This makes the dependency on the mutex explicit
+> in the code rather than relying on comments.
+>
+> Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> ---
+> v2 switches selinuxfs from using &selinux_state.policy_mutex to using
+> fsi->state->policy_mutex.  selinuxfs operates on fsi->state->policy
+> for all policy reading or modifying operations.  It only acts on
+> &selinux_state for checking permissions in the current context.
+> At present, fsi->state is always &selinux_state; this will change
+> when selinux namespaces are introduced.
+>
+>  security/selinux/hooks.c            |  1 +
+>  security/selinux/include/security.h |  1 +
+>  security/selinux/selinuxfs.c        | 26 ++++++++++----------
+>  security/selinux/ss/services.c      | 37 +++++++----------------------
+>  4 files changed, 22 insertions(+), 43 deletions(-)
 
-This change gives userfaultfd file descriptors a real security
-context, allowing policy to act on them.
+Seeing this is in an actual patch, it now looks logical to me. *thumbsup*
 
-Signed-off-by: Daniel Colascione <dancol@google.com>
+Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
 
-[Remove owner inode from userfaultfd_ctx]
-[Use anon_inode_getfd_secure() instead of anon_inode_getfile_secure()
- in userfaultfd syscall]
-[Use inode of file in userfaultfd_read() in resolve_userfault_fork()]
-
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
----
- fs/userfaultfd.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
-
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 0e4a3837da52..918535b49475 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -978,14 +978,14 @@ static __poll_t userfaultfd_poll(struct file *file, poll_table *wait)
- 
- static const struct file_operations userfaultfd_fops;
- 
--static int resolve_userfault_fork(struct userfaultfd_ctx *ctx,
--				  struct userfaultfd_ctx *new,
-+static int resolve_userfault_fork(struct userfaultfd_ctx *new,
-+				  struct inode *inode,
- 				  struct uffd_msg *msg)
- {
- 	int fd;
- 
--	fd = anon_inode_getfd("[userfaultfd]", &userfaultfd_fops, new,
--			      O_RDWR | (new->flags & UFFD_SHARED_FCNTL_FLAGS));
-+	fd = anon_inode_getfd_secure("[userfaultfd]", &userfaultfd_fops, new,
-+			O_RDWR | (new->flags & UFFD_SHARED_FCNTL_FLAGS), inode);
- 	if (fd < 0)
- 		return fd;
- 
-@@ -995,7 +995,7 @@ static int resolve_userfault_fork(struct userfaultfd_ctx *ctx,
- }
- 
- static ssize_t userfaultfd_ctx_read(struct userfaultfd_ctx *ctx, int no_wait,
--				    struct uffd_msg *msg)
-+				    struct uffd_msg *msg, struct inode *inode)
- {
- 	ssize_t ret;
- 	DECLARE_WAITQUEUE(wait, current);
-@@ -1106,7 +1106,7 @@ static ssize_t userfaultfd_ctx_read(struct userfaultfd_ctx *ctx, int no_wait,
- 	spin_unlock_irq(&ctx->fd_wqh.lock);
- 
- 	if (!ret && msg->event == UFFD_EVENT_FORK) {
--		ret = resolve_userfault_fork(ctx, fork_nctx, msg);
-+		ret = resolve_userfault_fork(fork_nctx, inode, msg);
- 		spin_lock_irq(&ctx->event_wqh.lock);
- 		if (!list_empty(&fork_event)) {
- 			/*
-@@ -1166,6 +1166,7 @@ static ssize_t userfaultfd_read(struct file *file, char __user *buf,
- 	ssize_t _ret, ret = 0;
- 	struct uffd_msg msg;
- 	int no_wait = file->f_flags & O_NONBLOCK;
-+	struct inode *inode = file_inode(file);
- 
- 	if (ctx->state == UFFD_STATE_WAIT_API)
- 		return -EINVAL;
-@@ -1173,7 +1174,7 @@ static ssize_t userfaultfd_read(struct file *file, char __user *buf,
- 	for (;;) {
- 		if (count < sizeof(msg))
- 			return ret ? ret : -EINVAL;
--		_ret = userfaultfd_ctx_read(ctx, no_wait, &msg);
-+		_ret = userfaultfd_ctx_read(ctx, no_wait, &msg, inode);
- 		if (_ret < 0)
- 			return ret ? ret : _ret;
- 		if (copy_to_user((__u64 __user *) buf, &msg, sizeof(msg)))
-@@ -1995,8 +1996,8 @@ SYSCALL_DEFINE1(userfaultfd, int, flags)
- 	/* prevent the mm struct to be freed */
- 	mmgrab(ctx->mm);
- 
--	fd = anon_inode_getfd("[userfaultfd]", &userfaultfd_fops, ctx,
--			      O_RDWR | (flags & UFFD_SHARED_FCNTL_FLAGS));
-+	fd = anon_inode_getfd_secure("[userfaultfd]", &userfaultfd_fops, ctx,
-+			O_RDWR | (flags & UFFD_SHARED_FCNTL_FLAGS), NULL);
- 	if (fd < 0) {
- 		mmdrop(ctx->mm);
- 		kmem_cache_free(userfaultfd_ctx_cachep, ctx);
 -- 
-2.28.0.297.g1956fa8f8d-goog
+Ondrej Mosnacek
+Software Engineer, Platform Security - SELinux kernel
+Red Hat, Inc.
 

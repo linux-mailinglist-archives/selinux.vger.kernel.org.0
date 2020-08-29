@@ -2,85 +2,85 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 309E8255E5E
-	for <lists+selinux@lfdr.de>; Fri, 28 Aug 2020 18:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D5FE25675D
+	for <lists+selinux@lfdr.de>; Sat, 29 Aug 2020 14:02:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726981AbgH1QAq (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 28 Aug 2020 12:00:46 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:44760 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728358AbgH1QAe (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 28 Aug 2020 12:00:34 -0400
-Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net [73.42.176.67])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 2023D20B36E7;
-        Fri, 28 Aug 2020 09:00:33 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2023D20B36E7
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1598630433;
-        bh=rFS7E9EDFK2NArtUO3BlDUuIRiMcxaSWtbaQ0LSrhHI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KzpF/wd+aA6rwHO+q6X+ytLf4Zit/tOWra0KBylE8WuFSrDJsCGifaBLh+1RUbbTl
-         FBPLmMJ/ckkMURFTfM3isJnTZi4vEDBjKHrjqiNxN13CtDifFool7ToFXkHLE1kKlS
-         c46W67h1IpWckpArWJXeeeHxMcFXc7L8tLQCqu1U=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     zohar@linux.ibm.com, stephen.smalley.work@gmail.com,
-        casey@schaufler-ca.com
-Cc:     tyhicks@linux.microsoft.com, tusharsu@linux.microsoft.com,
-        sashal@kernel.org, jmorris@namei.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH v2 3/3] IMA: Support early boot measurement of critical data
-Date:   Fri, 28 Aug 2020 09:00:21 -0700
-Message-Id: <20200828160021.11537-4-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20200828160021.11537-1-nramas@linux.microsoft.com>
-References: <20200828160021.11537-1-nramas@linux.microsoft.com>
+        id S1727852AbgH2MCD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 29 Aug 2020 08:02:03 -0400
+Received: from mail.rosalinux.ru ([195.19.76.54]:41962 "EHLO mail.rosalinux.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726798AbgH2MCB (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Sat, 29 Aug 2020 08:02:01 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rosalinux.ru (Postfix) with ESMTP id 74EBBD5313DDF;
+        Sat, 29 Aug 2020 14:08:43 +0300 (MSK)
+Received: from mail.rosalinux.ru ([127.0.0.1])
+        by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 80Cw3ssNfqQ4; Sat, 29 Aug 2020 14:08:43 +0300 (MSK)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.rosalinux.ru (Postfix) with ESMTP id F05D5D5313DD4;
+        Sat, 29 Aug 2020 14:08:42 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rosalinux.ru F05D5D5313DD4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rosalinux.ru;
+        s=A1AAD92A-9767-11E6-A27F-AC75C9F78EF4; t=1598699323;
+        bh=Urq6JweUV4XcfdCL9s6iNhORqAEOGLwAc7RzKdEge4w=;
+        h=To:From:Message-ID:Date:MIME-Version;
+        b=oaPdARaLxY0XAi5N453ZKSGomvHQbnLUinY8iP5wQRnfC9aH4nv0t6DMOz9ipqz0g
+         R3b0K5ZAbHHuZpAkJ4R0qEi3ajfZhXBd0ySjuuZ87ZHsehUOT+1aifGJ4ueITjEVLE
+         bLNhiBLxX3VxHwNvlCh65n14WPZCj54XDa8hM3kWyPweylPxPv4+ayoqn12MFimSo4
+         PXWx8ZfWIz2mLFqnpA0jmBQ2HADgj91KSNGC7wbIilt3giN6xnOIB5H4ZWp5DHLlWA
+         zW82EUqDnMVvw8vv+FrknNooS6tAhAmG95mN6AdgV5I4cCfDW5D/bwTjGdrAcqKZYb
+         pt2jwJotb9usw==
+X-Virus-Scanned: amavisd-new at rosalinux.ru
+Received: from mail.rosalinux.ru ([127.0.0.1])
+        by localhost (mail.rosalinux.ru [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id BHkMCjqcV_Z4; Sat, 29 Aug 2020 14:08:42 +0300 (MSK)
+Received: from [192.168.1.173] (broadband-90-154-71-182.ip.moscow.rt.ru [90.154.71.182])
+        by mail.rosalinux.ru (Postfix) with ESMTPSA id 804FED530DA28;
+        Sat, 29 Aug 2020 14:08:42 +0300 (MSK)
+To:     SElinux list <selinux@vger.kernel.org>
+Cc:     survolog@yandex.ru, Vladimir Potapov <vladimir.potapov@rosalab.ru>,
+        =?UTF-8?B?0JzQuNGF0LDQuNC7INCc0L7RgdC+0LvQvtCy?= 
+        <m.mosolov@rosalinux.ru>
+From:   Mikhail Novosyolov <m.novosyolov@rosalinux.ru>
+Subject: Hiding names of unreadable files
+Message-ID: <829a4d86-b5b8-69e4-e1d5-dbdcb9c1401e@rosalinux.ru>
+Date:   Sat, 29 Aug 2020 14:08:41 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The IMA hook, namely ima_measure_critical_data(), to measure kernel
-critical data requires a custom IMA policy to be loaded.
+Hello everyone,
 
-Update ima_measure_critical_data() to utilize early boot measurement
-support to defer processing data if a custom IMA policy is not yet
-loaded.
+We have been thinking on such problem: read access to a file may be restricted with SELinux MCS/MLS, especially MLS/MCS.
+If a file with restricted access is inside a directory without restricted access, its name is readable.
+Name of the file may be used to store some "secret" information.
+Some system directories, e.g. /var/tmp, are writable for multiple users, and they may use it to exchange secret information,
+bypassing restrictions.
 
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
----
- security/integrity/ima/ima_main.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Is there a way to restrict access to names of such files?
 
-diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-index 41be4d1d839e..ce0ef310c575 100644
---- a/security/integrity/ima/ima_main.c
-+++ b/security/integrity/ima/ima_main.c
-@@ -885,12 +885,22 @@ int ima_measure_critical_data(const char *event_name,
- 			      const void *buf, int buf_len,
- 			      bool measure_buf_hash)
- {
-+	bool queued = false;
-+
- 	if (!event_name || !event_data_source || !buf || !buf_len)
- 		return -EINVAL;
- 
- 	if (!ima_kernel_data_source_is_supported(event_data_source))
- 		return -EPERM;
- 
-+	if (ima_should_queue_data())
-+		queued = ima_queue_data(event_name, buf, buf_len,
-+					event_data_source, CRITICAL_DATA,
-+					measure_buf_hash);
-+
-+	if (queued)
-+		return 0;
-+
- 	return process_buffer_measurement(NULL, buf, buf_len, event_name,
- 					  CRITICAL_DATA, 0, event_data_source,
- 					  measure_buf_hash);
--- 
-2.28.0
+What may theoretically be done:
+
+1. Hide such files from directory listing. A bad idea, because most pieces of software (and people)
+are not ready to deal with situations when a file does not exist but a file with such name cannot be
+created because it already exists.
+
+2. Change name of the file to "????". Even worse.
+
+3. Do not show the name of the file at all. I do not know how it should be done,
+something like showing that an "inode" exists.
+
+4. Try to just restrict write access to directories without proper MLS labels:
+separate /tmp for arch user, maybe separate /var/tmp for each user, chmod -x (maybe via ACL) for /run etc.
+
+Can and should it be done with SELinux? What about other LSM modules?
+Is there a more generic approach to hide names of unreadable files?
 

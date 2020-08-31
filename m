@@ -2,141 +2,164 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EE50257B7C
-	for <lists+selinux@lfdr.de>; Mon, 31 Aug 2020 16:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA26A257DC1
+	for <lists+selinux@lfdr.de>; Mon, 31 Aug 2020 17:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728117AbgHaOrT (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 31 Aug 2020 10:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726384AbgHaOrP (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 31 Aug 2020 10:47:15 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFFCC061573;
-        Mon, 31 Aug 2020 07:47:14 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id g96so2946895otb.12;
-        Mon, 31 Aug 2020 07:47:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Q2tcN9Jz0h7kw1m7OiNmzbCBKujbmSV8MqHohL1aMxc=;
-        b=okkSFCeO2nLOMIkvoDn5wLrmrRFbpUKUqcypUHRgryOCdvmz3bPyt7lDX0PFnuYEhO
-         6c1MpCfws1lykdrr5sGQGnJ3t2/jkaOafYInME7Uaowdrhymh8jFoBia/4swJJohXsyq
-         QgGEF/yDCmAs0V0u9D3NiJEDrjYd9qH3H6Co+ZRgTYBFxrqUeC8fQ+D1V+PmFF66zVu2
-         pMJrZ0kfwK9NJM9tJ+lwaDcSSBJKkFv6wWGhPOB3InIaQTDMNjD2B6KBwy+kLr52z2ux
-         AVdRnxjK4d1VkohanZCV2N5dT0GVBilRt+j/7o/mxVGHgM2S03t5opG2vu74RxPAaz9+
-         5YgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Q2tcN9Jz0h7kw1m7OiNmzbCBKujbmSV8MqHohL1aMxc=;
-        b=SdjyGfHfLkTiniboi0XyCntDZA9EHvE1FvqlVkrwMOsyifVZlhmaTLatpqb65I9t5i
-         KKtjeT3GTzakiqUzlF1vkcf4Ug/I+sKUsHwZUyaisnJloUhWMUK3KkBt/AXabWO2cZ/g
-         UVKnhl+c7Jo6lAwrDbRnNuhPW8PWy8p7yRmH4iUjhPGppSqLVhQaGqrm7ud5wF/H/BEZ
-         weuk3HhJ1Skpv4bqMhR8nG5hLOVgTLiiW3guyYGWOq7DLLm9pK7efEiEFbQZkwUisIi7
-         7Dm9YbFx8utYYf2aGLe3k2ytCwIvs672pVbgIJOGMGaM4DnawboJrsoGZPAGZJO7yZy1
-         MPyA==
-X-Gm-Message-State: AOAM5317WEQUhprz+kgRZFhdAZypa728ybuXV/6gm2pt5raYtcpA6O2U
-        dJbIYb9EXWvoi5MfFzRsm6zHOTUeY9WDzIjin1g=
-X-Google-Smtp-Source: ABdhPJxPXXHtDiYGXjiJJVFSGYMXS15SU9DduSu2S4QuZFBZsnY3dQXEFlX9xjhw6RNRvh0QzILJ6LFIiS2sjeJp1Y8=
-X-Received: by 2002:a05:6830:1258:: with SMTP id s24mr1192602otp.162.1598885233434;
- Mon, 31 Aug 2020 07:47:13 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200822010018.19453-1-nramas@linux.microsoft.com>
- <CAEjxPJ5Kok-TBfS=XQ+NUC5tuaZRkyLBOawG4UDky51_bsMnGw@mail.gmail.com>
- <418618c4-a0c6-6b28-6718-2726a29b83c5@linux.microsoft.com>
- <CAEjxPJ6-8WnZRJnADsn=RVakzJiESjEjK-f8nSkscpT7dnricQ@mail.gmail.com>
- <CAFqZXNvVQ5U6Ea3gT32Z0hfWbu7GPR-mTF2z6-JZZJT57Heuuw@mail.gmail.com>
- <f041e8ee-3955-9551-b72d-d4d7fa6e636d@linux.microsoft.com>
- <CAHC9VhQP7_rV+Oi6weLjVhrx2d8iu9UJ8zeE=ZcqnBMqngrJ4Q@mail.gmail.com>
- <07854807-c495-b7e5-fc44-26d78ff14f1b@linux.microsoft.com> <CAEjxPJ4TkEEKG+pXwUjyysov1s1mFk4jbGGVyC7ghmpfd3TJ4w@mail.gmail.com>
-In-Reply-To: <CAEjxPJ4TkEEKG+pXwUjyysov1s1mFk4jbGGVyC7ghmpfd3TJ4w@mail.gmail.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Mon, 31 Aug 2020 10:47:02 -0400
-Message-ID: <CAEjxPJ6GkUot29g5qq2GVYzmY2xwfTvVJkNP2kK54OcW7tkz1Q@mail.gmail.com>
-Subject: Re: [PATCH] SELinux: Measure state and hash of policy using IMA
-To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Tyler Hicks <tyhicks@linux.microsoft.com>,
-        tusharsu@linux.microsoft.com, Sasha Levin <sashal@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        linux-integrity@vger.kernel.org,
+        id S1728362AbgHaPkx (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 31 Aug 2020 11:40:53 -0400
+Received: from vms1-real.sfasu.edu ([144.96.128.33]:19075 "EHLO
+        vms1-real.sfasu.edu" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728956AbgHaPkv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 31 Aug 2020 11:40:51 -0400
+Received: from CONVERSION-DAEMON.SFAVMS.SFASU.EDU by SFAVMS.SFASU.EDU
+ (PMDF V6.7-x04 #1799) id <01RP342BG5U88X2C4R@SFAVMS.SFASU.EDU>; Mon,
+ 31 Aug 2020 09:19:15 -0500 (CDT)
+Received: from exchgrouting.sfasu.edu ([144.96.206.206])
+ by SFAVMS.SFASU.EDU (PMDF V6.7-x04 #1799)
+ with ESMTPS id <01RP342BAQ228XEVLE@SFAVMS.SFASU.EDU>; Mon,
+ 31 Aug 2020 09:19:15 -0500 (CDT)
+Received: from TECHMB.sfasu.nac (2002:9060:cece::9060:cece)
+ by TECHMB.sfasu.nac (2002:9060:cece::9060:cece) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Mon, 31 Aug 2020 09:19:15 -0500
+Received: from TECHMB.sfasu.nac ([fe80::982c:d7b7:9491:6094])
+ by TECHMB.sfasu.nac ([fe80::982c:d7b7:9491:6094%15])
+ with mapi id 15.00.1497.006; Mon, 31 Aug 2020 09:19:15 -0500
+Date:   Mon, 31 Aug 2020 14:19:15 +0000
+From:   Robert Judy <rjudy@sfasu.edu>
+Subject: RE: [RFC PATCH] selinux: Add denied trace with permssion filter
+In-reply-to: <CAHC9VhRi87H2GhsKQN9iMOQeSw3g5_qwok9jpx+pfFSouQ9d5w@mail.gmail.com>
+X-Originating-IP: [144.96.210.77]
+To:     Paul Moore <paul@paul-moore.com>,
+        peter enderborg <peter.enderborg@sony.com>
+Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         SElinux list <selinux@vger.kernel.org>,
-        LSM List <linux-security-module@vger.kernel.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Steven Rostedt <rostedt@goodmis.org>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>
+Message-id: <f0e287f6b7dd4764a5091b90cf31b02e@TECHMB.sfasu.nac>
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-language: en-US
+Content-transfer-encoding: base64
+Thread-Topic: [RFC PATCH] selinux: Add denied trace with permssion filter
+Thread-Index: AQHWehnLeH0ZXs0eIUe8rW1dyDj2J6lHkvQAgAMqQwCAAA5OAIAAAz+AgAAFuICAAXd7gIAACZYAgAZMrAD//6x+MA==
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+References: <CAHC9VhRuvK55JVyHOxckThbRQ7sCwkeZsudwCaBo2f5G4g11VA@mail.gmail.com>
+ <20200824132252.31261-1-peter.enderborg@sony.com>
+ <20200824132252.31261-2-peter.enderborg@sony.com>
+ <CAHC9VhR8PscKpA5BrgTNj8cq_eQ6svqru6UXidc=v5+Ha+PM7Q@mail.gmail.com>
+ <6cbe5d27-ebb2-70a6-bad4-31c9f310eff2@sony.com>
+ <CAHC9VhRGaE4FwE8iXo_zeAPdimE9ryMR+r4Jcq=ZpF_2aTJxzQ@mail.gmail.com>
+ <59fa190f-37c0-79f3-ea46-8f821d820e1c@sony.com>
+ <CAHC9VhRE94YVK5bTcqqbNYJu-EwjbcwjSFgqV8jkyLn9HD39Ag@mail.gmail.com>
+ <abaccc15-85a8-24d2-4481-8303e3a42362@sony.com>
+ <CAHC9VhRi87H2GhsKQN9iMOQeSw3g5_qwok9jpx+pfFSouQ9d5w@mail.gmail.com>
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Aug 26, 2020 at 8:51 AM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
->
-> On Tue, Aug 25, 2020 at 4:49 PM Lakshmi Ramasubramanian
-> <nramas@linux.microsoft.com> wrote:
-> >
-> > On 8/24/20 3:18 PM, Paul Moore wrote:
-> >
-> > Hi Paul,
-> >
-> > >>>>> Is Ondrej's re-try approach I need to use to workaround policy reload issue?
-> > >>>>
-> > >>>> No, I think perhaps we should move the mutex to selinux_state instead
-> > >>>> of selinux_fs_info.  selinux_fs_info has a pointer to selinux_state so
-> > >>>> it can then use it indirectly.  Note that your patches are going to
-> > >>>> conflict with other ongoing work in the selinux next branch that is
-> > >>>> refactoring policy load and converting the policy rwlock to RCU.
-> > >>>
-> > >>> Yeah, and I'm experimenting with a patch on top of Stephen's RCU work
-> > >>> that would allow you to do this in a straightforward way without even
-> > >>> messing with the fsi->mutex. My patch may or may not be eventually
-> > >>> committed, but either way I'd recommend holding off on this for a
-> > >>> while until the dust settles around the RCU conversion.
-> > >>
-> > >> I can make the SELinux\IMA changes in "selinux next branch" taking
-> > >> dependencies on Stephen's patches + relevant IMA patches.
-> > >
-> > > I know it can be frustrating to hear what I'm about to say, but the
-> > > best option is probably just to wait a little to let things settle in
-> > > the SELinux -next branch.  There is a lot of stuff going on right now
-> > > with patches flooding in (at least "flooding" from a SELinux kernel
-> > > development perspective) and we/I've haven't gotten through all of
-> > > them yet.
-> > >
-> >
-> > Could you please let me know when the current set of changes in SELinux
-> > next branch would be completed and be ready to take new changes?
-> >
-> > I mean, roughly - would it be a month from now or you expect that to
-> > take longer?
->
-> I can't speak for Paul but I would expect it to be sooner rather than
-> later. Ondrej has some follow ups on top of my policy rcu conversion
-> but then it should be good to go.
-
-I think the major changes are now merged although there are still a
-couple of changes coming from Ondrej that could affect your code.  For
-your purposes, the important things to note are:
-
-1) The mutex has moved from selinux_fs_info to selinux_state and is
-now named policy_mutex.  You will need to take it around your call to
-security_read_policy_kernel().
-
-2) security_policydb_len() was removed and security_read_policy() just
-directly reads the policydb len.  You can do the same from your
-security_read_policy_kernel() variant.
-
-3) Ondrej has a pending change to move the policycap[] array from
-selinux_state to selinux_policy so that it can be atomically updated
-with the policy.
-
-4) Ondrej has a pending change to eliminate the separate initialized
-boolean from selinux_state and just test whether selinux_state.policy
-is non-NULL but as long as you are using selinux_initialized() to
-test, your code should be unaffected.
+SSB3b3VsZCBsaWtlIHRvIHVuc3Vic2NyaWJlIGZyb20gdGhpcyBncm91cC4gSSBoYXZlIHNlbnQg
+InVuc3Vic2NyaWJlIiByZXF1ZXN0cyB0byBzZWxpbnV4LW93bmVyQHZnZXIua2VybmVsLm9yZyBh
+cyBzdWJqZWN0IGFuZCBpbiB0aGUgYm9keSBvZiB0aGUgZS1tYWlsIGJ1dCB0aGF0IGhhcyBub3Qg
+d29ya2VkLiBQbGVhc2UgYWR2aXNlIG1lIGhvdyB0byB1bnN1YnNjcmliZS4NCg0KVGhhbmsgeW91
+IGFuZCByZXNwZWN0ZnVsbHksDQoNCnJtag0KDQotLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0K
+RnJvbTogc2VsaW51eC1vd25lckB2Z2VyLmtlcm5lbC5vcmcgPHNlbGludXgtb3duZXJAdmdlci5r
+ZXJuZWwub3JnPiBPbiBCZWhhbGYgT2YgUGF1bCBNb29yZQ0KU2VudDogTW9uZGF5LCBBdWd1c3Qg
+MzEsIDIwMjAgOToxNiBBTQ0KVG86IHBldGVyIGVuZGVyYm9yZyA8cGV0ZXIuZW5kZXJib3JnQHNv
+bnkuY29tPg0KQ2M6IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IFNFbGludXggbGlzdCA8
+c2VsaW51eEB2Z2VyLmtlcm5lbC5vcmc+OyBTdGV2ZW4gUm9zdGVkdCA8cm9zdGVkdEBnb29kbWlz
+Lm9yZz47IFN0ZXBoZW4gU21hbGxleSA8c3RlcGhlbi5zbWFsbGV5LndvcmtAZ21haWwuY29tPg0K
+U3ViamVjdDogUmU6IFtSRkMgUEFUQ0hdIHNlbGludXg6IEFkZCBkZW5pZWQgdHJhY2Ugd2l0aCBw
+ZXJtc3Npb24gZmlsdGVyDQoNCk9uIFRodSwgQXVnIDI3LCAyMDIwIGF0IDEwOjA0IEFNIHBldGVy
+IGVuZGVyYm9yZyA8cGV0ZXIuZW5kZXJib3JnQHNvbnkuY29tPiB3cm90ZToNCj4NCj4gT24gOC8y
+Ny8yMCAzOjMwIFBNLCBQYXVsIE1vb3JlIHdyb3RlOg0KPiA+IE9uIFdlZCwgQXVnIDI2LCAyMDIw
+IGF0IDExOjA2IEFNIHBldGVyIGVuZGVyYm9yZyANCj4gPiA8cGV0ZXIuZW5kZXJib3JnQHNvbnku
+Y29tPiB3cm90ZToNCj4gPj4gT24gOC8yNi8yMCA0OjQ1IFBNLCBQYXVsIE1vb3JlIHdyb3RlOg0K
+PiA+Pj4gT24gV2VkLCBBdWcgMjYsIDIwMjAgYXQgMTA6MzQgQU0gcGV0ZXIgZW5kZXJib3JnIA0K
+PiA+Pj4gPHBldGVyLmVuZGVyYm9yZ0Bzb255LmNvbT4gd3JvdGU6DQo+ID4+Pj4gT24gOC8yNi8y
+MCAzOjQyIFBNLCBQYXVsIE1vb3JlIHdyb3RlOg0KPiA+Pj4+PiBPbiBNb24sIEF1ZyAyNCwgMjAy
+MCBhdCA5OjIzIEFNIFBldGVyIEVuZGVyYm9yZyANCj4gPj4+Pj4gPHBldGVyLmVuZGVyYm9yZ0Bz
+b255LmNvbT4gd3JvdGU6DQo+ID4+Pj4+PiBUaGlzIGFkZHMgdHJhY2luZyBvZiBhbGwgZGVuaWVz
+LiBUaGV5IGFyZSBncm91cGVkIHdpdGggDQo+ID4+Pj4+PiB0cmFjZV9zZXEgZm9yIGVhY2ggYXVk
+aXQuDQo+ID4+Pj4+Pg0KPiA+Pj4+Pj4gQSBmaWx0ZXIgY2FuIGJlIGluc2VydGVkIHdpdGggYSB3
+cml0ZSB0byBpdCdzIGZpbHRlciBzZWN0aW9uLg0KPiA+Pj4+Pj4NCj4gPj4+Pj4+IGVjaG8gInBl
+cm1pc3Npb249PVwiZW50cnlwb2ludFwiIiA+IA0KPiA+Pj4+Pj4gZXZlbnRzL2F2Yy9zZWxpbnV4
+X2RlbmllZC9maWx0ZXINCj4gPj4+Pj4+DQo+ID4+Pj4+PiBBIG91dHB1dCB3aWxsIGJlIGxpa2U6
+DQo+ID4+Pj4+PiAgICAgICAgICAgcnVuY29uLTEwNDYgIFswMDJdIC5OLi4gICAxNTYuMzUxNzM4
+OiBzZWxpbnV4X2RlbmllZDoNCj4gPj4+Pj4+ICAgICAgICAgICB0cmFjZV9zZXE9MiByZXN1bHQ9
+LTEzDQo+ID4+Pj4+PiAgICAgICAgICAgc2NvbnRleHQ9c3lzdGVtX3U6c3lzdGVtX3I6Y3Vwc2Rf
+dDpzMC1zMDpjMC4NCj4gPj4+Pj4+ICAgICAgICAgICBjMTAyMyB0Y29udGV4dD1zeXN0ZW1fdTpv
+YmplY3RfcjpiaW5fdDpzMA0KPiA+Pj4+Pj4gICAgICAgICAgIHRjbGFzcz1maWxlIHBlcm1pc3Np
+b249ZW50cnlwb2ludA0KPiA+Pj4+Pj4NCj4gPj4+Pj4+IFNpZ25lZC1vZmYtYnk6IFBldGVyIEVu
+ZGVyYm9yZyA8cGV0ZXIuZW5kZXJib3JnQHNvbnkuY29tPg0KPiA+Pj4+Pj4gLS0tDQo+ID4+Pj4+
+PiAgaW5jbHVkZS90cmFjZS9ldmVudHMvYXZjLmggfCAzNyArKysrKysrKysrKysrKysrKysrKysr
+KysrKysrKysrKysrKysrDQo+ID4+Pj4+PiAgc2VjdXJpdHkvc2VsaW51eC9hdmMuYyAgICAgfCAy
+NyArKysrKysrKysrKysrKysrKysrKysrKysrLS0NCj4gPj4+Pj4+ICAyIGZpbGVzIGNoYW5nZWQs
+IDYyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+ID4+Pj4+IE15IG1vc3Qgc2lnbmlm
+aWNhbnQgY29tbWVudCBpcyB0aGF0IEkgZG9uJ3QgdGhpbmsgd2Ugd2FudCwgb3IgDQo+ID4+Pj4+
+IG5lZWQsIHR3byB0cmFjZSBwb2ludHMgaW4gdGhlIGF2Y19hdWRpdF9wb3N0X2NhbGxiYWNrKCkg
+DQo+ID4+Pj4+IGZ1bmN0aW9uLiAgWWVzLCBJIHVuZGVyc3RhbmQgdGhleSBhcmUgdHJpZ2dlcmVk
+IHNsaWdodGx5IA0KPiA+Pj4+PiBkaWZmZXJlbnRseSwgYnV0IGZyb20gbXkgcGVyc3BlY3RpdmUg
+dGhlcmUgaXNuJ3QgZW5vdWdoIA0KPiA+Pj4+PiBkaWZmZXJlbmNlIGJldHdlZW4gdGhlIHR3byB0
+cmFjZXBvaW50cyB0byB3YXJyYW50IGluY2x1ZGluZyANCj4gPj4+Pj4gYm90aC4gIEhvd2V2ZXIs
+IHdoaWxlIHRoZSB0cmFjZXBvaW50cyBtYXkgYmUNCj4gPj4+PiBXZSB0cmllZCB0aGF0IGJ1dCB0
+aGF0IHdhcyBwcm9ibGVtYXRpYyB0b28uDQo+ID4+PiBNeSBhcG9sb2dpZXMgaWYgSSB3YXMgb24g
+dGhhdCB0aHJlYWQsIGJ1dCBjYW4geW91IHJlbWluZCBtZSB3aHkgaXQgDQo+ID4+PiB3YXMgYSBw
+cm9ibGVtPyAgV2h5IGNhbid0IHdlIHVzZSBhIHNpbmdsZSB0cmFjZXBvaW50IHRvIGNhcHR1cmUg
+DQo+ID4+PiB0aGUgQVZDIGluZm9ybWF0aW9uPw0KPiA+PiBUaGUgcHJvYmxlbSBpcyBwYXJzaW5n
+IHRoZSBldmVudC4NCj4gPj4NCj4gPj4gaHR0cHM6Ly91cmxkZWZlbnNlLnByb29mcG9pbnQuY29t
+L3YyL3VybD91PWh0dHBzLTNBX19sa21sLm9yZ19sa21sXw0KPiA+PiAyMDIwXzhfMThfODQyJmQ9
+RHdJQmFRJmM9ZlA0dGYtLTFkUzBiaUNGbEIwc2F6MEkwa2pPNXY3LUdMUHR2U2hBbzRjDQo+ID4+
+IGMmcj1vTzVIdUdFR3h6bkEyRjNkamlpWXhteHhXUW9udzBoNlNrcy1CRW9CNHlzJm09cW1pMlJP
+V3NMQ18wbUxMaEgNCj4gPj4ga3BiNzFqMVlvaWN5ZExoLTdsNGNPc0xZY1kmcz1pUzNlWnIzVEZy
+TjVJN0JibnZQRllPS2Q2RGZXMUZIVEZjd0k3ag0KPiA+PiBvU19mayZlPQ0KPiA+Pg0KPiA+PiBo
+dHRwczovL3VybGRlZmVuc2UucHJvb2Zwb2ludC5jb20vdjIvdXJsP3U9aHR0cHMtM0FfX2xrbWwu
+b3JnX2xrbWxfDQo+ID4+IDIwMjBfOF8yMV81MjYmZD1Ed0lCYVEmYz1mUDR0Zi0tMWRTMGJpQ0Zs
+QjBzYXowSTBrak81djctR0xQdHZTaEFvNGMNCj4gPj4gYyZyPW9PNUh1R0VHeHpuQTJGM2RqaWlZ
+eG14eFdRb253MGg2U2tzLUJFb0I0eXMmbT1xbWkyUk9Xc0xDXzBtTExoSA0KPiA+PiBrcGI3MWox
+WW9pY3lkTGgtN2w0Y09zTFljWSZzPTlPc0xOMFk1bVVXeEVBQXFVRTZLNFBTNTdQbjFYeVp6N0dY
+YWs2DQo+ID4+IHVjX0xzJmU9DQo+ID4+DQo+ID4+IGFuZCB0aGUgInNpbmdsZSBsaXN0IiB2ZXJz
+aW9uDQo+ID4+DQo+ID4+IGh0dHBzOi8vdXJsZGVmZW5zZS5wcm9vZnBvaW50LmNvbS92Mi91cmw/
+dT1odHRwcy0zQV9fbGttbC5vcmdfbGttbF8NCj4gPj4gMjAyMF84XzE3XzEzNDYmZD1Ed0lCYVEm
+Yz1mUDR0Zi0tMWRTMGJpQ0ZsQjBzYXowSTBrak81djctR0xQdHZTaEFvNA0KPiA+PiBjYyZyPW9P
+NUh1R0VHeHpuQTJGM2RqaWlZeG14eFdRb253MGg2U2tzLUJFb0I0eXMmbT1xbWkyUk9Xc0xDXzBt
+TExoDQo+ID4+IEhrcGI3MWoxWW9pY3lkTGgtN2w0Y09zTFljWSZzPXRXU1kycnkySVQ2UmNUNUJJ
+VXdNdXFCTF95UE9iREUxVmxqYkwNCj4gPj4gcUkxenJBJmU9DQo+ID4+DQo+ID4+IFdpdGggdGhp
+cyBwYXRjaCB3ZSBmb2xsb3cgc3RhbmRhcmQgbWVzc2FnZSBmb3JtYXQgc28gbm8gcGx1Z2luIHNo
+b3VsZCBiZSBuZWVkZWQuDQo+ID4gSSdtIGV2aWRlbnRseSBtaXNzaW5nIHNvbWV0aGluZyB2ZXJ5
+IGZ1bmRhbWVudGFsIChsaWtlbHkpLCBhbmQvb3IgDQo+ID4gSSdtIGp1c3Qgbm90IGNvbW11bmlj
+YXRpbmcgdmVyeSBjbGVhcmx5IChhbHNvIGxpa2VseSksIGJlY2F1c2UgdGhlIA0KPiA+IGFib3Zl
+IGxpbmtzIGRvbid0IGFwcGVhciB0byBtYWtlIGFueSBzZW5zZSB3aXRoIHJlc3BlY3QgdG8gbXkg
+cXVlc3Rpb24uDQo+ID4NCj4gPiBMZXQgbWUgdHJ5IGEgcmVzZXQgLi4uIFdoeSBjYW4ndCB3ZSBi
+YXNpY2FsbHkgdGFrZSB0aGUgDQo+ID4gInNlbGludXhfZGVuaWVkIiBUUkFDRV9FVkVOVCBpbXBs
+ZW1lbnRhdGlvbiBpbiB5b3VyIHBhdGNoIGFuZCB1c2UgaXQgDQo+ID4gdG8gcmVwbGFjZSB0aGUg
+InNlbGludXhfYXVkaXRlZCIgVFJBQ0VfRVZFTlQgaW4gdGhlIHNlbGludXgvbmV4dCANCj4gPiB0
+cmVlIChvZiBjb3Vyc2Ugd2l0aCB0aGUgbmVjZXNzYXJ5IGNoYW5nZXMgdG8gdGhlIEFWQyBjYWxs
+YmFjayBjb2RlKT8NCj4gPg0KPiA+IElmIHRoZSAic2VsaW51eF9kZW5pZWQiIGltcGxlbWVudGF0
+aW9uIGlzIHZhbGlkIGZyb20gYSB0cmFjaW5nIHBvaW50IA0KPiA+IG9mIHZpZXcsIHdoeSBjYW4g
+d2Ugbm90IGRvIHRoaXM/ICBPZiBjb3Vyc2UgaWYgdGhlICJzZWxpbnV4X2RlbmllZCINCj4gPiBp
+bXBsZW1lbnRhdGlvbiBpcyBub3QgYSB2YWxpZCBUUkFDRV9FVkVOVCB0aGVuIEknbSBub3Qgc3Vy
+ZSB3aHkgdGhpcyANCj4gPiB3YXMgc3VnZ2VzdGVkIGZvciBTRUxpbnV4IDopDQo+DQo+IEltIGhh
+cHBseSBmaW5lIHdpdGggcmVwbGFjaW5nIHRoZSBzZWxpbnV4X2F1ZGl0ZWQgd2l0aCBzZWxpbnV4
+X2RlbmllZC4gIEhvd2V2ZXIgaXQgaXMgdGhlIGNhc2Ugd2hlcmUgdGhlcmUgYXJlIG1vcmUgdGhh
+biBvbmUgZGVuaWFsIGF0IHRoZSBzYW1lIHRpbWUuIEltIG5vdCBzdXJlIGhvdyBhbmQgd2hlbiBp
+dCBtaWdodCBoYXBwZW4uDQoNCk9uZSB0aGluZyBJIHdvbmRlcmVkIGFib3V0IHdhcyB3aHkgbm90
+IGJ1aWxkIHVwIGEgc2luZ2xlIHN0cmluZyB3aXRoIGFsbCBvZiB0aGUgcGVybWlzc2lvbnMgaW5z
+dGVhZCBvZiBnZW5lcmF0aW5nIG11bHRpcGxlIHRyYWNlIGV2ZW50cz8NCkluIHRoZSBwcmV2aW91
+cyBkaXNjdXNzaW9uIGl0IHdhcyBpbXBsaWVkIHRoYXQgdGhpcyB3YXMgZHVlIHRvIGxpbWl0YXRp
+b25zIGluIHRoZSB0cmFjaW5nIHN1YnN5c3RlbSdzIGZpbHRlcmluZywgYW5kIGJhc2VkIG9uIHRo
+ZSBkaXNjdXNzaW9uIHRodXMgZmFyIEknbSBndWVzc2luZyB0aGVyZSBpcyBsaXR0bGUgZGVzaXJl
+IGZvciB0aGlzIGluZm9ybWF0aW9uIGlmIGl0IGNhbid0IGJlIGZpbHRlcmVkIG9uPw0KDQpJZiB0
+aGF0J3MgdGhlIGNhc2UgdGhlbiBJIHRoaW5rIHdlIGFyZSBzdHVjayB3aXRoIHRoZSB0cmFjaW5n
+IGNvZGUgdGhhdCBjdXJyZW50bHkgbGl2ZXMgaW4gc2VsaW51eC9uZXh0LCBhcyBJIGN1cnJlbnRs
+eSBoYXZlIGxpdHRsZSBkZXNpcmUgdG8gYWRkIG1vcmUgdGhhbiBvbmUgdHJhY2Vwb2ludCBpbiB0
+aGUgU0VMaW51eCBwZXJtaXNzaW9uIGNoZWNraW5nIGNvZGVwYXRoLg0KDQo+IFdoZW4gdGhhdCBo
+YXBwZW4gd2UgZ290IG1vcmUgdGhhbiBvbmUgZXZlbnQuIEkgaGF2ZSBubyBwcm9ibGVtcyB3aXRo
+IHRoYXQsIGJ1dCBpbSBub3Qgc3VyZSBpZiB0aGUgZGVidWcgdG9vbHMgYW5kIHBlcmYgY2FuIG1h
+a2Ugc2Vuc2Ugb2YgdGhhdC4NCj4NCj4gQSBvdGhlciBmZWF0dXJlIHdpdGggdGhlIHNlbGludXhf
+YXVkaXRlZCBldmVudCBpdCBtaWdodCBiZSBpbnNlcnRlZCBvbiBvdGhlciBwbGFjZXMgaW4gdGhl
+IGNvZGUgdG9vLiAgQSBkZW5pYWwgaXMgc29ydCBvZiBmaW5hbC4NCg0KLS0NCnBhdWwgbW9vcmUN
+Cnd3dy5wYXVsLW1vb3JlLmNvbQ0K

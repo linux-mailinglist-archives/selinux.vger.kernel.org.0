@@ -2,118 +2,203 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D12826AC8D
-	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 20:51:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C16A626AE27
+	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 21:53:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727591AbgIOSvi (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 15 Sep 2020 14:51:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46874 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727431AbgIOSvL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 14:51:11 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B88C3C06174A
-        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 11:51:10 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id m12so4296894otr.0
-        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 11:51:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=/BWhQ71DNq1aG0OVwxXwnfy0Ikcd3mTyiyocCBJBG3Q=;
-        b=ojf87OFNzfgkSG2Eqk5k47bl7DF7fO22B251HltiqxuBxGl9MjFkLhO64cZMS5DCFV
-         VMKeik8shSUglLKYxYi0MG3L+KsTq+Ml3n0vX9ayII3ioFg4DGFOv5LYKr9loDgJTL4d
-         teNuX2BJJpCothL+vBuf+wtG8m4yQWeUk4zGJ6J25M6NULcDXlFY5xcoOgypS9tOzW1V
-         ++i07em3Wws2d4mWTelzFXE25PEBok3L9RGspJ/hcy3RYbhyRMpIdwsjRVX88i5xfK5o
-         ucXEx+oR/0pcBY4u4hm96JDoSzTqQSJVHXoPFfcw5wmOu02T/ojbMDYjsjC4GGHku5Ov
-         mDBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=/BWhQ71DNq1aG0OVwxXwnfy0Ikcd3mTyiyocCBJBG3Q=;
-        b=pHiFriX0D3hlA0SrF7wTdNk0KgrOTEcIcGDdMr2T3dKWbOHOI50auHFT4Yj8lVxbdW
-         thKUdoZaMhMk98JyJyAoN12n7LbBi0WdN9+iaBLLYZtSK2a1Zw6s1yC4ETz1FMopxN16
-         B6RaryXgE07OJf/cbl8lIHoxDQ6Z4K4bqBo6T6Jyq0F8XP7TVKGjTxb+SRjVenh5OvHi
-         Sc3CPj+YFr5JAaIo/2koa7NWedXebtnWcf309vxkggaG3ZtCPSnphNXd8TYp4+oJez/l
-         E7VSv7n42VNm6FEXko0hBAacfvfXJDIa2mV5VqZNnT+Pw4p8mWsIA4fAInG4L0IYyB4N
-         3Tyw==
-X-Gm-Message-State: AOAM531hBPPckPaX7PBNoesy16q375Dc6Q4Vrk9WqKBwXJ8J7ZygvhMH
-        TMySMXDGkDpmcQEusvLmdJhv58C1hm0VqD7Ct7lll+Sf
-X-Google-Smtp-Source: ABdhPJxlOteJlqqBis8bx8W2BJZ89mMiffUVN8gbFlNUVNZkycjVpMv6CJ7eq2AEMHQq/hZBRHgj8vlyKO799VWb8ws=
-X-Received: by 2002:a9d:23e2:: with SMTP id t89mr11159408otb.196.1600195870134;
- Tue, 15 Sep 2020 11:51:10 -0700 (PDT)
+        id S1727830AbgIOTxc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 15 Sep 2020 15:53:32 -0400
+Received: from mailomta8-sa.btinternet.com ([213.120.69.14]:28609 "EHLO
+        sa-prd-fep-049.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1727751AbgIOTxT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 15:53:19 -0400
+Received: from sa-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.38.6])
+          by sa-prd-fep-040.btinternet.com with ESMTP
+          id <20200902131748.LIKW5290.sa-prd-fep-040.btinternet.com@sa-prd-rgout-003.btmx-prd.synchronoss.net>;
+          Wed, 2 Sep 2020 14:17:48 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1599052668; 
+        bh=f9Xgk0jtnpb0PpwmGxZahurw7+LZbZCh8FkknZxjWOE=;
+        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
+        b=fbPP+jOHDk4wtgbO/843QzqPvmPsulAEKlzn3uEtyu7rGMepk8lXx+croaDSfpXWEFd8TfNrwen4iPQDHEp2KGNjIU6Aei887DXdLbwi+pU34McacZazpcZ8gF8l95DRz+GywAmZDXIX4obBrmQjW+uB284BWt0Wl1obqpJH4LTTnQZnoRUwL/yZgjlU5AnbuyiIKDan8CTQoyqopPNMqwD+jR7BxISC3QB4xFVVc2RAoHrVvQyIw0u0ZvI7IAAbE69/nM8vkKWXIFoSBOYfQxtBaXBLj7nB98KVoQ6ROFV1/8dUu3bL8wRAq8sXohL+gueiDm3DuLPB72m+dDrh7g==
+Authentication-Results: btinternet.com; none
+X-Originating-IP: [109.155.32.197]
+X-OWM-Source-IP: 109.155.32.197 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedrudefledgieefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeeutddtleelheeugefgiefhiedtheeukeffveeitdffgeffieeugeeljeegvefgieenucfkphepuddtledrudehhedrfedvrdduleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpedutdelrdduheehrdefvddrudeljedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehprghulhesphgruhhlqdhmohhorhgvrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheq
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from localhost.localdomain (109.155.32.197) by sa-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
+        id 5ED9AFBE0EF36BF4; Wed, 2 Sep 2020 14:17:48 +0100
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     paul@paul-moore.com, selinux@vger.kernel.org
+Cc:     Richard Haines <richard_c_haines@btinternet.com>
+Subject: [PATCH 11/13] polyinstantiation: Convert to markdown
+Date:   Wed,  2 Sep 2020 14:17:36 +0100
+Message-Id: <20200902131738.18425-12-richard_c_haines@btinternet.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200902131738.18425-1-richard_c_haines@btinternet.com>
+References: <20200902131738.18425-1-richard_c_haines@btinternet.com>
 MIME-Version: 1.0
-References: <1c3c974b-59a6-6295-b018-c7139cc1299d@gmail.com>
-In-Reply-To: <1c3c974b-59a6-6295-b018-c7139cc1299d@gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Tue, 15 Sep 2020 14:50:59 -0400
-Message-ID: <CAP+JOzRNTRTpMRfDBjN=67Lf-5tCjx_yAavn_UcDEzQK6Htd1A@mail.gmail.com>
-Subject: Re: classmapping with empty permissionset and neverallow leads to
- invalid policy
-To:     bauen1 <j2468h@googlemail.com>
-Cc:     selinux <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Sat, Sep 12, 2020 at 7:42 AM bauen1 <j2468h@googlemail.com> wrote:
->
-> Hi,
->
-> My policy makes heavy use of neverallow statements and permissionsets. I wanted to optimize it by using classmappings.
->
-> I've found that calling classmapping with an anonymous permissionset that results in an empty set breaks neverallow statements using those classmaps.
-> I think that this should be allowed. classmapping only ever adds permissions to a classmap, so if it is called with an empty permission set it should result in a no-op.
->
-> A minimal reproducer follows:
->
-> ; test.cil
->
-> (user u)
-> (userrole u r)
-> (role r)
-> (roletype r t)
-> (type t)
->
-> (sensitivity s0)
-> (sensitivityorder (s0))
->
-> (userlevel u (s0))
-> (userrange u ((s0) (s0)))
->
-> (sid kernel)
-> (sidorder (kernel))
-> (context kernel_c (u r t ((s0) (s0))))
-> (sidcontext kernel kernel_c)
->
-> ;; Begin interesting stuff
->
-> (class file (open read))
-> (class dir (getattr search))
-> (classorder (unordered file dir))
->
-> (type a)
-> (type b)
->
-> (classmap testmap (internal))
-> (classmapping testmap internal (file (not (open read)))) ; results in empty set
-> (classmapping testmap internal (dir (getattr)))
->
-> (allow a b (testmap (internal)))
-> (neverallow a b (testmap (internal)))
->
-> ; Results in 'allow a b:dir getattr;' but should have failed during Neverallow checks
->
+Add a TOC to aid navigation and convert to markdown.
 
-Thanks for the report. The problem was that the expansion of the
-classmap was stopped when the empty classmapping was reached. I sent a
-patch to the list.
+Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+---
+ src/polyinstantiation.md | 108 ++++++++++++++++++++++-----------------
+ 1 file changed, 60 insertions(+), 48 deletions(-)
 
-Jim
+diff --git a/src/polyinstantiation.md b/src/polyinstantiation.md
+index 3a64918..16a13c2 100644
+--- a/src/polyinstantiation.md
++++ b/src/polyinstantiation.md
+@@ -1,5 +1,12 @@
+ # Polyinstantiation Support
+ 
++- [Polyinstantiated Objects](#polyinstantiated-objects)
++- [Polyinstantiation support in PAM](#polyinstantiation-support-in-pam)
++  - [*namespace.conf* Configuration File](#namespace.conf-configuration-file)
++    - [Example Configurations](#example-configurations)
++- [Polyinstantiation support in X-Windows](#polyinstantiation-support-in-x-windows)
++- [Polyinstantiation support in the Reference Policy](#polyinstantiation-support-in-the-reference-policy)
++
+ GNU / Linux supports the polyinstantiation of directories that can be
+ utilised by SELinux via the Pluggable Authentication Module (PAM) as explained
+ in the next section. The
+@@ -12,16 +19,16 @@ sockets are not yet supported.
+ 
+ To clarify polyinstantiation support:
+ 
+-1.  SELinux has *libselinux* functions and a policy rule to support
+-    polyinstantiation.
+-2.  The polyinstantiation of directories is a function of GNU / Linux
+-    not SELinux (as more correctly, the GNU / Linux services such as PAM
+-    have been modified to support polyinstantiation of directories and
+-    have also been made SELinux-aware. Therefore their services can be
+-    controlled via policy).
+-3.  The polyinstantiation of X-windows selections and properties is a
+-    function of the XSELinux Object Manager and the supporting XACE
+-    service.
++1. SELinux has *libselinux* functions and a policy rule to support
++   polyinstantiation.
++2. The polyinstantiation of directories is a function of GNU / Linux
++   not SELinux (as more correctly, the GNU / Linux services such as PAM
++   have been modified to support polyinstantiation of directories and
++   have also been made SELinux-aware. Therefore their services can be
++   controlled via policy).
++3. The polyinstantiation of X-windows selections and properties is a
++   function of the XSELinux Object Manager and the supporting XACE
++   service.
+ 
+ ## Polyinstantiated Objects
+ 
+@@ -46,10 +53,11 @@ to enable the feature and some [**examples**](#example-configurations).
+ To implement polyinstantiated directories PAM requires the following
+ files to be configured:
+ 
+-1.  A **pam_namespace** module entry added to the appropriate */etc/pam.d/*
+-    login configuration file (e.g. login, sshd, gdm etc.). Fedora
+-    already has these entries configured, with an example
+-    */etc/pam.d/gdm-password* file being:
++- A **pam_namespace** module entry added to the appropriate */etc/pam.d/*
++  login configuration file (e.g. login, sshd, gdm etc.). Fedora
++  already has these entries configured, with an example
++  */etc/pam.d/gdm-password* file being:
++
+ ```
+ auth     [success=done ignore=ignore default=bad] pam_selinux_permit.so
+ auth        substack      password-auth
+@@ -73,13 +81,13 @@ session     optional      pam_gnome_keyring.so auto_start
+ session     include       postlogin
+ ```
+ 
+-2.  Entries added to the */etc/security/namespace.conf* file that defines
+-    the directories to be polyinstantiated by PAM (and other services
+-    that may need to use the namespace service). The entries are
+-    explained in the
+-    [*namespace.conf*](#namespace.conf-configuration-file) section,
+-    with the default entries in Fedora being (note that the entries are
+-    commented out in the distribution):
++- Entries added to the */etc/security/namespace.conf* file that defines
++  the directories to be polyinstantiated by PAM (and other services
++  that may need to use the namespace service). The entries are
++  explained in the
++  [*namespace.conf*](#namespace.conf-configuration-file) section,
++  with the default entries in Fedora being (note that the entries are
++  commented out in the distribution):
+ 
+ ```
+ # polydir  instance-prefix     method  list_of_uids
+@@ -108,33 +116,37 @@ Each line in the namespace.conf file is formatted as follows:
+ polydir instance_prefix method list_of_uids
+ ```
+ 
+-Where:
+-
+-<table>
+-<tbody>
+-<tr>
+-<td>polydir</td>
+-<td>The absolute path name of the directory to polyinstantiate. The optional strings $USER and $HOME will be replaced by the user name and home directory respectively.</td>
+-</tr>
+-<tr>
+-<td>instance_prefix</td>
+-<td>A string prefix used to build the pathname for the polyinstantiated directory. The optional strings $USER and $HOME will be replaced by the user name and home directory respectively.</td>
+-</tr>
+-<tr>
+-<td>method</td>
+-<td><p>This is used to determine the method of polyinstantiation with valid entries being:</p>
+-<p>user - Polyinstantiation is based on user name.</p>
+-<p>level - Polyinstantiation is based on the user name and MLS level.</p>
+-<p>context - Polyinstantiation is based on the user name and security context.</p>
+-<p>Note that level and context are only valid for SELinux enabled systems.</p></td>
+-</tr>
+-<tr>
+-<td>list_of_uids</td>
+-<td><p>A comma separated list of user names that will not have polyinstantiated directories. If blank, then all users are polyinstantiated. If the list is preceded with an '~' character, then only the users in the list will have polyinstantiated directories.</p>
+-<p>There are a number of optional flags available that are described in the <strong>namespace.conf</strong>(5) man page.</p></td>
+-</tr>
+-</tbody>
+-</table>
++**Where:**
++
++*polydir*
++
++- The absolute path name of the directory to polyinstantiate. The optional
++  strings *\$USER* and *\$HOME* will be replaced by the user name and home
++  directory respectively.
++
++*instance_prefix*
++
++- A string prefix used to build the pathname for the polyinstantiated
++  directory. The optional strings *\$USER* and *\$HOME* will be replaced by
++  the user name and home directory respectively.
++
++*method*
++
++- This is used to determine the method of polyinstantiation with valid
++  entries being:
++  - *user*    - Polyinstantiation is based on user name.
++  - *level*   - Polyinstantiation is based on user name and MLS level.
++  - *context* - Polyinstantiation is based on user name and security context.
++- Note that *level* and *context* are only valid for SELinux enabled systems.
++
++*list_of_uids*
++
++- A comma separated list of user names that will not have polyinstantiated
++  directories. If blank, then all users are polyinstantiated. If the list is
++  preceded with an '~' character, then only the users in the list will have
++  polyinstantiated directories.
++  There are a number of optional flags available that are described in the
++  ***namespace.conf**(5)* man page.
+ 
+ ### Example Configurations
+ 
+-- 
+2.26.2
 
-> --
-> bauen1
-> https://dn42.bauen1.xyz/

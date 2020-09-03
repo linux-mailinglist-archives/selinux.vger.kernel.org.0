@@ -2,68 +2,102 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B137025C337
-	for <lists+selinux@lfdr.de>; Thu,  3 Sep 2020 16:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B94C125C37F
+	for <lists+selinux@lfdr.de>; Thu,  3 Sep 2020 16:52:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729179AbgICOrZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 3 Sep 2020 10:47:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35314 "EHLO
+        id S1729392AbgICOwr (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 3 Sep 2020 10:52:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729249AbgICOYg (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 3 Sep 2020 10:24:36 -0400
-Received: from mail-oi1-x241.google.com (mail-oi1-x241.google.com [IPv6:2607:f8b0:4864:20::241])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC489C06123E
-        for <selinux@vger.kernel.org>; Thu,  3 Sep 2020 07:22:58 -0700 (PDT)
-Received: by mail-oi1-x241.google.com with SMTP id x69so303888oia.8
-        for <selinux@vger.kernel.org>; Thu, 03 Sep 2020 07:22:58 -0700 (PDT)
+        with ESMTP id S1729196AbgICOwm (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 3 Sep 2020 10:52:42 -0400
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32B92C061244
+        for <selinux@vger.kernel.org>; Thu,  3 Sep 2020 07:52:42 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id b12so2931346edz.11
+        for <selinux@vger.kernel.org>; Thu, 03 Sep 2020 07:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=KyuBtrbre9FLxZEJcKX5L74bgokYux5S3K8iMb5lJ7Y=;
-        b=XcLprULKumpwyJnyRcOscodCB83Vn/2ZT+gO67otxl4OdETdX3TOq27RN+pDrrhpB2
-         pKEHpUZZ2jAIdG74lpSqeJxfGHBItgLHTfFUnvYHGSwkJTCqiwlUEuGtu+3Nw125rK3z
-         TwlmfEeKZhRgB4gSJo3CKYj5SK2d5iaow93A0kRoWkjujKxWm0YGXQkqBa1GQlUoebJv
-         g/WttEIncgZRUNnm9KR3hoTkd9B4ESjKJJc6DtAtF4+yVLknPX0+wkKXPdyuvHYQEjTd
-         MNXA4BG88Q7x86HrqqyyKfaN09MWPEQOYLDPgwIr6VUFLogUffvB5N8ZIW3qx/ln9vxW
-         uQyQ==
+        bh=8w172oPnK5MVs29uk/vzRnYyo8w0UljolpLj/rIAHiM=;
+        b=GJV7WDwrboIWoLDQZjFYOlEc0RdLFBtnBQNSiV1aWkv7OO7Scl62fzPFXxENToQJ9T
+         wYLvhWWyA9anvDrqFieaW1fOsiFamhnrUGpDWKpc605gpXVzbiC6cU1jOTonUWDtpgVY
+         +P6dAZpCtrKSg/EdKg8pcsEMZevJgWd+T9Mm9KUFA2bjnKtA8soqJa7RxZJZeI98mtEG
+         5Boak60495ICuNDVYx6ELEf5UsSpqk34KgKgi5ANwLKV1yMppQEC+hhQdLk5KfvPxb6W
+         3pC8ZabGfgxwbDAE6JaMN3j2SQAk22eRaZ7qSWc/3lsN5hJBIXfRzePvJYr2FtQBjzGn
+         D4YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=KyuBtrbre9FLxZEJcKX5L74bgokYux5S3K8iMb5lJ7Y=;
-        b=Bk4VflWUvqGE2PrXDtLLLmGYLwfwFDrgNQC5/ZsynsemyvDf8sIW+0oEAZ69TvMMzZ
-         gTM+N2KsL6Bae/EtTSLwZboJkPfy9NlhMV15b+9Z3uQwUdsGBPAk54ctMfOCsk0GAzex
-         IGPtCorNJL6e2e2EAEX0fFmFy2NLSSck/lnGoEBlw9gtuXaocUx3bLMqNfulcuI23TPl
-         YLqJ/sjeEYveUMIt+0kAEQlE4/zlz52nz3x1TQQw8M/p7gRXiOTzHL2vKo7sy3NdjHbT
-         AONSOkI0hM5IvXTVnlNB5vB8LEtfTfrm96E0kpfbIugjTFnJXXodMBZNh8UORVbSfU7c
-         CXCg==
-X-Gm-Message-State: AOAM533Lrcvx21v97NdXUpmM1ZAVDbW6mAnhfFiFk+rEiTFVNscFu/Ik
-        gvCoaVZw8rAyrXgIoIrL2SpCPA6Fy3BcJPVuAshrX6nr
-X-Google-Smtp-Source: ABdhPJzj+dVH8do7AR/zp+15+gQM5TJOU1X/H+yGPZJ9uulOtwx+G+swraLXJPiNqjljZ5DTyGOQapuEWJUIXYWLJtY=
-X-Received: by 2002:a54:4f9b:: with SMTP id g27mr2224516oiy.140.1599142978350;
- Thu, 03 Sep 2020 07:22:58 -0700 (PDT)
+        bh=8w172oPnK5MVs29uk/vzRnYyo8w0UljolpLj/rIAHiM=;
+        b=O4iPFNevxLJOiwmmfmKiYkJxNJhzqMJ3SXP3qiDne9qnE/1NBCDtTj96hZn8KRrwFe
+         H51G+Xvx+jQZ3n4zc1oyRiIw8XTu8iGH2dgn9SXmC2NRd7DbeXDoqOESZhwQCN8wVd5m
+         OnCXk48wPaaLMUftgFm5YakpRkDd+H7hu6odCCouWWjh2lYHsAV1Pms0zEyMXYhK1XWe
+         QwEzJ+aAz/dOXv8vBzEZA1Cjve/5LdYJBlUKxQ9sb7tMdmDzP76DrE4ykQWeMto0G05/
+         UPjOfDNfCxsP+JvBEYzW9F1FOSh5b9n471dKBnhYusT9S+tVfOgJYA76/UYvpTJ6tbv5
+         NGiw==
+X-Gm-Message-State: AOAM531TnI3054tJuZUAFXuonVBdOHrCV58f4lbYBbx2t9iSgO+mfD5A
+        wQ0KgW8qnRrhLSAVMw089YvwMaWx/8ZPriQRCs2atIXJpw==
+X-Google-Smtp-Source: ABdhPJxc/AHs8kE2OPGEmEwfK9OlfPCYcDUvCKGYy91iSkgYm37QwgyNF1PfZnPvyfxD20C1J2gUZreJ7ZBI30VLNTk=
+X-Received: by 2002:aa7:cd06:: with SMTP id b6mr3353426edw.196.1599144759122;
+ Thu, 03 Sep 2020 07:52:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAEjxPJ73HtLW_AgRBSEUmNVer4xpotkCq1i7r=YJOF1LbixKuQ@mail.gmail.com>
- <20200901161641.431740-1-dominick.grift@defensec.nl>
-In-Reply-To: <20200901161641.431740-1-dominick.grift@defensec.nl>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Thu, 3 Sep 2020 10:22:47 -0400
-Message-ID: <CAEjxPJ4z6EbdP8nsSdUBKVKJkhmsOHN7U86bpne+0Hy0v=M_ow@mail.gmail.com>
-Subject: Re: [PATCH] newrole: support cross-compilation with PAM and audit
-To:     Dominick Grift <dominick.grift@defensec.nl>
-Cc:     SElinux list <selinux@vger.kernel.org>
+References: <20200902131738.18425-1-richard_c_haines@btinternet.com>
+In-Reply-To: <20200902131738.18425-1-richard_c_haines@btinternet.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Thu, 3 Sep 2020 10:52:28 -0400
+Message-ID: <CAHC9VhSOsYOYGaqDW+ATR5O5hRGJLbWs0QExNemoK2HRamY0xg@mail.gmail.com>
+Subject: Re: [PATCH 00/13] SELinux Notebook: Convert batch 2 to markdown
+To:     Richard Haines <richard_c_haines@btinternet.com>
+Cc:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Sep 1, 2020 at 12:17 PM Dominick Grift
-<dominick.grift@defensec.nl> wrote:
+On Wed, Sep 2, 2020 at 9:17 AM Richard Haines
+<richard_c_haines@btinternet.com> wrote:
 >
-> Compilation of newrole with PAM and audit support currently requires that you have the respective headers installed on the host. Instead make the header location customizable to accomodate cross-compilation.
+> Converted to Markdown or just tidy up formatting. Added TOC to aid
+> navigation where required.
+> No text changes.
 >
-> Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
+> Richard Haines (13):
+>   libselinux_functions: Convert to markdown
+>   mac: Tidy formatting
+>   modular_policy_statements: Convert to markdown
+>   network_statements: Convert to markdown
+>   network_support: Convert to markdown
+>   objects: Convert to markdown
+>   pam_login: Convert to markdown
+>   policy_config_statements: Convert to markdown
+>   policy_languages: Tidy up
+>   policy_store_config_files: Add TOC and tidy up formatting
+>   polyinstantiation: Convert to markdown
+>   rbac: Minor format fix
+>   role_statements: Convert to markdown
+>
+>  src/libselinux_functions.md      | 2179 +++++++++++++++---------------
+>  src/mac.md                       |   34 +-
+>  src/modular_policy_statements.md |  229 ++--
+>  src/network_statements.md        |  261 ++--
+>  src/network_support.md           |  270 ++--
+>  src/objects.md                   |  185 +--
+>  src/pam_login.md                 |  107 +-
+>  src/policy_config_statements.md  |   54 +-
+>  src/policy_languages.md          |   26 +-
+>  src/policy_store_config_files.md |  432 +++---
+>  src/polyinstantiation.md         |  108 +-
+>  src/rbac.md                      |    2 +-
+>  src/role_statements.md           |  443 +++---
+>  13 files changed, 2109 insertions(+), 2221 deletions(-)
 
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+All merged into the main branch.  Thanks again Richard, I know how
+tedious these conversion patches can be.
+
+-- 
+paul moore
+www.paul-moore.com

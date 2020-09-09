@@ -2,130 +2,592 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 597E42653A1
-	for <lists+selinux@lfdr.de>; Thu, 10 Sep 2020 23:38:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C1C22654BC
+	for <lists+selinux@lfdr.de>; Fri, 11 Sep 2020 00:01:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725803AbgIJVij (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 10 Sep 2020 17:38:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46736 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730643AbgIJNbO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 10 Sep 2020 09:31:14 -0400
-Received: from mail-ot1-x343.google.com (mail-ot1-x343.google.com [IPv6:2607:f8b0:4864:20::343])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED11C061573
-        for <selinux@vger.kernel.org>; Thu, 10 Sep 2020 06:31:12 -0700 (PDT)
-Received: by mail-ot1-x343.google.com with SMTP id o6so5360296ota.2
-        for <selinux@vger.kernel.org>; Thu, 10 Sep 2020 06:31:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mLNfd/U3e2McBmCQ5NrmupixXVnLzAvtnufCJQdxuQo=;
-        b=hs8veInH42EJ7NaiHgKB94xXuLiQg8J/JAjtatpCppTVXO+58lH+PKws49aF7SFr9Y
-         pa3IypywC39Qaw2vS5NlZWN3JtZmRyHqD0bPSmwHe9/mmt6OVNDHBTzzxJIWqqtpgowK
-         LKbGRjj0Pc6YfBpELfxHOUdMIS22tGiUeSe+Nu8vNfQ4LCWLKGhzpEABuMvoj59tVrVQ
-         nLtV0xHcPwF8/R57eC1KrqAY+dEzM6lw/zGR4MOYCE30hyNra971ANlUqk0W0yJaDU+c
-         B0w6WahICpoQETPvMNnsO+g4nLrVaoQqDId4Mp8Hzi7Ox3Gk5kZd5MSPgK0/DHLThKij
-         hPOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mLNfd/U3e2McBmCQ5NrmupixXVnLzAvtnufCJQdxuQo=;
-        b=JNA7zwNep02/eS3kcLqs7mPmh6W4LapG0VMxcFUE+IggEQgG0tJVbzXK9aTywotEgN
-         XZI3Z8ooYLz/ACfjKVqAoftcWVMRGvIExwhxE40oUUIIjFLwKT7gVSA8c1nvBKJ4z4ny
-         U2LLyJO2BoYvq2CHEIf2GC2eKo++ft4JEKB2BLiDz59t1GJqaSS6E9U5T+9X6PB1kjkM
-         hRl8guEH+hCJhq2yp+PC+cP3D/l/tyOoCAuAWF0ynU8i30nxv8pOjMsQHefB9A1x6oco
-         r7av8mWr+CYL7FjfvymSQUVZVrXHX3OQXeaXqQlrTYIraOvFKq6NZ6gMOxaGvj8z50n1
-         u02A==
-X-Gm-Message-State: AOAM5307+7X15OHU1ipGWtrjxeLgKS/Dpwo3m6jo6aaN/TBIjk9RuVXj
-        8AnCdEeqM1A27Dvqzhn4694GmAG4Ge2BWisbAD8=
-X-Google-Smtp-Source: ABdhPJwt03ZlT2Kc3BbIc8thbZq0zDWAE0mMUAFWETg7Ui9KNvWmzYPhN6A2Bag4H6ITgrSEdRdrepgegCkuinLcD/Y=
-X-Received: by 2002:a9d:185:: with SMTP id e5mr4057736ote.135.1599744671443;
- Thu, 10 Sep 2020 06:31:11 -0700 (PDT)
+        id S1725287AbgIJWBz (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 10 Sep 2020 18:01:55 -0400
+Received: from mailomta23-re.btinternet.com ([213.120.69.116]:55114 "EHLO
+        re-prd-fep-048.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725306AbgIJWBz (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 10 Sep 2020 18:01:55 -0400
+Received: from re-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.54.6])
+          by re-prd-fep-049.btinternet.com with ESMTP
+          id <20200909133043.HJKH4131.re-prd-fep-049.btinternet.com@re-prd-rgout-003.btmx-prd.synchronoss.net>;
+          Wed, 9 Sep 2020 14:30:43 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1599658243; 
+        bh=fDp+aiYMiKuGOrDkASPb9CISSP9yZVmBgu7MP00KTiM=;
+        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
+        b=KCBe8mP79KdUY+qAdznaP7QIlZXIfbau0TJwLCmZGp0/A+KKsG7m0YsBxqM6bLfslLpvOht4B0CZghcNOeV5iGTuhyP3HTmgT5Z+/6rxjbtCjQU/GHZEDP37kbGkHJI9OGBRxj2PuN3CPSynjdTBvRlWWQtvcCAlJ+0e6xSgCq6fk50qo223R80pIkHf3MxR762GwiSR9DM5sqTH4om7JQ0Esis28sCf/Q5pMlZFBRpuQaZN5csqlEpd7jmTl0tuUNbVFx+pR54TgDQ7lZQwyXw5KWWfyiB2eWBVsu4hWvp6Rjf551iOQfUxFJwHdhBfRGSgQW5Ru2m9PsANJTjVkw==
+Authentication-Results: btinternet.com; none
+X-Originating-IP: [86.154.154.133]
+X-OWM-Source-IP: 86.154.154.133 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedrudehhedgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeffieeigefgkeekteeifeffheevgfettdehjeeifeffudfggfdvkeefhefggeehveenucffohhmrghinheptghomhhprghrthhmvghnthhsrdgtvghnthgvrhdptggrthgvghhorhhivghsrdgtvghnthgvrhdpphholhhitgihrdgtvghnthgvrhenucfkphepkeeirdduheegrdduheegrddufeefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudehgedrudehgedrudeffedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehprghulhesphgruhhlqdhmohhorhgvrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgr
+        ihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheq
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from localhost.localdomain (86.154.154.133) by re-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
+        id 5ED9C2FD10134D7F; Wed, 9 Sep 2020 14:30:43 +0100
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     paul@paul-moore.com, selinux@vger.kernel.org
+Cc:     Richard Haines <richard_c_haines@btinternet.com>
+Subject: [PATCH 02/22] mls_statements: Convert to markdown
+Date:   Wed,  9 Sep 2020 14:30:19 +0100
+Message-Id: <20200909133039.44498-3-richard_c_haines@btinternet.com>
+X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20200909133039.44498-1-richard_c_haines@btinternet.com>
+References: <20200909133039.44498-1-richard_c_haines@btinternet.com>
 MIME-Version: 1.0
-References: <159110207843.57260.5661475689740939480.stgit@chester>
- <CAHC9VhQacYKE4sJRbqmpudXfMyzCT8VM0SFUCi=o-MNsn4c_MA@mail.gmail.com>
- <CAEjxPJ5oGWygz87dQw1HbP2wZovc+Q7ESKSF0zBMF_cSwxRdww@mail.gmail.com>
- <CAHC9VhSsY+MtSrj17g+p3FMeaKQ-Mjjy=iXS+1TbhCKGAn_yxA@mail.gmail.com>
- <CAEjxPJ6nLAOjLvhswyLNCUO8bUuwm_h7emFp7dZXDzRjMuG2HA@mail.gmail.com>
- <CAEjxPJ47H1_PQ1HnJhqV4yWz_u1vvWR=Q6T999Xm92z04OimqQ@mail.gmail.com>
- <CAEjxPJ6KQAc5YmrZNHU=Wr9xZ5+v6o3BYiV4+1NRzpfMhw7BJA@mail.gmail.com>
- <CAFqZXNuWNw+e23_Lz0WN-=HODHmbSAmMQcAX87tVRGp3ZSiccA@mail.gmail.com>
- <CAHC9VhQ25U5PLYMAA1onNssWrOMYrUXhfJ_SRpzM1qNXeavfuw@mail.gmail.com>
- <20200819171459.GA57975@localhost.localdomain> <CAEjxPJ54j6PD6oBMWj7wOVskJuUY=BLpMCkdmmqwrP1DGJ0VqA@mail.gmail.com>
- <CAFqZXNuPCwvf2BNYrxxL-DqcwLQBCS9b78iQBfKDsWXOy8pvyg@mail.gmail.com>
-In-Reply-To: <CAFqZXNuPCwvf2BNYrxxL-DqcwLQBCS9b78iQBfKDsWXOy8pvyg@mail.gmail.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Thu, 10 Sep 2020 09:31:00 -0400
-Message-ID: <CAEjxPJ4HMyabC+WwNwjO33SaFn9vKd1zZUR8n-wjrzN6bkHgMw@mail.gmail.com>
-Subject: Re: [RFC PATCH] selinux: runtime disable is deprecated, add some
- ssleep() discomfort
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     Petr Lautrbach <plautrba@redhat.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Sep 10, 2020 at 7:39 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> On Wed, Aug 19, 2020 at 9:07 PM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
-> > On Wed, Aug 19, 2020 at 1:15 PM Petr Lautrbach <plautrba@redhat.com> wrote:
-> <snip>
-> > > So I've started to compose Fedora Change proposal
-> > >
-> > > https://fedoraproject.org/wiki/SELinux/Changes/Disable_CONFIG_SECURITY_SELINUX_DISABLE
-> > >
-> > > It's not complete yet, but I believe it contains basic information. I'd
-> > > appreciate if you can help me with text, phrases and references so that it would
-> > > be easy to sell it as security feature to Fedora community :)
-> >
-> > I'd simplify the Summary to be something like "Remove support for
-> > SELinux runtime disable so that the LSM hooks can be hardened via
-> > read-only-after-initialization protections.  Migrate users to using
-> > selinux=0 if they want to disable SELinux."
->
-> FYI, the change proposal has now been announced to the Fedora devel community:
-> https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/YQIYMWKFQEWCILU7UZWXO3YFNS2PLDG4/
+Add a TOC to aid navigation and convert to markdown.
+Remove table 1 as didn't seem to add anything.
 
-With regard to concerns raised in that thread:
+Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+---
+ src/mls_statements.md | 461 +++++++++++++++---------------------------
+ 1 file changed, 167 insertions(+), 294 deletions(-)
 
-1) For (soft?) real-time users, one option (if the latency introduced
-by SELinux without a policy loaded is truly enough to affect their
-workloads) would be to insert a if
-(!selinux_initialized(&selinux_state)) return 0; at the beginning of
-most hooks. However, we can't do that everywhere (e.g. we still need
-to allocate/initialize security structures and maintain lists of
-superblocks and inodes allocated before policy load so that we can
-later fix up their labels during selinux_complete_init), and adding
-such checks would make selinux_state.initialized an even more
-attractive target for kernel exploits since it becomes another way to
-"disable" SELinux entirely.  You can of course already target it to
-disable policy checking but doing so tends to break certain things
-like security_sid_to_context/context_to_sid on SIDs other than the
-initial ones so it is not quite as attractive as enforcing currently.
-This assumes that these real-time workloads are not so sensitive that
-even the overhead of the indirect function call for the LSM hook
-pushes them over their tolerance.
+diff --git a/src/mls_statements.md b/src/mls_statements.md
+index f61ced6..05ba185 100644
+--- a/src/mls_statements.md
++++ b/src/mls_statements.md
+@@ -1,74 +1,30 @@
+ # MLS Statements
+ 
++- [MLS range Definition](#mls-range-definition)
++- [*sensitivity*](#sensitivity)
++- [*dominance*](#dominance)
++- [*category*](#category)
++- [*level*](#level)
++- [*range_transition*](#range_transition)
++- [*mlsconstrain*](#mlsconstrain)
++- [*mlsvalidatetrans*](#mlsvalidatetrans)
++
+ The optional MLS policy extension adds an additional security context
+ component that consists of the following highlighted entries:
+ 
+-```
+-user:role:type:sensitivity[:category,...]- sensitivity [:category,...]
+-```
++*user:role:type:* ***sensitivity[:category,...] - sensitivity [:category,...]***
+ 
+-These consist of a mandatory hierarchical
+-[**sensitivity**](#sensitivity) and optional
+-non-hierarchical [**category**](#category)'s. The
+-combination of the two comprise a [**level**](#level) or security level as
+-shown in **Table 1: Sensitivity and Category = Security Level**. Depending on
+-the circumstances, there can be one level defined or a
+-[**range**](#mls-range-definition) as shown in **Table 1**.
+-
+-<table>
+-<tbody>
+-<tr>
+-<td><center><p><strong>Security Level (or Level)</strong></p></center>
+-<p><center>Consisting of a sensitivity and zero or more category entries:</center></p></td>
+-<td colspan="2"; rowspan="2";><center>Note that SELinux uses <code>level</code>, <code>sensitivity</code> and <code>category</code><br>in the language statements (see the <a href="mls_statements.md#mls-statements"> MLS Language Statements</a> section),<br>however when discussing these the following terms can also be used:<br> labels, classifications, and compartments.</center></td>
+-</tr>
+-<tr>
+-<td><center><p><code>sensitivity [: category, ... ]</code><br>also known as:</p>
+-<p><strong>Sensitivity Label</strong></p>
+-<p>Consisting of a classification and compartment.</p></center></td>
+-</tr>
+-<tr>
+-<td colspan="3"><center><strong>&lt;-------------- Range --------------&gt;</strong></center></td>
+-</tr>
+-<tr>
+-<td><center><strong>Low</strong></center></td>
+-<td rowspan="6"><center><strong>-</strong></center></td>
+-<td><center><strong>High</strong></center></td>
+-</tr>
+-<tr>
+-<td><center><code>sensitivity [: category, ... ]</code></center></td>
+-<td><center><code>sensitivity [: category, ... ]</code></center></td>
+-</tr>
+-<tr>
+-<td><center>For a process or subject this is the current level or sensitivity</center></td>
+-<td><center>For a process or subject this is the Clearance</center></td>
+-</tr>
+-<tr>
+-<td><center>For an object this is the current level or sensitivity</center></td>
+-<td><center>For an object this is the maximum range</center></td>
+-</tr>
+-<tr>
+-<td><center><strong>SystemLow</strong></center></td>
+-
+-<td><center><strong>SystemHigh</strong></center></td>
+-</tr>
+-<tr>
+-<td><center>This is the lowest level or classification for the system<br>(for SELinux this is generally 's0', note that there are no categories).</center></td>
+-
+-<td><center>This is the highest level or classification for the system<br>(for SELinux this is generally 's15:c0,c255',<br>although note that they will be the highest set by the policy).</center></td>
+-</tr>
+-</tbody>
+-</table>
+-
+-**Table 1: Sensitivity and Category = Security Level** - *this table shows
+-the meanings depending on the context being discussed.*
++These consist of a mandatory hierarchical [**sensitivity**](#sensitivity) and
++optional non-hierarchical [**category**](#category)'s. The combination of the
++two comprise a [**level**](#level) or security level. Depending on the
++circumstances, there can be one level or a [**range**](#mls-range-definition).
+ 
+ To make the security levels more meaningful, it is possible to use the
+-setransd daemon to translate these to human readable formats. The
+-**semanage**(8) command will allow this mapping to be defined as discussed
++***mcstransd**(8)* daemon to translate these to human readable formats. The
++***semanage**(8)* command will allow this mapping to be defined as discussed
+ in the [**setrans.conf**](policy_config_files.md#setrans.conf) section.
+ 
+-#### MLS range Definition
++## MLS range Definition
+ 
+ The MLS range is appended to a number of statements and defines the lowest and
+ highest security levels. The range can also consist of a single level as
+@@ -82,23 +38,20 @@ low_level [ - high_level ]
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>low_level</code></td>
+-<td><p>The processes lowest level identifier that has been previously declared by a <a href="#level"><code>level</code></a> statement.</p>
+-<p>If a <code>high_level</code> is not defined, then it is taken as the same as the <code>low_level</code>.</p></td>
+-</tr>
+-<tr>
+-<td>-</td>
+-<td>The optional hyphen '-' separator if a <code>high_level</code> is also being defined.</td>
+-</tr>
+-<tr>
+-<td><code>high_level</code></td>
+-<td>The processes highest level identifier that has been previously declared by a <a href="#level"><code>level</code></a> statement. </td>
+-</tr>
+-</tbody>
+-</table>
++*low_level*
++
++The processes lowest level identifier that has been previously declared by a
++[*level*](#level) statement. If a *high_level* is not defined, then it is taken
++as the same as the *low_level*.
++
++*\-*
++
++The optional hyphen '-' separator if a *high_level* is also being defined.
++
++*high_level*
++
++The processes highest level identifier that has been previously declared by
++a [*level*](#level) statement.
+ 
+ ## *sensitivity*
+ 
+@@ -113,53 +66,35 @@ sensitivity sens_id [alias sensitivityalias_id ...];
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>sensitivity</code></td>
+-<td>The <code>sensitivity</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>sens_id</code></td>
+-<td>The <code>sensitivity</code> identifier.</td>
+-</tr>
+-<tr>
+-<td><code>alias</code></td>
+-<td>The optional <code>alias</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>sensitivityalias_id</code></td>
+-<td>One or more sensitivity alias identifiers in a space separated list.</td>
+-</tr>
+-</tbody>
+-</table>
++*sensitivity*
++
++The *sensitivity* keyword.
++
++*sens_id*
++
++The *sensitivity* identifier.
++
++*alias*
++
++The optional *alias* keyword.
++
++*sensitivityalias_id*
++
++One or more sensitivity alias identifiers in a space separated list.
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>Yes</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | Yes                     |
+ 
+ **Examples:**
+ 
+@@ -193,45 +128,29 @@ dominance { sensitivity_id ... }
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>dominance</code></td>
+-<td>The <code>dominance</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>sensitivity_id</code></td>
+-<td>A space separated list of previously declared <code>sensitivity</code> or <code>sensitivityalias</code> identifiers in the order lowest to highest. They are enclosed in braces '{}', and note that there is no terminating semi-colon ';'.</td>
+-</tr>
+-</tbody>
+-</table>
+-
+-The statement is valid in:
+-
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++*dominance*
++
++The *dominance* keyword.
++
++*sensitivity_id*
++
++A space separated list of previously declared *sensitivity* or
++*sensitivityalias* identifiers in the order lowest to highest. They are
++enclosed in braces '{}', and note that there is no terminating semi-colon ';'.
++
++**The statement is valid in:**
++
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | No                      |
+ 
+ **Example:**
+ 
+@@ -255,53 +174,35 @@ category category_id [alias categoryalias_id ...];
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>category</code></td>
+-<td>The <code>category</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>category_id</code></td>
+-<td>The <code>category</code> identifier.</td>
+-</tr>
+-<tr>
+-<td><code>alias</code></td>
+-<td>The optional <code>alias</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>categoryalias_id</code></td>
+-<td>One or more <code>alias</code> identifiers in a space separated list.</td>
+-</tr>
+-</tbody>
+-</table>
++*category*
++
++The *category* keyword.
++
++*category_id*
++
++The *category* identifier.
++
++*alias*
++
++The optional *alias* keyword.
++
++*categoryalias_id*
++
++One or more *alias* identifiers in a space separated list.
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>Yes</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | Yes                     |
+ 
+ **Examples:**
+ 
+@@ -337,52 +238,40 @@ level sensitivity_id [ :category_id ];
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>level</code></td>
+-<td>The <code>level</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><code>sensitivity_id</code></td>
+-<td>A previously declared <code>sensitivity</code> or <code>sensitivityalias</code> identifier.</td>
+-</tr>
+-<tr>
+-<td><code>category_id</code></td>
+-<td>An optional set of zero or more previously declared <code>category</code> or <code>categoryalias</code> identifiers that are preceded by a colon ':', that can be written as follows:
+-<p>The period '.' separating two <code>category</code> identifiers means an inclusive set (e.g. <code>c0.c16</code>).</p>
+-<p>The comma ',' separating two <code>category</code> identifiers means a non-contiguous list (e.g. <code>c21,c36,c45</code>).</p>
+-<p>Both separators may be used (e.g. <code>c0.c16,c21,c36,c45</code>).</p></td>
+-</tr>
+-</tbody>
+-</table>
++*level*
++
++The *level* keyword.
++
++*sensitivity_id*
++
++A previously declared *sensitivity* or *sensitivityalias* identifier.
++
++*category_id*
++
++An optional set of zero or more previously declared *category* or
++*categoryalias* identifiers that are preceded by a colon ':', that can be
++written as follows:
++
++- The period '.' separating two *category* identifiers means an inclusive
++  set (e.g. *c0.c16*).
++- The comma ',' separating two *category* identifiers means a non-contiguous
++  list (e.g. *c21,c36,c45*).
++
++Both separators may be used (e.g. *c0.c16,c21,c36,c45*).
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>No</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | No                      |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | No                      | No                      |
+ 
+ **Example:**
+ 
+@@ -417,55 +306,39 @@ range_transition source_type target_type : class new_range;
+ 
+ **Where:**
+ 
+-<table>
+-<tbody>
+-<tr>
+-<td><code>range_transition</code></td>
+-<td>The <code>range_transition</code> keyword.</td>
+-</tr>
+-<tr>
+-<td><p><code>source_type</code></p>
+-<p><code>target_type</code></p></td>
+-<td><p>One or more source / target <code>type</code> or <code>attribute</code> identifiers. Multiple entries consist of a space separated list enclosed in braces'{}'.</p>
+-<p>Entries can be excluded from the list by using the negative operator '-'.</p></td>
+-</tr>
+-<tr>
+-<td><code>class</code></td>
+-<td>The optional object <code>class</code> keyword (this allows policy versions 21 and greater to specify a class other than the default of <code>process</code>).</td>
+-</tr>
+-<tr>
+-<td><code>new_range</code></td>
+-<td>The new MLS range for the object class. The format of this field is described in the <a href="#mls-range-definition">"MLS range Definition"</a> section.</td>
+-</tr>
+-</tbody>
+-</table>
++*range_transition*
++
++The *range_transition* keyword.
++
++*source_type*, *target_type*
++
++One or more source / target *type* or *attribute* identifiers. Multiple entries
++consist of a space separated list enclosed in braces'{}'.
++Entries can be excluded from the list by using the negative operator '-'.
++
++*class*
++
++The optional object *class* keyword (this allows policy versions 21 and greater
++to specify a class other than the default of *process*).
++
++*new_range*
++
++The new MLS range for the object class. The format of this field is described
++in the [MLS range Definition](#mls-range-definition) section.
+ 
+ **The statement is valid in:**
+ 
+-<table style="text-align:center">
+-<tbody>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Monolithic Policy</strong></td>
+-<td><strong>Base Policy</strong></td>
+-<td><strong>Module Policy</strong></td>
+-</tr>
+-<tr>
+-<td>Yes</td>
+-<td>Yes</td>
+-<td>Yes</td>
+-</tr>
+-<tr style="background-color:#D3D3D3;">
+-<td><strong>Conditional Policy <code>if</code> Statement</strong></td>
+-<td><strong><code>optional</code> Statement</strong></td>
+-<td><strong><code>require</code> Statement</strong></td>
+-</tr>
+-<tr>
+-<td>No</td>
+-<td>Yes</td>
+-<td>No</td>
+-</tr>
+-</tbody>
+-</table>
++Policy Type
++
++| Monolithic Policy       | Base Policy             | Module Policy           |
++| ----------------------- | ----------------------- | ----------------------- |
++| Yes                     | Yes                     | Yes                     |
++
++Conditional Policy Statements
++
++| *if* Statement          | *optional* Statement    | *require* Statement     |
++| ----------------------- | ----------------------- | ----------------------- |
++| No                      | Yes                     | No                      |
+ 
+ **Examples:**
+ 
+-- 
+2.26.2
 
-2) For cases where an error is returned by SELinux that is not already
-governed by a selinux_initialized() or enforcing_enabled() check, we
-just need to ensure that all such cases are gated by such a check. We
-fixed that recently for the removexattr security.selinux case and
-there were some earlier cases fixed with respect to setting labels
-before policy load.  The specific concern raised in the thread
-appeared to be due to denials silenced via dontaudit rules, which
-won't happen if there is no policy loaded so I don't think that's
-relevant.  There are other cases where SELinux might return an error
-if a new case is introduced in another kernel subsystem without
-updating SELinux to handle it, e.g. a new type for
-selinux_perf_event_open(), a new obj_type in selinux_path_notify().
-It would be better if we could introduce build-time guards to catch
-these as we have done for e.g. new capabilities, new socket address
-families, new netlink message types, in order to ensure that they are
-always in sync.

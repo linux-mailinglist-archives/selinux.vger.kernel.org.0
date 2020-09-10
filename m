@@ -2,98 +2,76 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 780C9265493
-	for <lists+selinux@lfdr.de>; Thu, 10 Sep 2020 23:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51AB4265400
+	for <lists+selinux@lfdr.de>; Thu, 10 Sep 2020 23:43:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725379AbgIJV6l (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 10 Sep 2020 17:58:41 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:39068 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1730425AbgIJLlr (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 10 Sep 2020 07:41:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599738093;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=19tEG56Ki36E/KtiDUvt89ryS4NT0vm1pZKWJqQLRvA=;
-        b=D2IuuXnVfQuI2suzf3NWaDreM4LzaUIFZZhvDA9k+e2+yvH6thwToWcRCvoix/yCjRXo5F
-        kQbEGS8E8EhDI6jpdz/pck5Jm46YukPC6QgP9VDYaD82LlzAZAIndnToAzIDUd+hw+/PQT
-        sD+CEBbD630CNZjPiXftG2SWQpWEe9Q=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-567-ClSI-E6ZNYWy8QnEn2vl5w-1; Thu, 10 Sep 2020 07:39:27 -0400
-X-MC-Unique: ClSI-E6ZNYWy8QnEn2vl5w-1
-Received: by mail-lj1-f198.google.com with SMTP id 6so2123918lju.22
-        for <selinux@vger.kernel.org>; Thu, 10 Sep 2020 04:39:27 -0700 (PDT)
+        id S1728695AbgIJVm7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 10 Sep 2020 17:42:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38370 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730744AbgIJMhH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 10 Sep 2020 08:37:07 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E726DC061757
+        for <selinux@vger.kernel.org>; Thu, 10 Sep 2020 05:37:03 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id c10so5155295otm.13
+        for <selinux@vger.kernel.org>; Thu, 10 Sep 2020 05:37:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=ZJUXOVqhjqrSfsCFvncUIFvObZY51EUmQxYJowgsTqA=;
+        b=ek8DYZJBmA5OhE96HVbmZk2OLmboNNVOlq1cmfvWFNEZKY0QrRhayMHJ+QFBHmpVVh
+         88n081a54+YNJt7qz0yG+yOKlNF6DEhYAegwfRJAJPOOge7ON/0lIbk1V91IGlwr/xB6
+         o+oI6abula8zqu/fBv5TwT9KBVtXCeH+zibWgHM+7NUev/QJq3+6PBspvSkRj00msW/t
+         7CbkBPUO8bjUw4UZXwO5wwsGTpOfjDloPngr9INsxlOFNsh009H7TBCvGwa5L+DnreRq
+         WNrE20GLCk83mU+poHiyHODJ11snDhqb8cjCYayT1GH0av2K2cuahWUJ+AFP7Rh3qvOr
+         gmVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=19tEG56Ki36E/KtiDUvt89ryS4NT0vm1pZKWJqQLRvA=;
-        b=o9Z41LEQSitnhq5sTSBSCS5y6D8iWg9BrECYhUQ03LcSMHe+LG10zlfDAoiBk18Sz1
-         Esiz2CpPSiuXwHf0/vk1PvL1GjAowNO3CkcZfq+lzl3w3tNLA6WSEPTrUOC9oSW0sHvd
-         wweu3DEku2eLcoNUn+LwYS9dyG7MIyXwfigr0GvH0F55SXQ0gVEJAXcfnZEnEfgMEWYY
-         GLBXzQ/XmeoDPIawTPC+07EJM+0xN9iePoZshyjLI0ELxJZptZgwChP8motN0kZLTYV4
-         kAxBm4CM1TKk3PsDMQ/ihAwm7OlQzrlA0QE9Z7HVIeNEBXjr6a7TvxCpilFmItousfsO
-         u0Ng==
-X-Gm-Message-State: AOAM532hpQK0cjXBr0LWxKhrfIkpis25GNx42pmxTLdYJAMzBjRLfkJF
-        4FPaX6KDyIa/F+nA07EonbhUf1cVVL5zJDfgX8Dzb74aa5+M1I12aFDt64+zcLRXK87UQwbNW68
-        OfLpwg3bJe1ympY2dtArUcJPuGp4yr0weDg==
-X-Received: by 2002:a05:651c:38d:: with SMTP id e13mr3035812ljp.38.1599737965894;
-        Thu, 10 Sep 2020 04:39:25 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyd1ZA9pOGXtW0GFVrHd6yODZ9QHiBTOy33e8qySoo9fIRiW4fdYfaGrYqBjahvHSVCtUQroncA6gGhps9UOGI=
-X-Received: by 2002:a05:651c:38d:: with SMTP id e13mr3035803ljp.38.1599737965701;
- Thu, 10 Sep 2020 04:39:25 -0700 (PDT)
+        bh=ZJUXOVqhjqrSfsCFvncUIFvObZY51EUmQxYJowgsTqA=;
+        b=BtTGfcIAl5XzUZTrXR7GHd0eIm4ehzyAW3wYX36sSXtVSPCbrq9vsKuK0ypsypZQWv
+         Ddvu1TpIFfMgC1hFvpCsRBrZyE+SwtqQQfqj0vCmsXtWlvvD50Oj5dVAeYqjCo4Suv70
+         uUuGQFKlgWrzvTJDIPfRURXVBdYhDjC04REU0VrERgBdHknwASOdZN7rFxvUXIvyA5Nj
+         Yi2RtATkOdQd4auVqLOdfufElGLUZHtCRsPqzQsOVD6BcUUZkJt+SIsYh05XrjR1hwjh
+         fWwY0MjjN/emJanfwdsj9F4reSmVN3mK/uEUfVzVJEQCAyq0oeBF2l9F2QzlgaIuGiLc
+         7CYg==
+X-Gm-Message-State: AOAM530VgYVsqpPruOyUIjWwe6bhjaJx/gIzuXqgd4egFiDGTs1ymaRN
+        eog94JEfEaoL1VgUtMA/M3K7Lx22GgvOFJ8XUpw=
+X-Google-Smtp-Source: ABdhPJwW4QA4AjV8t5+QSWWsiC8wOzhrGwbTu+hGScylLRFyFD7Nu7/FyksiqsyZJ3s2boL176DwSwnVt6D7jDGHeQ0=
+X-Received: by 2002:a9d:7a92:: with SMTP id l18mr3550871otn.89.1599741420802;
+ Thu, 10 Sep 2020 05:37:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <159110207843.57260.5661475689740939480.stgit@chester>
- <CAHC9VhQacYKE4sJRbqmpudXfMyzCT8VM0SFUCi=o-MNsn4c_MA@mail.gmail.com>
- <CAEjxPJ5oGWygz87dQw1HbP2wZovc+Q7ESKSF0zBMF_cSwxRdww@mail.gmail.com>
- <CAHC9VhSsY+MtSrj17g+p3FMeaKQ-Mjjy=iXS+1TbhCKGAn_yxA@mail.gmail.com>
- <CAEjxPJ6nLAOjLvhswyLNCUO8bUuwm_h7emFp7dZXDzRjMuG2HA@mail.gmail.com>
- <CAEjxPJ47H1_PQ1HnJhqV4yWz_u1vvWR=Q6T999Xm92z04OimqQ@mail.gmail.com>
- <CAEjxPJ6KQAc5YmrZNHU=Wr9xZ5+v6o3BYiV4+1NRzpfMhw7BJA@mail.gmail.com>
- <CAFqZXNuWNw+e23_Lz0WN-=HODHmbSAmMQcAX87tVRGp3ZSiccA@mail.gmail.com>
- <CAHC9VhQ25U5PLYMAA1onNssWrOMYrUXhfJ_SRpzM1qNXeavfuw@mail.gmail.com>
- <20200819171459.GA57975@localhost.localdomain> <CAEjxPJ54j6PD6oBMWj7wOVskJuUY=BLpMCkdmmqwrP1DGJ0VqA@mail.gmail.com>
-In-Reply-To: <CAEjxPJ54j6PD6oBMWj7wOVskJuUY=BLpMCkdmmqwrP1DGJ0VqA@mail.gmail.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Thu, 10 Sep 2020 13:39:14 +0200
-Message-ID: <CAFqZXNuPCwvf2BNYrxxL-DqcwLQBCS9b78iQBfKDsWXOy8pvyg@mail.gmail.com>
-Subject: Re: [RFC PATCH] selinux: runtime disable is deprecated, add some
- ssleep() discomfort
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     Petr Lautrbach <plautrba@redhat.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        Paul Moore <paul@paul-moore.com>
+References: <20200909205712.282373-1-jwcart2@gmail.com>
+In-Reply-To: <20200909205712.282373-1-jwcart2@gmail.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Thu, 10 Sep 2020 08:36:50 -0400
+Message-ID: <CAEjxPJ7S82TPnwtdab7n+EG7mBH6oU6PJMAK_9T9GOK5tXB2Xw@mail.gmail.com>
+Subject: Re: [PATCH v2] libsepol/cil: Validate constraint expressions before
+ adding to binary policy
+To:     James Carter <jwcart2@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Jonathan Hettwer <j2468h@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 9:07 PM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
-> On Wed, Aug 19, 2020 at 1:15 PM Petr Lautrbach <plautrba@redhat.com> wrote:
-<snip>
-> > So I've started to compose Fedora Change proposal
-> >
-> > https://fedoraproject.org/wiki/SELinux/Changes/Disable_CONFIG_SECURITY_SELINUX_DISABLE
-> >
-> > It's not complete yet, but I believe it contains basic information. I'd
-> > appreciate if you can help me with text, phrases and references so that it would
-> > be easy to sell it as security feature to Fedora community :)
+On Wed, Sep 9, 2020 at 4:57 PM James Carter <jwcart2@gmail.com> wrote:
 >
-> I'd simplify the Summary to be something like "Remove support for
-> SELinux runtime disable so that the LSM hooks can be hardened via
-> read-only-after-initialization protections.  Migrate users to using
-> selinux=0 if they want to disable SELinux."
+> CIL was not correctly determining the depth of constraint expressions
+> which prevented it from giving an error when the max depth was exceeded.
+> This allowed invalid policy binaries with constraint expressions exceeding
+> the max depth to be created.
+>
+> Validate the constraint expression using the same logic that is used
+> when reading the binary policy. This includes checking the depth of the
+> the expression.
+>
+> Reported-by: Jonathan Hettwer <j2468h@gmail.com>
+> Signed-off-by: James Carter <jwcart2@gmail.com>
 
-FYI, the change proposal has now been announced to the Fedora devel community:
-https://lists.fedoraproject.org/archives/list/devel@lists.fedoraproject.org/thread/YQIYMWKFQEWCILU7UZWXO3YFNS2PLDG4/
-
---
-Ondrej Mosnacek
-Software Engineer, Platform Security - SELinux kernel
-Red Hat, Inc.
-
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>

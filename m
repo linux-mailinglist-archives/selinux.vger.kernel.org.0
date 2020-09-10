@@ -2,97 +2,88 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D0902650F7
-	for <lists+selinux@lfdr.de>; Thu, 10 Sep 2020 22:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB3C2652E3
+	for <lists+selinux@lfdr.de>; Thu, 10 Sep 2020 23:25:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726926AbgIJUhZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 10 Sep 2020 16:37:25 -0400
-Received: from mailomta29-re.btinternet.com ([213.120.69.122]:37533 "EHLO
-        re-prd-fep-043.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727095AbgIJUgs (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 10 Sep 2020 16:36:48 -0400
-Received: from re-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.54.6])
-          by re-prd-fep-046.btinternet.com with ESMTP
-          id <20200909133047.XPYC4657.re-prd-fep-046.btinternet.com@re-prd-rgout-003.btmx-prd.synchronoss.net>;
-          Wed, 9 Sep 2020 14:30:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1599658247; 
-        bh=eduegantj3dfN2YFOqqp8bjctyeuMflYLW19ih1dtD4=;
-        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=k91IK/hb3KyIk3xX/hzyN+lK3FAM+esAKuTfiyNRfKI9tg1EdWbrbvXPKccGJPvWxNVYIn7MtYOlxKtol6ZIPGe/+UheVfCK6+UrLl70u7gDW8UqNHYPCCO/iCVP6PEf1WqUOE0gBLf4qoE+C75OlIv5SvWS+2qBL97Qcy2PQcVYF2cqUG/zOhoWbFw1360APpcFIMiQG+lHdwpOMr1vFk2mbR07V0hOt8GA2tJ4TYQnLrtaCFrA+vA3w71fSLS+1C3UrtceRjQ3u3sCDhWyjMIMHLdnCuWPfCyn6We6iAxVrYa1hjR/xeupnhnQgnLjIHzPUiOY0Vks329HXWqrbQ==
-Authentication-Results: btinternet.com; none
-X-Originating-IP: [86.154.154.133]
-X-OWM-Source-IP: 86.154.154.133 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedrudehhedgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeeutddtleelheeugefgiefhiedtheeukeffveeitdffgeffieeugeeljeegvefgieenucfkphepkeeirdduheegrdduheegrddufeefnecuvehluhhsthgvrhfuihiivgepieenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudehgedrudehgedrudeffedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehprghulhesphgruhhlqdhmohhorhgvrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheq
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-SNCR-hdrdom: btinternet.com
-Received: from localhost.localdomain (86.154.154.133) by re-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
-        id 5ED9C2FD10134DFF; Wed, 9 Sep 2020 14:30:47 +0100
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     paul@paul-moore.com, selinux@vger.kernel.org
-Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH 13/22] type_enforcement: Convert to markdown
-Date:   Wed,  9 Sep 2020 14:30:30 +0100
-Message-Id: <20200909133039.44498-14-richard_c_haines@btinternet.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200909133039.44498-1-richard_c_haines@btinternet.com>
-References: <20200909133039.44498-1-richard_c_haines@btinternet.com>
+        id S1726760AbgIJVZe (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 10 Sep 2020 17:25:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54838 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730166AbgIJOXK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 10 Sep 2020 10:23:10 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE6FCC0617A3
+        for <selinux@vger.kernel.org>; Thu, 10 Sep 2020 07:11:25 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id w1so6484553edr.3
+        for <selinux@vger.kernel.org>; Thu, 10 Sep 2020 07:11:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=JqER1n/S/bVapO+RyrM1xxWOQKbNzVguXbfv8iwgPWk=;
+        b=mj1ksRYlYZoHO7kIpCwr5VKl8QULoy2ghTj3LYS/kfji3j2CawjoMCGn42zS79XNRh
+         WnAI5fHo5s/8DNoLXqOv92dWpYX5paf1rXOWMU60tkmXsWATdO6Pw4W7TVAV2Tt6gLBw
+         fMahCQYUhQ0eGLb3crDNL0DixDC2fR/N9X7QyM/1+bRWkSC1gO1vqbsQMv+cIL/bd5Zk
+         UxjIAtIySJgzO8XbV+0+BGxHgqrGrETxylsz7OmcMjO7wbExWp2bcEV97VSNj80I5Vyz
+         Bqdvy09ZzA21IET4hSfY4IoRwccGy8h8N4SBVhYpRHEEd0rl8X1PS/VgM+Tlx/+Uf7z+
+         /PWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=JqER1n/S/bVapO+RyrM1xxWOQKbNzVguXbfv8iwgPWk=;
+        b=gHfe1dnyA2RA02eCRjX+bLvgldWEBp7vvQCZOfUzFcOL8HXV/GBVNlaWSBijGNh4gS
+         sl4R7IDfUXL/Daz2IIAi1zR/7sbluvcysqC2EdO7TVTpvVn5O7K8sD8AA4idSn1yH4Hc
+         PCTjFNXLBl/6BbyzVmm/Ia1OE9RpoLlatcg0/BBgWEftJWDwWCZSxi+p0NVxduWMPPVA
+         HwO/hGoXsvV0ma9oEdlyEXVO6vtq70/r7gNAe/CtL42Zn5010xX8l7/dSC6jLT8Z2eNz
+         0LUeZ+gtQ0r7XGHI2Sw+9nWMefgGlUkZtKCIyrIbSnXW7v0qdMfoJHxdeTrwvlJidUjW
+         Dpfg==
+X-Gm-Message-State: AOAM533KTu8WWfwTcGdjGQ+s5s5ZkaFTK33f6gKjvN67fx20a7kPd0Js
+        zFQuYSY2gkqwQM5lnpVz0b42yTWvTnxTHQDv+Rt9
+X-Google-Smtp-Source: ABdhPJy1FTJ7DXFJo05WoW+t4O9pZDdDoW4TpXiv609ezJYlL+41ua8D4GnLvm80oWsYted6RRcGfRiYYQPB685hrWg=
+X-Received: by 2002:a05:6402:1805:: with SMTP id g5mr9107156edy.135.1599747084327;
+ Thu, 10 Sep 2020 07:11:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200826145247.10029-1-casey@schaufler-ca.com>
+ <20200826145247.10029-6-casey@schaufler-ca.com> <CAHC9VhSh=r4w_3mZOUwmKN0UxCMxPNGKd=_vr_iGV06rvCNbSA@mail.gmail.com>
+ <1eeef766-405f-3800-c0cf-3eb008f9673e@schaufler-ca.com> <CAHC9VhSf8RWUnRPYLR6LLzbn-cvNg8J0wnZGwTOAe=dOqkvd0g@mail.gmail.com>
+ <ef6a049a-c6b9-370b-c521-4594aa73e403@schaufler-ca.com> <CAHC9VhSu4qqKWsutm3=GF_pihUKpwjAtc9gAhfjGsGtKfz-Azw@mail.gmail.com>
+ <585600d7-70fb-0982-1e6b-ffd7b7c33e32@schaufler-ca.com> <9a58d14c-eaff-3acf-4689-925cf08ba406@canonical.com>
+ <CAEjxPJ7i5Ruy=NZ+sq3qCm8ux+sZXY5+XX_zJu3+OqFq3d_SLQ@mail.gmail.com>
+ <CAEjxPJ5KudgTjhmXBNdCO_ctvioy5UA5PXcoKX4zc19NYKgHZA@mail.gmail.com>
+ <c5bef71e-6d78-2058-bcaa-8497c76d7375@schaufler-ca.com> <b320f0f6-02db-95a5-acc5-cadd5dbb57dc@canonical.com>
+ <CAEjxPJ6wFJz935RR_1u+-EjAw3VMv4nabo-Za_OqkZGJuNS5Sg@mail.gmail.com> <b67799e2-fa22-2890-698d-f410913b0c8a@canonical.com>
+In-Reply-To: <b67799e2-fa22-2890-698d-f410913b0c8a@canonical.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Thu, 10 Sep 2020 10:11:13 -0400
+Message-ID: <CAHC9VhRMubBNRNRKSLWrQw9nGZFX1G96+8EZzaG69OHWvZaJoQ@mail.gmail.com>
+Subject: Re: [PATCH v20 05/23] net: Prepare UDS for security module stacking
+To:     John Johansen <john.johansen@canonical.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Casey Schaufler <casey.schaufler@intel.com>,
+        James Morris <jmorris@namei.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        SElinux list <selinux@vger.kernel.org>, linux-audit@redhat.com,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Stephen Smalley <sds@tycho.nsa.gov>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add a TOC to aid navigation and convert to markdown.
+On Wed, Sep 9, 2020 at 2:47 PM John Johansen
+<john.johansen@canonical.com> wrote:
+> ... For now Casey can drop it from this series.
 
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
----
- src/type_enforcement.md | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+As long as that whenever it reappears there is at the very least some
+note of the limits in the commit description and the code (via
+comments in the struct).  Of course that assumes we can't find an
+alternate solution that we can all agree on which doesn't have these
+stacking limits.
 
-diff --git a/src/type_enforcement.md b/src/type_enforcement.md
-index d8d08be..bfd75b8 100644
---- a/src/type_enforcement.md
-+++ b/src/type_enforcement.md
-@@ -1,5 +1,8 @@
- # Type Enforcement
- 
-+- [Constraints](#constraints)
-+- [Bounds](#bounds)
-+
- SELinux makes use of a specific style of type enforcement (TE) to enforce
- mandatory access control. For SELinux it means that all
- [**subjects**](subjects.md#subjects) and [**objects**](objects.md#objects)
-@@ -17,7 +20,7 @@ server, enforce policy via the object managers.
- Because the *type* identifier (or just 'type') is associated to all
- subjects and objects, it can sometimes be difficult to distinguish what
- the type is actually associated with (it's not helped by the fact that
--by convention, type identifiers end in *_t*). In the end it comes down
-+by convention, type identifiers end in *\_t*). In the end it comes down
- to understanding how they are allocated in the policy itself and how
- they are used by SELinux services (although CIL policies with namespaces
- do help in that a domain process 'type' could be declared as
-@@ -33,7 +36,7 @@ While SELinux refers to a subject as being an active process that is
- associated to a domain type, the scope of an SELinux type enforcement
- domain can vary widely. For example in the simple
- [**Kernel policy**](./notebook-examples/selinux-policy/kernel/kern-nb-policy.txt)
--in the notebook-examples, all the processes on the system run in the
-+in the *notebook-examples*, all the processes on the system run in the
- *unconfined_t* domain, therefore every process is
- 'of type *unconfined_t*' (that means it can do whatever it likes within
- the limits of the standard Linux DAC policy as all access is allowed by
-@@ -49,7 +52,7 @@ where the majority of user space processes run under the *unconfined_t*
- domain.
- 
- The SELinux type is the third component of a 'security context' and by
--convention SELinux types end in *_t*, however this is not enforced by
-+convention SELinux types end in *\_t*, however this is not enforced by
- any SELinux service (i.e. it is only used to identify the type
- component), although as explained above CIL with namespaces does make
- identification of types easier.
 -- 
-2.26.2
-
+paul moore
+www.paul-moore.com

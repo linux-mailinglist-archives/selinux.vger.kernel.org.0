@@ -2,95 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBF09264054
-	for <lists+selinux@lfdr.de>; Thu, 10 Sep 2020 10:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 75B962641D8
+	for <lists+selinux@lfdr.de>; Thu, 10 Sep 2020 11:29:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730309AbgIJIqf (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 10 Sep 2020 04:46:35 -0400
-Received: from mailomta24-re.btinternet.com ([213.120.69.117]:37014 "EHLO
-        re-prd-fep-049.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1730278AbgIJIqR (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 10 Sep 2020 04:46:17 -0400
-Received: from re-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.54.6])
-          by re-prd-fep-044.btinternet.com with ESMTP
-          id <20200909133047.TZMY21348.re-prd-fep-044.btinternet.com@re-prd-rgout-003.btmx-prd.synchronoss.net>;
-          Wed, 9 Sep 2020 14:30:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1599658247; 
-        bh=pzha7khpJL4E/90/eTKgAikz1W8y43PtnuK4ih7Hk5w=;
-        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=O5DtZ/ClSbfhWJmlg6P/OatA4qMyci+Wp28v6EGcjidV8CYru4lQb1DlGqHodvVnjkUdiaF+5SOxKXLPiY+gVgOfjuzKxmFBb9J/6hSRbj9xtQ+WqzgB6OLif+FuVJk7qKbjs+xXSmiuODhAbnDvpQn2J4rWJ9vMRopa+g1+wy7wCFvJ/wg2+WILiCJ8VaSAobIRe5l5CLAY8mJQgS2afDK+XJaPci1AbyEFkPkKzrJh9vW1HHB723w7UOyoMWt5Cb2LLGDp76ZXUPavrDHBZaiaJnaG7b7oGwo4XxQP2OaoXAxKX+EN2wZLCF3MGKzXwinKByqvCAmF/g3zIJi5Fw==
-Authentication-Results: btinternet.com; none
-X-Originating-IP: [86.154.154.133]
-X-OWM-Source-IP: 86.154.154.133 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedrudehhedgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfgggtgfesthekredtredtjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepgfekgffghffgleekgfellefftedvhfejveehhfekkefgvdehueetgfffffelkedtnecukfhppeekiedrudehgedrudehgedrudeffeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkeeirdduheegrdduheegrddufeefpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeophgruhhlsehprghulhdqmhhoohhrvgdrtghomheqpdhrtghpthhtohepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqecuqfftvefrvfeprhhftgekvddvnehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgqe
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-SNCR-hdrdom: btinternet.com
-Received: from localhost.localdomain (86.154.154.133) by re-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
-        id 5ED9C2FD10134DEE; Wed, 9 Sep 2020 14:30:46 +0100
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     paul@paul-moore.com, selinux@vger.kernel.org
-Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH 11/22] subjects: Convert to markdown
-Date:   Wed,  9 Sep 2020 14:30:28 +0100
-Message-Id: <20200909133039.44498-12-richard_c_haines@btinternet.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200909133039.44498-1-richard_c_haines@btinternet.com>
-References: <20200909133039.44498-1-richard_c_haines@btinternet.com>
+        id S1730525AbgIJJ3v (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 10 Sep 2020 05:29:51 -0400
+Received: from agnus.defensec.nl ([80.100.19.56]:53250 "EHLO agnus.defensec.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730446AbgIJJ3i (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Thu, 10 Sep 2020 05:29:38 -0400
+Received: from localhost.localdomain (brutus.lan [IPv6:2001:985:d55d::438])
+        by agnus.defensec.nl (Postfix) with ESMTPSA id 894312A127E;
+        Thu, 10 Sep 2020 11:29:22 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl 894312A127E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
+        s=default; t=1599730163;
+        bh=ZfTacSCSMcda5IYNeRZFmZuPbIMFKJbmWGl1pSUL8EU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=l+pAIePNIhzg+5tBFmBzF5a7VMN7ifgMD28qZeCsYczl8pjzBB+9z52c3Jtq/YmbI
+         AcL0BWbaEmDDGrimNsq8CmMZxRx0NPU8/igNA5/W0qSbLaTl2jFfZo+inUpQP3/eig
+         gVslQd4uy+anQHEOGXfsfLJpX0FC02UMQ/6Tcbl4=
+From:   Dominick Grift <dominick.grift@defensec.nl>
+To:     selinux@vger.kernel.org
+Cc:     Dominick Grift <dominick.grift@defensec.nl>
+Subject: [PATCH] cil_access_vector_rules: fixes a typo
+Date:   Thu, 10 Sep 2020 11:29:05 +0200
+Message-Id: <20200910092905.800461-1-dominick.grift@defensec.nl>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
----
- src/subjects.md | 21 +++++++++------------
- 1 file changed, 9 insertions(+), 12 deletions(-)
+neverallows should be neverallowx
 
-diff --git a/src/subjects.md b/src/subjects.md
-index 4f677cb..bc7a89a 100644
---- a/src/subjects.md
-+++ b/src/subjects.md
-@@ -9,13 +9,13 @@ Within SELinux a subject is an active process and has a
- it, however a process can also be referred to as an object depending on the
- context in which it is being taken, for example:
- 
--1.  A running process (i.e. an active entity) is a subject because it
--    causes information to flow among objects or can change the system
--    state.
--2.  The process can also be referred to as an object because each
--    process has an associated object class<a href="#fns1" class="footnote-ref" id="fnsub1"><strong><sup>1</sup></strong></a>
--    called '**process**'. This process 'object', defines what permissions the
--    policy is allowed to grant or deny on the active process.
-+1. A running process (i.e. an active entity) is a subject because it
-+   causes information to flow among objects or can change the system
-+   state.
-+2. The process can also be referred to as an object because each
-+   process has an associated object class[^fn_sub_1]
-+   called ***process***. This process 'object', defines what permissions the
-+   policy is allowed to grant or deny on the active process.
- 
- An example is given of the above scenarios in the
- [**Allowing a Process Access to Resources**](objects.md#allowing-a-process-access-to-resources)
-@@ -37,11 +37,8 @@ under *semanage_t*).
- 
- **Untrusted** - Everything else.
- 
--<section class="footnotes">
--<ol>
--<li id="fns1"><p>The object class and its associated permissions are explained in the <strong><a href="object_classes_permissions.md#process-object-class"> Appendix A - Object Classes and Permissions - Process Object Class</a></strong> section.<a href="#fnsub1" class="footnote-back">↩</a></p></li>
--</ol>
--</section>
-+[^fn_sub_1]: The object class and its associated permissions are explained in
-+[**Appendix A - Object Classes and Permissions - Process Object Class**](object_classes_permissions.md#process-object-class)
- 
- <!-- %CUTHERE% -->
- 
+Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
+---
+When I was verifying a suggestion that auditallowx and dontauditx does not work I found this typo.
+auditallowx and dontauditx seem to not work.
+
+ secilc/docs/cil_access_vector_rules.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/secilc/docs/cil_access_vector_rules.md b/secilc/docs/cil_access_vector_rules.md
+index 9c03c710..1eb33b2c 100644
+--- a/secilc/docs/cil_access_vector_rules.md
++++ b/secilc/docs/cil_access_vector_rules.md
+@@ -392,7 +392,7 @@ Note that these rules can be over-ridden by the CIL compiler command line parame
+ </colgroup>
+ <tbody>
+ <tr class="odd">
+-<td align="left"><p><code>neverallows</code></p></td>
++<td align="left"><p><code>neverallowx</code></p></td>
+ <td align="left"><p>The <code>neverallowx</code> keyword.</p></td>
+ </tr>
+ <tr class="even">
 -- 
-2.26.2
+2.28.0
 

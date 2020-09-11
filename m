@@ -2,84 +2,98 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 063472663B8
-	for <lists+selinux@lfdr.de>; Fri, 11 Sep 2020 18:23:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C60B26651C
+	for <lists+selinux@lfdr.de>; Fri, 11 Sep 2020 18:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726561AbgIKQXI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 11 Sep 2020 12:23:08 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:59396 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726659AbgIKQWp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 11 Sep 2020 12:22:45 -0400
-Received: from [192.168.86.21] (c-71-197-163-6.hsd1.wa.comcast.net [71.197.163.6])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 953AD20716FC;
-        Fri, 11 Sep 2020 09:22:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 953AD20716FC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1599841365;
-        bh=Su6m0M3GjOhlI1z/NUkRmKtJzGmhY9DfdpjSMQkRt4Y=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=icn5YDihH4nELQOa8XNaTtjLDKp8AAuHVuJp46dNGCfren5N/F4OyEY0zubNe4Afz
-         AU1se4eyggNhCjrdVqxdR65dpaLxKCZ3iPAt3S8r3n0Uj0kyoOZhfysoGyK3jNvgpt
-         HpvqV+kp8zkc9lqaawhKse8yHKUq5PidqsO1b9tA=
-Subject: Re: [PATCH v3 2/6] IMA: change process_buffer_measurement return type
- from void to int
-To:     Mimi Zohar <zohar@linux.ibm.com>, stephen.smalley.work@gmail.com,
-        casey@schaufler-ca.com, agk@redhat.com, snitzer@redhat.com,
-        gmazyland@gmail.com
-Cc:     tyhicks@linux.microsoft.com, sashal@kernel.org, jmorris@namei.org,
-        nramas@linux.microsoft.com, linux-integrity@vger.kernel.org,
-        selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dm-devel@redhat.com
-References: <20200828015704.6629-1-tusharsu@linux.microsoft.com>
- <20200828015704.6629-3-tusharsu@linux.microsoft.com>
- <e76bdb18c6045702156441470e50380445e6e218.camel@linux.ibm.com>
-From:   Tushar Sugandhi <tusharsu@linux.microsoft.com>
-Message-ID: <b4cc6ec3-a58b-df2b-2de9-864775ae2a5f@linux.microsoft.com>
-Date:   Fri, 11 Sep 2020 09:22:44 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726340AbgIKQxv (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 11 Sep 2020 12:53:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58704 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726334AbgIKPGN (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 11 Sep 2020 11:06:13 -0400
+Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CFB7C06137A
+        for <selinux@vger.kernel.org>; Fri, 11 Sep 2020 07:42:43 -0700 (PDT)
+Received: by mail-ed1-x544.google.com with SMTP id a12so10175318eds.13
+        for <selinux@vger.kernel.org>; Fri, 11 Sep 2020 07:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=xKPbI8VwqKlAE8s9yoM38wp+0CzJgjXbMuwWzyxPOcY=;
+        b=1s7mwc3WdQoHFAPpzSK7V4HKrkdvt/95aN4QFkMu4SJxrDZhMSoZKLcJKfa8qtfGib
+         T080djyOKpG50r60c9GWqSmi2lZseRzVL0QIuCln4jx1t8sT77Hb86qVW/AosKrvmKNI
+         jSBhOeQ0WkjXCksI6uWf1IV/1ZDJ0hMg9nHs8xp7P6zeRDP5uGMwjXch6v/OnkHlhZHA
+         KUeguEfuS4cxA4DoZgzGbm//lK0v3u8IlkrAukJVSa31f/sSeK2X5LoR9ALLbJIpgrzC
+         xfJwwuctE2Kp85yWJis0vd/2lnDM9e/SX/zzX4MEVQSExdWbfw7/27TuFF4KblA2mj6g
+         MNcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=xKPbI8VwqKlAE8s9yoM38wp+0CzJgjXbMuwWzyxPOcY=;
+        b=hwy1wjY0rgjhUxF9/d2pGkoc3HYdSxEdtXYOsvrvtSqs2sJv1H4tYkkTvL5hW/wsGX
+         9gt0pMajQCXPYj340/MDexRsNtvKXaEV1ifoRaYuCabqMoTOi+vgMjOWNltRCTt2IqM4
+         q9C0bKTK9RKjofdt8oKO74e28JNoZLbybYnCeIZTDQWr0+CKuUibAU1S+ggZF3jlL03t
+         vTcutPycN4jjYXa5O01UuByZUGdSg9+XIHn3j3bnzzrESXCQSz/OfgSxgSjzaXPmkqfk
+         zweyLebc7Qxd8mw7waTX7gKrslWmlbi5WrxS+pUSxtgvd4V7IlApvl94MvPBBJ1gOH6C
+         HUXg==
+X-Gm-Message-State: AOAM5335/D/p5zJfuE6ORPwEno4JSby6Cz0t9/zuSHwkyrOwmX4oaeo+
+        I4CF9J8ZGQJpjKJZAzVAnjazBRMix+hYfUKH4K1vztPSQixq
+X-Google-Smtp-Source: ABdhPJwwYHRTimFdxxuRNqJEUj62JzI/w0enZ9ZNkroIZMN/7hXwe/u2mwEslxdGxjZE/k4T/Bghatph2pX6EWl5bvA=
+X-Received: by 2002:aa7:cd06:: with SMTP id b6mr2273734edw.196.1599835352709;
+ Fri, 11 Sep 2020 07:42:32 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <e76bdb18c6045702156441470e50380445e6e218.camel@linux.ibm.com>
-Content-Type: text/plain; charset=iso-8859-15; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200909222822.23198-1-nramas@linux.microsoft.com>
+ <CAHC9VhSZiuHHg+oJPcaRLoZaDhARgiJ2PN5LiMHcVk1yB0a+ng@mail.gmail.com> <a09f9a78-a8ee-5b13-c4d9-e939a4edeb5c@linux.microsoft.com>
+In-Reply-To: <a09f9a78-a8ee-5b13-c4d9-e939a4edeb5c@linux.microsoft.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 11 Sep 2020 10:42:20 -0400
+Message-ID: <CAHC9VhQadF08JF5BuwbGt0r_2DKidLeb7U=sp4uj7YP+4hRE5Q@mail.gmail.com>
+Subject: Re: [PATCH v2] selinux: Add helper functions to get and set checkreqprot
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        sashal@kernel.org, James Morris <jmorris@namei.org>,
+        selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+On Fri, Sep 11, 2020 at 10:20 AM Lakshmi Ramasubramanian
+<nramas@linux.microsoft.com> wrote:
+> On 9/11/20 7:07 AM, Paul Moore wrote:
+> >>
+> >> +static inline bool checkreqprot_enabled(const struct selinux_state *state)
+> >> +{
+> >> +       return READ_ONCE(state->checkreqprot);
+> >> +}
+> >> +
+> >> +static inline void checkreqprot_set(struct selinux_state *state, bool value)
+> >> +{
+> >> +       WRITE_ONCE(state->checkreqprot, value);
+> >> +}
+> >
+> > This is a nitpick, and I recognize that Stephen already suggested the
+> > use of "*_set()" and "*_enabled()" for names, but if we are going to
+> > name the setter "*_set()" let's also name the getter "*_get()".
+> >
+> > Other than that, it looks fine to me.
+> >
+>
+> Sure - I can do that.
+>
+> Are you expecting something like below (for checkreqprot and enforcing)?
+>
+> s/checkreqprot_enabled/checkreqprot_get/
+>
+> s/enforcing_enabled/enforcing_get/
 
+Sorry for the confusion, I should have been more clear.  I was
+thinking that the names "checkreqprot_set()" and "checkreqprot_get()"
+would be nice.
 
-On 2020-08-31 4:36 a.m., Mimi Zohar wrote:
-> On Thu, 2020-08-27 at 18:57 -0700, Tushar Sugandhi wrote:
->> process_buffer_measurement() does not return the result of the operation.
->> Therefore, the consumers of this function cannot act on it, if needed.
->>
->> Update return type of process_buffer_measurement() from void to int.
-> 
-> Failure to measure may be audited, but should never fail.  This is one
-> of the main differences between secure and trusted boot concepts.
-> Notice in process_measurement() that -EACCES is only returned for
-> appraisal.
-> 
-> Returning a failure from process_buffer_measurement() in itself isn't a
-> problem, as long as the failure isn't returned to the LSM/IMA hook.
-> However,  just as the callers of  process_measurement() originally
-> processed the result, that processing was moved into
-> process_measurement() [1].
-> 
-> Mimi
-> 
-> [1] 750943a30714 ima: remove enforce checking duplication
-> 
-I can ignore the result of process_buffer_measurement() in
-ima_measure_critical_data(), and make  ima_measure_critical_data()
-return type "void".
-
-But currently ima_measure_critical_data() is the only place where the
-results of p_b_m() are being used.
-So I might as well just revert back the return type of p_b_m() to
-the original "void".
-
-
+-- 
+paul moore
+www.paul-moore.com

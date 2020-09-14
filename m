@@ -2,104 +2,81 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E623026907C
-	for <lists+selinux@lfdr.de>; Mon, 14 Sep 2020 17:45:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 096DF269396
+	for <lists+selinux@lfdr.de>; Mon, 14 Sep 2020 19:37:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725970AbgINPoi (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Sep 2020 11:44:38 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:51010 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726498AbgINPoY (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Sep 2020 11:44:24 -0400
-Received: from [192.168.0.104] (c-73-42-176-67.hsd1.wa.comcast.net [73.42.176.67])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 60931209F313;
-        Mon, 14 Sep 2020 08:44:19 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 60931209F313
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1600098259;
-        bh=9TRDw6jMv96lE08DLfg6UxAHsKefJ3mjRz2VnoaiiAI=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=OshSHgjULDvLv2a+nDkSt+CmNMlJp2WNu71uUJsmUeY0axXh4NPvOEV7UDQQC9r5x
-         RS5wM9Iej/uvtJyVlENimG+svhCXcNQMHUFMjsudLt8tNa+FePyBlLPREmuvGHAgHQ
-         qVTTQ08c4vTPfSnn9dfMDe8vDF3vmbc3cz2KPWpg=
-Subject: Re: [PATCH v3] selinux: Add helper functions to get and set
- checkreqprot
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Sasha Levin <sashal@kernel.org>, James Morris <jmorris@namei.org>,
-        SElinux list <selinux@vger.kernel.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>
-References: <20200911164009.21926-1-nramas@linux.microsoft.com>
- <CAEjxPJ4JCRkiSnDq=HZjk2pLj0m2ayYTeEvQ2jevMd=yLMoXhg@mail.gmail.com>
- <CAHC9VhQDYe1TQCG7waTEUxUhSzLHrqJGTG-OAQrgvR6E-iwEgQ@mail.gmail.com>
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Message-ID: <cc8286f7-84cf-8a53-4b3d-f642de49dd1a@linux.microsoft.com>
-Date:   Mon, 14 Sep 2020 08:44:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726174AbgINRg6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Sep 2020 13:36:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46732 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726422AbgINM1S (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Sep 2020 08:27:18 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C211C061A32
+        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 05:25:13 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id 60so14657551otw.3
+        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 05:25:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=POMfP86YB5WSfYuw2OT5Xv3cQhXd4h8NpiTeACat8hw=;
+        b=PM3w9TxjZIBpqVg2EspOT5HmB726kCZ59n7PSDT4aiza0yHzrixnnRH6uA67F9XSoR
+         3dtnlr0OZyFrroVupUYiVFRQE2TVDJr7ds7zvuo80GK+IP5MFhYSTkF4xSXglOV3g+Xl
+         WoteObLOdi5gtE1PZwC6B7OlrapApB+6gNznV0WqXpjWD5wuWFcuPaS5mA2Rdbe8ukuL
+         v+oXSeNzER6fg9syghQjthejI8Q8sdBiDbQCXSdOaOlNZsAypwPQUmUetkXM11Sc3uG2
+         oYf2vuxqAFBc0YCLK6OASz5blbsKmGEH+apMoY/E9PCLB3loUVb2ext/jt8vfmY6Ji9v
+         ktIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=POMfP86YB5WSfYuw2OT5Xv3cQhXd4h8NpiTeACat8hw=;
+        b=KeN1fa3jPQ81mud30qWdE99WfIDGV8ftJRse1w3Yxny9zKFnnAbfdrynCaopZq/9ns
+         KlpKidJCE26ZQ5IoorCR91hVvXYI7ndoZ9LDhlo/YldUrQmy1BWUm7MqyMog8deFPGyl
+         9yUxZWjzfWCOyHkGNHDAZGaigHL01OYVUPXoS6dv9Y8o85LC3MFl6vkFXCGLV3oS7A1I
+         gHv0jq3UGZ1zM2+kswgpzZ2sW7IlCwdoX5re1LpPGqFJG8b2qH/YMU7f1e9yt8juNgRd
+         0g+RKlKoqlQ9UA8rfNxiM+Cn2QyfR5mRIGh7nnfk1WNh8RPN4baKxo6EWQG/RG9Lre1m
+         grXw==
+X-Gm-Message-State: AOAM530sJdWwCA4VPPN1Hl720LepXTjf1VmPpg/0u7kAd240dabzbxqE
+        z7swvmzWebQSX0zuZo9xaPOoC7CVlcP4SvHkKOs=
+X-Google-Smtp-Source: ABdhPJx7DSyeqtCNYTQnGQOIF01bwifWTc2MPZRoLN4doTfEQlRoMEbxnih1yzGakDPvd8ghyz/pECwj9DrRdt4V11Y=
+X-Received: by 2002:a9d:7a92:: with SMTP id l18mr8596935otn.89.1600086313196;
+ Mon, 14 Sep 2020 05:25:13 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAHC9VhQDYe1TQCG7waTEUxUhSzLHrqJGTG-OAQrgvR6E-iwEgQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200909205712.282373-1-jwcart2@gmail.com> <CAEjxPJ7S82TPnwtdab7n+EG7mBH6oU6PJMAK_9T9GOK5tXB2Xw@mail.gmail.com>
+In-Reply-To: <CAEjxPJ7S82TPnwtdab7n+EG7mBH6oU6PJMAK_9T9GOK5tXB2Xw@mail.gmail.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Mon, 14 Sep 2020 08:25:02 -0400
+Message-ID: <CAEjxPJ4zNzcwn35q8ij_4qZ_jw5Jcv6cb_J3fUqYt7hpLR-m=Q@mail.gmail.com>
+Subject: Re: [PATCH v2] libsepol/cil: Validate constraint expressions before
+ adding to binary policy
+To:     James Carter <jwcart2@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Jonathan Hettwer <j2468h@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 9/14/20 8:04 AM, Paul Moore wrote:
-> On Mon, Sep 14, 2020 at 9:25 AM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
->> On Fri, Sep 11, 2020 at 12:40 PM Lakshmi Ramasubramanian
->> <nramas@linux.microsoft.com> wrote:
->>>
->>> checkreqprot data member in selinux_state struct is accessed directly by
->>> SELinux functions to get and set. This could cause unexpected read or
->>> write access to this data member due to compiler optimizations and/or
->>> compiler's reordering of access to this field.
->>>
->>> Add helper functions to get and set checkreqprot data member in
->>> selinux_state struct. These helper functions use READ_ONCE and
->>> WRITE_ONCE macros to ensure atomic read or write of memory for
->>> this data member.
->>>
->>> Rename enforcing_enabled() to enforcing_get() to be consistent
->>> with the corresponding set function name.
->>
->> I thought Paul said to only use the new names for checkreqprot_*() and
->> not to touch enforcing_*()?  I don't really care either way about the
->> names but usually we wouldn't mix renaming of something else with the
->> introduction of these new helpers in a single patch.
-> 
-> It's generally a good idea when someone has provided feedback on a
-> patch to limit the changes in the next revision to just those changes
-> which have been suggested.  It helps to keep the patch focused on the
-> original issue, makes the follow-up reviews easier, and shortens the
-> develop/reverge/merge cycle.  It generally isn't too bad of a problem
-> in the SELinux code, but there are other subsystems where several
-> large patch revisions have been wasted because the patch author lost
-> focus and started making additional changes outside the scope of the
-> comments.  If you want to submit the additional changes anyway, my
-> recommendation would be to split them out into a second patch in a
-> patch series (make sure the original patch is first!).
+On Thu, Sep 10, 2020 at 8:36 AM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
+>
+> On Wed, Sep 9, 2020 at 4:57 PM James Carter <jwcart2@gmail.com> wrote:
+> >
+> > CIL was not correctly determining the depth of constraint expressions
+> > which prevented it from giving an error when the max depth was exceeded.
+> > This allowed invalid policy binaries with constraint expressions exceeding
+> > the max depth to be created.
+> >
+> > Validate the constraint expression using the same logic that is used
+> > when reading the binary policy. This includes checking the depth of the
+> > the expression.
+> >
+> > Reported-by: Jonathan Hettwer <j2468h@gmail.com>
+> > Signed-off-by: James Carter <jwcart2@gmail.com>
+>
+> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-Sorry about that - I will resubmit the patch with the change to rename 
-only checkreqprot helper function.
-
-  -lakshmi
-
-> 
-> Of course the best solution is always to ask if you are unsure :)
-> While I don't check my upstream email quite as often as some folks
-> here, I promise to respond to any follow-up questions if no one
-> answers first.
-> 
-> ... and please don't let our small nitpicks discourage you from
-> submitting patches, we really do appreciate help and contributions :)
-> 
->> FWIW, looking at the history, the enforcing functions were originally
->> named is_enforcing() and set_enforcing() in aa8e712cee93d520e96a2ca8
->> ("selinux: wrap global selinux state") .  Then Paul renamed them to
->> enforcing_enabled() and enforcing_set() in e5a5ca96a42ca7eee19cf869
->> ("selinux: rename the {is,set}_enforcing() functions").
-> 
-
+Applied.

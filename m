@@ -2,134 +2,78 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC3C226936E
-	for <lists+selinux@lfdr.de>; Mon, 14 Sep 2020 19:33:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E02232693F5
+	for <lists+selinux@lfdr.de>; Mon, 14 Sep 2020 19:47:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726281AbgINRcl (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Sep 2020 13:32:41 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:37408 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726327AbgINRcB (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Sep 2020 13:32:01 -0400
-Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net [73.42.176.67])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 2894A209F300;
-        Mon, 14 Sep 2020 10:32:01 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 2894A209F300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1600104721;
-        bh=HmMdwV5vC6FyI34kdl+GonHxKHXbv5fHwIvqhjD3OiQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=G20veEAAHPibjR4QxfFfJuceF8KsBZoOCwvc+MYMpkkyQqtQ/X83hzNzhJ0ps8tYA
-         U+f9cRKQwGkrWsYexLMsOAtOki0Ff29iXZDxxDcjMPZJPx/X4Ac6vn0kpPOAA2MFBC
-         rScciCiKJTA0/6TnAMNFwWVTmZbKONdQClKCpi1g=
-From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-To:     stephen.smalley.work@gmail.com, paul@paul-moore.com
-Cc:     nramas@linux.microsoft.com, selinux@vger.kernel.org
-Subject: [PATCH v4] selinux: Add helper functions to get and set checkreqprot
-Date:   Mon, 14 Sep 2020 10:31:57 -0700
-Message-Id: <20200914173157.4655-1-nramas@linux.microsoft.com>
-X-Mailer: git-send-email 2.28.0
+        id S1726015AbgINRqx (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Sep 2020 13:46:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726154AbgINRqp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Sep 2020 13:46:45 -0400
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EA5EC06174A
+        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 10:46:44 -0700 (PDT)
+Received: by mail-oi1-x242.google.com with SMTP id d189so711751oig.12
+        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 10:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6UcMPpL7ohSeeaddIMQZ4Kob6HUB6ya29pJMzCdoImo=;
+        b=p2PdanAjpD6WfrA5+A2/EzGm3UVVBUzXY2+z69Xky4GVNFiGM2nZ5RO/DUifaaA+Sm
+         N920crWud8tUjv3qC81KWYC/sJYdc+xVyZCNPTQexHQTFdfLA2GnUrOYUoG92mbuFKSl
+         aH7bQPfxgpYrJGQzVB59maOPX2ainWcGfHFPj4QOJvxuHX/eu44s/XXfpes+tubd1+7y
+         r4UwZUUNlDfLCszdwcy7Nkz/z+zTXSDtnLLQR1dgHTsaHSkz5l3C8eJXIrCSDcEtIDDD
+         LWOt4Bm3G+OPBgD4H7xz9ThNntdSA6895Z3OlrZtcXquj09zrwQA0ZzVPDmK1rLz0n3Q
+         SwFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6UcMPpL7ohSeeaddIMQZ4Kob6HUB6ya29pJMzCdoImo=;
+        b=pZj1bIGp2kV+/RINIK/JeJygHZ49qaVPQquZ3yCwO6evuUGertmasp+dm99dpI71v7
+         hBlyjJmlvjOvE6yJ/m7GMsu/MGwwVi64YIylaebUS3fMCXmzjRBihaNL0NC0vw5Wb9Ik
+         HdW6A87/C+Z4q5BaaDZwLKgSDkLfa4K7/7iuFxhRl8vusCS4WmdiPt0inCgzZUzvpV/q
+         e3QiWmw90OoNlf09uut+ZWk3lmUNIyWZ0lfO5RrhBRFdOzdTz8qSjvdK+vc1Lk5r3tTb
+         SUAi6pbC+zEaF9RkDiHCmcwVWSHEkepkUNusVZZrFzkIMPOgzeTHwhP/7fJwS70Nttmi
+         4/Mw==
+X-Gm-Message-State: AOAM533R7pr2kKkqtCaevqADbzgb4mSjiTIjFsYAwe0DS/3Z4DOl70HQ
+        A/eVqSLDrRiHyXXZxpY9lkT+pnNurYJ3pzsevbdT0fGL
+X-Google-Smtp-Source: ABdhPJy530DvV/4+j9MkMxGqKltzzrEDAsrih0iNVQzuIE6imp95z7OA2L9Po/SQsE9afC2S+JSNhIRh9EFE8KKVCd0=
+X-Received: by 2002:aca:ec53:: with SMTP id k80mr340284oih.92.1600105603652;
+ Mon, 14 Sep 2020 10:46:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200914173157.4655-1-nramas@linux.microsoft.com>
+In-Reply-To: <20200914173157.4655-1-nramas@linux.microsoft.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Mon, 14 Sep 2020 13:46:33 -0400
+Message-ID: <CAEjxPJ64u0BGUbm2R3bX0gVqysh3-uyupjfh_H56n3Df+mJmFA@mail.gmail.com>
+Subject: Re: [PATCH v4] selinux: Add helper functions to get and set checkreqprot
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Cc:     Paul Moore <paul@paul-moore.com>,
+        SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-checkreqprot data member in selinux_state struct is accessed directly by
-SELinux functions to get and set. This could cause unexpected read or
-write access to this data member due to compiler optimizations and/or
-compiler's reordering of access to this field.
+On Mon, Sep 14, 2020 at 1:32 PM Lakshmi Ramasubramanian
+<nramas@linux.microsoft.com> wrote:
+>
+> checkreqprot data member in selinux_state struct is accessed directly by
+> SELinux functions to get and set. This could cause unexpected read or
+> write access to this data member due to compiler optimizations and/or
+> compiler's reordering of access to this field.
+>
+> Add helper functions to get and set checkreqprot data member in
+> selinux_state struct. These helper functions use READ_ONCE and
+> WRITE_ONCE macros to ensure atomic read or write of memory for
+> this data member.
+>
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> Suggested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> Suggested-by: Paul Moore <paul@paul-moore.com>
 
-Add helper functions to get and set checkreqprot data member in
-selinux_state struct. These helper functions use READ_ONCE and
-WRITE_ONCE macros to ensure atomic read or write of memory for
-this data member.
-
-Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
-Suggested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Suggested-by: Paul Moore <paul@paul-moore.com>
----
- security/selinux/hooks.c            |  6 +++---
- security/selinux/include/security.h | 10 ++++++++++
- security/selinux/selinuxfs.c        |  5 +++--
- 3 files changed, 16 insertions(+), 5 deletions(-)
-
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 6210e98219a5..d6b182c11700 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -3718,7 +3718,7 @@ static int selinux_mmap_file(struct file *file, unsigned long reqprot,
- 			return rc;
- 	}
- 
--	if (selinux_state.checkreqprot)
-+	if (checkreqprot_get(&selinux_state))
- 		prot = reqprot;
- 
- 	return file_map_prot_check(file, prot,
-@@ -3732,7 +3732,7 @@ static int selinux_file_mprotect(struct vm_area_struct *vma,
- 	const struct cred *cred = current_cred();
- 	u32 sid = cred_sid(cred);
- 
--	if (selinux_state.checkreqprot)
-+	if (checkreqprot_get(&selinux_state))
- 		prot = reqprot;
- 
- 	if (default_noexec &&
-@@ -7234,7 +7234,7 @@ static __init int selinux_init(void)
- 
- 	memset(&selinux_state, 0, sizeof(selinux_state));
- 	enforcing_set(&selinux_state, selinux_enforcing_boot);
--	selinux_state.checkreqprot = selinux_checkreqprot_boot;
-+	checkreqprot_set(&selinux_state, selinux_checkreqprot_boot);
- 	selinux_avc_init(&selinux_state.avc);
- 	mutex_init(&selinux_state.status_lock);
- 	mutex_init(&selinux_state.policy_mutex);
-diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
-index 0ce2ef684ed0..3cc8bab31ea8 100644
---- a/security/selinux/include/security.h
-+++ b/security/selinux/include/security.h
-@@ -143,6 +143,16 @@ static inline void enforcing_set(struct selinux_state *state, bool value)
- }
- #endif
- 
-+static inline bool checkreqprot_get(const struct selinux_state *state)
-+{
-+	return READ_ONCE(state->checkreqprot);
-+}
-+
-+static inline void checkreqprot_set(struct selinux_state *state, bool value)
-+{
-+	WRITE_ONCE(state->checkreqprot, value);
-+}
-+
- #ifdef CONFIG_SECURITY_SELINUX_DISABLE
- static inline bool selinux_disabled(struct selinux_state *state)
- {
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index 45e9efa9bf5b..4bde570d56a2 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -717,7 +717,8 @@ static ssize_t sel_read_checkreqprot(struct file *filp, char __user *buf,
- 	char tmpbuf[TMPBUFLEN];
- 	ssize_t length;
- 
--	length = scnprintf(tmpbuf, TMPBUFLEN, "%u", fsi->state->checkreqprot);
-+	length = scnprintf(tmpbuf, TMPBUFLEN, "%u",
-+			   checkreqprot_get(fsi->state));
- 	return simple_read_from_buffer(buf, count, ppos, tmpbuf, length);
- }
- 
-@@ -759,7 +760,7 @@ static ssize_t sel_write_checkreqprot(struct file *file, const char __user *buf,
- 			     comm, current->pid);
- 	}
- 
--	fsi->state->checkreqprot = new_value ? 1 : 0;
-+	checkreqprot_set(fsi->state, (new_value ? 1 : 0));
- 	length = count;
- out:
- 	kfree(page);
--- 
-2.28.0
-
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>

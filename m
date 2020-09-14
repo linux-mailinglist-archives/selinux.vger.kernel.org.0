@@ -2,114 +2,87 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45972268AC0
-	for <lists+selinux@lfdr.de>; Mon, 14 Sep 2020 14:18:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D452268D2F
+	for <lists+selinux@lfdr.de>; Mon, 14 Sep 2020 16:17:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726173AbgINMRN (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Sep 2020 08:17:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43806 "EHLO
+        id S1726716AbgINORg (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Sep 2020 10:17:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726126AbgINMGx (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Sep 2020 08:06:53 -0400
-Received: from mail-ed1-x544.google.com (mail-ed1-x544.google.com [IPv6:2a00:1450:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04545C06178C
-        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 05:06:51 -0700 (PDT)
-Received: by mail-ed1-x544.google.com with SMTP id w1so17339211edr.3
-        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 05:06:51 -0700 (PDT)
+        with ESMTP id S1726280AbgINNZf (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Sep 2020 09:25:35 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CEDAC061788
+        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 06:25:20 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id o8so7131920otl.4
+        for <selinux@vger.kernel.org>; Mon, 14 Sep 2020 06:25:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=gxYQz48aGorfvze6exW0FuIKKJvVhs5z+cRnEenJUaY=;
-        b=GPg5+wHSK8YNte0khcjd/6jCe4+D7rW2GuDcSUkXWQjJNS522SEllzRUOkAw1hGYe7
-         oHnlGlFuWBcGf6UbnpQy+ypkxP/v+8N+ooI+m1fEWxUNAs+cDE0lBhVJdaJYUMjYHuDJ
-         ohQD3+hboX525kG62FDNnmQaxslJj7x1XHShV5xoD5/TORUAaAhk7NHqDfj2eXWd9i1j
-         Xpwu6I7HQYa7fE1/sw9yeyfEYedoKFuU6F1jjVWyBz2RlEuD7Zfq7XaBKeN2cQpcSyxp
-         F4MlNp/usrPcxzTwBZB5Ctlrqleev8HNRF39MRJ8vUKNuC/irEHYKfd6gwQ1FpIhzJIZ
-         octQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DiRzZCQHGqj3T5JONDRdFBtB+hHjqPgAsdA1aY6qMPY=;
+        b=M5PacdToXc0fvVs3ROPFWIF0WDzixFwX1mTGomexWf2NIALsJpm+DdVXcXKl2cLakU
+         9zxdef5upztgWW9/I21max9WfB5feiKcQOLCghUUXSY9RstDCil/Danaxyws2eRnF9Sd
+         +G4i8q9GU1FSMNgvL/3TP+YI2SCqNWKFlfyEOWCB5YQZ4YJ8ZDpJfuOkcW4TCwC75Ls0
+         fJRKwz87Lb3pKaALFHCuqTgA/JEKE5M69KhfQZaQZD4bMxbNmZUPTFhy+dMS8vQEBAoS
+         NzJYRm7H+sGWSQnWEnCni6zp+mhnqCk7rNxDwSvZOJR+yw5JZqYeui4JIHALZ1SReQyw
+         9o/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=gxYQz48aGorfvze6exW0FuIKKJvVhs5z+cRnEenJUaY=;
-        b=ZYl3mGxigp2ftM0qX1JEr68oJ9MY+oFyq3VkMqNXNytLuzQASSNrZhU7Xh8ACQ1lcu
-         kT/NjZ3b0XfM869J9IWwq1BpXbjFqOq6BgrkFO3Ydxtx7LkK2pZRCLpR+9pvznt+hBBT
-         7gVU5XayZtH8fwxGwlHixnmWHwZo5Q5C/QV86CEHOUOpsENPCauWiaPUZ6U4pzsYn2xN
-         OrmdwrVtW36qFafGTuoSRmYreD06Nl8a0eK0i00zEmFN+cp+XOKhxaLY8F90Xf8yskuk
-         gQBXNFttcGXyFRKBxM6N6R6OKND/IvUMTWc+vvwX17Gq77hAwRQ8z4YDd32R7dCZ8oQj
-         cDwA==
-X-Gm-Message-State: AOAM533pmqmmtd5jh3p+PosWoHLrbCTJgaLORLMtKNjXLdSMODjX16Ht
-        E8fEMmzrODRcK7ZdSxEMC7dNmPb0F4/1d89WsSk=
-X-Google-Smtp-Source: ABdhPJzFJ/7si3am8XOwlwniSFXurGcUfUtYPM8OfD/SFQdpbcJcA/SMxn/5nMauKMk1UMVZ94bNG7/2CyZI7aoVnnM=
-X-Received: by 2002:a50:fd0a:: with SMTP id i10mr16500733eds.277.1600085210401;
- Mon, 14 Sep 2020 05:06:50 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DiRzZCQHGqj3T5JONDRdFBtB+hHjqPgAsdA1aY6qMPY=;
+        b=NpjlfkLSPf/QaTPjLNTaWTIlV3yZEcmgm5UTOYe1OBHaD+OKK+MQkMNv5VcZmpJ7hc
+         +vWm7rAOFepfGJKHq7JJmPmut14GtSP10Wt1/r/wMZTOwrYZuN/rQr3WwgBZv8UXS562
+         CpcW044JKqL9mQUs21oA1kGdgqNBRxuGSPjUpWmI6J9NkaxdnBvVwvyIXD3u1LfsMavH
+         tu8Vhs/AluCflQ5+sRlIaDz4wi6TPSGRxKIYDa8y0XxhK3UzWhqletZ/O7SfjVBDGNOt
+         gwJlrVfN7KqNMdfu4gBQ4tY+HKxaDK1TD3MJ5mhBeLsBu5Z7iXcyX5nQ5T83kyaQPJtn
+         5fXA==
+X-Gm-Message-State: AOAM5313ccHIqRHHRp5DfsgJtQny+wFsxzT9h8sJIeokdl+Dfba+sX6c
+        x2cTxAXnXdtDb9thvaWNqPi9OrpWiFjpTPXcxHI=
+X-Google-Smtp-Source: ABdhPJx+LGpOVfDITm4qR6KaJyqJuY35FTmUx+XTNBso0L3WN+bQeUL2BnATToka6/3kZyFTkAQ2DODWYZhuCFDr9AE=
+X-Received: by 2002:a05:6830:1be7:: with SMTP id k7mr9316992otb.162.1600089919495;
+ Mon, 14 Sep 2020 06:25:19 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a17:906:6945:0:0:0:0 with HTTP; Mon, 14 Sep 2020 05:06:50
- -0700 (PDT)
-Reply-To: mrsmegwilliam6@gmail.com
-From:   Ms Mary Mcniff <dhlcouriercompanymiami@gmail.com>
-Date:   Mon, 14 Sep 2020 05:06:50 -0700
-Message-ID: <CAG_OktqdAd5Cbq-STPNT=GB3sDuBkiU4pmhnUjTTOCg=19h6Rw@mail.gmail.com>
-Subject: Your Respond ASAP
-To:     undisclosed-recipients:;
+References: <20200911164009.21926-1-nramas@linux.microsoft.com>
+In-Reply-To: <20200911164009.21926-1-nramas@linux.microsoft.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Mon, 14 Sep 2020 09:25:08 -0400
+Message-ID: <CAEjxPJ4JCRkiSnDq=HZjk2pLj0m2ayYTeEvQ2jevMd=yLMoXhg@mail.gmail.com>
+Subject: Re: [PATCH v3] selinux: Add helper functions to get and set checkreqprot
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Cc:     Paul Moore <paul@paul-moore.com>, Sasha Levin <sashal@kernel.org>,
+        James Morris <jmorris@namei.org>,
+        SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
--- 
-From Chief Compliance Officer, Citigroup Inc CITIBANK
-388 Greenwich St, New York, 10013, United States United.
-PAYMENT CODE: FRB010
-Swift: PTBLBXXX
-==============================================
+On Fri, Sep 11, 2020 at 12:40 PM Lakshmi Ramasubramanian
+<nramas@linux.microsoft.com> wrote:
+>
+> checkreqprot data member in selinux_state struct is accessed directly by
+> SELinux functions to get and set. This could cause unexpected read or
+> write access to this data member due to compiler optimizations and/or
+> compiler's reordering of access to this field.
+>
+> Add helper functions to get and set checkreqprot data member in
+> selinux_state struct. These helper functions use READ_ONCE and
+> WRITE_ONCE macros to ensure atomic read or write of memory for
+> this data member.
+>
+> Rename enforcing_enabled() to enforcing_get() to be consistent
+> with the corresponding set function name.
 
-Attention: Beneficiary,
+I thought Paul said to only use the new names for checkreqprot_*() and
+not to touch enforcing_*()?  I don't really care either way about the
+names but usually we wouldn't mix renaming of something else with the
+introduction of these new helpers in a single patch.
 
-We write to inform you that Series of meetings have been held over the
-past 2 weeks with the Secretary General of United Nations,U.S
-Department of State and Dubai Union Organization this ended last
-week.And parcel is under our custody right now, It will deliver to you
-within 24 hours once you clear the charges which will cost you
-according to the BANKERS COURIER SERVICES that wish to deliver your
-ATM CARD card to
-you immediately.
-
-However, it is the pleasure of this office to inform you that your ATM
-CARD number; is 29741733 and it has been approved and upgraded in your
-favor .you call me for the pin code numbers. The ATM CARD value is us
-$10.5 Million only.
-
-Kindly contact the paying bank for the claim of your ATM visa card
-payment fund $10,500,000.00 through the below contact information;
-
-Contact Person:Mr Williams S Young
-Director of Financial Controller
-Bank Name: CITIBANK
-Bank address; 388 Greenwich St,
-New York City,10013, United States
-Email:mrsmegwilliam6@gmail.com
-
-Reconfirm the following information?
-
-(1)Your Full Name=============
-(2)Mobile Phone Number======
-(3)Current Home Address==== ====
-(4)Fax Number================
-(5)Passport/Drivers license ======
-
-Endeavor to keep me posted once you contacted the officer in charge
-through the above mentioned information.
-
-Your timely response is highly appreciated.To this end, you are
-required to forward your payment information as follows to enable us
-load your fund into the card with your information and deliver it to
-your door step. as the BANKERS COURIER SERVICES are in charge of the
-delivery services to your destination.
-
-Yours truly;
-
-Ms Mary Mcniff.
-Chief Compliance Officer, Citigroup Inc
-FEDERAL RESERVE SYSTEM.
-Email: marymcniff7@gmail.com.
+FWIW, looking at the history, the enforcing functions were originally
+named is_enforcing() and set_enforcing() in aa8e712cee93d520e96a2ca8
+("selinux: wrap global selinux state") .  Then Paul renamed them to
+enforcing_enabled() and enforcing_set() in e5a5ca96a42ca7eee19cf869
+("selinux: rename the {is,set}_enforcing() functions").

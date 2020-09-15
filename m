@@ -2,112 +2,68 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FEB226A8A9
-	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 17:21:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1183626AAC5
+	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 19:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727230AbgIOPVp (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 15 Sep 2020 11:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42266 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727279AbgIOPUw (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 11:20:52 -0400
-Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38343C06174A
-        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 08:20:52 -0700 (PDT)
-Received: by mail-ot1-x344.google.com with SMTP id w25so3576930otk.8
-        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 08:20:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=SX9LzBk2lFm4rgK8GN0bBTGK/i8QdgckpiaO2aDE+fk=;
-        b=ZzZRH+U2yoNo2DuAdzwX3a3mVjz4M2UiknfoP8pm2kIcGkxGjxjRmpWZeCsnWwc44b
-         Kf2epU2QckaJa21AKJpwVLtV6lpa4jfixnITHsN9km4UHCYgzx2AMODh5vSoZOnS1Z6q
-         a4vU8ypPStO55V6Mlpouh49kvjkSYaMjTBt1LO+rEUqbkemMyVnQ0WBMnz+M58ofLuF5
-         qyUfKzkJJRLTnOp2JIc5v5MNzcAdl+7N6+kdHgaJfyWIJeOjRYcPvWYVSbLksvKwLyAU
-         YrU9FV7v78FxswAImUZy+emV5UmbRotOd+6VkqZENawupgjErPZlyHNUvKAHI6vjS6a6
-         5IvA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=SX9LzBk2lFm4rgK8GN0bBTGK/i8QdgckpiaO2aDE+fk=;
-        b=ho7BkZGL+WD0eBgVldNbG/5e2moxJ73w/qcsI5VjaQMKqGnjVuopgmMTJdgrQjPxVz
-         35IVt71H6/xNNp/FAqN8lVQ2Qb5gdJMKqlij+XkQzYM0yt3oJXJPSJCQ2NF9UVwDWihT
-         LTAyyvNhQBPFFvzcetENWWY38csQ5NumwCpNDvmnwwlCoPNYncNDo2OmTcMSUJEr7/6G
-         6t9Hp6+5todEukSxntQV9j20gbGrLrGwFf1M2IF8gPWEr/SXry5xCIjxiKuzxIu3cNkl
-         A6hyo6AtLVCi3PsxlNToduEDdCdIuoDbEaOW+f7xmsHo3Uo7RQ1dMbEGvtDKS57CapIz
-         Q9nw==
-X-Gm-Message-State: AOAM530tywlvyksB7d8oQD/IPdT5nXUOA/0PGDBk1ywQr4EEnD68s5Y5
-        elJSB0ZEjzr4OYwL9E/OV/H9zBBxjGrSrzLcbr8=
-X-Google-Smtp-Source: ABdhPJx4eSLvFH3uqyph7vcaew9R9qLJ4OJomVYGVdHAEk9HE9wyjiuM2Vlmyj+pN2tlcSaUFMZE4Vk2DsBD6F3w7Kk=
-X-Received: by 2002:a9d:7a92:: with SMTP id l18mr12603087otn.89.1600183251522;
- Tue, 15 Sep 2020 08:20:51 -0700 (PDT)
+        id S1727683AbgIOReU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 15 Sep 2020 13:34:20 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:48520 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727787AbgIOReK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 13:34:10 -0400
+Received: from chpebeni.pebenito.net (pool-108-15-23-247.bltmmd.fios.verizon.net [108.15.23.247])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 15BDF20A1AF8;
+        Tue, 15 Sep 2020 10:34:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 15BDF20A1AF8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1600191250;
+        bh=YnZ8nh2/TJDYNPtq1VLi3JErbIBF08S1SGEPH+VEpDE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=mPWeboODp5rnqWHlZYdImTvTCv54+yQ4xOiAPQ6LChObG9llyVA84tcJTtrQtNX7y
+         lG/QErUKZfL9AgqdVfTGfQTXhJjbs9Dju/xdYKN6+TW4y/zkNLEBEbw6sMT6rChNf7
+         8dn217w/NqHsbEbAhI1ZWEHq0JUcZAoQF9YgnFqw=
+From:   Chris PeBenito <chpebeni@linux.microsoft.com>
+To:     selinux@vger.kernel.org
+Cc:     sgrubb@redhat.com
+Subject: [PATCH 1/2] libselinux: Add additional log callback details in man page for auditing.
+Date:   Tue, 15 Sep 2020 13:33:31 -0400
+Message-Id: <20200915173332.574700-1-chpebeni@linux.microsoft.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20200915130516.561693-1-chpebeni@linux.microsoft.com>
- <CAEjxPJ77s7WHqixbD60LnEOG_+WYc2mOj0cTPMoKXqk8M5zqBg@mail.gmail.com>
- <6bff0d2f-5e33-213f-dfe5-e3af01474860@linux.microsoft.com>
- <CAEjxPJ7Wj6R9y00=m1z9-qrC2+1onVOQQagD+WV0LxXpcJJCtg@mail.gmail.com> <ddf77261-7fa4-9ff6-01ed-3ac0f3c9e2cc@linux.microsoft.com>
-In-Reply-To: <ddf77261-7fa4-9ff6-01ed-3ac0f3c9e2cc@linux.microsoft.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Tue, 15 Sep 2020 11:20:40 -0400
-Message-ID: <CAEjxPJ6=s504ZdWevGALxxksCF4tsQ46meD8iCg7sCFoV9sKSA@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] libselinux: Revise userspace AVC avc_log() for
- auditable events.
-To:     Chris PeBenito <chpebeni@linux.microsoft.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        Steve Grubb <sgrubb@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Sep 15, 2020 at 11:04 AM Chris PeBenito
-<chpebeni@linux.microsoft.com> wrote:
->
-> On 9/15/20 10:43 AM, Stephen Smalley wrote:
-> > On Tue, Sep 15, 2020 at 10:33 AM Chris PeBenito
-> > <chpebeni@linux.microsoft.com> wrote:
-> >>
-> >> On 9/15/20 9:34 AM, Stephen Smalley wrote:
-> >>> On Tue, Sep 15, 2020 at 9:11 AM Chris PeBenito
-> >>> <chpebeni@linux.microsoft.com> wrote:
-> >>>> diff --git a/libselinux/src/avc_internal.c b/libselinux/src/avc_internal.c
-> >>>> index 572b2159..35ea59b6 100644
-> >>>> --- a/libselinux/src/avc_internal.c
-> >>>> +++ b/libselinux/src/avc_internal.c
-> >>>> @@ -59,14 +59,14 @@ int avc_process_setenforce(int enforcing)
-> >>>>           int rc = 0;
-> >>>>
-> >>>>           avc_log(SELINUX_SETENFORCE,
-> >>>> -               "%s:  received setenforce notice (enforcing=%d)\n",
-> >>>> +               "%s:  op=setenforce lsm=selinux_uavc enforcing=%d res=1",
-> >>>>                   avc_prefix, enforcing);
-> >>>>           if (avc_setenforce)
-> >>>>                   goto out;
-> >>>>           avc_enforcing = enforcing;
-> >>>>           if (avc_enforcing && (rc = avc_ss_reset(0)) < 0) {
-> >>>>                   avc_log(SELINUX_ERROR,
-> >>>> -                       "%s:  cache reset returned %d (errno %d)\n",
-> >>>> +                       "%s:  op=cache_reset lsm=selinux_uavc rc=%d errno=%d res=0",
-> >>>>                           avc_prefix, rc, errno);
-> >>>
-> >>> If we do this at all, I would think the op= would still be setenforce
-> >>> and this would just be an error for it.
-> >>
-> >> At this point we already audited success for the setenforce operation.  Wouldn't
-> >> it be confusing to have a op=setenforce res=1 and then immediately op=setenforce
-> >> res=0?
-> >
-> > Yes.  On second thought, I don't think any of the SELINUX_ERROR
-> > messages are intended for audit and since that is already a different
-> > type value, the callbacks can already redirect those to stderr or
-> > syslog as appropriate instead of audit.
->
-> Are the typebounds and validatetrans in UAVC passed to the kernel for
-> evaluation? The kernel audits failures on those as SELINUX_ERR.  If the UAVC
-> handles them itself, it seems that those failures should be audited as
-> USER_SELINUX_ERR.
+Add additional information about the log callback message types.  Indicate
+which types could be audited and the relevant audit record types for them.
 
-The userspace AVC defers all of the security_compute_av() logic to the kernel.
+Signed-off-by: Chris PeBenito <chpebeni@linux.microsoft.com>
+---
+ libselinux/man/man3/selinux_set_callback.3 | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/libselinux/man/man3/selinux_set_callback.3 b/libselinux/man/man3/selinux_set_callback.3
+index 6dfe5ff6..75f49b06 100644
+--- a/libselinux/man/man3/selinux_set_callback.3
++++ b/libselinux/man/man3/selinux_set_callback.3
+@@ -51,6 +51,15 @@ argument indicates the type of message and will be set to one of the following:
+ 
+ .B SELINUX_SETENFORCE
+ 
++SELINUX_ERROR, SELINUX_WARNING, and SELINUX_INFO indicate standard log severity
++levels and are not auditable messages.
++
++The SELINUX_AVC, SELINUX_POLICYLOAD, and SELINUX_SETENFORCE message types can be
++audited with AUDIT_USER_AVC, AUDIT_USER_MAC_POLICY_LOAD, and AUDIT_USER_MAC_STATUS
++values from libaudit, respectively.  If they are not audited, SELINUX_AVC should be
++considered equivalent to SELINUX_ERROR; similarly, SELINUX_POLICYLOAD and
++SELINUX_SETENFORCE should be considered equivalent to SELINUX_INFO.
++
+ .
+ .TP
+ .B SELINUX_CB_AUDIT
+-- 
+2.26.2
+

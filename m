@@ -2,94 +2,168 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DAD5A26B316
-	for <lists+selinux@lfdr.de>; Wed, 16 Sep 2020 01:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A970926B5F2
+	for <lists+selinux@lfdr.de>; Wed, 16 Sep 2020 01:55:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727333AbgIOXAK (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 15 Sep 2020 19:00:10 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:58032 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726205AbgIOPEh (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 11:04:37 -0400
-Received: from chpebeni.northamerica.corp.microsoft.com (pool-108-15-23-247.bltmmd.fios.verizon.net [108.15.23.247])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 40E6220A1B0A;
-        Tue, 15 Sep 2020 08:04:23 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 40E6220A1B0A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1600182263;
-        bh=hQ2/AyaW3BSZZayZPUjCHhl5iTHnIbUrjKDxQYOTZHY=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=DDeSKvxw3aRwhjklunZJnJoxOUvELDTtA1Ts+Tx3eA8sSSFZrVX4iRrcTb72RARav
-         1n1qpWjRYSsdIaVVYkfBs0pWJIF1pE1w+2S6h9UTLEhtVwYm2p/tdcFce+nDJmkm0z
-         bOHafGwA38dsd/QQYycHjTcxd/GDN650ge8VpJhE=
-Subject: Re: [RFC PATCH 1/1] libselinux: Revise userspace AVC avc_log() for
- auditable events.
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        Steve Grubb <sgrubb@redhat.com>
-References: <20200915130516.561693-1-chpebeni@linux.microsoft.com>
- <CAEjxPJ77s7WHqixbD60LnEOG_+WYc2mOj0cTPMoKXqk8M5zqBg@mail.gmail.com>
- <6bff0d2f-5e33-213f-dfe5-e3af01474860@linux.microsoft.com>
- <CAEjxPJ7Wj6R9y00=m1z9-qrC2+1onVOQQagD+WV0LxXpcJJCtg@mail.gmail.com>
-From:   Chris PeBenito <chpebeni@linux.microsoft.com>
-Message-ID: <ddf77261-7fa4-9ff6-01ed-3ac0f3c9e2cc@linux.microsoft.com>
-Date:   Tue, 15 Sep 2020 11:04:22 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1727100AbgIOXy7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 15 Sep 2020 19:54:59 -0400
+Received: from mail.hallyn.com ([178.63.66.53]:43054 "EHLO mail.hallyn.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727033AbgIOObc (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Tue, 15 Sep 2020 10:31:32 -0400
+X-Greylist: delayed 621 seconds by postgrey-1.27 at vger.kernel.org; Tue, 15 Sep 2020 10:31:23 EDT
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+        id EEC1BC38; Tue, 15 Sep 2020 09:19:46 -0500 (CDT)
+Date:   Tue, 15 Sep 2020 09:19:46 -0500
+From:   "Serge E. Hallyn" <serge@hallyn.com>
+To:     "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        linux-man <linux-man@vger.kernel.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        selinux@vger.kernel.org, smcv@collabora.com,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>
+Subject: Re: [PATCH v2] socket.7,unix.7: add initial description for
+ SO_PEERSEC
+Message-ID: <20200915141946.GA19979@mail.hallyn.com>
+References: <20200914180700.11003-1-stephen.smalley.work@gmail.com>
+ <CAKgNAkgjndEr4zd1zGD_h+2srWsRAQT7=Hyqh7Ktxy7FQn35Dg@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <CAEjxPJ7Wj6R9y00=m1z9-qrC2+1onVOQQagD+WV0LxXpcJJCtg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKgNAkgjndEr4zd1zGD_h+2srWsRAQT7=Hyqh7Ktxy7FQn35Dg@mail.gmail.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 9/15/20 10:43 AM, Stephen Smalley wrote:
-> On Tue, Sep 15, 2020 at 10:33 AM Chris PeBenito
-> <chpebeni@linux.microsoft.com> wrote:
->>
->> On 9/15/20 9:34 AM, Stephen Smalley wrote:
->>> On Tue, Sep 15, 2020 at 9:11 AM Chris PeBenito
->>> <chpebeni@linux.microsoft.com> wrote:
->>>> diff --git a/libselinux/src/avc_internal.c b/libselinux/src/avc_internal.c
->>>> index 572b2159..35ea59b6 100644
->>>> --- a/libselinux/src/avc_internal.c
->>>> +++ b/libselinux/src/avc_internal.c
->>>> @@ -59,14 +59,14 @@ int avc_process_setenforce(int enforcing)
->>>>           int rc = 0;
->>>>
->>>>           avc_log(SELINUX_SETENFORCE,
->>>> -               "%s:  received setenforce notice (enforcing=%d)\n",
->>>> +               "%s:  op=setenforce lsm=selinux_uavc enforcing=%d res=1",
->>>>                   avc_prefix, enforcing);
->>>>           if (avc_setenforce)
->>>>                   goto out;
->>>>           avc_enforcing = enforcing;
->>>>           if (avc_enforcing && (rc = avc_ss_reset(0)) < 0) {
->>>>                   avc_log(SELINUX_ERROR,
->>>> -                       "%s:  cache reset returned %d (errno %d)\n",
->>>> +                       "%s:  op=cache_reset lsm=selinux_uavc rc=%d errno=%d res=0",
->>>>                           avc_prefix, rc, errno);
->>>
->>> If we do this at all, I would think the op= would still be setenforce
->>> and this would just be an error for it.
->>
->> At this point we already audited success for the setenforce operation.  Wouldn't
->> it be confusing to have a op=setenforce res=1 and then immediately op=setenforce
->> res=0?
+On Tue, Sep 15, 2020 at 10:56:18AM +0200, Michael Kerrisk (man-pages) wrote:
+> Hello Stephen,
 > 
-> Yes.  On second thought, I don't think any of the SELINUX_ERROR
-> messages are intended for audit and since that is already a different
-> type value, the callbacks can already redirect those to stderr or
-> syslog as appropriate instead of audit.
+> On Mon, 14 Sep 2020 at 20:07, Stephen Smalley
+> <stephen.smalley.work@gmail.com> wrote:
+> >
+> > SO_PEERSEC was introduced for AF_UNIX stream sockets connected via
+> > connect(2) in Linux 2.6.2 [1] and later augmented to support AF_UNIX stream
+> > and datagram sockets created via socketpair(2) in Linux 4.18 [2].  Document
+> > SO_PEERSEC in the socket.7 and unix.7 man pages following the example
+> > of the existing SO_PEERCRED descriptions.  SO_PEERSEC is also supported
+> > on AF_INET sockets when using labeled IPSEC or NetLabel but defer
+> > adding a description of that support to a separate patch.
+> >
+> > The module-independent description of the security context returned
+> > by SO_PEERSEC is from Simon McVittie <smcv@collabora.com>.
+> 
+> Thanks for the patch, The text looks in reasonable shape to me. I'm
+> just hanging off applying for a bit in case some Reviewed/Acked-by
+> comes in.
+> 
 
-Are the typebounds and validatetrans in UAVC passed to the kernel for 
-evaluation? The kernel audits failures on those as SELINUX_ERR.  If the UAVC 
-handles them itself, it seems that those failures should be audited as 
-USER_SELINUX_ERR.
+fwiw just as someone who's used this,
 
+Reviewed-by: Serge Hallyn <serge@hallyn.com>
 
--- 
-Chris PeBenito
+Thanks Stephen, thanks Michael.
+
+> Cheers,
+> 
+> Michael
+> 
+> 
+> > [1] https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commit/?id=da6e57a2e6bd7939f610d957afacaf6a131e75ed
+> >
+> > [2] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=0b811db2cb2aabc910e53d34ebb95a15997c33e7
+> >
+> > Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> > ---
+> > v2 adds kernel commit info to the description and man page and uses
+> > the suggested text from Simon McVittie for the description of
+> > the security context string in a module-neutral way.
+> >
+> >  man7/socket.7 |  5 +++++
+> >  man7/unix.7   | 46 ++++++++++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 51 insertions(+)
+> >
+> > diff --git a/man7/socket.7 b/man7/socket.7
+> > index 21e891791..c3635f95b 100644
+> > --- a/man7/socket.7
+> > +++ b/man7/socket.7
+> > @@ -690,6 +690,11 @@ Return the credentials of the peer process connected to this socket.
+> >  For further details, see
+> >  .BR unix (7).
+> >  .TP
+> > +.BR SO_PEERSEC " (since Linux 2.6.2)"
+> > +Return the security context of the peer socket connected to this socket.
+> > +For further details, see
+> > +.BR unix (7).
+> > +.TP
+> >  .B SO_PRIORITY
+> >  Set the protocol-defined priority for all packets to be sent on
+> >  this socket.
+> > diff --git a/man7/unix.7 b/man7/unix.7
+> > index 50828a5bc..298521d4a 100644
+> > --- a/man7/unix.7
+> > +++ b/man7/unix.7
+> > @@ -349,6 +349,52 @@ stream sockets and for
+> >  .B AF_UNIX
+> >  stream and datagram socket pairs created using
+> >  .BR socketpair (2).
+> > +.TP
+> > +.B SO_PEERSEC
+> > +This read-only socket option returns the
+> > +security context of the peer socket connected to this socket.
+> > +By default, this will be the same as the security context of
+> > +the process that created the peer socket unless overridden
+> > +by the policy or by a process with the required permissions.
+> > +.IP
+> > +The argument to
+> > +.BR getsockopt (2)
+> > +is a pointer to a
+> > +buffer of the specified length in bytes
+> > +into which the security context string will be copied.
+> > +If the buffer length is less than the length of the security
+> > +context string, then
+> > +.BR getsockopt (2)
+> > +will return the required length
+> > +via
+> > +.I optlen
+> > +and return \-1 and sets
+> > +.I errno
+> > +to
+> > +.BR ERANGE .
+> > +The caller should allocate at least
+> > +.BR NAME_MAX
+> > +bytes for the buffer initially although this is not guaranteed
+> > +to be sufficient.  Resizing the buffer to the returned length
+> > +and retrying may be necessary.
+> > +.IP
+> > +The security context string may include a terminating null character
+> > +in the returned length, but is not guaranteed to do so: a security
+> > +context "foo" might be represented as either {'f','o','o'} of length 3
+> > +or {'f','o','o','\\0'} of length 4, which are considered to be
+> > +interchangeable. It is printable, does not contain non-terminating
+> > +null characters, and is in an unspecified encoding (in particular it
+> > +is not guaranteed to be ASCII or UTF-8).
+> > +.IP
+> > +The use of this option for sockets in the
+> > +.B AF_UNIX
+> > +address family
+> > +is supported since Linux 2.6.2 for connected stream sockets and
+> > +since Linux 4.18,
+> > +.\" commit 0b811db2cb2aabc910e53d34ebb95a15997c33e7
+> > +also for stream and datagram socket pairs created
+> > +using
+> > +.BR socketpair (2).
+> >  .\"
+> >  .SS Autobind feature
+> >  If a
+> > --
+> > 2.25.1
+> >
+> 
+> 
+> -- 
+> Michael Kerrisk
+> Linux man-pages maintainer; http://www.kernel.org/doc/man-pages/
+> Linux/UNIX System Programming Training: http://man7.org/training/

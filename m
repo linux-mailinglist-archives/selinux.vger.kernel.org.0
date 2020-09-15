@@ -2,139 +2,82 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 655C726B577
-	for <lists+selinux@lfdr.de>; Wed, 16 Sep 2020 01:45:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6485D26B82A
+	for <lists+selinux@lfdr.de>; Wed, 16 Sep 2020 02:37:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727009AbgIOXox (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 15 Sep 2020 19:44:53 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:53852 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726334AbgIOOdp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 10:33:45 -0400
-Received: from chpebeni.northamerica.corp.microsoft.com (pool-108-15-23-247.bltmmd.fios.verizon.net [108.15.23.247])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 443CE208971C;
-        Tue, 15 Sep 2020 07:33:44 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 443CE208971C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1600180424;
-        bh=tm4e9jBT8cB/ndPVVcoJytzYAoNftLas9+L46ZclHrs=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=aFqX8INSBuUiKDfLYuN4z/nBcTnHfm2lAlLoaNnR27cjr3zaZbegS+c4/6w94sSlc
-         OXO/qSHRFVNHXl54ZfGpnn8X1JpbpV+8lovBCkkPyfMMJLpFe3CuSp5tm3iltMMXen
-         pSHzBsi5ZobWC/YqR0V4cIZOa/lUyHrFekkeruus=
-Subject: Re: [RFC PATCH 1/1] libselinux: Revise userspace AVC avc_log() for
- auditable events.
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        Steve Grubb <sgrubb@redhat.com>
-References: <20200915130516.561693-1-chpebeni@linux.microsoft.com>
- <CAEjxPJ77s7WHqixbD60LnEOG_+WYc2mOj0cTPMoKXqk8M5zqBg@mail.gmail.com>
-From:   Chris PeBenito <chpebeni@linux.microsoft.com>
-Message-ID: <6bff0d2f-5e33-213f-dfe5-e3af01474860@linux.microsoft.com>
-Date:   Tue, 15 Sep 2020 10:33:43 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        id S1726255AbgIPAhf (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 15 Sep 2020 20:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52202 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726604AbgIONXy (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 09:23:54 -0400
+Received: from mail-oo1-xc44.google.com (mail-oo1-xc44.google.com [IPv6:2607:f8b0:4864:20::c44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF088C061A27
+        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 06:23:26 -0700 (PDT)
+Received: by mail-oo1-xc44.google.com with SMTP id 4so730986ooh.11
+        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 06:23:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Ij4TRBfUkaBfw5ERpLvzncgf6wPeQwgiIog3HeWapDg=;
+        b=BB91feiMTBICQ1bNWdQgo7j0qW0LMoMlRVm8vvjnfIe/m7TKxeUDRwuSn/VpnIWguL
+         1ZcMpVxGzfDq1sh2ztJ+feteEttlwjq5p75m1Ymay3p9+3IUrx4O1WK66tNsBWLzpthu
+         qkNd6D5bzd02svNyyj+IAgnEwyw+b9pql7euYpQo9U9zzoNGVuP2T98/FPufKGZ/9bvg
+         WzFZWHXnJH6SfDmkbaYhOEF1pY7Ojhq6C6VJWoX9JOQCE3tHK7sln7oqXIxs3HQXoZ3o
+         +fvc1L5g+k4ReXkJFk+eg9FsTIkRlaHkXdS+O4+DrjhMeONG71A8KxQ5JJ8lxEl1CgT5
+         PKQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Ij4TRBfUkaBfw5ERpLvzncgf6wPeQwgiIog3HeWapDg=;
+        b=ALYQtXLyOvUozaD/KkOydGvksyFJUE1Zxz5MaIlcPJnN7GXJFm9X4Qe7PufHOkSUH3
+         g71qTuOljpCdbhfJJnIrbrEo+Ux/hjZzyc63viHB9l9A/sZtUPYay223w6cSBDqSS7MO
+         N6pR/sBph5811MRrESzQP7TFYRPnHyaBeP14syWg39K4sM/twueejendj9VE4fDVRSxg
+         GLaL9An1vEl9yxe/qFjyoZrfb4dCHm16nt80vRURbiDBV4tILBEAcwZ9Kt6JbNpxQjUZ
+         V2bMwSx7gVJhbTslGTVoWzM8MWmb3oG8U9R88yh1Ap7Fik3I8HFe7JBsI/EMrRS0l7Zn
+         S3gQ==
+X-Gm-Message-State: AOAM532h8zx6uT78cOHWtUI7JlONoCcZX+zp+s3Bsj8PPlQfp0RSWIyq
+        U3v/bDpxpEF3KjBWgeIgi0s7ETHIZtXoUSLeVQGDgDjj
+X-Google-Smtp-Source: ABdhPJwcuB03BitXV3I5ysj5gfy2gjiMOjI2MSs5koEy+QLSVcpjywkJdQhv1Lx9oo9Xf8pQcKJpYWs5UueX3B6dLGQ=
+X-Received: by 2002:a4a:d0ad:: with SMTP id t13mr14207128oor.58.1600176206355;
+ Tue, 15 Sep 2020 06:23:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAEjxPJ77s7WHqixbD60LnEOG_+WYc2mOj0cTPMoKXqk8M5zqBg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+References: <20200911195614.429223-1-chpebeni@linux.microsoft.com> <CAEjxPJ5P0sv4v88xYnf=tadNk=y5+D_z6dDX-JTqQ=dgGjBarg@mail.gmail.com>
+In-Reply-To: <CAEjxPJ5P0sv4v88xYnf=tadNk=y5+D_z6dDX-JTqQ=dgGjBarg@mail.gmail.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Tue, 15 Sep 2020 09:23:15 -0400
+Message-ID: <CAEjxPJ4yfAi-Ha1V50EaU01FBU-D2zwUOtxLEPhaVz8hp38E9A@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] libselinux: Fix selabel_lookup() for the root dir.
+To:     Chris PeBenito <chpebeni@linux.microsoft.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 9/15/20 9:34 AM, Stephen Smalley wrote:
-> On Tue, Sep 15, 2020 at 9:11 AM Chris PeBenito
+On Fri, Sep 11, 2020 at 4:18 PM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
+>
+> On Fri, Sep 11, 2020 at 3:57 PM Chris PeBenito
 > <chpebeni@linux.microsoft.com> wrote:
->>
->> I put up a PR for dbus-broker to revise its auditing:
->>
->> https://github.com/bus1/dbus-broker/pull/240
->>
->> Steve Grubb mentioned that there wasn't much useful info in terms of the audit
->> message itself, since it isn't key:value pairs.
-> 
-> Does that matter since it is all just stuffed as a string value for
-> the msg= field?
-> 
->> I'm looking to revise the avc_log() messages for SELINUX_ERROR,
->> SELINUX_SETENFORCE, and SELINUX_POLICYLOAD messages such that they
->> more closely reseble the kernel audits.
->>
->> *This patch is _incomplete*; I implemented a few changes to get early feedback
->> on the direction I'm taking.  What seems potentially contentious is the
->> 'lsm=selinux_uavc' and op= choices.
-> 
-> Yes, I don't see the point of using a different lsm= value than just
-> "selinux"; the fact that it is a userspace event should get reflected
-> in some other way, right?
+> >
+> > 9e4480b921bb ("Remove trailing slash on selabel_file lookups.") introduced
+> > a bug which turns the root directory lookup "/" into an empty string.
+>
+> Thanks.
+>
+> > v2: Fix commit message
+>
+> This should go after the --- so that it doesn't get included in the
+> commit message since only the final version gets committed.  But don't
+> worry about re-posting just for that; I can just amend it before
+> merging if I remember or if not no big deal.
+>
+> > Signed-off-by: Chris PeBenito <chpebeni@linux.microsoft.com>
+>
+> Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-Fair point.  It's reflected in USER_MAC_POLICY_LOAD instead of MAC_POLICY_LOAD, 
-as an example.
-
-
->> diff --git a/libselinux/src/avc_internal.c b/libselinux/src/avc_internal.c
->> index 572b2159..35ea59b6 100644
->> --- a/libselinux/src/avc_internal.c
->> +++ b/libselinux/src/avc_internal.c
->> @@ -59,14 +59,14 @@ int avc_process_setenforce(int enforcing)
->>          int rc = 0;
->>
->>          avc_log(SELINUX_SETENFORCE,
->> -               "%s:  received setenforce notice (enforcing=%d)\n",
->> +               "%s:  op=setenforce lsm=selinux_uavc enforcing=%d res=1",
->>                  avc_prefix, enforcing);
->>          if (avc_setenforce)
->>                  goto out;
->>          avc_enforcing = enforcing;
->>          if (avc_enforcing && (rc = avc_ss_reset(0)) < 0) {
->>                  avc_log(SELINUX_ERROR,
->> -                       "%s:  cache reset returned %d (errno %d)\n",
->> +                       "%s:  op=cache_reset lsm=selinux_uavc rc=%d errno=%d res=0",
->>                          avc_prefix, rc, errno);
-> 
-> If we do this at all, I would think the op= would still be setenforce
-> and this would just be an error for it.
-
-At this point we already audited success for the setenforce operation.  Wouldn't 
-it be confusing to have a op=setenforce res=1 and then immediately op=setenforce 
-res=0?
-
-> Looking at the kernel, we aren't even checking avc_ss_reset() for
-> failure and none of the kernel avc callbacks ever return an error.
-
-I'm not deeply familiar with the AVC intricacies.  If the cache fails to clear, 
-then there could be wrong cache entries, no?  If so, I would argue that it's 
-worthy of an audit.  If not, then I agree that it's not auditable.
-
-
->> @@ -157,7 +157,7 @@ static int avc_netlink_receive(void *buf, unsigned buflen, int blocking)
->>                  return -1;
->>          }
->>          else if (rc < 1) {
->> -               avc_log(SELINUX_ERROR, "%s:  netlink poll: error %d\n",
->> +               avc_log(SELINUX_ERROR, "%s:  op=netlink_poll lsm=selinux_uavc errno=%d res=0",
->>                          avc_prefix, errno);
->>                  return rc;
->>          }
-> 
-> Not sure what to do with these; arguably they aren't audit events at
-> all, just error logging.
-
-Perhaps the question is: are any of SELINUX_ERROR actually auditable?  If so, it 
-would seem the answer is to either add another log level for auditable errors. 
-If not, then the few UAVC users that audit SELINUX_ERROR need to be fixed. 
-Alternatively we could change these non-auditable SELINUX_ERRORs to 
-SELINUX_WARNING, since admins can't do much about these in most (all?) cases.
-
-
-Maybe we should add a log callback function to libselinux that UAVC users could 
-optionally use.  It would audit where appropriate and otherwise syslog/stderr 
-the message.  That would provide an upgrade path for consistent auditing while 
-still allowing UAVC users the option to handle the log callback another way when 
-desired.  A another option would be to introduce a new callback specifically for 
-auditing.
-
--- 
-Chris PeBenito
+Applied.

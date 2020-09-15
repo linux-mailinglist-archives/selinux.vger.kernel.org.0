@@ -2,68 +2,70 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E5FC426AE16
-	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 21:51:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC3EB26AECB
+	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 22:42:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727721AbgIOTt4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 15 Sep 2020 15:49:56 -0400
-Received: from mailomta6-sa.btinternet.com ([213.120.69.12]:62158 "EHLO
-        sa-prd-fep-043.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1727952AbgIOTtn (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 15:49:43 -0400
-Received: from sa-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.38.6])
-          by sa-prd-fep-045.btinternet.com with ESMTP
-          id <20200902131748.VNDJ4112.sa-prd-fep-045.btinternet.com@sa-prd-rgout-003.btmx-prd.synchronoss.net>;
-          Wed, 2 Sep 2020 14:17:48 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1599052668; 
-        bh=CHJo7+Mp8hJaF/i7p8CvP20Ym0pqyO3Fl0dzhORi41Y=;
-        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=HX0jODTCVnCyZ16DzdzG2QKdgS/4YqtELGjpIGPhYZOfva6Xx2q3WXxNGDMMVmQ/Y1pJLkt4yz24ujIpSRp+SaoBXNQNzNZuHbT3nW0w8B1tixLiU0YOYBlLwZG4FryEVmtR1oThpCIavdgJHGrrogpngxaWCua7BNNcvSMxrEfoQqeayjXv6CwHOpvgbwF+pdlzAUQrIBFfQ3gg1CvIb4TN25lidrd8wT5aQ9DjRwcgr8E+VntbVkDG68S+tGnSfpT6/98axdbMS63iQAq6++MoDf7BFtti0kdjstqQKGvgjMR+T+T1HffzczycVSZvxUSkq2jplDdU7o49WjS69g==
-Authentication-Results: btinternet.com; none
-X-Originating-IP: [109.155.32.197]
-X-OWM-Source-IP: 109.155.32.197 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduiedrudefledgieefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeeutddtleelheeugefgiefhiedtheeukeffveeitdffgeffieeugeeljeegvefgieenucfkphepuddtledrudehhedrfedvrdduleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpedutdelrdduheehrdefvddrudeljedpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqpdhrtghpthhtohepoehprghulhesphgruhhlqdhmohhorhgvrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheq
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-SNCR-hdrdom: btinternet.com
-Received: from localhost.localdomain (109.155.32.197) by sa-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
-        id 5ED9AFBE0EF36BFB; Wed, 2 Sep 2020 14:17:48 +0100
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     paul@paul-moore.com, selinux@vger.kernel.org
-Cc:     Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH 12/13] rbac: Minor format fix
-Date:   Wed,  2 Sep 2020 14:17:37 +0100
-Message-Id: <20200902131738.18425-13-richard_c_haines@btinternet.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200902131738.18425-1-richard_c_haines@btinternet.com>
-References: <20200902131738.18425-1-richard_c_haines@btinternet.com>
+        id S1728057AbgIOUmK (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 15 Sep 2020 16:42:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728066AbgIOUlV (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 16:41:21 -0400
+Received: from mail-ot1-x341.google.com (mail-ot1-x341.google.com [IPv6:2607:f8b0:4864:20::341])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA30C06174A
+        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 13:41:12 -0700 (PDT)
+Received: by mail-ot1-x341.google.com with SMTP id c10so4534308otm.13
+        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 13:41:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QC+qva/7DNIyg2XAov+2UGDM6A/P3E1L1z3erk5iXbU=;
+        b=oCAE3w/+wiHgbzVJcaGkGkEIGV+RqnpxkGEhkll9b2PfV9zUwD70LJDe77LbB6tZHm
+         Ox/iqIEDZjxaFcqkb0F5E3r762QUll/ad+mo+qwXOcoaMxrXi19Qwf2eiG/dPvhzXbW3
+         rEWYIYlzc063qB/YvYds+K5IBWF0TKf+Okj+LkmMVLgZfIIn9owZGTa7fl9yjs68VDQ8
+         FaYYYZl+eJet4mRTsDoQT+wNj0Rp3BSG4KXtK4CkbLSl7ReaBxAMGuQjZzv53lMKi9WX
+         +dwRsrgmgVXN/Wk4XNX98Nx6wNQEeI15wRj/MGlcqw0+mEs14KZXGPYg5CSM032kcM5N
+         3o6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QC+qva/7DNIyg2XAov+2UGDM6A/P3E1L1z3erk5iXbU=;
+        b=E7qM2EywvnqWlj8EnLnXEZrE5MR68ERaEjOJIEUVsCaCXQLgzp0nomiZ0kj5I7yx+D
+         IR0IpfQFL7FtkpdJkaXR4ZHO1owU9hxd61zZayDSf4HgxxVEzffM1LGPk6gXhSNQvZHw
+         b/hmJUyjr/NOR2TE9w3IU7vilhZoS2V3Klf7j0MEcp8VyP3VTToaLuxPIMQ5bi1D/fm6
+         uKDk32K6E0xqJ+oFxFT8ZKXY8LZPtDOWaGTe+8xUN2H8i8Vqww7F/MV4SNJo92U2O3Fr
+         GZhEGD7xznExf00hH9cjsxVBLq595Y9GqeF9o1h5BIEWdUX2y/EFtqmG8OiH7Jrk2QKn
+         XeqQ==
+X-Gm-Message-State: AOAM530sxaAy8WBhs01rCcvE32EMzcuXu8x7Aff3TTIL6LqvgRC+brgt
+        ejF4AM4gla5RaSrbbU7SaAmTILKDUvTIsgoLwlU=
+X-Google-Smtp-Source: ABdhPJyPvPL3nNDWqyAP/0K8NY65lk6jypniJNfhjkVy+IMlIi1X09QDKH6mCn8fu3+ViDEqZBbqwV7zvwPPRCjfpA4=
+X-Received: by 2002:a9d:185:: with SMTP id e5mr14797694ote.135.1600202471445;
+ Tue, 15 Sep 2020 13:41:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200915173332.574700-1-chpebeni@linux.microsoft.com>
+In-Reply-To: <20200915173332.574700-1-chpebeni@linux.microsoft.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Tue, 15 Sep 2020 16:41:00 -0400
+Message-ID: <CAEjxPJ6cREbJT3gPJzz5pmsec3XSRtHqnhtjfiAERdjMm9OebQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] libselinux: Add additional log callback details in
+ man page for auditing.
+To:     Chris PeBenito <chpebeni@linux.microsoft.com>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Steve Grubb <sgrubb@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
----
- src/rbac.md | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, Sep 15, 2020 at 1:36 PM Chris PeBenito
+<chpebeni@linux.microsoft.com> wrote:
+>
+> Add additional information about the log callback message types.  Indicate
+> which types could be audited and the relevant audit record types for them.
+>
+> Signed-off-by: Chris PeBenito <chpebeni@linux.microsoft.com>
 
-diff --git a/src/rbac.md b/src/rbac.md
-index 4063e38..0cf4c22 100644
---- a/src/rbac.md
-+++ b/src/rbac.md
-@@ -6,7 +6,7 @@ associated to one or more roles, where each role is then associated to
- one or more domain types as shown in **Figure 4: Role Based Access Control**.
- 
- The SELinux role name is the second component of a 'security context'
--and by convention SELinux roles end in *_r*, however this is not
-+and by convention SELinux roles end in *\_r*, however this is not
- enforced by any SELinux service (i.e. it is only used to identify the
- role component), although CIL with namespaces does make identification
- of a role easier for example a 'role' could be declared as
--- 
-2.26.2
-
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>

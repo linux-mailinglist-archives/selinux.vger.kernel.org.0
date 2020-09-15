@@ -2,69 +2,87 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1912C26AAC3
-	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 19:34:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 381FC26AC33
+	for <lists+selinux@lfdr.de>; Tue, 15 Sep 2020 20:39:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727906AbgIOReQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 15 Sep 2020 13:34:16 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:48522 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727861AbgIOReL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 13:34:11 -0400
-Received: from chpebeni.pebenito.net (pool-108-15-23-247.bltmmd.fios.verizon.net [108.15.23.247])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 9EA3D20A1B15;
-        Tue, 15 Sep 2020 10:34:10 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 9EA3D20A1B15
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1600191250;
-        bh=atq6M6Tvkt1DWV59xIzdhq616ZdPeZ8f+HdH83TIsi0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C4KFVzhDkn4t2WIwsATSEVee7KPcsqiwvH9Jm4pa2LT94CpDV/nawIsy27KJYJjde
-         QoBn4e5hBM0XLdLfEcgzdJUKwv+1VOfLtK1sTsDbz8WrfboZ9Gfx1Le+xB1qZzICLj
-         fsmpAOyLkxUIxZUeREzokuXVHPkSpS3nvq81DnYY=
-From:   Chris PeBenito <chpebeni@linux.microsoft.com>
-To:     selinux@vger.kernel.org
-Cc:     sgrubb@redhat.com
-Subject: [PATCH 2/2] libselinux: Change userspace AVC setenforce and policy load messages to audit format.
-Date:   Tue, 15 Sep 2020 13:33:32 -0400
-Message-Id: <20200915173332.574700-2-chpebeni@linux.microsoft.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200915173332.574700-1-chpebeni@linux.microsoft.com>
-References: <20200915173332.574700-1-chpebeni@linux.microsoft.com>
+        id S1728014AbgIOSjV (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 15 Sep 2020 14:39:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44962 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727666AbgIOSiv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 15 Sep 2020 14:38:51 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C52C8C06174A
+        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 11:38:50 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id e22so4060839edq.6
+        for <selinux@vger.kernel.org>; Tue, 15 Sep 2020 11:38:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qEsf3xFiIddLDKhq/tbPypo1Eyq9uXrwuTwP67FZJBg=;
+        b=1+rL6wKb48qQJcBvWyP0X+TjsdB2TYbc6pVkLuNicvBlJCpm+Sj9R+cocxfD/UBoXG
+         eM8nQ4swu7S71iSxp6vZixeppbrIHHHP6EJZLJJvoPrd12hbiXVKyg3h51WgkoHwyyW2
+         P6GPH8mrdUuSBk6uUt0niYGIqkEw8k1VvbJQkGx3iWjYmZqulu9Af7Sd0/YXHQ3M4tR9
+         zB9aJdbaqlFuLkcYqqRPKwI0XH8BeABBKhmkSW5B4Y9wM3qlcyDagjjt8/Jrf1jvAg9M
+         NG6ScZvQDIqjgEraRdBci8+mPYDLzut89ky4EN8MqoOyf9X/AjHykGQc6yxdICY96jQ4
+         wukA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qEsf3xFiIddLDKhq/tbPypo1Eyq9uXrwuTwP67FZJBg=;
+        b=JNtVFeO8isbJ3svis8tVumKLwxTtqU9X2H6WEgtTFz3u2KJ1j5j3D3ZOXgSmmUBQc8
+         Y2JWB1AFT7dQYJ+j2E64JOADMzn0mYQhN/bJSkQgw/EAcerjtN3SqpkOzjHYRnJG3bWB
+         RBvMABxuibUqRBHxAqMeNrdHlDiNthWdGxbJ9Q5+3oxACtK9EcVzcZYzNjSRgMCu3Dxz
+         YVuKT7QxTuzNT1FtatT/EEql6pW961+87WHyaoCeKxpMdbxvPu2SIXXRPd/OxBwrMBrh
+         Q6EtR4N2Wm0cgVJTKpiOTjbchENmRD+aTh4Nqtk8P2LuWfIqKpSSEc07svv6Di1HQ5Uw
+         1zNQ==
+X-Gm-Message-State: AOAM531tc3HqhyzvqHVcFDRnnCICFog4h5ZGTXHnoWQbMYA2h2TVijRM
+        F55cQBilFH7GLl6QnVcSW3g9lZZF2c+G2hEc7bGjiyIJneI4
+X-Google-Smtp-Source: ABdhPJwliMhs3ia/GgGLGP6txYMtEL3KaLtRm7LPrwJeVo4Qssz+mrdUIvKMHDQtQmnNJq9cbqpX69aPax0F4S/aQkE=
+X-Received: by 2002:aa7:ce97:: with SMTP id y23mr24575347edv.128.1600195126950;
+ Tue, 15 Sep 2020 11:38:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20200914173157.4655-1-nramas@linux.microsoft.com>
+In-Reply-To: <20200914173157.4655-1-nramas@linux.microsoft.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Tue, 15 Sep 2020 14:38:35 -0400
+Message-ID: <CAHC9VhSYY03rkNsijouC3xAR23hvNNFwtvAB2_YFeDMVvdLj9w@mail.gmail.com>
+Subject: Re: [PATCH v4] selinux: Add helper functions to get and set checkreqprot
+To:     Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: selinux-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: Chris PeBenito <chpebeni@linux.microsoft.com>
----
- libselinux/src/avc_internal.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On Mon, Sep 14, 2020 at 1:32 PM Lakshmi Ramasubramanian
+<nramas@linux.microsoft.com> wrote:
+>
+> checkreqprot data member in selinux_state struct is accessed directly by
+> SELinux functions to get and set. This could cause unexpected read or
+> write access to this data member due to compiler optimizations and/or
+> compiler's reordering of access to this field.
+>
+> Add helper functions to get and set checkreqprot data member in
+> selinux_state struct. These helper functions use READ_ONCE and
+> WRITE_ONCE macros to ensure atomic read or write of memory for
+> this data member.
+>
+> Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+> Suggested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> Suggested-by: Paul Moore <paul@paul-moore.com>
+> ---
+>  security/selinux/hooks.c            |  6 +++---
+>  security/selinux/include/security.h | 10 ++++++++++
+>  security/selinux/selinuxfs.c        |  5 +++--
+>  3 files changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/libselinux/src/avc_internal.c b/libselinux/src/avc_internal.c
-index 572b2159..53a99a1f 100644
---- a/libselinux/src/avc_internal.c
-+++ b/libselinux/src/avc_internal.c
-@@ -59,7 +59,7 @@ int avc_process_setenforce(int enforcing)
- 	int rc = 0;
- 
- 	avc_log(SELINUX_SETENFORCE,
--		"%s:  received setenforce notice (enforcing=%d)\n",
-+		"%s:  op=setenforce lsm=selinux enforcing=%d res=1",
- 		avc_prefix, enforcing);
- 	if (avc_setenforce)
- 		goto out;
-@@ -81,7 +81,7 @@ int avc_process_policyload(uint32_t seqno)
- 	int rc = 0;
- 
- 	avc_log(SELINUX_POLICYLOAD,
--		"%s:  received policyload notice (seqno=%u)\n",
-+		"%s:  op=load_policy lsm=selinux seqno=%u res=1",
- 		avc_prefix, seqno);
- 	rc = avc_ss_reset(seqno);
- 	if (rc < 0) {
+Merged into selinux/next, thanks Lakshmi!
+
 -- 
-2.26.2
-
+paul moore
+www.paul-moore.com

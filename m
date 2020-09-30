@@ -2,126 +2,107 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D2EC327E0A2
-	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 07:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 60A8427E597
+	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 11:49:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725776AbgI3FuW (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 30 Sep 2020 01:50:22 -0400
-Received: from out2-smtp.messagingengine.com ([66.111.4.26]:50181 "EHLO
-        out2-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725440AbgI3FuW (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 30 Sep 2020 01:50:22 -0400
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-        by mailout.nyi.internal (Postfix) with ESMTP id 166B05C0112;
-        Wed, 30 Sep 2020 01:50:21 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 30 Sep 2020 01:50:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=themaw.net; h=
-        message-id:subject:from:to:cc:date:in-reply-to:references
-        :content-type:mime-version:content-transfer-encoding; s=fm1; bh=
-        Mp9EqWJ4lUoNUl6c9m7THxG0vTK6pHSVa8wUIjwah7U=; b=ankom8DyIiQ+f5GR
-        QbMxnDP32vp7AOWdPOGsbegp24fY9xujXYyST4xC5PqMredoKwSfBruFjMUWvroy
-        81hY4WDA8m7bI3nJ5awlRThuRS1wqr5/5JKnxKAI2K4g4d7Do5dN17YjogWo1Gs0
-        dX42MvKifQ3q/YSbym/YnYvR00pf41h3hCjCHbAHoWvsdrc+nPCynPGfHtc02NMG
-        rouFrA57rHcneLWSA1d1fDqlxNH6SHoNKCCYQVOhTYnfhib6T4daJ0tEoMpwjdTx
-        XFCGoFCLAlnqFOLyGl1S7AsfPR/SSGMCCRBXkOb+yu4C/4Uj5dKFmajOTTZtBSBO
-        KaDGjw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:content-transfer-encoding:content-type
-        :date:from:in-reply-to:message-id:mime-version:references
-        :subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; bh=Mp9EqWJ4lUoNUl6c9m7THxG0vTK6pHSVa8wUIjwah
-        7U=; b=B2KqN8M7C517SqGwaazCflnXDlSHILOVG5C8VgaxEvKEUpnrKMg78jFOn
-        9edzsSp1/5A+GiqjCnlpvmdX3Q0S1TlbeCKTRhhUNeQBgT75u1+IVJ3fi98vDjUs
-        KPA0HuGR/KTM+m7sDFAHY1y2q+NI3gjrflPZ21pdQpb+Mwb43/roFtv/DcVsA4zf
-        1ab2o6WHDctFZdzWCqdBQDEebbOfrev8GKdRxrSPUlCQv5BAsDtkrPxZQdrYVnwD
-        47QNr6tgwN7UJ5M2LXBkog2A79BvLhI7kJL/HP7qINqXJjIz9bK3usp+TBjfzBxC
-        5dSTrQ1rvRMcr94RmMOFs8FipBo5Q==
-X-ME-Sender: <xms:nBx0X4aTOnM93Ew87NG_-a2PVhUZi7xgXN3Ozsup3JTeBMvDVG2ixg>
-    <xme:nBx0XzZQ-StDGA1JJH6WnjNSJy_0tWqCv5tl3TAX-MyYBvOMMOvoeLlbx6kXeG8hc
-    1V-0ObgYWQ3>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedujedrfedtgdelkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefkuffhvfffjghftggfggfgsehtjeertddtreejnecuhfhrohhmpefkrghnucfm
-    vghnthcuoehrrghvvghnsehthhgvmhgrfidrnhgvtheqnecuggftrfgrthhtvghrnhepfe
-    efteetvdeguddvveefveeftedtffduudehueeihfeuvefgveehffeludeggfejnecukfhp
-    peduvddurdeggedruddvkedrvddtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprhgrvhgvnhesthhhvghmrgifrdhnvght
-X-ME-Proxy: <xmx:nBx0Xy8DYHRV0h7iRBTc76RoNdetRvIRDm5jEkMQZGWE82eK31aZNg>
-    <xmx:nBx0XyoB9cUUjsu-ehms1pgoXOMdGOkatBVqxsKgmqGzneUXKz3qbw>
-    <xmx:nBx0Xzr_WCNwqQ0AZtbgzbYvYXCn3C55yLm9T2tO70oT77yYwiVD5g>
-    <xmx:nRx0X0DKnl8WVFm1qYbMnz_GwfgNV1BdVsuBfI0_w-d_lqs6jxnhOQ>
-Received: from mickey.themaw.net (unknown [121.44.128.20])
-        by mail.messagingengine.com (Postfix) with ESMTPA id 489FA3280059;
-        Wed, 30 Sep 2020 01:50:17 -0400 (EDT)
-Message-ID: <689756d7d7d73a8eb86d020b0dfeb976e28cc9b4.camel@themaw.net>
-Subject: Re: Commit 13c164b1a186 - regression for LSMs/SELinux?
-From:   Ian Kent <raven@themaw.net>
-To:     Christoph Hellwig <hch@lst.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Al Viro <viro@zeniv.linux.org.uk>, autofs@vger.kernel.org,
-        Linux Security Module list 
-        <linux-security-module@vger.kernel.org>,
-        SElinux list <selinux@vger.kernel.org>,
-        Zdenek Pytela <zpytela@redhat.com>
-Date:   Wed, 30 Sep 2020 13:50:14 +0800
-In-Reply-To: <20200929180037.GA12447@lst.de>
-References: <20200921163011.GZ3421308@ZenIV.linux.org.uk>
-         <CAFqZXNsBqvCj0NjEd9+C0H1EPjz7Fst296AA5eOFSVx=SKjfOg@mail.gmail.com>
-         <0764629d33d151aee743d0429ac87a5b0c300235.camel@themaw.net>
-         <CAFqZXNsqD73hptXxBn+g98ngbFd=Sx+CghtwVqM+NC47VFZhVQ@mail.gmail.com>
-         <CAEjxPJ4oZvtqUpW0bMzoZwVsi9kDvL5LtouHQZAO7gM7_qyHMg@mail.gmail.com>
-         <CAFqZXNs0oZ+_RNvwE-e62H2FSS=N4wbvJ+tgk0_dSn=5mbPhcw@mail.gmail.com>
-         <CAHk-=wjYB+q1=3_x97VSNo5cPTL=eHnuMDXoKhGJOJvo+pbp9g@mail.gmail.com>
-         <05c18390d485ae6d84c49f707d20b49e28f210a6.camel@themaw.net>
-         <CAFqZXNt2pWwRnnzB0KfZfZy-dJuXfKkJeejpuXcHCBLq1htA8w@mail.gmail.com>
-         <CAHk-=wi3+AhZ0Q3nvGJCgdL0Vq8b_soy8rhS5_HE79VBP7Q-LQ@mail.gmail.com>
-         <20200929180037.GA12447@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.5 (3.36.5-1.fc32) 
+        id S1728916AbgI3Jtl (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 30 Sep 2020 05:49:41 -0400
+Received: from mailomta1-re.btinternet.com ([213.120.69.94]:35184 "EHLO
+        re-prd-fep-041.btinternet.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725776AbgI3Jtl (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 30 Sep 2020 05:49:41 -0400
+Received: from re-prd-rgout-005.btmx-prd.synchronoss.net ([10.2.54.8])
+          by re-prd-fep-041.btinternet.com with ESMTP
+          id <20200930094937.YAYH30588.re-prd-fep-041.btinternet.com@re-prd-rgout-005.btmx-prd.synchronoss.net>;
+          Wed, 30 Sep 2020 10:49:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1601459377; 
+        bh=YNsOkUZujBTp1VIhvorGSCJE/j6KGbTrOkO5VSFNFN8=;
+        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version;
+        b=DqrPHxHvqmH7LX/vwWop3jtNl2Yqrr9Ow5Sj6CeB5L2TpH0LaeRHRKN2Uc0hDUykXM0RavbyxvsDxZxnHboNWUOlxlQH1j0mdrJlPGzxdGZzkLpgqCJgeZdI6Femno1jqAEjhXcmLCjURmb90frPBYsQ/ZZYDB0yB+eOm7ZWEAnNaKweCwf34HGWnzDcznkN8WquvAvb1e/NiXFsjTC6psHE1J20dT8rSn1MwVKIH9PpXNzhgoDldMYtOv+zUhb58N+0+hKaVuiGogOgh2JALGwjyK5GNPZQggoMnDrlzWpRfMlFdz2zdIg24B8gYQ+OvyoqC5a+9gsoQ6SDs9pWUw==
+Authentication-Results: btinternet.com;
+    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
+X-Originating-IP: [81.141.56.129]
+X-OWM-Source-IP: 81.141.56.129 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedujedrfedvgdduhecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepgedvgeelgfefvdeftefhhfelveekgffhudektdelveduueejudevueejleekfffgnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpkhgvrhhnvghlrdhorhhgpdhoshhmohgtohhmrdhorhhgnecukfhppeekuddrudeguddrheeirdduvdelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekuddrudeguddrheeirdduvdelpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeojhhmohhrrhhishesnhgrmhgvihdrohhrgheqpdhrtghpthhtohepoehlrghfohhrghgvsehgnhhumhhonhhkshdrohhrgheqpdhrtghpthhtohepoehlihhnuhigqdhsvggtuhhrihhthidqmhhoughulhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgqedprhgtphhtthhopeeonhgvthguvghv
+        sehvghgvrhdrkhgvrhhnvghlrdhorhhgqedprhgtphhtthhopeeoohhsmhhotghomhdqnhgvthdqghhprhhssehlihhsthhsrdhoshhmohgtohhmrdhorhhgqedprhgtphhtthhopeeophgrsghlohesnhgvthhfihhlthgvrhdrohhrgheqpdhrtghpthhtohepoehprghulhesphgruhhlqdhmohhorhgvrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqpdhrtghpthhtohepoehsthgvphhhvghnrdhsmhgrlhhlvgihrdifohhrkhesghhmrghilhdrtghomheq
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from localhost.localdomain (81.141.56.129) by re-prd-rgout-005.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
+        id 5ED9C74D136117B5; Wed, 30 Sep 2020 10:49:37 +0100
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
+        osmocom-net-gprs@lists.osmocom.org, netdev@vger.kernel.org
+Cc:     stephen.smalley.work@gmail.com, paul@paul-moore.com,
+        pablo@netfilter.org, laforge@gnumonks.org, jmorris@namei.org,
+        Richard Haines <richard_c_haines@btinternet.com>
+Subject: [PATCH 0/3] Add LSM/SELinux support for GPRS Tunneling Protocol (GTP)
+Date:   Wed, 30 Sep 2020 10:49:31 +0100
+Message-Id: <20200930094934.32144-1-richard_c_haines@btinternet.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, 2020-09-29 at 20:00 +0200, Christoph Hellwig wrote:
-> On Tue, Sep 29, 2020 at 10:23:50AM -0700, Linus Torvalds wrote:
-> > On Tue, Sep 29, 2020 at 5:16 AM Ondrej Mosnacek <
-> > omosnace@redhat.com> wrote:
-> > > OK, so it seems that reverting comes out as the best choice here.
-> > 
-> > Yeah.
-> > 
-> > > BTW, I'm looking at rw_verify_area() and I see this "If (ppos)"
-> > > check
-> > > and the comment above it... And then I look at autofs_write(),
-> > > which
-> > > passes &file->f_pos, while ksys_write() passes file_ppos(file)
-> > 
-> > Ok, that doesn't matter for the security_file_permission() issue,
-> > but
-> > yes, autofs is doing the traditional thing, and it's pointless.
-> > Using
-> > file_ppos(file) isn't an option since it's an inline to
-> > read_write.c,
-> > but it could just pass in NULL these days and avoid that too.
-> > 
-> > So how about we just do the appended patch? Can whoever sees this
-> > problem just verify, even though it looks trivially correct...
-> 
-> This looks sensible to me.  I'd throw in a
-> 
-> /* only for autofs, don't use in new code */
-> 
-> near the export, but users of these kind of functions tend to be
-> blind copy and paste code anyway, so the comment probably isn't
-> even read by the relevant parties..
+These patches came about after looking at 5G open source in particular
+the updated 5G GTP driver at [1]. As this driver is still under
+development, added the LSM/SELinux hooks to the current stable GTP
+version in kernel selinux-next [2]. Similar hooks have also been
+implemented in [1] as it uses the same base code as the current 3G
+version (except that it handles different packet types).
 
-I'll build a patched kernel and give it a whirl.
+To test the 3G GTP driver there is an RFC patch for the selinux-testsuite
+at [3].
 
-Ian
+To enable the selinux-testsuite GTP tests, the libgtpnl [4] library and
+tools needed to be modified to:
+Return ERRNO on error to detect EACCES, Add gtp_match_tunnel function,
+Allow gtp-link to specify port numbers for multiple instances to
+run in the same namespace.
+
+A patch for libgtpnl is supplied in the selinux-testsuite patch as well
+as setup/test instructions (libgtpnl is not packaged by Fedora)
+
+These patches were tested on Fedora 32 with kernel [2] using the
+'targeted' policy. Also ran the Linux Kernel GTP-U basic tests [5].
+
+[1] https://github.com/PrinzOwO/gtp5g
+[2] https://github.com/SELinuxProject/selinux-kernel
+[3] https://lore.kernel.org/selinux/20200924085314.6120-1-richard_c_haines@btinternet.com/
+[4] git://git.osmocom.org/libgtpnl.git
+[5] https://osmocom.org/projects/linux-kernel-gtp-u/wiki/Basic_Testing
+
+Changes from RFC patches:
+1) Rework the LSM hook names and contents as suggested by Casey Schaufler.
+This resulted in moving the gtp_dev struct from gtp.c to include/net/gtp.h
+so that it is visible to the LSM modules for storing the security blob.
+2) Remove pr_debug's from gtp.c security_* calls.
+3) Minor GTP.rst updates.
+4) Added netdev to distribution list.
+
+Richard Haines (3):
+  security: Add GPRS Tunneling Protocol (GTP) security hooks
+  gtp: Add LSM hooks to GPRS Tunneling Protocol (GTP)
+  selinux: Add SELinux GTP support
+
+ Documentation/security/GTP.rst      | 100 ++++++++++++++++++++++++++++
+ Documentation/security/index.rst    |   1 +
+ drivers/net/gtp.c                   |  50 +++++++++-----
+ include/linux/lsm_hook_defs.h       |   3 +
+ include/linux/lsm_hooks.h           |  13 ++++
+ include/linux/security.h            |  22 ++++++
+ include/net/gtp.h                   |  21 ++++++
+ security/security.c                 |  18 +++++
+ security/selinux/hooks.c            |  66 ++++++++++++++++++
+ security/selinux/include/classmap.h |   2 +
+ security/selinux/include/objsec.h   |   4 ++
+ 11 files changed, 284 insertions(+), 16 deletions(-)
+ create mode 100644 Documentation/security/GTP.rst
+
+-- 
+2.26.2
 

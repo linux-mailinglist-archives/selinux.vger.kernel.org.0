@@ -2,43 +2,43 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C030727EB61
-	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 16:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C4627EB63
+	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 16:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730592AbgI3Ouu (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 30 Sep 2020 10:50:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:25441 "EHLO
+        id S1730601AbgI3OvE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 30 Sep 2020 10:51:04 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:55261 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728149AbgI3Ouu (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 30 Sep 2020 10:50:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1601477448;
+        by vger.kernel.org with ESMTP id S1730427AbgI3OvE (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 30 Sep 2020 10:51:04 -0400
+Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1601477463;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=lkNzSDye89EepijHfGqBte5KlKRaFGNVRbLrtB4sTNA=;
-        b=W+eGbC0qHPEarjOM37ENn62sArcphVZWlNna9BYfYEo1O9dJIekN6smsAudbmmqWSwoHmH
-        94Ca/yRwoyWkwOetz3eDDAeAfe9ZMuOCRWCxb/vqWXRnwOlSnhXmh1y2gOJ1g/6BZVodB9
-        BmnU79l869F4Fh25h3lufYjy/IqBNOQ=
+        bh=8gjR7A43Z0Pv7yuo/qczca/yad5OMKgL+O04+FVd61w=;
+        b=adY+uRYOu8bJZEFswUBuDsfBcMAKONllNlxNX6IVjQbkSN7ziKN2T3pN8r3V5ZXnOvxb/s
+        CJ+mBp/iqoPhYH+pXMce3Fs8qZvWCuPwrsSmfk1KmL5L8gW8SHMYn3dMk/OZhkL2xyp8xP
+        ndHynXFIrwaGFnoevQ3c5IelTaEig30=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-118-hr9bfHTJMMCsZfSLPzeEyA-1; Wed, 30 Sep 2020 10:50:46 -0400
-X-MC-Unique: hr9bfHTJMMCsZfSLPzeEyA-1
+ us-mta-483-6T4UT-zpPtaxR_9npqW-iQ-1; Wed, 30 Sep 2020 10:50:47 -0400
+X-MC-Unique: 6T4UT-zpPtaxR_9npqW-iQ-1
 Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BFFE780EFA4
-        for <selinux@vger.kernel.org>; Wed, 30 Sep 2020 14:50:45 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D4F2618BA280
+        for <selinux@vger.kernel.org>; Wed, 30 Sep 2020 14:50:46 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.40.193.40])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 057315D9DC;
-        Wed, 30 Sep 2020 14:50:44 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 207E65D9D3;
+        Wed, 30 Sep 2020 14:50:45 +0000 (UTC)
 From:   Petr Lautrbach <plautrba@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH 3/4] libsemanage: Remove legacy and duplicate symbols
-Date:   Wed, 30 Sep 2020 16:50:30 +0200
-Message-Id: <20200930145031.910190-3-plautrba@redhat.com>
+Subject: [PATCH 4/4] libsemanage: Bump libsemanage.so version
+Date:   Wed, 30 Sep 2020 16:50:31 +0200
+Message-Id: <20200930145031.910190-4-plautrba@redhat.com>
 In-Reply-To: <20200930145031.910190-1-plautrba@redhat.com>
 References: <20200930145031.910190-1-plautrba@redhat.com>
 MIME-Version: 1.0
@@ -48,229 +48,26 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Versioned duplicate symbols cause problems for LTO. These symbols were
-introduced during the CIL integration several releases ago and were only
-consumed by other SELinux userspace components.
+It's due to the previous ABI incompatible change
 
 Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
 ---
- libsemanage/include/semanage/modules.h |   2 +-
- libsemanage/src/libsemanage.map        |   5 --
- libsemanage/src/modules.c              | 100 +------------------------
- libsemanage/src/modules.h              |   9 +--
- libsemanage/src/semanageswig_python.i  |   2 -
- 5 files changed, 4 insertions(+), 114 deletions(-)
+ libsemanage/src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libsemanage/include/semanage/modules.h b/libsemanage/include/semanage/modules.h
-index ac4039314857..b51f61f033d5 100644
---- a/libsemanage/include/semanage/modules.h
-+++ b/libsemanage/include/semanage/modules.h
-@@ -33,7 +33,7 @@ typedef struct semanage_module_key semanage_module_key_t;
-  */
+diff --git a/libsemanage/src/Makefile b/libsemanage/src/Makefile
+index a0eb3747d74b..ab6cae51f5c3 100644
+--- a/libsemanage/src/Makefile
++++ b/libsemanage/src/Makefile
+@@ -32,7 +32,7 @@ YACC = bison
+ YFLAGS = -d
  
- extern int semanage_module_install(semanage_handle_t *,
--				   char *module_data, size_t data_len, char *name, char *ext_lang);
-+				   char *module_data, size_t data_len, const char *name, const char *ext_lang);
- extern int semanage_module_install_file(semanage_handle_t *,
- 					const char *module_name);
- extern int semanage_module_remove(semanage_handle_t *, char *module_name);
-diff --git a/libsemanage/src/libsemanage.map b/libsemanage/src/libsemanage.map
-index 1375a8ca0ea7..4bec06aaae27 100644
---- a/libsemanage/src/libsemanage.map
-+++ b/libsemanage/src/libsemanage.map
-@@ -167,18 +167,13 @@ LIBSEMANAGE_1.0 {
-     semanage_mls_enabled;
-     semanage_module_disable;
-     semanage_module_enable;
--    semanage_module_get_enabled;
-     semanage_module_get_name;
-     semanage_module_get_version;
-     semanage_module_info_datum_destroy;
--    semanage_module_install;
--    semanage_module_install_base;
--    semanage_module_install_base_file;
-     semanage_module_install_file;
-     semanage_module_list;
-     semanage_module_list_nth;
-     semanage_module_remove;
--    semanage_module_upgrade;
-     semanage_module_upgrade_file;
-     semanage_msg_get_channel;
-     semanage_msg_get_fname;
-diff --git a/libsemanage/src/modules.c b/libsemanage/src/modules.c
-index 6d3eb60ae462..8b36801038df 100644
---- a/libsemanage/src/modules.c
-+++ b/libsemanage/src/modules.c
-@@ -42,70 +42,7 @@
- #include "modules.h"
- #include "debug.h"
+ VERSION = $(shell cat ../VERSION)
+-LIBVERSION = 1
++LIBVERSION = 2
  
--asm(".symver semanage_module_get_enabled_1_1,semanage_module_get_enabled@@LIBSEMANAGE_1.1");
--asm(".symver semanage_module_get_enabled_1_0,semanage_module_get_enabled@LIBSEMANAGE_1.0");
--asm(".symver semanage_module_install_pp,semanage_module_install@LIBSEMANAGE_1.0");
--asm(".symver semanage_module_install_hll,semanage_module_install@@LIBSEMANAGE_1.1");
--
--/* Takes a module stored in 'module_data' and parses its headers.
-- * Sets reference variables 'module_name' to module's name and
-- * 'version' to module's version. The caller is responsible for
-- * free()ing 'module_name' and 'version'; they will be
-- * set to NULL upon entering this function.  Returns 0 on success, -1
-- * if out of memory, or -2 if data did not represent a module.
-- */
--static int parse_module_headers(semanage_handle_t * sh, char *module_data,
--				size_t data_len, char **module_name, char **version)
--{
--	struct sepol_policy_file *pf;
--	int file_type;
--	*version = NULL;
--
--	if (sepol_policy_file_create(&pf)) {
--		ERR(sh, "Out of memory!");
--		return -1;
--	}
--	sepol_policy_file_set_mem(pf, module_data, data_len);
--	sepol_policy_file_set_handle(pf, sh->sepolh);
--	if (module_data == NULL ||
--	    data_len == 0 ||
--	    sepol_module_package_info(pf, &file_type, module_name, version) == -1) {
--		sepol_policy_file_free(pf);
--		ERR(sh, "Could not parse module data.");
--		return -2;
--	}
--	sepol_policy_file_free(pf);
--	if (file_type != SEPOL_POLICY_MOD) {
--		ERR(sh, "Data did not represent a pp module. Please upgrade to the latest version of libsemanage to support hll modules.");
--		return -2;
--	}
--
--	return 0;
--}
--
--/* This function is used to preserve ABI compatibility with
-- * versions of semodule using LIBSEMANAGE_1.0
-- */
--int semanage_module_install_pp(semanage_handle_t * sh,
--			    char *module_data, size_t data_len)
--{
--	char *name = NULL;
--	char *version = NULL;
--	int status;
--
--	if ((status = parse_module_headers(sh, module_data, data_len, &name, &version)) != 0) {
--		goto cleanup;
--	}
--
--	status = semanage_module_install_hll(sh, module_data, data_len, name, "pp");
--
--cleanup:
--	free(name);
--	free(version);
--	return status;
--}
--
--int semanage_module_install_hll(semanage_handle_t * sh,
-+int semanage_module_install(semanage_handle_t * sh,
- 			    char *module_data, size_t data_len, const char *name, const char *ext_lang)
- {
- 	if (sh->funcs->install == NULL) {
-@@ -160,16 +97,6 @@ int semanage_module_extract(semanage_handle_t * sh,
- 	return sh->funcs->extract(sh, modkey, extract_cil, mapped_data, data_len, modinfo);
- }
- 
--/* Legacy function that remains to preserve ABI
-- * compatibility. Please use semanage_module_install instead.
-- */
--int semanage_module_upgrade(semanage_handle_t * sh,
--			    char *module_data, size_t data_len)
--{
--	return semanage_module_install_pp(sh, module_data, data_len);
--	
--}
--
- /* Legacy function that remains to preserve ABI
-  * compatibility. Please use semanage_module_install_file instead.
-  */
-@@ -179,24 +106,6 @@ int semanage_module_upgrade_file(semanage_handle_t * sh,
- 	return semanage_module_install_file(sh, module_name);
- }
- 
--/* Legacy function that remains to preserve ABI
-- * compatibility. Please use semanage_module_install instead.
-- */
--int semanage_module_install_base(semanage_handle_t * sh,
--				 char *module_data, size_t data_len)
--{
--	return semanage_module_install_pp(sh, module_data, data_len);
--}
--
--/* Legacy function that remains to preserve ABI
-- * compatibility. Please use semanage_module_install_file instead.
-- */
--int semanage_module_install_base_file(semanage_handle_t * sh,
--				 const char *module_name)
--{
--	return semanage_module_install_file(sh, module_name);
--}
--
- int semanage_module_remove(semanage_handle_t * sh, char *module_name)
- {
- 	if (sh->funcs->remove == NULL) {
-@@ -780,7 +689,7 @@ int semanage_module_key_set_priority(semanage_handle_t *sh,
- }
- 
- 
--int semanage_module_get_enabled_1_1(semanage_handle_t *sh,
-+int semanage_module_get_enabled(semanage_handle_t *sh,
- 				const semanage_module_key_t *modkey,
- 				int *enabled)
- {
-@@ -800,11 +709,6 @@ int semanage_module_get_enabled_1_1(semanage_handle_t *sh,
- 	return sh->funcs->get_enabled(sh, modkey, enabled);
- }
- 
--int semanage_module_get_enabled_1_0(semanage_module_info_t *modinfo)
--{
--	return modinfo->enabled;
--}
--
- int semanage_module_set_enabled(semanage_handle_t *sh,
- 				const semanage_module_key_t *modkey,
- 				int enabled)
-diff --git a/libsemanage/src/modules.h b/libsemanage/src/modules.h
-index 2d3576fb15df..64d4a157f5ca 100644
---- a/libsemanage/src/modules.h
-+++ b/libsemanage/src/modules.h
-@@ -26,16 +26,9 @@
- 
- #include "semanage/modules.h"
- 
--int semanage_module_install_pp(semanage_handle_t * sh,
--			    char *module_data, size_t data_len);
--int semanage_module_install_hll(semanage_handle_t * sh,
--			    char *module_data, size_t data_len, const char *name, const char *ext_lang);
--int semanage_module_upgrade(semanage_handle_t * sh,
--			    char *module_data, size_t data_len);
-+
- int semanage_module_upgrade_file(semanage_handle_t * sh,
- 				 const char *module_name);
--int semanage_module_install_base(semanage_handle_t * sh,
--				 char *module_data, size_t data_len);
- int semanage_module_install_base_file(semanage_handle_t * sh,
- 				 const char *module_name);
- 
-diff --git a/libsemanage/src/semanageswig_python.i b/libsemanage/src/semanageswig_python.i
-index 8dd79fc24213..5f0113966962 100644
---- a/libsemanage/src/semanageswig_python.i
-+++ b/libsemanage/src/semanageswig_python.i
-@@ -30,8 +30,6 @@
- %}
- 
- %include "stdint.i"
--%ignore semanage_module_install_pp;
--%ignore semanage_module_install_hll;
- 
- %wrapper %{
- 
+ LIBA=libsemanage.a
+ TARGET=libsemanage.so
 -- 
 2.28.0
 

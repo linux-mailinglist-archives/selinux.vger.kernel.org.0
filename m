@@ -2,26 +2,26 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FE4427DDCB
-	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 03:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA32727DDD3
+	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 03:38:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729365AbgI3BdU (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 29 Sep 2020 21:33:20 -0400
-Received: from smtpbgsg1.qq.com ([54.254.200.92]:35767 "EHLO smtpbgsg1.qq.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729322AbgI3BdU (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Tue, 29 Sep 2020 21:33:20 -0400
-X-QQ-mid: bizesmtp20t1601429574tjxe7o8j
-Received: from localhost.localdomain (unknown [110.53.188.237])
+        id S1729506AbgI3BiY (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 29 Sep 2020 21:38:24 -0400
+Received: from smtpbguseast1.qq.com ([54.204.34.129]:44765 "EHLO
+        smtpbguseast1.qq.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729404AbgI3BiX (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 29 Sep 2020 21:38:23 -0400
+X-QQ-mid: bizesmtp2t1601429879teikl1dg2
+Received: from localhost.localdomain (unknown [218.76.23.26])
         by esmtp6.qq.com (ESMTP) with 
-        id ; Wed, 30 Sep 2020 09:32:49 +0800 (CST)
+        id ; Wed, 30 Sep 2020 09:37:22 +0800 (CST)
 X-QQ-SSF: 01400000002000F0D000B00A0000000
-X-QQ-FEAT: gDbwoeOnDAEXUpeNLJFccHZemlJdFlT1aOC6Z/RFGwzL8HUOEvlshzsXbtoEg
-        8QXzCWmiw4Yhwrq4jBwekC2weLSkF7NQ/E0YGt7aGrx78OJB8ZYBENdT9zL7KdzjmqFrc9u
-        DX5lymeFN0XA9Mu2uLeeS+QICogA3HKayKLkiJqjMW+ps2rrKStEy6yXQZhgS02b+1NT78v
-        YWVImBMVcuTODef3hVKZppYAktTi0q05UYLpRqjoa0ggbkMhkkn9IdS9Ninb1c/XhNZtK3z
-        OB25wXW/rFuJreDH5bQkHHiapPPMROg9bw4EIPfFmrwa14wVWIDnTgNGNYkGFwnPCtQeHvC
-        9BgDupfhnQ9rs2REoQ=
+X-QQ-FEAT: WK7HT2c9PvWR0a7FdtqZp++22iZWCxON5yY9T0eBLNhNI901pR8uWn9iyeCEM
+        kxd/1weKhTRzRvcsEYbGfY50YEGqwGqHzn0HCVHeHckzSsKkTH1d3RcBxb/tuBDV2QTVVww
+        B/1o2SlhwveMqdFdgH5adUBChoW5sysZn2A8aQzEEIaq5cqkxqQrujxcC6xHiJjp8PfEU2B
+        Kx52Nz+nv4IVTzH9bjH8fZiUsdXB9fWBMgd4cyGAjWuVaQhbHWHz0hiC+OjNogR7KvLk8S8
+        bO2CbDXwbVrakIz3SQOt0yDcm94w3nWJo19Na/CxRhEwA2fQKYTsz574dSS7Hd+QeDhjuM/
+        bRrOppIIzGWuw/5EJg=
 X-QQ-GoodBg: 2
 From:   rentianyue@tj.kylinos.cn
 To:     Paul Moore <paul@paul-moore.com>,
@@ -31,9 +31,11 @@ To:     Paul Moore <paul@paul-moore.com>,
 Cc:     yangzhao@kylinos.cn, selinux@vger.kernel.org,
         Tianyue Ren <rentianyue@kylinos.cn>
 Subject: [PATCH v2 0/1] selinux: fix error initialization in inode_doinit_with_dentry()
-Date:   Wed, 30 Sep 2020 09:31:45 +0800
-Message-Id: <20200930013146.48339-1-rentianyue@tj.kylinos.cn>
+Date:   Wed, 30 Sep 2020 09:36:52 +0800
+Message-Id: <20200930013653.48787-1-rentianyue@tj.kylinos.cn>
 X-Mailer: git-send-email 2.28.0
+In-Reply-To: <CAEjxPJ7==mkXDKuDw2YueRP+ymoQjPDdCS8Wk7GJfth+CpLqkg@mail.gmail.com>
+References: <CAEjxPJ7==mkXDKuDw2YueRP+ymoQjPDdCS8Wk7GJfth+CpLqkg@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520

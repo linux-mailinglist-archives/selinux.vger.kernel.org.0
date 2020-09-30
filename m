@@ -2,26 +2,26 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA32727DDD3
-	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 03:38:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C75FF27DDD2
+	for <lists+selinux@lfdr.de>; Wed, 30 Sep 2020 03:38:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729506AbgI3BiY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 29 Sep 2020 21:38:24 -0400
-Received: from smtpbguseast1.qq.com ([54.204.34.129]:44765 "EHLO
-        smtpbguseast1.qq.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729404AbgI3BiX (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 29 Sep 2020 21:38:23 -0400
-X-QQ-mid: bizesmtp2t1601429879teikl1dg2
+        id S1729487AbgI3BiJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 29 Sep 2020 21:38:09 -0400
+Received: from smtpbg702.qq.com ([203.205.195.102]:47901 "EHLO
+        smtpproxy21.qq.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1729404AbgI3BiJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 29 Sep 2020 21:38:09 -0400
+X-QQ-mid: bizesmtp2t1601429884tfkczzv7u
 Received: from localhost.localdomain (unknown [218.76.23.26])
         by esmtp6.qq.com (ESMTP) with 
-        id ; Wed, 30 Sep 2020 09:37:22 +0800 (CST)
+        id ; Wed, 30 Sep 2020 09:38:01 +0800 (CST)
 X-QQ-SSF: 01400000002000F0D000B00A0000000
-X-QQ-FEAT: WK7HT2c9PvWR0a7FdtqZp++22iZWCxON5yY9T0eBLNhNI901pR8uWn9iyeCEM
-        kxd/1weKhTRzRvcsEYbGfY50YEGqwGqHzn0HCVHeHckzSsKkTH1d3RcBxb/tuBDV2QTVVww
-        B/1o2SlhwveMqdFdgH5adUBChoW5sysZn2A8aQzEEIaq5cqkxqQrujxcC6xHiJjp8PfEU2B
-        Kx52Nz+nv4IVTzH9bjH8fZiUsdXB9fWBMgd4cyGAjWuVaQhbHWHz0hiC+OjNogR7KvLk8S8
-        bO2CbDXwbVrakIz3SQOt0yDcm94w3nWJo19Na/CxRhEwA2fQKYTsz574dSS7Hd+QeDhjuM/
-        bRrOppIIzGWuw/5EJg=
+X-QQ-FEAT: Ry58bBY793vMGSxEvts4BX2LU96VFEbx9cSPcr5HTgw3iXgKu2kei0zARCt23
+        2mLAfGgE0cIHKWRGXpXeUCRs55N8liPqRg/KG4Qcg138JL3vC3dzHGpinYh4RHCvRQpGrEa
+        xvMjfDdvo6sJxjaZMCwc+8lElWcNbCGO88wNxSWOgsnOEYHTZiVUdcQZ8Ch4jkg73qmGFnT
+        Aq3Aj/wTgZHamIcLrk3bDD8Zl4LFYG/jQCjZMs9V0AtiBrcV3M1wHGx1EnFjfNcz//ny2qh
+        +FO3kDX9j3mEpxlxeNaG+7OCkjuBpj5qrR3KTRgFIJ/mbF7wIjQcs85YdaOOrxdY818PKNN
+        NA4AsSevA1+lCKOsfE=
 X-QQ-GoodBg: 2
 From:   rentianyue@tj.kylinos.cn
 To:     Paul Moore <paul@paul-moore.com>,
@@ -30,16 +30,17 @@ To:     Paul Moore <paul@paul-moore.com>,
         Andreas Gruenbacher <agruenba@redhat.com>
 Cc:     yangzhao@kylinos.cn, selinux@vger.kernel.org,
         Tianyue Ren <rentianyue@kylinos.cn>
-Subject: [PATCH v2 0/1] selinux: fix error initialization in inode_doinit_with_dentry()
-Date:   Wed, 30 Sep 2020 09:36:52 +0800
-Message-Id: <20200930013653.48787-1-rentianyue@tj.kylinos.cn>
+Subject: [PATCH v2 1/1] selinux: fix error initialization in inode_doinit_with_dentry()
+Date:   Wed, 30 Sep 2020 09:36:53 +0800
+Message-Id: <20200930013653.48787-2-rentianyue@tj.kylinos.cn>
 X-Mailer: git-send-email 2.28.0
-In-Reply-To: <CAEjxPJ7==mkXDKuDw2YueRP+ymoQjPDdCS8Wk7GJfth+CpLqkg@mail.gmail.com>
+In-Reply-To: <20200930013653.48787-1-rentianyue@tj.kylinos.cn>
 References: <CAEjxPJ7==mkXDKuDw2YueRP+ymoQjPDdCS8Wk7GJfth+CpLqkg@mail.gmail.com>
+ <20200930013653.48787-1-rentianyue@tj.kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:tj.kylinos.cn:qybgforeign:qybgforeign6
+Feedback-ID: bizesmtp:tj.kylinos.cn:qybgforeign:qybgforeign5
 X-QQ-Bgrelay: 1
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
@@ -47,21 +48,40 @@ X-Mailing-List: selinux@vger.kernel.org
 
 From: Tianyue Ren <rentianyue@kylinos.cn>
 
-I think there is a error initialization for isec->sid when the dentry is NULL,
-when we do "remount -o rw,remount ${rootmnt}" action before selinux policy loading.It's
-leading kernel getting wrong security label "unlabeled_t" when the userspace access
-files such as /etc/fstab.
+Mark the inode security label as invalid if we cannot find
+a dentry so that we will retry later rather than marking it
+initialized with the unlabeled SID.
 
-This patch lets the label be invalid before it's initializated correctly.
-
-v2: Modify the patch description
-
-Tianyue Ren (1):
-  selinux: fix error initialization in inode_doinit_with_dentry()
-
+Fixes: 9287aed2ad1f ("selinux: Convert isec->lock into a spinlock")
+Signed-off-by: Tianyue Ren <rentianyue@kylinos.cn>
+---
  security/selinux/hooks.c | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index bf8328adad8f..da7295a546e0 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -1499,6 +1499,7 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
+ 			 * inode_doinit with a dentry, before these inodes could
+ 			 * be used again by userspace.
+ 			 */
++			isec->initialized = LABEL_INVALID;
+ 			goto out;
+ 		}
+ 
+@@ -1553,8 +1554,10 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
+ 			 * inode_doinit() with a dentry, before these inodes
+ 			 * could be used again by userspace.
+ 			 */
+-			if (!dentry)
++			if (!dentry) {
++				isec->initialized = LABEL_INVALID;
+ 				goto out;
++			}
+ 			rc = selinux_genfs_get_sid(dentry, sclass,
+ 						   sbsec->flags, &sid);
+ 			if (rc) {
 -- 
 2.28.0
 

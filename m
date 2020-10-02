@@ -2,109 +2,160 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 315BF280996
-	for <lists+selinux@lfdr.de>; Thu,  1 Oct 2020 23:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5083A280DC3
+	for <lists+selinux@lfdr.de>; Fri,  2 Oct 2020 09:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727209AbgJAVpu (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 1 Oct 2020 17:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40580 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726626AbgJAVpu (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 1 Oct 2020 17:45:50 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53E2C0613E2
-        for <selinux@vger.kernel.org>; Thu,  1 Oct 2020 14:45:48 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id l24so7203670edj.8
-        for <selinux@vger.kernel.org>; Thu, 01 Oct 2020 14:45:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=V6MiXR2nE035pNSzCfJD+UEEujvF2fdNAl5yQoWlRNQ=;
-        b=O347ZKKQyHrayj4d1oCq85R9kE76wru9OFuQPJIqFwDlySU8C2u0OMdl18PbjD+BxR
-         ozvTtl7lUAOvSMPnkNBHGmJSHsa1qhDtfcfsAQX6XKtcsP4O9g3ZU3AtI84Hw+P3tshc
-         RNndXBR5CGJoIw/Dc/jJiMrssNI3JewgbJQo9/kPRM0yWVUOGozvAwRCKhlibWaR80Bc
-         zA2HAKIEB2tAqfpuTmYzQ4coPts1NzAZq9Poji+vubgfWgqKQlsBPO7UAGgcX/DnQuEF
-         JO8I/WRHUtbAxvtYtHrPmE//65HkMEpYW8k8tQLzz8q56U0NNxc4Xf6k7VdIy/XqcVof
-         QROw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=V6MiXR2nE035pNSzCfJD+UEEujvF2fdNAl5yQoWlRNQ=;
-        b=Japtu0sDEp1iZKCvtGgmX6UCWgrdEkYtLcI0LWXI8JDx2fEXowp8T0XL80j0S1fAzb
-         7que81L81KL9N9rv+S0ZnkHJ5RLYAgH6brsdq62+vSfi/KkvVmaMRiaAS7FlTgka33ml
-         +cvN6l1ASjvrNWBMp0JujNQWsupFrVV1s1L7eJQYVswCEc7QlPGqI86ww78X+99+rw5P
-         RW8IXjFKsbdqcxf7f8CHeJ6QVb0Ps+6UzBiWDQLiJxxVKg0qq7LtTPZsLqrg67h/zDj8
-         i22YWkeW1EAZ7IBVxa0aJLgadPZl0cD0hvWIr3pTVwJIUaUf7utg5gs8j7JKAwjnpdgR
-         7EDQ==
-X-Gm-Message-State: AOAM530zK5y3Ycrcrlnt3hbM0YA+iPBekquZNoRx/RC3xQYlyAR49C14
-        vwCUJJVdGxVUiuzkpY9y2uyydUODLZXMeb4Uj2NX
-X-Google-Smtp-Source: ABdhPJziZ3MnZ9kgj7RRwe6DbY4kqR3eKEF32H8bH9EBTrsMdD/CztTlHA+dd5aO+lhFOm9MqmKvYxW9VRxfFP4ZaZE=
-X-Received: by 2002:a50:8e17:: with SMTP id 23mr10357187edw.31.1601588747243;
- Thu, 01 Oct 2020 14:45:47 -0700 (PDT)
+        id S1725991AbgJBHCU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 2 Oct 2020 03:02:20 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:52855 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725948AbgJBHCT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 2 Oct 2020 03:02:19 -0400
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 1B4BE5646B4
+        for <selinux@vger.kernel.org>; Fri,  2 Oct 2020 08:53:22 +0200 (CEST)
+Received: by mail-ot1-f49.google.com with SMTP id c2so444483otp.7
+        for <selinux@vger.kernel.org>; Thu, 01 Oct 2020 23:53:22 -0700 (PDT)
+X-Gm-Message-State: AOAM532Nyr5IvgKw+x2GjhKA5rjNPO7r4aI8y9Sr6vqtoWkEEue0JBgK
+        DroBvsRXCJf/0UUkPwaddLtTUqz/dq4GJJGoNIQ=
+X-Google-Smtp-Source: ABdhPJyVLgFohEL5olQ5N1ng7Ce2g5MQPQ0o4ajhskGwGEzY2WoUD6q+B8tmGYOOdKDc+oxopfpfZ1n5LxnVROv8Yuc=
+X-Received: by 2002:a9d:6e1:: with SMTP id 88mr654609otx.279.1601621600955;
+ Thu, 01 Oct 2020 23:53:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAEjxPJ7==mkXDKuDw2YueRP+ymoQjPDdCS8Wk7GJfth+CpLqkg@mail.gmail.com>
- <20200930013653.48787-1-rentianyue@tj.kylinos.cn> <20200930013653.48787-2-rentianyue@tj.kylinos.cn>
-In-Reply-To: <20200930013653.48787-2-rentianyue@tj.kylinos.cn>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 1 Oct 2020 17:45:36 -0400
-Message-ID: <CAHC9VhQTp3Rc_7zM661Rzur0XSuWRWKJJg=CwLPAQo5ABRpS-w@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] selinux: fix error initialization in inode_doinit_with_dentry()
-To:     rentianyue@tj.kylinos.cn
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Andreas Gruenbacher <agruenba@redhat.com>, yangzhao@kylinos.cn,
-        selinux@vger.kernel.org, Tianyue Ren <rentianyue@kylinos.cn>
+References: <20200930145031.910190-1-plautrba@redhat.com> <20200930145031.910190-4-plautrba@redhat.com>
+ <CAEjxPJ6PHe7DqYh6mLGu+mjMLY43r4tbQzoiXH0=wgSuyVSpcw@mail.gmail.com>
+ <20200930155614.GA864960@fedora.redhat.com> <CAEjxPJ41ryHsDCnpX7qRLJNw5t=vYX_UEb1z=kW91O10Je6nDA@mail.gmail.com>
+ <20201001165551.GA33342@localhost.localdomain> <CAEjxPJ7tsyBGm2hqiABF=HeJvX6PfWdT5BSn+L4-miqsqexo+A@mail.gmail.com>
+ <20201001174837.GB33342@localhost.localdomain>
+In-Reply-To: <20201001174837.GB33342@localhost.localdomain>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Fri, 2 Oct 2020 08:53:09 +0200
+X-Gmail-Original-Message-ID: <CAJfZ7=ksiWidL58wj2=qjvq4sWW9uxi-mF+YdZf_niuf8KHDBQ@mail.gmail.com>
+Message-ID: <CAJfZ7=ksiWidL58wj2=qjvq4sWW9uxi-mF+YdZf_niuf8KHDBQ@mail.gmail.com>
+Subject: Re: [PATCH 4/4] libsemanage: Bump libsemanage.so version
+To:     Petr Lautrbach <plautrba@redhat.com>,
+        SElinux list <selinux@vger.kernel.org>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Fri Oct  2 08:53:22 2020 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.031141, queueID=914075646B8
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Sep 29, 2020 at 9:38 PM <rentianyue@tj.kylinos.cn> wrote:
-> From: Tianyue Ren <rentianyue@kylinos.cn>
+On Thu, Oct 1, 2020 at 7:48 PM Petr Lautrbach <plautrba@redhat.com> wrote:
 >
-> Mark the inode security label as invalid if we cannot find
-> a dentry so that we will retry later rather than marking it
-> initialized with the unlabeled SID.
+> On Thu, Oct 01, 2020 at 01:08:27PM -0400, Stephen Smalley wrote:
+> > On Thu, Oct 1, 2020 at 12:56 PM Petr Lautrbach <plautrba@redhat.com> wrote:
+> > >
+> > > On Thu, Oct 01, 2020 at 10:18:35AM -0400, Stephen Smalley wrote:
+> > > > On Wed, Sep 30, 2020 at 11:56 AM Petr Lautrbach <plautrba@redhat.com> wrote:
+> > > > >
+> > > > > On Wed, Sep 30, 2020 at 11:22:21AM -0400, Stephen Smalley wrote:
+> > > > > > On Wed, Sep 30, 2020 at 10:51 AM Petr Lautrbach <plautrba@redhat.com> wrote:
+> > > > > > >
+> > > > > > > It's due to the previous ABI incompatible change
+> > > > > > >
+> > > > > > > Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+> > > > > >
+> > > > > > My only real question is what are the implications for distros for
+> > > > > > this change?  Would Fedora end up having to carry both so versions for
+> > > > > > a time?  Or can you cleanly switch from the old to the new without
+> > > > > > disruption?
+> > > > > >
+> > > > >
+> > > > > Fedora and other distribution will need to temporary ship something like libsepol-compat and
+> > > > > libsemanage-compat with libsepol.so.1 resp libsemanage.so.1 in order not to
+> > > > > break buildroots. Also all packages which require so.1, see bellow, will have to
+> > > > > be rebuilt against so.2
+> > > > >
+> > > > > # dnf repoquery --whatrequires libsepol.'so.1()(64bit)'
+> > > > > libselinux-utils-0:3.1-3.fc34.x86_64
+> > > > > libsemanage-0:3.1-2.fc33.x86_64
+> > > > > libsepol-devel-0:3.1-3.fc33.x86_64
+> > > > > parted-0:3.3-6.fc34.x86_64
+> > > > > policycoreutils-0:3.1-4.fc33.x86_64
+> > > > > python3-setools-0:4.3.0-5.fc33.x86_64
+> > > > > secilc-0:3.1-2.fc33.x86_64
+> > > > >
+> > > > > # dnf -C repoquery --whatrequires 'libsemanage.so.1()(64bit)'
+> > > > > libsemanage-devel-0:3.1-2.fc33.x86_64
+> > > > > policycoreutils-0:3.1-4.fc33.x86_64
+> > > > > python3-libsemanage-0:3.1-2.fc33.x86_64
+> > > > > shadow-utils-2:4.8.1-4.fc33.x86_64
+> > > > > sssd-common-0:2.3.1-4.fc33.x86_64
+> > > > > sssd-ipa-0:2.3.1-4.fc33.x86_64
+> > > > >
+> > > > > I've experienced with this, builds are available in
+> > > > > https://copr.fedorainfracloud.org/coprs/plautrba/selinux-fedora/
+> > > > >
+> > > > > E.g. for libsemanage, I've added
+> > > > >
+> > > > > +%set_build_flags
+> > > > > +CFLAGS="$CFLAGS -fno-semantic-interposition"
+> > > > > +sed -i 's/LIBVERSION = 2/LIBVERSION = 1/' src/Makefile
+> > > > > +%make_build
+> > > > > +cp src/libsemanage.so.1 ${RPM_BUILD_ROOT}/%{_libdir}/libsemanage.so.1
+> > > > >
+> > > > > to the spec file in order to get libsemanage.so.1 which is shipped by
+> > > > > libsemanage.so.1
+> > > >
+> > > > The parted dependency looks suspect; seems to be an incorrect linking
+> > > > with libsepol despite not directly calling any sepol functions.
+> > > > Aside from that, if we have to bump the so version and deal with
+> > > > compat packages anyway, should we go ahead and purge all of the other
+> > > > deprecated functions in libsepol and libsemanage (grep -ri deprecated
+> > > > libsepol libsemanage)?
+> > > >
+> > >
+> > > I'd like to ship compat only for short time until all dependent components are
+> > > rebuilt.
+> > >
+> > > Purging deprecated functions could have much bigger impact than this patchset as it affects API. With
+> > > this change, it's generally enough to rebuild a component. If we drop functions
+> > > and change API, different software could stop work. There are only few packages
+> > > using libsepol and libsemanage directly, but there might be much bigger group of
+> > > python or ruby scripts using deprecated symbols like matchpathcon*()
+> >
+> > Yes, I just meant libsepol and libsemanage deprecated functions not
+> > libselinux (so not matchpathcon) since you are already bumping the so
+> > version.  But it's fine if you don't want to do it at the same time.
+> >
 >
-> Fixes: 9287aed2ad1f ("selinux: Convert isec->lock into a spinlock")
-> Signed-off-by: Tianyue Ren <rentianyue@kylinos.cn>
-> ---
->  security/selinux/hooks.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index bf8328adad8f..da7295a546e0 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -1499,6 +1499,7 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
->                          * inode_doinit with a dentry, before these inodes could
->                          * be used again by userspace.
->                          */
-> +                       isec->initialized = LABEL_INVALID;
->                         goto out;
->                 }
->
-> @@ -1553,8 +1554,10 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
->                          * inode_doinit() with a dentry, before these inodes
->                          * could be used again by userspace.
->                          */
-> -                       if (!dentry)
-> +                       if (!dentry) {
-> +                               isec->initialized = LABEL_INVALID;
->                                 goto out;
-> +                       }
->                         rc = selinux_genfs_get_sid(dentry, sclass,
->                                                    sbsec->flags, &sid);
->                         if (rc) {
+> I see, I missed that point, sorry. It seems to be reasonable, but I'll check it
+> again tomorrow.
 
-Looking at this some more, in both cases where we mark the isec as
-"LABEL_INVALID" we can probably just do a "return 0;" instead of
-jumping to "out" as there is nothing useful there except a needless
-spin lock/unlock cycle.  I would suggest adding a short explanation to
-the comment above each line explaining why this is okay.
+Hello,
+I have another question: why is bumping the .so version needed? As we
+are not changing the ABI of a "linked symbol" (thanks to using
+versioned symbols, with .map files), if we do not bump the .so
+version, programs that were built with libsepol.so from years ago will
+just stop working due to missing symbols, with an error message which
+will be quite clear (and this only if they were using deprecated
+symbols). In my humble opinion, bumping the .so version is most
+required when the calling convention of a non-versioned symbol
+changes, but this leads to unexpected execution paths.
 
--- 
-paul moore
-www.paul-moore.com
+Nevertheless I did not spend time to search for a document that would
+explain why bumping the .so version would be recommended when removing
+symbols. If you know one, could you please add a reference to it in
+the commit description ("Following guidelines from https://...) and/or
+to some documentation?
+
+>From a "distro maintainer point of view" (for Arch Linux), having just
+spent a considerable amount of time due to breaking changes in the
+last release of PAM, I am not eager to spend time dealing with finding
+clever ways to smoothly upgrade the system if there is no
+easy&straightforward way to do this. Introducing a transition package
+for each library which is bumped is acceptable to me, but if the
+release after the next one bumps the version again, introducing
+another set of transition packages will begin to be quite painful. In
+short: I agree to remove the deprecated functions in order to "bump
+the .so version only once", as suggested.
+
+Cheers,
+Nicolas
+

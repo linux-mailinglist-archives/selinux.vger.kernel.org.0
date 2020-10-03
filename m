@@ -2,64 +2,155 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 96879281BF0
-	for <lists+selinux@lfdr.de>; Fri,  2 Oct 2020 21:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AE49282252
+	for <lists+selinux@lfdr.de>; Sat,  3 Oct 2020 10:02:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388367AbgJBT0r convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Fri, 2 Oct 2020 15:26:47 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:59835 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbgJBT0r (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Fri, 2 Oct 2020 15:26:47 -0400
-X-Greylist: delayed 532 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:26:46 EDT
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 0F53961B9F
-        for <selinux@vger.kernel.org>; Fri,  2 Oct 2020 22:17:14 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id E740561B92
-        for <selinux@vger.kernel.org>; Fri,  2 Oct 2020 22:17:13 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id 8104561956; Fri,  2 Oct 2020 22:17:12 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.50])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id C3C63613F0;
-        Fri,  2 Oct 2020 22:17:05 +0300 (EEST)
+        id S1725648AbgJCICW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Sat, 3 Oct 2020 04:02:22 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:44493 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725601AbgJCICW (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 3 Oct 2020 04:02:22 -0400
+X-Greylist: delayed 425 seconds by postgrey-1.27 at vger.kernel.org; Sat, 03 Oct 2020 04:02:19 EDT
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 955BA564913
+        for <selinux@vger.kernel.org>; Sat,  3 Oct 2020 09:55:12 +0200 (CEST)
+Received: by mail-ot1-f54.google.com with SMTP id n61so3695978ota.10
+        for <selinux@vger.kernel.org>; Sat, 03 Oct 2020 00:55:12 -0700 (PDT)
+X-Gm-Message-State: AOAM533+8KouHC0oMxTykJre16PqEWwh71t0FTW7SBFd1V8pyopZ9oA0
+        CCT90ES6PhktLkqCC7RvPTlSE/6Pb5n6tREbkx4=
+X-Google-Smtp-Source: ABdhPJx+5KkVRTlAU258SSK3dZ8QtvTVmLhWYWySX7jq4c9D7rZq5tGY/mbkI8x2QUv5ARUSeo7PQTDFJYU7UoPRgj0=
+X-Received: by 2002:a05:6830:15d8:: with SMTP id j24mr4364738otr.361.1601711711462;
+ Sat, 03 Oct 2020 00:55:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Fri, 02 Oct 2020 16:16:56 -0300
-Reply-To: binmurrah@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201002191712.8104561956@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
+References: <20200910113244.818506-1-dominick.grift@defensec.nl>
+ <20200912131411.1213573-1-dominick.grift@defensec.nl> <CAJfZ7=ntv5eAke7cx-AaonssGznGF9c94jMAuHxp25e=PgkrbQ@mail.gmail.com>
+In-Reply-To: <CAJfZ7=ntv5eAke7cx-AaonssGznGF9c94jMAuHxp25e=PgkrbQ@mail.gmail.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Sat, 3 Oct 2020 09:55:00 +0200
+X-Gmail-Original-Message-ID: <CAJfZ7=mhNPNktmZED23PkL=RK2tZPRQvwPPz86a0a5BD-jFxcQ@mail.gmail.com>
+Message-ID: <CAJfZ7=mhNPNktmZED23PkL=RK2tZPRQvwPPz86a0a5BD-jFxcQ@mail.gmail.com>
+Subject: Re: [PATCH v4] cil_access_vector_rules: allowx, auditallowx and
+ dontauditx fixes
+To:     Dominick Grift <dominick.grift@defensec.nl>,
+        SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan.
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201002 notchecked
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sat Oct  3 09:55:13 2020 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=153EC56496C
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello Dear,
+On Fri, Oct 2, 2020 at 9:02 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+>
+> On Sat, Sep 12, 2020 at 3:14 PM Dominick Grift
+> <dominick.grift@defensec.nl> wrote:
+> >
+> > allowx requires a equivalent "allow ioctl" rule to be present
+> > auditallowx requires a equivalent "auditallow" ioctl rule to be present
+> > dontauditx requires atleast one equivalent "allowx" rule to be present (can be a random irrelevant ioctlcmd)
+> >
+> > Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
+>
+> It seems that this patch slipped through the review process, as there
+> could have been some confusion about the repository it was for. It
+> seems to me that it is for https://github.com/SELinuxProject/selinux,
+> and its contents looks good. Thanks!
+>
+> Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+>
+> If nobody complains, I will apply this patch tonight.
+> Nicolas
 
-We are Investment Company offering Corporate and Personal
-Loan at 3% Interest Rate for a duration of 10Years.
+Merged. Thanks!
+Nicolas
 
-We also pay 1% commission to brokers, who introduce project
-owners for finance or other opportunities.
+> > ---
+> > v4: add a "proper" clarification for dontauditx
+> >
+> > This just can't be how it was designed to behave, but it "works".
+> >
+> > There seem to be no logic to this at all and allowx, auditallowx and dontauditx should probably work the same as neverallowx.
+> > regardless, this behavior should be documented because people will lose their sanity if they have to figure this out on their own.
+> >
+> >  secilc/docs/cil_access_vector_rules.md | 13 +++++++++++--
+> >  1 file changed, 11 insertions(+), 2 deletions(-)
+> >
+> > diff --git a/secilc/docs/cil_access_vector_rules.md b/secilc/docs/cil_access_vector_rules.md
+> > index 9c03c710..683cc28c 100644
+> > --- a/secilc/docs/cil_access_vector_rules.md
+> > +++ b/secilc/docs/cil_access_vector_rules.md
+> > @@ -238,6 +238,8 @@ allowx
+> >
+> >  Specifies the access allowed between a source and target type using extended permissions. Unlike the [`allow`](cil_access_vector_rules.md#allow) statement, the statements [`validatetrans`](cil_constraint_statements.md#validatetrans), [`mlsvalidatetrans`](cil_constraint_statements.md#mlsvalidatetrans), [`constrain`](cil_constraint_statements.md#constrain), and [`mlsconstrain`](cil_constraint_statements.md#mlsconstrain) do not limit accesses granted by [`allowx`](cil_access_vector_rules.md#allowx).
+> >
+> > +Note that for this to work there must *also* be valid equivalent [`allow`](cil_access_vector_rules.md#allow) rules present.
+> > +
+> >  **Rule definition:**
+> >
+> >      (allowx source_id target_id|self permissionx_id)
+> > @@ -274,18 +276,21 @@ Specifies the access allowed between a source and target type using extended per
+> >
+> >  These examples show a selection of possible permutations of [`allowx`](cil_access_vector_rules.md#allowx) rules:
+> >
+> > +    (allow type_1 type_2 (tcp_socket (ioctl))) ;; pre-requisite
+> >      (allowx type_1 type_2 (ioctl tcp_socket (range 0x2000 0x20FF)))
+> >
+> >      (permissionx ioctl_nodebug (ioctl udp_socket (not (range 0x4000 0x4010))))
+> > +    (allow type_3 type_4 (udp_socket (ioctl))) ;; pre-requisite
+> >      (allowx type_3 type_4 ioctl_nodebug)
+> >
+> >
+> > -
+> >  auditallowx
+> >  -----------
+> >
+> >  Audit the access rights defined if there is a valid [`allowx`](cil_access_vector_rules.md#allowx) rule. It does NOT allow access, it only audits the event.
+> >
+> > +Note that for this to work there must *also* be valid equivalent [`auditallow`](cil_access_vector_rules.md#auditallow) rules present.
+> > +
+> >  **Rule definition:**
+> >
+> >      (auditallowx source_id target_id|self permissionx_id)
+> > @@ -324,6 +329,7 @@ This example will log an audit event whenever the corresponding [`allowx`](cil_a
+> >
+> >      (allowx type_1 type_2 (ioctl tcp_socket (range 0x2000 0x20FF)))
+> >
+> > +    (auditallow type_1 type_2 (tcp_socket (ioctl))) ;; pre-requisite
+> >      (auditallowx type_1 type_2 (ioctl tcp_socket (range 0x2005 0x2010)))
+> >
+> >
+> > @@ -332,6 +338,8 @@ dontauditx
+> >
+> >  Do not audit the access rights defined when access denied. This stops excessive log entries for known events.
+> >
+> > +Note that for this to work there must *also* be atleast one [`allowx`](cil_access_vector_rules.md#allowx) rule associated with the target type.
+> > +
+> >  Note that these rules can be omitted by the CIL compiler command line parameter `-D` or `--disable-dontaudit` flags.
+> >
+> >  **Rule definition:**
+> > @@ -370,6 +378,7 @@ Note that these rules can be omitted by the CIL compiler command line parameter
+> >
+> >  This example will not audit the denied access:
+> >
+> > +    (allowx type_1 type_2 (ioctl tcp_socket (0x1))) ;; pre-requisite, just some irrelevant random ioctl
+> >      (dontauditx type_1 type_2 (ioctl tcp_socket (range 0x3000 0x30FF)))
+> >
+> >
+> > @@ -392,7 +401,7 @@ Note that these rules can be over-ridden by the CIL compiler command line parame
+> >  </colgroup>
+> >  <tbody>
+> >  <tr class="odd">
+> > -<td align="left"><p><code>neverallows</code></p></td>
+> > +<td align="left"><p><code>neverallowx</code></p></td>
+> >  <td align="left"><p>The <code>neverallowx</code> keyword.</p></td>
+> >  </tr>
+> >  <tr class="even">
+> > --
+> > 2.28.0
+> >
 
-Please get back to me if you are interested for more
-details.
-
-Yours faithfully,
-Hashim Bin 

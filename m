@@ -2,129 +2,104 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24EEA282441
-	for <lists+selinux@lfdr.de>; Sat,  3 Oct 2020 15:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DED9D28265E
+	for <lists+selinux@lfdr.de>; Sat,  3 Oct 2020 21:40:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725781AbgJCNTp (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 3 Oct 2020 09:19:45 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:59844 "EHLO
+        id S1725913AbgJCTkH (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 3 Oct 2020 15:40:07 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:43413 "EHLO
         mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725710AbgJCNTp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 3 Oct 2020 09:19:45 -0400
+        with ESMTP id S1725831AbgJCTkG (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 3 Oct 2020 15:40:06 -0400
 Received: from localhost.localdomain (85-168-38-217.rev.numericable.fr [85.168.38.217])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id EC9AB564C4A
-        for <selinux@vger.kernel.org>; Sat,  3 Oct 2020 15:19:41 +0200 (CEST)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id EF6015600AD
+        for <selinux@vger.kernel.org>; Sat,  3 Oct 2020 21:40:03 +0200 (CEST)
 From:   Nicolas Iooss <nicolas.iooss@m4x.org>
 To:     selinux@vger.kernel.org
-Subject: [PATCH userspace] libsepol/cil: fix signed overflow caused by using (1 << 31) - 1
-Date:   Sat,  3 Oct 2020 15:19:08 +0200
-Message-Id: <20201003131908.1867282-1-nicolas.iooss@m4x.org>
+Subject: [PATCH 1/2] libsepol: drop confusing BUG_ON macro
+Date:   Sat,  3 Oct 2020 21:39:56 +0200
+Message-Id: <20201003193957.1876526-1-nicolas.iooss@m4x.org>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sat Oct  3 15:19:42 2020 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000131, queueID=776B6564C4B
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sat Oct  3 21:40:04 2020 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000183, queueID=4C0A95600B6
 X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-When compiling SELinux userspace tools with -ftrapv (this option
-generates traps for signed overflow on addition, subtraction,
-multiplication operations, instead of silently wrapping around),
-semodule crashes when running the tests from
-scripts/ci/fedora-test-runner.sh in a Fedora 32 virtual machine:
+Contrary to Linux kernel, BUG_ON() does not halt the execution, in
+libsepol/src/services.c. Instead it displays an error message and
+continues the execution.
 
-    [root@localhost selinux-testsuite]# make test
-    make -C policy load
-    make[1]: Entering directory '/root/selinux-testsuite/policy'
-    # Test for "expand-check = 0" in /etc/selinux/semanage.conf
-    # General policy build
-    make[2]: Entering directory '/root/selinux-testsuite/policy/test_policy'
-    Compiling targeted test_policy module
-    Creating targeted test_policy.pp policy package
-    rm tmp/test_policy.mod.fc
-    make[2]: Leaving directory '/root/selinux-testsuite/policy/test_policy'
-    # General policy load
-    domain_fd_use --> off
-    /usr/sbin/semodule -i test_policy/test_policy.pp test_mlsconstrain.cil test_overlay_defaultrange.cil test_add_levels.cil test_glblub.cil
-    make[1]: *** [Makefile:174: load] Aborted (core dumped)
+This means that this code does not prevent an out-of-bound write from
+happening:
 
-Using "coredumpctl gdb" leads to the following strack trace:
+    case CEXPR_AND:
+        BUG_ON(sp < 1);
+        sp--;
+        s[sp] &= s[sp + 1];
 
-    (gdb) bt
-    #0  0x00007f608fe4fa25 in raise () from /lib64/libc.so.6
-    #1  0x00007f608fe38895 in abort () from /lib64/libc.so.6
-    #2  0x00007f6090028aca in __addvsi3.cold () from /lib64/libsepol.so.1
-    #3  0x00007f6090096f59 in __avrule_xperm_setrangebits (low=30, high=30, xperms=0x8b9eea0)
-        at ../cil/src/cil_binary.c:1551
-    #4  0x00007f60900970dd in __cil_permx_bitmap_to_sepol_xperms_list (xperms=0xb650a30, xperms_list=0x7ffce2653b18)
-        at ../cil/src/cil_binary.c:1596
-    #5  0x00007f6090097286 in __cil_avrulex_ioctl_to_policydb (k=0xb8ec200 "@\023\214\022\006", datum=0xb650a30,
-        args=0x239a640) at ../cil/src/cil_binary.c:1649
-    #6  0x00007f609003f1e5 in hashtab_map (h=0x41f8710, apply=0x7f60900971da <__cil_avrulex_ioctl_to_policydb>,
-        args=0x239a640) at hashtab.c:234
-    #7  0x00007f609009ea19 in cil_binary_create_allocated_pdb (db=0x2394f10, policydb=0x239a640)
-        at ../cil/src/cil_binary.c:4969
-    #8  0x00007f609009d19d in cil_binary_create (db=0x2394f10, policydb=0x7ffce2653d30) at ../cil/src/cil_binary.c:4329
-    #9  0x00007f609008ec23 in cil_build_policydb_create_pdb (db=0x2394f10, sepol_db=0x7ffce2653d30)
-        at ../cil/src/cil.c:631
-    #10 0x00007f608fff4bf3 in semanage_direct_commit () from /lib64/libsemanage.so.1
-    #11 0x00007f608fff9fae in semanage_commit () from /lib64/libsemanage.so.1
-    #12 0x0000000000403e2b in main (argc=7, argv=0x7ffce2655058) at semodule.c:753
+Use if(...){BUG();rc=-EINVAL;goto out;} constructions instead, to make
+sure that the array access is always in-bound.
 
-    (gdb) f 3
-    #3  0x00007f6090096f59 in __avrule_xperm_setrangebits (low=30, high=30, xperms=0x8b9eea0)
-        at ../cil/src/cil_binary.c:1551
-    1551     xperms->perms[i] |= XPERM_SETBITS(h) - XPERM_SETBITS(low);
-
-A signed integer overflow therefore occurs in XPERM_SETBITS(h):
-
-    #define XPERM_SETBITS(x) ((1 << (x & 0x1f)) - 1)
-
-This macro is expanded with h=31, so "(1 << 31) - 1" is computed:
-
-* (1 << 31) = -0x80000000 is the lowest signed 32-bit integer value
-* (1 << 31) - 1 overflows the capacity of a signed 32-bit integer and
-  results in 0x7fffffff (which is unsigned)
-
-Using unsigned integers (with "1U") fixes the crash, as
-(1U << 31) = 0x80000000U has no overflowing issues.
+This issue has been found using clang's static analyzer:
+https://558-118970575-gh.circle-artifacts.com/0/output-scan-build/2020-10-02-065849-6375-1/report-50a861.html#EndPath
 
 Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
 ---
- checkpolicy/policy_define.c   | 2 +-
- libsepol/cil/src/cil_binary.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ libsepol/src/services.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
-index 395f62284e3c..bf6c3e68bef3 100644
---- a/checkpolicy/policy_define.c
-+++ b/checkpolicy/policy_define.c
-@@ -2147,7 +2147,7 @@ out:
- /* index of the u32 containing the permission */
- #define XPERM_IDX(x) (x >> 5)
- /* set bits 0 through x-1 within the u32 */
--#define XPERM_SETBITS(x) ((1 << (x & 0x1f)) - 1)
-+#define XPERM_SETBITS(x) ((1U << (x & 0x1f)) - 1)
- /* low value for this u32 */
- #define XPERM_LOW(x) (x << 5)
- /* high value for this u32 */
-diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
-index 36720eda4549..e417c5c28b8b 100644
---- a/libsepol/cil/src/cil_binary.c
-+++ b/libsepol/cil/src/cil_binary.c
-@@ -1526,7 +1526,7 @@ int cil_avrule_to_policydb(policydb_t *pdb, const struct cil_db *db, struct cil_
- /* index of the u32 containing the permission */
- #define XPERM_IDX(x) (x >> 5)
- /* set bits 0 through x-1 within the u32 */
--#define XPERM_SETBITS(x) ((1 << (x & 0x1f)) - 1)
-+#define XPERM_SETBITS(x) ((1U << (x & 0x1f)) - 1)
- /* low value for this u32 */
- #define XPERM_LOW(x) (x << 5)
- /* high value for this u32 */
+diff --git a/libsepol/src/services.c b/libsepol/src/services.c
+index 90da1f4efef3..beb0711f6680 100644
+--- a/libsepol/src/services.c
++++ b/libsepol/src/services.c
+@@ -67,7 +67,6 @@
+ #include "flask.h"
+ 
+ #define BUG() do { ERR(NULL, "Badness at %s:%d", __FILE__, __LINE__); } while (0)
+-#define BUG_ON(x) do { if (x) ERR(NULL, "Badness at %s:%d", __FILE__, __LINE__); } while (0)
+ 
+ static int selinux_enforcing = 1;
+ 
+@@ -469,18 +468,30 @@ static int constraint_expr_eval_reason(context_struct_t *scontext,
+ 		/* Now process each expression of the constraint */
+ 		switch (e->expr_type) {
+ 		case CEXPR_NOT:
+-			BUG_ON(sp < 0);
++			if (sp < 0) {
++				BUG();
++				rc = -EINVAL;
++				goto out;
++			}
+ 			s[sp] = !s[sp];
+ 			cat_expr_buf(expr_list[expr_counter], "not");
+ 			break;
+ 		case CEXPR_AND:
+-			BUG_ON(sp < 1);
++			if (sp < 1) {
++				BUG();
++				rc = -EINVAL;
++				goto out;
++			}
+ 			sp--;
+ 			s[sp] &= s[sp + 1];
+ 			cat_expr_buf(expr_list[expr_counter], "and");
+ 			break;
+ 		case CEXPR_OR:
+-			BUG_ON(sp < 1);
++			if (sp < 1) {
++				BUG();
++				rc = -EINVAL;
++				goto out;
++			}
+ 			sp--;
+ 			s[sp] |= s[sp + 1];
+ 			cat_expr_buf(expr_list[expr_counter], "or");
 -- 
 2.28.0
 

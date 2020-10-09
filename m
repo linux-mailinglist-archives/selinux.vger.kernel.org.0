@@ -2,43 +2,43 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EFCC128897E
-	for <lists+selinux@lfdr.de>; Fri,  9 Oct 2020 15:01:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECB72288980
+	for <lists+selinux@lfdr.de>; Fri,  9 Oct 2020 15:01:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729347AbgJINBI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 9 Oct 2020 09:01:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:26439 "EHLO
+        id S2387992AbgJINBT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 9 Oct 2020 09:01:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:51367 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2387996AbgJINBI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 9 Oct 2020 09:01:08 -0400
+        by vger.kernel.org with ESMTP id S1732468AbgJINBT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 9 Oct 2020 09:01:19 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1602248467;
+        s=mimecast20190719; t=1602248478;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=6YuYcG/VuIumVTcwv4wGEyKkJ3Y9RUfEx/+s7JmSJr8=;
-        b=OWASjFnz6P6lL2NKpJVXQA/OJYCZZhQ28nQOGx1SmpSrmNyiXR/VhCwIH9gzqJtnEAR9oE
-        4YTg9dgtfgH87pQxRVXaNTEWJzO84IcvqPfgqw82GxgYcko/uwkklm3t1794QmIEaBDS3f
-        dN6PVIYqqBSKA+wQKs5KO9LNZjVbyb4=
+        bh=CeDxwGvq1MbQ8fsclvmtrgtykXqL6FqZoVRYiixnbIg=;
+        b=SznoOXGLWhWixx65znhhACEOSGFSxhHhNbD2Ye+l3c1yHy7umyU4qJZ8BFO5kPU/4RLlyO
+        OcUlQTuy1cUiMcZxpjEGd+gSaZ8zM3t49/X/H2PNXtP8yJNlZ1GeeX4SqprXFqDsbJvZUD
+        o8ja7RCMti1K+bhGtpQa99RQZZnLG4c=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-62-cWkcASu7PhiRdG8i7QKAiA-1; Fri, 09 Oct 2020 09:01:05 -0400
-X-MC-Unique: cWkcASu7PhiRdG8i7QKAiA-1
+ us-mta-43-OcN7SstgPQaAcTD_rKhUtg-1; Fri, 09 Oct 2020 09:01:06 -0400
+X-MC-Unique: OcN7SstgPQaAcTD_rKhUtg-1
 Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7A0CA802B4E
-        for <selinux@vger.kernel.org>; Fri,  9 Oct 2020 13:01:04 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id A2CFD1015EDE
+        for <selinux@vger.kernel.org>; Fri,  9 Oct 2020 13:01:05 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.40.193.213])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A26E876642;
-        Fri,  9 Oct 2020 13:01:03 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id F36D076642;
+        Fri,  9 Oct 2020 13:01:04 +0000 (UTC)
 From:   Petr Lautrbach <plautrba@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH v2 5/6] libsemanage: Drop deprecated functions
-Date:   Fri,  9 Oct 2020 15:00:51 +0200
-Message-Id: <20201009130052.52409-6-plautrba@redhat.com>
+Subject: [PATCH v2 6/6] libsemanage: Bump libsemanage.so version
+Date:   Fri,  9 Oct 2020 15:00:52 +0200
+Message-Id: <20201009130052.52409-7-plautrba@redhat.com>
 In-Reply-To: <20201009130052.52409-1-plautrba@redhat.com>
 References: <20201009130052.52409-1-plautrba@redhat.com>
 MIME-Version: 1.0
@@ -48,98 +48,43 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-semanage_module_enable() and semanage_module_disable() were deprecated
-by commit 9fbc6d14418f ("libsemanage: add back original module
-enable/disable functions for ABI compatability") in 2014 in order to
-preserve ABI compatibility. As we the libsemanage ABI is changed by the
-previous commit, it makes sense to drop them completely.
+Previous commits removed some symbols and broke ABI, therefore we need to change
+SONAME.
+
+See the following quotes from distribution guidelines:
+
+https://www.debian.org/doc/debian-policy/ch-sharedlibs.html#run-time-shared-libraries
+
+Every time the shared library ABI changes in a way that may break
+binaries linked against older versions of the shared library, the SONAME
+of the library and the corresponding name for the binary package
+containing the runtime shared library should change.
+
+https://docs.fedoraproject.org/en-US/packaging-guidelines/#_downstream_so_name_versioning
+
+When new versions of the library are released, you should use an ABI
+comparison tool to check for ABI differences in the built shared
+libraries. If it detects any incompatibilities, bump the n number by
+one.
 
 Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
 ---
- libsemanage/src/libsemanage.map |  2 --
- libsemanage/src/modules.c       | 56 ---------------------------------
- 2 files changed, 58 deletions(-)
+ libsemanage/src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libsemanage/src/libsemanage.map b/libsemanage/src/libsemanage.map
-index 4bec06aaae27..3ea7b60f97bb 100644
---- a/libsemanage/src/libsemanage.map
-+++ b/libsemanage/src/libsemanage.map
-@@ -165,8 +165,6 @@ LIBSEMANAGE_1.0 {
-     semanage_is_connected;
-     semanage_is_managed;
-     semanage_mls_enabled;
--    semanage_module_disable;
--    semanage_module_enable;
-     semanage_module_get_name;
-     semanage_module_get_version;
-     semanage_module_info_datum_destroy;
-diff --git a/libsemanage/src/modules.c b/libsemanage/src/modules.c
-index 8b36801038df..b6dd456cac32 100644
---- a/libsemanage/src/modules.c
-+++ b/libsemanage/src/modules.c
-@@ -734,62 +734,6 @@ int semanage_module_set_enabled(semanage_handle_t *sh,
- }
+diff --git a/libsemanage/src/Makefile b/libsemanage/src/Makefile
+index a0eb3747d74b..ab6cae51f5c3 100644
+--- a/libsemanage/src/Makefile
++++ b/libsemanage/src/Makefile
+@@ -32,7 +32,7 @@ YACC = bison
+ YFLAGS = -d
  
+ VERSION = $(shell cat ../VERSION)
+-LIBVERSION = 1
++LIBVERSION = 2
  
--/* This function exists only for ABI compatibility. It has been deprecated and
-- * should not be used. Instead, use semanage_module_set_enabled() */
--int semanage_module_enable(semanage_handle_t *sh, char *module_name)
--{
--	int rc = -1;
--	semanage_module_key_t *modkey = NULL;
--
--	rc = semanage_module_key_create(sh, &modkey);
--	if (rc != 0)
--		goto exit;
--
--	rc = semanage_module_key_set_name(sh, modkey, module_name);
--	if (rc != 0)
--		goto exit;
--
--	rc = semanage_module_set_enabled(sh, modkey, 1);
--	if (rc != 0)
--		goto exit;
--
--	rc = 0;
--
--exit:
--	semanage_module_key_destroy(sh, modkey);
--	free(modkey);
--
--	return rc;
--}
--
--/* This function exists only for ABI compatibility. It has been deprecated and
-- * should not be used. Instead, use semanage_module_set_enabled() */
--int semanage_module_disable(semanage_handle_t *sh, char *module_name)
--{
--	int rc = -1;
--	semanage_module_key_t *modkey = NULL;
--
--	rc = semanage_module_key_create(sh, &modkey);
--	if (rc != 0)
--		goto exit;
--
--	rc = semanage_module_key_set_name(sh, modkey, module_name);
--	if (rc != 0)
--		goto exit;
--
--	rc = semanage_module_set_enabled(sh, modkey, 0);
--	if (rc != 0)
--		goto exit;
--
--	rc = 0;
--
--exit:
--	semanage_module_key_destroy(sh, modkey);
--	free(modkey);
--
--	return rc;
--}
--
- /* Converts a string to a priority
-  *
-  * returns -1 if str is not a valid priority.
+ LIBA=libsemanage.a
+ TARGET=libsemanage.so
 -- 
 2.28.0
 

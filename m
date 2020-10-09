@@ -2,112 +2,69 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49A82287FB7
-	for <lists+selinux@lfdr.de>; Fri,  9 Oct 2020 03:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C9E928800E
+	for <lists+selinux@lfdr.de>; Fri,  9 Oct 2020 03:38:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726766AbgJIBDr (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 8 Oct 2020 21:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41836 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726348AbgJIBDr (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 8 Oct 2020 21:03:47 -0400
-Received: from mail-ej1-x642.google.com (mail-ej1-x642.google.com [IPv6:2a00:1450:4864:20::642])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1709CC0613D4
-        for <selinux@vger.kernel.org>; Thu,  8 Oct 2020 18:03:47 -0700 (PDT)
-Received: by mail-ej1-x642.google.com with SMTP id t25so10643405ejd.13
-        for <selinux@vger.kernel.org>; Thu, 08 Oct 2020 18:03:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=sf18sy5cFiqzhxmHs+f/BFCK6VarsaYerE+/z3lsjXY=;
-        b=IxRV2uOpm7lCPjisn4dWl/y5bAz8o6YefQObub9q0QPN2H/XNETe7S3bquMsOPxDBi
-         AnI7seispDAWJc64iwt5NGgOACgF+LL+mT9Xhf/86Z8kG74zUnNBHQkuttF3mupy8lov
-         D4LJiyTgE0HgN5vdiHt/6WUoRHJ76FX7zuefwJVtOLjhykq/cxxiedNJzuwyChbr+EpC
-         DlyxmjbjUSkSuarkO88kEM9GLSejG8ZwcKiWz6c4WbKk2knWMoGmi1cdOSJaqIT2Xoqi
-         XRZlZ1ibMiPaQPudm4N1YZyRpY2YSZxGiljGrAlV/emRjV9sqDpeBsVIFxmGOrs7K3s4
-         Mhbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=sf18sy5cFiqzhxmHs+f/BFCK6VarsaYerE+/z3lsjXY=;
-        b=gb3c7xf65AvcnCtyw2EXChiBQK+mTMpssQhllUZDDC8I8T4x7mCkQj1X5uNvMiJ7nq
-         /Ylk79m1RGsIZ9hmrDbVYlLjPxorBBBejPWhozjF1zoCQ2so1J1oXUB2RxH9ivCjsWiS
-         3AB4QpBvWhqjXzqEIxr14k1Ht7m2ZBz9M8w7hJVMKiv91glS7jhkLHRNOQw18YE6QIX+
-         pbD+75yw1qfSnkQQNQY56f1ZjeW/HzdwNn6I9ccLsqj//uBlIBInNy06+sBgjwKjqshs
-         XkKuIY3Udjge7Swx/7fHjW86LoUfp4hcKjT3/q/w4Xz4kXX52YiQpByinX7xyMkug8BO
-         NeMg==
-X-Gm-Message-State: AOAM5321fYC+WMCKbPNVyLNJ6y9CZiDCpHM5wrc/ueclV8ozoJq3/PNE
-        4zi8ZmtoPZWTM2YMvjjZ9kCTbGxRaSxuL8ZMf8Dc
-X-Google-Smtp-Source: ABdhPJzQAt453SU3ysBgOsKp+uIfpxsBvwshJbbdoK5afkKzK0C1WDpQB9Hgx01S5r+CzeuwXJsANX0rJxhyi0MmwIY=
-X-Received: by 2002:a17:906:2301:: with SMTP id l1mr11220954eja.488.1602205425543;
- Thu, 08 Oct 2020 18:03:45 -0700 (PDT)
+        id S1730498AbgJIBim (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 8 Oct 2020 21:38:42 -0400
+Received: from smtpbg701.qq.com ([203.205.195.86]:44395 "EHLO
+        smtpproxy21.qq.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727313AbgJIBim (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 8 Oct 2020 21:38:42 -0400
+X-QQ-mid: bizesmtp5t1602207440t942295fv
+Received: from localhost.localdomain (unknown [218.76.23.26])
+        by esmtp6.qq.com (ESMTP) with 
+        id ; Fri, 09 Oct 2020 09:37:12 +0800 (CST)
+X-QQ-SSF: 01400000002000F0D000B00A0000000
+X-QQ-FEAT: Dql/Ow0GiGxiv6VuIpOcnVX3HwSA2COF/K3nFCTQCOZm3iWaRydB703ruxJBe
+        TT/vBLa8PoeTo4eKBlI53FgS93xck/sbXsIGD3zBJGxfZXw9V0VSFaYMjBjOat5WxMVF/Nl
+        HQd5Dq+0al1faQv2cVyyo806pL8gv4aGrz/V/gjeFmiAHBrCqg+/Z7GERHTkzr9XJKFZE+d
+        wQoLenLYPIxeykpupfs/1qzezQAcxwv71VPuEpRgpcHGM0RRVH/54k1evK5Nmmb5qZnhlwe
+        xwBWTcUge9kIqNmdW9on0ncqAcv3VVYQBb8c4Rm4VlG6xps0eez09vE9KgaNbUg5cwyA==
+X-QQ-GoodBg: 2
+From:   rentianyue@tj.kylinos.cn
+To:     Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Andreas Gruenbacher <agruenba@redhat.com>
+Cc:     yangzhao@kylinos.cn, selinux@vger.kernel.org,
+        Tianyue Ren <rentianyue@kylinos.cn>
+Subject: [PATCH v3 0/1] fix error initialization in inode_doinit_with_dentry()
+Date:   Fri,  9 Oct 2020 09:36:29 +0800
+Message-Id: <20201009013630.6777-1-rentianyue@tj.kylinos.cn>
+X-Mailer: git-send-email 2.28.0
+In-Reply-To: <CAHC9VhQTp3Rc_7zM661Rzur0XSuWRWKJJg=CwLPAQo5ABRpS-w@mail.gmail.com>
+References: <CAHC9VhQTp3Rc_7zM661Rzur0XSuWRWKJJg=CwLPAQo5ABRpS-w@mail.gmail.com>
 MIME-Version: 1.0
-References: <CAN-5tyETQWVphrgqWjcPrtTzHHyz5DGrRz741yPYRS9Byyd=3Q@mail.gmail.com>
- <CAHC9VhRP2iJqLWiBg46zPKUqxzZoUOuaA6FPigxOw7qubophdw@mail.gmail.com> <CAN-5tyFq775PeOOzqskFexdbCgK3Gk_XB2Yy80SRYSc7Pdj=CA@mail.gmail.com>
-In-Reply-To: <CAN-5tyFq775PeOOzqskFexdbCgK3Gk_XB2Yy80SRYSc7Pdj=CA@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 8 Oct 2020 21:03:34 -0400
-Message-ID: <CAHC9VhTzO1z6NmYz6cOLg5OvJiyQXdH_VmLh4=+h1MrGXx36JQ@mail.gmail.com>
-Subject: Re: selinux: how to query if selinux is enabled
-To:     Olga Kornievskaia <aglo@umich.edu>
-Cc:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        Chuck Lever <chucklever@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:tj.kylinos.cn:qybgforeign:qybgforeign6
+X-QQ-Bgrelay: 1
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-->On Thu, Oct 8, 2020 at 9:50 AM Olga Kornievskaia <aglo@umich.edu> wrote:
-> On Wed, Oct 7, 2020 at 9:07 PM Paul Moore <paul@paul-moore.com> wrote:
-> > On Wed, Oct 7, 2020 at 8:41 PM Olga Kornievskaia <aglo@umich.edu> wrote:
-> > > Hi folks,
-> > >
-> > > From some linux kernel module, is it possible to query and find out
-> > > whether or not selinux is currently enabled or not?
-> > >
-> > > Thank you.
-> >
-> > [NOTE: CC'ing the SELinux list as it's probably a bit more relevant
-> > that the LSM list]
-> >
-> > In general most parts of the kernel shouldn't need to worry about what
-> > LSMs are active and/or enabled; the simply interact with the LSM(s)
-> > via the interfaces defined in include/linux/security.h (there are some
-> > helpful comments in include/linux/lsm_hooks.h).  Can you elaborate a
-> > bit more on what you are trying to accomplish?
->
-> Hi Paul,
->
-> Thank you for the response. What I'm trying to accomplish is the
-> following. Within a file system (NFS), typically any queries for
-> security labels are triggered by the SElinux (or I guess an LSM in
-> general) (thru the xattr_handler hooks). However, when the VFS is
-> calling to get directory entries NFS will always get the labels
-> (baring server not supporting it). However this is useless and affects
-> performance (ie., this makes servers do extra work  and adds to the
-> network traffic) when selinux is disabled. It would be useful if NFS
-> can check if there is anything that requires those labels, if SElinux
-> is enabled or disabled.
+From: Tianyue Ren <rentianyue@kylinos.cn>
 
-[Adding Chuck Lever to the CC line as I believe he has the most recent
-LSM experience from the NFS side - sorry Chuck :)]
+I think there is a error initialization for isec->sid when the dentry is NULL,
+when we do "remount -o rw,remount ${rootmnt}" action before selinux policy loading.It's
+leading kernel getting wrong security label "unlabeled_t" when the userspace access
+files such as /etc/fstab.
 
-I'll need to ask your patience on this as I am far from a NFS expert.
+This patch lets the label be invalid before it's initializated correctly.
 
-Looking through the NFS readdir/getdents code this evening, I was
-wondering if the solution in the readdir case is to simply tell the
-server you are not interested in the security label by masking out
-FATTR4_WORD2_SECURITY_LABEL in the nfs4_readdir_arg->bitmask in
-_nfs4_proc_readdir()?  Of course this assumes that the security label
-genuinely isn't needed in this case (and not requesting it doesn't
-bypass access controls or break something on the server side), and we
-don't screw up some NFS client side cache by *not* fetching the
-security label attribute.
+v2: Modify the patch description
+v3: Remove unnecessary "out cycle" that do a needless
+    spin lock/unlock cycle when dentry is NULL.
 
-Is this remotely close to workable, or am I missing something fundamental?
+Tianyue Ren (1):
+  selinux: fix error initialization in inode_doinit_with_dentry()
+
+ security/selinux/hooks.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
 -- 
-paul moore
-www.paul-moore.com
+2.28.0
+
+
+

@@ -2,281 +2,224 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A6D728F96E
-	for <lists+selinux@lfdr.de>; Thu, 15 Oct 2020 21:30:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4365E28FA44
+	for <lists+selinux@lfdr.de>; Thu, 15 Oct 2020 22:43:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2391554AbgJOTaK (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 15 Oct 2020 15:30:10 -0400
-Received: from linux.microsoft.com ([13.77.154.182]:50354 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391545AbgJOTaJ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 15 Oct 2020 15:30:09 -0400
-Received: from localhost.localdomain (c-73-172-233-15.hsd1.md.comcast.net [73.172.233.15])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 684432010689;
-        Thu, 15 Oct 2020 12:30:06 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 684432010689
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1602790207;
-        bh=9NGeGQRohl9PtkCe5+rjPLu7210zJwIg66GpUXhny78=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AfXiEQLD/PSUzNXwhW+ImRFBQ6HYWdpUWC3fIVxWWY2IgQIO/TcQ3JrswQzV+vbCx
-         /kAGOpBLiMsmax40iMgDo/Mwtmx+Rj5c01FErwnUMt8eq9p8s7i/KT5DoLjwk74mXe
-         vaV8Zi1xAzaTE3OUI/Lz7RFrvA+QiLE3UzwW4QQE=
-From:   Daniel Burgener <dburgener@linux.microsoft.com>
-To:     stable@vger.kernel.org
-Cc:     stephen.smalley.work@gmail.com, paul@paul-moore.com,
-        selinux@vger.kernel.org, jmorris@namei.org, sashal@kernel.org
-Subject: [PATCH v5.4 3/3] selinux: Create new booleans and class dirs out of tree
-Date:   Thu, 15 Oct 2020 15:29:56 -0400
-Message-Id: <20201015192956.1797021-4-dburgener@linux.microsoft.com>
+        id S1726299AbgJOUn5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 15 Oct 2020 16:43:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58910 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732734AbgJOUn5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 15 Oct 2020 16:43:57 -0400
+Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20FAEC061755
+        for <selinux@vger.kernel.org>; Thu, 15 Oct 2020 13:43:57 -0700 (PDT)
+Received: by mail-il1-x142.google.com with SMTP id j13so6372579ilc.4
+        for <selinux@vger.kernel.org>; Thu, 15 Oct 2020 13:43:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XdTNCF12wBZZC3NS60mOokVJLbe1fbfIWp5dXsDA0Y4=;
+        b=Zi7llGg/3MxHu4KOHSKIt/nTdpbpDcUUfsTGVswxUk4p8xB9s3QkMKn6WXI658fruI
+         Ztq7iTMiV48Z8+gH0EkrMIBgsDr2sXiEMLaBxHf2AB5wpHAucK9djfRE7KCzpsN8GRbn
+         yt72s8gukjuo+W9rrTkF1kSo1BBjd3PKVhs64jfLNO8tubs+NiltFFjBR+UX7KupXSvI
+         fQOCHIdFCuXpUmXCNkH2PqnNCZ+hwi5F53cvSpGiBKSwjyE1gh5yB6MO2A1BFBS+1eOX
+         GrFvgSGo6+tgrNZpNgfaQOYZ6YFmdlLRMkdU/yZWcYsrsNuw8PePh/SqkPSkkI/u9Hxy
+         k/wg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XdTNCF12wBZZC3NS60mOokVJLbe1fbfIWp5dXsDA0Y4=;
+        b=HmeeoEA1iuHtOV3nGEumLlfyFXXNpAd7/m46NHLFYXlDLZrp9ClZ5TP+GoTEFoFJTB
+         6fcBjcd+AigbMAg16g1DJECZJo4dDk3+i91jXyTpdoFSNAQgxzCatX3LB07LZ/p0ZFGr
+         zw6jHM7so+QmHXocLW2531SJmXXdcbCK8jQF1W4rPgDtg72RjoYbHfo57gX/+UeXL6VY
+         z9Jv59wqNQsWYoqAVrVv5dI2bpDhUmCZTaxDE7hbPolAcFRIrl/tiqQaTvXMnmLG4hcv
+         Q+pXS+snRiINxQ2bC6OwRts2efg0Hf0sRfqjDwLcXUk1y+08deY4aFRslzLJQ7SQLDGX
+         clFg==
+X-Gm-Message-State: AOAM531k2iMEP5JfUut+NHPconVR1nN//OImPs4NoB0X3Y/Kp4l1kg4m
+        39NCLnvdTEUJD/SNUcp7lVLtkHXnGCw=
+X-Google-Smtp-Source: ABdhPJxa60QYot/IObtgLhrJlJQ8wZxb2eKWs6LiPbSytrds5w7CfJpc2fhF+WorhVSP6NcbatluAg==
+X-Received: by 2002:a92:cd05:: with SMTP id z5mr288464iln.15.1602794636178;
+        Thu, 15 Oct 2020 13:43:56 -0700 (PDT)
+Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
+        by smtp.gmail.com with ESMTPSA id w22sm200789iob.32.2020.10.15.13.43.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Oct 2020 13:43:55 -0700 (PDT)
+From:   James Carter <jwcart2@gmail.com>
+To:     selinux@vger.kernel.org
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH] libsepol/cil: Give error for more than one true or false block
+Date:   Thu, 15 Oct 2020 16:43:52 -0400
+Message-Id: <20201015204352.569018-1-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20201015192956.1797021-1-dburgener@linux.microsoft.com>
-References: <20201015192956.1797021-1-dburgener@linux.microsoft.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-In order to avoid concurrency issues around selinuxfs resource availability
-during policy load, we first create new directories out of tree for
-reloaded resources, then swap them in, and finally delete the old versions.
+Both tunableif and booleanif use conditional blocks (either true or
+false). No ordering is imposed, so a false block can be first (or even
+the only) block. Checks are made to ensure that the first and second
+(if it exists) blocks are either true or false, but no checks are made
+to ensure that there is only one true and/or one false block. If there
+are more than one true or false block, only the first will be used and
+the other will be ignored.
 
-This fix focuses on concurrency in each of the two subtrees swapped, and
-not concurrency between the trees.  This means that it is still possible
-that subsequent reads to eg the booleans directory and the class directory
-during a policy load could see the old state for one and the new for the other.
-The problem of ensuring that policy loads are fully atomic from the perspective
-of userspace is larger than what is dealt with here.  This commit focuses on
-ensuring that the directories contents always match either the new or the old
-policy state from the perspective of userspace.
+Create a function, cil_verify_conditional_blocks(), that gives an error
+along with a message if more than one true or false block is specified
+and call that function when building tunableif and booleanif blocks in
+the AST.
 
-In the previous implementation, on policy load /sys/fs/selinux is updated
-by deleting the previous contents of
-/sys/fs/selinux/{class,booleans} and then recreating them.  This means
-that there is a period of time when the contents of these directories do not
-exist which can cause race conditions as userspace relies on them for
-information about the policy.  In addition, it means that error recovery in
-the event of failure is challenging.
-
-In order to demonstrate the race condition that this series fixes, you
-can use the following commands:
-
-while true; do cat /sys/fs/selinux/class/service/perms/status
->/dev/null; done &
-while true; do load_policy; done;
-
-In the existing code, this will display errors fairly often as the class
-lookup fails.  (In normal operation from systemd, this would result in a
-permission check which would be allowed or denied based on policy settings
-around unknown object classes.) After applying this patch series you
-should expect to no longer see such error messages.
-
-This has been backported to 5.4 for inclusion in stable.  Because prior to this
-series in the main kernel some refactoring of SELinux policy loading had been
-done, the backport required changing some function call arguments.
-
-The most significant change of note in the backport is as follows:
-
-In previous versions of the kernel, on a policy load, three directories
-in the selinuxfs were recreated: class, booleans and policy_capabilities.
-Changes to the selinuxfs code after 5.4 but prior to this series removed
-the recreation of the policy_capabilities code, so that was not modified in
-this series.  For this backport, I left the existing recreation functionality
-of policy_capabilities intact, modifying only the class and booleans
-directories, as in the original series.
-
-As a final note about changes from the original patch, I dropped a patch
-that was only style cleanup, so this patch no longer takes advantage of
-the style changes.
-
-Signed-off-by: Daniel Burgener <dburgener@linux.microsoft.com>
+Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- security/selinux/selinuxfs.c | 119 +++++++++++++++++++++++++++--------
- 1 file changed, 93 insertions(+), 26 deletions(-)
+ libsepol/cil/src/cil_build_ast.c | 44 +++++---------------------------
+ libsepol/cil/src/cil_verify.c    | 35 +++++++++++++++++++++++++
+ libsepol/cil/src/cil_verify.h    |  1 +
+ 3 files changed, 42 insertions(+), 38 deletions(-)
 
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index ea21f3ef4a6f..ac553d88cb35 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -20,6 +20,7 @@
- #include <linux/fs_context.h>
- #include <linux/mount.h>
- #include <linux/mutex.h>
-+#include <linux/namei.h>
- #include <linux/init.h>
- #include <linux/string.h>
- #include <linux/security.h>
-@@ -351,7 +352,11 @@ static int sel_make_policycap(struct selinux_fs_info *fsi);
- static struct dentry *sel_make_dir(struct dentry *dir, const char *name,
- 			unsigned long *ino);
+diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
+index 3aabb05e..a8955834 100644
+--- a/libsepol/cil/src/cil_build_ast.c
++++ b/libsepol/cil/src/cil_build_ast.c
+@@ -2821,7 +2821,6 @@ int cil_gen_boolif(struct cil_db *db, struct cil_tree_node *parse_current, struc
+ 	int syntax_len = sizeof(syntax)/sizeof(*syntax);
+ 	struct cil_booleanif *bif = NULL;
+ 	struct cil_tree_node *next = NULL;
+-	struct cil_tree_node *cond = NULL;
+ 	int rc = SEPOL_ERR;
  
--/* declaration for sel_remove_old_policy_nodes */
-+/* declaration for sel_make_policy_nodes */
-+static struct dentry *sel_make_disconnected_dir(struct super_block *sb,
-+						unsigned long *ino);
-+
-+/* declaration for sel_make_policy_nodes */
- static void sel_remove_entries(struct dentry *de);
- 
- static ssize_t sel_read_mls(struct file *filp, char __user *buf,
-@@ -508,53 +513,101 @@ static const struct file_operations sel_policy_ops = {
- 	.llseek		= generic_file_llseek,
- };
- 
--static void sel_remove_old_policy_nodes(struct selinux_fs_info *fsi)
-+static void sel_remove_old_bool_data(unsigned int bool_num, char **bool_names,
-+				unsigned int *bool_values)
- {
- 	u32 i;
- 
- 	/* bool_dir cleanup */
--	for (i = 0; i < fsi->bool_num; i++)
--		kfree(fsi->bool_pending_names[i]);
--	kfree(fsi->bool_pending_names);
--	kfree(fsi->bool_pending_values);
--	fsi->bool_num = 0;
--	fsi->bool_pending_names = NULL;
--	fsi->bool_pending_values = NULL;
--
--	sel_remove_entries(fsi->bool_dir);
--
--	/* class_dir cleanup */
--	sel_remove_entries(fsi->class_dir);
--
-+	for (i = 0; i < bool_num; i++)
-+		kfree(bool_names[i]);
-+	kfree(bool_names);
-+	kfree(bool_values);
- }
- 
-+#define BOOL_DIR_NAME "booleans"
-+
- static int sel_make_policy_nodes(struct selinux_fs_info *fsi)
- {
--	int ret;
-+	int ret = 0;
-+	struct dentry *tmp_parent, *tmp_bool_dir, *tmp_class_dir, *old_dentry;
-+	unsigned int tmp_bool_num, old_bool_num;
-+	char **tmp_bool_names, **old_bool_names;
-+	unsigned int *tmp_bool_values, *old_bool_values;
-+	unsigned long tmp_ino = fsi->last_ino; /* Don't increment last_ino in this function */
- 
--	sel_remove_old_policy_nodes(fsi);
-+	tmp_parent = sel_make_disconnected_dir(fsi->sb, &tmp_ino);
-+	if (IS_ERR(tmp_parent))
-+		return PTR_ERR(tmp_parent);
- 
--	ret = sel_make_bools(fsi, fsi->bool_dir, &fsi->bool_num,
--			     &fsi->bool_pending_names, &fsi->bool_pending_values);
-+	tmp_ino = fsi->bool_dir->d_inode->i_ino - 1; /* sel_make_dir will increment and set */
-+	tmp_bool_dir = sel_make_dir(tmp_parent, BOOL_DIR_NAME, &tmp_ino);
-+	if (IS_ERR(tmp_bool_dir)) {
-+		ret = PTR_ERR(tmp_bool_dir);
-+		goto out;
-+	}
-+
-+	tmp_ino = fsi->class_dir->d_inode->i_ino - 1; /* sel_make_dir will increment and set */
-+	tmp_class_dir = sel_make_dir(tmp_parent, "classes", &tmp_ino);
-+	if (IS_ERR(tmp_class_dir)) {
-+		ret = PTR_ERR(tmp_class_dir);
-+		goto out;
-+	}
-+
-+	ret = sel_make_bools(fsi, tmp_bool_dir, &tmp_bool_num,
-+			     &tmp_bool_names, &tmp_bool_values);
- 	if (ret) {
- 		pr_err("SELinux: failed to load policy booleans\n");
--		return ret;
-+		goto out;
+ 	if (db == NULL || parse_current == NULL || ast_node == NULL) {
+@@ -2841,27 +2840,12 @@ int cil_gen_boolif(struct cil_db *db, struct cil_tree_node *parse_current, struc
+ 		goto exit;
  	}
  
--	ret = sel_make_classes(fsi, fsi->class_dir,
-+	ret = sel_make_classes(fsi, tmp_class_dir,
- 			       &fsi->last_class_ino);
- 	if (ret) {
- 		pr_err("SELinux: failed to load policy classes\n");
--		return ret;
-+		goto out;
- 	}
- 
- 	ret = sel_make_policycap(fsi);
- 	if (ret) {
- 		pr_err("SELinux: failed to load policy capabilities\n");
--		return ret;
-+		goto out;
- 	}
- 
--	return 0;
-+	/* booleans */
-+	old_dentry = fsi->bool_dir;
-+	lock_rename(tmp_bool_dir, old_dentry);
-+	d_exchange(tmp_bool_dir, fsi->bool_dir);
-+
-+	old_bool_num = fsi->bool_num;
-+	old_bool_names = fsi->bool_pending_names;
-+	old_bool_values = fsi->bool_pending_values;
-+
-+	fsi->bool_num = tmp_bool_num;
-+	fsi->bool_pending_names = tmp_bool_names;
-+	fsi->bool_pending_values = tmp_bool_values;
-+
-+	sel_remove_old_bool_data(old_bool_num, old_bool_names, old_bool_values);
-+
-+	fsi->bool_dir = tmp_bool_dir;
-+	unlock_rename(tmp_bool_dir, old_dentry);
-+
-+	/* classes */
-+	old_dentry = fsi->class_dir;
-+	lock_rename(tmp_class_dir, old_dentry);
-+	d_exchange(tmp_class_dir, fsi->class_dir);
-+	fsi->class_dir = tmp_class_dir;
-+	unlock_rename(tmp_class_dir, old_dentry);
-+
-+out:
-+	/* Since the other temporary dirs are children of tmp_parent
-+	 * this will handle all the cleanup in the case of a failure before
-+	 * the swapover
-+	 */
-+	sel_remove_entries(tmp_parent);
-+	dput(tmp_parent); /* d_genocide() only handles the children */
-+
-+	return ret;
- }
- 
- static ssize_t sel_write_load(struct file *file, const char __user *buf,
-@@ -1351,8 +1404,6 @@ static void sel_remove_entries(struct dentry *de)
- 	shrink_dcache_parent(de);
- }
- 
--#define BOOL_DIR_NAME "booleans"
+-	cond = parse_current->next->next;
 -
- static int sel_make_bools(struct selinux_fs_info *fsi, struct dentry *bool_dir,
- 			  unsigned int *bool_num, char ***bool_pending_names,
- 			  unsigned int **bool_pending_values)
-@@ -1910,6 +1961,22 @@ static struct dentry *sel_make_dir(struct dentry *dir, const char *name,
- 	return dentry;
+-	/* Destroying expr tree after stack is created*/
+-	if (cond->cl_head->data != CIL_KEY_CONDTRUE &&
+-		cond->cl_head->data != CIL_KEY_CONDFALSE) {
+-		rc = SEPOL_ERR;
+-		cil_log(CIL_ERR, "Conditional neither true nor false\n");
++	rc = cil_verify_conditional_blocks(parse_current->next->next);
++	if (rc != SEPOL_OK) {
+ 		goto exit;
+ 	}
+ 
+-	if (cond->next != NULL) {
+-		cond = cond->next;
+-		if (cond->cl_head->data != CIL_KEY_CONDTRUE &&
+-			cond->cl_head->data != CIL_KEY_CONDFALSE) {
+-			rc = SEPOL_ERR;
+-			cil_log(CIL_ERR, "Conditional neither true nor false\n");
+-			goto exit;
+-		}
+-	}
+-
+-
++	/* Destroying expr tree */
+ 	next = parse_current->next->next;
+ 	cil_tree_subtree_destroy(parse_current->next);
+ 	parse_current->next = next;
+@@ -2905,7 +2889,6 @@ int cil_gen_tunif(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 	int syntax_len = sizeof(syntax)/sizeof(*syntax);
+ 	struct cil_tunableif *tif = NULL;
+ 	struct cil_tree_node *next = NULL;
+-	struct cil_tree_node *cond = NULL;
+ 	int rc = SEPOL_ERR;
+ 
+ 	if (db == NULL || parse_current == NULL || ast_node == NULL) {
+@@ -2924,27 +2907,12 @@ int cil_gen_tunif(struct cil_db *db, struct cil_tree_node *parse_current, struct
+ 		goto exit;
+ 	}
+ 
+-	cond = parse_current->next->next;
+-
+-	if (cond->cl_head->data != CIL_KEY_CONDTRUE &&
+-		cond->cl_head->data != CIL_KEY_CONDFALSE) {
+-		rc = SEPOL_ERR;
+-		cil_log(CIL_ERR, "Conditional neither true nor false\n");
++	rc = cil_verify_conditional_blocks(parse_current->next->next);
++	if (rc != SEPOL_OK) {
+ 		goto exit;
+ 	}
+ 
+-	if (cond->next != NULL) {
+-		cond = cond->next;
+-
+-		if (cond->cl_head->data != CIL_KEY_CONDTRUE &&
+-			cond->cl_head->data != CIL_KEY_CONDFALSE) {
+-			rc = SEPOL_ERR;
+-			cil_log(CIL_ERR, "Conditional neither true nor false\n");
+-			goto exit;
+-		}
+-	}
+-
+-	/* Destroying expr tree after stack is created*/
++	/* Destroying expr tree */
+ 	next = parse_current->next->next;
+ 	cil_tree_subtree_destroy(parse_current->next);
+ 	parse_current->next = next;
+diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
+index c73bbeee..7b3d2a8b 100644
+--- a/libsepol/cil/src/cil_verify.c
++++ b/libsepol/cil/src/cil_verify.c
+@@ -324,6 +324,41 @@ exit:
+ 	return SEPOL_ERR;
  }
  
-+static struct dentry *sel_make_disconnected_dir(struct super_block *sb,
-+						unsigned long *ino)
++int cil_verify_conditional_blocks(struct cil_tree_node *current)
 +{
-+	struct inode *inode = sel_make_inode(sb, S_IFDIR | S_IRUGO | S_IXUGO);
++	int found_true = CIL_FALSE;
++	int found_false = CIL_FALSE;
 +
-+	if (!inode)
-+		return ERR_PTR(-ENOMEM);
++	if (current->cl_head->data == CIL_KEY_CONDTRUE) {
++		found_true = CIL_TRUE;
++	} else if (current->cl_head->data == CIL_KEY_CONDFALSE) {
++		found_false = CIL_TRUE;
++	} else {
++		cil_tree_log(current,CIL_ERR,"Expected true or false block in conditional");
++		return SEPOL_ERR;
++	}
 +
-+	inode->i_op = &simple_dir_inode_operations;
-+	inode->i_fop = &simple_dir_operations;
-+	inode->i_ino = ++(*ino);
-+	/* directory inodes start off with i_nlink == 2 (for "." entry) */
-+	inc_nlink(inode);
-+	return d_obtain_alias(inode);
++	current = current->next;
++	if (current != NULL) {
++		if (current->cl_head->data == CIL_KEY_CONDTRUE) {
++			if (found_true) {
++				cil_tree_log(current,CIL_ERR,"More than one true block in conditional");
++				return SEPOL_ERR;
++			}
++		} else if (current->cl_head->data == CIL_KEY_CONDFALSE) {
++			if (found_false) {
++				cil_tree_log(current,CIL_ERR,"More than one false block in conditional");
++				return SEPOL_ERR;
++			}
++		} else {
++			cil_tree_log(current,CIL_ERR,"Expected true or false block in conditional");
++			return SEPOL_ERR;
++		}
++	}
++
++	return SEPOL_OK;
 +}
 +
- #define NULL_FILE_NAME "null"
- 
- static int sel_fill_super(struct super_block *sb, struct fs_context *fc)
+ int cil_verify_no_self_reference(struct cil_symtab_datum *datum, struct cil_list *datum_list)
+ {
+ 	struct cil_list_item *i;
+diff --git a/libsepol/cil/src/cil_verify.h b/libsepol/cil/src/cil_verify.h
+index bda1565f..905761b0 100644
+--- a/libsepol/cil/src/cil_verify.h
++++ b/libsepol/cil/src/cil_verify.h
+@@ -61,6 +61,7 @@ int __cil_verify_syntax(struct cil_tree_node *parse_current, enum cil_syntax s[]
+ int cil_verify_expr_syntax(struct cil_tree_node *current, enum cil_flavor op, enum cil_flavor expr_flavor);
+ int cil_verify_constraint_leaf_expr_syntax(enum cil_flavor l_flavor, enum cil_flavor r_flavor, enum cil_flavor op, enum cil_flavor expr_flavor);
+ int cil_verify_constraint_expr_syntax(struct cil_tree_node *current, enum cil_flavor op);
++int cil_verify_conditional_blocks(struct cil_tree_node *current);
+ int cil_verify_no_self_reference(struct cil_symtab_datum *datum, struct cil_list *datum_list);
+ int __cil_verify_ranges(struct cil_list *list);
+ int __cil_verify_ordered_node_helper(struct cil_tree_node *node, uint32_t *finished, void *extra_args);
 -- 
 2.25.4
 

@@ -2,109 +2,108 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D56F294FCE
-	for <lists+selinux@lfdr.de>; Wed, 21 Oct 2020 17:20:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E7B42950E7
+	for <lists+selinux@lfdr.de>; Wed, 21 Oct 2020 18:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502353AbgJUPT7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 21 Oct 2020 11:19:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44842 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2502345AbgJUPT7 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 21 Oct 2020 11:19:59 -0400
-Received: from mail-pl1-x643.google.com (mail-pl1-x643.google.com [IPv6:2607:f8b0:4864:20::643])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D899C0613D9
-        for <selinux@vger.kernel.org>; Wed, 21 Oct 2020 08:19:58 -0700 (PDT)
-Received: by mail-pl1-x643.google.com with SMTP id r10so1383341plx.3
-        for <selinux@vger.kernel.org>; Wed, 21 Oct 2020 08:19:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=android.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=5hmO+mhbzoYH/GVwbytgH/sAwdgqzz47G17aTAhhRQ8=;
-        b=Lg4SyFJrAGKmMg6tKEON5sq5UQvRWRT9njDtU86HrhpkL0D0RdFN95O/iD+u7kC/4r
-         ahEy6DJB22RvhcXOWtpd4G1oxyqNVqToJqGqqUs1YqCpH2pXiY1c5d/0pzhbzSnYT69M
-         nqknNaLQF80VCLDCS9BeJ3heSe/9QtMbQljDx+DCvH0VNLMd/6p9Qqsw79r2qTLa69LX
-         R/bAIsTRcvhLiUbCjOhNRPhWsBrblxRy6nLLJDIlIAzaR7RQCmbvWYcaM06CO7pnHIQI
-         4XcufkDp9mMo7ZlREAiInwPH2LB+50E15mLIPFIh/Q71X2Y7y1PHShJVIl54u4zodyis
-         BSGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=5hmO+mhbzoYH/GVwbytgH/sAwdgqzz47G17aTAhhRQ8=;
-        b=AchzYoHQ5ylWlTmy5Yr2VEtMYfj8fypbRbUMeN9I8MCxj/IyJm5HQ+a1RNrCaHWZqY
-         hn7/tlLSS1IuPeOyYEDYJVV5vjVPPkM84PqAC+KIrTrQpVY/6RTQwUMij7V0ftV2qtw2
-         8Q0FUJuVZkHYJc+uK5Hgy3JBFWXOO5u1ZnT/QD0HSctqmhZkoSZ9rmLvP8L3pEnURhai
-         h//bxEq3JsosaWq33ARlrdxIEzAMcyBnIoupJasf8z7kFYV0+8zIUTarAKl1Y34dTj+b
-         dbVYek8nzzcRmE5QXmD+v2KvY4V4fgSRdhuWQqTfxUrIMk3RGoirk2vjmDRq7cSk73jI
-         jhSQ==
-X-Gm-Message-State: AOAM531wTRUEhLbWGz4dfX1adfIx5+Z7cygsiJFlcR4mpB8vdGnxmF1g
-        5JZqPIOM6/zRX1/j1f98W5Lzsw==
-X-Google-Smtp-Source: ABdhPJz/qcBUTmMYFz604l9m4rFbwcPGK6tFrbID3W5xqQgE0s1q2+B4QDvOzg5odG59Fj+FHRoowg==
-X-Received: by 2002:a17:902:c24b:b029:d3:f3e6:1915 with SMTP id 11-20020a170902c24bb02900d3f3e61915mr4132119plg.56.1603293598087;
-        Wed, 21 Oct 2020 08:19:58 -0700 (PDT)
-Received: from nebulus.mtv.corp.google.com ([2620:15c:211:200:4a0f:cfff:fe35:d61b])
-        by smtp.gmail.com with ESMTPSA id s10sm2409646pji.7.2020.10.21.08.19.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Oct 2020 08:19:57 -0700 (PDT)
-From:   Mark Salyzyn <salyzyn@android.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     kernel-team@android.com, John Stultz <john.stultz@linaro.org>,
-        Mark Salyzyn <salyzyn@android.com>,
+        id S2502986AbgJUQiX (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 21 Oct 2020 12:38:23 -0400
+Received: from out03.mta.xmission.com ([166.70.13.233]:60070 "EHLO
+        out03.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2391406AbgJUQiW (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 21 Oct 2020 12:38:22 -0400
+X-Greylist: delayed 6072 seconds by postgrey-1.27 at vger.kernel.org; Wed, 21 Oct 2020 12:38:22 EDT
+Received: from in01.mta.xmission.com ([166.70.13.51])
+        by out03.mta.xmission.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1kVFY2-00C1oh-KT; Wed, 21 Oct 2020 08:57:06 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
+        by in01.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1kVFXy-0003Sy-G0; Wed, 21 Oct 2020 08:57:06 -0600
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     Mark Salyzyn <salyzyn@android.com>
+Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vivek Goyal <vgoyal@redhat.com>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
         Stephen Smalley <sds@tycho.nsa.gov>,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Subject: [RESEND PATCH v18 4/4] overlayfs: inode_owner_or_capable called during execv
-Date:   Wed, 21 Oct 2020 08:19:03 -0700
-Message-Id: <20201021151903.652827-5-salyzyn@android.com>
-X-Mailer: git-send-email 2.29.0.rc1.297.gfa9743e501-goog
-In-Reply-To: <20201021151903.652827-1-salyzyn@android.com>
-References: <20201021151903.652827-1-salyzyn@android.com>
+        John Stultz <john.stultz@linaro.org>,
+        linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
+        selinux@vger.kernel.org
+References: <20201021143533.115895-1-salyzyn@android.com>
+Date:   Wed, 21 Oct 2020 09:57:14 -0500
+In-Reply-To: <20201021143533.115895-1-salyzyn@android.com> (Mark Salyzyn's
+        message of "Wed, 21 Oct 2020 07:35:29 -0700")
+Message-ID: <87wnzj6305.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-XM-SPF: eid=1kVFXy-0003Sy-G0;;;mid=<87wnzj6305.fsf@x220.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
+X-XM-AID: U2FsdGVkX199I58QG2refBpWT2h/3qg84rj5WxpAjCg=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa03.xmission.com
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
+        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
+        T_TooManySym_02,XMSubLong autolearn=disabled version=3.4.2
+X-Spam-Virus: No
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.7 XMSubLong Long Subject
+        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+        *      [sa03 1397; Body=1 Fuz1=1 Fuz2=1]
+        *  0.0 T_TooManySym_01 4+ unique symbols in subject
+        *  0.0 T_TooManySym_02 5+ unique symbols in subject
+X-Spam-DCC: XMission; sa03 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Mark Salyzyn <salyzyn@android.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 3757 ms - load_scoreonly_sql: 0.03 (0.0%),
+        signal_user_changed: 3.7 (0.1%), b_tie_ro: 2.6 (0.1%), parse: 0.60
+        (0.0%), extract_message_metadata: 25 (0.7%), get_uri_detail_list: 1.71
+        (0.0%), tests_pri_-1000: 27 (0.7%), tests_pri_-950: 1.02 (0.0%),
+        tests_pri_-900: 0.87 (0.0%), tests_pri_-90: 97 (2.6%), check_bayes: 94
+        (2.5%), b_tokenize: 6 (0.1%), b_tok_get_all: 7 (0.2%), b_comp_prob:
+        1.32 (0.0%), b_tok_touch_all: 78 (2.1%), b_finish: 0.66 (0.0%),
+        tests_pri_0: 235 (6.3%), check_dkim_signature: 0.71 (0.0%),
+        check_dkim_adsp: 18 (0.5%), poll_dns_idle: 3341 (88.9%), tests_pri_10:
+        2.6 (0.1%), tests_pri_500: 3363 (89.5%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH v18 0/4] overlayfs override_creds=off & nested get xattr fix
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: John Stultz <john.stultz@linaro.org>
 
-Using old_creds as an indication that we are not overriding the
-credentials, bypass call to inode_owner_or_capable.  This solves
-a problem with all execv calls being blocked when using the caller's
-credentials.
+Is there any reason why the cc list from the body of the email does not
+match the people who have been cc'd on the email.  Skipping the
+linux-unionfs list (which seems to be the mail list for overlayfs)
+seems like a pretty big oversight.
 
-Signed-off-by: John Stultz <john.stultz@linaro.org>
-Signed-off-by: Mark Salyzyn <salyzyn@android.com>
-Fixes: 05acefb4872da ("ovl: check permission to open real file")
-C: linux-fsdevel@vger.kernel.org
-C: linux-unionfs@vger.kernel.org
-Cc: Stephen Smalley <sds@tycho.nsa.gov>
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-security-module@vger.kernel.org
-Cc: kernel-team@android.com
-Cc: selinux@vger.kernel.org
+> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
+> Cc: Miklos Szeredi <miklos@szeredi.hu>
+> Cc: Jonathan Corbet <corbet@lwn.net>
+> Cc: Vivek Goyal <vgoyal@redhat.com>
+> Cc: Eric W. Biederman <ebiederm@xmission.com>
+> Cc: Amir Goldstein <amir73il@gmail.com>
+> Cc: Randy Dunlap <rdunlap@infradead.org>
+> Cc: Stephen Smalley <sds@tycho.nsa.gov>
+> Cc: John Stultz <john.stultz@linaro.org>
+> Cc: linux-doc@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> To: linux-fsdevel@vger.kernel.org
+> To: linux-unionfs@vger.kernel.org
+> Cc: linux-security-module@vger.kernel.org
+> Cc: kernel-team@android.com
+> Cc: selinux@vger.kernel.org
 
-v18 - rebase
-
-v17 - rebase
-
-v16 - introduced fix over rebased series
----
- fs/overlayfs/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
-index b1357bb067d9..9ab9663b02d8 100644
---- a/fs/overlayfs/file.c
-+++ b/fs/overlayfs/file.c
-@@ -53,7 +53,7 @@ static struct file *ovl_open_realfile(const struct file *file,
- 	err = inode_permission(realinode, MAY_OPEN | acc_mode);
- 	if (err) {
- 		realfile = ERR_PTR(err);
--	} else if (!inode_owner_or_capable(realinode)) {
-+	} else if (old_cred && !inode_owner_or_capable(realinode)) {
- 		realfile = ERR_PTR(-EPERM);
- 	} else {
- 		realfile = open_with_fake_path(&file->f_path, flags, realinode,
--- 
-2.29.0.rc1.297.gfa9743e501-goog
+Eric
 

@@ -2,108 +2,117 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E7B42950E7
-	for <lists+selinux@lfdr.de>; Wed, 21 Oct 2020 18:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 596F9295249
+	for <lists+selinux@lfdr.de>; Wed, 21 Oct 2020 20:33:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2502986AbgJUQiX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 21 Oct 2020 12:38:23 -0400
-Received: from out03.mta.xmission.com ([166.70.13.233]:60070 "EHLO
-        out03.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2391406AbgJUQiW (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 21 Oct 2020 12:38:22 -0400
-X-Greylist: delayed 6072 seconds by postgrey-1.27 at vger.kernel.org; Wed, 21 Oct 2020 12:38:22 EDT
-Received: from in01.mta.xmission.com ([166.70.13.51])
-        by out03.mta.xmission.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kVFY2-00C1oh-KT; Wed, 21 Oct 2020 08:57:06 -0600
-Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
-        by in01.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.87)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1kVFXy-0003Sy-G0; Wed, 21 Oct 2020 08:57:06 -0600
-From:   ebiederm@xmission.com (Eric W. Biederman)
-To:     Mark Salyzyn <salyzyn@android.com>
-Cc:     linux-kernel@vger.kernel.org, kernel-team@android.com,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        John Stultz <john.stultz@linaro.org>,
-        linux-doc@vger.kernel.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org
-References: <20201021143533.115895-1-salyzyn@android.com>
-Date:   Wed, 21 Oct 2020 09:57:14 -0500
-In-Reply-To: <20201021143533.115895-1-salyzyn@android.com> (Mark Salyzyn's
-        message of "Wed, 21 Oct 2020 07:35:29 -0700")
-Message-ID: <87wnzj6305.fsf@x220.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
+        id S2439087AbgJUSdU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 21 Oct 2020 14:33:20 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:50094 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2439017AbgJUSdT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 21 Oct 2020 14:33:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1603305198;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=8MHb6izU/7jzPgI8u4oNDfgfGD/7BvXhH62HQTn4SFw=;
+        b=YW7awLxQm69Jg6/uQ2pNG3PExD2rARbulpaEqze7XSf65xeq+3F4vc44K767c4XsycxIaG
+        IxCRp0gGIfMwtLoBmZ8mY3/g5J23t+Qxl6JImPR67UnI7DLDyDursqMg4r0DoEIjFzRakM
+        cT2A02vzu43srMb2rANkUSMs0odbB/M=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-518-5yzyBrHsPw601v58RowBsA-1; Wed, 21 Oct 2020 14:33:16 -0400
+X-MC-Unique: 5yzyBrHsPw601v58RowBsA-1
+Received: by mail-wr1-f69.google.com with SMTP id 91so2984419wrk.20
+        for <selinux@vger.kernel.org>; Wed, 21 Oct 2020 11:33:16 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8MHb6izU/7jzPgI8u4oNDfgfGD/7BvXhH62HQTn4SFw=;
+        b=cKOZQWRMurXQ/eQ1ao+0g8koDV/K50KxHVYi7UwoPk0pBx07Wt7m8qqq70qLuCSyRn
+         C3LWUr4bnPDxJQ/86q4UH7RgIMhz33R3Z2LwwAvq87ImCUnVU21ynn4ykqZ0ayeO40/m
+         qXiBrYukEdFGTGaI6nHKJq7JPi4zPyv48LlskP1PuAxeDmeiViu7TVnwUZUDJCoxq7CR
+         zr/QZKWN7fgnECSJj15fILDC3NSMO78EBE4JTifRtniIn9PT1COfYwQwORy+wjUzfsA4
+         zwjaLCMz1P0BD1mjKYVSQ+yLzGLWgAZgb+4QXK15cSKHERTRhdC8rylkZNlt9xDY7pmk
+         0i2A==
+X-Gm-Message-State: AOAM532NlFF1PDJYoGhWZh805JO2/H3FLtlDtc4pCIz6U+ziRo9mTuSG
+        Kb7B4iVolR4ZJdtEnLxUc2DzPkDwxiYLupdYC9Uv+9pOibra6T1p8+AJXKBpz6QKsnnbCTUJ8v5
+        tLGV41LCKAjX64XTFVQ==
+X-Received: by 2002:a5d:43c6:: with SMTP id v6mr6147634wrr.20.1603305195139;
+        Wed, 21 Oct 2020 11:33:15 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJw5a6YpUbRlqFViVToX61GY86mVezVnxHq5XeH4ETH0BTcUijNUpO4ls83tlvYK2ONLfZoBeA==
+X-Received: by 2002:a5d:43c6:: with SMTP id v6mr6147622wrr.20.1603305194889;
+        Wed, 21 Oct 2020 11:33:14 -0700 (PDT)
+Received: from omos.redhat.com ([2a02:8308:b103:4000:e83d:a4fb:e589:6902])
+        by smtp.gmail.com with ESMTPSA id a17sm5430970wra.29.2020.10.21.11.33.14
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Oct 2020 11:33:14 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH testsuite] travis: update the kernel and reboot before running the suite
+Date:   Wed, 21 Oct 2020 20:33:12 +0200
+Message-Id: <20201021183312.380344-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1kVFXy-0003Sy-G0;;;mid=<87wnzj6305.fsf@x220.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
-X-XM-AID: U2FsdGVkX199I58QG2refBpWT2h/3qg84rj5WxpAjCg=
-X-SA-Exim-Connect-IP: 68.227.160.95
-X-SA-Exim-Mail-From: ebiederm@xmission.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa03.xmission.com
-X-Spam-Level: 
-X-Spam-Status: No, score=0.5 required=8.0 tests=ALL_TRUSTED,BAYES_50,
-        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
-        T_TooManySym_02,XMSubLong autolearn=disabled version=3.4.2
-X-Spam-Virus: No
-X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.7 XMSubLong Long Subject
-        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
-        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
-        *      [sa03 1397; Body=1 Fuz1=1 Fuz2=1]
-        *  0.0 T_TooManySym_01 4+ unique symbols in subject
-        *  0.0 T_TooManySym_02 5+ unique symbols in subject
-X-Spam-DCC: XMission; sa03 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ;Mark Salyzyn <salyzyn@android.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 3757 ms - load_scoreonly_sql: 0.03 (0.0%),
-        signal_user_changed: 3.7 (0.1%), b_tie_ro: 2.6 (0.1%), parse: 0.60
-        (0.0%), extract_message_metadata: 25 (0.7%), get_uri_detail_list: 1.71
-        (0.0%), tests_pri_-1000: 27 (0.7%), tests_pri_-950: 1.02 (0.0%),
-        tests_pri_-900: 0.87 (0.0%), tests_pri_-90: 97 (2.6%), check_bayes: 94
-        (2.5%), b_tokenize: 6 (0.1%), b_tok_get_all: 7 (0.2%), b_comp_prob:
-        1.32 (0.0%), b_tok_touch_all: 78 (2.1%), b_finish: 0.66 (0.0%),
-        tests_pri_0: 235 (6.3%), check_dkim_signature: 0.71 (0.0%),
-        check_dkim_adsp: 18 (0.5%), poll_dns_idle: 3341 (88.9%), tests_pri_10:
-        2.6 (0.1%), tests_pri_500: 3363 (89.5%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v18 0/4] overlayfs override_creds=off & nested get xattr fix
-X-Spam-Flag: No
-X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+While the stable release cloud image always ships with a kernel which
+has the matching -modules and -devel packages available in the "fedora"
+repo, on development releases the nightly images may be behind the
+latest repo content and thus may fail to install kernel-modules and
+kernel-devel.
 
-Is there any reason why the cc list from the body of the email does not
-match the people who have been cc'd on the email.  Skipping the
-linux-unionfs list (which seems to be the mail list for overlayfs)
-seems like a pretty big oversight.
+Fix it by installing the latest available the kernel and booting it
+before running the testsuite. This unfortunately adds around 3-4 minutes
+to the Travis build time, but there seems to be no better way to make
+the Rawhide test work.
 
-> Signed-off-by: Mark Salyzyn <salyzyn@android.com>
-> Cc: Miklos Szeredi <miklos@szeredi.hu>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Vivek Goyal <vgoyal@redhat.com>
-> Cc: Eric W. Biederman <ebiederm@xmission.com>
-> Cc: Amir Goldstein <amir73il@gmail.com>
-> Cc: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Stephen Smalley <sds@tycho.nsa.gov>
-> Cc: John Stultz <john.stultz@linaro.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> To: linux-fsdevel@vger.kernel.org
-> To: linux-unionfs@vger.kernel.org
-> Cc: linux-security-module@vger.kernel.org
-> Cc: kernel-team@android.com
-> Cc: selinux@vger.kernel.org
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ .travis.yml               |  1 +
+ travis-ci/run-kvm-test.sh | 12 ++++++++++++
+ 2 files changed, 13 insertions(+)
 
-Eric
+diff --git a/.travis.yml b/.travis.yml
+index 9488807..dcac54d 100644
+--- a/.travis.yml
++++ b/.travis.yml
+@@ -17,6 +17,7 @@ addons:
+       - bridge-utils
+       - libguestfs-tools
+       - cpu-checker
++      - netcat
+ 
+ before_install:
+   # FYI: known good with HEAD at 8551fc60fc515cd290ba38ee8c758c1f4df52b56
+diff --git a/travis-ci/run-kvm-test.sh b/travis-ci/run-kvm-test.sh
+index 70fcf08..d22c92b 100755
+--- a/travis-ci/run-kvm-test.sh
++++ b/travis-ci/run-kvm-test.sh
+@@ -120,5 +120,17 @@ fi
+ # our known_hosts. Also, we need to forward the project directory
+ # so forks know where to go.
+ #
++
++# First update to the latest kernel.
++ssh -tt -o StrictHostKeyChecking=no -o LogLevel=QUIET "root@$ipaddy" \
++    dnf install -y kernel
++
++# Then reboot.
++sudo virsh reboot fedoravm
++sleep 5
++
++while ! nc -w 10 -z "$ipaddy" 22; do sleep 0.5s; done
++
++# And run the testsuite.
+ project_dir="$(basename "$TRAVIS_BUILD_DIR")"
+ ssh -tt -o StrictHostKeyChecking=no -o LogLevel=QUIET "root@$ipaddy" "SELINUX_DIR=/root/$project_dir /root/$project_dir/$TEST_RUNNER"
+-- 
+2.26.2
 

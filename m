@@ -2,81 +2,64 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 302DD29DFC1
-	for <lists+selinux@lfdr.de>; Thu, 29 Oct 2020 02:04:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9AC329E1C6
+	for <lists+selinux@lfdr.de>; Thu, 29 Oct 2020 03:03:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730416AbgJ2BE0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 28 Oct 2020 21:04:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52496 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728406AbgJ2BEZ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 28 Oct 2020 21:04:25 -0400
-Received: from mail-wr1-x443.google.com (mail-wr1-x443.google.com [IPv6:2a00:1450:4864:20::443])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3D04C0613CF
-        for <selinux@vger.kernel.org>; Wed, 28 Oct 2020 18:04:24 -0700 (PDT)
-Received: by mail-wr1-x443.google.com with SMTP id t9so955912wrq.11
-        for <selinux@vger.kernel.org>; Wed, 28 Oct 2020 18:04:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=oolgt33PMh+T/hOklmS2wmZw0YTFglRzts0lARs0PM0=;
-        b=lL+kiK7w+EkDfFmp9q4bS+hLokwpIj/pkgi2pmwG2qTmNKY/iAFvbUXjqH19/6gxrf
-         oHH8YgRVYg6ZKVQnswz3PY8D7K9y4dwCD46YlmMLZqa26FfSOrVwTFp3v7eVcBC25o/o
-         mjTj/CeEkZSkpkEdvbafvyioYT8eBYWor+cWdieknFQH0zyVh5FhnZzDKzbREUBaYSGQ
-         RZ1752HjovqMbh1emcw4PUAqo7dkjLGYGXym7JaCaskbhtPjno66e85BBqyA/sLPbrVX
-         oL6Q8O6p/t/PSX96HN9EsIQKF9rOfva9WXp/8R9kfpOnTsByAcbuW6/HhEQkUeAt9jY7
-         ny2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=oolgt33PMh+T/hOklmS2wmZw0YTFglRzts0lARs0PM0=;
-        b=NdTIcpMxtjsWmSeVGBhT1hIXKKEOsiIduffUa11PhgzD1Q0+MjfqgB9XS8fF1xilGS
-         utF83P4/YKHx1KjVXc12WXbkigc012fbm5KGk+wIgyOR/DE5MmwGgzIr0CIOSid0t/Un
-         sUyILcy1UBz+J/yycx485oPzlk5tJQbMLasGwFAPOnBwz0D+SeUXxJ8oE1xyspUFu4hh
-         0LGr3J9yafFoTJC2X5iPw0voOvdr6G8wXkaL73VZRpyqJ9mmrNTBzpazM66G9gAoCdU4
-         EDkCPBg6K/SsusoFHZkBhMBq4mMt0a7ZDlQ8GYifaKk+LpVtgM7pjFhrg0sxJItO1FBV
-         GO5w==
-X-Gm-Message-State: AOAM5315RQDceRAnNOOyzbOXGfC3sjB1dmgKKVl4R34F8PcyyoC37LOO
-        85yPFLzq8/6PfA8pkHYT15TnCR/hSRXpCDu6s/795VDkgg==
-X-Google-Smtp-Source: ABdhPJzPx/vSJ4s9zHJ7yRK9EXFpbtkvD/vqufLR76h8VRT08FmRyz5a9MxaEv35J+zga1QJhP9OPgzv3qZrq26Q2s0=
-X-Received: by 2002:a17:907:72cd:: with SMTP id du13mr101356ejc.398.1603851437517;
- Tue, 27 Oct 2020 19:17:17 -0700 (PDT)
+        id S1727871AbgJ1Vsk (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 28 Oct 2020 17:48:40 -0400
+Received: from namei.org ([65.99.196.166]:38520 "EHLO namei.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727805AbgJ1Vsi (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Wed, 28 Oct 2020 17:48:38 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by namei.org (8.14.4/8.14.4) with ESMTP id 09S5Rmxe026811;
+        Wed, 28 Oct 2020 05:27:49 GMT
+Date:   Wed, 28 Oct 2020 16:27:48 +1100 (AEDT)
+From:   James Morris <jmorris@namei.org>
+To:     Paul Moore <paul@paul-moore.com>
+cc:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        netdev@vger.kernel.org
+Subject: Re: [RFC PATCH] lsm,selinux: pass the family information along with
+ xfrm flow
+In-Reply-To: <CAHC9VhSq6stUdMSS5MXKDas5RHnrJiKSDU60CbKYe04x2DvymQ@mail.gmail.com>
+Message-ID: <alpine.LRH.2.21.2010281627250.25689@namei.org>
+References: <160141647786.7997.5490924406329369782.stgit@sifl> <alpine.LRH.2.21.2009300909150.6592@namei.org> <CAHC9VhTM_a+L8nY8QLVdA1FcL8hjdV1ZNLJcr6G_Q27qPD_5EQ@mail.gmail.com> <CAHC9VhSq6stUdMSS5MXKDas5RHnrJiKSDU60CbKYe04x2DvymQ@mail.gmail.com>
+User-Agent: Alpine 2.21 (LRH 202 2017-01-01)
 MIME-Version: 1.0
-References: <CAHC9VhQTp3Rc_7zM661Rzur0XSuWRWKJJg=CwLPAQo5ABRpS-w@mail.gmail.com>
- <20201009013630.6777-1-rentianyue@tj.kylinos.cn> <20201009013630.6777-2-rentianyue@tj.kylinos.cn>
-In-Reply-To: <20201009013630.6777-2-rentianyue@tj.kylinos.cn>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 27 Oct 2020 22:17:06 -0400
-Message-ID: <CAHC9VhR2KPKN8ot9WrkjZQ08X-VPDGkXro18C5jhDEwcFH6wog@mail.gmail.com>
-Subject: Re: [PATCH v3 1/1] selinux: fix error initialization in inode_doinit_with_dentry()
-To:     rentianyue@tj.kylinos.cn
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Andreas Gruenbacher <agruenba@redhat.com>, yangzhao@kylinos.cn,
-        selinux@vger.kernel.org, Tianyue Ren <rentianyue@kylinos.cn>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Oct 8, 2020 at 9:37 PM <rentianyue@tj.kylinos.cn> wrote:
-> From: Tianyue Ren <rentianyue@kylinos.cn>
->
-> Mark the inode security label as invalid if we cannot find
-> a dentry so that we will retry later rather than marking it
-> initialized with the unlabeled SID.
->
-> Fixes: 9287aed2ad1f ("selinux: Convert isec->lock into a spinlock")
-> Signed-off-by: Tianyue Ren <rentianyue@kylinos.cn>
-> ---
->  security/selinux/hooks.c | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
+On Tue, 27 Oct 2020, Paul Moore wrote:
 
-Merged into selinux/next with some minor tweaks to the comments.
-Thanks for your help!
+> On Wed, Sep 30, 2020 at 9:44 AM Paul Moore <paul@paul-moore.com> wrote:
+> > On Tue, Sep 29, 2020 at 7:09 PM James Morris <jmorris@namei.org> wrote:
+> > > I'm not keen on adding a parameter which nobody is using. Perhaps a note
+> > > in the header instead?
+> >
+> > On Wed, Sep 30, 2020 at 6:14 AM Herbert Xu <herbert@gondor.apana.org.au> wrote:
+> > > Please at least change to the struct flowi to flowi_common if we're
+> > > not adding a family field.
+> >
+> > It did feel a bit weird adding a (currently) unused parameter, so I
+> > can understand the concern, I just worry that a comment in the code
+> > will be easily overlooked.  I also thought about passing a pointer to
+> > the nested flowi_common struct, but it doesn't appear that this is
+> > done anywhere else in the stack so it felt wrong to do it here.
+> 
+> With the merge window behind us, where do stand on this?  I see the
+> ACK from Casey and some grumbling about adding an unused parameter
+> (which is a valid argument, I just feel the alternative is worse), but
+> I haven't seen any serious NACKs.
+> 
+> Any objections or other strong feelings to me merging this via the
+> selinux/next branch?
+
+Yes, we should not add unused parameters to functions.
 
 -- 
-paul moore
-www.paul-moore.com
+James Morris
+<jmorris@namei.org>
+

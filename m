@@ -2,86 +2,106 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FBF12A1157
-	for <lists+selinux@lfdr.de>; Sat, 31 Oct 2020 00:02:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3260A2A116B
+	for <lists+selinux@lfdr.de>; Sat, 31 Oct 2020 00:05:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726063AbgJ3XCY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 30 Oct 2020 19:02:24 -0400
-Received: from server.msgroupspa.com ([185.149.113.111]:55162 "EHLO
-        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725780AbgJ3XCU (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 30 Oct 2020 19:02:20 -0400
-X-Greylist: delayed 53432 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 19:02:11 EDT
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
-        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=f0J1AWuajA3oZ1Dpfc1x8K8xEJ
-        AUip3Gv2UXILC1QLa9azjb3AcsLQqGjiyvcdNpmgT4E3ckADFb84tXlqXdyZsQiNBG2DujmkXqT6T
-        d2mjFNqNRzqSvTZ5qo3MQnCtCov24Wb4wcnpMjift4pdGB4JPDnKAHB+AICh1brF5U0xFQPetWE6H
-        BdPwBb7MNTVWN2mlAPb66Psghg7IoDbQVF1Tmf3H0jaTjlEaWeH4lQoLQpQIzRJYm5NbY0Di4+n63
-        5jJQ9+O4mZNL1aiyS8rwPAgEOxxbLBRAAH3FJTu26AO783jjZImRhbqNmO2ZZgHvlSfFh6vWgR2oo
-        WibXGz9w==;
-Received: from [::1] (port=55834 helo=server.msgroupspa.com)
-        by server.msgroupspa.com with esmtpa (Exim 4.93)
-        (envelope-from <no-reply@msgroupspa.com>)
-        id 1kYPS7-0006MI-86; Fri, 30 Oct 2020 16:08:03 +0800
+        id S1725792AbgJ3XFN (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 30 Oct 2020 19:05:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725780AbgJ3XFM (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 30 Oct 2020 19:05:12 -0400
+Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF7AC0613D5
+        for <selinux@vger.kernel.org>; Fri, 30 Oct 2020 16:05:12 -0700 (PDT)
+Received: by mail-io1-xd43.google.com with SMTP id s7so9138270iol.12
+        for <selinux@vger.kernel.org>; Fri, 30 Oct 2020 16:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=/aDIvIxswanB9c8y6NVHo7t9+CSzn8rd7bV7fmMrhVI=;
+        b=sfiaoekpH7gAkY+OwC14jL139/DbUTWHRBvx6TNC7/3CdOlR7tFkAjtvQtfHiA2K5a
+         axqcz3l8ROcefg1jN7PQUTmCvnrBdfkIVMCf4mEEWkKKqP3k1s63GAv7lXVDrvpzc+CO
+         tqXZC/T6ONmpJK6gyeaGiWgTGER89ckmeLbc4cf0cH6lH13Vg2Mf37ZpmjLQpXRyUv5Q
+         VZuogb8eIDYA2gX985U842Y9/1yPU/euVKbSGvMUX8zBwBKB2gh/oT4fbG/zec+ts85s
+         iEIYaVqGSjFgL+cfIBHwnYDKe455RsJOpCDbYk+cjNxo6//IB1EGvmIF8YXMlyKtRNNV
+         tyqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=/aDIvIxswanB9c8y6NVHo7t9+CSzn8rd7bV7fmMrhVI=;
+        b=JvLwiek5cZQO5UhOyeX9vHyevsUktY9wour8J42N55K7Z2QzhopW6ZkvDUbM6EGV6d
+         +pLf3YScrqAeiBRNq8G+MThOYXBTaXE7VVXdB7P8mQ/sj5R7Cc2QzASlgRSY6ulJmImj
+         VimHPSNUaklzYLGp+DhncXNg43VSLAqHrpz79wcz0EAWZdaNEnLEXoMLWbG7Jk6SHVzE
+         C4J++P73GL9UYYkySHWIsStcm3nY/tde294mxpwZz5SDsCERewac63uTUh7wbO8jSpFt
+         QwRx+Yzj5FMVbCCywp2K9Zn71E7G+CK/ylUIa1t+UxIROiTb36SIyn0OlFvuPpP9hSHR
+         sQJQ==
+X-Gm-Message-State: AOAM531sjfwlcmRZtsTMIzykYKFbHKU+KBKpOnhvcgtnhsjguvFAVr/I
+        /4uJOQ4YoXNKDmQxHlSjtoVGJanbbWHirZy8t65beoVy
+X-Google-Smtp-Source: ABdhPJwUdiXJRxlDor4WAalIttieixbIJa89uvBVUPDWXSiuw5jNVNbOHYGq2yvJvfxCWbAMgpejT37AAaLV9gZPsZU=
+X-Received: by 2002:a6b:7947:: with SMTP id j7mr3515125iop.143.1604099112267;
+ Fri, 30 Oct 2020 16:05:12 -0700 (PDT)
 MIME-Version: 1.0
-Date:   Fri, 30 Oct 2020 16:08:03 +0800
-From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
-To:     undisclosed-recipients:;
-Subject: Hello/Hallo
-Reply-To: galvan.johnny@outlook.com
-User-Agent: Roundcube Webmail/1.4.8
-Message-ID: <0d2cf4301ff4649fbf993b8f3f7e83c8@msgroupspa.com>
-X-Sender: no-reply@msgroupspa.com
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.msgroupspa.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - msgroupspa.com
-X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
-X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20201030211327.111834-1-omosnace@redhat.com>
+In-Reply-To: <20201030211327.111834-1-omosnace@redhat.com>
+From:   William Roberts <bill.c.roberts@gmail.com>
+Date:   Fri, 30 Oct 2020 18:05:01 -0500
+Message-ID: <CAFftDdrws1qjTPZzg4aAAUPX2xeO8a6Q2YuHqDM7poaabM0fNA@mail.gmail.com>
+Subject: Re: [PATCH userspace v2] ci: use parallel build
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+On Fri, Oct 30, 2020 at 4:14 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>
+> Pass -j$(nproc) to all make invocations to make the CI run a little
+> faster.
+>
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> ---
+>
+> v2: use POSIX $() instead of ``
+>
+>  .travis.yml | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/.travis.yml b/.travis.yml
+> index bd3c9842..8ea6cc74 100644
+> --- a/.travis.yml
+> +++ b/.travis.yml
+> @@ -74,7 +74,7 @@ install:
+>    - tar -C "$TRAVIS_BUILD_DIR" -xvjf "$TRAVIS_BUILD_DIR/refpolicy.tar.bz2"
+>    # Make refpolicy Makefile use the new toolchain when building modules
+>    - sed -e "s,^PREFIX :=.*,PREFIX := \$(DESTDIR)/usr," -i "$TRAVIS_BUILD_DIR/refpolicy/support/Makefile.devel"
+> -  - sudo make -C "$TRAVIS_BUILD_DIR/refpolicy" install-headers
+> +  - sudo make -j$(nproc) -C "$TRAVIS_BUILD_DIR/refpolicy" install-headers
+>    - sudo rm -rf "$TRAVIS_BUILD_DIR/refpolicy.tar.bz2" "$TRAVIS_BUILD_DIR/refpolicy"
+>    - sudo mkdir -p /etc/selinux
+>    - echo 'SELINUXTYPE=refpolicy' | sudo tee /etc/selinux/config
+> @@ -129,12 +129,12 @@ before_script:
+>
+>  script:
+>    # Start by installing everything into $DESTDIR
+> -  - make install $EXPLICIT_MAKE_VARS -k
+> -  - make install-pywrap $EXPLICIT_MAKE_VARS -k
+> -  - make install-rubywrap $EXPLICIT_MAKE_VARS -k
+> +  - make -j$(nproc) install $EXPLICIT_MAKE_VARS -k
+> +  - make -j$(nproc) install-pywrap $EXPLICIT_MAKE_VARS -k
+> +  - make -j$(nproc) install-rubywrap $EXPLICIT_MAKE_VARS -k
+>
+>    # Now that everything is installed, run "make all" to build everything which may have not been built
+> -  - make all $EXPLICIT_MAKE_VARS -k
+> +  - make -j$(nproc) all $EXPLICIT_MAKE_VARS -k
+>
+>    # Set up environment variables for the tests
+>    - . ./scripts/env_use_destdir
+> --
+> 2.26.2
+>
 
-
--- 
-Sir/Madam,
-
-I have access to very vital information that can be used to move a huge 
-amount of money. I have done my homework very well and I have the 
-machineries in place to get it done since I am still in active service. 
-If it was possible for me to do it alone I would not have bothered 
-contacting you. Ultimately I need an honest foreigner to play an 
-important role in the completion of this business transaction. Send 
-responds to this email: galvan.johnny@outlook.com
-
-Regards,
-John Galvan
-
----------------------------------------------------------------
-
-Sir / Madam,
-
-Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
-große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
-gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
-noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
-zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
-Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
-Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
-Antworten auf diese E-Mail: galvan.johnny@outlook.com
-
-Grüße,
-John Galvan
+Ack

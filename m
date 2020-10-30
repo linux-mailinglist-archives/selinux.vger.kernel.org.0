@@ -2,133 +2,82 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 746012A0945
-	for <lists+selinux@lfdr.de>; Fri, 30 Oct 2020 16:09:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 01E4B2A0A1B
+	for <lists+selinux@lfdr.de>; Fri, 30 Oct 2020 16:43:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726977AbgJ3PJS (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 30 Oct 2020 11:09:18 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:44561 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726813AbgJ3PJR (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 30 Oct 2020 11:09:17 -0400
-Received: from mail-oo1-f70.google.com ([209.85.161.70])
-        by youngberry.canonical.com with esmtps (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <seth.forshee@canonical.com>)
-        id 1kYW0Q-0001sp-2Q
-        for selinux@vger.kernel.org; Fri, 30 Oct 2020 15:07:54 +0000
-Received: by mail-oo1-f70.google.com with SMTP id c2so1606514ooo.20
-        for <selinux@vger.kernel.org>; Fri, 30 Oct 2020 08:07:54 -0700 (PDT)
+        id S1726610AbgJ3Pny (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 30 Oct 2020 11:43:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46302 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726239AbgJ3Pny (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 30 Oct 2020 11:43:54 -0400
+Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34973C0613CF
+        for <selinux@vger.kernel.org>; Fri, 30 Oct 2020 08:43:54 -0700 (PDT)
+Received: by mail-il1-x141.google.com with SMTP id x7so6878744ili.5
+        for <selinux@vger.kernel.org>; Fri, 30 Oct 2020 08:43:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=LS62eleTYS8PtPNKa5H5yYkYT5JIXxVzCu4jTc33RzNHctoRh+DAmhRkzwTmFm6unZ
+         KO78EzYMTLVwoV3Dwed304PlHyRfjjFyGS6Eg5mK7xkmjDSVTPzdXKeS6te42zP9f3pE
+         XyrbpOO21cyILC2/73tGq5TmA7e4OTKD6T4zhjxUNSeBmQj6UuOiwLaLjbWw6eckSiui
+         HMIRWI6b1b0AVe5vyN4k+LYbOOQx5UHj+kLI2AS0Ld+UPulN23u7R3Woj9RKVfgTCna+
+         34y5jMeNZ/b2B7cPKFth8a7w9H1NVvMfskxy7s/lt+SPeLLZreclPblchoDo/OvA8h9K
+         QU+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=xa7Ya7WFCD66IO3n4EspVdAVBWL69bn4xyiCQC0MCNc=;
-        b=EVPVbKVqRUMJWHuMlStqgYWXon7X2ckrrAHKc4lv/uJnzsMhry87Mt9G74VLzKLakc
-         zl38zOv1lnjTniX5daD9F/febGy/p+2bYQfi9N5GyZdXKoBADIGcZzlpXY5JGAGENdJm
-         afoQ9F6vuWIzxDGnWFlSqx2f3zVOEPLVD7V7IgbdXbp4MCSnpfpiqP8rHgtc7rkAZ6PA
-         Rbaxp5Il80XXRRcTgLHma6xg/iNr3I/1OJaxOyRVGORRY7iAoAkZlHbpD5eZ45EqA1Yy
-         ZoHoyOOH40m7a8tL2b0DXLG3urZ/BPp3Q/3V3xzFwiCt3PmGaI1P4k+RTt6FqQHQKT3S
-         EZpA==
-X-Gm-Message-State: AOAM530tE0zYGsyEeVTixFuGooYXRn/EMOGdeKWG5pO5j0v6iiScm82l
-        ZIG8QWPzgszkzAwQa4iAeDqefvbd5TgdGMEb+aD/07gBJy8bM4OysvSelrhkGhDStqkBng+m/ki
-        15f/MEU3e3ggMSXeL/KUhfkprIkUj4uJ9ACc=
-X-Received: by 2002:a9d:7f90:: with SMTP id t16mr2120445otp.231.1604070472478;
-        Fri, 30 Oct 2020 08:07:52 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxrwanxbYDDJUUK4/p/rI4RmYyrOvYEAiYYd5ZsrwMuhegPWsvTXQZPd/YkhjdWXy2r86N00Q==
-X-Received: by 2002:a9d:7f90:: with SMTP id t16mr2120406otp.231.1604070472204;
-        Fri, 30 Oct 2020 08:07:52 -0700 (PDT)
-Received: from localhost ([2605:a601:ac0f:820:f03a:863:709:f18c])
-        by smtp.gmail.com with ESMTPSA id d22sm1412368oij.53.2020.10.30.08.07.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Oct 2020 08:07:49 -0700 (PDT)
-Date:   Fri, 30 Oct 2020 10:07:48 -0500
-From:   Seth Forshee <seth.forshee@canonical.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Aleksa Sarai <cyphar@cyphar.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@infradead.org>,
-        linux-fsdevel@vger.kernel.org,
-        John Johansen <john.johansen@canonical.com>,
-        James Morris <jmorris@namei.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Mrunal Patel <mpatel@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Theodore Tso <tytso@mit.edu>, Alban Crequy <alban@kinvolk.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Howells <dhowells@redhat.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Jann Horn <jannh@google.com>,
-        =?utf-8?B?U3TDqXBoYW5l?= Graber <stgraber@ubuntu.com>,
-        Lennart Poettering <lennart@poettering.net>,
-        smbarber@chromium.org, Phil Estes <estesp@gmail.com>,
-        Serge Hallyn <serge@hallyn.com>,
-        Kees Cook <keescook@chromium.org>,
-        Todd Kjos <tkjos@google.com>, Jonathan Corbet <corbet@lwn.net>,
-        containers@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-audit@redhat.com, linux-integrity@vger.kernel.org,
-        selinux@vger.kernel.org
-Subject: Re: [PATCH 00/34] fs: idmapped mounts
-Message-ID: <20201030150748.GA176340@ubuntu-x1>
-References: <20201029003252.2128653-1-christian.brauner@ubuntu.com>
- <87pn51ghju.fsf@x220.int.ebiederm.org>
- <20201029155148.5odu4j2kt62ahcxq@yavin.dot.cyphar.com>
- <87361xdm4c.fsf@x220.int.ebiederm.org>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=UWRJvuRMmAuaTiIFVVogaQptKSrbKAqPCU3iOkQDWoex+HvvIyCurkbnyBi7az07J3
+         RTZlNwEy0h8CGL9Q/KHIywokDQLdSeMTyhpq6rFkjDNFO8tpF9RjrD7R2qVQXWKrKDIH
+         2G8vOOoSB1OL+qTVQ4DJsUDDA4sButEkTmLeMRyqcvcvdjzRga7NimA085B6AMJwaAny
+         rCWhRNxATZBM6dJOD5yzhYxwT1aLLF83r0jB1FJ6zsZE7B/kHEgaNTTasy1pFmqIhL2c
+         b+480DEqIGcSQt+uMUyb7P5T9N2AkKx3e3F12HWN320CYHrITalEDC4g0pX4M/YreLgm
+         yswQ==
+X-Gm-Message-State: AOAM530DAIK0AQBt2erijwY1xzKRYXt7WUWdp0uHa9U2Vy+/fWtML7Tj
+        NdcUZ4A8Zq8dVrKhjTIP6P/6zEk8xFEIZOhRpXc=
+X-Google-Smtp-Source: ABdhPJzbCNVUeX5ISy1fVJKOm2jIsh5gKlymMmi/p3WdCq3biR6F1TCPVjtNRJaPGkdUNQUrsI7p1zx91UpmK1dqEfc=
+X-Received: by 2002:a92:3650:: with SMTP id d16mr2278389ilf.29.1604072633639;
+ Fri, 30 Oct 2020 08:43:53 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87361xdm4c.fsf@x220.int.ebiederm.org>
+Received: by 2002:a02:5d85:0:0:0:0:0 with HTTP; Fri, 30 Oct 2020 08:43:53
+ -0700 (PDT)
+Reply-To: li.anable85@gmail.com
+From:   Liliane Abel <y.ihou0@gmail.com>
+Date:   Fri, 30 Oct 2020 16:43:53 +0100
+Message-ID: <CABKXw9CVnSqZn6QX9_qquf4shwuc6zmjSB-k3cHOLek2E5p5vg@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Oct 29, 2020 at 11:37:23AM -0500, Eric W. Biederman wrote:
-> First and foremost: A uid shift on write to a filesystem is a security
-> bug waiting to happen.  This is especially in the context of facilities
-> like iouring, that play very agressive games with how process context
-> makes it to  system calls.
-> 
-> The only reason containers were not immediately exploitable when iouring
-> was introduced is because the mechanisms are built so that even if
-> something escapes containment the security properties still apply.
-> Changes to the uid when writing to the filesystem does not have that
-> property.  The tiniest slip in containment will be a security issue.
-> 
-> This is not even the least bit theoretical.  I have seem reports of how
-> shitfs+overlayfs created a situation where anyone could read
-> /etc/shadow.
+Dearest
 
-This bug was the result of a complex interaction with several
-contributing factors. It's fair to say that one component was overlayfs
-writing through an id-shifted mount, but the primary cause was related
-to how copy-up was done coupled with allowing unprivileged overlayfs
-mounts in a user ns. Checks that the mounter had access to the lower fs
-file were not done before copying data up, and so the file was copied up
-temporarily to the id shifted upperdir. Even though it was immediately
-removed, other factors made it possible for the user to get the file
-contents from the upperdir.
+Greeting my dear, I am Liliane Abel by name, The only daughter of late
+Mr.Benson Abel. My father is one of the top Politician in our country
+and my mother is a farmers and cocoa merchant when they were both
+alive. After the death of my mother, long ago, my father was
+controlling their business until he was poisoned by his business
+associates which he suffered and died.
 
-Regardless, I do think you raise a good point. We need to be wary of any
-place the kernel could open files through a shifted mount, especially
-when the open could be influenced by userspace.
-
-Perhaps kernel file opens through shifted mounts should to be opt-in.
-I.e. unless a flag is passed, or a different open interface used, the
-open will fail if the dentry being opened is subject to id shifting.
-This way any kernel writes which would be subject to id shifting will
-only happen through code which as been written to take it into account.
-
-Seth
+Before the death of my father, He told me about (two million five
+hundred thousand united states dollars) which he deposited in the bank
+in Lome-Togo, It was the money he intended to transfer overseas for
+investment before he was poisoned. He also instructed me that I should
+seek for foreign partners in any country of my choice who will assist
+me transfer this money in overseas account where the money will be
+wisely invested.
+I am seeking for your kind assistance in the following ways:  (1) to
+provide a safe bank account into where the money will be transferred
+for investment. (2) To serve as a guardian of this fund since I am a
+girl of 19 years old. (3) To make arrangement for me to come over to
+your country to further my education. This is my reason for writing to
+you. Please if you are willing to assist me I will offer you 25% of
+the total money. Reply if  you are interested
+Best regards.
+Liliane Abel.

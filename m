@@ -2,181 +2,142 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F12522A58E2
-	for <lists+selinux@lfdr.de>; Tue,  3 Nov 2020 23:01:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 019FA2A5CCB
+	for <lists+selinux@lfdr.de>; Wed,  4 Nov 2020 03:42:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730703AbgKCWBC (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 3 Nov 2020 17:01:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33246 "EHLO
+        id S1730683AbgKDCmt (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 3 Nov 2020 21:42:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730575AbgKCWAy (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 3 Nov 2020 17:00:54 -0500
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E13AC061A48
-        for <selinux@vger.kernel.org>; Tue,  3 Nov 2020 14:00:53 -0800 (PST)
-Received: by mail-pl1-x649.google.com with SMTP id bg12so1110620plb.16
-        for <selinux@vger.kernel.org>; Tue, 03 Nov 2020 14:00:53 -0800 (PST)
+        with ESMTP id S1730682AbgKDCmt (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 3 Nov 2020 21:42:49 -0500
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CAE6AC0401C1
+        for <selinux@vger.kernel.org>; Tue,  3 Nov 2020 18:42:48 -0800 (PST)
+Received: by mail-ej1-x641.google.com with SMTP id 7so27632009ejm.0
+        for <selinux@vger.kernel.org>; Tue, 03 Nov 2020 18:42:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=sender:date:in-reply-to:message-id:mime-version:references:subject
-         :from:to:cc;
-        bh=5MfBywdxMmsLRrplRDwjfeuNu4Dz7M8KwUBLUxZj6xM=;
-        b=udaQgtvyrunQ/CMzN8Xk1IupaOPWUZBksj6LPEJBbqUq0NnJlcBoPovdQ789qBRsN5
-         SJoma5dEVWU4sz/3ILN2w3Vk4tQD+DjTVUo3ut+k9a+xr5lty4GvEe+phRftibB0Wa/u
-         gJAmkO3kpZHqBgu22n8ZJIGZ+QSxJ8qtc//1EWon96YmBC8zN1K2YIUtTEQ0NOZii1/+
-         OBtUDZL/qPbNFDV/nko3qMAArLcvK6oyiJxvehGhKW4ezFBdwrmtRYlBCcqKEMQHhaxP
-         MN8n2VC22GpAWN1JERlZLWGzmhVq7rOuyrgD4kSMFO10RFq4rywPvgNYh+R7xhpK6C9A
-         Jq4Q==
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=H4MRrgyiCBwqPYu14EESxamsftSBg63Ed80Y1RDcSbw=;
+        b=aTDztr25nM239gjI2M2l1RdH3USlDdPQWfxu/floOSgvfDESOndKtnpnx16M4H8S/L
+         RhtG5TJtodIeN+sTFP7G33I0DbcOCx4vbo5NF3/R9RsZ0V8dsV/Evu//skWEIjMkODrc
+         FKxBrFY5INYVzIpGRXR0dO/XUw5KObfaO+4zL06b1+KGq2n5Pv80C/mpce5j2z3RWvLJ
+         gZS9F/NtuZITAFYY9jNYB9SEHyY4EEK2R/+59D4c36K/xf6Z6TBBh6W15F0H6rIFXHQn
+         KkTz24O+45lSo6h+vWek+yVlxvhxzv1MrAaudWVc8A01G1JM98RuFmI/psV0Yl5n0YKz
+         EqTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:in-reply-to:message-id:mime-version
-         :references:subject:from:to:cc;
-        bh=5MfBywdxMmsLRrplRDwjfeuNu4Dz7M8KwUBLUxZj6xM=;
-        b=e+yjlov+0nD4H/UWDwWZkfu/kAgH68ZyFMrJzmiAwc+aXMDokx7EGm+qLa1Q8IG1VE
-         +3px1CopeuqrPD6/WAEgdbcOICytfkDoL1bgrA7pazLxDEy+7qzoulpVRtaCvjaEAVzt
-         kwAaUb4poekU9ZgGmWxgUBewVclk77HcU4Uz9A7G3wl0xB++UivesEGRBS2Cz0vFUAZQ
-         1xXvBACFVUVfV7whpDqK5f23QVXjGh+bwmAtgnxAe13KS+0Bn/p/hA5MkVvj8iyuz1Ri
-         31Mj3eMq7JZATRHGX5G/znG1SCyeQmhoJd1BDYekB9gYGEUNX1H+GYHAKK+9A0tSLJlN
-         Vd0A==
-X-Gm-Message-State: AOAM533H2s5SqzizJPasbwe2F6d3eT10W016OYPA+WgKBuLljh1KdnFo
-        Mi6VqrpD3WoragmHAmH7NaQu0tLnYGwBIOQ82w==
-X-Google-Smtp-Source: ABdhPJyAOAyaXh2xZzoHs7/ZBCmt8D42Q2k0vfbMoTbMpRBhGybVkxXxBcnAzulcfDtjqseSbtRBcpDsBFbYgvG5vQ==
-Sender: "lokeshgidra via sendgmr" <lokeshgidra@lg.mtv.corp.google.com>
-X-Received: from lg.mtv.corp.google.com ([2620:15c:211:202:f693:9fff:fef4:29dd])
- (user=lokeshgidra job=sendgmr) by 2002:a17:90a:678a:: with SMTP id
- o10mr1283056pjj.180.1604440852797; Tue, 03 Nov 2020 14:00:52 -0800 (PST)
-Date:   Tue,  3 Nov 2020 14:00:20 -0800
-In-Reply-To: <20201103220020.2399003-1-lokeshgidra@google.com>
-Message-Id: <20201103220020.2399003-4-lokeshgidra@google.com>
-Mime-Version: 1.0
-References: <20201103220020.2399003-1-lokeshgidra@google.com>
-X-Mailer: git-send-email 2.29.1.341.ge80a0c044ae-goog
-Subject: [PATCH v10 3/3] Use secure anon inodes for userfaultfd
-From:   Lokesh Gidra <lokeshgidra@google.com>
-To:     Andrea Arcangeli <aarcange@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        James Morris <jmorris@namei.org>,
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=H4MRrgyiCBwqPYu14EESxamsftSBg63Ed80Y1RDcSbw=;
+        b=ArRel8T71lvoGHICInzKp1fNbq4DHoFf6TT7tzI+E6DDBCu7yLtcd1e9+JMRVrNhmW
+         Lj7fbPmhPhbq07+2KpjrBumTmrKnW2CvsIsqWIB1Racr3yHVhhMoUFfrRmFEYZF4OLD0
+         Mzv0IC1kXpz9+fO3fLhgWHBxw5FM2DrL617n5JfGF9tvN5OdU42Y9c+hRotSjljvfWaD
+         tdjIkyDcessRm/DdoaWQHLdu8ltkG/eZi4/7mKUyq/KDDUqB/ar9Bruyo6zJjgEpcdoD
+         CnAk/OeWWF0UeyYrBt2Wx0/RbtxlTx3oSFGY6rdc6PL+NPkhau0IO76soc8wt5GTPddI
+         xvWQ==
+X-Gm-Message-State: AOAM531JYr/FMPdaKpIOkcDCkWtp1luWz66pUESQgtDaaa4h6y3gQltY
+        mIpbtu1Ajfx+cJwKXXanDXpu11dkVlsX1zd/8W77
+X-Google-Smtp-Source: ABdhPJwyBIhlTuzFdM84glRNgGEv8wudbPNDzPgKc5M+4uOimtHSLJ+eCI6HNM/C+rUcSWG8/MSIShjeZd/qghxgkXc=
+X-Received: by 2002:a17:906:7c9:: with SMTP id m9mr21774852ejc.178.1604457767400;
+ Tue, 03 Nov 2020 18:42:47 -0800 (PST)
+MIME-Version: 1.0
+References: <CAHC9VhQTp3Rc_7zM661Rzur0XSuWRWKJJg=CwLPAQo5ABRpS-w@mail.gmail.com>
+ <20201009013630.6777-1-rentianyue@tj.kylinos.cn> <20201009013630.6777-2-rentianyue@tj.kylinos.cn>
+ <CAHC9VhR2KPKN8ot9WrkjZQ08X-VPDGkXro18C5jhDEwcFH6wog@mail.gmail.com>
+ <yt9dh7q64m8a.fsf@linux.ibm.com> <CAHC9VhT-dgT8pP7ZfPu+Ssw4RAYUpcwhTWfXXeciVPz0mRcP3A@mail.gmail.com>
+ <yt9dpn4u9scs.fsf@linux.ibm.com>
+In-Reply-To: <yt9dpn4u9scs.fsf@linux.ibm.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Tue, 3 Nov 2020 21:42:35 -0500
+Message-ID: <CAHC9VhRxm=YR1yBy8fnWPXRZ48pq4MA4b26YAtqAJORJZD61wg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/1] selinux: fix error initialization in inode_doinit_with_dentry()
+To:     Sven Schnelle <svens@linux.ibm.com>
+Cc:     rentianyue@tj.kylinos.cn,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Eric Biggers <ebiggers@kernel.org>
-Cc:     "Serge E. Hallyn" <serge@hallyn.com>,
-        Paul Moore <paul@paul-moore.com>,
         Eric Paris <eparis@parisplace.org>,
-        Lokesh Gidra <lokeshgidra@google.com>,
-        Daniel Colascione <dancol@dancol.org>,
-        Kees Cook <keescook@chromium.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        KP Singh <kpsingh@google.com>,
-        David Howells <dhowells@redhat.com>,
-        Thomas Cedeno <thomascedeno@google.com>,
-        Anders Roxell <anders.roxell@linaro.org>,
-        Sami Tolvanen <samitolvanen@google.com>,
-        Matthew Garrett <matthewgarrett@google.com>,
-        Aaron Goidel <acgoide@tycho.nsa.gov>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Alexey Budankov <alexey.budankov@linux.intel.com>,
-        Adrian Reber <areber@redhat.com>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        kaleshsingh@google.com, calin@google.com, surenb@google.com,
-        nnk@google.com, jeffv@google.com, kernel-team@android.com,
-        linux-mm@kvack.org, Daniel Colascione <dancol@google.com>
-Content-Type: text/plain; charset="UTF-8"
+        Andreas Gruenbacher <agruenba@redhat.com>, yangzhao@kylinos.cn,
+        selinux@vger.kernel.org, Tianyue Ren <rentianyue@kylinos.cn>,
+        linux-s390@vger.kernel.org, hca@linux.ibm.com,
+        borntraeger@de.ibm.com
+Content-Type: multipart/mixed; boundary="00000000000049141305b33eef93"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: Daniel Colascione <dancol@google.com>
+--00000000000049141305b33eef93
+Content-Type: text/plain; charset="UTF-8"
 
-This change gives userfaultfd file descriptors a real security
-context, allowing policy to act on them.
+On Tue, Nov 3, 2020 at 2:02 PM Sven Schnelle <svens@linux.ibm.com> wrote:
+> Thanks for the patch. Unfortunately it doesn't seem to change anything
+> for me. I can take a look into this tomorrow, but i don't know much
+> about the internals of selinux, so i'm not sure whether i'm of much help.
 
-Signed-off-by: Daniel Colascione <dancol@google.com>
+I'm sorry that patch didn't work out.  I just spent some more time
+looking at the code+patch and the only other thing that I can see is
+that if we mark the isec invalid, we don't bother setting the
+isec->sid value to whatever default we may have already found.  In a
+perfect world this shouldn't matter, but if for whatever reason the
+kernel can't revalidate the inode's label when it tries later it will
+fallback to that default isec->sid.
 
-[Remove owner inode from userfaultfd_ctx]
-[Use anon_inode_getfd_secure() instead of anon_inode_getfile_secure()
- in userfaultfd syscall]
-[Use inode of file in userfaultfd_read() in resolve_userfault_fork()]
+I'm sorry to ask this again, but would you be able to test the attached patch?
 
-Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
----
- fs/userfaultfd.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
-
-diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-index 0e4a3837da52..918535b49475 100644
---- a/fs/userfaultfd.c
-+++ b/fs/userfaultfd.c
-@@ -978,14 +978,14 @@ static __poll_t userfaultfd_poll(struct file *file, poll_table *wait)
- 
- static const struct file_operations userfaultfd_fops;
- 
--static int resolve_userfault_fork(struct userfaultfd_ctx *ctx,
--				  struct userfaultfd_ctx *new,
-+static int resolve_userfault_fork(struct userfaultfd_ctx *new,
-+				  struct inode *inode,
- 				  struct uffd_msg *msg)
- {
- 	int fd;
- 
--	fd = anon_inode_getfd("[userfaultfd]", &userfaultfd_fops, new,
--			      O_RDWR | (new->flags & UFFD_SHARED_FCNTL_FLAGS));
-+	fd = anon_inode_getfd_secure("[userfaultfd]", &userfaultfd_fops, new,
-+			O_RDWR | (new->flags & UFFD_SHARED_FCNTL_FLAGS), inode);
- 	if (fd < 0)
- 		return fd;
- 
-@@ -995,7 +995,7 @@ static int resolve_userfault_fork(struct userfaultfd_ctx *ctx,
- }
- 
- static ssize_t userfaultfd_ctx_read(struct userfaultfd_ctx *ctx, int no_wait,
--				    struct uffd_msg *msg)
-+				    struct uffd_msg *msg, struct inode *inode)
- {
- 	ssize_t ret;
- 	DECLARE_WAITQUEUE(wait, current);
-@@ -1106,7 +1106,7 @@ static ssize_t userfaultfd_ctx_read(struct userfaultfd_ctx *ctx, int no_wait,
- 	spin_unlock_irq(&ctx->fd_wqh.lock);
- 
- 	if (!ret && msg->event == UFFD_EVENT_FORK) {
--		ret = resolve_userfault_fork(ctx, fork_nctx, msg);
-+		ret = resolve_userfault_fork(fork_nctx, inode, msg);
- 		spin_lock_irq(&ctx->event_wqh.lock);
- 		if (!list_empty(&fork_event)) {
- 			/*
-@@ -1166,6 +1166,7 @@ static ssize_t userfaultfd_read(struct file *file, char __user *buf,
- 	ssize_t _ret, ret = 0;
- 	struct uffd_msg msg;
- 	int no_wait = file->f_flags & O_NONBLOCK;
-+	struct inode *inode = file_inode(file);
- 
- 	if (ctx->state == UFFD_STATE_WAIT_API)
- 		return -EINVAL;
-@@ -1173,7 +1174,7 @@ static ssize_t userfaultfd_read(struct file *file, char __user *buf,
- 	for (;;) {
- 		if (count < sizeof(msg))
- 			return ret ? ret : -EINVAL;
--		_ret = userfaultfd_ctx_read(ctx, no_wait, &msg);
-+		_ret = userfaultfd_ctx_read(ctx, no_wait, &msg, inode);
- 		if (_ret < 0)
- 			return ret ? ret : _ret;
- 		if (copy_to_user((__u64 __user *) buf, &msg, sizeof(msg)))
-@@ -1995,8 +1996,8 @@ SYSCALL_DEFINE1(userfaultfd, int, flags)
- 	/* prevent the mm struct to be freed */
- 	mmgrab(ctx->mm);
- 
--	fd = anon_inode_getfd("[userfaultfd]", &userfaultfd_fops, ctx,
--			      O_RDWR | (flags & UFFD_SHARED_FCNTL_FLAGS));
-+	fd = anon_inode_getfd_secure("[userfaultfd]", &userfaultfd_fops, ctx,
-+			O_RDWR | (flags & UFFD_SHARED_FCNTL_FLAGS), NULL);
- 	if (fd < 0) {
- 		mmdrop(ctx->mm);
- 		kmem_cache_free(userfaultfd_ctx_cachep, ctx);
 -- 
-2.28.0.1011.ga647a8990f-goog
+paul moore
+www.paul-moore.com
 
+--00000000000049141305b33eef93
+Content-Type: text/x-patch; charset="US-ASCII"; name="01-selinux-inode_dentry_init_fix.patch"
+Content-Disposition: attachment; 
+	filename="01-selinux-inode_dentry_init_fix.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_kh2spx770>
+X-Attachment-Id: f_kh2spx770
+
+c2VsaW51eDogZml4IGlub2RlX2RvaW5pdF93aXRoX2RlbnRyeSgpIGVycm9yIGNhc2UgbG9ja2lu
+ZwoKRnJvbTogUGF1bCBNb29yZSA8cGF1bEBwYXVsLW1vb3JlLmNvbT4KClhYWCAtIHRlc3Rpbmcg
+b25seSBwYXRjaCwgd29yayBpbiBwcm9ncmVzcwoKRml4ZXM6IDgzMzcwYjMxYTkxNSAoInNlbGlu
+dXg6IGZpeCBlcnJvciBpbml0aWFsaXphdGlvbiBpbiBpbm9kZV9kb2luaXRfd2l0aF9kZW50cnko
+KSIpClJlcG9ydGVkLWJ5OiBTdmVuIFNjaG5lbGxlIDxzdmVuc0BsaW51eC5pYm0uY29tPgpTaWdu
+ZWQtb2ZmLWJ5OiBQYXVsIE1vb3JlIDxwYXVsQHBhdWwtbW9vcmUuY29tPgotLS0KIHNlY3VyaXR5
+L3NlbGludXgvaG9va3MuYyB8ICAgMzEgKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLQog
+MSBmaWxlIGNoYW5nZWQsIDEzIGluc2VydGlvbnMoKyksIDE4IGRlbGV0aW9ucygtKQoKZGlmZiAt
+LWdpdCBhL3NlY3VyaXR5L3NlbGludXgvaG9va3MuYyBiL3NlY3VyaXR5L3NlbGludXgvaG9va3Mu
+YwppbmRleCAxNThmYzQ3ZDg2MjAuLmM0NjMxMjcxMGU3MyAxMDA2NDQKLS0tIGEvc2VjdXJpdHkv
+c2VsaW51eC9ob29rcy5jCisrKyBiL3NlY3VyaXR5L3NlbGludXgvaG9va3MuYwpAQCAtMTQ1MSwx
+MyArMTQ1MSw3IEBAIHN0YXRpYyBpbnQgaW5vZGVfZG9pbml0X3dpdGhfZGVudHJ5KHN0cnVjdCBp
+bm9kZSAqaW5vZGUsIHN0cnVjdCBkZW50cnkgKm9wdF9kZW50CiAJCQkgKiBpbm9kZV9kb2luaXQg
+d2l0aCBhIGRlbnRyeSwgYmVmb3JlIHRoZXNlIGlub2RlcyBjb3VsZAogCQkJICogYmUgdXNlZCBh
+Z2FpbiBieSB1c2Vyc3BhY2UuCiAJCQkgKi8KLQkJCWlzZWMtPmluaXRpYWxpemVkID0gTEFCRUxf
+SU5WQUxJRDsKLQkJCS8qCi0JCQkgKiBUaGVyZSBpcyBub3RoaW5nIHVzZWZ1bCB0byBqdW1wIHRv
+IHRoZSAib3V0IgotCQkJICogbGFiZWwsIGV4Y2VwdCBhIG5lZWRsZXNzIHNwaW4gbG9jay91bmxv
+Y2sKLQkJCSAqIGN5Y2xlLgotCQkJICovCi0JCQlyZXR1cm4gMDsKKwkJCWdvdG8gb3V0X2ludmFs
+aWQ7CiAJCX0KIAogCQlyYyA9IGlub2RlX2RvaW5pdF91c2VfeGF0dHIoaW5vZGUsIGRlbnRyeSwg
+c2JzZWMtPmRlZl9zaWQsCkBAIC0xNTEzLDE1ICsxNTA3LDggQEAgc3RhdGljIGludCBpbm9kZV9k
+b2luaXRfd2l0aF9kZW50cnkoc3RydWN0IGlub2RlICppbm9kZSwgc3RydWN0IGRlbnRyeSAqb3B0
+X2RlbnQKIAkJCSAqIGlub2RlX2RvaW5pdCgpIHdpdGggYSBkZW50cnksIGJlZm9yZSB0aGVzZSBp
+bm9kZXMKIAkJCSAqIGNvdWxkIGJlIHVzZWQgYWdhaW4gYnkgdXNlcnNwYWNlLgogCQkJICovCi0J
+CQlpZiAoIWRlbnRyeSkgewotCQkJCWlzZWMtPmluaXRpYWxpemVkID0gTEFCRUxfSU5WQUxJRDsK
+LQkJCQkvKgotCQkJCSAqIFRoZXJlIGlzIG5vdGhpbmcgdXNlZnVsIHRvIGp1bXAgdG8gdGhlICJv
+dXQiCi0JCQkJICogbGFiZWwsIGV4Y2VwdCBhIG5lZWRsZXNzIHNwaW4gbG9jay91bmxvY2sKLQkJ
+CQkgKiBjeWNsZS4KLQkJCQkgKi8KLQkJCQlyZXR1cm4gMDsKLQkJCX0KKwkJCWlmICghZGVudHJ5
+KQorCQkJCWdvdG8gb3V0X2ludmFsaWQ7CiAJCQlyYyA9IHNlbGludXhfZ2VuZnNfZ2V0X3NpZChk
+ZW50cnksIHNjbGFzcywKIAkJCQkJCSAgIHNic2VjLT5mbGFncywgJnNpZCk7CiAJCQlpZiAocmMp
+IHsKQEAgLTE1NDYsMTEgKzE1MzMsMTAgQEAgc3RhdGljIGludCBpbm9kZV9kb2luaXRfd2l0aF9k
+ZW50cnkoc3RydWN0IGlub2RlICppbm9kZSwgc3RydWN0IGRlbnRyeSAqb3B0X2RlbnQKIG91dDoK
+IAlzcGluX2xvY2soJmlzZWMtPmxvY2spOwogCWlmIChpc2VjLT5pbml0aWFsaXplZCA9PSBMQUJF
+TF9QRU5ESU5HKSB7Ci0JCWlmICghc2lkIHx8IHJjKSB7CisJCWlmIChyYykgewogCQkJaXNlYy0+
+aW5pdGlhbGl6ZWQgPSBMQUJFTF9JTlZBTElEOwogCQkJZ290byBvdXRfdW5sb2NrOwogCQl9Ci0K
+IAkJaXNlYy0+aW5pdGlhbGl6ZWQgPSBMQUJFTF9JTklUSUFMSVpFRDsKIAkJaXNlYy0+c2lkID0g
+c2lkOwogCX0KQEAgLTE1NTgsNiArMTU0NCwxNSBAQCBzdGF0aWMgaW50IGlub2RlX2RvaW5pdF93
+aXRoX2RlbnRyeShzdHJ1Y3QgaW5vZGUgKmlub2RlLCBzdHJ1Y3QgZGVudHJ5ICpvcHRfZGVudAog
+b3V0X3VubG9jazoKIAlzcGluX3VubG9jaygmaXNlYy0+bG9jayk7CiAJcmV0dXJuIHJjOworCitv
+dXRfaW52YWxpZDoKKwlzcGluX2xvY2soJmlzZWMtPmxvY2spOworCWlmIChpc2VjLT5pbml0aWFs
+aXplZCA9PSBMQUJFTF9QRU5ESU5HKSB7CisJCWlzZWMtPmluaXRpYWxpemVkID0gTEFCRUxfSU5W
+QUxJRDsKKwkJaXNlYy0+c2lkID0gc2lkOworCX0KKwlzcGluX3VubG9jaygmaXNlYy0+bG9jayk7
+CisJcmV0dXJuIDA7CiB9CiAKIC8qIENvbnZlcnQgYSBMaW51eCBzaWduYWwgdG8gYW4gYWNjZXNz
+IHZlY3Rvci4gKi8K
+--00000000000049141305b33eef93--

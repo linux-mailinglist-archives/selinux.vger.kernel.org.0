@@ -2,145 +2,150 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCAEA2A74CE
-	for <lists+selinux@lfdr.de>; Thu,  5 Nov 2020 02:16:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F3E22A74BC
+	for <lists+selinux@lfdr.de>; Thu,  5 Nov 2020 02:13:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388264AbgKEBQO (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 4 Nov 2020 20:16:14 -0500
-Received: from sonic301-36.consmr.mail.ne1.yahoo.com ([66.163.184.205]:43840
-        "EHLO sonic301-36.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388262AbgKEBQO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 4 Nov 2020 20:16:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1604538972; bh=yY/yFVl1emb2zJDw1hk6NF/KbSJkukEm4lylfgSZeVc=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject; b=lXnwSlePCq8EyA4T1vcN2vOrDNlPAcl2buH7ckrYgpmlxHXAIit12mmW8sUU9SY/aX9Gg/8aCHfEYI6kB9J2VSa3SUxKNz0kS4HPxHTPuxIQplmoJCkooygolNfEx63M/8VhPKK4KVKBETH3UY+ro2uRNzeyLiE5M52fVVALfJg0WY5cDLqGPbzxqBKOdrLBHtCpJiJZDJK1irfBz5kkPgCjB+lhrXDAoLSEdBsGcB7bMdb0Vpu7jbevaOMPnD2iP6GQjhDkmu6ZSqKiZgX/LYxg6fiGgSrIsdJ2EgYOO2M0DdaZ+wKUBHcBmLvn9eqd+rwgVPMapcmC0C4yuQ2kFA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1604538972; bh=ZAFMtpEOnazVgELbNLnWZ7misYOeJpXC6zIg5jypNKI=; h=From:To:Subject:Date; b=NMUHFfokFLRYl6F4JhHwSuPQJBTwDpCERNHKVSFKVb5YcUDYp6+BnHzoWYrLEtk1FCN6VTCe0xDCUqXKl6ssb15OJP9tJreJ1Tdt4Hq3an9eQ3BXWhfUztZwmNhMv4tcRFWjlupv9Y4OxP0G5md/us6EXDySHYAoCuz2Wyqiun99R3x95b5tE8hHlrNihwwUGzKk9xtFNqKxne+onppOBt2Z1MBOQQxOgorcq0mXYJJmUA9hNShQnEqTbMMyPRk2lxXFhzXDghMLbmtwwF24pfYsHRNwMy1/WBUqsw3eBYhdaUgWTFt9Gry+mNIM/Wc9CHsr8fI3V+/nOjTu5yPG2Q==
-X-YMail-OSG: uz66ApoVM1l9Q3PPl5hgCxQ_1ZcZlcX3DZQgALm1T.elz3Jajx7r1MfjZV4eHLX
- BojODkcHJx1YIWXdAxA1RBTkclb2Bj3wuZz4IgNRe5KES._QrcQcu.3owhzxbb.hQNe_3bzQ..3K
- Z43gJ8RHG80OVbKEB7x5TEYpCXiZ_v7H_v6Du_eXCp8Q1mR.8l_S1Xkj2zDQIpTZz6tiKRwZbGQl
- bW5GibYbaEJCHIR0wj69mxRDPO76eNDu37RUOPX.tG5djHHuHAAExjd_qEvogBgh9N3nXajzOnZh
- 9SWsgE0Q62MtoELIKspRscYTvY7ZTv031zYATaxzRa.qWRGCD.IWCPpQW7H14IaF546voMx6XxNK
- RMJiVWp25xXlRGOAJtmiUYgUsLQweC0CTrap6EcqiLzWKW0XPalGR656uMWi5b.Z30omTWysR4kO
- _0ziEM9ec0dqYC83BohF_BKbSuut6UQC_83FtVprPF1ixFRwDt9V0gwsf5cWvANtb3TuQhK913gi
- O1.nqhMSxS8f0lGcssn50OsEO1TDr1knIyU3H5rhHWM.DtBQrk6BUVGfs2d4yoOaPwE726hvzN3w
- fMHX5TivDxd1xpRFza6gsCY9R7HWT7NYCdRwBGoXAu54Kdr5Mmh1jgMDsuMJGYHysHhxSop63GLC
- XuPngwsbcA9BeAmR6_Ywg5sW.HvYpJgUz5NDJSLMwCnlx3JdiGAkj4eTkgWby7rgHpIyOG8X8zoF
- .dfYLaypTiESp574K0zI0I1pgGT6Z8SMQdv2tIa.LutsUyC.m8W0C4wKwY.RuVLo8VkUmdrG.ynm
- qE6bHFQRewQcK4b5criXYy16_rWQOJev7TwfAjAGe77e_lsI93J46f1K53oy.W2ImKVhzu6LnsBo
- 4evp_56Q.qMD3zEEBiCDqavl4vS8sglctFYHzfk8e37YHqXFY__7WGfkYZET3MVV5ik5xAk.sxUJ
- LexEFNPJk_pbkYjvL2.iNoUFcTU8rqkbLDKN9HnLbVJU4UWTkeOeI0d4jjVXyQ0EcD.R6hZW.DT7
- qvF_4yHOGDopw4N3t7Gt3SSG5vDspFbpxOitmEdjwzdJBMHIYsR3rDsWvJesDo.7KiUtYCwqCj2K
- xYHkcZGU6AZG_zwSgY1YSwl3AFsn6j0ZzHQW0ADzVQCH.JxkCcTYuzNl8w.u_2hKyMIZb3o9XZR9
- lT4PQ2F3.dpgYqZufDjPo75Iy9Dr0J2Eh2ep4suA0IHMeEH2RHZ7FbotiVtv1IJSseM6LfjgW13I
- tNOHg.SdO_DF7gEOYXDF2EmD4G9V.6.jveEZhKBwo6zIKyT2o3oZ4rGsYfZNnlt_ePjVDCLTZn0N
- 49X9cSJxP_ZxdmZl385.aGTIslovkrqZcPGLs2Z2q.L1MMD5rCD.SDni8u2bFM8SJpUWPssSzIQv
- nvWW77jM1ijipPKUaJAwA5iJ3AXpSsdugyiVCHU9EjPFoh5NZHLR_LLphkazGbCMBTAgXwXWRD99
- DD2Bmkk4f9KdDNzUpvS3qckuxzQ9LwUijS2L9oq7eGyjS9rqiaQPT_wnkvCicXGrFTmGU7ZC3jwl
- SBUvV8tnMiEc19B_ZCjlJlgGhIOooNKu5o6ieVFWDFeZfqEuNJAykF_I.t1GVofipSemcLHxRdSa
- 7zxAFWJTBquKdQs9S_cVUMPkYmlk9YRe1QT2Hr1k93.ebA9aY484YDBHVZ2xNwHa2N5QO0sKxcxr
- XGJhPpwnOgL2hrchj6LPoo4OS1Wcr6CxXeIT5BTn6UvrF4g7awp.9H1h2EqiWQewy8fB9kwJr7.A
- 3ko6aW_0.3rLzaERp2zPG6wySnz49BNTT8b.6g8Unq93ECZJYZ2aLMxOqVtHsIEqcSW8n7PMU1UO
- 5r5AXjG7l5qHz_9c9k85Xa4EUpG0WUx0yecUYNDXTfmYuSqpE8U9NcYm_qpkVKZL8h1SJEy9p6xz
- 8Nm5Ejkh6boYRUHRIEZF948NM4hXl2yvxwhcM2RisLswq0ZxAFCL8HgXurNqC02TfmvXjqWIOCAf
- VLqYYx3Yu8ktjbHRvl66ncjssthS5DupC.qbi6IyLlPFTg5wUrijfZPThkjcv1siO7vX1gprq79a
- cGC0ClYThZ4boTZ8X7foPG958k78EOi3osvRhxXugkPI5O6I1z_6HllgoXza7Ben0gFmQQs4Htjk
- 6tYCErIhOpM3KjXZC0CKZoMj5eltBMnbvsq3WL80c16KhrM1QJjc7X.1cIIunUntZe.J2CH1qjar
- 5vr6QNke0s6UA3fiV9_KO9MG7qftOwqa0oogCzOFx19yyHfuMSdTCJIkZv6shpT8SdTlfDYwDSfn
- 314U.WqwvD.qRvG1FLtt3bxQfZXa2hCdJ8yCEtVCED1Vk8qwLWyHcNLlbc3nFGofe1Em81prZOTL
- 7X7h5klhXSx4OqEaWAX2XJeryj_NK16ORB6ISSee..nFSBoY4KnUNRflsAjEb8S1_odW1bEvoJzz
- qIsWSrBS4Ifw_zc.ThVOIRlX.QKUuHUV8CBSc7IQcab9WS3rvvtJZFipSGdMrchkg5JyJOkNpKaA
- A_Y8ObHKewMQP_B4DhGs0b_kgZSxMBdcmeLdGJcM21AUnEcKZk0TrhgYV4SvBZdij6Fgt4hhjvAl
- CJj8rzZgFkMACQbjzkMKLA2nzYBP12MDc6p8VTewq7qqC7wuwx2exVamUAFtnF9qAazDOVLTkoE0
- DCtcfAv_16zH4PA97M1gNQsClYZHxyc8gZ4MHLZ1H7otMeMnyabqeX__QJWnjRHFQaZhpcN7j1Qb
- CayDtU6Bp..Nd2NHhmkwmhRsAE3faaxb.lJHCRPVrJWrkIadt9AKOiztDlosWgXpKmLJ_rebs38K
- d1MMYV7PYAZvJbuNFCUZsTB278.zpJDA8SNR6utWfWj3Qw1mw8UmQzbYu3uDeJH57znZjdXbYK6.
- lmppoIVxcWB05EMalUVBCg4JB40BE3tjnRxYiOhYv8LuyL7l8bX05g4_CuMxVk3vGlQzvB5YYdQw
- iF1ktCrWuB5ydr6IFsj5cC7sZZQOEaxNhwGwzBkSzQX12Utr1yA3sR9uB1KKfL_tqVFJ6DS8DO3U
- MipNOIk7nxQUCpkRQJTdz8AXD2Tet5.KIqbkohcOApQQMybkLFWpbHhikeqIyuwaAfnxDMjmYK1b
- 6nw9aOYpBxA_ndCvcWrpA96rFfNkqDN4D.yetx4bBZWhsiV7B3zFCoisH.J.JdSwtacKyueAvfbM
- JXYoyhWcJly4R6KjR0iRH3zw13VcjcoKbZ1rKRaO_zyEfz_8s7eZGmOSPFOszyDaEAVPB2JHJTJq
- eODvgeL.kh0wWxqOSU9a2m_GSNWjPN0IyEqswyeGTjXb4WJQ67ZrR4VWX7JVH2WvFCKxTTL8ZVtr
- OFRg.M5v7gyY-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ne1.yahoo.com with HTTP; Thu, 5 Nov 2020 01:16:12 +0000
-Received: by smtp402.mail.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 9b08706fcc5b5291f7c73cdec733f17c;
-          Thu, 05 Nov 2020 01:16:08 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, linux-audit@redhat.com,
-        keescook@chromium.org, john.johansen@canonical.com,
-        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com,
-        sds@tycho.nsa.gov, linux-kernel@vger.kernel.org
-Subject: [PATCH v22 23/23] AppArmor: Remove the exclusive flag
-Date:   Wed,  4 Nov 2020 16:49:24 -0800
-Message-Id: <20201105004924.11651-24-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.24.1
-In-Reply-To: <20201105004924.11651-1-casey@schaufler-ca.com>
-References: <20201105004924.11651-1-casey@schaufler-ca.com>
+        id S1732258AbgKEBNs (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 4 Nov 2020 20:13:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33806 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731555AbgKEBNs (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 4 Nov 2020 20:13:48 -0500
+Received: from mail-qt1-x844.google.com (mail-qt1-x844.google.com [IPv6:2607:f8b0:4864:20::844])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B839FC0613CF
+        for <selinux@vger.kernel.org>; Wed,  4 Nov 2020 17:13:47 -0800 (PST)
+Received: by mail-qt1-x844.google.com with SMTP id r8so19822qtp.13
+        for <selinux@vger.kernel.org>; Wed, 04 Nov 2020 17:13:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:from:to:cc:date:message-id:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=fXlT4V71Q1ygW+YYHe4lDOyP4jMeUG7r9s39tPX40zA=;
+        b=XXpsdZD4I81N1wwO9vWhzifc+mDoyXxTcjyueleBUSqHQlSv7QMsd3BXWodceGlcRY
+         2kO9M/soRpH/h6cyKZQ3qIduzS03ISeihCsQWLrFBf03ha95L7Q41PvC2rHxsGb0AkJB
+         S97liSh3a6GubMBzgzk050qHAOZEhYMWOT6YVF0zF4G4NfXssAG2UBHH2sYTEVEqvpK1
+         gw+hPvw9Zgg8VNAZGpThws/1c5lsg/L3HYcq9McUZsXLOmH7l9zFS9uZEKJh+odu1Rb9
+         M3CibMpxO5lxj1wljheMcN7f0Vs81af8QhL4isAzt7V+vGTWEayWguo5iFDvOqKA7tIM
+         PKHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:from:to:cc:date:message-id:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=fXlT4V71Q1ygW+YYHe4lDOyP4jMeUG7r9s39tPX40zA=;
+        b=goHw2215ajhIazRS1YptQ5vg2zFyWUr/C5smh/nc0tOb7DnZjfqurRS6F9T3nen6hS
+         E3TboOWjwWSsjfT63/lvz2atN2OKn3qWhNK4Qz2JJ2FOuqIcB6S2J8JYd2ayB4Mv3hci
+         rqkL8g43qDbq81mV+oAq7yv1BAnTN5mYk1wHvjpiqnSknAEunY2M0D2Qjzd5NjesvABE
+         oOVWkiZSyksc1o1hGMuY3eKOg4x4Tw5z6Pg84X1s0hBL0uzmr4ZmhXNGX2OKPdP3+uxL
+         sS0lb/N8X7GutG8QJIEEzmCdtg8wTY0b5jt3E15mAIWUSOzoy4qeGk1hoyH0O6ejwnmb
+         vm9w==
+X-Gm-Message-State: AOAM533mJRZxIDjN+/EkWaTmd8AqCb5W7S9eo/2aJeU5GkG3nq3qM4Ig
+        96iUBINW2Gl1XZCQ4XB4BQxxw/nTfHAq
+X-Google-Smtp-Source: ABdhPJy66JdAPLo2FUi293q0kgNhKimH2gqjYZ4uY4Nq9B3TG52QwEiXHZcevAt1NJ7AkvL3SQLWvw==
+X-Received: by 2002:ac8:1e84:: with SMTP id c4mr819413qtm.340.1604538826358;
+        Wed, 04 Nov 2020 17:13:46 -0800 (PST)
+Received: from localhost (pool-96-230-24-152.bstnma.fios.verizon.net. [96.230.24.152])
+        by smtp.gmail.com with ESMTPSA id c79sm5888qke.69.2020.11.04.17.13.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Nov 2020 17:13:45 -0800 (PST)
+Subject: [PATCH] selinux: fix inode_doinit_with_dentry() LABEL_INVALID error
+ handling
+From:   Paul Moore <paul@paul-moore.com>
+To:     selinux@vger.kernel.org
+Cc:     Sven Schnelle <svens@linux.ibm.com>
+Date:   Wed, 04 Nov 2020 20:13:44 -0500
+Message-ID: <160453882404.5064.13236738388118581389.stgit@sifl>
+User-Agent: StGit/0.23
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-With the inclusion of the "display" process attribute
-mechanism AppArmor no longer needs to be treated as an
-"exclusive" security module. Remove the flag that indicates
-it is exclusive. Remove the stub getpeersec_dgram AppArmor
-hook as it has no effect in the single LSM case and
-interferes in the multiple LSM case.
+A previous fix, commit 83370b31a915 ("selinux: fix error initialization
+in inode_doinit_with_dentry()"), changed how failures were handled
+before a SELinux policy was loaded.  Unfortunately that patch was
+potentially problematic for two reasons: it set the isec->initialized
+state without holding a lock, and it didn't set the inode's SELinux
+label to the "default" for the particular filesystem.  The later can
+be a problem if/when a later attempt to revalidate the inode fails
+and SELinux reverts to the existing inode label.
 
-Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
-Acked-by: John Johansen <john.johansen@canonical.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+This patch should restore the default inode labeling that existed
+before the original fix, without affecting the LABEL_INVALID marking
+such that revalidation will still be attempted in the future.
+
+Fixes: 83370b31a915 ("selinux: fix error initialization in inode_doinit_with_dentry()")
+Reported-by: Sven Schnelle <svens@linux.ibm.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 ---
- security/apparmor/lsm.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+ security/selinux/hooks.c |   31 +++++++++++++------------------
+ 1 file changed, 13 insertions(+), 18 deletions(-)
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 7ce570b0f491..4b7cbe9bb1be 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1129,22 +1129,6 @@ static int apparmor_socket_getpeersec_stream(struct socket *sock,
- 	return error;
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 158fc47d8620..c46312710e73 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -1451,13 +1451,7 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
+ 			 * inode_doinit with a dentry, before these inodes could
+ 			 * be used again by userspace.
+ 			 */
+-			isec->initialized = LABEL_INVALID;
+-			/*
+-			 * There is nothing useful to jump to the "out"
+-			 * label, except a needless spin lock/unlock
+-			 * cycle.
+-			 */
+-			return 0;
++			goto out_invalid;
+ 		}
+ 
+ 		rc = inode_doinit_use_xattr(inode, dentry, sbsec->def_sid,
+@@ -1513,15 +1507,8 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
+ 			 * inode_doinit() with a dentry, before these inodes
+ 			 * could be used again by userspace.
+ 			 */
+-			if (!dentry) {
+-				isec->initialized = LABEL_INVALID;
+-				/*
+-				 * There is nothing useful to jump to the "out"
+-				 * label, except a needless spin lock/unlock
+-				 * cycle.
+-				 */
+-				return 0;
+-			}
++			if (!dentry)
++				goto out_invalid;
+ 			rc = selinux_genfs_get_sid(dentry, sclass,
+ 						   sbsec->flags, &sid);
+ 			if (rc) {
+@@ -1546,11 +1533,10 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
+ out:
+ 	spin_lock(&isec->lock);
+ 	if (isec->initialized == LABEL_PENDING) {
+-		if (!sid || rc) {
++		if (rc) {
+ 			isec->initialized = LABEL_INVALID;
+ 			goto out_unlock;
+ 		}
+-
+ 		isec->initialized = LABEL_INITIALIZED;
+ 		isec->sid = sid;
+ 	}
+@@ -1558,6 +1544,15 @@ static int inode_doinit_with_dentry(struct inode *inode, struct dentry *opt_dent
+ out_unlock:
+ 	spin_unlock(&isec->lock);
+ 	return rc;
++
++out_invalid:
++	spin_lock(&isec->lock);
++	if (isec->initialized == LABEL_PENDING) {
++		isec->initialized = LABEL_INVALID;
++		isec->sid = sid;
++	}
++	spin_unlock(&isec->lock);
++	return 0;
  }
  
--/**
-- * apparmor_socket_getpeersec_dgram - get security label of packet
-- * @sock: the peer socket
-- * @skb: packet data
-- * @secid: pointer to where to put the secid of the packet
-- *
-- * Sets the netlabel socket state on sk from parent
-- */
--static int apparmor_socket_getpeersec_dgram(struct socket *sock,
--					    struct sk_buff *skb, u32 *secid)
--
--{
--	/* TODO: requires secid support */
--	return -ENOPROTOOPT;
--}
--
- /**
-  * apparmor_sock_graft - Initialize newly created socket
-  * @sk: child sock
-@@ -1248,8 +1232,6 @@ static struct security_hook_list apparmor_hooks[] __lsm_ro_after_init = {
- #endif
- 	LSM_HOOK_INIT(socket_getpeersec_stream,
- 		      apparmor_socket_getpeersec_stream),
--	LSM_HOOK_INIT(socket_getpeersec_dgram,
--		      apparmor_socket_getpeersec_dgram),
- 	LSM_HOOK_INIT(sock_graft, apparmor_sock_graft),
- #ifdef CONFIG_NETWORK_SECMARK
- 	LSM_HOOK_INIT(inet_conn_request, apparmor_inet_conn_request),
-@@ -1918,7 +1900,7 @@ static int __init apparmor_init(void)
- 
- DEFINE_LSM(apparmor) = {
- 	.name = "apparmor",
--	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
-+	.flags = LSM_FLAG_LEGACY_MAJOR,
- 	.enabled = &apparmor_enabled,
- 	.blobs = &apparmor_blob_sizes,
- 	.init = apparmor_init,
--- 
-2.24.1
+ /* Convert a Linux signal to an access vector. */
 

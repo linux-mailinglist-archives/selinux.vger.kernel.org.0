@@ -2,143 +2,168 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EA5E2A84F4
-	for <lists+selinux@lfdr.de>; Thu,  5 Nov 2020 18:33:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 079192A850C
+	for <lists+selinux@lfdr.de>; Thu,  5 Nov 2020 18:37:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726214AbgKERde (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 5 Nov 2020 12:33:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45346 "EHLO
+        id S1726729AbgKERhc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 5 Nov 2020 12:37:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726729AbgKERdd (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 5 Nov 2020 12:33:33 -0500
-Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FD34C0613D2;
-        Thu,  5 Nov 2020 09:33:33 -0800 (PST)
-Received: by mail-io1-xd44.google.com with SMTP id u19so2625006ion.3;
-        Thu, 05 Nov 2020 09:33:33 -0800 (PST)
+        with ESMTP id S1725862AbgKERhc (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 5 Nov 2020 12:37:32 -0500
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10800C0613CF
+        for <selinux@vger.kernel.org>; Thu,  5 Nov 2020 09:37:32 -0800 (PST)
+Received: by mail-oi1-x230.google.com with SMTP id m17so2514270oie.4
+        for <selinux@vger.kernel.org>; Thu, 05 Nov 2020 09:37:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=JIGbC6qi1dsWfG1zRqNIOMjeRvZN+6pg/ifwX9BE5tE=;
-        b=X6saMMByBG4fpZibbsMM/th0eH1lauCTY2r7JWwQJ5mrJsBi4rSlFEVtFzLD7VnySx
-         9Y/zSZXO3xNMbiNCRqQk/LK7BMBDau+dJoj1Jd+hwx5ThuM02GyzVtfBtYcJTtoQPhj1
-         0XQKkqo4pjxonXwVkYxLn8xB0niOL+qsFhFrtRdq/nuw+jvon0EuxzTVMbjB1iuVwo+7
-         ZIvsCFPP2mwehLHAEdu4GmFcILpkzCxm/4VrCa739sgG8EFBRTOqu9zTK0fY0ac7tjOF
-         kjY4RqseQFq9Laaa3D7sZzExBAWU20fenRvSzSBNJGDOPVRSkQ7YHYj58DbcdMXQLvA8
-         ZI4A==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8k0oFykdv1vO74HUCrxYzpFcNZgQeMmNmibgDdutAOA=;
+        b=oVpaDT5jL8RXR91dF8QmpD+kQAsKFGahvy9ZLvzLGqhgWN4TzJY766djF9ycINY730
+         psUfkAxIrgSLrwKf31jn/m84WXCw/H1x8B5odmP5rQE+LqT2UjH3jBXlP3Z49+Y3PbTD
+         iHBlYahTJqO6k+rXLeN48ZgWT8dHfeMe+GlDPe3NZJz9TjkrxCiym7FQK/zJE01ONvsZ
+         YrB16/8HO7Ux4Qh0Of0rVdOixS3tHDsKqCyorVLoo92RQYNbcze2Cv7fbOTCHb8GgxVS
+         3E+fbUOjtCrwQSwvRW0aBZ4c6519HSk8hFLIzvHANa/GcucYpWXoChlduOMTyg3FbjTE
+         1GHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=JIGbC6qi1dsWfG1zRqNIOMjeRvZN+6pg/ifwX9BE5tE=;
-        b=HsxjyOWQpUlctW/lXuRxymDByKPLlLpYQVnTIrWsQMaQFyD3HyuqzuJvKB4CMnu0yZ
-         aFNwLhrjZZvNx35u1mTgVywu74sT2wuV/gdHc06Oo7IdnDegu0jLrLlpDxMgyuHDHHDT
-         5yTF2I2yPRGKcpV3kLhTGGfECnvdTTJCQWvX/XDv0uewtk4e8qU8FVntohgHlk4US222
-         kbsBcNOPcIpCCImNJWA4V8jxNA7bT45PoGR9+kRRVw1ijBJsKK9fEhe1ndzyNnAR+NnT
-         7A9FrnkgiphEY/puIC3NJGVsJCqw3EJICMMJm+k32poZPSAZNJsi089xck/YANmCyLy3
-         h38w==
-X-Gm-Message-State: AOAM532KgvEMeZ3LVw0mtThS21opsZRMKnXvIOmSNC5/qe3Kt58OF9ZI
-        L4RUo092zEDNTprN/ez5BzU2z/DD/N8=
-X-Google-Smtp-Source: ABdhPJzpgyrdvwQhmjlZ9qGud7P46iHroVx6buTbSxJgQjcPVxcZjT8iR8MU8fAmRpZA5Xu8wnHA0g==
-X-Received: by 2002:a6b:8d12:: with SMTP id p18mr2468815iod.139.1604597612393;
-        Thu, 05 Nov 2020 09:33:32 -0800 (PST)
-Received: from Olgas-MBP-377.attlocal.net (172-10-226-31.lightspeed.livnmi.sbcglobal.net. [172.10.226.31])
-        by smtp.gmail.com with ESMTPSA id x20sm1413888ioh.17.2020.11.05.09.33.31
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Thu, 05 Nov 2020 09:33:31 -0800 (PST)
-From:   Olga Kornievskaia <olga.kornievskaia@gmail.com>
-To:     trond.myklebust@hammerspace.com, anna.schumaker@netapp.com,
-        paul@paul-moore.com, stephen.smalley.work@gmail.com
-Cc:     linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org
-Subject: [PATCH 2/2] NFSv4.2: condition READDIR's mask for security label based on LSM state
-Date:   Thu,  5 Nov 2020 12:33:28 -0500
-Message-Id: <20201105173328.2539-2-olga.kornievskaia@gmail.com>
-X-Mailer: git-send-email 2.10.1 (Apple Git-78)
-In-Reply-To: <20201105173328.2539-1-olga.kornievskaia@gmail.com>
-References: <20201105173328.2539-1-olga.kornievskaia@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8k0oFykdv1vO74HUCrxYzpFcNZgQeMmNmibgDdutAOA=;
+        b=asgDdf3dL4/S2Nt5syCZCQMxY+hqu40MlupO/1vc5iPT28JtxfR/2bVC8W5PGi5m6g
+         2xOZW+/3/xZjTH/5q8dDmKn5P5EzF4LhoqpUswk5S+v+MmUq562V7W+4xXVxoggGNa6f
+         ouwQ2mn9EmcZ4EBifEropolPg4eMnFum94DsHC18GGK9oxIhK1pwXGNYbOV76O9dw6/L
+         rL/UZ3NhAbZ5hIeLnJ+gMx0kY0XoNG8CYU5NN4nHDs9mGMkzN8NueaanrXo8Ex6jMIG1
+         dsBRR86RNCV9xMYSpX08gwMij9YCCspMkMvat8JOYYYajFHZzdXFsc3HPG30Q5HGXoV/
+         rkPw==
+X-Gm-Message-State: AOAM530XhPBHNvG1iAyT0xUJA/FjJk529optQo/z3zP9xqczQa0dj+X+
+        HPLDQ8HfynzlkXltd9hNfd95VdUjISKGhu8qszQ=
+X-Google-Smtp-Source: ABdhPJzAohvumXyfmQeIY0EVAhEDuNTPdpXHj+7aXAxOj3FjJm2VQN8qM+xVu20AnwJ7P6QVZqKMlLyE0jAto+pKtl0=
+X-Received: by 2002:aca:5095:: with SMTP id e143mr330248oib.138.1604597851177;
+ Thu, 05 Nov 2020 09:37:31 -0800 (PST)
+MIME-Version: 1.0
+References: <CAFqZXNvT=G4HPiugi6vnnJMGLgv5MsumURQij0cnFjLrnXZ93Q@mail.gmail.com>
+ <CAEjxPJ7cwBpLGoTmzGOUJFq5QuFCHG+xydiGYAtk2hV0d8ww3g@mail.gmail.com>
+ <CAHC9VhQZGM2XW5=durZRb-gapsu+bUu_45JegmsOxcGEgThL6g@mail.gmail.com>
+ <CAFqZXNvgQ5s50JS0_s1wEUONo2nzc2=_rufKxmWqQ=hhz8_T-A@mail.gmail.com> <CAEjxPJ6d4VN7TfJXMT-RGtZ=_rje_=27T5XhXrt9iRdvQuVCdw@mail.gmail.com>
+In-Reply-To: <CAEjxPJ6d4VN7TfJXMT-RGtZ=_rje_=27T5XhXrt9iRdvQuVCdw@mail.gmail.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Thu, 5 Nov 2020 12:36:38 -0500
+Message-ID: <CAEjxPJ7L88gxjs+A0RS-zRPrx_QDR=0ioYL5Dk0BXWiyL0dmOg@mail.gmail.com>
+Subject: Re: Possibly unwanted rootcontext= behavior?
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     Paul Moore <paul@paul-moore.com>,
+        SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: Olga Kornievskaia <kolga@netapp.com>
+On Thu, Nov 5, 2020 at 12:28 PM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
+>
+> On Thu, Nov 5, 2020 at 12:22 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> >
+> > On Thu, Nov 5, 2020 at 4:31 PM Paul Moore <paul@paul-moore.com> wrote:
+> > > On Thu, Nov 5, 2020 at 8:51 AM Stephen Smalley
+> > > <stephen.smalley.work@gmail.com> wrote:
+> > > > On Thu, Nov 5, 2020 at 7:44 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> > > > >
+> > > > > Hello everyone,
+> > > > >
+> > > > > while trying to fix the NFS rootcontext= issue, I realized that this
+> > > > > funny thing is possible:
+> > > > >
+> > > > > # mount -o rootcontext=system_u:object_r:lib_t:s0 -t tmpfs tmpfs /mnt
+> > > > > # ls -lZd /mnt
+> > > > > drwxrwxrwt. 2 root root system_u:object_r:lib_t:s0 40 nov  5 07:30 /mnt
+> > > > > # mount
+> > > > > [...]
+> > > > > tmpfs on /mnt type tmpfs
+> > > > > (rw,relatime,rootcontext=system_u:object_r:lib_t:s0,seclabel)
+> > > > > # chcon -t bin_t /mnt
+> > > > > # ls -lZd /mnt
+> > > > > drwxrwxrwt. 2 root root system_u:object_r:bin_t:s0 40 nov  5 07:30 /mnt
+> > > > > # mount
+> > > > > [...]
+> > > > > tmpfs on /mnt type tmpfs
+> > > > > (rw,relatime,rootcontext=system_u:object_r:bin_t:s0,seclabel)
+> > > > >
+> > > > > I.e. if you mount a tree with rootcontext=<oldctx> and then relabel
+> > > > > the root node to <newctx>, the displayed mount options will report
+> > > > > rootcontext=<newctx> instead of rootcontext=<oldctx>. A side effect is
+> > > > > that if you try to mount the same superblock again, it will only
+> > > > > permit you to mount with rootcontext=<newctx>, not with
+> > > > > rootcontext=<oldctx>.
+> > > > >
+> > > > > Is that intended, bad, or "weird, but doesn't matter" behavior?
+> > > >
+> > > > I'd say it is bad.
+> > > >
+> > > > > I have a halfway written patch to disallow altering the root node's
+> > > > > context when mounted with rootcontext=, but I'm not sure if that's the
+> > > > > right thing to do or not.
+> > > >
+> > > > Probably the better fix would be to save the original rootcontext SID
+> > > > as a new field of the
+> > > > superblock security struct and use that both when displaying the mount
+> > > > options and when
+> > > > comparing old and new mount options instead of what happens to be
+> > > > assigned to the root
+> > > > inode at the time.
+> > >
+> > > I worry that would be confusing, allowing the root inode to be
+> > > relabeled yet still showing the old label in the mount options.  It
+> > > would seem that simply blocking a root inode relabel when a
+> > > rootcontext is specified would be the cleanest choice, assuming
+> > > existing systems do not rely on this behavior.
+> > >
+> > > Ondrej, Stephen, any idea how common this is on normal systems?  My
+> > > gut feeling says "not very common", but that is just a guess.
+> >
+> > I don't even know what use case it's supposed to solve :) I suppose if
+> > you freshly format some storage drive and you want the root dir to be
+> > labeled immediately after mounting, rootcontext= could be useful. For
+> > such a use case Stephen's approach would make sense (you might still
+> > want to eventually relabel the root dir to something else), but there
+> > are some gotchas... For example, the label is initially set only in
+> > the inode security struct, but not written to the xattrs (I only
+> > looked at the code briefly, I could be wrong here), so you would still
+> > need to manually set the label on the root directory after mounting
+> > for the label to persist. And if you remount the superblock after
+> > changing the label, the internal label will be reset to the old one
+> > (which you are forced to specify in the mount options), but again not
+> > persistently. That's all very unintuitive.
+> >
+> > So, IMHO, good ways to fix it are either disallowing changing the
+> > label altogether, or making sure the label is propagated to the xattrs
+> > (if supported) and allowing to remount with a different rootcontext=
+> > option (or with no rootcontext). But that's only if I guessed the use
+> > case correctly.
+>
+> I think the original use case was primarily tmpfs mounts, so that e.g.
+> one could mount a tmpfs on /dev that is immediately labeled with
+> device_t.
+>
+> Not fundamentally opposed to preventing relabeling afterward but
+> always possible that could break existing userspace somewhere.
 
-Currently, the client will always ask for security_labels if the server
-returns that it supports that feature regardless of any LSM modules
-(such as Selinux) enforcing security policy. This adds performance
-penalty to the READDIR operation.
+commit 0808925ea5684a0ce25483b30e94d4f398804978
+Author: Eric Paris <eparis@parisplace.org>
+Date:   Mon Jul 10 04:43:55 2006 -0700
 
-Instead, query the LSM module to find if anything is enabled and
-if not, then remove FATTR4_WORD2_SECURITY_LABEL from the bitmask.
+    [PATCH] SELinux: add rootcontext= option to label root inode when mounting
 
-Suggested-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
----
- fs/nfs/nfs4proc.c       | 5 +++++
- fs/nfs/nfs4xdr.c        | 3 ++-
- include/linux/nfs_xdr.h | 1 +
- 3 files changed, 8 insertions(+), 1 deletion(-)
+    Introduce a new rootcontext= option to FS mounting.  This option will allow
+    you to explicitly label the root inode of an FS being mounted before that
+    FS or inode because visible to userspace.  This was found to be useful for
+    things like stateless linux, see
+    https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=190001
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 9e0ca9b2b210..774bc5e63ca7 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -55,6 +55,7 @@
- #include <linux/utsname.h>
- #include <linux/freezer.h>
- #include <linux/iversion.h>
-+#include <linux/security.h>
- 
- #include "nfs4_fs.h"
- #include "delegation.h"
-@@ -4968,6 +4969,7 @@ static int _nfs4_proc_readdir(struct dentry *dentry, const struct cred *cred,
- 		.count = count,
- 		.bitmask = NFS_SERVER(d_inode(dentry))->attr_bitmask,
- 		.plus = plus,
-+		.labels = true,
- 	};
- 	struct nfs4_readdir_res res;
- 	struct rpc_message msg = {
-@@ -4977,10 +4979,13 @@ static int _nfs4_proc_readdir(struct dentry *dentry, const struct cred *cred,
- 		.rpc_cred = cred,
- 	};
- 	int			status;
-+	int sec_flags = LSM_FQUERY_VFS_XATTRS;
- 
- 	dprintk("%s: dentry = %pd2, cookie = %Lu\n", __func__,
- 			dentry,
- 			(unsigned long long)cookie);
-+	if (!security_func_query_vfs(sec_flags))
-+		args.labels = false;
- 	nfs4_setup_readdir(cookie, NFS_I(dir)->cookieverf, dentry, &args);
- 	res.pgbase = args.pgbase;
- 	status = nfs4_call_sync(NFS_SERVER(dir)->client, NFS_SERVER(dir), &msg, &args.seq_args, &res.seq_res, 0);
-diff --git a/fs/nfs/nfs4xdr.c b/fs/nfs/nfs4xdr.c
-index c6dbfcae7517..585d5b5cc3dc 100644
---- a/fs/nfs/nfs4xdr.c
-+++ b/fs/nfs/nfs4xdr.c
-@@ -1605,7 +1605,8 @@ static void encode_readdir(struct xdr_stream *xdr, const struct nfs4_readdir_arg
- 			FATTR4_WORD1_OWNER_GROUP|FATTR4_WORD1_RAWDEV|
- 			FATTR4_WORD1_SPACE_USED|FATTR4_WORD1_TIME_ACCESS|
- 			FATTR4_WORD1_TIME_METADATA|FATTR4_WORD1_TIME_MODIFY;
--		attrs[2] |= FATTR4_WORD2_SECURITY_LABEL;
-+		if (readdir->labels)
-+			attrs[2] |= FATTR4_WORD2_SECURITY_LABEL;
- 		dircount >>= 1;
- 	}
- 	/* Use mounted_on_fileid only if the server supports it */
-diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
-index d63cb862d58e..95f648b26525 100644
---- a/include/linux/nfs_xdr.h
-+++ b/include/linux/nfs_xdr.h
-@@ -1119,6 +1119,7 @@ struct nfs4_readdir_arg {
- 	unsigned int			pgbase;	/* zero-copy data */
- 	const u32 *			bitmask;
- 	bool				plus;
-+	bool				labels;
- };
- 
- struct nfs4_readdir_res {
--- 
-2.18.2
-
+    Signed-off-by: Eric Paris <eparis@parisplace.org>
+    Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
+    Signed-off-by: James Morris <jmorris@namei.org>
+    Signed-off-by: Andrew Morton <akpm@osdl.org>
+    Signed-off-by: Linus Torvalds <torvalds@osdl.org>

@@ -2,59 +2,84 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A19462B490D
-	for <lists+selinux@lfdr.de>; Mon, 16 Nov 2020 16:23:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 479E72B5417
+	for <lists+selinux@lfdr.de>; Mon, 16 Nov 2020 23:07:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729345AbgKPPWz (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 16 Nov 2020 10:22:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52964 "EHLO
+        id S1727098AbgKPWHK (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 16 Nov 2020 17:07:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728396AbgKPPWy (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 16 Nov 2020 10:22:54 -0500
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EA09C0613CF
-        for <selinux@vger.kernel.org>; Mon, 16 Nov 2020 07:22:53 -0800 (PST)
-Received: by mail-ed1-x536.google.com with SMTP id k4so2400840edl.0
-        for <selinux@vger.kernel.org>; Mon, 16 Nov 2020 07:22:53 -0800 (PST)
+        with ESMTP id S1727044AbgKPWHK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 16 Nov 2020 17:07:10 -0500
+Received: from mail-qv1-xf43.google.com (mail-qv1-xf43.google.com [IPv6:2607:f8b0:4864:20::f43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C20DC0613CF
+        for <selinux@vger.kernel.org>; Mon, 16 Nov 2020 14:07:10 -0800 (PST)
+Received: by mail-qv1-xf43.google.com with SMTP id z17so9636092qvy.11
+        for <selinux@vger.kernel.org>; Mon, 16 Nov 2020 14:07:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=FjVIw2PMuDGZWH3b3e4jECPKdXmqyP+14Y90u1ATbGg=;
-        b=FiefZPDABr2cF3N9zOaiFRN7zQLKc2T/2eQc60ylOq+KBkceBJnQLDRpc2aKGsbRMa
-         mGONlNDeZKuVqsnaXwCL29uJHEAZyeb6wKRfVdN8eLjCThkBGZCtPycxJFqlP4kSKINx
-         kEuGNgV+E4c1tKJtABk+ytOPjLe2nt963lLVtwZFJGLS2LFfpC/lN/cxj/Ti7HOWNiZS
-         F+p3EjHWqf+jG5/Hd2RznoMZBw5C6izh1UPFF+7c4PEqn3ufZmFTwvyUag0oRTgtuq6D
-         3+t5I6sx+YeJcEPSjCZcds/lkh5OOC48VF7zqV4tXdrchiPwl3deLPr83X9WuHhBLRoI
-         88mw==
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gIdY/HZeLPpmuWY10kI8/O698zSfUdm0NtRoQWKT9Vk=;
+        b=Xo9RX1kp2nkvUlQPZV4jKk5Hy+8fXuQxCSGprJfzYZcIEtkRYIGFlLpHswO9xc3D6c
+         0Jz3Yv3hJ6g4tDkKMwSkwY40i8+YYVXCWvyEAFvzxUF8k4d5ebg4TxL5MoNLQ1QwloKk
+         Dlhw82/aVOLx4YEA3ipYJUKL85HIiozxGKqzRlwcKycDsQXd7NWxK9cMJioIKceQwqTa
+         5xHJ/TJKKbgK71GrI5NOzJDAFq6INiGDaKIsBuZ+qqmcrjD+SNPCVHF7ERkG3bn2V7sy
+         BE5ZsVU7Yo/vhUIg6cWon+ij7ohSN6QZlQ+uLZPRM6jUMShCQ/aftddLpCmdlRQPRq4P
+         6H+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=FjVIw2PMuDGZWH3b3e4jECPKdXmqyP+14Y90u1ATbGg=;
-        b=PG2L0gwosfa2TwUMxYSxEQbWyoFbIk6REoVJLvzvR5As4/70d+4oLvqxK4PQD5nyrZ
-         S+NNIE2HjHjqQmj28/j+y5nKlvAKA7Uddg2Y5QmcUiiY53uLSzR+cigZU2ad2yhZGwp6
-         7me5DCRhdwwnrrOLRilw/Vgskp5fABwySqmM8QNnzwKrRFVlCo+k5rxbXBYfRRpefpwh
-         H4SDKTrX+qzVJr/3ImvjN6GIU8DadkG+MOBe9goykx3vpY5EnjjgBScVUZBIZipO6NZH
-         +1KPov0CScmXSpEGERtWQR3gGDATcKwhgT1GmDMKNHoiuP1nE/dDy3ZUfmvOxG5IE+h/
-         Me4Q==
-X-Gm-Message-State: AOAM533gAi5GBizel7Iw1tl39HS82FCs8cBNwC9N3AYuUyk1nDcLl2CK
-        251gTyu+IJwqHW6xEupUWnuDG7icxDaSs2FM0trlga5ijkpX
-X-Google-Smtp-Source: ABdhPJwcjfvAqpmCg9i7p2w9pVfOMOzmuD2PXUqVvnJQ0pO3Oh6kyoq7FCWsPKeOnW5Yn3uKSM4CknTCFp+IQ8bhuK8=
-X-Received: by 2002:a05:6402:17ac:: with SMTP id j12mr15876095edy.31.1605540171343;
- Mon, 16 Nov 2020 07:22:51 -0800 (PST)
-MIME-Version: 1.0
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 16 Nov 2020 10:22:40 -0500
-Message-ID: <CAHC9VhQiUHp1ywBUFFne4DWyApykwJ18zeO4gRDATvxxsH_ppQ@mail.gmail.com>
-Subject: Rebased selinux/working-selinuxns on top of selinux/next
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=gIdY/HZeLPpmuWY10kI8/O698zSfUdm0NtRoQWKT9Vk=;
+        b=QqBs6LRCWME0Hoa0j45KYDvU0gWABpYAstsOABMKtmq9TwKH9ikqIsTWanqy+Ja+Kw
+         GfPBg2tIm6JSG5oqrqtxYpwO0Wx5kfu090NMJh12mqCwjZxuE3PiV9Rd/WZv+/Od6P9/
+         FURoWIahkDYe8QfHyqF0Kf9WqBbZ4QDiJ6BVhON3mwyyoEaTc4gwbwUyKnvstlGAlvZr
+         o4t04OE6W5Lcx8XncYZRKMZGHtJrfS3GZWIMuSM3j3Y+ZNJL3vUpua0z+PL9PkvLovgb
+         lRYojzQnXycU4ZK69gwfhjCnTjmKOgIl54BCwz9pq/7NM3bscjDvk1HFjxeBdgigdeVt
+         l/SQ==
+X-Gm-Message-State: AOAM532aLFhDPyVo+b/d8dd+O5bSGLYcQ4hLu0TiI0HWBj+zNFfhsuxR
+        mzeSePJ6Fb2sQYSOelJeq22yavxRbsI=
+X-Google-Smtp-Source: ABdhPJwHyDmxD5nUY9gOlzzSMEmonaQoPgIy/sPfIqbSXKZgcNvbHwabf7tV73T0vsXKXwyRivaV8A==
+X-Received: by 2002:ad4:56ee:: with SMTP id cr14mr18126237qvb.15.1605564429241;
+        Mon, 16 Nov 2020 14:07:09 -0800 (PST)
+Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
+        by smtp.gmail.com with ESMTPSA id q11sm12653330qtp.47.2020.11.16.14.07.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Nov 2020 14:07:08 -0800 (PST)
+From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH 0/6] libsepol/cil: Various CIL cleanups
+Date:   Mon, 16 Nov 2020 17:06:56 -0500
+Message-Id: <20201116220702.174765-1-jwcart2@gmail.com>
+X-Mailer: git-send-email 2.25.4
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-As a FYI, the SELinux namespace branch has been forward ported and and
-all of the existing tests are passing.
+Cleaning up the CIL codebase a bit. No changes to how CIL works.
+
+James Carter (6):
+  libsepol/cil: cil_tree_walk() helpers should use CIL_TREE_SKIP_*
+  libsepol/cil: Git rid of unnecessary check in cil_gen_node()
+  libsepol/cil: Remove unused field from struct cil_args_resolve
+  libsepol/cil: Remove unnecessary assignment in
+    cil_resolve_name_keep_aliases()
+  libsepol/cil: Use the macro NODE() whenever possible
+  libspepol/cil: Use the macro FLAVOR() whenever possible
+
+ libsepol/cil/src/cil.c             |  2 +-
+ libsepol/cil/src/cil_binary.c      | 12 +++----
+ libsepol/cil/src/cil_build_ast.c   |  6 ++--
+ libsepol/cil/src/cil_find.c        | 10 +++---
+ libsepol/cil/src/cil_post.c        |  2 +-
+ libsepol/cil/src/cil_resolve_ast.c | 55 +++++++++++++-----------------
+ libsepol/cil/src/cil_tree.c        |  2 +-
+ 7 files changed, 41 insertions(+), 48 deletions(-)
 
 -- 
-paul moore
-www.paul-moore.com
+2.25.4
+

@@ -2,43 +2,43 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CE442C6138
-	for <lists+selinux@lfdr.de>; Fri, 27 Nov 2020 09:55:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 04BBE2C6139
+	for <lists+selinux@lfdr.de>; Fri, 27 Nov 2020 09:55:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726316AbgK0Ixb (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 27 Nov 2020 03:53:31 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:38001 "EHLO
+        id S1725989AbgK0Ixh (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 27 Nov 2020 03:53:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:36598 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726162AbgK0Ixa (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 27 Nov 2020 03:53:30 -0500
+        by vger.kernel.org with ESMTP id S1725985AbgK0Ixh (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 27 Nov 2020 03:53:37 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1606467210;
+        s=mimecast20190719; t=1606467216;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=9SM39iyZJYJeWrb2MTGGRcWZz25lDnPuBUIEizzF69o=;
-        b=hDWxgWSx3YXsbaAOWFOWQoJ7kCTSlN5tWaMl6Mv3gI/JXJMM/bl19TImfio9k7V6N589zH
-        KZPAKN83BENt1plqvLJgArzWnc9XNKz8QH2Yb60Dw89r/1jFt6oE+qJdB7brvyApM969qL
-        Aa0DtotqwKYW1nNROc2/3g4sPduvnko=
+        bh=sin5tmcYh0FNYxdoTkiTRJlBjR4D3F5rVA7owkAUb6U=;
+        b=T9L132AyhTPuWX8o/nJbxnTGn7oobEShfzFaOp/ajC3SLiJqb3yZGEVLaxQjSa0bRF+9cu
+        8KZ2FzP7g1MdjHFXZtZgVIawG1o0H0TeVPe3SL3qyQKSB8OZWVo6482zUMwv4N9p+bDJ93
+        FTfFsgdg25FfkqRdL/EHihXhzO4adgE=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-248-hpPkMrWSMUaQNQ0h_yhzKQ-1; Fri, 27 Nov 2020 03:53:27 -0500
-X-MC-Unique: hpPkMrWSMUaQNQ0h_yhzKQ-1
+ us-mta-95-_LPceE6jMAWSD6zpw9NwaQ-1; Fri, 27 Nov 2020 03:53:32 -0500
+X-MC-Unique: _LPceE6jMAWSD6zpw9NwaQ-1
 Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7F75A3E747;
-        Fri, 27 Nov 2020 08:53:26 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id B8187107AD3B;
+        Fri, 27 Nov 2020 08:53:31 +0000 (UTC)
 Received: from localhost.localdomain.com (unknown [10.40.193.166])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 44E1519C46;
-        Fri, 27 Nov 2020 08:53:25 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id AB3E519C46;
+        Fri, 27 Nov 2020 08:53:30 +0000 (UTC)
 From:   Petr Lautrbach <plautrba@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     Hu Keping <hukeping@huawei.com>
-Subject: [PATCH 1/3] Introduce VERSION file for selinux
-Date:   Fri, 27 Nov 2020 09:52:19 +0100
-Message-Id: <20201127085220.813760-2-plautrba@redhat.com>
+Subject: [PATCH 2/3] Use X.Y instead of date for release tag
+Date:   Fri, 27 Nov 2020 09:52:20 +0100
+Message-Id: <20201127085220.813760-3-plautrba@redhat.com>
 In-Reply-To: <20201127085220.813760-1-plautrba@redhat.com>
 References: <20201127085220.813760-1-plautrba@redhat.com>
 MIME-Version: 1.0
@@ -50,22 +50,39 @@ X-Mailing-List: selinux@vger.kernel.org
 
 From: Hu Keping <hukeping@huawei.com>
 
-Init it to 3.1 as the same with the other 14 VERSION files
-in this project.
+As per discussed at github issue[1] and mailing list[2], we consider
+a version format of X.Y starting at 3.2.
+
+[1]: https://github.com/SELinuxProject/selinux/issues/270
+[2]: https://lore.kernel.org/selinux/87d004wan2.fsf@redhat.com/T/#u
 
 Signed-off-by: Hu Keping <hukeping@huawei.com>
 ---
- VERSION | 1 +
- 1 file changed, 1 insertion(+)
- create mode 100644 VERSION
+ scripts/release | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/VERSION b/VERSION
-new file mode 100644
-index 000000000000..8c50098d8aed
---- /dev/null
-+++ b/VERSION
-@@ -0,0 +1 @@
-+3.1
+diff --git a/scripts/release b/scripts/release
+index 0781374954e4..040aaf68e86a 100755
+--- a/scripts/release
++++ b/scripts/release
+@@ -7,7 +7,7 @@ if [ \! -d $WIKIDIR ]; then
+     git clone git@github.com:SELinuxProject/selinux.wiki.git $WIKIDIR
+ fi
+ 
+-RELEASE_TAG=$(date '+%Y%m%d')
++RELEASE_TAG=`cat VERSION`
+ DEST=releases/$RELEASE_TAG
+ DIRS="libsepol libselinux libsemanage checkpolicy secilc policycoreutils mcstrans restorecond semodule-utils"
+ DIRS_NEED_PREFIX="dbus gui python sandbox"
+@@ -43,7 +43,7 @@ echo "Add the following to the $WIKIDIR/Releases.md wiki page:"
+ 
+ echo ""
+ 
+-echo "## Release $(date '+%Y-%m-%d')"
++echo "## Release $RELEASE_TAG"
+ 
+ echo ""
+ 
 -- 
 2.29.2
 

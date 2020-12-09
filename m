@@ -2,116 +2,172 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDB4B2D4591
-	for <lists+selinux@lfdr.de>; Wed,  9 Dec 2020 16:40:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6DA2D4AE3
+	for <lists+selinux@lfdr.de>; Wed,  9 Dec 2020 20:49:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726195AbgLIPii (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 9 Dec 2020 10:38:38 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47122 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726119AbgLIPii (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 9 Dec 2020 10:38:38 -0500
-Received: from mail-ot1-x333.google.com (mail-ot1-x333.google.com [IPv6:2607:f8b0:4864:20::333])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC71C0613CF
-        for <selinux@vger.kernel.org>; Wed,  9 Dec 2020 07:37:57 -0800 (PST)
-Received: by mail-ot1-x333.google.com with SMTP id h18so1725191otq.12
-        for <selinux@vger.kernel.org>; Wed, 09 Dec 2020 07:37:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Ni4d4ssPHZqY9Mj7XDFzcu37/MBoB7MklbLckABwRU0=;
-        b=bGCzVybW1CDRl8ZvjvlYhWTDIVn9txzgQWKaACbCbduUBa/bTNZ07vHfOvqtUErNV8
-         hVghwLn5A/A7mWJt+wvxEhFUN5NWtJ0BuTLfH8qYkcudKNEz0gWD4lyHHIHxLZlsP6FE
-         IrT59tLrdP1Nm31J7bXktWZq+fi8U1kc7lDiTfhzU6n0d2a95+v1Y1nnJxz7IogxQ6nN
-         RWvjq2iiT+igJ+1HC4txQRVHOd5OlIBNkJiS61HuyQ0PzBs7F2rS65Y9DcV7qiXyyuit
-         OIH4Ky0dLOmQuI3KTsQQlK/UVNqHcnoECq2FQFEElbEpJlGD/yTZBkW19sqUENop+aA4
-         Z2pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Ni4d4ssPHZqY9Mj7XDFzcu37/MBoB7MklbLckABwRU0=;
-        b=KwDD2aYQauuQMA4NSKPLb4hr7AV+p37GvpDsklfT2K4AqsQJL5WdOcwmtODGdhtTGw
-         eZtJBHhOvQYrAtT1KO4jm3h1ZFJfmX39Y4drmuCaJ3FTQLFqxDZNwaGqDx3G2a5MB70n
-         Xwiy5/uPAQo5ZzS6BKvpodJLwNfgm+9LkQ2DwXjzMlpRedncTgreDsNbEucw0iQlCO9r
-         gMN/mnu9UvEcrC3NeXmdPcDz2c/LTKFv73J0uc+hq/105/FXF5q9hsv/I632ReyqR4VH
-         0tmY+XinQdW71fqjlLQKtNDBQVUaKVQTqXyDhe5xM5+SgP3I0tLdoxYvELZqgoVUTDsa
-         AiTg==
-X-Gm-Message-State: AOAM531GF+SpGOimK0qT2sjwy0KB0u49Z1yIcWd/gNCXAF5qnAgfzmfj
-        zl1P8foyR8kiPEfUd/l0mB61WJAJQeDSGUCqgXEcKiDb
-X-Google-Smtp-Source: ABdhPJx6sH4HU5oyHb97/WANhrhCEJxJ7gNia93TMEu33wpJey8HcJXmik9W+0eJahMe1/Fj/QWrlk2P0PUlIsG0Eqk=
-X-Received: by 2002:a05:6830:1ae4:: with SMTP id c4mr1157413otd.295.1607528277086;
- Wed, 09 Dec 2020 07:37:57 -0800 (PST)
-MIME-Version: 1.0
-References: <CAFqZXNsGabHBfV36nNAVLJgEzjkBev-O3YZ1vnmXyVoaDdjiHQ@mail.gmail.com>
- <CAP+JOzSWW6HFtN1VSyvKacKeZdtRkBo7TWR7JS4a0ewiopuKww@mail.gmail.com> <CAHC9VhSYt86rQJGg9JFD1ubL4N3PNmLg02sACOvRNHr94=41dg@mail.gmail.com>
-In-Reply-To: <CAHC9VhSYt86rQJGg9JFD1ubL4N3PNmLg02sACOvRNHr94=41dg@mail.gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Wed, 9 Dec 2020 10:37:46 -0500
-Message-ID: <CAP+JOzQ-s9ASgqFt7HVyY1R7JKQ85Ee-=iou0C5xRRvaSZo52Q@mail.gmail.com>
-Subject: Re: virtiofs and its optional xattr support vs. fs_use_xattr
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        Daniel Walsh <dwalsh@redhat.com>,
-        Zdenek Pytela <zpytela@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+        id S2387890AbgLITnF (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 9 Dec 2020 14:43:05 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:47428 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387871AbgLITnE (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 9 Dec 2020 14:43:04 -0500
+Received: from tusharsu-Ubuntu.lan (c-71-197-163-6.hsd1.wa.comcast.net [71.197.163.6])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 10D4220B717A;
+        Wed,  9 Dec 2020 11:42:22 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 10D4220B717A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1607542942;
+        bh=Zr4aBdcUR5WHi+qPdkh15pCn3FZfZd01vCUp9B+ZYDU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Eo89UdhJglMuGxPxIwfsM2YQYWI3W0lOkZySOtWUPTbU6x3u7c35q9fJsUOytpaAJ
+         yvD8wSW9Mwv9gXpqCz96Dt3YDP6oWrOIoRv5CIAsP994Wl2yhJ7RYwPyAVBWl+eACs
+         3WMO9/Syr2d2oXQaalun96JueEQhwwwo76Q3hd8w=
+From:   Tushar Sugandhi <tusharsu@linux.microsoft.com>
+To:     zohar@linux.ibm.com, stephen.smalley.work@gmail.com,
+        casey@schaufler-ca.com, agk@redhat.com, snitzer@redhat.com,
+        gmazyland@gmail.com, paul@paul-moore.com
+Cc:     tyhicks@linux.microsoft.com, sashal@kernel.org, jmorris@namei.org,
+        nramas@linux.microsoft.com, linux-integrity@vger.kernel.org,
+        selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dm-devel@redhat.com
+Subject: [PATCH v7 0/8] IMA: support for measuring kernel integrity critical data
+Date:   Wed,  9 Dec 2020 11:42:04 -0800
+Message-Id: <20201209194212.5131-1-tusharsu@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Dec 8, 2020 at 6:45 PM Paul Moore <paul@paul-moore.com> wrote:
->
-> On Mon, Dec 7, 2020 at 12:17 PM James Carter <jwcart2@gmail.com> wrote:
-> > On Mon, Dec 7, 2020 at 9:45 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > >
-> > > Hi everyone,
-> > >
-> > > In [1] we ran into a problem with the current handling of filesystem
-> > > labeling rules. Basically, it is only possible to specify either
-> > > genfscon or fs_use_xattr for a given filesystem, but in the case of
-> > > virtiofs, certain mounts may support security xattrs, while other ones
-> > > may not.
-> > >
-> > > So we can't use the xattr support by adding fs_use_xattr virtiofs
-> > > (...); to the policy, because then a non-xattr mount will fail
-> > > (SELinux does a mount-time check on the root inode to make sure that
-> > > the xattr handler works), but we also don't want to stay on genfscon,
-> > > because then we can't relabel files.
-> > >
-> > > So my question is how to best address this? One option is to use a
-> > > similar "hack" as for cgroupfs; i.e. do a kind of mixed genfs-xattr
-> > > labeling, but that's ugly and requires hard-coding another FS name in
-> > > the selinux code. The only other alternative I could come up with is
-> > > to add a new FS labeling statement that would specify some kind of
-> > > mixed genfscon / fs_use_xattr behavior. That would be a better
-> > > long-term solution, but leads to more questions on how such statement
-> > > should actually work... Should it work the cgroupfs way, giving a
-> > > default label to everything and allowing to set/change labels via
-> > > xattrs? Or should it rather just detect xattrs support and switch
-> > > between SECURITY_FS_USE_XATTR and SECURITY_FS_USE_GENFS behavior based
-> > > on that? In the latter case, should the statement specify two contexts
-> > > (one for fs_use_xattr and another one for genfscon) or just one for
-> > > both behaviors?
-> >
-> > I don't think adding a new statement is necessary. It seems like
-> > allowing both fs_use_xattr and genfscon rules for the filesystem in
-> > policy and then using the fs_use_xattr rule if xattrs are supported
-> > while falling back to the genfscon rule if they are not would do what
-> > you need.
->
-> That seems reasonable to me so long as this ambiguity is okay with the
-> folks who do policy analysis.  Thinking quickly I'm not sure why it
-> would be a problem, but the thought did occur while I was typing up
-> this reply ...
->
+IMA measures files and buffer data such as keys, command-line arguments
+passed to the kernel on kexec system call, etc. While these measurements
+are necessary for monitoring and validating the integrity of the system,
+they are not sufficient. Various data structures, policies, and states
+stored in kernel memory also impact the integrity of the system.
+Several kernel subsystems contain such integrity critical data -
+e.g. LSMs like SELinux, AppArmor etc. or device-mapper targets like
+dm-crypt, dm-verity, dm-integrity etc. These kernel subsystems help
+protect the integrity of a device. Their integrity critical data is not
+expected to change frequently during run-time. Some of these structures
+cannot be defined as __ro_after_init, because they are initialized later.
 
-I don't think that it would cause a problem with policy analysis. I
-think that you would just assume the genfscon rule is being used,
-since it is less fine-grained. It wouldn't be much different from how
-booleans are handled.
+For a given device, various external services/infrastructure tools
+(including the attestation service) interact with it - both during the
+setup and during rest of the device run-time. They share sensitive data
+and/or execute critical workload on that device. The external services
+may want to verify the current run-time state of the relevant kernel
+subsystems before fully trusting the device with business critical
+data/workload. For instance, verifying that SELinux is in "enforce" mode
+along with the expected policy, disks are encrypted with a certain
+configuration, secure boot is enabled etc.
 
-Jim
+This series provides the necessary IMA functionality for kernel
+subsystems to ensure their configuration can be measured:
+  - by kernel subsystems themselves,
+  - in a tamper resistant way,
+  - and re-measured - triggered on state/configuration change.
+
+This patch set:
+  - defines a new IMA hook ima_measure_critical_data() to measure
+    integrity critical data,
+  - limits the critical data being measured based on a label,
+  - defines a builtin critical data measurement policy,
+  - and includes an SELinux consumer of the new IMA critical data hook.
+
+This series is based on the following repo/branch:
+
+ repo: https://git.kernel.org/pub/scm/linux/kernel/git/zohar/linux-integrity.git
+ branch: next-integrity
+ commit 207cdd565dfc ("ima: Don't modify file descriptor mode on the fly")
+
+Change Log v7:    
+Incorporated feedback from Mimi on v6 of this series.
+ - Updated cover letter and patch descriptions as per Mimi's feedback.
+ - Changed references to variable names and policy documentation from
+   plural "data_sources" to singular "data_source".
+ - Updated SELinux patch to measure only policy, instead of policy and
+   state. The state measurement will be upstreamed through a separate
+   patch.
+ - Updated admin-guide/kernel-parameters.txt to document support for
+   critical_data in builtin policy.
+
+Change Log v6:
+Incorporated feedback from Mimi on v5 of this series.
+ - Got rid of patch 5 from the v5 of the series.(the allow list for data
+   sources)
+ - Updated function descriptions, changed variable names etc.
+ - Moved the input param event_data_source in ima_measure_critical_data()
+   to a new patch. (patch 6/8 of this series)
+ - Split patch 4 from v5 of the series into two patches (patch 4/8 and 
+   patch 5/8)
+ - Updated cover letter and patch descriptions as per feedback.
+
+Change Log v5:
+(1) Incorporated feedback from Stephen on the last SeLinux patch.
+ SeLinux Patch: https://patchwork.kernel.org/patch/11801585/
+ - Freed memory in the reverse order of allocation in 
+   selinux_measure_state().
+ - Used scnprintf() instead of snprintf() to create the string for
+   selinux state.
+ - Allocated event name passed to ima_measure_critical_data() before
+   gathering selinux state and policy information for measuring.
+
+(2) Incorporated feedback from Mimi on v4 of this series.
+ V4 of this Series: https://patchwork.kernel.org/project/linux-integrity/list/?series=354437
+
+ - Removed patch "[v4,2/6] IMA: conditionally allow empty rule data"
+ - Reversed the order of following patches.
+      [v4,4/6] IMA: add policy to measure critical data from kernel components
+      [v4,5/6] IMA: add hook to measure critical data from kernel components
+   and renamed them to remove "from kernel components"
+ - Added a new patch to this series - 
+       IMA: add critical_data to built-in policy rules
+
+ - Added the next version of SeLinux patch (mentioned above) to this
+   series 
+       selinux: measure state and hash of the policy using IMA
+
+ - Updated cover-letter description to give broader perspective of the
+   feature, rearranging paragraphs, removing unnecessary info, clarifying
+   terms etc.
+ - Got rid of opt_list param from ima_match_rule_data().
+ - Updated the documentation to remove sources that don't yet exist.
+ - detailed IMA hook description added to ima_measure_critical_data(),
+   as well as elaborating terms event_name, event_data_source. 
+ - "data_sources:=" is not a mandatory policy option for 
+   func=CRITICAL_DATA anymore. If not present, all the data sources
+   specified in __ima_supported_kernel_data_sources will be measured.
+
+
+Lakshmi Ramasubramanian (2):
+  IMA: define a builtin critical data measurement policy
+  selinux: include a consumer of the new IMA critical data hook
+
+Tushar Sugandhi (6):
+  IMA: generalize keyring specific measurement constructs
+  IMA: add support to measure buffer data hash
+  IMA: define a hook to measure kernel integrity critical data
+  IMA: add policy rule to measure critical data
+  IMA: limit critical data measurement based on a label
+  IMA: extend critical data hook to limit the measurement based on a
+    label
+
+ Documentation/ABI/testing/ima_policy          |   5 +-
+ .../admin-guide/kernel-parameters.txt         |   5 +-
+ include/linux/ima.h                           |   8 ++
+ security/integrity/ima/ima.h                  |   8 +-
+ security/integrity/ima/ima_api.c              |   8 +-
+ security/integrity/ima/ima_appraise.c         |   2 +-
+ security/integrity/ima/ima_asymmetric_keys.c  |   2 +-
+ security/integrity/ima/ima_main.c             |  81 +++++++++++-
+ security/integrity/ima/ima_policy.c           | 122 ++++++++++++++----
+ security/integrity/ima/ima_queue_keys.c       |   3 +-
+ security/selinux/Makefile                     |   2 +
+ security/selinux/include/security.h           |  11 +-
+ security/selinux/measure.c                    |  86 ++++++++++++
+ security/selinux/ss/services.c                |  71 ++++++++--
+ 14 files changed, 364 insertions(+), 50 deletions(-)
+ create mode 100644 security/selinux/measure.c
+
+-- 
+2.17.1
+

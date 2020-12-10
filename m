@@ -2,289 +2,128 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C59AE2D6B15
-	for <lists+selinux@lfdr.de>; Fri, 11 Dec 2020 00:38:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 263392D6B18
+	for <lists+selinux@lfdr.de>; Fri, 11 Dec 2020 00:38:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2394182AbgLJWbX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 10 Dec 2020 17:31:23 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:58222 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2405122AbgLJWY7 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 10 Dec 2020 17:24:59 -0500
-Received: from sequoia (162-237-133-238.lightspeed.rcsntx.sbcglobal.net [162.237.133.238])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 7782620B717A;
-        Thu, 10 Dec 2020 14:14:21 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7782620B717A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1607638462;
-        bh=n3rV1v0Ksy9472jn2PGaV3S3QfVFG8vBPEUCy9pnfAM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=PzZd+5UU0YnBD2A1OxjzzeYLonjWSS3EKnu85df1paOvStDnESOdKHCOIigF4pRut
-         VLFDLu6khKqqhpRlqpYfkViVwVjVvBVH6CtVeo0DPL6ZsCTsO5AWCw4/0Jk/6rp/pb
-         ZIIor6KYn1JI/hc2oal+iTPDPv20YUbLr4g35f9Y=
-Date:   Thu, 10 Dec 2020 16:14:17 -0600
-From:   Tyler Hicks <tyhicks@linux.microsoft.com>
-To:     Tushar Sugandhi <tusharsu@linux.microsoft.com>
-Cc:     zohar@linux.ibm.com, stephen.smalley.work@gmail.com,
-        casey@schaufler-ca.com, agk@redhat.com, snitzer@redhat.com,
-        gmazyland@gmail.com, paul@paul-moore.com, sashal@kernel.org,
-        jmorris@namei.org, nramas@linux.microsoft.com,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dm-devel@redhat.com
-Subject: Re: [PATCH v7 1/8] IMA: generalize keyring specific measurement
- constructs
-Message-ID: <20201210221417.GF489768@sequoia>
-References: <20201209194212.5131-1-tusharsu@linux.microsoft.com>
- <20201209194212.5131-2-tusharsu@linux.microsoft.com>
+        id S2394192AbgLJWbY (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 10 Dec 2020 17:31:24 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:38809 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2405130AbgLJW03 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 10 Dec 2020 17:26:29 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1607639102;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Fj9fVsZwFzNBajnKQY8dqzOVQ+aAkCpyFLDSXEQ7naY=;
+        b=fUY+nnJbeJDTwwKjHsrqNeFdl1YeY4bg6J9lOMCof/Kj9ofyt8Rqyv5kD488Al8FE1z10u
+        X037eVY6MzVxcsHkql38ugDUBi0KIzUZ/0ya/vMoiUCp/M4Ctm6Mg3/DW13lwsGmY3Gpcj
+        5GHr9ywQbOZDg5XbRCLrJ0liegNEtKQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-419-FKrioB_gMM-OCVDfA8lbPA-1; Thu, 10 Dec 2020 17:17:56 -0500
+X-MC-Unique: FKrioB_gMM-OCVDfA8lbPA-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id BFB4B107ACF5;
+        Thu, 10 Dec 2020 22:17:54 +0000 (UTC)
+Received: from horse.redhat.com (ovpn-116-241.rdu2.redhat.com [10.10.116.241])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 525A85C8AA;
+        Thu, 10 Dec 2020 22:17:54 +0000 (UTC)
+Received: by horse.redhat.com (Postfix, from userid 10451)
+        id D7F22220BCF; Thu, 10 Dec 2020 17:17:53 -0500 (EST)
+Date:   Thu, 10 Dec 2020 17:17:53 -0500
+From:   Vivek Goyal <vgoyal@redhat.com>
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     Paul Moore <paul@paul-moore.com>, James Carter <jwcart2@gmail.com>,
+        SElinux list <selinux@vger.kernel.org>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Daniel Walsh <dwalsh@redhat.com>,
+        Zdenek Pytela <zpytela@redhat.com>
+Subject: Re: virtiofs and its optional xattr support vs. fs_use_xattr
+Message-ID: <20201210221753.GB185111@redhat.com>
+References: <CAFqZXNsGabHBfV36nNAVLJgEzjkBev-O3YZ1vnmXyVoaDdjiHQ@mail.gmail.com>
+ <CAP+JOzSWW6HFtN1VSyvKacKeZdtRkBo7TWR7JS4a0ewiopuKww@mail.gmail.com>
+ <CAHC9VhSYt86rQJGg9JFD1ubL4N3PNmLg02sACOvRNHr94=41dg@mail.gmail.com>
+ <CAP+JOzQ-s9ASgqFt7HVyY1R7JKQ85Ee-=iou0C5xRRvaSZo52Q@mail.gmail.com>
+ <CAHC9VhQkSA5VteHfu8TyBp7wqDspoLCOP+sB7vaV4XCQ8vwBeA@mail.gmail.com>
+ <CAFqZXNsfomoMTr+uhisdsj75c7ZdXmGCiDZBsDwtLUpkwEA76w@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20201209194212.5131-2-tusharsu@linux.microsoft.com>
+In-Reply-To: <CAFqZXNsfomoMTr+uhisdsj75c7ZdXmGCiDZBsDwtLUpkwEA76w@mail.gmail.com>
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2020-12-09 11:42:05, Tushar Sugandhi wrote:
-> IMA functions such as ima_match_keyring(), process_buffer_measurement(),
-> ima_match_policy() etc. handle data specific to keyrings. Currently,
-> these constructs are not generic to handle any func specific data.
-> This makes it harder to extend them without code duplication.
+On Thu, Dec 10, 2020 at 10:29:02AM +0100, Ondrej Mosnacek wrote:
+> On Thu, Dec 10, 2020 at 3:40 AM Paul Moore <paul@paul-moore.com> wrote:
+> > On Wed, Dec 9, 2020 at 10:37 AM James Carter <jwcart2@gmail.com> wrote:
+> > > On Tue, Dec 8, 2020 at 6:45 PM Paul Moore <paul@paul-moore.com> wrote:
+> > > > On Mon, Dec 7, 2020 at 12:17 PM James Carter <jwcart2@gmail.com> wrote:
+> > > > > On Mon, Dec 7, 2020 at 9:45 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> > > > > >
+> > > > > > Hi everyone,
+> > > > > >
+> > > > > > In [1] we ran into a problem with the current handling of filesystem
+> > > > > > labeling rules. Basically, it is only possible to specify either
+> > > > > > genfscon or fs_use_xattr for a given filesystem, but in the case of
+> > > > > > virtiofs, certain mounts may support security xattrs, while other ones
+> > > > > > may not.
+> > > > > >
+> > > > > > So we can't use the xattr support by adding fs_use_xattr virtiofs
+> > > > > > (...); to the policy, because then a non-xattr mount will fail
+> > > > > > (SELinux does a mount-time check on the root inode to make sure that
+> > > > > > the xattr handler works), but we also don't want to stay on genfscon,
+> > > > > > because then we can't relabel files.
+> > > > > >
+> > > > > > So my question is how to best address this? One option is to use a
+> > > > > > similar "hack" as for cgroupfs; i.e. do a kind of mixed genfs-xattr
+> > > > > > labeling, but that's ugly and requires hard-coding another FS name in
+> > > > > > the selinux code. The only other alternative I could come up with is
+> > > > > > to add a new FS labeling statement that would specify some kind of
+> > > > > > mixed genfscon / fs_use_xattr behavior. That would be a better
+> > > > > > long-term solution, but leads to more questions on how such statement
+> > > > > > should actually work... Should it work the cgroupfs way, giving a
+> > > > > > default label to everything and allowing to set/change labels via
+> > > > > > xattrs? Or should it rather just detect xattrs support and switch
+> > > > > > between SECURITY_FS_USE_XATTR and SECURITY_FS_USE_GENFS behavior based
+> > > > > > on that? In the latter case, should the statement specify two contexts
+> > > > > > (one for fs_use_xattr and another one for genfscon) or just one for
+> > > > > > both behaviors?
+> > > > >
+> > > > > I don't think adding a new statement is necessary. It seems like
+> > > > > allowing both fs_use_xattr and genfscon rules for the filesystem in
+> > > > > policy and then using the fs_use_xattr rule if xattrs are supported
+> > > > > while falling back to the genfscon rule if they are not would do what
+> > > > > you need.
+> > > >
+> > > > That seems reasonable to me so long as this ambiguity is okay with the
+> > > > folks who do policy analysis.  Thinking quickly I'm not sure why it
+> > > > would be a problem, but the thought did occur while I was typing up
+> > > > this reply ...
+> > >
+> > > I don't think that it would cause a problem with policy analysis. I
+> > > think that you would just assume the genfscon rule is being used,
+> > > since it is less fine-grained. It wouldn't be much different from how
+> > > booleans are handled.
+> >
+> > Makes sense to me.  Thanks Jim.
 > 
-> Refactor the keyring specific measurement constructs to be generic and
-> reusable in other measurement scenarios.
-> 
-> Signed-off-by: Tushar Sugandhi <tusharsu@linux.microsoft.com>
+> Okay, so I'll look into switching between use_xattr and use_genfs
+> based on the availability of xattr support and the presence of
+> corresponding rules in the policy. Thanks everyone for the fruitful
+> discussion!
 
-I've got a few code cleanup suggestions to ima_match_rule_data() below
-but the current patch is fine:
+Hi Ondrej,
 
-Reviewed-by: Tyler Hicks <tyhicks@linux.microsoft.com>
+So this is now purely a policy change and no changes required in kernel?
+If yes, then the patch Dan Walsh proposed, is that good enough or
+it needs to be done in a different way.
 
-> ---
->  security/integrity/ima/ima.h        |  6 ++--
->  security/integrity/ima/ima_api.c    |  6 ++--
->  security/integrity/ima/ima_main.c   |  6 ++--
->  security/integrity/ima/ima_policy.c | 49 ++++++++++++++++++-----------
->  4 files changed, 40 insertions(+), 27 deletions(-)
-> 
-> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-> index 8e8b1e3cb847..e5622ce8cbb1 100644
-> --- a/security/integrity/ima/ima.h
-> +++ b/security/integrity/ima/ima.h
-> @@ -256,7 +256,7 @@ static inline void ima_process_queued_keys(void) {}
->  int ima_get_action(struct inode *inode, const struct cred *cred, u32 secid,
->  		   int mask, enum ima_hooks func, int *pcr,
->  		   struct ima_template_desc **template_desc,
-> -		   const char *keyring);
-> +		   const char *func_data);
->  int ima_must_measure(struct inode *inode, int mask, enum ima_hooks func);
->  int ima_collect_measurement(struct integrity_iint_cache *iint,
->  			    struct file *file, void *buf, loff_t size,
-> @@ -268,7 +268,7 @@ void ima_store_measurement(struct integrity_iint_cache *iint, struct file *file,
->  			   struct ima_template_desc *template_desc);
->  void process_buffer_measurement(struct inode *inode, const void *buf, int size,
->  				const char *eventname, enum ima_hooks func,
-> -				int pcr, const char *keyring);
-> +				int pcr, const char *func_data);
->  void ima_audit_measurement(struct integrity_iint_cache *iint,
->  			   const unsigned char *filename);
->  int ima_alloc_init_template(struct ima_event_data *event_data,
-> @@ -284,7 +284,7 @@ const char *ima_d_path(const struct path *path, char **pathbuf, char *filename);
->  int ima_match_policy(struct inode *inode, const struct cred *cred, u32 secid,
->  		     enum ima_hooks func, int mask, int flags, int *pcr,
->  		     struct ima_template_desc **template_desc,
-> -		     const char *keyring);
-> +		     const char *func_data);
->  void ima_init_policy(void);
->  void ima_update_policy(void);
->  void ima_update_policy_flag(void);
-> diff --git a/security/integrity/ima/ima_api.c b/security/integrity/ima/ima_api.c
-> index 4f39fb93f278..af218babd198 100644
-> --- a/security/integrity/ima/ima_api.c
-> +++ b/security/integrity/ima/ima_api.c
-> @@ -170,7 +170,7 @@ void ima_add_violation(struct file *file, const unsigned char *filename,
->   * @func: caller identifier
->   * @pcr: pointer filled in if matched measure policy sets pcr=
->   * @template_desc: pointer filled in if matched measure policy sets template=
-> - * @keyring: keyring name used to determine the action
-> + * @func_data: private data specific to @func, can be NULL.
->   *
->   * The policy is defined in terms of keypairs:
->   *		subj=, obj=, type=, func=, mask=, fsmagic=
-> @@ -186,14 +186,14 @@ void ima_add_violation(struct file *file, const unsigned char *filename,
->  int ima_get_action(struct inode *inode, const struct cred *cred, u32 secid,
->  		   int mask, enum ima_hooks func, int *pcr,
->  		   struct ima_template_desc **template_desc,
-> -		   const char *keyring)
-> +		   const char *func_data)
->  {
->  	int flags = IMA_MEASURE | IMA_AUDIT | IMA_APPRAISE | IMA_HASH;
->  
->  	flags &= ima_policy_flag;
->  
->  	return ima_match_policy(inode, cred, secid, func, mask, flags, pcr,
-> -				template_desc, keyring);
-> +				template_desc, func_data);
->  }
->  
->  /*
-> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
-> index 68956e884403..e76ef4bfd0f4 100644
-> --- a/security/integrity/ima/ima_main.c
-> +++ b/security/integrity/ima/ima_main.c
-> @@ -786,13 +786,13 @@ int ima_post_load_data(char *buf, loff_t size,
->   * @eventname: event name to be used for the buffer entry.
->   * @func: IMA hook
->   * @pcr: pcr to extend the measurement
-> - * @keyring: keyring name to determine the action to be performed
-> + * @func_data: private data specific to @func, can be NULL.
->   *
->   * Based on policy, the buffer is measured into the ima log.
->   */
->  void process_buffer_measurement(struct inode *inode, const void *buf, int size,
->  				const char *eventname, enum ima_hooks func,
-> -				int pcr, const char *keyring)
-> +				int pcr, const char *func_data)
->  {
->  	int ret = 0;
->  	const char *audit_cause = "ENOMEM";
-> @@ -831,7 +831,7 @@ void process_buffer_measurement(struct inode *inode, const void *buf, int size,
->  	if (func) {
->  		security_task_getsecid(current, &secid);
->  		action = ima_get_action(inode, current_cred(), secid, 0, func,
-> -					&pcr, &template, keyring);
-> +					&pcr, &template, func_data);
->  		if (!(action & IMA_MEASURE))
->  			return;
->  	}
-> diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-> index 823a0c1379cb..25419c7ff50b 100644
-> --- a/security/integrity/ima/ima_policy.c
-> +++ b/security/integrity/ima/ima_policy.c
-> @@ -453,30 +453,44 @@ int ima_lsm_policy_change(struct notifier_block *nb, unsigned long event,
->  }
->  
->  /**
-> - * ima_match_keyring - determine whether the keyring matches the measure rule
-> - * @rule: a pointer to a rule
-> - * @keyring: name of the keyring to match against the measure rule
-> + * ima_match_rule_data - determine whether the given func_data matches
-> + *			 the measure rule data
-> + * @rule: IMA policy rule
-> + * @func_data: data to match against the measure rule data
->   * @cred: a pointer to a credentials structure for user validation
->   *
-> - * Returns true if keyring matches one in the rule, false otherwise.
-> + * Returns true if func_data matches one in the rule, false otherwise.
->   */
-> -static bool ima_match_keyring(struct ima_rule_entry *rule,
-> -			      const char *keyring, const struct cred *cred)
-> +static bool ima_match_rule_data(struct ima_rule_entry *rule,
-> +				const char *func_data,
-> +				const struct cred *cred)
->  {
-> +	const struct ima_rule_opt_list *opt_list = NULL;
->  	bool matched = false;
->  	size_t i;
->  
->  	if ((rule->flags & IMA_UID) && !rule->uid_op(cred->uid, rule->uid))
->  		return false;
->  
-> -	if (!rule->keyrings)
-> -		return true;
-> +	switch (rule->func) {
-> +	case KEY_CHECK:
-> +		if (!rule->keyrings)
-> +			return true;
-> +		else
-> +			opt_list = rule->keyrings;
+Thanks
+Vivek
 
-You return if rule->keyrings is NULL so drop this else and simply make
-the opt_list assignment.
-
-> +		break;
-> +	default:
-> +		break;
-
-I would like to see the 'return false;' happen immediately here instead
-of waiting for the opt_list check below.
-
-> +	}
->  
-> -	if (!keyring)
-> +	if (!func_data)
-> +		return false;
-> +
-> +	if (!opt_list)
->  		return false;
-
-If you return false in the 'default:' case above, you can just remove this
-entire conditional because you'll be assigning opt_list in all of the
-valid cases of the switch statement.
-
-Tyler
-
->  
-> -	for (i = 0; i < rule->keyrings->count; i++) {
-> -		if (!strcmp(rule->keyrings->items[i], keyring)) {
-> +	for (i = 0; i < opt_list->count; i++) {
-> +		if (!strcmp(opt_list->items[i], func_data)) {
->  			matched = true;
->  			break;
->  		}
-> @@ -493,20 +507,20 @@ static bool ima_match_keyring(struct ima_rule_entry *rule,
->   * @secid: the secid of the task to be validated
->   * @func: LIM hook identifier
->   * @mask: requested action (MAY_READ | MAY_WRITE | MAY_APPEND | MAY_EXEC)
-> - * @keyring: keyring name to check in policy for KEY_CHECK func
-> + * @func_data: private data specific to @func, can be NULL.
->   *
->   * Returns true on rule match, false on failure.
->   */
->  static bool ima_match_rules(struct ima_rule_entry *rule, struct inode *inode,
->  			    const struct cred *cred, u32 secid,
->  			    enum ima_hooks func, int mask,
-> -			    const char *keyring)
-> +			    const char *func_data)
->  {
->  	int i;
->  
->  	if (func == KEY_CHECK) {
->  		return (rule->flags & IMA_FUNC) && (rule->func == func) &&
-> -		       ima_match_keyring(rule, keyring, cred);
-> +			ima_match_rule_data(rule, func_data, cred);
->  	}
->  	if ((rule->flags & IMA_FUNC) &&
->  	    (rule->func != func && func != POST_SETATTR))
-> @@ -610,8 +624,7 @@ static int get_subaction(struct ima_rule_entry *rule, enum ima_hooks func)
->   * @mask: requested action (MAY_READ | MAY_WRITE | MAY_APPEND | MAY_EXEC)
->   * @pcr: set the pcr to extend
->   * @template_desc: the template that should be used for this rule
-> - * @keyring: the keyring name, if given, to be used to check in the policy.
-> - *           keyring can be NULL if func is anything other than KEY_CHECK.
-> + * @func_data: private data specific to @func, can be NULL.
->   *
->   * Measure decision based on func/mask/fsmagic and LSM(subj/obj/type)
->   * conditions.
-> @@ -623,7 +636,7 @@ static int get_subaction(struct ima_rule_entry *rule, enum ima_hooks func)
->  int ima_match_policy(struct inode *inode, const struct cred *cred, u32 secid,
->  		     enum ima_hooks func, int mask, int flags, int *pcr,
->  		     struct ima_template_desc **template_desc,
-> -		     const char *keyring)
-> +		     const char *func_data)
->  {
->  	struct ima_rule_entry *entry;
->  	int action = 0, actmask = flags | (flags << 1);
-> @@ -638,7 +651,7 @@ int ima_match_policy(struct inode *inode, const struct cred *cred, u32 secid,
->  			continue;
->  
->  		if (!ima_match_rules(entry, inode, cred, secid, func, mask,
-> -				     keyring))
-> +				     func_data))
->  			continue;
->  
->  		action |= entry->flags & IMA_ACTION_FLAGS;
-> -- 
-> 2.17.1
-> 

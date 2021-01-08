@@ -2,143 +2,192 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C822EF829
-	for <lists+selinux@lfdr.de>; Fri,  8 Jan 2021 20:32:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC2A72EF84A
+	for <lists+selinux@lfdr.de>; Fri,  8 Jan 2021 20:40:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728893AbhAHTcJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 8 Jan 2021 14:32:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45572 "EHLO
+        id S1728850AbhAHTkU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 8 Jan 2021 14:40:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728656AbhAHTcJ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 8 Jan 2021 14:32:09 -0500
-Received: from mail-ot1-x32d.google.com (mail-ot1-x32d.google.com [IPv6:2607:f8b0:4864:20::32d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40B3EC061380
-        for <selinux@vger.kernel.org>; Fri,  8 Jan 2021 11:31:29 -0800 (PST)
-Received: by mail-ot1-x32d.google.com with SMTP id j12so10731269ota.7
-        for <selinux@vger.kernel.org>; Fri, 08 Jan 2021 11:31:29 -0800 (PST)
+        with ESMTP id S1728823AbhAHTkU (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 8 Jan 2021 14:40:20 -0500
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7C8BC061381;
+        Fri,  8 Jan 2021 11:39:39 -0800 (PST)
+Received: by mail-lf1-x133.google.com with SMTP id h205so25644560lfd.5;
+        Fri, 08 Jan 2021 11:39:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=J7tvswjNTHDLonxMreMe3dNcvasYdY8wDq9+iEtOlbs=;
-        b=MLQENEwZbp24V8Ilopnt2xUYAVyFMnaOjx6St7HrQAJHCifekhHgfXUfWyZ5frVOcQ
-         hMdPjJjhoEnL25ZQNEcngp/401++KanVB2ms3QA5O/8CTiHZM1juJJ1YBQUoC5gDg/X9
-         QyiKk3W+qhINFY1S6eInBS1bmIJhFXF7kdZ60ihQKjh0cUYpb7MQJOzj6LneICESW8nP
-         l38L52uKCjoOVwIQEKN+g6gNqgKxjbaxpEAOBlD1MTy9TZj10keV5/vSGC2IuGchS7AM
-         7BAQbBYgF1lBgr8PzQsfCb0iGBDHlJhQLcNTmwblRchhr3B0p5Ply6r3J9TRWQL2VEDE
-         l13A==
+        bh=lRRuQiPCIIeRicvu+E7yQv5jDQB4era/dfVIHrx38PY=;
+        b=DDK07p/ZKmZovcAoUiUjhPZ9+WCGC807tO2pvPWlhUi9UtECGHDga2OUiQLvFRW6m1
+         CL7YpLNNsh3TSClAeQ/dcSMdqb7lPU03rY1tDf2yHm+w0ax3yV318Yy5oPz3DyHPicTI
+         vmAGuZP3ws04WKr1+0mzPdwnygTMRJx0+iB6AAiBfXZc15OrNwotlxr94ltS3El5Ph1R
+         5WYgAdo103laqbvVr/QRVJacC46ys3XZ59rB6XDiSWFlvy8CFIN7IpE4eHnbipMfAj4j
+         9YLrGXSg4oVXIGeWUrPWGEnZJXsHYmpMQZxKHYjAY2W5nH/ttP52YDraR9DHsNuOMRyg
+         ykbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=J7tvswjNTHDLonxMreMe3dNcvasYdY8wDq9+iEtOlbs=;
-        b=NTdD/vqPaGQDk4pcg3SZvsJelw4k6XIZFwChgbugMZoQ63Ts72mEVcv0Ry/laiYKYm
-         Umlr3+AFYS8dBXy+5N2p8pLm0STFHFZpYo7bxotF45BEoRCIiCRHvhEYwtuTo7bjzl7h
-         ygZHYyQ6a3nH1TjWi2xesMe5Cp2oObj7AighWdKpYVzxYr3+WJJO+WPbB5qGmKKldF4r
-         H3mXE8pvAuSyIOCjbQuCKTZ25SOhJkBnwP52ijrCIyrY4cfWkr877jPbY0I/m8ru3Yj/
-         evZPBlVkEsiskZmHhbbT0/ZI5izJLiGKoQ1dDBR9VSO4KBFFP/8+KTQiW/MZb/kk9e7y
-         HhXA==
-X-Gm-Message-State: AOAM531GbzofisuoD7mv4dYkjKOqzKzxwr9pZgUWLm2ZhSV4rhDzrCgt
-        BbdfBlPLwR+XfyrNJJeZ7x0CTnljoI64EOS/TOE=
-X-Google-Smtp-Source: ABdhPJwsPW5XydHm9yozltgtWR6pavlguE03CDXT+Z2L/CbPkbGn3B/HaI836h44qPzJRAHVRpGprLcsaJdovHP9prg=
-X-Received: by 2002:a9d:27a7:: with SMTP id c36mr3658617otb.59.1610134288549;
- Fri, 08 Jan 2021 11:31:28 -0800 (PST)
+        bh=lRRuQiPCIIeRicvu+E7yQv5jDQB4era/dfVIHrx38PY=;
+        b=ZhIR0Oh2KDcSKN9sjDRGrFvTbTp4ISpFG6cm3D6DrokHQGTFwcgWQYvjKEZfAUniXx
+         /u4nibnr3VpSpvoLnhyqdSqLLFOdZjclucc+2KoQV4ybfWo/iFbCzx/+Cz9mSZiAJuoO
+         EuE0ewc8hd8McxWvVWjBNRE9DEDrf/oRZ5NUb2YQaTjhkzYI6OwaFV6riUObBEPrPVnk
+         HAEI+hHNtwZsEBxznB3MKArbhyrfifmut7utUTjHeIxCPV2uNmN+Raeusm8cYtJaVJFW
+         w0aWMqHIkK9c6TK1QeZZbs4uhC75oHuxaourNGOI8rKev4pSu5f7skpjB0h7oN9n9uvN
+         HNCA==
+X-Gm-Message-State: AOAM530B0inqi06mPJ2jRMoLfcntEE14efkpToEPpE8BVFwncKu9yhQ2
+        pXj80omPGaDfey3wUKqbIekOsd+C1OGTdt83t8I=
+X-Google-Smtp-Source: ABdhPJzp+tchs1WxNnpCyQKdVwlmdW4339VLO6VpJKuxPGqACDJSvoyrCRLpOfnZNEuPynu3i6RydgSvS62GOLzl5A8=
+X-Received: by 2002:a2e:b949:: with SMTP id 9mr2033333ljs.376.1610134778285;
+ Fri, 08 Jan 2021 11:39:38 -0800 (PST)
 MIME-Version: 1.0
-References: <20210106081319.379572-1-nicolas.iooss@m4x.org>
-In-Reply-To: <20210106081319.379572-1-nicolas.iooss@m4x.org>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Fri, 8 Jan 2021 14:35:51 -0500
-Message-ID: <CAP+JOzQ_UcpR-LHaed+DAAhAL9VeCpg9aG=DEo+y4s-cwvMb5g@mail.gmail.com>
-Subject: Re: [PATCH v2] libsepol/cil: fix NULL pointer dereference when
- parsing an improper integer
-To:     Nicolas Iooss <nicolas.iooss@m4x.org>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        William Roberts <bill.c.roberts@gmail.com>
+References: <20210108053259.726613-1-lokeshgidra@google.com> <20210108053259.726613-4-lokeshgidra@google.com>
+In-Reply-To: <20210108053259.726613-4-lokeshgidra@google.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Fri, 8 Jan 2021 14:39:26 -0500
+Message-ID: <CAEjxPJ5Z8X02J-qvETuhDSHqgnORYiG=dmsTPGYfYtyusdRz1A@mail.gmail.com>
+Subject: Re: [PATCH v14 3/4] selinux: teach SELinux about anonymous inodes
+To:     Lokesh Gidra <lokeshgidra@google.com>
+Cc:     Andrea Arcangeli <aarcange@redhat.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        James Morris <jmorris@namei.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Paul Moore <paul@paul-moore.com>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Daniel Colascione <dancol@dancol.org>,
+        Kees Cook <keescook@chromium.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        KP Singh <kpsingh@google.com>,
+        David Howells <dhowells@redhat.com>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Matthew Garrett <matthewgarrett@google.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Adrian Reber <areber@redhat.com>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        SElinux list <selinux@vger.kernel.org>, kaleshsingh@google.com,
+        Calin Juravle <calin@google.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Jeffrey Vander Stoep <jeffv@google.com>,
+        kernel-team@android.com, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jan 6, 2021 at 3:13 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+On Fri, Jan 8, 2021 at 12:33 AM Lokesh Gidra <lokeshgidra@google.com> wrote:
 >
-> OSS-Fuzz found a NULL pointer dereference when the CIL compiler tries to
-> compile a policy with an invalid integer:
+> From: Daniel Colascione <dancol@google.com>
 >
->     $ echo '(ioportcon(2())n)' > tmp.cil
->     $ secilc tmp.cil
->     Segmentation fault (core dumped)
+> This change uses the anon_inodes and LSM infrastructure introduced in
+> the previous patches to give SELinux the ability to control
+> anonymous-inode files that are created using the new
+> anon_inode_getfd_secure() function.
 >
-> This is because strtol() is called with a NULL pointer, in
-> cil_fill_integer().
+> A SELinux policy author detects and controls these anonymous inodes by
+> adding a name-based type_transition rule that assigns a new security
+> type to anonymous-inode files created in some domain. The name used
+> for the name-based transition is the name associated with the
+> anonymous inode for file listings --- e.g., "[userfaultfd]" or
+> "[perf_event]".
 >
-> Fix this by checking that int_node->data is not NULL. While at it, use
-> strtoul() instead of strtol() to parse an unsigned integer.
+> Example:
 >
-> When using "val > UINT32_MAX" with "unsigned long val;", it is expected
-> that some compilers emit a warning when the size of "unsigned long" is
-> 32 bits. In theory gcc could be such a compiler (with warning
-> -Wtype-limits, which is included in -Wextra). Nevertheless this is
-> currently broken, according to
-> https://gcc.gnu.org/pipermail/gcc-help/2021-January/139755.html and
-> https://gcc.gnu.org/bugzilla/show_bug.cgi?id=89126 (this bug was
-> opened in January 2019).
+> type uffd_t;
+> type_transition sysadm_t sysadm_t : anon_inode uffd_t "[userfaultfd]";
+> allow sysadm_t uffd_t:anon_inode { create };
 >
-> In order to prevent this warning from appearing, introduce some
-> preprocessor macros around the bound check.
+> (The next patch in this series is necessary for making userfaultfd
+> support this new interface.  The example above is just
+> for exposition.)
 >
-> Fixes: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=28456
-> Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
-
-Acked-by: James Carter <jwcart2@gmail.com>
-
+> Signed-off-by: Daniel Colascione <dancol@google.com>
+> Signed-off-by: Lokesh Gidra <lokeshgidra@google.com>
 > ---
->  libsepol/cil/src/cil_build_ast.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
+>  security/selinux/hooks.c            | 59 +++++++++++++++++++++++++++++
+>  security/selinux/include/classmap.h |  2 +
+>  2 files changed, 61 insertions(+)
 >
-> diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-> index be10d61b1314..02481558ad11 100644
-> --- a/libsepol/cil/src/cil_build_ast.c
-> +++ b/libsepol/cil/src/cil_build_ast.c
-> @@ -5570,19 +5570,27 @@ int cil_fill_integer(struct cil_tree_node *int_node, uint32_t *integer, int base
->  {
->         int rc = SEPOL_ERR;
->         char *endptr = NULL;
-> -       int val;
-> +       unsigned long val;
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 644b17ec9e63..8b4e155b2930 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2934,6 +2933,63 @@ static int selinux_inode_init_security(struct inode *inode, struct inode *dir,
+>         return 0;
+>  }
 >
-> -       if (int_node == NULL || integer == NULL) {
-> +       if (int_node == NULL || int_node->data == NULL || integer == NULL) {
->                 goto exit;
->         }
->
->         errno = 0;
-> -       val = strtol(int_node->data, &endptr, base);
-> +       val = strtoul(int_node->data, &endptr, base);
->         if (errno != 0 || endptr == int_node->data || *endptr != '\0') {
->                 rc = SEPOL_ERR;
->                 goto exit;
->         }
->
-> +       /* Ensure that the value fits a 32-bit integer without triggering -Wtype-limits */
-> +#if ULONG_MAX > UINT32_MAX
-> +       if (val > UINT32_MAX) {
-> +               rc = SEPOL_ERR;
-> +               goto exit;
-> +       }
-> +#endif
+> +static int selinux_inode_init_security_anon(struct inode *inode,
+> +                                           const struct qstr *name,
+> +                                           const struct inode *context_inode)
+> +{
+> +       const struct task_security_struct *tsec = selinux_cred(current_cred());
+> +       struct common_audit_data ad;
+> +       struct inode_security_struct *isec;
+> +       int rc;
 > +
->         *integer = val;
->
->         return SEPOL_OK;
-> @@ -5598,7 +5606,7 @@ int cil_fill_integer64(struct cil_tree_node *int_node, uint64_t *integer, int ba
->         char *endptr = NULL;
->         uint64_t val;
->
-> -       if (int_node == NULL || integer == NULL) {
-> +       if (int_node == NULL || int_node->data == NULL || integer == NULL) {
->                 goto exit;
->         }
->
-> --
-> 2.30.0
->
+> +       if (unlikely(!selinux_initialized(&selinux_state)))
+> +               return 0;
+> +
+> +       isec = selinux_inode(inode);
+> +
+> +       /*
+> +        * We only get here once per ephemeral inode.  The inode has
+> +        * been initialized via inode_alloc_security but is otherwise
+> +        * untouched.
+> +        */
+> +       isec->initialized = LABEL_INITIALIZED;
+> +       isec->sclass = SECCLASS_ANON_INODE;
+> +
+> +       if (context_inode) {
+> +               struct inode_security_struct *context_isec =
+> +                       selinux_inode(context_inode);
+> +               if (context_isec->initialized != LABEL_INITIALIZED)
+> +                       return -EACCES;
+> +               if (context_isec->sclass != SECCLASS_ANON_INODE) {
+> +                       pr_err("SELinux:  initializing anonymous inode with non-anonymous inode");
+> +                       return -EACCES;
+> +               }
+
+This would preclude using this facility for anonymous inodes created
+by kvm and other use cases.
+Don't do this.
+
+> +
+> +               isec->sid = context_isec->sid;
+> +       } else {
+> +               rc = security_transition_sid(
+> +                       &selinux_state, tsec->sid, tsec->sid,
+> +                       isec->sclass, name, &isec->sid);
+> +               if (rc)
+> +                       return rc;
+> +       }
+> +
+> +       /*
+> +        * Now that we've initialized security, check whether we're
+> +        * allowed to actually create this type of anonymous inode.
+> +        */
+> +
+> +       ad.type = LSM_AUDIT_DATA_INODE;
+> +       ad.u.inode = inode;
+> +
+> +       return avc_has_perm(&selinux_state,
+> +                           tsec->sid,
+> +                           isec->sid,
+> +                           isec->sclass,
+> +                           ANON_INODE__CREATE,
+
+FILE__CREATE is perfectly appropriate here, not that it makes any difference.

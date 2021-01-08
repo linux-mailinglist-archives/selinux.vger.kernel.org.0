@@ -2,179 +2,64 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 61E352EF020
-	for <lists+selinux@lfdr.de>; Fri,  8 Jan 2021 10:53:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 108732EF296
+	for <lists+selinux@lfdr.de>; Fri,  8 Jan 2021 13:36:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728301AbhAHJxB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 8 Jan 2021 04:53:01 -0500
-Received: from so254-31.mailgun.net ([198.61.254.31]:22319 "EHLO
-        so254-31.mailgun.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727566AbhAHJxA (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 8 Jan 2021 04:53:00 -0500
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1610099554; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=TwVrvVK1OzG/lArxagrlCuTmDgJ2ODUQJRFSPWgtUOk=; b=j2UcN/8uNh1hpG8UJPAXxbUEOF3mdXUqcamkhx3eEngMo9dA4inqyaXFabAGURPYMhRMKOIW
- uB2g1DYGFznqz3PyMH7g1kqSms998DtwTFTwGqsBm31vOyD5qT7QaPa45f0YgT5rMipfHlVK
- pjAlTAV/Th/atfXB8m01pJ1Vs+o=
-X-Mailgun-Sending-Ip: 198.61.254.31
-X-Mailgun-Sid: WyIxZmM3MiIsICJzZWxpbnV4QHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n08.prod.us-east-1.postgun.com with SMTP id
- 5ff82b43d092322d9e7779ed (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Fri, 08 Jan 2021 09:52:03
- GMT
-Sender: pnagar=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id A2CC0C43468; Fri,  8 Jan 2021 09:52:02 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from pnagar-linux.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: pnagar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id C6A8EC433C6;
-        Fri,  8 Jan 2021 09:51:56 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org C6A8EC433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pnagar@codeaurora.org
-From:   Preeti Nagar <pnagar@codeaurora.org>
-To:     arnd@arndb.de, jmorris@namei.org, serge@hallyn.com,
-        paul@paul-moore.com, stephen.smalley.work@gmail.com,
-        eparis@parisplace.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org, linux-arch@vger.kernel.org
-Cc:     psodagud@codeaurora.org, nmardana@codeaurora.org,
-        dsule@codeaurora.org, pnagar@codeaurora.org,
-        Joe Perches <joe@perches.com>, Miguel Ojeda <ojeda@kernel.org>,
-        Nick Desaulniers <ndesaulniers@gooogle.com>,
-        linux-kernel@vger.kernel.org
-Subject: [RFC PATCH v2] selinux: security: Move selinux_state to a separate page
-Date:   Fri,  8 Jan 2021 15:19:47 +0530
-Message-Id: <1610099389-28329-1-git-send-email-pnagar@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        id S1726133AbhAHMfz (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 8 Jan 2021 07:35:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37270 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725816AbhAHMfz (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 8 Jan 2021 07:35:55 -0500
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81989C0612F5
+        for <selinux@vger.kernel.org>; Fri,  8 Jan 2021 04:35:14 -0800 (PST)
+Received: by mail-lf1-x132.google.com with SMTP id h205so22560001lfd.5
+        for <selinux@vger.kernel.org>; Fri, 08 Jan 2021 04:35:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:sender:in-reply-to:references:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
+        b=ht72jnqziCz6YTSdOk+2+MIO6kBfwjWj3xIweyH1sy2x79BNdpifj4Z4vM1MhSJKna
+         UfFeNxelDd5Xqa58ZNffUnmnG6sHLElfRLg4Z+RPDV+AHp4pN9F7L10TRlrHFujfw1aO
+         G49KFhAIMf4qWlCWSfngqrVcbhGwv3nTwxhLNxx5EsdUfNoUu+OV+00yPsmitbHdj3eH
+         e4xfcvY347F1a3M/ffMM8Bu1K37DesOByOTOvlR4OzJ777jytZbnwOZc2UDMYUFrf7Zq
+         FEvVMY6GhIOKUgAb+bZZpn+5BkwTOpRw9KDCYJiuCeMbavotYWFN2AgSc/qCznEvlnvu
+         ShPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:from
+         :date:message-id:subject:to:content-transfer-encoding;
+        bh=ik6B+6lkNc+iFrIPLOlH6nyfA0JsJ4cRGzVhof+Ll8w=;
+        b=IxPvNPH5G2mbnMscJQp8LInDVvxpn28U1cE1bhtlYpztDb13lY6u/a0cQzR8Z4OZRD
+         Tp6YPfvxtH7XPPuL6braQ6Tu8B9KAZpI0bwIqgqkB4Ceo8j8HxaKgrpjtIEeczU1YzD/
+         jLcgNhxpLr3oEbOB9yM6fSTb9N9cTaMVd+yiVqzX5tpxzCycgJKBQ4PkuRV7jTDlDQc7
+         4gNBQfSoSaxJyBiYaSMFH83pixUnFtSUX9aEeclMsVX6DW1zM0kpbwMvQgC4GfjdwOgb
+         jCDj/F3PUXYEyu+LLRitpg6rS6lF/tPhBXzFwlCxW34hwVfIosbcGqaYGMWobg/3p3W+
+         Vc5A==
+X-Gm-Message-State: AOAM5311L4/J9RNUkOA2ZzOoH7U+umH7w8u2nrlGNH1bcqOhz0XUufRq
+        nTrALVeT4ktEBZFOC57WZt6/j3beZC0Lhu2ials=
+X-Google-Smtp-Source: ABdhPJzMVQ2seusTniSJWVqpO9AzSf9lT2HpeW7zBJ5fgpg4IT/uHdNu0WAyvUaGD89RL3ifT8dURU6VYz3MzEB/Q3k=
+X-Received: by 2002:a2e:8e62:: with SMTP id t2mr1506251ljk.463.1610109313070;
+ Fri, 08 Jan 2021 04:35:13 -0800 (PST)
+MIME-Version: 1.0
+Sender: messanhdekpo@gmail.com
+Received: by 2002:ab3:4a0c:0:0:0:0:0 with HTTP; Fri, 8 Jan 2021 04:35:12 -0800 (PST)
+In-Reply-To: <CAGayJq1i3hL7Z2DXSxH7_ZPLfOkLsBCrk_2STC5QEvWWuzRx7w@mail.gmail.com>
+References: <CAGayJq1i3hL7Z2DXSxH7_ZPLfOkLsBCrk_2STC5QEvWWuzRx7w@mail.gmail.com>
+From:   camille <camillejackson021@gmail.com>
+Date:   Fri, 8 Jan 2021 12:35:12 +0000
+X-Google-Sender-Auth: UZMXzI1mWnnHezrNV_agR8ziBr4
+Message-ID: <CAGayJq0Nv3=fK77CkD7309VKrJU8QeAXfpSuQDz_vNY=mUei+g@mail.gmail.com>
+Subject: =?UTF-8?B?0JfQtNGA0LDQstGB0YLQstGD0LnRgtC1LA==?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The changes introduce a new security feature, RunTime Integrity Check
-(RTIC), designed to protect Linux Kernel at runtime. The motivation
-behind these changes is:
-1. The system protection offered by SE for Android relies on the
-assumption of kernel integrity. If the kernel itself is compromised (by
-a perhaps as yet unknown future vulnerability), SE for Android security
-mechanisms could potentially be disabled and rendered ineffective.
-2. Qualcomm Snapdragon devices use Secure Boot, which adds cryptographic
-checks to each stage of the boot-up process, to assert the authenticity
-of all secure software images that the device executes.  However, due to
-various vulnerabilities in SW modules, the integrity of the system can be
-compromised at any time after device boot-up, leading to un-authorized
-SW executing.
-
-The feature's idea is to move some sensitive kernel structures to a
-separate page and monitor further any unauthorized changes to these,
-from higher Exception Levels using stage 2 MMU. Moving these to a
-different page will help avoid getting page faults from un-related data.
-Using this mechanism, some sensitive variables of the kernel which are
-initialized after init or are updated rarely can also be protected from
-simple overwrites and attacks trying to modify these.
-
-Currently, the change moves selinux_state structure to a separate page. In
-future we plan to move more security-related kernel assets to this page to
-enhance protection.
-
-We want to seek your suggestions and comments on the idea and the changes
-in the patch.
-
-Signed-off-by: Preeti Nagar <pnagar@codeaurora.org>
----
- include/asm-generic/vmlinux.lds.h | 10 ++++++++++
- include/linux/init.h              |  4 ++++
- security/Kconfig                  | 10 ++++++++++
- security/selinux/hooks.c          |  4 ++++
- 4 files changed, 28 insertions(+)
-
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index b2b3d81..158dbc2 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -770,6 +770,15 @@
- 		*(.scommon)						\
- 	}
- 
-+#ifdef CONFIG_SECURITY_RTIC
-+#define RTIC_BSS							\
-+	. = ALIGN(PAGE_SIZE);						\
-+	KEEP(*(.bss.rtic))						\
-+	. = ALIGN(PAGE_SIZE);
-+#else
-+#define RTIC_BSS
-+#endif
-+
- /*
-  * Allow archectures to redefine BSS_FIRST_SECTIONS to add extra
-  * sections to the front of bss.
-@@ -782,6 +791,7 @@
- 	. = ALIGN(bss_align);						\
- 	.bss : AT(ADDR(.bss) - LOAD_OFFSET) {				\
- 		BSS_FIRST_SECTIONS					\
-+		RTIC_BSS						\
- 		. = ALIGN(PAGE_SIZE);					\
- 		*(.bss..page_aligned)					\
- 		. = ALIGN(PAGE_SIZE);					\
-diff --git a/include/linux/init.h b/include/linux/init.h
-index 7b53cb3..617adcf 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -300,6 +300,10 @@ void __init parse_early_options(char *cmdline);
- /* Data marked not to be saved by software suspend */
- #define __nosavedata __section(".data..nosave")
- 
-+#ifdef CONFIG_SECURITY_RTIC
-+#define __rticdata  __section(".bss.rtic")
-+#endif
-+
- #ifdef MODULE
- #define __exit_p(x) x
- #else
-diff --git a/security/Kconfig b/security/Kconfig
-index 7561f6f..66b61b9 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -291,5 +291,15 @@ config LSM
- 
- source "security/Kconfig.hardening"
- 
-+config SECURITY_RTIC
-+        bool "RunTime Integrity Check feature"
-+        help
-+	  RTIC(RunTime Integrity Check) feature is to protect Linux kernel
-+	  at runtime. This relocates some of the security sensitive kernel
-+	  structures to a separate page aligned special section.
-+
-+	  This is to enable monitoring and protection of these kernel assets
-+	  from a higher exception level(EL) against any unauthorized changes.
-+
- endmenu
- 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 6b1826f..7add17c 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -104,7 +104,11 @@
- #include "audit.h"
- #include "avc_ss.h"
- 
-+#ifdef CONFIG_SECURITY_RTIC
-+struct selinux_state selinux_state __rticdata;
-+#else
- struct selinux_state selinux_state;
-+#endif
- 
- /* SECMARK reference count */
- static atomic_t selinux_secmark_refcount = ATOMIC_INIT(0);
--- 
-2.7.4
-
+0J/RgNC40LLQtdGC0YHRgtCy0YPRjiDRgtC10LHRjywg0LzQvtC5INC00YDRg9CzLCDQvdCw0LTQ
+tdGO0YHRjCwg0YLRiyDQsiDQv9C+0YDRj9C00LrQtSwg0L/QvtC20LDQu9GD0LnRgdGC0LAsINC+
+0YLQstC10YLRjCDQvNC90LUNCtCx0LvQsNCz0L7QtNCw0YDRjywNCg==

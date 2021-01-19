@@ -2,82 +2,88 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 92C392FB79D
-	for <lists+selinux@lfdr.de>; Tue, 19 Jan 2021 15:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E380D2FB79F
+	for <lists+selinux@lfdr.de>; Tue, 19 Jan 2021 15:27:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2405233AbhASLMI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 19 Jan 2021 06:12:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48766 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388605AbhASJse (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 19 Jan 2021 04:48:34 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8613C061573;
-        Tue, 19 Jan 2021 01:47:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=KBLdqigwXHa9zb4IKHjzXYIBtipeYgH3IvVF9mKe8Wc=; b=rkMudNvWO66HMSQr1C/riYx6VA
-        ITPbSZKgiBW4KcAtUmJmkUr1dBGlA/LNN3BGZBcxy4D6iuF9UCTZW8+fvX6Fs2HjXaH7Id164/C6p
-        8aX7aQWKUIb43BuHAt825NJDtfHZ03eFtv7j69IJStn2YxsSOCpKR6Ec83TqhIMYX2rT5ua6MVffv
-        dkDjTkT8HY7yNCIjlZIOXXuGVjfTfypwT0jzue7d0zu6Oqjhs9YmICue9ulItMg+VcpccEHVuyhvT
-        Git07uadZsjuEsjKkGCVR9P2D1ctpz0L0F93Xqf5Qcom70CCTkD4H7p/+v1MyKeAUkCnqLSoSIzQN
-        d/kOWGMA==;
-Received: from hch by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
-        id 1l1nc6-00E8cK-3V; Tue, 19 Jan 2021 09:47:50 +0000
-Date:   Tue, 19 Jan 2021 09:47:50 +0000
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@infradead.org>,
-        linux-fsdevel@vger.kernel.org,
-        John Johansen <john.johansen@canonical.com>,
-        James Morris <jmorris@namei.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Mrunal Patel <mpatel@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Theodore Tso <tytso@mit.edu>, Alban Crequy <alban@kinvolk.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Howells <dhowells@redhat.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        St??phane Graber <stgraber@ubuntu.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Lennart Poettering <lennart@poettering.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>, smbarber@chromium.org,
-        Phil Estes <estesp@gmail.com>, Serge Hallyn <serge@hallyn.com>,
-        Kees Cook <keescook@chromium.org>,
-        Todd Kjos <tkjos@google.com>, Paul Moore <paul@paul-moore.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        containers@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        Christoph Hellwig <hch@lst.de>,
-        Mauricio V??squez Bernal <mauricio@kinvolk.io>
-Subject: Re: [PATCH v5 40/42] fs: introduce MOUNT_ATTR_IDMAP
-Message-ID: <20210119094750.GQ3364550@infradead.org>
-References: <20210112220124.837960-1-christian.brauner@ubuntu.com>
- <20210112220124.837960-41-christian.brauner@ubuntu.com>
+        id S2405248AbhASLMa (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 19 Jan 2021 06:12:30 -0500
+Received: from mailomta2-re.btinternet.com ([213.120.69.95]:14967 "EHLO
+        re-prd-fep-043.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S2389184AbhASK7O (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 19 Jan 2021 05:59:14 -0500
+Received: from re-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.54.6])
+          by re-prd-fep-043.btinternet.com with ESMTP
+          id <20210119105757.UGLF30383.re-prd-fep-043.btinternet.com@re-prd-rgout-003.btmx-prd.synchronoss.net>;
+          Tue, 19 Jan 2021 10:57:57 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1611053877; 
+        bh=3R2bmY6lM2gP0FuzWUAVzCmY4Gzvf064QiRUU1LvdM8=;
+        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version;
+        b=TDbi2/VtwYXE6A/5k6RSN5gojlBNWtNYryCx6eOf4Yvkzl3vwKJ0/FQw6LUL3hbrxdqk1WaBMeO7lumn1K9iwWiiT7YMHYtna2VhGTTEn86adsFwa0SQNIaA1FSK+1XCqThO+Modnn4djT2ZFA1gCxzbJBQKKcAgLLMZ6mGAFUKfYA1otzxcsG1NT2wVHiXYWBbdg9ef0erkHAn4q6g3ilRUkTqkYL8fRE93lEp9RpXLkCTnPw/VbUvsS4lStaK/pMMCAN/1WkR5AuvnKfH4/CL1XZs9olcDmy7R/cPmXY+MxLL4R7WjOCPTCvD2BIsCFj4d28P56eYa4t+r4isO1g==
+Authentication-Results: btinternet.com;
+    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com
+X-SNCR-Rigid: 5ED9C2FD22DF7599
+X-Originating-IP: [109.158.127.23]
+X-OWM-Source-IP: 109.158.127.23 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduledruddtgddvudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepleetffegveevjeehvefhtefgueevudettedutdffvdejkeeiteegheevfeejtdefnecukfhppedutdelrdduheekrdduvdejrddvfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepuddtledrudehkedruddvjedrvdefpdhmrghilhhfrhhomhepoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqedprhgtphhtthhopeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequcfqtfevrffvpehrfhgtkedvvdenrhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopeeoshgvlhhinhhugidqrhgvfhhpohhlihgthiesvhhgvghrrdhkvghrnhgvlhdrohhrgheqpdhrtghpthhtohepoehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdho
+        rhhgqe
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from localhost.localdomain (109.158.127.23) by re-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
+        id 5ED9C2FD22DF7599; Tue, 19 Jan 2021 10:57:57 +0000
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     selinux@vger.kernel.org, selinux-refpolicy@vger.kernel.org
+Cc:     Richard Haines <richard_c_haines@btinternet.com>
+Subject: [RFC PATCH 0/1] selinux-notebook: Add new section for Embedded Systems
+Date:   Tue, 19 Jan 2021 10:57:46 +0000
+Message-Id: <20210119105747.9680-1-richard_c_haines@btinternet.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210112220124.837960-41-christian.brauner@ubuntu.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Generally looks good, but wouldn't it make sense to introduce the
-userns_fd in version 0 of the mount_attr structure instead of having
-two versions from the start?
+In light of the recent queries regarding embedded systems, thought I would
+add this new section.
+
+This is an RFC patch as I've not been involved in embedded systems, therefore
+looking for feedback. There are a few TODO entries that need resolving.
+
+I've made an attempt to build a smaller Reference Policy that can be extended,
+does this seem reasonable ?.
+
+I'll issue an updated patch in a week or two.
+
+Richard Haines (1):
+  selinux-notebook: Add new section for Embedded Systems
+
+ src/embedded_systems.md                       | 517 ++++++++++++++++++
+ src/implementing_seaware_apps.md              |   2 +-
+ .../embedded-policy/android-policy/README.md  |  34 ++
+ .../android-policy/android-4/Makefile         |  32 ++
+ .../android-policy/android10/Makefile         |  40 ++
+ .../android-policy/brillo-device/Makefile     |  43 ++
+ .../android-policy/brillo/Makefile            |  36 ++
+ .../reference-policy/README.md                |   6 +
+ .../reference-policy/build.conf               |  84 +++
+ .../reference-policy/modules.conf             | 236 ++++++++
+ src/seandroid.md                              |   6 +-
+ src/section_list.txt                          |   1 +
+ src/toc.md                                    |   1 +
+ 13 files changed, 1036 insertions(+), 2 deletions(-)
+ create mode 100644 src/embedded_systems.md
+ create mode 100644 src/notebook-examples/embedded-policy/android-policy/README.md
+ create mode 100644 src/notebook-examples/embedded-policy/android-policy/android-4/Makefile
+ create mode 100644 src/notebook-examples/embedded-policy/android-policy/android10/Makefile
+ create mode 100644 src/notebook-examples/embedded-policy/android-policy/brillo-device/Makefile
+ create mode 100644 src/notebook-examples/embedded-policy/android-policy/brillo/Makefile
+ create mode 100644 src/notebook-examples/embedded-policy/reference-policy/README.md
+ create mode 100644 src/notebook-examples/embedded-policy/reference-policy/build.conf
+ create mode 100644 src/notebook-examples/embedded-policy/reference-policy/modules.conf
+
+-- 
+2.29.2
+

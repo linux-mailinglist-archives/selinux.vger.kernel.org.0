@@ -2,85 +2,96 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B3552FD01E
-	for <lists+selinux@lfdr.de>; Wed, 20 Jan 2021 13:34:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE8972FD0CF
+	for <lists+selinux@lfdr.de>; Wed, 20 Jan 2021 13:59:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727151AbhATMVm (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 20 Jan 2021 07:21:42 -0500
-Received: from mailomta5-sa.btinternet.com ([213.120.69.11]:35116 "EHLO
-        sa-prd-fep-046.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1732101AbhATLz4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 20 Jan 2021 06:55:56 -0500
-Received: from sa-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.38.6])
-          by sa-prd-fep-046.btinternet.com with ESMTP
-          id <20210120115512.BRPL28150.sa-prd-fep-046.btinternet.com@sa-prd-rgout-003.btmx-prd.synchronoss.net>;
-          Wed, 20 Jan 2021 11:55:12 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1611143712; 
-        bh=c2vRwTO7GTdmLt0+uT9Q3hJULeYILhdBxVMsWq97xUY=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:MIME-Version;
-        b=fy5mafaZNNkhUeOBj08qL2/GEA9YuDcODprqd0J3JBJJ7zDyCUiVpH248sZOpA4HlqvCm69kl13z7818sYatK2L6MaSV0KUEJpLVy8nwn1Gk0emlK/uw/YQd6buz+0gptsv6I1LQV+5a5uhm7aSy1W2G5tZT0iiJvogwFmMZV3UY3pW6SQo+V/MRCQ2wT3QhLuLsxX7dcbmlhdZQzTTHHPDbcGcDLZwN+UnCs8CxCUd7MourJsp3wpI/xE0famAd8cBgecsWuIT88abMYIT5VdflOzlvt4gO23N/kldyzHJ9eVR/sTSm8z7w321JKiiNBWhpE5gSbz0lHQtfT0r7rQ==
-Authentication-Results: btinternet.com;
-    auth=pass (LOGIN) smtp.auth=richard_c_haines@btinternet.com
-X-SNCR-Rigid: 5ED9AFBE23A4C332
-X-Originating-IP: [109.158.127.42]
-X-OWM-Source-IP: 109.158.127.42 (GB)
-X-OWM-Env-Sender: richard_c_haines@btinternet.com
-X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgeduledruddvgdefiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepteetveegheevieeifeekvdeiheejvedtieelfffffeevleeijeevvdejvdduudegnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepuddtledrudehkedruddvjedrgedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddurdduleekngdpihhnvghtpedutdelrdduheekrdduvdejrdegvddpmhgrihhlfhhrohhmpeeorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhequceuqfffjgepkeeukffvoffkoffgpdhrtghpthhtohepoeguohhmihhnihgtkhdrghhrihhfthesuggvfhgvnhhsvggtrdhnlheqpdhrtghpthhtohepoehsvghlihhnuhigqdhrvghfphholhhitgihsehvghgvrhdrkhgvrhhnvghlrdhorhhgqedprhgtphhtthhopeeoshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhr
-        gheq
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-X-SNCR-hdrdom: btinternet.com
-Received: from [192.168.1.198] (109.158.127.42) by sa-prd-rgout-003.btmx-prd.synchronoss.net (5.8.340) (authenticated as richard_c_haines@btinternet.com)
-        id 5ED9AFBE23A4C332; Wed, 20 Jan 2021 11:55:11 +0000
-Message-ID: <8776cbb2687a09ed5b4e5b3cf0c50ade6c018fa6.camel@btinternet.com>
-Subject: Re: [RFC PATCH 1/1] selinux-notebook: Add new section for Embedded
- Systems
-From:   Richard Haines <richard_c_haines@btinternet.com>
-To:     Dominick Grift <dominick.grift@defensec.nl>
-Cc:     selinux@vger.kernel.org, selinux-refpolicy@vger.kernel.org
-Date:   Wed, 20 Jan 2021 11:55:02 +0000
-In-Reply-To: <ypjleeihm5e0.fsf@defensec.nl>
-References: <20210119105747.9680-1-richard_c_haines@btinternet.com>
-         <20210119105747.9680-2-richard_c_haines@btinternet.com>
-         <ypjleeihm5e0.fsf@defensec.nl>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3 (3.38.3-1.fc33) 
+        id S1726324AbhATMxz (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 20 Jan 2021 07:53:55 -0500
+Received: from youngberry.canonical.com ([91.189.89.112]:42418 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727325AbhATMIH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 20 Jan 2021 07:08:07 -0500
+Received: from ip5f5af0a0.dynamic.kabel-deutschland.de ([95.90.240.160] helo=wittgenstein)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1l2CCh-0006rZ-My; Wed, 20 Jan 2021 12:03:15 +0000
+Date:   Wed, 20 Jan 2021 13:03:10 +0100
+From:   Christian Brauner <christian.brauner@ubuntu.com>
+To:     Jann Horn <jannh@google.com>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christoph Hellwig <hch@infradead.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        John Johansen <john.johansen@canonical.com>,
+        James Morris <jmorris@namei.org>,
+        Mimi Zohar <zohar@linux.ibm.com>,
+        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+        Geoffrey Thomas <geofft@ldpreload.com>,
+        Mrunal Patel <mpatel@redhat.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Theodore Tso <tytso@mit.edu>, Alban Crequy <alban@kinvolk.io>,
+        Tycho Andersen <tycho@tycho.ws>,
+        David Howells <dhowells@redhat.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Seth Forshee <seth.forshee@canonical.com>,
+        =?utf-8?B?U3TDqXBoYW5l?= Graber <stgraber@ubuntu.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Lennart Poettering <lennart@poettering.net>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Stephen Barber <smbarber@chromium.org>,
+        Phil Estes <estesp@gmail.com>, Serge Hallyn <serge@hallyn.com>,
+        Kees Cook <keescook@chromium.org>,
+        Todd Kjos <tkjos@google.com>, Paul Moore <paul@paul-moore.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Linux Containers <containers@lists.linux-foundation.org>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Ext4 Developers List <linux-ext4@vger.kernel.org>,
+        linux-xfs@vger.kernel.org, linux-integrity@vger.kernel.org,
+        SElinux list <selinux@vger.kernel.org>,
+        Christoph Hellwig <hch@lst.de>
+Subject: Re: [PATCH v5 15/42] fs: add file_user_ns() helper
+Message-ID: <20210120120310.6tczonwl3rdtnyu3@wittgenstein>
+References: <20210112220124.837960-1-christian.brauner@ubuntu.com>
+ <20210112220124.837960-16-christian.brauner@ubuntu.com>
+ <CAG48ez3Ccr77+zH56YGimESf9jdy_xnQrebypn1TXEP3Q+xw=w@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAG48ez3Ccr77+zH56YGimESf9jdy_xnQrebypn1TXEP3Q+xw=w@mail.gmail.com>
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, 2021-01-19 at 14:18 +0100, Dominick Grift wrote:
-> Richard Haines <richard_c_haines@btinternet.com> writes:
+On Tue, Jan 19, 2021 at 04:05:00PM +0100, Jann Horn wrote:
+> On Wed, Jan 13, 2021 at 1:52 AM Christian Brauner
+> <christian.brauner@ubuntu.com> wrote:
+> > Add a simple helper to retrieve the user namespace associated with the
+> > vfsmount of a file. Christoph correctly points out that this makes
+> > codepaths (e.g. ioctls) way easier to follow that would otherwise
+> > dereference via mnt_user_ns(file->f_path.mnt).
+> >
+> > In order to make file_user_ns() static inline we'd need to include
+> > mount.h in either file.h or fs.h which seems undesirable so let's simply
+> > not force file_user_ns() to be inline.
+> [...]
+> > +struct user_namespace *file_user_ns(struct file *file)
+> > +{
+> > +       return mnt_user_ns(file->f_path.mnt);
+> > +}
 > 
-> > Add a new section and supporting examples for embedded systems.
+> That name is confusing to me, because when I think of "the userns of a
+> file", it's file->f_cred->user_ns. There are a bunch of places that
+> look at that, as you can see from grepping for "f_cred->user_ns".
 > 
-> Nice initiative, thanks. Looks pretty solid for a first iteration.
-> 
-> I wrote a document for OpenWrt here [1]. Basically the instructions
-> needed
-> to assemble OpenWrt from modules applicable to a particular system,
-> but also how
-> to build on top of it, or now to just fork it so that you can use it
-> as
-> a base for your own policy.
-> 
-> [1] 
-> https://github.com/doverride/openwrt-selinux-policy/blob/master/README.md
-> 
-> I am currently pretty happy with the results so far (its a work in
-> progress, and there are known loose ends)
-> 
-> One of the differences compared with android is that SELinux is not
-> tightly integrated in OpenWrt, and so most of the tough aspects are
-> addressed in policy
-> rather than adding selinux-awareness all over. SELinux in OpenWrt is
-> therefore
-> fairly self-contained and considering the challenges fairly robust.
-> 
+> If you really want this to be a separate helper, can you maybe give it
+> a clearer name? file_mnt_user_ns(), or something like that, idk.
 
-Thanks, I've worked these comments into the next version.
-
-
+Done.

@@ -2,167 +2,256 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2552F2FEECE
-	for <lists+selinux@lfdr.de>; Thu, 21 Jan 2021 16:31:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 918F32FF55F
+	for <lists+selinux@lfdr.de>; Thu, 21 Jan 2021 21:06:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731936AbhAUPap (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 21 Jan 2021 10:30:45 -0500
-Received: from youngberry.canonical.com ([91.189.89.112]:54090 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731136AbhAUNWN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 21 Jan 2021 08:22:13 -0500
-Received: from ip5f5af0a0.dynamic.kabel-deutschland.de ([95.90.240.160] helo=wittgenstein.fritz.box)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1l2Ztt-0005g7-Cs; Thu, 21 Jan 2021 13:21:25 +0000
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>, linux-fsdevel@vger.kernel.org
-Cc:     John Johansen <john.johansen@canonical.com>,
-        James Morris <jmorris@namei.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Mrunal Patel <mpatel@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Theodore Tso <tytso@mit.edu>, Alban Crequy <alban@kinvolk.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Howells <dhowells@redhat.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        =?UTF-8?q?St=C3=A9phane=20Graber?= <stgraber@ubuntu.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Lennart Poettering <lennart@poettering.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>, smbarber@chromium.org,
-        Phil Estes <estesp@gmail.com>, Serge Hallyn <serge@hallyn.com>,
-        Kees Cook <keescook@chromium.org>,
-        Todd Kjos <tkjos@google.com>, Paul Moore <paul@paul-moore.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        containers@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org,
+        id S1726821AbhAUUFo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 21 Jan 2021 15:05:44 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:48386 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726482AbhAUUDf (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 21 Jan 2021 15:03:35 -0500
+Received: from localhost.localdomain (c-73-42-176-67.hsd1.wa.comcast.net [73.42.176.67])
+        by linux.microsoft.com (Postfix) with ESMTPSA id ACB1020B7192;
+        Thu, 21 Jan 2021 12:02:52 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com ACB1020B7192
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1611259373;
+        bh=84PuZ9THBM7C7BDS14/NZVcdEbnd3n4d/+WYQmnI1Zs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=qWKNVGNflSXeaqnZItzC9Kf+2PWvra2B0D9jjxUV752yTPtKq/Sq9ecrhgSy3VEY/
+         UTYZ7teXoiuOZg1YiJppGvVM+GClnb7hrs8am/dMv3hVl9eJzenu4++VncOKJe+R0a
+         YioPeElPfJz32laPhxjbamqRmrIpWwMsVVst5dIw=
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+To:     zohar@linux.ibm.com, paul@paul-moore.com,
+        stephen.smalley.work@gmail.com, tusharsu@linux.microsoft.com
+Cc:     tyhicks@linux.microsoft.com, casey@schaufler-ca.com,
+        agk@redhat.com, snitzer@redhat.com, gmazyland@gmail.com,
+        sashal@kernel.org, jmorris@namei.org,
         linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        Christian Brauner <christian.brauner@ubuntu.com>
-Subject: [PATCH v6 16/40] open: handle idmapped mounts
-Date:   Thu, 21 Jan 2021 14:19:35 +0100
-Message-Id: <20210121131959.646623-17-christian.brauner@ubuntu.com>
+        linux-security-module@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] selinux: measure state and policy capabilities
+Date:   Thu, 21 Jan 2021 12:01:50 -0800
+Message-Id: <20210121200150.2448-1-nramas@linux.microsoft.com>
 X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210121131959.646623-1-christian.brauner@ubuntu.com>
-References: <20210121131959.646623-1-christian.brauner@ubuntu.com>
 MIME-Version: 1.0
-X-Patch-Hashes: v=1; h=sha256; i=YKSd0FdGGLgCSTeDw7b6sTvRU/kXPfMpmc0z0c+ceJs=; m=QtXKH7l01QTmlgDZWGGLs41QsIHJYr2I07NJQrbQhUc=; p=UQ8ZL9iZHePP4j74jgLUJqMxCUpzv40jcAqgWmdc+iM=; g=fc42bb0317f59f78c12f1f5b6f750e685efc9c8e
-X-Patch-Sig: m=pgp; i=christian.brauner@ubuntu.com; s=0x0x91C61BC06578DCA2; b=iHQEABYKAB0WIQRAhzRXHqcMeLMyaSiRxhvAZXjcogUCYAl9pAAKCRCRxhvAZXjcom58APiYXnz MLA9PdyDTNWHJ1hzxQwmhv0RHo0AradNsIDslAQDIvEnNGlH+yVfr0r/waOULLGeiGRFi0nzVv0+4 7M8YDg==
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-For core file operations such as changing directories or chrooting,
-determining file access, changing mode or ownership the vfs will verify
-that the caller is privileged over the inode. Extend the various helpers
-to handle idmapped mounts. If the inode is accessed through an idmapped
-mount map it into the mount's user namespace. Afterwards the permissions
-checks are identical to non-idmapped mounts. When changing file
-ownership we need to map the uid and gid from the mount's user
-namespace. If the initial user namespace is passed nothing changes so
-non-idmapped mounts will see identical behavior as before.
+SELinux stores the configuration state and the policy capabilities
+in kernel memory.  Changes to this data at runtime would have an impact
+on the security guarantees provided by SELinux.  Measuring SELinux
+configuration state and policy capabilities through IMA subsystem
+provides a tamper-resistant way for an attestation service to remotely
+validate the runtime state.
 
-Link: https://lore.kernel.org/r/20210112220124.837960-24-christian.brauner@ubuntu.com
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+Measure the configuration state and policy capabilities by calling
+the IMA hook ima_measure_critical_data().
+
+To enable SELinux data measurement, the following steps are required:
+
+ 1, Add "ima_policy=critical_data" to the kernel command line arguments
+    to enable measuring SELinux data at boot time.
+    For example,
+      BOOT_IMAGE=/boot/vmlinuz-5.11.0-rc3+ root=UUID=fd643309-a5d2-4ed3-b10d-3c579a5fab2f ro nomodeset security=selinux ima_policy=critical_data
+
+ 2, Add the following rule to /etc/ima/ima-policy
+       measure func=CRITICAL_DATA label=selinux
+
+Sample measurement of SELinux state and policy capabilities:
+
+10 2122...65d8 ima-buf sha256:13c2...1292 selinux-state 696e...303b
+
+To verify the measurement check the following:
+
+Execute the following command to extract the measured data
+from the IMA log for SELinux configuration (selinux-state).
+
+  grep "selinux-state" /sys/kernel/security/integrity/ima/ascii_runtime_measurements | tail -1 | cut -d' ' -f 6 | xxd -r -p
+
+The output should be a list of key-value pairs. For example,
+ initialized=1;enabled=1;enforcing=0;checkreqprot=1;network_peer_controls=1;open_perms=1;extended_socket_class=1;always_check_network=0;cgroup_seclabel=1;nnp_nosuid_transition=1;genfs_seclabel_symlinks=0;
+
+To verify the measured data with the current SELinux state:
+
+ => enabled should be set to 1 if /sys/fs/selinux folder exists,
+    0 otherwise
+
+For other entries, compare the integer value in the files
+ => /sys/fs/selinux/enforce
+ => /sys/fs/selinux/checkreqprot
+And, each of the policy capabilities files under
+ => /sys/fs/selinux/policy_capabilities
+
+Note that the actual verification would be against an expected state
+and done on a system other than the measured system, typically
+requiring "initialized=1; enabled=1;enforcing=1;checkreqprot=0;" for
+a secure state and then whatever policy capabilities are actually set
+in the expected policy (which can be extracted from the policy itself
+via seinfo, for example).
+
+Signed-off-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Suggested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 ---
-/* v2 */
-unchanged
+This patch is based on
+commit e58bb688f2e4 "Merge branch 'measure-critical-data' into next-integrity"
+in "next-integrity-testing" branch
 
-/* v3 */
-- David Howells <dhowells@redhat.com>:
-  - Remove mnt_idmapped() check after removing mnt_idmapped() helper in earlier
-    patches.
+ security/selinux/hooks.c     |  5 +++
+ security/selinux/ima.c       | 68 ++++++++++++++++++++++++++++++++++++
+ security/selinux/selinuxfs.c | 10 ++++++
+ 3 files changed, 83 insertions(+)
 
-/* v4 */
-- Serge Hallyn <serge@hallyn.com>:
-  - Use "mnt_userns" to refer to a vfsmount's userns everywhere to make
-    terminology consistent.
-
-/* v5 */
-unchanged
-base-commit: 7c53f6b671f4aba70ff15e1b05148b10d58c2837
-
-- Christoph Hellwig <hch@lst.de>:
-  - Use new file_mnt_user_ns() helper.
-
-/* v6 */
-base-commit: 19c329f6808995b142b3966301f217c831e7cf31
-
-- Christoph Hellwig <hch@lst.de>:
-  - Make use of new path_permission() helper.
----
- fs/open.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
-
-diff --git a/fs/open.c b/fs/open.c
-index 8b3f3eb652d0..4ec3979d0466 100644
---- a/fs/open.c
-+++ b/fs/open.c
-@@ -438,7 +438,7 @@ static long do_faccessat(int dfd, const char __user *filename, int mode, int fla
- 			goto out_path_release;
- 	}
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 644b17ec9e63..879a0d90615d 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -103,6 +103,7 @@
+ #include "netlabel.h"
+ #include "audit.h"
+ #include "avc_ss.h"
++#include "ima.h"
  
--	res = inode_permission(&init_user_ns, inode, mode | MAY_ACCESS);
-+	res = inode_permission(mnt_user_ns(path.mnt), inode, mode | MAY_ACCESS);
- 	/* SuS v2 requires we report a read only fs too */
- 	if (res || !(mode & S_IWOTH) || special_file(inode->i_mode))
- 		goto out_path_release;
-@@ -582,8 +582,8 @@ int chmod_common(const struct path *path, umode_t mode)
- 		goto out_unlock;
- 	newattrs.ia_mode = (mode & S_IALLUGO) | (inode->i_mode & ~S_IALLUGO);
- 	newattrs.ia_valid = ATTR_MODE | ATTR_CTIME;
--	error = notify_change(&init_user_ns, path->dentry, &newattrs,
--			      &delegated_inode);
-+	error = notify_change(mnt_user_ns(path->mnt), path->dentry,
-+			      &newattrs, &delegated_inode);
- out_unlock:
- 	inode_unlock(inode);
- 	if (delegated_inode) {
-@@ -644,6 +644,7 @@ SYSCALL_DEFINE2(chmod, const char __user *, filename, umode_t, mode)
+ struct selinux_state selinux_state;
  
- int chown_common(const struct path *path, uid_t user, gid_t group)
- {
-+	struct user_namespace *mnt_userns;
- 	struct inode *inode = path->dentry->d_inode;
- 	struct inode *delegated_inode = NULL;
- 	int error;
-@@ -654,6 +655,10 @@ int chown_common(const struct path *path, uid_t user, gid_t group)
- 	uid = make_kuid(current_user_ns(), user);
- 	gid = make_kgid(current_user_ns(), group);
+@@ -7407,6 +7408,10 @@ int selinux_disable(struct selinux_state *state)
  
-+	mnt_userns = mnt_user_ns(path->mnt);
-+	uid = kuid_from_mnt(mnt_userns, uid);
-+	gid = kgid_from_mnt(mnt_userns, gid);
+ 	selinux_mark_disabled(state);
+ 
++	mutex_lock(&state->policy_mutex);
++	selinux_ima_measure_state(state);
++	mutex_unlock(&state->policy_mutex);
 +
- retry_deleg:
- 	newattrs.ia_valid =  ATTR_CTIME;
- 	if (user != (uid_t) -1) {
-@@ -674,7 +679,7 @@ int chown_common(const struct path *path, uid_t user, gid_t group)
- 	inode_lock(inode);
- 	error = security_path_chown(path, uid, gid);
- 	if (!error)
--		error = notify_change(&init_user_ns, path->dentry, &newattrs,
-+		error = notify_change(mnt_userns, path->dentry, &newattrs,
- 				      &delegated_inode);
- 	inode_unlock(inode);
- 	if (delegated_inode) {
+ 	pr_info("SELinux:  Disabled at runtime.\n");
+ 
+ 	/*
+diff --git a/security/selinux/ima.c b/security/selinux/ima.c
+index 03715893ff97..e65d462d2d30 100644
+--- a/security/selinux/ima.c
++++ b/security/selinux/ima.c
+@@ -12,6 +12,60 @@
+ #include "security.h"
+ #include "ima.h"
+ 
++/*
++ * read_selinux_state - Read selinux configuration settings
++ *
++ * @state_str: Return the configuration settings.
++ * @state_str_len: Size of the configuration settings string
++ * @state: selinux_state
++ *
++ * Return 0 on success, error code on failure
++ */
++static int read_selinux_state(char **state_str, int *state_str_len,
++			      struct selinux_state *state)
++{
++	char *buf;
++	int i, buf_len, curr;
++	bool initialized = selinux_initialized(state);
++	bool enabled = !selinux_disabled(state);
++	bool enforcing = enforcing_enabled(state);
++	bool checkreqprot = checkreqprot_get(state);
++
++	buf_len = snprintf(NULL, 0, "%s=%d;%s=%d;%s=%d;%s=%d;",
++			   "initialized", initialized,
++			   "enabled", enabled,
++			   "enforcing", enforcing,
++			   "checkreqprot", checkreqprot);
++
++	for (i = 0; i < __POLICYDB_CAPABILITY_MAX; i++) {
++		buf_len += snprintf(NULL, 0, "%s=%d;",
++				    selinux_policycap_names[i],
++				    state->policycap[i]);
++	}
++	++buf_len;
++
++	buf = kzalloc(buf_len, GFP_KERNEL);
++	if (!buf)
++		return -ENOMEM;
++
++	curr = scnprintf(buf, buf_len, "%s=%d;%s=%d;%s=%d;%s=%d;",
++			 "initialized", initialized,
++			 "enabled", enabled,
++			 "enforcing", enforcing,
++			 "checkreqprot", checkreqprot);
++
++	for (i = 0; i < __POLICYDB_CAPABILITY_MAX; i++) {
++		curr += scnprintf((buf + curr), (buf_len - curr), "%s=%d;",
++				  selinux_policycap_names[i],
++				  state->policycap[i]);
++	}
++
++	*state_str = buf;
++	*state_str_len = curr;
++
++	return 0;
++}
++
+ /*
+  * selinux_ima_measure_state - Measure hash of the SELinux policy
+  *
+@@ -21,10 +75,24 @@
+  */
+ void selinux_ima_measure_state(struct selinux_state *state)
+ {
++	char *state_str = NULL;
++	int state_str_len;
+ 	void *policy = NULL;
+ 	size_t policy_len;
+ 	int rc = 0;
+ 
++	rc = read_selinux_state(&state_str, &state_str_len, state);
++	if (rc) {
++		pr_err("SELinux: %s: failed to read state %d.\n",
++			__func__, rc);
++		return;
++	}
++
++	ima_measure_critical_data("selinux", "selinux-state",
++				  state_str, state_str_len, false);
++
++	kfree(state_str);
++
+ 	/*
+ 	 * Measure SELinux policy only after initialization is completed.
+ 	 */
+diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+index 4bde570d56a2..8b561e1c2caa 100644
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -41,6 +41,7 @@
+ #include "security.h"
+ #include "objsec.h"
+ #include "conditional.h"
++#include "ima.h"
+ 
+ enum sel_inos {
+ 	SEL_ROOT_INO = 2,
+@@ -182,6 +183,10 @@ static ssize_t sel_write_enforce(struct file *file, const char __user *buf,
+ 		selinux_status_update_setenforce(state, new_value);
+ 		if (!new_value)
+ 			call_blocking_lsm_notifier(LSM_POLICY_CHANGE, NULL);
++
++		mutex_lock(&state->policy_mutex);
++		selinux_ima_measure_state(state);
++		mutex_unlock(&state->policy_mutex);
+ 	}
+ 	length = count;
+ out:
+@@ -762,6 +767,11 @@ static ssize_t sel_write_checkreqprot(struct file *file, const char __user *buf,
+ 
+ 	checkreqprot_set(fsi->state, (new_value ? 1 : 0));
+ 	length = count;
++
++	mutex_lock(&fsi->state->policy_mutex);
++	selinux_ima_measure_state(fsi->state);
++	mutex_unlock(&fsi->state->policy_mutex);
++
+ out:
+ 	kfree(page);
+ 	return length;
 -- 
 2.30.0
 

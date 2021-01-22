@@ -2,121 +2,77 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 75CD9300914
-	for <lists+selinux@lfdr.de>; Fri, 22 Jan 2021 17:57:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 63F8D30096C
+	for <lists+selinux@lfdr.de>; Fri, 22 Jan 2021 18:22:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728996AbhAVQxD (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 22 Jan 2021 11:53:03 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:27346 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1729119AbhAVQiN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 22 Jan 2021 11:38:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1611333361;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=PLqEmMn//MU3/qWSHRhQLmIGI/LN3Yne85jM+Q+dcko=;
-        b=BLV1qXnyvLL5lpAnbN1Gh8yEd2jvBrGyO2S1lYzdhYdOEeuGoP5ORyejOrZMdZXfrCceUJ
-        VzuToUK7eLwO8dUiHSbui2WqLIRmEyQYGsugk+bcDmLTLdo2cQWZhoSORNoAgceZYWkjQn
-        6iJ6tMLT5vy/YV9IwSvateTuPtmnOnk=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-26-HHfbsGuYOWafXAWDotVLxQ-1; Fri, 22 Jan 2021 11:32:26 -0500
-X-MC-Unique: HHfbsGuYOWafXAWDotVLxQ-1
-Received: by mail-lj1-f197.google.com with SMTP id r20so2184648ljg.21
-        for <selinux@vger.kernel.org>; Fri, 22 Jan 2021 08:32:26 -0800 (PST)
+        id S1729292AbhAVPtb (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 22 Jan 2021 10:49:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729213AbhAVPsZ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 22 Jan 2021 10:48:25 -0500
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF91AC061351
+        for <selinux@vger.kernel.org>; Fri, 22 Jan 2021 07:47:39 -0800 (PST)
+Received: by mail-ej1-x630.google.com with SMTP id l9so8312168ejx.3
+        for <selinux@vger.kernel.org>; Fri, 22 Jan 2021 07:47:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=wzvPRUfibxBK9mBmS5xTCJ+zr+srTirmfMsi/vkO5Rk=;
+        b=xOEkzNH5scs8vlRDvOctOEzrDkHdsEEJBqmdl8k6iVyaapBTZ1/bfl5cco3UnwAV6A
+         i8hltshWBYfo/5ywBzX7X+45ZY8VqyDprKG7lMHIQrsObmoCzYxHdGKM6LgAvBo6vY93
+         yx2QiZTcu7mmotb177A6tsbnkxkirsbGwrhfW5TxGGpq3tLstmrWDKbVj7Zu7HcEDrEA
+         J03A6+w1EY/0oKfiEu5ni73lQcBOIoo7BGuuwUCV2altQAW+OytAwO9v286GWiRCUYcG
+         334yaGlkHQVEcYG4z32Msow6HyIOjXHoCT+Kj0PpGtxfaoJtnY0EYDIUL6/ZtpjLIbIu
+         +auQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=PLqEmMn//MU3/qWSHRhQLmIGI/LN3Yne85jM+Q+dcko=;
-        b=byBsMZXGOdKV2WFRaw4t+Mrncu5aZ/vRM59h8cQs5ROYq0eB0iw2XOWdn2JW6jvTsR
-         PqzGP1/hYzkL8K+JU8oqgzdstnuZ0qqOAeMM0ewcrA5p38CQk4uZ3uZEV3q64kAMmTPx
-         OtaT1Qxo/97wRnXBrQ9Ipohyxt8liS1laPiAG/FpvpgtkSPsyH0tUJcXdLs00Wz++Dk3
-         KS9ni9pyaji0szSEn/3Hezdyxd9PmjiUYUZFcWeRAyOZnam0zfITA9hXR0FsyP4ItLsE
-         PcTu4tIp8O68CcDTAhBTorHD/XDgky1cENKPaj0SOQ9mLFq6Chbq5WzyHUZf6xxj5qui
-         YBGA==
-X-Gm-Message-State: AOAM530SU9Ui3N+AVf60a0gfzB6WzS47HzhPSR5eHdgJDZ6YSKHRpFGS
-        QieCDukbruH8ao90HAlqfRFq5r0m11b7sR12gMfwukJZcbK/QJy5w8fvpHSemCsJNkdpF2iO22V
-        tMiPg4k5h7JhhSu49VIbdviJuPJ6aUeXYFA==
-X-Received: by 2002:a2e:2a86:: with SMTP id q128mr543420ljq.158.1611333144236;
-        Fri, 22 Jan 2021 08:32:24 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyCG3FIV07bl4Rv35twGTB0bLE3LVIF2Sj7CuA+MGWXNOwaE1xE2vU2o1F3Si1MCEPTqMLP9wxUBI5ho+9GXPg=
-X-Received: by 2002:a2e:2a86:: with SMTP id q128mr543412ljq.158.1611333144027;
- Fri, 22 Jan 2021 08:32:24 -0800 (PST)
+        bh=wzvPRUfibxBK9mBmS5xTCJ+zr+srTirmfMsi/vkO5Rk=;
+        b=o6Et+0b2osWelz+KDyXOrEPO0MGH6darbfsMmCyXzp/a9rGJDKkjRr8k6BNz5ojclY
+         sgJUToKAfE7VBy+ltnYCHpURCJnuJoYofdvNyG0u1nbl4xe/MvHxF5Fq1+mCVFv6GvHL
+         Gw8py2vecG+DIQiI3HESmFTN6bew+KEwG/xsBq3REa6hfxJvyWadHz/ohnkFynqHnP5o
+         4DrlS9Pyyxddqk8KvonanIpPXNtyUiqrs/eSU8Nbq8gSm4D/QC58JSwwdFUyRpkrDrb9
+         C6nCEIRr1fxmWR/sSUk4Ghqy8yQDiCB3C52tpkpbcr1LDivfUvzRcwAIjpyN1atrPXFw
+         vcMQ==
+X-Gm-Message-State: AOAM530KOkpypIfBAxmn563tVCRO9ORDswPM01AE6io6cTkrQR42TO1i
+        mJV6YjEqtmNkOLdVISOGs1pWaOuNn24YqpciwdUQ
+X-Google-Smtp-Source: ABdhPJzx8nvR83tauU2c6IZSLShYbENetwZ5CQOxXYGd07EcWq9+V/o6x6pKAR0g9tMt/gmxRTKuzp+NuyiYxcBrpRw=
+X-Received: by 2002:a17:907:c01:: with SMTP id ga1mr3252567ejc.488.1611330458292;
+ Fri, 22 Jan 2021 07:47:38 -0800 (PST)
 MIME-Version: 1.0
-References: <CAFqZXNuE3CbwGDv7mvxh67iX3zeLKTu6AJC_VoeALb_o26+zOg@mail.gmail.com>
- <20210122152552.405237-1-vmojzis@redhat.com>
-In-Reply-To: <20210122152552.405237-1-vmojzis@redhat.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Fri, 22 Jan 2021 17:32:14 +0100
-Message-ID: <CAFqZXNusUEjEqg1a80vPFbgPZLdcseC2ot6co8F4CEjb-a+vjQ@mail.gmail.com>
-Subject: Re: [PATCH v2] python/sepolgen: allow any policy statement in if(n)def
-To:     Vit Mojzis <vmojzis@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+References: <20210122102748.38776-1-omosnace@redhat.com> <20210122102748.38776-2-omosnace@redhat.com>
+In-Reply-To: <20210122102748.38776-2-omosnace@redhat.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 22 Jan 2021 10:47:27 -0500
+Message-ID: <CAHC9VhR20WJM=KQPuzt6YzSmKbj8hKoCLJg9gESQzt6GXto_Eg@mail.gmail.com>
+Subject: Re: [PATCH testsuite 1/2] check-syntax: use 'command -v' instead of 'which'
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Jan 22, 2021 at 4:29 PM Vit Mojzis <vmojzis@redhat.com> wrote:
-> "ifdef/ifndef" statements can be used to conditionally define
-> an interface, but this syntax is not recognised by sepolgen-ifgen.
-> Fix sepolgen-ifgen to allow any policy statement inside an
-> "fidef/ifndef" statement.
+On Fri, Jan 22, 2021 at 5:46 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
 >
-> Fixes:
->         $ cat <<EOF > i.if
-> ifndef(`apache_manage_pid_files',`
->         interface(`apache_manage_pid_files',`
->                 manage_files_pattern($1, httpd_var_run_t, httpd_var_run_t)
->         ')
-> ')
+> In minimal environments (e.g. Fedora container image) 'which' is not
+> installed by default. To avoid the need to install an additional
+> dependency, use 'command -v', which also does the trick and is a shell
+> builtin.
 >
->         #sepolgen-ifgen --interface=i.if
->         i.if: Syntax error on line 2 interface [type=INTERFACE]
->         i.if: Syntax error on line 4 ' [type=SQUOTE]
->
-> Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 > ---
-> Thanks. Fixed. And I replaced "statement" with "statements" to allow
-> multiple statements (as was possible with interface_stmts).
-> I'm not all that sure about the last line since I didn't manage to find
-> it's meaning (but I assume IF-THEN-ELSE).
+>  tools/check-syntax | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Yes, the third argument is basically an optional 'else' branch:
-https://www.gnu.org/software/m4/manual/m4-1.4.15/html_node/Ifdef.html
+Nice.
 
->
->  python/sepolgen/src/sepolgen/refparser.py | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
->
-> diff --git a/python/sepolgen/src/sepolgen/refparser.py b/python/sepolgen/src/sepolgen/refparser.py
-> index 9f850990..e611637f 100644
-> --- a/python/sepolgen/src/sepolgen/refparser.py
-> +++ b/python/sepolgen/src/sepolgen/refparser.py
-> @@ -433,9 +433,9 @@ def p_ifelse(p):
->
->
->  def p_ifdef(p):
-> -    '''ifdef : IFDEF OPAREN TICK IDENTIFIER SQUOTE COMMA TICK interface_stmts SQUOTE CPAREN optional_semi
-> -             | IFNDEF OPAREN TICK IDENTIFIER SQUOTE COMMA TICK interface_stmts SQUOTE CPAREN optional_semi
-> -             | IFDEF OPAREN TICK IDENTIFIER SQUOTE COMMA TICK interface_stmts SQUOTE COMMA TICK interface_stmts SQUOTE CPAREN optional_semi
-> +    '''ifdef : IFDEF OPAREN TICK IDENTIFIER SQUOTE COMMA TICK statements SQUOTE CPAREN optional_semi
-> +             | IFNDEF OPAREN TICK IDENTIFIER SQUOTE COMMA TICK statements SQUOTE CPAREN optional_semi
-> +             | IFDEF OPAREN TICK IDENTIFIER SQUOTE COMMA TICK statements SQUOTE COMMA TICK statements SQUOTE CPAREN optional_semi
->      '''
->      x = refpolicy.IfDef(p[4])
->      if p[1] == 'ifdef':
-> --
-> 2.29.2
->
+Acked-by: Paul Moore <paul@paul-moore.com>
 
-Acked-by: Ondrej Mosnacek <omosnace@redhat.com>
-
---
-Ondrej Mosnacek
-Software Engineer, Platform Security - SELinux kernel
-Red Hat, Inc.
-
+-- 
+paul moore
+www.paul-moore.com

@@ -2,60 +2,65 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 101D83047CA
-	for <lists+selinux@lfdr.de>; Tue, 26 Jan 2021 20:13:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2019E3047C8
+	for <lists+selinux@lfdr.de>; Tue, 26 Jan 2021 20:13:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731545AbhAZF4d (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 26 Jan 2021 00:56:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46272 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727397AbhAYKPN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 25 Jan 2021 05:15:13 -0500
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38EC2C061786
-        for <selinux@vger.kernel.org>; Mon, 25 Jan 2021 02:03:46 -0800 (PST)
-Received: by mail-oi1-x229.google.com with SMTP id k25so48169oik.13
-        for <selinux@vger.kernel.org>; Mon, 25 Jan 2021 02:03:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=tGxddNv/Si2wB03sHKwOUJOsRjg0p0LakVdqO89PdHs=;
-        b=TJVUcVmwLWw3mwa1+Dd3Z1Rmsa+tCOnLbIseLoFQtdAX1tTAuyGfkCbyF9spDUkeNT
-         jA4r+661R+sbjXf/O8iD2id8CtZRMtFMNvwKsXP7aiqLF/fHsFGgEyFCpSJn+JVf3qnj
-         i8CTfjcAyBWU+d7Wg35dJt/uiyOcMrL9PjOPXAcuVVKbL6G093WW8VVQF1uwJebF1y9t
-         SxFfxMGA2bCoCyOMErIIGRe7cOCAlTchs1R3EZMP7l7HRUoeVEljwOLODNO2X1P6vX8v
-         ThIwm0QmazPco+ow/neefAyKZM2ir+xjT/MunU2koiv2Fd9AaAricgIyhx6WipaQXPgh
-         QxLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=tGxddNv/Si2wB03sHKwOUJOsRjg0p0LakVdqO89PdHs=;
-        b=r/YzRYP3JPQW4WTn06YZqeR/xHJAJS75jOrShykWxGFa1+1Bgi18Eqld8/nuT2ucYQ
-         P+LlYkUR1sxcRs/qnO/mGLtFh3z3f25axZXi7EZ8u2s4J7Fl0st1Se0YP1ThdYX7wML7
-         OjE0JfYQLOfnOYfm4MjTpPJZFJ/0Hh8WHCl1rTbGRTpmxfFwWBiWPS4qaHuzIiItB5t/
-         nJwcBhGhH9ffey46S2voiAMmTtdS5t+tX57mq9fKAgnpKkPP1v1jNV7MBdiENzwk4S7N
-         xDf/gkyujxZiJyUs5qpKvEQVX6ypCfu52Wn/LFD1vuo7dgzL1/5Ve1fDGjrJsCm+GDCO
-         Ylzw==
-X-Gm-Message-State: AOAM53370+ep7zZyYRtFPVvvQu1WGQQXqQDtN8HL2tOHHXK16VR+F1N8
-        4F+GTI6JjMDvGi5/CZq4l9R8LOZV8SyRoQYaxMc=
-X-Google-Smtp-Source: ABdhPJwq+NUBmRupHTbI/eeejcLKUoDe3MCavij+h8WVyxjNx6mkowph5nFvBoa4WgVZ4AKtlzVzyhsOZdrwRdYwN0k=
-X-Received: by 2002:aca:f12:: with SMTP id 18mr11980oip.106.1611569025722;
- Mon, 25 Jan 2021 02:03:45 -0800 (PST)
+        id S1727397AbhAZF4i (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 26 Jan 2021 00:56:38 -0500
+Received: from mx2.suse.de ([195.135.220.15]:48444 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728757AbhAYNVT (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Mon, 25 Jan 2021 08:21:19 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+        t=1611580783; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=hvyCg1tArEMURZiCaw0o7rfIdGticTsjrcjPx+/JdNc=;
+        b=A4Vm72+PELLClS/Iy715Uik0vACGATsRtA2iQMVkLUk7pB1NNEp+sD+oPc2YAwpCTCYFWo
+        S6cgCM5W61YrqU3UsTpXfJsNEmMTLpZ92x7E+4u1Hve30Vlh8wUkj93JfsZaBNc0InUmqa
+        E/9B6Y8rEAQXzzf6L5pfNetYN4lnJf8=
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id D4325AAC6;
+        Mon, 25 Jan 2021 13:19:42 +0000 (UTC)
+Date:   Mon, 25 Jan 2021 14:19:35 +0100
+From:   Michal Hocko <mhocko@suse.com>
+To:     Suren Baghdasaryan <surenb@google.com>
+Cc:     linux-man@vger.kernel.org, akpm@linux-foundation.org,
+        jannh@google.com, keescook@chromium.org, jeffv@google.com,
+        minchan@kernel.org, shakeelb@google.com, rientjes@google.com,
+        edgararriaga@google.com, timmurray@google.com, linux-mm@kvack.org,
+        selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-team@android.com
+Subject: Re: [PATCH 1/1] process_madvise.2: Add process_madvise man page
+Message-ID: <20210125131935.GI827@dhcp22.suse.cz>
+References: <20210120202337.1481402-1-surenb@google.com>
 MIME-Version: 1.0
-Received: by 2002:a8a:798:0:0:0:0:0 with HTTP; Mon, 25 Jan 2021 02:03:45 -0800 (PST)
-Reply-To: hkmohammedh@gmail.com
-From:   Mohammed Hossain <milleymilley335@gmail.com>
-Date:   Mon, 25 Jan 2021 10:03:45 +0000
-Message-ID: <CAJDTW+PECWy-Sk13-1mFUOTG21GiUWzTiBD8M57wBZioq+Vd2A@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210120202337.1481402-1-surenb@google.com>
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+On Wed 20-01-21 12:23:37, Suren Baghdasaryan wrote:
+[...]
+>     MADV_COLD (since Linux 5.4.1)
+>         Deactivate a given range of pages by moving them from active to
+>         inactive LRU list. This is done to accelerate the reclaim of these
+>         pages. The advice might be ignored for some pages in the range when it
+>         is not applicable.
+
+I do not think we want to talk about active/inactive LRU lists here.
+Wouldn't it be sufficient to say
+Deactive a given range of pages which will make them a more probable
+reclaim target should there be a memory pressure. This is a
+non-destructive operation.
+
+Other than that, looks good to me from the content POV.
+
+Thanks!
 -- 
-I have an proposal for you get back for more details
-Regards
-Mohammed Hossain
+Michal Hocko
+SUSE Labs

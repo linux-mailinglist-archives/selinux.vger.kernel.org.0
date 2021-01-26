@@ -2,292 +2,212 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E4E98304520
-	for <lists+selinux@lfdr.de>; Tue, 26 Jan 2021 18:24:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08DA5304673
+	for <lists+selinux@lfdr.de>; Tue, 26 Jan 2021 19:38:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388092AbhAZRXs (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 26 Jan 2021 12:23:48 -0500
-Received: from sonic302-27.consmr.mail.ne1.yahoo.com ([66.163.186.153]:37029
-        "EHLO sonic302-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388444AbhAZQ5p (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 26 Jan 2021 11:57:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1611680217; bh=InRcyhhJuzgiVCj9DpUa99gVCQBHjUsRI8eU6VrdUIc=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=VwgGzcin+Q5M1briHCDJgDsbTHT1RQGf4qaMpXu1KXT9Z5Y/H2FCGvsinJxI36knDxt6u0d9P69k18FzdbNGp0iStTrkcX7FCKmpTY4pDMqDPC4m3gfu4SylJchkwCbOqHYgKZMiPbLxcM6V9M6RYNK1I0TGCeRZuXPveC3OQ14UyNwe4EAkVBIrpYz99pg5K6KEeh8GykJlLNnmIjNIr3jqoJkVfUlbirPQV34vh3sG5IpWeMZ/q9jriC9AFq8IlcGTG8rg+lrijMyVX7/oMymrAdYji+xkoU2JfIrH7FDSoWR1KI/b/nZfhvxtYSZ+coH/zWWPCSfRqsMUWFvjLQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1611680217; bh=hRje+M4tW2XgeT0UAeMwCLfCcbeyVKg3e50mVlnvi+v=; h=From:To:Subject:Date:From:Subject:Reply-To; b=evJ/PfiBq+bNSXT0D+A+VbLiVz6al778feDjrzPez87gEAorbLol4nK/D4mNroOjduqw5PoYnlxM+hB7604EWVEvX4DKXsWwoiQGxcbGaUkrHKcWOw9h1VLRzjcsiSsE85RsFyzLuzrXMQHvwCuviXaGpL78obJ1St7X8/sz0cF6RgW9/cIEKgJPUyQm7ffxQpGgCyB4jBdheleyP4DnEZZC/GLgbH236FzC7CiQ6T7055yPRKJb0kev6yLn+lciLzS0OyWZOdILcsXEP9+GKeah7voZm2WNq9+0JLZsihClBpupkGZ/BeF5ADqmKTOPN+0qy1c7jITreakHoJVKZw==
-X-YMail-OSG: izcoDdkVM1mx_Ac3NTEsNJJUn0koRn5zIdGZ5S5KZ6RzOIUluVzv4WgzYq2bCpe
- XNMb8QGVRrNtqNP27zptGH9X9PpGqzXCR.yzC5hMC50b388pzqUoLIqQ7w2EknrdlFrwbchfebhY
- JPgKFMPmPBKx_Pxk3A9vBY.0YGOxnacYCw4D83LMTe5LJq_1HqYVRZmEOUoIirM5osBK0qDJdub5
- Zj9_nIzFmlPwgmlOabhx4360sLSzAdxAaOecMp3brAa6BR.4q4QglIX8NqumadszIlpduVLmhFCz
- tpLght7HpheKdDMEXyPLyBPU7sLXUynIkpx4MfqVpNES5I0bD2lUkruKjDpfChvxraOb6hhXfd5Z
- tWMmdok3ZVGyQTLDcS3FgeQvzg5qfDp7Umy2n4nnY5KhYlBoHVAtkPatWagkD5w62kEutZWGy6Xm
- w1hrCNoCKdpWM6mPfYOevh2pna4YDBCF9Yi7TqEjqYhsvI2gqdyHrfWbMUA0NNquqJ1aokAgo4RE
- AO5CIa4MOVEPBlZurBUChZsHqAVBgtdsrEbAkMr8YXHlCpUFSrenGV1N6efJx2FryGOncvE25E6R
- 0CxdbEx.MKB0XwIq9hAXnyecQScNg9_YozPqarXdwW.haVSy5IvANpbLMeuEwQST_vqvklhOm9JV
- 2srBUpru.C8PdAg7vW.le5jyGTaEK1YqcK9edv6euItZ7tN5T6oRqswJSI83v0VzboLjEkyZEPcS
- Y53IEYNzcZHwmtqsjUt6Or_msJZZCxeOdLk_laYDhUmiFIX5foSVcFrtYikg2knrp.8h5Eaq253w
- .P3H.YIcCM266PozyqvIUAl1hRVG2RRnriD90.BwLt2v_kqax3aF7ER_IVTOCY5Xpg.BN1nYk4NF
- jiChgxkiOqCzVodPDDk2edFPpFDNa4ZMIHLX_cNdyd8.58hguVp4rN8o16_i9hcI3w2CIIttmuK3
- ksoM7X.HI2SBI.LekvA1ExZk29uHWK32DHVY4qXbxE7eGEHhN1gshIKhIkYqdf1MgjCsC0z8WmaY
- cLIWUpHc.T9V2aSJKhnqbCXBpOuiXPMhY7eAgsGQdpDKafpez6JzhM8f18jCQnpp0eTPTnBowx3p
- LIHxEXQagR95ubV.bcfHc3pMADDALEgflyCzWSQOmaHxcQKUM_CfZTo8.Y_zfSK3o2bqSk81t_89
- BElrXGlJ6nEtWkXB7XYmNP3fypDywg5UuU3TpAf8rFfMTVpCfRXNeYCogCvXeKJ_wXaOP_v9MYO.
- ShiMHRpwJsDZhOt4MCjTvE9VO0Rzq4Yh064ngA.kK0dPn5NhKpB6Hk8zva_rAAw7c3cdHkfloZ.5
- zhG88aY8QUGaO40yKyFTpZSr2ar9QgFO0dXPyuwTiR6VWS.IYDV1UTFY8jZ9oucKQH_Y0actWBVB
- 0rhtQiQJ7QI.pTrAgvTzlBbLD6Ace_dNTeF2ahBYfYHXX0Ef.IU.lAjfW5UOE3FkEZFgdXUM8zDu
- jDNcAryd1j.i6nhlGp_.lb5qfBsfA0Bz6sVcw4a08ivBa5vBaQ4MoF1ShmYIjlXVBBe6uphwDLGQ
- jg9TXPFl1qsr9lioOT36aGIZFXQMe4OCo77gTn3xA4luPGWrDQP4IK1AaIRCRodTodJ8dE9bFPTn
- HUWV6Afa9Cp6qAwFGiHNAUqjdbd0Psih.jtNsHsFOyJm2PU0oWJOlXsIm18yVBQ_BTGTKfASk0YA
- QCkeGARtSvdyeoRQ1gPa5TcniRYRvmV0LAHaKr3P_xE7VTFqh0_SmxWDry8Z2pDsqjIndJENDoka
- RMJRdPHxQy5nEROBCt_SdH8dAX7AqubKdhcLcK7VWcM6hvSR9MpQ86r73lrxRZNGloN.cN3CuCyI
- MOZW7FNReZNLGB5RAlV.a7tYIAyvq1PZliJJMkdFgS0Sgv7cdi4RnOTY3xQQ3kAuExiaeght_FCE
- 2JU3veJMP9Ng_O5pcUvn8qC.0DyKhEM0yvYBp8XcI7lCU4.52LW53Lftsk4kBR.EpbvSyb1tIsJd
- a5NOzWGTu5KO7Nay8IANH5LggDWX_m2DvCohNK1ZjVXKfqIAyuHQZZRq_zqGaiXJy9mNpUgC1YH_
- 8ID8YG87JaIcSkrbUoIqx_6d5Wqg6e4Ghc6zthBl7NfDqFsTsstD.Y2_2..A90x7l1GQ0BswA678
- 8ZC9P.6hlVw0FQvyVcDvWqj2WMVuSlGHQaT7JgBIjxLmZbucYUNa8u3jUe1AfnMH0CowRq4Xjgbz
- M1LZou0m__lCkRtMiKMMsnt0dN375Xy2dO1tw5rzdXHtgKRnSEERs7Y3fj9UYS4EYfwV3UETsxQe
- LA0h_HzUMockgAD_ARBCIL91pehYo4_2tT3vB20bBjfnnHTDYC5ECsbsbFZnG35j36AeZOi_jK7Y
- ZZgXL.OuEpMZiYbSHuenAuvNPr_DagN375bmHMVrA_VWYlMl5Z7P1Z6O2FLfiRvTu6cEqfJ6Rf6G
- uFxkQmV6EqdLcZIXtNJRl6G7aSg4jevT0iKRRXMJSe5Z.8vHwyWt50qD4h.1ra4iimxYfhpTb4uT
- Z_wCi7FUprkePnOGZl2mxsmNGS4zNOeZGudL8EM9esRdCCQ7umZ.d55hr_2tTpzfS.Z3VnZg.vnz
- bRXxF1w2cBWLuA_JPOUn2sn1Mo8_ygJd1nhj2zA9mQid7Uh.ldOpwWBM4INzQUVKxXe06ugf2dcu
- 3XoQzgRZ7XmmEqM60OeBZnjpZANSpcZTImPzKheVFCPRq7lLfPbxx_gScw8o13Wwfzt3h5EBmuTw
- JvOwO0YN5QHhf42tSVSTVFZDqTJQafQjA2ZL0.C1otAIpejHy0UDRtKxzrhAu3G_zj75a66RmKY5
- _rzs9JQY4Ro_EXjoUdnoPn6a44e8Lzs9mxQqGRELeVva9ZicO9fan4wQG8AhjlcNTMETMJWIyOpo
- 3GgLICkR1N4txBiGMpkc2FetklGV0i.aixs6bVfw9gDqf.kGsp4SCJMevFmAJzWBQyvnzEmZD3VK
- 5eQYb2nYfF_TmwMiAxz0q2esn4hMzpjaSdQQdICPi3wWIxCWxh_VA1HMBLe82K9ITFw.veYwlhCj
- yEZUMnWT6LV.VwXcLfQeCC6Ruu5kW9Y12aeejqd1ASNX2te3C4L09zaCahnjzgLYnMhNpGBDBR_y
- BdEWjVhe6GSjldPaKtT2DEyCQzNIvwEMDTdc-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ne1.yahoo.com with HTTP; Tue, 26 Jan 2021 16:56:57 +0000
-Received: by smtp423.mail.gq1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 32fbc15af0745cf1933c31a9f9c8038e;
-          Tue, 26 Jan 2021 16:46:48 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, linux-audit@redhat.com,
-        keescook@chromium.org, john.johansen@canonical.com,
-        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com,
-        sds@tycho.nsa.gov, linux-kernel@vger.kernel.org,
-        linux-integrity@vger.kernel.org
-Subject: [PATCH v24 05/25] LSM: Use lsmblob in security_audit_rule_match
-Date:   Tue, 26 Jan 2021 08:40:48 -0800
-Message-Id: <20210126164108.1958-6-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.25.4
-In-Reply-To: <20210126164108.1958-1-casey@schaufler-ca.com>
-References: <20210126164108.1958-1-casey@schaufler-ca.com>
+        id S1732130AbhAZRXR (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 26 Jan 2021 12:23:17 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:40003 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S2389641AbhAZH7K (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 26 Jan 2021 02:59:10 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1611647864;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+B2ja/aFXjAGE4IS+0OgtlgwJnapft893TzB26uTWsI=;
+        b=G34CHh15bGyPR0lX+gA4fYVWaTYVKe9osbSMEY7jQQWCb5aWc8dq1XbTaw8LAdh6jvARte
+        zo8tVN8etILExA3SfHm+UiqTipwbBEPsNXfAyKiaBmjIDKLcK+EzWX6j0VP7H1XlgYLKtJ
+        sE0djdewud9Lz3yQbRLkoVYMWv3N4mU=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-377-aeyR5Ks0M_WIDVlMHouhYg-1; Tue, 26 Jan 2021 02:57:40 -0500
+X-MC-Unique: aeyR5Ks0M_WIDVlMHouhYg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 7418E806674;
+        Tue, 26 Jan 2021 07:57:39 +0000 (UTC)
+Received: from localhost (unknown [10.36.110.22])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 8ABD85D752;
+        Tue, 26 Jan 2021 07:57:38 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     SElinux list <selinux@vger.kernel.org>
+Cc:     Nicolas Iooss <nicolas.iooss@m4x.org>,
+        Christian =?utf-8?Q?G=C3=B6ttsc?= =?utf-8?Q?he?= 
+        <cgzones@googlemail.com>
+Subject: Re: [PATCH] newrole: preserve environment variable XDG_RUNTIME_DIR
+In-Reply-To: <CAJfZ7=kvVcix_qbTywWAF8v3HHrRx13qeAaW9GQrLHR83cDaow@mail.gmail.com>
+References: <20210106133449.193940-1-cgzones@googlemail.com>
+ <CAJfZ7=kvVcix_qbTywWAF8v3HHrRx13qeAaW9GQrLHR83cDaow@mail.gmail.com>
+Date:   Tue, 26 Jan 2021 08:57:36 +0100
+Message-ID: <87ft2o166n.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Change the secid parameter of security_audit_rule_match
-to a lsmblob structure pointer. Pass the entry from the
-lsmblob structure for the approprite slot to the LSM hook.
+Nicolas Iooss <nicolas.iooss@m4x.org> writes:
 
-Change the users of security_audit_rule_match to use the
-lsmblob instead of a u32. The scaffolding function lsmblob_init()
-fills the blob with the value of the old secid, ensuring that
-it is available to the appropriate module hook. The sources of
-the secid, security_task_getsecid() and security_inode_getsecid(),
-will be converted to use the blob structure later in the series.
-At the point the use of lsmblob_init() is dropped.
+> On Wed, Jan 6, 2021 at 2:36 PM Christian G=C3=B6ttsche
+> <cgzones@googlemail.com> wrote:
+>>
+>> XDG_RUNTIME_DIR is required for systemctl --user to work.
+>> See https://github.com/systemd/systemd/issues/15231
+>>
+>> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+>> ---
+>>  policycoreutils/newrole/newrole.c | 20 +++++++++++++++-----
+>>  1 file changed, 15 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/policycoreutils/newrole/newrole.c b/policycoreutils/newrole=
+/newrole.c
+>> index 36e2ba9c..500969e0 100644
+>> --- a/policycoreutils/newrole/newrole.c
+>> +++ b/policycoreutils/newrole/newrole.c
+>> @@ -466,7 +466,7 @@ static int extract_pw_data(struct passwd *pw_copy)
+>>   * Either restore the original environment, or set up a minimal one.
+>>   *
+>>   * The minimal environment contains:
+>> - * TERM, DISPLAY and XAUTHORITY - if they are set, preserve values
+>> + * TERM, DISPLAY, XAUTHORITY and XDG_RUNTIME_DIR - if they are set, pre=
+serve values
+>>   * HOME, SHELL, USER and LOGNAME - set to contents of /etc/passwd
+>>   * PATH - set to default value DEFAULT_PATH
+>>   *
+>> @@ -478,9 +478,11 @@ static int restore_environment(int preserve_environ=
+ment,
+>>         char const *term_env;
+>>         char const *display_env;
+>>         char const *xauthority_env;
+>> -       char *term =3D NULL;      /* temporary container */
+>> -       char *display =3D NULL;   /* temporary container */
+>> +       char const *xdg_runtime_dir_env;
+>> +       char *term =3D NULL;              /* temporary container */
+>> +       char *display =3D NULL;           /* temporary container */
+>>         char *xauthority =3D NULL;        /* temporary container */
+>> +       char *xdg_runtime_dir =3D NULL;   /* temporary container */
+>>         int rc;
+>>
+>>         environ =3D old_environ;
+>> @@ -491,6 +493,7 @@ static int restore_environment(int preserve_environm=
+ent,
+>>         term_env =3D getenv("TERM");
+>>         display_env =3D getenv("DISPLAY");
+>>         xauthority_env =3D getenv("XAUTHORITY");
+>> +       xdg_runtime_dir_env =3D getenv("XDG_RUNTIME_DIR");        /* nee=
+ded for `systemd --user` operations */
+>>
+>>         /* Save the variable values we want */
+>>         if (term_env)
+>> @@ -499,8 +502,12 @@ static int restore_environment(int preserve_environ=
+ment,
+>>                 display =3D strdup(display_env);
+>>         if (xauthority_env)
+>>                 xauthority =3D strdup(xauthority_env);
+>> -       if ((term_env && !term) || (display_env && !display) ||
+>> -           (xauthority_env && !xauthority)) {
+>> +       if (xdg_runtime_dir_env)
+>> +               xdg_runtime_dir =3D strdup(xdg_runtime_dir_env);
+>> +       if ((term_env && !term) ||
+>> +           (display_env && !display) ||
+>> +           (xauthority_env && !xauthority) ||
+>> +           (xdg_runtime_dir_env && !xdg_runtime_dir)) {
+>>                 rc =3D -1;
+>>                 goto out;
+>>         }
+>> @@ -518,6 +525,8 @@ static int restore_environment(int preserve_environm=
+ent,
+>>                 rc |=3D setenv("DISPLAY", display, 1);
+>>         if (xauthority)
+>>                 rc |=3D setenv("XAUTHORITY", xauthority, 1);
+>> +       if (xdg_runtime_dir)
+>> +               rc |=3D setenv("XDG_RUNTIME_DIR", xdg_runtime_dir, 1);
+>>         rc |=3D setenv("HOME", pw->pw_dir, 1);
+>>         rc |=3D setenv("SHELL", pw->pw_shell, 1);
+>>         rc |=3D setenv("USER", pw->pw_name, 1);
+>> @@ -527,6 +536,7 @@ static int restore_environment(int preserve_environm=
+ent,
+>>         free(term);
+>>         free(display);
+>>         free(xauthority);
+>> +       free(xdg_runtime_dir);
+>>         return rc;
+>>  }
+>
+> Hello,
+> I am quite uncomfortable with this approach of keeping only one more
+> variable: why is only XDG_RUNTIME_DIR added, and not also
+> XDG_DATA_DIRS, XDG_SESSION_ID, XDG_SESSION_PATH, etc.? For example
+> someone pointed out in
+> https://github.com/systemd/systemd/issues/18301#issuecomment-763933678
+> that DBUS_SESSION_BUS_ADDRESS could also need to be preserved, so
+> there seem to be a long list of items.
+>
+> Moreover I am wondering whether this would be fine to keep such
+> environment variables while newrole uses the information from another
+> user (i.e. when newrole is built with USE_AUDIT and
+> audit_getloginuid() !=3D getuid() because the user changed their UID ;
+> in such a situation newrole resets $HOME and $SHELL to the HOME of
+> audit_getloginuid()).
+>
+> In my humble opinion, I also do not understand why TERM, DISPLAY and
+> XAUTHORITY are kept but not LANG, LC_ALL, and all other LC_...
+> variables. I understand that there exist dangerous environment
+> variables (LD_LIBRARY_PATH, LD_PRELOAD, ...), that resetting the
+> environment to a minimal one is nice, and that using "newrole
+> --preserve-environment" could seem dangerous. For information, sudo
+> has been maintaining a list of "bad" variables, of variables with
+> potential dangerous values and of variables preserved by default, in
+> https://github.com/sudo-project/sudo/blob/SUDO_1_9_5p1/plugins/sudoers/en=
+v.c#L134-L228.
+>
+> This being said, I have never really used newrole but to expose a bug
+> in "sudo -r" a few years ago
+> (https://bugzilla.sudo.ws/show_bug.cgi?id=3D611 "root user can change
+> its SELinux context without password"). Since then I have always used
+> sudo to change role, with the advantage that it can be configured to
+> keep some environment variables, so I am not really the best reviewer
+> for such a patch (and also I am a little bit confused about the
+> "isolation guarantees" that newrole implements, and I am not sure
+> whether keeping XDG_RUNTIME_DIR would not break such guarantees).
+>
+> TL;DR: can another maintainer more familiar with newrole review this
+> patch, please?
+>
+> Thanks,
+> Nicolas
 
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: John Johansen <john.johansen@canonical.com>
-Acked-by: Stephen Smalley <sds@tycho.nsa.gov>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-Cc: linux-audit@redhat.com
-Cc: linux-integrity@vger.kernel.org
-To: Mimi Zohar <zohar@linux.ibm.com>
----
- include/linux/security.h            |  7 ++++---
- kernel/auditfilter.c                |  6 ++++--
- kernel/auditsc.c                    | 14 ++++++++++----
- security/integrity/ima/ima.h        |  4 ++--
- security/integrity/ima/ima_policy.c |  7 +++++--
- security/security.c                 | 10 ++++++++--
- 6 files changed, 33 insertions(+), 15 deletions(-)
+I think it does not make much sense to keep XDG_RUNTIME_DIR
 
-diff --git a/include/linux/security.h b/include/linux/security.h
-index a99a4307176f..112aadf3e7f9 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -1902,7 +1902,8 @@ static inline int security_key_getsecurity(struct key *key, char **_buffer)
- #ifdef CONFIG_SECURITY
- int security_audit_rule_init(u32 field, u32 op, char *rulestr, void **lsmrule);
- int security_audit_rule_known(struct audit_krule *krule);
--int security_audit_rule_match(u32 secid, u32 field, u32 op, void **lsmrule);
-+int security_audit_rule_match(struct lsmblob *blob, u32 field, u32 op,
-+			      void **lsmrule);
- void security_audit_rule_free(void **lsmrule);
- 
- #else
-@@ -1918,8 +1919,8 @@ static inline int security_audit_rule_known(struct audit_krule *krule)
- 	return 0;
- }
- 
--static inline int security_audit_rule_match(u32 secid, u32 field, u32 op,
--					    void **lsmrule)
-+static inline int security_audit_rule_match(struct lsmblob *blob, u32 field,
-+					    u32 op, void **lsmrule)
- {
- 	return 0;
- }
-diff --git a/kernel/auditfilter.c b/kernel/auditfilter.c
-index 45da229f9f1f..e27424216159 100644
---- a/kernel/auditfilter.c
-+++ b/kernel/auditfilter.c
-@@ -1331,6 +1331,7 @@ int audit_filter(int msgtype, unsigned int listtype)
- 			struct audit_field *f = &e->rule.fields[i];
- 			pid_t pid;
- 			u32 sid;
-+			struct lsmblob blob;
- 
- 			switch (f->type) {
- 			case AUDIT_PID:
-@@ -1361,8 +1362,9 @@ int audit_filter(int msgtype, unsigned int listtype)
- 			case AUDIT_SUBJ_CLR:
- 				if (f->lsm_isset) {
- 					security_task_getsecid(current, &sid);
--					result = security_audit_rule_match(sid,
--						   f->type, f->op,
-+					lsmblob_init(&blob, sid);
-+					result = security_audit_rule_match(
-+						   &blob, f->type, f->op,
- 						   f->lsm_rules);
- 				}
- 				break;
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index 9eea55525480..a8335cbe0091 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -472,6 +472,7 @@ static int audit_filter_rules(struct task_struct *tsk,
- 	const struct cred *cred;
- 	int i, need_sid = 1;
- 	u32 sid;
-+	struct lsmblob blob;
- 	unsigned int sessionid;
- 
- 	cred = rcu_dereference_check(tsk->cred, tsk == current || task_creation);
-@@ -670,7 +671,9 @@ static int audit_filter_rules(struct task_struct *tsk,
- 					security_task_getsecid(tsk, &sid);
- 					need_sid = 0;
- 				}
--				result = security_audit_rule_match(sid, f->type,
-+				lsmblob_init(&blob, sid);
-+				result = security_audit_rule_match(&blob,
-+								   f->type,
- 								   f->op,
- 								   f->lsm_rules);
- 			}
-@@ -685,15 +688,17 @@ static int audit_filter_rules(struct task_struct *tsk,
- 			if (f->lsm_isset) {
- 				/* Find files that match */
- 				if (name) {
-+					lsmblob_init(&blob, name->osid);
- 					result = security_audit_rule_match(
--								name->osid,
-+								&blob,
- 								f->type,
- 								f->op,
- 								f->lsm_rules);
- 				} else if (ctx) {
- 					list_for_each_entry(n, &ctx->names_list, list) {
-+						lsmblob_init(&blob, name->osid);
- 						if (security_audit_rule_match(
--								n->osid,
-+								&blob,
- 								f->type,
- 								f->op,
- 								f->lsm_rules)) {
-@@ -705,7 +710,8 @@ static int audit_filter_rules(struct task_struct *tsk,
- 				/* Find ipc objects that match */
- 				if (!ctx || ctx->type != AUDIT_IPC)
- 					break;
--				if (security_audit_rule_match(ctx->ipc.osid,
-+				lsmblob_init(&blob, ctx->ipc.osid);
-+				if (security_audit_rule_match(&blob,
- 							      f->type, f->op,
- 							      f->lsm_rules))
- 					++result;
-diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
-index 8e8b1e3cb847..0c520ea21677 100644
---- a/security/integrity/ima/ima.h
-+++ b/security/integrity/ima/ima.h
-@@ -430,8 +430,8 @@ static inline void ima_filter_rule_free(void *lsmrule)
- {
- }
- 
--static inline int ima_filter_rule_match(u32 secid, u32 field, u32 op,
--					void *lsmrule)
-+static inline int ima_filter_rule_match(struct lsmblob *blob, u32 field,
-+					u32 op, void *lsmrule)
- {
- 	return -EINVAL;
- }
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index de72b719c90c..265184921eef 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -576,6 +576,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule, struct inode *inode,
- 	for (i = 0; i < MAX_LSM_RULES; i++) {
- 		int rc = 0;
- 		u32 osid;
-+		struct lsmblob lsmdata;
- 
- 		if (!ima_lsm_isset(rule, i)) {
- 			if (!rule->lsm[i].args_p)
-@@ -588,14 +589,16 @@ static bool ima_match_rules(struct ima_rule_entry *rule, struct inode *inode,
- 		case LSM_OBJ_ROLE:
- 		case LSM_OBJ_TYPE:
- 			security_inode_getsecid(inode, &osid);
--			rc = ima_filter_rule_match(osid, rule->lsm[i].type,
-+			lsmblob_init(&lsmdata, osid);
-+			rc = ima_filter_rule_match(&lsmdata, rule->lsm[i].type,
- 						   Audit_equal,
- 						   rule->lsm[i].rules);
- 			break;
- 		case LSM_SUBJ_USER:
- 		case LSM_SUBJ_ROLE:
- 		case LSM_SUBJ_TYPE:
--			rc = ima_filter_rule_match(secid, rule->lsm[i].type,
-+			lsmblob_init(&lsmdata, secid);
-+			rc = ima_filter_rule_match(&lsmdata, rule->lsm[i].type,
- 						   Audit_equal,
- 						   rule->lsm[i].rules);
- 		default:
-diff --git a/security/security.c b/security/security.c
-index 05ce02ae7c46..291db266fdc2 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -2605,11 +2605,14 @@ void security_audit_rule_free(void **lsmrule)
- 	hlist_for_each_entry(hp, &security_hook_heads.audit_rule_free, list) {
- 		if (WARN_ON(hp->lsmid->slot < 0 || hp->lsmid->slot >= lsm_slot))
- 			continue;
-+		if (lsmrule[hp->lsmid->slot] == NULL)
-+			continue;
- 		hp->hook.audit_rule_free(lsmrule[hp->lsmid->slot]);
- 	}
- }
- 
--int security_audit_rule_match(u32 secid, u32 field, u32 op, void **lsmrule)
-+int security_audit_rule_match(struct lsmblob *blob, u32 field, u32 op,
-+			      void **lsmrule)
- {
- 	struct security_hook_list *hp;
- 	int rc;
-@@ -2617,7 +2620,10 @@ int security_audit_rule_match(u32 secid, u32 field, u32 op, void **lsmrule)
- 	hlist_for_each_entry(hp, &security_hook_heads.audit_rule_match, list) {
- 		if (WARN_ON(hp->lsmid->slot < 0 || hp->lsmid->slot >= lsm_slot))
- 			continue;
--		rc = hp->hook.audit_rule_match(secid, field, op,
-+		if (lsmrule[hp->lsmid->slot] == NULL)
-+			continue;
-+		rc = hp->hook.audit_rule_match(blob->secid[hp->lsmid->slot],
-+					       field, op,
- 					       &lsmrule[hp->lsmid->slot]);
- 		if (rc)
- 			return rc;
--- 
-2.25.4
+When you change a role, type or level, it's like changing a
+linux user and it should be completely new session.
+
+In Fedora, sysadm_t is not even allow to get status of
+staff_t units:
+
+    [staff@rawhide ~]$ echo $XDG_RUNTIME_DIR
+    /run/user/1001
+    [staff@rawhide ~]$ newrole -r sysadm_r
+    Password:=20
+    [staff@rawhide ~]$ export XDG_RUNTIME_DIR=3D/run/user/1001
+    [staff@rawhide ~]$ systemctl --user list-units
+    Failed to list units: Access denied
+
+    systemd[33326]: selinux: avc:  denied  { status } for auid=3Dn/a uid=3D=
+1001 gid=3D1001 cmdline=3D"" scontext=3Dstaff_u:sysadm_r:sysadm_t:s0-s0:c0.=
+c1023 tcontext=3Dstaff_u:staff_r:staff_t:s0-s0:c0.c1023 tclass=3Dsystem per=
+missive=3D0
+    systemd[33326]: selinux: avc:  denied  { status } for auid=3Dn/a uid=3D=
+1001 gid=3D1001 cmdline=3D"" scontext=3Dstaff_u:sysadm_r:sysadm_t:s0-s0:c0.=
+c1023 tcontext=3Dstaff_u:staff_r:staff_t:s0-s0:c0.c1023 tclass=3Dsystem per=
+missive=3D0
+
+There's also question why one would use newrole to control their a
+systemd user session when it's possible to control it directly.=20
 

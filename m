@@ -2,244 +2,99 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD383307FBF
-	for <lists+selinux@lfdr.de>; Thu, 28 Jan 2021 21:38:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 481063080D0
+	for <lists+selinux@lfdr.de>; Thu, 28 Jan 2021 22:54:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229866AbhA1Uin (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 28 Jan 2021 15:38:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37614 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbhA1Uim (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 28 Jan 2021 15:38:42 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EE82C061574
-        for <selinux@vger.kernel.org>; Thu, 28 Jan 2021 12:38:02 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id d16so6710043wro.11
-        for <selinux@vger.kernel.org>; Thu, 28 Jan 2021 12:38:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1UVTyfisZAnJyUTGj4E05jEDNc8Dha7tB5MVBOZTxgI=;
-        b=ThxQPnFlQS2JusYTiQxFRP3+0zCf67Lx1mZmUowPWQxOSXDGBf95O4lG5NKH0KvxFB
-         Njg81kGWKAhCSjVrUAT5rwS36+YsMq93vtkglgZDRf9+97oM5WB/yHVObYB6bh878ytQ
-         LI3TljWwYHbhh9xVUucfC3iUGmatqLJI0PvLxitJOoIwtWHV+iIU5A0Opi8hXMTNpipK
-         M7sCdDcKFeXICxGPa4UxsZSjQdeWH/cT3hFXNuP/KbYlwsFrLc3vbKX9ByhKaeRH8idL
-         5ExA6IFOiCNtWzF1wU8tB6vVMTG/rTOHlXqIlVkwIx8rD36WcPaduWxDPtr6Kmt5APXY
-         WcVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1UVTyfisZAnJyUTGj4E05jEDNc8Dha7tB5MVBOZTxgI=;
-        b=OS9WORC8dUp/fXy78hTm+Uv+PO3Ma/QUse5HQuz401Cv3/HBogztdN/3yP4Xr4OyNN
-         Fe9urzSqXU/yObhGOKys6Lddj4GdHsfoM7Taly1G1p3Xq76wPYW9VmfF45cGCsltqpDa
-         FwW1y6fovx6Y/rDRxl7i/zAWKeF3hWephso/krDoHFf+xg59Z0lRka75TvAaumb6HbZE
-         1q9hLKZAXQ6Kk90O6zXQH+BWdF47NyhokNb9kddgGjNXh3Z+NnJ3uvrVgLWmh9kCFZW5
-         iPHUm9ToaarsamGmJdGUjK2yKHf0wpB0MwwNVrgPK1mouD731Wvx3CyM1Xch0pcSdSwN
-         W4Bw==
-X-Gm-Message-State: AOAM53064J/IYTelwPV2/PLRj8DJ1uGu3Gj8/ZMg2PPw1RwGazRdEfO7
-        0M6A4U5sUtMq6UhXIpE8uqw3aobkVqQcEJ8t4xUnQA==
-X-Google-Smtp-Source: ABdhPJx+4T/pO4+VmwEvjZVx1CDiwbKYgrpPlUmq9ilFyshra0xthpiM/f5kvNBGGgKzNC8NOCSNdGRi87R0LyUm7L8=
-X-Received: by 2002:a5d:6884:: with SMTP id h4mr999072wru.106.1611866280568;
- Thu, 28 Jan 2021 12:38:00 -0800 (PST)
+        id S231549AbhA1Vx4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 28 Jan 2021 16:53:56 -0500
+Received: from spe8-2.ucebox.co.za ([197.242.156.207]:39142 "EHLO
+        spe8-2.ucebox.co.za" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231403AbhA1Vxw (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 28 Jan 2021 16:53:52 -0500
+X-Greylist: delayed 6124 seconds by postgrey-1.27 at vger.kernel.org; Thu, 28 Jan 2021 16:53:45 EST
+Received: from cornucopia.aserv.co.za ([154.0.175.203])
+        by spe2.ucebox.co.za with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
+        (Exim 4.92)
+        (envelope-from <manornutgrovemanor@gmail.com>)
+        id 1l5Bno-0001H8-2W; Thu, 28 Jan 2021 20:14:25 +0200
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by cornucopia.aserv.co.za (Postfix) with ESMTPA id 2C01EC1250;
+        Thu, 28 Jan 2021 20:12:38 +0200 (SAST)
 MIME-Version: 1.0
-References: <20210120202337.1481402-1-surenb@google.com> <CAKgNAkgsQWL3QAyF6CQU=yifzA1tfp_E5kBBNKuAq_+sB4Amyw@mail.gmail.com>
- <CAJuCfpEfMgA6z5S5gmHwJB_3KWwmKKp434GeHheUGF3yC7r01w@mail.gmail.com> <6cd84701-fb65-7aa0-38db-b69fe5748754@gmail.com>
-In-Reply-To: <6cd84701-fb65-7aa0-38db-b69fe5748754@gmail.com>
-From:   Suren Baghdasaryan <surenb@google.com>
-Date:   Thu, 28 Jan 2021 12:37:49 -0800
-Message-ID: <CAJuCfpGsi_973t=c0TXCQE4JPSN+APJW-insxFuRUwbWh4Pk-Q@mail.gmail.com>
-Subject: Re: [PATCH 1/1] process_madvise.2: Add process_madvise man page
-To:     "Michael Kerrisk (man-pages)" <mtk.manpages@gmail.com>
-Cc:     linux-man <linux-man@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Jeffrey Vander Stoep <jeffv@google.com>,
-        Minchan Kim <minchan@kernel.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        David Rientjes <rientjes@google.com>,
-        =?UTF-8?Q?Edgar_Arriaga_Garc=C3=ADa?= <edgararriaga@google.com>,
-        Tim Murray <timmurray@google.com>,
-        Linux-MM <linux-mm@kvack.org>,
-        SElinux list <selinux@vger.kernel.org>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        lkml <linux-kernel@vger.kernel.org>,
-        Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Thu, 28 Jan 2021 20:12:38 +0200
+From:   Nut Grove Manor <manornutgrovemanor@gmail.com>
+To:     undisclosed-recipients:;
+Subject: Invitation To Quote
+User-Agent: Roundcube Webmail/1.4.1
+Message-ID: <bc9a5f43f3caae762f95ca676f59aca0@gmail.com>
+X-Sender: manornutgrovemanor@gmail.com
+X-Originating-IP: 154.0.175.203
+X-Afrihost-Domain: pesci.aserv.co.za
+X-Afrihost-Username: 154.0.175.203
+Authentication-Results: ucebox.co.za; auth=pass smtp.auth=154.0.175.203@pesci.aserv.co.za
+X-Afrihost-Outgoing-Class: unsure
+X-Afrihost-Outgoing-Evidence: Combined (0.71)
+X-Recommended-Action: accept
+X-Filter-ID: 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
+X-Report-Abuse-To: spam@spe1.ucebox.co.za
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jan 28, 2021 at 12:31 PM Michael Kerrisk (man-pages)
-<mtk.manpages@gmail.com> wrote:
->
-> Hello Suren,
->
-> On 1/28/21 7:40 PM, Suren Baghdasaryan wrote:
-> > On Thu, Jan 28, 2021 at 4:24 AM Michael Kerrisk (man-pages)
-> > <mtk.manpages@gmail.com> wrote:
-> >>
-> >> Hello Suren,
-> >>
-> >> Thank you for writing this page! Some comments below.
-> >
-> > Thanks for the review!
-> > Couple questions below and I'll respin the new version once they are clarified.
->
-> Okay. See below.
->
-> >> On Wed, 20 Jan 2021 at 21:36, Suren Baghdasaryan <surenb@google.com> wrote:
-> >>>
->
-> [...]
->
-> Thanks for all the acks. That let's me know that you saw what I said.
->
-> >>> RETURN VALUE
-> >>>     On success, process_madvise() returns the number of bytes advised. This
-> >>>     return value may be less than the total number of requested bytes, if an
-> >>>     error occurred. The caller should check return value to determine whether
-> >>>     a partial advice occurred.
-> >>
-> >> So there are three return values possible,
-> >
-> > Ok, I think I see your point. How about this instead:
->
-> Well, I'm glad you saw it, because I forgot to finish it. But yes,
-> you understood what I forgot to say.
->
-> > RETURN VALUE
-> >      On success, process_madvise() returns the number of bytes advised. This
-> >      return value may be less than the total number of requested bytes, if an
-> >      error occurred after some iovec elements were already processed. The caller
-> >      should check the return value to determine whether a partial
-> > advice occurred.
-> >
-> >     On error, -1 is returned and errno is set appropriately.
->
-> We recently standardized some wording here:
-> s/appropriately/to indicate the error/.
+Good Day Sir
 
-ack
+We are please to invite you/your company to quote the following item
+listed
+below:
 
->
->
-> >>> +.PP
-> >>> +The pointer
-> >>> +.I iovec
-> >>> +points to an array of iovec structures, defined in
-> >>
-> >> "iovec" should be formatted as
-> >>
-> >> .I iovec
-> >
-> > I think it is formatted that way above. What am I missing?
->
-> But also in "an array of iovec structures"...
+Product/Model No: TM9653 PRESSURE REGULATOR
+Product Name:MEKO
+Qty. 30 units
 
-ack
+Compulsory,Kindly send your quotation
+for immediate approval.
 
->
-> > BTW, where should I be using .I vs .IR? I was looking for an answer
-> > but could not find it.
->
-> .B / .I == bold/italic this line
-> .BR / .IR == alternate bold/italic with normal (Roman) font.
->
-> So:
-> .I iovec
-> .I iovec ,       # so that comma is not italic
-> .BR process_madvise ()
-> etc.
-
-Aha! Got it now. It's clear after your example. Thanks!
-
->
-> [...]
->
-> >>> +.I iovec
-> >>> +if one of its elements points to an invalid memory
-> >>> +region in the remote process. No further elements will be
-> >>> +processed beyond that point.
-> >>> +.PP
-> >>> +Permission to provide a hint to external process is governed by a
-> >>> +ptrace access mode
-> >>> +.B PTRACE_MODE_READ_REALCREDS
-> >>> +check; see
-> >>> +.BR ptrace (2)
-> >>> +and
-> >>> +.B CAP_SYS_ADMIN
-> >>> +capability that caller should have in order to affect performance
-> >>> +of an external process.
-> >>
-> >> The preceding sentence is garbled. Missing words?
-> >
-> > Maybe I worded it incorrectly. What I need to say here is that the
-> > caller should have both PTRACE_MODE_READ_REALCREDS credentials and
-> > CAP_SYS_ADMIN capability. The first part I shamelessly copy/pasted
-> > from https://man7.org/linux/man-pages/man2/process_vm_readv.2.html and
-> > tried adding the second one to it, obviously unsuccessfully. Any
-> > advice on how to fix that?
->
-> I think you already got pretty close. How about:
->
-> [[
-> Permission to provide a hint to another process is governed by a
-> ptrace access mode
-> .B PTRACE_MODE_READ_REALCREDS
-> check (see
-> BR ptrace (2));
-> in addition, the caller must have the
-> .B CAP_SYS_ADMIN
-> capability.
-> ]]
-
-Perfect! I'll use that.
-
->
-> [...]
->
-> >>> +.TP
-> >>> +.B ESRCH
-> >>> +No process with ID
-> >>> +.I pidfd
-> >>> +exists.
-> >>
-> >> Should this maybe be:
-> >> [[
-> >> The target process does not exist (i.e., it has terminated and
-> >> been waited on).
-> >> ]]
-> >>
-> >> See pidfd_send_signal(2).
-> >
-> > I "borrowed" mine from
-> > https://man7.org/linux/man-pages/man2/process_vm_readv.2.html but
-> > either one sounds good to me. Maybe for pidfd_send_signal the wording
-> > about termination is more important. Anyway, it's up to you. Just let
-> > me know which one to use.
->
-> I think the pidfd_send_signal(2) wording fits better.
-
-ack, will use pidfd_send_signal(2) version.
-
->
-> [...]
->
-> Thanks,
->
-> Michael
-
-I'll include your and Michal's suggestions and will post the next
-version later today or tomorrow morning.
-Thanks for the guidance!
-
->
-> --
-> Michael Kerrisk
-> Linux man-pages maintainer; http://www.kernel.org/doc/man-pages/
-> Linux/UNIX System Programming Training: http://man7.org/training/
+Kind Regards,
+Albert Bourla
+PFIZER B.V Supply Chain Manager
+Tel: +31(0)208080 880
+ADDRESS: Rivium Westlaan 142, 2909 LD
+Capelle aan den IJssel, Netherlands

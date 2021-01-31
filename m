@@ -2,131 +2,98 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33B56309B61
-	for <lists+selinux@lfdr.de>; Sun, 31 Jan 2021 11:39:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D5EB309BC4
+	for <lists+selinux@lfdr.de>; Sun, 31 Jan 2021 13:00:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230523AbhAaKiG (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 31 Jan 2021 05:38:06 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:22493 "EHLO
+        id S231598AbhAaLw3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 31 Jan 2021 06:52:29 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:29145 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230479AbhAaK3V (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 31 Jan 2021 05:29:21 -0500
+        by vger.kernel.org with ESMTP id S231530AbhAaLqK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 31 Jan 2021 06:46:10 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612088875;
+        s=mimecast20190719; t=1612093471;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=hGgUtQy/EotPb4+t3c0I8Em3zgpFP6WAj0sA+HmRbnQ=;
-        b=WoFEVlwBHgLICXFE/5TaAIIK9l1ovnVVZ1YZvHaklCP3GDXpuXBTUBA6myzzAVlJL1iaXC
-        Uja4y93mVNCW0KZlh6/JBrZPISSE60zqk9mviwS4AVUr0CSGlsFO3+osza+PgOsTGRiU+y
-        Y3Z3dUGuW9Lp0sHpVXYQKqD0LIu4CPk=
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=hu4hfhClN5l2sVYRZd+zbYi+HUCGDrHy3GXil/KkXdw=;
+        b=IXPgq9BoDe4dwOd3Np40dbeAIe1DulXa7ct0HNi+wsvoo5pUuP8F+jpdkkjk5tE7tAKye8
+        dwNDXVatra9HZQ/7T0BCxDXr0dLMGZoy5S2qIsigdBhnVCg3eAHq9FLeHt9SZT5zsVxWlR
+        VqhX5cOm2CR/IsJkER7+GEdTh7fpg6I=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-197-IwJ-zNevMv2pPNPqw1p_og-1; Sun, 31 Jan 2021 05:27:52 -0500
-X-MC-Unique: IwJ-zNevMv2pPNPqw1p_og-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
+ us-mta-62-5-8BT1oLPU6GOMztFQ71Sw-1; Sun, 31 Jan 2021 06:03:03 -0500
+X-MC-Unique: 5-8BT1oLPU6GOMztFQ71Sw-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.phx2.redhat.com [10.5.11.22])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 99F4C10054FF
-        for <selinux@vger.kernel.org>; Sun, 31 Jan 2021 10:27:51 +0000 (UTC)
-Received: from localhost (unknown [10.40.192.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 2BB8D5DA2E
-        for <selinux@vger.kernel.org>; Sun, 31 Jan 2021 10:27:50 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 31ECB10054FF
+        for <selinux@vger.kernel.org>; Sun, 31 Jan 2021 11:03:02 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.40.192.93])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5DE2B10016FD;
+        Sun, 31 Jan 2021 11:03:01 +0000 (UTC)
 From:   Petr Lautrbach <plautrba@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] setfiles: drop ABORT_ON_ERRORS and related code
-In-Reply-To: <20210113210948.217575-2-plautrba@redhat.com>
-References: <20210113210948.217575-1-plautrba@redhat.com>
- <20210113210948.217575-2-plautrba@redhat.com>
-Date:   Sun, 31 Jan 2021 11:27:50 +0100
-Message-ID: <875z3do0yh.fsf@redhat.com>
+Cc:     Petr Lautrbach <plautrba@redhat.com>
+Subject: [PATCH v3] libsemanage: sync filesystem with sandbox
+Date:   Sun, 31 Jan 2021 12:02:51 +0100
+Message-Id: <20210131110251.300553-1-plautrba@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.22
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-UGV0ciBMYXV0cmJhY2ggPHBsYXV0cmJhQHJlZGhhdC5jb20+IHdyaXRlczoNCg0KPiBgc2V0Zmls
-ZXMgLWRgIGRvZXNuJ3QgaGF2ZSBhbnkgaW1wYWN0IG9uIG51bWJlciBvZiBlcnJvcnMgYmVmb3Jl
-IGl0DQo+IGFib3J0cy4gSXQgYWx3YXlzIGFib3J0cyBvbiBmaXJzdCBpbnZhbGlkIGNvbnRleHQg
-aW4gc3BlYyBmaWxlLg0KPg0KPiBTaWduZWQtb2ZmLWJ5OiBQZXRyIExhdXRyYmFjaCA8cGxhdXRy
-YmFAcmVkaGF0LmNvbT4NCj4gLS0tDQo+ICBwb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvTWFrZWZp
-bGUgICAgICB8ICAzIC0tLQ0KPiAgcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3J1L3NldGZpbGVz
-LjggfCAgMiArLQ0KPiAgcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3NldGZpbGVzLjggICAgfCAg
-MyArLS0NCj4gIHBvbGljeWNvcmV1dGlscy9zZXRmaWxlcy9zZXRmaWxlcy5jICAgIHwgMTggLS0t
-LS0tLS0tLS0tLS0tLS0tDQo+ICA0IGZpbGVzIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgMjQg
-ZGVsZXRpb25zKC0pDQo+DQo+IGRpZmYgLS1naXQgYS9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMv
-TWFrZWZpbGUgYi9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvTWFrZWZpbGUNCj4gaW5kZXggYmM1
-YThkYjc4OWE1Li5hM2JiYmUxMTZiN2YgMTAwNjQ0DQo+IC0tLSBhL3BvbGljeWNvcmV1dGlscy9z
-ZXRmaWxlcy9NYWtlZmlsZQ0KPiArKysgYi9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvTWFrZWZp
-bGUNCj4gQEAgLTUsOCArNSw2IEBAIFNCSU5ESVIgPz0gL3NiaW4NCj4gIE1BTkRJUiA9ICQoUFJF
-RklYKS9zaGFyZS9tYW4NCj4gIEFVRElUSCA/PSAkKHNoZWxsIHRlc3QgLWYgL3Vzci9pbmNsdWRl
-L2xpYmF1ZGl0LmggJiYgZWNobyB5KQ0KPiAgDQo+IC1BQk9SVF9PTl9FUlJPUlM9JChzaGVsbCBn
-cmVwICJeXCNkZWZpbmUgQUJPUlRfT05fRVJST1JTIiBzZXRmaWxlcy5jIHwgYXdrIC1TICd7IHBy
-aW50ICQkMyB9JykNCj4gLQ0KPiAgQ0ZMQUdTID89IC1nIC1XZXJyb3IgLVdhbGwgLVcNCj4gIG92
-ZXJyaWRlIExETElCUyArPSAtbHNlbGludXggLWxzZXBvbA0KPiAgDQo+IEBAIC0yNiw3ICsyNCw2
-IEBAIHJlc3RvcmVjb25feGF0dHI6IHJlc3RvcmVjb25feGF0dHIubyByZXN0b3JlLm8NCj4gIA0K
-PiAgbWFuOg0KPiAgCUBjcCAtYWYgc2V0ZmlsZXMuOCBzZXRmaWxlcy44Lm1hbg0KPiAtCUBzZWQg
-LWkgInMvQUJPUlRfT05fRVJST1JTLyQoQUJPUlRfT05fRVJST1JTKS9nIiBzZXRmaWxlcy44Lm1h
-bg0KPiAgDQo+ICBpbnN0YWxsOiBhbGwNCj4gIAlbIC1kICQoREVTVERJUikkKE1BTkRJUikvbWFu
-OCBdIHx8IG1rZGlyIC1wICQoREVTVERJUikkKE1BTkRJUikvbWFuOA0KPiBkaWZmIC0tZ2l0IGEv
-cG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3J1L3NldGZpbGVzLjggYi9wb2xpY3ljb3JldXRpbHMv
-c2V0ZmlsZXMvcnUvc2V0ZmlsZXMuOA0KPiBpbmRleCAyNzgxNWEzZjFlZWUuLjkxMDEwMTQ1MjYy
-NSAxMDA2NDQNCj4gLS0tIGEvcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3J1L3NldGZpbGVzLjgN
-Cj4gKysrIGIvcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3J1L3NldGZpbGVzLjgNCj4gQEAgLTQ3
-LDcgKzQ3LDcgQEAgc2V0ZmlsZXMgXC0g0YPRgdGC0LDQvdC+0LLQuNGC0YwgU0VMaW51eC3QutC+
-0L3RgtC10LrRgdGC0Ysg0LHQtdC30L7Qv9Cw0YHQvdC+0YENCj4gINC/0YDQvtCy0LXRgNC40YLR
-jCDQtNC10LnRgdGC0LLQuNGC0LXQu9GM0L3QvtGB0YLRjCDQutC+0L3RgtC10LrRgdGC0L7QsiDQ
-vtGC0L3QvtGB0LjRgtC10LvRjNC90L4g0YPQutCw0LfQsNC90L3QvtC5INC00LLQvtC40YfQvdC+
-0Lkg0L/QvtC70LjRgtC40LrQuC4NCj4gIC5UUA0KPiAgLkIgXC1kDQo+IC3Qv9C+0LrQsNC30LDR
-gtGMLCDQutCw0LrQsNGPINGB0L/QtdGG0LjRhNC40LrQsNGG0LjRjyDRgdC+0L7RgtCy0LXRgtGB
-0YLQstGD0LXRgiDQutCw0LbQtNC+0LzRgyDQuNC3INGE0LDQudC70L7QsiAo0L3QtSDQv9GA0LXQ
-utGA0LDRidCw0YLRjCDQv9GA0L7QstC10YDQutGDINC/0L7RgdC70LUg0L/QvtC70YPRh9C10L3Q
-uNGPINC+0YjQuNCx0L7QuiBBQk9SVF9PTl9FUlJPUlMpLg0KPiAr0L/QvtC60LDQt9Cw0YLRjCwg
-0LrQsNC60LDRjyDRgdC/0LXRhtC40YTQuNC60LDRhtC40Y8g0YHQvtC+0YLQstC10YLRgdGC0LLR
-g9C10YIg0LrQsNC20LTQvtC80YMg0LjQtyDRhNCw0LnQu9C+0LIuDQo+ICAuVFANCj4gIC5CSSBc
-LWUgXCBkaXJlY3RvcnkNCj4gINC40YHQutC70Y7Rh9C40YLRjCDQutCw0YLQsNC70L7QsyAo0YfR
-gtC+0LHRiyDQuNGB0LrQu9GO0YfQuNGC0Ywg0LHQvtC70LXQtSDQvtC00L3QvtCz0L4g0LrQsNGC
-0LDQu9C+0LPQsCwg0Y3RgtC+0YIg0L/QsNGA0LDQvNC10YLRgCDQvdC10L7QsdGF0L7QtNC40LzQ
-viDQuNGB0L/QvtC70YzQt9C+0LLQsNGC0Ywg0YHQvtC+0YLQstC10YLRgdGC0LLRg9GO0YnQtdC1
-INC60L7Qu9C40YfQtdGB0YLQstC+INGA0LDQtykuDQo+IGRpZmYgLS1naXQgYS9wb2xpY3ljb3Jl
-dXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuOCBiL3BvbGljeWNvcmV1dGlscy9zZXRmaWxlcy9zZXRm
-aWxlcy44DQo+IGluZGV4IGUzMjhhNTYyODY4Mi4uNGQyOGJjOWE5NWMxIDEwMDY0NA0KPiAtLS0g
-YS9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuOA0KPiArKysgYi9wb2xpY3ljb3Jl
-dXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuOA0KPiBAQCAtNTcsOCArNTcsNyBAQCBvcHRpb24gd2ls
-bCBmb3JjZSBhIHJlcGxhY2VtZW50IG9mIHRoZSBlbnRpcmUgY29udGV4dC4NCj4gIGNoZWNrIHRo
-ZSB2YWxpZGl0eSBvZiB0aGUgY29udGV4dHMgYWdhaW5zdCB0aGUgc3BlY2lmaWVkIGJpbmFyeSBw
-b2xpY3kuDQo+ICAuVFANCj4gIC5CIFwtZA0KPiAtc2hvdyB3aGF0IHNwZWNpZmljYXRpb24gbWF0
-Y2hlZCBlYWNoIGZpbGUgKGRvIG5vdCBhYm9ydCB2YWxpZGF0aW9uDQo+IC1hZnRlciBBQk9SVF9P
-Tl9FUlJPUlMgZXJyb3JzKS4NCj4gK3Nob3cgd2hhdCBzcGVjaWZpY2F0aW9uIG1hdGNoZWQgZWFj
-aCBmaWxlLg0KPiAgLlRQDQo+ICAuQkkgXC1lIFwgZGlyZWN0b3J5DQo+ICBkaXJlY3RvcnkgdG8g
-ZXhjbHVkZSAocmVwZWF0IG9wdGlvbiBmb3IgbW9yZSB0aGFuIG9uZSBkaXJlY3RvcnkpLg0KPiBk
-aWZmIC0tZ2l0IGEvcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3NldGZpbGVzLmMgYi9wb2xpY3lj
-b3JldXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuYw0KPiBpbmRleCAxMDY5MmQ2ZDk0YTAuLjkyNjE2
-NTcxZWYyYSAxMDA2NDQNCj4gLS0tIGEvcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3NldGZpbGVz
-LmMNCj4gKysrIGIvcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3NldGZpbGVzLmMNCj4gQEAgLTIz
-LDE0ICsyMyw2IEBAIHN0YXRpYyBpbnQgbmVycjsNCj4gIA0KPiAgI2RlZmluZSBTVEFUX0JMT0NL
-X1NJWkUgMQ0KPiAgDQo+IC0vKiBzZXRmaWxlcyB3aWxsIGFib3J0IGl0cyBvcGVyYXRpb24gYWZ0
-ZXIgcmVhY2hpbmcgdGhlDQo+IC0gKiBmb2xsb3dpbmcgbnVtYmVyIG9mIGVycm9ycyAoZS5nLiBp
-bnZhbGlkIGNvbnRleHRzKSwNCj4gLSAqIHVubGVzcyBpdCBpcyB1c2VkIGluICJkZWJ1ZyIgbW9k
-ZSAoLWQgb3B0aW9uKS4NCj4gLSAqLw0KPiAtI2lmbmRlZiBBQk9SVF9PTl9FUlJPUlMNCj4gLSNk
-ZWZpbmUgQUJPUlRfT05fRVJST1JTCTEwDQo+IC0jZW5kaWYNCj4gLQ0KPiAgI2RlZmluZSBTRVRG
-SUxFUyAic2V0ZmlsZXMiDQo+ICAjZGVmaW5lIFJFU1RPUkVDT04gInJlc3RvcmVjb24iDQo+ICBz
-dGF0aWMgaW50IGlhbXJlc3RvcmVjb247DQo+IEBAIC01NiwxNSArNDgsNiBAQCBzdGF0aWMgX19h
-dHRyaWJ1dGVfXygoX19ub3JldHVybl9fKSkgdm9pZCB1c2FnZShjb25zdCBjaGFyICpjb25zdCBu
-YW1lKQ0KPiAgCWV4aXQoLTEpOw0KPiAgfQ0KPiAgDQo+IC12b2lkIGluY19lcnIodm9pZCkNCj4g
-LXsNCj4gLQluZXJyKys7DQo+IC0JaWYgKG5lcnIgPiBBQk9SVF9PTl9FUlJPUlMgLSAxICYmICFy
-X29wdHMuZGVidWcpIHsNCj4gLQkJZnByaW50ZihzdGRlcnIsICJFeGl0aW5nIGFmdGVyICVkIGVy
-cm9ycy5cbiIsIEFCT1JUX09OX0VSUk9SUyk7DQo+IC0JCWV4aXQoLTEpOw0KPiAtCX0NCj4gLX0N
-Cj4gLQ0KPiAgdm9pZCBzZXRfcm9vdHBhdGgoY29uc3QgY2hhciAqYXJnKQ0KPiAgew0KPiAgCWlm
-IChzdHJsZW4oYXJnKSA9PSAxICYmIHN0cm5jbXAoYXJnLCAiLyIsIDEpID09IDApIHsNCj4gQEAg
-LTk3LDcgKzgwLDYgQEAgaW50IGNhbm9uY29uKGNoYXIgKipjb250ZXh0cCkNCj4gIAkJKmNvbnRl
-eHRwID0gdG1wY29uOw0KPiAgCX0gZWxzZSBpZiAoZXJybm8gIT0gRU5PRU5UKSB7DQo+ICAJCXJj
-ID0gLTE7DQo+IC0JCWluY19lcnIoKTsNCj4gIAl9DQo+ICANCj4gIAlyZXR1cm4gcmM7DQo+IC0t
-IA0KPiAyLjMwLjANCg0KDQpJZiB0aGVyZSdzIG5vIG9iamVjdGlvbiBJJ2QgbGlrZSB0byBtZXJn
-ZSBib3RoIHBhdGNoZXMgYmVmb3JlIFdlZG5lc2RheQ0Kc28gdGhleSdsbCBwYXJ0IG9mIHJjMi4N
-Cg0K
+Commit 331a109f91ea ("libsemanage: fsync final files before rename")
+added fsync() for policy files and improved situation when something
+unexpected happens right after rename(). However the module store could
+be affected as well. After the following steps module files could be 0
+size:
+
+1. Run `semanage fcontext -a -t var_t "/tmp/abc"`
+2. Force shutdown the server during the command is run, or right after
+   it's finished
+3. Boot the system and look for empty files:
+    # find /var/lib/selinux/targeted/ -type f -size 0 | wc -l
+    1266
+
+It looks like this situation can be avoided if the filesystem with the
+sandbox is sync()ed before we start to rename() directories in the
+store.
+
+Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+---
+
+- syncfs() moved before rename() dance
+
+ libsemanage/src/semanage_store.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
+index cd5e46bb2401..c6a736fe2d26 100644
+--- a/libsemanage/src/semanage_store.c
++++ b/libsemanage/src/semanage_store.c
+@@ -1736,6 +1736,19 @@ static int semanage_commit_sandbox(semanage_handle_t * sh)
+ 	}
+ 	close(fd);
+ 
++	/* sync changes in sandbox to filesystem */
++	fd = open(sandbox, O_DIRECTORY);
++	if (fd == -1) {
++		ERR(sh, "Error while opening %s for syncfs(): %d", sandbox, errno);
++		return -1;
++	}
++	if (syncfs(fd) == -1) {
++		ERR(sh, "Error while syncing %s to filesystem: %d", sandbox, errno);
++		close(fd);
++		return -1;
++	}
++	close(fd);
++
+ 	retval = commit_number;
+ 
+ 	if (semanage_get_active_lock(sh) < 0) {
+-- 
+2.30.0
 

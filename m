@@ -2,146 +2,155 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C59F5309C01
-	for <lists+selinux@lfdr.de>; Sun, 31 Jan 2021 13:37:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 93FFD309E7C
+	for <lists+selinux@lfdr.de>; Sun, 31 Jan 2021 21:03:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230526AbhAaKgQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 31 Jan 2021 05:36:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:23817 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230484AbhAaKKu (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 31 Jan 2021 05:10:50 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612087763;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=DewXL8P6Y3gTK9v/c4CgbrbHAUpuTFSjz/5wrRZkpP0=;
-        b=PbdQ3Utgkz3DY/oH5r0CQLDLFIJIcWM9qOVtUPUpPAJEzz/WH1fwfBIbDx8UHQVByySIuh
-        koZGI8DenDwIV9ME+PfwGbvxleH+zgUv4uyWVi7HkojnoC37iNaNl8JfNZj2d1fXQCqahp
-        tGyfCyq5tST3Ompu2lYZ6HpmCkoWNzA=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-458-txhuJIMMO0KKIoOHMJGLeg-1; Sun, 31 Jan 2021 05:09:20 -0500
-X-MC-Unique: txhuJIMMO0KKIoOHMJGLeg-1
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S230033AbhAaUDA (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 31 Jan 2021 15:03:00 -0500
+Received: from mx1.polytechnique.org ([129.104.30.34]:49336 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231757AbhAaT6w (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 31 Jan 2021 14:58:52 -0500
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 824BA107ACE4;
-        Sun, 31 Jan 2021 10:09:19 +0000 (UTC)
-Received: from localhost (unknown [10.40.192.93])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E60D37086E;
-        Sun, 31 Jan 2021 10:09:18 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
-To:     SElinux list <selinux@vger.kernel.org>
-Cc:     Nicolas Iooss <nicolas.iooss@m4x.org>
-Subject: Re: [PATCH] scripts/release: Release also tarball with everything
-In-Reply-To: <CAJfZ7=mJ+=tPA8aZzmxhgRqR-incXW8qztibPPQ=RSkc2pS_kQ@mail.gmail.com>
-References: <20210129200034.205263-1-plautrba@redhat.com>
- <CAJfZ7=mJ+=tPA8aZzmxhgRqR-incXW8qztibPPQ=RSkc2pS_kQ@mail.gmail.com>
-Date:   Sun, 31 Jan 2021 11:09:17 +0100
-Message-ID: <87bld5o1te.fsf@redhat.com>
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 8C25B564E37
+        for <selinux@vger.kernel.org>; Sun, 31 Jan 2021 18:30:46 +0100 (CET)
+Received: by mail-oi1-f172.google.com with SMTP id w124so16221083oia.6
+        for <selinux@vger.kernel.org>; Sun, 31 Jan 2021 09:30:46 -0800 (PST)
+X-Gm-Message-State: AOAM530jKq68zWdzH9h63XvsLmpFnkL9c7grgIwsB2PKiX62bf5C3W82
+        cPaBd3uNxcu/aTPkqjoGJNlGdhS95pfT5bkRd/o=
+X-Google-Smtp-Source: ABdhPJyXuchX7nCynRVeZMtEpVerULVreYS3EYxLwKMJMV1jRN/jkMK+du7KQB6OjkIEfhpvYTL+CY1+pIlD55ELJiU=
+X-Received: by 2002:a05:6808:918:: with SMTP id w24mr8732526oih.20.1612114245435;
+ Sun, 31 Jan 2021 09:30:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
+References: <20210129200034.205263-1-plautrba@redhat.com> <CAJfZ7=mJ+=tPA8aZzmxhgRqR-incXW8qztibPPQ=RSkc2pS_kQ@mail.gmail.com>
+ <87bld5o1te.fsf@redhat.com>
+In-Reply-To: <87bld5o1te.fsf@redhat.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Sun, 31 Jan 2021 18:30:34 +0100
+X-Gmail-Original-Message-ID: <CAJfZ7=mJ7-RCXFO1iDDmaUJx24xmd6-+-ERmi1J7w82Kb3hi7A@mail.gmail.com>
+Message-ID: <CAJfZ7=mJ7-RCXFO1iDDmaUJx24xmd6-+-ERmi1J7w82Kb3hi7A@mail.gmail.com>
+Subject: Re: [PATCH] scripts/release: Release also tarball with everything
+To:     Petr Lautrbach <plautrba@redhat.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sun Jan 31 18:30:46 2021 +0100 (CET))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=E93B2564E08
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Nicolas Iooss <nicolas.iooss@m4x.org> writes:
-
-> On Fri, Jan 29, 2021 at 9:06 PM Petr Lautrbach <plautrba@redhat.com> wrote:
->>
->> Create and publish with sha256sum also tarball called
->> selinux-$VERS.tar.gz with the whole tree. It could be useful for unit
->> testing directly from tarball or backporting patches which affects more
->> subdirectories. Github already provides similar archive called "Source
->> code (tar.gz)" via release assets, but there's no guarantee this file
->> would not change.
->>
->> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
->> ---
->>  scripts/release | 23 ++++++++++++++++++++---
->>  1 file changed, 20 insertions(+), 3 deletions(-)
->>
->> diff --git a/scripts/release b/scripts/release
->> index 895a0e1ca1a1..40a9c06f56b9 100755
->> --- a/scripts/release
->> +++ b/scripts/release
->> @@ -35,6 +35,8 @@ for i in $DIRS_NEED_PREFIX; do
->>         cd ..
->>  done
->>
->> +git archive -o $DEST/selinux-$VERS.tar.gz --prefix=selinux-$VERS/ $VERS
->> +
->>  cd $DEST
->>
->>  git add .
->> @@ -54,13 +56,28 @@ echo ""
->>  echo "[short log](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/shortlog-$RELEASE_TAG.txt)"
->>  echo ""
->>
->> -for i in *.tar.gz; do
->> +for i in $DIRS; do
->> +       tarball=$i-$VERS.tar.gz
->> +       echo -n "[$tarball](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/$tarball) "
->> +       sha256sum $tarball | cut -d " " -f 1
->> +       echo ""
->> +done
->>
->> -       echo -n "[$i](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/$i) "
->> -       sha256sum $i | cut -d " " -f 1
->> +for i in $DIRS_NEED_PREFIX; do
->> +       tarball=selinux-$i-$VERS.tar.gz
->> +       echo -n "[$tarball](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/$tarball) "
->> +       sha256sum $tarball | cut -d " " -f 1
->>         echo ""
->>  done
->>
->> +echo "### Everything"
->> +
->> +echo ""
->> +
->> +echo -n "[selinux-$VERS.tar.gz](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/selinux-$VERS.tar.gz) "
->> +sha256sum selinux-$VERS.tar.gz | cut -d " " -f 1
->> +echo ""
+On Sun, Jan 31, 2021 at 11:09 AM Petr Lautrbach <plautrba@redhat.com> wrote:
 >
-> Hello, there are at least two issues here:
-> * The section is named "Everything" but on
-> https://github.com/SELinuxProject/selinux/wiki/Releases it is named
-> "All in one". What is the proper name?
-
-
-I used "All in one" in rc1 release but I didn't announce it properly and
-it didn't feel good to me. So I sent this patch to make this official.
-And I like "Everything" more than the original "All in one". I can
-change it on the release page if the change is accepted or drop it
-completely if it's denied. 
-
-
-> * $VERS comes from a VERSION file in a subdirectory. It would be more
-> consistent to either use $RELEASE_TAG (which is the content of the
-> main VERSION file) or to use a single $VERS variable (and to verify
-> that the */VERSION files all contain the same content, for example
-> with "diff VERSION $i/VERSION"). Which option would be preferable?
-
-For now I'd use $RELEASE_TAG for selinux-X.Y.tar.gz
-
-and maybe something like:
-
--for i in $DIRS; do
--       tarball=$i-$VERS.tar.gz
-+for i in $DIRS; do
-+       tarball=`ls $i-*.tar.gz`
-
-
-> Moreover I do not like using string variables without quotes (and
-> shellcheck reports warnings for this), but this is a general issue of
-> this script. I will send a patch to improve the release script.
-
-Thanks!
-
+> Nicolas Iooss <nicolas.iooss@m4x.org> writes:
 >
-> Cheers,
-> Nicolas
+> > On Fri, Jan 29, 2021 at 9:06 PM Petr Lautrbach <plautrba@redhat.com> wrote:
+> >>
+> >> Create and publish with sha256sum also tarball called
+> >> selinux-$VERS.tar.gz with the whole tree. It could be useful for unit
+> >> testing directly from tarball or backporting patches which affects more
+> >> subdirectories. Github already provides similar archive called "Source
+> >> code (tar.gz)" via release assets, but there's no guarantee this file
+> >> would not change.
+> >>
+> >> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+> >> ---
+> >>  scripts/release | 23 ++++++++++++++++++++---
+> >>  1 file changed, 20 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/scripts/release b/scripts/release
+> >> index 895a0e1ca1a1..40a9c06f56b9 100755
+> >> --- a/scripts/release
+> >> +++ b/scripts/release
+> >> @@ -35,6 +35,8 @@ for i in $DIRS_NEED_PREFIX; do
+> >>         cd ..
+> >>  done
+> >>
+> >> +git archive -o $DEST/selinux-$VERS.tar.gz --prefix=selinux-$VERS/ $VERS
+> >> +
+> >>  cd $DEST
+> >>
+> >>  git add .
+> >> @@ -54,13 +56,28 @@ echo ""
+> >>  echo "[short log](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/shortlog-$RELEASE_TAG.txt)"
+> >>  echo ""
+> >>
+> >> -for i in *.tar.gz; do
+> >> +for i in $DIRS; do
+> >> +       tarball=$i-$VERS.tar.gz
+> >> +       echo -n "[$tarball](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/$tarball) "
+> >> +       sha256sum $tarball | cut -d " " -f 1
+> >> +       echo ""
+> >> +done
+> >>
+> >> -       echo -n "[$i](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/$i) "
+> >> -       sha256sum $i | cut -d " " -f 1
+> >> +for i in $DIRS_NEED_PREFIX; do
+> >> +       tarball=selinux-$i-$VERS.tar.gz
+> >> +       echo -n "[$tarball](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/$tarball) "
+> >> +       sha256sum $tarball | cut -d " " -f 1
+> >>         echo ""
+> >>  done
+> >>
+> >> +echo "### Everything"
+> >> +
+> >> +echo ""
+> >> +
+> >> +echo -n "[selinux-$VERS.tar.gz](https://github.com/SELinuxProject/selinux/releases/download/$RELEASE_TAG/selinux-$VERS.tar.gz) "
+> >> +sha256sum selinux-$VERS.tar.gz | cut -d " " -f 1
+> >> +echo ""
+> >
+> > Hello, there are at least two issues here:
+> > * The section is named "Everything" but on
+> > https://github.com/SELinuxProject/selinux/wiki/Releases it is named
+> > "All in one". What is the proper name?
+>
+>
+> I used "All in one" in rc1 release but I didn't announce it properly and
+> it didn't feel good to me. So I sent this patch to make this official.
+> And I like "Everything" more than the original "All in one". I can
+> change it on the release page if the change is accepted or drop it
+> completely if it's denied.
+
+I find "Everything" to be quite unclear, because for example the
+archive does not contain the git history... What about "Source
+repository snapshot", which better describes what the archive really
+is? This is a personal opinion and I am also fine with keeping
+"Everything" if you do not like my suggestion.
+
+> > * $VERS comes from a VERSION file in a subdirectory. It would be more
+> > consistent to either use $RELEASE_TAG (which is the content of the
+> > main VERSION file) or to use a single $VERS variable (and to verify
+> > that the */VERSION files all contain the same content, for example
+> > with "diff VERSION $i/VERSION"). Which option would be preferable?
+>
+> For now I'd use $RELEASE_TAG for selinux-X.Y.tar.gz
+>
+> and maybe something like:
+>
+> -for i in $DIRS; do
+> -       tarball=$i-$VERS.tar.gz
+> +for i in $DIRS; do
+> +       tarball=`ls $i-*.tar.gz`
+
+I do not like using wildcard patterns. In the patch I sent
+(https://lore.kernel.org/selinux/20210130133313.1759011-1-nicolas.iooss@m4x.org/)
+I replaced this part with reading $i/VERSION again:
+
++for COMPONENT in "${DIRS[@]}"; do
++ DIR="${COMPONENT#selinux-}"
++ VERS="$(cat "$DIR/VERSION")"
++ TAG="$COMPONENT-$VERS"
++ tarball="$TAG.tar.gz"
+
+Nevertheless the script is currently using wildcards and your
+suggestion works, so you can use `ls $i-*.tar.gz` and I will then
+propose a new version of my patch to remove this. Or you can include
+my changes in your patch, if you agree with them. How do you want to
+proceed?
+
+Thanks,
+Nicolas
 

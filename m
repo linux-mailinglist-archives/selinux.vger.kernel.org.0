@@ -2,17 +2,17 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA8E30C989
-	for <lists+selinux@lfdr.de>; Tue,  2 Feb 2021 19:22:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E2F1E30C925
+	for <lists+selinux@lfdr.de>; Tue,  2 Feb 2021 19:13:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235140AbhBBSVt (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 2 Feb 2021 13:21:49 -0500
-Received: from sonic314-27.consmr.mail.ne1.yahoo.com ([66.163.189.153]:46864
-        "EHLO sonic314-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238406AbhBBSUN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 2 Feb 2021 13:20:13 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1612289965; bh=j8x44LpoTFfUH4HOzyDNCNzfG3hSJ0gj9lo3px1hSNo=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject:Reply-To; b=DX2CGccDFRrvzI3YUF35lZbe3bxpJrnEsvWp+exibzzpiS8DPuHp1QCVxQG0fmUoh8tteub8EEWIJXkA0+vYbeHymkxNQ7I/+cpvFf5PnYPr0nyaangMfO2r/mAlNb11QvllponFy158p3wV4yMe4Zz5niHVkEyVX4JZCZkzT9kWPbDekoF6rSzHhmISnPrq4uxN7ezm8qIxI4awdFP3zm7V0X3B+0Rgm2ZQQJRs0+XBWNEijNveqjLCeSj8N/H824aSO2LT2kCPL1cMifd6MydWx5Wy2gBddQQdAtSsp1Dz0f+y8hmThpIWk2TO1fZW3pMFIyOo90m8UhzyVjeabg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1612289965; bh=M3KA+2N+YCFRPPX9pf2HeFU7XqaYRzrHUOKrRz6hx4w=; h=Subject:To:From:Date:From:Subject:Reply-To; b=QB7ZD0zdLjllkqvyXmlVhVQ+5RdpCDepNnsVJoaFwAPXwI7ekWS4MmCd8jws2VxSIrY+R6paIzEX5KWQrmxj251a2v9edWq9+rX3wEvtq0e6MVLzH3IUkRfaYaC8G5VuTM7bUeBQ0A3qHBOGyH9Gnar8gjAZMX8hh1pWio6A8Wcg2rEOZFyFl2GCWfx8slBeyCKmCjidRpYobvIbj5VUNy/L8manwWK4ZUP4Cy2gkevEpdnWzp4KKy0UKG6iXcm+l6yHXeackBY2ItjUdA4rw3w7d7voofrCvBrpLUpPGGAvJe1tkGyLa15gmx0GFOtufP88sAGti8NDzVmFINtzlQ==
+        id S238242AbhBBSLJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 2 Feb 2021 13:11:09 -0500
+Received: from sonic307-15.consmr.mail.ne1.yahoo.com ([66.163.190.38]:38534
+        "EHLO sonic307-15.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238278AbhBBSHZ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 2 Feb 2021 13:07:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1612289198; bh=j8x44LpoTFfUH4HOzyDNCNzfG3hSJ0gj9lo3px1hSNo=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject:Reply-To; b=SOG3MkzI/xo4NHO773dKiJqmfifbW10ppO5VX0RDiEtsVo2tYzrW3vQKUAVMkNA5lIvQREOwdvy1OoVIqnmQ0shXGFSE4BsxQgpHUkyVipBSy4igv7D8oUF4p3OO1/Etx7BlLAOPJ+A3624Hh2xvrYNTAC31HVUqRN36gZdfm0MShcpXLZrFeDsGn2GbTVzfsJkLLyGZqpXAvmVVCJjeCweKLVOACnrLE7T8NOUXwQ3Z8ZQxxYpo3ix3xBG5ZkerR6nRqfk3FnnMDmKLBEHEUuu9CFbnBKy/PbYnqOSarHsIDWiJQMmnZRoYdxSAbD8ED9JVgN2/JzSwOT0ZwfxLdw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1612289198; bh=KsrlqM5OHzy9Aywsqwu8aQS1km6LVWfDIQYwYdfcds/=; h=Subject:To:From:Date:From:Subject:Reply-To; b=p4M/nKQ3YAoXqA//DTGYpdM6RKd+Xo0RUt8RwX2vhm1c5oTViGJrwxvkEmBDt8PaWdaWrItJ78O76dsceq+In8g5e208AkusaDmDrI5FnvX8vKAD2OqhVhp1Fk8c6vIv+lTQH6Fwp4qsOUHYxV5UBxeZ+Ak23fxuyGdjuDtbpYtE/nrPD8HGyPffXyNVlUzAuerv3zkRaKf1kSzHgtfVUiTA7JCvBW1zP1bg/cBubnu0DnVQIRYvOuXqnZTxD8+/hwGb0ealTR86Ka9mJgJd7g8LWdmuo2AoI2nyWDGIUEiKJHg3/I8QxaX8dfmjb7DWMFCymcgGiYk5H1RjvBdASQ==
 X-YMail-OSG: cPypzh0VM1kMwv2Q4BIswcIGJhfwCxn6Shchaipebl27u6A.Af9a.DcAPg.WJrD
  x4Mz4rM1uoYhq.KY1SUqgiK294YKKfYi6aryGPPTFnSOr37TyBqlKY7u1FkN0Y.vaaeCyTEmm7RK
  8l5PE4XqSdr.X9U6WSo7EnS00zXHrVhRJV.Tx75QjBjcaJ6gXd8qCHykL7.2z8yglQRfaLuHIAGA
@@ -55,7 +55,7 @@ X-YMail-OSG: cPypzh0VM1kMwv2Q4BIswcIGJhfwCxn6Shchaipebl27u6A.Af9a.DcAPg.WJrD
  g7sdRxILm26sj84ClbjAZyPqZ.ieVOC0WGTDLuG9CjHmThjrTngkoCRzv.0_i9GrrVliKxCdEG66
  mwoSUFWYMVMIqe.3ByGHgIFns6NPSQq_znXT8f32_uLhVZQnrQ_KzySATQjWQ6JdKW5BZ7addHb2
  1IAsvzcrts2hpujDumdU1DYPzfkE6JTeJwsMXEe3D2bxClHKK7XjGAA2oMcuzZJQ-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Tue, 2 Feb 2021 18:19:25 +0000
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ne1.yahoo.com with HTTP; Tue, 2 Feb 2021 18:06:38 +0000
 Received: by smtp415.mail.gq1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 2e19b6b38051dbf5ab33afec7d37668e;
           Tue, 02 Feb 2021 18:06:31 +0000 (UTC)
 Subject: Re: [PATCH v24 00/25] LSM: Module stacking for AppArmor

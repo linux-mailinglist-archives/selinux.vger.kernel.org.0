@@ -2,1112 +2,2532 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8442830FA3F
-	for <lists+selinux@lfdr.de>; Thu,  4 Feb 2021 18:54:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E45EE30FC97
+	for <lists+selinux@lfdr.de>; Thu,  4 Feb 2021 20:27:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238607AbhBDRuy (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 4 Feb 2021 12:50:54 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:52490 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238763AbhBDRt0 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 4 Feb 2021 12:49:26 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1612460876;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=EPfAuG0oBJE4PXJsBlf2tB98jHVDv6oHlGeWmlrAOzc=;
-        b=WsFIxPLoVfVbggoY+Xjw2iekWzn0aYUcssK3P9husR0v4PALUpd6d7yZixmF2PdS4agjjV
-        yN54hpcJm+jLiThE9NJfaCD+rzS5NRPVczz7DZqkMGrQwp1xmrM2MDhZ48WhXLcP/V4gAL
-        01zYfdL//2o00kKRNalCgA2nB+cHXGk=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-85-KG3bQBilOTydoNN-krak0w-1; Thu, 04 Feb 2021 12:47:52 -0500
-X-MC-Unique: KG3bQBilOTydoNN-krak0w-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 095B4195D562;
-        Thu,  4 Feb 2021 17:47:51 +0000 (UTC)
-Received: from warthog.procyon.org.uk (ovpn-115-23.rdu2.redhat.com [10.10.115.23])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8AD7F6CDD5;
-        Thu,  4 Feb 2021 17:47:48 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-        Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-        Kingdom.
-        Registered in England and Wales under Company Registration No. 3798903
-Subject: [PATCH 2/2] keys: Allow request_key upcalls from a container to be
- intercepted
-From:   David Howells <dhowells@redhat.com>
-To:     sprabhu@redhat.com
-Cc:     dhowells@redhat.com, Jarkko Sakkinen <jarkko@kernel.org>,
-        christian@brauner.io, selinux@vger.kernel.org,
-        keyrings@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, containers@lists.linux-foundation.org
-Date:   Thu, 04 Feb 2021 17:47:47 +0000
-Message-ID: <161246086770.1990927.4967525549888707001.stgit@warthog.procyon.org.uk>
-In-Reply-To: <161246085160.1990927.13137391845549674518.stgit@warthog.procyon.org.uk>
-References: <161246085160.1990927.13137391845549674518.stgit@warthog.procyon.org.uk>
-User-Agent: StGit/0.23
+        id S238040AbhBDRHs (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 4 Feb 2021 12:07:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59698 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237467AbhBDRGs (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 4 Feb 2021 12:06:48 -0500
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15FA3C061786
+        for <selinux@vger.kernel.org>; Thu,  4 Feb 2021 09:06:08 -0800 (PST)
+Received: by mail-wr1-x430.google.com with SMTP id g10so4430200wrx.1
+        for <selinux@vger.kernel.org>; Thu, 04 Feb 2021 09:06:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20161025;
+        h=from:subject:to:message-id:date:user-agent:mime-version
+         :content-language:content-transfer-encoding;
+        bh=8YJ8i7cJYVsTWz7UqILGM4X8KCVxo82rHvOulO1GhpY=;
+        b=cNGUA5oDhJFGHZAU+L8Oqr/Mql1M8l64VQ4XDZOFdlPVa1YSnyump7M13mv/V3vS1d
+         bCm5h1ax/2xTGCunmPb32voWFz4DOx6zGgkklcKMATyEjECIL9gbtK3UPCD2H6IrI59D
+         LOdLKo7wt7RF3CiRJ5GLaXTZ5Onab/8Dbhv4fv4v7kBX6oUuuxGPKS5zkC+nphtPKqaJ
+         fx+MWV8tVTXBXw+YNTzYxs0pvKYI/a9LoahZ1lgcRnInx+XSPjnqYHePjzyuyUCH4YB2
+         YbmeMkTFGlQCBjn/vXmHSFebpMzZLq82/mcFdKN++KynUxYO6eO1c6EN/uBs+fYbj4Fp
+         O4xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:subject:to:message-id:date:user-agent
+         :mime-version:content-language:content-transfer-encoding;
+        bh=8YJ8i7cJYVsTWz7UqILGM4X8KCVxo82rHvOulO1GhpY=;
+        b=lr2aULsliFW2shPbDbU88UJj/OUe710G9eAQWDkM75BFBLUUv0RTfsktN0HsSlOdL7
+         IqE3W8l/b2LVXCpRhqmlQL88U+FYUfgqVFzbBE9rCyS+ySG7tbwBwU4zqEDv/RofIA65
+         tDWkSTHVRdSkSylOTLy3TCYbvd0NNHRCR+FAHxrGlDCilttcDl+5ukFMwX+WZAbFLOBl
+         9sOeiLgjfO+Vo6a0BSLtMdjqLpj1yCVP5fRW4G7X1LVU3fiCx9pncwCQABKWg4LfuLXl
+         EHHD61uWJiYEKZFjtWvD7kPCUc6RsoqKpmYG5tVAo/a6FaK35uEhfYnDcklSZk48zIyD
+         +BkQ==
+X-Gm-Message-State: AOAM532IZBxhYuMFGrcBGyOOTT61ai++ezXqsoUlNqOUyvMcCr1EBvg+
+        IuHbBudJ9jEBL2qjeRSccfSKlcZn6Ho=
+X-Google-Smtp-Source: ABdhPJyT4/SrvnQJGHfMxxje85Ywm+6JUCxAcKuanZnkOLaRs4fbLfxtfpFDNnz8WoeydHWVqhFbpw==
+X-Received: by 2002:a05:6000:48:: with SMTP id k8mr344463wrx.340.1612458365815;
+        Thu, 04 Feb 2021 09:06:05 -0800 (PST)
+Received: from ?IPv6:2001:a61:340e:e601:8a:719c:9bc1:dcee? ([2001:a61:340e:e601:8a:719c:9bc1:dcee])
+        by smtp.gmail.com with ESMTPSA id q7sm8830095wrx.18.2021.02.04.09.06.04
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Feb 2021 09:06:05 -0800 (PST)
+From:   bauen1 <j2468h@googlemail.com>
+X-Google-Original-From: bauen1 <j2468h@gmail.com>
+Subject: [PATCH 1/2] secilc/docs: use fenced code blocks for cil examples
+To:     selinux@vger.kernel.org
+Message-ID: <330ab096-0c0f-f066-266d-94a5e965f1a5@gmail.com>
+Date:   Thu, 4 Feb 2021 18:06:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Provide a mechanism by which daemons can intercept request_key upcalls,
-filtered by namespace and key type, and service them.  The list of active
-services is per-user_namespace.
+Also fixes the occasional missing brackets as highlited by my editor,
+however the individual examples where not reviewed much closer.
 
+secilc was chosen as language name because the compiler is named secilc
+and outside of SELinux the name cil is less searchable and could lead to
+confusion.
 
-====
-WHY?
-====
-
-Requests to upcall and instantiate a key are directed to /sbin/request_key
-run in the init namespaces.  This is the wrong thing to do for
-request_key() called inside a container.  Rather, the container manager
-should be able to intercept a request and deal with it itself, applying the
-appropriate namespaces.
-
-For example, a container with a different network namespace that routes
-packets out of a different NIC should probably not use the main system DNS
-settings.
-
-
-==================
-SETTING INTERCEPTS
-==================
-
-An intercept is set by calling:
-
-	keyctl(KEYCTL_SERVICE_INTERCEPT,
-	       int queue_keyring, int userns_fd,
-	       const char *type_name, unsigned int ns_mask);
-
-where "queue_keyring" indicates a keyring into which authorisation keys
-will be placed as request_key() calls happen; "userns_fd" indicates the
-user namespace on which to place the interception (or -1 for the caller's);
-"type_name" indicates the type of key to filter for (or NULL); and
-"ns_mask" is a bitwise-OR of:
-
-	KEY_SERVICE_NS_UTS
-	KEY_SERVICE_NS_IPC
-	KEY_SERVICE_NS_MNT
-	KEY_SERVICE_NS_PID
-	KEY_SERVICE_NS_NET
-	KEY_SERVICE_NS_CGROUP
-
-which select those namespaces of the caller that must match for the
-interceptionto occur..  So, for example, a daemon that wanted to service
-DNS requests from the kernel would do something like:
-
-	queue = add_key("keyring", "queue", NULL, 0,
-			KEY_SPEC_THREAD_KEYRING);
-	keyctl(KEYCTL_SERVICE_INTERCEPT, queue, -1, "dns_resolver",
-	       KEY_SERVICE_NS_NET);
-
-so that it gets all the DNS records issued by processes in the current
-network namespace, no matter what other namespaces are in force at the
-time.  On the other hand, the following call:
-
-	keyctl(KEYCTL_SERVICE_INTERCEPT, queue, -1, NULL, 0);
-
-will match everything.
-
-If conflicts arise between two filter records (and different daemons can
-have filter records in the same list), the most specific record is matched
-by preference, otherwise the first added gets the work.  So, in the example
-above, the dns_resolver-specific record would match in preference to the
-match-everything record as the former in more specific (it specifies a type
-and a particular namespace).  EEXIST is given if an intercept exactly
-matches one already in place.
-
-An intercept can be removed by setting queue_keyring to 0, e.g.:
-
-	keyctl(KEYCTL_SERVICE_INTERCEPT, 0, -1, "dns_resolver",
-	       KEY_SERVICE_NS_NET);
-
-All the other parameters must be given as when the intercept was set.
-
-Notes:
-
- (1) Note that anyone can create a channel, but only a sysadmin or the root
-     user of the current user_namespace may add filters.
-
-     [!] NOTE: I'm really not sure how to get the security right here.  Who
-	 is allowed to intercept requests?  Getting it wrong opens a
-	 definite security hole.
-
- (2) It doesn't really handle multiple service threads watching the same
-     keyring.
-
- (3) The intercepts are not tied to the lifetime of the queue keyring,
-     though they can be removed later.  This is probably wrong, but it's
-     more tricky since they currently pin the queue keyring.  They are,
-     however, cleaned up when the user namespace that owns then is
-     destroyed.
-
- (4) I'm not sure it really handles cases where some of the caller's
-     namespaces aren't owned by the caller's user_namespace.
-
-
-==================
-SERVICING REQUESTS
-==================
-
-The daemon servicing requests should place a watch on the queue keyring.
-This will inform it of when an authorisation key is placed in there.
-
-An authorisation key's description indicates the target key and the callout
-data can be read from the authorisation key.
-
-The daemon can then gain permission to instantiate the associated key.
-
-	keyctl_assume_authority(key_id);
-
-After which it can do one of:
-
-	keyctl_instantiate(key_id, "foo_bar", 7, 0);
-	keyctl_negate(key_id, 0, 0);
-	keyctl_reject(key_id, 0, ENOANO, 0);
-
-and the authorisation key will be automatically revoked and unlinked.
-
-If the authorisation key is unlinked from all keyrings, the target key will
-be rejected if it hasn't been instantiated yet.
-
-
-[!] NOTE: Need to provide some way to find out the operation type and other
-    parameters from the auth key.  /sbin/request_key supplies this on the
-    command line, but I can't do that here.  It's probably something that
-    needs storing into the request_key_auth-type key and an additional
-    keyctl providing to retrieve it.
-
-
-===========
-SAMPLE CODE
-===========
-
-A sample program is provided.  This can be run as:
-
-	./samples/watch_queue/key_req_intercept
-
-it will then watch for requests to be made for user keyrings in the user
-namespace in which it resides.  Such requests can be made by:
-
-	keyctl request2 user a @s
-
-This key will be rejected and the command will fail with ENOANO.
-Subsequent accesses to the key will also fail with ENOANO.
-
-Signed-off-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Jonathan Hettwer <j2468h@gmail.com>
 ---
+ secilc/docs/Makefile                          |  2 +-
+ secilc/docs/cil_access_vector_rules.md        | 33 ++++++++++--
+ secilc/docs/cil_call_macro_statements.md      | 10 ++++
+ .../cil_class_and_permission_statements.md    | 42 ++++++++++++++++
+ secilc/docs/cil_conditional_statements.md     | 16 +++++-
+ secilc/docs/cil_constraint_statements.md      | 16 ++++++
+ secilc/docs/cil_container_statements.md       | 16 ++++++
+ secilc/docs/cil_context_statement.md          | 10 ++++
+ secilc/docs/cil_file_labeling_statements.md   | 14 ++++++
+ secilc/docs/cil_infiniband_statements.md      |  9 +++-
+ secilc/docs/cil_mls_labeling_statements.md    | 50 ++++++++++++++++++-
+ .../docs/cil_network_labeling_statements.md   | 16 ++++++
+ secilc/docs/cil_policy_config_statements.md   | 12 +++++
+ secilc/docs/cil_reference_guide.md            | 27 ++++++++++
+ secilc/docs/cil_role_statements.md            | 26 ++++++++++
+ secilc/docs/cil_sid_statements.md             | 12 +++++
+ secilc/docs/cil_type_statements.md            | 50 +++++++++++++++++++
+ secilc/docs/cil_user_statements.md            | 42 +++++++++++++++-
+ secilc/docs/cil_xen_statements.md             | 20 ++++++++
+ 19 files changed, 414 insertions(+), 9 deletions(-)
 
- include/linux/key-type.h                |    4 
- include/linux/user_namespace.h          |    2 
- include/uapi/linux/keyctl.h             |   13 +
- kernel/user.c                           |    3 
- kernel/user_namespace.c                 |    2 
- samples/watch_queue/Makefile            |    2 
- samples/watch_queue/key_req_intercept.c |  271 +++++++++++++++++++++++++
- security/keys/Makefile                  |    2 
- security/keys/compat.c                  |    3 
- security/keys/internal.h                |    5 
- security/keys/keyctl.c                  |    6 +
- security/keys/keyring.c                 |    1 
- security/keys/process_keys.c            |    2 
- security/keys/request_key.c             |   16 +
- security/keys/request_key_auth.c        |    3 
- security/keys/service.c                 |  337 +++++++++++++++++++++++++++++++
- 16 files changed, 663 insertions(+), 9 deletions(-)
- create mode 100644 samples/watch_queue/key_req_intercept.c
- create mode 100644 security/keys/service.c
-
-diff --git a/include/linux/key-type.h b/include/linux/key-type.h
-index 7d985a1dfe4a..6218688eb254 100644
---- a/include/linux/key-type.h
-+++ b/include/linux/key-type.h
-@@ -62,8 +62,10 @@ struct key_match_data {
-  * kernel managed key type definition
-  */
- struct key_type {
-+	struct module *owner;
-+
- 	/* name of the type */
--	const char *name;
-+	const char name[24];
+diff --git a/secilc/docs/Makefile b/secilc/docs/Makefile
+index 197ccef2..79a165ba 100644
+--- a/secilc/docs/Makefile
++++ b/secilc/docs/Makefile
+@@ -51,7 +51,7 @@ $(TMPDIR)/%.md: %.md | $(TMPDIR)
+ $(TMPDIR)/policy.cil: $(TESTDIR)/policy.cil
+ 	cp -f $< $@
+ 	@# add a title for the TOC to policy.cil. This is needed to play nicely with the PDF conversion.
+-	$(SED) -i '1i Example Policy\n=========\n```' $@
++	$(SED) -i '1i Example Policy\n=========\n```secil' $@
+ 	echo '```' >> $@
  
- 	/* default payload length for quota precalculation (optional)
- 	 * - this can be used instead of calling key_payload_reserve(), that
-diff --git a/include/linux/user_namespace.h b/include/linux/user_namespace.h
-index 64cf8ebdc4ec..7691778aff3a 100644
---- a/include/linux/user_namespace.h
-+++ b/include/linux/user_namespace.h
-@@ -73,6 +73,8 @@ struct user_namespace {
- 	struct list_head	keyring_name_list;
- 	struct key		*user_keyring_register;
- 	struct rw_semaphore	keyring_sem;
-+	struct hlist_head	request_key_services;
-+	spinlock_t		request_key_services_lock;
- #endif
+ html: $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil
+diff --git a/secilc/docs/cil_access_vector_rules.md b/secilc/docs/cil_access_vector_rules.md
+index 683cc28c..e8fc740f 100644
+--- a/secilc/docs/cil_access_vector_rules.md
++++ b/secilc/docs/cil_access_vector_rules.md
+@@ -42,6 +42,7 @@ Specifies the access allowed between a source and target type. Note that access
  
- 	/* Register of per-UID persistent keyrings for this namespace */
-diff --git a/include/uapi/linux/keyctl.h b/include/uapi/linux/keyctl.h
-index 4c8884eea808..a2e553df139b 100644
---- a/include/uapi/linux/keyctl.h
-+++ b/include/uapi/linux/keyctl.h
-@@ -36,6 +36,18 @@
- #define KEY_REQKEY_DEFL_GROUP_KEYRING		6
- #define KEY_REQKEY_DEFL_REQUESTOR_KEYRING	7
+ These examples show a selection of possible permutations of [`allow`](cil_access_vector_rules.md#allow) rules:
  
-+/* Request_key service daemon namespace selection specifiers. */
-+#define KEY_SERVICE_NS_UTS		0x0001
-+#define KEY_SERVICE_NS_IPC		0x0002
-+#define KEY_SERVICE_NS_MNT		0x0004
-+#define KEY_SERVICE_NS_PID		0x0008
-+#define KEY_SERVICE_NS_NET		0x0010
-+#define KEY_SERVICE_NS_CGROUP		0x0020
-+#define KEY_SERVICE___ALL_NS		0x003f
-+
-+#define KEY_SERVICE_FD_CLOEXEC		0x0001
-+#define KEY_SERVICE_FD_NONBLOCK		0x0002
-+
- /* keyctl commands */
- #define KEYCTL_GET_KEYRING_ID		0	/* ask for a keyring's ID */
- #define KEYCTL_JOIN_SESSION_KEYRING	1	/* join or start named session keyring */
-@@ -70,6 +82,7 @@
- #define KEYCTL_MOVE			30	/* Move keys between keyrings */
- #define KEYCTL_CAPABILITIES		31	/* Find capabilities of keyrings subsystem */
- #define KEYCTL_WATCH_KEY		32	/* Watch a key or ring of keys for changes */
-+#define KEYCTL_SERVICE_INTERCEPT	33	/* Intercept request_key services on a user_ns */
++```secil
+     (class binder (impersonate call set_context_mgr transfer receive))
+     (class property_service (set))
+     (class zygote (specifyids specifyrlimits specifycapabilities specifyinvokewith specifyseinfo))
+@@ -84,6 +85,7 @@ These examples show a selection of possible permutations of [`allow`](cil_access
+         (allow type_5 type_5 (property_service (set)))
+         (allow type_1 all_types (property_service (set)))
+     )
++```
  
- /* keyctl structures */
- struct keyctl_dh_params {
-diff --git a/kernel/user.c b/kernel/user.c
-index 78ee75f4cd21..0362d738286a 100644
---- a/kernel/user.c
-+++ b/kernel/user.c
-@@ -71,6 +71,9 @@ struct user_namespace init_user_ns = {
- #ifdef CONFIG_KEYS
- 	.keyring_name_list = LIST_HEAD_INIT(init_user_ns.keyring_name_list),
- 	.keyring_sem = __RWSEM_INITIALIZER(init_user_ns.keyring_sem),
-+	.request_key_services = HLIST_HEAD_INIT,
-+	.request_key_services_lock =
-+	__SPIN_LOCK_UNLOCKED(init_user_ns.request_key_services_lock),
- #endif
- };
- EXPORT_SYMBOL_GPL(init_user_ns);
-diff --git a/kernel/user_namespace.c b/kernel/user_namespace.c
-index f60cf7b5973c..9aebb4be4c00 100644
---- a/kernel/user_namespace.c
-+++ b/kernel/user_namespace.c
-@@ -130,6 +130,8 @@ int create_user_ns(struct cred *new)
- #ifdef CONFIG_KEYS
- 	INIT_LIST_HEAD(&ns->keyring_name_list);
- 	init_rwsem(&ns->keyring_sem);
-+	INIT_HLIST_HEAD(&ns->request_key_services);
-+	spin_lock_init(&ns->request_key_services_lock);
- #endif
- 	ret = -ENOMEM;
- 	if (!setup_userns_sysctls(ns))
-diff --git a/samples/watch_queue/Makefile b/samples/watch_queue/Makefile
-index c0db3a6bc524..4aaa2e2f67a0 100644
---- a/samples/watch_queue/Makefile
-+++ b/samples/watch_queue/Makefile
-@@ -1,4 +1,6 @@
- # SPDX-License-Identifier: GPL-2.0-only
- userprogs-always-y += watch_test
-+userprogs-always-y += key_req_intercept
+ auditallow
+ ----------
+@@ -92,7 +94,9 @@ Audit the access rights defined if there is a valid allow rule. Note: It does NO
  
- userccflags += -I usr/include
-+userldflags += -lkeyutils
-diff --git a/samples/watch_queue/key_req_intercept.c b/samples/watch_queue/key_req_intercept.c
-new file mode 100644
-index 000000000000..c187024a0ce0
---- /dev/null
-+++ b/samples/watch_queue/key_req_intercept.c
-@@ -0,0 +1,271 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/* Intercept request_key upcalls
-+ *
-+ * Copyright (C) 2021 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ */
-+
-+#define _GNU_SOURCE
-+#include <stdbool.h>
-+#include <stdarg.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+#include <signal.h>
-+#include <unistd.h>
-+#include <errno.h>
-+#include <sys/ioctl.h>
-+#include <limits.h>
-+#include <keyutils.h>
-+#include <linux/watch_queue.h>
-+#include <linux/unistd.h>
-+
-+#ifndef KEYCTL_WATCH_KEY
-+#define KEYCTL_WATCH_KEY 32
-+#endif
-+#ifndef KEYCTL_SERVICE_INTERCEPT
-+#define KEYCTL_SERVICE_INTERCEPT 33
-+#endif
-+#ifndef __NR_keyctl
-+#define __NR_keyctl -1
-+#endif
-+
-+#define BUF_SIZE 256
-+
-+typedef int key_serial_t;
-+key_serial_t queue_keyring;
-+
-+static long keyctl_watch_key(int key, int watch_fd, int watch_id)
-+{
-+	return syscall(__NR_keyctl, KEYCTL_WATCH_KEY, key, watch_fd, watch_id);
-+}
-+
-+static long keyctl_service_intercept(int queue_keyring, int userns_fd,
-+				     const char *type_name, unsigned int ns_mask)
-+{
-+	return syscall(__NR_keyctl, KEYCTL_SERVICE_INTERCEPT,
-+		       queue_keyring, userns_fd, type_name, ns_mask);
-+}
-+
-+static const char auth_key_type[] = ".request_key_auth;";
-+
-+/*
-+ * Instantiate a key.
-+ */
-+static void do_instantiation(key_serial_t key, char *desc)
-+{
-+	printf("INSTANTIATE %u '%s'\n", key, desc);
-+
-+	if (keyctl_assume_authority(key) == -1) {
-+		perror("keyctl_assume_authority");
-+		exit(1);
-+	}
-+
-+	if (keyctl_reject(key, 20, ENOANO, 0) == -1) {
-+		perror("keyctl_reject");
-+		exit(1);
-+	}
-+}
-+
-+/*
-+ * Process a notification.
-+ */
-+static void process_request(struct watch_notification *n, size_t len)
-+{
-+	struct key_notification *k = (struct key_notification *)n;
-+	key_serial_t auth_key, key;
-+	char desc[1024], *p;
-+
-+	if (len != sizeof(struct key_notification)) {
-+		fprintf(stderr, "Incorrect key message length\n");
-+		return;
-+	}
-+
-+	auth_key = k->aux;
-+	printf("REQUEST %d aux=%d\n", k->key_id, k->aux);
-+
-+	if (keyctl_describe(auth_key, desc, sizeof(desc)) == -1) {
-+		perror("keyctl_describe(auth_key)");
-+		exit(1);
-+	}
-+
-+	printf("AUTH_KEY '%s'\n", desc);
-+	if (memcmp(desc, auth_key_type, sizeof(auth_key_type) - 1) != 0) {
-+		printf("NOT AUTH_KEY TYPE\n");
-+	} else {
-+		p = strrchr(desc, ';');
-+		if (p) {
-+			key = strtoul(p + 1, NULL, 16);
-+			printf("KEY '%d'\n", key);
-+
-+			if (keyctl_describe(key, desc, sizeof(desc)) == -1) {
-+				perror("keyctl_describe(key)");
-+				exit(1);
-+			}
-+
-+			do_instantiation(key, desc);
-+			return;
-+		}
-+	}
-+
-+	/* Shouldn't need to do this if we successfully instantiated/rejected
-+	 * the target key.
-+	 */
-+	if (keyctl_unlink(auth_key, queue_keyring) == -1)
-+		perror("keyctl_unlink");
-+}
-+
-+/*
-+ * Consume and display events.
-+ */
-+static void consumer(int fd)
-+{
-+	unsigned char buffer[433], *p, *end;
-+	union {
-+		struct watch_notification n;
-+		unsigned char buf1[128];
-+	} n;
-+	ssize_t buf_len;
-+
-+	for (;;) {
-+		buf_len = read(fd, buffer, sizeof(buffer));
-+		if (buf_len == -1) {
-+			perror("read");
-+			exit(1);
-+		}
-+
-+		if (buf_len == 0) {
-+			printf("-- END --\n");
-+			return;
-+		}
-+
-+		if (buf_len > sizeof(buffer)) {
-+			fprintf(stderr, "Read buffer overrun: %zd\n", buf_len);
-+			return;
-+		}
-+
-+		printf("read() = %zd\n", buf_len);
-+
-+		p = buffer;
-+		end = buffer + buf_len;
-+		while (p < end) {
-+			size_t largest, len;
-+
-+			largest = end - p;
-+			if (largest > 128)
-+				largest = 128;
-+			if (largest < sizeof(struct watch_notification)) {
-+				fprintf(stderr, "Short message header: %zu\n", largest);
-+				return;
-+			}
-+			memcpy(&n, p, largest);
-+
-+			printf("NOTIFY[%03zx]: ty=%06x sy=%02x i=%08x\n",
-+			       p - buffer, n.n.type, n.n.subtype, n.n.info);
-+
-+			len = n.n.info & WATCH_INFO_LENGTH;
-+			if (len < sizeof(n.n) || len > largest) {
-+				fprintf(stderr, "Bad message length: %zu/%zu\n", len, largest);
-+				exit(1);
-+			}
-+
-+			switch (n.n.type) {
-+			case WATCH_TYPE_META:
-+				switch (n.n.subtype) {
-+				case WATCH_META_REMOVAL_NOTIFICATION:
-+					printf("REMOVAL of watchpoint %08x\n",
-+					       (n.n.info & WATCH_INFO_ID) >>
-+					       WATCH_INFO_ID__SHIFT);
-+					break;
-+				case WATCH_META_LOSS_NOTIFICATION:
-+					printf("-- LOSS --\n");
-+					break;
-+				default:
-+					printf("other meta record\n");
-+					break;
-+				}
-+				break;
-+			case WATCH_TYPE_KEY_NOTIFY:
-+				switch (n.n.subtype) {
-+				case NOTIFY_KEY_LINKED:
-+					process_request(&n.n, len);
-+					break;
-+				default:
-+					printf("other key subtype\n");
-+					break;
-+				}
-+				break;
-+			default:
-+				printf("other type\n");
-+				break;
-+			}
-+
-+			p += len;
-+		}
-+	}
-+}
-+
-+static struct watch_notification_filter filter = {
-+	.nr_filters	= 1,
-+	.filters = {
-+		[0]	= {
-+			.type			= WATCH_TYPE_KEY_NOTIFY,
-+			.subtype_filter[0]	= (1 << NOTIFY_KEY_LINKED),
-+		},
-+	},
-+};
-+
-+static void cleanup(void)
-+{
-+	printf("--- clean up ---\n");
-+	if (keyctl_service_intercept(0, -1, "user", 0) == -1)
-+		perror("unintercept");
-+	if (keyctl_clear(queue_keyring) == -1)
-+		perror("clear");
-+	if (keyctl_unlink(queue_keyring, KEY_SPEC_SESSION_KEYRING) == -1)
-+		perror("unlink/q");
-+}
-+
-+int main(int argc, char **argv)
-+{
-+	int pipefd[2], fd;
-+
-+	queue_keyring = add_key("keyring", "intercept", NULL, 0, KEY_SPEC_SESSION_KEYRING);
-+	if (queue_keyring == -1) {
-+		perror("add_key");
-+		exit(1);
-+	}
-+
-+	printf("QUEUE KEYRING %d\n", queue_keyring);
-+
-+	if (pipe2(pipefd, O_NOTIFICATION_PIPE) == -1) {
-+		perror("pipe2");
-+		exit(1);
-+	}
-+	fd = pipefd[0];
-+
-+	if (ioctl(fd, IOC_WATCH_QUEUE_SET_SIZE, BUF_SIZE) == -1) {
-+		perror("watch_queue(size)");
-+		exit(1);
-+	}
-+
-+	if (ioctl(fd, IOC_WATCH_QUEUE_SET_FILTER, &filter) == -1) {
-+		perror("watch_queue(filter)");
-+		exit(1);
-+	}
-+
-+	if (keyctl_watch_key(queue_keyring, fd, 0x01) == -1) {
-+		perror("keyctl_watch_key");
-+		exit(1);
-+	}
-+
-+	if (keyctl_service_intercept(queue_keyring, -1, "user", 0) == -1) {
-+		perror("keyctl_service_intercept");
-+		exit(1);
-+	}
-+
-+	atexit(cleanup);
-+
-+	consumer(fd);
-+	exit(0);
-+}
-diff --git a/security/keys/Makefile b/security/keys/Makefile
-index 5f40807f05b3..3626340df84b 100644
---- a/security/keys/Makefile
-+++ b/security/keys/Makefile
-@@ -15,7 +15,9 @@ obj-y := \
- 	process_keys.o \
- 	request_key.o \
- 	request_key_auth.o \
-+	service.o \
- 	user_defined.o
-+
- compat-obj-$(CONFIG_KEY_DH_OPERATIONS) += compat_dh.o
- obj-$(CONFIG_COMPAT) += compat.o $(compat-obj-y)
- obj-$(CONFIG_PROC_FS) += proc.o
-diff --git a/security/keys/compat.c b/security/keys/compat.c
-index 1545efdca562..39c7b1b2a7c7 100644
---- a/security/keys/compat.c
-+++ b/security/keys/compat.c
-@@ -126,6 +126,9 @@ COMPAT_SYSCALL_DEFINE5(keyctl, u32, option,
- 	case KEYCTL_WATCH_KEY:
- 		return keyctl_watch_key(arg2, arg3, arg4);
+ **Rule definition:**
  
-+	case KEYCTL_SERVICE_INTERCEPT:
-+		return keyctl_service_intercept(arg2, arg3, compat_ptr(arg4), arg5);
-+
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/security/keys/internal.h b/security/keys/internal.h
-index 9b9cf3b6fcbb..b777ef755626 100644
---- a/security/keys/internal.h
-+++ b/security/keys/internal.h
-@@ -150,6 +150,7 @@ extern struct key *find_keyring_by_name(const char *name, bool uid_keyring);
++```secil
+     (auditallow source_id target_id|self classpermissionset_id ...)
++```
  
- extern int look_up_user_keyrings(struct key **, struct key **);
- extern struct key *get_user_session_keyring_rcu(const struct cred *);
-+extern int install_thread_keyring(void);
- extern int install_thread_keyring_to_cred(struct cred *);
- extern int install_process_keyring_to_cred(struct cred *);
- extern int install_session_keyring_to_cred(struct cred *, struct key *);
-@@ -183,6 +184,8 @@ extern void key_gc_keytype(struct key_type *ktype);
- extern int key_task_permission(const key_ref_t key_ref,
- 			       const struct cred *cred,
- 			       enum key_need_perm need_perm);
-+extern int queue_request_key(struct key *key, struct key *auth_key);
-+extern void clear_request_key_services(struct user_namespace *ns);
+ **Where:**
  
- static inline void notify_key(struct key *key,
- 			      enum key_notification_subtype subtype, u32 aux)
-@@ -265,6 +268,8 @@ extern long keyctl_invalidate_key(key_serial_t);
- extern long keyctl_restrict_keyring(key_serial_t id,
- 				    const char __user *_type,
- 				    const char __user *_restriction);
-+extern long keyctl_service_intercept(int, int, const char __user *, unsigned int);
-+
- #ifdef CONFIG_PERSISTENT_KEYRINGS
- extern long keyctl_get_persistent(uid_t, key_serial_t);
- extern unsigned persistent_keyring_expiry;
-diff --git a/security/keys/keyctl.c b/security/keys/keyctl.c
-index 96a92a645216..5cac7979c5c0 100644
---- a/security/keys/keyctl.c
-+++ b/security/keys/keyctl.c
-@@ -2015,6 +2015,12 @@ SYSCALL_DEFINE5(keyctl, int, option, unsigned long, arg2, unsigned long, arg3,
- 	case KEYCTL_WATCH_KEY:
- 		return keyctl_watch_key((key_serial_t)arg2, (int)arg3, (int)arg4);
+@@ -126,10 +130,11 @@ Audit the access rights defined if there is a valid allow rule. Note: It does NO
  
-+	case KEYCTL_SERVICE_INTERCEPT:
-+		return keyctl_service_intercept((key_serial_t)arg2,
-+						(int)arg3,
-+						(const char __user *)arg4,
-+						(unsigned int)arg5);
-+
- 	default:
- 		return -EOPNOTSUPP;
- 	}
-diff --git a/security/keys/keyring.c b/security/keys/keyring.c
-index 5e6a90760753..7ab9e5130f18 100644
---- a/security/keys/keyring.c
-+++ b/security/keys/keyring.c
-@@ -60,6 +60,7 @@ void key_free_user_ns(struct user_namespace *ns)
- 	list_del_init(&ns->keyring_name_list);
- 	write_unlock(&keyring_name_lock);
+ This example will log an audit event whenever the corresponding [`allow`](cil_access_vector_rules.md#allow) rule grants access to the specified permissions:
  
-+	clear_request_key_services(ns);
- 	key_put(ns->user_keyring_register);
- #ifdef CONFIG_PERSISTENT_KEYRINGS
- 	key_put(ns->persistent_keyring_register);
-diff --git a/security/keys/process_keys.c b/security/keys/process_keys.c
-index e3d79a7b6db6..3b515781bc8b 100644
---- a/security/keys/process_keys.c
-+++ b/security/keys/process_keys.c
-@@ -241,7 +241,7 @@ int install_thread_keyring_to_cred(struct cred *new)
-  *
-  * Return: 0 if a thread keyring is now present; -errno on failure.
-  */
--static int install_thread_keyring(void)
-+int install_thread_keyring(void)
- {
- 	struct cred *new;
- 	int ret;
-diff --git a/security/keys/request_key.c b/security/keys/request_key.c
-index 2da4404276f0..81fe5aa02dee 100644
---- a/security/keys/request_key.c
-+++ b/security/keys/request_key.c
-@@ -14,6 +14,7 @@
- #include <linux/keyctl.h>
- #include <linux/slab.h>
- #include <net/net_namespace.h>
-+#include <linux/init_task.h>
- #include "internal.h"
- #include <keys/request_key_auth-type.h>
++```secil
+     (allow release_app.process secmark_demo.browser_packet (packet (send recv append bind)))
  
-@@ -112,7 +113,7 @@ static int call_usermodehelper_keys(const char *path, char **argv, char **envp,
-  * Request userspace finish the construction of a key
-  * - execute "/sbin/request-key <op> <key> <uid> <gid> <keyring> <keyring> <keyring>"
-  */
--static int call_sbin_request_key(struct key *authkey, void *aux)
-+static int call_sbin_request_key(struct key *authkey)
- {
- 	static char const request_key[] = "/sbin/request-key";
- 	struct request_key_auth *rka = get_request_key_auth(authkey);
-@@ -224,7 +225,6 @@ static int construct_key(struct key *key, const void *callout_info,
- 			 size_t callout_len, void *aux,
- 			 struct key *dest_keyring)
- {
--	request_key_actor_t actor;
- 	struct key *authkey;
- 	int ret;
- 
-@@ -237,11 +237,13 @@ static int construct_key(struct key *key, const void *callout_info,
- 		return PTR_ERR(authkey);
- 
- 	/* Make the call */
--	actor = call_sbin_request_key;
--	if (key->type->request_key)
--		actor = key->type->request_key;
+     (auditallow release_app.process secmark_demo.browser_packet (packet (send recv)))
 -
--	ret = actor(authkey, aux);
-+	if (key->type->request_key) {
-+		ret = key->type->request_key(authkey, aux);
-+	} else {
-+		ret = queue_request_key(key, authkey);
-+		if (ret == -ENOPARAM)
-+			ret = call_sbin_request_key(authkey);
-+	}
++```
  
- 	/* check that the actor called complete_request_key() prior to
- 	 * returning an error */
-diff --git a/security/keys/request_key_auth.c b/security/keys/request_key_auth.c
-index 41e9735006d0..8379dfd15395 100644
---- a/security/keys/request_key_auth.c
-+++ b/security/keys/request_key_auth.c
-@@ -152,6 +152,9 @@ static void request_key_auth_destroy(struct key *key)
- 		rcu_assign_keypointer(key, NULL);
- 		call_rcu(&rka->rcu, request_key_auth_rcu_disposal);
- 	}
-+
-+	if (key_read_state(rka->target_key) == KEY_IS_UNINSTANTIATED)
-+		key_reject_and_link(rka->target_key, 0, -ENOKEY, NULL, NULL);
- }
+ dontaudit
+ ---------
+@@ -140,7 +145,9 @@ Note that these rules can be omitted by the CIL compiler command line parameter
  
- /*
-diff --git a/security/keys/service.c b/security/keys/service.c
-new file mode 100644
-index 000000000000..cea8ae993bea
---- /dev/null
-+++ b/security/keys/service.c
-@@ -0,0 +1,337 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* Service daemon interface
-+ *
-+ * Copyright (C) 2021 Red Hat, Inc. All Rights Reserved.
-+ * Written by David Howells (dhowells@redhat.com)
-+ */
+ **Rule definition:**
+ 
++```secil
+     (dontaudit source_id target_id|self classpermissionset_id ...)
++```
+ 
+ **Where:**
+ 
+@@ -174,7 +181,9 @@ Note that these rules can be omitted by the CIL compiler command line parameter
+ 
+ This example will not audit the denied access:
+ 
++```secil
+     (dontaudit zygote.process self (capability (fsetid)))
++```
+ 
+ neverallow
+ ----------
+@@ -185,7 +194,9 @@ Note that these rules can be over-ridden by the CIL compiler command line parame
+ 
+ **Rule definition:**
+ 
++```secil
+     (neverallow source_id target_id|self classpermissionset_id ...)
++```
+ 
+ **Where:**
+ 
+@@ -219,6 +230,7 @@ Note that these rules can be over-ridden by the CIL compiler command line parame
+ 
+ This example will not compile as `type_3` is not allowed to be a source type for the [`allow`](cil_access_vector_rules.md#allow) rule:
+ 
++```secil
+     (class property_service (set))
+ 
+     (block av_rules
+@@ -232,6 +244,7 @@ This example will not compile as `type_3` is not allowed to be a source type for
+         ; This rule will fail compilation:
+         (allow type_3 self (property_service (set)))
+     )
++```
+ 
+ allowx
+ ------
+@@ -242,7 +255,9 @@ Note that for this to work there must *also* be valid equivalent [`allow`](cil_a
+ 
+ **Rule definition:**
+ 
++```secil
+     (allowx source_id target_id|self permissionx_id)
++```
+ 
+ **Where:**
+ 
+@@ -276,12 +291,14 @@ Note that for this to work there must *also* be valid equivalent [`allow`](cil_a
+ 
+ These examples show a selection of possible permutations of [`allowx`](cil_access_vector_rules.md#allowx) rules:
+ 
++```secil
+     (allow type_1 type_2 (tcp_socket (ioctl))) ;; pre-requisite
+     (allowx type_1 type_2 (ioctl tcp_socket (range 0x2000 0x20FF)))
+ 
+     (permissionx ioctl_nodebug (ioctl udp_socket (not (range 0x4000 0x4010))))
+     (allow type_3 type_4 (udp_socket (ioctl))) ;; pre-requisite
+     (allowx type_3 type_4 ioctl_nodebug)
++```
+ 
+ 
+ auditallowx
+@@ -293,7 +310,9 @@ Note that for this to work there must *also* be valid equivalent [`auditallow`](
+ 
+ **Rule definition:**
+ 
++```secil
+     (auditallowx source_id target_id|self permissionx_id)
++```
+ 
+ **Where:**
+ 
+@@ -327,11 +346,12 @@ Note that for this to work there must *also* be valid equivalent [`auditallow`](
+ 
+ This example will log an audit event whenever the corresponding [`allowx`](cil_access_vector_rules.md#allowx) rule grants access to the specified extended permissions:
+ 
++```secil
+     (allowx type_1 type_2 (ioctl tcp_socket (range 0x2000 0x20FF)))
+ 
+     (auditallow type_1 type_2 (tcp_socket (ioctl))) ;; pre-requisite
+     (auditallowx type_1 type_2 (ioctl tcp_socket (range 0x2005 0x2010)))
+-
++```
+ 
+ dontauditx
+ ----------
+@@ -344,7 +364,9 @@ Note that these rules can be omitted by the CIL compiler command line parameter
+ 
+ **Rule definition:**
+ 
++```secil
+     (dontauditx source_id target_id|self permissionx_id)
++```
+ 
+ **Where:**
+ 
+@@ -378,9 +400,10 @@ Note that these rules can be omitted by the CIL compiler command line parameter
+ 
+ This example will not audit the denied access:
+ 
++```secil
+     (allowx type_1 type_2 (ioctl tcp_socket (0x1))) ;; pre-requisite, just some irrelevant random ioctl
+     (dontauditx type_1 type_2 (ioctl tcp_socket (range 0x3000 0x30FF)))
+-
++```
+ 
+ neverallowx
+ ----------
+@@ -390,7 +413,9 @@ Note that these rules can be over-ridden by the CIL compiler command line parame
+ 
+ **Rule definition:**
+ 
++```secil
+     (neverallowx source_id target_id|self permissionx_id)
++```
+ 
+ **Where:**
+ 
+@@ -424,6 +449,7 @@ Note that these rules can be over-ridden by the CIL compiler command line parame
+ 
+ This example will not compile as `type_3` is not allowed to be a source type and ioctl range for the [`allowx`](cil_access_vector_rules.md#allowx) rule:
+ 
++```secil
+ 	(class property_service (ioctl))
+ 	(block av_rules
+ 		(type type_1)
+@@ -435,3 +461,4 @@ This example will not compile as `type_3` is not allowed to be a source type and
+ 		; This rule will fail compilation:
+ 		(allowx type_3 self (ioctl property_service (0x20A0)))
+ 	)
++```
+diff --git a/secilc/docs/cil_call_macro_statements.md b/secilc/docs/cil_call_macro_statements.md
+index 98b70368..33ef9462 100644
+--- a/secilc/docs/cil_call_macro_statements.md
++++ b/secilc/docs/cil_call_macro_statements.md
+@@ -10,7 +10,9 @@ Each parameter passed contains an argument to be resolved by the [macro](#macro)
+ 
+ **Statement definition:**
+ 
++```secil
+     (call macro_id [(param ...)])
++```
+ 
+ **Where:**
+ 
+@@ -58,10 +60,12 @@ When resolving macros the following places are checked in this order:
+ 
+ **Statement definition:**
+ 
++```secil
+     (macro macro_id ([(param_type param_id) ...])
+         cil_statements
+         ...
+     )
++```
+ 
+ **Where:**
+ 
+@@ -99,6 +103,7 @@ When resolving macros the following places are checked in this order:
+ 
+ This example will instantiate the `binder_call` macro in the calling namespace (`my_domain`) and replace `ARG1` with `appdomain` and `ARG2` with `binderservicedomain`:
+ 
++```secil
+     (block my_domain
+         (call binder_call (appdomain binderservicedomain))
+     )
+@@ -108,9 +113,11 @@ This example will instantiate the `binder_call` macro in the calling namespace (
+         (allow ARG2 ARG1 (binder (transfer)))
+         (allow ARG1 ARG2 (fd (use)))
+     )
++```
+ 
+ This example does not pass any parameters to the macro but adds a [`type`](cil_type_statements.md#type) identifier to the current namespace:
+ 
++```secil
+     (block unconfined
+         (call add_type)
+         ....
+@@ -119,9 +126,11 @@ This example does not pass any parameters to the macro but adds a [`type`](cil_t
+             (type exec)
+         )
+     )
++```
+ 
+ This example passes an anonymous and named IP address to the macro:
+ 
++```secil
+     (ipaddr netmask_1 255.255.255.0)
+     (context netlabel_1 (system.user object_r unconfined.object low_low)
+ 
+@@ -130,3 +139,4 @@ This example passes an anonymous and named IP address to the macro:
+     (macro build_nodecon ((ipaddr ARG1) (ipaddr ARG2))
+         (nodecon ARG1 ARG2  netlabel_1)
+     )
++```
+diff --git a/secilc/docs/cil_class_and_permission_statements.md b/secilc/docs/cil_class_and_permission_statements.md
+index 308c86d6..368e3a4d 100644
+--- a/secilc/docs/cil_class_and_permission_statements.md
++++ b/secilc/docs/cil_class_and_permission_statements.md
+@@ -8,7 +8,9 @@ Declares a common identifier in the current namespace with a set of common permi
+ 
+ **Statement definition:**
+ 
++```secil
+     (common common_id (permission_id ...))
++```
+ 
+ **Where:**
+ 
+@@ -37,7 +39,9 @@ Declares a common identifier in the current namespace with a set of common permi
+ 
+ This common statement will associate the [`common`](cil_class_and_permission_statements.md#common) identifier '`file`' with the list of permissions:
+ 
++```secil
+     (common file (ioctl read write create getattr setattr lock relabelfrom relabelto append unlink link rename execute swapon quotaon mounton))
++```
+ 
+ classcommon
+ -----------
+@@ -46,7 +50,9 @@ Associate a [`class`](cil_class_and_permission_statements.md#class) identifier t
+ 
+ **Statement definition:**
+ 
++```secil
+     (classcommon class_id common_id)
++```
+ 
+ **Where:**
+ 
+@@ -75,9 +81,11 @@ Associate a [`class`](cil_class_and_permission_statements.md#class) identifier t
+ 
+ This associates the `dir` class with the list of permissions declared by the `file common` identifier:
+ 
++```secil
+     (common file (ioctl read write create getattr setattr lock relabelfrom relabelto append unlink link rename execute swapon quotaon mounton))
+ 
+     (classcommon dir file)
++```
+ 
+ class
+ -----
+@@ -86,7 +94,9 @@ Declares a class and zero or more permissions in the current namespace.
+ 
+ **Statement definition:**
+ 
++```secil
+     (class class_id (permission_id ...))
++```
+ 
+ **Where:**
+ 
+@@ -115,29 +125,39 @@ Declares a class and zero or more permissions in the current namespace.
+ 
+ This example defines a set of permissions for the `binder` class identifier:
+ 
++```secil
+     (class binder (impersonate call set_context_mgr transfer receive))
++```
+ 
+ This example defines a common set of permissions to be used by the `sem` class, the `(class sem ())` does not define any other permissions (i.e. an empty list):
+ 
++```secil
+     (common ipc (create destroy getattr setattr read write associate unix_read unix_write))
+ 
+     (classcommon sem ipc)
+     (class sem ())
++```
+ 
+ and will produce the following set of permissions for the `sem` class identifier of:
+ 
++```secil
+     (class sem (create destroy getattr setattr read write associate unix_read unix_write))
++```
+ 
+ This example, with the following combination of the [`common`](cil_class_and_permission_statements.md#common), [`classcommon`](cil_class_and_permission_statements.md#classcommon) and [`class`](cil_class_and_permission_statements.md#class) statements:
+ 
++```secil
+     (common file (ioctl read write create getattr setattr lock relabelfrom relabelto append unlink link rename execute swapon quotaon mounton))
+ 
+     (classcommon dir file)
+     (class dir (add_name remove_name reparent search rmdir open audit_access execmod))
++```
+ 
+ will produce a set of permissions for the `dir` class identifier of:
+ 
++```secil
+     (class dir (add_name remove_name reparent search rmdir open audit_access execmod ioctl read write create getattr setattr lock relabelfrom relabelto append unlink link rename execute swapon quotaon mounton))
++```
+ 
+ classorder
+ ----------
+@@ -146,7 +166,9 @@ Defines the order of [class](#class)'s. This is a mandatory statement. Multiple
+ 
+ **Statement definition:**
+ 
++```secil
+     (classorder (class_id ...))
++```
+ 
+ **Where:**
+ 
+@@ -171,11 +193,13 @@ Defines the order of [class](#class)'s. This is a mandatory statement. Multiple
+ 
+ This will produce an ordered list of "`file dir process`"
+ 
++```secil
+     (class process)
+     (class file)
+     (class dir)
+     (classorder (file dir))
+     (classorder (dir process))
++```
+ 
+ **Unordered Classorder Statement:**
+ 
+@@ -185,6 +209,7 @@ If users do not have knowledge of the existing [`classorder`](#classorder), the
+ 
+ This will produce an unordered list of "`file dir foo a bar baz`"
+ 
++```secil
+ 	(class file)
+ 	(class dir)
+ 	(class foo)
+@@ -195,6 +220,7 @@ This will produce an unordered list of "`file dir foo a bar baz`"
+ 	(classorder (dir foo))
+ 	(classorder (unordered a))
+ 	(classorder (unordered bar foo baz))
++```
+ 
+ classpermission
+ ---------------
+@@ -203,7 +229,9 @@ Declares a class permission set identifier in the current namespace that can be
+ 
+ **Statement definition:**
+ 
++```secil
+     (classpermission classpermissionset_id)
++```
+ 
+ **Where:**
+ 
+@@ -235,7 +263,9 @@ Defines a class permission set identifier in the current namespace that associat
+ 
+ **Statement definition:**
+ 
++```secil
+     (classpermissionset classpermissionset_id (class_id (permission_id | expr ...)))
++```
+ 
+ **Where:**
+ 
+@@ -278,6 +308,7 @@ Defines a class permission set identifier in the current namespace that associat
+ 
+ These class permission set statements will resolve to the permission sets shown in the kernel policy language [`allow`](cil_access_vector_rules.md#allow) rules:
+ 
++```secil
+     (class zygote (specifyids specifyrlimits specifycapabilities specifyinvokewith specifyseinfo))
+ 
+     (type test_1)
+@@ -322,6 +353,7 @@ These class permission set statements will resolve to the permission sets shown
+     (classpermissionset zygote_all_perms (zygote (all)))
+     (allow unconfined.process test_5 zygote_all_perms)
+     ;; allow unconfined.process test_5 : zygote { specifyids specifyrlimits specifycapabilities specifyinvokewith specifyseinfo } ;
++```
+ 
+ classmap
+ --------
+@@ -346,7 +378,9 @@ Declares a class map identifier in the current namespace and one or more class m
+ 
+ **Statement definition:**
+ 
++```secil
+     (classmap classmap_id (classmapping_id ...))
++```
+ 
+ **Where:**
+ 
+@@ -382,7 +416,9 @@ Define sets of [`classpermissionset`](cil_class_and_permission_statements.md#cla
+ 
+ **Statement definition:**
+ 
++```secil
+     (classmapping classmap_id classmapping_id classpermissionset_id)
++```
+ 
+ **Where:**
+ 
+@@ -415,6 +451,7 @@ Define sets of [`classpermissionset`](cil_class_and_permission_statements.md#cla
+ 
+ These class mapping statements will resolve to the permission sets shown in the kernel policy language [`allow`](cil_access_vector_rules.md#allow) rules:
+ 
++```secil
+     (class binder (impersonate call set_context_mgr transfer receive))
+     (class property_service (set))
+     (class zygote (specifyids specifyrlimits specifycapabilities specifyinvokewith specifyseinfo))
+@@ -454,6 +491,7 @@ These class mapping statements will resolve to the permission sets shown in the
+ 
+     ;; allow map_example.type_3 map_example.type_3 : binder { impersonate call set_context_mgr } ;
+     ;; allow map_example.type_3 map_example.type_3 : zygote { specifyrlimits specifycapabilities specifyinvokewith specifyseinfo } ;
++```
+ 
+ permissionx
+ -----------
+@@ -462,7 +500,9 @@ Defines a named extended permission, which can be used in the [`allowx`](cil_acc
+ 
+ **Statement definition:**
+ 
++```secil
+     (permissionx permissionx_id (kind class_id (permission ... | expr ...)))
++```
+ 
+ **Where:**
+ 
+@@ -517,6 +557,8 @@ Defines a named extended permission, which can be used in the [`allowx`](cil_acc
+ 
+ **Examples:**
+ 
++```secil
+     (permissionx ioctl_1 (ioctl tcp_socket (0x2000 0x3000 0x4000)))
+     (permissionx ioctl_2 (ioctl tcp_socket (range 0x6000 0x60FF)))
+     (permissionx ioctl_3 (ioctl tcp_socket (and (range 0x8000 0x90FF) (not (range 0x8100 0x82FF)))))
++```
+diff --git a/secilc/docs/cil_conditional_statements.md b/secilc/docs/cil_conditional_statements.md
+index f30d2cce..a55a9b6c 100644
+--- a/secilc/docs/cil_conditional_statements.md
++++ b/secilc/docs/cil_conditional_statements.md
+@@ -8,7 +8,9 @@ Declares a run time boolean as true or false in the current namespace. The [`boo
+ 
+ **Statement definition:**
+ 
++```secil
+     (boolean boolean_id true|false)
++```
+ 
+ **Where:**
+ 
+@@ -46,7 +48,8 @@ Contains the run time conditional statements that are instantiated in the binary
+ 
+ **Statement definition:**
+ 
+-    (booleanif boolean_id | expr ...)
++```secil
++    (booleanif boolean_id | expr ...
+         (true
+             cil_statements
+             ...)
+@@ -54,6 +57,7 @@ Contains the run time conditional statements that are instantiated in the binary
+             cil_statements
+             ...)
+     )
++```
+ 
+ **Where:**
+ 
+@@ -96,6 +100,7 @@ Contains the run time conditional statements that are instantiated in the binary
+ 
+ The second example also shows the kernel policy language equivalent:
+ 
++```secil
+     (boolean disableAudio false)
+ 
+     (booleanif disableAudio
+@@ -112,6 +117,7 @@ The second example also shows the kernel policy language equivalent:
+             (allow process mediaserver.audio_capture_device (chr_file_set (rw_file_perms)))
+         )
+     )
++```
+ 
+ tunable
+ -------
+@@ -122,7 +128,9 @@ Note that tunables can be treated as booleans by the CIL compiler command line p
+ 
+ **Statement definition:**
+ 
++```secil
+     (tunable tunable_id true|false)
++```
+ 
+ **Where:**
+ 
+@@ -158,7 +166,8 @@ Compile time conditional statement that may or may not add CIL statements to be
+ 
+ **Statement definition:**
+ 
+-    (tunableif tunable_id | expr ...)
++```secil
++    (tunableif tunable_id | expr ...
+         (true
+             cil_statements
+             ...)
+@@ -166,6 +175,7 @@ Compile time conditional statement that may or may not add CIL statements to be
+             cil_statements
+             ...)
+     )
++```
+ 
+ **Where:**
+ 
+@@ -208,6 +218,7 @@ Compile time conditional statement that may or may not add CIL statements to be
+ 
+ This example will not add the range transition rule to the binary policy:
+ 
++```secil
+     (tunable range_trans_rule false)
+ 
+     (block init
+@@ -220,3 +231,4 @@ This example will not add the range transition rule to the binary policy:
+             )
+         ) ; End tunableif
+     ) ; End block
++```
+diff --git a/secilc/docs/cil_constraint_statements.md b/secilc/docs/cil_constraint_statements.md
+index df03ae6b..2dd6e6f0 100644
+--- a/secilc/docs/cil_constraint_statements.md
++++ b/secilc/docs/cil_constraint_statements.md
+@@ -8,7 +8,9 @@ Enable constraints to be placed on the specified permissions of the object class
+ 
+ **Statement definition:**
+ 
++```secil
+     (constrain classpermissionset_id ... expression | expr ...)
++```
+ 
+ **Where:**
+ 
+@@ -62,6 +64,7 @@ Enable constraints to be placed on the specified permissions of the object class
+ 
+ Two constrain statements are shown with their equivalent kernel policy language statements:
+ 
++```secil
+     ;; constrain { file } { write }
+     ;;    (( t1 == unconfined.process  ) and ( t2 == unconfined.object  ) or ( r1 eq r2 ));
+     (constrain (file (write))
+@@ -87,6 +90,7 @@ Two constrain statements are shown with their equivalent kernel policy language
+             )
+         )
+     )
++```
+ 
+ validatetrans
+ -------------
+@@ -95,7 +99,9 @@ The [`validatetrans`](cil_constraint_statements.md#validatetrans) statement is o
+ 
+ **Statement definition:**
+ 
++```secil
+     (validatetrans class_id expression | expr ...)
++```
+ 
+ **Where:**
+ 
+@@ -153,9 +159,11 @@ The [`validatetrans`](cil_constraint_statements.md#validatetrans) statement is o
+ 
+ A validate transition statement with the equivalent kernel policy language statement:
+ 
++```secil
+     ; validatetrans { file } ( t1 == unconfined.process  );
+ 
+     (validatetrans file (eq t1 unconfined.process))
++```
+ 
+ mlsconstrain
+ ------------
+@@ -164,7 +172,9 @@ Enable MLS constraints to be placed on the specified permissions of the object c
+ 
+ **Statement definition:**
+ 
++```secil
+     (mlsconstrain classpermissionset_id ... expression | expr ...)
++```
+ 
+ **Where:**
+ 
+@@ -224,6 +234,7 @@ Enable MLS constraints to be placed on the specified permissions of the object c
+ 
+ An MLS constrain statement with the equivalent kernel policy language statement:
+ 
++```secil
+     ;; mlsconstrain { file } { open }
+     ;;     (( l1 eq l2 ) and ( u1 == u2 ) or ( r1 != r2 ));
+ 
+@@ -236,6 +247,7 @@ An MLS constrain statement with the equivalent kernel policy language statement:
+             (neq r1 r2)
+         )
+     )
++```
+ 
+ mlsvalidatetrans
+ ----------------
+@@ -244,7 +256,9 @@ The [`mlsvalidatetrans`](cil_constraint_statements.md#mlsvalidatetrans) statemen
+ 
+ **Statement definition:**
+ 
++```secil
+     (mlsvalidatetrans class_id expression | expr ...)
++```
+ 
+ **Where:**
+ 
+@@ -308,6 +322,8 @@ The [`mlsvalidatetrans`](cil_constraint_statements.md#mlsvalidatetrans) statemen
+ 
+ An MLS validate transition statement with the equivalent kernel policy language statement:
+ 
++```secil
+     ;; mlsvalidatetrans { file } ( l1 domby h2 );
+ 
+     (mlsvalidatetrans file (domby l1 h2))
++```
+diff --git a/secilc/docs/cil_container_statements.md b/secilc/docs/cil_container_statements.md
+index 58b3224d..76e9da51 100644
+--- a/secilc/docs/cil_container_statements.md
++++ b/secilc/docs/cil_container_statements.md
+@@ -8,10 +8,12 @@ Start a new namespace where any CIL statement is valid.
+ 
+ **Statement definition:**
+ 
++```secil
+     (block block_id
+         cil_statement
+         ...
+     )
++```
+ 
+ **Where:**
+ 
+@@ -47,11 +49,13 @@ Declares the namespace as a 'template' and does not generate code until instanti
+ 
+ **Statement definition:**
+ 
++```secil
+     (block block_id
+         (blockabstract template_id)
+         cil_statement
+         ...
+     )
++```
+ 
+ **Where:**
+ 
+@@ -95,11 +99,13 @@ Used to add common policy rules to the current namespace via a template that has
+ 
+ **Statement definition:**
+ 
++```secil
+     (block block_id
+         (blockinherit template_id)
+         cil_statement
+         ...
+     )
++```
+ 
+ **Where:**
+ 
+@@ -136,6 +142,7 @@ Used to add common policy rules to the current namespace via a template that has
+ 
+ This example contains a template `client_server` that is instantiated in two blocks (`netserver_app` and `netclient_app`):
+ 
++```secil
+     ; This is the template block:
+     (block client_server
+         (blockabstract client_server)
+@@ -187,6 +194,7 @@ This example contains a template `client_server` that is instantiated in two blo
+     (block ab
+         (blockinherit b)
+         (blockinherit a))
++```
+ 
+ optional
+ --------
+@@ -203,10 +211,12 @@ Declare an [`optional`](cil_container_statements.md#optional) namespace. All CIL
+ 
+ **Statement definition:**
+ 
++```secil
+     (optional optional_id
+         cil_statement
+         ...
+     )
++```
+ 
+ **Where:**
+ 
+@@ -235,6 +245,7 @@ Declare an [`optional`](cil_container_statements.md#optional) namespace. All CIL
+ 
+ This example will instantiate the optional block `ext_gateway.move_file` into policy providing all optional CIL statements can be resolved:
+ 
++```secil
+     (block ext_gateway
+         ......
+         (optional move_file
+@@ -250,6 +261,7 @@ This example will instantiate the optional block `ext_gateway.move_file` into po
+ 
+         .....
+     ) ; End block
++```
+ 
+ in
+ --
+@@ -258,10 +270,12 @@ Allows the insertion of CIL statements into a named container ([`block`](cil_con
+ 
+ **Statement definition:**
+ 
++```secil
+     (in container_id
+         cil_statement
+         ...
+     )
++```
+ 
+ **Where:**
+ 
+@@ -290,7 +304,9 @@ Allows the insertion of CIL statements into a named container ([`block`](cil_con
+ 
+ This will add rules to the container named `system_server`:
+ 
++```secil
+     (in system_server
+         (dontaudit process secmark_demo.dns_packet (packet (send recv)))
+         (allow process secmark_demo.dns_packet (packet (send recv)))
+     )
++```
+diff --git a/secilc/docs/cil_context_statement.md b/secilc/docs/cil_context_statement.md
+index 60812751..caa7ff6b 100644
+--- a/secilc/docs/cil_context_statement.md
++++ b/secilc/docs/cil_context_statement.md
+@@ -16,7 +16,9 @@ Declare an SELinux security context identifier for labeling. The range (or curre
+ 
+ **Statement definition:**
+ 
++```secil
+     (context context_id (user_id role_id type_id levelrange_id)))
++```
+ 
+ **Where:**
+ 
+@@ -57,21 +59,29 @@ Declare an SELinux security context identifier for labeling. The range (or curre
+ 
+ This example uses a named context definition:
+ 
++```secil
+     (context runas_exec_context (u object_r exec low_low))
+ 
+     (filecon "/system/bin/run-as" file runas_exec_context)
++```
+ 
+ to resolve/build a `file_contexts` entry of (assuming MLS enabled policy):
+ 
++```
+     /system/bin/run-as  -- u:object_r:runas.exec:s0-s0
++```
+ 
+ This example uses an anonymous context where the previously declared `user role type levelrange` identifiers are used to specify two [`portcon`](cil_network_labeling_statements.md#portcon) statements:
+ 
++```secil
+     (portcon udp 1024 (test.user object_r test.process ((s0) (s1))))
+     (portcon tcp 1024 (test.user object_r test.process (system_low system_high)))
++```
+ 
+ This example uses an anonymous context for the first and named context for the second in a [`netifcon`](cil_network_labeling_statements.md#netifcon) statement:
+ 
++```secil
+     (context netif_context (test.user object_r test.process ((s0 (c0)) (s1 (c0)))))
+ 
+     (netifcon eth04 (test.user object_r test.process ((s0 (c0)) (s1 (c0)))) netif_context)
++```
+diff --git a/secilc/docs/cil_file_labeling_statements.md b/secilc/docs/cil_file_labeling_statements.md
+index 3175ebca..ed7b7bf9 100644
+--- a/secilc/docs/cil_file_labeling_statements.md
++++ b/secilc/docs/cil_file_labeling_statements.md
+@@ -8,7 +8,9 @@ Define entries for labeling files. The compiler will produce these entries in a
+ 
+ **Statement definition:**
+ 
++```secil
+     (filecon "path" file_type context_id)
++```
+ 
+ **Where:**
+ 
+@@ -89,17 +91,21 @@ Define entries for labeling files. The compiler will produce these entries in a
+ 
+ These examples use one named, one anonymous and one empty context definition:
+ 
++```secil
+     (context runas_exec_context (u object_r exec low_low))
+ 
+     (filecon "/system/bin/run-as" file runas_exec_context)
+     (filecon "/dev/socket/wpa_wlan[0-9]" any u:object_r:wpa.socket:s0-s0)
+     (filecon "/data/local/mine" dir ())
++```
+ 
+ to resolve/build `file_contexts` entries of (assuming MLS enabled policy):
+ 
++```
+     /system/bin/run-as  -- u:object_r:runas.exec:s0
+     /dev/socket/wpa_wlan[0-9]   u:object_r:wpa.socket:s0
+     /data/local/mine -d <<none>>
++```
+ 
+ fsuse
+ -----
+@@ -108,7 +114,9 @@ Label filesystems that support SELinux security contexts.
+ 
+ **Statement definition:**
+ 
++```secil
+     (fsuse fstype fsname context_id)
++```
+ 
+ **Where:**
+ 
+@@ -147,6 +155,7 @@ Label filesystems that support SELinux security contexts.
+ 
+ The [context](#context) identifiers are declared in the `file` namespace and the [`fsuse`](cil_file_labeling_statements.md#fsuse) statements in the global namespace:
+ 
++```secil
+     (block file
+         (type labeledfs)
+         (roletype object_r labeledfs)
+@@ -166,6 +175,7 @@ The [context](#context) identifiers are declared in the `file` namespace and the
+ 
+     (fsuse trans devpts file.devpts_context)
+     (fsuse trans tmpfs file.tmpfs_context)
++```
+ 
+ genfscon
+ --------
+@@ -174,7 +184,9 @@ Used to allocate a security context to filesystems that cannot support any of th
+ 
+ **Statement definition:**
+ 
++```secil
+     (genfscon fsname path context_id)
++```
+ 
+ **Where:**
+ 
+@@ -207,6 +219,7 @@ Used to allocate a security context to filesystems that cannot support any of th
+ 
+ The [context](#context) identifiers are declared in the `file` namespace and the [`genfscon`](cil_file_labeling_statements.md#genfscon) statements are then inserted using the [`in`](cil_container_statements.md#in) container statement:
+ 
++```secil
+     (file
+         (type rootfs)
+         (roletype object_r rootfs)
+@@ -226,3 +239,4 @@ The [context](#context) identifiers are declared in the `file` namespace and the
+         (genfscon proc /sysrq-trigger sysrq_proc_context)
+         (genfscon selinuxfs / selinuxfs_context)
+     )
++```
+diff --git a/secilc/docs/cil_infiniband_statements.md b/secilc/docs/cil_infiniband_statements.md
+index ba1d7101..0ba167cf 100644
+--- a/secilc/docs/cil_infiniband_statements.md
++++ b/secilc/docs/cil_infiniband_statements.md
+@@ -10,7 +10,9 @@ Label IB partition keys. This may be a single key or a range.
+ 
+ **Statement definition:**
+ 
++```secil
+     (ibpkeycon subnet pkey|(pkey_low pkey_high)  context_id)
++```
+ 
+ **Where:**
+ 
+@@ -43,8 +45,9 @@ Label IB partition keys. This may be a single key or a range.
+ 
+ An anonymous context for a partition key range of `0x0-0x10` assigned to an IPv6 subnet:
+ 
++```secil
+     (ibpkeycon fe80:: (0 0x10) (system_u system_r kernel_t (low (s3 (cats01 cats02)))))
+-
++```
+ 
+ ibendportcon
+ ------------
+@@ -53,7 +56,9 @@ Label IB end ports.
+ 
+ **Statement definition:**
+ 
++```secil
+     (ibendportcon device_id port context_id)
++```
+ 
+ **Where:**
+ 
+@@ -86,4 +91,6 @@ Label IB end ports.
+ 
+ A named context for device `mlx5_0` on port `1`:
+ 
++```secil
+     (ibendportcon mlx5_0 1 system_u_bin_t_l2h)
++```
+diff --git a/secilc/docs/cil_mls_labeling_statements.md b/secilc/docs/cil_mls_labeling_statements.md
+index 9b3a36a5..1b9c53c5 100644
+--- a/secilc/docs/cil_mls_labeling_statements.md
++++ b/secilc/docs/cil_mls_labeling_statements.md
+@@ -10,7 +10,9 @@ Declare a sensitivity identifier in the current namespace. Multiple [`sensitivit
+ 
+ **Statement definition:**
+ 
++```secil
+     (sensitivity sensitivity_id)
++```
+ 
+ **Where:**
+ 
+@@ -35,9 +37,11 @@ Declare a sensitivity identifier in the current namespace. Multiple [`sensitivit
+ 
+ This example declares three [`sensitivity`](cil_mls_labeling_statements.md#sensitivity) identifiers:
+ 
++```secil
+     (sensitivity s0)
+     (sensitivity s1)
+     (sensitivity s2)
++```
+ 
+ sensitivityalias
+ ----------------
+@@ -46,7 +50,9 @@ Declares a sensitivity alias identifier in the current namespace. See the [`sens
+ 
+ **Statement definition:**
+ 
++```secil
+     (sensitivityalias sensitivityalias_id)
++```
+ 
+ **Where:**
+ 
+@@ -78,7 +84,9 @@ Associates a previously declared [`sensitivityalias`](cil_mls_labeling_statement
+ 
+ **Statement definition:**
+ 
++```secil
+     (sensitivityaliasactual sensitivityalias_id sensitivity_id)
++```
+ 
+ **Where:**
+ 
+@@ -107,11 +115,13 @@ Associates a previously declared [`sensitivityalias`](cil_mls_labeling_statement
+ 
+ This example will associate sensitivity `s0` with two sensitivity alias's:
+ 
++```secil
+     (sensitivity s0)
+     (sensitivityalias unclassified)
+     (sensitivityalias SystemLow)
+     (sensitivityaliasactual unclassified s0)
+     (sensitivityaliasactual SystemLow s0)
++```
+ 
+ sensitivityorder
+ ----------------
+@@ -120,7 +130,9 @@ Define the sensitivity order - lowest to highest. Multiple [`sensitivityorder`](
+ 
+ **Statement definition:**
+ 
++```secil
+     (sensitivityorder (sensitivity_id ...))
++```
+ 
+ **Where:**
+ 
+@@ -145,6 +157,7 @@ Define the sensitivity order - lowest to highest. Multiple [`sensitivityorder`](
+ 
+ This example shows two [`sensitivityorder`](cil_mls_labeling_statements.md#sensitivityorder) statements that when compiled will form an ordered list. Note however that the second [`sensitivityorder`](cil_mls_labeling_statements.md#sensitivityorder) statement starts with `s2` so that the ordered list can be built.
+ 
++```secil
+     (sensitivity s0)
+     (sensitivityalias s0 SystemLow)
+     (sensitivity s1)
+@@ -155,6 +168,7 @@ This example shows two [`sensitivityorder`](cil_mls_labeling_statements.md#sensi
+     (sensitivity s4)
+     (sensitivityalias s4 SystemHigh)
+     (sensitivityorder (s2 s3 SystemHigh))
++```
+ 
+ category
+ --------
+@@ -163,7 +177,9 @@ Declare a category identifier in the current namespace. Multiple category statem
+ 
+ **Statement definition:**
+ 
++```secil
+     (category category_id)
++```
+ 
+ **Where:**
+ 
+@@ -188,9 +204,11 @@ Declare a category identifier in the current namespace. Multiple category statem
+ 
+ This example declares a three [`category`](cil_mls_labeling_statements.md#category) identifiers:
+ 
++```secil
+     (category c0)
+     (category c1)
+     (category c2)
++```
+ 
+ categoryalias
+ -------------
+@@ -199,7 +217,9 @@ Declares a category alias identifier in the current namespace. See the [`categor
+ 
+ **Statement definition:**
+ 
++```secil
+     (categoryalias categoryalias_id)
++```
+ 
+ **Where:**
+ 
+@@ -227,7 +247,9 @@ Associates a previously declared [`categoryalias`](cil_mls_labeling_statements.m
+ 
+ **Statement definition:**
+ 
++```secil
+     (categoryaliasactual categoryalias_id category_id)
++```
+ 
+ **Where:**
+ 
+@@ -256,9 +278,11 @@ Associates a previously declared [`categoryalias`](cil_mls_labeling_statements.m
+ 
+ Declares a category `c0`, a category alias of `documents`, and then associates them:
+ 
++```secil
+     (category c0)
+     (categoryalias documents)
+     (categoryaliasactual documents c0)
++```
+ 
+ categoryorder
+ -------------
+@@ -267,7 +291,9 @@ Define the category order. Multiple [`categoryorder`](cil_mls_labeling_statement
+ 
+ **Statement definition:**
+ 
++```secil
+     (categoryorder (category_id ...))
++```
+ 
+ **Where:**
+ 
+@@ -292,7 +318,9 @@ Define the category order. Multiple [`categoryorder`](cil_mls_labeling_statement
+ 
+ This example orders one category alias and nine categories:
+ 
++```secil
+     (categoryorder (documents c1 c2 c3 c4 c5 c6 c7 c8 c9)
++```
+ 
+ categoryset
+ -----------
+@@ -307,7 +335,9 @@ Notes:
+ 
+ **Statement definition:**
+ 
++```secil
+     (categoryset categoryset_id (category_id ... | expr ...))
++```
+ 
+ **Where:**
+ 
+@@ -347,6 +377,7 @@ Notes:
+ 
+ These examples show a selection of [`categoryset`](cil_mls_labeling_statements.md#categoryset) statements:
+ 
++```secil
+     ; Declare categories with two alias's:
+     (category c0)
+     (categoryalias documents)
+@@ -372,6 +403,7 @@ These examples show a selection of [`categoryset`](cil_mls_labeling_statements.m
+     (categoryset catset_3 (c4))
+ 
+     (categoryset just_c0 (xor (c1 c2) (documents c1 c2)))
++```
+ 
+ sensitivitycategory
+ -------------------
+@@ -380,7 +412,9 @@ Associate a [`sensitivity`](cil_mls_labeling_statements.md#sensitivity) identifi
+ 
+ **Statement definition:**
+ 
++```secil
+     (sensitivitycategory sensitivity_id categoryset_id)
++```
+ 
+ **Where:**
+ 
+@@ -409,11 +443,13 @@ Associate a [`sensitivity`](cil_mls_labeling_statements.md#sensitivity) identifi
+ 
+ These [`sensitivitycategory`](cil_mls_labeling_statements.md#sensitivitycategory) examples use a selection of [`category`](cil_mls_labeling_statements.md#category), [`categoryalias`](cil_mls_labeling_statements.md#categoryalias) and [`categoryset`](cil_mls_labeling_statements.md#categoryset)'s:
+ 
++```secil
+     (sensitivitycategory s0 catrange_1)
+     (sensitivitycategory s0 catset_1)
+     (sensitivitycategory s0 catset_3)
+     (sensitivitycategory s0 (all))
+     (sensitivitycategory unclassified (range documents c2))
++```
+ 
+ level
+ -----
+@@ -422,7 +458,9 @@ Declare a [`level`](cil_mls_labeling_statements.md#level) identifier in the curr
+ 
+ **Statement definition:**
+ 
+-    level level_id (sensitivity_id [categoryset_id])
++```secil
++    (level level_id (sensitivity_id [categoryset_id]))
++```
+ 
+ **Where:**
+ 
+@@ -455,11 +493,13 @@ Declare a [`level`](cil_mls_labeling_statements.md#level) identifier in the curr
+ 
+ These [`level`](cil_mls_labeling_statements.md#level) examples use a selection of [`category`](cil_mls_labeling_statements.md#category), [`categoryalias`](cil_mls_labeling_statements.md#categoryalias) and [`categoryset`](cil_mls_labeling_statements.md#categoryset)'s:
+ 
++```secil
+     (level systemLow (s0))
+     (level level_1 (s0))
+     (level level_2 (s0 (catrange_1)))
+     (level level_3 (s0 (all_cats)))
+     (level level_4 (unclassified (c2 c3 c4)))
++```
+ 
+ levelrange
+ ----------
+@@ -468,7 +508,9 @@ Declare a level range identifier in the current namespace and associate a curren
+ 
+ **Statement definition:**
+ 
++```secil
+     (levelrange levelrange_id (low_level_id high_level_id))
++```
+ 
+ **Where:**
+ 
+@@ -501,6 +543,7 @@ Declare a level range identifier in the current namespace and associate a curren
+ 
+ This example policy shows [`levelrange`](cil_mls_labeling_statements.md#levelrange) statement and all the other MLS labeling statements discussed in this section and will compile as a standalone policy:
+ 
++```secil
+     (handleunknown allow)
+     (mls true)
+ 
+@@ -581,6 +624,7 @@ This example policy shows [`levelrange`](cil_mls_labeling_statements.md#levelran
+ 
+         (context context_1 (user object_r object low_low))
+     ) ; End unconfined namespace
++```
+ 
+ rangetransition
+ ---------------
+@@ -589,7 +633,9 @@ Allows an objects level to transition to a different level. Generally used to en
+ 
+ **Statement definition:**
+ 
++```secil
+     (rangetransition source_id target_id class_id new_range_id)
++```
+ 
+ **Where:**
+ 
+@@ -626,6 +672,7 @@ Allows an objects level to transition to a different level. Generally used to en
+ 
+ This rule will transition the range of `sshd.exec` to `s0 - s1:c0.c3` on execution from the `init.process`:
+ 
++```secil
+     (sensitivity s0)
+     (sensitivity s1)
+     (sensitivityorder s0 s1)
+@@ -636,3 +683,4 @@ This rule will transition the range of `sshd.exec` to `s0 - s1:c0.c3` on executi
+     (levelrange low_high (systemlow systemhigh))
+ 
+     (rangetransition init.process sshd.exec process low_high)
++```
+diff --git a/secilc/docs/cil_network_labeling_statements.md b/secilc/docs/cil_network_labeling_statements.md
+index 60aec80d..395069cc 100644
+--- a/secilc/docs/cil_network_labeling_statements.md
++++ b/secilc/docs/cil_network_labeling_statements.md
+@@ -14,7 +14,9 @@ Notes:
+ 
+ **Statement definition:**
+ 
++```secil
+     (ipaddr ipaddr_id ip_address)
++```
+ 
+ **Where:**
+ 
+@@ -43,6 +45,7 @@ Notes:
+ 
+ This example declares a named IP address and also passes an 'explicit anonymously declared' IP address to a macro:
+ 
++```secil
+     (ipaddr netmask_1 255.255.255.0)
+     (context netlabel_1 (system.user object_r unconfined.object low_low)
+ 
+@@ -50,6 +53,7 @@ This example declares a named IP address and also passes an 'explicit anonymousl
+ 
+     (macro build_nodecon ((ipaddr ARG1) (ipaddr ARG2))
+         (nodecon ARG1 ARG2  netlabel_1))
++```
+ 
+ netifcon
+ --------
+@@ -58,7 +62,9 @@ Label network interface objects (e.g. `eth0`).
+ 
+ **Statement definition:**
+ 
++```secil
+     (netifcon netif_name netif_context_id packet_context_id)
++```
+ 
+ **Where:**
+ 
+@@ -93,12 +99,14 @@ Label network interface objects (e.g. `eth0`).
+ 
+ These examples show named and anonymous [`netifcon`](cil_network_labeling_statements.md#netifcon) statements:
+ 
++```secil
+     (context context_1 (unconfined.user object_r unconfined.object low_low))
+     (context context_2 (unconfined.user object_r unconfined.object (systemlow level_2)))
+ 
+     (netifcon eth0 context_1 (unconfined.user object_r unconfined.object levelrange_1))
+     (netifcon eth1 context_1 (unconfined.user object_r unconfined.object ((s0) level_1)))
+     (netifcon eth3 context_1 context_2)
++```
+ 
+ nodecon
+ -------
+@@ -109,7 +117,9 @@ IP Addresses may be declared without a previous declaration by enclosing within
+ 
+ **Statement definition:**
+ 
++```secil
+     (nodecon subnet_id netmask_id context_id)
++```
+ 
+ **Where:**
+ 
+@@ -142,6 +152,7 @@ IP Addresses may be declared without a previous declaration by enclosing within
+ 
+ These examples show named and anonymous [`nodecon`](cil_network_labeling_statements.md#nodecon) statements:
+ 
++```secil
+     (context context_1 (unconfined.user object_r unconfined.object low_low))
+     (context context_2 (unconfined.user object_r unconfined.object (systemlow level_2)))
+ 
+@@ -160,6 +171,7 @@ These examples show named and anonymous [`nodecon`](cil_network_labeling_stateme
+     (nodecon ipv6_2 netmask_2 context_3)
+     (nodecon (2001:db8:1:0:0:0:0:0) (ffff:ffff:ffff:0:0:0:0:0) context_3)
+     (nodecon (2001:db8:1:0:0:0:0:0) netmask_2 (sys.id sys.role my48prefix.node ((s0)(s0))))
++```
+ 
+ portcon
+ -------
+@@ -168,7 +180,9 @@ Label a udp, tcp, dccp or sctp port.
+ 
+ **Statement definition:**
+ 
++```secil
+     (portcon protocol port|(port_low port_high) context_id)
++```
+ 
+ **Where:**
+ 
+@@ -203,6 +217,7 @@ Label a udp, tcp, dccp or sctp port.
+ 
+ These examples show named and anonymous [`portcon`](cil_network_labeling_statements.md#portcon) statements:
+ 
++```secil
+     (portcon tcp 1111 (unconfined.user object_r unconfined.object ((s0) (s0 (c0)))))
+     (portcon tcp 2222 (unconfined.user object_r unconfined.object levelrange_2))
+     (portcon tcp 3333 (unconfined.user object_r unconfined.object levelrange_1))
+@@ -210,3 +225,4 @@ These examples show named and anonymous [`portcon`](cil_network_labeling_stateme
+     (portcon tcp (2000 20000) (unconfined.user object_r unconfined.object (systemlow level_3)))
+     (portcon dccp (6840 6880) (unconfined.user object_r unconfined.object ((s0) level_2)))
+     (portcon sctp (1024 1035) (unconfined.user object_r unconfined.object ((s0) level_2)))
++```
+diff --git a/secilc/docs/cil_policy_config_statements.md b/secilc/docs/cil_policy_config_statements.md
+index 48e29d67..0258b913 100644
+--- a/secilc/docs/cil_policy_config_statements.md
++++ b/secilc/docs/cil_policy_config_statements.md
+@@ -10,7 +10,9 @@ Note that this can be over-ridden by the CIL compiler command line parameter `-M
+ 
+ **Statement definition:**
+ 
++```secil
+     (mls boolean)
++```
+ 
+ **Where:**
+ 
+@@ -33,7 +35,9 @@ Note that this can be over-ridden by the CIL compiler command line parameter `-M
+ 
+ **Example:**
+ 
++```secil
+     (mls true)
++```
+ 
+ handleunknown
+ -------------
+@@ -44,7 +48,9 @@ Note that this can be over-ridden by the CIL compiler command line parameter `-U
+ 
+ **Statement definition:**
+ 
++```secil
+     (handleunknown action)
++```
+ 
+ **Where:**
+ 
+@@ -72,7 +78,9 @@ Note that this can be over-ridden by the CIL compiler command line parameter `-U
+ 
+ This will allow unknown classes / permissions to be present in the policy:
+ 
++```secil
+     (handleunknown allow)
++```
+ 
+ policycap
+ ---------
+@@ -81,7 +89,9 @@ Allow policy capabilities to be enabled via policy. These should be declared in
+ 
+ **Statement definition:**
+ 
++```secil
+     (policycap policycap_id)
++```
+ 
+ **Where:**
+ 
+@@ -106,8 +116,10 @@ Allow policy capabilities to be enabled via policy. These should be declared in
+ 
+ These set two valid policy capabilities:
+ 
++```secil
+     ; Enable networking controls.
+     (policycap network_peer_controls)
+ 
+     ; Enable open permission check.
+     (policycap open_perms)
++```
+diff --git a/secilc/docs/cil_reference_guide.md b/secilc/docs/cil_reference_guide.md
+index 3e33c5f7..c08ad114 100644
+--- a/secilc/docs/cil_reference_guide.md
++++ b/secilc/docs/cil_reference_guide.md
+@@ -57,10 +57,12 @@ Declarations may be named or anonymous and have three different forms:
+     ipaddr
+     macro
+     policycap
 +
-+#include <linux/key.h>
-+#include <linux/key-type.h>
-+#include <linux/utsname.h>
-+#include <linux/ipc_namespace.h>
-+#include <linux/mnt_namespace.h>
-+#include <linux/pid_namespace.h>
-+#include <linux/cgroup.h>
-+#include <net/net_namespace.h>
-+#include "internal.h"
-+#include "../fs/mount.h"
-+
-+/*
-+ * Request service filter record.
-+ */
-+struct request_key_service {
-+	struct hlist_node	user_ns_link;	/* Link in the user_ns service list */
-+	struct key		*queue_keyring;	/* Keyring into which requests are placed */
-+
-+	/* The following fields define the selection criteria that we select
-+	 * this record on.  All these references must be pinned just in case
-+	 * the fd gets passed to another process or the owning process changes
-+	 * its own namespaces.
-+	 *
-+	 * Most of the criteria can be NULL if that criterion is irrelevant to
-+	 * the filter.
-+	 */
-+	char			type[24];	/* Key type of interest (or "") */
-+	struct ns_tag		*uts_ns;	/* Matching UTS namespace (or NULL) */
-+	struct ns_tag		*ipc_ns;	/* Matching IPC namespace (or NULL) */
-+	struct ns_tag		*mnt_ns;	/* Matching mount namespace (or NULL) */
-+	struct ns_tag		*pid_ns;	/* Matching process namespace (or NULL) */
-+	struct ns_tag		*net_ns;	/* Matching network namespace (or NULL) */
-+	struct ns_tag		*cgroup_ns;	/* Matching cgroup namespace (or NULL) */
-+	u8			selectivity;	/* Number of exact-match fields */
-+	bool			dead;
-+};
-+
-+/*
-+ * Free a request_key service record
-+ */
-+static void free_key_service(struct request_key_service *svc)
-+{
-+	if (svc) {
-+		put_ns_tag(svc->uts_ns);
-+		put_ns_tag(svc->ipc_ns);
-+		put_ns_tag(svc->mnt_ns);
-+		put_ns_tag(svc->pid_ns);
-+		put_ns_tag(svc->net_ns);
-+		put_ns_tag(svc->cgroup_ns);
-+		key_put(svc->queue_keyring);
-+		kfree(svc);
-+	}
-+}
-+
-+/*
-+ * Allocate a service record.
-+ */
-+static struct request_key_service *alloc_key_service(key_serial_t queue_keyring,
-+						     const char __user *type_name,
-+						     unsigned int ns_mask)
-+{
-+	struct request_key_service *svc;
-+	struct key_type *type;
-+	key_ref_t key_ref;
-+	int ret;
-+	u8 selectivity = 0;
-+
-+	svc = kzalloc(sizeof(struct request_key_service), GFP_KERNEL);
-+	if (!svc)
-+		return ERR_PTR(-ENOMEM);
-+
-+	if (queue_keyring != 0) {
-+		key_ref = lookup_user_key(queue_keyring, 0, KEY_NEED_SEARCH);
-+		if (IS_ERR(key_ref)) {
-+			ret = PTR_ERR(key_ref);
-+			goto err_svc;
-+		}
-+
-+		svc->queue_keyring = key_ref_to_ptr(key_ref);
-+	}
-+
-+	/* Save the matching criteria.  Anything the caller doesn't care about
-+	 * we leave as NULL.
-+	 */
-+	if (type_name) {
-+		ret = strncpy_from_user(svc->type, type_name, sizeof(svc->type));
-+		if (ret < 0)
-+			goto err_keyring;
-+		if (ret >= sizeof(svc->type)) {
-+			ret = -EINVAL;
-+			goto err_keyring;
-+		}
-+
-+		type = key_type_lookup(type_name);
-+		if (IS_ERR(type)) {
-+			ret = -EINVAL;
-+			goto err_keyring;
-+		}
-+		memcpy(svc->type, type->name, sizeof(svc->type));
-+		key_type_put(type);
-+	}
-+
-+	if (ns_mask & KEY_SERVICE_NS_UTS) {
-+		svc->uts_ns = get_ns_tag(current->nsproxy->uts_ns->ns.tag);
-+		selectivity++;
-+	}
-+	if (ns_mask & KEY_SERVICE_NS_IPC) {
-+		svc->ipc_ns = get_ns_tag(current->nsproxy->ipc_ns->ns.tag);
-+		selectivity++;
-+	}
-+	if (ns_mask & KEY_SERVICE_NS_MNT) {
-+		svc->mnt_ns = get_ns_tag(current->nsproxy->mnt_ns->ns.tag);
-+		selectivity++;
-+	}
-+	if (ns_mask & KEY_SERVICE_NS_PID) {
-+		svc->pid_ns = get_ns_tag(task_active_pid_ns(current)->ns.tag);
-+		selectivity++;
-+	}
-+	if (ns_mask & KEY_SERVICE_NS_NET) {
-+		svc->net_ns = get_ns_tag(current->nsproxy->net_ns->ns.tag);
-+		selectivity++;
-+	}
-+	if (ns_mask & KEY_SERVICE_NS_CGROUP) {
-+		svc->cgroup_ns = get_ns_tag(current->nsproxy->cgroup_ns->ns.tag);
-+		selectivity++;
-+	}
-+
-+	svc->selectivity = selectivity;
-+	return svc;
-+
-+err_keyring:
-+	key_put(svc->queue_keyring);
-+err_svc:
-+	kfree(svc);
-+	return ERR_PTR(ret);
-+}
-+
-+/*
-+ * Install a request_key service into the user namespace's list
-+ */
-+static int install_key_service(struct user_namespace *user_ns,
-+			       struct request_key_service *svc)
-+{
-+	struct request_key_service *p;
-+	struct hlist_node **pp;
-+	int ret = 0;
-+
-+	spin_lock(&user_ns->request_key_services_lock);
-+
-+	/* The services list is kept in order of selectivity.  The more exact
-+	 * matches a service requires, the earlier it is in the list.
-+	 */
-+	for (pp = &user_ns->request_key_services.first; *pp; pp = &(*pp)->next) {
-+		p = hlist_entry(*pp, struct request_key_service, user_ns_link);
-+		if (p->selectivity < svc->selectivity)
-+			goto insert_before;
-+		if (p->selectivity > svc->selectivity)
-+			continue;
-+		if (memcmp(p->type, svc->type, sizeof(p->type)) == 0 &&
-+		    p->uts_ns == svc->uts_ns &&
-+		    p->ipc_ns == svc->ipc_ns &&
-+		    p->mnt_ns == svc->mnt_ns &&
-+		    p->pid_ns == svc->pid_ns &&
-+		    p->net_ns == svc->net_ns &&
-+		    p->cgroup_ns == svc->cgroup_ns)
-+			goto duplicate;
-+	}
-+
-+	svc->user_ns_link.pprev = pp;
-+	rcu_assign_pointer(*pp, &svc->user_ns_link);
-+	goto out;
-+
-+insert_before:
-+	hlist_add_before_rcu(&svc->user_ns_link, &p->user_ns_link);
-+	goto out;
-+
-+duplicate:
-+	free_key_service(svc);
-+	ret = -EEXIST;
-+out:
-+	spin_unlock(&user_ns->request_key_services_lock);
-+	return ret;
-+}
-+
-+/*
-+ * Remove a request_key service interception from the user namespace's list
-+ */
-+static int remove_key_service(struct user_namespace *user_ns,
-+			      struct request_key_service *svc)
-+{
-+	struct request_key_service *p;
-+	struct hlist_node **pp;
-+	int ret = 0;
-+
-+	spin_lock(&user_ns->request_key_services_lock);
-+
-+	/* The services list is kept in order of selectivity.  The more exact
-+	 * matches a service requires, the earlier it is in the list.
-+	 */
-+	for (pp = &user_ns->request_key_services.first; *pp; pp = &(*pp)->next) {
-+		p = hlist_entry(*pp, struct request_key_service, user_ns_link);
-+		if (p->selectivity < svc->selectivity)
-+			break;
-+		if (p->selectivity > svc->selectivity)
-+			continue;
-+		if (memcmp(p->type, svc->type, sizeof(p->type)) == 0 &&
-+		    p->uts_ns == svc->uts_ns &&
-+		    p->ipc_ns == svc->ipc_ns &&
-+		    p->mnt_ns == svc->mnt_ns &&
-+		    p->pid_ns == svc->pid_ns &&
-+		    p->net_ns == svc->net_ns &&
-+		    p->cgroup_ns == svc->cgroup_ns)
-+			goto found;
-+	}
-+
-+	p = NULL;
-+	ret = -ENOENT;
-+	goto out;
-+
-+found:
-+	hlist_del_rcu(&p->user_ns_link);
-+out:
-+	spin_unlock(&user_ns->request_key_services_lock);
-+	free_key_service(p);
-+	free_key_service(svc);
-+	return ret;
-+}
-+
-+/*
-+ * Add a request_key service handler for a subset of the calling process's
-+ * particular set of namespaces.
-+ */
-+long keyctl_service_intercept(key_serial_t queue_keyring,
-+			      int userns_fd,
-+			      const char __user *type_name,
-+			      unsigned int ns_mask)
-+{
-+	struct request_key_service *svc;
-+	struct user_namespace *user_ns = current_user_ns();
-+
-+	if (ns_mask & ~KEY_SERVICE___ALL_NS)
-+		return -EINVAL;
-+	if (userns_fd != -1)
-+		return -EINVAL; /* Not supported yet */
-+
-+	/* Require the caller to be the owner of the user namespace in which
-+	 * the fd was created if they're not the sysadmin.  Possibly we should
-+	 * be more strict about what namespaces one can select, but it's not
-+	 * clear how best to do that.
-+	 */
-+	if (!capable(CAP_SYS_ADMIN) &&
-+	    !uid_eq(user_ns->owner, current_cred()->euid))
-+		return -EPERM;
-+
-+	svc = alloc_key_service(queue_keyring, type_name, ns_mask);
-+	if (IS_ERR(svc))
-+		return PTR_ERR(svc);
-+
-+	if (queue_keyring == 0)
-+		return remove_key_service(user_ns, svc);
-+
-+	return install_key_service(user_ns, svc);
-+}
-+
-+/*
-+ * Queue a construction record if we can find a queue to punt it off to.
-+ */
-+int queue_request_key(struct key *key, struct key *auth_key)
-+{
-+	struct request_key_service *svc;
-+	struct user_namespace *user_ns = current_user_ns();
-+	struct pid_namespace *pid_ns = task_active_pid_ns(current);
-+	struct nsproxy *nsproxy = current->nsproxy;
-+	struct key *queue_keyring = NULL;
-+	int ret;
-+
-+	if (hlist_empty(&user_ns->request_key_services))
-+		return false;
-+
-+	rcu_read_lock();
-+
-+	hlist_for_each_entry_rcu(svc, &user_ns->request_key_services, user_ns_link) {
-+		if (svc->type[0] &&
-+		    memcmp(svc->type, key->type->name, sizeof(svc->type)) != 0)
-+			continue;
-+		if ((svc->uts_ns && svc->uts_ns != nsproxy->uts_ns->ns.tag) ||
-+		    (svc->ipc_ns && svc->ipc_ns != nsproxy->ipc_ns->ns.tag) ||
-+		    (svc->mnt_ns && svc->mnt_ns != nsproxy->mnt_ns->ns.tag) ||
-+		    (svc->pid_ns && svc->pid_ns != pid_ns->ns.tag) ||
-+		    (svc->net_ns && svc->net_ns != nsproxy->net_ns->ns.tag) ||
-+		    (svc->cgroup_ns && svc->cgroup_ns != nsproxy->cgroup_ns->ns.tag))
-+			continue;
-+		goto found_match;
-+	}
-+
-+	rcu_read_unlock();
-+	return -ENOPARAM;
-+
-+found_match:
-+	spin_lock(&user_ns->request_key_services_lock);
-+	if (!svc->dead)
-+		queue_keyring = key_get(svc->queue_keyring);
-+	spin_unlock(&user_ns->request_key_services_lock);
-+	rcu_read_unlock();
-+
-+	ret = -ENOPARAM;
-+	if (queue_keyring) {
-+		ret = key_link(queue_keyring, auth_key);
-+		if (ret < 0)
-+			key_reject_and_link(key, 0, ret, NULL, auth_key);
-+		key_put(queue_keyring);
-+	}
-+
-+	return ret;
-+}
-+
-+/*
-+ * Clear all the service intercept records on a user namespace.
-+ */
-+void clear_request_key_services(struct user_namespace *user_ns)
-+{
-+	struct request_key_service *svc;
-+
-+	while (!hlist_empty(&user_ns->request_key_services)) {
-+		svc = hlist_entry(user_ns->request_key_services.first,
-+				  struct request_key_service, user_ns_link);
-+		hlist_del(&svc->user_ns_link);
-+		free_key_service(svc);
-+	}
-+}
-
+ 2.  Explicit anonymous declarations - These are currently restricted to IP addresses where they can be declared directly in statements by enclosing them within parentheses e.g. `(127.0.0.1)` or `(::1)`. See the [Network Labeling Statements](#network_labeling) section for examples.
+ 
+ 3.  Anonymous declarations - These have been previously declared and the object already exists, therefore they may be referenced by their name or identifier within statements. For example the following declare all the components required to specify a context:
+ 
++    ```secil
+         (sensitivity s0)
+         (category c0)
+         (role object_r)
+@@ -69,10 +71,13 @@ Declarations may be named or anonymous and have three different forms:
+             (user user)
+             (type object)
+         )
++    ```
+ 
+     now a [`portcon`](cil_network_labeling_statements.md#portcon) statement can be defined that uses these individual components to build a context as follows:
+ 
++    ```secil
+         (portcon udp 12345 (unconfined.user object_r unconfined.object ((s0) (s0(c0)))))
++    ```
+ 
+ Definitions
+ -----------
+@@ -113,6 +118,7 @@ Namespaces
+ 
+ CIL supports namespaces via containers such as the [`block`](cil_container_statements.md#block) statement. When a block is resolved to form the parent / child relationship a dot '`.`' is used, for example the following [`allow`](cil_access_vector_rules.md#allow) rule:
+ 
++```secil
+     (block example_ns
+         (type process)
+         (type object)
+@@ -120,16 +126,20 @@ CIL supports namespaces via containers such as the [`block`](cil_container_state
+ 
+         (allow process object (file (open read getattr)))
+     )
++```
+ 
+ will resolve to the following kernel policy language statement:
+ 
++```
+     allow example_ns.process example_ns.object : example_ns.file { open read getattr };
++```
+ 
+ Global Namespace
+ ----------------
+ 
+ CIL has a global namespace that is always present. Any symbol that is declared outside a container is in the global namespace. To reference a symbol in global namespace, the symbol should be prefixed with a dot '`.`' as shown in the following example:
+ 
++```secil
+     ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+     ; This example has three namespace 'tmpfs' types declared:
+     ;    1) Global .tmpfs
+@@ -170,6 +180,7 @@ CIL has a global namespace that is always present. Any symbol that is declared o
+     (block other_ns
+         (type tmpfs)
+     )
++```
+ 
+ Should the symbol not be prefixed with a dot, the current namespace would be searched first and then the global namespace (provided there is not a symbol of that name in the current namespace).
+ 
+@@ -204,6 +215,7 @@ The number of `expr_set`'s in an `expr` is dependent on the statement type (ther
+ 
+     This example includes all `fs_type type` entries except `file.usermodehelper` and `file.proc_security` in the associated [`typeattribute`](cil_type_statements.md#typeattribute) identifier `all_fs_type_except_usermodehelper_and_proc_security`:
+ 
++    ```secil
+         (typeattribute all_fs_type_except_usermodehelper_and_proc_security)
+ 
+         (typeattributeset all_fs_type_except_usermodehelper_and_proc_security
+@@ -215,17 +227,21 @@ The number of `expr_set`'s in an `expr` is dependent on the statement type (ther
+                 (not file.proc_security)
+             )
+         )
++    ```
+ 
+     The `cps_1 classpermissionset` identifier includes all permissions except `load_policy` and `setenforce`:
+ 
++    ```secil
+         (class security (compute_av compute_create compute_member check_context load_policy compute_relabel compute_user setenforce setbool setsecparam setcheckreqprot read_policy))
+ 
+         (classpermission cps_1)
+ 
+         (classpermissionset cps_1 (security (not (load_policy setenforce))))
++    ```
+ 
+     This example includes all permissions in the associated [`classpermissionset`](cil_class_and_permission_statements.md#classpermissionset) identifier `security_all_perms`:
+ 
++    ```secil
+         (class security (compute_av compute_create compute_member check_context load_policy
+             compute_relabel compute_user setenforce setbool setsecparam setcheckreqprot
+             read_policy)
+@@ -234,6 +250,7 @@ The number of `expr_set`'s in an `expr` is dependent on the statement type (ther
+         (classpermission security_all_perms)
+ 
+         (classpermissionset security_all_perms (security (all)))
++    ```
+ 
+ 2.  The [`categoryset`](cil_mls_labeling_statements.md#categoryset) statement allows `expr_set` to mix names and `expr_key` values of: `and`, `or`, `not`, `xor`, `all`, `range` as shown in the examples.
+ 
+@@ -241,6 +258,7 @@ The number of `expr_set`'s in an `expr` is dependent on the statement type (ther
+ 
+ 3.  The [`booleanif`](cil_conditional_statements.md#booleanif) and [`tunableif`](cil_conditional_statements.md#tunableif) statements only allow an `expr_set` to have one `name` or `expr` with `expr_key` values of `and`, `or`, `xor`, `not`, `eq`, `neq` as shown in the examples:
+ 
++    ```secil
+         (booleanif disableAudio
+             (false
+                 (allow process device.audio_device (chr_file_set (rw_file_perms)))
+@@ -252,9 +270,11 @@ The number of `expr_set`'s in an `expr` is dependent on the statement type (ther
+                 (allow process device.audio_capture_device (chr_file_set (rw_file_perms)))
+             )
+         )
++    ```
+ 
+ 4.  The [`constrain`](cil_constraint_statements.md#constrain), [`mlsconstrain`](cil_constraint_statements.md#mlsconstrain), [`validatetrans`](cil_constraint_statements.md#validatetrans) and [`mlsvalidatetrans`](cil_constraint_statements.md#mlsvalidatetrans) statements only allow an `expr_set` to have one `name` or `expr` with `expr_key` values of `and`, `or`, `not`, `all`, `eq`, `neq`, `dom`, `domby`, `incomp`. When `expr_key` is `dom`, `domby` or `incomp`, it must be followed by a string (e.g. `h1`, `l2`) and another string or a set of `name`s. The following examples show CIL constraint statements and their policy language equivalents:
+ 
++    ```secil
+         ; Process transition:  Require equivalence unless the subject is trusted.
+         (mlsconstrain (process (transition dyntransition))
+             (or (and (eq h1 h2) (eq l1 l2)) (eq t1 mlstrustedsubject)))
+@@ -270,29 +290,36 @@ The number of `expr_set`'s in an `expr` is dependent on the statement type (ther
+         ; The equivalent policy language mlsconstrain statememt is:
+         ;mlsconstrain process { getsched getsession getpgid getcap getattr ptrace share }
+         ;    (l1 dom l2 or t1 == mlstrustedsubject);
++    ```
+ 
+ Name String
+ -----------
+ 
+ Used to define [`macro`](cil_call_macro_statements.md#macro) statement parameter string types:
+ 
++```secil
+     (call macro1("__kmsg__"))
+ 
+     (macro macro1 ((string ARG1))
+         (typetransition audit.process device.device chr_file ARG1 device.klog_device)
+     )
++```
+ 
+ Alternatively:
+ 
++```secil
+     (call macro1("__kmsg__"))
+ 
+     (macro macro1 ((name ARG1))
+         (typetransition audit.process device.device chr_file ARG1 device.klog_device)
+     )
++```
+ 
+ self
+ ----
+ 
+ The [`self`](cil_reference_guide.md#self) keyword may be used as the target in AVC rule statements, and means that the target is the same as the source as shown in the following example:.
+ 
++```secil
+     (allow unconfined.process self (file (read write)))
++```
+diff --git a/secilc/docs/cil_role_statements.md b/secilc/docs/cil_role_statements.md
+index c1e457a7..ee6a5868 100644
+--- a/secilc/docs/cil_role_statements.md
++++ b/secilc/docs/cil_role_statements.md
+@@ -8,7 +8,9 @@ Declares a role identifier in the current namespace.
+ 
+ **Statement definition:**
+ 
++```secil
+     (role role_id)
++```
+ 
+ **Where:**
+ 
+@@ -33,11 +35,13 @@ Declares a role identifier in the current namespace.
+ 
+ This example declares two roles: `object_r` in the global namespace and `unconfined.role`:
+ 
++```secil
+     (role object_r)
+ 
+     (block unconfined
+         (role role)
+     )
++```
+ 
+ roletype
+ --------
+@@ -46,7 +50,9 @@ Authorises a [`role`](cil_role_statements.md#role) to access a [`type`](cil_type
+ 
+ **Statement definition:**
+ 
++```secil
+     (role role_id type_id)
++```
+ 
+ **Where:**
+ 
+@@ -75,11 +81,13 @@ Authorises a [`role`](cil_role_statements.md#role) to access a [`type`](cil_type
+ 
+ This example will declare [`role`](cil_role_statements.md#role) and [`type`](cil_type_statements.md#type) identifiers, then associate them:
+ 
++```secil
+     (block unconfined
+         (role role)
+         (type process)
+         (roletype role process)
+     )
++```
+ 
+ roleattribute
+ -------------
+@@ -88,7 +96,9 @@ Declares a role attribute identifier in the current namespace. The identifier ma
+ 
+ **Statement definition:**
+ 
++```secil
+     (roleattribute roleattribute_id)
++```
+ 
+ **Where:**
+ 
+@@ -113,9 +123,11 @@ Declares a role attribute identifier in the current namespace. The identifier ma
+ 
+ This example will declare a role attribute `roles.role_holder` that will have an empty set:
+ 
++```secil
+     (block roles
+         (roleattribute role_holder)
+     )
++```
+ 
+ roleattributeset
+ ----------------
+@@ -124,7 +136,9 @@ Allows the association of one or more previously declared [`role`](cil_role_stat
+ 
+ **Statement definition:**
+ 
++```secil
+     (roleattributeset roleattribute_id (role_id ... | expr ...))
++```
+ 
+ **Where:**
+ 
+@@ -163,6 +177,7 @@ Allows the association of one or more previously declared [`role`](cil_role_stat
+ 
+ This example will declare three roles and two role attributes, then associate all the roles to them as shown:
+ 
++```secil
+     (block roles
+         (role role_1)
+         (role role_2)
+@@ -174,6 +189,7 @@ This example will declare three roles and two role attributes, then associate al
+         (roleattribute role_holder_all)
+         (roleattributeset role_holder_all (all))
+     )
++```
+ 
+ roleallow
+ ---------
+@@ -188,7 +204,9 @@ Notes:
+ 
+ **Statement definition:**
+ 
++```secil
+     (roleallow current_role_id new_role_id)
++```
+ 
+ **Where:**
+ 
+@@ -224,7 +242,9 @@ Specify a role transition from the current role to a new role when computing a c
+ 
+ **Statement definition:**
+ 
++```secil
+     (roletransition current_role_id target_type_id class_id new_role_id)
++```
+ 
+ **Where:**
+ 
+@@ -261,6 +281,7 @@ Specify a role transition from the current role to a new role when computing a c
+ 
+ This example will authorise the `unconfined.role` to assume the `msg_filter.role` role, and then transition to that role:
+ 
++```secil
+     (block ext_gateway
+         (type process)
+         (type exec)
+@@ -269,6 +290,7 @@ This example will authorise the `unconfined.role` to assume the `msg_filter.role
+         (roleallow unconfined.role msg_filter.role)
+         (roletransition unconfined.role exec process msg_filter.role)
+     )
++```
+ 
+ rolebounds
+ ----------
+@@ -283,7 +305,9 @@ Notes:
+ 
+ **Statement definition:**
+ 
++```secil
+     (rolebounds parent_role_id child_role_id)
++```
+ 
+ **Where:**
+ 
+@@ -312,9 +336,11 @@ Notes:
+ 
+ In this example the role `test` cannot have greater privileges than `unconfined.role`:
+ 
++```secil
+     (role test)
+ 
+     (unconfined
+         (role role)
+         (rolebounds role .test)
+     )
++```
+diff --git a/secilc/docs/cil_sid_statements.md b/secilc/docs/cil_sid_statements.md
+index a9b25373..a5d21013 100644
+--- a/secilc/docs/cil_sid_statements.md
++++ b/secilc/docs/cil_sid_statements.md
+@@ -8,7 +8,9 @@ Declares a new SID identifier in the current namespace.
+ 
+ **Statement definition:**
+ 
++```secil
+     (sid sid_id)
++```
+ 
+ **Where:**
+ 
+@@ -33,9 +35,11 @@ Declares a new SID identifier in the current namespace.
+ 
+ These examples show three [`sid`](cil_sid_statements.md#sid) declarations:
+ 
++```secil
+     (sid kernel)
+     (sid security)
+     (sid igmp_packet)
++```
+ 
+ sidorder
+ --------
+@@ -44,7 +48,9 @@ Defines the order of [sid](#sid)'s. This is a mandatory statement when SIDs are
+ 
+ **Statement definition:**
+ 
++```secil
+     (sidorder (sid_id ...))
++```
+ 
+ **Where:**
+ 
+@@ -69,11 +75,13 @@ Defines the order of [sid](#sid)'s. This is a mandatory statement when SIDs are
+ 
+ This will produce an ordered list of "`kernel security unlabeled`"
+ 
++```secil
+     (sid kernel)
+     (sid security)
+     (sid unlabeled)
+     (sidorder (kernel security))
+     (sidorder (security unlabeled))
++```
+ 
+ sidcontext
+ ----------
+@@ -82,7 +90,9 @@ Associates an SELinux security [context](#context) to a previously declared [`si
+ 
+ **Statement definition:**
+ 
++```secil
+     (sidcontext sid_id context_id)
++```
+ 
+ **Where:**
+ 
+@@ -111,6 +121,7 @@ Associates an SELinux security [context](#context) to a previously declared [`si
+ 
+ This shows two named security context examples plus an anonymous context:
+ 
++```secil
+     ; Two named context:
+     (sid kernel)
+     (context kernel_context (u r process low_low))
+@@ -123,3 +134,4 @@ This shows two named security context examples plus an anonymous context:
+     ; An anonymous context:
+     (sid unlabeled)
+     (sidcontext unlabeled (u object_r ((s0) (s0))))
++```
+diff --git a/secilc/docs/cil_type_statements.md b/secilc/docs/cil_type_statements.md
+index 432cede5..19438417 100644
+--- a/secilc/docs/cil_type_statements.md
++++ b/secilc/docs/cil_type_statements.md
+@@ -8,7 +8,9 @@ Declares a type identifier in the current namespace.
+ 
+ **Statement definition:**
+ 
++```secil
+     (type type_id)
++```
+ 
+ **Where:**
+ 
+@@ -33,9 +35,11 @@ Declares a type identifier in the current namespace.
+ 
+ This example declares a type identifier `bluetooth.process`:
+ 
++```secil
+     (block bluetooth
+         (type process)
+     )
++```
+ 
+ typealias
+ ---------
+@@ -44,7 +48,9 @@ Declares a type alias in the current namespace.
+ 
+ **Statement definition:**
+ 
++```secil
+     (typealias typealias_id)
++```
+ 
+ **Where:**
+ 
+@@ -76,7 +82,9 @@ Associates a previously declared [`typealias`](cil_type_statements.md#typealias)
+ 
+ **Statement definition:**
+ 
++```secil
+     (typealiasactual typealias_id type_id)
++```
+ 
+ **Where:**
+ 
+@@ -105,12 +113,14 @@ Associates a previously declared [`typealias`](cil_type_statements.md#typealias)
+ 
+ This example will alias `unconfined.process` as `unconfined_t` in the global namespace:
+ 
++```secil
+     (typealias unconfined_t)
+     (typealiasactual unconfined_t unconfined.process)
+ 
+     (block unconfined
+         (type process)
+     )
++```
+ 
+ typeattribute
+ -------------
+@@ -119,7 +129,9 @@ Declares a type attribute identifier in the current namespace. The identifier ma
+ 
+ **Statement definition:**
+ 
++```secil
+     (typeattribute typeattribute_id)
++```
+ 
+ **Where:**
+ 
+@@ -144,7 +156,9 @@ Declares a type attribute identifier in the current namespace. The identifier ma
+ 
+ This example declares a type attribute `domain` in global namespace that will have an empty set:
+ 
++```secil
+     (typeattribute domain)
++```
+ 
+ typeattributeset
+ ----------------
+@@ -153,7 +167,9 @@ Allows the association of one or more previously declared [`type`](cil_type_stat
+ 
+ **Statement definition:**
+ 
++```secil
+     (typeattributeset typeattribute_id (type_id ... | expr ...))
++```
+ 
+ **Where:**
+ 
+@@ -192,12 +208,15 @@ Allows the association of one or more previously declared [`type`](cil_type_stat
+ 
+ This example will take all the policy types and exclude those in `appdomain`. It is equivalent to `~appdomain` in the kernel policy language.
+ 
++```secil
+     (typeattribute not_in_appdomain)
+ 
+     (typeattributeset not_in_appdomain (not (appdomain)))
++```
+ 
+ This example is equivalent to `{ domain -kernel.process -ueventd.process -init.process }` in the kernel policy language:
+ 
++```secil
+     (typeattribute na_kernel_or_ueventd_or_init_in_domain)
+ 
+     (typeattributeset na_kernel_or_ueventd_or_init_in_domain
+@@ -212,6 +231,7 @@ This example is equivalent to `{ domain -kernel.process -ueventd.process -init.p
+             (not (init.process))
+         )
+     )
++```
+ 
+ expandtypeattribute
+ -------------------
+@@ -229,7 +249,9 @@ option cause the rules involving the type attribute to be expanded.
+ 
+ **Statement definition:**
+ 
++```secil
+     (expandtypeattribute typeattribute_id expand_value)
++```
+ 
+ **Where:**
+ 
+@@ -258,11 +280,15 @@ option cause the rules involving the type attribute to be expanded.
+ 
+ This example uses the expandtypeattribute statement to forcibly expand a previously declared `domain` type attribute.
+ 
++```secil
+     (expandtypeattribute domain true)
++```
+ 
+ This example uses the expandtypeattribute statement to not expand previously declared `file_type` and `port_type` type attributes regardless of compiler defaults.
+ 
++```secil
+     (expandtypeattribute (file_type port_type) false)
++```
+ 
+ typebounds
+ ----------
+@@ -273,7 +299,9 @@ Requires kernel 2.6.28 and above to control the security context associated to t
+ 
+ **Statement definition:**
+ 
++```secil
+     (typebounds parent_type_id child_type_id)
++```
+ 
+ **Where:**
+ 
+@@ -302,6 +330,7 @@ Requires kernel 2.6.28 and above to control the security context associated to t
+ 
+ In this example the `httpd.child.process` cannot have `file (write)` due to lack of permissions on `httpd.process` which is the parent. It means the child domain will always have equal or less privileges than the parent:
+ 
++```secil
+     (class file (getattr read write))
+ 
+     (block httpd
+@@ -320,6 +349,7 @@ In this example the `httpd.child.process` cannot have `file (write)` due to lack
+             (allow process httpd.object (file (read write)))
+         )
+     )
++```
+ 
+ typechange
+ ----------
+@@ -328,7 +358,9 @@ The type change rule is used to define a different label of an object for usersp
+ 
+ **Statement definition:**
+ 
++```secil
+     (typechange source_type_id target_type_id class_id change_type_id)
++```
+ 
+ **Where:**
+ 
+@@ -371,6 +403,7 @@ the function will return a context of:
+ 
+ `    unconfined.object:object_r:unconfined.change_label:s0`
+ 
++```secil
+     (class file (getattr read write))
+ 
+     (block unconfined
+@@ -380,6 +413,7 @@ the function will return a context of:
+ 
+         (typechange object object file change_label)
+     )
++```
+ 
+ typemember
+ ----------
+@@ -388,7 +422,9 @@ The type member rule is used to define a new polyinstantiated label of an object
+ 
+ **Statement definition:**
+ 
++```secil
+     (typemember source_type_id target_type_id class_id member_type_id)
++```
+ 
+ **Where:**
+ 
+@@ -431,6 +467,7 @@ the function will return a context of:
+ 
+ `    unconfined.object:object_r:unconfined.member_label:s0`
+ 
++```secil
+     (class file (getattr read write))
+ 
+     (block unconfined
+@@ -440,6 +477,7 @@ the function will return a context of:
+ 
+         (typemember object object file member_label)
+     )
++```
+ 
+ typetransition
+ --------------
+@@ -448,7 +486,9 @@ The type transition rule specifies the labeling and object creation allowed betw
+ 
+ **Statement definition:**
+ 
++```secil
+     (typetransition source_type_id target_type_id class_id [object_name] default_type_id)
++```
+ 
+ **Where:**
+ 
+@@ -489,29 +529,35 @@ The type transition rule specifies the labeling and object creation allowed betw
+ 
+ This example shows a process transition rule with its supporting [`allow`](cil_access_vector_rules.md#allow) rule:
+ 
++```secil
+     (macro domain_auto_trans ((type ARG1) (type ARG2) (type ARG3))
+         ; Allow the necessary permissions.
+         (call domain_trans (ARG1 ARG2 ARG3))
+         ; Make the transition occur by default.
+         (typetransition ARG1 ARG2 process ARG3)
+     )
++```
+ 
+ This example shows a file object transition rule with its supporting [`allow`](cil_access_vector_rules.md#allow) rule:
+ 
++```secil
+     (macro tmpfs_domain ((type ARG1))
+         (type tmpfs)
+         (typeattributeset file_type (tmpfs))
+         (typetransition ARG1 file.tmpfs file tmpfs)
+         (allow ARG1 tmpfs (file (read write execute execmod)))
+     )
++```
+ 
+ This example shows the 'name transition' rule with its supporting [`allow`](cil_access_vector_rules.md#allow) rule:
+ 
++```secil
+     (macro write_klog ((type ARG1))
+         (typetransition ARG1 device.device chr_file "__kmsg__" device.klog_device)
+         (allow ARG1 device.klog_device (chr_file (create open write unlink)))
+         (allow ARG1 device.device (dir (write add_name remove_name)))
+     )
++```
+ 
+ typepermissive
+ --------------
+@@ -520,7 +566,9 @@ Policy database version 23 introduced the permissive statement to allow the name
+ 
+ **Statement definition:**
+ 
++```secil
+     (typepermissive source_type_id)
++```
+ 
+ **Where:**
+ 
+@@ -545,9 +593,11 @@ Policy database version 23 introduced the permissive statement to allow the name
+ 
+ This example will allow SELinux to run the `healthd.process` domain in permissive mode even when enforcing is enabled:
+ 
++```secil
+     (block healthd
+         (type process)
+         (typepermissive process)
+ 
+         (allow ...)
+     )
++```
+diff --git a/secilc/docs/cil_user_statements.md b/secilc/docs/cil_user_statements.md
+index 26e45510..d5674f12 100644
+--- a/secilc/docs/cil_user_statements.md
++++ b/secilc/docs/cil_user_statements.md
+@@ -8,7 +8,9 @@ Declares an SELinux user identifier in the current namespace.
+ 
+ **Statement definition:**
+ 
++```secil
+     (user user_id)
++```
+ 
+ **Where:**
+ 
+@@ -33,9 +35,11 @@ Declares an SELinux user identifier in the current namespace.
+ 
+ This will declare an SELinux user as `unconfined.user`:
+ 
++```secil
+     (block unconfined
+         (user user)
+     )
++```
+ 
+ userrole
+ --------
+@@ -44,7 +48,9 @@ Associates a previously declared [`user`](cil_user_statements.md#user) identifie
+ 
+ **Statement definition:**
+ 
++```secil
+     (userrole user_id role_id)
++```
+ 
+ **Where:**
+ 
+@@ -73,11 +79,13 @@ Associates a previously declared [`user`](cil_user_statements.md#user) identifie
+ 
+ This example will associate `unconfined.user` to `unconfined.role`:
+ 
++```secil
+     (block unconfined
+         (user user)
+         (role role)
+         (userrole user role)
+     )
++```
+ 
+ userattribute
+ -------------
+@@ -86,7 +94,9 @@ Declares a user attribute identifier in the current namespace. The identifier ma
+ 
+ **Statement definition:**
+ 
++```secil
+     (userattribute userattribute_id)
++```
+ 
+ **Where:**
+ 
+@@ -111,9 +121,11 @@ Declares a user attribute identifier in the current namespace. The identifier ma
+ 
+ This example will declare a user attribute `users.user_holder` that will have an empty set:
+ 
++```secil
+     (block users
+         (userattribute user_holder)
+     )
++```
+ 
+ userattributeset
+ ----------------
+@@ -122,7 +134,9 @@ Allows the association of one or more previously declared [`user`](cil_user_stat
+ 
+ **Statement definition:**
+ 
++```secil
+     (userattributeset userattribute_id (user_id ... | expr ...))
++```
+ 
+ **Where:**
+ 
+@@ -161,6 +175,7 @@ Allows the association of one or more previously declared [`user`](cil_user_stat
+ 
+ This example will declare three users and two user attributes, then associate all the users to them as shown:
+ 
++```secil
+     (block users
+         (user user_1)
+         (user user_2)
+@@ -172,6 +187,7 @@ This example will declare three users and two user attributes, then associate al
+         (userattribute user_holder_all)
+         (userattributeset user_holder_all (all))
+     )
++```
+ 
+ userlevel
+ ---------
+@@ -180,7 +196,9 @@ Associates a previously declared [`user`](cil_user_statements.md#user) identifie
+ 
+ **Statement definition:**
+ 
++```secil
+     (userlevel user_id level_id)
++```
+ 
+ **Where:**
+ 
+@@ -209,6 +227,7 @@ Associates a previously declared [`user`](cil_user_statements.md#user) identifie
+ 
+ This example will associate `unconfined.user` with a named [`level`](cil_mls_labeling_statements.md#level) of `systemlow`:
+ 
++```secil
+     (sensitivity s0)
+     (level systemlow (s0))
+ 
+@@ -218,6 +237,7 @@ This example will associate `unconfined.user` with a named [`level`](cil_mls_lab
+         ; An anonymous example:
+         ;(userlevel user (s0))
+     )
++```
+ 
+ userrange
+ ---------
+@@ -226,7 +246,9 @@ Associates a previously declared [`user`](cil_user_statements.md#user) identifie
+ 
+ **Statement definition:**
+ 
++```secil
+     (userrange user_id levelrange_id)
++```
+ 
+ **Where:**
+ 
+@@ -255,6 +277,7 @@ Associates a previously declared [`user`](cil_user_statements.md#user) identifie
+ 
+ This example will associate `unconfined.user` with a named [`levelrange`](cil_mls_labeling_statements.md#levelrange) of `low_high`, other anonymous examples are also shown:
+ 
++```secil
+     (category c0)
+     (category c1)
+     (categoryorder (c0 c1))
+@@ -277,6 +300,7 @@ This example will associate `unconfined.user` with a named [`levelrange`](cil_ml
+         ;(userrange user (systemLow (s0 (c0 c1))))
+         ;(userrange user ((s0) (s0 (c0 c1))))
+     )
++```
+ 
+ userbounds
+ ----------
+@@ -291,7 +315,9 @@ Notes:
+ 
+ **Statement definition:**
+ 
++```secil
+     (userbounds parent_user_id child_user_id)
++```
+ 
+ **Where:**
+ 
+@@ -320,12 +346,14 @@ Notes:
+ 
+ The user `test` cannot have greater privileges than `unconfined.user`:
+ 
++```secil
+     (user test)
+ 
+     (unconfined
+         (user user)
+         (userbounds user .test)
+     )
++```
+ 
+ userprefix
+ ----------
+@@ -334,7 +362,9 @@ Declare a user prefix that will be replaced by the file labeling utilities descr
+ 
+ **Statement definition:**
+ 
++```secil
+     (userprefix user_id prefix)
++```
+ 
+ **Where:**
+ 
+@@ -363,10 +393,12 @@ Declare a user prefix that will be replaced by the file labeling utilities descr
+ 
+ This example will associate `unconfined.admin` user with a prefix of "[`user`](cil_user_statements.md#user)":
+ 
++```secil
+     (block unconfined
+-        (user admin
++        (user admin)
+         (userprefix admin user)
+     )
++```
+ 
+ selinuxuser
+ -----------
+@@ -375,7 +407,9 @@ Associates a GNU/Linux user to a previously declared [`user`](cil_user_statement
+ 
+ **Statement definition:**
+ 
++```secil
+     (selinuxuser user_name user_id userrange_id)
++```
+ 
+ **Where:**
+ 
+@@ -408,10 +442,12 @@ Associates a GNU/Linux user to a previously declared [`user`](cil_user_statement
+ 
+ This example will associate `unconfined.admin` user with a GNU / Linux user "`admin_1`":
+ 
++```secil
+     (block unconfined
+         (user admin)
+         (selinuxuser admin_1 admin low_low)
+     )
++```
+ 
+ selinuxuserdefault
+ ------------------
+@@ -420,7 +456,9 @@ Declares the default SELinux user. Only one [`selinuxuserdefault`](cil_user_stat
+ 
+ **Statement definition:**
+ 
++```secil
+     (selinuxuserdefault user_id userrange_id)
++```
+ 
+ **Where:**
+ 
+@@ -449,7 +487,9 @@ Declares the default SELinux user. Only one [`selinuxuserdefault`](cil_user_stat
+ 
+ This example will define the `unconfined.user` as the default SELinux user:
+ 
++```secil
+     (block unconfined
+         (user user)
+         (selinuxuserdefault user low_low)
+     )
++```
+diff --git a/secilc/docs/cil_xen_statements.md b/secilc/docs/cil_xen_statements.md
+index 5ae03e6e..3cfc5dd2 100644
+--- a/secilc/docs/cil_xen_statements.md
++++ b/secilc/docs/cil_xen_statements.md
+@@ -12,7 +12,9 @@ Label i/o memory. This may be a single memory location or a range.
+ 
+ **Statement definition:**
+ 
++```secil
+     (iomemcon mem_addr|(mem_low mem_high) context_id)
++```
+ 
+ **Where:**
+ 
+@@ -43,7 +45,9 @@ Label i/o memory. This may be a single memory location or a range.
+ 
+ An anonymous context for a memory address range of `0xfebe0-0xfebff`:
+ 
++```secil
+     (iomemcon (1043424 1043455) (unconfined.user object_r unconfined.object low_low))
++```
+ 
+ ioportcon
+ ---------
+@@ -52,7 +56,9 @@ Label i/o ports. This may be a single port or a range.
+ 
+ **Statement definition:**
+ 
++```secil
+     (ioportcon port|(port_low port_high) context_id)
++```
+ 
+ **Where:**
+ 
+@@ -83,7 +89,9 @@ Label i/o ports. This may be a single port or a range.
+ 
+ An anonymous context for a single port of :`0xecc0`:
+ 
++```secil
+     (ioportcon 60608 (unconfined.user object_r unconfined.object low_low))
++```
+ 
+ pcidevicecon
+ ------------
+@@ -92,7 +100,9 @@ Label a PCI device.
+ 
+ **Statement definition:**
+ 
++```secil
+     (pcidevicecon device context_id)
++```
+ 
+ **Where:**
+ 
+@@ -121,7 +131,9 @@ Label a PCI device.
+ 
+ An anonymous context for a pci device address of `0xc800`:
+ 
++```secil
+     (pcidevicecon 51200 (unconfined.user object_r unconfined.object low_low))
++```
+ 
+ pirqcon
+ -------
+@@ -130,7 +142,9 @@ Label an interrupt level.
+ 
+ **Statement definition:**
+ 
++```secil
+     (pirqcon irq_level context_id)
++```
+ 
+ **Where:**
+ 
+@@ -159,7 +173,9 @@ Label an interrupt level.
+ 
+ An anonymous context for IRQ 33:
+ 
++```secil
+     (pirqcon 33 (unconfined.user object_r unconfined.object low_low))
++```
+ 
+ devicetreecon
+ -------------
+@@ -168,7 +184,9 @@ Label device tree nodes.
+ 
+ **Statement definition:**
+ 
++```secil
+     (devicetreecon path context_id)
++```
+ 
+ **Where:**
+ 
+@@ -197,4 +215,6 @@ Label device tree nodes.
+ 
+ An anonymous context for the specified path:
+ 
++```secil
+     (devicetreecon "/this is/a/path" (unconfined.user object_r unconfined.object low_low))
++```
+-- 
+2.30.0
 

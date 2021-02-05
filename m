@@ -2,199 +2,127 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3520A31086A
-	for <lists+selinux@lfdr.de>; Fri,  5 Feb 2021 10:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0D8231091B
+	for <lists+selinux@lfdr.de>; Fri,  5 Feb 2021 11:31:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229509AbhBEJxb (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Feb 2021 04:53:31 -0500
-Received: from mx1.polytechnique.org ([129.104.30.34]:38176 "EHLO
+        id S230063AbhBEKbj (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Feb 2021 05:31:39 -0500
+Received: from mx1.polytechnique.org ([129.104.30.34]:42504 "EHLO
         mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229767AbhBEJqz (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 5 Feb 2021 04:46:55 -0500
-Received: from localhost.localdomain (85-168-38-217.rev.numericable.fr [85.168.38.217])
+        with ESMTP id S231354AbhBEK3g (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 5 Feb 2021 05:29:36 -0500
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id E586856129F
-        for <selinux@vger.kernel.org>; Fri,  5 Feb 2021 10:46:12 +0100 (CET)
-From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-To:     selinux@vger.kernel.org
-Subject: [PATCH 3/3] libsepol/cil: introduce intermediate cast to silence -Wvoid-pointer-to-enum-cast
-Date:   Fri,  5 Feb 2021 10:45:39 +0100
-Message-Id: <20210205094539.388854-3-nicolas.iooss@m4x.org>
-X-Mailer: git-send-email 2.30.0
-In-Reply-To: <20210205094539.388854-1-nicolas.iooss@m4x.org>
-References: <20210205094539.388854-1-nicolas.iooss@m4x.org>
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 98316565A9F
+        for <selinux@vger.kernel.org>; Fri,  5 Feb 2021 11:28:53 +0100 (CET)
+Received: by mail-ot1-f41.google.com with SMTP id d7so6416238otf.3
+        for <selinux@vger.kernel.org>; Fri, 05 Feb 2021 02:28:53 -0800 (PST)
+X-Gm-Message-State: AOAM530rRaqJwFVr2Qjgnk9SOWIupc5z65GED5hCRpGzm7TPWKqRsu7X
+        xtV0jZ63SFx97JIwDr8L0ZAS0+lwiYsQjL1zkNY=
+X-Google-Smtp-Source: ABdhPJxZzs86zIco/r/TTiyEpWCJRZeZ5aZZ9F4+Txq59znOciXUxUUFldYS+bZGAVdE6/HBW6i+0OI1yFRsLgi7g1g=
+X-Received: by 2002:a05:6830:4121:: with SMTP id w33mr2703240ott.361.1612520932500;
+ Fri, 05 Feb 2021 02:28:52 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Fri Feb  5 10:46:13 2021 +0100 (CET))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000004, queueID=302C2564671
+References: <20210204220131.229753-1-jwcart2@gmail.com>
+In-Reply-To: <20210204220131.229753-1-jwcart2@gmail.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Fri, 5 Feb 2021 11:28:41 +0100
+X-Gmail-Original-Message-ID: <CAJfZ7=mk77mhCh4mkNiEu8LfOt2g88cGajwo39toN0JeT=-Xww@mail.gmail.com>
+Message-ID: <CAJfZ7=mk77mhCh4mkNiEu8LfOt2g88cGajwo39toN0JeT=-Xww@mail.gmail.com>
+Subject: Re: [PATCH] libsepol/cil: Fix integer overflow in the handling of hll
+ line marks
+To:     James Carter <jwcart2@gmail.com>,
+        James Carter <jwcart2@tycho.nsa.gov>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        William Roberts <bill.c.roberts@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Fri Feb  5 11:28:54 2021 +0100 (CET))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=4382D565AA5
 X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-clang 11.0.0 reports the following warning several times (when building
-with "make CC=clang" from libsepol directory, in the default
-configuration of the git repository):
+On Thu, Feb 4, 2021 at 11:01 PM James Carter <jwcart2@gmail.com> wrote:
+>
+> From: James Carter <jwcart2@tycho.nsa.gov>
+>
+> Nicolass Iooss reports:
 
-    ../cil/src/cil_binary.c:1980:8: error: cast to smaller integer type
-    'enum cil_flavor' from 'void *' [-Werror,-Wvoid-pointer-to-enum-cast]
-                    op = (enum cil_flavor)curr->data;
-                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+There is only one S in my first name ;)
 
-Silence this warning by casting the pointer to an integer the cast to
-enum cil_flavor.
+>   OSS-Fuzz found an integer overflow when compiling the following
+>   (empty) CIL policy:
+>
+>   ;;*lms 2147483647 a
+>   ; (empty line)
+>
+> Change hll_lineno to uint32_t which is the type of the field hll_line
+> in struct cil_tree_node where the line number will be stored eventually.
+> Read the line number into an unsigned long variable using strtoul()
+> instead of strtol(). On systems where ULONG_MAX > UINT32_MAX, set the
+> value to 0 and print a warning if it is larger than UINT32_MAX before
+> storing it in hll_lineno.
+>
+> Also change hll_expand to uint32_t, since its value will be either
+> 0 or 1 and there is no need for it to be signed.
+>
+> Reported-by: Nicolass Iooss <nicolas.iooss@m4x.org>
+> Signed-off-by: James Carter <jwcart2@gmail.com>
+> ---
+>  libsepol/cil/src/cil_parser.c | 31 ++++++++++++++++++++-----------
+>  1 file changed, 20 insertions(+), 11 deletions(-)
+>
+> diff --git a/libsepol/cil/src/cil_parser.c b/libsepol/cil/src/cil_parser.c
+> index b62043b9..9d3bd580 100644
+>[...]
+> @@ -140,11 +141,19 @@ static int add_hll_linemark(struct cil_tree_node **current, int *hll_lineno, int
+>                         cil_log(CIL_ERR, "Invalid line mark syntax\n");
+>                         goto exit;
+>                 }
+> -               *hll_lineno = strtol(tok.value, &end, 10);
+> +
+> +               val = strtoul(tok.value, &end, 10);
+>                 if (errno == ERANGE || *end != '\0') {
+>                         cil_log(CIL_ERR, "Problem parsing line number for line mark\n");
+>                         goto exit;
+>                 }
+> +#if ULONG_MAX > UINT32_MAX
+> +               if (val > UINT32_MAX) {
+> +                       cil_log(CIL_WARN, "Line mark line number > UINT32_MAX\n");
+> +                       val = 0;
+> +               }
+> +#endif
+> +               *hll_lineno = val;
 
-Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
----
- libsepol/cil/src/cil_binary.c      | 12 ++++++------
- libsepol/cil/src/cil_policy.c      | 12 ++++++------
- libsepol/cil/src/cil_post.c        |  2 +-
- libsepol/cil/src/cil_resolve_ast.c |  2 +-
- 4 files changed, 14 insertions(+), 14 deletions(-)
+Using both cil_log(CIL_ERR, "Problem parsing line number for line
+mark\n"); and cil_log(CIL_WARN, "Line mark line number >
+UINT32_MAX\n"); is inconsistent (if a CIL file is processed on a
+32-bit system and contains a line mark with a number greater than
+UINT32_MAX, the compilation will fail due to the first if).
 
-diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
-index 7ba2098b61ea..f80d84679f85 100644
---- a/libsepol/cil/src/cil_binary.c
-+++ b/libsepol/cil/src/cil_binary.c
-@@ -1977,7 +1977,7 @@ static void __cil_expr_to_string(struct cil_list *expr, enum cil_flavor flavor,
- 	curr = expr->head;
- 
- 	if (curr->flavor == CIL_OP) {
--		op = (enum cil_flavor)curr->data;
-+		op = (enum cil_flavor)(uintptr_t)curr->data;
- 
- 		if (op == CIL_ALL) {
- 			*out = cil_strdup(CIL_KEY_ALL);
-@@ -2076,7 +2076,7 @@ static int __cil_cond_expr_to_sepol_expr_helper(policydb_t *pdb, struct cil_list
- 	if (item == NULL) {
- 		goto exit;
- 	} else if (item->flavor == CIL_OP) {
--		enum cil_flavor cil_op = (enum cil_flavor)item->data;
-+		enum cil_flavor cil_op = (enum cil_flavor)(uintptr_t)item->data;
- 
- 		op = cil_malloc(sizeof(*op));
- 		op->bool = 0;
-@@ -2562,7 +2562,7 @@ int __cil_constrain_expr_leaf_to_sepol_expr(policydb_t *pdb, const struct cil_db
- 	struct cil_list_item *l_item = op_item->next;
- 	struct cil_list_item *r_item = op_item->next->next;
- 	
--	enum cil_flavor l_operand = (enum cil_flavor)l_item->data;
-+	enum cil_flavor l_operand = (enum cil_flavor)(uintptr_t)l_item->data;
- 
- 	switch (l_operand) {
- 	case CIL_CONS_U1:
-@@ -2593,7 +2593,7 @@ int __cil_constrain_expr_leaf_to_sepol_expr(policydb_t *pdb, const struct cil_db
- 		expr->attr = CEXPR_TYPE | CEXPR_XTARGET;
- 		break;
- 	case CIL_CONS_L1: {
--		enum cil_flavor r_operand = (enum cil_flavor)r_item->data;
-+		enum cil_flavor r_operand = (enum cil_flavor)(uintptr_t)r_item->data;
- 
- 		if (r_operand == CIL_CONS_L2) {
- 			expr->attr = CEXPR_L1L2;
-@@ -2608,7 +2608,7 @@ int __cil_constrain_expr_leaf_to_sepol_expr(policydb_t *pdb, const struct cil_db
- 		expr->attr = CEXPR_L2H2;
- 		break;
- 	case CIL_CONS_H1: {
--		enum cil_flavor r_operand = (enum cil_flavor)r_item->data;
-+		enum cil_flavor r_operand = (enum cil_flavor)(uintptr_t)r_item->data;
- 		if (r_operand == CIL_CONS_L2) {
- 			expr->attr = CEXPR_H1L2;
- 		} else {
-@@ -2672,7 +2672,7 @@ int __cil_constrain_expr_to_sepol_expr_helper(policydb_t *pdb, const struct cil_
- 		goto exit;
- 	}
- 
--	enum cil_flavor cil_op = (enum cil_flavor)item->data;
-+	enum cil_flavor cil_op = (enum cil_flavor)(uintptr_t)item->data;
- 	switch (cil_op) {
- 	case CIL_NOT:
- 		op->expr_type = CEXPR_NOT;
-diff --git a/libsepol/cil/src/cil_policy.c b/libsepol/cil/src/cil_policy.c
-index 74edb34575ea..30d507f12626 100644
---- a/libsepol/cil/src/cil_policy.c
-+++ b/libsepol/cil/src/cil_policy.c
-@@ -285,7 +285,7 @@ static void cil_cond_expr_to_policy(FILE *out, struct cil_list *expr, int first)
- 	struct cil_list_item *i1 = expr->head;
- 
- 	if (i1->flavor == CIL_OP) {
--		enum cil_flavor op = (enum cil_flavor)i1->data;
-+		enum cil_flavor op = (enum cil_flavor)(uintptr_t)i1->data;
- 		fprintf(out, "(");
- 		switch (op) {
- 		case CIL_NOT:
-@@ -385,7 +385,7 @@ static size_t __cil_cons_leaf_operand_len(struct cil_db *db, struct cil_list_ite
- 
- static size_t __cil_cons_leaf_op_len(struct cil_list_item *op)
- {
--	enum cil_flavor flavor = (enum cil_flavor)op->data;
-+	enum cil_flavor flavor = (enum cil_flavor)(uintptr_t)op->data;
- 	size_t len;
- 
- 	switch (flavor) {
-@@ -420,7 +420,7 @@ static size_t cil_cons_expr_len(struct cil_db *db, struct cil_list *cons_expr)
- 
- 	i1 = cons_expr->head;
- 
--	op = (enum cil_flavor)i1->data;
-+	op = (enum cil_flavor)(uintptr_t)i1->data;
- 	switch (op) {
- 	case CIL_NOT:
- 		len = 6; /* "(not )" */
-@@ -472,7 +472,7 @@ static char *__cil_cons_leaf_operand_to_string(struct cil_db *db, struct cil_lis
- 	size_t o_len;
- 
- 	if (flavor == CIL_CONS_OPERAND) {
--		enum cil_flavor o_flavor = (enum cil_flavor)operand->data;
-+		enum cil_flavor o_flavor = (enum cil_flavor)(uintptr_t)operand->data;
- 		switch (o_flavor) {
- 		case CIL_CONS_U1:
- 			o_str = "u1";
-@@ -555,7 +555,7 @@ static char *__cil_cons_leaf_operand_to_string(struct cil_db *db, struct cil_lis
- 
- static char *__cil_cons_leaf_op_to_string(struct cil_list_item *op, char *new)
- {
--	enum cil_flavor flavor = (enum cil_flavor)op->data;
-+	enum cil_flavor flavor = (enum cil_flavor)(uintptr_t)op->data;
- 	const char *op_str;
- 	size_t len;
- 
-@@ -599,7 +599,7 @@ static char *__cil_cons_expr_to_string(struct cil_db *db, struct cil_list *cons_
- 
- 	i1 = cons_expr->head;
- 
--	op = (enum cil_flavor)i1->data;
-+	op = (enum cil_flavor)(uintptr_t)i1->data;
- 	switch (op) {
- 	case CIL_NOT:
- 		*new++ = '(';
-diff --git a/libsepol/cil/src/cil_post.c b/libsepol/cil/src/cil_post.c
-index 37a444157853..a55df1ea5bb0 100644
---- a/libsepol/cil/src/cil_post.c
-+++ b/libsepol/cil/src/cil_post.c
-@@ -1301,7 +1301,7 @@ static int __cil_expr_to_bitmap(struct cil_list *expr, ebitmap_t *out, int max,
- 	flavor = expr->flavor;
- 
- 	if (curr->flavor == CIL_OP) {
--		enum cil_flavor op = (enum cil_flavor)curr->data;
-+		enum cil_flavor op = (enum cil_flavor)(uintptr_t)curr->data;
- 
- 		if (op == CIL_ALL) {
- 			ebitmap_init(&b1); /* all zeros */
-diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
-index 9300cd2be9be..208bc01a7a2d 100644
---- a/libsepol/cil/src/cil_resolve_ast.c
-+++ b/libsepol/cil/src/cil_resolve_ast.c
-@@ -3355,7 +3355,7 @@ static int __cil_evaluate_tunable_expr(struct cil_list_item *curr)
- 		return CIL_FALSE;
- 	} else if (curr->flavor == CIL_OP) {
- 		uint16_t v1, v2;
--		enum cil_flavor op_flavor = (enum cil_flavor)curr->data;
-+		enum cil_flavor op_flavor = (enum cil_flavor)(uintptr_t)curr->data;
- 
- 		v1 = __cil_evaluate_tunable_expr_helper(curr->next);
- 
--- 
-2.30.0
+In my humble opinion, the compiler should output an error if val >
+UINT32_MAX here, while accepting to (silently) wrap around UINT32_MAX
+when the line number is later incremented (which is the standard
+behavior with unsigned integers in C, if I remember correctly). This
+way, numbers greater than UINT32_MAX are forbidden in CIL source
+files, both on 32-bit and 64-bit systems. If you disagree and want to
+accept line mark with any line numbers, the first if block needs to be
+changed to use "cil_log(CIL_WARN, "Problem parsing line number for
+line mark\n");val=0;".
+
+Another issue: function add_hll_linemark() currently ends with:
+
+exit:
+  cil_log(CIL_ERR, "Problem with high-level line mark at line %d of
+%s\n", tok.line, path);
+  return SEPOL_ERR;
+
+The %d needs to be replaced with %u in the message. Moreover if you
+want to keep cil_log(CIL_WARN), it would be very useful to have ("...
+at line %u of %s\n", tok.line, path) in the message.
+
+Thanks,
+Nicolas
 

@@ -2,186 +2,223 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C3F3310829
-	for <lists+selinux@lfdr.de>; Fri,  5 Feb 2021 10:46:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A7E9331086B
+	for <lists+selinux@lfdr.de>; Fri,  5 Feb 2021 10:55:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229618AbhBEJp3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Feb 2021 04:45:29 -0500
-Received: from mx1.polytechnique.org ([129.104.30.34]:56603 "EHLO
+        id S229767AbhBEJxg (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Feb 2021 04:53:36 -0500
+Received: from mx1.polytechnique.org ([129.104.30.34]:46889 "EHLO
         mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229720AbhBEJnW (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 5 Feb 2021 04:43:22 -0500
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+        with ESMTP id S229554AbhBEJqw (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 5 Feb 2021 04:46:52 -0500
+Received: from localhost.localdomain (85-168-38-217.rev.numericable.fr [85.168.38.217])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id 28894561276
-        for <selinux@vger.kernel.org>; Fri,  5 Feb 2021 10:42:35 +0100 (CET)
-Received: by mail-ot1-f43.google.com with SMTP id s107so6288057otb.8
-        for <selinux@vger.kernel.org>; Fri, 05 Feb 2021 01:42:35 -0800 (PST)
-X-Gm-Message-State: AOAM533BCkPszwO9q020BisT6GzINhAffXnT0XbIW2WduH4keYOkVMdZ
-        AZQIqI13+9TRTvh8HEBGw/5RLDZoir4fjt74hfU=
-X-Google-Smtp-Source: ABdhPJxPBsULFAWy3W7i2/kzCxGTA6MQqHgCyIaPGdAwHcOpb4bep5ggG2eqI23Ysj4oiwlPQHPulJ0dXYB+7Uz7jzA=
-X-Received: by 2002:a9d:66da:: with SMTP id t26mr2701787otm.279.1612518154018;
- Fri, 05 Feb 2021 01:42:34 -0800 (PST)
-MIME-Version: 1.0
-References: <20210203085846.6680-1-nicolas.iooss@m4x.org> <20210203085846.6680-3-nicolas.iooss@m4x.org>
- <CAP+JOzSk62FAj=xP5=8S2NCzdspn23NyxaMEVE4b+LvKyms3dw@mail.gmail.com>
-In-Reply-To: <CAP+JOzSk62FAj=xP5=8S2NCzdspn23NyxaMEVE4b+LvKyms3dw@mail.gmail.com>
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 6EC3456129F
+        for <selinux@vger.kernel.org>; Fri,  5 Feb 2021 10:46:09 +0100 (CET)
 From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-Date:   Fri, 5 Feb 2021 10:42:23 +0100
-X-Gmail-Original-Message-ID: <CAJfZ7=n+HRY_0ApPM8GAjt9vVe+yuUGjCitt73TqtbaVdo9DFQ@mail.gmail.com>
-Message-ID: <CAJfZ7=n+HRY_0ApPM8GAjt9vVe+yuUGjCitt73TqtbaVdo9DFQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] libsepol: include header files in source files when
- matching declarations
-To:     James Carter <jwcart2@gmail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Fri Feb  5 10:42:35 2021 +0100 (CET))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.089861, queueID=86DCF561285
+To:     selinux@vger.kernel.org
+Subject: [PATCH 1/3] libsepol/cil: fix NULL pointer dereference with empty macro argument
+Date:   Fri,  5 Feb 2021 10:45:37 +0100
+Message-Id: <20210205094539.388854-1-nicolas.iooss@m4x.org>
+X-Mailer: git-send-email 2.30.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Fri Feb  5 10:46:09 2021 +0100 (CET))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.003700, queueID=A514C564671
 X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Feb 4, 2021 at 8:22 PM James Carter <jwcart2@gmail.com> wrote:
->
-> On Wed, Feb 3, 2021 at 4:00 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
-> >
-> > It is good practise in C to include the header file that specifies the
-> > prototype of functions which are defined in the source file. Otherwise,
-> > the function prototypes which be different, which could cause unexpected
-> > issues.
-> >
-> > Add the include directives to do this.
-> >
-> > Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
->
-> Acked-by: James Carter <jwcart2@gmail.com>
+OSS-Fuzz found a Null-dereference READ in the CIL compiler when trying
+to compile the following policy:
 
-Merged.
-Nicolas
+    (macro m((name n))) (call m(()))
 
-> > ---
-> >  libsepol/cil/src/cil_find.c      | 1 +
-> >  libsepol/cil/src/cil_fqn.c       | 1 +
-> >  libsepol/cil/src/cil_mem.c       | 1 +
-> >  libsepol/cil/src/cil_parser.c    | 1 +
-> >  libsepol/cil/src/cil_policy.c    | 1 +
-> >  libsepol/cil/src/cil_reset_ast.c | 1 +
-> >  libsepol/src/kernel_to_cil.c     | 1 +
-> >  libsepol/src/kernel_to_conf.c    | 1 +
-> >  libsepol/src/services.c          | 1 +
-> >  9 files changed, 9 insertions(+)
-> >
-> > diff --git a/libsepol/cil/src/cil_find.c b/libsepol/cil/src/cil_find.c
-> > index 638b675db826..3898725f18d5 100644
-> > --- a/libsepol/cil/src/cil_find.c
-> > +++ b/libsepol/cil/src/cil_find.c
-> > @@ -30,6 +30,7 @@
-> >  #include <sepol/policydb/ebitmap.h>
-> >
-> >  #include "cil_internal.h"
-> > +#include "cil_find.h"
-> >  #include "cil_flavor.h"
-> >  #include "cil_list.h"
-> >  #include "cil_log.h"
-> > diff --git a/libsepol/cil/src/cil_fqn.c b/libsepol/cil/src/cil_fqn.c
-> > index 2e76f8737754..097222a83da9 100644
-> > --- a/libsepol/cil/src/cil_fqn.c
-> > +++ b/libsepol/cil/src/cil_fqn.c
-> > @@ -31,6 +31,7 @@
-> >  #include <stdio.h>
-> >  #include <string.h>
-> >
-> > +#include "cil_fqn.h"
-> >  #include "cil_internal.h"
-> >  #include "cil_log.h"
-> >  #include "cil_strpool.h"
-> > diff --git a/libsepol/cil/src/cil_mem.c b/libsepol/cil/src/cil_mem.c
-> > index f73021b58d50..8e4a1d246f2c 100644
-> > --- a/libsepol/cil/src/cil_mem.c
-> > +++ b/libsepol/cil/src/cil_mem.c
-> > @@ -33,6 +33,7 @@
-> >  #include <string.h>
-> >
-> >  #include "cil_log.h"
-> > +#include "cil_mem.h"
-> >
-> >  void *cil_malloc(size_t size)
-> >  {
-> > diff --git a/libsepol/cil/src/cil_parser.c b/libsepol/cil/src/cil_parser.c
-> > index b62043b95806..0038eed6dd1b 100644
-> > --- a/libsepol/cil/src/cil_parser.c
-> > +++ b/libsepol/cil/src/cil_parser.c
-> > @@ -38,6 +38,7 @@
-> >  #include "cil_mem.h"
-> >  #include "cil_tree.h"
-> >  #include "cil_lexer.h"
-> > +#include "cil_parser.h"
-> >  #include "cil_strpool.h"
-> >  #include "cil_stack.h"
-> >
-> > diff --git a/libsepol/cil/src/cil_policy.c b/libsepol/cil/src/cil_policy.c
-> > index 06d7d74e54c3..74edb34575ea 100644
-> > --- a/libsepol/cil/src/cil_policy.c
-> > +++ b/libsepol/cil/src/cil_policy.c
-> > @@ -41,6 +41,7 @@
-> >  #include "cil_flavor.h"
-> >  #include "cil_find.h"
-> >  #include "cil_mem.h"
-> > +#include "cil_policy.h"
-> >  #include "cil_tree.h"
-> >  #include "cil_list.h"
-> >  #include "cil_symtab.h"
-> > diff --git a/libsepol/cil/src/cil_reset_ast.c b/libsepol/cil/src/cil_reset_ast.c
-> > index 52e5f64011d2..3da1b9a64167 100644
-> > --- a/libsepol/cil/src/cil_reset_ast.c
-> > +++ b/libsepol/cil/src/cil_reset_ast.c
-> > @@ -2,6 +2,7 @@
-> >  #include "cil_internal.h"
-> >  #include "cil_log.h"
-> >  #include "cil_list.h"
-> > +#include "cil_reset_ast.h"
-> >  #include "cil_symtab.h"
-> >
-> >  static inline void cil_reset_classperms_list(struct cil_list *cp_list);
-> > diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-> > index c247b32f9e75..a146ac514018 100644
-> > --- a/libsepol/src/kernel_to_cil.c
-> > +++ b/libsepol/src/kernel_to_cil.c
-> > @@ -16,6 +16,7 @@
-> >  #define IPPROTO_SCTP 132
-> >  #endif
-> >
-> > +#include <sepol/kernel_to_cil.h>
-> >  #include <sepol/policydb/avtab.h>
-> >  #include <sepol/policydb/conditional.h>
-> >  #include <sepol/policydb/hashtab.h>
-> > diff --git a/libsepol/src/kernel_to_conf.c b/libsepol/src/kernel_to_conf.c
-> > index 62bf706c1aa0..a22f196df9e9 100644
-> > --- a/libsepol/src/kernel_to_conf.c
-> > +++ b/libsepol/src/kernel_to_conf.c
-> > @@ -15,6 +15,7 @@
-> >  #define IPPROTO_SCTP 132
-> >  #endif
-> >
-> > +#include <sepol/kernel_to_conf.h>
-> >  #include <sepol/policydb/avtab.h>
-> >  #include <sepol/policydb/conditional.h>
-> >  #include <sepol/policydb/hashtab.h>
-> > diff --git a/libsepol/src/services.c b/libsepol/src/services.c
-> > index 72b39657cd2e..6596431c38e2 100644
-> > --- a/libsepol/src/services.c
-> > +++ b/libsepol/src/services.c
-> > @@ -59,6 +59,7 @@
-> >  #include <sepol/policydb/services.h>
-> >  #include <sepol/policydb/conditional.h>
-> >  #include <sepol/policydb/util.h>
-> > +#include <sepol/sepol.h>
-> >
-> >  #include "debug.h"
-> >  #include "private.h"
-> > --
-> > 2.30.0
-> >
+When calling the macro, the name (in variable "pc") is NULL, which
+triggers a NULL pointer dereference when using it as a key in
+__cil_insert_name(). The stack trace is:
+
+    #0 0x7f4662655a85 in __strlen_avx2 (/usr/lib/libc.so.6+0x162a85)
+    #1 0x556d0b6d150c in __interceptor_strlen.part.0 (/selinux/libsepol/fuzz/fuzz-secilc+0x44850c)
+    #2 0x556d0ba74ed6 in symhash /selinux/libsepol/src/symtab.c:22:9
+    #3 0x556d0b9ef50d in hashtab_search /selinux/libsepol/src/hashtab.c:186:11
+    #4 0x556d0b928e1f in cil_symtab_get_datum /selinux/libsepol/src/../cil/src/cil_symtab.c:121:37
+    #5 0x556d0b8f28f4 in __cil_insert_name /selinux/libsepol/src/../cil/src/cil_resolve_ast.c:96:2
+    #6 0x556d0b908184 in cil_resolve_call1 /selinux/libsepol/src/../cil/src/cil_resolve_ast.c:2835:12
+    #7 0x556d0b91b404 in __cil_resolve_ast_node /selinux/libsepol/src/../cil/src/cil_resolve_ast.c
+    #8 0x556d0b91380f in __cil_resolve_ast_node_helper /selinux/libsepol/src/../cil/src/cil_resolve_ast.c:3773:7
+    #9 0x556d0b932230 in cil_tree_walk_core /selinux/libsepol/src/../cil/src/cil_tree.c:263:9
+    #10 0x556d0b932230 in cil_tree_walk /selinux/libsepol/src/../cil/src/cil_tree.c:307:7
+    #11 0x556d0b932326 in cil_tree_walk_core /selinux/libsepol/src/../cil/src/cil_tree.c:275:9
+    #12 0x556d0b932326 in cil_tree_walk /selinux/libsepol/src/../cil/src/cil_tree.c:307:7
+    #13 0x556d0b911189 in cil_resolve_ast /selinux/libsepol/src/../cil/src/cil_resolve_ast.c:3941:8
+    #14 0x556d0b798729 in cil_compile /selinux/libsepol/src/../cil/src/cil.c:550:7
+
+Fixes: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=28544
+Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+---
+ libsepol/cil/src/cil_resolve_ast.c | 79 ++++++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
+
+diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
+index 0c85eabe5a81..9300cd2be9be 100644
+--- a/libsepol/cil/src/cil_resolve_ast.c
++++ b/libsepol/cil/src/cil_resolve_ast.c
+@@ -2828,6 +2828,12 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 			switch (flavor) {
+ 			case CIL_NAME: {
+ 				struct cil_name *name;
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				name = __cil_insert_name(args->db, pc->data, current);
+ 				if (name != NULL) {
+ 					new_arg->arg = (struct cil_symtab_datum *)name;
+@@ -2837,21 +2843,57 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 			}
+ 				break;
+ 			case CIL_TYPE:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_ROLE:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_USER:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_SENS:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_CAT:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_BOOL:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_CATSET: {
+@@ -2871,6 +2913,11 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 					cil_list_append(((struct cil_symtab_datum*)catset)->nodes,
+ 									CIL_LIST_ITEM, cat_node);
+ 					new_arg->arg = (struct cil_symtab_datum*)catset;
++				} else if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
+ 				} else {
+ 					new_arg->arg_str = pc->data;
+ 				}
+@@ -2896,6 +2943,11 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 					cil_list_append(((struct cil_symtab_datum*)level)->nodes, 
+ 									CIL_LIST_ITEM, lvl_node);
+ 					new_arg->arg = (struct cil_symtab_datum*)level;
++				} else if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
+ 				} else {
+ 					new_arg->arg_str = pc->data;
+ 				}
+@@ -2921,6 +2973,11 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 					cil_list_append(((struct cil_symtab_datum*)range)->nodes, 
+ 									CIL_LIST_ITEM, range_node);
+ 					new_arg->arg = (struct cil_symtab_datum*)range;
++				} else if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
+ 				} else {
+ 					new_arg->arg_str = pc->data;
+ 				}
+@@ -2946,6 +3003,11 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 					cil_list_append(((struct cil_symtab_datum*)ipaddr)->nodes,
+ 									CIL_LIST_ITEM, addr_node);
+ 					new_arg->arg = (struct cil_symtab_datum*)ipaddr;
++				} else if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
+ 				} else {
+ 					new_arg->arg_str = pc->data;
+ 				}
+@@ -2953,9 +3015,21 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 				break;
+ 			}
+ 			case CIL_CLASS:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_MAP_CLASS:
++				if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
++				}
+ 				new_arg->arg_str = pc->data;
+ 				break;
+ 			case CIL_CLASSPERMISSION: {
+@@ -2976,6 +3050,11 @@ int cil_resolve_call1(struct cil_tree_node *current, void *extra_args)
+ 					cp_node->data = cp;
+ 					cil_list_append(cp->datum.nodes, CIL_LIST_ITEM, cp_node);
+ 					new_arg->arg = (struct cil_symtab_datum*)cp;
++				} else if (pc->data == NULL) {
++					cil_tree_log(current, CIL_ERR, "Invalid macro parameter");
++					cil_destroy_args(new_arg);
++					rc = SEPOL_ERR;
++					goto exit;
+ 				} else {
+ 					new_arg->arg_str = pc->data;
+ 				}
+-- 
+2.30.0
 

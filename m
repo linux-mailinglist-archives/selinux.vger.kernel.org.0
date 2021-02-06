@@ -2,60 +2,60 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 94644312024
-	for <lists+selinux@lfdr.de>; Sat,  6 Feb 2021 22:05:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A4104312025
+	for <lists+selinux@lfdr.de>; Sat,  6 Feb 2021 22:06:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbhBFVFf (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 6 Feb 2021 16:05:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49446 "EHLO
+        id S229548AbhBFVGL (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 6 Feb 2021 16:06:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229522AbhBFVFf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 6 Feb 2021 16:05:35 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6585BC061756
-        for <selinux@vger.kernel.org>; Sat,  6 Feb 2021 13:04:54 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id hs11so18671392ejc.1
-        for <selinux@vger.kernel.org>; Sat, 06 Feb 2021 13:04:54 -0800 (PST)
+        with ESMTP id S229545AbhBFVGL (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 6 Feb 2021 16:06:11 -0500
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F20FDC06174A
+        for <selinux@vger.kernel.org>; Sat,  6 Feb 2021 13:05:30 -0800 (PST)
+Received: by mail-ej1-x635.google.com with SMTP id i8so18577724ejc.7
+        for <selinux@vger.kernel.org>; Sat, 06 Feb 2021 13:05:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:subject:to:cc:references:message-id:date:user-agent
          :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=w7pKNTc34nd4m220XD4sSGo2v7uZGqRxKl0+PekX09A=;
-        b=pUUkhdm7LKUA5rpI26Yx2veHQTKj8DPaEozUa2hBhLyYYyY6bDFKWhcck75Y/7Tc71
-         zrfCqNHZ/++G9CB2XCgc4+9FL8Vxtnef7TFXRfpGqWnNVJ0aApb7UtPariiXpRXfPst4
-         vpEI/pw8JXDkuEkv88oYnqXHpA1wxJgCT024jFXTvVUOtt1GsPaFUCnMmTAS1cLDrq/F
-         1BmiVCOO/A7HLT74JFqszjo+gEfUTthyPQNp26EdYdwmVI7zUmcJPEepRN+9Oh6d2Lre
-         gUNfR470dbuHJfuG1aT/fv/hLirUQ1rTgiMZaYWdWtzA15gicPes5VHuVqeBHGwjTJKW
-         laVA==
+        bh=Ro3KoNBDf5RcpE/SlzkdzqJje5AFe0NcvsTf5sCl8z4=;
+        b=WcJUR0I4ZwXzrpOwGPfvFJ4vXJRJc5+8y68LDJEtXlELhv5zAbTV/SAbBiEDRjTvvc
+         UtB6ZUQ5wIuZIQge3fM9mqNWf9PRUW5oA3bt2JEJ+WP9xWWLSeEdU5etmmTpdx0+7NAM
+         HXj6f1v7vxLQZ76oIKdSR8n5a9/1jRUgLiZZItfdg5iUPvzYEDzY2hyk80i8wE5SwDA6
+         xrlN2jmOTzhm50LVhFxOwtWr39cvsdTOb1Oc3nAe9gNZWhTGQh8txV7kgdtkszYlyMwP
+         5fLqLNcAnjXwwqlw0tJtuwthmVnX37FQN0c8oY0Hu/pR0ZJQeALOXzWCciTKUpZjm5Cq
+         hOWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:subject:to:cc:references:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=w7pKNTc34nd4m220XD4sSGo2v7uZGqRxKl0+PekX09A=;
-        b=XzdpTlHzXwDk1r/iMlQPZs/xOXLZYKS0bGeYoOF8wYzZeeiRTjUPmSbjEvMsYdZVMV
-         Wk4nJt2sDZoi1fhJtvylPJUQyWBhAFj8Q01UN0FgX5R0j1ruoui0s2VQXfYJihAl3RLn
-         L7e4IUWo5ibZwPVRT5keJkvpkZQI49Lsu9EVNNGeP4SlhBCnjnq61sk0/RAcqHXZDSH/
-         F5FZe8u/f8zzKsuKo8uj7Oll/DKRUQLANUxkELKjtgbTY3E8BmTna8BcqjZ+I4BxC/LI
-         83/CndDElXd9Q+v4fXMfmdUdrC9cdF/OpJ7gI70eP6W5+wAe7trWC2atC58t9vu1Zt5D
-         7Zig==
-X-Gm-Message-State: AOAM531jwU2wkjT9s/QRCD/MA7/gGTdQydDt844ikzF08wchJFkyJHsu
-        yyX4qoJL+qWQvHVihzOapl4=
-X-Google-Smtp-Source: ABdhPJxY8f5OyzUQte63xMyl4ird5Jp2RN0AKVW3XysQX9ab4jjX9nrMJRcVrF21fhn9p/RkD3NRJg==
-X-Received: by 2002:a17:906:2ac1:: with SMTP id m1mr10186816eje.149.1612645493178;
-        Sat, 06 Feb 2021 13:04:53 -0800 (PST)
+        bh=Ro3KoNBDf5RcpE/SlzkdzqJje5AFe0NcvsTf5sCl8z4=;
+        b=N8/OZpmyfIN99uYr+Qx3HP1cSgqXHzBw6pw3spsDZXXHCryT5dsI24xYi0x0z3GBdI
+         2EEP+1HpE7MXYwWXopme2m2StCf6QHAvK2nTTNtHzix0ctnEDfJo7I3AdAgDbf82eBbB
+         IJUev+StqZRkMOHlstJwiiMzcrsfWKIVkRyhUnEgn1KFmb30h7J41dE3LVl4sVrwtOw8
+         AxXU+ZCg9HmwQ60a0bHF5ih54sFVVqhKewdu20PHfqMgPOzeW7O7YgOItPQXdziVc+8t
+         8/Z/nPRT06XMbG9yxnx8cV8+EsgRMSxLOoMP4uCvJPIVv1x1SzrEfCtkJRVf0tFFA3N2
+         7bdA==
+X-Gm-Message-State: AOAM532Pl+88CYn5D98cSSrQ12UPIbkrA6gn+EKlD63+BhbjKRvM9GgX
+        FDorDkCKmhJ8CtaQSWEN3zo=
+X-Google-Smtp-Source: ABdhPJzsur4DS5RSKoN77LbbtS7csffOhL2k+bEPIhRI5okXIIaEU1e7u0YUPaUDfZSCNJZfEmLJlg==
+X-Received: by 2002:a17:906:390c:: with SMTP id f12mr10292699eje.31.1612645529727;
+        Sat, 06 Feb 2021 13:05:29 -0800 (PST)
 Received: from ?IPv6:2001:a61:340e:e601:8a:719c:9bc1:dcee? ([2001:a61:340e:e601:8a:719c:9bc1:dcee])
-        by smtp.gmail.com with ESMTPSA id y1sm6025378edq.26.2021.02.06.13.04.52
+        by smtp.gmail.com with ESMTPSA id y8sm5824234edd.97.2021.02.06.13.05.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 06 Feb 2021 13:04:52 -0800 (PST)
+        Sat, 06 Feb 2021 13:05:29 -0800 (PST)
 From:   bauen1 <j2468h@googlemail.com>
 X-Google-Original-From: bauen1 <j2468h@gmail.com>
-Subject: [PATCH v2 2/3] secilc/docs: add syntax highlighting for secil
+Subject: [PATCH v2 3/3] secilc/docs: add custom color theme
 To:     selinux@vger.kernel.org
 Cc:     j2468h@googlemail.com
 References: <a8abefda-5c2b-918d-65d9-e21b89e9a2bf@gmail.com>
-Message-ID: <90473e07-fe79-18d8-4772-52deb4f8e1bd@gmail.com>
-Date:   Sat, 6 Feb 2021 22:04:52 +0100
+Message-ID: <3cfe5057-8bfe-4058-a0f2-058ecc480ab9@gmail.com>
+Date:   Sat, 6 Feb 2021 22:05:28 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.1
 MIME-Version: 1.0
@@ -67,292 +67,95 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This is done by creating a somewhat rudimentary KDE syntax xml for
-pandoc.
-
-The default styles provided by pandoc don't look very good and don't
-highlight e.g. the strings marked as builtin.
+Since the default pandoc themes either don't highlight everything or
+don't fit the black/white color style of the html / pdf I've created my
+own.
 
 Signed-off-by: Jonathan Hettwer <j2468h@gmail.com>
 ---
- secilc/docs/Makefile  |  10 +-
- secilc/docs/secil.xml | 236 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 242 insertions(+), 4 deletions(-)
- create mode 100644 secilc/docs/secil.xml
+ secilc/docs/Makefile    |  2 +-
+ secilc/docs/theme.theme | 59 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 60 insertions(+), 1 deletion(-)
+ create mode 100644 secilc/docs/theme.theme
 
 diff --git a/secilc/docs/Makefile b/secilc/docs/Makefile
-index 79a165ba..a91bcde0 100644
+index a91bcde0..a03ebeed 100644
 --- a/secilc/docs/Makefile
 +++ b/secilc/docs/Makefile
-@@ -28,6 +28,8 @@ FILE_LIST ?= cil_introduction.md \
+@@ -28,7 +28,7 @@ FILE_LIST ?= cil_introduction.md \
  
  PANDOC_FILE_LIST = $(addprefix $(TMPDIR)/,$(FILE_LIST))
  
-+PANDOC_HIGHLIGHT_STYLE="pygments"
-+
+-PANDOC_HIGHLIGHT_STYLE="pygments"
++PANDOC_HIGHLIGHT_STYLE="theme.theme"
+ 
  PDF_OUT=CIL_Reference_Guide.pdf
  HTML_OUT=CIL_Reference_Guide.html
- PANDOC = pandoc
-@@ -54,13 +56,13 @@ $(TMPDIR)/policy.cil: $(TESTDIR)/policy.cil
- 	$(SED) -i '1i Example Policy\n=========\n```secil' $@
- 	echo '```' >> $@
- 
--html: $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil
-+html: $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil secil.xml
- 	mkdir -p $(HTMLDIR)
--	$(PANDOC) -t html $^ -o $(HTMLDIR)/$(HTML_OUT)
-+	$(PANDOC) --highlight-style=$(PANDOC_HIGHLIGHT_STYLE) --syntax-definition=secil.xml --standalone --metadata title="CIL Reference Guide" -t html $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil  -o $(HTMLDIR)/$(HTML_OUT)
- 
--pdf: $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil
-+pdf: $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil secil.xml
- 	mkdir -p $(PDFDIR)
--	$(PANDOC) --standalone --toc $^ -o $(PDFDIR)/$(PDF_OUT)
-+	$(PANDOC) --highlight-style=$(PANDOC_HIGHLIGHT_STYLE) --syntax-definition=secil.xml --standalone --toc $(PANDOC_FILE_LIST) $(TMPDIR)/policy.cil -o $(PDFDIR)/$(PDF_OUT)
- 
- clean:
- 	rm -rf $(HTMLDIR)
-diff --git a/secilc/docs/secil.xml b/secilc/docs/secil.xml
+diff --git a/secilc/docs/theme.theme b/secilc/docs/theme.theme
 new file mode 100644
-index 00000000..daa80ded
+index 00000000..5ffa9a65
 --- /dev/null
-+++ b/secilc/docs/secil.xml
-@@ -0,0 +1,236 @@
-+<?xml version="1.0" encoding="UTF-8"?>
-+<!-- https://docs.kde.org/trunk5/en/applications/katepart/highlight.html#katehighlight-xml-format -->
-+<!DOCTYPE language SYSTEM "language.dtd">
-+<language name="secil" section="Sources" extensions="*.cil" version="1" kateversion="2.4">
-+    <!--
-+        The keywords where extracted from libsepol/cil/src/cil.c sorted into the
-+        right lists and sorted alphabetically
-+    -->
-+    <list name="keywords_blockstart">
-+        <item>allow</item>
-+        <item>allowx</item>
-+        <item>auditallow</item>
-+        <item>auditallowx</item>
-+        <item>block</item>
-+        <item>blockabstract</item>
-+        <item>boolean</item>
-+        <item>booleanif</item>
-+        <item>category</item>
-+        <item>categoryalias</item>
-+        <item>categoryaliasactual</item>
-+        <item>categoryorder</item>
-+        <item>categoryset</item>
-+        <item>class</item>
-+        <item>classcommon</item>
-+        <item>classmap</item>
-+        <item>classmapping</item>
-+        <item>classorder</item>
-+        <item>classpermission</item>
-+        <item>classpermissionset</item>
-+        <item>common</item>
-+        <item>constrain</item>
-+        <item>context</item>
-+        <item>defaultrange</item>
-+        <item>defaultrole</item>
-+        <item>defaulttype</item>
-+        <item>defaultuser</item>
-+        <item>devicetreecon</item>
-+        <item>dontaudit</item>
-+        <item>dontauditx</item>
-+        <item>expandtypeattribute</item>
-+        <item>false</item>
-+        <item>filecon</item>
-+        <item>fsuse</item>
-+        <item>genfscon</item>
-+        <item>handleunknown</item>
-+        <item>ibendportcon</item>
-+        <item>ibpkeycon</item>
-+        <item>ioctl</item>
-+        <item>iomemcon</item>
-+        <item>ioportcon</item>
-+        <item>ipaddr</item>
-+        <item>level</item>
-+        <item>levelrange</item>
-+        <item>mls</item>
-+        <item>mlsconstrain</item>
-+        <item>mlsvalidatetrans</item>
-+        <item>netifcon</item>
-+        <item>neverallow</item>
-+        <item>neverallowx</item>
-+        <item>nodecon</item>
-+        <item>optional</item>
-+        <item>pcidevicecon</item>
-+        <item>perm</item>
-+        <item>permissionx</item>
-+        <item>pirqcon</item>
-+        <item>policycap</item>
-+        <item>portcon</item>
-+        <item>rangetransition</item>
-+        <item>role</item>
-+        <item>roleallow</item>
-+        <item>roleattribute</item>
-+        <item>roleattributeset</item>
-+        <item>rolebounds</item>
-+        <item>roletransition</item>
-+        <item>roletype</item>
-+        <item>selinuxuser</item>
-+        <item>selinuxuserdefault</item>
-+        <item>sensitivity</item>
-+        <item>sensitivityalias</item>
-+        <item>sensitivityaliasactual</item>
-+        <item>sensitivitycategory</item>
-+        <item>sensitivityorder</item>
-+        <item>sid</item>
-+        <item>sidcontext</item>
-+        <item>sidorder</item>
-+        <item>true</item>
-+        <item>tunable</item>
-+        <item>tunableif</item>
-+        <item>type</item>
-+        <item>typealias</item>
-+        <item>typealiasactual</item>
-+        <item>typeattribute</item>
-+        <item>typeattributeset</item>
-+        <item>typebounds</item>
-+        <item>typechange</item>
-+        <item>typemember</item>
-+        <item>typepermissive</item>
-+        <item>typetransition</item>
-+        <item>unordered</item>
-+        <item>user</item>
-+        <item>userattribute</item>
-+        <item>userattributeset</item>
-+        <item>userbounds</item>
-+        <item>userlevel</item>
-+        <item>userprefix</item>
-+        <item>userrange</item>
-+        <item>userrole</item>
-+        <item>validatetrans</item>
-+    </list>
++++ b/secilc/docs/theme.theme
+@@ -0,0 +1,59 @@
++{
++    "text-color": null,
++    "background-color": null,
++    "line-number-color": null,
++    "line-number-background-color": null,
++    "text-styles": {
++        "String": {
++            "text-color": "#049b0a",
++            "background-color": null,
++            "bold": false,
++            "italic": false,
++            "underline": false
++        },
++        "SpecialChar": {
++            "text-color": "#049b0a",
++            "background-color": null,
++            "bold": false,
++            "italic": false,
++            "underline": false
++        },
 +
-+    <list name="function">
-+        <item>blockinherit</item>
-+        <item>call</item>
-+        <item>in</item>
-+        <item>macro</item>
-+    </list>
++        "Function": {
++            "text-color": "#ff9358",
++            "background-color": null,
++            "bold": true,
++            "italic": false,
++            "underline": false
++        },
 +
-+    <list name="operators">
-+        <item>and</item>
-+        <item>dom</item>
-+        <item>domby</item>
-+        <item>eq</item>
-+        <item>incomp</item>
-+        <item>neq</item>
-+        <item>not</item>
-+        <item>or</item>
-+        <item>range</item>
-+        <item>xor</item>
-+    </list>
-+
-+    <!-- list of "magic" functions or values -->
-+    <list name="builtins">
-+        <item>*</item>
-+        <item>all</item>
-+        <item>dccp</item>
-+        <item>false</item>
-+        <item>h1</item>
-+        <item>h2</item>
-+        <item>l1</item>
-+        <item>l2</item>
-+        <item>object_r</item>
-+        <item>r1</item>
-+        <item>r2</item>
-+        <item>r3</item>
-+        <item>sctp</item>
-+        <item>self</item>
-+        <item>t1</item>
-+        <item>t2</item>
-+        <item>t3</item>
-+        <item>tcp</item>
-+        <item>true</item>
-+        <item>u1</item>
-+        <item>u2</item>
-+        <item>u3</item>
-+        <item>udp</item>
-+
-+        <!--
-+            Excluded because they lead to a lot of false-positives
-+        <item>allow</item>
-+        <item>any</item>
-+        <item>char</item>
-+        <item>deny</item>
-+        <item>dir</item>
-+        <item>file</item>
-+        <item>glblub</item>
-+        <item>high</item>
-+        <item>low-high</item>
-+        <item>low</item>
-+        <item>pipe</item>
-+        <item>reject</item>
-+        <item>socket</item>
-+        <item>source</item>
-+        <item>symlink</item>
-+        <item>target</item>
-+        <item>task</item>
-+        <item>trans</item>
-+        <item>xattr</item>
-+        -->
-+    </list>
-+    <highlighting>
-+        <contexts>
-+            <context name="Normal" attribute="Normal" lineEndContext="#stay">
-+                <DetectChar attribute="Brackets" context="BlockStart" char="("/>
-+
-+                <DetectChar attribute="Comment" context="Comment" char=";"/>
-+            </context>
-+            <context name="BlockStart" attribute="Normal" lineEndContext="#stay">
-+                <keyword attribute="Keyword" context="Block" String="keywords_blockstart"/>
-+                <keyword attribute="Function" context="Block" String="function"/>
-+                <keyword attribute="Operator" context="Block" String="operators"/>
-+
-+                <DetectChar attribute="Comment" context="Comment" char=";"/>
-+            </context>
-+            <context name="Block" attribute="Normal" lineEndContext="#stay">
-+                <keyword attribute="Builtin" context="#stay" String="builtins"/>
-+
-+                <DetectChar attribute="Comment" context="Comment" char=";"/>
-+                <DetectChar attribute="String" context="String" char="&quot;"/>
-+
-+                <DetectChar attribute="Brackets" context="BlockStart" char="("/>
-+                <DetectChar attribute="Brackets" context="#pop" char=")"/>
-+            </context>
-+
-+            <!-- single line comment -->
-+            <context name="Comment" attribute="Comment" lineEndContext="#pop"></context>
-+
-+            <!-- string / name -->
-+            <context name="String" attribute="String" lineEndContext="#stay">
-+                <RegExpr attribute="Char" context="#stay" String="#\\."/>
-+
-+                <!-- allow escaping " or similiar -->
-+                <HlCStringChar attribute="String Char" context="#stay"/>
-+
-+                <DetectChar attribute="String" context="#pop" char="&quot;"/>
-+            </context>
-+        </contexts>
-+        <itemDatas>
-+            <itemData name="Normal" defStyleNum="dsNormal" />
-+            <itemData name="Keyword" defStyleNum="dsKeyword"/>
-+            <itemData name="Function" defStyleNum="dsFunction"/>
-+            <itemData name="Operator" defStyleNum="dsOperator"/>
-+            <itemData name="Builtin" defStyleNum="dsBuiltIn"/>
-+
-+            <itemData name="Comment" defStyleNum="dsComment"/>
-+
-+            <itemData name="String" defStyleNum="dsString"/>
-+            <itemData name="String Char" defStyleNum="dsSpecialChar"/>
-+        </itemDatas>
-+    </highlighting>
-+    <general>
-+        <comments>
-+            <comment name="singleLine" start=";"/>
-+        </comments>
-+        <keywords casesensitive="1" weakDeliminator="."/>
-+    </general>
-+</language>
++        "Operator": {
++            "text-color": "#43a8ed",
++            "background-color": null,
++            "bold": true,
++            "italic": false,
++            "underline": false
++        },
++        "BuiltIn": {
++            "text-color": "#ff6dd3",
++            "background-color": null,
++            "bold": true,
++            "italic": false,
++            "underline": false
++        },
++        "Comment": {
++            "text-color": "#bc7a00",
++            "background-color": null,
++            "bold": false,
++            "italic": true,
++            "underline": false
++        },
++        "Keyword": {
++            "text-color": "#28648e",
++            "background-color": null,
++            "bold": true,
++            "italic": false,
++            "underline": false
++        }
++    }
++}
 -- 
 2.30.0
 

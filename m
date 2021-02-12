@@ -2,151 +2,198 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A1EF331A6C1
-	for <lists+selinux@lfdr.de>; Fri, 12 Feb 2021 22:21:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BE4331A71A
+	for <lists+selinux@lfdr.de>; Fri, 12 Feb 2021 22:51:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232035AbhBLVUw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 12 Feb 2021 16:20:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41288 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232066AbhBLVUm (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 12 Feb 2021 16:20:42 -0500
-Received: from mail-il1-x134.google.com (mail-il1-x134.google.com [IPv6:2607:f8b0:4864:20::134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 374B8C061756;
-        Fri, 12 Feb 2021 13:20:02 -0800 (PST)
-Received: by mail-il1-x134.google.com with SMTP id y15so449762ilj.11;
-        Fri, 12 Feb 2021 13:20:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=ZFoPlC9Ox6zK6lUP8unB6mEMSEpKmVAmcqkIvxGgLK4=;
-        b=hSZZOE71IN3CjEqQK8VS+pu+X1LbA62C3V5J62sXSKRYcLrCn3Oh85hNVOm8EsdyS9
-         vC8VQUXGEuGAgL6mI07S5XX2nfihYT5SVhk8xvPJ6xMbeGqU4UyfCniJH6JliaVTX0uw
-         ie1ajml3LQtblOCBIIKu37P+sJhdql0jeTvID7XxGjj39i+x7IYiEWsMFBWtZDN1br6x
-         bcHX1Da7Xf4aSWH36njxcQIbPWZUkie0/v2MGKW+HN9oiJ4BSOBHZ9VI3Yxv1xX7o9rn
-         oykr0o2fJHXvTtx+f5wC9xaui6msMMBsa2opR+y4ReRMX46ndC8xeKlVlVQElqVJVhoS
-         vnng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=ZFoPlC9Ox6zK6lUP8unB6mEMSEpKmVAmcqkIvxGgLK4=;
-        b=YM1tFcbkMNXvWRG9LwOQmZ3QCMov6EA4XucIrE5dLdbjnPURnnlx7XH+Vu2bBnWyKT
-         fserhgXyOsgu8Nmzif2p8AMtTQrD5YoEzYJGjRyF1korwysPIBVGeZeY0atbBz2dCyc4
-         JJieNtzDbNGNt/8N7RsELxuWFsxfwchP5+aVglALdPSiFIKvwfdgGsqvqzUnlH9f++5U
-         R6ibTR2wMlwgH0+Dv8WwtgIZ/uPo73chobBz19BXaGrxGYRmZaEBZDt7hYTsCkA+XOuc
-         sAXxym58viJ4Jp8dSm7Dih3BLKrFfhMcsEAGCRg/qrpetplsyIADIVd5S8sQ+y/wcRuT
-         N68w==
-X-Gm-Message-State: AOAM5322/DwmWWuObMHeF5N3oCPURM86wvkGOO3dgHlQMlFcNl2B9Srr
-        qfWDCBrZLyM9KKT1PjxY72oTrb/pH2o7VA==
-X-Google-Smtp-Source: ABdhPJzx5eE7PXldjvPvTehXqaQjzJe+J+I412FXoSM0yb9Rigf4AwDhoWZzAaty1HH0zxlA2I5VTQ==
-X-Received: by 2002:a92:870d:: with SMTP id m13mr3878147ild.104.1613164801697;
-        Fri, 12 Feb 2021 13:20:01 -0800 (PST)
-Received: from Olgas-MBP-444.attlocal.net (172-10-226-31.lightspeed.livnmi.sbcglobal.net. [172.10.226.31])
-        by smtp.gmail.com with ESMTPSA id k11sm4685570iop.45.2021.02.12.13.20.00
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Fri, 12 Feb 2021 13:20:01 -0800 (PST)
-From:   Olga Kornievskaia <olga.kornievskaia@gmail.com>
-To:     trond.myklebust@hammerspace.com, anna.schumaker@netapp.com
-Cc:     linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org
-Subject: [PATCH 2/2] NFSv4 account for selinux security context when deciding to share superblock
-Date:   Fri, 12 Feb 2021 16:19:55 -0500
-Message-Id: <20210212211955.11239-2-olga.kornievskaia@gmail.com>
-X-Mailer: git-send-email 2.10.1 (Apple Git-78)
-In-Reply-To: <20210212211955.11239-1-olga.kornievskaia@gmail.com>
-References: <20210212211955.11239-1-olga.kornievskaia@gmail.com>
+        id S230043AbhBLVut (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 12 Feb 2021 16:50:49 -0500
+Received: from agnus.defensec.nl ([80.100.19.56]:57644 "EHLO agnus.defensec.nl"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229815AbhBLVus (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Fri, 12 Feb 2021 16:50:48 -0500
+Received: from brutus (brutus.lan [IPv6:2001:985:d55d::438])
+        by agnus.defensec.nl (Postfix) with ESMTPSA id DFFF02A06F9;
+        Fri, 12 Feb 2021 22:50:02 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 agnus.defensec.nl DFFF02A06F9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=defensec.nl;
+        s=default; t=1613166603;
+        bh=hARjeb8JDXy+YfONjIenUs5ce7KkalGEySkP8OINL1M=;
+        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+        b=aaFndU8Jq9Qq/UMexrHlg61sZ5sjSBic6qHOKwuSzudSAPa60YhxmuiyGwgtbf+l1
+         KPD4jR310+4HNQRCuMZ6mVfkNk5mBX7v1Sq0+z+O71cbmdbY8nH6fXXb72kRM9DILe
+         2QNBFuzNpOwwCbBBWxoFd8NZDgQmwYFfaaoClR9c=
+From:   Dominick Grift <dominick.grift@defensec.nl>
+To:     Peter Whittaker <peterwhittaker@sphyrnasecurity.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Subject: Re: Defining SELinux users, "Unable to get valid context...". Help!
+References: <CAGeouKF3jSsvDosCWDb3q4RSq8g1RiZma6V1N=1ZaSUtf2TadA@mail.gmail.com>
+        <ypjlblcppx6o.fsf@defensec.nl> <ypjl7dndpvoy.fsf@defensec.nl>
+        <CAGeouKEX-suBZgmCniX=FLUB4LxyfK67=NyDRdqoCfpHnzYk+g@mail.gmail.com>
+Date:   Fri, 12 Feb 2021 22:49:59 +0100
+In-Reply-To: <CAGeouKEX-suBZgmCniX=FLUB4LxyfK67=NyDRdqoCfpHnzYk+g@mail.gmail.com>
+        (Peter Whittaker's message of "Fri, 12 Feb 2021 16:16:02 -0500")
+Message-ID: <ypjl35y1ot14.fsf@defensec.nl>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: Olga Kornievskaia <kolga@netapp.com>
+Peter Whittaker <peterwhittaker@sphyrnasecurity.com> writes:
 
-Keep track of whether or not there was an selinux context mount
-options during the mount. While deciding if the superblock can be
-shared for the new mount, check for if we had selinux context on
-the existing mount and call into selinux to tell if new passed
-in selinux context is compatible with the existing mount's options.
+> On Fri, Feb 12, 2021 at 2:58 AM Dominick Grift
+> <dominick.grift@defensec.nl> wrote:
+>> Dominick Grift <dominick.grift@defensec.nl> writes:
+>> > Peter Whittaker <peterwhittaker@sphyrnasecurity.com> writes:
+>> >
+>> >>     BLUF: Logging in via SSH or directly at the console results
+>> >>     in "Unable to get valid context...". Help! Much info included.
+>
+> Thanks to Dominick, I have made at least some progress: I can get the
+> role to transition,
+> but not the user or the process type. Details below.
+>
+>> > A few things that I could find but that are needed for computing
+>> > contexts are:
+>> >
+>> > the login programs need to be allowed to manual transition to the user
+>> > type. So for example if you want to login with sshd_t:
+>> > allow sshd_t xferHigh2Local_t:process transition;
+>
+> That rule was already present (it is the only one I really need, these
+> users will be coming in via SSH only).
 
-Previously, NFS wasn't able to do the following 2mounts:
-mount -o vers=4.2,sec=sys,context=system_u:object_r:root_t:s0
-<serverip>:/ /mnt
-mount -o vers=4.2,sec=sys,context=system_u:object_r:swapfile_t:s0
-<serverip>:/scratch /scratch
+Okay I dont think you mentioned that before
 
-2nd mount would fail with "mount.nfs: an incorrect mount option was
-specified" and var log messages would have:
-"SElinux: mount invalid. Same superblock, different security
-settings for.."
+>
+>> In relation to the above, ensure that the xferHigh2Local_t type is
+>> associated with the process_user_target typeattribute:
+>> typeattribute xferHigh2Local_t process_user_target;
+>
+> I added process_user_target to the type definition, no effect:
+>
+>     type xferHigh2Local_t, CDTml_types, userdomain, process_user_target;
 
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
----
- fs/nfs/fs_context.c       | 3 +++
- fs/nfs/internal.h         | 1 +
- fs/nfs/super.c            | 4 ++++
- include/linux/nfs_fs_sb.h | 1 +
- 4 files changed, 9 insertions(+)
+I dont think you mentioned this before and I think you also didnt
+mention that you had userdomain associates with it.
 
-diff --git a/fs/nfs/fs_context.c b/fs/nfs/fs_context.c
-index 06894bcdea2d..8067f055d842 100644
---- a/fs/nfs/fs_context.c
-+++ b/fs/nfs/fs_context.c
-@@ -448,6 +448,9 @@ static int nfs_fs_context_parse_param(struct fs_context *fc,
- 	if (opt < 0)
- 		return ctx->sloppy ? 1 : opt;
- 
-+	if (fc->security)
-+		ctx->has_sec_mnt_opts = 1;
-+
- 	switch (opt) {
- 	case Opt_source:
- 		if (fc->source)
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 62d3189745cd..08f4f34e8cf5 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -96,6 +96,7 @@ struct nfs_fs_context {
- 	char			*fscache_uniq;
- 	unsigned short		protofamily;
- 	unsigned short		mountfamily;
-+	bool			has_sec_mnt_opts;
- 
- 	struct {
- 		union {
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 4034102010f0..ea4e5252a1f0 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1058,6 +1058,7 @@ static void nfs_fill_super(struct super_block *sb, struct nfs_fs_context *ctx)
- 						 &sb->s_blocksize_bits);
- 
- 	nfs_super_set_maxbytes(sb, server->maxfilesize);
-+	server->has_sec_mnt_opts = ctx->has_sec_mnt_opts;
- }
- 
- static int nfs_compare_mount_options(const struct super_block *s, const struct nfs_server *b,
-@@ -1174,6 +1175,9 @@ static int nfs_compare_super(struct super_block *sb, struct fs_context *fc)
- 		return 0;
- 	if (!nfs_compare_userns(old, server))
- 		return 0;
-+	if ((old->has_sec_mnt_opts || fc->security) &&
-+			!security_sb_do_mnt_opts_match(sb, fc->security))
-+		return 0;
- 	return nfs_compare_mount_options(sb, server, fc);
- }
- 
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index 38e60ec742df..3f0acada5794 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -254,6 +254,7 @@ struct nfs_server {
- 
- 	/* User namespace info */
- 	const struct cred	*cred;
-+	bool			has_sec_mnt_opts;
- };
- 
- /* Server capabilities */
+>
+>> > The user type needs to be a bin and shell entry type:
+>> > allow xferHigh2Local_t { bin_t shell_exec_t }:file entrypoint;
+>
+> Also added that, after testing process_user_target, no effect. (So I
+> had all three suggestions active.)
+>
+> I then added
+>
+>     role_transition system_r sshd_exec_t CDTml_high2local_r;
+
+That is wrong
+
+>
+> and this got me my first real progress - 'id -Z' now shows:
+>
+>     system_u:CDTml_high2local_r:unconfined_t:s0
+
+Yes but that is wrong
+
+>
+>> > There is probably more that i am overlooking but these, i think, are
+>> > important part for computation of contexts
+>
+> Any other suggestions would be most welcome! I am at a loss,
+> especially since the
+> *_u "types" are not part of the policy but are defined via semanage,
+> and I already have
+> rules for the _t types, via an existing rules:
+>
+>     allow { sshd_t unconfined_t } xferHigh2Local_t:process transition;
+>
+> What surprises me most is that originally nothing showed up in ausearch.
+> I suppose this is because either PAM or SSHD is doing the computation
+> and not logging it in audit.log, but that is just a guess, likely misguided.
+
+Yes the computation does not cause any logging
+
+>
+> However! After that last allow, above, I finally have errors in ausearch,
+> many repeats of:
+>
+>     libsepol.context_from_record: invalid security context:
+> "system_u:CDTml_high2local_r:sshd_t:s0"
+>     libsepol.context_from_record: could not create context structure
+>     libsepol.context_from_string: could not create context structure
+>     libsepol.sepol_context_to_sid: could not convert
+> system_u:CDTml_high2local_r:sshd_t:s0 to sid
+>     libsepol.context_from_record: invalid security context:
+> "system_u:CDTml_high2local_r:unconfined_t:s0"
+>     libsepol.context_from_record: could not create context structure
+>     libsepol.context_from_string: could not create context structure
+>     libsepol.sepol_context_to_sid: could not convert
+> system_u:CDTml_high2local_r:unconfined_t:s0 to sid
+>
+> I then expanded the basic allow rule for the CDTml_high2local_r role:
+>
+>    role CDTml_high2local_r types {
+>        sshd_t
+>        unconfined_t
+>        xferHigh2Local_t
+>        xferHigh2Local_exec_t
+>    };
+
+Yes but the above is not right, and so those errors are expected.
+
+>
+> This didn't get me any farther, though.
+>
+> Do I need to widen the roles associated with CDTml_high2local_u at login?
+
+It helps if you post your full policy related to this and also the output
+of the following:
+
+seinfo -xuCDTml_high2local_u
+seinfo -xrCDTml_high2local_r
+seinfo -xtxferHigh2Local_t
+
+>
+> I really am trying to keep them as tight as possible. (Which,
+> incidentally, is one
+> of the reasons I am using "old school" rules and not CIL: the M4 macros may
+> do more than I need them to....)
+
+That shouldnt matter, but it helps if you post the full policy rather
+than snippets.
+
+also there are some tools that you can use to verify if a specified
+context can be reached.
+
+getconlist:
+https://github.com/SELinuxProject/selinux/blob/master/libselinux/utils/getconlist.c
+getdefaultcon:
+https://github.com/SELinuxProject/selinux/blob/master/libselinux/utils/getdefaultcon.c
+
+There is also a boolean that might affect things (but speculation
+without a closer look at your policy):
+
+ssh_sysadm_login
+
+see if setting that to on helps
+
+>
+> Thanks,
+>
+> P
+>
+> PS apologies to all for the double send of the original, user error (PEBCAD).
+>
+> Peter Whittaker
+> Director, Business Development
+> www.SphyrnaSecurity.com
+> +1 613 864 5337
+
 -- 
-2.27.0
-
+gpg --locate-keys dominick.grift@defensec.nl
+Key fingerprint = FCD2 3660 5D6B 9D27 7FC6  E0FF DA7E 521F 10F6 4098
+https://sks-keyservers.net/pks/lookup?op=get&search=0xDA7E521F10F64098
+Dominick Grift

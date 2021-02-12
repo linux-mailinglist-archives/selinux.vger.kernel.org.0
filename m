@@ -2,191 +2,150 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4927831A4F4
-	for <lists+selinux@lfdr.de>; Fri, 12 Feb 2021 20:06:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 514E231A6D6
+	for <lists+selinux@lfdr.de>; Fri, 12 Feb 2021 22:26:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231751AbhBLTFj (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 12 Feb 2021 14:05:39 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:51530 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229980AbhBLTFf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 12 Feb 2021 14:05:35 -0500
-Received: from sequoia (162-237-133-238.lightspeed.rcsntx.sbcglobal.net [162.237.133.238])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 608BF20B6C40;
-        Fri, 12 Feb 2021 11:04:52 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 608BF20B6C40
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1613156693;
-        bh=6YnCV6liH82sConSeIcoMvSWdbV+LrQaalBNmKqtnLk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GITEbyMOWmtO06swLLyzbqAndCL6qYoJwEmT2XhJyRqxT/lw3xpO8LZVsa6FeEhyy
-         Zla+9UCM9aT2VCn9g+XvrcPOq6hrKkSXzExsDCw+BNm3xfc6aB/ucA30hTk8Gslh4D
-         mf9uScKCuHbQdzAFC0IQnNVnowxrfhjH6wwp5mJA=
-Date:   Fri, 12 Feb 2021 13:04:50 -0600
-From:   Tyler Hicks <tyhicks@linux.microsoft.com>
-To:     Mark Salyzyn <salyzyn@android.com>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Cc:     linux-kernel@vger.kernel.org,
-        kernel-team <kernel-team@android.com>,
-        linux-fsdevel@vger.kernel.org,
-        overlayfs <linux-unionfs@vger.kernel.org>,
-        Stephen Smalley <sds@tycho.nsa.gov>,
-        LSM <linux-security-module@vger.kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Amir Goldstein <amir73il@gmail.com>, linux-doc@vger.kernel.org,
-        SElinux list <selinux@vger.kernel.org>,
-        James Morris <jmorris@namei.org>
-Subject: Re: [RESEND PATCH v18 2/4] overlayfs: handle XATTR_NOSECURITY flag
- for get xattr method
-Message-ID: <20210212190450.GB56839@sequoia>
-References: <20201021151903.652827-1-salyzyn@android.com>
- <20201021151903.652827-3-salyzyn@android.com>
- <CAJfpegtMoD85j5namV592sJD23QeUMD=+tq4SvFDqjVxsAszYQ@mail.gmail.com>
- <2fd64e4f-c573-c841-abb6-ec0908f78cdd@android.com>
- <20210205180131.GA648953@sequoia>
+        id S231583AbhBLVZy (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 12 Feb 2021 16:25:54 -0500
+Received: from p3plsmtpa11-07.prod.phx3.secureserver.net ([68.178.252.108]:35080
+        "EHLO p3plsmtpa11-07.prod.phx3.secureserver.net" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231720AbhBLVZv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 12 Feb 2021 16:25:51 -0500
+X-Greylist: delayed 520 seconds by postgrey-1.27 at vger.kernel.org; Fri, 12 Feb 2021 16:25:51 EST
+Received: from mail-wr1-f43.google.com ([209.85.221.43])
+        by :SMTPAUTH: with ESMTPA
+        id Afnglcw7am2QCAfnilmBKX; Fri, 12 Feb 2021 14:16:31 -0700
+X-CMAE-Analysis: v=2.4 cv=YvnK+6UX c=1 sm=1 tr=0 ts=6026f02f
+ a=dFnnagVfVWeg+/bq/M6kfQ==:117 a=IkcTkHD0fZMA:10 a=qa6Q16uM49sA:10
+ a=QsYl2dacAAAA:8 a=oSqZqoiyAAAA:8 a=6uehwDVwuo6R3l91z2EA:9 a=QEXdDO2ut3YA:10
+ a=DRj6J5qQIhcA:10 a=jVVJWZ3hHjYA:10 a=jGkiYVYK7qwcb4-OGRgL:22
+ a=fw9lIXHl4l3rR_lUHM3T:22
+X-SECURESERVER-ACCT: peterwhittaker@sphyrnasecurity.com
+Received: by mail-wr1-f43.google.com with SMTP id n6so847272wrv.8
+        for <selinux@vger.kernel.org>; Fri, 12 Feb 2021 13:16:30 -0800 (PST)
+X-Gm-Message-State: AOAM530k+0RYqaXCkc4v/C0DkLi4GwjI7Wfrz4/nN9Zc3FLSbDvd4zJN
+        bxkXdH2F5U3ntk5hd98BlkkQZ24H3tmlI6onEHOfhA==
+X-Google-Smtp-Source: ABdhPJwQuSGK7kPco2jvof3h3GIJGC6UGhNXNxJweVdnW3Qpdi8JWpF8oR3WS5pcUIUe6KUGfoUxk8oC3YUvVXa+u7I=
+X-Received: by 2002:adf:9f54:: with SMTP id f20mr5567489wrg.362.1613164588232;
+ Fri, 12 Feb 2021 13:16:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210205180131.GA648953@sequoia>
+References: <CAGeouKF3jSsvDosCWDb3q4RSq8g1RiZma6V1N=1ZaSUtf2TadA@mail.gmail.com>
+ <ypjlblcppx6o.fsf@defensec.nl> <ypjl7dndpvoy.fsf@defensec.nl>
+In-Reply-To: <ypjl7dndpvoy.fsf@defensec.nl>
+From:   Peter Whittaker <peterwhittaker@sphyrnasecurity.com>
+Date:   Fri, 12 Feb 2021 16:16:02 -0500
+X-Gmail-Original-Message-ID: <CAGeouKEX-suBZgmCniX=FLUB4LxyfK67=NyDRdqoCfpHnzYk+g@mail.gmail.com>
+Message-ID: <CAGeouKEX-suBZgmCniX=FLUB4LxyfK67=NyDRdqoCfpHnzYk+g@mail.gmail.com>
+Subject: Re: Defining SELinux users, "Unable to get valid context...". Help!
+To:     Dominick Grift <dominick.grift@defensec.nl>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-CMAE-Envelope: MS4xfJXyXR/jafjUJ+btoN8yZEP7RRt+fcj2gr5JzaH9oc37dwXCq2jPusQHN7PWdYwawE4VyaR57gibiXMxQMQJXXdxWVotbiQz9VAk/jfhR6N1J53EkJSz
+ KYG8i+o64K1WTk0ohPlKboV+nX9WgH/pWaoJaYwo+DaqK33j5QchiutP++Y0qQWwNlvaqD9pP2ZOPN61TxyRy0p1ewKgskl+WJzWHBsEiQ7vJu7R0ZsOBVW0
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2021-02-05 12:01:55, Tyler Hicks wrote:
-> On 2020-10-30 09:00:35, Mark Salyzyn wrote:
-> > On 10/30/20 8:07 AM, Miklos Szeredi wrote:
-> > > On Wed, Oct 21, 2020 at 5:19 PM Mark Salyzyn <salyzyn@android.com> wrote:
-> > > > Because of the overlayfs getxattr recursion, the incoming inode fails
-> > > > to update the selinux sid resulting in avc denials being reported
-> > > > against a target context of u:object_r:unlabeled:s0.
-> > > > 
-> > > > Solution is to respond to the XATTR_NOSECURITY flag in get xattr
-> > > > method that calls the __vfs_getxattr handler instead so that the
-> > > > context can be read in, rather than being denied with an -EACCES
-> > > > when vfs_getxattr handler is called.
-> > > > 
-> > > > For the use case where access is to be blocked by the security layer.
-> > > > 
-> > > > The path then would be security(dentry) ->
-> > > > __vfs_getxattr({dentry...XATTR_NOSECURITY}) ->
-> > > > handler->get({dentry...XATTR_NOSECURITY}) ->
-> > > > __vfs_getxattr({realdentry...XATTR_NOSECURITY}) ->
-> > > > lower_handler->get({realdentry...XATTR_NOSECURITY}) which
-> > > > would report back through the chain data and success as expected,
-> > > > the logging security layer at the top would have the data to
-> > > > determine the access permissions and report back to the logs and
-> > > > the caller that the target context was blocked.
-> > > > 
-> > > > For selinux this would solve the cosmetic issue of the selinux log
-> > > > and allow audit2allow to correctly report the rule needed to address
-> > > > the access problem.
-> > > > 
-> > > > Check impure, opaque, origin & meta xattr with no sepolicy audit
-> > > > (using __vfs_getxattr) since these operations are internal to
-> > > > overlayfs operations and do not disclose any data.  This became
-> > > > an issue for credential override off since sys_admin would have
-> > > > been required by the caller; whereas would have been inherently
-> > > > present for the creator since it performed the mount.
-> > > > 
-> > > > This is a change in operations since we do not check in the new
-> > > > ovl_do_getxattr function if the credential override is off or not.
-> > > > Reasoning is that the sepolicy check is unnecessary overhead,
-> > > > especially since the check can be expensive.
-> > > > 
-> > > > Because for override credentials off, this affects _everyone_ that
-> > > > underneath performs private xattr calls without the appropriate
-> > > > sepolicy permissions and sys_admin capability.  Providing blanket
-> > > > support for sys_admin would be bad for all possible callers.
-> > > > 
-> > > > For the override credentials on, this will affect only the mounter,
-> > > > should it lack sepolicy permissions. Not considered a security
-> > > > problem since mounting by definition has sys_admin capabilities,
-> > > > but sepolicy contexts would still need to be crafted.
-> > > This would be a problem when unprivileged mounting of overlay is
-> > > introduced.  I'd really like to avoid weakening the current security
-> > > model.
-> > 
-> > The current security model does not deal with non-overlapping security
-> > contexts between init (which on android has MAC permissions only when
-> > necessary, only enough permissions to perform the mount and other mundane
-> > operations, missing exec and read permissions in key spots) and user calls.
-> > 
-> > We are only weakening (that is actually an incorrect statement, security is
-> > there, just not double security of both mounter and caller) the security
-> > around calls that retrieve the xattr for administrative and internal
-> > purposes. No data is exposed to the caller that it would not otherwise have
-> > permissions for.
-> 
-> We've ran into the same issues that Mark is trying to solve with this
-> series. I came across Mark's series while searching around before I
-> wrote up a similar patch to Mark's patch #3.
-> 
-> We have a confined process that sets up Overlayfs mounts, then that process
-> starts a service confined by another security context, then that service
-> may execute binaries that run under a third security context. In this
-> case, I'm talking about SELinux security contexts but it could be
-> AppArmor or anything else that you use to separate out
-> privileges/permissions at fine-grained detail.
-> 
-> We don't want to grant all the privileges/permissions required by the
-> service (and its helper utilities) to the process that sets up the
-> Overlayfs mounts because we've been very careful in separating them
-> apart with security policy. However, we want to make use of Overlayfs
-> and adding a mount option to bypass the check on the mounter's cred
-> seems like a safe way of using Overlayfs without violating our principle
-> of least privilege.
+On Fri, Feb 12, 2021 at 2:58 AM Dominick Grift
+<dominick.grift@defensec.nl> wrote:
+> Dominick Grift <dominick.grift@defensec.nl> writes:
+> > Peter Whittaker <peterwhittaker@sphyrnasecurity.com> writes:
+> >
+> >>     BLUF: Logging in via SSH or directly at the console results
+> >>     in "Unable to get valid context...". Help! Much info included.
 
-I just realized that I missed one noteworthy aspect of our use case. We
-would be alright if this functionality to bypass the mounter's cred
-checks (conditional, based on a mount option) was only allowed for
-read-only overlays[1].
+Thanks to Dominick, I have made at least some progress: I can get the
+role to transition,
+but not the user or the process type. Details below.
 
-I'm not sure if that would meet the needs of Android. Can you comment on
-that, Mark?
+> > A few things that I could find but that are needed for computing
+> > contexts are:
+> >
+> > the login programs need to be allowed to manual transition to the user
+> > type. So for example if you want to login with sshd_t:
+> > allow sshd_t xferHigh2Local_t:process transition;
 
-Miklos, would that restriction make this series any more acceptable to
-you?
+That rule was already present (it is the only one I really need, these
+users will be coming in via SSH only).
 
-Thanks!
+> In relation to the above, ensure that the xferHigh2Local_t type is
+> associated with the process_user_target typeattribute:
+> typeattribute xferHigh2Local_t process_user_target;
 
-Tyler
+I added process_user_target to the type definition, no effect:
 
-[1] https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html#multiple-lower-layers
+    type xferHigh2Local_t, CDTml_types, userdomain, process_user_target;
 
-> 
-> Tyler
-> 
-> > 
-> > This patch becomes necessary when matched with the PATCH v18 3/4 of the
-> > series which fixes the user space break introduced in ~4.6 that formerly
-> > used the callers credentials for all accesses in all places. Security is
-> > weakened already as-is in overlayfs with all the overriding of the
-> > credentials for internal accesses to overlayfs mechanics based on the
-> > mounter credentials. Using the mounter credentials as a wider security hole
-> > is the problem, at least with PATCH v18 3/4 of the series we go back
-> > optionally to only using the caller's credentials to perform the operations.
-> > Admittedly some of the internal operations like mknod are privileged, but at
-> > least in Android's use case we are not using them with callers without the
-> > necessary credentials.
-> > 
-> > Android does not give the mounter more credentials than the callers, there
-> > is very little overlap in the MAC security.
-> > 
-> > > The big API churn in the 1/4 patch also seems excessive considering
-> > > that this seems to be mostly a cosmetic issue for android.  Am I
-> > > missing something?
-> > 
-> > Breaks sepolicy, it no longer has access to the context data at the
-> > overlayfs security boundary.
-> > 
-> > unknown is a symptom of being denied based on the denial to xattr data from
-> > the underlying filesystem layer. Being denied the security context of the
-> > target is not a good thing within the sepolicy security layer.
-> > 
-> > > 
-> > > Thanks,
-> > > Miklos
-> > 
-> > 
+> > The user type needs to be a bin and shell entry type:
+> > allow xferHigh2Local_t { bin_t shell_exec_t }:file entrypoint;
+
+Also added that, after testing process_user_target, no effect. (So I
+had all three suggestions active.)
+
+I then added
+
+    role_transition system_r sshd_exec_t CDTml_high2local_r;
+
+and this got me my first real progress - 'id -Z' now shows:
+
+    system_u:CDTml_high2local_r:unconfined_t:s0
+
+> > There is probably more that i am overlooking but these, i think, are
+> > important part for computation of contexts
+
+Any other suggestions would be most welcome! I am at a loss,
+especially since the
+*_u "types" are not part of the policy but are defined via semanage,
+and I already have
+rules for the _t types, via an existing rules:
+
+    allow { sshd_t unconfined_t } xferHigh2Local_t:process transition;
+
+What surprises me most is that originally nothing showed up in ausearch.
+I suppose this is because either PAM or SSHD is doing the computation
+and not logging it in audit.log, but that is just a guess, likely misguided.
+
+However! After that last allow, above, I finally have errors in ausearch,
+many repeats of:
+
+    libsepol.context_from_record: invalid security context:
+"system_u:CDTml_high2local_r:sshd_t:s0"
+    libsepol.context_from_record: could not create context structure
+    libsepol.context_from_string: could not create context structure
+    libsepol.sepol_context_to_sid: could not convert
+system_u:CDTml_high2local_r:sshd_t:s0 to sid
+    libsepol.context_from_record: invalid security context:
+"system_u:CDTml_high2local_r:unconfined_t:s0"
+    libsepol.context_from_record: could not create context structure
+    libsepol.context_from_string: could not create context structure
+    libsepol.sepol_context_to_sid: could not convert
+system_u:CDTml_high2local_r:unconfined_t:s0 to sid
+
+I then expanded the basic allow rule for the CDTml_high2local_r role:
+
+   role CDTml_high2local_r types {
+       sshd_t
+       unconfined_t
+       xferHigh2Local_t
+       xferHigh2Local_exec_t
+   };
+
+This didn't get me any farther, though.
+
+Do I need to widen the roles associated with CDTml_high2local_u at login?
+
+I really am trying to keep them as tight as possible. (Which,
+incidentally, is one
+of the reasons I am using "old school" rules and not CIL: the M4 macros may
+do more than I need them to....)
+
+Thanks,
+
+P
+
+PS apologies to all for the double send of the original, user error (PEBCAD).
+
+Peter Whittaker
+Director, Business Development
+www.SphyrnaSecurity.com
++1 613 864 5337

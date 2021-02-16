@@ -2,194 +2,110 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6686331C8B8
-	for <lists+selinux@lfdr.de>; Tue, 16 Feb 2021 11:26:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B904931CBA3
+	for <lists+selinux@lfdr.de>; Tue, 16 Feb 2021 15:16:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229717AbhBPKZm (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 16 Feb 2021 05:25:42 -0500
-Received: from z11.mailgun.us ([104.130.96.11]:24822 "EHLO z11.mailgun.us"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229864AbhBPKZj (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Tue, 16 Feb 2021 05:25:39 -0500
-X-Greylist: delayed 347 seconds by postgrey-1.27 at vger.kernel.org; Tue, 16 Feb 2021 05:25:39 EST
-DKIM-Signature: a=rsa-sha256; v=1; c=relaxed/relaxed; d=mg.codeaurora.org; q=dns/txt;
- s=smtp; t=1613471115; h=Message-Id: Date: Subject: Cc: To: From:
- Sender; bh=EtaXSbm5asCMvhst8Y9o7sTMibimpMRZTlvRciR2ohk=; b=t4ng0cElFKny5QAtJjsTSV7rwZlbGbTaHU4nkU7xXwNEP52Q33sTvJSdw1eeqdozUgVnXI0y
- RAKOdJN5AhYa9g7GqXXnJltuKxjUKKzQyCkLa4lG71EVA/hahQV6h0d0oMmk/ykd0MORoqAE
- gH+OFJuli0Ng3FxIMcdmpaROQlc=
-X-Mailgun-Sending-Ip: 104.130.96.11
-X-Mailgun-Sid: WyIxZmM3MiIsICJzZWxpbnV4QHZnZXIua2VybmVsLm9yZyIsICJiZTllNGEiXQ==
-Received: from smtp.codeaurora.org
- (ec2-35-166-182-171.us-west-2.compute.amazonaws.com [35.166.182.171]) by
- smtp-out-n02.prod.us-west-2.postgun.com with SMTP id
- 602b9c0e8e43a988b7c128d5 (version=TLS1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256); Tue, 16 Feb 2021 10:18:54
- GMT
-Sender: pnagar=codeaurora.org@mg.codeaurora.org
-Received: by smtp.codeaurora.org (Postfix, from userid 1001)
-        id BA2E7C43469; Tue, 16 Feb 2021 10:18:54 +0000 (UTC)
-X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
-        aws-us-west-2-caf-mail-1.web.codeaurora.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.9 required=2.0 tests=ALL_TRUSTED,BAYES_00,SPF_FAIL,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.0
-Received: from pnagar-linux.qualcomm.com (unknown [202.46.22.19])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
+        id S229923AbhBPOQZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 16 Feb 2021 09:16:25 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([63.128.21.124]:49113 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229894AbhBPOQY (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 16 Feb 2021 09:16:24 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1613484898;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=QVVQpS1h77s1HChoxuZWVqN+q395+dpiUimupvpLqSQ=;
+        b=XZUGvF+HxGWgnalQKnIWvXTHdzbZKsfkWWwuqvP7QXpsg7r1eSFvXyikss8KYyZSoW3uBt
+        /PvppRZiZM4/ntdUQU0d7desDFFpWxpJu9RYcE/fGDEWDCtss3er2eWk+AF+KbUdelRKrn
+        qblZPufDV/2NkG/CLCr5tgWdT/lbt/w=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-356-2fYGkjdyOAOiBA5zxrMfGA-1; Tue, 16 Feb 2021 09:14:55 -0500
+X-MC-Unique: 2fYGkjdyOAOiBA5zxrMfGA-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        (Authenticated sender: pnagar)
-        by smtp.codeaurora.org (Postfix) with ESMTPSA id D33A2C433C6;
-        Tue, 16 Feb 2021 10:18:46 +0000 (UTC)
-DMARC-Filter: OpenDMARC Filter v1.3.2 smtp.codeaurora.org D33A2C433C6
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; dmarc=none (p=none dis=none) header.from=codeaurora.org
-Authentication-Results: aws-us-west-2-caf-mail-1.web.codeaurora.org; spf=fail smtp.mailfrom=pnagar@codeaurora.org
-From:   Preeti Nagar <pnagar@codeaurora.org>
-To:     arnd@arndb.de, jmorris@namei.org, serge@hallyn.com,
-        paul@paul-moore.com, stephen.smalley.work@gmail.com,
-        eparis@parisplace.org, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org, linux-arch@vger.kernel.org
-Cc:     casey@schaufler-ca.com, ndesaulniers@google.com,
-        dhowells@redhat.com, ojeda@kernel.org, psodagud@codeaurora.org,
-        nmardana@codeaurora.org, rkavati@codeaurora.org,
-        vsekhar@codeaurora.org, mreichar@codeaurora.org, johan@kernel.org,
-        joe@perches.com, jeyu@kernel.org, pnagar@codeaurora.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] RTIC: selinux: ARM64: Move selinux_state to a separate page
-Date:   Tue, 16 Feb 2021 15:47:52 +0530
-Message-Id: <1613470672-3069-1-git-send-email-pnagar@codeaurora.org>
-X-Mailer: git-send-email 2.7.4
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 37CD6804023
+        for <selinux@vger.kernel.org>; Tue, 16 Feb 2021 14:14:53 +0000 (UTC)
+Received: from localhost.localdomain.com (unknown [10.40.192.169])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 0903D60C62;
+        Tue, 16 Feb 2021 14:14:51 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     selinux@vger.kernel.org
+Cc:     Petr Lautrbach <plautrba@redhat.com>
+Subject: [PATCH 1/2] libselinux: fix segfault in add_xattr_entry()
+Date:   Tue, 16 Feb 2021 15:14:45 +0100
+Message-Id: <20210216141446.171306-1-plautrba@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The changes introduce a new security feature, RunTime Integrity Check
-(RTIC), designed to protect Linux Kernel at runtime. The motivation
-behind these changes is:
-1. The system protection offered by Security Enhancements(SE) for
-Android relies on the assumption of kernel integrity. If the kernel
-itself is compromised (by a perhaps as yet unknown future vulnerability),
-SE for Android security mechanisms could potentially be disabled and
-rendered ineffective.
-2. Qualcomm Snapdragon devices use Secure Boot, which adds cryptographic
-checks to each stage of the boot-up process, to assert the authenticity
-of all secure software images that the device executes.  However, due to
-various vulnerabilities in SW modules, the integrity of the system can be
-compromised at any time after device boot-up, leading to un-authorized
-SW executing.
+When selabel_get_digests_all_partial_matches(), resp
+get_digests_all_partial_matches() doesn't find a match,
+calculated_digest is not initialized and followup memcmp() could
+segfault. Given that calculated_digest and xattr_digest are already
+compared in get_digests_all_partial_matches() and the function returns
+true or false based on this comparison, it's not neccessary to compare
+these values again.
 
-The feature's idea is to move some sensitive kernel structures to a
-separate page and monitor further any unauthorized changes to these,
-from higher Exception Levels using stage 2 MMU. Moving these to a
-different page will help avoid getting page faults from un-related data.
-The mechanism we have been working on removes the write permissions for
-HLOS in the stage 2 page tables for the regions to be monitored, such
-that any modification attempts to these will lead to faults being
-generated and handled by handlers. If the protected assets are moved to
-a separate page, faults will be generated corresponding to change attempts
-to these assets only. If not moved to a separate page, write attempts to
-un-related data present on the monitored pages will also be generated.
+Fixes:
+    # restorecon_xattr -d -v tmp
+    specfiles SHA1 digest: afc752f47d489f3e82ac1da8fd247a2e1a6af5f8
+    calculated using the following specfile(s):
+    /etc/selinux/targeted/contexts/files/file_contexts.subs_dist
+    /etc/selinux/targeted/contexts/files/file_contexts.subs
+    /etc/selinux/targeted/contexts/files/file_contexts.bin
+    /etc/selinux/targeted/contexts/files/file_contexts.homedirs.bin
+    /etc/selinux/targeted/contexts/files/file_contexts.local.bin
 
-Using this feature, some sensitive variables of the kernel which are
-initialized after init or are updated rarely can also be protected from
-simple overwrites and attacks trying to modify these.
+    Segmentation fault (core dumped)
 
-Currently, the change moves selinux_state structure to a separate page.
-The page is 2MB aligned not 4K to avoid TLB related performance impact as,
-for some CPU core designs, the TLB does not cache 4K stage 2 (IPA to PA)
-mappings if the IPA comes from a stage 1 mapping. In future, we plan to
-move more security-related kernel assets to this page to enhance
-protection.
-
-Signed-off-by: Preeti Nagar <pnagar@codeaurora.org>
+Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
 ---
-The RFC patch reviewed available at:
-https://lore.kernel.org/linux-security-module/1610099389-28329-1-git-send-email-pnagar@codeaurora.org/
----
- include/asm-generic/vmlinux.lds.h | 10 ++++++++++
- include/linux/init.h              |  6 ++++++
- security/Kconfig                  | 11 +++++++++++
- security/selinux/hooks.c          |  2 +-
- 4 files changed, 28 insertions(+), 1 deletion(-)
+ libselinux/src/selinux_restorecon.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index b97c628..d1a5434 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -770,6 +770,15 @@
- 		*(.scommon)						\
+diff --git a/libselinux/src/selinux_restorecon.c b/libselinux/src/selinux_restorecon.c
+index 6993be6fda17..4bca29b9de78 100644
+--- a/libselinux/src/selinux_restorecon.c
++++ b/libselinux/src/selinux_restorecon.c
+@@ -297,6 +297,7 @@ static int add_xattr_entry(const char *directory, bool delete_nonmatch,
+ 	char *sha1_buf = NULL;
+ 	size_t i, digest_len = 0;
+ 	int rc, digest_result;
++	bool match;
+ 	struct dir_xattr *new_entry;
+ 	uint8_t *xattr_digest = NULL;
+ 	uint8_t *calculated_digest = NULL;
+@@ -306,7 +307,7 @@ static int add_xattr_entry(const char *directory, bool delete_nonmatch,
+ 		return -1;
  	}
  
-+#ifdef CONFIG_SECURITY_RTIC
-+#define RTIC_BSS							\
-+	. = ALIGN(SZ_2M);						\
-+	KEEP(*(.bss.rtic))						\
-+	. = ALIGN(SZ_2M);
-+#else
-+#define RTIC_BSS
-+#endif
-+
- /*
-  * Allow archectures to redefine BSS_FIRST_SECTIONS to add extra
-  * sections to the front of bss.
-@@ -782,6 +791,7 @@
- 	. = ALIGN(bss_align);						\
- 	.bss : AT(ADDR(.bss) - LOAD_OFFSET) {				\
- 		BSS_FIRST_SECTIONS					\
-+		RTIC_BSS						\
- 		. = ALIGN(PAGE_SIZE);					\
- 		*(.bss..page_aligned)					\
- 		. = ALIGN(PAGE_SIZE);					\
-diff --git a/include/linux/init.h b/include/linux/init.h
-index e668832..e6d452a 100644
---- a/include/linux/init.h
-+++ b/include/linux/init.h
-@@ -300,6 +300,12 @@ void __init parse_early_options(char *cmdline);
- /* Data marked not to be saved by software suspend */
- #define __nosavedata __section(".data..nosave")
+-	selabel_get_digests_all_partial_matches(fc_sehandle, directory,
++	match = selabel_get_digests_all_partial_matches(fc_sehandle, directory,
+ 						&calculated_digest,
+ 						&xattr_digest, &digest_len);
  
-+#ifdef CONFIG_SECURITY_RTIC
-+#define __rticdata  __section(".bss.rtic")
-+#else
-+#define __rticdata
-+#endif
-+
- #ifdef MODULE
- #define __exit_p(x) x
- #else
-diff --git a/security/Kconfig b/security/Kconfig
-index 7561f6f..1af913a 100644
---- a/security/Kconfig
-+++ b/security/Kconfig
-@@ -291,5 +291,16 @@ config LSM
+@@ -326,11 +327,10 @@ static int add_xattr_entry(const char *directory, bool delete_nonmatch,
+ 	for (i = 0; i < digest_len; i++)
+ 		sprintf((&sha1_buf[i * 2]), "%02x", xattr_digest[i]);
  
- source "security/Kconfig.hardening"
+-	rc = memcmp(calculated_digest, xattr_digest, digest_len);
+-	digest_result = rc ? NOMATCH : MATCH;
++	digest_result = match ? MATCH : NOMATCH;
  
-+config SECURITY_RTIC
-+	bool "RunTime Integrity Check feature"
-+	depends on ARM64
-+	help
-+	  RTIC(RunTime Integrity Check) feature is to protect Linux kernel
-+	  at runtime. This relocates some of the security sensitive kernel
-+	  structures to a separate RTIC specific page.
-+
-+	  This is to enable monitoring and protection of these kernel assets
-+	  from a higher exception level(EL) against any unauthorized changes.
-+
- endmenu
- 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 644b17e..59d7eee 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -104,7 +104,7 @@
- #include "audit.h"
- #include "avc_ss.h"
- 
--struct selinux_state selinux_state;
-+struct selinux_state selinux_state __rticdata;
- 
- /* SECMARK reference count */
- static atomic_t selinux_secmark_refcount = ATOMIC_INIT(0);
+-	if ((delete_nonmatch && rc != 0) || delete_all) {
+-		digest_result = rc ? DELETED_NOMATCH : DELETED_MATCH;
++	if ((delete_nonmatch && ! match) || delete_all) {
++		digest_result = match ? DELETED_MATCH : DELETED_NOMATCH;
+ 		rc = removexattr(directory, RESTORECON_PARTIAL_MATCH_DIGEST);
+ 		if (rc) {
+ 			selinux_log(SELINUX_ERROR,
 -- 
-QUALCOMM INDIA, on behalf of Qualcomm Innovation Center, Inc. is a member
-of Code Aurora Forum, hosted by The Linux Foundation
+2.30.1
 

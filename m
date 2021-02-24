@@ -2,124 +2,128 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CB01324149
-	for <lists+selinux@lfdr.de>; Wed, 24 Feb 2021 17:05:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C8C3241D5
+	for <lists+selinux@lfdr.de>; Wed, 24 Feb 2021 17:19:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231845AbhBXPpo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 24 Feb 2021 10:45:44 -0500
-Received: from linux.microsoft.com ([13.77.154.182]:41202 "EHLO
-        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235620AbhBXOhe (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 24 Feb 2021 09:37:34 -0500
-Received: from sequoia (162-237-133-238.lightspeed.rcsntx.sbcglobal.net [162.237.133.238])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 677E120B6C40;
-        Wed, 24 Feb 2021 06:36:53 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 677E120B6C40
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1614177413;
-        bh=f6M1L4+YPaEkOkpFKDkks9/iMdw0tuIyo+Sn3wOAtR8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BmU8bOFIMACplHx1Sof8884gvIG/jF1rGfoECbswTuvURtfb2RawJTiqn1QxuMlj6
-         f5MQRgD067UHcE6zA43V0yAh7UwxxeCq4HzGX5vs4icg2MVEBLBkDrMq+RCsWGsCDG
-         VKXl6wdehUPaXDMxrV/y4J8BKnc38KO0wHTfW7/k=
-Date:   Wed, 24 Feb 2021 08:36:51 -0600
-From:   Tyler Hicks <tyhicks@linux.microsoft.com>
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>
-Subject: Re: [BUG] Race between policy reload sidtab conversion and live
- conversion
-Message-ID: <20210224143651.GE6000@sequoia>
-References: <20210223214346.GB6000@sequoia>
- <20210223215054.GC6000@sequoia>
- <20210223223652.GD6000@sequoia>
- <CAFqZXNvfux46_f8gnvVvRYMKoes24nwm2n3sPbMjrB8vKTW00g@mail.gmail.com>
+        id S234810AbhBXQMP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 24 Feb 2021 11:12:15 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:24004 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235372AbhBXP4W (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 24 Feb 2021 10:56:22 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614182074;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=SxO3R0jKA/O+QBBZuSBx1pemK318klVrQyV7YEscO0E=;
+        b=TqYfYspYFx5DSgaUucm+jsgmTd3FIHBtwS2jAgpm2nO1KUKmig90RizA8GUEntwKjG9+Gy
+        6UxgfUnjjho9j77xL9m26e026v14rg1BPFycO6Bj7C9NdN4Fq3jNxcUVxuML+vt1g24WMf
+        Uw7AJUr6/Fu61Q/GR9IJciBX1XsPCNQ=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-115-d07GrSk1N1-ol1aNhJupoQ-1; Wed, 24 Feb 2021 10:54:28 -0500
+X-MC-Unique: d07GrSk1N1-ol1aNhJupoQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.phx2.redhat.com [10.5.11.12])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8AC9090CAE2
+        for <selinux@vger.kernel.org>; Wed, 24 Feb 2021 15:45:56 +0000 (UTC)
+Received: from localhost (unknown [10.40.193.133])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D7F9E60267
+        for <selinux@vger.kernel.org>; Wed, 24 Feb 2021 15:45:55 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: ANN: SELinux userspace 3.2-rc3 release candidate
+Date:   Wed, 24 Feb 2021 16:45:54 +0100
+Message-ID: <87v9ah1nbh.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFqZXNvfux46_f8gnvVvRYMKoes24nwm2n3sPbMjrB8vKTW00g@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.12
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2021-02-24 10:33:46, Ondrej Mosnacek wrote:
-> On Tue, Feb 23, 2021 at 11:37 PM Tyler Hicks
-> <tyhicks@linux.microsoft.com> wrote:
-> > On 2021-02-23 15:50:56, Tyler Hicks wrote:
-> > > On 2021-02-23 15:43:48, Tyler Hicks wrote:
-> > > > I'm seeing a race during policy load while the "regular" sidtab
-> > > > conversion is happening and a live conversion starts to take place in
-> > > > sidtab_context_to_sid().
-> > > >
-> > > > We have an initial policy that's loaded by systemd ~0.6s into boot and
-> > > > then another policy gets loaded ~2-3s into boot. That second policy load
-> > > > is what hits the race condition situation because the sidtab is only
-> > > > partially populated and there's a decent amount of filesystem operations
-> > > > happening, at the same time, which are triggering live conversions.
-> >
-> > Hmm, perhaps this is the same problem that's fixed by Ondrej's proposed
-> > change here:
-> >
-> >  https://lore.kernel.org/selinux/20210212185930.130477-3-omosnace@redhat.com/
-> >
-> > I'll put these changes through a validation run (the only place that I
-> > can seem to reproduce this crash) and see how it looks.
-> 
-> Hm... I think there is actually another race condition introduced by
-> the switch from rwlock to RCU [1]... Judging from the call trace you
-> may be hitting that.
+Hello,
 
-I believe your patches above fixed the race I was seeing. I was able to
-make it through a full validation run without any crashes. Without those
-patches applied, I would see several crashes resulting from this race
-over the course of a validation run.
+A 3.2-rc3 release candidate for the SELinux userspace is now=20
+available at:
 
-I'll continue to test with your changes and let you know if I end up
-running into the other race you spotted.
+https://github.com/SELinuxProject/selinux/wiki/Releases
 
-Tyler
+Please give it a test and let us know if there are any issues.
 
-> 
-> Basically, before the switch the sidtab swapover worked like this:
-> 1. Start live conversion of new entries.
-> 2. Convert existing entries.
-> [Still only the old sidtab is visible to readers here.]
-> 3. Swap sidtab under write lock.
-> 4. Now only the new sidtab is visible to readers, so the old one can
-> be destroyed.
-> 
-> After the switch to RCU, we now have:
-> 1. Start live conversion of new entries.
-> 2. Convert existing entries.
-> 3. RCU-assign the new policy pointer to selinux_state.
-> [!!! Now actually both old and new sidtab may be referenced by
-> readers, since there is no synchronization barrier previously provided
-> by the write lock.]
-> 4. Wait for synchronize_rcu() to return.
-> 5. Now only the new sidtab is visible to readers, so the old one can
-> be destroyed.
-> 
-> So the race can happen between 3. and 5., if one thread already sees
-> the new sidtab and adds a new entry there, and a second thread still
-> has the reference to the old sidtab and also tires to add a new entry;
-> live-converting to the new sidtab, which it doesn't expect to change
-> by itself. Unfortunately I failed to realize this when reviewing the
-> patch :/
-> 
-> I think the only two options to fix it are A) switching back to
-> read-write lock (the easy and safe way; undoing the performance
-> benefits of [1]), or B) implementing a safe two-way live conversion of
-> new sidtab entries, so that both tables are kept in sync while they
-> are both available (more complicated and with possible tricky
-> implications of different interpretations of contexts by the two
-> policies).
-> 
-> [1] 1b8b31a2e612 ("selinux: convert policy read-write lock to RCU")
-> 
-> --
-> Ondrej Mosnacek
-> Software Engineer, Linux Security - SELinux kernel
-> Red Hat, Inc.
-> 
+If there are specific changes that you think should be called out=20
+in release notes for packagers and users in the final release
+announcement, let us know.=20
+
+Thanks to all the contributors to this release candidate!
+
+User-visible changes since 3.2-rc2
+----------------------------------
+
+* Improved secilc documentation - fenced code blocks, syntax highlighting, =
+custom
+  color theme, ...
+
+* Better error reporting in getconlist
+
+* Improved selinux(8,5) and fixiles(8) man pages
+
+* Bug fixes
+
+Packaging-relevant changes since 3.2-rc2
+----------------------------------------
+
+* sestatus is installed as /usr/bin/sestatus by default. Original /usr/sbin=
+/sestatus is
+  a relative symlink to the /usr/bin/sestatus.
+
+
+Shortlog of changes since the 3.2-rc2 release
+-----------------------------------------------
+Christian G=C3=B6ttsche (3):
+      libselinux/getconlist: report failures
+      policycoreutils/fixfiles.8: add missing file systems and merge check =
+and verify
+      libsepol/cil: handle SID without assigned context when writing policy=
+.conf
+
+Dominick Grift (1):
+      secilc: fixes cil_role_statements.md example
+
+James Carter (4):
+      libsepol/cil: Fix integer overflow in the handling of hll line marks
+      libsepol/cil: Destroy disabled optional blocks after pass is complete
+      libsepol: Create function ebitmap_highest_set_bit()
+      libsepol: Validate policydb values when reading binary policy
+
+Nicolas Iooss (7):
+      libsepol: remove unused files
+      libsepol: uniformize prototypes of sepol_mls_contains and sepol_mls_c=
+heck
+      libsepol: include header files in source files when matching declarat=
+ions
+      libsepol/cil: fix NULL pointer dereference with empty macro argument
+      libsepol/cil: be more robust when encountering <src_info>
+      libsepol/cil: introduce intermediate cast to silence -Wvoid-pointer-t=
+o-enum-cast
+      libselinux: rename gettid() to something which never conflicts with t=
+he libc
+
+Petr Lautrbach (3):
+      libselinux: fix segfault in add_xattr_entry()
+      policycoreutils: Resolve path in restorecon_xattr
+      Update VERSIONs to 3.2-rc3 for release.
+
+Vit Mojzis (2):
+      selinux(8,5): Describe fcontext regular expressions
+      gui: fix "file type" selection in fcontextPage
+
+bauen1 (4):
+      secilc/docs: use fenced code blocks for cil examples
+      secilc/docs: add syntax highlighting for secil
+      secilc/docs: add custom color theme
+      policycoreutils: sestatus belongs to bin not sbin
+

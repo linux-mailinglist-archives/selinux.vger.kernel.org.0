@@ -2,298 +2,200 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D39132B41C
-	for <lists+selinux@lfdr.de>; Wed,  3 Mar 2021 05:36:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E36032B41D
+	for <lists+selinux@lfdr.de>; Wed,  3 Mar 2021 05:36:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352907AbhCCEY6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 2 Mar 2021 23:24:58 -0500
-Received: from sonic310-30.consmr.mail.ne1.yahoo.com ([66.163.186.211]:32819
-        "EHLO sonic310-30.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1835393AbhCBTF2 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 2 Mar 2021 14:05:28 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1614711881; bh=qgaMXq3MepzUdSISmshqlJxIDGrGpWmnZTDhOMv/VX8=; h=Subject:To:Cc:References:From:Date:In-Reply-To:From:Subject:Reply-To; b=L5mBNuaohw33W39aCoXPpRpeuvfZnLgCyj6JT82gH+kVGb4C17exQKefwCG+AfKecFPaLeQlP+jjWsqdXk+zO/mpji58Duv4zlLvd+E8O+XJOIfTL+aPzp3arWYrGLcbtiVM7RXSlOdODbveOrKfJOAQH+ho4mxdWWLBMYo3sxLd/NPvhHoS3F3J+QwOy2Z1pu4Jz2k+kS/6ZA67hFjQpQArYAD53/qamyTVtavAYaiZBR75LGygsv4eOOLkQVU18USdkn8FAQ/4Jck3Kbog7kC8xYt9FNMsJkMyel5QspWyB1s88bQxSDo1hX9B2P0Zzcqwpp3ZWqLGYfiCyiDSnQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1614711881; bh=FUZZ6rwSYjjwdW1WDfX/vs2IyS1sa48Noaj2IvXwe4N=; h=X-Sonic-MF:Subject:To:From:Date:From:Subject; b=VYGVKXLt5JFANCKHAptcoLnNYrrchw/u19j/3UHFgGFYDpHH9xXmEsBOW8WAkXFvIYNPhk0euoYi5EmPpp8O6/fEWvGkK9/0Ixoy/uBtBCgV8ZL0PohHCHHSD+JfFVrLkNO2VMiLtIJCEVV0nGh/9xfWnhckg7BTuIFkmGUWNm7kxCa9hF5x1WXoUFECVIYEmW/0OpN7JDmgUahz1HRQR4EqvgSNZxnjEMIJoq/WLjh1SKOjlSSiBrSaHkSXOG5R/JZVgeWyvKRSH1xgp7t2REdzM4/FqP5zwfRCM/ardTtJydrE7TjH1ACzBv7+Uz1nS31QlqSHn/n1H0fePd/rLA==
-X-YMail-OSG: BzbRTpMVM1lK7LD1V29fiwhyWBrVxYjeRmN7PPSM9pAG_sV7bvWyDWM8_xu7zd6
- uuDoELKiBcTzVLLzOnjcFXfyeLaRVvepXgXrahLgxHE0YNV6OPwTJYsfB42UNSzslCaVaXj2rgmY
- qSwusdOjU.yZKnqGE4hEBUK5dAnUgo0fC1i8Hk5DsEFYPILoAfUiwpsSRc94PZOsZIqAvucB1VPP
- nFk.qAsI8fmab4CDdvGIXZaznnzNkiHNz96C3oQ9cEJ_zGwPiEMUoMq5.fqRAtJW.oBm7ROAtzlJ
- vUBmSVK6L4vZdXUKEsEHIia5D3Lk36oD1NRvF556z6zV1A99Ss1_rGirgulYqJd1pABCf9iZaqMj
- zjDsIdKu4KPwuLQCsOgErfgLuExwhyk.uyWHjy_dRPkv8Q5dP5fFj19HHj6Lrq_9m2Swr1jYFXkN
- lm4zG5POnp867z.tHy1x9uWK1SHWWEim5lU9i_f6_lXI1ACvMsXBM0Issx.smrnDf1IFNQ0GSLRU
- 5p6mVzGBVmo5qOcyifNPCfPDkC7rRFy75D78IIr4w_BmCQ_lEca7JBKZj5R9tp9hkXkPwi4zbLYj
- oFS92.Ye2_9cRZ2zIHJvYfs7Lymutf8wY0L1z8PN26SB3ka21xjHcupoY_q7uSQEASMm1LLDZ.Az
- 4JJ1YGNrkvgrKnu1b0fZfIy3evnI_vUXEGSvrggwVk5efeGOHCl6JwqEpGOCcIGZs_2rt.7eRH6G
- UuAYKSWn71PIOLhEdEG1y0Z86jBc34q.nO9Bec_Vy8oj4Z5XBKQOo_dh_45BikKmhCgGGeMXsLQr
- v9D.m.uwE.4MiSGbURJMi0zcaqwosayUxM0UlIHRVysRJ2MkuxEaCdNAvYBLSDYerhoCCsjrFSTn
- 94EpaPwwkIwRR7RUB.fBZWIwjzRpJLAekQ3MCLrOyYXcW4yuXNF9p2OuU9uAA9lk9hDIjh5Lp.zD
- qT0V9GMVw6rUa3NYywTmiffVUTru0zxwmqL9rfdyOgHQwgI8Gchf9B9yuYnrbuMqW7fS4.r7CzBY
- DBkhgtf1UG0_1uqzth7U_D.Yaln5zjSLHSH2Jl3hWNTiF5qpvsszM.IXlpkM3la6NEYZPg1226wa
- AnqUxiSbq07G28WG4WLvo6XUGzeud8ObOguJjim1rhyMTfrwb8ZmXs7E3c9Fk6RKX2tgwxB852L_
- sl6Oibby6JwRVDfmsBZ769zR8z.Q_Zu5OUWoklatNOkCUQKY1TGbniUPXuVJFud0eiCMuEwtbzu_
- YlcgwZtc3dilhNgRgSxm6kN8ZC3TdMZx1ipWkofzx_DWjZDyzD3hb8vwZf6652g2TICAnJEhbNaJ
- SQcXP57zSQ97nhrKVbNSd.l0GC1f_4MB2IZd.Nx6br.UXav7eqtv2aa1zaXilI2x0Ljlspbfu7FS
- lGmc0BPLd0cEmnJ35CYLFr2RAGvbVdxmxA_m8Hp4l6u.CDsGwT8c__DxV6qF.sRRqgIMz047dnz7
- NgRLF7gV5xE9S.aShqWKHPAKrWUpbCHSgjqs4ikXVKE1sgsH_TOm6LqOTCX11gpdWu.M9kLFKWL.
- rkSGTGAOyhcFHcHfUWgK0HqEORTSP081abFTAim0efLhNk8._PDHv4GhWJa.MLUMlcOyEVjp23xm
- wWJ5ipuJ_X58HI_Pi53RDZmLMyL5KVfxk.xO.rxkPVpX2FcALdXe09_12VQIJ3P3Y6GjW_hKZsxE
- J7NRB88M9aW01ZJRmq8FAaV3h2x2S0qQT16Evt1S2v.9FyOXoO8M5DqtsEvWUrva4G1lRYG9Yr5y
- zEnxpwWkZ9WY28bLLHAhTgzzmDnxqVhC0j8kv7J.5rQ9QOi4DTpntt5FZtVtUEQx4flKXUzKdT8g
- FA8E_Cz_472rOG9_zfdCl9g9sbWsVCVF28RLtSjKwZLzZcQmOuw1NFtFx6c.PFxQho_5aEP8V8SH
- ad4Lh.j7lnQTYWK1gWRanjjlMjw4CZbLzKe1rUU_AGoo9LbQvpRCIw_WhGmMLGv6GSJr0bioBz7L
- Oyrv3STdVoeoNoajywqQBKWxcYxCjLr9PHHCA9BWG5aMALRVhcUHkneF21RBsbpLKDVA.v4xA0Y2
- gJqMNLZaKRDxsDhMXT0pvgnj_TGTEG7zy4bqY.WJy_cZ_cUtfkJHqilR9SSlsA6d0sWCne8diqiy
- z2wQXbA6HB2w59.NYpB6EQRxW0E4sWPAJ2AHzk6q0SRZLcTolSCfEQbfcWPW6vMbAa_p4TIcHfy8
- dvQPdthvyb20UHSJhU8BkAwEATjH8Qa5thQabKWm2_gS2RC4vK5QZxvOqi7Yhn6l0_px9Gb_Cpfx
- EkrMT1LBnMf9RzJpg2cqoLjoA0iX72sVSrGBP5sA.YD5KvIhrDGegvqVOkoVFF1z7FHh8u4k2QN2
- prZWM5FgHJbxFJMefu..jC0W2zXlc3vYrT3YfO2m.1ZfCpEOqVkf4H8sIHHQfj65AlVwQIJg2PGL
- AItDAhX22LzhFo.0TaF48cNMHrDnA9YWHDuaXnqGQSQvbUAhOvJcUDFJJkGzStffs1eoNg5sVAvh
- 8T35ImP4uDUo1fHzAtjL9mqVaBeOgY08E1fjjkmCvxJuHGW6DxzQE_egyxXaJcn2yNQJJ3MMjnF1
- aHtbemlNgyXocdGB2paYEbT4vO45ZUOJgIohDf_gjkUz2vSE1gtJ2UWaggzMRnykhIywRLQZRjMu
- yytuCV3AP_wnFJyp5v3lW8hHU6INX1wnM8eO4QB4Eayc3SjnMBSMXcBmXzoA1gYCW_K133fgLqFR
- o2k6z9nYNoAozvD8xN0Tr5TAvDJZZAkxqN9U9XxocrfC_tKnvUJrf.M4_9BZet0gZygqO4hGT_Pk
- CF4ZYM71TAcdZjZ0E2c88H2YBGSTfBLbS8Ox52jDKSvQM58EGNu9z5FLNVasCUL2W7VJFiMNRone
- USd8688li63sAv74dJBjRzix7Kjq2TDFO3LfYDlAgfEVrZhz.O63lye_ez7dBAqpEAbbqqIuJAq5
- PB.3HCzPxLto-
-X-Sonic-MF: <casey@schaufler-ca.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic310.consmr.mail.ne1.yahoo.com with HTTP; Tue, 2 Mar 2021 19:04:41 +0000
-Received: by kubenode534.mail-prod1.omega.gq1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 31fae7b590c07b63d8a1e296bc7c1804;
-          Tue, 02 Mar 2021 18:51:35 +0000 (UTC)
-Subject: Re: [PATCH v4 1/3] [security] Add new hook to compare new mount to an
- existing mount
-To:     Anna Schumaker <anna.schumaker@netapp.com>,
-        Olga Kornievskaia <olga.kornievskaia@gmail.com>
-Cc:     Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        Casey Schaufler <casey@schaufler-ca.com>
-References: <CAN-5tyGuV-gs0KzVbKSj42ZMx553zy9wOfVb1SoHoE-WCoN1_w@mail.gmail.com>
- <20210227033755.24460-1-olga.kornievskaia@gmail.com>
- <CAFX2Jfk--KwkAss1gqTPnQt-bKvUUapNdHbuicu=m+jOtjrMyQ@mail.gmail.com>
-From:   Casey Schaufler <casey@schaufler-ca.com>
-Message-ID: <f8f5323c-cdfd-92e8-b359-43caaf9d7490@schaufler-ca.com>
-Date:   Tue, 2 Mar 2021 10:51:33 -0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S236707AbhCCEZS (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 2 Mar 2021 23:25:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46836 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233622AbhCBXyn (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 2 Mar 2021 18:54:43 -0500
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F9FFC0617A9
+        for <selinux@vger.kernel.org>; Tue,  2 Mar 2021 15:53:51 -0800 (PST)
+Received: by mail-yb1-xb2f.google.com with SMTP id x19so22603098ybe.0
+        for <selinux@vger.kernel.org>; Tue, 02 Mar 2021 15:53:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bil8NB7FtyMQm2LWvHudKINIt601VCCkCAtNfJdlFqs=;
+        b=EZ95T+rNXENXimY3pzATLXSNLha9hbHpdO3IWfbrrXDxmRhX0t0UT20WlzRGlBerOk
+         mq1NCpaPbKg1hTYF2hKaXxT5G0ERcltjSoANnaSWufp95sXwyhd/GI244y4LkMUoCUHZ
+         Z19jUkS8cd148IrrUXF66k4R8S6+4popTpoYvji5vTjm5y4B+aq5ZgLuBPp5voboqZ+s
+         Io/ahydOa4fmHqkxp/oM2uJ657wsmEB5Hqu4va7hQGmTclSDZj5rI7Can4zlSACYE9L4
+         BuXEF6JeOOAB3qJ1Y17e2EYxh23ouR9mmUQ8t+Sp1as6Nspiq+yKmrxKEJ5XBspw+hIi
+         Ti8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bil8NB7FtyMQm2LWvHudKINIt601VCCkCAtNfJdlFqs=;
+        b=P9hL0ob7Etp8aeSp3FOlJhbf2KE/EonniSZk6m1mTNIGyA13Vix+pZjLiOefcz1lix
+         40SOoXVak7Hmj59liNox4vGdRNhUerZT5gb1TRh78L/swPBOOCZRpedkqlX3Ri5QlVXr
+         ZCiVu5M3C3V2fJyQWmgsN1L1U+FS9nmD8CfQDdSTbRTic4I0lWElnkTVB+6QdjXnIAL4
+         MWZJ/KZQryvaeaqrt7QEtoz5jJCV9smGxz8lR6FUZ7hiliHwNsZK0HEeKjVtj7prWSwh
+         /y1DavIusiR8r3eKJaIm+RPclYkzcbOyBubfuBxGbwAs5QqLAlZz/ZYCCukNJoEm+CJr
+         9jvw==
+X-Gm-Message-State: AOAM533pf6gbuCPYS8lRfLI4Jx4O3oLgYD2NfdueGzc8OwdrrG30cuJB
+        RA2dHn3fZkizA63wZnGgdZxPqlls6W4mUhMy5LCAtA==
+X-Google-Smtp-Source: ABdhPJyPySea+4ZAWR4FCDlNGShhv6ZqZfVIbq+FwDY0XtpNacbMtnX9ErF6UqxXj8O2Gl4NQDcqnTDjJgXoxKMbDrU=
+X-Received: by 2002:a5b:751:: with SMTP id s17mr34290248ybq.111.1614729230287;
+ Tue, 02 Mar 2021 15:53:50 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <CAFX2Jfk--KwkAss1gqTPnQt-bKvUUapNdHbuicu=m+jOtjrMyQ@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Language: en-US
-X-Mailer: WebService/1.1.17828 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo Apache-HttpAsyncClient/4.1.4 (Java/11.0.9.1)
+References: <20210111170622.2613577-1-surenb@google.com> <20210112074629.GG22493@dhcp22.suse.cz>
+ <20210112174507.GA23780@redhat.com> <CAJuCfpFQz=x-LvONO3c4iqjKP4NKJMgUuiYc8HACKHAv1Omu0w@mail.gmail.com>
+ <20210113142202.GC22493@dhcp22.suse.cz> <CAG48ez0=QSzuj96+5oVQ2qWqfjedv3oKtfEFzw--C8bzfvj7EQ@mail.gmail.com>
+ <20210126135254.GP827@dhcp22.suse.cz> <CAJuCfpEnMyo9XAnoF+q1j9EkC0okZfUxxdAFhzhPJi+adJYqjw@mail.gmail.com>
+ <CAJuCfpF861zhp8yR_pYx8gb+WMrORAZ0tbzcKtKxaj7L=jzw+Q@mail.gmail.com> <CAJuCfpFzxiBXp1rdY=H=bX+eOAVGOe72_FxwC-NTWF4fhUO26g@mail.gmail.com>
+In-Reply-To: <CAJuCfpFzxiBXp1rdY=H=bX+eOAVGOe72_FxwC-NTWF4fhUO26g@mail.gmail.com>
+From:   Suren Baghdasaryan <surenb@google.com>
+Date:   Tue, 2 Mar 2021 15:53:39 -0800
+Message-ID: <CAJuCfpEOE8=L1fT4FSauy65cS82M_kW3EzTgH89ewE9HudL=VA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] mm/madvise: replace ptrace attach requirement for process_madvise
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Jann Horn <jannh@google.com>, Oleg Nesterov <oleg@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Jeffrey Vander Stoep <jeffv@google.com>,
+        Minchan Kim <minchan@kernel.org>,
+        Shakeel Butt <shakeelb@google.com>,
+        David Rientjes <rientjes@google.com>,
+        =?UTF-8?Q?Edgar_Arriaga_Garc=C3=ADa?= <edgararriaga@google.com>,
+        Tim Murray <timmurray@google.com>,
+        linux-mm <linux-mm@kvack.org>,
+        SElinux list <selinux@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        kernel-team <kernel-team@android.com>,
+        linux-security-module <linux-security-module@vger.kernel.org>,
+        stable <stable@vger.kernel.org>, Michal Hocko <mhocko@suse.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 3/2/2021 10:20 AM, Anna Schumaker wrote:
-> Hi Casey,
+On Mon, Feb 1, 2021 at 9:34 PM Suren Baghdasaryan <surenb@google.com> wrote:
 >
-> On Fri, Feb 26, 2021 at 10:40 PM Olga Kornievskaia
-> <olga.kornievskaia@gmail.com> wrote:
->> From: Olga Kornievskaia <kolga@netapp.com>
->>
->> Add a new hook that takes an existing super block and a new mount
->> with new options and determines if new options confict with an
->> existing mount or not.
->>
->> A filesystem can use this new hook to determine if it can share
->> the an existing superblock with a new superblock for the new mount.
->>
->> Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-> Do you have any other thoughts on this patch? I'm also wondering how
-> you want to handle sending it upstream.=20
-
-James Morris is the maintainer for the security sub-system,
-so you'll want to send this through him. He will want you to
-have an ACK from Paul Moore, who is the SELinux maintainer.
-
-> I'm happy to take it through
-> the NFS tree (with an acked-by) for a 5.12-rc with Olga's bugfix
-> patches, but if you have other thoughts or plans then let me know!
+> On Thu, Jan 28, 2021 at 11:08 PM Suren Baghdasaryan <surenb@google.com> wrote:
+> >
+> > On Thu, Jan 28, 2021 at 11:51 AM Suren Baghdasaryan <surenb@google.com> wrote:
+> > >
+> > > On Tue, Jan 26, 2021 at 5:52 AM 'Michal Hocko' via kernel-team
+> > > <kernel-team@android.com> wrote:
+> > > >
+> > > > On Wed 20-01-21 14:17:39, Jann Horn wrote:
+> > > > > On Wed, Jan 13, 2021 at 3:22 PM Michal Hocko <mhocko@suse.com> wrote:
+> > > > > > On Tue 12-01-21 09:51:24, Suren Baghdasaryan wrote:
+> > > > > > > On Tue, Jan 12, 2021 at 9:45 AM Oleg Nesterov <oleg@redhat.com> wrote:
+> > > > > > > >
+> > > > > > > > On 01/12, Michal Hocko wrote:
+> > > > > > > > >
+> > > > > > > > > On Mon 11-01-21 09:06:22, Suren Baghdasaryan wrote:
+> > > > > > > > >
+> > > > > > > > > > What we want is the ability for one process to influence another process
+> > > > > > > > > > in order to optimize performance across the entire system while leaving
+> > > > > > > > > > the security boundary intact.
+> > > > > > > > > > Replace PTRACE_MODE_ATTACH with a combination of PTRACE_MODE_READ
+> > > > > > > > > > and CAP_SYS_NICE. PTRACE_MODE_READ to prevent leaking ASLR metadata
+> > > > > > > > > > and CAP_SYS_NICE for influencing process performance.
+> > > > > > > > >
+> > > > > > > > > I have to say that ptrace modes are rather obscure to me. So I cannot
+> > > > > > > > > really judge whether MODE_READ is sufficient. My understanding has
+> > > > > > > > > always been that this is requred to RO access to the address space. But
+> > > > > > > > > this operation clearly has a visible side effect. Do we have any actual
+> > > > > > > > > documentation for the existing modes?
+> > > > > > > > >
+> > > > > > > > > I would be really curious to hear from Jann and Oleg (now Cced).
+> > > > > > > >
+> > > > > > > > Can't comment, sorry. I never understood these security checks and never tried.
+> > > > > > > > IIUC only selinux/etc can treat ATTACH/READ differently and I have no idea what
+> > > > > > > > is the difference.
+> > > > >
+> > > > > Yama in particular only does its checks on ATTACH and ignores READ,
+> > > > > that's the difference you're probably most likely to encounter on a
+> > > > > normal desktop system, since some distros turn Yama on by default.
+> > > > > Basically the idea there is that running "gdb -p $pid" or "strace -p
+> > > > > $pid" as a normal user will usually fail, but reading /proc/$pid/maps
+> > > > > still works; so you can see things like detailed memory usage
+> > > > > information and such, but you're not supposed to be able to directly
+> > > > > peek into a running SSH client and inject data into the existing SSH
+> > > > > connection, or steal the cryptographic keys for the current
+> > > > > connection, or something like that.
+> > > > >
+> > > > > > > I haven't seen a written explanation on ptrace modes but when I
+> > > > > > > consulted Jann his explanation was:
+> > > > > > >
+> > > > > > > PTRACE_MODE_READ means you can inspect metadata about processes with
+> > > > > > > the specified domain, across UID boundaries.
+> > > > > > > PTRACE_MODE_ATTACH means you can fully impersonate processes with the
+> > > > > > > specified domain, across UID boundaries.
+> > > > > >
+> > > > > > Maybe this would be a good start to document expectations. Some more
+> > > > > > practical examples where the difference is visible would be great as
+> > > > > > well.
+> > > > >
+> > > > > Before documenting the behavior, it would be a good idea to figure out
+> > > > > what to do with perf_event_open(). That one's weird in that it only
+> > > > > requires PTRACE_MODE_READ, but actually allows you to sample stuff
+> > > > > like userspace stack and register contents (if perf_event_paranoid is
+> > > > > 1 or 2). Maybe for SELinux things (and maybe also for Yama), there
+> > > > > should be a level in between that allows fully inspecting the process
+> > > > > (for purposes like profiling) but without the ability to corrupt its
+> > > > > memory or registers or things like that. Or maybe perf_event_open()
+> > > > > should just use the ATTACH mode.
+> > > >
+> > > > Thanks for the clarification. I still cannot say I would have a good
+> > > > mental picture. Having something in Documentation/core-api/ sounds
+> > > > really needed. Wrt to perf_event_open it sounds really odd it can do
+> > > > more than other places restrict indeed. Something for the respective
+> > > > maintainer but I strongly suspect people simply copy the pattern from
+> > > > other places because the expected semantic is not really clear.
+> > > >
+> > >
+> > > Sorry, back to the matters of this patch. Are there any actionable
+> > > items for me to take care of before it can be accepted? The only
+> > > request from Andrew to write a man page is being worked on at
+> > > https://lore.kernel.org/linux-mm/20210120202337.1481402-1-surenb@google.com/
+> > > and I'll follow up with the next version. I also CC'ed stable@ for
+> > > this to be included into 5.10 per Andrew's request. That CC was lost
+> > > at some point, so CC'ing again.
+> > >
+> > > I do not see anything else on this patch to fix. Please chime in if
+> > > there are any more concerns, otherwise I would ask Andrew to take it
+> > > into mm-tree and stable@ to apply it to 5.10.
+> > > Thanks!
+> >
+> > process_madvise man page V2 is posted at:
+> > https://lore.kernel.org/linux-mm/20210129070340.566340-1-surenb@google.com/
 >
-> Thanks,
-> Anna
+> process_madvise man page V3 is posted at:
+> https://lore.kernel.org/linux-mm/20210202053046.1653012-1-surenb@google.com/
 >
->> ---
->>  include/linux/lsm_hook_defs.h |  1 +
->>  include/linux/lsm_hooks.h     |  6 ++++
->>  include/linux/security.h      |  8 +++++
->>  security/security.c           |  7 +++++
->>  security/selinux/hooks.c      | 56 ++++++++++++++++++++++++++++++++++=
-+
->>  5 files changed, 78 insertions(+)
->>
->> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_de=
-fs.h
->> index 7aaa753b8608..1b12a5266a51 100644
->> --- a/include/linux/lsm_hook_defs.h
->> +++ b/include/linux/lsm_hook_defs.h
->> @@ -62,6 +62,7 @@ LSM_HOOK(int, 0, sb_alloc_security, struct super_blo=
-ck *sb)
->>  LSM_HOOK(void, LSM_RET_VOID, sb_free_security, struct super_block *sb=
-)
->>  LSM_HOOK(void, LSM_RET_VOID, sb_free_mnt_opts, void *mnt_opts)
->>  LSM_HOOK(int, 0, sb_eat_lsm_opts, char *orig, void **mnt_opts)
->> +LSM_HOOK(int, 0, sb_mnt_opts_compat, struct super_block *sb, void *mn=
-t_opts)
->>  LSM_HOOK(int, 0, sb_remount, struct super_block *sb, void *mnt_opts)
->>  LSM_HOOK(int, 0, sb_kern_mount, struct super_block *sb)
->>  LSM_HOOK(int, 0, sb_show_options, struct seq_file *m, struct super_bl=
-ock *sb)
->> diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
->> index a19adef1f088..0de8eb2ea547 100644
->> --- a/include/linux/lsm_hooks.h
->> +++ b/include/linux/lsm_hooks.h
->> @@ -142,6 +142,12 @@
->>   *     @orig the original mount data copied from userspace.
->>   *     @copy copied data which will be passed to the security module.=
 
->>   *     Returns 0 if the copy was successful.
->> + * @sb_mnt_opts_compat:
->> + *     Determine if the new mount options in @mnt_opts are allowed gi=
-ven
->> + *     the existing mounted filesystem at @sb.
->> + *     @sb superblock being compared
->> + *     @mnt_opts new mount options
->> + *     Return 0 if options are compatible.
->>   * @sb_remount:
->>   *     Extracts security system specific mount options and verifies n=
-o changes
->>   *     are being made to those options.
->> diff --git a/include/linux/security.h b/include/linux/security.h
->> index c35ea0ffccd9..50db3d5d1608 100644
->> --- a/include/linux/security.h
->> +++ b/include/linux/security.h
->> @@ -291,6 +291,7 @@ int security_sb_alloc(struct super_block *sb);
->>  void security_sb_free(struct super_block *sb);
->>  void security_free_mnt_opts(void **mnt_opts);
->>  int security_sb_eat_lsm_opts(char *options, void **mnt_opts);
->> +int security_sb_mnt_opts_compat(struct super_block *sb, void *mnt_opt=
-s);
->>  int security_sb_remount(struct super_block *sb, void *mnt_opts);
->>  int security_sb_kern_mount(struct super_block *sb);
->>  int security_sb_show_options(struct seq_file *m, struct super_block *=
-sb);
->> @@ -635,6 +636,13 @@ static inline int security_sb_remount(struct supe=
-r_block *sb,
->>         return 0;
->>  }
->>
->> +static inline int security_sb_mnt_opts_compat(struct super_block *sb,=
+Hi Andrew,
+A friendly reminder to please include this patch into mm tree.
+There seem to be no more questions or objections.
+The man page you requested is accepted here:
+https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git/commit/?id=a144f458bad476a3358e3a45023789cb7bb9f993
+stable is CC'ed and this patch should go into 5.10 and later kernels
+The patch has been:
+Acked-by: Minchan Kim <minchan@kernel.org>
+Acked-by: David Rientjes <rientjes@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
->> +                                             void *mnt_opts)
->> +{
->> +       return 0;
->> +}
->> +
->> +
->>  static inline int security_sb_kern_mount(struct super_block *sb)
->>  {
->>         return 0;
->> diff --git a/security/security.c b/security/security.c
->> index 7b09cfbae94f..56cf5563efde 100644
->> --- a/security/security.c
->> +++ b/security/security.c
->> @@ -890,6 +890,13 @@ int security_sb_eat_lsm_opts(char *options, void =
-**mnt_opts)
->>  }
->>  EXPORT_SYMBOL(security_sb_eat_lsm_opts);
->>
->> +int security_sb_mnt_opts_compat(struct super_block *sb,
->> +                               void *mnt_opts)
->> +{
->> +       return call_int_hook(sb_mnt_opts_compat, 0, sb, mnt_opts);
->> +}
->> +EXPORT_SYMBOL(security_sb_mnt_opts_compat);
->> +
->>  int security_sb_remount(struct super_block *sb,
->>                         void *mnt_opts)
->>  {
->> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
->> index 644b17ec9e63..afee3a222a0e 100644
->> --- a/security/selinux/hooks.c
->> +++ b/security/selinux/hooks.c
->> @@ -2656,6 +2656,61 @@ static int selinux_sb_eat_lsm_opts(char *option=
-s, void **mnt_opts)
->>         return rc;
->>  }
->>
->> +static int selinux_sb_mnt_opts_compat(struct super_block *sb, void *m=
-nt_opts)
->> +{
->> +       struct selinux_mnt_opts *opts =3D mnt_opts;
->> +       struct superblock_security_struct *sbsec =3D sb->s_security;
->> +       u32 sid;
->> +       int rc;
->> +
->> +       /*
->> +        * Superblock not initialized (i.e. no options) - reject if an=
-y
->> +        * options specified, otherwise accept.
->> +        */
->> +       if (!(sbsec->flags & SE_SBINITIALIZED))
->> +               return opts ? 1 : 0;
->> +
->> +       /*
->> +        * Superblock initialized and no options specified - reject if=
+If you want me to resend it, please let me know.
+Thanks,
+Suren.
 
->> +        * superblock has any options set, otherwise accept.
->> +        */
->> +       if (!opts)
->> +               return (sbsec->flags & SE_MNTMASK) ? 1 : 0;
->> +
->> +       if (opts->fscontext) {
->> +               rc =3D parse_sid(sb, opts->fscontext, &sid);
->> +               if (rc)
->> +                       return 1;
->> +               if (bad_option(sbsec, FSCONTEXT_MNT, sbsec->sid, sid))=
 
->> +                       return 1;
->> +       }
->> +       if (opts->context) {
->> +               rc =3D parse_sid(sb, opts->context, &sid);
->> +               if (rc)
->> +                       return 1;
->> +               if (bad_option(sbsec, CONTEXT_MNT, sbsec->mntpoint_sid=
-, sid))
->> +                       return 1;
->> +       }
->> +       if (opts->rootcontext) {
->> +               struct inode_security_struct *root_isec;
->> +
->> +               root_isec =3D backing_inode_security(sb->s_root);
->> +               rc =3D parse_sid(sb, opts->rootcontext, &sid);
->> +               if (rc)
->> +                       return 1;
->> +               if (bad_option(sbsec, ROOTCONTEXT_MNT, root_isec->sid,=
- sid))
->> +                       return 1;
->> +       }
->> +       if (opts->defcontext) {
->> +               rc =3D parse_sid(sb, opts->defcontext, &sid);
->> +               if (rc)
->> +                       return 1;
->> +               if (bad_option(sbsec, DEFCONTEXT_MNT, sbsec->def_sid, =
-sid))
->> +                       return 1;
->> +       }
->> +       return 0;
->> +}
->> +
->>  static int selinux_sb_remount(struct super_block *sb, void *mnt_opts)=
-
->>  {
->>         struct selinux_mnt_opts *opts =3D mnt_opts;
->> @@ -6984,6 +7039,7 @@ static struct security_hook_list selinux_hooks[]=
- __lsm_ro_after_init =3D {
->>
->>         LSM_HOOK_INIT(sb_free_security, selinux_sb_free_security),
->>         LSM_HOOK_INIT(sb_free_mnt_opts, selinux_free_mnt_opts),
->> +       LSM_HOOK_INIT(sb_mnt_opts_compat, selinux_sb_mnt_opts_compat),=
-
->>         LSM_HOOK_INIT(sb_remount, selinux_sb_remount),
->>         LSM_HOOK_INIT(sb_kern_mount, selinux_sb_kern_mount),
->>         LSM_HOOK_INIT(sb_show_options, selinux_sb_show_options),
->> --
->> 2.27.0
->>
-
+> >
+> > >
+> > >
+> > > > --
+> > > > Michal Hocko
+> > > > SUSE Labs
+> > > >
+> > > > --
+> > > > To unsubscribe from this group and stop receiving emails from it, send an email to kernel-team+unsubscribe@android.com.
+> > > >

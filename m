@@ -2,85 +2,102 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3278632C5C5
-	for <lists+selinux@lfdr.de>; Thu,  4 Mar 2021 02:00:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9CF32C5C9
+	for <lists+selinux@lfdr.de>; Thu,  4 Mar 2021 02:00:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232577AbhCDAYS (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 3 Mar 2021 19:24:18 -0500
-Received: from verein.lst.de ([213.95.11.211]:35428 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1355863AbhCCHCF (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Wed, 3 Mar 2021 02:02:05 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 16AAD68CFC; Wed,  3 Mar 2021 08:01:06 +0100 (CET)
-Date:   Wed, 3 Mar 2021 08:01:03 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     "Darrick J. Wong" <djwong@kernel.org>
-Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christoph Hellwig <hch@lst.de>, linux-fsdevel@vger.kernel.org,
-        John Johansen <john.johansen@canonical.com>,
-        James Morris <jmorris@namei.org>,
-        Mimi Zohar <zohar@linux.ibm.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        Geoffrey Thomas <geofft@ldpreload.com>,
-        Mrunal Patel <mpatel@redhat.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Theodore Tso <tytso@mit.edu>, Alban Crequy <alban@kinvolk.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Howells <dhowells@redhat.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Seth Forshee <seth.forshee@canonical.com>,
-        =?iso-8859-1?Q?St=E9phane?= Graber <stgraber@ubuntu.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Lennart Poettering <lennart@poettering.net>,
-        "Eric W. Biederman" <ebiederm@xmission.com>, smbarber@chromium.org,
-        Phil Estes <estesp@gmail.com>, Serge Hallyn <serge@hallyn.com>,
-        Kees Cook <keescook@chromium.org>,
-        Todd Kjos <tkjos@google.com>, Paul Moore <paul@paul-moore.com>,
-        Jonathan Corbet <corbet@lwn.net>,
-        containers@lists.linux-foundation.org,
-        linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Subject: Re: [PATCH v6 39/40] xfs: support idmapped mounts
-Message-ID: <20210303070103.GA7866@lst.de>
-References: <20210121131959.646623-1-christian.brauner@ubuntu.com> <20210121131959.646623-40-christian.brauner@ubuntu.com> <20210301200520.GK7272@magnolia>
+        id S243808AbhCDAYX (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 3 Mar 2021 19:24:23 -0500
+Received: from mx1.polytechnique.org ([129.104.30.34]:59524 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1357080AbhCCIRb (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 3 Mar 2021 03:17:31 -0500
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id B5CEB561254
+        for <selinux@vger.kernel.org>; Wed,  3 Mar 2021 08:46:04 +0100 (CET)
+Received: by mail-pg1-f174.google.com with SMTP id o10so15748564pgg.4
+        for <selinux@vger.kernel.org>; Tue, 02 Mar 2021 23:46:04 -0800 (PST)
+X-Gm-Message-State: AOAM531nvcm3xnz5f+VdHHdZ9ENIAbssBB5Z/JNNDaVpTyjpnP/r5r8O
+        /yAKFLdYkpBfVlJWkPHvuktDEd9IjqjXtfrHMVs=
+X-Google-Smtp-Source: ABdhPJwThRbpdGkFBbxhV1J6et9w3oSoAMWaGGHQF4DhZRNFvt7shVjk3Z0PlMc4K9+4YNRhAlM0NDMW3t+Qx3bFtPg=
+X-Received: by 2002:aa7:9577:0:b029:1ee:ea22:5eeb with SMTP id
+ x23-20020aa795770000b02901eeea225eebmr2241674pfq.33.1614757563461; Tue, 02
+ Mar 2021 23:46:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210301200520.GK7272@magnolia>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+References: <20210228084858.8499-1-nicolas.iooss@m4x.org> <CAP+JOzQbROkh0rOZ0uyrjnMtoZcDZmPix1KJU6=YrSL6La1wWw@mail.gmail.com>
+In-Reply-To: <CAP+JOzQbROkh0rOZ0uyrjnMtoZcDZmPix1KJU6=YrSL6La1wWw@mail.gmail.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Wed, 3 Mar 2021 08:45:52 +0100
+X-Gmail-Original-Message-ID: <CAJfZ7=mszw=SGFZJKbBzWRNxw2wCp1iCnPN5ChRUuifMuGYR3A@mail.gmail.com>
+Message-ID: <CAJfZ7=mszw=SGFZJKbBzWRNxw2wCp1iCnPN5ChRUuifMuGYR3A@mail.gmail.com>
+Subject: Re: [PATCH] libsepol: invalidate the pointer to the policydb if
+ policydb_init fails
+To:     James Carter <jwcart2@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Wed Mar  3 08:46:05 2021 +0100 (CET))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000002, queueID=3528456126A
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Mar 01, 2021 at 12:05:20PM -0800, Darrick J. Wong wrote:
-> > +	if (breq->mnt_userns != &init_user_ns) {
-> > +		xfs_warn_ratelimited(breq->mp,
-> > +			"bulkstat not supported inside of idmapped mounts.");
-> > +		return -EINVAL;
-> 
-> Shouldn't this be -EPERM?
-> 
-> Or -EOPNOTSUPP?
+On Mon, Mar 1, 2021 at 3:55 PM James Carter <jwcart2@gmail.com> wrote:
+>
+> On Sun, Feb 28, 2021 at 3:51 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+> >
+> > Facebook's Infer static analyzer warns about a use-after-free issue in
+> > libsemanage:
+> >
+> >     int semanage_direct_mls_enabled(semanage_handle_t * sh)
+> >     {
+> >             sepol_policydb_t *p = NULL;
+> >             int retval;
+> >
+> >             retval = sepol_policydb_create(&p);
+> >             if (retval < 0)
+> >                     goto cleanup;
+> >
+> >             /* ... */
+> >     cleanup:
+> >             sepol_policydb_free(p);
+> >             return retval;
+> >     }
+> >
+> > When sepol_policydb_create() is called, p is allocated and
+> > policydb_init() is called. If this second call fails, p is freed
+> > andsepol_policydb_create() returns -1, but p still stores a pointer to
+> > freed memory. This pointer is then freed again in the cleanup part of
+> > semanage_direct_mls_enabled().
+> >
+> > Fix this by setting p to NULL in sepol_policydb_create() after freeing
+> > it.
+> >
+> > Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+>
+> Acked-by: James Carter <jwcart2@gmail.com>
 
--EINVAL is what we return for all our nor suppored ioctls, so I think it
-is the right choice here, and should generally trigger the right
-fallbacks.
+Merged.
+Nicolas
 
-> Also, I'm not sure why bulkstat won't work in an idmapped mount but
-> bulkstat_single does?  You can use the singleton version to stat inodes
-> that aren't inside the submount.
+> > ---
+> >  libsepol/src/policydb_public.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/libsepol/src/policydb_public.c b/libsepol/src/policydb_public.c
+> > index e5def7078eb0..0218c9403856 100644
+> > --- a/libsepol/src/policydb_public.c
+> > +++ b/libsepol/src/policydb_public.c
+> > @@ -68,6 +68,7 @@ int sepol_policydb_create(sepol_policydb_t ** sp)
+> >         p = &(*sp)->p;
+> >         if (policydb_init(p)) {
+> >                 free(*sp);
+> > +               *sp = NULL;
+> >                 return -1;
+> >         }
+> >         return 0;
+> > --
+> > 2.30.0
+> >
 
-Looking at it again I think we should fail BULKSTAT_SINGLE as well.
-I had somehow assumed BULKSTAT_SINGLE would operate on the inode of
-the open file, in which case it would be fine.  But it doesn't so that
-argument doesn't count.

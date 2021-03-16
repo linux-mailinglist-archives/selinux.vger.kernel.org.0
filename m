@@ -2,117 +2,212 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9260E33DF7D
-	for <lists+selinux@lfdr.de>; Tue, 16 Mar 2021 21:49:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C117733DF82
+	for <lists+selinux@lfdr.de>; Tue, 16 Mar 2021 21:50:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230508AbhCPUsc (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 16 Mar 2021 16:48:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49306 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232228AbhCPUrF (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 16 Mar 2021 16:47:05 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1713BC061764
-        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 13:47:05 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id a9so36714918qkn.13
-        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 13:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=8Y3ZtjVdB7S6Ir5KZsOcBYwZ4O3gd3WI1L5QfaZ+bSs=;
-        b=mV9+4uTPgnTyW6MlxQMFS5k/LguRBIIJEhFu96PhMniQGZEDKcMLt1SNa0WHlLOQUR
-         AIYO83U5m4SaIh8mFBBp1lZrX35BzbNgMa0WC85zrZH7pcN1F1JzEP7xEYqGXqK8TprZ
-         spcq+5moyu1rBZTI4C6JCWYdR4nuPyW5qdO44y62erlFFBTHticMv9kCfYdEtNQeDKhc
-         NZRD7gafDRhGn8iI1p20H46eVt7yBvlHKibLP3qeGDiMjwTrpxg3JPzSzpkiTbq0gGtP
-         Q77ZriNuySvTakFEPLs/ofg+oXwuF8GOUkYyjsyTvG/FOmN4vp+/bHVTV0hjgQL2YDoa
-         TB/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=8Y3ZtjVdB7S6Ir5KZsOcBYwZ4O3gd3WI1L5QfaZ+bSs=;
-        b=Z7H61HDtA07oIeUKx3qUjBJZwFO1Zgw+mNMp6NJkngQ5uOkxgstbeeIyqcw25WIsEZ
-         4px9PqvDHUNAjAbAvwaXzX+4jVRJDIGhg4HQF4/vRn2RtXgfW5c1/uoX8erkuRFEohbm
-         OUUhevV/rcxGUjWlH3zfxI1d9KjiMjnPjcJgVmL5pB0H2vPqryTz7tUM6ZRM7Mm68BOr
-         RLSUIvwHganFUdCrEmiQP8TUOYMCkjvLsaU3HNk42Hq2OyfrtYdrG1NFUexH5aST3k3B
-         6Nj3O1txY+Vo1FQS7fkHvlGiT/U4oXweiaXCezu5wdDm5CrJHjx7gs5MxQFZ/v02GWVk
-         LcqA==
-X-Gm-Message-State: AOAM533RFGK7JmjRzS0yl08FYMoXMw6QBTHDBMzATxEA8fZgYbbhc4WH
-        jsCuWNtKiLnKgRv6FAtmr6uZnWNKhy4=
-X-Google-Smtp-Source: ABdhPJxfn0QYscJzk7ugH4JFv7/7RjW5Q0M47C4GlJiR4a2Ye+27lJeBcnPlY+TtusAz6e6WB0pb0g==
-X-Received: by 2002:a05:620a:16ad:: with SMTP id s13mr1027547qkj.68.1615927624143;
-        Tue, 16 Mar 2021 13:47:04 -0700 (PDT)
-Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id v4sm13905687qte.18.2021.03.16.13.47.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Mar 2021 13:47:03 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     James Carter <jwcart2@gmail.com>
-Subject: [PATCH 4/4] libsepol: Write "NO_IDENTIFIER" for empty CIL constraint expression
-Date:   Tue, 16 Mar 2021 16:46:46 -0400
-Message-Id: <20210316204646.52060-4-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210316204646.52060-1-jwcart2@gmail.com>
-References: <20210316204646.52060-1-jwcart2@gmail.com>
+        id S231618AbhCPUtb (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 16 Mar 2021 16:49:31 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:44852 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231452AbhCPUtI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 16 Mar 2021 16:49:08 -0400
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id ACBD6564C35
+        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 21:49:04 +0100 (CET)
+Received: by mail-pl1-f182.google.com with SMTP id z5so17542189plg.3
+        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 13:49:04 -0700 (PDT)
+X-Gm-Message-State: AOAM533EWpArHZmMsbzyTAUbEBpSPDDVyTQ9CgBMOCmkckkqRefIj652
+        NZKlFdKfWoaZCTgxfVrP+RGksQGE9TvR+6K6znQ=
+X-Google-Smtp-Source: ABdhPJyHyep8Fu4YbKz0Xk17bQnJHOb+ZVh06onCGhLR6bRyGCXpSifzSBI4aU75ZKVyJ5pn0fog+YMfwauleQfhl7I=
+X-Received: by 2002:a17:90a:4d81:: with SMTP id m1mr837220pjh.143.1615927743402;
+ Tue, 16 Mar 2021 13:49:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210316165131.37312-1-jwcart2@gmail.com>
+In-Reply-To: <20210316165131.37312-1-jwcart2@gmail.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Tue, 16 Mar 2021 21:48:52 +0100
+X-Gmail-Original-Message-ID: <CAJfZ7==dLpSiV04zRKJdSXMg-FS3uZVQcQkixdK9tJ4+4d8xvQ@mail.gmail.com>
+Message-ID: <CAJfZ7==dLpSiV04zRKJdSXMg-FS3uZVQcQkixdK9tJ4+4d8xvQ@mail.gmail.com>
+Subject: Re: [PATCH] libsepol/cil: Check for duplicate blocks, optionals, and macros
+To:     James Carter <jwcart2@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        Evgeny Vereshchagin <evvers@ya.ru>
+Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Tue Mar 16 21:49:05 2021 +0100 (CET))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.030304, queueID=45EAC564C38
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-If a role or user attribute with nothing associated with it is used
-in a constraint expression, then the bitmap will be empty. This is
-not a problem for the kernel, but does cause problems when converting
-a kernel policy or module to CIL.
+On Tue, Mar 16, 2021 at 5:51 PM James Carter <jwcart2@gmail.com> wrote:
+>
+> In CIL, blocks, optionals, and macros share the same symbol table so
+> that the targets of "in" statements can be located. Because of this,
+> they cannot have the same name in the same namespace, but, because
+> they do not show up in the final policy, they can have the same name
+> as long as they are in different namespaces. Unfortunately, when
+> copying from one namespace to another, no check was being done to see
+> if there was a conflict.
+>
+> When copying blocks, optionals, and macros, if a datum is found in
+> the destination namespace, then there is a conflict with a previously
+> declared block, optional, or macro, so exit with an error.
+>
+> Reported-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+> Reported-by: Evgeny Vereshchagin <evvers@ya.ru>
+> Signed-off-by: James Carter <jwcart2@gmail.com>
 
-When creating a CIL policy from a kernel policy or module, if an
-empty bitmap is encountered, use the string "NO_IDENTIFIER". An
-error will occur if an attempt is made to compile the resulting
-policy, but a valid policy was not being produced before anyway.
-Treat types the same way even though empty bitmaps are not expected.
+I confirm this patch fixes the reported bug, and makes secilc no
+longer crashes on the non-reduced test case found by OSS-Fuzz.
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- libsepol/src/kernel_to_cil.c |  2 +-
- libsepol/src/module_to_cil.c | 10 +++++++---
- 2 files changed, 8 insertions(+), 4 deletions(-)
+Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
 
-diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-index 96e0f5d3..c6dd2e12 100644
---- a/libsepol/src/kernel_to_cil.c
-+++ b/libsepol/src/kernel_to_cil.c
-@@ -189,7 +189,7 @@ static char *constraint_expr_to_str(struct policydb *pdb, struct constraint_expr
- 					names = ebitmap_to_str(&curr->names, pdb->p_role_val_to_name, 1);
- 				}
- 				if (!names) {
--					goto exit;
-+					names = strdup("NO_IDENTIFIER");
- 				}
- 				if (strchr(names, ' ')) {
- 					new_val = create_str("(%s %s (%s))", 3, op, attr1, names);
-diff --git a/libsepol/src/module_to_cil.c b/libsepol/src/module_to_cil.c
-index 3cc75b42..2a794f57 100644
---- a/libsepol/src/module_to_cil.c
-+++ b/libsepol/src/module_to_cil.c
-@@ -1793,9 +1793,13 @@ static int constraint_expr_to_string(struct policydb *pdb, struct constraint_exp
- 						goto exit;
- 					}
- 				}
--				rc = name_list_to_string(name_list, num_names, &names);
--				if (rc != 0) {
--					goto exit;
-+				if (num_names == 0) {
-+					names = strdup("NO_IDENTIFIER");
-+				} else {
-+					rc = name_list_to_string(name_list, num_names, &names);
-+					if (rc != 0) {
-+						goto exit;
-+					}
- 				}
- 
- 				// length of values/oper + 2 spaces + 2 parens + null terminator
--- 
-2.26.2
+Thanks!
+Nicolas
+
+> ---
+>  libsepol/cil/src/cil_copy_ast.c | 89 +++++++++------------------------
+>  1 file changed, 25 insertions(+), 64 deletions(-)
+>
+> diff --git a/libsepol/cil/src/cil_copy_ast.c b/libsepol/cil/src/cil_copy_ast.c
+> index c9aada9d..ed967861 100644
+> --- a/libsepol/cil/src/cil_copy_ast.c
+> +++ b/libsepol/cil/src/cil_copy_ast.c
+> @@ -100,16 +100,17 @@ int cil_copy_block(__attribute__((unused)) struct cil_db *db, void *data, void *
+>         struct cil_block *orig = data;
+>         char *key = orig->datum.name;
+>         struct cil_symtab_datum *datum = NULL;
+> +       struct cil_block *new;
+>
+>         cil_symtab_get_datum(symtab, key, &datum);
+> -       if (datum == NULL) {
+> -               struct cil_block *new;
+> -               cil_block_init(&new);
+> -               *copy = new;
+> -       } else {
+> -               *copy = datum;;
+> +       if (datum != NULL) {
+> +               cil_tree_log(NODE(datum), CIL_ERR, "Re-declaration of %s %s", cil_node_to_string(NODE(datum)), key);
+> +               return SEPOL_ERR;
+>         }
+>
+> +       cil_block_init(&new);
+> +       *copy = new;
+> +
+>         return SEPOL_OK;
+>  }
+>
+> @@ -1509,64 +1510,22 @@ int cil_copy_macro(__attribute__((unused)) struct cil_db *db, void *data, void *
+>         struct cil_macro *orig = data;
+>         char *key = orig->datum.name;
+>         struct cil_symtab_datum *datum = NULL;
+> +       struct cil_macro *new;
+>
+>         cil_symtab_get_datum(symtab, key, &datum);
+> -       if (datum == NULL) {
+> -               struct cil_macro *new;
+> -               cil_macro_init(&new);
+> -               if (orig->params != NULL) {
+> -                       cil_copy_list(orig->params, &new->params);
+> -               }
+> -
+> -               *copy = new;
+> -
+> -       } else {
+> -               struct cil_list_item *curr_orig = NULL;
+> -               struct cil_list_item *curr_new = NULL;
+> -               struct cil_param *param_orig = NULL;
+> -               struct cil_param *param_new = NULL;
+> -
+> -               if (((struct cil_macro*)datum)->params != NULL) {
+> -                       curr_new = ((struct cil_macro*)datum)->params->head;
+> -               }
+> -
+> -               if (orig->params != NULL) {
+> -                       curr_orig = orig->params->head;
+> -               }
+> -
+> -               if (curr_orig != NULL && curr_new != NULL) {
+> -                       while (curr_orig != NULL) {
+> -                               if (curr_new == NULL) {
+> -                                       goto exit;
+> -                               }
+> -
+> -                               param_orig = (struct cil_param*)curr_orig->data;
+> -                               param_new = (struct cil_param*)curr_new->data;
+> -                               if (param_orig->str != param_new->str) {
+> -                                       goto exit;
+> -                               } else if (param_orig->flavor != param_new->flavor) {
+> -                                       goto exit;
+> -                               }
+> -
+> -                               curr_orig = curr_orig->next;
+> -                               curr_new = curr_new->next;
+> -                       }
+> -
+> -                       if (curr_new != NULL) {
+> -                               goto exit;
+> -                       }
+> -               } else if (!(curr_orig == NULL && curr_new == NULL)) {
+> -                       goto exit;
+> -               }
+> +       if (datum != NULL) {
+> +               cil_tree_log(NODE(datum), CIL_ERR, "Re-declaration of %s %s", cil_node_to_string(NODE(datum)), key);
+> +               return SEPOL_ERR;
+> +       }
+>
+> -               *copy = datum;
+> +       cil_macro_init(&new);
+> +       if (orig->params != NULL) {
+> +               cil_copy_list(orig->params, &new->params);
+>         }
+>
+> -       return SEPOL_OK;
+> +       *copy = new;
+>
+> -exit:
+> -       cil_log(CIL_INFO, "cil_copy_macro: macro cannot be redefined\n");
+> -       return SEPOL_ERR;
+> +       return SEPOL_OK;
+>  }
+>
+>  int cil_copy_optional(__attribute__((unused)) struct cil_db *db, void *data, void **copy, symtab_t *symtab)
+> @@ -1574,16 +1533,17 @@ int cil_copy_optional(__attribute__((unused)) struct cil_db *db, void *data, voi
+>         struct cil_optional *orig = data;
+>         char *key = orig->datum.name;
+>         struct cil_symtab_datum *datum = NULL;
+> +       struct cil_optional *new;
+>
+>         cil_symtab_get_datum(symtab, key, &datum);
+> -       if (datum == NULL) {
+> -               struct cil_optional *new;
+> -               cil_optional_init(&new);
+> -               *copy = new;
+> -       } else {
+> -               *copy = datum;
+> +       if (datum != NULL) {
+> +               cil_tree_log(NODE(datum), CIL_ERR, "Re-declaration of %s %s", cil_node_to_string(NODE(datum)), key);
+> +               return SEPOL_ERR;
+>         }
+>
+> +       cil_optional_init(&new);
+> +       *copy = new;
+> +
+>         return SEPOL_OK;
+>  }
+>
+> @@ -2122,6 +2082,7 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) u
+>                         args->dest = new;
+>                 }
+>         } else {
+> +               cil_tree_log(orig, CIL_ERR, "Problem copying %s node", cil_node_to_string(orig));
+>                 goto exit;
+>         }
+>
+> --
+> 2.26.2
+>
 

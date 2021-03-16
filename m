@@ -2,96 +2,97 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 46FD333DF7B
+	by mail.lfdr.de (Postfix) with ESMTP id 5141B33DF7C
 	for <lists+selinux@lfdr.de>; Tue, 16 Mar 2021 21:49:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231816AbhCPUs1 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 16 Mar 2021 16:48:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49272 "EHLO
+        id S229786AbhCPUsa (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 16 Mar 2021 16:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231183AbhCPUq5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 16 Mar 2021 16:46:57 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09291C061756
-        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 13:46:57 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id t16so325174qvr.12
-        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 13:46:56 -0700 (PDT)
+        with ESMTP id S232055AbhCPUrA (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 16 Mar 2021 16:47:00 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A04ADC06175F
+        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 13:46:59 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id l15so354749qvl.4
+        for <selinux@vger.kernel.org>; Tue, 16 Mar 2021 13:46:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=aRBz0TmwQUZDHrXeDqZKEcQG5wdjJ6pae6s147KCb/Q=;
-        b=j3UrUBdibL2E5mjMPmwG+ngR+zO7sifSgVrWEg1tGKOFgz2Wvim8fq1xWvZJDuJVn6
-         EV9o9R7oCQKLmjBU0JSA3QXJ+OWBQNvbZm+FryqLRLhnxAjmay/xwXsF3F+C86Yb+B97
-         yysP+glE03egU/lmisHrnK/hGGtG6jd9gNLEVAt271w4XF3NWeMDI/0wq4FERRZfQFzX
-         ws3IZiHhMI48TygTwKfQ7+fTydDkH1Ueeo+VQU9ISUVqpuDPRlVn63rm6Em2ue4PsJcp
-         9FPKC9zirUH+NFHfGf6csk8ql7pKkbgB4o41H3irsnwSU+Uw2dw/KMX6SG+4d/qi1xmD
-         Umlg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=KndiZX6ZvuL4L7L+mv14eJRLLDWcGmyh90ql2dfT/To=;
+        b=UE6vBORfGlWZaZcXavJhrt69IvGi9KQP/hYnSYfPv+KU7zT9ZQMW4jAm7nytIgvXYa
+         tYJueCk2jlS3U/1eOj1aA4nT1D2uKQ1z6bYC0GO1Av7rqZH3eTMx/d8zix6jbI6mrMWG
+         MR2L4aa9JxVY1hcszysCSARIBqMTWoGjCcZSsjTN/QidWTw9U2c3WJLunpJAFyxlFpGx
+         y4kQ5BMnOd/j5fbYIlDSw6mM+4Rw02RSgaZpstR+GXF9JaAie0mbOcBY9TriCUB9jt9l
+         lLozs9CoRGZ7F2DJKB42mM5zfDNa/FrhyjpetxVg83TSUIQhu3Y6/dgnyVXGoA/qMrmm
+         UZ9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=aRBz0TmwQUZDHrXeDqZKEcQG5wdjJ6pae6s147KCb/Q=;
-        b=qq8+CsZRtTqSQp8ScW+7lQBWhK54HGIjdaWGflGw5q1tL1g2NfwGOZFWqVaMELBnzy
-         BZ8LEIQBfAlyr/cyS2MEmHfPA3WMODvSSBV/wuBkN67oOn4YRRm9WF/3bkoifHXxovO5
-         dZVZXHabcmSRK3YNsL+fOQiumSk1wdWeO+lNycY9WzKSBKagInI9JqHlzWaoEPKOuj9i
-         Nr4XCdlNatnfykMceQENQaOM3e+p3jJRa5xY1VVCGbFJatqkcX9W4lMvLE7ALPgrZkcZ
-         yBTiwbQ3z1ZRFxtLhCU+3zx+Jb+AgDngFOZsNF+fHtwOOHmoMKlVRGX4w2PRki5S7J5U
-         1daQ==
-X-Gm-Message-State: AOAM530ySiLFkWl9rhTYM9Iea+yRZ5sKQwh1YE4K7K05U+O7A9xkj77Q
-        Cn68TljHfFPnMRx117kciXXixdB4m/0=
-X-Google-Smtp-Source: ABdhPJzNOekUqYCmF35Bb9+K6r5GLp1CwG/vBNeOgfPPsCOcKXoYrJGJ0oEmAZqqkQTBe6prR2SCTw==
-X-Received: by 2002:ad4:4745:: with SMTP id c5mr1412134qvx.39.1615927616165;
-        Tue, 16 Mar 2021 13:46:56 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=KndiZX6ZvuL4L7L+mv14eJRLLDWcGmyh90ql2dfT/To=;
+        b=XrTLC+Sa+Gk79ZswjIjefTWcCJy/WX5EyLvSMfgFUA60wOr+rjgouoTj91qncECz3U
+         OKJVWJdc7yWhhUG4fUbI6a+lCvV78ytq7YOdebEuS5tjxrnw0tAkusZ7XAXO7YyG2bcc
+         Rb88lujNt20+HrVQOlCYxqSEs9CB7eCgCxQm7djBLMA7yVXmJOlfwOmIDQVzIglvIzXU
+         S1XHSN8gwBH/wKCs0NYyfkCffoX9mgSIEjTeLDryJxMvYBbwdGWLuzkfMrXvXUmrPuhW
+         RaPVAyqEgrQt6CcQVpOCEf8FZfwULk1/04BnT6J0tkVgbq1xeKxixExIKrUSIpMvOBLT
+         V6rg==
+X-Gm-Message-State: AOAM5324xAVjFgFYePIo4ByGoMOlZ+0egl85eG1WR8ocbE/NI/ZaBZ49
+        qzq/sAgVm6ymeoQVFY3GfHDA37eZmjg=
+X-Google-Smtp-Source: ABdhPJzMG6WYpY+fNIP02LJ1pQlDAN55/v1JeV3a1jxG9OXSWpeZEzM5bmQQvwX4ngxj40UA1TA6xw==
+X-Received: by 2002:a0c:e385:: with SMTP id a5mr1436900qvl.12.1615927618768;
+        Tue, 16 Mar 2021 13:46:58 -0700 (PDT)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id v4sm13905687qte.18.2021.03.16.13.46.55
+        by smtp.gmail.com with ESMTPSA id v4sm13905687qte.18.2021.03.16.13.46.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Mar 2021 13:46:55 -0700 (PDT)
+        Tue, 16 Mar 2021 13:46:58 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     James Carter <jwcart2@gmail.com>
-Subject: [PATCH 1/4] libsepol/cil: Allow lists in constraint expressions
-Date:   Tue, 16 Mar 2021 16:46:43 -0400
-Message-Id: <20210316204646.52060-1-jwcart2@gmail.com>
+Subject: [PATCH 2/4] secilc/docs: Lists are now allowed in constraint expressions
+Date:   Tue, 16 Mar 2021 16:46:44 -0400
+Message-Id: <20210316204646.52060-2-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20210316204646.52060-1-jwcart2@gmail.com>
+References: <20210316204646.52060-1-jwcart2@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The expectation in CIL was to use user, role, or type attributes in
-constraint expressions. The problem is that neither user nor role
-attributes are part of the kernel binary policy, so when converting
-from a kernel policy to CIL, that would require the creation of a
-role or user attribute. The better solution is to just allow a list
-to be used. In fact, the only thing preventing a list to be used
-is a check in cil_verify_constraint_leaf_expr_syntax().
-
-Remove the check and allow lists in constraint expressions.
-
-The following is now allowed:
-  (constrain (CLASS1 (PERM1)) (eq r1 (ROLE1 ROLE2 ROLE_ATTR3)))
+Update the CIL documentation to show that lists are allowed in
+constraint expressions.
 
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/cil/src/cil_verify.c | 3 ---
- 1 file changed, 3 deletions(-)
+ secilc/docs/cil_constraint_statements.md | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
-index 6706e219..09e3daf9 100644
---- a/libsepol/cil/src/cil_verify.c
-+++ b/libsepol/cil/src/cil_verify.c
-@@ -225,9 +225,6 @@ int cil_verify_constraint_leaf_expr_syntax(enum cil_flavor l_flavor, enum cil_fl
- 				cil_log(CIL_ERR, "u3, r3, and t3 can only be used with (mls)validatetrans rules\n");
- 				goto exit;
- 			}
--		} else if (r_flavor == CIL_LIST) {
--			cil_log(CIL_ERR, "t1, t2, r1, r2, u1, u2 cannot be used on the left side with a list on the right side\n");
--			goto exit;
- 		}
- 	} else {
- 		if (r_flavor == CIL_CONS_U2) {
+diff --git a/secilc/docs/cil_constraint_statements.md b/secilc/docs/cil_constraint_statements.md
+index 2dd6e6f0..358927d6 100644
+--- a/secilc/docs/cil_constraint_statements.md
++++ b/secilc/docs/cil_constraint_statements.md
+@@ -34,12 +34,12 @@ Enable constraints to be placed on the specified permissions of the object class
+ <p><code>    (op u1 u2)</code></p>
+ <p><code>    (role_op r1 r2)</code></p>
+ <p><code>    (op t1 t2)</code></p>
+-<p><code>    (op u1 user_id)</code></p>
+-<p><code>    (op u2 user_id)</code></p>
+-<p><code>    (op r1 role_id)</code></p>
+-<p><code>    (op r2 role_id)</code></p>
+-<p><code>    (op t1 type_id)</code></p>
+-<p><code>    (op t2 type_id)</code></p>
++<p><code>    (op u1 user_id | (user_id ...))</code></p>
++<p><code>    (op u2 user_id | (user_id ...))</code></p>
++<p><code>    (op r1 role_id | (role_id ...))</code></p>
++<p><code>    (op r2 role_id | (role_id ...))</code></p>
++<p><code>    (op t1 type_id | (type_id ...))</code></p>
++<p><code>    (op t2 type_id | (type_id ...))</code></p>
+ <p>where:</p>
+ <p><code>  u1, r1, t1 = Source context: user, role or type</code></p>
+ <p><code>  u2, r2, t2 = Target context: user, role or type</code></p>
 -- 
 2.26.2
 

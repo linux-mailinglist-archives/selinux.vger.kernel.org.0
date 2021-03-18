@@ -2,121 +2,151 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CC54341010
-	for <lists+selinux@lfdr.de>; Thu, 18 Mar 2021 22:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81ACC341026
+	for <lists+selinux@lfdr.de>; Thu, 18 Mar 2021 23:04:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230333AbhCRVxk (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 18 Mar 2021 17:53:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:51025 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231137AbhCRVxO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 18 Mar 2021 17:53:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1616104393;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=D13idU/RGQP/7DvYnIgShNQmcLLiP8MbqYqD1hjQ6Gc=;
-        b=WfJSldn3d/yOxQURtKGZS9NKxT5Nuw4oVhYRHzfRrj4DPvZfsa5tPu3eYCL+md85yCfuZe
-        rScnB5weeuYdw7KoofmumwjZgRuYdwMPBuN78Q8ptvJjLwLuUD2MhgqBN+kVyYTGc4Z/7P
-        ilbBCpHG9gv3ZsnICaNcUNNZxTObZOw=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-17-2u2qY_HGPOKps-lke1lXDA-1; Thu, 18 Mar 2021 17:53:11 -0400
-X-MC-Unique: 2u2qY_HGPOKps-lke1lXDA-1
-Received: by mail-ed1-f70.google.com with SMTP id q25so7184852eds.16
-        for <selinux@vger.kernel.org>; Thu, 18 Mar 2021 14:53:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=D13idU/RGQP/7DvYnIgShNQmcLLiP8MbqYqD1hjQ6Gc=;
-        b=qjIlSsNBsGeuwlz2OYlV/SKCEjkC28Bx/5J9fDJHXBgTle6f1mlRW9x+odtX+5yTKG
-         spk84ODKP9/SU58ro//L4L1W3bwHhaQdB+y5CgCZLlLpdNBZQO9ARq2ydERWDY1bsNC6
-         9FOg/LfuajySdhPc1P1BEPd4XQVVsapepgZseBEqSvRb6gJADngQJbFxqfgGwOKTlgOg
-         2bPvpKy3h8pi87I/er5zkONa0+RdsfNM/FqmFFyyeTn0SV8XSS509JIA7nVH1Td0hAex
-         tLvdu/nYmrqJBDNrxTzFJyTITszmqUxiw4PzbAIG3SrWqc0k+OMAX97nq8Y/BaA0yQvt
-         zRcw==
-X-Gm-Message-State: AOAM5311ijUyPtXWEgtuyAXDfLC3U+xu6aQAdaL7J7CpzwgHKmIWaZkn
-        lpm6WPM/Oprnd9Z9F5diagCkSWYmfkXes7iU0XFqEseCNsS4dQ/YmrY0DrIsbMePWbgywhSq36B
-        uabqQ55p5KLC5iT2RDvQp1lGIW9JCfEhmTsx1ktJqLhP4dp2RSHmyCLkvFwqwoV1todhWhA==
-X-Received: by 2002:a05:6402:5252:: with SMTP id t18mr6363991edd.258.1616104389978;
-        Thu, 18 Mar 2021 14:53:09 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyP7xtEEsXql+EQRVY+e1DCigE4JLxBIKq9jNIkNxr5WWJRwzKIF7KzYGdYVie0Fsk6wGJn6w==
-X-Received: by 2002:a05:6402:5252:: with SMTP id t18mr6363980edd.258.1616104389791;
-        Thu, 18 Mar 2021 14:53:09 -0700 (PDT)
-Received: from omos.redhat.com ([2a02:8308:b105:dd00:277b:6436:24db:9466])
-        by smtp.gmail.com with ESMTPSA id a17sm2620255ejf.20.2021.03.18.14.53.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Mar 2021 14:53:08 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v3 3/3] selinuxfs: unify policy load error reporting
-Date:   Thu, 18 Mar 2021 22:53:03 +0100
-Message-Id: <20210318215303.2578052-4-omosnace@redhat.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210318215303.2578052-1-omosnace@redhat.com>
-References: <20210318215303.2578052-1-omosnace@redhat.com>
+        id S231280AbhCRWEW (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 18 Mar 2021 18:04:22 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:52905 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230333AbhCRWEA (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 18 Mar 2021 18:04:00 -0400
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 69B4D564E44
+        for <selinux@vger.kernel.org>; Thu, 18 Mar 2021 23:03:52 +0100 (CET)
+Received: by mail-pf1-f170.google.com with SMTP id g15so4456150pfq.3
+        for <selinux@vger.kernel.org>; Thu, 18 Mar 2021 15:03:52 -0700 (PDT)
+X-Gm-Message-State: AOAM530nYKrDdq2KS/NGvCCloLdHHclZtsvC5OVS5TOF+0kCw2S0fina
+        PB78d6JRO6VuodiwSDJ5Br+6s2HPpvMG/8fSTZY=
+X-Google-Smtp-Source: ABdhPJyQNTSlz9nweGsj7W3sK5zot2+hwjAOzrA8KgoTpLswqqQBJcwUUz7IpTZ/jj0bubMijBD/2SGCgW00TFSn+Rw=
+X-Received: by 2002:a63:c90c:: with SMTP id o12mr8910302pgg.210.1616105031037;
+ Thu, 18 Mar 2021 15:03:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210317190002.81465-1-jwcart2@gmail.com>
+In-Reply-To: <20210317190002.81465-1-jwcart2@gmail.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Thu, 18 Mar 2021 23:03:40 +0100
+X-Gmail-Original-Message-ID: <CAJfZ7==R5Gpvxpb--nErHb7ZP3LvCZYP-fPZOpg1ZJsQG_Fi5w@mail.gmail.com>
+Message-ID: <CAJfZ7==R5Gpvxpb--nErHb7ZP3LvCZYP-fPZOpg1ZJsQG_Fi5w@mail.gmail.com>
+Subject: Re: [PATCH] libsepol/cil: Destroy classperms list when resetting classpermission
+To:     James Carter <jwcart2@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Thu Mar 18 23:03:53 2021 +0100 (CET))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000000, queueID=F2FEA564EDD
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Let's drop the pr_err()s from sel_make_policy_nodes() and just add one
-pr_warn_ratelimited() call to the sel_make_policy_nodes() error path in
-sel_write_load().
+On Wed, Mar 17, 2021 at 8:00 PM James Carter <jwcart2@gmail.com> wrote:
+>
+> Nicolas Iooss reports:
+>   A few months ago, OSS-Fuzz found a crash in the CIL compiler, which
+>   got reported as
+>   https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=28648 (the title
+>   is misleading, or is caused by another issue that conflicts with the
+>   one I report in this message). Here is a minimized CIL policy which
+>   reproduces the issue:
+>
+>   (class CLASS (PERM))
+>   (classorder (CLASS))
+>   (sid SID)
+>   (sidorder (SID))
+>   (user USER)
+>   (role ROLE)
+>   (type TYPE)
+>   (category CAT)
+>   (categoryorder (CAT))
+>   (sensitivity SENS)
+>   (sensitivityorder (SENS))
+>   (sensitivitycategory SENS (CAT))
+>   (allow TYPE self (CLASS (PERM)))
+>   (roletype ROLE TYPE)
+>   (userrole USER ROLE)
+>   (userlevel USER (SENS))
+>   (userrange USER ((SENS)(SENS (CAT))))
+>   (sidcontext SID (USER ROLE TYPE ((SENS)(SENS))))
+>
+>   (classpermission CLAPERM)
+>
+>   (optional OPT
+>       (roletype nonexistingrole nonexistingtype)
+>       (classpermissionset CLAPERM (CLASS (PERM)))
+>   )
+>
+>   The CIL policy fuzzer (which mimics secilc built with clang Address
+>   Sanitizer) reports:
+>
+>   ==36541==ERROR: AddressSanitizer: heap-use-after-free on address
+>   0x603000004f98 at pc 0x56445134c842 bp 0x7ffe2a256590 sp
+>   0x7ffe2a256588
+>   READ of size 8 at 0x603000004f98 thread T0
+>       #0 0x56445134c841 in __cil_verify_classperms
+>   /selinux/libsepol/src/../cil/src/cil_verify.c:1620:8
+>       #1 0x56445134a43e in __cil_verify_classpermission
+>   /selinux/libsepol/src/../cil/src/cil_verify.c:1650:9
+>       #2 0x56445134a43e in __cil_pre_verify_helper
+>   /selinux/libsepol/src/../cil/src/cil_verify.c:1715:8
+>       #3 0x5644513225ac in cil_tree_walk_core
+>   /selinux/libsepol/src/../cil/src/cil_tree.c:272:9
+>       #4 0x564451322ab1 in cil_tree_walk
+>   /selinux/libsepol/src/../cil/src/cil_tree.c:316:7
+>       #5 0x5644513226af in cil_tree_walk_core
+>   /selinux/libsepol/src/../cil/src/cil_tree.c:284:9
+>       #6 0x564451322ab1 in cil_tree_walk
+>   /selinux/libsepol/src/../cil/src/cil_tree.c:316:7
+>       #7 0x5644512b88fd in cil_pre_verify
+>   /selinux/libsepol/src/../cil/src/cil_post.c:2510:7
+>       #8 0x5644512b88fd in cil_post_process
+>   /selinux/libsepol/src/../cil/src/cil_post.c:2524:7
+>       #9 0x5644511856ff in cil_compile
+>   /selinux/libsepol/src/../cil/src/cil.c:564:7
+>
+> The classperms list of a classpermission rule is created and filled
+> in when classpermissionset rules are processed, so it doesn't own any
+> part of the list and shouldn't retain any of it when it is reset.
+>
+> Destroy the classperms list (without destroying the data in it)  when
+> resetting a classpermission rule.
+>
+> Reported-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+> Signed-off-by: James Carter <jwcart2@gmail.com>
+> ---
+>  libsepol/cil/src/cil_reset_ast.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/libsepol/cil/src/cil_reset_ast.c b/libsepol/cil/src/cil_reset_ast.c
+> index 3da1b9a6..db70a535 100644
+> --- a/libsepol/cil/src/cil_reset_ast.c
+> +++ b/libsepol/cil/src/cil_reset_ast.c
+> @@ -54,7 +54,7 @@ static void cil_reset_classpermission(struct cil_classpermission *cp)
+>                 return;
+>         }
+>
+> -       cil_reset_classperms_list(cp->classperms);
+> +       cil_list_destroy(&cp->classperms, CIL_FALSE);
+>  }
+>
+>  static void cil_reset_classperms_set(struct cil_classperms_set *cp_set)
 
-Changing from error to warning makes sense, since after 02a52c5c8c3b
-("selinux: move policy commit after updating selinuxfs"), this error
-path no longer leads to a broken selinuxfs tree (it's just kept in the
-original state and policy load is aborted).
+Hello,
+This patch seems to make secilc segfault on a test policy, for example
+on GitHub Actions:
 
-I also added _ratelimited to be consistent with the other prtin in the
-same function (it's probably not necessary, but can't really hurt...
-there are likely more important error messages to be printed when
-filesystem entry creation starts erroring out).
+make[1]: Entering directory '/home/runner/work/selinux/selinux/secilc'
+./secilc test/policy.cil
+make[1]: *** [Makefile:32: test] Segmentation fault (core dumped)
 
-Suggested-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- security/selinux/selinuxfs.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+(from https://github.com/fishilico/selinux/runs/2135040809?check_suite_focus=true#step:9:2645).
+It also produces a segmentation fault on my Arch Linux development
+system (building with gcc or clang and the default compilation flags
+of the project).
 
-diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-index dc7297abe4ea..e4cd7cb856f3 100644
---- a/security/selinux/selinuxfs.c
-+++ b/security/selinux/selinuxfs.c
-@@ -566,17 +566,13 @@ static int sel_make_policy_nodes(struct selinux_fs_info *fsi,
- 
- 	ret = sel_make_bools(newpolicy, tmp_bool_dir, &tmp_bool_num,
- 			     &tmp_bool_names, &tmp_bool_values);
--	if (ret) {
--		pr_err("SELinux: failed to load policy booleans\n");
-+	if (ret)
- 		goto out;
--	}
- 
- 	ret = sel_make_classes(newpolicy, tmp_class_dir,
- 			       &fsi->last_class_ino);
--	if (ret) {
--		pr_err("SELinux: failed to load policy classes\n");
-+	if (ret)
- 		goto out;
--	}
- 
- 	/* booleans */
- 	old_dentry = fsi->bool_dir;
-@@ -653,6 +649,7 @@ static ssize_t sel_write_load(struct file *file, const char __user *buf,
- 
- 	length = sel_make_policy_nodes(fsi, load_state.policy);
- 	if (length) {
-+		pr_warn_ratelimited("SELinux: failed to initialize selinuxfs\n");
- 		selinux_policy_cancel(fsi->state, &load_state);
- 		goto out;
- 	}
--- 
-2.30.2
+Is this segfault fixed by the other patches you sent?
+
+Thanks,
+Nicolas
 

@@ -2,101 +2,113 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AB21344FE6
-	for <lists+selinux@lfdr.de>; Mon, 22 Mar 2021 20:30:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FEAD3465F5
+	for <lists+selinux@lfdr.de>; Tue, 23 Mar 2021 18:09:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231539AbhCVTaD (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 22 Mar 2021 15:30:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57966 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231308AbhCVT3o (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 22 Mar 2021 15:29:44 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 750C6C061574
-        for <selinux@vger.kernel.org>; Mon, 22 Mar 2021 12:29:43 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id bx7so20761112edb.12
-        for <selinux@vger.kernel.org>; Mon, 22 Mar 2021 12:29:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=y5r8vrk0RmFcttAb72LWQcbklz+HCMJrxiDMKZwe4wg=;
-        b=p5erR9PEGFp1swe2diXRMbGO9r+wTbNT2PF+f2EAt7hbHnNgUQvv+xkP+6S2EL1GnR
-         U+Uzw6p9rh4c/04ULDSEkp9sv0gcB1BqwkdJqEeoF0z9/AvBcL7A9SY4Oule9LFFQi0F
-         hN4ygjX6VidadiMWzgWpnyH+DaEj1rtJnuH+Lt1a8PRyGrx8nGIfjHQF03vhuI0QhVa+
-         K0K3RO+w2VtikIWCHOsN4xlP+ThA3c4nluCb+xhRZF7rbQXl/9Mr9OnVnOLaUGGtzlPS
-         0/kVpEDakFfd3WGTC+h7HtKhn6xip28qFIbwV1aopml7+ci9Bv8p4EwpUkIW3CqhhPLw
-         svPg==
+        id S229452AbhCWRIo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 23 Mar 2021 13:08:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:21955 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229871AbhCWRIh (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 23 Mar 2021 13:08:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1616519316;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=mGXsKqwmCuWhJMJy6T6zftVw1uWRfrsTgEFydCHaDcA=;
+        b=fbTbnFt1gfTaWTPQU13vGU6PZy2WtFJzKUwYGEX4TiwGCK4KX8ofpCKUgSUy1E/i3ZGobn
+        Q61IM9OD75sAFQDNIsLU+QfzPVpgavpZD3KEhJq3Y8P9gIW7btVCA46n1EI1lMKMTpAVLl
+        pC21ZHUYddU7shllQb6VNrkEbOCIUxI=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-131-qa_pjj1mNXOSQA-w1CHGYQ-1; Tue, 23 Mar 2021 13:08:33 -0400
+X-MC-Unique: qa_pjj1mNXOSQA-w1CHGYQ-1
+Received: by mail-ej1-f70.google.com with SMTP id en21so1362671ejc.2
+        for <selinux@vger.kernel.org>; Tue, 23 Mar 2021 10:08:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=y5r8vrk0RmFcttAb72LWQcbklz+HCMJrxiDMKZwe4wg=;
-        b=lI2ptqw+gWHytv5haEMEVLAGhINifcTMY9Lcje9NX7m9jto0LPwQrDicX6Mfo9WqXp
-         CjzN/jL8pRHnn1K80zjD6sOCNB/5PPNYUgUkUhsXwB2JcCxCbpjLZfd7+VErwtHkytK/
-         82oWMPPODtAw588Kb4tLXxn54nIpIGipFJcTjz3XfMbMW1cAZ7zfFymypXQUPBYjjYs3
-         KYgByn0MS9cljsGqqfKp4smd1ms/uGIrmUQ6n3lFQjlcOY8mLSBo2koMV7FREkTOXHlC
-         J3AnDdl0ayKDq47zqCclgtHsbvkH2VIOpDBjHZTL+RYLwVAw/4OQV5Tp1/sTIW+6IuVE
-         JACQ==
-X-Gm-Message-State: AOAM532afu1SpJu0rLvd7LEzgx3wLQwshTX4nvoPSg7Wb07V4d2NBITw
-        laAUyvugzL2r38e7HYllWl4azwaPK4ywB14rLZ9O
-X-Google-Smtp-Source: ABdhPJzGU/T9xoph1YWbf4mgQ+693uVmIILpwh/6TNc6el91BsI8BWGqoAEachuvH9/dsXb8UJ6Y+Polb/dHCDpGtRw=
-X-Received: by 2002:aa7:db4f:: with SMTP id n15mr1227097edt.12.1616441382025;
- Mon, 22 Mar 2021 12:29:42 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=mGXsKqwmCuWhJMJy6T6zftVw1uWRfrsTgEFydCHaDcA=;
+        b=W/gnscWsfEFjXuvbUvvy3pVC/+CY1I8Okw72igRrYK/e8OO8wtdyvQVzh4QVo6gFhO
+         7VTdoRmP4m3512h3c3zK1vrvOXFbPhTozeq/R0DBdwWHqDVGo/cx88bzJD4mkCb6kWt1
+         /dT9MxsXT56JBd8QQ4Ej9/rfyYQVp+WGWsgrqnnksREHf2y7S24XmoDBqhynioLMDdOf
+         Mz72Wiw1BCONtrDE/gXTurLdKPVAyLKWx484LHJW61eiYWeXf8cEuIi6uGHeLF0VC/OG
+         SRTQ8tQMBYzitUhDWIPdpTrwoxsa1YmvE2gKzrQcNoWZmtJ/vuHkDUcDkBs3ifvjkqvd
+         y8MA==
+X-Gm-Message-State: AOAM532eVxiU48mdo6jNU63EIWudfXWBSJhqqp7tT/yVWqKt58uf/Bj2
+        9CfXNs+erGr+r0qawya44+Sg3RpixX8a8yNFEPP6m/ki2xSJumy70NAkFkt78DJIErbSw+ISJ6S
+        PpbTY4lWzM13i8r1f0uD5P26DwSj9UC3I2uLi0daqboBCTaG2FwFoAcmDuwGn9tdoiGtFiw==
+X-Received: by 2002:a50:fb10:: with SMTP id d16mr5646263edq.73.1616519312425;
+        Tue, 23 Mar 2021 10:08:32 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz+Fqe4nK0z/XRbVyM1W084+0hSuE0/LohaihYM9SsirqQIdwATnxyEpoHhHYvzz4vAyNohYA==
+X-Received: by 2002:a50:fb10:: with SMTP id d16mr5646238edq.73.1616519312205;
+        Tue, 23 Mar 2021 10:08:32 -0700 (PDT)
+Received: from omos.redhat.com ([2a02:8308:b105:dd00:277b:6436:24db:9466])
+        by smtp.gmail.com with ESMTPSA id k9sm13337948edn.68.2021.03.23.10.08.31
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 23 Mar 2021 10:08:31 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [RFC PATCH userspace 0/6] Parallel setfiles/restorecon
+Date:   Tue, 23 Mar 2021 18:08:24 +0100
+Message-Id: <20210323170830.182553-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <161609713992.55424.6906498317563652734.stgit@olly>
-In-Reply-To: <161609713992.55424.6906498317563652734.stgit@olly>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 22 Mar 2021 15:29:31 -0400
-Message-ID: <CAHC9VhRF4xRQiu+iww=G3FkY2vcjFuPAj4=5yVW4dxCYSnF1NA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Split security_task_getsecid() into subj and obj variants
-To:     linux-security-module@vger.kernel.org, linux-audit@redhat.com,
-        selinux@vger.kernel.org
-Cc:     Casey Schaufler <casey@schaufler-ca.com>,
-        John Johansen <john.johansen@canonical.com>,
-        Richard Guy Briggs <rgb@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Mar 18, 2021 at 4:42 PM Paul Moore <paul@paul-moore.com> wrote:
->
-> An update on the previous RFC patchset found here:
->
-> https://lore.kernel.org/linux-security-module/161377712068.87807.12246856567527156637.stgit@sifl/
->
-> Aside from being rebased to the current SELinux next branch (which
-> in turn is based on v5.12-rc2), this revision changes the binder
-> related code to always use the objective credentials as discussed
-> in the thread above.  I've also dropped the AppArmor patch as John
-> has a better version in progress; in the meantime AppArmor should
-> continue to work exactly as it did before this patchset so there
-> is no harm in merging this without the AppArmor patch.
->
-> Casey, John, and Richard; I dropped your ACKs, Reviewed-by, etc.
-> tags as the binder changes seemed substantial enough to not
-> carryover your tags.  I would appreciate it if you could re-review
-> this revision; the changes should be minimal.  I did leave Mimi's
-> tag on this revision as she qualified it for IMA and that code
-> didn't change.
->
-> ---
->
-> Paul Moore (3):
->       lsm: separate security_task_getsecid() into subjective and objective variants
->       selinux: clarify task subjective and objective credentials
->       smack: differentiate between subjective and objective task credentials
->
->
->  security/selinux/hooks.c   | 112 ++++++++++++++++++++++++-------------
->  security/smack/smack.h     |  18 +++++-
->  security/smack/smack_lsm.c |  40 ++++++++-----
->  3 files changed, 117 insertions(+), 53 deletions(-)
+This series adds basic support for parallel relabeling to the libselinux
+API and the setfiles/restorecon CLI tools. It turns out that doing the
+relabeling in parallel can significantly reduce the time even with a
+relatively simple approach.
 
-All three patches have been merged into selinux/next, thanks for the
-help/review everyone!
+The first patch is a small cleanup that was found along the way and can
+be applied independently. Patches 2-4 are small incremental changes that
+make the internal selinux_restorecon functions more thread-safe (I kept
+them separate for ease of of review, but maybe they should be rather
+folded into the netx patch...). Patch 5 then completes the parallel
+relabeling implementation at libselinux level and adds a new function
+to the API that allows to make use of it. Finally, patch 6 adds parallel
+relabeling support to he setfiles/restorecon tools.
+
+The relevant man pages are also updated to reflect the new
+functionality.
+
+The patch descriptions contain more details, namely the last patch has
+also some benchmark numbers.
+
+Please test and review. I'm still not fully confident I got everything
+right (esp. regarding error handling), but I wanted to put this forward
+as an RFC to get some early feedback.
+
+Ondrej Mosnacek (6):
+  selinux_restorecon: simplify fl_head allocation by using calloc()
+  selinux_restorecon: protect file_spec list with a mutex
+  selinux_restorecon: introduce selinux_log_sync()
+  selinux_restorecon: add a global mutex to synchronize progress output
+  selinux_restorecon: introduce selinux_restorecon_parallel(3)
+  setfiles/restorecon: support parallel relabeling
+
+ libselinux/include/selinux/restorecon.h       |  14 +
+ libselinux/man/man3/selinux_restorecon.3      |  29 +
+ .../man/man3/selinux_restorecon_parallel.3    |   1 +
+ libselinux/src/libselinux.map                 |   5 +
+ libselinux/src/selinux_internal.h             |  14 +
+ libselinux/src/selinux_restorecon.c           | 498 ++++++++++++------
+ policycoreutils/setfiles/Makefile             |   2 +-
+ policycoreutils/setfiles/restore.c            |   7 +-
+ policycoreutils/setfiles/restore.h            |   2 +-
+ policycoreutils/setfiles/restorecon.8         |   9 +
+ policycoreutils/setfiles/setfiles.8           |   9 +
+ policycoreutils/setfiles/setfiles.c           |  28 +-
+ 12 files changed, 436 insertions(+), 182 deletions(-)
+ create mode 100644 libselinux/man/man3/selinux_restorecon_parallel.3
 
 -- 
-paul moore
-www.paul-moore.com
+2.30.2
+

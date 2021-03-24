@@ -2,309 +2,80 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4620B3465FC
-	for <lists+selinux@lfdr.de>; Tue, 23 Mar 2021 18:09:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4865D347534
+	for <lists+selinux@lfdr.de>; Wed, 24 Mar 2021 10:59:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229764AbhCWRJP (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 23 Mar 2021 13:09:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:30061 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230050AbhCWRIn (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 23 Mar 2021 13:08:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1616519322;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=XsOY1N9DVLuUMCekvDNDqyoYEic1JhxmkoreO8nLHX0=;
-        b=XGQ9pRnd7py35vwy9gU47u9KUt6F/f43zhnpcoZZDIyq4VQXaQDqzKpZ71ESIlQkOlX0Q7
-        UzCLLbEfPh2BWKp0xHTRa96YDud8aCyjpY/UaLG7J1Xo6QnHPFq4ppp+ySh8SIbwSAK/xm
-        ZR5jqbwzifDb1N1prRT8hlvbf0dGLTA=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-149-Gzk33Vc6P0mSUUahf_C8aQ-1; Tue, 23 Mar 2021 13:08:40 -0400
-X-MC-Unique: Gzk33Vc6P0mSUUahf_C8aQ-1
-Received: by mail-ej1-f70.google.com with SMTP id e7so1360448ejx.5
-        for <selinux@vger.kernel.org>; Tue, 23 Mar 2021 10:08:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=XsOY1N9DVLuUMCekvDNDqyoYEic1JhxmkoreO8nLHX0=;
-        b=Byw17IqbnnOAMkRQq/IF/c6m+mEekXPquil78RLHBTRL/O5Qf/I++8fW7i7tJ7Cxil
-         MZ8xMuWtgqI9Nu9t/86lct0CgOor0nZTp28LMTxZAYWZHIn7VUnALp5r85vnUZcWRnoN
-         gUAvOUs00lfF87BEZq4N9QYKdOcvGlc3juOj6GdvV9MiLYAEvmhHT8vE/kGfFQPrxKhq
-         JBioLBz2ubR2n1Q7jap1LvAWJOojlzUkS2dpEIguMjaICaabtViAECnHumH1OcE1avSP
-         FFEEtxA1AHV9CSW9EFrzXr0Nr/gCA6Uu25E/RsoR6ct0ISQLSV4HmU1u0p+KnHvNgWyl
-         jsJA==
-X-Gm-Message-State: AOAM531Ao3chnjoBCFpgse6RJ3eLd6+tEeWaAKE3a+KABszOZrroSLiA
-        ca2CLW0NwaTXVqTuxB7VSaUVTDc9/ZzlD0VQh3p2XT7k09DjZb5KyDejxe63h7nZ/n45nYeXITY
-        Z8+Wco8IRKu8RAwDCNzbHjlOgwVEjt8qJ4JWJyEqrIsSifChY0ha8Vdu6/MFwJhz5Nbbp9w==
-X-Received: by 2002:a05:6402:1103:: with SMTP id u3mr5423031edv.205.1616519318604;
-        Tue, 23 Mar 2021 10:08:38 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyK7fS5ZZcWmSFE+SY0WZbpcdZMSF9nK5k1dO2OuLPqNIbwSkm/JfWXtOv8liaCaylS4JBtGw==
-X-Received: by 2002:a05:6402:1103:: with SMTP id u3mr5423000edv.205.1616519318309;
-        Tue, 23 Mar 2021 10:08:38 -0700 (PDT)
-Received: from omos.redhat.com ([2a02:8308:b105:dd00:277b:6436:24db:9466])
-        by smtp.gmail.com with ESMTPSA id k9sm13337948edn.68.2021.03.23.10.08.37
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Mar 2021 10:08:37 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [RFC PATCH userspace 6/6] setfiles/restorecon: support parallel relabeling
-Date:   Tue, 23 Mar 2021 18:08:30 +0100
-Message-Id: <20210323170830.182553-7-omosnace@redhat.com>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210323170830.182553-1-omosnace@redhat.com>
+        id S232960AbhCXJ64 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 24 Mar 2021 05:58:56 -0400
+Received: from jptosegrel01.sonyericsson.com ([124.215.201.71]:14978 "EHLO
+        JPTOSEGREL01.sonyericsson.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S233163AbhCXJ6f (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 24 Mar 2021 05:58:35 -0400
+Subject: Re: [RFC PATCH userspace 0/6] Parallel setfiles/restorecon
+To:     Ondrej Mosnacek <omosnace@redhat.com>, <selinux@vger.kernel.org>
 References: <20210323170830.182553-1-omosnace@redhat.com>
+From:   peter enderborg <peter.enderborg@sony.com>
+Message-ID: <cd8c8721-0194-e2d3-b7a5-2f00834b5f60@sony.com>
+Date:   Wed, 24 Mar 2021 10:58:29 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210323170830.182553-1-omosnace@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Content-Language: en-GB
+X-SEG-SpamProfiler-Analysis: v=2.3 cv=fqOim2wf c=1 sm=1 tr=0 a=9drRLWArJOlETflmpfiyCA==:117 a=IkcTkHD0fZMA:10 a=dESyimp9J3IA:10 a=1ofRuVqaXi316pVUBy4A:9 a=QEXdDO2ut3YA:10 a=fCgQI5UlmZDRPDxm0A3o:22
+X-SEG-SpamProfiler-Score: 0
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Use the newly introduced selinux_restorecon_parallel(3) in
-setfiles/restorecon and a -T option to both to allow enabling parallel
-relabeling. The default behavior without specifying the -T option is to
-use 1 thread; parallel relabeling must be requested explicitly by
-passing -T 0 (which will use as many threads as there are available CPU
-cores) or -T <N>, which will use <N> threads.
-
-=== Benchmarks ===
-As measured on a 32-core cloud VM with Fedora 34. Not a fully
-representative environment, but still the scaling is quite good.
-
-WITHOUT PATCHES:
-$ time restorecon -rn /usr/src
-
-real    0m23,580s
-user    0m22,681s
-sys     0m0,707s
-
-WITH PATCHES:
-$ time restorecon -rn -T 1 /usr/src
-
-real    0m23,493s
-user    0m22,637s
-sys     0m0,668s
-$ time restorecon -rn -T 2 /usr/src
-
-real    0m13,438s
-user    0m25,536s
-sys     0m0,946s
-$ time restorecon -rn -T 8 /usr/src
-
-real    0m5,476s
-user    0m38,440s
-sys     0m3,016s
-$ time restorecon -rn -T 16 /usr/src
-
-real    0m3,868s
-user    0m51,292s
-sys     0m5,289s
-$ time restorecon -rn -T 32 /usr/src
-
-real    0m2,817s
-user    1m0,317s
-sys     0m6,157s
-
-Note that the benchmarks were performed in read-only mode (-n), so the
-labels were only read and looked up in the database, not written. When
-fixing labels on a heavily mislabeled system, the scaling would likely
-be event better, since a larger % of work could be done in parallel.
-
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- policycoreutils/setfiles/Makefile     |  2 +-
- policycoreutils/setfiles/restore.c    |  7 ++++---
- policycoreutils/setfiles/restore.h    |  2 +-
- policycoreutils/setfiles/restorecon.8 |  9 +++++++++
- policycoreutils/setfiles/setfiles.8   |  9 +++++++++
- policycoreutils/setfiles/setfiles.c   | 28 ++++++++++++++++-----------
- 6 files changed, 41 insertions(+), 16 deletions(-)
-
-diff --git a/policycoreutils/setfiles/Makefile b/policycoreutils/setfiles/Makefile
-index a3bbbe11..82de8f2a 100644
---- a/policycoreutils/setfiles/Makefile
-+++ b/policycoreutils/setfiles/Makefile
-@@ -6,7 +6,7 @@ MANDIR = $(PREFIX)/share/man
- AUDITH ?= $(shell test -f /usr/include/libaudit.h && echo y)
- 
- CFLAGS ?= -g -Werror -Wall -W
--override LDLIBS += -lselinux -lsepol
-+override LDLIBS += -lselinux -lsepol -lpthread
- 
- ifeq ($(AUDITH), y)
- 	override CFLAGS += -DUSE_AUDIT
-diff --git a/policycoreutils/setfiles/restore.c b/policycoreutils/setfiles/restore.c
-index 9d688c60..74d48bb3 100644
---- a/policycoreutils/setfiles/restore.c
-+++ b/policycoreutils/setfiles/restore.c
-@@ -72,7 +72,7 @@ void restore_finish(void)
- 	}
- }
- 
--int process_glob(char *name, struct restore_opts *opts)
-+int process_glob(char *name, struct restore_opts *opts, size_t nthreads)
- {
- 	glob_t globbuf;
- 	size_t i = 0;
-@@ -91,8 +91,9 @@ int process_glob(char *name, struct restore_opts *opts)
- 			continue;
- 		if (len > 0 && strcmp(&globbuf.gl_pathv[i][len], "/..") == 0)
- 			continue;
--		rc = selinux_restorecon(globbuf.gl_pathv[i],
--					opts->restorecon_flags);
-+		rc = selinux_restorecon_parallel(globbuf.gl_pathv[i],
-+						 opts->restorecon_flags,
-+						 nthreads);
- 		if (rc < 0)
- 			errors = rc;
- 	}
-diff --git a/policycoreutils/setfiles/restore.h b/policycoreutils/setfiles/restore.h
-index ac6ad680..bb35a1db 100644
---- a/policycoreutils/setfiles/restore.h
-+++ b/policycoreutils/setfiles/restore.h
-@@ -49,7 +49,7 @@ struct restore_opts {
- void restore_init(struct restore_opts *opts);
- void restore_finish(void);
- void add_exclude(const char *directory);
--int process_glob(char *name, struct restore_opts *opts);
-+int process_glob(char *name, struct restore_opts *opts, size_t nthreads);
- extern char **exclude_list;
- 
- #endif
-diff --git a/policycoreutils/setfiles/restorecon.8 b/policycoreutils/setfiles/restorecon.8
-index 668486f6..e07db2c8 100644
---- a/policycoreutils/setfiles/restorecon.8
-+++ b/policycoreutils/setfiles/restorecon.8
-@@ -33,6 +33,8 @@ restorecon \- restore file(s) default SELinux security contexts.
- .RB [ \-W ]
- .RB [ \-I | \-D ]
- .RB [ \-x ]
-+.RB [ \-T
-+.IR nthreads ]
- 
- .SH "DESCRIPTION"
- This manual page describes the
-@@ -160,6 +162,13 @@ prevent
- .B restorecon
- from crossing file system boundaries.
- .TP
-+.BI \-T \ nthreads
-+use up to
-+.I nthreads
-+threads.  Specify 0 to create as many threads as there are available
-+CPU cores; 1 to use only a single thread (default); or any positive
-+number to use the given number of threads (if possible).
-+.TP
- .SH "ARGUMENTS"
- .IR pathname \ ...
- The pathname for the file(s) to be relabeled.
-diff --git a/policycoreutils/setfiles/setfiles.8 b/policycoreutils/setfiles/setfiles.8
-index 4d28bc9a..15f939d1 100644
---- a/policycoreutils/setfiles/setfiles.8
-+++ b/policycoreutils/setfiles/setfiles.8
-@@ -19,6 +19,8 @@ setfiles \- set SELinux file security contexts.
- .RB [ \-W ]
- .RB [ \-F ]
- .RB [ \-I | \-D ]
-+.RB [ \-T
-+.IR nthreads ]
- .I spec_file
- .IR pathname \ ...
- 
-@@ -161,6 +163,13 @@ quote marks or backslashes.  The
- option of GNU
- .B find
- produces input suitable for this mode.
-+.TP
-+.BI \-T \ nthreads
-+use up to
-+.I nthreads
-+threads.  Specify 0 to create as many threads as there are available
-+CPU cores; 1 to use only a single thread (default); or any positive
-+number to use the given number of threads (if possible).
- 
- .SH "ARGUMENTS"
- .TP
-diff --git a/policycoreutils/setfiles/setfiles.c b/policycoreutils/setfiles/setfiles.c
-index f018d161..2313a21f 100644
---- a/policycoreutils/setfiles/setfiles.c
-+++ b/policycoreutils/setfiles/setfiles.c
-@@ -1,4 +1,5 @@
- #include "restore.h"
-+#include <stdlib.h>
- #include <unistd.h>
- #include <fcntl.h>
- #include <stdio_ext.h>
-@@ -34,14 +35,14 @@ static __attribute__((__noreturn__)) void usage(const char *const name)
- {
- 	if (iamrestorecon) {
- 		fprintf(stderr,
--			"usage:  %s [-iIDFmnprRv0x] [-e excludedir] pathname...\n"
--			"usage:  %s [-iIDFmnprRv0x] [-e excludedir] -f filename\n",
-+			"usage:  %s [-iIDFmnprRv0xT] [-e excludedir] pathname...\n"
-+			"usage:  %s [-iIDFmnprRv0xT] [-e excludedir] -f filename\n",
- 			name, name);
- 	} else {
- 		fprintf(stderr,
--			"usage:  %s [-diIDlmnpqvEFW] [-e excludedir] [-r alt_root_path] [-c policyfile] spec_file pathname...\n"
--			"usage:  %s [-diIDlmnpqvEFW] [-e excludedir] [-r alt_root_path] [-c policyfile] spec_file -f filename\n"
--			"usage:  %s -s [-diIDlmnpqvFW] spec_file\n",
-+			"usage:  %s [-diIDlmnpqvEFWT] [-e excludedir] [-r alt_root_path] [-c policyfile] spec_file pathname...\n"
-+			"usage:  %s [-diIDlmnpqvEFWT] [-e excludedir] [-r alt_root_path] [-c policyfile] spec_file -f filename\n"
-+			"usage:  %s -s [-diIDlmnpqvFWT] spec_file\n",
- 			name, name, name);
- 	}
- 	exit(-1);
-@@ -144,12 +145,12 @@ int main(int argc, char **argv)
- 	int opt, i = 0;
- 	const char *input_filename = NULL;
- 	int use_input_file = 0;
--	char *buf = NULL;
--	size_t buf_len;
-+	char *buf = NULL, *endptr;
-+	size_t buf_len, nthreads = 1;
- 	const char *base;
- 	int errors = 0;
--	const char *ropts = "e:f:hiIDlmno:pqrsvFRW0x";
--	const char *sopts = "c:de:f:hiIDlmno:pqr:svEFR:W0";
-+	const char *ropts = "e:f:hiIDlmno:pqrsvFRW0xT:";
-+	const char *sopts = "c:de:f:hiIDlmno:pqr:svEFR:W0T:";
- 	const char *opts;
- 	union selinux_callback cb;
- 
-@@ -370,6 +371,11 @@ int main(int argc, char **argv)
- 				usage(argv[0]);
-                         }
-                         break;
-+		case 'T':
-+			nthreads = strtoull(optarg, &endptr, 10);
-+			if (*optarg == '\0' || *endptr != '\0')
-+				usage(argv[0]);
-+			break;
- 		case 'h':
- 		case '?':
- 			usage(argv[0]);
-@@ -448,13 +454,13 @@ int main(int argc, char **argv)
- 			buf[len - 1] = 0;
- 			if (!strcmp(buf, "/"))
- 				r_opts.mass_relabel = SELINUX_RESTORECON_MASS_RELABEL;
--			errors |= process_glob(buf, &r_opts) < 0;
-+			errors |= process_glob(buf, &r_opts, nthreads) < 0;
- 		}
- 		if (strcmp(input_filename, "-") != 0)
- 			fclose(f);
- 	} else {
- 		for (i = optind; i < argc; i++)
--			errors |= process_glob(argv[i], &r_opts) < 0;
-+			errors |= process_glob(argv[i], &r_opts, nthreads) < 0;
- 	}
- 
- 	maybe_audit_mass_relabel(r_opts.mass_relabel, errors);
--- 
-2.30.2
+On 3/23/21 6:08 PM, Ondrej Mosnacek wrote:
+> This series adds basic support for parallel relabeling to the libselinux
+> API and the setfiles/restorecon CLI tools. It turns out that doing the
+> relabeling in parallel can significantly reduce the time even with a
+> relatively simple approach.
+Nice! Have you any figures? Is it valid for both solid state and mechanical storage?
+> The first patch is a small cleanup that was found along the way and can
+> be applied independently. Patches 2-4 are small incremental changes that
+> make the internal selinux_restorecon functions more thread-safe (I kept
+> them separate for ease of of review, but maybe they should be rather
+> folded into the netx patch...). Patch 5 then completes the parallel
+> relabeling implementation at libselinux level and adds a new function
+> to the API that allows to make use of it. Finally, patch 6 adds parallel
+> relabeling support to he setfiles/restorecon tools.
+>
+> The relevant man pages are also updated to reflect the new
+> functionality.
+>
+> The patch descriptions contain more details, namely the last patch has
+> also some benchmark numbers.
+>
+> Please test and review. I'm still not fully confident I got everything
+> right (esp. regarding error handling), but I wanted to put this forward
+> as an RFC to get some early feedback.
+>
+> Ondrej Mosnacek (6):
+>   selinux_restorecon: simplify fl_head allocation by using calloc()
+>   selinux_restorecon: protect file_spec list with a mutex
+>   selinux_restorecon: introduce selinux_log_sync()
+>   selinux_restorecon: add a global mutex to synchronize progress output
+>   selinux_restorecon: introduce selinux_restorecon_parallel(3)
+>   setfiles/restorecon: support parallel relabeling
+>
+>  libselinux/include/selinux/restorecon.h       |  14 +
+>  libselinux/man/man3/selinux_restorecon.3      |  29 +
+>  .../man/man3/selinux_restorecon_parallel.3    |   1 +
+>  libselinux/src/libselinux.map                 |   5 +
+>  libselinux/src/selinux_internal.h             |  14 +
+>  libselinux/src/selinux_restorecon.c           | 498 ++++++++++++------
+>  policycoreutils/setfiles/Makefile             |   2 +-
+>  policycoreutils/setfiles/restore.c            |   7 +-
+>  policycoreutils/setfiles/restore.h            |   2 +-
+>  policycoreutils/setfiles/restorecon.8         |   9 +
+>  policycoreutils/setfiles/setfiles.8           |   9 +
+>  policycoreutils/setfiles/setfiles.c           |  28 +-
+>  12 files changed, 436 insertions(+), 182 deletions(-)
+>  create mode 100644 libselinux/man/man3/selinux_restorecon_parallel.3
+>
 

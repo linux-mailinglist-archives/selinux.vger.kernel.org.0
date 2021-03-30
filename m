@@ -2,104 +2,276 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9985534EFE7
-	for <lists+selinux@lfdr.de>; Tue, 30 Mar 2021 19:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1606434EFE8
+	for <lists+selinux@lfdr.de>; Tue, 30 Mar 2021 19:40:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232394AbhC3RkB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 30 Mar 2021 13:40:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58892 "EHLO
+        id S232403AbhC3RkE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 30 Mar 2021 13:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232101AbhC3Rj2 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 30 Mar 2021 13:39:28 -0400
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5B38C061574
-        for <selinux@vger.kernel.org>; Tue, 30 Mar 2021 10:39:27 -0700 (PDT)
-Received: by mail-qk1-x729.google.com with SMTP id g20so16700140qkk.1
-        for <selinux@vger.kernel.org>; Tue, 30 Mar 2021 10:39:27 -0700 (PDT)
+        with ESMTP id S231701AbhC3Rja (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 30 Mar 2021 13:39:30 -0400
+Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 981FDC061574
+        for <selinux@vger.kernel.org>; Tue, 30 Mar 2021 10:39:30 -0700 (PDT)
+Received: by mail-qk1-x736.google.com with SMTP id y18so16631017qky.11
+        for <selinux@vger.kernel.org>; Tue, 30 Mar 2021 10:39:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ech7HsHonbPixWe1neyIZhWoNSlCZjCrFz7eGNgoeZs=;
-        b=aNRnoZ91xtht3pAkUlimytup54EwgeJImZ59Ky81ienKWcggF20Pvq85m/WcJ8qDnr
-         BrC7CzALAdpYQn7Y8Mim9CdPLhwwBLvDT6L/XGjz2cKHaaQmelPsYWGaTLIE7nub/HF8
-         cCjhaEL1tDXqVrv1WAw8/KNamVLDj8vD3m72+kHCI9bcOMV5wR4ZpfzPqhXYwioKjxSo
-         rsPZW+THBVV4D+KcVhtKI6g9+7fVeSEOG23oP1pPXwtgwm/kGRU9w+Sj51VmNQzUfssp
-         HahyHm5M5tiQmIyZAh1SjCVO7LU6ygayj0j4IjHaGOqeiHzbU/PwzNtdAjWZUf7lAmb8
-         UYvQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=g+6TjWfzdMru7Jb6qMivLGdR+Dq1tZsUpNnFX8G7o2c=;
+        b=UN/BDg46sy3Q2I/UduA1mB4eTHCBikj9vk8jEQ/oiAQlADyILoR78EYNP34D09VE0O
+         9HaIDcZlZrQigzUCWp6RRLpW9MWFcUuXr7xHYqr4PSKAGmYM0UlpXaqJEDoMUvwKOR+d
+         oc9uW0tGiVJ+9OZjjonCxg+4IeLSFY2d+ufLvoVjFVoqYoOaplZW9UV8FoXQLJgOFTOO
+         ljn/vIfg2kdxJOKrqAErtGE6Xm565JAa2qtcojt5DECBjvRqPU+ENqWu9zmqp+yj7cR0
+         itRpyJf71I4tZHxEcygp5OXtCYrjK/N72KFiWSInzrWghfdv7s/XY0df86k91dQeuHHo
+         wNDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ech7HsHonbPixWe1neyIZhWoNSlCZjCrFz7eGNgoeZs=;
-        b=eY5wwISmdal8WDzMd+/KZ6GMia3PZoz6uOvokkebVfz8SF0yBFPB2JCny/RxA2P2D0
-         p0xnR4BQP8okjwePlBGB7a1gVx4DAiaVHISPNUnpScpfdsO4xPlo4WQEr3lzVtX8xAmh
-         07vWxcRBJtoMzvYLZWagLoJlz6puedOtJCzfjAOowrixw4ORaGEy0aCNk2MIRfatySMO
-         j84WJb45+OClht1eBB4lUAXg8pc1w99QrjGf1zK47UHFam7GUFgp92lv2UCFxfdu4hSi
-         JMBTjzfuYI8hok0koSqdJQsd96LhAVbbEbYwzNc79OcUr02eyzL9tHHl88+3EXQ665xa
-         EQ4g==
-X-Gm-Message-State: AOAM533cqqGJ2SPWU9x31RYYD4I4ZwWdXRiku9jUORUqhbLotyWQn/Q8
-        L9bW9vV6U+DLDn9uNjDKg+7Ce9MZB2PomA==
-X-Google-Smtp-Source: ABdhPJxh4QxNvUrtlWrMJCp1WExXWNqwCKG+WT7eqgVay33VC7xhACjSPep10t4zLa4j886VrQma8w==
-X-Received: by 2002:a37:4396:: with SMTP id q144mr30212649qka.441.1617125966931;
-        Tue, 30 Mar 2021 10:39:26 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=g+6TjWfzdMru7Jb6qMivLGdR+Dq1tZsUpNnFX8G7o2c=;
+        b=rCvDlq2W5x8KcZM1e30nJgpr+nSkbTHPkksHGVNDJRveTwF7DxA36Aqc1WxgRcWA/p
+         DDwmgMKD5NMRAg09cUgPTJN3vkwcPgrGjpRicUo5gOSPKwzxettuXQSZ0l2mHK1WqsXt
+         ZjK17D0EcAuJQJ7bYDvmkLbmOaG5tcsSkFt3GdeLGDNEOwSsHyje04kJi+7G15+j8Vh9
+         v4TWPhm42KrnhS8sMr/ViXWCEFq1SSZTDXTWyx3hBKnWT3oLcYJ68UFQOKURtCm7rsKa
+         eeFlcHx+d/wJP5GwQga1ZESqXTlB7qgmYHoX1bziyMUh4SuBTqa0zFZVuKgpCLnvZx5R
+         pKkQ==
+X-Gm-Message-State: AOAM531WHm5kJREBvkz4RirO+z0QpBE33wMqYWNsAziG+IBg8PyVIofb
+        UEdaT9DNUxVlOZXkg+ga+jXW3/jooM/OlQ==
+X-Google-Smtp-Source: ABdhPJzzMk80/c51MAky2k81dMjdB+VsEoHfIXkz5pB5ukDO1DEAxcISpJ5yZvtBfCR1tKAPMfRIjw==
+X-Received: by 2002:a05:620a:31a:: with SMTP id s26mr31765715qkm.355.1617125969630;
+        Tue, 30 Mar 2021 10:39:29 -0700 (PDT)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id r7sm13507482qtm.88.2021.03.30.10.39.26
+        by smtp.gmail.com with ESMTPSA id r7sm13507482qtm.88.2021.03.30.10.39.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Mar 2021 10:39:26 -0700 (PDT)
+        Tue, 30 Mar 2021 10:39:29 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     James Carter <jwcart2@gmail.com>
-Subject: [PATCH 00/12] Update checks for invalid rules in blocks
-Date:   Tue, 30 Mar 2021 13:39:11 -0400
-Message-Id: <20210330173920.281531-1-jwcart2@gmail.com>
+Subject: [PATCH 01/12] libsepol/cil: Reorder checks for invalid rules when building AST
+Date:   Tue, 30 Mar 2021 13:39:12 -0400
+Message-Id: <20210330173920.281531-2-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20210330173920.281531-1-jwcart2@gmail.com>
+References: <20210330173920.281531-1-jwcart2@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Looking into a bug that OSS-Fuzz found led to patch 7, Check for
-statements not allowed in optional blocks, which is the most important
-patch in this series. Working on patch 7 led to fixing some other
-problems with the checks for invalid rules, cleaning up some of the code,
-and improving the CIL documentation.
+Reorder checks for invalid rules in the blocks of tunableifs,
+in-statements, macros, and booleanifs when building the AST for
+consistency.
 
-Patches 1, 2, 4, 5, and 10 are doing various cleanups.
-Patch 3 fixes a bug that prevents the first rule in a block from being checked.
-Patches 6, 7, 8, and 9 update the checks for invalid rules.
-Patch 11 fixes a bug that prevented some error messages from being displayed.
-Patch 12 updates the CIL documentation.
+Order the checks in the same order the blocks will be resolved in,
+so tuanbleif, in-statement, macro, booleanif, and then non-block
+rules.
 
-There is still work to do in this area. I am not sure why sensitivity and
-category statements are not allowed in blocks, but everything else is. That
-is why I didn't add those checks when building the AST. It is not clear if
-mls, handleunknown, defaultuser, defaultrole, defaulttype, defaultrange,
-and policycap should be restricted to the global namespace.
+Signed-off-by: James Carter <jwcart2@gmail.com>
+---
+ libsepol/cil/src/cil_build_ast.c | 100 +++++++++++++++----------------
+ 1 file changed, 50 insertions(+), 50 deletions(-)
 
-James Carter (12):
-  libsepol/cil: Reorder checks for invalid rules when building AST
-  libsepol/cil: Cleanup build AST helper functions
-  libsepol/cil: Create new first child helper function for building AST
-  libsepol/cil: Use AST to track blocks and optionals when resolving
-  libsepol/cil: Reorder checks for invalid rules when resolving AST
-  libsepol/cil: Sync checks for invalid rules in booleanifs
-  libsepol/cil: Check for statements not allowed in optional blocks
-  libsepol/cil: Sync checks for invalid rules in macros
-  libsepol/cil: Do not allow tunable declarations in in-statements
-  libsepol/cil: Make invalid statement error messages consistent
-  libsepol/cil: Use CIL_ERR for error messages in cil_compile()
-  secilc/docs: Update the CIL documentation for various blocks
-
- libsepol/cil/src/cil.c                    |   8 +-
- libsepol/cil/src/cil_build_ast.c          | 193 ++++++++++++----------
- libsepol/cil/src/cil_resolve_ast.c        | 174 ++++++++-----------
- secilc/docs/cil_call_macro_statements.md  |   2 +
- secilc/docs/cil_conditional_statements.md |   6 +
- secilc/docs/cil_container_statements.md   |  28 ++--
- 6 files changed, 205 insertions(+), 206 deletions(-)
-
+diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
+index 4e53f06a..1c530bbc 100644
+--- a/libsepol/cil/src/cil_build_ast.c
++++ b/libsepol/cil/src/cil_build_ast.c
+@@ -49,10 +49,10 @@
+ struct cil_args_build {
+ 	struct cil_tree_node *ast;
+ 	struct cil_db *db;
+-	struct cil_tree_node *macro;
+-	struct cil_tree_node *boolif;
+ 	struct cil_tree_node *tunif;
+ 	struct cil_tree_node *in;
++	struct cil_tree_node *macro;
++	struct cil_tree_node *boolif;
+ };
+ 
+ int cil_fill_list(struct cil_tree_node *current, enum cil_flavor flavor, struct cil_list **list)
+@@ -6097,10 +6097,10 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 	struct cil_tree_node *ast_current = NULL;
+ 	struct cil_db *db = NULL;
+ 	struct cil_tree_node *ast_node = NULL;
+-	struct cil_tree_node *macro = NULL;
+-	struct cil_tree_node *boolif = NULL;
+ 	struct cil_tree_node *tunif = NULL;
+ 	struct cil_tree_node *in = NULL;
++	struct cil_tree_node *macro = NULL;
++	struct cil_tree_node *boolif = NULL;
+ 	int rc = SEPOL_ERR;
+ 
+ 	if (parse_current == NULL || finished == NULL || extra_args == NULL) {
+@@ -6110,10 +6110,10 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 	args = extra_args;
+ 	ast_current = args->ast;
+ 	db = args->db;
+-	macro = args->macro;
+-	boolif = args->boolif;
+ 	tunif = args->tunif;
+ 	in = args->in;
++	macro = args->macro;
++	boolif = args->boolif;
+ 
+ 	if (parse_current->parent->cl_head != parse_current) {
+ 		/* ignore anything that isn't following a parenthesis */
+@@ -6130,13 +6130,31 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 		goto exit;
+ 	}
+ 
++	if (tunif != NULL) {
++		if (parse_current->data == CIL_KEY_TUNABLE) {
++			rc = SEPOL_ERR;
++			cil_tree_log(parse_current, CIL_ERR, "Found tunable");
++			cil_log(CIL_ERR, "Tunables cannot be defined within tunableif statement\n");
++			goto exit;
++		}
++	}
++
++	if (in != NULL) {
++		if (parse_current->data == CIL_KEY_IN) {
++			rc = SEPOL_ERR;
++			cil_tree_log(parse_current, CIL_ERR, "Found in-statement");
++			cil_log(CIL_ERR, "in-statements cannot be defined within in-statements\n");
++			goto exit;
++		}
++	}
++
+ 	if (macro != NULL) {
+-		if (parse_current->data == CIL_KEY_MACRO ||
+-			parse_current->data == CIL_KEY_TUNABLE ||
++		if (parse_current->data == CIL_KEY_TUNABLE ||
+ 			parse_current->data == CIL_KEY_IN ||
+ 			parse_current->data == CIL_KEY_BLOCK ||
+ 			parse_current->data == CIL_KEY_BLOCKINHERIT ||
+-			parse_current->data == CIL_KEY_BLOCKABSTRACT) {
++			parse_current->data == CIL_KEY_BLOCKABSTRACT ||
++			parse_current->data == CIL_KEY_MACRO) {
+ 			rc = SEPOL_ERR;
+ 			cil_tree_log(parse_current, CIL_ERR, "%s is not allowed in macros", (char *)parse_current->data);
+ 			goto exit;
+@@ -6144,15 +6162,15 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 	}
+ 
+ 	if (boolif != NULL) {
+-		if (parse_current->data != CIL_KEY_CONDTRUE &&
++		if (parse_current->data != CIL_KEY_TUNABLEIF &&
++			parse_current->data != CIL_KEY_CALL &&
++			parse_current->data != CIL_KEY_CONDTRUE &&
+ 			parse_current->data != CIL_KEY_CONDFALSE &&
+-			parse_current->data != CIL_KEY_AUDITALLOW &&
+-			parse_current->data != CIL_KEY_TUNABLEIF &&
+ 			parse_current->data != CIL_KEY_ALLOW &&
+ 			parse_current->data != CIL_KEY_DONTAUDIT &&
++			parse_current->data != CIL_KEY_AUDITALLOW &&
+ 			parse_current->data != CIL_KEY_TYPETRANSITION &&
+-			parse_current->data != CIL_KEY_TYPECHANGE &&
+-			parse_current->data != CIL_KEY_CALL) {
++			parse_current->data != CIL_KEY_TYPECHANGE) {
+ 			rc = SEPOL_ERR;
+ 			cil_tree_log(parse_current, CIL_ERR, "Found %s", (char*)parse_current->data);
+ 			if (((struct cil_booleanif*)boolif->data)->preserved_tunable) {
+@@ -6166,24 +6184,6 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 		}
+ 	}
+ 
+-	if (tunif != NULL) {
+-		if (parse_current->data == CIL_KEY_TUNABLE) {
+-			rc = SEPOL_ERR;
+-			cil_tree_log(parse_current, CIL_ERR, "Found tunable");
+-			cil_log(CIL_ERR, "Tunables cannot be defined within tunableif statement\n");
+-			goto exit;
+-		}
+-	}
+-
+-	if (in != NULL) {
+-		if (parse_current->data == CIL_KEY_IN) {
+-			rc = SEPOL_ERR;
+-			cil_tree_log(parse_current, CIL_ERR, "Found in-statement");
+-			cil_log(CIL_ERR, "in-statements cannot be defined within in-statements\n");
+-			goto exit;
+-		}
+-	}
+-
+ 	cil_tree_node_init(&ast_node);
+ 
+ 	ast_node->parent = ast_current;
+@@ -6469,14 +6469,6 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 
+ 	if (rc == SEPOL_OK) {
+ 		if (ast_current->cl_head == NULL) {
+-			if (ast_current->flavor == CIL_MACRO) {
+-				args->macro = ast_current;
+-			}
+-
+-			if (ast_current->flavor == CIL_BOOLEANIF) {
+-				args->boolif = ast_current;
+-			}
+-
+ 			if (ast_current->flavor == CIL_TUNABLEIF) {
+ 				args->tunif = ast_current;
+ 			}
+@@ -6485,6 +6477,14 @@ int __cil_build_ast_node_helper(struct cil_tree_node *parse_current, uint32_t *f
+ 				args->in = ast_current;
+ 			}
+ 
++			if (ast_current->flavor == CIL_MACRO) {
++				args->macro = ast_current;
++			}
++
++			if (ast_current->flavor == CIL_BOOLEANIF) {
++				args->boolif = ast_current;
++			}
++
+ 			ast_current->cl_head = ast_node;
+ 		} else {
+ 			ast_current->cl_tail->next = ast_node;
+@@ -6520,14 +6520,6 @@ int __cil_build_ast_last_child_helper(struct cil_tree_node *parse_current, void
+ 
+ 	args->ast = ast->parent;
+ 
+-	if (ast->flavor == CIL_MACRO) {
+-		args->macro = NULL;
+-	}
+-
+-	if (ast->flavor == CIL_BOOLEANIF) {
+-		args->boolif = NULL;
+-	}
+-
+ 	if (ast->flavor == CIL_TUNABLEIF) {
+ 		args->tunif = NULL;
+ 	}
+@@ -6536,6 +6528,14 @@ int __cil_build_ast_last_child_helper(struct cil_tree_node *parse_current, void
+ 		args->in = NULL;
+ 	}
+ 
++	if (ast->flavor == CIL_MACRO) {
++		args->macro = NULL;
++	}
++
++	if (ast->flavor == CIL_BOOLEANIF) {
++		args->boolif = NULL;
++	}
++
+ 	// At this point we no longer have any need for parse_current or any of its
+ 	// siblings; they have all been converted to the appropriate AST node. The
+ 	// full parse tree will get deleted elsewhere, but in an attempt to
+@@ -6560,10 +6560,10 @@ int cil_build_ast(struct cil_db *db, struct cil_tree_node *parse_tree, struct ci
+ 
+ 	extra_args.ast = ast;
+ 	extra_args.db = db;
+-	extra_args.macro = NULL;
+-	extra_args.boolif = NULL;
+ 	extra_args.tunif = NULL;
+ 	extra_args.in = NULL;
++	extra_args.macro = NULL;
++	extra_args.boolif = NULL;
+ 
+ 	rc = cil_tree_walk(parse_tree, __cil_build_ast_node_helper, NULL, __cil_build_ast_last_child_helper, &extra_args);
+ 	if (rc != SEPOL_OK) {
 -- 
 2.26.3
 

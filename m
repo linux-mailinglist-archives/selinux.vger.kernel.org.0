@@ -2,85 +2,165 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C69C6351AE7
-	for <lists+selinux@lfdr.de>; Thu,  1 Apr 2021 20:07:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 622EF351AEA
+	for <lists+selinux@lfdr.de>; Thu,  1 Apr 2021 20:07:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237321AbhDASDj (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 1 Apr 2021 14:03:39 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:59024 "EHLO
+        id S237390AbhDASDm (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 1 Apr 2021 14:03:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:52255 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S237141AbhDAR7h (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 1 Apr 2021 13:59:37 -0400
+        by vger.kernel.org with ESMTP id S237518AbhDASAR (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 1 Apr 2021 14:00:17 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1617299977;
+        s=mimecast20190719; t=1617300016;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=ktS87jJw/08j20VhO7XCpSRx0/B7KGmgEACWGMbsYe0=;
-        b=K3CjOdES2AyxKZR7nBdwCizVZQr8qp2rUe9vNZeKb7QQSkKXVO6fMKrypEa36G9UGJk0Qp
-        b7A789+m1PbHJONmLR6g6A8knG+pk8HmnamU7qcvsYOuk2/A0haLhcCZJM15Za2OwMpnBL
-        XTtl0QVyOa//cFWrb2gYjum6M589xOk=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-600-GbXUuF3lNYWmsahCoaIuQw-1; Thu, 01 Apr 2021 11:59:17 -0400
-X-MC-Unique: GbXUuF3lNYWmsahCoaIuQw-1
-Received: by mail-ej1-f71.google.com with SMTP id mj6so2417005ejb.11
-        for <selinux@vger.kernel.org>; Thu, 01 Apr 2021 08:59:16 -0700 (PDT)
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=gRE5GcGcin1rGCTya2tDyS72EKxIVRDPfIUXPACOCGU=;
+        b=DeObkn5soCHiCyzvrxaouyGansU7HlzU6NZBf4dKIv5BApVDOtU8l6ni1Gitv2GPWgCYYV
+        h1LgG4EtjEOCBJW41OlqYp3PfzyGKbe4U7eYruQ6wP0bkcCrcdoHUL1vBcs7bLiyIUuRR+
+        lISxs0gLLVlf081PyO6G7YHyAAjXCH0=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-341-8QAlfLM0POuCFFJpSktcNg-1; Thu, 01 Apr 2021 11:59:18 -0400
+X-MC-Unique: 8QAlfLM0POuCFFJpSktcNg-1
+Received: by mail-ed1-f71.google.com with SMTP id p6so3036690edq.21
+        for <selinux@vger.kernel.org>; Thu, 01 Apr 2021 08:59:17 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ktS87jJw/08j20VhO7XCpSRx0/B7KGmgEACWGMbsYe0=;
-        b=GX2xASDBT1qN5MH7ZCTqzi/d4A9G5eq+J2ZZbLTMfK8mIjfD+WpW1lGOVc3CIHRQPA
-         VdpSAmzqFlg8MrvfAon/ARmNGq0nYYgwfYIgWCaUocVox/ewKA0MZqx+YAZMB4HJYGIE
-         mYfbgfkoNHMfNA3bmFnVR1YPecDngAyHNZcTHop1muuGgvuzRdncGasnzLZzoQDwhF4Q
-         fhveSbKNEmft3Aw/L2iLREQKUzBs3HjXERTIe9yDIt+qj/Gt+mvxUoDRcynfp2sBqj1f
-         gclTkYDyH0E2252bdcTBcWAyBAdIsl9evA39zjH87BID2AHnxG85VZ+2eBVXjLw+yOgG
-         YNyQ==
-X-Gm-Message-State: AOAM532UOpBi3iWdv2bXDxycsHNRnECfE4BDLLCCn1buPyCbXpPjq6g/
-        tLwzMhEOQDucwmStiMgwoT1yes0YEpstz4FNlbPTYSjEoFdVtia/2zIO7Dxmc6P9T/kWDIzlcCd
-        UKg3ejjibo57Lq+nxrKLwHFA5+QNVhCUZg4UhPMhkVoyxrdTdVJJEJUg6GjGeHxsYZ/x+Hg==
-X-Received: by 2002:a17:906:1a16:: with SMTP id i22mr9939957ejf.522.1617292755762;
-        Thu, 01 Apr 2021 08:59:15 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJz3leMnDpHexp5bDnN1+poyT/rHNN/Wvtl9/ILLDnViHZtqUkyv5W1eMD/JS0gIcPNgc3k1QA==
-X-Received: by 2002:a17:906:1a16:: with SMTP id i22mr9939943ejf.522.1617292755575;
-        Thu, 01 Apr 2021 08:59:15 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=gRE5GcGcin1rGCTya2tDyS72EKxIVRDPfIUXPACOCGU=;
+        b=e6eWSH64Q9oolTFV15o7GsPjYZftfC65mjR+iXt7xYVLDp4+JCNcJyScEejcyzISjm
+         LGQDKwjW84a47HwhHPlCynuzQZfg7eL1OYKQv1rWxtVI1v/+LfPQn5oRlfr0Hk/w87Fz
+         XmS62iket0olAd/nKHUToPPdKjPPqFlys3uXt6MPC1/FQcFCoWbZwm5OkgwX/TlU1XDK
+         QUgiVYleQzTm6GFg5A34HfEsArGEg073eH4stfJxUSiXJTAxwThtr9ti0rgiGhAXUTdF
+         eX16kotqzBPgiXHcVNlKjwI1WXJGwDKoFeSOuZjJujbY5M26rl0eKqZJcaCGKxneJJRz
+         X/aA==
+X-Gm-Message-State: AOAM530n/lTRf4JllT7INwgY3FW5FRdQqfrrm/SNjjBBCxkkSFiNpGU8
+        ImxDSF35aJ/tkX88TjIyZm4xPQlkIDTmA9mdTMOv9ykm3qMSyuZ0WgHjm8YxPRmkD3cE3gVMbbG
+        jEpQBaccxSkFiCoiIXQ1Q1tt53Z0TVIVAwIwhb3h7QzjID7GE7T1WmsC4blZrNghgqihwqw==
+X-Received: by 2002:aa7:d484:: with SMTP id b4mr10679752edr.63.1617292756550;
+        Thu, 01 Apr 2021 08:59:16 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJzM55CJGCVSgTsOBemDRFZul0STHaDNtENro0wQhmbmjr2ho9BjyAPbsBmZAxtJ87eVvDxxiw==
+X-Received: by 2002:aa7:d484:: with SMTP id b4mr10679734edr.63.1617292756400;
+        Thu, 01 Apr 2021 08:59:16 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:8308:b105:dd00:277b:6436:24db:9466])
-        by smtp.gmail.com with ESMTPSA id x4sm3537000edd.58.2021.04.01.08.59.14
+        by smtp.gmail.com with ESMTPSA id x4sm3537000edd.58.2021.04.01.08.59.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 01 Apr 2021 08:59:15 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
 Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v2 0/2] selinux: fix changing booleans
-Date:   Thu,  1 Apr 2021 17:59:11 +0200
-Message-Id: <20210401155913.1693097-1-omosnace@redhat.com>
+Subject: [PATCH v2 1/2] selinux: make nslot handling in avtab more robust
+Date:   Thu,  1 Apr 2021 17:59:12 +0200
+Message-Id: <20210401155913.1693097-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210401155913.1693097-1-omosnace@redhat.com>
+References: <20210401155913.1693097-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This series contains a patch that fixes broken conditional AV list
-duplication introduced by c7c556f1e81b ("selinux: refactor changing
-booleans") and a couple "and while I'm here..." cleanup patches on top.
+1. Make sure all fileds are initialized in avtab_init().
+2. Slightly refactor avtab_alloc() to use the above fact.
+3. Use h->nslot == 0 as a sentinel in the access functions to prevent
+   dereferencing h->htable when it's not allocated.
 
-v2:
-- drop the follow-up cleanup patches from this series
-- add a patch fixing the current handling of nrules/nslots being zero
-- fix this handling also in the original v1 patch
-- simplify the loop that computes nslots
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ security/selinux/ss/avtab.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-Ondrej Mosnacek (2):
-  selinux: make nslot handling in avtab more robust
-  selinux: fix cond_list corruption when changing booleans
-
- security/selinux/ss/avtab.c       | 101 ++++++++++--------------------
- security/selinux/ss/avtab.h       |   2 +-
- security/selinux/ss/conditional.c |  12 ++--
- 3 files changed, 40 insertions(+), 75 deletions(-)
-
+diff --git a/security/selinux/ss/avtab.c b/security/selinux/ss/avtab.c
+index 6dcb6aa4db7f..2aee4c965c25 100644
+--- a/security/selinux/ss/avtab.c
++++ b/security/selinux/ss/avtab.c
+@@ -109,7 +109,7 @@ static int avtab_insert(struct avtab *h, struct avtab_key *key, struct avtab_dat
+ 	struct avtab_node *prev, *cur, *newnode;
+ 	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
+ 
+-	if (!h)
++	if (!h || !h->nslot)
+ 		return -EINVAL;
+ 
+ 	hvalue = avtab_hash(key, h->mask);
+@@ -154,7 +154,7 @@ avtab_insert_nonunique(struct avtab *h, struct avtab_key *key, struct avtab_datu
+ 	struct avtab_node *prev, *cur;
+ 	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
+ 
+-	if (!h)
++	if (!h || !h->nslot)
+ 		return NULL;
+ 	hvalue = avtab_hash(key, h->mask);
+ 	for (prev = NULL, cur = h->htable[hvalue];
+@@ -184,7 +184,7 @@ struct avtab_datum *avtab_search(struct avtab *h, struct avtab_key *key)
+ 	struct avtab_node *cur;
+ 	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
+ 
+-	if (!h)
++	if (!h || !h->nslot)
+ 		return NULL;
+ 
+ 	hvalue = avtab_hash(key, h->mask);
+@@ -220,7 +220,7 @@ avtab_search_node(struct avtab *h, struct avtab_key *key)
+ 	struct avtab_node *cur;
+ 	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
+ 
+-	if (!h)
++	if (!h || !h->nslot)
+ 		return NULL;
+ 
+ 	hvalue = avtab_hash(key, h->mask);
+@@ -295,6 +295,7 @@ void avtab_destroy(struct avtab *h)
+ 	}
+ 	kvfree(h->htable);
+ 	h->htable = NULL;
++	h->nel = 0;
+ 	h->nslot = 0;
+ 	h->mask = 0;
+ }
+@@ -303,14 +304,15 @@ void avtab_init(struct avtab *h)
+ {
+ 	h->htable = NULL;
+ 	h->nel = 0;
++	h->nslot = 0;
++	h->mask = 0;
+ }
+ 
+ int avtab_alloc(struct avtab *h, u32 nrules)
+ {
+-	u32 mask = 0;
+ 	u32 shift = 0;
+ 	u32 work = nrules;
+-	u32 nslot = 0;
++	u32 nslot;
+ 
+ 	if (nrules == 0)
+ 		goto avtab_alloc_out;
+@@ -324,16 +326,15 @@ int avtab_alloc(struct avtab *h, u32 nrules)
+ 	nslot = 1 << shift;
+ 	if (nslot > MAX_AVTAB_HASH_BUCKETS)
+ 		nslot = MAX_AVTAB_HASH_BUCKETS;
+-	mask = nslot - 1;
+ 
+ 	h->htable = kvcalloc(nslot, sizeof(void *), GFP_KERNEL);
+ 	if (!h->htable)
+ 		return -ENOMEM;
+ 
+- avtab_alloc_out:
+-	h->nel = 0;
+ 	h->nslot = nslot;
+-	h->mask = mask;
++	h->mask = nslot - 1;
++
++avtab_alloc_out:
+ 	pr_debug("SELinux: %d avtab hash slots, %d rules.\n",
+ 	       h->nslot, nrules);
+ 	return 0;
 -- 
 2.30.2
 

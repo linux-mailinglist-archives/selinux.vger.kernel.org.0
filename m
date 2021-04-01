@@ -2,74 +2,85 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D5CC3519C6
-	for <lists+selinux@lfdr.de>; Thu,  1 Apr 2021 20:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C69C6351AE7
+	for <lists+selinux@lfdr.de>; Thu,  1 Apr 2021 20:07:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235277AbhDAR41 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 1 Apr 2021 13:56:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59916 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237218AbhDARvI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 1 Apr 2021 13:51:08 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3768BC02FE81
-        for <selinux@vger.kernel.org>; Thu,  1 Apr 2021 08:56:30 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id h13so2515727eds.5
-        for <selinux@vger.kernel.org>; Thu, 01 Apr 2021 08:56:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=eZyej4DR7Bni1LGYVDkMQcQWwua8NQMc3CSgND+VEu4=;
-        b=cpxAHeoCM7XSXQVAAbHDBdHaEddnUwmNudBAkRrbhbZvUjzRpPCZuP4kKpk9RXj7og
-         Onx1kHycWhYUVBNqNeqkxSkbNM362Y2u1QVleVQrNbBdQ6+lDEkAr5sDw0xRe1oyzxLg
-         +ozzUqg8eXxJlTY9fEX/x6oHEN1Ib2FhD8HVOTWqslf252zJ/KtSme7d+2Yu4r1p0pDy
-         ZOefPAB2zvbokIJhVX/+E4nSPoeqhTIwR8zg2Q4/KSP36pLNwid7nQx42YgYuvQVr4lk
-         Om9KWWgOFlf785XiC1qggUqj0BVrH/0le/AANVk5Y/OrzV8QSvAd449iXYtaXaETyF21
-         Kgog==
+        id S237321AbhDASDj (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 1 Apr 2021 14:03:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:59024 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S237141AbhDAR7h (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 1 Apr 2021 13:59:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1617299977;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=ktS87jJw/08j20VhO7XCpSRx0/B7KGmgEACWGMbsYe0=;
+        b=K3CjOdES2AyxKZR7nBdwCizVZQr8qp2rUe9vNZeKb7QQSkKXVO6fMKrypEa36G9UGJk0Qp
+        b7A789+m1PbHJONmLR6g6A8knG+pk8HmnamU7qcvsYOuk2/A0haLhcCZJM15Za2OwMpnBL
+        XTtl0QVyOa//cFWrb2gYjum6M589xOk=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-600-GbXUuF3lNYWmsahCoaIuQw-1; Thu, 01 Apr 2021 11:59:17 -0400
+X-MC-Unique: GbXUuF3lNYWmsahCoaIuQw-1
+Received: by mail-ej1-f71.google.com with SMTP id mj6so2417005ejb.11
+        for <selinux@vger.kernel.org>; Thu, 01 Apr 2021 08:59:16 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=eZyej4DR7Bni1LGYVDkMQcQWwua8NQMc3CSgND+VEu4=;
-        b=SmjY5liJAw25WfOaWPfqT+qEzuYt+foQ+xzABGqdo9Uf6uiNiW2UV87b3rIsretztx
-         4TYVBBToiUqj4ZjnCAcVDIMGyAXKR3LqPq0KBing4BQY5/ooPKKxxRUCsXc/O5C2GJea
-         OAyBgaIDesj323m5JMeh0yCyVfg/2ZpL/4ykCRNB3jImOAxp2SxS8Fb6ysZBdmNQf58C
-         mA/IYcWE4dguAVJ6sBf5/z/0IE0W93xdGfEE0JN9Hi64GzH5jFVmE4Q3TjRruG3En7F2
-         daFYRWo7IB9C2ypzKH8w3KW/Px7d138qwnr8sX+huEm/akjsJSN6bBAVyPFi9/7b9NrP
-         Pxkw==
-X-Gm-Message-State: AOAM533nudZIAKwthmS0uDlxrCZzpSUI7x60VaxtCedPHtlNWHhPVNAU
-        GT33w49/n1X8fp/1L6y7FGkss2yWAmUcgXjJ9vb3
-X-Google-Smtp-Source: ABdhPJxZC/uVrZM4x2XkmIICX9nPPq8TapFSzVB2MlGG3rC/2s5jCoZ69WWdKV1NHX77lwkOUKuQlhH0ZJ7Y5+Wnkqk=
-X-Received: by 2002:a05:6402:1cc1:: with SMTP id ds1mr2243009edb.135.1617292588872;
- Thu, 01 Apr 2021 08:56:28 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ktS87jJw/08j20VhO7XCpSRx0/B7KGmgEACWGMbsYe0=;
+        b=GX2xASDBT1qN5MH7ZCTqzi/d4A9G5eq+J2ZZbLTMfK8mIjfD+WpW1lGOVc3CIHRQPA
+         VdpSAmzqFlg8MrvfAon/ARmNGq0nYYgwfYIgWCaUocVox/ewKA0MZqx+YAZMB4HJYGIE
+         mYfbgfkoNHMfNA3bmFnVR1YPecDngAyHNZcTHop1muuGgvuzRdncGasnzLZzoQDwhF4Q
+         fhveSbKNEmft3Aw/L2iLREQKUzBs3HjXERTIe9yDIt+qj/Gt+mvxUoDRcynfp2sBqj1f
+         gclTkYDyH0E2252bdcTBcWAyBAdIsl9evA39zjH87BID2AHnxG85VZ+2eBVXjLw+yOgG
+         YNyQ==
+X-Gm-Message-State: AOAM532UOpBi3iWdv2bXDxycsHNRnECfE4BDLLCCn1buPyCbXpPjq6g/
+        tLwzMhEOQDucwmStiMgwoT1yes0YEpstz4FNlbPTYSjEoFdVtia/2zIO7Dxmc6P9T/kWDIzlcCd
+        UKg3ejjibo57Lq+nxrKLwHFA5+QNVhCUZg4UhPMhkVoyxrdTdVJJEJUg6GjGeHxsYZ/x+Hg==
+X-Received: by 2002:a17:906:1a16:: with SMTP id i22mr9939957ejf.522.1617292755762;
+        Thu, 01 Apr 2021 08:59:15 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz3leMnDpHexp5bDnN1+poyT/rHNN/Wvtl9/ILLDnViHZtqUkyv5W1eMD/JS0gIcPNgc3k1QA==
+X-Received: by 2002:a17:906:1a16:: with SMTP id i22mr9939943ejf.522.1617292755575;
+        Thu, 01 Apr 2021 08:59:15 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8308:b105:dd00:277b:6436:24db:9466])
+        by smtp.gmail.com with ESMTPSA id x4sm3537000edd.58.2021.04.01.08.59.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 01 Apr 2021 08:59:15 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>
+Subject: [PATCH v2 0/2] selinux: fix changing booleans
+Date:   Thu,  1 Apr 2021 17:59:11 +0200
+Message-Id: <20210401155913.1693097-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20210330131646.1401838-1-omosnace@redhat.com> <20210330131646.1401838-2-omosnace@redhat.com>
- <CAHC9VhQ4Hc1VccUjR7cMq_Lm2YOn=i=w_FahZ7ZFnoxz+iKUPA@mail.gmail.com>
- <CAFqZXNsus-5PGNMT2t=T4WQQMrzgBSJDu6=qr0KmtDgKCR=hfQ@mail.gmail.com>
- <CAHC9VhRD=SNev8Ptk7idauX+0gzQysKDLBhGkfpD1CETB2TNrA@mail.gmail.com>
- <CAFqZXNuq2aBs6mW6jZ+bt_SY2xrE4LYL3knEjxD26bOw8J3Eqg@mail.gmail.com>
- <CAHC9VhQUo0cp_7Zt=ogsj0RknZ-YK7pv40rUevZztF-PJ+99ig@mail.gmail.com> <CAFqZXNu0fwwPYLPy0_E-+YoK+A+5odiw1f_SBVSsgeOJ-L80Mw@mail.gmail.com>
-In-Reply-To: <CAFqZXNu0fwwPYLPy0_E-+YoK+A+5odiw1f_SBVSsgeOJ-L80Mw@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 1 Apr 2021 11:56:18 -0400
-Message-ID: <CAHC9VhTHYnEBEd3F2QhsatZFykqQ6HRYR8YHhUrK9YKKrKJ1QA@mail.gmail.com>
-Subject: Re: [PATCH 1/3] selinux: fix cond_list corruption when changing booleans
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Apr 1, 2021 at 11:54 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> Ok, I agree it's not something worth obsessing over, so I'll just use
-> this last suggestion :) (One day maybe I'll try to simplify/optimize
-> it a bit, but that is for another patch...)
+This series contains a patch that fixes broken conditional AV list
+duplication introduced by c7c556f1e81b ("selinux: refactor changing
+booleans") and a couple "and while I'm here..." cleanup patches on top.
 
-Sounds good, thanks Ondrej.
+v2:
+- drop the follow-up cleanup patches from this series
+- add a patch fixing the current handling of nrules/nslots being zero
+- fix this handling also in the original v1 patch
+- simplify the loop that computes nslots
+
+Ondrej Mosnacek (2):
+  selinux: make nslot handling in avtab more robust
+  selinux: fix cond_list corruption when changing booleans
+
+ security/selinux/ss/avtab.c       | 101 ++++++++++--------------------
+ security/selinux/ss/avtab.h       |   2 +-
+ security/selinux/ss/conditional.c |  12 ++--
+ 3 files changed, 40 insertions(+), 75 deletions(-)
 
 -- 
-paul moore
-www.paul-moore.com
+2.30.2
+

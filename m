@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C5EB9358D61
-	for <lists+selinux@lfdr.de>; Thu,  8 Apr 2021 21:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79465358D63
+	for <lists+selinux@lfdr.de>; Thu,  8 Apr 2021 21:16:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231918AbhDHTQs (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 8 Apr 2021 15:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59084 "EHLO
+        id S232749AbhDHTQw (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 8 Apr 2021 15:16:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232748AbhDHTQs (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 8 Apr 2021 15:16:48 -0400
-Received: from mail-qt1-x82c.google.com (mail-qt1-x82c.google.com [IPv6:2607:f8b0:4864:20::82c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1358C061761
-        for <selinux@vger.kernel.org>; Thu,  8 Apr 2021 12:16:36 -0700 (PDT)
-Received: by mail-qt1-x82c.google.com with SMTP id j7so2319191qtx.5
-        for <selinux@vger.kernel.org>; Thu, 08 Apr 2021 12:16:36 -0700 (PDT)
+        with ESMTP id S232748AbhDHTQv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 8 Apr 2021 15:16:51 -0400
+Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A364C061761
+        for <selinux@vger.kernel.org>; Thu,  8 Apr 2021 12:16:38 -0700 (PDT)
+Received: by mail-qv1-xf2b.google.com with SMTP id o11so1467466qvh.11
+        for <selinux@vger.kernel.org>; Thu, 08 Apr 2021 12:16:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=z2uGQ4SMR7NT/I1qLKeRT+vuzQsg1knGf1Lzc4GrxRc=;
-        b=ZY3kHRPzEA6TaOsp12A3IIxnW5ghjWf2zwn56Qcqe+QzWi3fRPvwXVUA66Z3DfHV/u
-         3uWb5RY1hv74SdB/PiqwmKmBkUTHx8o8t/FPTAJ7tnQSgTWC1K6YtUWPChbV7PmHUDao
-         jJ7ofwgpVb3pGZLwaD57mCrsUHVrjo9Tword6E6Od5P/eMqZQsbNLln39VEIwsN2gaEs
-         ZgCT7do7R6NKwVF1IwDlq4llRgDbIJvSayfnglPZ83/BwbnvRXluNAQlhTGgEcvLoWk+
-         0u1wsvsr7Rb3qdBvkQx1rBnazKvY3TFcUQzVkPGUYTdEzbo514Bfcu2m4TRExQH3ZfBV
-         k4/w==
+        bh=evPRVxbFwAWkC5R48FuxkwmxPxWXmzzBFPOqwYJ8ZkA=;
+        b=aBZ6oySNaf2Mtfd0x8IRXj6tYGNWJmLE3nKUK65nQqxloYPbsjYRBogG5gwzKBk5ei
+         kP7QNnpgtU/jJpoqfVGwl+11cwYnjHsZp0HjyoMvtkL6I7+v+pbe/P5oev2A3X3+lGyQ
+         6DtbHym7ge0boE8uWqZV2SkMv4uoXXC2iLbe4mIADSLpU0RpgHSwXyoPHYqcRoDd0zU+
+         KLL8EnIrnwRnGJrBlC3gBJN10vkJeicA07U0MPNEpSEkqfBdKPaNePw+MEByrjefzlId
+         97BMw/MXVsfjAzLPHaXMQeqWpcG+8OEwHfbdVQ00TBtjsiq02inj2LFuGiljjzRqg4Uw
+         LgiQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=z2uGQ4SMR7NT/I1qLKeRT+vuzQsg1knGf1Lzc4GrxRc=;
-        b=OgUZm9PvltKo2H2dTkK2qCtkgVyQuNl6kbM4sEqu9Y8LSmjK514Nhp3CGWtdn7bV4a
-         GrCk+o0H4uOXXXwLRU+rYBTi3PYLsMRC1HXS94rBmgPZum0oPUOphgHOVEfd8T0qN2Dl
-         rwqK7zZ1WgWOuk/jeD1gtZPOW6EB0VKbMLXok1YtpKXHqnSzdPwp3Pi7Al33rkMQFppq
-         NfdcqNUTbqICXioxxjyZLbYI3CQFkUokDgRCHKRHMPW/pGyXXKlMlmci0uDFFylnjGec
-         stqIpsxM72l7PzZZNsM+Q9xP7z3NvfPaAS6cuC1E6P6ePzQZ1WsuTBSVUxMEZGR6tSUV
-         4TUQ==
-X-Gm-Message-State: AOAM530jei+T4rqvGBRrprMTM53U4XVn28xdElHjyD/i5+H8/Vsfs+uE
-        lv8/EI6e5R82XbbXYTXcaKGzrcjArJ6TKQ==
-X-Google-Smtp-Source: ABdhPJws7IXmQPioOlZKiQrnl+qicVH8EVXyLq0jbc2g14PBVhXBvEkkFUEnffatxaO6yXGBDvTCeQ==
-X-Received: by 2002:a05:622a:1347:: with SMTP id w7mr2554466qtk.199.1617909396090;
-        Thu, 08 Apr 2021 12:16:36 -0700 (PDT)
+        bh=evPRVxbFwAWkC5R48FuxkwmxPxWXmzzBFPOqwYJ8ZkA=;
+        b=cgoV1Ry5dDRpW/wLgtXEoiSQK9T0t4bwqXTFG1IcMnIltvx06oPzi3D34gsF3Bgej1
+         lWe3VvffOE75lF3CrZ4spLLKpOLLY7vuhzrAoLEnbbkPCKwRzRLjudfCNctCcBuR/bub
+         viy0pr+Pr8tt1I7ZfeHaZ7OwmEqsvcd/iNtXlGawS2cFFxw15nEo8XDF4jkZ33LIhgpr
+         egF8DlDcE+lfPHEol9Zw+lSnXEW/jB9uCwIR/CSltvHy93U1szG5o5xXAuNRjGOSihy0
+         FVLLgIzC0cVheliDdPKq12MOFqODztZJwYtXhaZuwI4gnR23Xj9nbdyqZDUWjNjnaaoT
+         Vu2Q==
+X-Gm-Message-State: AOAM5319+XtOc8BWmcDUm4zNxoO1pEgHHomcbkTypPhsP9nAxV5v0q+5
+        ZmQtA8aZCbn6BHvbr/vleI9AMNzXRsc8oQ==
+X-Google-Smtp-Source: ABdhPJz74qkqHeUTV/HfMNLLo/BGoTltUcUElQxOsyZwkwS1H0MZvnn1I7podTH4mkH6bTXhcXb6gA==
+X-Received: by 2002:a0c:f74d:: with SMTP id e13mr10980010qvo.8.1617909397501;
+        Thu, 08 Apr 2021 12:16:37 -0700 (PDT)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id v128sm147949qkc.127.2021.04.08.12.16.35
+        by smtp.gmail.com with ESMTPSA id v128sm147949qkc.127.2021.04.08.12.16.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Apr 2021 12:16:35 -0700 (PDT)
+        Thu, 08 Apr 2021 12:16:37 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     nicolas.iooss@m4x.org, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 09/11] libsepol/cil: Refactor helper function for cil_gen_node()
-Date:   Thu,  8 Apr 2021 15:16:12 -0400
-Message-Id: <20210408191614.262173-10-jwcart2@gmail.com>
+Subject: [PATCH 10/11] libsepol/cil: Create function cil_add_decl_to_symtab() and refactor
+Date:   Thu,  8 Apr 2021 15:16:13 -0400
+Message-Id: <20210408191614.262173-11-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210408191614.262173-1-jwcart2@gmail.com>
 References: <20210408191614.262173-1-jwcart2@gmail.com>
@@ -62,72 +62,138 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Change the name of cil_is_datum_multiple_decl() to
-cil_allow_multiple_decls() and make it static. The new function
-takes the CIL db and the flavors of the old and new datum as
-arguments. Also, put all of the logic of determining if multiple
-declarations are allowed into the new function. Finally, update
-the call from cil_gen_node().
+The functionality of adding a declaration to a symbol table is also
+needed in __cil_copy_node_helper() and not just cil_gen_node().
+
+Create a new function called cil_add_decl_to_symtab() to add a
+declaration to a symtab and refactor cil_gen_node() and
+__cil_copy_node_helper() to use the new function.
+
+By using the new function, __cil_copy_node_helper() will now allow
+duplicate declarations when appropriate.
 
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/cil/src/cil_build_ast.c | 27 ++++++++++-----------------
- 1 file changed, 10 insertions(+), 17 deletions(-)
+ libsepol/cil/src/cil_build_ast.c | 63 +++++++++++++++++++-------------
+ libsepol/cil/src/cil_build_ast.h |  2 +
+ libsepol/cil/src/cil_copy_ast.c  |  6 ++-
+ 3 files changed, 45 insertions(+), 26 deletions(-)
 
 diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-index e57de662..14cdce14 100644
+index 14cdce14..ec81db55 100644
 --- a/libsepol/cil/src/cil_build_ast.c
 +++ b/libsepol/cil/src/cil_build_ast.c
-@@ -82,30 +82,24 @@ exit:
- 	return rc;
+@@ -102,11 +102,45 @@ static int cil_allow_multiple_decls(struct cil_db *db, enum cil_flavor f_new, en
+ 	return CIL_FALSE;
  }
  
--/*
-- * Determine whether or not multiple declarations of the same key can share a
-- * datum, given the new datum and the one already present in a given symtab.
-- */
--int cil_is_datum_multiple_decl(__attribute__((unused)) struct cil_symtab_datum *cur,
--                               struct cil_symtab_datum *old,
--                               enum cil_flavor f)
-+static int cil_allow_multiple_decls(struct cil_db *db, enum cil_flavor f_new, enum cil_flavor f_old)
- {
--	int rc = CIL_FALSE;
-+	if (f_new != f_old) {
-+		return CIL_FALSE;
-+	}
- 
--	switch (f) {
-+	switch (f_new) {
- 	case CIL_TYPE:
- 	case CIL_TYPEATTRIBUTE:
--		if (!old || f != FLAVOR(old)) {
--			rc = CIL_FALSE;
--		} else {
--			/* type and typeattribute statements insert empty datums */
--			rc = CIL_TRUE;
-+		if (db->multiple_decls) {
-+			return CIL_TRUE;
- 		}
- 		break;
- 	default:
- 		break;
- 	}
--	return rc;
++int cil_add_decl_to_symtab(struct cil_db *db, symtab_t *symtab, hashtab_key_t key, struct cil_symtab_datum *datum, struct cil_tree_node *node)
++{
++	int rc;
 +
-+	return CIL_FALSE;
- }
- 
++	if (symtab == NULL || datum == NULL || node == NULL) {
++		return SEPOL_ERR;
++	}
++
++	rc = cil_symtab_insert(symtab, key, datum, node);
++	if (rc == SEPOL_EEXIST) {
++		struct cil_symtab_datum *prev;
++		rc = cil_symtab_get_datum(symtab, key, &prev);
++		if (rc != SEPOL_OK) {
++			cil_log(CIL_ERR, "Re-declaration of %s %s, but previous declaration could not be found\n",cil_node_to_string(node), key);
++			return SEPOL_ERR;
++		}
++		if (!cil_allow_multiple_decls(db, node->flavor, FLAVOR(prev))) {
++			/* multiple_decls not ok, ret error */
++			struct cil_tree_node *n = NODE(prev);
++			cil_log(CIL_ERR, "Re-declaration of %s %s\n",
++				cil_node_to_string(node), key);
++			cil_tree_log(node, CIL_ERR, "Previous declaration of %s",
++				     cil_node_to_string(n));
++			return SEPOL_ERR;
++		}
++		/* multiple_decls is enabled and works for this datum type, add node */
++		cil_list_append(prev->nodes, CIL_NODE, node);
++		node->data = prev;
++		cil_symtab_datum_destroy(datum);
++		free(datum);
++	}
++
++	return SEPOL_OK;
++}
++
  int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_symtab_datum *datum, hashtab_key_t key, enum cil_sym_index sflavor, enum cil_flavor nflavor)
-@@ -135,8 +129,7 @@ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_s
- 				cil_log(CIL_ERR, "Re-declaration of %s %s, but previous declaration could not be found\n",cil_node_to_string(ast_node), key);
+ {
+ 	int rc = SEPOL_ERR;
+ 	symtab_t *symtab = NULL;
+-	struct cil_symtab_datum *prev;
+ 
+ 	rc = cil_verify_name((const char*)key, nflavor);
+ 	if (rc != SEPOL_OK) {
+@@ -121,30 +155,9 @@ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_s
+ 	ast_node->data = datum;
+ 	ast_node->flavor = nflavor;
+ 
+-	if (symtab != NULL) {
+-		rc = cil_symtab_insert(symtab, (hashtab_key_t)key, datum, ast_node);
+-		if (rc == SEPOL_EEXIST) {
+-			rc = cil_symtab_get_datum(symtab, (hashtab_key_t)key, &prev);
+-			if (rc != SEPOL_OK) {
+-				cil_log(CIL_ERR, "Re-declaration of %s %s, but previous declaration could not be found\n",cil_node_to_string(ast_node), key);
+-				goto exit;
+-			}
+-			if (!cil_allow_multiple_decls(db, nflavor, FLAVOR(prev))) {
+-				/* multiple_decls not ok, ret error */
+-				struct cil_tree_node *node = NODE(prev);
+-				cil_log(CIL_ERR, "Re-declaration of %s %s\n",
+-					cil_node_to_string(ast_node), key);
+-				cil_tree_log(node, CIL_ERR, "Previous declaration of %s",
+-					cil_node_to_string(node));
+-				rc = SEPOL_ERR;
+-				goto exit;
+-			}
+-			/* multiple_decls is enabled and works for this datum type, add node */
+-			cil_list_append(prev->nodes, CIL_NODE, ast_node);
+-			ast_node->data = prev;
+-			cil_symtab_datum_destroy(datum);
+-			free(datum);
+-		}
++	rc = cil_add_decl_to_symtab(db, symtab, key, datum, ast_node);
++	if (rc != SEPOL_OK) {
++		goto exit;
+ 	}
+ 
+ 	if (ast_node->parent->flavor == CIL_MACRO) {
+diff --git a/libsepol/cil/src/cil_build_ast.h b/libsepol/cil/src/cil_build_ast.h
+index 8153e51e..fd9053ce 100644
+--- a/libsepol/cil/src/cil_build_ast.h
++++ b/libsepol/cil/src/cil_build_ast.h
+@@ -37,6 +37,8 @@
+ #include "cil_tree.h"
+ #include "cil_list.h"
+ 
++int cil_add_decl_to_symtab(struct cil_db *db, symtab_t *symtab, hashtab_key_t key, struct cil_symtab_datum *datum, struct cil_tree_node *node);
++
+ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_symtab_datum *datum, hashtab_key_t key, enum cil_sym_index sflavor, enum cil_flavor nflavor);
+ int cil_parse_to_list(struct cil_tree_node *parse_cl_head, struct cil_list *ast_cl, enum cil_flavor flavor);
+ 
+diff --git a/libsepol/cil/src/cil_copy_ast.c b/libsepol/cil/src/cil_copy_ast.c
+index ed967861..12bc553c 100644
+--- a/libsepol/cil/src/cil_copy_ast.c
++++ b/libsepol/cil/src/cil_copy_ast.c
+@@ -2031,7 +2031,11 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) u
+ 				rc = SEPOL_ERR;
  				goto exit;
  			}
--			if (!db->multiple_decls ||
--			    !cil_is_datum_multiple_decl(datum, prev, nflavor)) {
-+			if (!cil_allow_multiple_decls(db, nflavor, FLAVOR(prev))) {
- 				/* multiple_decls not ok, ret error */
- 				struct cil_tree_node *node = NODE(prev);
- 				cil_log(CIL_ERR, "Re-declaration of %s %s\n",
+-			rc = cil_symtab_insert(symtab, ((struct cil_symtab_datum*)orig->data)->name, ((struct cil_symtab_datum*)data), new);
++
++			rc = cil_add_decl_to_symtab(db, symtab, DATUM(orig->data)->name, DATUM(data), new);
++			if (rc != SEPOL_OK) {
++				goto exit;
++			}
+ 
+ 			namespace = new;
+ 			while (namespace->flavor != CIL_MACRO && namespace->flavor != CIL_BLOCK && namespace->flavor != CIL_ROOT) {
 -- 
 2.26.3
 

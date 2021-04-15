@@ -2,94 +2,134 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5AFDA35FB74
-	for <lists+selinux@lfdr.de>; Wed, 14 Apr 2021 21:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 079C6360667
+	for <lists+selinux@lfdr.de>; Thu, 15 Apr 2021 12:04:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353126AbhDNTTL (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 14 Apr 2021 15:19:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232828AbhDNTTJ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 14 Apr 2021 15:19:09 -0400
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F14B3C061574
-        for <selinux@vger.kernel.org>; Wed, 14 Apr 2021 12:18:46 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id k25so21743703oic.4
-        for <selinux@vger.kernel.org>; Wed, 14 Apr 2021 12:18:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=nIJfNBD0BVbMuNQNEwnDEDrvwO7pOazFHcCnSXJOTMY=;
-        b=el9U83kytBg7F0qWNlnB9kN/4QhE1NTkV9pJxH3CjPx50Cr3Q4lZQSPSw/f7LIhUYJ
-         PJVTN9xl4wfeUkFtWHSXy7LB+0QN5DGFUZSJffE3/zdoaV+zt1lKXbkeChEK5yKqc3uA
-         AXkCp6amRWyAkQaBLKcbShbSiWO3JdwPKgwUiMSfZzmtnMLA//KUOVU5AlUpUk/gZ0JT
-         zKZ7L6ebKK63T3LJag3rMwjw1G67+H2p8+5g0XwiGIayN8MJFiDWDFj2cKrbssv87/xO
-         bMyQzlbnRMwLrwt+MsDm/Tl5BlAJG9L/nEa5b+sPSkwydZi7jmXW+2M5wIUI4EMEfqDf
-         70Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=nIJfNBD0BVbMuNQNEwnDEDrvwO7pOazFHcCnSXJOTMY=;
-        b=tSps0/BEHRwecQsXB8xe+O6KJHp0rTMzR2EKuISV4Ve4XPg9g1GRcVa74Wssk7EZcj
-         a3r+zkMoM8rSrBVfq/0tledqE0Gerr2lz30CZ2bhc9Mj7WHbQwAha1fSP1/D6ITtYf8s
-         NVgGXhMcAdC+V2N+464BG9p210WAVk7fg60cAbYeWvJRmbCTZVg8ybzTtW0GtnGvUoxj
-         5ehMCmv9WvUyZPVg40nrbaLSW5qO8ckLzXBfOSQvITmO6sZxYu6/FklFogIbId4aGE3h
-         +V5JxCteROzyydPErf9GORircXOSxKNLf2v92xqykYpy4iE97Ebg6r/NnbOIZXLFaphd
-         P9Fw==
-X-Gm-Message-State: AOAM532zbv6NoIE7x5nX+Un/mWCcSyxoSPpt3KqDFgCieKg/8xLtgkqC
-        Fd9tQI7lQH0599p07Q7Zw8wWk+yqldC/RFZmpKM=
-X-Google-Smtp-Source: ABdhPJwc87SJCK6kEWSMq9haCP1E7tFguaFa2RTcmn/dBsrYcCggJJTeUJR4DxWuMOz/zz4SYdwqNT6ZJcN+ISjWEgQ=
-X-Received: by 2002:a05:6808:1482:: with SMTP id e2mr3543984oiw.138.1618427926421;
- Wed, 14 Apr 2021 12:18:46 -0700 (PDT)
+        id S231584AbhDOKFO (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 15 Apr 2021 06:05:14 -0400
+Received: from frasgout.his.huawei.com ([185.176.79.56]:2860 "EHLO
+        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229841AbhDOKFO (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 15 Apr 2021 06:05:14 -0400
+Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.226])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FLZWv5YZDz688pV;
+        Thu, 15 Apr 2021 17:57:31 +0800 (CST)
+Received: from fraphisprd00473.huawei.com (7.182.8.141) by
+ fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2106.2; Thu, 15 Apr 2021 12:04:48 +0200
+From:   Roberto Sassu <roberto.sassu@huawei.com>
+To:     <zohar@linux.ibm.com>, <jmorris@namei.org>, <paul@paul-moore.com>,
+        <casey@schaufler-ca.com>
+CC:     <linux-integrity@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <selinux@vger.kernel.org>,
+        <reiserfs-devel@vger.kernel.org>,
+        Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH 0/5] evm: Prepare for moving to the LSM infrastructure
+Date:   Thu, 15 Apr 2021 12:04:30 +0200
+Message-ID: <20210415100435.18619-1-roberto.sassu@huawei.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20210414141027.3494107-1-yochiang@google.com>
-In-Reply-To: <20210414141027.3494107-1-yochiang@google.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Wed, 14 Apr 2021 15:18:35 -0400
-Message-ID: <CAP+JOzSCEfgouyWfjkZjPwrEZM0SSKqGH2QJdirp8zkHPyXBfg@mail.gmail.com>
-Subject: Re: [PATCH] secilc.c: Don't fail if input file is empty
-To:     Yi-Yo Chiang <yochiang@google.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [7.182.8.141]
+X-ClientProxiedBy: lhreml752-chm.china.huawei.com (10.201.108.202) To
+ fraeml714-chm.china.huawei.com (10.206.15.33)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Apr 14, 2021 at 12:32 PM Yi-Yo Chiang <yochiang@google.com> wrote:
->
-> fread(3) returns zero if |size| is zero. This confuses secilc, and
-> causes it to fail with a "Failure reading file" error, even though there
-> is no error.
->
-> Add a shortcut that closes and skips an input file if file size is zero.
->
-> Signed-off-by: Yi-Yo Chiang <yochiang@google.com>
+This patch set depends on:
 
-Acked-by: James Carter <jwcart2@gmail.com>
+https://lore.kernel.org/linux-integrity/20210409114313.4073-1-roberto.sassu@huawei.com/
+https://lore.kernel.org/linux-integrity/20210407105252.30721-1-roberto.sassu@huawei.com/
 
-> ---
->  secilc/secilc.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/secilc/secilc.c b/secilc/secilc.c
-> index 186c5a73..9c78e425 100644
-> --- a/secilc/secilc.c
-> +++ b/secilc/secilc.c
-> @@ -268,6 +268,12 @@ int main(int argc, char *argv[])
->                 }
->                 file_size = filedata.st_size;
->
-> +               if (!file_size) {
-> +                       fclose(file);
-> +                       file = NULL;
-> +                       continue;
-> +               }
-> +
->                 buffer = malloc(file_size);
->                 rc = fread(buffer, file_size, 1, file);
->                 if (rc != 1) {
-> --
-> 2.31.1.295.g9ea45b61b8-goog
->
+One of the challenges that must be tackled to move IMA and EVM to the LSM
+infrastructure is to ensure that EVM is capable to correctly handle
+multiple stacked LSMs providing an xattr at file creation. At the moment,
+there are few issues that would prevent a correct integration. This patch
+set aims at solving them.
+
+From the LSM infrastructure side, the LSM stacking feature added the
+possibility of registering multiple implementations of the security hooks,
+that are called sequentially whenever someone calls the corresponding
+security hook. However, security_inode_init_security() and
+security_old_inode_init_security() are currently limited to support one
+xattr provided by LSM and one by EVM.
+
+In addition, using the call_int_hook() macro causes some issues. According
+to the documentation in include/linux/lsm_hooks.h, it is a legitimate case
+that an LSM returns -EOPNOTSUPP when it does not want to provide an xattr.
+However, the loop defined in the macro would stop calling subsequent LSMs
+if that happens. In the case of security_old_inode_init_security(), using
+the macro would also cause a memory leak due to replacing the *value
+pointer, if multiple LSMs provide an xattr.
+
+From EVM side, the first operation to be done is to change the definition
+of evm_inode_init_security() to be compatible with the security hook
+definition. Unfortunately, the current definition does not provide enough
+information for EVM, as it must have visibility of all xattrs provided by
+LSMs to correctly calculate the HMAC. This patch set changes the security
+hook definition by adding the full array of xattr as a parameter.
+
+Secondly, EVM must know how many elements are in the xattr array. It seems
+that it is not necessary to add another parameter, as all filesystems that
+define an initxattr function, expect that the last element of the array is
+one with the name field set to NULL. EVM reuses the same assumption.
+
+This patch set has been tested by introducing several instances of a
+TestLSM (some providing an xattr, some not, one with a wrong implementation
+to see how the LSM infrastructure handles it). The patch is not included
+in this set but it is available here:
+
+https://github.com/robertosassu/linux/commit/0370ff0fbc16e5d63489836a958e65d697f956db
+
+The test, added to ima-evm-utils, is available here:
+
+https://github.com/robertosassu/ima-evm-utils/blob/evm-multiple-lsms-v1-devel-v1/tests/evm_multiple_lsms.test
+
+The test takes a UML kernel built by Travis and launches it several times,
+each time with a different combination of LSMs. After boot, it first checks
+that there is an xattr for each LSM providing it, and then calculates the
+HMAC in user space and compares it with the HMAC calculated by EVM in
+kernel space.
+
+A test report can be obtained here:
+
+https://www.travis-ci.com/github/robertosassu/ima-evm-utils/jobs/498699540
+
+Lastly, running the test on reiserfs to check
+security_old_inode_init_security(), some issues have been discovered: a
+free of xattr->name which is not correct after commit 9548906b2bb7 ('xattr:
+Constify ->name member of "struct xattr"'), and a misalignment with
+security_inode_init_security() (the old version expects the full xattr name
+with the security. prefix, the new version just the suffix). The last issue
+has not been fixed yet.
+
+Roberto Sassu (5):
+  xattr: Complete constify ->name member of "struct xattr"
+  security: Support multiple LSMs implementing the inode_init_security
+    hook
+  security: Pass xattrs allocated by LSMs to the inode_init_security
+    hook
+  evm: Align evm_inode_init_security() definition with LSM
+    infrastructure
+  evm: Support multiple LSMs providing an xattr
+
+ fs/reiserfs/xattr_security.c        |  2 -
+ include/linux/evm.h                 | 21 ++++---
+ include/linux/lsm_hook_defs.h       |  2 +-
+ include/linux/lsm_hooks.h           |  5 +-
+ security/integrity/evm/evm.h        |  2 +
+ security/integrity/evm/evm_crypto.c |  9 ++-
+ security/integrity/evm/evm_main.c   | 35 +++++++----
+ security/security.c                 | 95 +++++++++++++++++++++++------
+ security/selinux/hooks.c            |  3 +-
+ security/smack/smack_lsm.c          |  4 +-
+ 10 files changed, 135 insertions(+), 43 deletions(-)
+
+-- 
+2.26.2
+

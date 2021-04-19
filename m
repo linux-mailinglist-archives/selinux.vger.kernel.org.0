@@ -2,197 +2,114 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BF0723646E9
-	for <lists+selinux@lfdr.de>; Mon, 19 Apr 2021 17:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC65236471C
+	for <lists+selinux@lfdr.de>; Mon, 19 Apr 2021 17:27:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240864AbhDSPQ6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 19 Apr 2021 11:16:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56880 "EHLO
+        id S237956AbhDSP2Y (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 19 Apr 2021 11:28:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240871AbhDSPQ5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 19 Apr 2021 11:16:57 -0400
-Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9048CC06138D
-        for <selinux@vger.kernel.org>; Mon, 19 Apr 2021 08:16:27 -0700 (PDT)
-Received: by mail-qk1-x734.google.com with SMTP id h13so17421549qka.2
-        for <selinux@vger.kernel.org>; Mon, 19 Apr 2021 08:16:27 -0700 (PDT)
+        with ESMTP id S233733AbhDSP2Y (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 19 Apr 2021 11:28:24 -0400
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DDECC06174A
+        for <selinux@vger.kernel.org>; Mon, 19 Apr 2021 08:27:54 -0700 (PDT)
+Received: by mail-qk1-x72c.google.com with SMTP id y136so4054490qkb.1
+        for <selinux@vger.kernel.org>; Mon, 19 Apr 2021 08:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=BiVKg2WBPAYnYNP2ztrBu/JhVoUYWMeDmegrPETotks=;
-        b=tshprCSRNs+hr88ogqFCgXY0mKV2MVlvYgymqY5+C9a6aKDAcY33DeVOImHikOxbFD
-         TW6RBOpp+ePzqiUgsx98XNgTpaKXRBcbIE7A2ia4YPkeprguchefv9v0VayX1TXLdFg+
-         VqiLeAyB5xWlWyWbdENT+IiHGqUNXQcwH3rYFjZ5hXKwLhvGzOTYIJMvfBmnAGcu5szL
-         0e+QVN8oREa3cvYa16HnUOEmhTZPV/3twHsfGy3nvX93YDYAPG4v/qCMM7Twjrvu5LP8
-         U4hPsZ/JfhfNQEt4l++/5ZONZPfraJk/tL1LziE8YmYyRC6e+vcj+P7yMGhNCoLsWJrc
-         JGGw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+WPeU4vz01u/YtlHbzZm8Pukmp9EFFXLPjUbjMUZmOA=;
+        b=JYjZlWyn4tUx6IA3PvxiuaiZzW3BdCkJl2xlqrz+vRTbF2+xo0ACtV9nxIMU3daGVG
+         UwigzCaWcHmH222dD3rJE76HffaZhfDTik62Utih2juG8x0CkIpete7Iz7HrCt5hEKQs
+         v5rlEQosFsG9M9NknHA0stCCvCRi7rV23q6uUa0vRYNWCmULkhF3UuY8Mb5KAaJMlOsJ
+         ddm2cZ3rpfacREW0/a+rdLdWG5PhBDAkjCuykHROnUvjxizrEnxt9C62ILKR8yqAMjpr
+         bKboNbXigh3pYtYyWwg89OoZJbzgtwo6GoFmV/F8igzCU5Ms3XtQOFUGeegS2E0H9YqK
+         j9XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=BiVKg2WBPAYnYNP2ztrBu/JhVoUYWMeDmegrPETotks=;
-        b=OUFuI7pIhVC2uHpvXeyIZMvtUhOOeJfwyqvAcv6TsuF52B522bSsI4jF4Hapc8bkDn
-         lwEpjYiMZIn+Sqx+8zsI1DswLurjY7vEtH6sKTRiaHc0oIGFGk3+mEV0+lyqQq7jzy29
-         4Vmgozuo2UVo2USrYgEcQjIzbCMKB1jPeins/3zQmzqS3pNJtAV8nEqCJHzkN/eT82gn
-         q6eGDk9zFTg6yNNeydOAtBzs8yajWsZS11yL9UcIsbl06VwWNfSHH0mxEBZBoZn0mMPT
-         h4HnsNVSzGQuCt1V82z5BAy5ixRExy2jf9m/ElsqgL91XrnK/O7ccw0I6pHwAj+S2OHu
-         B6iw==
-X-Gm-Message-State: AOAM532FMkSNiIuAImtO2vzIknnl1W1G+aKE0LKBJ86276gTYeVPrtJa
-        05bHYSD45SzgoNcee0acM/5/Z/5B6OFlCQ==
-X-Google-Smtp-Source: ABdhPJx41+BV9eZnyVKJF1Oi/iFpsO18zsWs3o7xsNxx7XX4sR3H/G9hpr3FcNGQhtlNOlQyoe7Acw==
-X-Received: by 2002:a37:b807:: with SMTP id i7mr12360093qkf.126.1618845386687;
-        Mon, 19 Apr 2021 08:16:26 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+WPeU4vz01u/YtlHbzZm8Pukmp9EFFXLPjUbjMUZmOA=;
+        b=kWS6glOmBX2haEkuZ+t6cswKJbb9LIMo2JyrBciEOvemHZRzO2Ica8UJhduAxgmioH
+         srY6OC/cncV2O6IUHYrAIFzUJYBWUpis4VRE9SqeBmE7/HT1Uor0CvvD/hdaq+0/ZLzC
+         e4D0Lm7yZExnPwcprXxQ/QQr7zo2gkAbegZJUybFa2+juyo6zX+eEEzTJI+FO1SEjR77
+         9w7Gc+y9hOdC069vwYAH4ERjnaWVHW2q/r7/rIido89zpbyvwzpmecGb+UES6OMtf3VX
+         K9uvR6zzo6q2Ndgq6rZ+fn+oJ2aXiuxYzBSECr2R5Ep0664VNOh7KlDGTxGPT2KIa27D
+         EJSA==
+X-Gm-Message-State: AOAM531zDmzYijm/5Xnh9VyCTgSE4WWCnVn8x1IQTGCM/nw5chMwcZ2e
+        l7VvUQosdAWdA2W0aBqUdSLmPdc9uM43Iw==
+X-Google-Smtp-Source: ABdhPJzmtP7H977R/ueTLGJ9dqQt4YnMT74n+ylvCnmUxvwt4YMVogf6tLNva+p7OWXsUKIwWYLbgw==
+X-Received: by 2002:a05:620a:7d4:: with SMTP id 20mr9718638qkb.58.1618846073747;
+        Mon, 19 Apr 2021 08:27:53 -0700 (PDT)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id d68sm9840584qkf.93.2021.04.19.08.16.26
+        by smtp.gmail.com with ESMTPSA id p23sm5959249qtl.8.2021.04.19.08.27.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Apr 2021 08:16:26 -0700 (PDT)
+        Mon, 19 Apr 2021 08:27:53 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
-Cc:     nicolas.iooss@m4x.org, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 11/11 v2] libsepol/cil: Move check for the shadowing of macro parameters
-Date:   Mon, 19 Apr 2021 11:15:57 -0400
-Message-Id: <20210419151557.87561-12-jwcart2@gmail.com>
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH 0/3 v2] Create secil2tree to write CIL AST
+Date:   Mon, 19 Apr 2021 11:27:46 -0400
+Message-Id: <20210419152749.88086-1-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20210419151557.87561-1-jwcart2@gmail.com>
-References: <20210419151557.87561-1-jwcart2@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-In cil_gen_node(), after the declaration is added to the symbol
-table, if the parent is a macro, then a check is made to ensure
-the declaration does not shadow any of the macro's parameters.
-This check also needs to be done when copying the AST.
+For debugging purposes it would be useful to be able to write out
+the CIL AST at various points in the build process.
 
-Move the check for the shadowing of macro parameters to its own
-function, cil_verify_decl_does_not_shadow_macro_parameter(), and
-refactor cil_gen_node() and __cil_copy_node_helper() to use the
-new function.
+This patch set creates secil2tree which can write the CIL parse tree,
+the CIL AST after the build phase, or the CIL AST after the resolve
+phase (with names fully-qualified).
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- libsepol/cil/src/cil_build_ast.c | 16 +++-------------
- libsepol/cil/src/cil_copy_ast.c  | 20 ++++----------------
- libsepol/cil/src/cil_verify.c    | 18 ++++++++++++++++++
- libsepol/cil/src/cil_verify.h    |  1 +
- 4 files changed, 26 insertions(+), 29 deletions(-)
+Within CIL the function cil_print_tree() has existed from early in
+CIL's development, but it was not exported in libsepol and there was no
+way to use it except by adding a call to it where you wanted to print
+out the CIL AST and then recompiling everything. It also used cil_log()
+as its output, so other messages could be mixed in with the output. This
+patch set moves all of this code to its own file, updates it, renames it
+as cil_write_ast(), and adds libsepol functions that can be used to call
+it after each one of the phases mentioned above.
 
-diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-index ec81db55..a4a2baa0 100644
---- a/libsepol/cil/src/cil_build_ast.c
-+++ b/libsepol/cil/src/cil_build_ast.c
-@@ -161,19 +161,9 @@ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_s
- 	}
- 
- 	if (ast_node->parent->flavor == CIL_MACRO) {
--		struct cil_list_item *item;
--		struct cil_list *param_list = ((struct cil_macro*)ast_node->parent->data)->params;
--		if (param_list != NULL) {
--			cil_list_for_each(item, param_list) {
--				struct cil_param *param = item->data;
--				if (param->flavor == ast_node->flavor) {
--					if (param->str == key) {
--						cil_log(CIL_ERR, "%s %s shadows a macro parameter in macro declaration\n", cil_node_to_string(ast_node), key);
--						rc = SEPOL_ERR;
--						goto exit;
--					}
--				}
--			}
-+		rc = cil_verify_decl_does_not_shadow_macro_parameter(ast_node->parent->data, ast_node, key);
-+		if (rc != SEPOL_OK) {
-+			goto exit;
- 		}
- 	}
- 
-diff --git a/libsepol/cil/src/cil_copy_ast.c b/libsepol/cil/src/cil_copy_ast.c
-index 12bc553c..954eab33 100644
---- a/libsepol/cil/src/cil_copy_ast.c
-+++ b/libsepol/cil/src/cil_copy_ast.c
-@@ -40,6 +40,7 @@
- #include "cil_copy_ast.h"
- #include "cil_build_ast.h"
- #include "cil_strpool.h"
-+#include "cil_verify.h"
- 
- struct cil_args_copy {
- 	struct cil_tree_node *dest;
-@@ -1716,7 +1717,6 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) u
- 	struct cil_db *db = NULL;
- 	struct cil_args_copy *args = NULL;
- 	struct cil_tree_node *namespace = NULL;
--	struct cil_param *param = NULL;
- 	enum cil_sym_index sym_index = CIL_SYM_UNKNOWN;
- 	symtab_t *symtab = NULL;
- 	void *data = NULL;
-@@ -2043,21 +2043,9 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, __attribute__((unused)) u
- 			}
- 
- 			if (namespace->flavor == CIL_MACRO) {
--				struct cil_macro *macro = namespace->data;
--				struct cil_list *param_list = macro->params;
--				if (param_list != NULL) {
--					struct cil_list_item *item;
--					cil_list_for_each(item, param_list) {
--						param = item->data;
--						if (param->flavor == new->flavor) {
--							if (param->str == ((struct cil_symtab_datum*)new->data)->name) {
--								cil_tree_log(orig, CIL_ERR, "%s %s shadows a macro parameter", cil_node_to_string(new), ((struct cil_symtab_datum*)orig->data)->name);
--								cil_tree_log(namespace, CIL_ERR, "Note: macro declaration");
--								rc = SEPOL_ERR;
--								goto exit;
--							}
--						}
--					}
-+				rc = cil_verify_decl_does_not_shadow_macro_parameter(namespace->data, orig, DATUM(orig->data)->name);
-+				if (rc != SEPOL_OK) {
-+					goto exit;
- 				}
- 			}
- 		}
-diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
-index 8fd54360..5a37dd2f 100644
---- a/libsepol/cil/src/cil_verify.c
-+++ b/libsepol/cil/src/cil_verify.c
-@@ -412,6 +412,24 @@ int cil_verify_conditional_blocks(struct cil_tree_node *current)
- 	return SEPOL_OK;
- }
- 
-+int cil_verify_decl_does_not_shadow_macro_parameter(struct cil_macro *macro, struct cil_tree_node *node, const char *name)
-+{
-+	struct cil_list_item *item;
-+	struct cil_list *param_list = macro->params;
-+	if (param_list != NULL) {
-+		cil_list_for_each(item, param_list) {
-+			struct cil_param *param = item->data;
-+			if (param->flavor == node->flavor) {
-+				if (param->str == name) {
-+					cil_log(CIL_ERR, "%s %s shadows a macro parameter in macro declaration\n", cil_node_to_string(node), name);
-+					return SEPOL_ERR;
-+				}
-+			}
-+		}
-+	}
-+	return SEPOL_OK;
-+}
-+
- int cil_verify_no_self_reference(struct cil_symtab_datum *datum, struct cil_list *datum_list)
- {
- 	struct cil_list_item *i;
-diff --git a/libsepol/cil/src/cil_verify.h b/libsepol/cil/src/cil_verify.h
-index 1887ae3f..c497018f 100644
---- a/libsepol/cil/src/cil_verify.h
-+++ b/libsepol/cil/src/cil_verify.h
-@@ -62,6 +62,7 @@ int cil_verify_expr_syntax(struct cil_tree_node *current, enum cil_flavor op, en
- int cil_verify_constraint_leaf_expr_syntax(enum cil_flavor l_flavor, enum cil_flavor r_flavor, enum cil_flavor op, enum cil_flavor expr_flavor);
- int cil_verify_constraint_expr_syntax(struct cil_tree_node *current, enum cil_flavor op);
- int cil_verify_conditional_blocks(struct cil_tree_node *current);
-+int cil_verify_decl_does_not_shadow_macro_parameter(struct cil_macro *macro, struct cil_tree_node *node, const char *name);
- int cil_verify_no_self_reference(struct cil_symtab_datum *datum, struct cil_list *datum_list);
- int __cil_verify_ranges(struct cil_list *list);
- int __cil_verify_ordered_node_helper(struct cil_tree_node *node, uint32_t *finished, void *extra_args);
+Both the parse and build CIL AST are valid CIL policies that can be
+compiled with secilc, but the resolve CIL AST is not always a valid CIL
+policy. The biggest problem is that fully-qualified names can contain
+dots and CIL does not allow dots in declaration names. There are other
+problems as well. It would be nice to get to the point where the output
+for all of the trees are valid CIL, but that is a goal for the future.
+
+v2:
+- Remove whitespace errors in cil_write_ast.h
+- Use "const char*" instead of just "char*" when dealing with string
+literals to satisfy clang.
+
+James Carter (3):
+  libsepol/cil: Create functions to write the CIL AST
+  libsepol/cil: Add functions to make use of cil_write_ast()
+  secilc: Create the new program called secil2tree to write out CIL AST
+
+ libsepol/cil/include/cil/cil.h   |    3 +
+ libsepol/cil/src/cil.c           |   92 ++
+ libsepol/cil/src/cil_tree.c      | 1471 ----------------------------
+ libsepol/cil/src/cil_tree.h      |    2 -
+ libsepol/cil/src/cil_write_ast.c | 1573 ++++++++++++++++++++++++++++++
+ libsepol/cil/src/cil_write_ast.h |   46 +
+ libsepol/src/libsepol.map.in     |    3 +
+ secilc/.gitignore                |    2 +
+ secilc/Makefile                  |   20 +-
+ secilc/secil2tree.8.xml          |   81 ++
+ secilc/secil2tree.c              |  206 ++++
+ 11 files changed, 2024 insertions(+), 1475 deletions(-)
+ create mode 100644 libsepol/cil/src/cil_write_ast.c
+ create mode 100644 libsepol/cil/src/cil_write_ast.h
+ create mode 100644 secilc/secil2tree.8.xml
+ create mode 100644 secilc/secil2tree.c
+
 -- 
 2.26.3
 

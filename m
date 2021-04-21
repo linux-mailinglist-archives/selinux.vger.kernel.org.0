@@ -2,175 +2,113 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F4CC3670B8
-	for <lists+selinux@lfdr.de>; Wed, 21 Apr 2021 18:56:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AB75367115
+	for <lists+selinux@lfdr.de>; Wed, 21 Apr 2021 19:15:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244489AbhDUQ5U (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 21 Apr 2021 12:57:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34182 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244484AbhDUQ5U (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 21 Apr 2021 12:57:20 -0400
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E53C06138A
-        for <selinux@vger.kernel.org>; Wed, 21 Apr 2021 09:56:46 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id i81so43062579oif.6
-        for <selinux@vger.kernel.org>; Wed, 21 Apr 2021 09:56:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=PX29pm3fbINXwEow/9B95B4Iab4aW9hCCo4GCIAf624=;
-        b=muXUDemKvFNNdy/rD7hE4sN/Fnenagw8cq087L0+2y3I07Anwng9ZtSiDcHxOUwBfm
-         JFzIlLe5aT5mjaNicMi2vgcmVCwMF3w8AObf13YNeE0VgH5hq6iS7h4+tXNNeL+hgOAm
-         M7alt1F7/H0OoXIx7XybDAtkol+wCITNWcV3Dj128Z2NTprXnY9Ye+jYGZoqI9sZTlbC
-         uouECD4K0UH4Xxnu1sy5tVLlT5B/ZG4cysqJaJ2TfP1y9jpjvVD/tbsuBB3p7ymBy26b
-         aq5jK6w0+vQWPUjXu1nWuDSi9YoeHomYMJHIoxluY6h6H/fg+knQLDJ8/qyJ984sHjYL
-         NmJQ==
+        id S241576AbhDURPd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 21 Apr 2021 13:15:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:59373 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S242973AbhDURPb (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 21 Apr 2021 13:15:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1619025298;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=7Ds+L1bCP6+6WbzB+/50dXw+9s8exJ7s0FvADavIhEQ=;
+        b=NQQU92PIgrh3iDkjXdCSdKwSSD6tLZdQ/JYphwolvKLp3QCOVfYBtzJ8dgEXj1POA4HylJ
+        8Sd9xZd9ytZfqKP9MEeKbRnwQ9rDmJ3QFPUbU5VtqOFutJP2bDaLueAl8v85yXoPOLDGs0
+        5LHnrcV2pHE4CzV0v5cZXfZA9mCK3rI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-292-iYVenShQNaqU4QVtw6jnRg-1; Wed, 21 Apr 2021 13:14:51 -0400
+X-MC-Unique: iYVenShQNaqU4QVtw6jnRg-1
+Received: by mail-ej1-f71.google.com with SMTP id bx15-20020a170906a1cfb029037415131f28so6192976ejb.18
+        for <selinux@vger.kernel.org>; Wed, 21 Apr 2021 10:14:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=PX29pm3fbINXwEow/9B95B4Iab4aW9hCCo4GCIAf624=;
-        b=NxZEqjcnB6fPan35UXbI9tykdLBeKqXC9Ux5BaZvU7I3+GUaedKGvxuofIBcq6uQYa
-         EcmUcRQ5y+j5aRRNE5ah3BHXNnzd++BW4qq78XyzGYKyBFVPaJCzJRHXV3MzPaHaoO6p
-         aAcey8CcAJ5KIEZYPn1AdWpTsGwuXOenKm1nMl/8Oe6BN5EFhjj265pdoEqsRDbPOaEp
-         OSWRSz4vTx+YrHKUbunR10Raapmk6Ku7kDgDH0UXAAWnHM5SWCiaPnW+Yn/4KVn8u7t9
-         MeMba2W0N8YS8cr30wWuEZHVbeiadmk0CW6DeDiMUQ+FC3Oqeao7Gq1/oegllzcXSjHx
-         kepQ==
-X-Gm-Message-State: AOAM5319uT766WejtvNTPGIsRoUSHqWBO/FHIMdffaMt3T7DnVxlp0Lr
-        30l59gEKDmhD5S+63KAKBGS2ytPAmfOCA5Dy+rZ2U0/hpkM=
-X-Google-Smtp-Source: ABdhPJx5BMxywYAuEmeth2o0fkAWY6hhsXGcEFf90Tm6PaWaQyoyBIzkRuf1u+5GN574G3k147hXBCeA4S53KK2MB+c=
-X-Received: by 2002:aca:abd4:: with SMTP id u203mr5415728oie.16.1619024206182;
- Wed, 21 Apr 2021 09:56:46 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=7Ds+L1bCP6+6WbzB+/50dXw+9s8exJ7s0FvADavIhEQ=;
+        b=asMofwfqhqecROoShpQ4yOhwhNufSY0Y1mXMA84uMC8osvpuRG5Pptn5oPOyWZzxJ1
+         enSVVTwMs0kJsBMpv1PMk3HjtHF6yUg1kviY4isGruxibIpQW2iZab4QRkfsL0EYfc62
+         7T7YRurCbQFszEXme+idda79vE71QEiX3cCw2TmmZQqCYlXTeY0iNJDWgyKcpweIHRar
+         l3sz2nCaJxunNwZ1ngghg8diV00XtqMwUL5GlKylwLKClP/j1cnOd6GdlsfUqItYC5OV
+         7tALFULiUuXLcuM3Z/2+aby7s8Pft1O15PEbHF626GgjNZYlbV4t9L5xKN9kJiIG3H2L
+         njwA==
+X-Gm-Message-State: AOAM532xuur1ab3mR6Agk1nyVH9lsD2KX7dU+z44z0nXUlcIhK3U/q8h
+        HOLaSaOgD7FRbI9aI/JIQXz94GlltA6liq69zQJMvtDQ0ezjZ/uy4lanq0Xw6k9HtQfqLdRC5lB
+        URGyHvRTGta5KfPpRZsgYUIcYy3r//zeRs7VetO9rg1DTv+HEWlkBN3Ue4aeRP6EypC9uag==
+X-Received: by 2002:a05:6402:290:: with SMTP id l16mr29082613edv.337.1619025289600;
+        Wed, 21 Apr 2021 10:14:49 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwmoKETRUuKqjG2OlKoFygbPK3HDWwNtdSKU+JS0tzwEYE4lpqCN0fHqQM+w+zccUEMLCoX8w==
+X-Received: by 2002:a05:6402:290:: with SMTP id l16mr29082582edv.337.1619025289299;
+        Wed, 21 Apr 2021 10:14:49 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8308:b105:dd00:277b:6436:24db:9466])
+        by smtp.gmail.com with ESMTPSA id i1sm22905edt.33.2021.04.21.10.14.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Apr 2021 10:14:48 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>
+Cc:     linux-security-module@vger.kernel.org, linux-mm@kvack.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Lokesh Gidra <lokeshgidra@google.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>
+Subject: [RFC PATCH 0/2] selinux,anon_inodes: Use a separate SELinux class for each type of anon inode
+Date:   Wed, 21 Apr 2021 19:14:44 +0200
+Message-Id: <20210421171446.785507-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20210419152749.88086-1-jwcart2@gmail.com> <CAP+JOzRtCjKaXVW6jVs7k-fhZE+AkkJuP5ORUNap0r3GHy2_Sg@mail.gmail.com>
- <CAJfZ7=k6z6aRXtFnpzyjmkBdAYTeXouqYSePsQ-dQLxB=enHMQ@mail.gmail.com>
-In-Reply-To: <CAJfZ7=k6z6aRXtFnpzyjmkBdAYTeXouqYSePsQ-dQLxB=enHMQ@mail.gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Wed, 21 Apr 2021 12:56:35 -0400
-Message-ID: <CAP+JOzQ_Ghm5nbPdOxwNrMNHTrMKwca59eUW7uNsKL_046=QoA@mail.gmail.com>
-Subject: Re: [PATCH 0/3 v2] Create secil2tree to write CIL AST
-To:     Nicolas Iooss <nicolas.iooss@m4x.org>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Apr 21, 2021 at 4:58 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote=
-:
->
-> On Tue, Apr 20, 2021 at 7:08 PM James Carter <jwcart2@gmail.com> wrote:
-> >
-> > As an example of how it can be used, I have been using secil2tree
-> > recently to make secilc fuzzing test cases readable.
-> >
-> > Running:
-> > secil2tree -A build -o fuzz_613136.cil
-> > clusterfuzz-testcase-minimized-secilc-fuzzer-6131368317812736
-> >
-> > The attached files shows the original and the output of secil2tree.
-> >
-> > Jim
-> >
-> > On Mon, Apr 19, 2021 at 11:27 AM James Carter <jwcart2@gmail.com> wrote=
-:
-> > >
-> > > For debugging purposes it would be useful to be able to write out
-> > > the CIL AST at various points in the build process.
-> > >
-> > > This patch set creates secil2tree which can write the CIL parse tree,
-> > > the CIL AST after the build phase, or the CIL AST after the resolve
-> > > phase (with names fully-qualified).
-> > >
-> > > Within CIL the function cil_print_tree() has existed from early in
-> > > CIL's development, but it was not exported in libsepol and there was =
-no
-> > > way to use it except by adding a call to it where you wanted to print
-> > > out the CIL AST and then recompiling everything. It also used cil_log=
-()
-> > > as its output, so other messages could be mixed in with the output. T=
-his
-> > > patch set moves all of this code to its own file, updates it, renames=
- it
-> > > as cil_write_ast(), and adds libsepol functions that can be used to c=
-all
-> > > it after each one of the phases mentioned above.
-> > >
-> > > Both the parse and build CIL AST are valid CIL policies that can be
-> > > compiled with secilc, but the resolve CIL AST is not always a valid C=
-IL
-> > > policy. The biggest problem is that fully-qualified names can contain
-> > > dots and CIL does not allow dots in declaration names. There are othe=
-r
-> > > problems as well. It would be nice to get to the point where the outp=
-ut
-> > > for all of the trees are valid CIL, but that is a goal for the future=
-.
-> > >
-> > > v2:
-> > > - Remove whitespace errors in cil_write_ast.h
-> > > - Use "const char*" instead of just "char*" when dealing with string
-> > > literals to satisfy clang.
-> > >
-> > > James Carter (3):
-> > >   libsepol/cil: Create functions to write the CIL AST
-> > >   libsepol/cil: Add functions to make use of cil_write_ast()
-> > >   secilc: Create the new program called secil2tree to write out CIL A=
-ST
-> > >
-> > >  libsepol/cil/include/cil/cil.h   |    3 +
-> > >  libsepol/cil/src/cil.c           |   92 ++
-> > >  libsepol/cil/src/cil_tree.c      | 1471 ----------------------------
-> > >  libsepol/cil/src/cil_tree.h      |    2 -
-> > >  libsepol/cil/src/cil_write_ast.c | 1573 ++++++++++++++++++++++++++++=
-++
-> > >  libsepol/cil/src/cil_write_ast.h |   46 +
-> > >  libsepol/src/libsepol.map.in     |    3 +
-> > >  secilc/.gitignore                |    2 +
-> > >  secilc/Makefile                  |   20 +-
-> > >  secilc/secil2tree.8.xml          |   81 ++
-> > >  secilc/secil2tree.c              |  206 ++++
-> > >  11 files changed, 2024 insertions(+), 1475 deletions(-)
-> > >  create mode 100644 libsepol/cil/src/cil_write_ast.c
-> > >  create mode 100644 libsepol/cil/src/cil_write_ast.h
-> > >  create mode 100644 secilc/secil2tree.8.xml
-> > >  create mode 100644 secilc/secil2tree.c
-> > >
-> > > --
-> > > 2.26.3
-> > >
->
-> Hello,
-> Thanks for this tool! It looks great and it seems to work quite well.
->
-> Anyway, while building with some warning flags, gcc reported issues
-> about using non-const pointers to hold literal strings. For example:
->
-> ../cil/src/cil_write_ast.c: In function =E2=80=98datum_to_str=E2=80=99:
-> ../cil/src/cil_write_ast.c:51:28: error: return discards =E2=80=98const=
-=E2=80=99
-> qualifier from pointer target type [-Werror=3Ddiscarded-qualifiers]
->    51 |  return datum ? datum->fqn : "<?DATUM>";
->       |         ~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-> ../cil/src/cil_write_ast.c: In function =E2=80=98write_expr=E2=80=99:
-> ../cil/src/cil_write_ast.c:122:12: error: assignment discards =E2=80=98co=
-nst=E2=80=99
-> qualifier from pointer target type [-Werror=3Ddiscarded-qualifiers]
->   122 |     op_str =3D "<?OP>";
->       |            ^
->
-> With the attached patch, the code compiles fine. Feel free to directly
-> modify the first patch with these fixes.
->
+This series aims to correct a design flaw in the original anon_inode
+SELinux support that would make it hard to write policies for anonymous
+inodes once more types of them are supported (currently only userfaultfd
+inodes are). A more detailed rationale is provided in the second patch.
 
-I think that you might have tested the first version. The second
-version actually has everything in your patch.
+The first patch extends the anon_inode_getfd_secure() function to accept
+an additional numeric identifier that represents the type of the
+anonymous inode being created, which is passed to the LSMs via
+security_inode_init_security_anon().
 
-Thanks,
-Jim
+The second patch then introduces a new SELinux policy capability that
+allow policies to opt-in to have a separate class used for each type of
+anon inode. That means that the "old way" will still 
 
-> Thanks,
-> Nicolas
+I wish I had realized the practical consequences earlier, while the
+patches were still under review, but it only started to sink in after
+the authors themselves later raised the issue in an off-list
+conversation. Even then, I still hoped it wouldn't be that bad, but the
+more I thought about how to apply this in an actual policy, the more I
+realized how much pain it would be to work with the current design, so
+I decided to propose these changes.
+
+I hope this will be an acceptable solution.
+
+A selinux-testsuite patch that adapts the userfaultfd test to work also
+with the new policy capability enabled will follow.
+
+Ondrej Mosnacek (2):
+  LSM,anon_inodes: explicitly distinguish anon inode types
+  selinux: add capability to map anon inode types to separate classes
+
+ fs/anon_inodes.c                           | 42 +++++++++++++---------
+ fs/userfaultfd.c                           |  6 ++--
+ include/linux/anon_inodes.h                |  4 ++-
+ include/linux/lsm_hook_defs.h              |  3 +-
+ include/linux/security.h                   | 19 ++++++++++
+ security/security.c                        |  3 +-
+ security/selinux/hooks.c                   | 28 ++++++++++++++-
+ security/selinux/include/classmap.h        |  2 ++
+ security/selinux/include/policycap.h       |  1 +
+ security/selinux/include/policycap_names.h |  3 +-
+ security/selinux/include/security.h        |  7 ++++
+ 11 files changed, 95 insertions(+), 23 deletions(-)
+
+-- 
+2.30.2
+

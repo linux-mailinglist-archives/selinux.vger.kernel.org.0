@@ -2,142 +2,100 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AB60736C562
-	for <lists+selinux@lfdr.de>; Tue, 27 Apr 2021 13:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 161D936C78D
+	for <lists+selinux@lfdr.de>; Tue, 27 Apr 2021 16:10:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237852AbhD0Ljt (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 27 Apr 2021 07:39:49 -0400
-Received: from frasgout.his.huawei.com ([185.176.79.56]:2931 "EHLO
-        frasgout.his.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235982AbhD0Ljs (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 27 Apr 2021 07:39:48 -0400
-Received: from fraeml714-chm.china.huawei.com (unknown [172.18.147.207])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4FTzzM0BFqz77b7N;
-        Tue, 27 Apr 2021 19:28:31 +0800 (CST)
-Received: from roberto-ThinkStation-P620.huawei.com (10.204.62.217) by
- fraeml714-chm.china.huawei.com (10.206.15.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2176.2; Tue, 27 Apr 2021 13:39:02 +0200
-From:   Roberto Sassu <roberto.sassu@huawei.com>
-To:     <zohar@linux.ibm.com>, <jmorris@namei.org>, <paul@paul-moore.com>,
-        <casey@schaufler-ca.com>
-CC:     <linux-integrity@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>,
-        <reiserfs-devel@vger.kernel.org>, <selinux@vger.kernel.org>,
-        <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Roberto Sassu <roberto.sassu@huawei.com>
-Subject: [PATCH v3 6/6] evm: Support multiple LSMs providing an xattr
-Date:   Tue, 27 Apr 2021 13:37:32 +0200
-Message-ID: <20210427113732.471066-7-roberto.sassu@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210427113732.471066-1-roberto.sassu@huawei.com>
-References: <20210427113732.471066-1-roberto.sassu@huawei.com>
+        id S236269AbhD0OLC (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 27 Apr 2021 10:11:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50552 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236226AbhD0OLC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 27 Apr 2021 10:11:02 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74680C061574
+        for <selinux@vger.kernel.org>; Tue, 27 Apr 2021 07:10:17 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id n21so13507460eji.1
+        for <selinux@vger.kernel.org>; Tue, 27 Apr 2021 07:10:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=fsUKcENovv6F7snSfbw4AkJEI8bc+D0BVFwGl2051cw=;
+        b=nOMWs7SycB8eUAiGxxTjzwrDZnyicSQTd0qExLGRnf1cafCz/CcjYKf8hxOKXy4szA
+         FuUFrkLYq8TOXpbO6wUwQl1EM6acNGOIBPg5DEh71EaKw0c4YuvywyPCgFzKgGFOhFOy
+         WkAle+FftPnb9EECmbjz0b3gf01Dl+WgTGsZR2xgR+P4kdMZ3y6iaNFq+MzStJhYlq1d
+         QkwOH8Jy3mH1U6BAPitaTYeBnsmfPMajV2JFNLOG3gFCIXMQDiHAT/R9L89uj/wXWXXO
+         B2GKXRxiAfoUFuxrFTlhMaqHCUsR3FJfXfMTWc/mj6QV3fvx+NzlzGsI1xQRu6PYfPTb
+         Tdsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=fsUKcENovv6F7snSfbw4AkJEI8bc+D0BVFwGl2051cw=;
+        b=Da1YVb7s3/L2HqTMIxo4ylROwtPrI0lZXx4nm8Tmq5bcgyMPTR73CtndcFdPP+g4TE
+         9+kjDN9CedWWOM2iXdgrlCRnMwUlqslv+y5Yn0CKqqomFlvJeYo6pfSOFZ2MJlkNjoPz
+         k2mCtxWD44pMXIseKsB0au+3soI8g1kW1KNerf8CFmz6lgU4jEremIbz6d+WBeyYxxTE
+         o7gBeNh1ccP0+mMi9L0ydbNTFb7IC4jSltz4KjG8iBS6mrS5woHfmLmLs5048Kadgq2J
+         Y8LUCqvcOsPDR3Nb4FFA8TW4OsXN8LIUns/Zg871Y7PIwJ7hA7Emb+G3LAs2CLLCd5Vt
+         7Wyg==
+X-Gm-Message-State: AOAM532XciSlfyrYvXDGtvwh/bT7QkZh+9ADs0KuwCRz6xcPwrIPbZYq
+        tedPdUAM8Cb/QTmpfcJnwR26ifSHaued+qrO11CuXzNFgw==
+X-Google-Smtp-Source: ABdhPJwrkNz0r+O2D6yizNCrsTYOf979HUZXElLXT+UoNyAHnK+prcr6ctW59hu22/feup6vQAUVitk7tpkPU9aq1Do=
+X-Received: by 2002:a17:906:a006:: with SMTP id p6mr24118748ejy.350.1619532615025;
+ Tue, 27 Apr 2021 07:10:15 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.204.62.217]
-X-ClientProxiedBy: lhreml751-chm.china.huawei.com (10.201.108.201) To
- fraeml714-chm.china.huawei.com (10.206.15.33)
-X-CFilter-Loop: Reflected
+References: <20210413122508.24745-1-cgzones@googlemail.com>
+In-Reply-To: <20210413122508.24745-1-cgzones@googlemail.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Tue, 27 Apr 2021 10:10:03 -0400
+Message-ID: <CAHC9VhSomhz2O6ijJgFnP+1zF54nA8=86Xn5t+tj+k6_121vAQ@mail.gmail.com>
+Subject: Re: [RFC SHADOW PATCH 0/7] SELinux modernizations
+To:     selinux@vger.kernel.org
+Cc:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Currently, evm_inode_init_security() processes a single LSM xattr from
-the array passed by security_inode_init_security(), and calculates the
-HMAC on it and other inode metadata.
+On Tue, Apr 13, 2021 at 8:25 AM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
+>
+> Modernize SELinux parts of shadow
+> (https://github.com/shadow-maint/shadow).
+>
+> Upstream pull request: https://github.com/shadow-maint/shadow/pull/323
+>
+>
+> Christian G=C3=B6ttsche (7):
+>   struct commonio_db[selinux]: do not use deprecated type
+>     security_context_t
+>   vipw[selinux]: do not use deprecated typedef and skip context
+>     translation
+>   selinux.c: do not use deprecated typedef and skip context translation
+>   selinux.c:reset_selinux_file_context(): do not fail in permissive mode
+>   selinux.c: use modern selabel interface instead of deprecated
+>     matchpathcon
+>   set_selinux_file_context(): prepare context for actual file type
+>   selinux: only open selabel database once
+>
+>  lib/commonio.c    |  4 ++--
+>  lib/commonio.h    |  6 +----
+>  lib/prototypes.h  |  2 +-
+>  lib/selinux.c     | 60 ++++++++++++++++++++++++++++++++---------------
+>  libmisc/copydir.c |  8 +++----
+>  src/useradd.c     |  7 ++++--
+>  src/userdel.c     |  3 +++
+>  src/usermod.c     |  3 +++
+>  src/vipw.c        | 10 ++++----
+>  9 files changed, 65 insertions(+), 38 deletions(-)
 
-Given that initxattrs(), called by security_inode_init_security(), expects
-that this array is terminated when the xattr name is set to NULL, this
-patch reuses the same assumption for to scan all xattrs and to calculate
-the HMAC on all of them.
+SELinux userspace folks, can someone give this patchset a quick look
+to make sure it is sane?  A little birdie tells me this might get
+merged soonish and I don't trust my understanding of the current
+SELinux userspace to do a good enough job making sure these patches do
+The Right Things :)
 
-Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
----
- security/integrity/evm/evm.h        |  2 ++
- security/integrity/evm/evm_crypto.c |  9 ++++++++-
- security/integrity/evm/evm_main.c   | 15 +++++++++++----
- 3 files changed, 21 insertions(+), 5 deletions(-)
-
-diff --git a/security/integrity/evm/evm.h b/security/integrity/evm/evm.h
-index ae590f71ce7d..24eac42b9f32 100644
---- a/security/integrity/evm/evm.h
-+++ b/security/integrity/evm/evm.h
-@@ -49,6 +49,8 @@ struct evm_digest {
- 	char digest[IMA_MAX_DIGEST_SIZE];
- } __packed;
- 
-+int evm_protected_xattr(const char *req_xattr_name);
-+
- int evm_init_key(void);
- int __init evm_init_crypto(void);
- int evm_update_evmxattr(struct dentry *dentry,
-diff --git a/security/integrity/evm/evm_crypto.c b/security/integrity/evm/evm_crypto.c
-index b66264b53d5d..35c5eec0517d 100644
---- a/security/integrity/evm/evm_crypto.c
-+++ b/security/integrity/evm/evm_crypto.c
-@@ -358,6 +358,7 @@ int evm_init_hmac(struct inode *inode, const struct xattr *lsm_xattr,
- 		  char *hmac_val)
- {
- 	struct shash_desc *desc;
-+	const struct xattr *xattr;
- 
- 	desc = init_desc(EVM_XATTR_HMAC, evm_hash_algo);
- 	if (IS_ERR(desc)) {
-@@ -365,7 +366,13 @@ int evm_init_hmac(struct inode *inode, const struct xattr *lsm_xattr,
- 		return PTR_ERR(desc);
- 	}
- 
--	crypto_shash_update(desc, lsm_xattr->value, lsm_xattr->value_len);
-+	for (xattr = lsm_xattr; xattr->name != NULL; xattr++) {
-+		if (!evm_protected_xattr(xattr->name))
-+			continue;
-+
-+		crypto_shash_update(desc, xattr->value, xattr->value_len);
-+	}
-+
- 	hmac_add_misc(desc, inode, EVM_XATTR_HMAC, hmac_val);
- 	kfree(desc);
- 	return 0;
-diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
-index d647bfd0adcd..cd2f46770646 100644
---- a/security/integrity/evm/evm_main.c
-+++ b/security/integrity/evm/evm_main.c
-@@ -261,7 +261,7 @@ static enum integrity_status evm_verify_hmac(struct dentry *dentry,
- 	return evm_status;
- }
- 
--static int evm_protected_xattr(const char *req_xattr_name)
-+int evm_protected_xattr(const char *req_xattr_name)
- {
- 	int namelen;
- 	int found = 0;
-@@ -713,15 +713,22 @@ int evm_inode_init_security(struct inode *inode, struct inode *dir,
- 			    void *fs_data)
- {
- 	struct evm_xattr *xattr_data;
-+	struct xattr *xattr;
- 	struct xattr *evm_xattr = lsm_find_xattr_slot(xattrs, base_slot,
- 						      *base_slot + 1);
--	int rc;
-+	int rc, evm_protected_xattrs = 0;
- 
- 	if (!xattrs || !xattrs->name)
- 		return 0;
- 
--	if (!(evm_initialized & EVM_INIT_HMAC) ||
--	    !evm_protected_xattr(xattrs->name))
-+	if (!(evm_initialized & EVM_INIT_HMAC))
-+		return -EOPNOTSUPP;
-+
-+	for (xattr = xattrs; xattr->name != NULL && xattr < evm_xattr; xattr++)
-+		if (evm_protected_xattr(xattr->name))
-+			evm_protected_xattrs++;
-+
-+	if (!evm_protected_xattrs)
- 		return -EOPNOTSUPP;
- 
- 	xattr_data = kzalloc(sizeof(*xattr_data), GFP_NOFS);
--- 
-2.25.1
-
+--=20
+paul moore
+www.paul-moore.com

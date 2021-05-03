@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 95453371EFD
-	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FC72371F02
+	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231649AbhECRzE (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 3 May 2021 13:55:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39454 "EHLO
+        id S231609AbhECRzF (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 3 May 2021 13:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231718AbhECRy5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:57 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0645EC06174A
+        with ESMTP id S231738AbhECRy7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:59 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DEB8C061763
         for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:54:03 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id u3so9148787eja.12
-        for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:54:02 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id g14so7299147edy.6
+        for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:54:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=q1c+dSkGvb+QkY/rA9tywMX6zTIRP1JVcE26G5ixBJY=;
-        b=QuafPaT7k/34b0IClduS4aejQlUgQwugA/P39+4cNoqi5wY0kgReeL+jHTwvIEBrzm
-         TxDTsOV7707yURYUxmi3Cfjvq3XSW1x5sSCX3zEND69iFxkvU+omhPWWAHz629OUmqnM
-         3yXC9Mdkxs+QyBHHr1Wu81QkMUa47D5eP1ob/+SNOae82ZCgJh3FsezRBDL26iadaDxS
-         wN2CbhnJg0m3DrItCpNmbwFj5aO/4QLqpWAM2NahDddOmBnNVKtw32vyYhI9++4iMpNi
-         PZWfXmZs4gspSja7SxsCQYMOOdzAYqG5ZL2oomP25GntBXDFoJwN5JYs+kyi51RdDDZp
-         GurQ==
+        bh=2qeqi96IaIbzo+rnEBgHFQ1xj4F2X71Y0Eph2jKqL2s=;
+        b=mLfbEd1MlvS95Qd9R6wTmXQh1iIXaOlHLyK2jeVvnOX2GhKs29L5pfdoPb2DnmH9jn
+         tmKtdMkESzDvnVGfWHQ9HbPWrQUgr9ux25CcnUhPGtb9JGMlRPAUnQokMLT5ZLrE4zXz
+         10tjpou9qvn8Ilf/aAb7rxIeKcx/jMTXtPhMrKsfZX9BkNQbLKPfCAGhcm4hSo3dqnow
+         Jwug1MJRB297vYqU+NQ0XhtChqUXHprEXL827Cg3/YX9cnbIUDf+gsuoldzjKDHoy6Pq
+         2Rob9dvhK45YlPnXqAgS3hpRHVuXfSwHmOhowt/+E8iK75/6mcgYGB3Za6IJjvnl7MFo
+         kceQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=q1c+dSkGvb+QkY/rA9tywMX6zTIRP1JVcE26G5ixBJY=;
-        b=E19DGapMuHma92P4r1V5YQ6vuhfVavq5k8raHN9bmOWnOL2EM2VX+3xQjCNutrFmtn
-         eYlpAQ+iLnS41eczdwpXL5kUBHzfqshZHidqS8/hMtO0EDPKdGK28FYlUJCReggwHECg
-         Ujk8v3doPMiAA/4Hz4SOnI+MZKTvoKztYaVqJDwVQPRlgLzBL1DXpmpNi+hKunl/2K1w
-         d1gQC+h/BimGLFlSoHNArt6OTpBMP3Dzb9qJT85UwuGkiJKweMs1FrBL+Cl+DkhEycx2
-         YpS/3UjXT582c+TwmAbje3S6N62fmBNZjt+yLfNAuJ7qgumKIemevFdF59uHA17CmW7d
-         DhDw==
-X-Gm-Message-State: AOAM5330UZF6PDh6r4a1ruxdF1LW71RCFQc9BpgO76HUE5dZbKes3s1c
-        evUrR68wJxcnzdq0wdOV8869IO4jSwORHg==
-X-Google-Smtp-Source: ABdhPJw46mkbeBi12dwFkmbpQVj2HiRc2+02ic7EiKjgagytNWkAj6P3W2aU3ABDraeK0ensECXQ6w==
-X-Received: by 2002:a17:906:6544:: with SMTP id u4mr17828181ejn.455.1620064441746;
-        Mon, 03 May 2021 10:54:01 -0700 (PDT)
+        bh=2qeqi96IaIbzo+rnEBgHFQ1xj4F2X71Y0Eph2jKqL2s=;
+        b=lONavvrRNkx6H1iCN9GwrLBa4ZG3bEzCcllmL/EizDpzCdaPiBbh7N9oyXBzo0fwKV
+         a1+qZEWaemX3G2++nLOUjHMmV2+SeHt68dJdWyKimkkEy59OlD+8CUqS46hPdulWR/9T
+         QoaEJGH/5eLtdb+OVyOQCdK0OEIwYgdCJWH2Lu9RAorkYcasluj0m4pjnRoJoVb0RhFn
+         OyBm92jM41C+1OisL5tbgUKjdgmXdFLMGydWlBdr/Y8h6ANEIBb7uJyeQROnMVUv8vJG
+         Gt1uE84LlJO+YxD8i2jjAW9HzinH6GpBf9JbZgHJI6a9HrzzbLvK5Qf3ymPehH9ItTSL
+         2xWQ==
+X-Gm-Message-State: AOAM531qFompPWyf9753o9y8of6ke1Jj0Rt3p/Fo5Yh5udvRVSTi3Gqs
+        mQ06IQbQChLxnAin6xfcldx6NFZc7PdDcg==
+X-Google-Smtp-Source: ABdhPJzl55fxmO7lY9W8Zr4+o7cW/m5xB4Pn7JaPl+xft/wgfvn7Bg/7riOGNRoIkpp2tJq20p5QMg==
+X-Received: by 2002:a05:6402:51d4:: with SMTP id r20mr21255933edd.112.1620064442006;
+        Mon, 03 May 2021 10:54:02 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefonica.de. [77.0.172.37])
         by smtp.gmail.com with ESMTPSA id b17sm1830165edr.80.2021.05.03.10.54.01
         for <selinux@vger.kernel.org>
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefon
         Mon, 03 May 2021 10:54:01 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 20/25] libselinux: matchpathcon: free memory on realloc failure
-Date:   Mon,  3 May 2021 19:53:45 +0200
-Message-Id: <20210503175350.55954-21-cgzones@googlemail.com>
+Subject: [PATCH 21/25] libselinux: label_db::db_init(): open file with CLOEXEC mode
+Date:   Mon,  3 May 2021 19:53:46 +0200
+Message-Id: <20210503175350.55954-22-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210503175350.55954-1-cgzones@googlemail.com>
 References: <20210503175350.55954-1-cgzones@googlemail.com>
@@ -63,75 +63,31 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-In case `realloc()` fails and returns NULL, free the passed array,
-instead of just setting the size helper variables to 0.
+Open the file stream with the `e` flag, so that the underlying file
+descriptor gets closed on an exec in a potential sibling thread.
 
-Also free the string contents in `free_array_elts()` of the array
-`con_array`, instead of just the array of pointers.
+Also drop the flag `b`, since it is ignored on POSIX systems.
 
-Found by cppcheck.
-
-src/matchpathcon.c:86:4: error: Common realloc mistake: 'con_array' nulled but not freed upon failure [memleakOnRealloc]
-   con_array = (char **)realloc(con_array, sizeof(char*) *
-   ^
+Found by clang-tidy.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/matchpathcon.c | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ libselinux/src/label_db.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
-index 9e1fab59..075a3fb3 100644
---- a/libselinux/src/matchpathcon.c
-+++ b/libselinux/src/matchpathcon.c
-@@ -78,17 +78,30 @@ static pthread_once_t once = PTHREAD_ONCE_INIT;
- static pthread_key_t destructor_key;
- static int destructor_key_initialized = 0;
+diff --git a/libselinux/src/label_db.c b/libselinux/src/label_db.c
+index fba96c92..94c05c6d 100644
+--- a/libselinux/src/label_db.c
++++ b/libselinux/src/label_db.c
+@@ -277,7 +277,7 @@ db_init(const struct selinux_opt *opts, unsigned nopts,
+ 	if (!path)
+ 		path = selinux_sepgsql_context_path();
  
-+static void free_array_elts(void)
-+{
-+	int i;
-+	for (i = 0; i < con_array_used; i++)
-+		free(con_array[i]);
-+	free(con_array);
-+
-+	con_array_size = con_array_used = 0;
-+	con_array = NULL;
-+}
-+
- static int add_array_elt(char *con)
- {
-+	char **tmp;
- 	if (con_array_size) {
- 		while (con_array_used >= con_array_size) {
- 			con_array_size *= 2;
--			con_array = (char **)realloc(con_array, sizeof(char*) *
-+			tmp = (char **)realloc(con_array, sizeof(char*) *
- 						     con_array_size);
--			if (!con_array) {
--				con_array_size = con_array_used = 0;
-+			if (!tmp) {
-+				free_array_elts();
- 				return -1;
- 			}
-+			con_array = tmp;
- 		}
- 	} else {
- 		con_array_size = 1000;
-@@ -105,13 +118,6 @@ static int add_array_elt(char *con)
- 	return con_array_used++;
- }
- 
--static void free_array_elts(void)
--{
--	con_array_size = con_array_used = 0;
--	free(con_array);
--	con_array = NULL;
--}
--
- void set_matchpathcon_invalidcon(int (*f) (const char *p, unsigned l, char *c))
- {
- 	myinvalidcon = f;
+-	if ((filp = fopen(path, "rb")) == NULL) {
++	if ((filp = fopen(path, "re")) == NULL) {
+ 		free(catalog);
+ 		return NULL;
+ 	}
 -- 
 2.31.1
 

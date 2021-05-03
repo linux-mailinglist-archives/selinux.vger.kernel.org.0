@@ -2,46 +2,46 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D9CDD371EEE
-	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48B68371EF1
+	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231733AbhECRy6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 3 May 2021 13:54:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39408 "EHLO
+        id S231643AbhECRy7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 3 May 2021 13:54:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231624AbhECRyx (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:53 -0400
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5793C06138B
-        for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:53:58 -0700 (PDT)
-Received: by mail-ej1-x631.google.com with SMTP id b25so9187567eju.5
-        for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:53:58 -0700 (PDT)
+        with ESMTP id S231642AbhECRyz (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:55 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48792C06138D
+        for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:53:59 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id u13so4616068edd.3
+        for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:53:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=1JhlCsiGRXtSRbdAAlrHwjRODmg8T/Akun+p7ZCPbQg=;
-        b=n0vPmMKNYd4COy9wIxVVMC+Z9/iiwr23bMQHm5p0grzsWvkAb2605AlcJoPEabNVFO
-         XFlln3IsjIr/+cQEwPkoqHUXHseaYfr0k1oXWgpoVtLqjgbkMP+kExQ2ouAuWqStLzZ0
-         gwTU5F4hGd92xyBldlsQkY7bnJK0UPIW7wH7o7rQRwB9wvS57p4DlRETdm+XuI/EqDr0
-         BgQGe3K0i+ww7AxcfQhkxmcHaODW66GaopMArxNeS0NtaK4yDgOz0SV9O2XXjVd5FWTW
-         zXh1tKVjWBofn1qI/i3QPS57R7T+tBAaD6CHBa9J8JhfDVgM1n434lZojaR9CewZ/tDN
-         ER+A==
+        bh=/8YTM1x8f18VNrTJdlKur6vh0lfbOCklkMl5jzvLQ+c=;
+        b=WF8vzFxfqyDvoDayyBBVdGnymY9yZSIBYwwa4wmkKdOT5u3hhCb6XJEo9F8876pOWV
+         HiBqp2qsqxr8cAejKNwA/9sKiMgeaM5K6VA2euEMw/vorHSd+mhszx9kr99ukYWjpeHo
+         /mqLXxj06iWs74G3qyaajFWk2gbGMXbucauERkLcKOe/mJcNglUzepas68fxuifZRRvn
+         NbwQpdu6kgANBet4WmoZ9yL5o4AHbia7PI3xu1DAlwEQ/3Y4SdAQig4zboUwFDjlH57g
+         h+YPfU61eVYwu/CnoqbR08Sx2Mt0lc+TxLrc2I1ge+l0Gf1tXfK8z/FQPiWRh2ckNK0w
+         9SNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=1JhlCsiGRXtSRbdAAlrHwjRODmg8T/Akun+p7ZCPbQg=;
-        b=tmtKnehES8xwFJ4iHAoS1bNVoZ4vETJj+SSYkxV+1RT6rjbnlvQ5kgKLavU55I4/lE
-         bVrw3PiFZ2RCdWSOtJJUOMdL3qdDJPopw6+YEfoTidhD5L/brlPugPYcg5g/dTBVqVg5
-         pYA1W46DyB5bWylJ6I6EsePYDoJCagnAaPEhwpKrHinqqRDQzUkZZY9u5HiPF8S5qUk1
-         qDJW6iiSnl724TMjgnpnLjz4C5Sf5wMAZIOQeMFroj8BYSyo23a8bbJJ8QE6GHY5u0CA
-         Pv9xaQy8H/+JCln1k2ejbP6EOH8MhVq+5SMs7TiTPLLsyw7U+060v7b9xse6LrOrkqs0
-         69cA==
-X-Gm-Message-State: AOAM532S/cquvqymy0nVe00NUV4Au4tboPuPTMNtJ7kbM5XXp+Ir7I8c
-        fA38K2lK/UrLQPaScIzcr01CQP298/JViA==
-X-Google-Smtp-Source: ABdhPJz3l+fgidxQTlG79BtrnLBVC6hT3HKOLxZMWRYMVSDJ9+MqMGpUyyxWTv5LZIaHb920sdJY6A==
-X-Received: by 2002:a17:906:2482:: with SMTP id e2mr6622734ejb.212.1620064437597;
+        bh=/8YTM1x8f18VNrTJdlKur6vh0lfbOCklkMl5jzvLQ+c=;
+        b=Cy0JA55xuwg7GqY7SQTSqxEQLSlHP4ydczJkja8BQqFpi0b60ydxrnhHjvIWoGMAk5
+         FunC5o1Gy56vT865CQ6j8sSbji7Q1ONPCynjP6xe4yTOMl6ynSBvlD5+UQViWRoMLFhG
+         +8L9IolIC2/PNtF7X8E58MbpLZ1HKZuAkCWayVh3V7Df6DTIu53m6ZDXv6e6RvG7uxif
+         +pIGqagROmnMHTcXdUxgvl60EhNlrugCQktVFSdza/1IvpFDu0cHJVxiw3wlkdFbcBCu
+         Cb0e6za1s4szTvcOY3ghKrHpFuTz7amG48oXghnO8St9+884BzKPT9HSWWCVaRm/wxau
+         XJFg==
+X-Gm-Message-State: AOAM532s4QWXw6nq3LY15NdZmqD1rIoWhYAeeiPyDXbERiDWJoHGlh2R
+        5DTMNhogJJuCcvHxPGhDcmHrarAPimnD0w==
+X-Google-Smtp-Source: ABdhPJyUjgnxY/DBSMkN0Sh7xpyjazBBaeXvCzQaozOWD+2iDJXx11WvfzMjTx+Q/JXwgRBTDRQWcw==
+X-Received: by 2002:a05:6402:3553:: with SMTP id f19mr12415866edd.167.1620064437863;
         Mon, 03 May 2021 10:53:57 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefonica.de. [77.0.172.37])
         by smtp.gmail.com with ESMTPSA id b17sm1830165edr.80.2021.05.03.10.53.57
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefon
         Mon, 03 May 2021 10:53:57 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 06/25] libselinux: avcstat: use standard length modifier for unsigned long long
-Date:   Mon,  3 May 2021 19:53:31 +0200
-Message-Id: <20210503175350.55954-7-cgzones@googlemail.com>
+Subject: [PATCH 07/25] libselinux: selinux_restorecon: mark local variable static
+Date:   Mon,  3 May 2021 19:53:32 +0200
+Message-Id: <20210503175350.55954-8-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210503175350.55954-1-cgzones@googlemail.com>
 References: <20210503175350.55954-1-cgzones@googlemail.com>
@@ -63,36 +63,33 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The format width specifier `L` is only standardized for floating point
-types. Use `ll` for fixed-width data types.
+The variable `dir_xattr_list` is only used inside `selinux_restorecon.c`.
+
+selinux_restorecon.c:65:19: warning: no previous extern declaration for non-static variable 'dir_xattr_list' [-Wmissing-variable-declarations]
+struct dir_xattr *dir_xattr_list;
+                  ^
+selinux_restorecon.c:65:1: note: declare 'static' if the variable is not intended to be used outside of this translation unit
+struct dir_xattr *dir_xattr_list;
+^
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/utils/avcstat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ libselinux/src/selinux_restorecon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libselinux/utils/avcstat.c b/libselinux/utils/avcstat.c
-index da239287..cc9a48dd 100644
---- a/libselinux/utils/avcstat.c
-+++ b/libselinux/utils/avcstat.c
-@@ -205,7 +205,7 @@ int main(int argc, char **argv)
- 			die("unable to parse \'%s\': no data", avcstatfile);
+diff --git a/libselinux/src/selinux_restorecon.c b/libselinux/src/selinux_restorecon.c
+index 63fb8dc5..249c361f 100644
+--- a/libselinux/src/selinux_restorecon.c
++++ b/libselinux/src/selinux_restorecon.c
+@@ -62,7 +62,7 @@ static uint64_t fc_count = 0;	/* Number of files processed so far */
+ static uint64_t efile_count;	/* Estimated total number of files */
  
- 		if (cumulative || !i)
--			printf("%10Lu %10Lu %10Lu %10Lu %10Lu %10Lu\n",
-+			printf("%10llu %10llu %10llu %10llu %10llu %10llu\n",
- 			       tot.lookups, tot.hits, tot.misses,
- 			       tot.allocations, tot.reclaims, tot.frees);
- 		else {
-@@ -215,7 +215,7 @@ int main(int argc, char **argv)
- 			rel.allocations = tot.allocations - last.allocations;
- 			rel.reclaims = tot.reclaims - last.reclaims;
- 			rel.frees = tot.frees - last.frees;
--			printf("%10Lu %10Lu %10Lu %10Lu %10Lu %10Lu\n",
-+			printf("%10llu %10llu %10llu %10llu %10llu %10llu\n",
- 			       rel.lookups, rel.hits, rel.misses,
- 			       rel.allocations, rel.reclaims, rel.frees);
- 		}
+ /* Store information on directories with xattr's. */
+-struct dir_xattr *dir_xattr_list;
++static struct dir_xattr *dir_xattr_list;
+ static struct dir_xattr *dir_xattr_last;
+ 
+ /* restorecon_flags for passing to restorecon_sb() */
 -- 
 2.31.1
 

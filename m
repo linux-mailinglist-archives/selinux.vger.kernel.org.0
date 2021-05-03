@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C303371EF4
-	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01F82371EF8
+	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231624AbhECRzA (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 3 May 2021 13:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39430 "EHLO
+        id S231664AbhECRzC (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 3 May 2021 13:55:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231649AbhECRy4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:56 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04877C061342
-        for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:53:59 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id gx5so9154030ejb.11
-        for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:53:59 -0700 (PDT)
+        with ESMTP id S231685AbhECRy5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:57 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3ABF9C06138F
+        for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:54:00 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id y26so7323616eds.4
+        for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:54:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=LbwZlbBVV6DpLBBhseCMZpwc2EMISvQSBHBs+9MbTM4=;
-        b=irB2tP8dDORuIOExOh8vb6S1H7eHJN+uQ+uf+ABSq9JKzpZrk/HHLpAt6su3mLkoAU
-         6TT67efcmLh06dnyB+f6/VblooLRslGqOdhG95sdeHEZyTjVK+wOcJDxiLN8IjAihcJP
-         w3YKgmGq+UxjBZbwxcyLIUBLIkRVEE3i3BsY2uqcogHMqbeyFoxec4HDiU4ZZfLjsp6I
-         BBb5W+pL1+/y17FpHfxDA/n3bzKhR6jTIhR1hoQD60PD/VhHYbZuogbRJrQ4RD+AZ6kr
-         g7jY0nHKZZHpNsHpJYC/MYVdkBhiIdtyDbijh+FqDF0cLuHaRQoNBXKhgEbU9p8JDbo/
-         uJtQ==
+        bh=fIogwTVFYjCmaSZ6TY103+kSKHXedn5m6sgVOECNPfM=;
+        b=WIOuTKcj8TkHBKROSItE+/S+4JEjS08kwLmXz9ftEbOPUMhMgTnP3+NzFNmI9bOemk
+         u7XNgBxLiUa4xxL2GhrXtfqxuHTWYtwOKQchB532qcpThJ1rIqF6h2AhjcfpyKx4WfCq
+         Z8LCPQIpQ1IJQL/LLfPjGEou0pdacjlTDgi54Vc+CSq63pwvtADpWFxJbKdkZ3OnXVHf
+         roWV30JYtZWgQoKkvUTqsE3/0N96FIbE5gnwhmlSk8Eg4Z2cvR04uwL2I8zSRQQtDJDl
+         ioup3t2skPKWvY4lAksKTmdljRJ2RsKxRcHnycp2HkU5Kp8Ef6NJJIe+67i2okCuvSG8
+         nsQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=LbwZlbBVV6DpLBBhseCMZpwc2EMISvQSBHBs+9MbTM4=;
-        b=B01KjSGlQyxMfwJUBXaan7PgEBddTw7UrnykANWx4Zg2XnpUSwk1IH1aIz7UksmlL3
-         sFE6WZJ0+EiqxtLcOcI/Ygz2fhqEW7r9sOOoGn5Nj5njb6uBu7LYgLkSHd3L8SyCDRjT
-         iyI58w0mrgxdQGfrz93nR1feCOnrWeyx7dtdAUEWGhe8djX8gvQctGb+WKz7n8GyMJK3
-         CrCrRggWpsm0uwtHfB3f4mLZfeC252Tz4hey3y79xg/a8jjoXkKidWeaTtuajmIKGvQC
-         LScTgzvLaz/RLAAxqmIb/1Cht0/Bre+k9v7ysOMExUncPQG7dgKwyxM/QEB61MsUAJXk
-         VZmw==
-X-Gm-Message-State: AOAM530dgQdlF9qBH+zrcichU2w47WudF8jgMU/6Xdhs1/Cj+rmiU2l6
-        /9V//4TYb8HbDLntVnT+DYGosmDxORt1gA==
-X-Google-Smtp-Source: ABdhPJy2L4CWIGHDwPtQHRUScTRL2/BaXZaqbVvXvuphImDK9Y0aqAPyZ4r6iYxVn1NERozoglLetQ==
-X-Received: by 2002:a17:906:1185:: with SMTP id n5mr18230153eja.468.1620064438724;
-        Mon, 03 May 2021 10:53:58 -0700 (PDT)
+        bh=fIogwTVFYjCmaSZ6TY103+kSKHXedn5m6sgVOECNPfM=;
+        b=JHP7n6WZaAJABAA1hF1k9F335soIc9Y58j1212+65VtPMiB76q6u1K5XNhCR8MN54w
+         +sjCpm/JMQl5RL9Ef4FMqqJbOr7OH9Z5ZWUtDDJP4mQ+R7pBDq5sycInSZd+Cb9TfR62
+         679nMBZ/UHA1mvPq/RFLbiyTkjFV1q6OiW9F800cMERvb3lh35Xu4CAs54UJ5X7ZDGLe
+         cukZwTRSHxRBsUIH/HrDrDpfU2sPum45VTqXlY/u2RphzZvo2kgqmHRTmgFQ8DJBKthr
+         pXuZkfS8AieEEVmiGoQ7tmhre8izRdA/AkxK6Pi29gahz5QW52DrIOekIhIRw8ak77f1
+         bMBA==
+X-Gm-Message-State: AOAM533lyW8XiyTPZdbp9U0CifseEUxmMY2TH8xnFugdRVGzml1SGELE
+        TSzNgEWMYxr34fgnAKaZgkmEtE+XZFeG6A==
+X-Google-Smtp-Source: ABdhPJzze1Rb7E2qmssIn5ibT922W0tkuXkUxN51dH5msy+CmJsJxfw7dElPstwykto6Uma0WHbKGw==
+X-Received: by 2002:aa7:c413:: with SMTP id j19mr21358945edq.206.1620064439020;
+        Mon, 03 May 2021 10:53:59 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefonica.de. [77.0.172.37])
         by smtp.gmail.com with ESMTPSA id b17sm1830165edr.80.2021.05.03.10.53.58
         for <selinux@vger.kernel.org>
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefon
         Mon, 03 May 2021 10:53:58 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 10/25] libselinux: exclude_non_seclabel_mounts(): drop unused variable
-Date:   Mon,  3 May 2021 19:53:35 +0200
-Message-Id: <20210503175350.55954-11-cgzones@googlemail.com>
+Subject: [PATCH 11/25] libselinux: context_new(): drop dead assignment
+Date:   Mon,  3 May 2021 19:53:36 +0200
+Message-Id: <20210503175350.55954-12-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210503175350.55954-1-cgzones@googlemail.com>
 References: <20210503175350.55954-1-cgzones@googlemail.com>
@@ -63,36 +63,29 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The variable `num` is never read from.
+The variable `i` is not used inside this loop, and it later
+unconditionally set to 0.
 
-Found by clang-analyer.
+Found by clang-analyzer.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/selinux_restorecon.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ libselinux/src/context.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libselinux/src/selinux_restorecon.c b/libselinux/src/selinux_restorecon.c
-index 249c361f..6fb9e1ff 100644
---- a/libselinux/src/selinux_restorecon.c
-+++ b/libselinux/src/selinux_restorecon.c
-@@ -230,7 +230,6 @@ static int exclude_non_seclabel_mounts(void)
- 	struct utsname uts;
- 	FILE *fp;
- 	size_t len;
--	ssize_t num;
- 	int index = 0, found = 0, nfile = 0;
- 	char *mount_info[4];
- 	char *buf = NULL, *item;
-@@ -245,7 +244,7 @@ static int exclude_non_seclabel_mounts(void)
- 	if (!fp)
- 		return 0;
- 
--	while ((num = getline(&buf, &len, fp)) != -1) {
-+	while (getline(&buf, &len, fp) != -1) {
- 		found = 0;
- 		index = 0;
- 		item = strtok(buf, " ");
+diff --git a/libselinux/src/context.c b/libselinux/src/context.c
+index ce425880..b2144c7c 100644
+--- a/libselinux/src/context.c
++++ b/libselinux/src/context.c
+@@ -37,7 +37,7 @@ context_t context_new(const char *str)
+ 	}
+ 	n->current_str = n->component[0] = n->component[1] = n->component[2] =
+ 	    n->component[3] = 0;
+-	for (i = count = 0, p = str; *p; p++) {
++	for (count = 0, p = str; *p; p++) {
+ 		switch (*p) {
+ 		case ':':
+ 			count++;
 -- 
 2.31.1
 

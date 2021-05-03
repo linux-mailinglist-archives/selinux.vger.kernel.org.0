@@ -2,46 +2,46 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 34315371EED
-	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6DD1371EEB
+	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231388AbhECRy5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 3 May 2021 13:54:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39394 "EHLO
+        id S231665AbhECRy4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 3 May 2021 13:54:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231622AbhECRyx (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:53 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2880C06174A
-        for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:53:57 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id h10so7264584edt.13
+        with ESMTP id S231285AbhECRyv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:51 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D4B9C061761
+        for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:53:58 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id b17so4292580ede.0
         for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:53:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=FSFNkp3zfDVlCOXZVNpd6NENdAAQgbrDoDyhNlN4s5c=;
-        b=Guo0ensQPAsQ+vFqxPAo1zCjsBsjWnEHYNfzpcjID6kU+OeCj95SeMJGmG9CJvjZNs
-         4TKuXlFo6K2iMElDiTT8DjFhYsBkRxjV+u3yzQgF7VeZkJ+SJb7L/jj5kcqQOp9ijFGG
-         be4rOFhWW9EjQn5cGtUOvMzWMikkmbt82mpMj3iwIU66rqOoMbY3q3EMk4qRiG03fX9g
-         q8XG0ePJ4NtmDXGw2OTTDRW/yVTm7Lk6WgLL8AQJaU+IA8UGDqr/pR8wNfYRHh78PkDj
-         35ISdYemD6/4tc3GkX6f0OsveIzGbvrpDYIK9Ct3qWSlqIp+0NKziOhu7tR8C9Xz2R58
-         +1iw==
+        bh=PR3K+awGkRMcy1+IeKglsEg2qWTUDuhLCNwgWilDMRo=;
+        b=as827ohyJWAofLh5pe4iYSU38rzdLO2L5p611+Xmrgvc8WI7MsA8QMoBQVcer4BRnd
+         hVAtcoEYCqdmayayFO3rF2ef7coNXTZook/U0EkvjXUt+5IG3WYk+NsQz3531QqBCqCW
+         7Uzt+HUVYn6CJkl+bu8RTSUAUBxkvt4xS3f/Iu0ixI176+f0rRdiLG9szsuY3/orvs1a
+         HRgbbZF8hlKqXGHkd63JDldKk6HMSA5GD/aDaCN+N1DCEARP+CfANYhg2iwQYlNiGzKg
+         tGwDt7IKwX/pKRPxFFIYtwrjoeSPrtjaT9rB9xhawF4aomFStpazmW+WHaVJSYc8lm7P
+         nTdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FSFNkp3zfDVlCOXZVNpd6NENdAAQgbrDoDyhNlN4s5c=;
-        b=TY0WFOaVhH66jpOvCtrBZpjtRXQI/LjtZXFhGC5m0YuKeXV9SnMC8dWoLvl2IvIIBb
-         PQX9oEsIzIFRmUDfVEPt8oL4gEJ2Xs3AyLUfQENTJxwkzOIOIBNm7jmnf804oOKsxogW
-         r6vo5C/Oimf/ki90ueXf1tP+zkeVGQ0pMGOYjn85VYBLlE01UyNjLwormdzQBBQgfu+D
-         ImKSpjNRgNc+8Z++Oa4aLPl5sGrCrOf6Kfwq7U31xd70eeit5o8nLmtchB7YLX5TLsFL
-         ZJ5g975iRp21cLGqOi1yv8CUsJSsez15sYpfcxkE74TwuFwapKsx+1qASSwQQ41q06qE
-         woOg==
-X-Gm-Message-State: AOAM531J39npxefk3v48yK0Ws8U6U6G0tgRBCIsHH5ZlWFYURGbtnJY7
-        94f5WoQg2VNicizZoueRfrnFuIdFt51Ldw==
-X-Google-Smtp-Source: ABdhPJzrWIaPRjx3Xhw9Z1Cgn7uSgykdY9UubdofOVjGbliV6TRSU3ETJrPm9rf+2UxoTRfwOUeghA==
-X-Received: by 2002:aa7:d408:: with SMTP id z8mr7101376edq.286.1620064436452;
+        bh=PR3K+awGkRMcy1+IeKglsEg2qWTUDuhLCNwgWilDMRo=;
+        b=R8GoNOdTAOp5TQ+oiPbFLD7TaM0YUCvI4iKrPvekdfEYXPAXBi+avc1NEah7jImfUY
+         irWOFriDj865qTjtTPU9jwsFS5ycCoWOVipv79j6FERNxOr8pkUJ8fRRMkR35ln1F/Tr
+         3xiSV3crO6AjO3q3iCmrXUXVPvSrxaeUL/kfTFVccSeWp2HzRhStQJjmu580lazpCb/t
+         nh1jlOiejlz5YhxZOadH1KTwroWhIQaIctH1x5oglE65tjGuCjWUyS2ctzcXIj4Z+ADM
+         fQHOQ7bQIBNW9vC6rBlYa9G1W2RLoZf5AJdBjgtOgQnchm88j34ZZgF89Uh/7O6FDHYC
+         zFgQ==
+X-Gm-Message-State: AOAM533coioeGF1PHaPA6P0u1kUwmYPAQMUrqcF+mfJKAy7fj1Vu7xBQ
+        kcm2jPkguClA8BcikHRlRleYb3wD29THyA==
+X-Google-Smtp-Source: ABdhPJzIRefKrDGAZ4+gKHC56cpAZEEzWygUnQy9ZyYKTtjGB4DYUYQVg/Y0TX5fglfsTjAGVRzydg==
+X-Received: by 2002:aa7:dc10:: with SMTP id b16mr21791318edu.258.1620064436726;
         Mon, 03 May 2021 10:53:56 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefonica.de. [77.0.172.37])
         by smtp.gmail.com with ESMTPSA id b17sm1830165edr.80.2021.05.03.10.53.56
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefon
         Mon, 03 May 2021 10:53:56 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 02/25] libselinux: selinux_file_context_cmp(): do not discard const qualifier
-Date:   Mon,  3 May 2021 19:53:27 +0200
-Message-Id: <20210503175350.55954-3-cgzones@googlemail.com>
+Subject: [PATCH 03/25] libselinux: label_common(): do not discard const qualifier
+Date:   Mon,  3 May 2021 19:53:28 +0200
+Message-Id: <20210503175350.55954-4-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20210503175350.55954-1-cgzones@googlemail.com>
 References: <20210503175350.55954-1-cgzones@googlemail.com>
@@ -63,42 +63,64 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-matchpathcon.c: In function ‘selinux_file_context_cmp’:
-matchpathcon.c:487:18: warning: cast discards ‘const’ qualifier from pointer target type [-Wcast-qual]
-  487 |  rest_a = strchr((char *)a, ':');
-      |                  ^
-matchpathcon.c:488:18: warning: cast discards ‘const’ qualifier from pointer target type [-Wcast-qual]
-  488 |  rest_b = strchr((char *)b, ':');
-      |                  ^
+As the const qualifier is discarded in label_common(), do not return a
+const qualified pointer pointer from the local function `lookup_all()`.
+
+label_file.c: In function ‘lookup_common’:
+label_file.c:994:24: warning: cast discards ‘const’ qualifier from pointer target type [-Wcast-qual]
+  994 |  struct spec *result = (struct spec*)matches[0];
+      |                        ^
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/matchpathcon.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ libselinux/src/label_file.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
-index 2ec66650..9e1fab59 100644
---- a/libselinux/src/matchpathcon.c
-+++ b/libselinux/src/matchpathcon.c
-@@ -477,15 +477,15 @@ void matchpathcon_checkmatches(char *str __attribute__((unused)))
- int selinux_file_context_cmp(const char * a,
- 			     const char * b)
- {
--	char *rest_a, *rest_b;	/* Rest of the context after the user */
-+	const char *rest_a, *rest_b;	/* Rest of the context after the user */
- 	if (!a && !b)
- 		return 0;
- 	if (!a)
- 		return -1;
- 	if (!b)
- 		return 1;
--	rest_a = strchr((char *)a, ':');
--	rest_b = strchr((char *)b, ':');
-+	rest_a = strchr(a, ':');
-+	rest_b = strchr(b, ':');
- 	if (!rest_a && !rest_b)
- 		return 0;
- 	if (!rest_a)
+diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
+index 726394ca..4d4e3a76 100644
+--- a/libselinux/src/label_file.c
++++ b/libselinux/src/label_file.c
+@@ -845,7 +845,7 @@ static void closef(struct selabel_handle *rec)
+ // Finds all the matches of |key| in the given context. Returns the result in
+ // the allocated array and updates the match count. If match_count is NULL,
+ // stops early once the 1st match is found.
+-static const struct spec **lookup_all(struct selabel_handle *rec,
++static struct spec **lookup_all(struct selabel_handle *rec,
+                                       const char *key,
+                                       int type,
+                                       bool partial,
+@@ -861,7 +861,7 @@ static const struct spec **lookup_all(struct selabel_handle *rec,
+ 	unsigned int sofar = 0;
+ 	char *sub = NULL;
+ 
+-	const struct spec **result = NULL;
++	struct spec **result = NULL;
+ 	if (match_count) {
+ 		*match_count = 0;
+ 		result = calloc(data->nspec, sizeof(struct spec*));
+@@ -987,11 +987,11 @@ static struct spec *lookup_common(struct selabel_handle *rec,
+                                   const char *key,
+                                   int type,
+                                   bool partial) {
+-	const struct spec **matches = lookup_all(rec, key, type, partial, NULL);
++	struct spec **matches = lookup_all(rec, key, type, partial, NULL);
+ 	if (!matches) {
+ 		return NULL;
+ 	}
+-	struct spec *result = (struct spec*)matches[0];
++	struct spec *result = matches[0];
+ 	free(matches);
+ 	return result;
+ }
+@@ -1054,7 +1054,7 @@ static bool hash_all_partial_matches(struct selabel_handle *rec, const char *key
+ 	assert(digest);
+ 
+ 	size_t total_matches;
+-	const struct spec **matches = lookup_all(rec, key, 0, true, &total_matches);
++	struct spec **matches = lookup_all(rec, key, 0, true, &total_matches);
+ 	if (!matches) {
+ 		return false;
+ 	}
 -- 
 2.31.1
 

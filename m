@@ -2,91 +2,119 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BEFDF371F01
-	for <lists+selinux@lfdr.de>; Mon,  3 May 2021 19:54:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 534D0373131
+	for <lists+selinux@lfdr.de>; Tue,  4 May 2021 22:06:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231710AbhECRzF (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 3 May 2021 13:55:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39434 "EHLO
+        id S232733AbhEDUHe (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 4 May 2021 16:07:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231594AbhECRy6 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 3 May 2021 13:54:58 -0400
-Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63363C06138E
-        for <selinux@vger.kernel.org>; Mon,  3 May 2021 10:54:04 -0700 (PDT)
-Received: by mail-ej1-x630.google.com with SMTP id t4so9234689ejo.0
-        for <selinux@vger.kernel.org>; Mon, 03 May 2021 10:54:04 -0700 (PDT)
+        with ESMTP id S232670AbhEDUHb (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 4 May 2021 16:07:31 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5012EC061761
+        for <selinux@vger.kernel.org>; Tue,  4 May 2021 13:06:33 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id g15-20020a9d128f0000b02902a7d7a7bb6eso2648944otg.9
+        for <selinux@vger.kernel.org>; Tue, 04 May 2021 13:06:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=osNyx1FIPkAa/wFyAagZJAoLCmCuby1zL1yHhVFkfCs=;
-        b=gsXqDDEFNKBAVxaFOgzGZrkd0qe/K7CP/tO7YMBdzAv5Ul1OxrOHXP4FQjIzxILU0N
-         txtzxKmNBApvkAiEgffdUJMZ6SEe42sheF+291Ng2pqcv324SoAmowqRJQFpB0d/LsCS
-         q1zynCFkxw3yJsClP4cu0v/QKhbpXRGWpK4Y21bKeSp/LmX/Quf7Hhyer+QGe+eKBTkX
-         EDXL4WMwSBlYgY6p7kRdEW+SUwSKSFxMQYgRjPWaiGOGqBzZ3EncR7SzvyiiqzgDV2sN
-         NZF7oSHld+QwnZ6aRBjt4KewJ7sbXTS6hqUc4BnKzc/hmyLSSY/ay+rtXL97KIMvt00Y
-         /tkw==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=BJlnqiFijnV6MGWFkXCqIygBlu3DhLFVPjRYwUWJbpw=;
+        b=UugloqK/OwXmdArFu8cscGQwPvUUsmzWA4MIixQrSyREHWUjvTQm1AAcR9dLvOcmN6
+         Fu8v68MaB6Se3r2WFBJEIvAZo8Fxaf8+v5gPZ78GTGil94Pm9sBrik8wvgOBthhbXQ2F
+         SeCdyZn31j7MR11EIZiZyoKAojy76xOW8H8Qn3KnTTqhQF6hgCRAI2QS/n4JUr2UEW0C
+         e5DsuV8ydrScCkYQBEDPHDUHv2cj5UvwYHiYm3DAqNpYZRpO2Fp6AzUvTLOsNdNJRKrV
+         S71NploWrb/KILwKw3bEWRY7UYF8Cxt1k281/8DeRiVOmMQggDDh/MdwjsCoCgGG+dwE
+         ox8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=osNyx1FIPkAa/wFyAagZJAoLCmCuby1zL1yHhVFkfCs=;
-        b=It4n4prDsrSlh35XAmJ3sWVnJWbtnAWKcOUCH5FmQmqRqXIiDQGhxA8bUc+4uGW187
-         0jQ6RiVXxVsc1sNpICzt6f8OirfLsx2QB2gv6I6odyYsxlA4hlF5HSsMJvo7Iunkiz/W
-         aKDjVHYDJiD88xwO+aOkePkHUsvUUuGQuKkRRljUnPliPnnQUX9Emkdf/kqbyPRbFdX7
-         yckvTVo+R4M077FfTDAqzJN4MoWI1PHNC8j3W4brow0/sAOayWd+2mXJH1TLp3pOylGf
-         qGDjYWj3qXgy4sSpmc6cDnSXlRHOsnl6GiOuvpMS6+iN0N2D/ha/yKjNey89+lC56Sxj
-         kBPA==
-X-Gm-Message-State: AOAM532fCFX7PyfrPF88zNObSMkzlnxw09k5BzhjlBwC1kW59uYfTm6H
-        c7oioN1GGqQna8wuWgrXtnx26CGS6lFQtg==
-X-Google-Smtp-Source: ABdhPJxrpzPK/jYeD00MY/B5EC640O4PyixwZe7fj7W0TgnP6B6IsAO0xmIZ33yIskKZChJtm3eHYA==
-X-Received: by 2002:a17:907:3342:: with SMTP id yr2mr18133267ejb.325.1620064443137;
-        Mon, 03 May 2021 10:54:03 -0700 (PDT)
-Received: from debianHome.localdomain (dynamic-077-000-172-037.77.0.pool.telefonica.de. [77.0.172.37])
-        by smtp.gmail.com with ESMTPSA id b17sm1830165edr.80.2021.05.03.10.54.02
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 May 2021 10:54:03 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH 25/25] libselinux: label_file.c: fix indent
-Date:   Mon,  3 May 2021 19:53:50 +0200
-Message-Id: <20210503175350.55954-26-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210503175350.55954-1-cgzones@googlemail.com>
-References: <20210503175350.55954-1-cgzones@googlemail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=BJlnqiFijnV6MGWFkXCqIygBlu3DhLFVPjRYwUWJbpw=;
+        b=dy+4c+/AUAjvE8jG6Gen4uTzTD0rdEcY9VujAn5uBpsr80A2KubJRlJEzZDjO5KK+c
+         N+9KvH3nAlfEolzB+cyTXvz6IwU6gBXYMnICz6Znpj0s65pCPl26+5bk4P6Ogy2bpvsD
+         qWpMYBYCJ2o+v3lNZnu6qdpF0LIFQSn1m0h9hLhRCFvjb+LRH+j8sj21LrOAMEiC4/1E
+         hG0T126lpXU+NF59b54FjTSW+Mb64llh/bkXyLQj6k2xMaoq5nH8okR0bPGMl/VkbMtz
+         maEu0REpwqqlaB9+KFwlbZy69F5DN+6QA7mTdjUJypR4XnsOcaFuqtiCtfrHYdqhTEG0
+         m8xg==
+X-Gm-Message-State: AOAM532asG+P0CRSjaju8lGHQ/CjsZw7yQ5cSmj/quAlpE4C1vK4XLJM
+        FVt1kzluG/xfFJyHhrzfjmadUwLid3yB/A6uKUH7ps5af6s=
+X-Google-Smtp-Source: ABdhPJyoq3wi93HMjXjOK9DkFPLoyGbfQt8DwcLllNCtPE/jy7zzW+Ke50rbHWaktGj5JyF6H1s8J+bvGjuvVuqZbBY=
+X-Received: by 2002:a9d:614b:: with SMTP id c11mr9820939otk.59.1620158792750;
+ Tue, 04 May 2021 13:06:32 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20210427204333.208637-1-jwcart2@gmail.com> <CAJfZ7==yNja-v36=0bdq2z4u6NsjNyQ4E-Gp_RUL=RUfHEoNPg@mail.gmail.com>
+In-Reply-To: <CAJfZ7==yNja-v36=0bdq2z4u6NsjNyQ4E-Gp_RUL=RUfHEoNPg@mail.gmail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Tue, 4 May 2021 16:06:21 -0400
+Message-ID: <CAP+JOzSaAxF2387msoUvkiosR=GQm-0ifYgsaS56ufKxqeMZPw@mail.gmail.com>
+Subject: Re: [PATCH] libsepol/cil: Properly reset an anonymous classperm set
+To:     Nicolas Iooss <nicolas.iooss@m4x.org>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Found by clang-tidy.
+On Sat, May 1, 2021 at 10:34 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+>
+> On Tue, Apr 27, 2021 at 10:43 PM James Carter <jwcart2@gmail.com> wrote:
+> >
+> > In struct cil_classperms_set, the "set" field is a pointer to a
+> > struct cil_classpermission. Normally the classpermission is created
+> > in a classpermissionset rule with a name declared in a
+> > classpermission rule and stored in a symbol table. Commit c49a8ea0
+> > ("libsepol/cil: cil_reset_classperms_set() should not reset
+> > classpermission") fixed the resetting of classperms sets by setting
+> > the "set" field to NULL rather than resetting the classpermission
+> > that it pointed to.
+> >
+> > But this fix mixed the special case where an anonymous classperm
+> > set is passed as an argument to a call. In this case the
+> > classpermission is not named and not stored in a symtab, it is
+> > created just for the classperms set and its classperms list needs
+> > to be reset.
+> >
+> > Reset the classperms list if the classperms set is anonymous (which
+> > is when the datum name is NULL).
+> >
+> > Signed-off-by: James Carter <jwcart2@gmail.com>
+>
+> Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+>
 
-libselinux/src/label_file.c:374:4: warning: different indentation for 'if' and corresponding 'else' [readability-misleading-indentation]
-                 else
-                 ^
+This has been applied.
+Jim
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libselinux/src/label_file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
-index 39a56133..8139b38c 100644
---- a/libselinux/src/label_file.c
-+++ b/libselinux/src/label_file.c
-@@ -371,7 +371,7 @@ end_arch_check:
- 
- 		if (stem_id < 0 || stem_id >= (int32_t)stem_map_len)
- 			spec->stem_id = -1;
--		 else
-+		else
- 			spec->stem_id = stem_map[stem_id];
- 
- 		/* retrieve the hasMetaChars bit */
--- 
-2.31.1
-
+> Thanks!
+> Nicolas
+>
+> > ---
+> >  libsepol/cil/src/cil_reset_ast.c | 6 +++++-
+> >  1 file changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/libsepol/cil/src/cil_reset_ast.c b/libsepol/cil/src/cil_reset_ast.c
+> > index 76405aba..d24d4f81 100644
+> > --- a/libsepol/cil/src/cil_reset_ast.c
+> > +++ b/libsepol/cil/src/cil_reset_ast.c
+> > @@ -60,10 +60,14 @@ static void cil_reset_classpermission(struct cil_classpermission *cp)
+> >
+> >  static void cil_reset_classperms_set(struct cil_classperms_set *cp_set)
+> >  {
+> > -       if (cp_set == NULL) {
+> > +       if (cp_set == NULL || cp_set->set == NULL) {
+> >                 return;
+> >         }
+> >
+> > +       if (cp_set->set->datum.name == NULL) {
+> > +               cil_reset_classperms_list(cp_set->set->classperms);
+> > +       }
+> > +
+> >         cp_set->set = NULL;
+> >  }
+> >
+> > --
+> > 2.26.3
+> >
+>

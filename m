@@ -2,105 +2,114 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1B59737889C
-	for <lists+selinux@lfdr.de>; Mon, 10 May 2021 13:48:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A18A378891
+	for <lists+selinux@lfdr.de>; Mon, 10 May 2021 13:48:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233494AbhEJLW0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 10 May 2021 07:22:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46328 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235795AbhEJLGJ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 10 May 2021 07:06:09 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EC76C061763
-        for <selinux@vger.kernel.org>; Mon, 10 May 2021 03:56:52 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a4so23860575ejk.1
-        for <selinux@vger.kernel.org>; Mon, 10 May 2021 03:56:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=/rcmJv8nTcbgRLLFgkz6QJI4jGsZ2XdOfQEYgTdv044=;
-        b=rZv1PeoJKGfS0Quz9QXMXLQztBNT+C3YrERUyHnnEOQJXjBkX4BCvOnCpQ1KDXiJ5x
-         oyNnI8yPn9BMYcvjXfqTyJ9l1/xgqVcwqupB/FEE7cwqDUBCOQ9MSTbS22Zq7vpWg4zg
-         21bzlWhZKxcFldQymIYQgMybVLqzp0dGk0QfOD2mFceWfAZsOCLXazpAnNzI2DNMIBiH
-         C8/PccTHyatQJdLPVjPo/6LjuZxL7pfkeuaYTvMThzjD41PTSeWPsfEWrPrlBBMBXcaX
-         E6KYQhP/PUsYA365ZAIggdcOVvhopaa3mH9B/xWXgcqIOoT4cJR33Q9V/R/ixQI2y/fZ
-         1fIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=/rcmJv8nTcbgRLLFgkz6QJI4jGsZ2XdOfQEYgTdv044=;
-        b=ZJkYKhwLSBbzuykM0kbEr1662DJwZeTpba7ydk1e2jT4TqyisUP4/C1ky9VcKMsweo
-         hCfxD3TU2LG6DU2XdjZGM+S0KtLVMb4PmdHnQMeR/tLZel1WhUvIA/GZHWJ+zgRona2N
-         qY1Rt4qVrmjTcxyRiTRGeDCd74tznBrpBu3jpeO1BjngyXJlEH+MM34cK49+S1m7IKN7
-         00t/o0utVWSqqK9Nqk8YEjwUKjoFsBgnLp7lfJvJGkDYThdwhRiiqc9tBvFEXbFkupuJ
-         ORzMoPyC4OFAV8m3T6VQcPekLZKPx5Mp4fYn5ol+Pc1b4U20CMRC+1KQFmCPG6fJftKD
-         FVig==
-X-Gm-Message-State: AOAM53264LWfhGHDCHYoGhDGufsHeAwUoXnaDlAlW6lLmSqfPWZXF5md
-        VUu1PQw7LTn8KGAif5ZPr15EiSV0JiuUQMMC
-X-Google-Smtp-Source: ABdhPJwFcpM3P/SXEvDGOjeqO2qHVXbtI4AiJjA7qwLH0oQncDpiEDEmazqqNUxfzA9ugZV83VbTkw==
-X-Received: by 2002:a17:907:20f7:: with SMTP id rh23mr24580928ejb.276.1620644211028;
-        Mon, 10 May 2021 03:56:51 -0700 (PDT)
-Received: from debianHome.localdomain (dynamic-077-003-162-005.77.3.pool.telefonica.de. [77.3.162.5])
-        by smtp.gmail.com with ESMTPSA id z17sm8884162eju.65.2021.05.10.03.56.50
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 May 2021 03:56:50 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+        id S230486AbhEJLWT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 10 May 2021 07:22:19 -0400
+Received: from m12-12.163.com ([220.181.12.12]:42560 "EHLO m12-12.163.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234673AbhEJLFP (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Mon, 10 May 2021 07:05:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+        s=s110527; h=From:Subject:Date:Message-Id; bh=t3DdB1X/hJYHrSUY2b
+        tJvf6c/WLMsfB7TwGWIpSDb+M=; b=kW4xx/RPC8EYo7QoSZi+42uCjLkIA6iWnR
+        jiYS2kyHQcLJa79ncCUsUR94svogx5dhpK0g5P0aXoBz9dSbYI++zrkq0B80gVbd
+        uVbr7B74F55s8+/baUHZm2oyTnjBGd7h6pwAjXes1MqYmBTHWL5JPc2zujeACdRM
+        PcU4TiZQA=
+Received: from mi-OptiPlex-9020.mioffice.cn (unknown [113.50.48.195])
+        by smtp8 (Coremail) with SMTP id DMCowAAX9bkcE5lg+klMDQ--.28741S2;
+        Mon, 10 May 2021 19:04:08 +0800 (CST)
+From:   liwugang <liwugang@163.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 3/3] libselinux: do not use status page fallback mode internally
-Date:   Mon, 10 May 2021 12:56:48 +0200
-Message-Id: <20210510105648.14635-4-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20210510105648.14635-1-cgzones@googlemail.com>
-References: <20210510105648.14635-1-cgzones@googlemail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Cc:     liwugang <liwugang@163.com>
+Subject: [PATCH] checkpolicy: fix the leak memory when uses xperms
+Date:   Mon, 10 May 2021 19:03:54 +0800
+Message-Id: <20210510110354.3585-1-liwugang@163.com>
+X-Mailer: git-send-email 2.17.1
+X-CM-TRANSID: DMCowAAX9bkcE5lg+klMDQ--.28741S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxAFy3Kw48Jw13KF1UurWDCFg_yoW5tFy8pr
+        srKrZ7AryUWrWfXrn7Ww4jvr4S93yqkw48GFyxAw47AFy8Zw18WayDAryYyF4rWF95Aa93
+        tFn8Xa1UWaykJFDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziy89_UUUUU=
+X-Originating-IP: [113.50.48.195]
+X-CM-SenderInfo: 5olz3wxdqjqiywtou0bp/xtbBRgiOs13l-lWCsQAAsT
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Currently `avc_init_internal()`, called by `avc_open(3)` and
-`avc_init(3)`, does open the SELinux status page with fallback mode
-enabled.
+In the define_te_avtab_ioctl function:
+1. the parameter avrule_template has been copies to
+new elements which added to avrule list through
+the function avrule_cpy, so it should free avrule_template.
+2. And for rangelist, it does not free the allocated memory.
 
-Quote from man:selinux_status_open(3):
-    In this case, this function tries to open a netlink socket using
-    .BR avc_netlink_open (3) and overwrite corresponding callbacks
-    (setenforce and policyload).  Thus, we need to pay attention to the
-    interaction with these interfaces, when fallback mode is enabled.
+The memory leak can by found by using memory sanitizer:
+=================================================================
+==20021==ERROR: LeakSanitizer: detected memory leaks
 
-Calling `selinux_status_open` internally in fallback mode is bad, cause
-it overrides callbacks from client applications or the internal
-fallback-callbacks get overridden by client applications.
-Note that `avc_open(3)` gets called under the hood by
-`selinux_check_access(3)` without checking for failure.
-Also the status page is available since Linux 2.6.37, so failures of
-`selinux_status_open(3)` in non-fallback mode should only be caused by
-policies not allowing the client process to open/read/map
-the /sys/fs/selinux/status file.
+Direct leak of 10336 byte(s) in 76 object(s) allocated from:
+    #0 0x7f8f96d9cb50 in __interceptor_malloc (/usr/lib/x86_64-linux-gnu/libasan.so.4+0xdeb50)
+    #1 0x55c2e9447fb3 in define_te_avtab_xperms_helper /mnt/sources/tools/selinux/checkpolicy/policy_define.c:2046
+    #2 0x55c2e944a6ca in define_te_avtab_extended_perms /mnt/sources/tools/selinux/checkpolicy/policy_define.c:2479
+    #3 0x55c2e943126b in yyparse /mnt/sources/tools/selinux/checkpolicy/policy_parse.y:494
+    #4 0x55c2e9440221 in read_source_policy /mnt/sources/tools/selinux/checkpolicy/parse_util.c:64
+    #5 0x55c2e945a3df in main /mnt/sources/tools/selinux/checkpolicy/checkpolicy.c:619
+    #6 0x7f8f968eeb96 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x21b96)
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+Direct leak of 240 byte(s) in 15 object(s) allocated from:
+    #0 0x7f8f96d9cb50 in __interceptor_malloc (/usr/lib/x86_64-linux-gnu/libasan.so.4+0xdeb50)
+    #1 0x55c2e9446cd9 in avrule_sort_ioctls /mnt/sources/tools/selinux/checkpolicy/policy_define.c:1846
+    #2 0x55c2e9447d8f in avrule_ioctl_ranges /mnt/sources/tools/selinux/checkpolicy/policy_define.c:2020
+    #3 0x55c2e944a0de in define_te_avtab_ioctl /mnt/sources/tools/selinux/checkpolicy/policy_define.c:2409
+    #4 0x55c2e944a744 in define_te_avtab_extended_perms /mnt/sources/tools/selinux/checkpolicy/policy_define.c:2485
+    #5 0x55c2e94312bf in yyparse /mnt/sources/tools/selinux/checkpolicy/policy_parse.y:503
+    #6 0x55c2e9440221 in read_source_policy /mnt/sources/tools/selinux/checkpolicy/parse_util.c:64
+    #7 0x55c2e945a3df in main /mnt/sources/tools/selinux/checkpolicy/checkpolicy.c:619
+    #8 0x7f8f968eeb96 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x21b96)
+
+Signed-off-by: liwugang <liwugang@163.com>
 ---
- libselinux/src/avc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ checkpolicy/policy_define.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/libselinux/src/avc.c b/libselinux/src/avc.c
-index 8314d7ba..daaedbc6 100644
---- a/libselinux/src/avc.c
-+++ b/libselinux/src/avc.c
-@@ -214,7 +214,7 @@ static int avc_init_internal(const char *prefix,
- 		avc_enforcing = rc;
- 	}
+diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+index 16234f31..04064af2 100644
+--- a/checkpolicy/policy_define.c
++++ b/checkpolicy/policy_define.c
+@@ -2400,7 +2400,7 @@ int avrule_cpy(avrule_t *dest, avrule_t *src)
+ int define_te_avtab_ioctl(avrule_t *avrule_template)
+ {
+ 	avrule_t *avrule;
+-	struct av_ioctl_range_list *rangelist;
++	struct av_ioctl_range_list *rangelist, *r, *r2;
+ 	av_extended_perms_t *complete_driver, *partial_driver, *xperms;
+ 	unsigned int i;
  
--	rc = selinux_status_open(1);
-+	rc = selinux_status_open(0);
- 	if (rc < 0) {
- 		avc_log(SELINUX_ERROR,
- 			"%s: could not open selinux status page: %d (%s)\n",
+@@ -2458,6 +2458,13 @@ done:
+ 	if (partial_driver)
+ 		free(partial_driver);
+ 
++	r = rangelist;
++	while (r != NULL) {
++		r2 = r;
++		r = r->next;
++		free(r2);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -2484,6 +2491,8 @@ int define_te_avtab_extended_perms(int which)
+ 		free(id);
+ 		if (define_te_avtab_ioctl(avrule_template))
+ 			return -1;
++		avrule_destroy(avrule_template);
++		free(avrule_template);
+ 	} else {
+ 		yyerror("only ioctl extended permissions are supported");
+ 		free(id);
 -- 
-2.31.1
+2.17.1
+
 

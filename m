@@ -2,90 +2,39 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 30C93379C52
-	for <lists+selinux@lfdr.de>; Tue, 11 May 2021 03:56:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16CFD379C65
+	for <lists+selinux@lfdr.de>; Tue, 11 May 2021 04:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230023AbhEKB5o (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 10 May 2021 21:57:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48934 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229948AbhEKB5o (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 10 May 2021 21:57:44 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B086FC061574
-        for <selinux@vger.kernel.org>; Mon, 10 May 2021 18:56:37 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id s6so20927187edu.10
-        for <selinux@vger.kernel.org>; Mon, 10 May 2021 18:56:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DDtzTdMSjcCqYcT5nK6EFkvKRXtIDXqaS339sOlu//0=;
-        b=goM8csypbR2xlddwybHibrVkVZ8BUvaLsQbWcSyDqReWQli4Dpdl5+6XDnHyed5Od3
-         GtirXBkJHXlunkCaxk6pq+ytw6KDnFf9imkrkXdU7pfgxepLMyhq+UNQqvdd/aY7Paol
-         uE7oMtDLW0YeAkEByiVEDPPPcND/TFIKsm2Mc6WrjPGK67PSDJNaY9a95kYC/4tCl4vt
-         Ls5GYWjkZCtiw/iIVgM/aB9h7IP5297yA1+hFE9KPABzipUCYxNj5Ks2I2Efb9bCnFt2
-         tzRrzbKfX34SunzQJw6D0jXU7jZqclwu35EeI+V/ESbQgVgMujJmSOoyL1liYBDH8kIV
-         6Hqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DDtzTdMSjcCqYcT5nK6EFkvKRXtIDXqaS339sOlu//0=;
-        b=CJs+nXQEXkBCnWIOcRzL5xJSduOHnOO61HTrQhD4MbDiJY1pGibS0pU+VW7UtLbT75
-         pQq9cbblFvI/a/IWrtNVQRsBfQQNd+eDNYSBmWpdDokHmtOCTjEke8Ns9J9upi0z+r2s
-         KaTg8szMzEH16o3/enY9Yk1NxZDFqo+9i5806ZBcq1f+sZ+Q7vtVv+7ubWdjXyNbuUQP
-         6YOONbPgMcDnKX9By2pvEc56VxuSjkvuVScwACiozf30hbD/7vk0DwspYGn3k1XVk75X
-         DwCfJj8lWk4egfU1gEY/PS/2K75DR1j+w4uD77KFWfkz5984g+BdqvqRV3aV1Mj5mSrJ
-         d2pw==
-X-Gm-Message-State: AOAM530oo0Un+AXGgcTPxSFF67tO3QRZeCV4DpGil9Ze0Bzn2EyTvTzE
-        z72AzyTtDP+QsRyVxsuDk3g1eIhIYZF43dQoIsLg
-X-Google-Smtp-Source: ABdhPJxBfHu8z/ZiSgV/j3o5jS7B+Kumf+ru+Z6HH3l2edXqgoWbzp1aZ4GL0VzEmuOB8wvgEDE9g248+SPIiDyvR9U=
-X-Received: by 2002:a05:6402:199:: with SMTP id r25mr32824463edv.128.1620698195684;
- Mon, 10 May 2021 18:56:35 -0700 (PDT)
+        id S230338AbhEKCER (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 10 May 2021 22:04:17 -0400
+Received: from [125.7.54.12] ([125.7.54.12]:39458 "EHLO
+        snhve01-ext-001.mktdns.com" rhost-flags-FAIL-FAIL-OK-OK)
+        by vger.kernel.org with ESMTP id S229948AbhEKCEQ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 10 May 2021 22:04:16 -0400
+X-MSFBL: V40B2W7COZ8MhkI+zdKL30e1vQ61V+Uokb4+eGUSmG0=|eyJiIjoic25odmUwMS1
+        tdGEwMy0xMjUtNy01NC0xMiIsInIiOiJzZWxpbnV4QHZnZXIua2VybmVsLm9yZyI
+        sInUiOiIldmN0eF9tZXNze21rdG9NYWlsaW5nSUR9IiwiZyI6ImJnLXNuaHZlMDF
+        kLTAxIn0=
+Reply-To: <avislmarie@yahoo.com>
+Message-ID: <46.9B.30551.3D5E9906@snhve01-mta03.marketo.org>
+From:   "COMPANY" <marieaviss@gmail.com>
+Subject: Re: Business inquiries 05:11:2021
+Date:   Mon, 10 May 2021 19:02:43 -0700
 MIME-Version: 1.0
-References: <20210507130445.145457-1-omosnace@redhat.com>
-In-Reply-To: <20210507130445.145457-1-omosnace@redhat.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 10 May 2021 21:56:25 -0400
-Message-ID: <CAHC9VhRFT=CVTq=wCxE=Wn8VHP+g1Cyw4zc0oAtsk7Jaa5EMzQ@mail.gmail.com>
-Subject: Re: [PATCH] selinux: use strlcpy() when copying IB device name
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, May 7, 2021 at 9:04 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> While the buffer should be large enough (IB_DEVICE_NAME_MAX) for all
-> InfiniBand device names, it's better to be defensive and ensure the
-> string will be null-terminated even if the hook happens to receive a
-> longer name.
->
-> Found by a Coverity scan (BUFFER_SIZE warning).
->
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> ---
->  security/selinux/hooks.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 92f909a2e8f7..ec14ed56f508 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -6864,7 +6864,7 @@ static int selinux_ib_endport_manage_subnet(void *ib_sec, const char *dev_name,
->                 return err;
->
->         ad.type = LSM_AUDIT_DATA_IBENDPORT;
-> -       strncpy(ibendport.dev_name, dev_name, sizeof(ibendport.dev_name));
-> +       strlcpy(ibendport.dev_name, dev_name, sizeof(ibendport.dev_name));
-
-The kernel preference these days appears to be to use strscpy()
-instead of strlcpy(); if we are going to change it, let's change it to
-strscpy().
-
--- 
-paul moore
-www.paul-moore.com
+Hello
+How are you doing today?
+I am willing to initiate a business relationship with you.
+Yours sincerely
+MA/PM

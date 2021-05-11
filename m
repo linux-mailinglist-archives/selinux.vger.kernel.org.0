@@ -2,39 +2,86 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 16CFD379C65
-	for <lists+selinux@lfdr.de>; Tue, 11 May 2021 04:03:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA2B537AFE4
+	for <lists+selinux@lfdr.de>; Tue, 11 May 2021 22:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230338AbhEKCER (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 10 May 2021 22:04:17 -0400
-Received: from [125.7.54.12] ([125.7.54.12]:39458 "EHLO
-        snhve01-ext-001.mktdns.com" rhost-flags-FAIL-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S229948AbhEKCEQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 10 May 2021 22:04:16 -0400
-X-MSFBL: V40B2W7COZ8MhkI+zdKL30e1vQ61V+Uokb4+eGUSmG0=|eyJiIjoic25odmUwMS1
-        tdGEwMy0xMjUtNy01NC0xMiIsInIiOiJzZWxpbnV4QHZnZXIua2VybmVsLm9yZyI
-        sInUiOiIldmN0eF9tZXNze21rdG9NYWlsaW5nSUR9IiwiZyI6ImJnLXNuaHZlMDF
-        kLTAxIn0=
-Reply-To: <avislmarie@yahoo.com>
-Message-ID: <46.9B.30551.3D5E9906@snhve01-mta03.marketo.org>
-From:   "COMPANY" <marieaviss@gmail.com>
-Subject: Re: Business inquiries 05:11:2021
-Date:   Mon, 10 May 2021 19:02:43 -0700
+        id S229945AbhEKUEU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 11 May 2021 16:04:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40460 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229954AbhEKUEU (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 11 May 2021 16:04:20 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 936F4C061574
+        for <selinux@vger.kernel.org>; Tue, 11 May 2021 13:03:12 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id k10so2033595qtp.9
+        for <selinux@vger.kernel.org>; Tue, 11 May 2021 13:03:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+dXS6L48VuTAxb2+PywL09hLpA+KUqpD3muGHMKw1AA=;
+        b=aPA/IPpI9Q8ULZ9BIjIh3IGfBYilChexoLibDQJQjvFd2gavA5k/ACQZEK7aqLbOBn
+         OxVqWUYEtK9r5QhcsTXqiyOfzY9gQ+aZn1akSizrY4uJI3+4d+4LAh2z6wYlWPFtRhqQ
+         OB8csB+1oObD+gvCwzQkSGKLcClz9gwU93j7tbtYG0e87v6xH/tXIpVeefxYT1sTj3ET
+         PlOdGpqAFPIlBKvN0kc1z9kTBoXFQzWQgbEbu5u3EkSWnlFR9bWR+ax58PHpdKIByL9i
+         3eDLzEb/vScnXqmKFfA3s1f1TSGq0gy/5GRHkvMEsrYkeSQEw96w2heo0MEFfhrWghpt
+         0Ozg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=+dXS6L48VuTAxb2+PywL09hLpA+KUqpD3muGHMKw1AA=;
+        b=rtBZ4cKqhR6PmR2CVzYji3oR87Zyn9AYDiyGelZgFuGQpue3NzhzR896YGYeeY/87k
+         DIQY+apPClc1JSjAYLss+tELBpxS51WARNvEu28U1SZ3ZqzDa2jV2d2O9CwbXrwGyX6t
+         M1wvkiB2EjwwEsbfpOL2fZc+aOkQTp4WHok13XvEV8VG6PjwM1KBwz1zX7o4Ems4CPkI
+         Ly8USrw+MNVqbxiSIY+dn+WnLozub/R/s5GKBEYpE6hZs2tvcy3tR6o9P3g2Dk/kVL1Z
+         5oiUg7ANyAQDP4INaHcw+500hhFHYzwMg0D74he6t1j8NPS0Dye5QiNYFphZj9qZXDvE
+         G1rg==
+X-Gm-Message-State: AOAM531M4AEBtk6fOrwjJwyTb9QTyi31kY7GwWrZ9sqPfZk4rjiIL4E3
+        3lXdWy9DhsaXidND688UXRfm6LL3mhM1dw==
+X-Google-Smtp-Source: ABdhPJz5KJ1At7uAGGR79PeuevPCJh5Z9SkXO7UkY6Pwq/60MmtI89Ej4VG3I9Cee3yljEXnirsISA==
+X-Received: by 2002:a05:622a:253:: with SMTP id c19mr29573175qtx.53.1620763391592;
+        Tue, 11 May 2021 13:03:11 -0700 (PDT)
+Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
+        by smtp.gmail.com with ESMTPSA id z9sm4642533qtf.10.2021.05.11.13.03.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 May 2021 13:03:10 -0700 (PDT)
+From:   James Carter <jwcart2@gmail.com>
+To:     selinux@vger.kernel.org
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH 0/5 v2] secilc/cil: Fix name resolution for macro calls
+Date:   Tue, 11 May 2021 16:02:56 -0400
+Message-Id: <20210511200301.407855-1-jwcart2@gmail.com>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello
-How are you doing today?
-I am willing to initiate a business relationship with you.
-Yours sincerely
-MA/PM
+This patch series fixes name resolution within expanded macro calls and
+with call arguments.
+
+The first patch is same as in v1.
+Patches 2-4 replace patch 2 in v1. The original way of fixing name
+resolution of call arguments did not work if a disabled optional
+forced a reset.
+Patch 5 is the same as patch 3 in v1.
+
+James Carter (5):
+  libsepol/cil: Make name resolution in macros work as documented
+  libsepol/cil: Do not add NULL node when inserting key into symtab
+  libsepo/cil: Refactor macro call resolution
+  libsepol/cil: Do not resolve arguments to declarations in the call
+  secilc/docs: Relocate and reword macro call name resolution order
+
+ libsepol/cil/src/cil_internal.h          |   1 -
+ libsepol/cil/src/cil_resolve_ast.c       | 635 ++++++++++++-----------
+ libsepol/cil/src/cil_symtab.c            |   8 +-
+ secilc/docs/cil_call_macro_statements.md |  24 +-
+ 4 files changed, 354 insertions(+), 314 deletions(-)
+
+-- 
+2.26.3
+

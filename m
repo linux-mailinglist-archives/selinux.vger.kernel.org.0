@@ -2,119 +2,107 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A47F37AFE7
-	for <lists+selinux@lfdr.de>; Tue, 11 May 2021 22:03:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA69537B781
+	for <lists+selinux@lfdr.de>; Wed, 12 May 2021 10:08:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230097AbhEKUEX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 11 May 2021 16:04:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40480 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230129AbhEKUEX (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 11 May 2021 16:04:23 -0400
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E17C06175F
-        for <selinux@vger.kernel.org>; Tue, 11 May 2021 13:03:15 -0700 (PDT)
-Received: by mail-qk1-x733.google.com with SMTP id i67so20051697qkc.4
-        for <selinux@vger.kernel.org>; Tue, 11 May 2021 13:03:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=Qc24INqDpH9n53QfFon6+NSiYgfprG80aEUo2dO32BE=;
-        b=YzHl9I6HHqhj8JadwnJmtXbzKlzvjnx0JkrkbXklToFNLG+xoB+tjOR261iuZOpzrU
-         oEWDVWT0INa+E4QSD0dsWzXOnS2oikBVuaHj24VSAa2mBI6RQLgcGsYOdU84WSCW1h2Y
-         Y+Lb6q98j7B7JtVdL7+o6qJVoTf5LjBjaB3472S37DDVPxIZakxIjJoNwW8n3uB7DsZu
-         TeaUM6GlhUWLkeVkWDwO2CG1yGZfTOvTkKVZfnLFMVe219tbE4XmDEfz0WOStaue8zch
-         f4AAMchgT8fYEbmGUGhMgsypXnmNhfMFnKQH3yCZ2kh2xNxKeDOhwtsUNCVpd3U5KnIx
-         9gLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=Qc24INqDpH9n53QfFon6+NSiYgfprG80aEUo2dO32BE=;
-        b=DGRjdEvQP5bLrSnDO2iS1AW48oaCJzSJrvMq8VoBhNvupd3qkfi27kwWNz8R5IFHZP
-         yjjBmx416BcY31fm5/rlltaCdcuhTVt/4W9bIJp+itIsKNM4Ek557j8GJxWWenZMT1SD
-         abuZ7QJEDH0/GWKbsWCZHyLVVtGALi0O5xh/N0tcTrirjxpagaBguDyAUnooW29pYsHx
-         OOzDEbE0vmO/quYpsEIHimdi9Giouk65aSSYIzroR6IVlElL9/1giFoM4cTj1sWXA0Ha
-         PFnzsO6DYAXFM9XKL49rUvb5wk65W4mzin4Yez+NLS4U6vY+tJInSaz/jn0KiGlD4iUa
-         5VSw==
-X-Gm-Message-State: AOAM532NXY6Jp4V54C2PCERMfCxjIg7ANj0v/I20cWKHl/g5RXwayrQm
-        IPGymRqNNLa8piF9R7xBAi5qMXZPvRDvNw==
-X-Google-Smtp-Source: ABdhPJye0DHyl1D0RjVE38Q6Fzw8odeeXDz8968Z/ehM1zTwZ1VDJh65ucDTxd8DREzuyOF24t21zA==
-X-Received: by 2002:a05:620a:3c3:: with SMTP id r3mr29016127qkm.35.1620763394606;
-        Tue, 11 May 2021 13:03:14 -0700 (PDT)
-Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id z9sm4642533qtf.10.2021.05.11.13.03.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 May 2021 13:03:14 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     James Carter <jwcart2@gmail.com>
-Subject: [PATCH 5/5 v2] secilc/docs: Relocate and reword macro call name resolution order
-Date:   Tue, 11 May 2021 16:03:01 -0400
-Message-Id: <20210511200301.407855-6-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20210511200301.407855-1-jwcart2@gmail.com>
-References: <20210511200301.407855-1-jwcart2@gmail.com>
+        id S230139AbhELIJS (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 12 May 2021 04:09:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:58371 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230018AbhELIJS (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 12 May 2021 04:09:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1620806890;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=aXwn7uORAQmFTZ0Tdh10CZ+lzZb73UyXLKPbd90x7fM=;
+        b=cc0WHZCyObE16VCxOSipmzZE1i0K3AYhQwaoSkl5GqLcmYgV3a+NP5ijmZP0IzGHthu/DX
+        IIFrMNuoOpII1uGzvQvKSK4MZjfACMHnH/lPli8FYWpcM1gMyfcbMKPJRlvZ9kgWcbCdq7
+        cdKXBjPVUg80xvOqxW0KBd72aNsom50=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-98-frP8tBNIOYioQplgxLroXw-1; Wed, 12 May 2021 04:08:08 -0400
+X-MC-Unique: frP8tBNIOYioQplgxLroXw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D17FD6D24A
+        for <selinux@vger.kernel.org>; Wed, 12 May 2021 08:08:07 +0000 (UTC)
+Received: from localhost (unknown [10.40.194.163])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9ACED2CE01;
+        Wed, 12 May 2021 08:08:06 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
+Cc:     Zdenek Pytela <zpytela@redhat.com>
+Subject: Re: [PATCH userspace] fixfiles: do not exclude /dev and /run in -C
+ mode
+In-Reply-To: <87bl9mhgzn.fsf@redhat.com>
+References: <20210301171922.321907-1-omosnace@redhat.com>
+ <87bl9mhgzn.fsf@redhat.com>
+Date:   Wed, 12 May 2021 10:08:04 +0200
+Message-ID: <871racidcr.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The listing of the order was in the macro section, but it belongs
-in the call section.
+Petr Lautrbach <plautrba@redhat.com> writes:
 
-Move the listing of the order to the call section and provide a
-better explanation.
+> Ondrej Mosnacek <omosnace@redhat.com> writes:
+>
+>> I can't think of a good reason why they should be excluded. On the
+>> contrary, excluding them can cause trouble very easily if some labeling
+>> rules for these directories change. For example, we changed the label
+>> for /dev/nvme* from nvme_device_t to fixed_disk_device_t in Fedora
+>> (updating the allow rules accordingly) and after policy update they
+>> ended up with an invalid context, causing denials.
+>>
+>> Thus, remove /dev and /run from the excludes. While there, also add
+>> /root to the basic excludes to match the regex that excludes fc rules
+>> (that should be effectively no functional change).
+>>
+>> I did a sanity check on my system by running `restorecon -nv /dev /run`
+>> and it didn't report any label differences.
+>>
+>> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+>>
+>
+> Acked-by: Petr Lautrbach <plautrba@redhat.com>
+>
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- secilc/docs/cil_call_macro_statements.md | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+Merged
 
-diff --git a/secilc/docs/cil_call_macro_statements.md b/secilc/docs/cil_call_macro_statements.md
-index 352a9fb0..3cc14bf8 100644
---- a/secilc/docs/cil_call_macro_statements.md
-+++ b/secilc/docs/cil_call_macro_statements.md
-@@ -8,6 +8,18 @@ Instantiate a [macro](#macro) within the current namespace. There may be zero or
- 
- Each parameter passed contains an argument to be resolved by the [macro](#macro), these can be named or anonymous but must conform to the parameter types defined in the [`macro`](cil_call_macro_statements.md#macro) statement.
- 
-+Macro rules are resolved by searching in the following order:
-+
-+-   The macro namespace (If found this means that the name was declared in the macro and is now declared in the namespace of one of the parents of the call.)
-+
-+-   The call arguments
-+
-+-   The parent namespaces of the macro being called (if any) with the exception of the global namespace.
-+
-+-   The parent namespaces of the call (if any) with the exception of the global namespace.
-+
-+-   The global namespace
-+
- **Statement definition:**
- 
- ```secil
-@@ -46,18 +58,6 @@ macro
- 
- Declare a macro in the current namespace with its associated parameters. The macro identifier is used by the [`call`](cil_call_macro_statements.md#call) statement to instantiate the macro and resolve any parameters. The call statement may be within the body of a macro.
- 
--When resolving macros the following places are checked in this order:
--
---   Items defined inside the macro
--
---   Items passed into the macro as arguments
--
---   Items defined in the same namespace of the macro
--
---   Items defined in the callers namespace
--
---   Items defined in the global namespace
--
- [`tunable`](cil_conditional_statements.md#tunable), [`in`](cil_container_statements.md#in), [`block`](cil_container_statements.md#block), [`blockinherit`](cil_container_statements.md#blockinherit), [`blockabstract`](cil_container_statements.md#blockabstract), and other [`macro`](cil_call_macro_statements.md#macro) statements are not allowed in [`macro`](cil_call_macro_statements.md#macro) blocks.
- 
- **Statement definition:**
--- 
-2.26.3
+
+>
+>> ---
+>>  policycoreutils/scripts/fixfiles | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/policycoreutils/scripts/fixfiles b/policycoreutils/scripts/fixfiles
+>> index 30dadb4f..6fb12e04 100755
+>> --- a/policycoreutils/scripts/fixfiles
+>> +++ b/policycoreutils/scripts/fixfiles
+>> @@ -162,7 +162,7 @@ newer() {
+>>  #
+>>  diff_filecontext() {
+>>  EXCLUDEDIRS="`exclude_dirs_from_relabelling`"
+>> -for i in /sys /proc /dev /run /mnt /var/tmp /var/lib/BackupPC /home /tmp /dev; do
+>> +for i in /sys /proc /mnt /var/tmp /var/lib/BackupPC /home /root /tmp; do
+>>      [ -e $i ]  && EXCLUDEDIRS="${EXCLUDEDIRS} -e $i";
+>>  done
+>>  LogExcluded
+>> @@ -175,7 +175,7 @@ if [ -f ${PREFC} -a -x /usr/bin/diff ]; then
+>>  	sed -r -e 's,:s0, ,g' $FC | sort -u | \
+>>  	/usr/bin/diff -b ${PREFCTEMPFILE} - | \
+>>  	    grep '^[<>]'|cut -c3-| grep ^/ | \
+>> -	    egrep -v '(^/home|^/root|^/tmp|^/dev)' |\
+>> +	    egrep -v '(^/home|^/root|^/tmp)' |\
+>>  	sed -r -e 's,[[:blank:]].*,,g' \
+>>  	       -e 's|\(([/[:alnum:]]+)\)\?|{\1,}|g' \
+>>  	       -e 's|([/[:alnum:]])\?|{\1,}|g' \
+>> -- 
+>> 2.29.2
 

@@ -2,44 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B03BC39FB82
-	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 18:00:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28C1839FB74
+	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 17:59:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233338AbhFHQCa (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Jun 2021 12:02:30 -0400
-Received: from mail-ej1-f51.google.com ([209.85.218.51]:47045 "EHLO
-        mail-ej1-f51.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233559AbhFHQC2 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:02:28 -0400
-Received: by mail-ej1-f51.google.com with SMTP id he7so14012746ejc.13
-        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 09:00:22 -0700 (PDT)
+        id S230460AbhFHQB3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Jun 2021 12:01:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51314 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231794AbhFHQB2 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:01:28 -0400
+Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74DE6C061574
+        for <selinux@vger.kernel.org>; Tue,  8 Jun 2021 08:59:23 -0700 (PDT)
+Received: by mail-ej1-x635.google.com with SMTP id ce15so33436923ejb.4
+        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 08:59:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=cilr5VJh6Rx+zDBjugNMcKX9tEVL15YNgChmc2XaUzw=;
-        b=mt1+FZOGyzulAydIUylaOxWuVaLzwhl6HH2fKcFRXqf3Th2QfbZVA5GLeC6gNKgtgc
-         x88Sj8MdkuahAamq0SIDgWZM5Nx9x00E5pYzWiOO3LK4sQYdgJgoSLho1RGidYUgf4Oq
-         5vXQxV5R8Anr/fqctBTzwNRJ6bFIMDZHK4/ZLfaO9n7FfjBQEpK7lAcdrHYki6S0ENuo
-         hkwx3LEXnSa0W3QxaBZY0vZVVB3pr8K2ACrPyKvz9evy1eVrCsNc52hwKb+9hgCvFV85
-         X33w0W+f5A0p7yXqP0sGBzhKBpaTEMtKAwiAdELLglzdU41vePUPNWfE962qbkCSPzum
-         OYVg==
+        bh=uYZQDgKuK3aWpLYQs8mqqUL/L969oc9TyAiq+YPfHF4=;
+        b=Utp1bVygDJqSOaUF6eKd+4euE5e3syeydX2nUNCm6sEbcss/jUBd7Ahk2vXHumEuDG
+         7Q3HDsKYmJxRN8SUDiCBrGf5HcSEMmfu1mtPfJc5xkz0/7GUpTbOqbaFkBmj7rHXG317
+         mAhSjAo4HkyGPaPm6e2cXbefqMFq213gVZVRjuwFQV4Xi2jcjrgLC/nOufILWGCj2jre
+         0qGZ8Yu64Sckq+qH3cDHEsuOsbftk55Rk1ekaxgikUR8U0Uzxn25qgCnQDcx/S5iTz+C
+         zfuser0M+erur739uglIAXXZPTpkwry5fWSvSsTBs5r4R3+wGtXHoCF+le4U7zpOZlSG
+         UhTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=cilr5VJh6Rx+zDBjugNMcKX9tEVL15YNgChmc2XaUzw=;
-        b=HvxaVyi1Z1+udXGdX+r6UlLVdHck6r6LnTmqI6iPrYOMmRCnPCr5ZCHg/mTGodrs/7
-         mbX7k55idqjx/w8lEorcT/YByayQq3ViW2iMZ7up3LJkx+5T65bgx3qsGNdtCaDLzyP+
-         7KC8GDUXvcgeLpYdUbc0dVm/7lUO9R/5gYo/EQs/zZ7eM216cu/a5ygZCCxbEQojkh9u
-         YeH+m592eEk8L0duH3gQI319cooqpiFCZ7avOdku+Pu3UtkbhkRAEnLViWJzzApYF8F2
-         y3CcgzYovJxjDIWfNXYig/JXSo5sgNdwxZFQG0rjfpnK1CEANNaiQ0ucoFlhRtyiH0jD
-         7D1A==
-X-Gm-Message-State: AOAM530t+R7r+HxiRojeMJra2wbyJ8ugqijC9Zjk+pGqvJJvJUCTN9Zh
-        xt1DMPV+LjAfI9zOW5i+PRI9VQe93UE=
-X-Google-Smtp-Source: ABdhPJzACwPHZstIWYZhOu28rIS8QvDsrB6n7mjfSZKflY8N0UOPYxpdTXrB7dQW3GC5+Obhl20lZg==
-X-Received: by 2002:a17:906:1dc5:: with SMTP id v5mr23788609ejh.212.1623167961499;
-        Tue, 08 Jun 2021 08:59:21 -0700 (PDT)
+        bh=uYZQDgKuK3aWpLYQs8mqqUL/L969oc9TyAiq+YPfHF4=;
+        b=peHH1ftfiwJicrA2h23uPMLSSsWyAod8jI5TOA10uBpxnY3vvM/lwY4GYTLMPCernJ
+         UAKKSw4pVDb+iH7zHYt1ncA7XC44YXxgQC+DjiDmRrJLw8154iYYgCdsoOgL/3b9Stvk
+         1TtlFRGCpb/Yjmv1pA+IP8/TWWqFw59C3QOZZfBxpdfPeuskkVZSEKK+CqK/yVhAucoW
+         Rno5BF/wY6UGdusQu5mCtdyvPqeEcCiNqA9RC11S5Ryny3a1ElVj0mX7Cfxln6pAiGEe
+         FIN9bRvPtqg/yctwmOzfMLz4/N0y1kAL4BewCnOFsMh4MNboyTw2tZybL80GAfQfxqfF
+         kfeA==
+X-Gm-Message-State: AOAM531PH3ppNkRjUDU+UBtdJvgrGUT0vr2l2WT4BUE0ol3MatEWvWQv
+        3ItrwGJXiGS27OHRkq1oxyo6pN0+3zg=
+X-Google-Smtp-Source: ABdhPJy6r2WwBL/dqd6TuwMk4Jbe9y+YrS017JCRAa8EBGWq8rA3mtZB6dTDN9uHwpFKQRPRNEu+EQ==
+X-Received: by 2002:a17:906:3057:: with SMTP id d23mr24196100ejd.131.1623167962019;
+        Tue, 08 Jun 2021 08:59:22 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-112-183-231.95.112.pool.telefonica.de. [95.112.183.231])
         by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.21
         for <selinux@vger.kernel.org>
@@ -47,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-095-112-183-231.95.112.pool.telef
         Tue, 08 Jun 2021 08:59:21 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 04/23] libsepol: ignore UBSAN false-positives
-Date:   Tue,  8 Jun 2021 17:58:53 +0200
-Message-Id: <20210608155912.32047-5-cgzones@googlemail.com>
+Subject: [PATCH 05/23] libsepol: avoid implicit conversions
+Date:   Tue,  8 Jun 2021 17:58:54 +0200
+Message-Id: <20210608155912.32047-6-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210608155912.32047-1-cgzones@googlemail.com>
 References: <20210608155912.32047-1-cgzones@googlemail.com>
@@ -60,75 +63,61 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Unsigned integer overflow is well-defined and not undefined behavior.
-But it is still useful to enable undefined behavior sanitizer checks on
-unsigned arithmetic to detect possible issues on counters or variables
-with similar purpose.
+Avoid implicit conversions from signed to unsigned values, found by
+UB sanitizers, by using unsigned values in the first place.
 
-Annotate functions in which unsigned overflows are expected to happen.
+expand.c:1644:18: runtime error: implicit conversion from type 'int' of value -1 (32-bit, signed) to type 'uint32_t' (aka 'unsigned int') changed the value to 4294967295 (32-bit, unsigned)
 
-avtab.c:76:2: runtime error: unsigned integer overflow: 6 * 3432918353 cannot be represented in type 'unsigned int'
-policydb.c:795:42: runtime error: unsigned integer overflow: 8160943042179512010 * 11 cannot be represented in type 'unsigned long'
-symtab.c:25:12: runtime error: left shift of 1766601759 by 4 places cannot be represented in type 'unsigned int'
+expand.c:2892:24: runtime error: implicit conversion from type 'int' of value -2 (32-bit, signed) to type 'unsigned int' changed the value to 4294967294 (32-bit, unsigned)
+
+policy_define.c:2344:4: runtime error: implicit conversion from type 'int' of value -1048577 (32-bit, signed) to type 'unsigned int' changed the value to 4293918719 (32-bit, unsigned)
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/avtab.c    | 6 ++++++
- libsepol/src/policydb.c | 6 ++++++
- libsepol/src/symtab.c   | 6 ++++++
- 3 files changed, 18 insertions(+)
+ libsepol/include/sepol/policydb/conditional.h | 2 +-
+ libsepol/include/sepol/policydb/policydb.h    | 2 +-
+ libsepol/src/expand.c                         | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/libsepol/src/avtab.c b/libsepol/src/avtab.c
-index 257f051a..c2ccb005 100644
---- a/libsepol/src/avtab.c
-+++ b/libsepol/src/avtab.c
-@@ -52,6 +52,12 @@
- /* Based on MurmurHash3, written by Austin Appleby and placed in the
-  * public domain.
-  */
-+#if defined(__clang__) && defined(__clang_major__) && (__clang_major__ >= 4)
-+__attribute__((no_sanitize("unsigned-integer-overflow")))
-+#if (__clang_major__ >= 12)
-+__attribute__((no_sanitize("unsigned-shift-base")))
-+#endif
-+#endif
- static inline int avtab_hash(struct avtab_key *keyp, uint32_t mask)
- {
- 	static const uint32_t c1 = 0xcc9e2d51;
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index fc1d0711..cbe0c432 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -789,6 +789,12 @@ static int roles_init(policydb_t * p)
- 	goto out;
- }
+diff --git a/libsepol/include/sepol/policydb/conditional.h b/libsepol/include/sepol/policydb/conditional.h
+index 9c3df3ef..db3ef98d 100644
+--- a/libsepol/include/sepol/policydb/conditional.h
++++ b/libsepol/include/sepol/policydb/conditional.h
+@@ -90,7 +90,7 @@ typedef struct cond_node {
+ 	uint32_t expr_pre_comp;
+ 	struct cond_node *next;
+ 	/* a tunable conditional, calculated and used at expansion */
+-#define	COND_NODE_FLAGS_TUNABLE	0x01
++#define	COND_NODE_FLAGS_TUNABLE	0x01U
+ 	uint32_t flags;
+ } cond_node_t;
  
-+#if defined(__clang__) && defined(__clang_major__) && (__clang_major__ >= 4)
-+__attribute__((no_sanitize("unsigned-integer-overflow")))
-+#if (__clang_major__ >= 12)
-+__attribute__((no_sanitize("unsigned-shift-base")))
-+#endif
-+#endif
- static inline unsigned long
- partial_name_hash(unsigned long c, unsigned long prevhash)
- {
-diff --git a/libsepol/src/symtab.c b/libsepol/src/symtab.c
-index 9a417ca2..738fa0a4 100644
---- a/libsepol/src/symtab.c
-+++ b/libsepol/src/symtab.c
-@@ -11,6 +11,12 @@
- #include <sepol/policydb/hashtab.h>
- #include <sepol/policydb/symtab.h>
+diff --git a/libsepol/include/sepol/policydb/policydb.h b/libsepol/include/sepol/policydb/policydb.h
+index 9ef43abc..c29339dc 100644
+--- a/libsepol/include/sepol/policydb/policydb.h
++++ b/libsepol/include/sepol/policydb/policydb.h
+@@ -253,7 +253,7 @@ typedef struct class_perm_node {
  
-+#if defined(__clang__) && defined(__clang_major__) && (__clang_major__ >= 4)
-+__attribute__((no_sanitize("unsigned-integer-overflow")))
-+#if (__clang_major__ >= 12)
-+__attribute__((no_sanitize("unsigned-shift-base")))
-+#endif
-+#endif
- static unsigned int symhash(hashtab_t h, const_hashtab_key_t key)
- {
- 	const char *p, *keyp;
+ #define xperm_test(x, p) (1 & (p[x >> 5] >> (x & 0x1f)))
+ #define xperm_set(x, p) (p[x >> 5] |= (1 << (x & 0x1f)))
+-#define xperm_clear(x, p) (p[x >> 5] &= ~(1 << (x & 0x1f)))
++#define xperm_clear(x, p) (p[x >> 5] &= ~(1U << (x & 0x1f)))
+ #define EXTENDED_PERMS_LEN 8
+ 
+ typedef struct av_extended_perms {
+diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
+index 84bfcfa3..35e45780 100644
+--- a/libsepol/src/expand.c
++++ b/libsepol/src/expand.c
+@@ -1641,7 +1641,7 @@ static avtab_ptr_t find_avtab_node(sepol_handle_t * handle,
+ 		 * AUDITDENY, aka DONTAUDIT, are &= assigned, versus |= for
+ 		 * others. Initialize the data accordingly.
+ 		 */
+-		avdatum.data = key->specified == AVTAB_AUDITDENY ? ~0 : 0;
++		avdatum.data = key->specified == AVTAB_AUDITDENY ? ~0U : 0U;
+ 		/* this is used to get the node - insertion is actually unique */
+ 		node = avtab_insert_nonunique(avtab, key, &avdatum);
+ 		if (!node) {
 -- 
 2.32.0
 

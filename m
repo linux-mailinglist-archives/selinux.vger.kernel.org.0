@@ -2,58 +2,60 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C6D639FB6D
-	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 17:59:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 474D239FB72
+	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 17:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231844AbhFHQBO (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Jun 2021 12:01:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51296 "EHLO
+        id S232031AbhFHQB2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Jun 2021 12:01:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230460AbhFHQBN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:01:13 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD52AC061574
-        for <selinux@vger.kernel.org>; Tue,  8 Jun 2021 08:59:20 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id ba2so23376015edb.2
-        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 08:59:20 -0700 (PDT)
+        with ESMTP id S231308AbhFHQB2 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:01:28 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49FB9C061787
+        for <selinux@vger.kernel.org>; Tue,  8 Jun 2021 08:59:21 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id l1so33445553ejb.6
+        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 08:59:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=a0cjQsxG0pkMqJ9jOeiXTHxjyIBAZkz9JQ/5Kdnizz4=;
-        b=ooMzAu+g9gxS1RZtp3pmLXx8nwSlAwg2KNtFgQYKp3BusPo+9k5OPdqy5RrxmCmWgy
-         m9CISrlc3xoaCMpREnBmU1lKM+xjCaIpCmCw+CuBcK+nawIKhzzwmEu0BomWrT/gZ5RD
-         GeZxP/Bwl2HO4n459ZB2TxRZfa5SaYd0KbHx1SgEPt83i1JuYZaDtozo0Oxw8mHZB+Oj
-         oV8rm+eM2QJOxXS51FaHholHV0Vnkmn87B9AWG1lGvxogiA+AXDWMtSdsstXgIVbkRqN
-         Qb9SFvU5rR+RDbE9oMYniQTEIzsRtOsx6geGJTeCAqAk3XoQcIGJPVdgrdLxbSxQD8V4
-         44oA==
+        bh=xtIdW4G81bW74Br+IjP1e2QKqelXexDHXVnkHP0CJk4=;
+        b=o3CGXsvqHep38ta0UBAFBAxhxuXKUJx71dPeHdhKJ8VIsT5SmWCLHYNNyqRw/S2t9v
+         Utfm3T45zDqGqhtH6OH/uO9Ol0dDG52f3qHsNJrFGRvBLgl7E0I94aH1Mi4JlBbjbzAf
+         HP7newv3RzEl1kRPH7wI98a7Uke9fbyxodljI9WWwVQg6R1DEyfmQ4tArMmWcX7imaOG
+         oM/IwXxkJsvNLOuiBVJm2JvG5iDqTBJNzdbql40eOMcusr1YprcCa6koDzVFmYADFFEc
+         eH4EXqoqlcQcvZW2J70/dlH7D0+i+MV4fQnkuIxeMA1t9WLr9BfmINm+SOr5fI/t8ilx
+         ILtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=a0cjQsxG0pkMqJ9jOeiXTHxjyIBAZkz9JQ/5Kdnizz4=;
-        b=QaQp+sdOkaJZ08A0tIjWoCxIpPigqEXj9SIoSC8qvEqvKW9FaWj4IN3LxzCyasyZRK
-         0FLkoftbZG5Vch9ElZbOvaaqpNRaRzIQjre9klXEGh1IIstvznUXoV7OWRIsfchUVdYP
-         1JupIvA/zLQJuc+TYkshQLQAThxY3nMkKYx4LU1tcQ1AfIKNOcNtFVwfDaaLmY/LjauS
-         m2KKDBODLipqKiTZYnCqpB5FU/9CpryTyE9mGAFR78ng+kDcJFQ7dCwDYPpyCMsY5V+r
-         KVrhYwhaC5eeSCdRy8MJdWhxteoVTt8XwFAXtXpdTe8Q1IyQ4S4KvTF7xq04qnfcFplq
-         I9/g==
-X-Gm-Message-State: AOAM5333qJIBGUvIoXuX+xGxgf0x7cny8taxWAg2eBhem7a073Yt+cXL
-        BKp/nJqiZx5fV0WnM0u/TJCi0Y2GB8E=
-X-Google-Smtp-Source: ABdhPJwqQ/ZsZuE4T7gwd2DXAeXGqZApTng6plpFFxsoe1Z4YWrJd1ni6gRcDThOVt0B1yB9GbvN+g==
-X-Received: by 2002:a50:fa8c:: with SMTP id w12mr26358466edr.350.1623167959321;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=xtIdW4G81bW74Br+IjP1e2QKqelXexDHXVnkHP0CJk4=;
+        b=gfopiam/By9Ufz8nnFMiH7mpmir3sWtq2BvG0v+MOA85N8yghyV/zZlG7oDSTwusjQ
+         WTLRZPy7eylfvP2dtPdxJxaXwjqlf4VhDVnh9BrOQL9POzgUR9DN3EllThabKwi0lg6T
+         3KmEV9LNEAQly2YnujvQx1nHuCkGAy4mktwWJD8IGVlZJ7VoYOrefAd22BdvGvMgHxPD
+         jHrY1VgruO8i7XjSpn9pUPFMszvS2HM03leflBoeoe4dPff/7+RftHrLvA1fZ36VA51z
+         KZjHvxdopgAOHFkLKKKadDzuLY5c7S/5hsqjEecshw6zOEb5Ml65f2GhVXXZl5mm47Gg
+         cJBg==
+X-Gm-Message-State: AOAM530AYsVtgxE0sU4smNrnmAbfSjBQnYOm8KDXOPvK3JXv1n6HSYY4
+        JDIgFbLzJmjakq5jtIEABViBQtLIW/k=
+X-Google-Smtp-Source: ABdhPJxZs7jZ7dKDICnHCFymdcbciFY6QTzp66ZZ2SKacoB5eTbUCKlzp+jLgc6daXIRLjLNh1aAug==
+X-Received: by 2002:a17:906:a854:: with SMTP id dx20mr24616927ejb.128.1623167959871;
         Tue, 08 Jun 2021 08:59:19 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-112-183-231.95.112.pool.telefonica.de. [95.112.183.231])
-        by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.18
+        by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.19
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 08:59:18 -0700 (PDT)
+        Tue, 08 Jun 2021 08:59:19 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 00/23] libsepol: miscellaneous cleanup
-Date:   Tue,  8 Jun 2021 17:58:49 +0200
-Message-Id: <20210608155912.32047-1-cgzones@googlemail.com>
+Subject: [PATCH 01/23] libsepol: fix typos
+Date:   Tue,  8 Jun 2021 17:58:50 +0200
+Message-Id: <20210608155912.32047-2-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20210608155912.32047-1-cgzones@googlemail.com>
+References: <20210608155912.32047-1-cgzones@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -61,76 +63,66 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Clean up several code smells, compiler warnings, static analyzer issues
-and UBSAN findings in libsepol.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ libsepol/cil/src/cil_build_ast.c   | 2 +-
+ libsepol/cil/src/cil_resolve_ast.c | 2 +-
+ libsepol/src/module_to_cil.c       | 2 +-
+ libsepol/src/policydb_validate.c   | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-Also declare local functions and variables static and some interface
-parameters const to improve maintainability.
-
-Christian Göttsche (23):
-  libsepol: fix typos
-  libsepol: resolve missing prototypes
-  libsepol: remove unused functions
-  libsepol: ignore UBSAN false-positives
-  libsepol: avoid implicit conversions
-  libsepol: avoid unsigned integer overflow
-  libsepol: follow declaration-after-statement
-  libsepol/cil: follow declaration-after-statement
-  libsepol: remove dead stores
-  libsepol: mark read-only parameters of ebitmap interfaces const
-  libsepol: mark read-only parameters of type_set_ interfaces const
-  libsepol: do not allocate memory of size 0
-  libsepol: assure string NUL-termination
-  libsepol: remove dead stores
-  libsepol/cil: silence cast warning
-  libsepol/cil: drop extra semicolon
-  libsepol/cil: drop dead store
-  libsepol/cil: drop unnecessary casts
-  libsepol/cil: avoid using maybe uninitialized variables
-  libsepol: drop repeated semicolons
-  libsepol: drop unnecessary casts
-  libsepol: declare file local variable static
-  libsepol: declare read-only arrays const
-
- libsepol/cil/src/cil_binary.c                 |  19 +--
- libsepol/cil/src/cil_build_ast.c              |   9 +-
- libsepol/cil/src/cil_fqn.c                    |   3 +-
- libsepol/cil/src/cil_list.c                   |   7 +-
- libsepol/cil/src/cil_post.c                   |   2 +-
- libsepol/cil/src/cil_resolve_ast.c            |   8 +-
- libsepol/cil/src/cil_strpool.c                |  16 +--
- libsepol/cil/src/cil_write_ast.c              |   4 +-
- libsepol/include/sepol/policydb/conditional.h |   2 +-
- libsepol/include/sepol/policydb/ebitmap.h     |  16 +--
- libsepol/include/sepol/policydb/policydb.h    |   6 +-
- libsepol/src/assertion.c                      |   2 +-
- libsepol/src/avrule_block.c                   |   2 +-
- libsepol/src/avtab.c                          |   8 +-
- libsepol/src/booleans.c                       |   6 +-
- libsepol/src/conditional.c                    |   3 -
- libsepol/src/context_internal.h               |   1 +
- libsepol/src/debug.c                          |   2 +-
- libsepol/src/ebitmap.c                        |  29 +++--
- libsepol/src/expand.c                         |   8 +-
- libsepol/src/ibendport_record.c               |   4 +-
- libsepol/src/kernel_to_cil.c                  |   7 +-
- libsepol/src/kernel_to_conf.c                 |   5 +-
- libsepol/src/link.c                           |   2 +-
- libsepol/src/module.c                         |   2 +-
- libsepol/src/module_to_cil.c                  |  14 +-
- libsepol/src/nodes.c                          |   6 +-
- libsepol/src/polcaps.c                        |   2 +-
- libsepol/src/policydb.c                       |  70 +++++-----
- libsepol/src/policydb_internal.h              |   2 +-
- libsepol/src/policydb_validate.c              |   2 +-
- libsepol/src/private.h                        |   6 +-
- libsepol/src/services.c                       | 120 ++++++------------
- libsepol/src/sidtab.c                         |  31 -----
- libsepol/src/symtab.c                         |   6 +
- libsepol/src/util.c                           |   2 +-
- libsepol/src/write.c                          |   8 +-
- 37 files changed, 187 insertions(+), 255 deletions(-)
-
+diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
+index 71f14e20..42d10c87 100644
+--- a/libsepol/cil/src/cil_build_ast.c
++++ b/libsepol/cil/src/cil_build_ast.c
+@@ -3692,7 +3692,7 @@ int cil_gen_sensitivityorder(struct cil_db *db, struct cil_tree_node *parse_curr
+ 
+ 	cil_list_for_each(curr, sensorder->sens_list_str) {
+ 		if (curr->data == CIL_KEY_UNORDERED) {
+-			cil_log(CIL_ERR, "Sensitivy order cannot be unordered.\n");
++			cil_log(CIL_ERR, "Sensitivity order cannot be unordered.\n");
+ 			rc = SEPOL_ERR;
+ 			goto exit;
+ 		}
+diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
+index 77ffe0ff..d8481002 100644
+--- a/libsepol/cil/src/cil_resolve_ast.c
++++ b/libsepol/cil/src/cil_resolve_ast.c
+@@ -1619,7 +1619,7 @@ int cil_resolve_sensitivityorder(struct cil_tree_node *current, void *extra_args
+ 	cil_list_for_each(curr, sensorder->sens_list_str) {
+ 		rc = cil_resolve_name(current, (char *)curr->data, CIL_SYM_SENS, extra_args, &datum);
+ 		if (rc != SEPOL_OK) {
+-			cil_log(CIL_ERR, "Failed to resolve sensitivty %s in sensitivityorder\n", (char *)curr->data);
++			cil_log(CIL_ERR, "Failed to resolve sensitivity %s in sensitivityorder\n", (char *)curr->data);
+ 			goto exit;
+ 		}
+ 		if (FLAVOR(datum) != CIL_SENS) {
+diff --git a/libsepol/src/module_to_cil.c b/libsepol/src/module_to_cil.c
+index 496693f4..41605eb8 100644
+--- a/libsepol/src/module_to_cil.c
++++ b/libsepol/src/module_to_cil.c
+@@ -3972,7 +3972,7 @@ int sepol_module_policydb_to_cil(FILE *fp, struct policydb *pdb, int linked)
+ 
+ 	if (pdb->policy_type != SEPOL_POLICY_BASE &&
+ 		pdb->policy_type != SEPOL_POLICY_MOD) {
+-		log_err("Policy pakcage is not a base or module");
++		log_err("Policy package is not a base or module");
+ 		rc = -1;
+ 		goto exit;
+ 	}
+diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
+index b2891ddd..246aa6e3 100644
+--- a/libsepol/src/policydb_validate.c
++++ b/libsepol/src/policydb_validate.c
+@@ -641,7 +641,7 @@ static int validate_scope_index(sepol_handle_t *handle, scope_index_t *scope_ind
+ 	return 0;
+ 
+ bad:
+-	ERR(handle, "Invalide scope");
++	ERR(handle, "Invalid scope");
+ 	return -1;
+ }
+ 
 -- 
 2.32.0
 

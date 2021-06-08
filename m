@@ -2,54 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB7139FB87
-	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 18:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B05D39FB70
+	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 17:59:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231775AbhFHQCb (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Jun 2021 12:02:31 -0400
-Received: from mail-ej1-f49.google.com ([209.85.218.49]:35416 "EHLO
-        mail-ej1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233618AbhFHQCa (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:02:30 -0400
-Received: by mail-ej1-f49.google.com with SMTP id h24so33483322ejy.2
-        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 09:00:26 -0700 (PDT)
+        id S231760AbhFHQBW (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Jun 2021 12:01:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51326 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231712AbhFHQBV (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:01:21 -0400
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 259D7C06178B
+        for <selinux@vger.kernel.org>; Tue,  8 Jun 2021 08:59:28 -0700 (PDT)
+Received: by mail-ed1-x534.google.com with SMTP id cb9so25158965edb.1
+        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 08:59:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=0z7t5twwtM2WwZB2k3WH5stRi/ApvczF5bMdyFPqhA0=;
-        b=sVZDhUc3y/ZZQGfvhYSvDGQh2l/2noHMwB6DWygYq4Ku82nIVjqWIuC8PkQ2/Y3rgw
-         EXIX/p01l2QJxnEq1IYk618t5EQ4SKBaRzuIpSP9hI3sr/g919k9Se4gbt2DqvkK0UA+
-         XFph79fGptrVYcvTVMzo+NRN7QQBDrNcjvm+Ie1X00VY2pGIZhVsK+v3ou2lSPTwCUAO
-         1mlmnVGheXD+wo6nxLQELNcoh1lcfDTea5/OHbk/9wp8Hc7lY/1nFJS8c3hRQTOToRse
-         m0rV4kufZWdpLdd+ePgAV4fe4RN5Wj9tQTCjCW3VZQEIKtwlHYxkzzIPZmnuMlq2/ol3
-         XX0Q==
+        bh=C3nXCcvnkDXMCR3wdcYuoqMvBk+nOj0oP10tIddhEXQ=;
+        b=GBB79vKIQHta4WRS+yNRLPxhrBRgX3YtUZPMwKit9c4+otim3kHzJEBdoFKDuVb6HH
+         wE91652rRfe4qytx4HK4x9vkYcagrrJQ88PtQ4f1epuUbxxgWkzFghuCxYr+NXsR92TP
+         HkmxfohJjz+BWnduMTOZzalDpOTdKbbnlKkj5qq6tsjBYqAfPd3QbZpSaQyqlIxQSHEi
+         ogBkbZdKmOxDzuk6k2noHzB95fRaLXSwFIcsv9emo6xe6AJDnDTwIwstoBrmqkKGR/D5
+         qHJTXPe+W0vWZplGIVdLNai59VGc5pzYERadnfbW+tGZ0uSe/6fL4pfjXZSvv36Ovk6G
+         wEAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=0z7t5twwtM2WwZB2k3WH5stRi/ApvczF5bMdyFPqhA0=;
-        b=FbbBoiop8WMyRd2iWilBdmHSP1Rnf2e0Whp1dri6mPqCI1NaMcHjVnG1U7YS71kJ0j
-         5GMaLqZXnys0W4Qtvv5p2QUGUQtAtfefjFyh0df0MqnfDBns1xByGj2LGpq/6l8l2UF8
-         WPYgVgUYB5CYwj25cPXmWmH/RQxmSk27PHigHJ9q/gCKCI2wJYUaCv0ElcEuDEfMi++I
-         7gFtXcAHkfPpWkhaV954biL2r1zhvur0ArT6sxKL0dbNQOt6IFNsBfU4BkR6aPTvT+sX
-         Y+LZeAqGgc9KgauzNQRnlVIAIpUzHd9tCsTv5boAfnsJENZvW+IXACtS1sfH2e/j2T4T
-         X8dQ==
-X-Gm-Message-State: AOAM532B6WSEYrjUi9zR9LkwYeaUqif3bR6jXgT8Qlgu61kVDolqBlkU
-        7upbRZj07fsGJiCiV2W4FRT3s43A65w=
-X-Google-Smtp-Source: ABdhPJzJ6uHWXHLkflR16P/gTmYZvCALcM7hHKaspTgsbDl9qBwLEYc8mw1Ar0oTDOW+U696Yl+Pfg==
-X-Received: by 2002:a17:906:fcb5:: with SMTP id qw21mr23773611ejb.57.1623167966075;
+        bh=C3nXCcvnkDXMCR3wdcYuoqMvBk+nOj0oP10tIddhEXQ=;
+        b=K7C9+LpxILS7jmJbcSeJnFFWc+ZeLNrcuNYIgvFnt0uYiEORSPIzIE1OsKtEW6KO/S
+         wnutyW735xmIm/i8r1iLYL/0CfoQU6feo4XsQTeu350s2NVLml+fl2DdQE6oiRIUMfNO
+         g/RKBn4lp9Y+BV5cQzluYSkCC9K4LXoX0lg3gQ++Ve2ewz1wPnfehTiphE48JTVBbFGo
+         z3/26MhVpZZg5YegyP23ipegIdXX8adHP0n/M4I6mscuRebBi6uHZH6DkWp8Xli7HhD7
+         l8qDY5yYHKelHPqfe0KauShQE5rlqcdC4bEKTPLEJsBYCFClC7sqiRAMzS4eeBQnOM7v
+         Gxeg==
+X-Gm-Message-State: AOAM532xq12L+ExHY8RlnAWGy63n8SBS9e3bYagOipAYzlaRGOIDtVYM
+        Zj+2XDjgaS2Yx9VlplEHtxbVEuSd3DQ=
+X-Google-Smtp-Source: ABdhPJxRoFGntd+2I1qMCSEbx2fEBfhD5Oehjo64Ju5zzqgj33uBgNou6xvKcXv9WkEea0IO7URDsQ==
+X-Received: by 2002:aa7:d9d8:: with SMTP id v24mr25933255eds.15.1623167966620;
         Tue, 08 Jun 2021 08:59:26 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-112-183-231.95.112.pool.telefonica.de. [95.112.183.231])
-        by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.25
+        by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.26
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 08:59:25 -0700 (PDT)
+        Tue, 08 Jun 2021 08:59:26 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 12/23] libsepol: do not allocate memory of size 0
-Date:   Tue,  8 Jun 2021 17:59:01 +0200
-Message-Id: <20210608155912.32047-13-cgzones@googlemail.com>
+Subject: [PATCH 13/23] libsepol: assure string NUL-termination
+Date:   Tue,  8 Jun 2021 17:59:02 +0200
+Message-Id: <20210608155912.32047-14-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210608155912.32047-1-cgzones@googlemail.com>
 References: <20210608155912.32047-1-cgzones@googlemail.com>
@@ -60,57 +63,48 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-In case cats_ebitmap_len() returns 0, do not allocate but quit.
+ibendport_record.c: In function ‘sepol_ibendport_get_ibdev_name’:
+ibendport_record.c:169:2: error: ‘strncpy’ specified bound 64 equals destination size [-Werror=stringop-truncation]
+  169 |  strncpy(tmp_ibdev_name, ibendport->ibdev_name, IB_DEVICE_NAME_MAX);
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ibendport_record.c: In function ‘sepol_ibendport_set_ibdev_name’:
+ibendport_record.c:189:2: error: ‘strncpy’ specified bound 64 equals destination size [-Werror=stringop-truncation]
+  189 |  strncpy(tmp, ibdev_name, IB_DEVICE_NAME_MAX);
+      |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Found by clang-analyzer
+strncpy(3) does not NUL-terminate the destination if the source is of
+the same length or longer then the specified size.
+Reduce the size to copy by 1.
+
+Found by Clang
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/kernel_to_cil.c  | 5 ++++-
- libsepol/src/kernel_to_conf.c | 5 ++++-
- 2 files changed, 8 insertions(+), 2 deletions(-)
+ libsepol/src/ibendport_record.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-index 989aacde..17b5ebf0 100644
---- a/libsepol/src/kernel_to_cil.c
-+++ b/libsepol/src/kernel_to_cil.c
-@@ -1034,11 +1034,14 @@ static char *cats_ebitmap_to_str(struct ebitmap *cats, char **val_to_name)
- {
- 	struct ebitmap_node *node;
- 	uint32_t i, start, range;
--	char *catsbuf, *p;
-+	char *catsbuf = NULL, *p;
- 	const char *fmt;
- 	int len, remaining;
+diff --git a/libsepol/src/ibendport_record.c b/libsepol/src/ibendport_record.c
+index adf67161..2eb8ca18 100644
+--- a/libsepol/src/ibendport_record.c
++++ b/libsepol/src/ibendport_record.c
+@@ -166,7 +166,7 @@ int sepol_ibendport_get_ibdev_name(sepol_handle_t *handle,
+ 	if (sepol_ibendport_alloc_ibdev_name(handle, &tmp_ibdev_name) < 0)
+ 		goto err;
  
- 	remaining = (int)cats_ebitmap_len(cats, val_to_name);
-+	if (remaining == 0) {
-+		goto exit;
-+	}
- 	catsbuf = malloc(remaining);
- 	if (!catsbuf) {
- 		goto exit;
-diff --git a/libsepol/src/kernel_to_conf.c b/libsepol/src/kernel_to_conf.c
-index 5db47fe4..c1253820 100644
---- a/libsepol/src/kernel_to_conf.c
-+++ b/libsepol/src/kernel_to_conf.c
-@@ -1025,12 +1025,15 @@ static char *cats_ebitmap_to_str(struct ebitmap *cats, char **val_to_name)
- {
- 	struct ebitmap_node *node;
- 	uint32_t i, start, range, first;
--	char *catsbuf, *p;
-+	char *catsbuf = NULL, *p;
- 	const char *fmt;
- 	char sep;
- 	int len, remaining;
+-	strncpy(tmp_ibdev_name, ibendport->ibdev_name, IB_DEVICE_NAME_MAX);
++	strncpy(tmp_ibdev_name, ibendport->ibdev_name, IB_DEVICE_NAME_MAX - 1);
+ 	*ibdev_name = tmp_ibdev_name;
+ 	return STATUS_SUCCESS;
  
- 	remaining = (int)cats_ebitmap_len(cats, val_to_name);
-+	if (remaining == 0) {
-+		goto exit;
-+	}
- 	catsbuf = malloc(remaining);
- 	if (!catsbuf) {
- 		goto exit;
+@@ -186,7 +186,7 @@ int sepol_ibendport_set_ibdev_name(sepol_handle_t *handle,
+ 	if (sepol_ibendport_alloc_ibdev_name(handle, &tmp) < 0)
+ 		goto err;
+ 
+-	strncpy(tmp, ibdev_name, IB_DEVICE_NAME_MAX);
++	strncpy(tmp, ibdev_name, IB_DEVICE_NAME_MAX - 1);
+ 	free(ibendport->ibdev_name);
+ 	ibendport->ibdev_name = tmp;
+ 	return STATUS_SUCCESS;
 -- 
 2.32.0
 

@@ -2,57 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 956C739FB76
-	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 17:59:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50CF439FB89
+	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 18:00:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232792AbhFHQBh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Jun 2021 12:01:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51344 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232377AbhFHQBg (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:01:36 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B452FC0617A6
-        for <selinux@vger.kernel.org>; Tue,  8 Jun 2021 08:59:30 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id r7so10720993edv.12
-        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 08:59:30 -0700 (PDT)
+        id S233586AbhFHQCh (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Jun 2021 12:02:37 -0400
+Received: from mail-ej1-f49.google.com ([209.85.218.49]:43589 "EHLO
+        mail-ej1-f49.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232973AbhFHQCh (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:02:37 -0400
+Received: by mail-ej1-f49.google.com with SMTP id ci15so33423926ejc.10
+        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 09:00:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=w+yWMlseXgD5XDTMV2cty4djn46QT1tcPhKURFHDH8Y=;
-        b=Wn//gpbahlOBQGdJ6UfeZ51hnmX37NG14w+FHrWWcpZYRSguIzW7mVqUkSCSKp8e3U
-         ZwPSDQnidyOjxtP7v7CP0YRfmvKYtEA1JLj/vJRzcS6zpC6nYh2SSV4XYyiWQU4LLBP0
-         Pr9BIiKl11Ur3k0HirklBgQQKjk/RpeFDHdYP7PALwXRbiR6gK047I6bNRW7H74DihkP
-         ZM98yNWZNu8kYTfrJGiKtLVqySBNlF7i9ry72/Sotrc9fDmGROJknd4/rphoxng2JCx1
-         yL900lttjW76LiE0IuuVscCFNbhx3epEh0S9vACdifwqO7MoYF1Z0+7QRUx0GC+xDJNZ
-         dXKQ==
+        bh=wt8tV6cOAtQf7ullP506otx0rkyraYe9/a8/Bp/vNP4=;
+        b=ml3Oz41pqseqQB78yRju3Hw8hSXgfjsw8dR3EyTjmgV7xxwOUA0I1bzx6N8Ns1iCaE
+         B/Ds+yg5bJcIbnG4ytYjCi9dn0q6vaLdxqQwupzeWBmd9iR/3LUWeA+LfWRRm6fdchxw
+         qa/p86ebPs3X/N86KWhyHt2RB3hNnVkpWg78lNNTF5ZFcidij9+Uz+DGRwmsV7aB4LSY
+         Synuf7snejJmp5pzX3zsTkWbJpP9TStEhlsZkwkTny7n+e/UbclUBeeHN45zUMpNiBId
+         PzM1d8pAKbFSEz/B/O4hSFfaW2vFuEVzKG8ahwyjM1LLfXySPa1Oh6XdxkKm7cDktKWn
+         Zoog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=w+yWMlseXgD5XDTMV2cty4djn46QT1tcPhKURFHDH8Y=;
-        b=krqCBLdHkYv7W9E0fJWgOGPAVQH0QQxPwdMsquSIg/B8umTl6PHSXhqTzdnoMBV0mQ
-         bySNec+UDs3UEV7FeXtgV64nH+qIx+5CeW7Eu+u0QcIveg9HHqiTV3AUPsR6X82rLFNA
-         TtNssGbolifnQwhl1GXiE3W3pfov9dYmaBCbVqNjVnigHTE52KWaQ/J8fULE2FNGbTec
-         Kv8q37peYgsKGqRY5Sv6+xy6tUVlXWyfxJ4Qpcvc7no2RO5RwsP2yh43n6x8rDCA0RCB
-         hFb+9seCiQVskSdsnKxYlIXteCcMCv+nZQPJ1RUIwt196ioPggiZy73p/8EKSFkDwB2F
-         96bg==
-X-Gm-Message-State: AOAM531roJOCo8+gIOr4Ex4yJ+c8lTW6AhivfsH7YHgmDlU+1enU2oHH
-        JdRlJYQnfYatJzcZIDi5PmCFb+HXkuY=
-X-Google-Smtp-Source: ABdhPJzXjUu8jBuhd3rXZHBPhaM/Zj6GjqYr3Mz0oQ8pASNK1VIlX6SBoPhGP6z9UnO/0AVioP2h4Q==
-X-Received: by 2002:a50:9d8d:: with SMTP id w13mr26189090ede.94.1623167969334;
+        bh=wt8tV6cOAtQf7ullP506otx0rkyraYe9/a8/Bp/vNP4=;
+        b=LT2tvKw7IOCXnzj5x82RsW1TDkrWKmR/COMLMWFa+5vNT7bZwbMo2pBA3XO3Wf8Y+8
+         p2iifhDbgb/lTnwwnosubdKZumPC4L1mK+yfysDm4HjTL4iQqrcXcO/veLW5EfRVTnZW
+         KOmuhyhWZrATm+3VJnXaOBw6uszc+IDRCiuW+c6GUPbg0jTqbuZds2y/2bAx6H5C2TVD
+         qf9fV/bDRBLDKhVzrEthUNjmrJttguxcroNPqF3a8jJddb3V5d4cqdS6ymBx3Du/cUsr
+         wV/QUbQWJJvhQBIQYAuqOpnKlnpgNuGHLvFv3rsW07Q0MPvZz9AmTeAattPc1M+TfXaj
+         9IWQ==
+X-Gm-Message-State: AOAM532Fp4GPk9PJCB1HJ1RFUgUNwh+tmkm8DHlw9P2gdQzEP03S9x+7
+        qKdcGVXL3TeVQizu4FKZwbHubt/MDZs=
+X-Google-Smtp-Source: ABdhPJxr06kftxrDONkYwl9oHB87ZtiXrwmbPhP9AuMW7TwV0XkstNGXHgCAXqmHK+GL/tb/GCNarA==
+X-Received: by 2002:a17:907:7808:: with SMTP id la8mr22170600ejc.13.1623167969889;
         Tue, 08 Jun 2021 08:59:29 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-112-183-231.95.112.pool.telefonica.de. [95.112.183.231])
-        by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.28
+        by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.29
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 08 Jun 2021 08:59:29 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 18/23] libsepol/cil: drop unnecessary casts
-Date:   Tue,  8 Jun 2021 17:59:07 +0200
-Message-Id: <20210608155912.32047-19-cgzones@googlemail.com>
+Subject: [PATCH 19/23] libsepol/cil: avoid using maybe uninitialized variables
+Date:   Tue,  8 Jun 2021 17:59:08 +0200
+Message-Id: <20210608155912.32047-20-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210608155912.32047-1-cgzones@googlemail.com>
 References: <20210608155912.32047-1-cgzones@googlemail.com>
@@ -63,62 +60,72 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-`const_hashtab_key_t` is a typedef of `const char *`, so these casts are
-not needed.
+Initialize variables, as they are set after goto statements, which jump
+to cleanup code using them.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/cil/src/cil_strpool.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ libsepol/cil/src/cil_binary.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/libsepol/cil/src/cil_strpool.c b/libsepol/cil/src/cil_strpool.c
-index 70bca363..e32ee4e9 100644
---- a/libsepol/cil/src/cil_strpool.c
-+++ b/libsepol/cil/src/cil_strpool.c
-@@ -47,14 +47,13 @@ static hashtab_t cil_strpool_tab = NULL;
- 
- static unsigned int cil_strpool_hash(hashtab_t h, const_hashtab_key_t key)
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index 601fe8d1..54d13f2f 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -1073,7 +1073,7 @@ int __cil_type_rule_to_avtab(policydb_t *pdb, const struct cil_db *db, struct ci
+ 	type_datum_t *sepol_src = NULL;
+ 	type_datum_t *sepol_tgt = NULL;
+ 	class_datum_t *sepol_obj = NULL;
+-	struct cil_list *class_list;
++	struct cil_list *class_list = NULL;
+ 	type_datum_t *sepol_result = NULL;
+ 	ebitmap_t src_bitmap, tgt_bitmap;
+ 	ebitmap_node_t *node1, *node2;
+@@ -1129,7 +1129,7 @@ int __cil_typetransition_to_avtab(policydb_t *pdb, const struct cil_db *db, stru
+ 	type_datum_t *sepol_src = NULL;
+ 	type_datum_t *sepol_tgt = NULL;
+ 	class_datum_t *sepol_obj = NULL;
+-	struct cil_list *class_list;
++	struct cil_list *class_list = NULL;
+ 	type_datum_t *sepol_result = NULL;
+ 	ebitmap_t src_bitmap, tgt_bitmap;
+ 	ebitmap_node_t *node1, *node2;
+@@ -2338,7 +2338,7 @@ int cil_roletrans_to_policydb(policydb_t *pdb, const struct cil_db *db, struct c
+ 	role_datum_t *sepol_src = NULL;
+ 	type_datum_t *sepol_tgt = NULL;
+ 	class_datum_t *sepol_obj = NULL;
+-	struct cil_list *class_list;
++	struct cil_list *class_list = NULL;
+ 	role_datum_t *sepol_result = NULL;
+ 	role_trans_t *new = NULL;
+ 	uint32_t *new_role = NULL;
+@@ -3166,7 +3166,7 @@ int cil_rangetransition_to_policydb(policydb_t *pdb, const struct cil_db *db, st
+ 	type_datum_t *sepol_src = NULL;
+ 	type_datum_t *sepol_tgt = NULL;
+ 	class_datum_t *sepol_class = NULL;
+-	struct cil_list *class_list;
++	struct cil_list *class_list = NULL;
+ 	range_trans_t *newkey = NULL;
+ 	struct mls_range *newdatum = NULL;
+ 	ebitmap_t src_bitmap, tgt_bitmap;
+@@ -3603,7 +3603,7 @@ int cil_default_to_policydb(policydb_t *pdb, struct cil_default *def)
  {
--	const char *p, *keyp;
-+	const char *p;
- 	size_t size;
- 	unsigned int val;
+ 	struct cil_list_item *curr;
+ 	class_datum_t *sepol_class;
+-	struct cil_list *class_list;
++	struct cil_list *class_list = NULL;
  
- 	val = 0;
--	keyp = (const char*)key;
--	size = strlen(keyp);
--	for (p = keyp; ((size_t) (p - keyp)) < size; p++)
-+	size = strlen(key);
-+	for (p = key; ((size_t) (p - key)) < size; p++)
- 		val =
- 		    (val << 4 | (val >> (8 * sizeof(unsigned int) - 4))) ^ (*p);
- 	return val & (h->size - 1);
-@@ -62,9 +61,7 @@ static unsigned int cil_strpool_hash(hashtab_t h, const_hashtab_key_t key)
- 
- static int cil_strpool_compare(hashtab_t h __attribute__ ((unused)), const_hashtab_key_t key1, const_hashtab_key_t key2)
+ 	cil_list_for_each(curr, def->class_datums) {
+ 		struct cil_list_item *c;
+@@ -3658,7 +3658,7 @@ int cil_defaultrange_to_policydb(policydb_t *pdb, struct cil_defaultrange *def)
  {
--	const char *keyp1 = (const char*)key1;
--	const char *keyp2 = (const char*)key2;
--	return strcmp(keyp1, keyp2);
-+	return strcmp(key1, key2);
- }
+ 	struct cil_list_item *curr;
+ 	class_datum_t *sepol_class;
+-	struct cil_list *class_list;
++	struct cil_list *class_list = NULL;
  
- char *cil_strpool_add(const char *str)
-@@ -73,12 +70,12 @@ char *cil_strpool_add(const char *str)
- 
- 	pthread_mutex_lock(&cil_strpool_mutex);
- 
--	strpool_ref = hashtab_search(cil_strpool_tab, (hashtab_key_t)str);
-+	strpool_ref = hashtab_search(cil_strpool_tab, str);
- 	if (strpool_ref == NULL) {
- 		int rc;
- 		strpool_ref = cil_malloc(sizeof(*strpool_ref));
- 		strpool_ref->str = cil_strdup(str);
--		rc = hashtab_insert(cil_strpool_tab, (hashtab_key_t)strpool_ref->str, strpool_ref);
-+		rc = hashtab_insert(cil_strpool_tab, strpool_ref->str, strpool_ref);
- 		if (rc != SEPOL_OK) {
- 			pthread_mutex_unlock(&cil_strpool_mutex);
- 			cil_log(CIL_ERR, "Failed to allocate memory\n");
+ 	cil_list_for_each(curr, def->class_datums) {
+ 		struct cil_list_item *c;
 -- 
 2.32.0
 

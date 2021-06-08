@@ -2,54 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 917EC39FAFB
-	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 17:38:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C6D639FB6D
+	for <lists+selinux@lfdr.de>; Tue,  8 Jun 2021 17:59:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232763AbhFHPjz (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Jun 2021 11:39:55 -0400
-Received: from mail-ej1-f41.google.com ([209.85.218.41]:33595 "EHLO
-        mail-ej1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231842AbhFHPjz (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 11:39:55 -0400
-Received: by mail-ej1-f41.google.com with SMTP id g20so33384740ejt.0
-        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 08:37:53 -0700 (PDT)
+        id S231844AbhFHQBO (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Jun 2021 12:01:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51296 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230460AbhFHQBN (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Jun 2021 12:01:13 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD52AC061574
+        for <selinux@vger.kernel.org>; Tue,  8 Jun 2021 08:59:20 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id ba2so23376015edb.2
+        for <selinux@vger.kernel.org>; Tue, 08 Jun 2021 08:59:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=i6VHZ2CpBOxzJtERgZjFSsOJnHnIuO2oFgV/eZZ7eBU=;
-        b=hyoTKZaO7QvnfpMgsaHYdpv5Z16aEaFC4UPEBpVclbqyXdanXC+SABL8vX1ue1UssI
-         m2dU8ZSyvKdv16EYfHIIXxzpmU73Tf8ky6Tbk4luTA9mB51MoNL5p3fED+PTVpdMW9Za
-         V/gHhKPx8wHeIngc+rNKl4UMDmt0AGL5TXeqosePx43jO4/SW2MXu0Swp9o7MM/DOS8F
-         OmuBLNofM4egzmROIlwIMJqhsUUcPMr04bqqmSO4NLSsplqTwZCFQC2mOLQnlGjO87Or
-         +fR2ad2+TsBY94cw6ZlsgsjjDxIhqCn4OkAsk5ntp2i3Adl1echjwtVaGZ3H6A9WeGjK
-         eoSw==
+        bh=a0cjQsxG0pkMqJ9jOeiXTHxjyIBAZkz9JQ/5Kdnizz4=;
+        b=ooMzAu+g9gxS1RZtp3pmLXx8nwSlAwg2KNtFgQYKp3BusPo+9k5OPdqy5RrxmCmWgy
+         m9CISrlc3xoaCMpREnBmU1lKM+xjCaIpCmCw+CuBcK+nawIKhzzwmEu0BomWrT/gZ5RD
+         GeZxP/Bwl2HO4n459ZB2TxRZfa5SaYd0KbHx1SgEPt83i1JuYZaDtozo0Oxw8mHZB+Oj
+         oV8rm+eM2QJOxXS51FaHholHV0Vnkmn87B9AWG1lGvxogiA+AXDWMtSdsstXgIVbkRqN
+         Qb9SFvU5rR+RDbE9oMYniQTEIzsRtOsx6geGJTeCAqAk3XoQcIGJPVdgrdLxbSxQD8V4
+         44oA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=i6VHZ2CpBOxzJtERgZjFSsOJnHnIuO2oFgV/eZZ7eBU=;
-        b=OQPtX5jl1iagO83wQ97FY04nr76HftV9Ppb7ROxiLovXoXWCxrH4poUjBkqvOY+qLo
-         J9BuQpr8BziJ8OPlGHp/quXD2fAn4UkygBP9PoMkyJQcE/k6c1EYiU3lifxG8RRnb0n1
-         t99VzRHocmZwgOWP7k2FcmuRcaDJKMw7G8vyJt/6i1RlWAUtcxU7XTYq6jYzxidQm+KH
-         Ng4kAfLiQ8jXPdqkcFFO4V/W7a+7b0qPeTZNaZAXNxP9N4u0etgnC07M6p7S000qJYW5
-         cI0Lp3KC15b+INWRHNfajwdGB8Y3JocLK85bnRnwyHqbTdtpx9SdO6jJvVNV6GXy4X5E
-         wXpQ==
-X-Gm-Message-State: AOAM530GoaqOkpU4SFYckoBHnKAOrZ3+nxD6XPGhbNZxbzxNnei+hxkC
-        R2Ceu09wnacBCaze+EM88bzn4DIGC+o=
-X-Google-Smtp-Source: ABdhPJwj5oQYZJ/fCp/fudTBlvXEc5GPICfpP2JCKITNeYVhIQFp9MOoyudj0EN2FEhXilHuHG7A1A==
-X-Received: by 2002:a17:906:2f0d:: with SMTP id v13mr23984782eji.321.1623166612750;
-        Tue, 08 Jun 2021 08:36:52 -0700 (PDT)
+        bh=a0cjQsxG0pkMqJ9jOeiXTHxjyIBAZkz9JQ/5Kdnizz4=;
+        b=QaQp+sdOkaJZ08A0tIjWoCxIpPigqEXj9SIoSC8qvEqvKW9FaWj4IN3LxzCyasyZRK
+         0FLkoftbZG5Vch9ElZbOvaaqpNRaRzIQjre9klXEGh1IIstvznUXoV7OWRIsfchUVdYP
+         1JupIvA/zLQJuc+TYkshQLQAThxY3nMkKYx4LU1tcQ1AfIKNOcNtFVwfDaaLmY/LjauS
+         m2KKDBODLipqKiTZYnCqpB5FU/9CpryTyE9mGAFR78ng+kDcJFQ7dCwDYPpyCMsY5V+r
+         KVrhYwhaC5eeSCdRy8MJdWhxteoVTt8XwFAXtXpdTe8Q1IyQ4S4KvTF7xq04qnfcFplq
+         I9/g==
+X-Gm-Message-State: AOAM5333qJIBGUvIoXuX+xGxgf0x7cny8taxWAg2eBhem7a073Yt+cXL
+        BKp/nJqiZx5fV0WnM0u/TJCi0Y2GB8E=
+X-Google-Smtp-Source: ABdhPJwqQ/ZsZuE4T7gwd2DXAeXGqZApTng6plpFFxsoe1Z4YWrJd1ni6gRcDThOVt0B1yB9GbvN+g==
+X-Received: by 2002:a50:fa8c:: with SMTP id w12mr26358466edr.350.1623167959321;
+        Tue, 08 Jun 2021 08:59:19 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-112-183-231.95.112.pool.telefonica.de. [95.112.183.231])
-        by smtp.gmail.com with ESMTPSA id qq26sm43310ejb.6.2021.06.08.08.36.52
+        by smtp.gmail.com with ESMTPSA id n13sm51134ejk.97.2021.06.08.08.59.18
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 08:36:52 -0700 (PDT)
+        Tue, 08 Jun 2021 08:59:18 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH] libselinux: fix typo
-Date:   Tue,  8 Jun 2021 17:36:44 +0200
-Message-Id: <20210608153644.29176-1-cgzones@googlemail.com>
+Subject: [PATCH 00/23] libsepol: miscellaneous cleanup
+Date:   Tue,  8 Jun 2021 17:58:49 +0200
+Message-Id: <20210608155912.32047-1-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -58,24 +61,76 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libselinux/src/regex.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Clean up several code smells, compiler warnings, static analyzer issues
+and UBSAN findings in libsepol.
 
-diff --git a/libselinux/src/regex.h b/libselinux/src/regex.h
-index 10c3df78..2dfa2534 100644
---- a/libselinux/src/regex.h
-+++ b/libselinux/src/regex.h
-@@ -44,7 +44,7 @@ struct mmap_area;
- char const *regex_arch_string(void) ;
- 
- /**
-- * regex_verison returns the version string of the underlying regular
-+ * regex_version returns the version string of the underlying regular
-  * regular expressions library. In the case of PCRE it just returns the
-  * result of pcre_version(). In the case of PCRE2, the very first time this
-  * function is called it allocates a buffer large enough to hold the version
+Also declare local functions and variables static and some interface
+parameters const to improve maintainability.
+
+Christian Göttsche (23):
+  libsepol: fix typos
+  libsepol: resolve missing prototypes
+  libsepol: remove unused functions
+  libsepol: ignore UBSAN false-positives
+  libsepol: avoid implicit conversions
+  libsepol: avoid unsigned integer overflow
+  libsepol: follow declaration-after-statement
+  libsepol/cil: follow declaration-after-statement
+  libsepol: remove dead stores
+  libsepol: mark read-only parameters of ebitmap interfaces const
+  libsepol: mark read-only parameters of type_set_ interfaces const
+  libsepol: do not allocate memory of size 0
+  libsepol: assure string NUL-termination
+  libsepol: remove dead stores
+  libsepol/cil: silence cast warning
+  libsepol/cil: drop extra semicolon
+  libsepol/cil: drop dead store
+  libsepol/cil: drop unnecessary casts
+  libsepol/cil: avoid using maybe uninitialized variables
+  libsepol: drop repeated semicolons
+  libsepol: drop unnecessary casts
+  libsepol: declare file local variable static
+  libsepol: declare read-only arrays const
+
+ libsepol/cil/src/cil_binary.c                 |  19 +--
+ libsepol/cil/src/cil_build_ast.c              |   9 +-
+ libsepol/cil/src/cil_fqn.c                    |   3 +-
+ libsepol/cil/src/cil_list.c                   |   7 +-
+ libsepol/cil/src/cil_post.c                   |   2 +-
+ libsepol/cil/src/cil_resolve_ast.c            |   8 +-
+ libsepol/cil/src/cil_strpool.c                |  16 +--
+ libsepol/cil/src/cil_write_ast.c              |   4 +-
+ libsepol/include/sepol/policydb/conditional.h |   2 +-
+ libsepol/include/sepol/policydb/ebitmap.h     |  16 +--
+ libsepol/include/sepol/policydb/policydb.h    |   6 +-
+ libsepol/src/assertion.c                      |   2 +-
+ libsepol/src/avrule_block.c                   |   2 +-
+ libsepol/src/avtab.c                          |   8 +-
+ libsepol/src/booleans.c                       |   6 +-
+ libsepol/src/conditional.c                    |   3 -
+ libsepol/src/context_internal.h               |   1 +
+ libsepol/src/debug.c                          |   2 +-
+ libsepol/src/ebitmap.c                        |  29 +++--
+ libsepol/src/expand.c                         |   8 +-
+ libsepol/src/ibendport_record.c               |   4 +-
+ libsepol/src/kernel_to_cil.c                  |   7 +-
+ libsepol/src/kernel_to_conf.c                 |   5 +-
+ libsepol/src/link.c                           |   2 +-
+ libsepol/src/module.c                         |   2 +-
+ libsepol/src/module_to_cil.c                  |  14 +-
+ libsepol/src/nodes.c                          |   6 +-
+ libsepol/src/polcaps.c                        |   2 +-
+ libsepol/src/policydb.c                       |  70 +++++-----
+ libsepol/src/policydb_internal.h              |   2 +-
+ libsepol/src/policydb_validate.c              |   2 +-
+ libsepol/src/private.h                        |   6 +-
+ libsepol/src/services.c                       | 120 ++++++------------
+ libsepol/src/sidtab.c                         |  31 -----
+ libsepol/src/symtab.c                         |   6 +
+ libsepol/src/util.c                           |   2 +-
+ libsepol/src/write.c                          |   8 +-
+ 37 files changed, 187 insertions(+), 255 deletions(-)
+
 -- 
 2.32.0
 

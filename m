@@ -2,54 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1ABBF3A699B
-	for <lists+selinux@lfdr.de>; Mon, 14 Jun 2021 17:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 09FAA3A6995
+	for <lists+selinux@lfdr.de>; Mon, 14 Jun 2021 17:05:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232869AbhFNPI4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Jun 2021 11:08:56 -0400
-Received: from mail-qk1-f170.google.com ([209.85.222.170]:41648 "EHLO
-        mail-qk1-f170.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232919AbhFNPIz (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Jun 2021 11:08:55 -0400
-Received: by mail-qk1-f170.google.com with SMTP id 5so648150qkc.8
-        for <selinux@vger.kernel.org>; Mon, 14 Jun 2021 08:06:52 -0700 (PDT)
+        id S233135AbhFNPH5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Jun 2021 11:07:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36056 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233080AbhFNPH4 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Jun 2021 11:07:56 -0400
+Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D249BC061574
+        for <selinux@vger.kernel.org>; Mon, 14 Jun 2021 08:05:53 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id d196so33521991qkg.12
+        for <selinux@vger.kernel.org>; Mon, 14 Jun 2021 08:05:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=TnteHTbE/SOn55CRc7MFSXv/V54p00tAQXnSbbVVqzE=;
-        b=hvV/wTev1zBxu6wg72ZKl/wxKgtjFXvQo+jYlN5Aiorxp5B/RaBcft6OAKml3tPZ6y
-         7x0EdkPJvv6ULfJIOkAk1ResN5OT7CL+RIEW13QF6IrlGzYvFzVxxlTqr0KUGhwupbfj
-         TXf2viYgB+WSt0o560/sRbGwDWoheqCZQdTjODgNE2zI3WBM7GV0s9eX9zSdjOGIP9Fe
-         WFEaW6Jps37ljnfl4kQ2Hahv41Ma3Fi9RSshuhnQJ5c4iSE84aDg8mMuJ4Q1oSbRbp//
-         jCgEJqDwEg4DY6mitzcqDGtTouVyqdihn8k5NPrF3p6gmpgfi3sDNIGq7q4pDjiVeXqy
-         Q3pQ==
+        bh=rK3o1rHoBsNAXJOHw4ZVkW3DyM2rRzcWhvuypNdhVdc=;
+        b=gBTCG2rj4Fc/N2B/r8SwIg7WO2vtaOgx/Q/mDrb2+S52SC+79QIv9pcpOGzKh7q0Fz
+         93OOQ3TZps3EOxm/TFe/Z8Sx2g9hW7e2Mm+Pv4Nl/eyNo0HJdRCTLxZPPoQnd0PyrVa7
+         BpUDXpIGGyA/PPGOyf+N48wtsVe1K8SBDN7HkORcB7TS5fyCWFLyydYmx3CUx9i2uJLr
+         gjiIPvU3NpBq6YIxp+f3yx6U0dxn5YJ2leldeIwZLFy8Czb8mOcEf5BlBRWOOrpSG04L
+         JOXos4LFXX4bPdPF3rnX7zQo9pgiNm/aJYcbI4YFShnL+QWzT0nKMhaHikXvfXYcCQ82
+         wwIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TnteHTbE/SOn55CRc7MFSXv/V54p00tAQXnSbbVVqzE=;
-        b=hOzPVLvBs9Ex/4ytSHmhD1lNdwrMc/8wk5pOAsZpKVxUwSA8dBLopd8KyhmR0B2n/p
-         dvZEbpdK8vljR3M7bFAFAXOwkxHxS99kX4rKJc1/WnQlsSR1y1lg0Z+V1c4mQGL2v08N
-         ROjPqJ2Wv/Gq9OO4RUWf2wyLpPuHjiD6HoJp8mL/v0NffiJa40bc8EJ3eL1YfO48GHKq
-         uFQ7KhdnMvNx0+yTmhMtaS0MJ8+5K6donB7YbSzCdBu5FH+VR1r7KL6FlKkJq5F6Nsxa
-         oD1sR4VgBruD6Fsyg0fwvoF7890VNjsXtmT8rkAESF8UOzdY9saJcLC8suGkadkeFrLJ
-         H47g==
-X-Gm-Message-State: AOAM531Fe24uLJHf8JMkITLN7HcwIJc9H5PIHxvGm0ZSgbrfH5M4M1vN
-        zIvV90VO8dwHB8kUSvJUE3/KwkKxImOxiQ==
-X-Google-Smtp-Source: ABdhPJxPyT03RV6xr8YFYgT4bwSnNjTav8SBevKt5fDxC1hLeeoDoARi4vhlSlCtWxLzoEiJDaYG5Q==
-X-Received: by 2002:ae9:eb45:: with SMTP id b66mr16603439qkg.339.1623683152410;
+        bh=rK3o1rHoBsNAXJOHw4ZVkW3DyM2rRzcWhvuypNdhVdc=;
+        b=ZySqF0g4H8j6ZG/RWrq8YMhHq8cyyQVtMjV1ehl0ZfJQEpZAcSdRk+xoJClEKt2fOj
+         lcNrNyyKRSXpIpMjN9Xk5+h/lwo1vRrBqhc67m5x1/zXYgVYPJHlgQZ0PsZKPs4bNMs8
+         yRUvmxVjT3nRIX6GIFKT1V4TeSxtPqvSyHFESg2dg7IlzkpZO3S/T+4+XQDY6p0tbjYH
+         MBRRiwHmYNTYLj5hdzog0aTr+WTUPR/52eB223umymDClUptubPeUdp7pYC9fmgylQPQ
+         gvpMatdrZGbvh7ZzYVx3f+uYZPRaWHDjcbJY5df7Q3xNz3TiO0iQ4cj/PXpSA+N3yjBO
+         vpwA==
+X-Gm-Message-State: AOAM531YqQ8GB4jzZ54wvDC+TqDfvt+T4SKZ0BDPsG7KDHaDy2MqPlwp
+        SEZXd+1G3D51M1JYgn+bCX+FL0nt78fWNQ==
+X-Google-Smtp-Source: ABdhPJyd1ZcXzOK0rwUgc/HHDqTc4g5U9pw81N351y5k/U+ezh56pC8YH9jm08fqRLKrfDlBgOIT5A==
+X-Received: by 2002:a37:618f:: with SMTP id v137mr16865075qkb.282.1623683152956;
         Mon, 14 Jun 2021 08:05:52 -0700 (PDT)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id 75sm8221014qkm.57.2021.06.14.08.05.51
+        by smtp.gmail.com with ESMTPSA id 75sm8221014qkm.57.2021.06.14.08.05.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 14 Jun 2021 08:05:52 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     nicolas.iooss@m4x.org, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 2/5] libsepol/cil: Fix syntax checking of defaultrange rule
-Date:   Mon, 14 Jun 2021 11:05:43 -0400
-Message-Id: <20210614150546.512001-3-jwcart2@gmail.com>
+Subject: [PATCH 3/5] libsepol/cil: Check for empty list when marking neverallow attributes
+Date:   Mon, 14 Jun 2021 11:05:44 -0400
+Message-Id: <20210614150546.512001-4-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210614150546.512001-1-jwcart2@gmail.com>
 References: <20210614150546.512001-1-jwcart2@gmail.com>
@@ -59,30 +62,31 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The syntax array that cil_gen_defaultrange() called __cil_verify_syntax()
-with was wrong. It had the range (which should be low, high, or low-high)
-as optional when it is not.
-
-Use the correct syntax array to check the syntax of the defaultrange rule.
+When marking a type attribute as used in a neverallow (to help determine
+whether or not it should be expanded), check if the attribute's expression
+list is empty (no attributes are associated with it) before iterating
+over the list.
 
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/cil/src/cil_build_ast.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ libsepol/cil/src/cil_post.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-index 71f14e20..a5f617d8 100644
---- a/libsepol/cil/src/cil_build_ast.c
-+++ b/libsepol/cil/src/cil_build_ast.c
-@@ -5862,7 +5862,7 @@ int cil_gen_defaultrange(struct cil_tree_node *parse_current, struct cil_tree_no
- 		CIL_SYN_STRING,
- 		CIL_SYN_STRING | CIL_SYN_LIST,
- 		CIL_SYN_STRING,
--		CIL_SYN_STRING | CIL_SYN_END,
-+		CIL_SYN_STRING,
- 		CIL_SYN_END
- 	};
- 	int syntax_len = sizeof(syntax)/sizeof(*syntax);
+diff --git a/libsepol/cil/src/cil_post.c b/libsepol/cil/src/cil_post.c
+index 05842b64..38544aef 100644
+--- a/libsepol/cil/src/cil_post.c
++++ b/libsepol/cil/src/cil_post.c
+@@ -1494,6 +1494,10 @@ static void __mark_neverallow_attrs(struct cil_list *expr_list)
+ {
+ 	struct cil_list_item *curr;
+ 
++	if (!expr_list) {
++		return;
++	}
++
+ 	cil_list_for_each(curr, expr_list) {
+ 		if (curr->flavor == CIL_DATUM) {
+ 			if (FLAVOR(curr->data) == CIL_TYPEATTRIBUTE) {
 -- 
 2.26.3
 

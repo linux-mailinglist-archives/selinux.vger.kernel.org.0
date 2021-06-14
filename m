@@ -2,57 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09FAA3A6995
-	for <lists+selinux@lfdr.de>; Mon, 14 Jun 2021 17:05:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0239B3A699C
+	for <lists+selinux@lfdr.de>; Mon, 14 Jun 2021 17:06:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233135AbhFNPH5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Jun 2021 11:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36056 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233080AbhFNPH4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Jun 2021 11:07:56 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D249BC061574
-        for <selinux@vger.kernel.org>; Mon, 14 Jun 2021 08:05:53 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id d196so33521991qkg.12
-        for <selinux@vger.kernel.org>; Mon, 14 Jun 2021 08:05:53 -0700 (PDT)
+        id S232919AbhFNPI5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Jun 2021 11:08:57 -0400
+Received: from mail-qt1-f174.google.com ([209.85.160.174]:46972 "EHLO
+        mail-qt1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233171AbhFNPI4 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Jun 2021 11:08:56 -0400
+Received: by mail-qt1-f174.google.com with SMTP id a15so8721495qtx.13
+        for <selinux@vger.kernel.org>; Mon, 14 Jun 2021 08:06:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=rK3o1rHoBsNAXJOHw4ZVkW3DyM2rRzcWhvuypNdhVdc=;
-        b=gBTCG2rj4Fc/N2B/r8SwIg7WO2vtaOgx/Q/mDrb2+S52SC+79QIv9pcpOGzKh7q0Fz
-         93OOQ3TZps3EOxm/TFe/Z8Sx2g9hW7e2Mm+Pv4Nl/eyNo0HJdRCTLxZPPoQnd0PyrVa7
-         BpUDXpIGGyA/PPGOyf+N48wtsVe1K8SBDN7HkORcB7TS5fyCWFLyydYmx3CUx9i2uJLr
-         gjiIPvU3NpBq6YIxp+f3yx6U0dxn5YJ2leldeIwZLFy8Czb8mOcEf5BlBRWOOrpSG04L
-         JOXos4LFXX4bPdPF3rnX7zQo9pgiNm/aJYcbI4YFShnL+QWzT0nKMhaHikXvfXYcCQ82
-         wwIQ==
+        bh=rrTvLwpCAi1d94KNTiy8IzKm93bkkbSspOl/PDNYp7Y=;
+        b=LEU7mc8KrG4Y0cuOG4y8SpXvsAavSZqM9kW1Y7P+4SOT25zWj31tEWWH9pSUrn06hA
+         zTYBRCzea0TcFrJ3dwiqftMZkXCjUm3oKACSHLMRWdXhL5RHrP66LkufA/ulPDT53fYd
+         fiUrlbKpDv8pdwTyPiFfZio4A/K3lEIc4wMDoexvLS5hxVksya/W+YW+/Gbd59DB+769
+         Xg4a5WN9ZvGz5ps/pW8d+ZbnGDK0qnD2kOhm7HUSCvheLaLqvBHnN+q3mEQhAdaSTmHe
+         c1U49hwuG0mpkawujQqo645OfVDGqiDB6ByB1u0xoWAVolonJD553CKdlo4T4op2L4Fo
+         IkOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=rK3o1rHoBsNAXJOHw4ZVkW3DyM2rRzcWhvuypNdhVdc=;
-        b=ZySqF0g4H8j6ZG/RWrq8YMhHq8cyyQVtMjV1ehl0ZfJQEpZAcSdRk+xoJClEKt2fOj
-         lcNrNyyKRSXpIpMjN9Xk5+h/lwo1vRrBqhc67m5x1/zXYgVYPJHlgQZ0PsZKPs4bNMs8
-         yRUvmxVjT3nRIX6GIFKT1V4TeSxtPqvSyHFESg2dg7IlzkpZO3S/T+4+XQDY6p0tbjYH
-         MBRRiwHmYNTYLj5hdzog0aTr+WTUPR/52eB223umymDClUptubPeUdp7pYC9fmgylQPQ
-         gvpMatdrZGbvh7ZzYVx3f+uYZPRaWHDjcbJY5df7Q3xNz3TiO0iQ4cj/PXpSA+N3yjBO
-         vpwA==
-X-Gm-Message-State: AOAM531YqQ8GB4jzZ54wvDC+TqDfvt+T4SKZ0BDPsG7KDHaDy2MqPlwp
-        SEZXd+1G3D51M1JYgn+bCX+FL0nt78fWNQ==
-X-Google-Smtp-Source: ABdhPJyd1ZcXzOK0rwUgc/HHDqTc4g5U9pw81N351y5k/U+ezh56pC8YH9jm08fqRLKrfDlBgOIT5A==
-X-Received: by 2002:a37:618f:: with SMTP id v137mr16865075qkb.282.1623683152956;
-        Mon, 14 Jun 2021 08:05:52 -0700 (PDT)
+        bh=rrTvLwpCAi1d94KNTiy8IzKm93bkkbSspOl/PDNYp7Y=;
+        b=IjkdbLTEVQDaYf0plIKOgkeZhhGP3QL6JH/xQkGSWFwhpMDfuV4g6sfKBPR8VrJGoZ
+         unrGfkIY8H6KQFbNrir9Z8pqNuDCblsRPOHD0D/MtfhEeSI7hPBwo6hRljNo8cjC+3Gf
+         8VdSmZB5Lz0P86pE0aBVBGlPGh719ZFPMypgEG1aCBYtB/DO7q6L4mZN/Ttufod7b6TT
+         X7OKzXD7YEYHGeXt1iU8hPHD/+SU5S+7uCECNbxbNbRgYbT/+38gqiDJXMF9peNYWx2G
+         vqR3YeSj7qSTzyN1cDXLVQMDVmCaMHr442OZlVDcX4lNgI7X4pHgUr5MN/6GF4YeFNYH
+         12/Q==
+X-Gm-Message-State: AOAM532CA71RBhZqiYD1Qtm/SK3c/AxiFDmWivjiGki56GKjxz2ehO6O
+        50lqagC/iLKmyWZlMhB/5ytsMZh+gmpgpA==
+X-Google-Smtp-Source: ABdhPJxtX8XdwouYAlF+L9WRwPjg25CpwNl94sVb6BFQGYyGlGIXVcgTE5g3SYp56epXJyhB3fsanA==
+X-Received: by 2002:ac8:708e:: with SMTP id y14mr16891968qto.221.1623683153547;
+        Mon, 14 Jun 2021 08:05:53 -0700 (PDT)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id 75sm8221014qkm.57.2021.06.14.08.05.52
+        by smtp.gmail.com with ESMTPSA id 75sm8221014qkm.57.2021.06.14.08.05.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Jun 2021 08:05:52 -0700 (PDT)
+        Mon, 14 Jun 2021 08:05:53 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     nicolas.iooss@m4x.org, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 3/5] libsepol/cil: Check for empty list when marking neverallow attributes
-Date:   Mon, 14 Jun 2021 11:05:44 -0400
-Message-Id: <20210614150546.512001-4-jwcart2@gmail.com>
+Subject: [PATCH 4/5] libsepol/cil: Reduce the initial symtab sizes for blocks
+Date:   Mon, 14 Jun 2021 11:05:45 -0400
+Message-Id: <20210614150546.512001-5-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.26.3
 In-Reply-To: <20210614150546.512001-1-jwcart2@gmail.com>
 References: <20210614150546.512001-1-jwcart2@gmail.com>
@@ -62,31 +59,33 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-When marking a type attribute as used in a neverallow (to help determine
-whether or not it should be expanded), check if the attribute's expression
-list is empty (no attributes are associated with it) before iterating
-over the list.
+It is possible to create bad behaving policy that can consume all
+of a system's memory (one way is through the use of inheritance).
+Analyzing these policies shows that most of the memory usage is for
+the block symtabs.
+
+Most of the nineteen symtabs will most likely never be used, so give
+these symtabs an initial size of 1. The others are given more
+appropriate sizes.
 
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/cil/src/cil_post.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ libsepol/cil/src/cil.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libsepol/cil/src/cil_post.c b/libsepol/cil/src/cil_post.c
-index 05842b64..38544aef 100644
---- a/libsepol/cil/src/cil_post.c
-+++ b/libsepol/cil/src/cil_post.c
-@@ -1494,6 +1494,10 @@ static void __mark_neverallow_attrs(struct cil_list *expr_list)
- {
- 	struct cil_list_item *curr;
+diff --git a/libsepol/cil/src/cil.c b/libsepol/cil/src/cil.c
+index 0d351b49..c6674fc1 100644
+--- a/libsepol/cil/src/cil.c
++++ b/libsepol/cil/src/cil.c
+@@ -54,7 +54,7 @@
  
-+	if (!expr_list) {
-+		return;
-+	}
-+
- 	cil_list_for_each(curr, expr_list) {
- 		if (curr->flavor == CIL_DATUM) {
- 			if (FLAVOR(curr->data) == CIL_TYPEATTRIBUTE) {
+ int cil_sym_sizes[CIL_SYM_ARRAY_NUM][CIL_SYM_NUM] = {
+ 	{64, 64, 64, 1 << 13, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64},
+-	{64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64, 64},
++	{8, 8, 8, 32, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+ 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+ 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+ 	{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 -- 
 2.26.3
 

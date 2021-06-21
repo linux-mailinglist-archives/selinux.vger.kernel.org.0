@@ -2,86 +2,194 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 400053AF5ED
-	for <lists+selinux@lfdr.de>; Mon, 21 Jun 2021 21:18:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1552D3AF5EE
+	for <lists+selinux@lfdr.de>; Mon, 21 Jun 2021 21:18:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231232AbhFUTU7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S231288AbhFUTU7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Mon, 21 Jun 2021 15:20:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39984 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231134AbhFUTU6 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 21 Jun 2021 15:20:58 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 128F3C061574
+        with ESMTP id S231134AbhFUTU7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 21 Jun 2021 15:20:59 -0400
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5658C061756
         for <selinux@vger.kernel.org>; Mon, 21 Jun 2021 12:18:43 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id w21so19532071qkb.9
+Received: by mail-qt1-x82a.google.com with SMTP id e3so14375573qte.0
         for <selinux@vger.kernel.org>; Mon, 21 Jun 2021 12:18:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mWIT5afHlljCpg4a12oL0OVKsHoITi4LoCD214PZgbk=;
-        b=cTEyrrPh0gZeCSQMGxrDiLEg12fAaSZ+xwA7pq5hA67zmvUCv9IHxFmnA+zknKuxMk
-         syKRdBmZjQXLxnYombeGEJKU+tHRmB2je1dOHtNi2Jiu3SlCeaSrAyh6pMQDchhnCxqq
-         /mS4//TOMMdnnWgcFlzpka0wdgCEhDPfX7fKrwd3EzTWK2lw3OCYZM3i7pJST+ZZgWv+
-         G861OC9DpkXYfWHbOO/f/Y+UXtLYVuEUQBDlgw3lnbzh/hH5rHAyjk3CTrkP9LQZ4XWu
-         bwYAc21nO3SvfKi3G7LdtPpo/AioN2ua97gwzmdK0mhRHfOhDxZ08ZSGY6evxQ0wQa7m
-         S17Q==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=i7HAfMW+B1XJvbDs0vNOvjIbN8XUyOGzoA5qXa9JGTg=;
+        b=puFkAzHJLN4bnXWcD0BAQgp+ZzSltc3GiQJ+7vdB6dk8hh6z27ALMV7FXYlV55IUJM
+         CfKN2RaeowIT1WXHTocp/6ldvkrzZl4fntPS5gyfcC5ugAfrSI3Bg0sKdpF1KjVBxmus
+         c+r1qbqbGv3dpK4UxHKj8XEXPxGFy99OXwtLDZgYATJv4tmp+TKthgJgqcgEDXzKxoLX
+         btr1o6CtYBcs2mX4YgdHgy1bBC97UO68k1yLTv1eiN9D7eKZjh38P4dF1kQOXjfpgzD9
+         kGv9gDh2qheyHQh7+hfQ9CTXlZOcQpzNwdl08gG06TKZvJt24VHOcoFyCKJ9N4nb3/IA
+         6R8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=mWIT5afHlljCpg4a12oL0OVKsHoITi4LoCD214PZgbk=;
-        b=Pi21SHp2XM5K9wXdIvl7ZkVO4Y3Bbzj6reyyhiji7c/KYFfYI0R37iTFXJb5CvKPLS
-         qn6zdWyC7C4gfUQFBRkSQpPPGnJlQRgmOMKtWUZDPyqATaQBr0PonbNUhjE5zqtUy9v5
-         S4BaYEMS/H1Y5kux6J4RfmzqrHNuV8MFTqD8/yG6Q64f63InUhrmRNaC1KTtpFZ98A3x
-         JdNg4g4UoXoBsk2aJcxF8DXQDJ46mEJIJJac7q2vtBJ08GCju2Tc8d2V9un/mHnYL9D9
-         wy+kEwBPm1mMHfveEe8UCzM9JbDvOR3fP7OhWCJrZdO2+ZjOWhK4CvtoHpczgC+X3vcY
-         KasQ==
-X-Gm-Message-State: AOAM530SMPe5spuI70xJAIzROW+ftsZIP1lvrDqQEvmxDXDffJbJQ3It
-        i+DnKaCtQntBaYls9AHJcCn60DykwP53Tg==
-X-Google-Smtp-Source: ABdhPJy8JD2sD2O2hjxL9w/RzBBcGzcjNO+uZKYaLez7XY0+S6BJ45fCqqgg/7w8u740MaQdVikVbg==
-X-Received: by 2002:a05:620a:218e:: with SMTP id g14mr206306qka.290.1624303122050;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=i7HAfMW+B1XJvbDs0vNOvjIbN8XUyOGzoA5qXa9JGTg=;
+        b=QL8+4YliRfOXz2/hGI3ZQqA1CMJYWn1HxPFx7S6yupJx2Q9D/+yAZDoyKKVMRFSTYc
+         0D0k/359OO7qPt5OF76Mvb41vcf2LG1kmmN7+skDz+02AOwi6wHi7rDH2KWII+uU25Tn
+         qW5F0ZnutNoUn5VTmK2+rH+lITyT1B3U9C0pOcO8spozt446FTD+5aM6zFC0qNbZkUlT
+         hSuhcQvEQFPne+i+7hrDiVXG91zV15UmhvwJsrZB713jk+qOrPUQTV573t1VN2tlnrFv
+         v12LD+jImnDyTsDt/mhc5r0NWT07CAa3EDUUx2lslRiB8oA5UbUz33LIdDDAmO7QoZtH
+         LaKA==
+X-Gm-Message-State: AOAM531M2oKyrGX0Jxe7SiBX5r7Ej/qWDpPKVpU6LCIzHAjX4fYtqd/n
+        wTGxEXt/4TFw7Tddyz6Pk8rxRA3bAsjyag==
+X-Google-Smtp-Source: ABdhPJylXc49msBUCk1+wugvDWV2P5KYUPSCA+fC3L0wYUfj+Wz5ZJjB1qs446zvTo3tXDRkgZwQPg==
+X-Received: by 2002:ac8:5755:: with SMTP id 21mr71597qtx.267.1624303122803;
         Mon, 21 Jun 2021 12:18:42 -0700 (PDT)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
-        by smtp.gmail.com with ESMTPSA id o5sm10449124qkl.25.2021.06.21.12.18.41
+        by smtp.gmail.com with ESMTPSA id o5sm10449124qkl.25.2021.06.21.12.18.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Jun 2021 12:18:41 -0700 (PDT)
+        Mon, 21 Jun 2021 12:18:42 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     nicolas.iooss@m4x.org, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 0/5 v2] Another round of secilc-fuzzer problems fixed
-Date:   Mon, 21 Jun 2021 15:18:28 -0400
-Message-Id: <20210621191833.282874-1-jwcart2@gmail.com>
+Subject: [PATCH 1/5 v2] libsepol/cil: Properly check for loops in sets
+Date:   Mon, 21 Jun 2021 15:18:29 -0400
+Message-Id: <20210621191833.282874-2-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.26.3
+In-Reply-To: <20210621191833.282874-1-jwcart2@gmail.com>
+References: <20210621191833.282874-1-jwcart2@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Patch 1 fixes the check for self-referential loops that didn't work in all cases
-Patches 2 and 3 fix a couple of bugs
-Patches 4 and 5 make it harder to create small policies that expand into large
-policies that consume all of a system's memory.
+Commit 61fbdce666f24c4a118b249ece6b014d54b65074 (ibsepol/cil: Check
+for self-referential loops in sets) added checks for self-referential
+loops in user, role, type, and category sets. Unfortunately, this
+check ends up in an infinite loop if the set with the self-referential
+loop is used in a different set that is checked before the bad set.
 
-Only patches 2 and 5 are changed in v2.
+The problem with the old check is that only the initial datum is used
+for the check. Instead, use a stack to track all of the set datums
+that are currently involved as the check is made. A self-referential
+loop occurs if a duplicate datum is found for any of the datums in the
+stack.
 
-James Carter (5):
-  libsepol/cil: Properly check for loops in sets
-  libsepol/cil: Fix syntax checking of defaultrange rule
-  libsepol/cil: Check for empty list when marking neverallow attributes
-  libsepol/cil: Reduce the initial symtab sizes for blocks
-  libsepol/cil: Improve degenerate inheritance check
+Signed-off-by: James Carter <jwcart2@gmail.com>
+Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+---
+ libsepol/cil/src/cil_verify.c | 48 +++++++++++++++++++++++------------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
- libsepol/cil/src/cil.c             |   2 +-
- libsepol/cil/src/cil_build_ast.c   |  10 ++
- libsepol/cil/src/cil_internal.h    |   5 +-
- libsepol/cil/src/cil_post.c        |   4 +
- libsepol/cil/src/cil_resolve_ast.c | 226 +++++++++++++++++++----------
- libsepol/cil/src/cil_verify.c      |  48 ++++--
- 6 files changed, 198 insertions(+), 97 deletions(-)
-
+diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
+index 8e15a0e6..59397f70 100644
+--- a/libsepol/cil/src/cil_verify.c
++++ b/libsepol/cil/src/cil_verify.c
+@@ -44,6 +44,7 @@
+ #include "cil_tree.h"
+ #include "cil_list.h"
+ #include "cil_find.h"
++#include "cil_stack.h"
+ 
+ #include "cil_verify.h"
+ 
+@@ -430,9 +431,9 @@ int cil_verify_decl_does_not_shadow_macro_parameter(struct cil_macro *macro, str
+ 	return SEPOL_OK;
+ }
+ 
+-static int cil_verify_no_self_reference(enum cil_flavor flavor, struct cil_symtab_datum *datum, struct cil_symtab_datum *orig);
++static int cil_verify_no_self_reference(enum cil_flavor flavor, struct cil_symtab_datum *datum, struct cil_stack *stack);
+ 
+-static int __verify_no_self_reference_in_expr(struct cil_list *expr, struct cil_symtab_datum *orig)
++static int __verify_no_self_reference_in_expr(struct cil_list *expr, struct cil_stack *stack)
+ {
+ 	struct cil_list_item *item;
+ 	int rc = SEPOL_OK;
+@@ -444,9 +445,9 @@ static int __verify_no_self_reference_in_expr(struct cil_list *expr, struct cil_
+ 	cil_list_for_each(item, expr) {
+ 		if (item->flavor == CIL_DATUM) {
+ 			struct cil_symtab_datum* datum = item->data;
+-			rc = cil_verify_no_self_reference(FLAVOR(datum), datum, orig);
++			rc = cil_verify_no_self_reference(FLAVOR(datum), datum, stack);
+ 		} else if (item->flavor == CIL_LIST) {
+-			rc = __verify_no_self_reference_in_expr(item->data, orig);
++			rc = __verify_no_self_reference_in_expr(item->data, stack);
+ 		}
+ 		if (rc != SEPOL_OK) {
+ 			return SEPOL_ERR;
+@@ -456,36 +457,47 @@ static int __verify_no_self_reference_in_expr(struct cil_list *expr, struct cil_
+ 	return SEPOL_OK;
+ }
+ 
+-static int cil_verify_no_self_reference(enum cil_flavor flavor, struct cil_symtab_datum *datum, struct cil_symtab_datum *orig)
++static int cil_verify_no_self_reference(enum cil_flavor flavor, struct cil_symtab_datum *datum, struct cil_stack *stack)
+ {
++	struct cil_stack_item *item;
++	int i = 0;
+ 	int rc = SEPOL_OK;
+ 
+-	if (datum == orig) {
+-		cil_tree_log(NODE(orig), CIL_ERR, "Self-reference found for %s", orig->name);
+-		return SEPOL_ERR;
+-	} else if (orig == NULL) {
+-		orig = datum;
++	cil_stack_for_each(stack, i, item) {
++		struct cil_symtab_datum *prev = item->data;
++		if (datum == prev) {
++			cil_tree_log(NODE(datum), CIL_ERR, "Self-reference found for %s", datum->name);
++			return SEPOL_ERR;
++		}
+ 	}
+ 
+ 	switch (flavor) {
+ 	case CIL_USERATTRIBUTE: {
+ 		struct cil_userattribute *attr = (struct cil_userattribute *)datum;
+-		rc = __verify_no_self_reference_in_expr(attr->expr_list, orig);
++		cil_stack_push(stack, CIL_DATUM, datum);
++		rc = __verify_no_self_reference_in_expr(attr->expr_list, stack);
++		cil_stack_pop(stack);
+ 		break;
+ 	}
+ 	case CIL_ROLEATTRIBUTE: {
+ 		struct cil_roleattribute *attr = (struct cil_roleattribute *)datum;
+-		rc = __verify_no_self_reference_in_expr(attr->expr_list, orig);
++		cil_stack_push(stack, CIL_DATUM, datum);
++		rc = __verify_no_self_reference_in_expr(attr->expr_list, stack);
++		cil_stack_pop(stack);
+ 		break;
+ 	}
+ 	case CIL_TYPEATTRIBUTE: {
+ 		struct cil_typeattribute *attr = (struct cil_typeattribute *)datum;
+-		rc = __verify_no_self_reference_in_expr(attr->expr_list, orig);
++		cil_stack_push(stack, CIL_DATUM, datum);
++		rc = __verify_no_self_reference_in_expr(attr->expr_list, stack);
++		cil_stack_pop(stack);
+ 		break;
+ 	}
+ 	case CIL_CATSET: {
+ 		struct cil_catset *set = (struct cil_catset *)datum;
+-		rc = __verify_no_self_reference_in_expr(set->cats->datum_expr, orig);
++		cil_stack_push(stack, CIL_DATUM, datum);
++		rc = __verify_no_self_reference_in_expr(set->cats->datum_expr, stack);
++		cil_stack_pop(stack);
+ 		break;
+ 	}
+ 	default:
+@@ -1826,9 +1838,13 @@ int __cil_pre_verify_helper(struct cil_tree_node *node, uint32_t *finished, __at
+ 	case CIL_USERATTRIBUTE:
+ 	case CIL_ROLEATTRIBUTE:
+ 	case CIL_TYPEATTRIBUTE:
+-	case CIL_CATSET:
+-		rc = cil_verify_no_self_reference(node->flavor, node->data, NULL);
++	case CIL_CATSET: {
++		struct cil_stack *stack;
++		cil_stack_init(&stack);
++		rc = cil_verify_no_self_reference(node->flavor, node->data, stack);
++		cil_stack_destroy(&stack);
+ 		break;
++	}
+ 	default:
+ 		rc = SEPOL_OK;
+ 		break;
 -- 
 2.26.3
 

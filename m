@@ -2,145 +2,224 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BB4113B86CF
-	for <lists+selinux@lfdr.de>; Wed, 30 Jun 2021 18:09:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B36A53B88EB
+	for <lists+selinux@lfdr.de>; Wed, 30 Jun 2021 21:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230372AbhF3QMK (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 30 Jun 2021 12:12:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:36327 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229540AbhF3QMJ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 30 Jun 2021 12:12:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1625069380;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=52V6002QO3cX0YhTEgm8sdsHZhDo4SqxSLMck++RLBo=;
-        b=WFjDn4fOcEtkuToNJXwysAGS0Fl3c4TOj2z1lbVsPG/XjsOsPbhHPWgu2pDEtNSNAev2cL
-        l7hUWMXv0dZ1XXIEKdyxvG+RYld0SQePpACwgsfxm54zt6V56pDOgwxg6QxZ60Tcpha+jj
-        7y0eF4BEywE2VGyox6IGpQF/zN4gUTI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-122-AQW-WcG6PSq609UJqweyuA-1; Wed, 30 Jun 2021 12:09:38 -0400
-X-MC-Unique: AQW-WcG6PSq609UJqweyuA-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        id S232881AbhF3TFg (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 30 Jun 2021 15:05:36 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:46502 "EHLO
+        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232851AbhF3TFf (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 30 Jun 2021 15:05:35 -0400
+X-Greylist: delayed 465 seconds by postgrey-1.27 at vger.kernel.org; Wed, 30 Jun 2021 15:05:35 EDT
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 542EB18414A2;
-        Wed, 30 Jun 2021 16:09:37 +0000 (UTC)
-Received: from horse.redhat.com (ovpn-115-222.rdu2.redhat.com [10.10.115.222])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A7E2E5C1A3;
-        Wed, 30 Jun 2021 16:09:33 +0000 (UTC)
-Received: by horse.redhat.com (Postfix, from userid 10451)
-        id 4052122054F; Wed, 30 Jun 2021 12:09:33 -0400 (EDT)
-Date:   Wed, 30 Jun 2021 12:09:33 -0400
-From:   Vivek Goyal <vgoyal@redhat.com>
-To:     Theodore Ts'o <tytso@mit.edu>
-Cc:     "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
-        Daniel Walsh <dwalsh@redhat.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        "Schaufler, Casey" <casey.schaufler@intel.com>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "viro@zeniv.linux.org.uk" <viro@zeniv.linux.org.uk>,
-        "virtio-fs@redhat.com" <virtio-fs@redhat.com>,
-        "berrange@redhat.com" <berrange@redhat.com>,
-        linux-security-module <linux-security-module@vger.kernel.org>,
-        "selinux@vger.kernel.org" <selinux@vger.kernel.org>
-Subject: Re: [RFC PATCH 0/1] xattr: Allow user.* xattr on symlink/special
- files if caller has CAP_SYS_RESOURCE
-Message-ID: <20210630160933.GC75386@redhat.com>
-References: <a13f2861-7786-09f4-99a8-f0a5216d0fb1@schaufler-ca.com>
- <YNrhQ9XfcHTtM6QA@work-vm>
- <e6f9ed0d-c101-01df-3dff-85c1b38f9714@schaufler-ca.com>
- <20210629152007.GC5231@redhat.com>
- <78663f5c-d2fd-747a-48e3-0c5fd8b40332@schaufler-ca.com>
- <20210629173530.GD5231@redhat.com>
- <f4992b3a-a939-5bc4-a5da-0ce8913bd569@redhat.com>
- <YNvvLIv16jY8mfP8@mit.edu>
- <YNwmXOqT7LgbeVPn@work-vm>
- <YNyECw/1FzDCW3G8@mit.edu>
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id DEF445646D0
+        for <selinux@vger.kernel.org>; Wed, 30 Jun 2021 20:55:12 +0200 (CEST)
+Received: by mail-pl1-f172.google.com with SMTP id h1so2031582plt.1
+        for <selinux@vger.kernel.org>; Wed, 30 Jun 2021 11:55:12 -0700 (PDT)
+X-Gm-Message-State: AOAM531QsGinAFXBWWsjdRtldrhiIngAGoB8SZX0K1iOSihx9qswPizD
+        e3AbD3Et7Gal0oUhIB4TbrWgQTXwoRYsy1xkhz0=
+X-Google-Smtp-Source: ABdhPJyXAnnsHXea80LMmXK8ogkn4elSuLqUBXMBCff9dT9fyyXmZZ6d5lzkiIr/iMYuDioF7WCD2fZWFkYTJV4EpRQ=
+X-Received: by 2002:a17:902:b717:b029:11a:fae3:ba7c with SMTP id
+ d23-20020a170902b717b029011afae3ba7cmr32646242pls.28.1625079311599; Wed, 30
+ Jun 2021 11:55:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YNyECw/1FzDCW3G8@mit.edu>
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
+References: <20210624195919.148828-1-jwcart2@gmail.com> <CAJfZ7==EtyPWdrC4Wz3bK=yf0PFF18b6CcVnjHfXF+4knjopPg@mail.gmail.com>
+ <CAP+JOzS+Bn4L-y9BL=5+3+GZ__TCX+9kG4RAta-JP3LoSTJCdw@mail.gmail.com>
+In-Reply-To: <CAP+JOzS+Bn4L-y9BL=5+3+GZ__TCX+9kG4RAta-JP3LoSTJCdw@mail.gmail.com>
+From:   Nicolas Iooss <nicolas.iooss@m4x.org>
+Date:   Wed, 30 Jun 2021 20:55:00 +0200
+X-Gmail-Original-Message-ID: <CAJfZ7=mX0G1bQcpuSB_rtcKSFzjGwvtYjuS7JAwgNxxKUDaa2g@mail.gmail.com>
+Message-ID: <CAJfZ7=mX0G1bQcpuSB_rtcKSFzjGwvtYjuS7JAwgNxxKUDaa2g@mail.gmail.com>
+Subject: Re: [PATCH 1/4] libsepol/cil: Provide option to allow qualified names
+ in declarations
+To:     James Carter <jwcart2@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Wed Jun 30 20:55:13 2021 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000006, queueID=7207656476D
+X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jun 30, 2021 at 10:47:39AM -0400, Theodore Ts'o wrote:
-> On Wed, Jun 30, 2021 at 09:07:56AM +0100, Dr. David Alan Gilbert wrote:
-> > * Theodore Ts'o (tytso@mit.edu) wrote:
-> > > On Tue, Jun 29, 2021 at 04:28:24PM -0400, Daniel Walsh wrote:
-> > > > All this conversation is great, and I look forward to a better solution, but
-> > > > if we go back to the patch, it was to fix an issue where the kernel is
-> > > > requiring CAP_SYS_ADMIN for writing user Xattrs on link files and other
-> > > > special files.
-> > > > 
-> > > > The documented reason for this is to prevent the users from using XATTRS to
-> > > > avoid quota.
-> > > 
-> > > Huh?  Where is it so documented?
-> > 
-> > man xattr(7):
-> >        The  file permission bits of regular files and directories are
-> >        interpreted differently from the file permission bits of special
-> >        files and symbolic links.  For regular files and directories the
-> >        file permission bits define access to the file's contents,
-> >        while for device special files they define access to the device
-> >        described by the special file.  The file permissions of symbolic
-> >        links are not used in access checks.
-> 
-> All of this is true...
-> 
-> >         *** These differences would
-> >        allow users to consume filesystem resources in a way not
-> >        controllable by disk quotas for group or world writable special
-> >        files and directories.****
-> 
-> Anyone with group write access to a regular file can append to the
-> file, and the blocks written will be charged the owner of the file.
-> So it's perfectly "controllable" by the quota system; if you have
-> group write access to a file, you can charge against the user's quota.
-> This is Working As Intended.
-> 
-> And the creation of device special files take the umask into account,
-> just like regular files, so if you have a umask that allows newly
-> created files to be group writeable, the same issue would occur for
-> regular files as device files.  Given that most users have a umask of
-> 0077 or 0022, this is generally Not A Problem.
-> 
-> I think I see the issue which drove the above text, though, which is
-> that Linux's syscall(2) is creating symlinks which do not take umask
-> into account; that is, the permissions are always mode ST_IFLNK|0777.
+On Mon, Jun 28, 2021 at 10:48 PM James Carter <jwcart2@gmail.com> wrote:
+>
+> On Sat, Jun 26, 2021 at 5:46 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+> >
+> > On Thu, Jun 24, 2021 at 9:59 PM James Carter <jwcart2@gmail.com> wrote:
+> > >
+> > > Qualified names have "dots" in them. They are generated when a CIL
+> > > policy is compiled and come from declarations in blocks. If a kernel
+> > > policy is decompiled into a CIL policy, the resulting policy could
+> > > have decarations that use qualified names. Compiling this policy would
+> >
+> > Misspelling: decarations -> declarations
+> >
+>
+> Thanks, I'll fix that in v2.
+>
+> > > result in an error because "dots" in declarations are not allowed.
+> > >
+> > > Qualified names in a policy are normally used to refer to the name of
+> > > identifiers, blocks, macros, or optionals that are declared in a
+> > > different block (that is not a parent). Name resolution is based on
+> > > splitting a name based on the "dots", searching the parents up to the
+> > > global namespace for the first block using the first part of the name,
+> > > using the second part of the name to lookup the next block using the
+> > > first block's symbol tables, looking up the third block in the second's
+> > > symbol tables, and so on.
+> > >
+> > > To allow the option of using qualified names in declarations:
+> > >
+> > > 1) Create a field in the struct cil_db called "qualified_names" which
+> > > is set to CIL_TRUE when qualified names are to be used. This field is
+> > > checked in cil_verify_name() and "dots" are allowed if qualified names
+> > > are being allowed.
+> > >
+> > > 2) Only allow the direct lookup of the whole name in the global symbol
+> > > table. This means that blocks, blockinherits, blockabstracts, and in-
+> > > statements cannot be allowed. Use the "qualified_names" field of the
+> > > cil_db to know when using one of these should result in an error.
+> > >
+> > > 3) Create the function cil_set_qualified_names() that is used to set
+> > > the "qualified_names" field. Export the function in libsepol.
+> > >
+> > > Signed-off-by: James Carter <jwcart2@gmail.com>
+> > > ---
+> > >  libsepol/cil/include/cil/cil.h     |  1 +
+> > >  libsepol/cil/src/cil.c             |  6 ++++++
+> > >  libsepol/cil/src/cil_build_ast.c   | 24 ++++++++++++++++++++++--
+> > >  libsepol/cil/src/cil_internal.h    |  1 +
+> > >  libsepol/cil/src/cil_resolve_ast.c |  4 ++--
+> > >  libsepol/cil/src/cil_verify.c      | 19 ++++++++++++++-----
+> > >  libsepol/cil/src/cil_verify.h      |  2 +-
+> > >  libsepol/src/libsepol.map.in       |  1 +
+> > >  8 files changed, 48 insertions(+), 10 deletions(-)
+> > >
+> > [...]
+> > > diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
+> > > index 59397f70..9cb1a6f6 100644
+> > > --- a/libsepol/cil/src/cil_verify.c
+> > > +++ b/libsepol/cil/src/cil_verify.c
+> > > @@ -92,7 +92,7 @@ static int __cil_is_reserved_name(const char *name, enum cil_flavor flavor)
+> > >         return CIL_FALSE;
+> > >  }
+> > >
+> > > -int cil_verify_name(const char *name, enum cil_flavor flavor)
+> > > +int cil_verify_name(struct cil_db *db, const char *name, enum cil_flavor flavor)
+> > >  {
+> > >         int rc = SEPOL_ERR;
+> > >         int len;
+> > > @@ -116,10 +116,19 @@ int cil_verify_name(const char *name, enum cil_flavor flavor)
+> > >                         goto exit;
+> > >         }
+> > >
+> > > -       for (i = 1; i < len; i++) {
+> > > -               if (!isalnum(name[i]) && name[i] != '_' && name[i] != '-') {
+> > > -                       cil_log(CIL_ERR, "Invalid character \"%c\" in %s\n", name[i], name);
+> > > -                       goto exit;
+> > > +       if (db->qualified_names == CIL_FALSE) {
+> > > +               for (i = 1; i < len; i++) {
+> > > +                       if (!isalnum(name[i]) && name[i] != '_' && name[i] != '-') {
+> > > +                               cil_log(CIL_ERR, "Invalid character \"%c\" in %s\n", name[i], name);
+> > > +                               goto exit;
+> > > +                       }
+> > > +               }
+> > > +       } else {
+> > > +               for (i = 1; i < len; i++) {
+> > > +                       if (!isalnum(name[i]) && name[i] != '_' && name[i] != '-' && name[i] != '.') {
+> > > +                               cil_log(CIL_ERR, "Invalid character \"%c\" in %s\n", name[i], name);
+> > > +                               goto exit;
+> > > +                       }
+> > >                 }
+> > >         }
+> >
+> > As cil_verify_name does not modify db (and would be seen as a function
+> > which does not modify anything and only checks some rules), it would
+> > be better to add a const qualifier:
+> >
+> >     int cil_verify_name(const struct cil_db *db, const char *name,
+> > enum cil_flavor flavor)
+> >
+>
+> Good suggestion.
+>
+> > Other than that, the documentation of the new option,
+> > "--qualified-names  Use qualified names." make me feel like the
+> > wording can be improved. More precisely, a commit message contains
+> > "Using qualified names means that declaration names can have dots in
+> > them" and this definition should also be in the documentation. So I am
+> > suggesting to replace the documentation with:
+> >
+> >     Allow names containing dots (qualified names). Blocks,
+> > blockinherits, blockabstracts, and in-statements will not be allowed.
+> >
+>
+> Sounds clearer.
+>
+> > Other than that, when I tested "secil2tree -A resolve -o test.cil
+> > secilc/test/policy.cil && secilc -Q test.cil" I encountered other
+> > errors, which are not related to these patches. When modifying the
+> > resulting "test.cil" to make it compile (by removing blocks and
+> > renaming some objects), option -Q worked fine. It would be nice if
+> > such a command was integrated in secilc's tests, in order to prevent
+> > future regressions. Nevertheless such work can be done once this
+> > series is merged.
+> >
+>
+> I might not have been clear. This patch doesn't allow you to compile
+> after using "-A resolve". I will be working on that next.
+> I am thinking of creating a generic block "<block>", so blocks that
+> are resolved can be re-written using that.
+>
+> So when writing out the AST for the resolve phase,
+>
+> (block b
+>   (type t)
+>   (allow t self (CLASS (PERM)))
+> )
+>
+> would be written as
+>
+> ;block b
+> (<block>
+>   (type b.t)
+>   (allow b.t self (CLASS (PERM)))
+> )
+>
+> or, maybe I would also create a comment statement that wouldn't be
+> discarded by the parser
+>
+> (<comment> "block b")
+> (<block>
+>   (type b.t)
+>   (allow b.t self (CLASS (PERM)))
+> )
+>
+> I need to do similar things to blockinherits, blockabstracts, and
+> in-statements. I also would like to be able add a comment when an
+> optional is disabled.
+>
+> I am open to suggestions.
 
-IIUC, idea is to use permission bits on symlink to decide whether caller
-can read/write user.* xattrs (like regular file). Hence create symlinks
-while honoring umask (or default posix acl on dir) and modify relevant
-code for file creation. Also that possibly will require changing chmod
-to allow chaging mode on chmod. 
+These suggestions look good to me. Actually I even began writing a
+small patch to show resolved blockinherit statements as "( ;
+blockinherit b", because otherwise the parentheses are wrong in the
+output of "secil2tree -A resolve secilc/test/policy.cil".
 
-Vivek
+About introducing a new comment statement, it sounds like a whole new
+feature just designed to make a niche tool work in a simple way. In my
+humble opinion I prefer seeing regular comments in secil2tree dumps,
+which has the advantage of being an existing syntax, being easy to
+read, etc. But this is what I feel and of course if you prefer the way
+you suggest or if someone else has a different preference, it would be
+all right. And I might have missed the whole point of introducing
+comments which are not discarded by CIL parsers and what advantage
+this approach gives.
 
-> 
-> Hence, it might be that the right answer is to remove this fairly
-> arbitrary restriction entirely, and change symlink(2) so that it
-> creates files which respects the umask.  Posix and SUS doesn't specify
-> what the permissions are that are used, and historically (before the
-> advent of xattrs) I suspect since it didn't matter, no one cared about
-> whether or not umask was applied.
-> 
-> Some people might object to such a change arguing that with
-> pre-existing file systems where there are symlinks which
-> world-writeable, this might cause people to be able to charge up to
-> 32k (or whatever the maximum size of the xattr supported by the file
-> system) for each symlink.  However, (a) very few people actually use
-> quotas, and this would only be an issue for those users, and (b) the
-> amount of quota "abuse" that could be carried out this way is small
-> enough that I'm not sure it matters.
-> 
->      	    	  	      	  - Ted
-> 
+Cheers,
+Nicolas
 

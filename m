@@ -2,296 +2,110 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D285F3B88E9
-	for <lists+selinux@lfdr.de>; Wed, 30 Jun 2021 21:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9980B3B8946
+	for <lists+selinux@lfdr.de>; Wed, 30 Jun 2021 21:45:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233030AbhF3TFg (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 30 Jun 2021 15:05:36 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:48722 "EHLO
+        id S233681AbhF3TsA (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 30 Jun 2021 15:48:00 -0400
+Received: from mx1.polytechnique.org ([129.104.30.34]:41728 "EHLO
         mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232881AbhF3TFf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 30 Jun 2021 15:05:35 -0400
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+        with ESMTP id S229700AbhF3TsA (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 30 Jun 2021 15:48:00 -0400
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id D8825564774
-        for <selinux@vger.kernel.org>; Wed, 30 Jun 2021 20:57:13 +0200 (CEST)
-Received: by mail-pj1-f42.google.com with SMTP id g24so2424420pji.4
-        for <selinux@vger.kernel.org>; Wed, 30 Jun 2021 11:57:13 -0700 (PDT)
-X-Gm-Message-State: AOAM533YxcUbyz2zeuvdbn+SpztlCPi2lGwrKgbaR5zyMLEQK/FKK3ek
-        zp1OIi/eCdimrheuRiP1dlnZoqknBt1u+tJWkAg=
-X-Google-Smtp-Source: ABdhPJzyqLRVtk8Es4mHkguV6hpH0WLyeUE4TQC6t2XDqskvkTOWCONkI3QuSvL8KEwYDprBt//Zzt4AllUbD6LPE8A=
-X-Received: by 2002:a17:90a:6394:: with SMTP id f20mr5698859pjj.80.1625079432442;
- Wed, 30 Jun 2021 11:57:12 -0700 (PDT)
+        by ssl.polytechnique.org (Postfix) with ESMTPSA id 3FC5E56128D
+        for <selinux@vger.kernel.org>; Wed, 30 Jun 2021 21:45:29 +0200 (CEST)
+Received: by mail-pl1-f174.google.com with SMTP id m17so2099201plx.7
+        for <selinux@vger.kernel.org>; Wed, 30 Jun 2021 12:45:29 -0700 (PDT)
+X-Gm-Message-State: AOAM530Bc84OBjrC0NmDalJDVo/JmrN3bUlBNH1Ux0TOEtaLFt47vsN5
+        +J/WvbAHRRsgARm1Wkko9DQob051YR8f2G/cZrA=
+X-Google-Smtp-Source: ABdhPJzSPhZVswdqCzkRk8oEmum9wE+8BJCG/a2JvByRD8BC8+wHhB0F90EDjyqb2zYCBXDaWU4Zlzi51OXeLeXY2DY=
+X-Received: by 2002:a17:90a:102:: with SMTP id b2mr41176495pjb.156.1625082327958;
+ Wed, 30 Jun 2021 12:45:27 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210629151402.41071-1-jwcart2@gmail.com>
-In-Reply-To: <20210629151402.41071-1-jwcart2@gmail.com>
+References: <20210624195815.148698-1-jwcart2@gmail.com> <CAJfZ7==-2aToEuU4ZyD6qpCwN+JQCVkAm=3KLf4dJUM_yNFnFA@mail.gmail.com>
+In-Reply-To: <CAJfZ7==-2aToEuU4ZyD6qpCwN+JQCVkAm=3KLf4dJUM_yNFnFA@mail.gmail.com>
 From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-Date:   Wed, 30 Jun 2021 20:57:01 +0200
-X-Gmail-Original-Message-ID: <CAJfZ7=kMyhsTVjQ6Qy42K5ewTmP=60-3s7pjZ+Lr3p0caROuUw@mail.gmail.com>
-Message-ID: <CAJfZ7=kMyhsTVjQ6Qy42K5ewTmP=60-3s7pjZ+Lr3p0caROuUw@mail.gmail.com>
-Subject: Re: [PATCH 1/4 v2] libsepol/cil: Provide option to allow qualified
- names in declarations
+Date:   Wed, 30 Jun 2021 21:45:17 +0200
+X-Gmail-Original-Message-ID: <CAJfZ7==bjNsRTqgGwWeXWi1v7QCoBPkOpPiyW4-agJMVsdxY3w@mail.gmail.com>
+Message-ID: <CAJfZ7==bjNsRTqgGwWeXWi1v7QCoBPkOpPiyW4-agJMVsdxY3w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] libsepol/cil: Add function to determine if a subtree
+ has a declaration
 To:     James Carter <jwcart2@gmail.com>
 Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Wed Jun 30 20:57:14 2021 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.000008, queueID=7A228564777
+X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Wed Jun 30 21:45:29 2021 +0200 (CEST))
+X-Spam-Flag: No, tests=bogofilter, spamicity=0.000172, queueID=AAE8056129A
 X-Org-Mail: nicolas.iooss.2010@polytechnique.org
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Jun 29, 2021 at 5:14 PM James Carter <jwcart2@gmail.com> wrote:
+On Sat, Jun 26, 2021 at 2:33 PM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
 >
-> Qualified names have "dots" in them. They are generated when a CIL
-> policy is compiled and come from declarations in blocks. If a kernel
-> policy is decompiled into a CIL policy, the resulting policy could
-> have declarations that use qualified names. Compiling this policy would
-> result in an error because "dots" in declarations are not allowed.
+> On Thu, Jun 24, 2021 at 9:58 PM James Carter <jwcart2@gmail.com> wrote:
+> >
+> > Create the function cil_tree_subtree_has_decl() that returns CIL_TRUE
+> > if the subtree has a declaration in it and CIL_FALSE otherwise.
+> >
+> > Signed-off-by: James Carter <jwcart2@gmail.com>
 >
-> Qualified names in a policy are normally used to refer to the name of
-> identifiers, blocks, macros, or optionals that are declared in a
-> different block (that is not a parent). Name resolution is based on
-> splitting a name based on the "dots", searching the parents up to the
-> global namespace for the first block using the first part of the name,
-> using the second part of the name to lookup the next block using the
-> first block's symbol tables, looking up the third block in the second's
-> symbol tables, and so on.
+> For these 2 patches:
 >
-> To allow the option of using qualified names in declarations:
->
-> 1) Create a field in the struct cil_db called "qualified_names" which
-> is set to CIL_TRUE when qualified names are to be used. This field is
-> checked in cil_verify_name() and "dots" are allowed if qualified names
-> are being allowed.
->
-> 2) Only allow the direct lookup of the whole name in the global symbol
-> table. This means that blocks, blockinherits, blockabstracts, and in-
-> statements cannot be allowed. Use the "qualified_names" field of the
-> cil_db to know when using one of these should result in an error.
->
-> 3) Create the function cil_set_qualified_names() that is used to set
-> the "qualified_names" field. Export the function in libsepol.
->
-> Signed-off-by: James Carter <jwcart2@gmail.com>
-> ---
-> v2:
->  Fixed misspelling in commit message
->  Make struct cil_db * const in cil_verify_name()
+> Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
 
-For these 4 patches:
+I applied them.
 
-Acked-by: Nicolas Iooss <nicolas.iooss@m4x.org>
-
-Thanks,
+Thanks!
 Nicolas
 
->
->  libsepol/cil/include/cil/cil.h     |  1 +
->  libsepol/cil/src/cil.c             |  6 ++++++
->  libsepol/cil/src/cil_build_ast.c   | 24 ++++++++++++++++++++++--
->  libsepol/cil/src/cil_internal.h    |  1 +
->  libsepol/cil/src/cil_resolve_ast.c |  4 ++--
->  libsepol/cil/src/cil_verify.c      | 19 ++++++++++++++-----
->  libsepol/cil/src/cil_verify.h      |  2 +-
->  libsepol/src/libsepol.map.in       |  1 +
->  8 files changed, 48 insertions(+), 10 deletions(-)
->
-> diff --git a/libsepol/cil/include/cil/cil.h b/libsepol/cil/include/cil/cil.h
-> index 92fac6e1..482ca522 100644
-> --- a/libsepol/cil/include/cil/cil.h
-> +++ b/libsepol/cil/include/cil/cil.h
-> @@ -51,6 +51,7 @@ extern int cil_selinuxusers_to_string(cil_db_t *db, char **out, size_t *size);
->  extern int cil_filecons_to_string(cil_db_t *db, char **out, size_t *size);
->  extern void cil_set_disable_dontaudit(cil_db_t *db, int disable_dontaudit);
->  extern void cil_set_multiple_decls(cil_db_t *db, int multiple_decls);
-> +extern void cil_set_qualified_names(struct cil_db *db, int qualified_names);
->  extern void cil_set_disable_neverallow(cil_db_t *db, int disable_neverallow);
->  extern void cil_set_preserve_tunables(cil_db_t *db, int preserve_tunables);
->  extern int cil_set_handle_unknown(cil_db_t *db, int handle_unknown);
-> diff --git a/libsepol/cil/src/cil.c b/libsepol/cil/src/cil.c
-> index 9d5038d9..3f2e6927 100644
-> --- a/libsepol/cil/src/cil.c
-> +++ b/libsepol/cil/src/cil.c
-> @@ -440,6 +440,7 @@ void cil_db_init(struct cil_db **db)
->         (*db)->handle_unknown = -1;
->         (*db)->mls = -1;
->         (*db)->multiple_decls = CIL_FALSE;
-> +       (*db)->qualified_names = CIL_FALSE;
->         (*db)->target_platform = SEPOL_TARGET_SELINUX;
->         (*db)->policy_version = POLICYDB_VERSION_MAX;
->  }
-> @@ -1872,6 +1873,11 @@ void cil_set_multiple_decls(struct cil_db *db, int multiple_decls)
->         db->multiple_decls = multiple_decls;
->  }
->
-> +void cil_set_qualified_names(struct cil_db *db, int qualified_names)
-> +{
-> +       db->qualified_names = qualified_names;
-> +}
-> +
->  void cil_set_target_platform(struct cil_db *db, int target_platform)
->  {
->         db->target_platform = target_platform;
-> diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-> index baed3e58..9da90883 100644
-> --- a/libsepol/cil/src/cil_build_ast.c
-> +++ b/libsepol/cil/src/cil_build_ast.c
-> @@ -146,7 +146,7 @@ int cil_gen_node(struct cil_db *db, struct cil_tree_node *ast_node, struct cil_s
->         int rc = SEPOL_ERR;
->         symtab_t *symtab = NULL;
->
-> -       rc = cil_verify_name((const char*)key, nflavor);
-> +       rc = cil_verify_name(db, (const char*)key, nflavor);
->         if (rc != SEPOL_OK) {
->                 goto exit;
->         }
-> @@ -204,6 +204,11 @@ int cil_gen_block(struct cil_db *db, struct cil_tree_node *parse_current, struct
->                 goto exit;
->         }
->
-> +       if (db->qualified_names) {
-> +               cil_log(CIL_ERR, "Blocks are not allowed when the option for qualified names is used\n");
-> +               goto exit;
-> +       }
-> +
->         rc = __cil_verify_syntax(parse_current, syntax, syntax_len);
->         if (rc != SEPOL_OK) {
->                 goto exit;
-> @@ -274,6 +279,11 @@ int cil_gen_blockinherit(struct cil_db *db, struct cil_tree_node *parse_current,
->                 goto exit;
->         }
->
-> +       if (db->qualified_names) {
-> +               cil_log(CIL_ERR, "Block inherit rules are not allowed when the option for qualified names is used\n");
-> +               goto exit;
-> +       }
-> +
->         rc = __cil_verify_syntax(parse_current, syntax, syntax_len);
->         if (rc != SEPOL_OK) {
->                 goto exit;
-> @@ -331,6 +341,11 @@ int cil_gen_blockabstract(struct cil_db *db, struct cil_tree_node *parse_current
->                 goto exit;
->         }
->
-> +       if (db->qualified_names) {
-> +               cil_log(CIL_ERR, "Block abstract rules are not allowed when the option for qualified names is used\n");
-> +               goto exit;
-> +       }
-> +
->         rc = __cil_verify_syntax(parse_current, syntax, syntax_len);
->         if (rc != SEPOL_OK) {
->                 goto exit;
-> @@ -376,6 +391,11 @@ int cil_gen_in(struct cil_db *db, struct cil_tree_node *parse_current, struct ci
->                 goto exit;
->         }
->
-> +       if (db->qualified_names) {
-> +               cil_log(CIL_ERR, "In-statements are not allowed when the option for qualified names is used\n");
-> +               goto exit;
-> +       }
-> +
->         rc = __cil_verify_syntax(parse_current, syntax, syntax_len);
->         if (rc != SEPOL_OK) {
->                 goto exit;
-> @@ -5261,7 +5281,7 @@ int cil_gen_macro(struct cil_db *db, struct cil_tree_node *parse_current, struct
->
->                 param->str =  current_item->cl_head->next->data;
->
-> -               rc = cil_verify_name(param->str, param->flavor);
-> +               rc = cil_verify_name(db, param->str, param->flavor);
->                 if (rc != SEPOL_OK) {
->                         cil_destroy_param(param);
->                         goto exit;
-> diff --git a/libsepol/cil/src/cil_internal.h b/libsepol/cil/src/cil_internal.h
-> index 8b9aeabf..f184d739 100644
-> --- a/libsepol/cil/src/cil_internal.h
-> +++ b/libsepol/cil/src/cil_internal.h
-> @@ -321,6 +321,7 @@ struct cil_db {
->         int handle_unknown;
->         int mls;
->         int multiple_decls;
-> +       int qualified_names;
->         int target_platform;
->         int policy_version;
->  };
-> diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
-> index 5245cc15..27efffa6 100644
-> --- a/libsepol/cil/src/cil_resolve_ast.c
-> +++ b/libsepol/cil/src/cil_resolve_ast.c
-> @@ -4409,8 +4409,8 @@ int cil_resolve_name_keep_aliases(struct cil_tree_node *ast_node, char *name, en
->
->         *datum = NULL;
->
-> -       if (strchr(name,'.') == NULL) {
-> -               /* No '.' in name */
-> +       if (db->qualified_names || strchr(name,'.') == NULL) {
-> +               /* Using qualified names or No '.' in name */
->                 rc = __cil_resolve_name_helper(db, ast_node->parent, name, sym_index, datum);
->                 if (rc != SEPOL_OK) {
->                         goto exit;
-> diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
-> index 59397f70..ce3fcd8c 100644
-> --- a/libsepol/cil/src/cil_verify.c
-> +++ b/libsepol/cil/src/cil_verify.c
-> @@ -92,7 +92,7 @@ static int __cil_is_reserved_name(const char *name, enum cil_flavor flavor)
->         return CIL_FALSE;
->  }
->
-> -int cil_verify_name(const char *name, enum cil_flavor flavor)
-> +int cil_verify_name(const struct cil_db *db, const char *name, enum cil_flavor flavor)
->  {
->         int rc = SEPOL_ERR;
->         int len;
-> @@ -116,10 +116,19 @@ int cil_verify_name(const char *name, enum cil_flavor flavor)
->                         goto exit;
->         }
->
-> -       for (i = 1; i < len; i++) {
-> -               if (!isalnum(name[i]) && name[i] != '_' && name[i] != '-') {
-> -                       cil_log(CIL_ERR, "Invalid character \"%c\" in %s\n", name[i], name);
-> -                       goto exit;
-> +       if (db->qualified_names == CIL_FALSE) {
-> +               for (i = 1; i < len; i++) {
-> +                       if (!isalnum(name[i]) && name[i] != '_' && name[i] != '-') {
-> +                               cil_log(CIL_ERR, "Invalid character \"%c\" in %s\n", name[i], name);
-> +                               goto exit;
-> +                       }
-> +               }
-> +       } else {
-> +               for (i = 1; i < len; i++) {
-> +                       if (!isalnum(name[i]) && name[i] != '_' && name[i] != '-' && name[i] != '.') {
-> +                               cil_log(CIL_ERR, "Invalid character \"%c\" in %s\n", name[i], name);
-> +                               goto exit;
-> +                       }
->                 }
->         }
->
-> diff --git a/libsepol/cil/src/cil_verify.h b/libsepol/cil/src/cil_verify.h
-> index 4ea14f5b..26e195a9 100644
-> --- a/libsepol/cil/src/cil_verify.h
-> +++ b/libsepol/cil/src/cil_verify.h
-> @@ -56,7 +56,7 @@ struct cil_args_verify {
->         int *pass;
->  };
->
-> -int cil_verify_name(const char *name, enum cil_flavor flavor);
-> +int cil_verify_name(const struct cil_db *db, const char *name, enum cil_flavor flavor);
->  int __cil_verify_syntax(struct cil_tree_node *parse_current, enum cil_syntax s[], int len);
->  int cil_verify_expr_syntax(struct cil_tree_node *current, enum cil_flavor op, enum cil_flavor expr_flavor);
->  int cil_verify_constraint_leaf_expr_syntax(enum cil_flavor l_flavor, enum cil_flavor r_flavor, enum cil_flavor op, enum cil_flavor expr_flavor);
-> diff --git a/libsepol/src/libsepol.map.in b/libsepol/src/libsepol.map.in
-> index 2e503bd1..0e05d606 100644
-> --- a/libsepol/src/libsepol.map.in
-> +++ b/libsepol/src/libsepol.map.in
-> @@ -272,4 +272,5 @@ LIBSEPOL_3.0 {
->         cil_write_parse_ast;
->         cil_write_build_ast;
->         cil_write_resolve_ast;
-> +       cil_set_qualified_names;
->  } LIBSEPOL_1.1;
-> --
-> 2.31.1
->
+> > ---
+> >  libsepol/cil/src/cil_tree.c | 16 ++++++++++++++++
+> >  libsepol/cil/src/cil_tree.h |  2 ++
+> >  2 files changed, 18 insertions(+)
+> >
+> > diff --git a/libsepol/cil/src/cil_tree.c b/libsepol/cil/src/cil_tree.c
+> > index 067268eb..4cf8dcc8 100644
+> > --- a/libsepol/cil/src/cil_tree.c
+> > +++ b/libsepol/cil/src/cil_tree.c
+> > @@ -136,6 +136,22 @@ __attribute__((format (printf, 3, 4))) void cil_tree_log(struct cil_tree_node *n
+> >         cil_log(lvl,"\n");
+> >  }
+> >
+> > +int cil_tree_subtree_has_decl(struct cil_tree_node *node)
+> > +{
+> > +       while (node) {
+> > +               if (node->flavor >= CIL_MIN_DECLARATIVE) {
+> > +                       return CIL_TRUE;
+> > +               }
+> > +               if (node->cl_head != NULL) {
+> > +                       if (cil_tree_subtree_has_decl(node->cl_head))
+> > +                               return CIL_TRUE;
+> > +               }
+> > +               node = node->next;
+> > +       }
+> > +
+> > +       return CIL_FALSE;
+> > +}
+> > +
+> >  int cil_tree_init(struct cil_tree **tree)
+> >  {
+> >         struct cil_tree *new_tree = cil_malloc(sizeof(*new_tree));
+> > diff --git a/libsepol/cil/src/cil_tree.h b/libsepol/cil/src/cil_tree.h
+> > index bac9f1e4..f4d22071 100644
+> > --- a/libsepol/cil/src/cil_tree.h
+> > +++ b/libsepol/cil/src/cil_tree.h
+> > @@ -54,6 +54,8 @@ struct cil_tree_node *cil_tree_get_next_path(struct cil_tree_node *node, char **
+> >  char *cil_tree_get_cil_path(struct cil_tree_node *node);
+> >  __attribute__((format (printf, 3, 4))) void cil_tree_log(struct cil_tree_node *node, enum cil_log_level lvl, const char* msg, ...);
+> >
+> > +int cil_tree_subtree_has_decl(struct cil_tree_node *node);
+> > +
+> >  int cil_tree_init(struct cil_tree **tree);
+> >  void cil_tree_destroy(struct cil_tree **tree);
+> >  void cil_tree_subtree_destroy(struct cil_tree_node *node);
+> > --
+> > 2.26.3
+> >
 

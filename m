@@ -2,137 +2,218 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3DB73BDC8E
-	for <lists+selinux@lfdr.de>; Tue,  6 Jul 2021 19:54:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A8B93BDDF2
+	for <lists+selinux@lfdr.de>; Tue,  6 Jul 2021 21:20:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230347AbhGFR52 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 6 Jul 2021 13:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49834 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230442AbhGFR52 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 6 Jul 2021 13:57:28 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70C60C06175F
-        for <selinux@vger.kernel.org>; Tue,  6 Jul 2021 10:54:48 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id l24so29177781edr.11
-        for <selinux@vger.kernel.org>; Tue, 06 Jul 2021 10:54:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=qklAFuHgG6PaBIN7LRiq0ZqDomO1gxp4FJcY+IieCno=;
-        b=pGzBkixzLr8F4NsB7DZWdbIK2FODkgy8Xcmv+9ICE1vnpWpxgrg87dGtSO/khtHf5E
-         RdvJMORw9aJGAKnNRyKJS1qdGzHqzt4k/TweeSbGJQ/FyrI3/02ZuOHiaQZ78I8vSNT+
-         Re28z3/CwQGZGh42u865DuOMimugTdN3LNHW6628BzGvmJWtVnk31CLdCI2YQ6ti0/gv
-         SJHqFbCU+Qufre9H9zmYiVpjOQoL5P1uUgXlA8l9hv5mlEtcY+2uOEpeQWST9gpT9iGH
-         hrYCUWBWd0PbZDEsV4XUadxdnuSDgcd7XPKBjMFgFIW3qUHfDR7lvTxjSOxp8HHxbkVm
-         mJcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=qklAFuHgG6PaBIN7LRiq0ZqDomO1gxp4FJcY+IieCno=;
-        b=G7oYAmhilbJV8DZ4bF2HbXDW1bTn6oSCSTk83zvvqCnbWL9ckMeJUoYhuzMASs9AFm
-         5PmyG5+ZlczTIAoIFx3gfubrWCiQFKH5r1ZsnTTP7j04Pl3VipUD2NEBPTFRElPF1HKo
-         uikisdul54KrRIwT7xZ7PkngFh1yJyFd33YpiLRViGOQiYTlZPcnNUTj/UDBpY2R2Qoh
-         /WeI1qXN/BeKvc2o3apZTu18AwS5hbp5QsSoSMsuUYRNbyvuB4aRFLOXKj0DBRAKMOR2
-         C/Td98WZRya4k2uTDMcyu/K3Xxw5KFMwRpv6Yi2cyEGU4ArZVjXpaIJ+huTMTLPcktPB
-         z1EQ==
-X-Gm-Message-State: AOAM531QK/wxcN8rpDQH7GSrzC2nbkfBCPhIyQR9mJDXvFQksptEUszx
-        ocZs/OcWLzMEVJX7bJCnDXAElCP//3c=
-X-Google-Smtp-Source: ABdhPJxbCxj4Hwdm7zZXzbIBb025aJP6+JKdiStMZot7R5/R6xZpihCf7PGckeFYmL4qfHHO/uXzww==
-X-Received: by 2002:a05:6402:31b3:: with SMTP id dj19mr25426513edb.24.1625594087043;
-        Tue, 06 Jul 2021 10:54:47 -0700 (PDT)
-Received: from debianHome.localdomain (dynamic-095-116-100-174.95.116.pool.telefonica.de. [95.116.100.174])
-        by smtp.gmail.com with ESMTPSA id lg16sm6050950ejb.69.2021.07.06.10.54.46
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 10:54:46 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH 13/13] checkpolicy: mark read-only parameters in policy define const
-Date:   Tue,  6 Jul 2021 19:54:33 +0200
-Message-Id: <20210706175433.29270-13-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20210706175433.29270-1-cgzones@googlemail.com>
-References: <20210706175433.29270-1-cgzones@googlemail.com>
+        id S231866AbhGFTVt (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 6 Jul 2021 15:21:49 -0400
+Received: from linux.microsoft.com ([13.77.154.182]:41376 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231774AbhGFTVt (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 6 Jul 2021 15:21:49 -0400
+Received: from [10.137.112.111] (unknown [131.107.147.111])
+        by linux.microsoft.com (Postfix) with ESMTPSA id 4E1F320B7188;
+        Tue,  6 Jul 2021 12:19:10 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4E1F320B7188
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1625599150;
+        bh=HAyiPMPlknf585eyjiByUkZYMcEfesGAqJ5IRtDhZNY=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=cw2ZMpdXbJc2YaqalFiZFCL2zmBUDnNh/RiSOFP2Wggm2eE5TVzXqFerw1CYvhy+/
+         eM0D7iqhnJp4l+wiiEIS643DB+s02Ry+iUnZuuvIAZWpprtuo1IQsAaTcaUnoEgaiZ
+         0zAPn4Sm907XkbmpCgwGjJNxKOgAohrkVfrMmvgs=
+Subject: Re: [PATCH v3 2/3] ima: Return int in the functions to measure a
+ buffer
+To:     Roberto Sassu <roberto.sassu@huawei.com>, zohar@linux.ibm.com,
+        paul@paul-moore.com
+Cc:     stephen.smalley.work@gmail.com, prsriva02@gmail.com,
+        tusharsu@linux.microsoft.com, linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org, selinux@vger.kernel.org
+References: <20210705090922.3321178-1-roberto.sassu@huawei.com>
+ <20210705090922.3321178-3-roberto.sassu@huawei.com>
+From:   Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
+Message-ID: <5bc9d707-b193-6111-fea6-50c70e6f2245@linux.microsoft.com>
+Date:   Tue, 6 Jul 2021 12:21:04 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210705090922.3321178-3-roberto.sassu@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Make it more obvious which parameters are read-only and not being
-modified and allow callers to pass const pointers.
+On 7/5/2021 2:09 AM, Roberto Sassu wrote:
+> ima_measure_critical_data() and process_buffer_measurement() currently
+> don't return a result. A caller wouldn't be able to know whether those
+> functions were executed successfully.
+> 
+> This patch modifies the return type from void to int, and returns 0 if the
+> buffer has been successfully measured, a negative value otherwise.
+> 
+> Also, this patch does not modify the behavior of existing callers by
+> processing the returned value. For those, the return value is ignored.
+> 
+> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> ---
+>   include/linux/ima.h               | 15 +++++++-----
+>   security/integrity/ima/ima.h      | 10 ++++----
+>   security/integrity/ima/ima_main.c | 40 ++++++++++++++++++-------------
+>   3 files changed, 37 insertions(+), 28 deletions(-)
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- checkpolicy/policy_define.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+Reviewed-by: Lakshmi Ramasubramanian <nramas@linux.microsoft.com>
 
-diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
-index 462e3994..a8aa615e 100644
---- a/checkpolicy/policy_define.c
-+++ b/checkpolicy/policy_define.c
-@@ -77,7 +77,7 @@ extern int yyerror(const char *msg);
- #define ERRORMSG_LEN 255
- static char errormsg[ERRORMSG_LEN + 1] = {0};
- 
--static int id_has_dot(char *id);
-+static int id_has_dot(const char *id);
- static int parse_security_context(context_struct_t *c);
- 
- /* initialize all of the state variables for the scanner/parser */
-@@ -141,7 +141,7 @@ int insert_id(const char *id, int push)
- 
- /* If the identifier has a dot within it and that its first character
-    is not a dot then return 1, else return 0. */
--static int id_has_dot(char *id)
-+static int id_has_dot(const char *id)
- {
- 	if (strchr(id, '.') >= id + 1) {
- 		return 1;
-@@ -2172,7 +2172,7 @@ void avrule_xperm_setrangebits(uint16_t low, uint16_t high,
- 	}
- }
- 
--int avrule_xperms_used(av_extended_perms_t *xperms)
-+int avrule_xperms_used(const av_extended_perms_t *xperms)
- {
- 	unsigned int i;
- 
-@@ -2347,7 +2347,7 @@ unsigned int xperms_for_each_bit(unsigned int *bit, av_extended_perms_t *xperms)
- 	return 0;
- }
- 
--int avrule_cpy(avrule_t *dest, avrule_t *src)
-+int avrule_cpy(avrule_t *dest, const avrule_t *src)
- {
- 	class_perm_node_t *src_perms;
- 	class_perm_node_t *dest_perms, *dest_tail;
-@@ -2395,7 +2395,7 @@ int avrule_cpy(avrule_t *dest, avrule_t *src)
- 	return 0;
- }
- 
--int define_te_avtab_ioctl(avrule_t *avrule_template)
-+int define_te_avtab_ioctl(const avrule_t *avrule_template)
- {
- 	avrule_t *avrule;
- 	struct av_ioctl_range_list *rangelist;
-@@ -3444,9 +3444,10 @@ bad:
- 	return -1;
- }
- 
--static constraint_expr_t *constraint_expr_clone(constraint_expr_t * expr)
-+static constraint_expr_t *constraint_expr_clone(const constraint_expr_t * expr)
- {
--	constraint_expr_t *h = NULL, *l = NULL, *e, *newe;
-+	constraint_expr_t *h = NULL, *l = NULL, *newe;
-+	const constraint_expr_t *e;
- 	for (e = expr; e; e = e->next) {
- 		newe = malloc(sizeof(*newe));
- 		if (!newe)
--- 
-2.32.0
+  -lakshmi
 
+> 
+> diff --git a/include/linux/ima.h b/include/linux/ima.h
+> index 81e830d01ced..60492263aa64 100644
+> --- a/include/linux/ima.h
+> +++ b/include/linux/ima.h
+> @@ -35,10 +35,10 @@ extern void ima_post_path_mknod(struct user_namespace *mnt_userns,
+>   extern int ima_file_hash(struct file *file, char *buf, size_t buf_size);
+>   extern int ima_inode_hash(struct inode *inode, char *buf, size_t buf_size);
+>   extern void ima_kexec_cmdline(int kernel_fd, const void *buf, int size);
+> -extern void ima_measure_critical_data(const char *event_label,
+> -				      const char *event_name,
+> -				      const void *buf, size_t buf_len,
+> -				      bool hash);
+> +extern int ima_measure_critical_data(const char *event_label,
+> +				     const char *event_name,
+> +				     const void *buf, size_t buf_len,
+> +				     bool hash);
+>   
+>   #ifdef CONFIG_IMA_APPRAISE_BOOTPARAM
+>   extern void ima_appraise_parse_cmdline(void);
+> @@ -144,10 +144,13 @@ static inline int ima_inode_hash(struct inode *inode, char *buf, size_t buf_size
+>   
+>   static inline void ima_kexec_cmdline(int kernel_fd, const void *buf, int size) {}
+>   
+> -static inline void ima_measure_critical_data(const char *event_label,
+> +static inline int ima_measure_critical_data(const char *event_label,
+>   					     const char *event_name,
+>   					     const void *buf, size_t buf_len,
+> -					     bool hash) {}
+> +					     bool hash)
+> +{
+> +	return -ENOENT;
+> +}
+>   
+>   #endif /* CONFIG_IMA */
+>   
+> diff --git a/security/integrity/ima/ima.h b/security/integrity/ima/ima.h
+> index f0e448ed1f9f..03db221324c3 100644
+> --- a/security/integrity/ima/ima.h
+> +++ b/security/integrity/ima/ima.h
+> @@ -264,11 +264,11 @@ void ima_store_measurement(struct integrity_iint_cache *iint, struct file *file,
+>   			   struct evm_ima_xattr_data *xattr_value,
+>   			   int xattr_len, const struct modsig *modsig, int pcr,
+>   			   struct ima_template_desc *template_desc);
+> -void process_buffer_measurement(struct user_namespace *mnt_userns,
+> -				struct inode *inode, const void *buf, int size,
+> -				const char *eventname, enum ima_hooks func,
+> -				int pcr, const char *func_data,
+> -				bool buf_hash);
+> +int process_buffer_measurement(struct user_namespace *mnt_userns,
+> +			       struct inode *inode, const void *buf, int size,
+> +			       const char *eventname, enum ima_hooks func,
+> +			       int pcr, const char *func_data,
+> +			       bool buf_hash);
+>   void ima_audit_measurement(struct integrity_iint_cache *iint,
+>   			   const unsigned char *filename);
+>   int ima_alloc_init_template(struct ima_event_data *event_data,
+> diff --git a/security/integrity/ima/ima_main.c b/security/integrity/ima/ima_main.c
+> index 8ef1fa357e0c..b512c06d8ee1 100644
+> --- a/security/integrity/ima/ima_main.c
+> +++ b/security/integrity/ima/ima_main.c
+> @@ -827,7 +827,7 @@ int ima_post_load_data(char *buf, loff_t size,
+>   	return 0;
+>   }
+>   
+> -/*
+> +/**
+>    * process_buffer_measurement - Measure the buffer or the buffer data hash
+>    * @mnt_userns:	user namespace of the mount the inode was found from
+>    * @inode: inode associated with the object being measured (NULL for KEY_CHECK)
+> @@ -840,12 +840,15 @@ int ima_post_load_data(char *buf, loff_t size,
+>    * @buf_hash: measure buffer data hash
+>    *
+>    * Based on policy, either the buffer data or buffer data hash is measured
+> + *
+> + * Return: 0 if the buffer has been successfully measured, a negative value
+> + * otherwise.
+>    */
+> -void process_buffer_measurement(struct user_namespace *mnt_userns,
+> -				struct inode *inode, const void *buf, int size,
+> -				const char *eventname, enum ima_hooks func,
+> -				int pcr, const char *func_data,
+> -				bool buf_hash)
+> +int process_buffer_measurement(struct user_namespace *mnt_userns,
+> +			       struct inode *inode, const void *buf, int size,
+> +			       const char *eventname, enum ima_hooks func,
+> +			       int pcr, const char *func_data,
+> +			       bool buf_hash)
+>   {
+>   	int ret = 0;
+>   	const char *audit_cause = "ENOMEM";
+> @@ -867,7 +870,7 @@ void process_buffer_measurement(struct user_namespace *mnt_userns,
+>   	u32 secid;
+>   
+>   	if (!ima_policy_flag)
+> -		return;
+> +		return -ENOENT;
+>   
+>   	template = ima_template_desc_buf();
+>   	if (!template) {
+> @@ -889,7 +892,7 @@ void process_buffer_measurement(struct user_namespace *mnt_userns,
+>   					secid, 0, func, &pcr, &template,
+>   					func_data);
+>   		if (!(action & IMA_MEASURE))
+> -			return;
+> +			return -ENOENT;
+>   	}
+>   
+>   	if (!pcr)
+> @@ -937,7 +940,7 @@ void process_buffer_measurement(struct user_namespace *mnt_userns,
+>   					func_measure_str(func),
+>   					audit_cause, ret, 0, ret);
+>   
+> -	return;
+> +	return ret;
+>   }
+>   
+>   /**
+> @@ -977,18 +980,21 @@ void ima_kexec_cmdline(int kernel_fd, const void *buf, int size)
+>    * and extend the pcr.  Examples of critical data could be various data
+>    * structures, policies, and states stored in kernel memory that can
+>    * impact the integrity of the system.
+> + *
+> + * Return: 0 if the buffer has been successfully measured, a negative value
+> + * otherwise.
+>    */
+> -void ima_measure_critical_data(const char *event_label,
+> -			       const char *event_name,
+> -			       const void *buf, size_t buf_len,
+> -			       bool hash)
+> +int ima_measure_critical_data(const char *event_label,
+> +			      const char *event_name,
+> +			      const void *buf, size_t buf_len,
+> +			      bool hash)
+>   {
+>   	if (!event_name || !event_label || !buf || !buf_len)
+> -		return;
+> +		return -ENOPARAM;
+>   
+> -	process_buffer_measurement(&init_user_ns, NULL, buf, buf_len, event_name,
+> -				   CRITICAL_DATA, 0, event_label,
+> -				   hash);
+> +	return process_buffer_measurement(&init_user_ns, NULL, buf, buf_len,
+> +					  event_name, CRITICAL_DATA, 0,
+> +					  event_label, hash);
+>   }
+>   
+>   static int __init init_ima(void)
+> 

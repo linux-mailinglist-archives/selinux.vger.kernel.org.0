@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04F943BDC87
+	by mail.lfdr.de (Postfix) with ESMTP id B9BF53BDC89
 	for <lists+selinux@lfdr.de>; Tue,  6 Jul 2021 19:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230293AbhGFR5X (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 6 Jul 2021 13:57:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49812 "EHLO
+        id S230247AbhGFR5Y (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 6 Jul 2021 13:57:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230247AbhGFR5X (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 6 Jul 2021 13:57:23 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71CC3C061574
-        for <selinux@vger.kernel.org>; Tue,  6 Jul 2021 10:54:44 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id m17so7584261edc.9
+        with ESMTP id S230347AbhGFR5Y (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 6 Jul 2021 13:57:24 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09241C061574
+        for <selinux@vger.kernel.org>; Tue,  6 Jul 2021 10:54:45 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id h2so29212239edt.3
         for <selinux@vger.kernel.org>; Tue, 06 Jul 2021 10:54:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=1MEIpjRB+BUPTBDiEods8jPK/TxPB9V/ZU1g8xBx+7E=;
-        b=RyJKhjM/+zTus/ha0MXE3onpAvg8fcvLTCqFN9lHRKlzXe36BWUHxGpWjRv3Uh2pGH
-         02fG703E/MewlRiFYxiRlkiXKqQG/i8mueowzPD2WoUJUKY8u2s7Ss6z9PIRUUbdbJEa
-         VLPuArQo6V1vdKTMom9xTGstYAeEnan9P15XK0ucPoEkQK66muEDzFy8EHm29pNoNIop
-         ZbOV1WYXuZ5pCK9SMuu6p0jVjr8u9pIEI1gi6duYNCUK6jdLDHNm9GaC/hveDSm6/nO4
-         bIuS+3hZNndqtas2QedoohFB2zKmZOLpzfjdm5zwIzp0pVpVOinYgQ8Kyo8BWfHdX5Ls
-         Au1Q==
+        bh=oav1PeRGPMZWIm7UG7Np40qqDwAtjIlXIG+x9/XHnYo=;
+        b=JXZcUQi6qz9Y9IR+CLJ2fprBQaZjo0FQvhrsAOHEztk26HCd2dQOs07oyHtiobi5GF
+         vZ/3jNRiEGlUf1nK44il+1HtyhPTVOa5X0IH6lajE0rI6pArXsmw+nXJrGcpoGfKy78i
+         vVKQjzo2hCQHlvZrNig8/EW/KerLDjveHTcIZeDctHLvnxeCzRtC10V69xHP4n11KeJ0
+         2BDbqtX5Ku4BGHq7jgYrntt32APgEwiumM+WaTJr2/wzbvkjSaMg51WcgJ2nVkUjrnhm
+         3nHCkzIiolvGAJ3X/vfgwLjbmb9IMiPESb8EHQstpZIqmVNQbg9FN2KjwDP1Tcs3gnK0
+         Weyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=1MEIpjRB+BUPTBDiEods8jPK/TxPB9V/ZU1g8xBx+7E=;
-        b=RTv39AtFmye+xDfL492Zm2RIgHSXEKhL19yvO7a5oIrcdhW5oe7Q9ZmkaEHDTApUcb
-         CjIsSV6ILbc7UvtqgP2svkJHKiJL2YLynPEMb31PRoaJwOMECv77PQI81ewSIfI6PDtE
-         FA1q2WlVQJpz5xvbk9+TojQMG0myR7E1EDdhTig/i+98ongKZOYMWk+E+eupNpfXUXCg
-         jRc+8hntZJoiUsl/Ja+EYTRFUlapOfvnIeu/VYK7451costq2eTXjXJetvWnFvxxM9ew
-         Jw2ENTFkZi7Yp5SvizsmOpu7aVdlVDbIN4XrUgxBikaQq1O5PCO/HaPSDQdluPsg/hsU
-         OMlw==
-X-Gm-Message-State: AOAM530F49bS1K8NbxheDy6/ZayUSSAzE8fEFr77AKjOMtxVphM8cfLq
-        G9jkeWNkcgNQHXUnfgwtbsBeERuy0Ic=
-X-Google-Smtp-Source: ABdhPJyzACE/ntnKxM/HW66ey4tKNTStLTNtFCrt3GOOclhlpBgP3WiBOKiVZGg2Jl6xtx//yYMxDA==
-X-Received: by 2002:a05:6402:40c3:: with SMTP id z3mr23835051edb.375.1625594083103;
+        bh=oav1PeRGPMZWIm7UG7Np40qqDwAtjIlXIG+x9/XHnYo=;
+        b=ock2PVUQkmd1ShSfajGDf5iAptqMZvSfvzm5AFXpuaEJO7gBC9brpmcYjqbcnENE7U
+         UySfyXnoUBarIw9jvA5Fyogu41Z3foPRE4+MmySJ71cYevIdHxSxWveaBgMv+cXc9SP1
+         oPkRzwusVp/Ri1nIi0KDfZoEwpcntxC2StFb/T82tivWoeyCpQR02xpcoVMeuEjKaI9f
+         rmTby7aihJ/R4CdfktEIzolIkJ5HV7kQJNiigJH5mEgzdEXgO359yUW0MBlZPvH86wbj
+         kwUzpUrf39GEk8XDeJ/6GNEWhw0i91BE6SDPhQpVLXZQdJLIrZHIqQvRiZSEzlnIArDV
+         PrKw==
+X-Gm-Message-State: AOAM530wofP3ELlZKkzlU4FUPhz+LvIanCDm4tjn3KYbvpCqQf1HXKGa
+        XGdiqFUvwV6HBjnmzqlXISaTDWIism8=
+X-Google-Smtp-Source: ABdhPJxYzW2t6UwQSXzm7StmkuerthmRFCrntGej6rOj/ZUAyNTY6Nkno2sHVV5vLDmIClHW3i+YRA==
+X-Received: by 2002:aa7:cb03:: with SMTP id s3mr24833467edt.189.1625594083633;
         Tue, 06 Jul 2021 10:54:43 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-116-100-174.95.116.pool.telefonica.de. [95.116.100.174])
-        by smtp.gmail.com with ESMTPSA id lg16sm6050950ejb.69.2021.07.06.10.54.42
+        by smtp.gmail.com with ESMTPSA id lg16sm6050950ejb.69.2021.07.06.10.54.43
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jul 2021 10:54:42 -0700 (PDT)
+        Tue, 06 Jul 2021 10:54:43 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 06/13] checkpolicy: follow declaration-after-statement
-Date:   Tue,  6 Jul 2021 19:54:26 +0200
-Message-Id: <20210706175433.29270-6-cgzones@googlemail.com>
+Subject: [PATCH 07/13] checkpolicy: remove dead assignments
+Date:   Tue,  6 Jul 2021 19:54:27 +0200
+Message-Id: <20210706175433.29270-7-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210706175433.29270-1-cgzones@googlemail.com>
 References: <20210706175433.29270-1-cgzones@googlemail.com>
@@ -63,69 +63,38 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Follow the project style of no declaration after statement.
+The variable `cladatum` is otherwise always assigned before used, so
+these two assignments without a follow up usages are not needed.
 
-Found by the GCC warning -Wdeclaration-after-statement.
+Found by clang-analyzer.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/checkmodule.c   | 6 ++++--
- checkpolicy/policy_define.c | 3 ++-
- checkpolicy/test/dismod.c   | 2 +-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ checkpolicy/checkpolicy.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/checkpolicy/checkmodule.c b/checkpolicy/checkmodule.c
-index 40d0ec99..316b2898 100644
---- a/checkpolicy/checkmodule.c
-+++ b/checkpolicy/checkmodule.c
-@@ -288,14 +288,16 @@ int main(int argc, char **argv)
- 	}
- 
- 	if (policy_type != POLICY_BASE && outfile) {
-+		char *out_name;
-+		char *separator;
- 		char *mod_name = modpolicydb.name;
- 		char *out_path = strdup(outfile);
- 		if (out_path == NULL) {
- 			fprintf(stderr, "%s:  out of memory\n", argv[0]);
- 			exit(1);
- 		}
--		char *out_name = basename(out_path);
--		char *separator = strrchr(out_name, '.');
-+		out_name = basename(out_path);
-+		separator = strrchr(out_name, '.');
- 		if (separator) {
- 			*separator = '\0';
- 		}
-diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
-index 7eff747a..22218c07 100644
---- a/checkpolicy/policy_define.c
-+++ b/checkpolicy/policy_define.c
-@@ -1904,8 +1904,9 @@ int avrule_read_ioctls(struct av_ioctl_range_list **rangehead)
- {
- 	char *id;
- 	struct av_ioctl_range_list *rnew, *r = NULL;
--	*rangehead = NULL;
- 	uint8_t omit = 0;
-+	
-+	*rangehead = NULL;	
- 
- 	/* read in all the ioctl commands */
- 	while ((id = queue_remove(id_queue))) {
-diff --git a/checkpolicy/test/dismod.c b/checkpolicy/test/dismod.c
-index fadbc8d1..b1b96115 100644
---- a/checkpolicy/test/dismod.c
-+++ b/checkpolicy/test/dismod.c
-@@ -697,8 +697,8 @@ int display_avblock(int field, policydb_t * policy,
- {
- 	avrule_block_t *block = policydb.global;
- 	while (block != NULL) {
--		fprintf(out_fp, "--- begin avrule block ---\n");
- 		avrule_decl_t *decl = block->branch_list;
-+		fprintf(out_fp, "--- begin avrule block ---\n");
- 		while (decl != NULL) {
- 			if (display_avdecl(decl, field, policy, out_fp)) {
- 				return -1;
+diff --git a/checkpolicy/checkpolicy.c b/checkpolicy/checkpolicy.c
+index 9627275f..c88ca542 100644
+--- a/checkpolicy/checkpolicy.c
++++ b/checkpolicy/checkpolicy.c
+@@ -1176,8 +1176,6 @@ int main(int argc, char **argv)
+ 					printf("\nNo such class.\n");
+ 					break;
+ 				}
+-				cladatum =
+-				    policydb.class_val_to_struct[tclass - 1];
+ 			} else {
+ 				ans[strlen(ans) - 1] = 0;
+ 				cladatum =
+@@ -1229,8 +1227,6 @@ int main(int argc, char **argv)
+ 					printf("\nNo such class.\n");
+ 					break;
+ 				}
+-				cladatum =
+-				    policydb.class_val_to_struct[tclass - 1];
+ 			} else {
+ 				ans[strlen(ans) - 1] = 0;
+ 				cladatum =
 -- 
 2.32.0
 

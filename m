@@ -2,37 +2,37 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 11B833BD350
+	by mail.lfdr.de (Postfix) with ESMTP id B56623BD352
 	for <lists+selinux@lfdr.de>; Tue,  6 Jul 2021 13:49:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231698AbhGFLvB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 6 Jul 2021 07:51:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47560 "EHLO mail.kernel.org"
+        id S231843AbhGFLvD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 6 Jul 2021 07:51:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:47548 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237173AbhGFLf7 (ORCPT <rfc822;selinux@vger.kernel.org>);
-        Tue, 6 Jul 2021 07:35:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 83F3C61EC6;
-        Tue,  6 Jul 2021 11:25:52 +0000 (UTC)
+        id S237373AbhGFLgH (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Tue, 6 Jul 2021 07:36:07 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 220C161D8E;
+        Tue,  6 Jul 2021 11:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625570753;
-        bh=hJvUjptkuHe8DrOfp/X28AnaU9SsW4Do5T0kzTafEU8=;
+        s=k20201202; t=1625570836;
+        bh=QuJTIMQ5VK6Gfj7t+RpW9EpkFv4Tgo3EbCbcDqTAWfg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bZtZljUiyxqxDtC2YdpbBvW+l3JBKBESxob6u9/E8UY8dEyBe5SCnMweRXbcAAmOn
-         biFYGZBzZuNGEuorsQeBfI0bE+oS+EhA5TT6/7kx5QUncoB9lMKZ4T6TgZidVWSAYd
-         jGM8SoRgP2hNiY9Ej6KF3+qGIRr+rJWblTK6Dq744e2If+Iprx6AUseT7NSrx0VGYi
-         KwkAHO9UM4IXXbBB+L2G+NurAn/0GZUffJmvnPgtPExAJ5Gh4jNEGdPZBPnIfka00t
-         O5IXTjZIbykeXt4k9dqUQFD+FZMG2B3VuZOlSIHg87nUM1N7eO+qhQiCBjTddPNYde
-         O7zvZG176hm7g==
+        b=llP+apL+Q+Uin0jc84gAZzae8+BpfANkIB9RYVjaxEMKcfR9R1XamDZ/9F0JvCtS2
+         wc9EO2FdriV2N3ss8P90iZWLxFcISU+aY1ks4e/kE+ltSEaSDty4nryOKj+zS9vFTi
+         3X4CoNFiafTTAz8aUembkkm6C0M3qesiK1Pj/V4JqNwVZ8yjzKJHGSXca/M9+IsvOc
+         NGxkQTVgyNFxhAdHp4nQZH6+6Yfp0J6m/bwSyNtnOxXOR4VKONE8uyDbw/4ZnNBcvr
+         s+QMLApSSGoqqgwi/K7VT3yhAvr7iS+Dclf084wbuEDYcIDzxTi3VhCvI1d3Jgu1ZK
+         JR4i1H3f2l4Og==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Minchan Kim <minchan@kernel.org>, Paul Moore <paul@paul-moore.com>,
         Sasha Levin <sashal@kernel.org>, selinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 40/74] selinux: use __GFP_NOWARN with GFP_NOWAIT in the AVC
-Date:   Tue,  6 Jul 2021 07:24:28 -0400
-Message-Id: <20210706112502.2064236-40-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 30/55] selinux: use __GFP_NOWARN with GFP_NOWAIT in the AVC
+Date:   Tue,  6 Jul 2021 07:26:13 -0400
+Message-Id: <20210706112638.2065023-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210706112502.2064236-1-sashal@kernel.org>
-References: <20210706112502.2064236-1-sashal@kernel.org>
+In-Reply-To: <20210706112638.2065023-1-sashal@kernel.org>
+References: <20210706112638.2065023-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -112,10 +112,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/security/selinux/avc.c b/security/selinux/avc.c
-index d18cb32a242a..4a744b1cebc8 100644
+index d52be7b9f08c..717a4be771ab 100644
 --- a/security/selinux/avc.c
 +++ b/security/selinux/avc.c
-@@ -294,26 +294,27 @@ static struct avc_xperms_decision_node
+@@ -366,26 +366,27 @@ static struct avc_xperms_decision_node
  	struct avc_xperms_decision_node *xpd_node;
  	struct extended_perms_decision *xpd;
  
@@ -147,7 +147,7 @@ index d18cb32a242a..4a744b1cebc8 100644
  		if (!xpd->dontaudit)
  			goto error;
  	}
-@@ -341,7 +342,7 @@ static struct avc_xperms_node *avc_xperms_alloc(void)
+@@ -413,7 +414,7 @@ static struct avc_xperms_node *avc_xperms_alloc(void)
  {
  	struct avc_xperms_node *xp_node;
  
@@ -156,7 +156,7 @@ index d18cb32a242a..4a744b1cebc8 100644
  	if (!xp_node)
  		return xp_node;
  	INIT_LIST_HEAD(&xp_node->xpd_head);
-@@ -497,7 +498,7 @@ static struct avc_node *avc_alloc_node(struct selinux_avc *avc)
+@@ -569,7 +570,7 @@ static struct avc_node *avc_alloc_node(struct selinux_avc *avc)
  {
  	struct avc_node *node;
  

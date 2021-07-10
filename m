@@ -2,63 +2,109 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 33F3E3C2A6D
-	for <lists+selinux@lfdr.de>; Fri,  9 Jul 2021 22:37:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10F6E3C3470
+	for <lists+selinux@lfdr.de>; Sat, 10 Jul 2021 14:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230180AbhGIUjz (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 9 Jul 2021 16:39:55 -0400
-Received: from outgoing-auth-1.mit.edu ([18.9.28.11]:45661 "EHLO
-        outgoing.mit.edu" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S229506AbhGIUjz (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 9 Jul 2021 16:39:55 -0400
-Received: from cwcc.thunk.org (pool-72-74-133-215.bstnma.fios.verizon.net [72.74.133.215])
-        (authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-        by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 169KaXOm025930
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 9 Jul 2021 16:36:41 -0400
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-        id 320F815C3C9E; Fri,  9 Jul 2021 16:36:33 -0400 (EDT)
-Date:   Fri, 9 Jul 2021 16:36:33 -0400
-From:   "Theodore Ts'o" <tytso@mit.edu>
-To:     Casey Schaufler <casey@schaufler-ca.com>
-Cc:     Vivek Goyal <vgoyal@redhat.com>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        viro@zeniv.linux.org.uk, virtio-fs@redhat.com, dwalsh@redhat.com,
-        dgilbert@redhat.com, casey.schaufler@intel.com,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        miklos@szeredi.hu, gscrivan@redhat.com, jack@suse.cz,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH v2 1/1] xattr: Allow user.* xattr on symlink and special
- files
-Message-ID: <YOizURuWJO9DYGGk@mit.edu>
-References: <20210708175738.360757-1-vgoyal@redhat.com>
- <20210708175738.360757-2-vgoyal@redhat.com>
- <20210709091915.2bd4snyfjndexw2b@wittgenstein>
- <20210709152737.GA398382@redhat.com>
- <710d1c6f-d477-384f-0cc1-8914258f1fb1@schaufler-ca.com>
+        id S231334AbhGJMN4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 10 Jul 2021 08:13:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37678 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231303AbhGJMNz (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 10 Jul 2021 08:13:55 -0400
+X-Greylist: delayed 483 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 10 Jul 2021 05:11:10 PDT
+Received: from forward106p.mail.yandex.net (forward106p.mail.yandex.net [IPv6:2a02:6b8:0:1472:2741:0:8b7:109])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE184C0613DD
+        for <selinux@vger.kernel.org>; Sat, 10 Jul 2021 05:11:10 -0700 (PDT)
+Received: from iva5-f90c153e7fcb.qloud-c.yandex.net (iva5-f90c153e7fcb.qloud-c.yandex.net [IPv6:2a02:6b8:c0c:7d80:0:640:f90c:153e])
+        by forward106p.mail.yandex.net (Yandex) with ESMTP id 65DA21C8295C
+        for <selinux@vger.kernel.org>; Sat, 10 Jul 2021 15:03:03 +0300 (MSK)
+Received: from iva1-bc1861525829.qloud-c.yandex.net (iva1-bc1861525829.qloud-c.yandex.net [2a02:6b8:c0c:a0e:0:640:bc18:6152])
+        by iva5-f90c153e7fcb.qloud-c.yandex.net (mxback/Yandex) with ESMTP id EiSsy0nQBA-33HaAt8m;
+        Sat, 10 Jul 2021 15:03:03 +0300
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ya.ru; s=mail; t=1625918583;
+        bh=owilsSQoyQx0KSHSv2UihFEugVJkPu3ycUV4j0YOLIw=;
+        h=Date:Subject:To:From:Message-Id;
+        b=a4XKc2oA62zB0WUrjWvexK/74Lex9N2INmU2GzI2dXx/vZwsdW2rAWdT7BedTkQBY
+         IAX7AlhFX1aKQPYLNKc/gle3CYwKG7YwXncfHiRaeQ7ddU4Om4Wn/EhcOF2Glb536l
+         2bf4k14sBLIhNsJ7O3cPBLt9200J0FaTHLoJBI2E=
+Authentication-Results: iva5-f90c153e7fcb.qloud-c.yandex.net; dkim=pass header.i=@ya.ru
+Received: by iva1-bc1861525829.qloud-c.yandex.net (smtp/Yandex) with ESMTPSA id FGY8jxoL3C-32PSwuli;
+        Sat, 10 Jul 2021 15:03:02 +0300
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+        (Client certificate not present)
+From:   Evgeny Vereshchagin <evvers@ya.ru>
+To:     selinux@vger.kernel.org
+Subject: [PATCH 1/2] ci: turn on CIFuzz
+Date:   Sat, 10 Jul 2021 12:03:01 +0000
+Message-Id: <20210710120302.74862-1-evvers@ya.ru>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <710d1c6f-d477-384f-0cc1-8914258f1fb1@schaufler-ca.com>
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Jul 09, 2021 at 08:34:41AM -0700, Casey Schaufler wrote:
-> >> One question, do all filesystem supporting xattrs deal with setting them
-> >> on symlinks/device files correctly?
-> > Wrote a simple bash script to do setfattr/getfattr user.foo xattr on
-> > symlink and device node on ext4, xfs and btrfs and it works fine.
-> 
-> How about nfs, tmpfs, overlayfs and/or some of the other less conventional
-> filesystems?
+Now that almost all the bugs reported by OSS-Fuzz have been
+fixed libsepol/cil should be stable enough to get CIFuzz working
+more or less reliably. It should help to catch regressions/new bugs
+faster.
 
-As a suggestion, perhaps you could take your bash script and turn it
-into an xfstests test so we can more easily test various file systems,
-both now and once the commit is accepted, to look for regressions?
+https://google.github.io/oss-fuzz/getting-started/continuous-integration/
 
-Cheers,
+The patch was tested on GitHub in https://github.com/SELinuxProject/selinux/pull/285
+The CIFuzz job can be found at https://github.com/SELinuxProject/selinux/actions/runs/1017865690
 
-					- Ted
+Signed-off-by: Evgeny Vereshchagin <evvers@ya.ru>
+---
+ .github/workflows/cifuzz.yml | 39 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 39 insertions(+)
+ create mode 100644 .github/workflows/cifuzz.yml
+
+diff --git a/.github/workflows/cifuzz.yml b/.github/workflows/cifuzz.yml
+new file mode 100644
+index 00000000..5c2233a2
+--- /dev/null
++++ b/.github/workflows/cifuzz.yml
+@@ -0,0 +1,39 @@
++---
++name: CIFuzz
++on:
++  push:
++    branches:
++      - master
++  pull_request:
++    branches:
++      - master
++jobs:
++  Fuzzing:
++    runs-on: ubuntu-latest
++    if: github.repository == 'SELinuxProject/selinux'
++    strategy:
++      fail-fast: false
++      matrix:
++        sanitizer: [address, undefined, memory]
++    steps:
++      - name: Build Fuzzers (${{ matrix.sanitizer }})
++        id: build
++        uses: google/oss-fuzz/infra/cifuzz/actions/build_fuzzers@master
++        with:
++          oss-fuzz-project-name: 'selinux'
++          dry-run: false
++          allowed-broken-targets-percentage: 0
++          sanitizer: ${{ matrix.sanitizer }}
++      - name: Run Fuzzers (${{ matrix.sanitizer }})
++        uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
++        with:
++          oss-fuzz-project-name: 'selinux'
++          fuzz-seconds: 180
++          dry-run: false
++          sanitizer: ${{ matrix.sanitizer }}
++      - name: Upload Crash
++        uses: actions/upload-artifact@v1
++        if: failure() && steps.build.outcome == 'success'
++        with:
++          name: ${{ matrix.sanitizer }}-artifacts
++          path: ./out/artifacts
+-- 
+2.31.1
+

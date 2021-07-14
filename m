@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2073B3C8A89
+	by mail.lfdr.de (Postfix) with ESMTP id E48FF3C8A8C
 	for <lists+selinux@lfdr.de>; Wed, 14 Jul 2021 20:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239899AbhGNSQn (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S239986AbhGNSQn (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Wed, 14 Jul 2021 14:16:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56704 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239918AbhGNSQm (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 14 Jul 2021 14:16:42 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5EFCC06175F
-        for <selinux@vger.kernel.org>; Wed, 14 Jul 2021 11:13:50 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id t3so4361838edc.7
-        for <selinux@vger.kernel.org>; Wed, 14 Jul 2021 11:13:50 -0700 (PDT)
+        with ESMTP id S239092AbhGNSQn (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 14 Jul 2021 14:16:43 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C258FC06175F
+        for <selinux@vger.kernel.org>; Wed, 14 Jul 2021 11:13:51 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id nd37so4799039ejc.3
+        for <selinux@vger.kernel.org>; Wed, 14 Jul 2021 11:13:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=ziM0fkJuZyD2AWczxGjHTbFbRPnaPU4JiMm5QdUbPQk=;
-        b=N1mirWmv1ZC7brueBPmwtVgFkw+rTR6mqVOgGsPxmvsyFpLX5AdY/BE6H746nf7tWw
-         yKuCV1LmF2JrfUfiIzpKub4PTH/UpagHnFMxqBRDGY4+IIyhSozIKahYPYf1aMdZIaCW
-         8nks+GQdtygUdG0kY69qVBV5sXf0uyA82ITQRKOv9E3f3S0tocST16l47S80tSyyUz7F
-         VMWG+aXu/4B26HxDF76HyMmojXBQJTPP5/WwolneKlv4U23eo2tDacEEaSpvsCH/Vwe6
-         R5zU9nFyWsxmPmGEE+Y5bZUGJUaoInZuiDQHuTYdKZh8H27TtAGq+i7HoeeSVRnJo15l
-         i/tw==
+        bh=irGbfK4DqMAI/5PrSBE+ev8F8q53nGm4C016+uwtSig=;
+        b=LLu2ARhPj13CYBPOrEkIClpxMPUT7y5yDfRluApvPizZs9FnPsb3f5y6bchT+aL2is
+         SEv0OkCUQJln/t6YwnU3JqXfJPFuPcQhlaI6HNipZQMd0ZoLgoJ+gtv0zI0JxyTskdeG
+         qACt9UQrTP+xLxsjQ+ptuhzdXT1UYzPvXZnSx8f29Z2u9tA461Kp7mMLc0xOIzZ0JN50
+         jCCxcgivTnkbFBvefBGPubPCQ0mG5XK02+sC5eSPdX9U0hfasfNGw5iLzuB4jWR1iwaU
+         TKZvU/NnNgOu2nVzo1Ih5QsMPcCoyBfz/hDtAC85gGPCYMs/0P4PsiHTz7DC6f9Un2oU
+         qYzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=ziM0fkJuZyD2AWczxGjHTbFbRPnaPU4JiMm5QdUbPQk=;
-        b=uFUWfhJM5m+jD3zrfK5Raizlzy3LKcdUe5e019n5rp6UB3CJa/bLBVipZGAqPefZnm
-         rt8TarX8b+vCWKiy9q/zpIiBJjacAV7fUiQsKtDk2hlYy70rfX7Cn8aGSJTr5Wvv4FQ/
-         +SSlFk2cL1rglwv9FUo5zaP49302ktgQekj8BX0iLQhcDzxO7AcckwGN4TA/nzvbHfHv
-         IgvkSpsyB2xqaksWdUsUHJElQYhT+ip2vD2fPZ4wVIEotU1533rdhjoV30Z2g82BPQes
-         DkBy6kOTcSz7HxOCDEdy39SMIfyYwzdI49HQquQf+BA282kFMYXCAMkBiNpiN1TxK1bF
-         pt1w==
-X-Gm-Message-State: AOAM531n6ijpsSn5+D4Fcorgd6Oh4NsD8nyDngXw+xV2kscDwHZwpWKC
-        kdlyGgpTkZ65Pk4fXW8hohFC+JUXlYo=
-X-Google-Smtp-Source: ABdhPJzPQCeFtAdEiZp++adAb24MObj3Qsll2T7kcyYX65Fj7E/57VWNhg9w6rO8ZVkSha3JaPdwHw==
-X-Received: by 2002:a05:6402:35d4:: with SMTP id z20mr15993530edc.138.1626286429512;
-        Wed, 14 Jul 2021 11:13:49 -0700 (PDT)
+        bh=irGbfK4DqMAI/5PrSBE+ev8F8q53nGm4C016+uwtSig=;
+        b=mHlpP6PrYhJ0Su2J0Ym3GYH3tCX1Ba3PjPCLFv0rpZuJEUNYuQoOvjVgf4kY2Kh1Nq
+         4F0VeJHfH3MC8hKuAOVphBT7dR+eohK0+M3ywuFP0yc1k9OkdZk1EJxAOdoUlTGt4SdM
+         n+Ordz6McmTtyv6S3FpFXnaA91dIPXcKSiVR/OeZr/24zYY/hr7Rc9Dm6LfptlBcM0KD
+         jYoD3ahYS1vD7TnC2YoqrssLa3jgLSk2FFBdAAbIIXJ30Gm7zBTf5Iyy8tV8MJ7YURvT
+         fWIo5ztXk83M9BUpQpI42QhOZT8cxeQWDDwzZgL1dGNyOY52J1Wt291w8yLIoWsLs30a
+         YqfA==
+X-Gm-Message-State: AOAM532D0l+mhYf4tnuoQMtnm76e8DuvpOWqh84+kLrcrQToErOLIURc
+        qoG5ofp/CzxTFeyF6DPy2F5l4WBEZ3c=
+X-Google-Smtp-Source: ABdhPJyOCO8fa7x6voazcN6zWYgo6ipFrDOsFtF2C0WEDMabNbqL17X0v7vzOahxMr9rOEjTD5LMJQ==
+X-Received: by 2002:a17:907:e8c:: with SMTP id ho12mr7665466ejc.552.1626286430120;
+        Wed, 14 Jul 2021 11:13:50 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-116-198-161.95.116.pool.telefonica.de. [95.116.198.161])
         by smtp.gmail.com with ESMTPSA id ot18sm1020975ejb.109.2021.07.14.11.13.49
         for <selinux@vger.kernel.org>
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-095-116-198-161.95.116.pool.telef
         Wed, 14 Jul 2021 11:13:49 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 5/6] policycoreutils: free memory of allocated context in run_init
-Date:   Wed, 14 Jul 2021 20:13:42 +0200
-Message-Id: <20210714181343.58880-5-cgzones@googlemail.com>
+Subject: [PATCH 6/6] policycoreutils: free memory of allocated context in newrole
+Date:   Wed, 14 Jul 2021 20:13:43 +0200
+Message-Id: <20210714181343.58880-6-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210714181343.58880-1-cgzones@googlemail.com>
 References: <20210714181343.58880-1-cgzones@googlemail.com>
@@ -67,33 +67,21 @@ Found by scan-build.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- policycoreutils/run_init/run_init.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ policycoreutils/newrole/newrole.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/policycoreutils/run_init/run_init.c b/policycoreutils/run_init/run_init.c
-index 1c5eb68e..545490a2 100644
---- a/policycoreutils/run_init/run_init.c
-+++ b/policycoreutils/run_init/run_init.c
-@@ -406,14 +406,19 @@ int main(int argc, char *argv[])
- 
- 	if (chdir("/")) {
- 		perror("chdir");
+diff --git a/policycoreutils/newrole/newrole.c b/policycoreutils/newrole/newrole.c
+index 0264531a..7c1f062f 100644
+--- a/policycoreutils/newrole/newrole.c
++++ b/policycoreutils/newrole/newrole.c
+@@ -1239,6 +1239,7 @@ int main(int argc, char *argv[])
+ 		free(pw.pw_dir);
+ 		free(pw.pw_shell);
+ 		free(shell_argv0);
 +		free(new_context);
- 		exit(-1);
+ 		return exit_code;
  	}
  
- 	if (setexeccon(new_context) < 0) {
- 		fprintf(stderr, _("Could not set exec context to %s.\n"),
- 			new_context);
-+		free(new_context);
- 		exit(-1);
- 	}
-+
-+	free(new_context);
-+
- 	if (access("/usr/sbin/open_init_pty", X_OK) != 0) {
- 		if (execvp(argv[1], argv + 1)) {
- 			perror("execvp");
 -- 
 2.32.0
 

@@ -2,76 +2,94 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 149C53CA419
-	for <lists+selinux@lfdr.de>; Thu, 15 Jul 2021 19:25:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A9EF3CD62A
+	for <lists+selinux@lfdr.de>; Mon, 19 Jul 2021 15:54:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232948AbhGOR2Q (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 15 Jul 2021 13:28:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37302 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234967AbhGOR2P (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 15 Jul 2021 13:28:15 -0400
-Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05EBAC061767
-        for <selinux@vger.kernel.org>; Thu, 15 Jul 2021 10:25:22 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id r125so5944381qkf.1
-        for <selinux@vger.kernel.org>; Thu, 15 Jul 2021 10:25:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=VEbievBeLXzXz2IFTCJlfsSW3SGnPx5BRLHAunZVXukgfJX3HSSAUxCtdiKf61hv/8
-         dEjk1vTJjxHihT0WA1OL/uEOLbisu+eOZ9QBM+pSgOr0g3iviST/L7UaXer3M8NeFmjI
-         cUcDXANijM5RzePSgHNEUg4tiAZJvw7xY2717+o5bCXGYbN3j0in5RSdJSiv5QmZpfXV
-         xJwXiiE0C1Gs4ldNfG+SItE+RoyPJtAgR4hB34JMXRrPZxzy82ifiVVChBVQnRUKYafC
-         pLvyRURLCMNCEs5zTTafGrQe1zI12ARsnWy7gNJNMcFCKTa1+89JJPFI0mohmLMeae0x
-         ASdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=Ibb5KNEw1DKqJEg9n4gJy5KnzVasBofn6QaWYsu9UCQ=;
-        b=mDBdlg+rSHFYwg97FbxPZvuBf68KUDA+p+upsRpZLSFF6YlwF7ZF2+SS1VmHrIaDjb
-         +FZn7eFm0L3HzW6b0DAKtulVSiO1v9w6a5imAcPeirz8+M5zFnymMUtbDSCN6gfHUcX0
-         lcHiv1zOxDicYj/64pAAvrepTZ37JF/K3gwyhcS2OmR9FRTNkoEV9t0wf4oCtxtYfRxL
-         oKmZpLN7rmMXIcz4aIqBp2eoe3hyRMBOuS3Hx9CpZxj6GmDgTZTW4hRCi1Kty/RR5ejh
-         fGSr5KqoTQDQ30pHrXkWzeIWxt00yofCBcHX2DD99oscRwXMVASFZ1BvDCxk3Dl5Xr8s
-         vQOw==
-X-Gm-Message-State: AOAM533NW/VizRi33dWBNX23AAAKqQkcheoNPnjDxaIEnFT6EkROTmRv
-        MQaYK2YvxLo+SWmHSopA6YEXOlNKUmSPEjfqQHo=
-X-Google-Smtp-Source: ABdhPJyVA6gR/njuabWs2C2fW8gelCsYJFEl6/1qckwAKb5sFvak5SWUy5PHC6/Yk0GlmffBpcH6FQwcd62hdQoqBbA=
-X-Received: by 2002:a37:9947:: with SMTP id b68mr5263725qke.56.1626369920992;
- Thu, 15 Jul 2021 10:25:20 -0700 (PDT)
+        id S240602AbhGSNNo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 19 Jul 2021 09:13:44 -0400
+Received: from szxga02-in.huawei.com ([45.249.212.188]:7392 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S239282AbhGSNNo (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 19 Jul 2021 09:13:44 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4GT3C63rq9z7wYk;
+        Mon, 19 Jul 2021 21:50:42 +0800 (CST)
+Received: from dggpeml500023.china.huawei.com (7.185.36.114) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 19 Jul 2021 21:54:20 +0800
+Received: from [10.67.110.112] (10.67.110.112) by
+ dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Mon, 19 Jul 2021 21:54:20 +0800
+Subject: Re: issues about selinux namespace
+To:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        <jamorris@linux.microsoft.com>
+CC:     "Likun(OSLab)" <hw.likun@huawei.com>,
+        <linux-security-module@vger.kernel.org>, <selinux@vger.kernel.org>
+References: <22c0d7a1-b658-64ce-f099-0b3617ef8e38@huawei.com>
+ <CAEjxPJ5-w83HMRGuDHHqMthkju3bxT0gZ-EiiTE=t5UhQqQ_ug@mail.gmail.com>
+From:   xiujianfeng <xiujianfeng@huawei.com>
+Message-ID: <ec36e53f-5a6d-b86e-790c-d58b7b503aae@huawei.com>
+Date:   Mon, 19 Jul 2021 21:54:19 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.9.1
 MIME-Version: 1.0
-Received: by 2002:a0c:e502:0:0:0:0:0 with HTTP; Thu, 15 Jul 2021 10:25:20
- -0700 (PDT)
-Reply-To: faty.muhamad@gmail.com
-From:   Ms Fatima Muhammad <steveokoh.fedexdeliveryagent@gmail.com>
-Date:   Thu, 15 Jul 2021 17:25:20 +0000
-Message-ID: <CAFKwDuBfMzCdHqoenSL2rqjnW5tE27dPjiWKbgxM_hjsa-G7pg@mail.gmail.com>
-Subject: Hello Dear
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <CAEjxPJ5-w83HMRGuDHHqMthkju3bxT0gZ-EiiTE=t5UhQqQ_ug@mail.gmail.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.67.110.112]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500023.china.huawei.com (7.185.36.114)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello Dear,
+thanks stepthen,  I've found James's patch in 
+https://lwn.net/Articles/737949/,
 
-My name is Ms.Fatima Muhammad., Please forgive me for stressing you
-with my predicaments and I sorry to approach you through this media
-because is serves the fastest means of  my communication right now,
+but it seems can't resolve my questions, so any futher discussion would 
+be helpfull and welcome.
 
-I came across your Email from my personal search and I decided to
-contact you believing you will be honest to fulfill my business
-proposal which I believe that will be a very good opportunity for both
-of us. Please it is my pleasure to contact you today for a business
-partnership investments projects worth $4.6 million USD which I intend
-to establish in your country..
-
-Pls If this business proposal offends your moral and ethic values do
-accept my apology. therefore kindly contact me immediately if you are
-interested for more details.
-
-Thank you for your wiliness to help me
-Yours Sincerely Fatima Muhammad
+在 2021/7/14 20:11, Stephen Smalley 写道:
+> Please take your email to the selinux@vger.kernel.org. You are the
+> second person to ask about selinux namespaces within the past week or
+> so. I did upstream the refactoring and encapsulation of the data
+> structures and code via the selinux_state patches, so those are in the
+> mainline kernel these days, and Paul Moore and I have periodically
+> re-based the remaining patches on top of upstream over in the
+> https://github.com/SELinuxProject/selinux-kernel/tree/working-selinuxns
+> branch. However, I had to drop the inode and superblock per-ns patches
+> temporarily because of changes to LSM (inode blob management moved to
+> the LSM framework out of the security modules), so that would need to
+> be revisited. There was a separate patch from James Morris to support
+> per-namespace security.selinux extended attributes; you can dig that
+> out from the history or mailing lists if you want to revive that. I
+> won't be able to look at it again until October at the earliest.
+>
+> On Wed, Jul 14, 2021 at 6:54 AM xiujianfeng <xiujianfeng@huawei.com> wrote:
+>> Hi Stephen,
+>>
+>> I am writing to discuss about selinux namespace because I found your
+>> previous work on github and I think selinux namespace is helpful to
+>> harden container security. So I try to do further work but there are
+>> some issues mentioned in the commit message and I have no idea how to
+>> fix them, it would be great if I can get help from you.
+>> First is about selinux hook functions, we need to update each hook to
+>> perform its processing on current namespace and all of its ancestors,
+>> for object, we can have different sid/tag in different namespace based
+>> on inode namespace support, but for task, do we need to maintain each
+>> security context generated in the corresponding namespace?
+>> Second is the lifecycle management of on-disk inode labels. it's not
+>> easy to handle this, should we clean all corresponding labels on disk
+>> when namespace exit? if we do this, it may cost long time to iterate
+>> inode on disk and must relabel files when container restart, if not, the
+>> inode xattr space maybe full and cannot write label again when new
+>> namespace starts.
+>> BTW, do you have plan to finish the work?
+>>
+>> I look forward to receiving your reply.
+>>
+>> Best wishes.
+> .

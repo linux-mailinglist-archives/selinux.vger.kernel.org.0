@@ -2,71 +2,66 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 870BC3D86F1
-	for <lists+selinux@lfdr.de>; Wed, 28 Jul 2021 06:57:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD7473D87ED
+	for <lists+selinux@lfdr.de>; Wed, 28 Jul 2021 08:30:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233929AbhG1E5a (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 28 Jul 2021 00:57:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48434 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229714AbhG1E5a (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 28 Jul 2021 00:57:30 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237A5C061760
-        for <selinux@vger.kernel.org>; Tue, 27 Jul 2021 21:57:28 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id a26so1524919lfr.11
-        for <selinux@vger.kernel.org>; Tue, 27 Jul 2021 21:57:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=Aauu7gYvMaBruI9Zt1CgTlkxSZ8evQwPBhKOMH6jf8s=;
-        b=ex7has7lm2EYUARRR5LcChbD9/m9mw2JDQrgfwPm0AQ7nz3tBShikHlgegFeTW8837
-         yqoOTt2/jzzUshroUEWAbXdmjGCyCWCm/Dv6zz4KJTnJJV5JhB+i33yztPISOMsgqsC2
-         xeyjaHEDW29/XjUa8csUmNdA/eRpLuWmHkvQKQ8DMWfnH87tQsgn0vhjrF5pa/r4RHVx
-         UeYi8+SoWK21TeRQFdQXMN8+WB/wUv9csdvw2Gh6C85vc/a3rmEmWKpJ0TfvkkIbTqXa
-         XvW3cjYx9umMlBvUdsbwe8TQvRZq3m9Fw8Sowz/iZ2E86eoyovfwaqxHh2+8Pnl0/C7t
-         cUbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=Aauu7gYvMaBruI9Zt1CgTlkxSZ8evQwPBhKOMH6jf8s=;
-        b=YldR92xO5PrCjmOMOge9zSAX59tDCDGnCaDt7RIBL2nA+BCAWFT8/GzRlvIFm1XXUk
-         ohWMOu42/iuHrjSuPDdZ8Wp+iMsnb89OOyME01P091CgBVf6fuWKGYV8BtjtpU/NQvRb
-         NwpvEgWnnkdMstkbULLI8+1bJM/6wHeEoS9I6Ceumk+B/c3X/iwcPwkRu7kse37sZ4Lq
-         JMXJ1Lbnaf9Nb8MtLlb2QCFNbpP1xfIIAIRcq45Zlr7eIrxUD0SZ1x5rZiYho37Cve1O
-         t7GoxEsfPZXSv8UOK+7qEANsXdcw41DjyetochJqC7QpYVynzyw/Ik/fx2srKCKOXDMQ
-         hL0A==
-X-Gm-Message-State: AOAM530TBtAV5iiQZNcXN3EGCk4ec8DqSbSkU+NoczbfLLGGYbUl0Twx
-        CP41XPwBbIR739R3GbtQQHzLfo0hf/OJA5Ny9H0=
-X-Google-Smtp-Source: ABdhPJxjDi5MO3oP6wK+JFGyMPMq511TjrSnKCc1EQeX3WjMKMMnoWYiaz3e6T956b/YoYBH41Z8dtVAyOzh6gNDCkM=
-X-Received: by 2002:a05:6512:3f5:: with SMTP id n21mr9673781lfq.633.1627448246368;
- Tue, 27 Jul 2021 21:57:26 -0700 (PDT)
+        id S232985AbhG1GaJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 28 Jul 2021 02:30:09 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:12322 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231484AbhG1GaJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 28 Jul 2021 02:30:09 -0400
+Received: from dggemv704-chm.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4GZNv63X11z801B;
+        Wed, 28 Jul 2021 14:25:22 +0800 (CST)
+Received: from dggpeml500023.china.huawei.com (7.185.36.114) by
+ dggemv704-chm.china.huawei.com (10.3.19.47) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 28 Jul 2021 14:30:05 +0800
+Received: from ubuntu1804.huawei.com (10.67.174.58) by
+ dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2176.2; Wed, 28 Jul 2021 14:30:05 +0800
+From:   Xiu Jianfeng <xiujianfeng@huawei.com>
+To:     <paul@paul-moore.com>, <stephen.smalley.work@gmail.com>,
+        <eparis@parisplace.org>
+CC:     <selinux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <wangweiyang2@huawei.com>
+Subject: [PATCH -next] selinux: correct the return value when loads initial sids
+Date:   Wed, 28 Jul 2021 14:31:10 +0800
+Message-ID: <20210728063110.3652-1-xiujianfeng@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Reply-To: godwinppter@gmail.com
-Sender: mrszoungranamonica@gmail.com
-Received: by 2002:ac2:5cb7:0:0:0:0:0 with HTTP; Tue, 27 Jul 2021 21:57:25
- -0700 (PDT)
-From:   Godwin Pete <godwinnpeter@gmail.com>
-Date:   Wed, 28 Jul 2021 06:57:25 +0200
-X-Google-Sender-Auth: C9jb4yttJUXoY_3G7TMYro2reVc
-Message-ID: <CAAB_Eni0RFY-vqCgH1QdFFTivpik3dApdNj2rv6U9gXpiXBKWA@mail.gmail.com>
-Subject: It's very urgent, please reply immediately
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.58]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpeml500023.china.huawei.com (7.185.36.114)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-My good friend,
+It should not return 0 when SID 0 is assigned to isids.
+This patch fixes it.
 
-I just want to know if you, can help me to transfer the amount of
-($6Million). After the transfer we have to share it, 50% for me, and
-50% for you. Please let me know if you can help me for more
-information in regards with the transfer. I hope you can work with me
-honestly?
+Fixes: e3e0b582c321a ("selinux: remove unused initial SIDs and improve handling")
+Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
+---
+ security/selinux/ss/policydb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index defc5ef35c66..ad1183e18ce0 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -884,6 +884,7 @@ int policydb_load_isids(struct policydb *p, struct sidtab *s)
+ 
+ 		if (sid == SECSID_NULL) {
+ 			pr_err("SELinux:  SID 0 was assigned a context.\n");
++			rc = -EINVAL;
+ 			sidtab_destroy(s);
+ 			goto out;
+ 		}
+-- 
+2.17.1
 
-Thanks.
-
-Godwin Peter,

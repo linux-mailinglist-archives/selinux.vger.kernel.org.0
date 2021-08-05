@@ -2,63 +2,89 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C50BB3E121C
-	for <lists+selinux@lfdr.de>; Thu,  5 Aug 2021 12:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D9AC3E1646
+	for <lists+selinux@lfdr.de>; Thu,  5 Aug 2021 16:01:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240229AbhHEKId (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 5 Aug 2021 06:08:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38404 "EHLO
+        id S240537AbhHEOBw (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 5 Aug 2021 10:01:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240342AbhHEKI2 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 5 Aug 2021 06:08:28 -0400
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B96ACC061798
-        for <selinux@vger.kernel.org>; Thu,  5 Aug 2021 03:08:14 -0700 (PDT)
-Received: by mail-yb1-xb31.google.com with SMTP id s48so8136532ybi.7
-        for <selinux@vger.kernel.org>; Thu, 05 Aug 2021 03:08:14 -0700 (PDT)
+        with ESMTP id S238069AbhHEOBv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 5 Aug 2021 10:01:51 -0400
+Received: from mail-ot1-x32a.google.com (mail-ot1-x32a.google.com [IPv6:2607:f8b0:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F891C061765
+        for <selinux@vger.kernel.org>; Thu,  5 Aug 2021 07:01:36 -0700 (PDT)
+Received: by mail-ot1-x32a.google.com with SMTP id r16-20020a0568304190b02904f26cead745so4838600otu.10
+        for <selinux@vger.kernel.org>; Thu, 05 Aug 2021 07:01:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=IXiF0cE8iLdsKXBHXuqgd6kWlwigyuOCyyGf/zSHAKo=;
-        b=pdNJV22hEKUkr2wA+Dw7b0HK5p+fKD7oi9ms73/NQBq4byh0+9pB1A6oe1xCXysupS
-         vT4ZgNrd/iDydeaITAzgCWnvJ1T8DzO9Ikue0eh2028J3bvM5/nV9CmcQHIWzzF2i+mX
-         /sg0lMiy+hw6Gvldm32hnzhxHNIZ3+sg/LpGT95hdfcE2C1+CpQnpZJcHKLwQp4sX3cM
-         fVqfexzZBPzvGUcimtdAPr3QQtqUMw9B7bRNUxrN6Y7mpkt3HH0BSk5A+iJOJO2gEQRY
-         drwgDCakbhJ9+GbQpfUQ9EJCisqQqw73Q2cN3zdtfbHNShRLJrFU59HOzPVqqfS6ENTI
-         xSyw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=MMrJk6/3jTO5A5XLnH26wIfb2zXuydt2pwvSNbt20V8=;
+        b=vRX/6+ArMy9jQdfBPdjGJiRS/VIXkzcqvH2jrZjOuhnY82mDE1LmQga2Vl/eiQSUdu
+         4GDtVlFBCGqfPEWgkLYdLWG6dyvoIh3e+77wMi9lA1K5vQXKKzPaGG/cR/8p09G6OmPc
+         miBUbaWhQonWv9Sb9x9Uu/DMnIDC5z54JkoVAmiW6uM3x8yTC+1KCr0VxrFxors0c0Ij
+         W+wo59rk7nlLx54NgTkaEBRFMCKhUTAWlb9QT+D2RS+5ocqe4qwWrS5Ya4DS8AcuIBwU
+         HShkorGMRxV6PV0WRA2YVqbcuBgF0JqLrkqYozIRnNOfrMzlLlpI8/VyKXxKC5X7J9P/
+         4qmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=IXiF0cE8iLdsKXBHXuqgd6kWlwigyuOCyyGf/zSHAKo=;
-        b=gvYVFdj4dagkZjgcpYcXvlC2SJTfCSFTbKM8xQ9ZPTKOWHBAbSWAJ5Pgx9x+TnOGs/
-         UA9TGOUvK/WO7hwjoUVVfk5BpeMPgErYPK8JtdobMaw9EKTJXalXTxjaRHFNKcAorDXm
-         7e08XPoF3kJy2yf7MaTNxKmyHd2FcnpLNB73AbeSnCWnEDU/9RuUexyIHGZH8kz/ch5F
-         p/O4lQBKZCwp7xwXw+t26Ks9rrJWjFUDvKoe5geai2N5V/EJA3Jon6Cvfa9SZh1LgE6A
-         Cwfv2X6WUldFetJWPIQ4jM/lhKFkocs4K2+cuQEdryuL2CHrSchMF3a23FkPjHob6kRb
-         ucCQ==
-X-Gm-Message-State: AOAM531fzB/X9uDHrP+bAUGyFUVYd9Q6ddV9XN3F2Qazb9UYG62K0yTN
-        hUgh5liubNCI/WzyJlMx6o6r4HHZskOIDEVldZU=
-X-Google-Smtp-Source: ABdhPJy6VyomjzZA7FzL2YAykxMaSEH2FbkM8+spFBukZHbLNwTOeY7OBuFr7jJq9kzHGjfNz0QbSoO2ZvIS8b1T9E0=
-X-Received: by 2002:a25:ad57:: with SMTP id l23mr5146843ybe.303.1628158094076;
- Thu, 05 Aug 2021 03:08:14 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=MMrJk6/3jTO5A5XLnH26wIfb2zXuydt2pwvSNbt20V8=;
+        b=LEoZcF/DXYmsmnJ7OLMancny52jftl/ehSdH9N0VDqQgpd8CgPe6rf6mhXxaCLgbPM
+         wo3uEV7W/lnBj4pNKBIRB7AINgTLM9rPNQPuiQYBFmC6jWNL15/YRaMW07PeNOI71YBj
+         pb3tLXPoLhZ0j1HrCvoqkFocjM6MUcO6veCPJxsZU3ygaYu02eouF303DkcHYs5ybN2H
+         rntW9uLo3n1e4lRetU/YdZzm+/vqa4I68nQiZtLHc5b56IMFuBPZm472BYi+aZXb4syL
+         k/919ltSV8Dk/1uPcPn1BXg6RZ/vZOgL9MhUueDCr8+QIoY3sDKRLl2z+koVOw4JVKI0
+         lc4Q==
+X-Gm-Message-State: AOAM533Hgp3kg75tY2UtVwQG9J9JWJauPafau0YLRkeVhf6t8SZQ+IXg
+        lmj0jaOlCIXtOv/HiKnnXQTbJTqVPK81KdMiX5g=
+X-Google-Smtp-Source: ABdhPJzJmTF+wqASooRBYchGjba3NqCuvIodKlNuZPYdgFyU0Sb0I0mCmnBxnBMAeCr8VhvC3VT6ZNJp6XIbcsRTEls=
+X-Received: by 2002:a9d:65d0:: with SMTP id z16mr2236685oth.196.1628172095217;
+ Thu, 05 Aug 2021 07:01:35 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:7010:330b:b029:db:4f3a:6691 with HTTP; Thu, 5 Aug 2021
- 03:08:13 -0700 (PDT)
-Reply-To: rihabmanyang07@yahoo.com
-From:   Rihab Manyang <diamakaire48@gmail.com>
-Date:   Thu, 5 Aug 2021 11:08:13 +0100
-Message-ID: <CAJq20O=9kXZZhN9x-CTs6piokkzkxiwXwVNxHWpQhvfUgDzb5A@mail.gmail.com>
-Subject: Hello
-To:     undisclosed-recipients:;
+References: <20210805084550.810783-1-omosnace@redhat.com>
+In-Reply-To: <20210805084550.810783-1-omosnace@redhat.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Thu, 5 Aug 2021 10:01:24 -0400
+Message-ID: <CAP+JOzS902PUNYq-5HG_-oNEZGnr+rA3TBVHFQnP-+c2XHYYHg@mail.gmail.com>
+Subject: Re: [PATCH userspace] libsepol/cil: remove obsolete comment
+To:     Ondrej Mosnacek <omosnace@redhat.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
--- 
+On Thu, Aug 5, 2021 at 5:16 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>
+> Commit a60343cabfc2 ("libsepol/cil: remove unnecessary hash tables")
+> removed FILENAME_TRANS_TABLE_SIZE macro that this comment was referring
+> to. Remove the comment as well to avoid confusion.
+>
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 
-Hello,
+Acked-by: James Carter <jwcart2@gmail.com>
 
-i am trying to reach you hope this message get to
-you.from Rihab Manyang
+> ---
+>  libsepol/cil/src/cil_binary.c | 3 ---
+>  1 file changed, 3 deletions(-)
+>
+> diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+> index 41105c12..2b65c622 100644
+> --- a/libsepol/cil/src/cil_binary.c
+> +++ b/libsepol/cil/src/cil_binary.c
+> @@ -55,9 +55,6 @@
+>  #include "cil_find.h"
+>  #include "cil_build_ast.h"
+>
+> -/* There are 44000 filename_trans in current fedora policy. 1.33 times this is the recommended
+> - * size of a hashtable. The next power of 2 of this is 2 ** 16.
+> - */
+>  #define ROLE_TRANS_TABLE_SIZE (1 << 10)
+>  #define AVRULEX_TABLE_SIZE (1 <<  10)
+>  #define PERMS_PER_CLASS 32
+> --
+> 2.31.1
+>

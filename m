@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E15CA3E16E8
-	for <lists+selinux@lfdr.de>; Thu,  5 Aug 2021 16:26:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 405C63E16EB
+	for <lists+selinux@lfdr.de>; Thu,  5 Aug 2021 16:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241659AbhHEO0j (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 5 Aug 2021 10:26:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41584 "EHLO
+        id S241657AbhHEO0k (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 5 Aug 2021 10:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241658AbhHEO0f (ORCPT
+        with ESMTP id S241660AbhHEO0f (ORCPT
         <rfc822;selinux@vger.kernel.org>); Thu, 5 Aug 2021 10:26:35 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F023CC061798
-        for <selinux@vger.kernel.org>; Thu,  5 Aug 2021 07:26:19 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id e19so9882919ejs.9
-        for <selinux@vger.kernel.org>; Thu, 05 Aug 2021 07:26:19 -0700 (PDT)
+Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84E27C061799
+        for <selinux@vger.kernel.org>; Thu,  5 Aug 2021 07:26:20 -0700 (PDT)
+Received: by mail-ej1-x62d.google.com with SMTP id yk17so9869309ejb.11
+        for <selinux@vger.kernel.org>; Thu, 05 Aug 2021 07:26:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=fVul56w0w/09wFHQU8+GgrAPFPp0mQE4tVBUTeDj6cI=;
-        b=dPHSAdvJ0S3BARRLNNv6t7Dyq3FlxAfQy7uoznVMmSLodlYbT+S0oW0s7dVHB6rG/v
-         9lPdSKAKGM4bv+hp49gUDhH3n+GfbmHhfjqId9RyA5Q9RBJ/JUWHcHMIcavJZOcSqD70
-         2ekA93e1ln3YI02O0pUvBtQEfiXU4nEwA1kg8w7Fm+pzABI+96nnhfMZzApoOudVj4D2
-         KY9g2kvpBHYpzo6pguhJQcM4Hp2ZHZMbk1hF4qZu3+J2KbcRDXumArf+CM79WHdwTW4X
-         MvsSKTUUig6tzOdoeuNmn5xLicmn7eoIsCHuoFb8MLVj6FH85cMsdc1zsL49FdA4Ilx0
-         HI5Q==
+        bh=EX7cn+uDoO+qXuwXHKxjXopNzfspr/KdB6g/6+eRst4=;
+        b=JY+SU10BKOPIXrR/5Z0JOwvumLdGXYoT5aKT5FKmVMN+wEOlc1C/ypLrWKiKGQ0Qx6
+         f1mLmOAQ05eFXuiAuwhxzdXZmua93RDau1QzAaBmjQ+DqPG+B7pVqoteqGo/EF5Azs4m
+         tYQlGBZ/91IqFvOZV8ND7S2fS6frtXVHplHXLZpPxBd8lZqgL/5IqPpDdFrfYpNSGcOF
+         m7mhxNxXqjI0WhUYGvoKj4mcCpAFGmspd1r7YeKAPXWRjSN/DIGX1G46t4UNo0hisYOM
+         dTjjNn5E4fehfIRR27SGbfgArCNJr5v/gfTBzC8+vE1U1xXi2Y1qFu4MC3XGMbdxH/ER
+         cmPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=fVul56w0w/09wFHQU8+GgrAPFPp0mQE4tVBUTeDj6cI=;
-        b=ORX5mQyp9qjsyIShnZ6rZliIWmct0YZF5x1nlcC/k5mO2DQ6PygcVdM081z1Ytjyys
-         emFMKvHUQjw5N0SHsCiAiTAhKupGh/jvp4Vgy/o/H0jNZPrrp6ANCu6CTlZb4JC1SBTS
-         nRiM+KlIy7bDZx7A7jmaMBdlcLMFGUk+3ja4qGO1FaVCkMAKWobuo8NDJ/1IorgFnZ0q
-         JkG4U+LWpo65LAIpHcTPBbRX2XPMOTrWShWDNzKsO8AiVpE7hQxYqfs4dt2pGXtEK0Ud
-         Al11/P9SPmTh7lRrMLPNIE8Qzi/FCSz4ZG+YC7w1ZFcC9HFt14lJsTlkRNW3NYpATQu6
-         QjMw==
-X-Gm-Message-State: AOAM530RIGBZHdfq+/2rD2Lrrd82zDTwL53GHD2zDDpUe7i0QhrqKfxk
-        Xl8qwfHtD4JoCrIDalKKhctwl+GtfKM=
-X-Google-Smtp-Source: ABdhPJycbm3kuphUDTuVJ7lLhqReKEP98kEJmMKTI9vgEAvSHh7Ny2NaRKepoWMWHk5q4aBCHq7NWQ==
-X-Received: by 2002:a17:906:840f:: with SMTP id n15mr5240629ejx.334.1628173578575;
-        Thu, 05 Aug 2021 07:26:18 -0700 (PDT)
+        bh=EX7cn+uDoO+qXuwXHKxjXopNzfspr/KdB6g/6+eRst4=;
+        b=QeSNWFecjoEVsU5PrsL2T7MUe4sBT/J1KQaVkK+LeWGZgtw319P5CLYWw9rNmJTmmL
+         qy0DAkPVD4xH7tdfcqsN/2AiVHNni6gn3jWmRQwi3mMNXMrC0lRxVimyX17kZRvUqeQG
+         DXhiZfDOuN02aN4RCRC2O+15g5SSd6H+O2tyKDTnRVYhyqcubn20PGkMMldbpdlUJHq+
+         8KZhUA2SgBmSDZ9qKutaTLmzPT7j1oqhYVnKNMxNvUyQResXK/IOc4pCgHM4wIPQQ5cu
+         9IGtMWZMPKpyxDbRw/OPvWVZO3d67uYRkJiWbZe4kPL1pbksLeSxX7TQIdze5Map02Wb
+         e8VQ==
+X-Gm-Message-State: AOAM531OuXJMBm0zdqH4yXVLJ/zWwNhdxfHgFiP9bWljuPhqEjo7saru
+        9mD3CE7s7JZaGj4C6OOlm1e26SQ84T8=
+X-Google-Smtp-Source: ABdhPJw2bjrnDdp/EEfK69XhJHrjR35Hz5FIb9hNwU8lgl4UAGs2mih4e6iZ3d9fkgIivdNIFSu0MQ==
+X-Received: by 2002:a17:907:375:: with SMTP id rs21mr5238563ejb.252.1628173579132;
+        Thu, 05 Aug 2021 07:26:19 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-008-149-099.77.8.pool.telefonica.de. [77.8.149.99])
         by smtp.gmail.com with ESMTPSA id f15sm1768887ejt.75.2021.08.05.07.26.18
         for <selinux@vger.kernel.org>
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-008-149-099.77.8.pool.telefon
         Thu, 05 Aug 2021 07:26:18 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH SYSTEMD 6/7] core: avoid bypasses in D-BUS SELinux filter
-Date:   Thu,  5 Aug 2021 16:24:44 +0200
-Message-Id: <20210805142445.61725-7-cgzones@googlemail.com>
+Subject: [PATCH SYSTEMD 7/7] core: tweak job_type_to_access_method SELinux permissions
+Date:   Thu,  5 Aug 2021 16:24:45 +0200
+Message-Id: <20210805142445.61725-8-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20210805142445.61725-1-cgzones@googlemail.com>
 References: <20210805142445.61725-1-cgzones@googlemail.com>
@@ -62,92 +62,41 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Do not allow access if D-Bus credentials are unavailable.
-Perform system check if job or unit not found.
+JOB_RELOAD_OR_START might collapse into JOB_START and JOB_VERIFY_ACTIVE
+is similar to JOB_START.  Use the more heavy and appropriate permission
+"start" instead of "reload".
 ---
- src/core/dbus.c | 44 +++++++++++++++++++-------------------------
- 1 file changed, 19 insertions(+), 25 deletions(-)
+ src/core/job.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/src/core/dbus.c b/src/core/dbus.c
-index f876433c00..576dfa0b11 100644
---- a/src/core/dbus.c
-+++ b/src/core/dbus.c
-@@ -214,13 +214,12 @@ static int mac_selinux_filter(sd_bus_message *message, void *userdata, sd_bus_er
-         Manager *m = userdata;
-         const char *verb, *path;
-         Unit *u = NULL;
--        Job *j;
-         int r;
+diff --git a/src/core/job.c b/src/core/job.c
+index dd16a0b280..0b2e0373c6 100644
+--- a/src/core/job.c
++++ b/src/core/job.c
+@@ -1557,12 +1557,20 @@ const char* job_type_to_access_method(JobType t) {
+         assert(t >= 0);
+         assert(t < _JOB_TYPE_MAX);
  
-         assert(message);
- 
-         /* Our own method calls are all protected individually with
--         * selinux checks, but the built-in interfaces need to be
-+         * SELinux checks, but the built-in interfaces need to be
-          * protected too. */
- 
-         if (sd_bus_message_is_method_call(message, "org.freedesktop.DBus.Properties", "Set"))
-@@ -235,42 +234,37 @@ static int mac_selinux_filter(sd_bus_message *message, void *userdata, sd_bus_er
- 
-         path = sd_bus_message_get_path(message);
- 
--        if (object_path_startswith("/org/freedesktop/systemd1", path)) {
--                r = mac_selinux_access_check(message, verb, error);
--                if (r < 0)
--                        return r;
-+        if (streq_ptr(path, "/org/freedesktop/systemd1"))
-+                return mac_selinux_access_check(message, verb, error);
- 
--                return 0;
--        }
--
--        if (streq_ptr(path, "/org/freedesktop/systemd1/unit/self")) {
-+        if (object_path_startswith(path, "/org/freedesktop/systemd1/job")) {
-+                Job *j;
-+                r = manager_get_job_from_dbus_path(m, path, &j);
-+                if (r >= 0)
-+                        u = j->unit;
-+        } else if (streq_ptr(path, "/org/freedesktop/systemd1/unit/self")) {
-                 _cleanup_(sd_bus_creds_unrefp) sd_bus_creds *creds = NULL;
-                 pid_t pid;
- 
-                 r = sd_bus_query_sender_creds(message, SD_BUS_CREDS_PID, &creds);
-                 if (r < 0)
--                        return 0;
-+                        return r;
- 
-                 r = sd_bus_creds_get_pid(creds, &pid);
-                 if (r < 0)
--                        return 0;
-+                        return r;
- 
-                 u = manager_get_unit_by_pid(m, pid);
--        } else {
--                r = manager_get_job_from_dbus_path(m, path, &j);
--                if (r >= 0)
--                        u = j->unit;
--                else
--                        manager_load_unit_from_dbus_path(m, path, NULL, &u);
--        }
--        if (!u)
--                return 0;
-+        } else if (object_path_startswith(path, "/org/freedesktop/systemd1/unit")) {
-+                manager_load_unit_from_dbus_path(m, path, NULL, &u);
-+        } else
-+                log_warning("Unexpected object path '%s' in SELinux D-Bus filter", path);
- 
--        r = mac_selinux_unit_access_check(u, message, verb, error);
--        if (r < 0)
--                return r;
-+        if (!u)
-+                /* Fall back to main instance check, e.g. if job or unit not found. */
-+                return mac_selinux_access_check(message, verb, error);
- 
--        return 0;
-+        return mac_selinux_unit_access_check(u, message, verb, error);
+-        if (IN_SET(t, JOB_START, JOB_RESTART, JOB_TRY_RESTART))
++        switch (t) {
++        case JOB_START:
++        case JOB_RESTART:
++        case JOB_TRY_RESTART:
++        case JOB_RELOAD_OR_START:
++        case JOB_VERIFY_ACTIVE:
+                 return "start";
+-        else if (t == JOB_STOP)
++        case JOB_STOP:
+                 return "stop";
+-        else
++        case JOB_RELOAD:
++        case JOB_TRY_RELOAD:
++        default:
+                 return "reload";
++        }
  }
- #endif
  
+ /*
 -- 
 2.32.0
 

@@ -2,103 +2,69 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 58AC13E7D87
-	for <lists+selinux@lfdr.de>; Tue, 10 Aug 2021 18:31:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF3C3E8214
+	for <lists+selinux@lfdr.de>; Tue, 10 Aug 2021 20:06:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233409AbhHJQcQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 10 Aug 2021 12:32:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36708 "EHLO
+        id S235273AbhHJSFl (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 10 Aug 2021 14:05:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231709AbhHJQcQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 10 Aug 2021 12:32:16 -0400
-Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DC90C0613C1
-        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 09:31:54 -0700 (PDT)
-Received: by mail-oi1-x232.google.com with SMTP id u10so29655735oiw.4
-        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 09:31:54 -0700 (PDT)
+        with ESMTP id S238184AbhHJSDt (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 10 Aug 2021 14:03:49 -0400
+Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E390BC09B137
+        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
+Received: by mail-lf1-x143.google.com with SMTP id z20so5991454lfd.2
+        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3ezbpXknzc+vUNqDy4JgUHkIjsW5FxQdGSQkG7Z/W1U=;
-        b=I4W44iLLH07aiLg6c4Q3CwPdAWP3oZNlOZZD4xDYVvKh/wj6THyCoo2Iw70QvAi44X
-         vCarRlkRB6DUo1qtXVxmijcgIaa0MvTO36GC9+PRr8G/e5BUSYvMHHcstnWlRXKcrwZ5
-         xts740P6gDnpOxZuJbuSWNIdJ5xafGogCauG11YRzUB4cYA3z3RURVU75K+IrJ7ui+gc
-         bh3ibWxX17lY/J3eVGdE16f361mYp5Yq2EjSQJ6GgwV7xiBatAo/7JFcrQpar+vAi9AO
-         qk7pjok8coGYmgYBmJrTL2h4y+hQJ4DBpddDCLaGxScKNf/KW65CLdPJBT6auz4PeW47
-         +IZQ==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=rZyDO+pQmFAMTqMMwbflMM4ql7GCGPeivQF49luaUKDh68BdWveTpXnyTbx8OavZh5
+         bGP7zLKVlUZwhT2f48vcZmIt1snZCfta1+RSsuWy7jL1bN3yiCeI7kSgY9GO+Mr9hMq3
+         QkduLfUrIvN/HhmkJo3bkzdVVz9B3L1xqaqjjeWbgQaiVHo19p8Fs6QUjc1RLTijFsZ1
+         J9z0vnpLd+WWbyIkFWEiiEi8HRNeEnyGx9q1dMSNuv5GsXDJ6u1Pt8dggrrGxNlZZA6H
+         nx910xE9Y9oc9IQRBXvrtvv831ie/oFdSTFPcOo+Z7/z7WR4icLIqTKALRAXVA68hURN
+         avgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3ezbpXknzc+vUNqDy4JgUHkIjsW5FxQdGSQkG7Z/W1U=;
-        b=EdnK6DZU5iPH0kH/MMznzV9gh3NuhaTG2oYz3lyyxbGp73vWAFuQMcRbL9RIl5ROcH
-         g0EO0b3CtICdNtfWAH6QGLmXU2gNSuGi0MHZp69o0f2oaeLaJPQzYlf3mLBaE39hbYaS
-         2Fet4jTP+q4uQbySctEQ2+q6xGL5fYOj0LkkxEgzDYKZZrYUjq1l7UPEA+PQGkUq1yS4
-         OwXy7FI7ZBJpOuKtqG75QKirBKzNicFh2lWlmUyx5K0YWjV+Kyg6HMI8KufXWVmp16LY
-         oFKaBuqRggepbe7gYdrOSrLWZDb0NvHOE24WoUX7EydIOSQ+GPl4U/HjKfuTfvyymRYj
-         nFLw==
-X-Gm-Message-State: AOAM532YGWvQ/SbE7Ofm2hhHndeTcFWC4PvWDR691UmMZLFzHoGcve1B
-        wEh+3OYlI1v90wfNlFraxo/i1RkkPHV0SsMRAvY=
-X-Google-Smtp-Source: ABdhPJyLkSdNG7zYZ3Zty3NSOtG86kQ4HZlWFKyuz31elM0KyI7TYOw4hOw2vLKxRrrUDOLRc5guwxomQgHfmn0gGBA=
-X-Received: by 2002:aca:1815:: with SMTP id h21mr4201243oih.128.1628613113642;
- Tue, 10 Aug 2021 09:31:53 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
+        b=RyW+/z1rTa+ucabfBrFf7pJkzpLs0m1CdBdGf1wy2/QaSgS52iXaUWTjsLc6V17Xx9
+         Z0OINzuJ/+1dEDz8uXtpK3psCm3YO/lwHvWS8RH5n16ToKblWAnR9Rqgx+6p+ZFLkIp8
+         q8luEVsOfrXCCbZaNi07Z9niHOB1fwilRB0xbeDMfiE+FgWVwHjlENXlxhm5RfjA/Fuh
+         PyTIGDIf1RuUxg61gBiuiroGYDszYdN1T5DgkHjiQR+U1LI/gvhGcMYAkkjU4nAJq9VG
+         mb0azDdDG0X2AKEDazZqYpVzkV4FDYrhBr+t+M1MP1HFxVShTlPNssqCvlgIKN7EQdzc
+         I6iw==
+X-Gm-Message-State: AOAM533pS1yXQc+MEidZC/PLSCvqDx6z4GXZVsSNNHJzRB8qAAoExcsL
+        cIKNEu0IRn+FOLJn//LtVILZ4hye9HVJEctuHqA=
+X-Google-Smtp-Source: ABdhPJzIebxwo90Zyr4sj9ScmYCof4VCk1w95dCMQpZ4/cQfOuUDCqwTC1pz0BbxoizG48Nn6kSbzrBfyOpB9YVAvEQ=
+X-Received: by 2002:a05:6512:11c3:: with SMTP id h3mr22104381lfr.413.1628617013026;
+ Tue, 10 Aug 2021 10:36:53 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210806083340.160333-1-plautrba@redhat.com> <CAP+JOzR3twm0Jg5EFsRP=2mzEdthUnwVv=8WKcXV=3zVzz+c1w@mail.gmail.com>
-In-Reply-To: <CAP+JOzR3twm0Jg5EFsRP=2mzEdthUnwVv=8WKcXV=3zVzz+c1w@mail.gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Tue, 10 Aug 2021 12:31:42 -0400
-Message-ID: <CAP+JOzTxtN42OF9+C5EeKNUAq76RRaP4nrHuiLuG3dLU_U=APg@mail.gmail.com>
-Subject: Re: [PATCH] mcstrans: Improve mlstrans-test output
-To:     Petr Lautrbach <plautrba@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+Received: by 2002:ac2:4eca:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:36:52
+ -0700 (PDT)
+Reply-To: majidmuzaffar8@gmail.com
+From:   Majid Muzaffar <ngl.binabdul.rashiid333.me@gmail.com>
+Date:   Tue, 10 Aug 2021 20:36:52 +0300
+Message-ID: <CAG1gDZWXEFoLwsRk8a_qSWzn3-vwvvxE2XX3d--LKh2r2t4e1w@mail.gmail.com>
+Subject: Proposal
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Aug 6, 2021 at 4:06 PM James Carter <jwcart2@gmail.com> wrote:
->
-> On Fri, Aug 6, 2021 at 4:34 AM Petr Lautrbach <plautrba@redhat.com> wrote:
-> >
-> > Fixes:
-> >     trans: a:b:c:s9 -> a:b:c:TOP SECRET != a:b:c:TOP SECRET SUCCESS
-> >     untrans: a:b:c:T O P S E C R E T -> a:b:c:s9 != a:b:c:s9 SUCCESS
-> >
-> > Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
->
-> Acked-by: James Carter <jwcart2@gmail.com>
->
-Merged.
-Thanks,
-Jim
+Salam alaikum,
 
-> > ---
-> >  mcstrans/share/util/mlstrans-test | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/mcstrans/share/util/mlstrans-test b/mcstrans/share/util/mlstrans-test
-> > index 085fa82ddd25..df34e0e67c84 100644
-> > --- a/mcstrans/share/util/mlstrans-test
-> > +++ b/mcstrans/share/util/mlstrans-test
-> > @@ -15,7 +15,7 @@ def untrans(trans, val):
-> >          errors += 1
-> >      else:
-> >          if verbose:
-> > -            print("untrans: %s -> %s != %s SUCCESS" % (trans, raw, val))
-> > +            print("untrans: '%s' -> '%s' == '%s' SUCCESS" % (trans, raw, val))
-> >
-> >
-> >  def trans(raw, val):
-> > @@ -26,7 +26,7 @@ def trans(raw, val):
-> >          errors += 1
-> >      else:
-> >          if verbose:
-> > -            print("trans: %s -> %s != %s SUCCESS" % (raw, trans, val))
-> > +            print("trans: '%s' -> '%s' == '%s' SUCCESS" % (raw, trans, val))
-> >
-> >
-> >  if len(sys.argv) > 1 and sys.argv[1] == "-v":
-> > --
-> > 2.32.0
-> >
+I am the investment officer of UAE based investment company who are
+ready to fund projects outside UAE, in the form of debt finance. We
+grant loan to both Corporate and private entities at a low interest
+rate of 3% ROI per annum. The terms are very flexible and interesting.
+Kindly revert back if you have projects that needs funding for further
+discussion and negotiation.
+
+Thanks
+
+investment officer

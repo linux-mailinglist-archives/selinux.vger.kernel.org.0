@@ -2,69 +2,92 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5FF3C3E8214
-	for <lists+selinux@lfdr.de>; Tue, 10 Aug 2021 20:06:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 065693E82E2
+	for <lists+selinux@lfdr.de>; Tue, 10 Aug 2021 20:21:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235273AbhHJSFl (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 10 Aug 2021 14:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57006 "EHLO
+        id S235832AbhHJSWG (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 10 Aug 2021 14:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238184AbhHJSDt (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 10 Aug 2021 14:03:49 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E390BC09B137
-        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id z20so5991454lfd.2
-        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 10:36:54 -0700 (PDT)
+        with ESMTP id S237194AbhHJSVz (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 10 Aug 2021 14:21:55 -0400
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B8FC07AF59
+        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 11:05:43 -0700 (PDT)
+Received: by mail-qk1-x734.google.com with SMTP id e14so23393377qkg.3
+        for <selinux@vger.kernel.org>; Tue, 10 Aug 2021 11:05:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=rZyDO+pQmFAMTqMMwbflMM4ql7GCGPeivQF49luaUKDh68BdWveTpXnyTbx8OavZh5
-         bGP7zLKVlUZwhT2f48vcZmIt1snZCfta1+RSsuWy7jL1bN3yiCeI7kSgY9GO+Mr9hMq3
-         QkduLfUrIvN/HhmkJo3bkzdVVz9B3L1xqaqjjeWbgQaiVHo19p8Fs6QUjc1RLTijFsZ1
-         J9z0vnpLd+WWbyIkFWEiiEi8HRNeEnyGx9q1dMSNuv5GsXDJ6u1Pt8dggrrGxNlZZA6H
-         nx910xE9Y9oc9IQRBXvrtvv831ie/oFdSTFPcOo+Z7/z7WR4icLIqTKALRAXVA68hURN
-         avgA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oW1AswY8jRNtRxkWGMjfa0LvMIj8H4wFjuk298s54p4=;
+        b=PIf1r+dJQcsETeCg+yKTP79zmA0s25+YzrkcF9/JkWAHaJ5KD1c9Xy1DCy+tc2VNXY
+         envvZTw27vbXIVycJhZaBskrxaLU4xDpZ4cmqUoN3CJ+K6Z3glTpUWZ41fWUcg3l9M55
+         u9CL+BgSrkgOB4y5beEmaC301K1LXCfijHsm5ELeBQaFLwAVe3nl3VinyBbtNfzi5iZa
+         LbNc7u/ok4eSx72KCSMouto3XVe+NkKa2NV2cjLB7o6boh1P9hrxytwpTLoP/3KBn4tK
+         ZzQHFW+w09flrxlV/rCXXhOAL9cwHbSh/MTHqzk0xUIYcQBsbzl+CV6dCG/HG5e6A0/f
+         G4sw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=y3BZ+wT7TMDVjM2/WQcyPOhYkG/NWjvDbJIsMqFI2RA=;
-        b=RyW+/z1rTa+ucabfBrFf7pJkzpLs0m1CdBdGf1wy2/QaSgS52iXaUWTjsLc6V17Xx9
-         Z0OINzuJ/+1dEDz8uXtpK3psCm3YO/lwHvWS8RH5n16ToKblWAnR9Rqgx+6p+ZFLkIp8
-         q8luEVsOfrXCCbZaNi07Z9niHOB1fwilRB0xbeDMfiE+FgWVwHjlENXlxhm5RfjA/Fuh
-         PyTIGDIf1RuUxg61gBiuiroGYDszYdN1T5DgkHjiQR+U1LI/gvhGcMYAkkjU4nAJq9VG
-         mb0azDdDG0X2AKEDazZqYpVzkV4FDYrhBr+t+M1MP1HFxVShTlPNssqCvlgIKN7EQdzc
-         I6iw==
-X-Gm-Message-State: AOAM533pS1yXQc+MEidZC/PLSCvqDx6z4GXZVsSNNHJzRB8qAAoExcsL
-        cIKNEu0IRn+FOLJn//LtVILZ4hye9HVJEctuHqA=
-X-Google-Smtp-Source: ABdhPJzIebxwo90Zyr4sj9ScmYCof4VCk1w95dCMQpZ4/cQfOuUDCqwTC1pz0BbxoizG48Nn6kSbzrBfyOpB9YVAvEQ=
-X-Received: by 2002:a05:6512:11c3:: with SMTP id h3mr22104381lfr.413.1628617013026;
- Tue, 10 Aug 2021 10:36:53 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=oW1AswY8jRNtRxkWGMjfa0LvMIj8H4wFjuk298s54p4=;
+        b=aLqnNwqVeWDXzy4+p/PUmLhRPTaBeTNH5qjbTHM7uSXG/0xGlD9i5uBlgw0VY6eDlv
+         ti4+buww8p1adMD6Vdly7tkZt0bELZKF3egSe3p1fKKr8iEYj8erXm1kgmcGpmRtRnA5
+         AIuVJDpsY4/1u5RsQu30xo8kbLGoOT5tkBuhpjFAbKEkZqP48qln2lgg3BgfcKOesTVJ
+         mqSwDy4t3X9DKDlNNO5jAyucl48FnJliEDDj3eq0SXqk0Gy4fwa1q2pJtnnZSufx2A0Z
+         /GIEaa5qE/MVn9fPNLgvP/ZqRW4O8fay+xQR/GQZxrseNH2oWLKOkVNZ4pA2tB+dwrXO
+         QcLA==
+X-Gm-Message-State: AOAM531xGqeB/bmsTU/UedBaUmRYmD7pSjBkVDOkfBZ65Tv6sLt1A9oa
+        haKjxk/v60s4XI2dbzmSzB9/n4U23rD2rQ==
+X-Google-Smtp-Source: ABdhPJxIY+0ghniRNSJmrqzmtyavAYQp279oDmU4ImyQ+yOMo4Y7yVMnRgRxm8UL7LVAUQSiL0g8CQ==
+X-Received: by 2002:a05:620a:3d9:: with SMTP id r25mr2835821qkm.76.1628618742776;
+        Tue, 10 Aug 2021 11:05:42 -0700 (PDT)
+Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
+        by smtp.gmail.com with ESMTPSA id m16sm3057415qki.19.2021.08.10.11.05.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Aug 2021 11:05:42 -0700 (PDT)
+From:   James Carter <jwcart2@gmail.com>
+To:     selinux@vger.kernel.org
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH 0/8] libsepol/cil: Line mark cleanup and fix
+Date:   Tue, 10 Aug 2021 14:05:29 -0400
+Message-Id: <20210810180537.669439-1-jwcart2@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Received: by 2002:ac2:4eca:0:0:0:0:0 with HTTP; Tue, 10 Aug 2021 10:36:52
- -0700 (PDT)
-Reply-To: majidmuzaffar8@gmail.com
-From:   Majid Muzaffar <ngl.binabdul.rashiid333.me@gmail.com>
-Date:   Tue, 10 Aug 2021 20:36:52 +0300
-Message-ID: <CAG1gDZWXEFoLwsRk8a_qSWzn3-vwvvxE2XX3d--LKh2r2t4e1w@mail.gmail.com>
-Subject: Proposal
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Salam alaikum,
+Patches 1-5 cleanup minor issues with CIL's line marks.
 
-I am the investment officer of UAE based investment company who are
-ready to fund projects outside UAE, in the form of debt finance. We
-grant loan to both Corporate and private entities at a low interest
-rate of 3% ROI per annum. The terms are very flexible and interesting.
-Kindly revert back if you have projects that needs funding for further
-discussion and negotiation.
+Patches 6-7 fix the way line mark works so that the correct line
+numbers will be given for nested line marks.
 
-Thanks
+Patch 8 writes out line mark information when writing out the AST.
 
-investment officer
+James Carter (8):
+  libsepol/cil: Check syntax of src_info statement
+  libsepol/cil: Check the token type after getting the next token
+  libsepol/cil: Check for valid line mark type immediately
+  libsepol/cil: Push line mark state first when processing a line mark
+  libsepol/cil: Create common string-to-unsigned-integer functions
+  libsepol/cil: Add line mark kind and line number to src info
+  libsepol/cil: Report correct high-level language line numbers
+  libsepol/cil: When writing AST use line marks for src_info nodes
+
+ libsepol/cil/src/cil.c           |  70 ++++++++++++++++-
+ libsepol/cil/src/cil_binary.c    |   9 ++-
+ libsepol/cil/src/cil_build_ast.c |  77 ++++++++++--------
+ libsepol/cil/src/cil_copy_ast.c  |   5 +-
+ libsepol/cil/src/cil_internal.h  |   9 ++-
+ libsepol/cil/src/cil_parser.c    | 131 +++++++++++++++----------------
+ libsepol/cil/src/cil_tree.c      |  53 +++++++++----
+ libsepol/cil/src/cil_tree.h      |   4 +-
+ libsepol/cil/src/cil_write_ast.c |  21 ++++-
+ 9 files changed, 245 insertions(+), 134 deletions(-)
+
+-- 
+2.31.1
+

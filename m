@@ -2,60 +2,182 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 045CE3E9153
-	for <lists+selinux@lfdr.de>; Wed, 11 Aug 2021 14:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89123E99E0
+	for <lists+selinux@lfdr.de>; Wed, 11 Aug 2021 22:48:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229794AbhHKMcj (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 11 Aug 2021 08:32:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56160 "EHLO
+        id S231796AbhHKUsi (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 11 Aug 2021 16:48:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbhHKMca (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 11 Aug 2021 08:32:30 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 206CAC08E816
-        for <selinux@vger.kernel.org>; Wed, 11 Aug 2021 05:30:34 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id y18so4322770oiv.3
-        for <selinux@vger.kernel.org>; Wed, 11 Aug 2021 05:30:34 -0700 (PDT)
+        with ESMTP id S229589AbhHKUsh (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 11 Aug 2021 16:48:37 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C50A9C0613D5
+        for <selinux@vger.kernel.org>; Wed, 11 Aug 2021 13:48:13 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id 14so3940091qkc.4
+        for <selinux@vger.kernel.org>; Wed, 11 Aug 2021 13:48:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=nFX2iyV8Qzv5VsUpkp+XCZa2rMildRgp4rmfs3/i85r3diZKl8jKG090hSg6ULd5u0
-         wIUSHLA1AmXndyReLtv1chzdu754A+Ph1wh/vfIxRjmTWJBsEDXYNbyV2L9uurl7rygw
-         3BEum9dkaxKey+Q+UMRctjDwuKQ1YXcRTKc1UUkneSCjfxqWrboBTOfNkJIzK5BsdQWa
-         4ApOxxKRhIhdaQEWowgLF5+CTQczgHFusP4oeusQUd6ved7FHPiMHEi1ZA8iFV2rLfKi
-         fjv9vsAR1EzF12CgxEwzjmHIzUqCG96Sjm8KNwWILsHtKg9/nTHJHDOvwQ9NbYqFW4uy
-         uTIQ==
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:from:to:date:message-id:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=zBlBSbAuxRUJW1lgOYptxB+0Lua2LslYZABHs/8DQw8=;
+        b=eUl8wgQjb6gGJUCDXI5DKOavtrZkcpwdJMLOEArw3NWOcmgexnHPccbTvRywxHi2VF
+         LZhJPBU7NvwO9SrJ88aTKEAB03QCnDNJyv0Kdl3dBd4Fzi+i+cJ5TX5/GzYCKLyQU6kn
+         m9vVAUDi5C4Cqw7K/ZN13W3ZGBHOlkBOwZ/cu1OI7p7Y8whLOdJiCMrbfxoCXJTUSYrn
+         NTMVuon/k5gDupO3Q2eWAdaeLdf5NE+eV49IiIYmew0R2IZEXTkfBRcN6kk+er+6YV4p
+         zJ0GgFSw3GQNQrVMVI0KIDdyzSmEjomkORiaNnihPL1Ug3UJG4TbANJeRXA3NWLbNm/V
+         aCqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=77BwqRII9XCweQU8IJul6unijI/BEL+vUJmVmCRLxH4=;
-        b=mygDS0W6eodZVuVOtqpxsupVgqgRQ7j9XwS/K0SVRqXZmG8ZG0XTsvIU+bbAqWpfxJ
-         UKtSFPE2dzSewZGgvKMY2xZ4ZRxPdM3VCL/WwejTlOjiC8HAr6aH1aNkFpZ1FSoPnhfj
-         Jw/ROfXtRzITFsPuxFTKkO/Qu+zCzezClBCbudxiEqMOsz8O8t26DnUWdf3rBWjBHWhD
-         qa4WZLXspYpIefrLXHgIUfOxWK7m82h0gsx5DmCikUIHAe3WodYqGEimwW1SdwAMMF5j
-         EzyMBy6G09oWkeQ46r76ZZd2lLK4OPtqP2IAvHzZ7zdekamIfcy3m+uRbpcLXXZSCUnr
-         EZvw==
-X-Gm-Message-State: AOAM533bE3Akdbm3+5za0cSUe+3L+nsyvuUFWjmKNOlKEIfOcN9XvEVo
-        pM4WR5MOy+zi5CK79AW29NsebPM3ayqX1hC72io=
-X-Google-Smtp-Source: ABdhPJxSi33xoEoIXQryMK7AlPvsXum9+Uhn2FA5SmsaT4s7SDGDeViE6wxc5zRdGly1PhBzYc0n/cZJtjhPnV2BKH4=
-X-Received: by 2002:aca:f306:: with SMTP id r6mr23008947oih.165.1628685033420;
- Wed, 11 Aug 2021 05:30:33 -0700 (PDT)
+        h=x-gm-message-state:subject:from:to:date:message-id:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=zBlBSbAuxRUJW1lgOYptxB+0Lua2LslYZABHs/8DQw8=;
+        b=Ki1TTCl20UpZXb+3GsomGzXK9GujmfG6bezCICjcbs+6WwXfPP6/pw6mOAw3/ZxTrJ
+         52AN/DYktlWoVujGH8sBMNXL9KuOfCAX2HfV3OT1QSOcraOW3vr8+dZG2oyV8K+1FlDf
+         loHgR+16Xahas0cNQIrsYhwzxnToT11cNdnD1FoJ2/dtn+SqCeiGDPaVoYHocfRvpd1H
+         yWvh2v4xvJFaTm9jz0rYwv2kaQDO4NL/EP93QLaT8YT+R2Y5/b4Si900DjpR7QchQEjc
+         YR/5LwEG/XdHPlIROsacDN41gJYpmK/ld06BYJMrkTQwkxD1te1fi1NwRsxzj4I6bI6m
+         wB/Q==
+X-Gm-Message-State: AOAM5333ZOB7m5OxzGQGCFrugm6pX5r+BpUxqfMgxGI2QHJbN2bTa/8z
+        gDlOkgD8rLweEmJ1YY56WxDP
+X-Google-Smtp-Source: ABdhPJydL0ykzGSU3mSv7znsNMhnb+x6axRiQjqG6NUGWFR49FmN7RGZaFHzTlB9WZgH5isKA3x/lQ==
+X-Received: by 2002:a37:b082:: with SMTP id z124mr964004qke.298.1628714892595;
+        Wed, 11 Aug 2021 13:48:12 -0700 (PDT)
+Received: from localhost (pool-96-237-52-188.bstnma.fios.verizon.net. [96.237.52.188])
+        by smtp.gmail.com with ESMTPSA id k1sm159186qkj.21.2021.08.11.13.48.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Aug 2021 13:48:12 -0700 (PDT)
+Subject: [RFC PATCH v2 0/9] Add LSM access controls and auditing to io_uring
+From:   Paul Moore <paul@paul-moore.com>
+To:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        linux-audit@redhat.com, io-uring@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Pavel Begunkov <asml.silence@gmail.com>
+Date:   Wed, 11 Aug 2021 16:48:11 -0400
+Message-ID: <162871480969.63873.9434591871437326374.stgit@olly>
+User-Agent: StGit/1.1
 MIME-Version: 1.0
-Received: by 2002:a05:6830:23a5:0:0:0:0 with HTTP; Wed, 11 Aug 2021 05:30:32
- -0700 (PDT)
-Reply-To: rihabmanyang07@yahoo.com
-From:   Rihab Manyang <ndourandiogou1@gmail.com>
-Date:   Wed, 11 Aug 2021 13:30:32 +0100
-Message-ID: <CAP5_mB4O7JPQr86GPAep=Ynd-Yb8pks_-mRAKZxGu6O8ZzfAKA@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
--- 
-How are you?I am miss.Rihab Manyang i will like to be your friend
-please write me back on my email for more details, Thanks.
+Draft #2 of the patchset which brings auditing and proper LSM access
+controls to the io_uring subsystem.  The original patchset was posted
+in late May and can be found via lore using the link below:
+
+https://lore.kernel.org/linux-security-module/162163367115.8379.8459012634106035341.stgit@sifl/
+
+This draft should incorporate all of the feedback from the original
+posting as well as a few smaller things I noticed while playing
+further with the code.  The big change is of course the selective
+auditing in the io_uring op servicing, but that has already been
+discussed quite a bit in the original thread so I won't go into
+detail here; the important part is that we found a way to move
+forward and this draft captures that.  For those of you looking to
+play with these patches, they are based on Linus' v5.14-rc5 tag and
+on my test system they boot and appear to function without problem;
+they pass the selinux-testsuite and audit-testsuite and I have not
+noticed any regressions in the normal use of the system.  If you want
+to get a copy of these patches straight from git you can use the
+"working-io_uring" branch in the repo below:
+
+git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git
+https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git
+
+Beyond the existing test suite tests mentioned above, I've cobbled
+together some very basic, very crude tests to exercise some of the
+things I care about from a LSM/audit perspective.  These tests are
+pretty awful (I'm not kidding), but they might be helpful for the
+other LSM/audit developers who want to test things:
+
+https://drop.paul-moore.com/90.kUgq
+
+There are currently two tests: 'iouring.2' and 'iouring.3';
+'iouring.1' was lost in a misguided and overzealous 'rm' command.
+The first test is standalone and basically tests the SQPOLL
+functionality while the second tests sharing io_urings across process
+boundaries and the credential/personality sharing mechanism.  The
+console output of both tests isn't particularly useful, the more
+interesting bits are in the audit and LSM specific logs.  The
+'iouring.2' command requires no special arguments to run but the
+'iouring.3' test is split into a "server" and "client"; the server
+should be run without argument:
+
+  % ./iouring.3s
+  >>> server started, pid = 11678
+  >>> memfd created, fd = 3
+  >>> io_uring created; fd = 5, creds = 1
+
+... while the client should be run with two arguments: the first is
+the PID of the server process, the second is the "memfd" fd number:
+
+  % ./iouring.3c 11678 3
+  >>> client started, server_pid = 11678 server_memfd = 3
+  >>> io_urings = 5 (server) / 5 (client)
+  >>> io_uring ops using creds = 1
+  >>> async op result: 36
+  >>> async op result: 36
+  >>> async op result: 36
+  >>> async op result: 36
+  >>> START file contents
+  What is this life if, full of care,
+  we have no time to stand and stare.
+  >>> END file contents
+
+The tests were hacked together from various sources online,
+attribution and links to additional info can be found in the test
+sources, but I expect these tests to die a fiery death in the not
+to distant future as I work to add some proper tests to the SELinux
+and audit test suites.
+
+As I believe these patches should spend a full -rcX cycle in
+linux-next, my current plan is to continue to solicit feedback on
+these patches while they undergo additional testing (next up is
+verification of the audit filter code for io_uring).  Assuming no
+critical issues are found on the mailing lists or during testing, I
+will post a proper patchset later with the idea of merging it into
+selinux/next after the upcoming merge window closes.
+
+Any comments, feedback, etc. are welcome.
+
+---
+
+Casey Schaufler (1):
+      Smack: Brutalist io_uring support with debug
+
+Paul Moore (8):
+      audit: prepare audit_context for use in calling contexts beyond
+             syscalls
+      audit,io_uring,io-wq: add some basic audit support to io_uring
+      audit: dev/test patch to force io_uring auditing
+      audit: add filtering for io_uring records
+      fs: add anon_inode_getfile_secure() similar to
+          anon_inode_getfd_secure()
+      io_uring: convert io_uring to the secure anon inode interface
+      lsm,io_uring: add LSM hooks to io_uring
+      selinux: add support for the io_uring access controls
+
+
+ fs/anon_inodes.c                    |  29 ++
+ fs/io-wq.c                          |   4 +
+ fs/io_uring.c                       |  69 +++-
+ include/linux/anon_inodes.h         |   4 +
+ include/linux/audit.h               |  26 ++
+ include/linux/lsm_hook_defs.h       |   5 +
+ include/linux/lsm_hooks.h           |  13 +
+ include/linux/security.h            |  16 +
+ include/uapi/linux/audit.h          |   4 +-
+ kernel/audit.h                      |   7 +-
+ kernel/audit_tree.c                 |   3 +-
+ kernel/audit_watch.c                |   3 +-
+ kernel/auditfilter.c                |  15 +-
+ kernel/auditsc.c                    | 483 +++++++++++++++++++-----
+ security/security.c                 |  12 +
+ security/selinux/hooks.c            |  34 ++
+ security/selinux/include/classmap.h |   2 +
+ security/smack/smack_lsm.c          |  64 ++++
+ 18 files changed, 678 insertions(+), 115 deletions(-)

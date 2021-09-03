@@ -2,158 +2,106 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 32BA63FFA22
-	for <lists+selinux@lfdr.de>; Fri,  3 Sep 2021 08:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7ACC43FFAC2
+	for <lists+selinux@lfdr.de>; Fri,  3 Sep 2021 08:56:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343752AbhICGLg (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 3 Sep 2021 02:11:36 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:29479 "EHLO
+        id S1347491AbhICG53 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 3 Sep 2021 02:57:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:47505 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S244587AbhICGLf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 3 Sep 2021 02:11:35 -0400
+        by vger.kernel.org with ESMTP id S1347517AbhICG5V (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 3 Sep 2021 02:57:21 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1630649435;
+        s=mimecast20190719; t=1630652182;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=GtHmaUO+0GEq+rNeAQMdkCRow+2wFofi089GURVjj/Q=;
-        b=gQJDmi0ZU8d3SG75mSPC/Q3TRbN0HRcUjpw24ZTASDi5wUQGEh13rmgDgAkSnmZdSFyLyb
-        7fD/utn1niZR2t5TqJ260091TCFE2duQ/wlhXWljTdakcVMWoRFVXcQPzkob7dnOHQH6cP
-        PHeqTfG8Da0OUaprAhzOu1gvCfEx3nw=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-271--L1hGhr8PbOUlWZCgh6LOA-1; Fri, 03 Sep 2021 02:10:34 -0400
-X-MC-Unique: -L1hGhr8PbOUlWZCgh6LOA-1
-Received: by mail-pl1-f198.google.com with SMTP id a13-20020a170902b58d00b001326cab1084so1746480pls.2
-        for <selinux@vger.kernel.org>; Thu, 02 Sep 2021 23:10:34 -0700 (PDT)
+        bh=CMU0FH7DhLi0oHnmcQCBzsX4HoHYqzZdV2dtgL7VZJc=;
+        b=DmxoWER/CtV19WixMQYmzkCPLAtBZH/5mNwAnWTyax6t//tlHdpDS/Jpd5hapVVK1zZuAK
+        W13UlDDi4uNL0CP6LbRQnUv8Fto5jZevBxaxxcmMHBfsSJvWshWr2YrJwzgrU9V1Ba4KWk
+        pAzqXb5Edn9T2YjGtX7a7Tpb+sMnECM=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-383-u88scp_hOKWHoymRFbI5Ig-1; Fri, 03 Sep 2021 02:56:21 -0400
+X-MC-Unique: u88scp_hOKWHoymRFbI5Ig-1
+Received: by mail-wm1-f69.google.com with SMTP id e33-20020a05600c4ba100b002f8993a54f8so581046wmp.7
+        for <selinux@vger.kernel.org>; Thu, 02 Sep 2021 23:56:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id
-         :mail-followup-to:references:mime-version:content-disposition
-         :in-reply-to;
-        bh=GtHmaUO+0GEq+rNeAQMdkCRow+2wFofi089GURVjj/Q=;
-        b=EjVMqaqBMv82/pfwfVXxWXNJ7wh1YCzUDnC02aIIap4pLqcD1EnrY4e3qrm7uZLnXm
-         +CWDH9IDiVizarbTxqZK77qVTYejy818bMq/cn+yBaTZU/HdoO6OwJzoivz3sFSZ3w/W
-         UOQPpnZ+rJEfRfkUYZhzRtsYbiSnCu6Oob3mtk0jaUbb88uCRqhYHxavHhZ2ni5jfktH
-         1ypzVjp/H3GtV+xazs9ilNetKKRjg+F4ZCEF3phXJIHKHLJKUCU3lBYqw/ewYCyC/QuY
-         W2meaYZ5G8dJ7qclVhXSUOwFf2E2ASflINw7lCQQjGbQ72zUPhbTQ7f9aTUFMrZjUiPr
-         ToLg==
-X-Gm-Message-State: AOAM532nvGFXITTdvLFVJDzFawgURqtp4mWMIi9OneH2FZ73r5Gm+YZW
-        JlNp5K35xrqSuj0qvDqxDLvQwnDqt4P9vjeeVH/V6Z8sHi4scx3ElU9kXm6yW8ihuynXnN6Gssg
-        uTPBHJkNugeuK42OsGA==
-X-Received: by 2002:a63:a4c:: with SMTP id z12mr2137191pgk.185.1630649433426;
-        Thu, 02 Sep 2021 23:10:33 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyJDGjsGTZPA4QMV/Zc6Gjp8iEfZR3XXkoNHMRJnENkybg32Bvzp9DhO/6VKy815DeLZNwpbQ==
-X-Received: by 2002:a63:a4c:: with SMTP id z12mr2137158pgk.185.1630649433049;
-        Thu, 02 Sep 2021 23:10:33 -0700 (PDT)
-Received: from fedora ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id h4sm3393427pjs.2.2021.09.02.23.10.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Sep 2021 23:10:32 -0700 (PDT)
-Date:   Fri, 3 Sep 2021 14:31:33 +0800
-From:   Zorro Lang <zlang@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=CMU0FH7DhLi0oHnmcQCBzsX4HoHYqzZdV2dtgL7VZJc=;
+        b=VBE4L7fPRDrtiw8QjypgECF70T5eQfVnqJ9csapTWZcNU9DslM3P4g7XnV7VrwaCwf
+         2yP4y/E4sf/Pd9T9Rub5MOwKOHdl7zTyu8Nesu1VM7UtHEu0uXYHU/vsG0TD3HmRW2CX
+         udrHczKElIxg8rtHVD5qMWSAdAu1yizyb2J14m6bSMS3kG2kj0u2kmhyafAej2XAqmjT
+         zTi0QooAn1uhEHetPgzRVJGsDRimvAuUFmI9NHZK5iwwoJs6J1ghokZTSmcWFvz7Lc07
+         J+uWeIp6ALcDRfQuiLeFe9QsPK2Mbd5MBCP9Oz8eHGGNYY/YyH4u1sF+8vwAtohQtOQ0
+         W9PQ==
+X-Gm-Message-State: AOAM533lK+K05G17627QDPEee4m8DDEzwbCLCTZ2MDBeOo0pPceUOSpT
+        A5IduEBAAHVx84aNEJN2Gpe7JERogMrFkic7zf2pHQ3a1zz89gcqILQiK8CE/7pDp5UF9RZZmsv
+        Bs5cYmH36Hqr4yKITp9H9yPUAqsMoeboXzw==
+X-Received: by 2002:a05:600c:1c08:: with SMTP id j8mr1757633wms.27.1630652179801;
+        Thu, 02 Sep 2021 23:56:19 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwEMgRhDhAirpF+1BwSzCXJ2JmOX/csrcn3G6xdkU4jNs0c3KyXpXRLPYTJcObTec0xa9Qcz/PI2DFfXbdCfYE=
+X-Received: by 2002:a05:600c:1c08:: with SMTP id j8mr1757607wms.27.1630652179603;
+ Thu, 02 Sep 2021 23:56:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210902152228.665959-1-vgoyal@redhat.com> <YTDyE9wVQQBxS77r@redhat.com>
+ <CAHc6FU4ytU5eo4bmJcL6MW+qJZAtYTX0=wTZnv4myhDBv-qZHQ@mail.gmail.com>
+In-Reply-To: <CAHc6FU4ytU5eo4bmJcL6MW+qJZAtYTX0=wTZnv4myhDBv-qZHQ@mail.gmail.com>
+From:   Andreas Gruenbacher <agruenba@redhat.com>
+Date:   Fri, 3 Sep 2021 08:56:08 +0200
+Message-ID: <CAHc6FU5quZWQtZ3fRfM_ZseUsweEbJA0aAkZvQEF5u9MJhrqdQ@mail.gmail.com>
+Subject: Re: [PATCH 3/1] xfstests: generic/062: Do not run on newer kernels
 To:     Vivek Goyal <vgoyal@redhat.com>
-Cc:     fstests@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, virtio-fs@redhat.com,
+Cc:     fstests <fstests@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, virtio-fs@redhat.com,
         dwalsh@redhat.com, dgilbert@redhat.com,
         christian.brauner@ubuntu.com, casey.schaufler@intel.com,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        tytso@mit.edu, miklos@szeredi.hu, gscrivan@redhat.com,
-        bfields@redhat.com, stephen.smalley.work@gmail.com,
-        agruenba@redhat.com, david@fromorbit.com, viro@zeniv.linux.org.uk
-Subject: Re: [PATCH 3/1] xfstests: generic/062: Do not run on newer kernels
-Message-ID: <20210903063133.ld2benxs3vxemgnb@fedora>
-Mail-Followup-To: Vivek Goyal <vgoyal@redhat.com>, fstests@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        virtio-fs@redhat.com, dwalsh@redhat.com, dgilbert@redhat.com,
-        christian.brauner@ubuntu.com, casey.schaufler@intel.com,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        tytso@mit.edu, miklos@szeredi.hu, gscrivan@redhat.com,
-        bfields@redhat.com, stephen.smalley.work@gmail.com,
-        agruenba@redhat.com, david@fromorbit.com, viro@zeniv.linux.org.uk
-References: <20210902152228.665959-1-vgoyal@redhat.com>
- <YTDyE9wVQQBxS77r@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YTDyE9wVQQBxS77r@redhat.com>
+        LSM <linux-security-module@vger.kernel.org>,
+        selinux@vger.kernel.org, "Theodore Ts'o" <tytso@mit.edu>,
+        Miklos Szeredi <miklos@szeredi.hu>, gscrivan@redhat.com,
+        "Fields, Bruce" <bfields@redhat.com>,
+        stephen.smalley.work@gmail.com, Dave Chinner <david@fromorbit.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Sep 02, 2021 at 11:47:31AM -0400, Vivek Goyal wrote:
-> 
-> xfstests: generic/062: Do not run on newer kernels
-> 
-> This test has been written with assumption that setting user.* xattrs will
-> fail on symlink and special files. When newer kernels support setting
-> user.* xattrs on symlink and special files, this test starts failing.
-> 
-> Found it hard to change test in such a way that it works on both type of
-> kernels. Primary problem is 062.out file which hardcodes the output and
-> output will be different on old and new kernels.
-> 
-> So instead, do not run this test if kernel is new and is expected to
-> exhibit new behavior. Next patch will create a new test and run that
-> test on new kernel.
-> 
-> IOW, on old kernels run 062 and on new kernels run new test.
-> 
-> This is a proposed patch. Will need to be fixed if corresponding
-> kernel changes are merged upstream.
-> 
-> Signed-off-by: Vivek Goyal <vgoyal@redhat.com>
-> ---
->  tests/generic/062 |   20 ++++++++++++++++++++
->  1 file changed, 20 insertions(+)
-> 
-> Index: xfstests-dev/tests/generic/062
-> ===================================================================
-> --- xfstests-dev.orig/tests/generic/062	2021-08-31 15:51:08.160307982 -0400
-> +++ xfstests-dev/tests/generic/062	2021-08-31 16:27:41.678307982 -0400
-> @@ -55,6 +55,26 @@ _require_attrs
->  _require_symlinks
->  _require_mknod
->  
-> +user_xattr_allowed()
-> +{
-> +	local kernel_version kernel_patchlevel
-> +
-> +	kernel_version=`uname -r | awk -F. '{print $1}'`
-> +	kernel_patchlevel=`uname -r | awk -F. '{print $2}'`
-> +
-> +	# Kernel version 5.14 onwards allow user xattr on symlink/special files.
-> +	[ $kernel_version -lt 5 ] && return 1
-> +	[ $kernel_patchlevel -lt 14 ] && return 1
-> +	return 0;
-> +}
+On Fri, Sep 3, 2021 at 8:31 AM Andreas Gruenbacher <agruenba@redhat.com> wrote:
+> On Thu, Sep 2, 2021 at 5:47 PM Vivek Goyal <vgoyal@redhat.com> wrote:
+> > xfstests: generic/062: Do not run on newer kernels
+> >
+> > This test has been written with assumption that setting user.* xattrs will
+> > fail on symlink and special files. When newer kernels support setting
+> > user.* xattrs on symlink and special files, this test starts failing.
+>
+> It's actually a good thing that this test case triggers for the kernel
+> change you're proposing; that change should never be merged. The
+> user.* namespace is meant for data with the same access permissions as
+> the file data, and it has been for many years. We may have
+> applications that assume the existing behavior. In addition, this
+> change would create backwards compatibility problems for things like
+> backups.
+>
+> I'm not convinced that what you're actually proposing (mapping
+> security.selinux to a different attribute name) actually makes sense,
+> but that's a question for the selinux folks to decide. Mapping it to a
+> user.* attribute is definitely wrong though. The modified behavior
+> would affect anybody, not only users of selinux and/or virtiofs. If
+> mapping attribute names is actually the right approach, then you need
+> to look at trusted.* xattrs, which exist specifically for this kind of
+> purpose. You've noted that trusted.* xattrs aren't supported over nfs.
+> That's unfortunate, but not an acceptable excuse for messing up user.*
+> xattrs.
 
-I don't think this's a good way to judge if run or notrun a test. Many downstream
-kernels always backport upstream features. I can't say what's the best way to
-deal with this thing, I only can provide two optional methods:
-
-1) Add new requre_* helpers to check if current kernel support to set xattr on
-symlink and special files, then let this case only run on support/unsupport
-condition.
-
-2) Use _link_out_file() to link the .out file to different golden images (refer to
-generic/050 etc), according to different feature implementation.
-
-If anyone has a better method, feel free to talk :)
+Another possibility would be to make selinux use a different
+security.* attribute for this nested selinux case. That way, the
+"host" selinux would retain some control over the labels the "guest"
+uses.
 
 Thanks,
-Zorro
-
-> +
-> +
-> +# Kernel version 5.14 onwards allow user xattr on symlink/special files.
-> +# Do not run this test on newer kernels. Instead run the new test
-> +# which has been written with the assumption that user.* xattr
-> +# will succeed on symlink and special files.
-> +user_xattr_allowed && _notrun "Kernel allows user.* xattrs on symlinks and special files. Skipping this test. Run newer test instead."
-> +
->  rm -f $tmp.backup1 $tmp.backup2 $seqres.full
->  
->  # real QA test starts here
-> 
+Andreas
 

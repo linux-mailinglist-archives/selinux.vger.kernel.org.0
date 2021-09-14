@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BFF640AE30
+	by mail.lfdr.de (Postfix) with ESMTP id 6540540AE31
 	for <lists+selinux@lfdr.de>; Tue, 14 Sep 2021 14:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232758AbhINMwC (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S232613AbhINMwC (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Tue, 14 Sep 2021 08:52:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43060 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232613AbhINMwC (ORCPT
+        with ESMTP id S232902AbhINMwC (ORCPT
         <rfc822;selinux@vger.kernel.org>); Tue, 14 Sep 2021 08:52:02 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7666C061574
-        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:44 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id z94so13508066ede.8
-        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:44 -0700 (PDT)
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1768DC061760
+        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:45 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id v5so19712982edc.2
+        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=wxVrwi7fqRCUdi0rstdW3xmsLEx4av06gtb8OTs43dA=;
-        b=VEyv86Gb6XT6v6opXjl3kKKyRNRgOTf0cr/0ciRCGV7ti6/l3FSJcWpD8OeywbPSBk
-         RGbEoQYv+hydsvjrVFTkpRrMUy51RUfjynd/Vxty37HvMIjF3ILL5uS3634DVOBhZA4V
-         dli22+Y6pFlgIBhSn3VayghjMzt8nvjbsHG3OYuIDu30WdIL8F5FVV8NGUGxUBZqwCJn
-         OxJfHMB7XAk15kcv1nHFysWwbY0865pqZnJAwbL0x0YmREHyizSNkc9oc0w5HbvK48jj
-         ED3+lkTeX1NB1E7wZBnNJaVuVvdEH70muKZuGS8uMvh2QMALn7lQNM/jZlLJ52gqi6rB
-         9U4w==
+        bh=0WjwCzQgBKZD7tXonFIJXydSihUgcjVDMEH63M2fMKE=;
+        b=VJyH035mCxPTPFV7sR7Y0umFZPnTzJxwp9QS/HsXicyKYKfmH2swvYDiH6jD7gkZu3
+         pkg5IJe0ICZvzwji7AA45kGc4Yql7Cdxd8HBKmezV1+NGn3YqQ2COFW/nNHD2L8BZWyn
+         NBtybFaqgC6c4SUZ39ofYezEXpdZjzsSFpC6I+5E6dclY8zMi1hxZild8j91ur3BPWyN
+         KRMvpyzbFSc/++76YCnsdw9cK1Sh+Byct+91GG6EmSttUfTl4EtWJ4Vte0rwBcdQ31ct
+         PMeQxF5qt22zeOIeSzRAMhoa8utEtu3v8Jhwf9Z8qg+rpoGR/MmFCc/QeVcRiDN4FyZV
+         LWcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wxVrwi7fqRCUdi0rstdW3xmsLEx4av06gtb8OTs43dA=;
-        b=364RJKvX8X+Edv1pDn/Hwzu9CSi/7AYZ+3CQfoBxbTVHWB/NJuXCPxe4EvdlZhV9ny
-         ZFv1F2GGxCCOuzRF2wyMPs3W3c2l6ljK+Mb5E1SyFYRkWn3+/G2Le7By1U5yPByip1aP
-         t96ykcO4MRomE339SWMLU4tvbmQPvs8QkuJTIAPxPCJtKQxNmTyYkoNT50kOjr5KSP9X
-         I6z/av0D1rOPjcFRbh58BGZxHce3CkZkls6gLERl2rI81vEYQ2v0gnEDsmEAkfq8oYMA
-         a5nx/E59CggWHqMNuQIx7ZgSgmXEpnn2SUHAVSDpI6B3uLEdatF20zvDfIBxpMLbwGjn
-         ii8w==
-X-Gm-Message-State: AOAM530izUZ1qTyb3ZTJhVHeDuwgiY460nv+ZXoa8xqStKnKJDaR+5ec
-        LkqEVEPDusU4v+dd9Jtxv8QqD9y+9UA=
-X-Google-Smtp-Source: ABdhPJxKWKMvotIZz2YXsuwPMGx3oWBmNr7lNiyNajgrkga7jxpL8kqTpDoNqPs1OKQrLxQEu0wvsQ==
-X-Received: by 2002:a05:6402:49a:: with SMTP id k26mr19613030edv.279.1631623843176;
+        bh=0WjwCzQgBKZD7tXonFIJXydSihUgcjVDMEH63M2fMKE=;
+        b=vTOfi5u1hBe5FhQCBS8insWDUUQzbHrC5LTnlLBmoMWD8bXX+YU7qO9q3OHcACccA/
+         MfKEHjTUnL117ZeC36+yWCqueGAUVwbvflU0z2B+rT0gX7/9b+NBTLZue0kYe3OlMdNY
+         5LbQr4cVEitvLeH+eBBrGfUFQYp3KSrPVUEBAB0kKVO6s/L1sTMXINxIR8BPnJ6rJ2Pd
+         olTkeJ6/CuAJiIMCjF+wt6zUulKx8EAp5hm8VAqMvqrTTTPGfEay/7jcbG8WzCMpRTVI
+         W2IsNmjljGjPc3uS8zc6WZIOLiuWejEnFUuJiUhUKa+CKI1blPIznqStpfWZ7qNvbk+M
+         Dp5A==
+X-Gm-Message-State: AOAM530/1x8Q4vbA6PpVtutx/f0WmoIO+yNhgV30f5kj7x70kVZVu9v0
+        +172gVkyJpb5AS2Kq6zjUC4bE21IGQc=
+X-Google-Smtp-Source: ABdhPJzZSQGVMbCZ8C659Bd39kFiDx9ayU2qpRSpflTPfpmtyIaFyrUC0uAfmNGlxUTHKbc3vu1jAA==
+X-Received: by 2002:a50:bb09:: with SMTP id y9mr15016018ede.89.1631623843693;
         Tue, 14 Sep 2021 05:50:43 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-003-237-250.77.3.pool.telefonica.de. [77.3.237.250])
-        by smtp.gmail.com with ESMTPSA id r8sm5567865eds.39.2021.09.14.05.50.42
+        by smtp.gmail.com with ESMTPSA id r8sm5567865eds.39.2021.09.14.05.50.43
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Sep 2021 05:50:42 -0700 (PDT)
+        Tue, 14 Sep 2021 05:50:43 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 01/13] libsepol: avoid implicit conversions
-Date:   Tue, 14 Sep 2021 14:48:16 +0200
-Message-Id: <20210914124828.19488-2-cgzones@googlemail.com>
+Subject: [PATCH 02/13] libsepol: free memory after policy validation
+Date:   Tue, 14 Sep 2021 14:48:17 +0200
+Message-Id: <20210914124828.19488-3-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210914124828.19488-1-cgzones@googlemail.com>
 References: <20210914124828.19488-1-cgzones@googlemail.com>
@@ -63,29 +63,75 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Avoid implicit conversions from signed to unsigned values, found by
-UB sanitizers, by using unsigned values in the first place.
+Found while running the checkpolicy/test/dispol binary.
 
-    util.c:95:15: runtime error: left shift of 1 by 31 places cannot be represented in type 'int'
+    Direct leak of 24 byte(s) in 1 object(s) allocated from:
+        #0 0x49bacd in __interceptor_malloc (./checkpolicy/test/dispol+0x49bacd)
+        #1 0x5551e1 in ebitmap_set_bit ./libsepol/src/ebitmap.c:326:27
+        #2 0x517873 in create_gap_ebitmap ./libsepol/src/policydb_validate.c:23:8
+        #3 0x517873 in validate_init ./libsepol/src/policydb_validate.c:34:6
+        #4 0x50fa47 in validate_array_init ./libsepol/src/policydb_validate.c:44:6
+        #5 0x50fa47 in validate_policydb ./libsepol/src/policydb_validate.c:732:6
+        #6 0x4f22df in policydb_read ./libsepol/src/policydb.c:4538:6
+        #7 0x4cddb3 in main ./checkpolicy/test/dispol.c:437:8
+        #8 0x7f5980e47e49 in __libc_start_main csu/../csu/libc-start.c:314:16
+
+    Indirect leak of 48 byte(s) in 2 object(s) allocated from:
+        #0 0x49bacd in __interceptor_malloc (./checkpolicy/test/dispol+0x49bacd)
+        #1 0x5551e1 in ebitmap_set_bit ./libsepol/src/ebitmap.c:326:27
+        #2 0x517873 in create_gap_ebitmap ./libsepol/src/policydb_validate.c:23:8
+        #3 0x517873 in validate_init ./libsepol/src/policydb_validate.c:34:6
+        #4 0x50fa47 in validate_array_init ./libsepol/src/policydb_validate.c:44:6
+        #5 0x50fa47 in validate_policydb ./libsepol/src/policydb_validate.c:732:6
+        #6 0x4f22df in policydb_read ./libsepol/src/policydb.c:4538:6
+        #7 0x4cddb3 in main ./checkpolicy/test/dispol.c:437:8
+        #8 0x7f5980e47e49 in __libc_start_main csu/../csu/libc-start.c:314:16
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ libsepol/src/policydb_validate.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/libsepol/src/util.c b/libsepol/src/util.c
-index a47cae87..902c63c5 100644
---- a/libsepol/src/util.c
-+++ b/libsepol/src/util.c
-@@ -92,7 +92,7 @@ char *sepol_av_to_string(policydb_t * policydbp, uint32_t tclass,
- 	cladatum = policydbp->class_val_to_struct[tclass - 1];
- 	p = avbuf;
- 	for (i = 0; i < cladatum->permissions.nprim; i++) {
--		if (av & (1 << i)) {
-+		if (av & (UINT32_C(1) << i)) {
- 			v.val = i + 1;
- 			rc = hashtab_map(cladatum->permissions.table,
- 					 perm_name, &v);
+diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
+index 246aa6e3..f9a4b942 100644
+--- a/libsepol/src/policydb_validate.c
++++ b/libsepol/src/policydb_validate.c
+@@ -722,12 +722,21 @@ bad:
+ 	return -1;
+ }
+ 
++static void validate_destroy(validate_t flavors[])
++{
++	unsigned int i;
++
++	for (i = 0; i < SYM_NUM; i++) {
++		ebitmap_destroy(&flavors[i].gaps);
++	}
++}
++
+ /*
+  * Validate policydb
+  */
+ int validate_policydb(sepol_handle_t *handle, policydb_t *p)
+ {
+-	validate_t flavors[SYM_NUM];
++	validate_t flavors[SYM_NUM] = {};
+ 
+ 	if (validate_array_init(p, flavors))
+ 		goto bad;
+@@ -756,9 +765,12 @@ int validate_policydb(sepol_handle_t *handle, policydb_t *p)
+ 	if (validate_datum_arrays(handle, p, flavors))
+ 		goto bad;
+ 
++	validate_destroy(flavors);
++
+ 	return 0;
+ 
+ bad:
+ 	ERR(handle, "Invalid policydb");
++	validate_destroy(flavors);
+ 	return -1;
+ }
 -- 
 2.33.0
 

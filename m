@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C782740AE36
-	for <lists+selinux@lfdr.de>; Tue, 14 Sep 2021 14:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C9D940AE37
+	for <lists+selinux@lfdr.de>; Tue, 14 Sep 2021 14:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232864AbhINMwG (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S232902AbhINMwG (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Tue, 14 Sep 2021 08:52:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43086 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233015AbhINMwF (ORCPT
+        with ESMTP id S232986AbhINMwF (ORCPT
         <rfc822;selinux@vger.kernel.org>); Tue, 14 Sep 2021 08:52:05 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3C54C061762
-        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:47 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id c21so11863957edj.0
-        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:47 -0700 (PDT)
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80924C061766
+        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:48 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id j13so19684733edv.13
+        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=0xnftEX/8RMO9TxboJnoJJLRnQz2F3DsGIplRYkbz2Y=;
-        b=WgHfigpVvCEAtlMpD4wlvUjNmDFRkzTcCUdMnny6T9OFOVI5evoswvhmAJw0CHsymA
-         L6LaMLtNB9HJbkIlH3h+a68c6MrfwyRdx0fGS0lj1+bm22Wj//n4Lr7Z0ndz11Zn/KUr
-         0CfS69dhSUebuBpa9Xl9zn5cfsJKDAio/qs4fY/7wOB0slBbmYv+Tu/D7uANHD9qy7tU
-         VMDdMSBTbIC0UivyAD8Xv6AccIxBfEVj6mcTBtrBd5IQp2gPHOslD0ifiwur+tuf3PqA
-         RzfZ4Bn8hhFpiGubK2rd7FddoECJdWLAqrXsuv60lrlSpSTN4+AIcxerABl9o9P2/61w
-         3wFw==
+        bh=sUcWbZEsagYCsYe2kOOTbpLjbFUKNZmcmVw/Fchgzw8=;
+        b=LDoAYN1km4otTjpiH//EDyHdaZKlSgD/fbiFPGC6WQJqawe9Rl4Iu8TiMbfPXD09uZ
+         gXES0MHFs6FAiunH6emmJbpMX0iX1CVCee8o9vK5+87lzU9yDR90Jq5r67dDKrDEliJX
+         oRMte0wBX3F+Ejyxe1BdjQDfwLEaNlicf3G0y7fdudcxaRxXKTig8iCofrMlhNh7mcim
+         ttIacsgyI4Mph5wYrGszt2WVfAsytiQBwKkhJu7NM5zYW1/wnMH/WrnvGj/HOxah63jY
+         4fro7bVZuCi0ZIK/bds7nDDiZ8yDd1VRjuFGm3YJVkyJiivXEyLv0TM9A/hSuATOHLIs
+         6BjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=0xnftEX/8RMO9TxboJnoJJLRnQz2F3DsGIplRYkbz2Y=;
-        b=TPuT7p+WG8FrGKdzjIojicEIDY9aj2HuX6ibCxNb5D3cddqAHPlWo4gyJ0yKU00BEJ
-         hTqDzouQRe0snjXf2EBUuErm65zS8QBP0Yrka+DbNYilwuaUO/gVgyS/zboXkCw2cOAO
-         A//u8KXqlk9vzhzU1rO08u/u3pStAWlMyjMUT9jHUxAxV2Xjx64nrIjO2rVDhihaTinw
-         ZK56fmPIkRG+PBu4LXe85KY/2jO0bPb/wBuIBwZYL9hmRGygrwbIXZCbHsF/3omWtbA3
-         hE5beFroH5P/OI1tJeHQiLbKZ696GgWxnwcV0QQ4hUhlloH4ZQoeOalAAIp/n5ii7VHE
-         iFJA==
-X-Gm-Message-State: AOAM531Cffh9RJ7plV4g/wWDbmMaAlMwSG9AgzjsziWzir96nVSTZO1n
-        uF8ZQ9EyDfx0FTRa2HxFqZTB1jgjVRU=
-X-Google-Smtp-Source: ABdhPJwkpKq+qPFt0rrRG1ADouKCEybT9VU8nDYoZ4SHfl2A7wTUm/+7cVkkR3aQosCyAWBOoTeAbA==
-X-Received: by 2002:a05:6402:150a:: with SMTP id f10mr19132375edw.318.1631623846542;
-        Tue, 14 Sep 2021 05:50:46 -0700 (PDT)
+        bh=sUcWbZEsagYCsYe2kOOTbpLjbFUKNZmcmVw/Fchgzw8=;
+        b=7VF0Hp0gzCo7+WN4bur0QlIC1sDIILqUqxEGrP6RahWhTsUTeSmMF0p4NvhmmnoXaE
+         Pak/bEfn65wGcYjii0oJONUKYx0kSX/VEUqTFw9AZluMV8wFtW7jmPRRPAop+y2yNBdG
+         IALhiLxNqu7QpZzBWE7+YsDbRbh9m/Q97SYFIX4NbKakXEYL3H46pRJjHAEA4sGX/HEe
+         2Hk47LTXdFyYw0Rxmizgd0C1Ej2h8umq16FTcW4SDS3OVcJG+ngYGLq2nWS0l9BTVMLY
+         CsuaV3QPKeiea+/lP1gf96RcElSM8EakTap0P9Cmq/k7Hm86v5vNvAOcWzF7ADSb4IKu
+         p3/w==
+X-Gm-Message-State: AOAM530FY8M3kgUWIPjh21m3nCncnZrPVvPL20mzGKCNWxPxzKASG9Jm
+        MUDA+lzwPR3hv/gkdFw0c/LhLLd3zxI=
+X-Google-Smtp-Source: ABdhPJzhjCwpFnSWge09TMiKsb2P0jOJIgVorWen9HMSzQodfIdt/ctUTxiPY7SgWJi+M3QC/LPyjw==
+X-Received: by 2002:a05:6402:518e:: with SMTP id q14mr19079628edd.268.1631623847058;
+        Tue, 14 Sep 2021 05:50:47 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-003-237-250.77.3.pool.telefonica.de. [77.3.237.250])
         by smtp.gmail.com with ESMTPSA id r8sm5567865eds.39.2021.09.14.05.50.46
         for <selinux@vger.kernel.org>
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-003-237-250.77.3.pool.telefon
         Tue, 14 Sep 2021 05:50:46 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 07/13] checkpolicy: mark file local functions in policy_define static
-Date:   Tue, 14 Sep 2021 14:48:22 +0200
-Message-Id: <20210914124828.19488-8-cgzones@googlemail.com>
+Subject: [PATCH 08/13] checkpolicy: add missing function declarations
+Date:   Tue, 14 Sep 2021 14:48:23 +0200
+Message-Id: <20210914124828.19488-9-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210914124828.19488-1-cgzones@googlemail.com>
 References: <20210914124828.19488-1-cgzones@googlemail.com>
@@ -63,181 +63,46 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Also remove the unused function `avrule_ioctl_freeranges()`.
+Ideally they should be declared in the corresponding header file, but
+the overall include style in the checkpolicy code is quite messy.
+Declare them for now in the source file before defining them to silence
+related compiler warnings:
+
+    policy_define.c:84:6: error: no previous prototype for function 'init_parser' [-Werror,-Wmissing-prototypes]
+    void init_parser(int pass_number)
+         ^
+    policy_define.c:93:6: error: no previous prototype for function 'yyerror2' [-Werror,-Wmissing-prototypes]
+    void yyerror2(const char *fmt, ...)
+         ^
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/policy_define.c | 45 ++++++++++++++-----------------------
- 1 file changed, 17 insertions(+), 28 deletions(-)
+ checkpolicy/policy_define.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
-index 7e7801d3..11707700 100644
+index 11707700..c71e0571 100644
 --- a/checkpolicy/policy_define.c
 +++ b/checkpolicy/policy_define.c
-@@ -1605,7 +1605,7 @@ static int set_types(type_set_t * set, char *id, int *add, char starallowed)
- 	return -1;
+@@ -60,6 +60,10 @@
+ #include "module_compiler.h"
+ #include "policy_define.h"
+ 
++extern void init_parser(int pass_number);
++__attribute__ ((format(printf, 1, 2)))
++extern void yyerror2(const char *fmt, ...);
++
+ policydb_t *policydbp;
+ queue_t id_queue = 0;
+ unsigned int pass;
+@@ -89,7 +93,6 @@ void init_parser(int pass_number)
+ 	pass = pass_number;
  }
  
--int define_compute_type_helper(int which, avrule_t ** rule)
-+static int define_compute_type_helper(int which, avrule_t ** rule)
+-__attribute__ ((format(printf, 1, 2)))
+ void yyerror2(const char *fmt, ...)
  {
- 	char *id;
- 	type_datum_t *datum;
-@@ -1832,7 +1832,7 @@ struct av_ioctl_range_list {
- 	struct av_ioctl_range_list *next;
- };
- 
--int avrule_sort_ioctls(struct av_ioctl_range_list **rangehead)
-+static int avrule_sort_ioctls(struct av_ioctl_range_list **rangehead)
- {
- 	struct av_ioctl_range_list *r, *r2, *sorted, *sortedhead = NULL;
- 
-@@ -1880,7 +1880,7 @@ error:
- 	return -1;
- }
- 
--int avrule_merge_ioctls(struct av_ioctl_range_list **rangehead)
-+static int avrule_merge_ioctls(struct av_ioctl_range_list **rangehead)
- {
- 	struct av_ioctl_range_list *r, *tmp;
- 	r = *rangehead;
-@@ -1900,7 +1900,7 @@ int avrule_merge_ioctls(struct av_ioctl_range_list **rangehead)
- 	return 0;
- }
- 
--int avrule_read_ioctls(struct av_ioctl_range_list **rangehead)
-+static int avrule_read_ioctls(struct av_ioctl_range_list **rangehead)
- {
- 	char *id;
- 	struct av_ioctl_range_list *rnew, *r = NULL;
-@@ -1953,7 +1953,7 @@ error:
- }
- 
- /* flip to included ranges */
--int avrule_omit_ioctls(struct av_ioctl_range_list **rangehead)
-+static int avrule_omit_ioctls(struct av_ioctl_range_list **rangehead)
- {
- 	struct av_ioctl_range_list *rnew, *r, *newhead, *r2;
- 
-@@ -2001,7 +2001,7 @@ error:
- 	return -1;
- }
- 
--int avrule_ioctl_ranges(struct av_ioctl_range_list **rangelist)
-+static int avrule_ioctl_ranges(struct av_ioctl_range_list **rangelist)
- {
- 	struct av_ioctl_range_list *rangehead;
- 	uint8_t omit;
-@@ -2029,7 +2029,7 @@ int avrule_ioctl_ranges(struct av_ioctl_range_list **rangelist)
- 	return 0;
- }
- 
--int define_te_avtab_xperms_helper(int which, avrule_t ** rule)
-+static int define_te_avtab_xperms_helper(int which, avrule_t ** rule)
- {
- 	char *id;
- 	class_perm_node_t *perms, *tail = NULL, *cur_perms = NULL;
-@@ -2150,7 +2150,7 @@ out:
- #define XPERM_LOW(x) ((x) << 5)
- /* high value for this u32 */
- #define XPERM_HIGH(x) ((((x) + 1) << 5) - 1)
--void avrule_xperm_setrangebits(uint16_t low, uint16_t high,
-+static void avrule_xperm_setrangebits(uint16_t low, uint16_t high,
- 				av_extended_perms_t *xperms)
- {
- 	unsigned int i;
-@@ -2172,7 +2172,7 @@ void avrule_xperm_setrangebits(uint16_t low, uint16_t high,
- 	}
- }
- 
--int avrule_xperms_used(const av_extended_perms_t *xperms)
-+static int avrule_xperms_used(const av_extended_perms_t *xperms)
- {
- 	unsigned int i;
- 
-@@ -2192,7 +2192,7 @@ int avrule_xperms_used(const av_extended_perms_t *xperms)
- #define IOC_DRIV(x) ((x) >> 8)
- #define IOC_FUNC(x) ((x) & 0xff)
- #define IOC_CMD(driver, func) (((driver) << 8) + (func))
--int avrule_ioctl_partialdriver(struct av_ioctl_range_list *rangelist,
-+static int avrule_ioctl_partialdriver(struct av_ioctl_range_list *rangelist,
- 				av_extended_perms_t *complete_driver,
- 				av_extended_perms_t **extended_perms)
- {
-@@ -2231,7 +2231,7 @@ int avrule_ioctl_partialdriver(struct av_ioctl_range_list *rangelist,
- 
- }
- 
--int avrule_ioctl_completedriver(struct av_ioctl_range_list *rangelist,
-+static int avrule_ioctl_completedriver(struct av_ioctl_range_list *rangelist,
- 			av_extended_perms_t **extended_perms)
- {
- 	struct av_ioctl_range_list *r;
-@@ -2273,7 +2273,7 @@ int avrule_ioctl_completedriver(struct av_ioctl_range_list *rangelist,
- 	return 0;
- }
- 
--int avrule_ioctl_func(struct av_ioctl_range_list *rangelist,
-+static int avrule_ioctl_func(struct av_ioctl_range_list *rangelist,
- 		av_extended_perms_t **extended_perms, unsigned int driver)
- {
- 	struct av_ioctl_range_list *r;
-@@ -2323,18 +2323,7 @@ int avrule_ioctl_func(struct av_ioctl_range_list *rangelist,
- 	return 0;
- }
- 
--void avrule_ioctl_freeranges(struct av_ioctl_range_list *rangelist)
--{
--	struct av_ioctl_range_list *r, *tmp;
--	r = rangelist;
--	while (r) {
--		tmp = r;
--		r = r->next;
--		free(tmp);
--	}
--}
--
--unsigned int xperms_for_each_bit(unsigned int *bit, av_extended_perms_t *xperms)
-+static unsigned int xperms_for_each_bit(unsigned int *bit, av_extended_perms_t *xperms)
- {
- 	unsigned int i;
- 	for (i = *bit; i < sizeof(xperms->perms)*8; i++) {
-@@ -2347,7 +2336,7 @@ unsigned int xperms_for_each_bit(unsigned int *bit, av_extended_perms_t *xperms)
- 	return 0;
- }
- 
--int avrule_cpy(avrule_t *dest, const avrule_t *src)
-+static int avrule_cpy(avrule_t *dest, const avrule_t *src)
- {
- 	class_perm_node_t *src_perms;
- 	class_perm_node_t *dest_perms, *dest_tail;
-@@ -2395,7 +2384,7 @@ int avrule_cpy(avrule_t *dest, const avrule_t *src)
- 	return 0;
- }
- 
--int define_te_avtab_ioctl(const avrule_t *avrule_template)
-+static int define_te_avtab_ioctl(const avrule_t *avrule_template)
- {
- 	avrule_t *avrule;
- 	struct av_ioctl_range_list *rangelist;
-@@ -2490,7 +2479,7 @@ int define_te_avtab_extended_perms(int which)
- 	return 0;
- }
- 
--int define_te_avtab_helper(int which, avrule_t ** rule)
-+static int define_te_avtab_helper(int which, avrule_t ** rule)
- {
- 	char *id;
- 	class_datum_t *cladatum;
-@@ -5470,7 +5459,7 @@ int define_fs_use(int behavior)
- 	return 0;
- }
- 
--int define_genfs_context_helper(char *fstype, int has_type)
-+static int define_genfs_context_helper(char *fstype, int has_type)
- {
- 	struct genfs *genfs_p, *genfs, *newgenfs;
- 	ocontext_t *newc, *c, *head, *p;
+ 	va_list ap;
 -- 
 2.33.0
 

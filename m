@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 89D7040AE38
+	by mail.lfdr.de (Postfix) with ESMTP id D314B40AE39
 	for <lists+selinux@lfdr.de>; Tue, 14 Sep 2021 14:50:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232986AbhINMwG (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 14 Sep 2021 08:52:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43098 "EHLO
+        id S233003AbhINMwH (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 14 Sep 2021 08:52:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233003AbhINMwG (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 14 Sep 2021 08:52:06 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 032B3C061760
+        with ESMTP id S233001AbhINMwH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 14 Sep 2021 08:52:07 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2D46C061574
         for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:49 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id n10so19678389eda.10
-        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:48 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id n27so28658935eja.5
+        for <selinux@vger.kernel.org>; Tue, 14 Sep 2021 05:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=vNE1e9mEnoTqmeRgeC8ybL/zlx4MVHTgHYCCk/5UPKI=;
-        b=ZzyUnkTAFdCkhYSBQpu+P9MQe/tKL3r6LjIGUDMO/QxSOAA74fPhPKOLAD8tPg0jQx
-         RnmTFCuboDNCB6Ykpjey4G9Pxw6APwbwZBxuHYjQYHf/lD1ne/2jhrMt2elSGHrXfHKL
-         j2dAvlUz7Caw/iOiAyk3HuOHcWhm7JQscMLhRoN+thvdUHbDlQ06ILVRwaxFqPhFw+6d
-         OqOZNv3OHsfrbdKc5wHn3gqlPcIIaAjxYrLhSsynQJpayUoqb2P9NBpqqUlRVFiEpo7V
-         zpi6mddb4dNlAyL/HKzbcAzzJNan4C/VI4xRtf84thY5c5dGWaMscu532Z0g2iDdNF8h
-         hFYA==
+        bh=BQasiyHoRS2fp1DDItVAAVd0KVYaxsvAdkxxZMUyp2Y=;
+        b=WQXnekqNmBFbbd5i1t7p71+bi4tJOsbnWJBJELoJWKXmWCFKov59E04yUTNVGnPHsE
+         ePQAKq3eNmkpo7NhLHC1eHB50H45se7PzLBphLDRi/AzcNxRNppS0pdspM/xb5Ant/4r
+         nY06fpXpt9iOKJPWbPOtLIZ14EgIgGbDE9j83bXITUSXG+S9QnqYvER3TADrisKjISbH
+         jIyZCHfmURj0pAzXSajEZJ1tM4TFtriI2OchBRAyoqJWY3pCzjVVyYimtUyyvroNK/kH
+         n2aesAMSn1sh5FmQO008XB3HfF6ujjVEKJdi7FfhUXguRaQrClrdc7NXw5FAc4JbYB7e
+         n36Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=vNE1e9mEnoTqmeRgeC8ybL/zlx4MVHTgHYCCk/5UPKI=;
-        b=V5nO/HGzaiPXFLp0k1tOEjf5KeInJEi6gUn4RSO7Rqlo7TLvdP1F0zqdPqj/xNn1x+
-         IIMC9GfzU2/4T+7P18eJwSM1Kheigdi8ovB/mlz+61+fZuiCqtJhclnp79uThv0iw2jY
-         dyZgu3E9OgooGkkiATjnxoQPDze7JSBUdMPSJKqK58t6lGnxnXjwre+ycxlR7U+/dvuo
-         NufCrSpKeZoqOZNrpkxRilZK5qr9FBHaSHOhzSO6D73TInGYpcoBzZn7XIi3noClseRo
-         gsWbY8c8sQT7ZYaGSffj2UC30iaYhaY9jghWBSCXoYmKJfAsLhcyzSodWzJngo4ZswIx
-         0zLw==
-X-Gm-Message-State: AOAM530DwanVOjRmkTDBi1dRy377SmlSNriUd2XVedVIDu/OnbQpB+wW
-        alq+SOymyfSxwCmlfD4Oom6kqo6M1Fw=
-X-Google-Smtp-Source: ABdhPJxkLt1dUY9OdgPMy11x/mgi/DtysZWzKP35nW4XMKnlM3XqLDosaRr0VEF6hxNsLE3zpfEK3Q==
-X-Received: by 2002:aa7:c617:: with SMTP id h23mr17752346edq.357.1631623847636;
-        Tue, 14 Sep 2021 05:50:47 -0700 (PDT)
+        bh=BQasiyHoRS2fp1DDItVAAVd0KVYaxsvAdkxxZMUyp2Y=;
+        b=ZM/3CX3Kamltp2V6qCdxSxtH9g6Ru0ioMRlzJTW/EfXkYMT3hT9glRWN6BCnLXRNO2
+         POqOIDoYSvFmvUPCZnarBufWJ0MI8jZSuUhAwF6nXryMaXf3T4QMel5fHCiEncI9SHSy
+         86sFPBDqdelik8eaC0urWDMqeJCGZSIgNjO57DTD57q8mplB6QT2KKbLiONSKCee6Lc/
+         782l9sUFyh8OJWa1hjPQ5nEax9uIS1lALGAure/rNhVg2kkZee8rtO2I2j5sGuDTWYce
+         FMVX+nwjR++H9qJPGnH3moLnscIdTtM46rbyHAcz3xo0/74pR/9OVDTIYiQL0Z9gKE9B
+         Mu1w==
+X-Gm-Message-State: AOAM530/EcliWa4u8WjOVN0SZT25S5REey/9n5PKKDQgi3ixmZrLzBMJ
+        bcDI8tgSk3JrEC+GPghizjRYJp1jrKE=
+X-Google-Smtp-Source: ABdhPJwsFpsiTAb1f85mNRHkxFcJa8SuhA7oEBT1+y8+/v3QvGqx7SkHxtZH1xR2aYFou0wpXCiMgA==
+X-Received: by 2002:a17:906:4c8c:: with SMTP id q12mr18832593eju.254.1631623848163;
+        Tue, 14 Sep 2021 05:50:48 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-003-237-250.77.3.pool.telefonica.de. [77.3.237.250])
         by smtp.gmail.com with ESMTPSA id r8sm5567865eds.39.2021.09.14.05.50.47
         for <selinux@vger.kernel.org>
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-003-237-250.77.3.pool.telefon
         Tue, 14 Sep 2021 05:50:47 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 09/13] checkpolicy: resolve dismod memory leaks
-Date:   Tue, 14 Sep 2021 14:48:24 +0200
-Message-Id: <20210914124828.19488-10-cgzones@googlemail.com>
+Subject: [PATCH 10/13] checkpolicy: avoid implicit conversion
+Date:   Tue, 14 Sep 2021 14:48:25 +0200
+Message-Id: <20210914124828.19488-11-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210914124828.19488-1-cgzones@googlemail.com>
 References: <20210914124828.19488-1-cgzones@googlemail.com>
@@ -63,47 +63,29 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Example leak:
+Avoid implicit conversions from signed to unsigned values, found by
+UB sanitizers, by using unsigned values in the first place.
 
-    Indirect leak of 4 byte(s) in 1 object(s) allocated from:
-        #0 0x49bacd in __interceptor_malloc (./checkpolicy/test/dismod+0x49bacd)
-        #1 0x58ae54 in add_i_to_a ./libsepol/src/util.c:55:21
-        #2 0x53ea8e in symtab_insert ./libsepol/src/policydb.c:1729:6
-        #3 0x536252 in roles_init ./libsepol/src/policydb.c:772:7
-        #4 0x536252 in policydb_init ./libsepol/src/policydb.c:892:7
-        #5 0x562ff1 in sepol_policydb_create ./libsepol/src/policydb_public.c:69:6
-        #6 0x521a7c in module_package_init ./libsepol/src/module.c:96:6
-        #7 0x521a7c in sepol_module_package_create ./libsepol/src/module.c:126:7
-        #8 0x4cfb80 in read_policy ./checkpolicy/test/dismod.c:750:7
-        #9 0x4cda10 in main ./checkpolicy/test/dismod.c:878:6
-        #10 0x7f8538d01e49 in __libc_start_main csu/../csu/libc-start.c:314:16
+    dismod.c:92:42: runtime error: left shift of 1 by 31 places cannot be represented in type 'int'
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/test/dismod.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ checkpolicy/test/dismod.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/checkpolicy/test/dismod.c b/checkpolicy/test/dismod.c
-index 90c29318..9550b999 100644
+index 9550b999..792deb3a 100644
 --- a/checkpolicy/test/dismod.c
 +++ b/checkpolicy/test/dismod.c
-@@ -751,12 +751,15 @@ static int read_policy(char *filename, policydb_t * policy)
- 			fprintf(stderr, "%s:  Out of memory!\n", __FUNCTION__);
- 			exit(1);
+@@ -89,7 +89,7 @@ static void render_access_bitmap(ebitmap_t * map, uint32_t class,
+ 	fprintf(fp, "{");
+ 	for (i = ebitmap_startbit(map); i < ebitmap_length(map); i++) {
+ 		if (ebitmap_get_bit(map, i)) {
+-			perm = sepol_av_to_string(p, class, 1 << i);
++			perm = sepol_av_to_string(p, class, UINT32_C(1) << i);
+ 			if (perm)
+ 				fprintf(fp, " %s", perm);
  		}
-+		policydb_destroy((policydb_t *) package->policy);
-+		free(package->policy);
- 		package->policy = (sepol_policydb_t *) policy;
- 		package->file_contexts = NULL;
- 		retval =
- 		    sepol_module_package_read(package,
- 					      (sepol_policy_file_t *) & f, 1);
--		free(package->file_contexts);
-+		package->policy = NULL;
-+		sepol_module_package_free(package);
- 	} else {
- 		if (policydb_init(policy)) {
- 			fprintf(stderr, "%s:  Out of memory!\n", __FUNCTION__);
 -- 
 2.33.0
 

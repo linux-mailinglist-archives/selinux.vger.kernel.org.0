@@ -2,88 +2,138 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A2940CA08
-	for <lists+selinux@lfdr.de>; Wed, 15 Sep 2021 18:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 475E840CB4F
+	for <lists+selinux@lfdr.de>; Wed, 15 Sep 2021 19:00:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230304AbhIOQZi (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 15 Sep 2021 12:25:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58436 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230405AbhIOQZc (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 15 Sep 2021 12:25:32 -0400
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B86C0613D8
-        for <selinux@vger.kernel.org>; Wed, 15 Sep 2021 09:24:00 -0700 (PDT)
-Received: by mail-ed1-x52e.google.com with SMTP id g21so5704965edw.4
-        for <selinux@vger.kernel.org>; Wed, 15 Sep 2021 09:24:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8L1ObEbhewVu5Z9L+F5pzMdKDppRrP8OC4GS9huW5tg=;
-        b=hR7XWEFYJgEALLGJNOqB0F2cbk7SgsXdibmukCsOBrXOfgnf0K1jW2SvX2W8/REsIJ
-         j/Rg/9YB5rPc95AgYzWw0j+iyQB2RtyqAkHKJ23Xu4ZF+zFdeKhWCRMkbOGmKG24XlDZ
-         u6M1qArSkDMmlqZb85Bm3o+SAAJwp1AKmqEYFsFVukvISgkszZV7lXZqyVCaNU6EoZmn
-         oB2cwAo8GRULNHeVUExTW+dnyPGlyoOcC5lq7n5/FdAuj7jtRDrxVLPI+BqExSduzUyO
-         c4F17gAIb9LgCuHFeSEtDNq3sVBXeRHXMEVI9oqh+gblLvWl/m4VACrWtAPMCNd53pYz
-         SsNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8L1ObEbhewVu5Z9L+F5pzMdKDppRrP8OC4GS9huW5tg=;
-        b=JRS0IJPGGARh+HHWEtLFTeAxqbfC66cnIhwJ0ia5j2TGK6GM831QoX4bZo2FwyacOJ
-         u2CUKnxUPR3o1r9DZhhW43oPBvXzwCXwmxM72tnypZiMZkAMBvfk3TrUjSQRTX6lqB+F
-         ODPtjHyZWMiIiKzXnulWvGVFcVieKzOjv3QBBl2ij6gB/TVSeu+l0J5Mg3pfxzP4Fyft
-         9Xy7t1O2JttmFV+32SWWv3xpSb1su96b/5yb7L1cw2txcfBBpX6hp7gTJcVbGF9A3fuP
-         dSfzwuYkPKBmmFYKbDF3zCaQQI1y+3X5CfZdgsgbiHYbP55rXtvQIcVQ4mgXEv7p3kOV
-         7nMg==
-X-Gm-Message-State: AOAM532RU3S2rt9K9H+2k7Nigi8IfFF4XGFrPiM+i26v+UlzGNcA1hfO
-        lHwV51ywYoKFowQT839BejibWYk6CSg=
-X-Google-Smtp-Source: ABdhPJx3rntDXISX2moUzlJMKri4GvivfbdRy5GftVRFmTQIkf2r5ym+7Vo5NMfIYCfupTQ8U+7r1A==
-X-Received: by 2002:a17:906:b46:: with SMTP id v6mr888926ejg.262.1631723038827;
-        Wed, 15 Sep 2021 09:23:58 -0700 (PDT)
-Received: from debianHome.localdomain (dynamic-095-112-239-251.95.112.pool.telefonica.de. [95.112.239.251])
-        by smtp.gmail.com with ESMTPSA id x25sm192699ejy.46.2021.09.15.09.23.57
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Sep 2021 09:23:58 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH] selinux: enable genfscon labeling for securityfs
-Date:   Wed, 15 Sep 2021 18:23:26 +0200
-Message-Id: <20210915162326.392808-1-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.33.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+        id S229746AbhIORBQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 Sep 2021 13:01:16 -0400
+Received: from wind.enjellic.com ([76.10.64.91]:58928 "EHLO wind.enjellic.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229690AbhIORBQ (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Wed, 15 Sep 2021 13:01:16 -0400
+X-Greylist: delayed 1542 seconds by postgrey-1.27 at vger.kernel.org; Wed, 15 Sep 2021 13:01:15 EDT
+Received: from wind.enjellic.com (localhost [127.0.0.1])
+        by wind.enjellic.com (8.15.2/8.15.2) with ESMTP id 18FGXT0I002910;
+        Wed, 15 Sep 2021 11:33:29 -0500
+Received: (from greg@localhost)
+        by wind.enjellic.com (8.15.2/8.15.2/Submit) id 18FGXRgh002909;
+        Wed, 15 Sep 2021 11:33:27 -0500
+Date:   Wed, 15 Sep 2021 11:33:27 -0500
+From:   "Dr. Greg" <greg@enjellic.com>
+To:     Vivek Goyal <vgoyal@redhat.com>
+Cc:     Bruce Fields <bfields@redhat.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        "Dr. David Alan Gilbert" <dgilbert@redhat.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, virtio-fs@redhat.com,
+        Daniel Walsh <dwalsh@redhat.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Casey Schaufler <casey.schaufler@intel.com>,
+        LSM <linux-security-module@vger.kernel.org>,
+        selinux@vger.kernel.org, "Theodore Ts'o" <tytso@mit.edu>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        Giuseppe Scrivano <gscrivan@redhat.com>,
+        stephen.smalley.work@gmail.com,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        Dave Chinner <david@fromorbit.com>
+Subject: Re: [PATCH v3 0/1] Relax restrictions on user.* xattr
+Message-ID: <20210915163327.GA2324@wind.enjellic.com>
+Reply-To: "Dr. Greg" <greg@enjellic.com>
+References: <YTEEPZJ3kxWkcM9x@redhat.com> <YTENEAv6dw9QoYcY@redhat.com> <3bca47d0-747d-dd49-a03f-e0fa98eaa2f7@schaufler-ca.com> <YTEur7h6fe4xBJRb@redhat.com> <1f33e6ef-e896-09ef-43b1-6c5fac40ba5f@schaufler-ca.com> <YTYr4MgWnOgf/SWY@work-vm> <496e92bf-bf9e-a56b-bd73-3c1d0994a064@schaufler-ca.com> <YUCa6pWpr5cjCNrU@redhat.com> <CAPL3RVHB=E_s1AW1sQMEgrLYJ8ADCdr=qaKsDrpYjVzW-Apq8w@mail.gmail.com> <YUCybaYK/0RLvY9J@redhat.com>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <YUCybaYK/0RLvY9J@redhat.com>
+User-Agent: Mutt/1.4i
+X-Greylist: Sender passed SPF test, not delayed by milter-greylist-4.2.3 (wind.enjellic.com [127.0.0.1]); Wed, 15 Sep 2021 11:33:29 -0500 (CDT)
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add support for genfscon per-file labeling of securityfs files. This allows
-for separate labels and therby permissions for different files, e.g.
-/sys/kernel/security/integrity/ima/policy.
+On Tue, Sep 14, 2021 at 10:32:13AM -0400, Vivek Goyal wrote:
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- security/selinux/hooks.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Good morning, I hope the day is going well for everyone.
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 6517f221d52c..a18626424731 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -760,7 +760,8 @@ static int selinux_set_mnt_opts(struct super_block *sb,
- 	    !strcmp(sb->s_type->name, "tracefs") ||
- 	    !strcmp(sb->s_type->name, "binder") ||
- 	    !strcmp(sb->s_type->name, "bpf") ||
--	    !strcmp(sb->s_type->name, "pstore"))
-+	    !strcmp(sb->s_type->name, "pstore") ||
-+	    !strcmp(sb->s_type->name, "securityfs"))
- 		sbsec->flags |= SE_SBGENFS;
- 
- 	if (!strcmp(sb->s_type->name, "sysfs") ||
--- 
-2.33.0
+> On Tue, Sep 14, 2021 at 09:59:19AM -0400, Bruce Fields wrote:
+> > On Tue, Sep 14, 2021 at 8:52 AM Vivek Goyal <vgoyal@redhat.com> wrote:
+> > > Same is the requirement for regular containers and that's why
+> > > podman (and possibly other container managers), make top level
+> > > storage directory only readable and searchable by root, so that
+> > > unpriveleged entities on host can not access container root filesystem
+> > > data.
+> > 
+> > Note--if that directory is on NFS, making it readable and searchable
+> > by root is very weak protection, since it's often possible for an
+> > attacker to guess filehandles and access objects without the need for
+> > directory lookups.
 
+> open_by_handle_at() requires CAP_DAC_READ_SEARCH. And if you have
+> CAP_DAC_READ_SEARCH, you don't need to even guess file handles. You
+> should be able to read/search through all directories, IIUC.
+>
+> So how does one make sure that shared directory on host is not
+> accessible to unprivileged entities. If making directory accessible
+> to root only is weaker security, what are the options for stronger
+> security.
+
+I've been watching this thread, with some interest, given what we have
+been working on with respect to providing a new security framework
+that merges IMA and LSM and external security co-processor technology.
+
+Some observations based on those experiences and this thread.
+
+Casey is an expert on MAC and capability based security systems,
+unfortunately for our industry, particularly bog standard system
+administrators, a rarefied set of skills.  It may be helpful to
+consider his concerns and position on the issues involved in the
+framework of the number of systems that have, and blog posts that
+recommend, setting 'selinux=0' on the kernel command-line.
+
+I believe the best summary of his position on this issue, is the
+notion that placing security labels, even in transitive form in user
+accessible attributes, subordinates the security of the guest system,
+regardless of the MAC policy it implements, to the DAC based policy on
+the host system.
+
+Given that, there are no legitimate security guarantees that are
+inferrable based on the guest MAC policy.
+
+A legitimate pundit, could and probably should question, in the face
+of container filesystems and virtual machine images, whether any type
+of inferrable security guarantees are possible, but that is a question
+and argument for another day.
+
+I didn't see any mention of EVM brought up in these discussions, which
+may provide some options to improve the security integrity state of
+the guest.
+
+The 800 pound gorilla in the corner in all of this, is that inferrable
+security guarantees in guests require a certifiable chain of trust
+from the creator of the object to the kernel context that is making
+the security gating decisions on the object.  A hard to implement and
+prove concept in bare metal trusted systems, let alone the myriad of
+edge cases lurking in namespaced and virtual environments.
+
+Which, in a nod to the other corner of the ring, may simply mean, with
+our current state of deployable technology, you pay your money and
+take your chances in these virtual environments.  Which would in turn
+support the notion of a minimum security, ie. DAC, based effort.
+
+> Vivek
+
+Have a good remainder of the week.
+
+Dr. Greg
+
+As always,
+Dr. Greg Wettstein, Ph.D, Worker      Autonomously self-defensive
+Enjellic Systems Development, LLC     IOT platforms and edge devices.
+4206 N. 19th Ave.
+Fargo, ND  58102
+PH: 701-281-1686                      EMAIL: dg@enjellic.com
+------------------------------------------------------------------------------
+"This place is so screwed up.  It's just like the Titanic, only
+ we don't even have a band playing.
+                                -- Terrance George Wieland
+                                   Resurrection.

@@ -2,156 +2,98 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 722F540CB31
-	for <lists+selinux@lfdr.de>; Wed, 15 Sep 2021 18:50:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6FD940CC89
+	for <lists+selinux@lfdr.de>; Wed, 15 Sep 2021 20:28:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230454AbhIOQvc (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 15 Sep 2021 12:51:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36678 "EHLO
+        id S229623AbhIOS31 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 Sep 2021 14:29:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230439AbhIOQv3 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 15 Sep 2021 12:51:29 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B763AC061766
-        for <selinux@vger.kernel.org>; Wed, 15 Sep 2021 09:50:10 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id gs10so2246277qvb.13
-        for <selinux@vger.kernel.org>; Wed, 15 Sep 2021 09:50:10 -0700 (PDT)
+        with ESMTP id S229466AbhIOS30 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 15 Sep 2021 14:29:26 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D464C061574
+        for <selinux@vger.kernel.org>; Wed, 15 Sep 2021 11:28:07 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id i6so7019758edu.1
+        for <selinux@vger.kernel.org>; Wed, 15 Sep 2021 11:28:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:from:to:date:message-id:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=znV6h22uLT4tju8GfDCyoAJth/iE5nhq2gX552Nh+J8=;
-        b=yR4M9FMq5YkZZZnLVBGoHE8n/L7LBcuRYu45AIK6rpu6q86Bt8q97V42UpmZakk9Hk
-         qy1Abyuha691Im0rYc9EK/tOxPEZ+1p++dVyuU49SBOnF3DsCPgp/ECkkaOcSk9hOYg9
-         uZwNWDENAneb/b3kwwfPpFtKTclqgTySmd7avIWwSBqFJauyZ+YBc6bH4I/Gmz4clP5w
-         UOG2/ZoGWt1ti8+ruNUFKiGZJPPEEa2XjAF0DA2xVI/cJ3BaH4r06uP8JDKIZQ63Cap9
-         ayT/rIEu7My8B35KdwQFfy0AsExXY/vMA5Y0BemiwrEF4O/6W75CvXEWvQeBY3Bhk5kO
-         rFyQ==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=9HAZ4btVwSoLcVMdutXRisWqFHtXadG67XOBgInatXw=;
+        b=YlDEbqhEjN+KogHwIitdZLcywFmaMCW5fo8updGWGGm3HfluIhnnj1blIz44aV/NON
+         IiJWP1lGD41uDwQEpeUVeg1I03q+27+4yejTzcj5ikdDrVFGyedjUJ2yw9Z5+hNuWav0
+         7aq99t6Ry78LKTgHD63oq8t92YMjlEvemyyAFm8D6EuFm8gutKG9Satn+S/evTN2MI/g
+         dFsgk0KH3mgmFuKzu3TtXmE3cf70whTOCIQxl3Vq2ukhGS/35y/XiBKpPikPWiWgYSpB
+         02CiSBsJwoL6A3o29pWiLhrxA1OQNQSZXEnUEhNtop3NSjXrfJgAJYg5pHtjUjMfiLIx
+         WqKw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:subject:from:to:date:message-id:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=znV6h22uLT4tju8GfDCyoAJth/iE5nhq2gX552Nh+J8=;
-        b=j8NEAx/0sfNWl//9GnL+JsNlvgcmv2qmBCUqY0sykIXLE+aDRHu580m2saUEyIJt+v
-         kkcvX1hxkS6J17tfihkZQ7Ppme5ryOz2RaEmHytd/aMuiorCKViYy3ZH0zRQnPnZCVD5
-         HLP63uYskgJin0jDPM4yDDMcwVUl0948ObC/Ss/LMoiEOqi6cGTdHYJP0wuf3MSIHYi5
-         BsVSgDfZ4h7jTVnjDlfjawUEgkrH4ekjqGxUz7XxggUp96VMMNOUI++XgSHPDO/ZmqL8
-         V1hkWuEnnZhhAtjsC2mETAU2OLiw0Z4SUl3/lJCwRPG4vARQMlmvsP1ehIvnWlZEkVBK
-         yhGQ==
-X-Gm-Message-State: AOAM530YusPUKJCW0cFyqiBXRTa+ZL2WIpvWX+6VcLisgOUPM7GrXTCE
-        wzXpA/DAZONNtFcuQot+kEhA
-X-Google-Smtp-Source: ABdhPJx75T0dQPzt4WSic6uHD74Uop3/gZqSo+/ev3KVEiS5rzNOA3M5qoWYDRrYR2z4q+uilRE4LA==
-X-Received: by 2002:a05:6214:1394:: with SMTP id g20mr812980qvz.21.1631724609746;
-        Wed, 15 Sep 2021 09:50:09 -0700 (PDT)
-Received: from localhost (pool-96-237-52-188.bstnma.fios.verizon.net. [96.237.52.188])
-        by smtp.gmail.com with ESMTPSA id w20sm377308qkj.116.2021.09.15.09.50.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Sep 2021 09:50:09 -0700 (PDT)
-Subject: [PATCH v4 8/8] Smack: Brutalist io_uring support
-From:   Paul Moore <paul@paul-moore.com>
-To:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        linux-audit@redhat.com, io-uring@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        Pavel Begunkov <asml.silence@gmail.com>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Date:   Wed, 15 Sep 2021 12:50:08 -0400
-Message-ID: <163172460848.88001.15344229885190060624.stgit@olly>
-In-Reply-To: <163172413301.88001.16054830862146685573.stgit@olly>
-References: <163172413301.88001.16054830862146685573.stgit@olly>
-User-Agent: StGit/1.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=9HAZ4btVwSoLcVMdutXRisWqFHtXadG67XOBgInatXw=;
+        b=LfUEcvBdOr37adlCabp/ZmcVXnHL7Iy8OmxvmK27UhTDrMn+R5zLPdw+lCrY5XtCx1
+         xaXRDJVRxspr8Eq3cbCxmruDtUFnYRPoFYmfhwjQHFgwL0q5U9Y9L7TjFR9T1zIriF6o
+         u/PsIcYrLl2qVvIG0lyktfzImBnf2CKyvpfaHkS0jB8WIVCCjVx0YJA+fXDaXxwjgVny
+         25CF2NvCxQlLpYXR1kEJhtLJTcvkmpaATLivnVUZNIRJ6CzSM9rmBh6cgvYzZJC6N7tm
+         jszosMwy7ftxCHXulMfX+NjvIXBmw5HuNqLwO3KaqJobNxDvI0bCzkykDrOBGUYKpRqa
+         42lw==
+X-Gm-Message-State: AOAM5301EJtfqP+89kIyxsNxyKbDolvzEOnq5WyQuHbaU43AYEl8UPcY
+        Xa7HyUeWMTQglfP8a1O1aDFeF3Lk6gJmuAoXxrjc1c94YU/Y
+X-Google-Smtp-Source: ABdhPJzy2fDWDUV7y6Z2RJCh77SxOjaGBz91KUxmxaJoVIxq/4m+8UVoZvvpO1yUUL4CrcHcd66KL7jsUO0Q0vD3cqU=
+X-Received: by 2002:a05:6402:1607:: with SMTP id f7mr1508701edv.187.1631730486059;
+ Wed, 15 Sep 2021 11:28:06 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+References: <20210915162326.392808-1-cgzones@googlemail.com>
+In-Reply-To: <20210915162326.392808-1-cgzones@googlemail.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 15 Sep 2021 14:27:55 -0400
+Message-ID: <CAHC9VhTcyz5i7jRiz1iAg7U_Ru1cJi6APv0GyMw408d+2aJmqw@mail.gmail.com>
+Subject: Re: [PATCH] selinux: enable genfscon labeling for securityfs
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: Casey Schaufler <casey@schaufler-ca.com>
+On Wed, Sep 15, 2021 at 12:24 PM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
+>
+> Add support for genfscon per-file labeling of securityfs files. This allo=
+ws
+> for separate labels and therby permissions for different files, e.g.
+> /sys/kernel/security/integrity/ima/policy.
+>
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> ---
+>  security/selinux/hooks.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
-Add Smack privilege checks for io_uring. Use CAP_MAC_OVERRIDE
-for the override_creds case and CAP_MAC_ADMIN for creating a
-polling thread. These choices are based on conjecture regarding
-the intent of the surrounding code.
+Hi Christian,
 
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-[PM: make the smack_uring_* funcs static, remove debug code]
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+It would be nice if you could add some additional notes on how this
+was tested to the description above.
 
----
-v4:
-- updated subject line
-v3:
-- removed debug code
-v2:
-- made the smack_uring_* funcs static
-v1:
-- initial draft
----
- security/smack/smack_lsm.c |   46 ++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 6517f221d52c..a18626424731 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -760,7 +760,8 @@ static int selinux_set_mnt_opts(struct super_block *s=
+b,
+>             !strcmp(sb->s_type->name, "tracefs") ||
+>             !strcmp(sb->s_type->name, "binder") ||
+>             !strcmp(sb->s_type->name, "bpf") ||
+> -           !strcmp(sb->s_type->name, "pstore"))
+> +           !strcmp(sb->s_type->name, "pstore") ||
+> +           !strcmp(sb->s_type->name, "securityfs"))
+>                 sbsec->flags |=3D SE_SBGENFS;
+>
+>         if (!strcmp(sb->s_type->name, "sysfs") ||
+> --
+> 2.33.0
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index cacbe7518519..f90ab1efeb6d 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4691,6 +4691,48 @@ static int smack_dentry_create_files_as(struct dentry *dentry, int mode,
- 	return 0;
- }
- 
-+#ifdef CONFIG_IO_URING
-+/**
-+ * smack_uring_override_creds - Is io_uring cred override allowed?
-+ * @new: the target creds
-+ *
-+ * Check to see if the current task is allowed to override it's credentials
-+ * to service an io_uring operation.
-+ */
-+static int smack_uring_override_creds(const struct cred *new)
-+{
-+	struct task_smack *tsp = smack_cred(current_cred());
-+	struct task_smack *nsp = smack_cred(new);
-+
-+	/*
-+	 * Allow the degenerate case where the new Smack value is
-+	 * the same as the current Smack value.
-+	 */
-+	if (tsp->smk_task == nsp->smk_task)
-+		return 0;
-+
-+	if (smack_privileged_cred(CAP_MAC_OVERRIDE, current_cred()))
-+		return 0;
-+
-+	return -EPERM;
-+}
-+
-+/**
-+ * smack_uring_sqpoll - check if a io_uring polling thread can be created
-+ *
-+ * Check to see if the current task is allowed to create a new io_uring
-+ * kernel polling thread.
-+ */
-+static int smack_uring_sqpoll(void)
-+{
-+	if (smack_privileged_cred(CAP_MAC_ADMIN, current_cred()))
-+		return 0;
-+
-+	return -EPERM;
-+}
-+
-+#endif /* CONFIG_IO_URING */
-+
- struct lsm_blob_sizes smack_blob_sizes __lsm_ro_after_init = {
- 	.lbs_cred = sizeof(struct task_smack),
- 	.lbs_file = sizeof(struct smack_known *),
-@@ -4843,6 +4885,10 @@ static struct security_hook_list smack_hooks[] __lsm_ro_after_init = {
- 	LSM_HOOK_INIT(inode_copy_up, smack_inode_copy_up),
- 	LSM_HOOK_INIT(inode_copy_up_xattr, smack_inode_copy_up_xattr),
- 	LSM_HOOK_INIT(dentry_create_files_as, smack_dentry_create_files_as),
-+#ifdef CONFIG_IO_URING
-+	LSM_HOOK_INIT(uring_override_creds, smack_uring_override_creds),
-+	LSM_HOOK_INIT(uring_sqpoll, smack_uring_sqpoll),
-+#endif
- };
- 
- 
-
+--=20
+paul moore
+www.paul-moore.com

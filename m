@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1B3141B343
-	for <lists+selinux@lfdr.de>; Tue, 28 Sep 2021 17:47:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A43B941B340
+	for <lists+selinux@lfdr.de>; Tue, 28 Sep 2021 17:47:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241685AbhI1PtA (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 28 Sep 2021 11:49:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42560 "EHLO
+        id S241679AbhI1Ps4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 28 Sep 2021 11:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42534 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241565AbhI1PtA (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 28 Sep 2021 11:49:00 -0400
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D4BC06161C
-        for <selinux@vger.kernel.org>; Tue, 28 Sep 2021 08:47:20 -0700 (PDT)
-Received: by mail-ed1-x535.google.com with SMTP id bd28so23413521edb.9
-        for <selinux@vger.kernel.org>; Tue, 28 Sep 2021 08:47:20 -0700 (PDT)
+        with ESMTP id S241565AbhI1Psz (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 28 Sep 2021 11:48:55 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 324FAC06161C
+        for <selinux@vger.kernel.org>; Tue, 28 Sep 2021 08:47:16 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id s17so66157745edd.8
+        for <selinux@vger.kernel.org>; Tue, 28 Sep 2021 08:47:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=PNvuTizLv0cwOxbk8m3l9W44wpXZgEFiGyrOuxwwRBc=;
-        b=P4FumdAl5RrkGbIIeHVkx8UMLVwh0PCc0zLqDI746X+LLM8YY7QDo7TyoKK9jVIAJ3
-         sbqm5IDeP8IxxAZFm4Dov0n6083Af1YZHzgs10/c31Rb9l/hDY2+tV7kWNux4UvnvXXC
-         OSN23nraC4DT2bpjSlPfP+m5iSrWX7naa3/wsJU/+vT6ou8RVRXpw/yPPIGUgS/wiZBS
-         rsNIav/VMH1oAjldBgxHctaXL+hDO+14qri9G3TmDGn9MXZXAl4o/w1kn3/TAXfsxHgP
-         22UoByzICDaUUgGLUo+pQ1krRT1N+YKWfDctqcrE+EhDZccLDDU4huHjYOvYoi7R2rVr
-         I2eA==
+        bh=JKnQuMHaBMfpY/3fWHFejTQul5LVF20aHJanG2kNNXE=;
+        b=OG/bXFko2YOTdeus952N9D1zF5NkQB5CoTBKpc6vQQJZEcAjRdlZNkV0+deItNkvlQ
+         0XDl310B9R9oggJlTREjYKs65qrJlcntJg/MCVlKpy1gxZR5Iw+zR24fj8/yP8Xu5BjX
+         NF9WsaOVqkkUfABabj2axCEXKU+XW96NYjBNawW4N0bnzUw3EJzsoU8X8ibizo9Av6zi
+         aCHtsYF5Nh4vg4dr8ADnir9YYLpgl93jEIqqm7ttHyT9lWBwoSw4YKFw5BKKDORMuoyj
+         ssC/5smmzH4IVmaRv9zn0wSO8vK5iXgJtf6d6yjDwZ4IlxIk9MByTmQ7y5H9w2SYTgSM
+         iyJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=PNvuTizLv0cwOxbk8m3l9W44wpXZgEFiGyrOuxwwRBc=;
-        b=FfE6SAwJg364PMH6Lp2ZOINp9Kp9U5V42DrU/uXJsDAskxxj4VRxNDRUxN8wfHwWsZ
-         p2Jrqn3IqBXEGv9xUxrREVgy92zy7GE75PavGIwMCeVvEpTh9hXrVr5b+x4FcalXU0+E
-         KDGkqlTfOimHBSv5Ob+z2zS+Xyik6deLbx3IMGDsGaq5mL1AqLdIBKgy5Y3GrrCxBLlr
-         BG/r8Gxxo+uV95A/ST6stpI8YNZIJ4QFmMU1yMNc1h3dJtn84BJE1Qiz2eHj76Ug4Qj6
-         HeuYbvZZFc+m6YXMzuL8FyfY3c7mA47/BBbkHNMck/1sZSwIZOecWemmO/siXHSYz/KN
-         RroQ==
-X-Gm-Message-State: AOAM530oQ17MwHYv9813xEk/tiiuv0+ZQTdGjb/yC7e4qHt8t7IQqRxC
-        XGrPRkU5LjwGZUxzvtxbmQNRuT42pTE=
-X-Google-Smtp-Source: ABdhPJxdSAshw82xWeXHVJzvckPnQGjQMjB/Bhs3RbPkd5n9hLrJTk/yS0snDyrbV8swuZdMJYQuog==
-X-Received: by 2002:a17:906:498b:: with SMTP id p11mr7178815eju.295.1632843986340;
+        bh=JKnQuMHaBMfpY/3fWHFejTQul5LVF20aHJanG2kNNXE=;
+        b=mHvDGNWv9JJLEQVNKxOTjCmiCgMdpVr5Jh1yJRgHS3LTNqf928StRU/ICyyMnBH30E
+         fGRTd+pOM6KUrlzWi6WdaumOwZj5AmTXTraYc80fz8hnPha4FyeHH3ssbXPjEGlJ0mjE
+         Xmw8NAg18y/oSTW6TJ6xMEg2hsEOJN/acFq/3m1Bn+/H3r9P9KNY94fdF0YxoLgfWG9Q
+         d4R+0A/HOc2aeFJyrWXFHN7eGUxQ6dMriN9nKJHLK394geFJyqo5nuEh0wK5FV2k0iss
+         Wzdjqnan0lCiWpHOhn8fr4IfM/9cl79S1yk7sjVUBwA+03UMcQmxZ26T6Z0EVtlFzhkU
+         XV7A==
+X-Gm-Message-State: AOAM531Fbnvt09+Tjo5kABkpWzEnH4yI5rnmJtXPDK6xAT3ILZepjPTr
+        K2tNMLpDmo1wlUQ7I7x90+9bJvxRPqI=
+X-Google-Smtp-Source: ABdhPJzm90xsDzI3WQPSVf6I2QEx7uQYMkU/J+nEyaP07IokUiWHhklw2X1dS8Y+9RnA8oGLFzJrLQ==
+X-Received: by 2002:a17:906:6b1a:: with SMTP id q26mr7246771ejr.185.1632843986892;
         Tue, 28 Sep 2021 08:46:26 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-112-152-081.95.112.pool.telefonica.de. [95.112.152.81])
-        by smtp.gmail.com with ESMTPSA id l18sm13403834edw.78.2021.09.28.08.46.25
+        by smtp.gmail.com with ESMTPSA id l18sm13403834edw.78.2021.09.28.08.46.26
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 28 Sep 2021 08:46:26 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 6/9] checkpolicy: print reason of fopen failure
-Date:   Tue, 28 Sep 2021 17:46:17 +0200
-Message-Id: <20210928154620.11181-6-cgzones@googlemail.com>
+Subject: [PATCH 7/9] checkpolicy: update documentation
+Date:   Tue, 28 Sep 2021 17:46:18 +0200
+Message-Id: <20210928154620.11181-7-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20210928154620.11181-1-cgzones@googlemail.com>
 References: <20210928154620.11181-1-cgzones@googlemail.com>
@@ -63,28 +63,86 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Print the reason why opening a source policy file failed, e.g:
+Add missing command-line arguments to synopsis and highlight mentions of
+other tools in man pages.
 
-    checkpolicy:  unable to open policy.conf:  No such file or directory
+Add missing space between arguments in help message.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/parse_util.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ checkpolicy/checkmodule.8 | 11 +++++++----
+ checkpolicy/checkpolicy.8 |  8 +++++---
+ checkpolicy/checkpolicy.c |  2 +-
+ 3 files changed, 13 insertions(+), 8 deletions(-)
 
-diff --git a/checkpolicy/parse_util.c b/checkpolicy/parse_util.c
-index 1795e93c..8c1f393c 100644
---- a/checkpolicy/parse_util.c
-+++ b/checkpolicy/parse_util.c
-@@ -36,7 +36,7 @@ int read_source_policy(policydb_t * p, const char *file, const char *progname)
+diff --git a/checkpolicy/checkmodule.8 b/checkpolicy/checkmodule.8
+index c4b1592b..1061a6f2 100644
+--- a/checkpolicy/checkmodule.8
++++ b/checkpolicy/checkmodule.8
+@@ -3,7 +3,7 @@
+ checkmodule \- SELinux policy module compiler
+ .SH SYNOPSIS
+ .B checkmodule
+-.I "[\-h] [\-b] [\-C] [\-m] [\-M] [\-U handle_unknown ] [\-V] [\-o output_file] [input_file]"
++.I "[\-h] [\-b] [\-c policy_version] [\-C] [\-E] [\-m] [\-M] [\-U handle_unknown] [\-V] [\-o output_file] [input_file]"
+ .SH "DESCRIPTION"
+ This manual page describes the
+ .BR checkmodule
+@@ -15,9 +15,12 @@ into a binary representation.  It can generate either a base policy
+ module (default) or a non-base policy module (\-m option); typically,
+ you would build a non-base policy module to add to an existing module
+ store that already has a base module provided by the base policy.  Use
+-semodule_package to combine this module with its optional file
+-contexts to create a policy package, and then use semodule to install
+-the module package into the module store and load the resulting policy.
++.B semodule_package(8)
++to combine this module with its optional file
++contexts to create a policy package, and then use
++.B semodule(8)
++to install the module package into the module store and load the resulting
++policy.
+ 
+ .SH OPTIONS
+ .TP
+diff --git a/checkpolicy/checkpolicy.8 b/checkpolicy/checkpolicy.8
+index f4e6fb24..2984c238 100644
+--- a/checkpolicy/checkpolicy.8
++++ b/checkpolicy/checkpolicy.8
+@@ -3,7 +3,7 @@
+ checkpolicy \- SELinux policy compiler
+ .SH SYNOPSIS
+ .B checkpolicy
+-.I "[\-b[F]] [\-C] [\-d] [\-U handle_unknown (allow,deny,reject)] [\-M] [\-c policyvers] [\-o output_file|\-] [\-S] [\-t target_platform (selinux,xen)] [\-V] [input_file]"
++.I "[\-b[F]] [\-C] [\-d] [\-U handle_unknown (allow,deny,reject)] [\-M] [\-c policyvers] [\-o output_file|\-] [\-S] [\-t target_platform (selinux,xen)] [\-O] [\-E] [\-V] [input_file]"
+ .br
+ .SH "DESCRIPTION"
+ This manual page describes the
+@@ -13,8 +13,10 @@ command.
+ .B checkpolicy
+ is a program that checks and compiles a SELinux security policy configuration
+ into a binary representation that can be loaded into the kernel.  If no 
+-input file name is specified, checkpolicy will attempt to read from
+-policy.conf or policy, depending on whether the \-b flag is specified.
++input file name is specified,
++.B checkpolicy
++will attempt to read from policy.conf or policy, depending on whether the \-b
++flag is specified.
+ 
+ .SH OPTIONS
+ .TP
+diff --git a/checkpolicy/checkpolicy.c b/checkpolicy/checkpolicy.c
+index 9459486b..6740c6d4 100644
+--- a/checkpolicy/checkpolicy.c
++++ b/checkpolicy/checkpolicy.c
+@@ -109,7 +109,7 @@ static __attribute__((__noreturn__)) void usage(const char *progname)
  {
- 	yyin = fopen(file, "r");
- 	if (!yyin) {
--		fprintf(stderr, "%s:  unable to open %s\n", progname, file);
-+		fprintf(stderr, "%s:  unable to open %s:  %s\n", progname, file, strerror(errno));
- 		return -1;
- 	}
- 	set_source_file(file);
+ 	printf
+ 	    ("usage:  %s [-b[F]] [-C] [-d] [-U handle_unknown (allow,deny,reject)] [-M] "
+-	     "[-c policyvers (%d-%d)] [-o output_file|-] [-S] [-O]"
++	     "[-c policyvers (%d-%d)] [-o output_file|-] [-S] [-O] "
+ 	     "[-t target_platform (selinux,xen)] [-E] [-V] [input_file]\n",
+ 	     progname, POLICYDB_VERSION_MIN, POLICYDB_VERSION_MAX);
+ 	exit(1);
 -- 
 2.33.0
 

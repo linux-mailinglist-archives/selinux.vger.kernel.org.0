@@ -2,81 +2,71 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B38F41E8E5
-	for <lists+selinux@lfdr.de>; Fri,  1 Oct 2021 10:17:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F9C941EBF9
+	for <lists+selinux@lfdr.de>; Fri,  1 Oct 2021 13:32:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229829AbhJAIS7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 1 Oct 2021 04:18:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:53651 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231327AbhJAIS7 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 1 Oct 2021 04:18:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1633076235;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=UE2APLTsf4TfoW9jpD7MdAvTpE6rXWOM3IhczrAVMf4=;
-        b=YlM3Jz8F3jC4xCQX98UQUmOF5gCsAc5SeRrEgwrnG3sULl7VM6xL4gc3oAVcbVlaob+sAw
-        cmZxKqQHG5G0v3+X7cZzdvyoSqSwq06wyl70t+1KXW4mnerK3rri7haw2Jox/l6YBdPKBO
-        bGkX9BAks3y4ZBQIu8jxTse0W1CPBNU=
-Received: from mail-yb1-f198.google.com (mail-yb1-f198.google.com
- [209.85.219.198]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-374-2jwQZG_MPgSWWCIxQrwELg-1; Fri, 01 Oct 2021 04:17:14 -0400
-X-MC-Unique: 2jwQZG_MPgSWWCIxQrwELg-1
-Received: by mail-yb1-f198.google.com with SMTP id t9-20020a056902124900b005b64be937e1so12392735ybu.23
-        for <selinux@vger.kernel.org>; Fri, 01 Oct 2021 01:17:14 -0700 (PDT)
+        id S231177AbhJALe0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 1 Oct 2021 07:34:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40576 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230345AbhJALe0 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 1 Oct 2021 07:34:26 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58038C061775
+        for <selinux@vger.kernel.org>; Fri,  1 Oct 2021 04:32:42 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id x7so32530740edd.6
+        for <selinux@vger.kernel.org>; Fri, 01 Oct 2021 04:32:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=QuM8eqYfYd0jQ6ZjnDurupW9MG9/BcFbPm1whQOIpAFRPumynlqXbv20ElJsPqw68S
+         q9jZVqHMaDHffn87RfPHuqwAyCvkYNNcTastv3Lt/5gm7BpBSoljkq2iuiRqqghPMMh8
+         Bs/MwDutTRUVZWBMhx4J8sKVUC4EY6stEaM2SQ3PTzL6KH1JzzSyQD5gsQKGjUYuzY6v
+         qqoGkGVf2L/Rv8BWvhsRkNm5RJoSOCEYNvVfN4R8wcLF+QoryoXFERfnssmVGtGR7DfO
+         ZAmHsUJ+Jvsjhnw5DDg/FFXRHmiVPSgIipI7nqkbdWTYb+ViCp39PNBPWzJZvvF8j9PY
+         d0jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=UE2APLTsf4TfoW9jpD7MdAvTpE6rXWOM3IhczrAVMf4=;
-        b=HvNUtLZ8BktboQENSI6ZVIXfQIGMfyststxDCmcLZ+GTwXjIXmcBeJnAAkl67yAnb/
-         0Z2sEE+O39S9nbOd2h+++vLUVsUqvVhgEZdylV0C0XPkKrITvVs3vuhJMrER+lNK7a6/
-         7nC3tLcOCpNJh4k4PtqrgmBOBcf4HlGbZ6NrCriVB5Sda7Kxh+/wb/ymUL7ZMIaTa8ri
-         MN0wHAemFbFqIrJkVcimFQhvV2kDz3yX5E9AT4LkZAu1dgEUcnfmhX+5roR9l0Gza7ch
-         Rmevl4qArsg9gecmOfpfeoF6Fyl93YQo7VhQxkYSdOudn7WTTBqP+ZA4+e6Sni3ORO1B
-         98Jw==
-X-Gm-Message-State: AOAM5331FGQvZrgVDRMN4sjkX4Hv6UjMJ2sIXcQ39zyWh/OQmuq3YbFX
-        XX+jqx2WitaheEd0mMCUeWDFPncaPok7hAnATmebKwO8IDa0mgVf9Jn1AT6Lf+tabZ9Iy/29qDM
-        xd1bcRIOAvv/2lvKovRNM/SjgY4HpPcTWgg==
-X-Received: by 2002:a25:3ac1:: with SMTP id h184mr4537094yba.237.1633076233774;
-        Fri, 01 Oct 2021 01:17:13 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzfp6I8gZITXxYEtH5ZHW3yzknXvQOHyz+7KG8V3v3xp1VKl4p9OWT8SkBLTvRG9nRQteb4QAQM/5cRYoKIQUU=
-X-Received: by 2002:a25:3ac1:: with SMTP id h184mr4537071yba.237.1633076233453;
- Fri, 01 Oct 2021 01:17:13 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=5L/E4eErsLvrvRSyjenHMn1XgR3BfAibYkaUBTxnmho=;
+        b=rNjyxzE+xATzf/PZXuqNdMC2fpqo9/idEKX1SME1M4UIxjArdwn3Cdju2Zv7s5PJz2
+         9V06iSMbhB1AXxKAqxOWRT9zq3jE00Z7dHXTjgpuo356a7UPM9ox9usRB1ibuHydinyj
+         tefzk6VVrmXWRKCmngAJqNN9BVQE2Pcs5kBoXK9v2J/vXGvz26BUklZzR26sHEuwytGX
+         WFHlRMn1KJbnV/UDWEi4oI/s+rqBUxaTp2cTvYrXlv6CjfAQyRJOoiokCN552mAxqkfm
+         rpBIwSwtA7aR2pZML4Ly61i5sR2usuiHaB54ChQtfuWZseqN7E+gkCdYt28gPwNNwvLI
+         vi/Q==
+X-Gm-Message-State: AOAM531YquNTtl6CNGmj+bbl6WednHW+nDPpieTx0izW+SwUZFOBS80R
+        Ghv8oQ6GRwyi7hKeFJJtWEnI5hqFtRxHQ1tkR/8=
+X-Google-Smtp-Source: ABdhPJwASerReIqbqcw1q8MxBcGc3nY6YtzzzpnEywJ8gEM8HEfG1iK8qJErWvYEUemjor5HebFZzmIVy695zbg3RFM=
+X-Received: by 2002:a50:e14a:: with SMTP id i10mr13683319edl.73.1633087959919;
+ Fri, 01 Oct 2021 04:32:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210930112639.657328-1-omosnace@redhat.com>
-In-Reply-To: <20210930112639.657328-1-omosnace@redhat.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Fri, 1 Oct 2021 10:17:02 +0200
-Message-ID: <CAFqZXNvugmt4taraRNyj-=dL3uoscjtN4GaLQ1-SNd2oXT9V0w@mail.gmail.com>
-Subject: Re: [PATCH testsuite] Remove the lockdown test
-To:     SElinux list <selinux@vger.kernel.org>
-Cc:     Paul Moore <paul@paul-moore.com>
+Received: by 2002:a17:906:724a:0:0:0:0 with HTTP; Fri, 1 Oct 2021 04:32:39
+ -0700 (PDT)
+Reply-To: joymat52@gmail.com
+From:   Joyce Thomas <tjoyc1234@gmail.com>
+Date:   Fri, 1 Oct 2021 04:32:39 -0700
+Message-ID: <CAF-RpUjOX0Y2hOEpLbDJNqH9DZPxG1K8_OdbAESfKoPApimveQ@mail.gmail.com>
+Subject: ATTN:
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Sep 30, 2021 at 1:26 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> The lockdown class is about to be removed from the mainline kernel due
-> to the difficulty of ensuring that a relevant subject context is
-> available during each call to the locked_down hook.
->
-> Hence remove the lockdown test from the testsuite.
->
-> Note that the module_load and perf_event test policy still conditionally
-> provides rules involving the lockdown class so that these tests can
-> still work on older kernels.
->
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-
-The removal is now merged in next, so I went ahead and applied this:
-https://github.com/SELinuxProject/selinux-testsuite/commit/bba37c007a0c7a12dd603bdac5e4431796f3e2e1
-
--- 
-Ondrej Mosnacek
-Software Engineer, Linux Security - SELinux kernel
-Red Hat, Inc.
-
+Hello Dear
+My Name is Mr. Joyce Thomas. Contact me for more information on the
+transfer of ($7.9 million dollars) left by my late client from your
+Country. I want to present you as a business partner and next of kin
+of the fund. I will give you the details of this transaction, as soon
+as I hear from you. I need the information below:
+Full Name:
+Address:
+Occupation:
+Age:
+Personal Email:
+Personal Telephone:
+Best Regards,
+Mr.Joyce  Thomas

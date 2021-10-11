@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 51BCA42947A
-	for <lists+selinux@lfdr.de>; Mon, 11 Oct 2021 18:26:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 599DE42947C
+	for <lists+selinux@lfdr.de>; Mon, 11 Oct 2021 18:26:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232016AbhJKQ20 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 11 Oct 2021 12:28:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43958 "EHLO
+        id S232108AbhJKQ21 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 11 Oct 2021 12:28:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232035AbhJKQ2Z (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 11 Oct 2021 12:28:25 -0400
+        with ESMTP id S232062AbhJKQ20 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 11 Oct 2021 12:28:26 -0400
 Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E8A5C061570
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF184C06161C
         for <selinux@vger.kernel.org>; Mon, 11 Oct 2021 09:26:25 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id a25so54087426edx.8
+Received: by mail-ed1-x529.google.com with SMTP id d9so46036288edh.5
         for <selinux@vger.kernel.org>; Mon, 11 Oct 2021 09:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=+jacl8Al8Q58H+wLtpDSJ9c94xGremV+a4pxFon+T1Y=;
-        b=QsgY4LKgclzOCvaI847Yq7FGnrAtBgv+cj+N/3lTM1ym5uurRsotyZm0NZeQ2VXt59
-         2FniJgIwWpcQsVs1l3y2eJpv4MYlUxqN5wAUZSd2GC2BSmRXCXF9sVsq9J7qvn+BegMK
-         LjsHlIwADpneEfXGOq9/+eA7/dw2tnHbgNS05ZZLgwfFkhzahBqniy1MvFhXt/LMlfAy
-         h8A5cH6wCY6kS9NQfPzwqfplhwXKrKadrrb2S2MnIufbQD+FB2ejBrisGbBN/HTYW6Jl
-         0v4mio4r5WtmAF+oaOxFP7LCHl5HVWU27HIXtL2lZA+BalN1y1NMvH/t/h5O5FiBDDxj
-         0Luw==
+        bh=2ruCt1+N7aypGX9gh1/S/uTgsVDxJ/gF0h3VlIk0pQo=;
+        b=eh9GKkQIIXZW0+MjPaumJ9Qhrbti4xct5n06F0Ph6tZbUa7EpSg/h1yz8CqHTu+21t
+         RNK+IrkrU0RazC2ptMF34vbz9pgRJGOmtmmmNpcML0zMe2iH690d6MYnhPzWRpkWN4g7
+         vAiVPDYPqy86t8nOsoRPebysxvNrGPbEQu0rZmYu5QeZOwD/4RVeKhXvwGjhJpNMzFH2
+         T+wPztdgjra6OChZ3PPZsNpBiRID2kx1nCQVaDT48OrNhIW7AtkZZfb/vh+Y2vug0s7o
+         zJWfMB9UXlzWacgQqOg0ziSeBXfsOX09HK0UVPjPHRnTZFQ7uB712ZPh2xQR3wi9t8Tz
+         0JSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=+jacl8Al8Q58H+wLtpDSJ9c94xGremV+a4pxFon+T1Y=;
-        b=AfRM5raNBW1E7rQKwh27Ap++sE2n+3CDIHPgrtRCv13pHbSn8YR0kF2vaoo7j9MDsr
-         XNusAu5dNaYumijw35BZVNkRbeHs91iKkmTujjOesTd0G1uPskn3jqtHdcuIxO3mo6ok
-         sk1Q5VF+ErbGw9Z/15Jp3JTTlef25qnATVdFniM8cF/wUJ1wnzakIHdTdwiI6mkQq41K
-         V+2IknnYUnwASu5DyV62ezIrvFqNtN25J3hlo19Rm54FRg330WeIxzM6qQWDwl/Nhl7E
-         jsb5Ms0l6ifgmj+ZtoFIMcnkm6doAQJ2NvzollwRuBbZSw2Azpa3rpcTElsc7MjdKVMd
-         MAUg==
-X-Gm-Message-State: AOAM531gY//5FSdOyR+hpzuwNyK5wMw6SDAC3c6A8/W+F/qg7LEtLwjK
-        dZ4Ssl19sO9dzADAfvdiTFeqVVi550M=
-X-Google-Smtp-Source: ABdhPJzQcUzZkEkBWnvjVTb4f8nZW4EYn7sHmhYieo9ucCwiYKCZuEkZeOP8uhYk2sDfKH/WvjXPKw==
-X-Received: by 2002:a17:906:26c4:: with SMTP id u4mr25515248ejc.511.1633969583846;
-        Mon, 11 Oct 2021 09:26:23 -0700 (PDT)
+        bh=2ruCt1+N7aypGX9gh1/S/uTgsVDxJ/gF0h3VlIk0pQo=;
+        b=wGToG/n18X65fIlLqhpxtYRMjh3MFigVt5GD84c/mGv+lOjfoOhyAa9EqWNXEwNviN
+         Y1ycULROrHjYp9VoJtB6UX1cy48fqIGSXO95rffw2gcy3qK9AsLRTm3Jd/K/q3FWZ1nk
+         hv4qpRFa1Ii3nmq/SnIQWWXln60RcqcuGz7Rl9IircSyW3R8hzneN4vkZqOuBRt7+tA4
+         pgbKep3sqoebg0wH4kLGTGSzr6uwAXk4/u2PtMdI/VGzDAabt/Iog1+9yht2R7SaEF2o
+         QNwT3Awu54C/wqNuN6u2vXb/GHGTZOWiSj2vpUesEgu89eLl50ikbxpr0SwJVqNhFR6d
+         T7dg==
+X-Gm-Message-State: AOAM533Wn8MS7zD1OAPNQBZgaMiYReYo25zeZ7XXpaX0rlZFGu1WroS4
+        5+HAIoiJKYL1gWC9zx3XnwQuN0HVAOY=
+X-Google-Smtp-Source: ABdhPJzr5o9kxQN9tfUoSSls+ERPACrWnw2NOZjsTqhTtf4+AWx4yiH2ecdkhY2QQOfuoaO5CDZR6w==
+X-Received: by 2002:a17:906:ae14:: with SMTP id le20mr27496321ejb.89.1633969584384;
+        Mon, 11 Oct 2021 09:26:24 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-010-085-058.77.10.pool.telefonica.de. [77.10.85.58])
         by smtp.gmail.com with ESMTPSA id a1sm4489514edu.43.2021.10.11.09.26.23
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Oct 2021 09:26:23 -0700 (PDT)
+        Mon, 11 Oct 2021 09:26:24 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH 05/35] libsepol/fuzz: limit element sizes for fuzzing
-Date:   Mon, 11 Oct 2021 18:25:03 +0200
-Message-Id: <20211011162533.53404-6-cgzones@googlemail.com>
+Subject: [RFC PATCH 06/35] libsepol: use logging framework in conditional.c
+Date:   Mon, 11 Oct 2021 18:25:04 +0200
+Message-Id: <20211011162533.53404-7-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.0
 In-Reply-To: <20211011162533.53404-1-cgzones@googlemail.com>
 References: <20211011162533.53404-1-cgzones@googlemail.com>
@@ -63,100 +63,120 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Limit the maximum length of read sizes, like string length of module
-version and name or keys and number of symtab entries.  This avoids the
-fuzzer to report oom events for huge allocations (it also improves the
-number of executions per seconds of the fuzzer).
-
-This change only affects the fuzzer build.
-
-    ==15211== ERROR: libFuzzer: out-of-memory (malloc(3115956666))
-       To change the out-of-memory limit use -rss_limit_mb=<N>
-
-        #0 0x52dc61 in __sanitizer_print_stack_trace (./out/binpolicy-fuzzer+0x52dc61)
-        #1 0x475618 in fuzzer::PrintStackTrace() fuzzer.o
-        #2 0x458855 in fuzzer::Fuzzer::HandleMalloc(unsigned long) fuzzer.o
-        #3 0x45876a in fuzzer::MallocHook(void const volatile*, unsigned long) fuzzer.o
-        #4 0x534557 in __sanitizer::RunMallocHooks(void const*, unsigned long) (./out/binpolicy-fuzzer+0x534557)
-        #5 0x4aa7d7 in __asan::Allocator::Allocate(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*, __asan::AllocType, bool) (./out/binpolicy-fuzzer+0x4aa7d7)
-        #6 0x4aa143 in __asan::asan_malloc(unsigned long, __sanitizer::BufferedStackTrace*) (./out/binpolicy-fuzzer+0x4aa143)
-        #7 0x5259cb in malloc (./out/binpolicy-fuzzer+0x5259cb)
-        #8 0x59d307 in str_read ./libsepol/src/services.c:1746:8
-        #9 0x585b97 in perm_read ./libsepol/src/policydb.c:2063:5
-        #10 0x581f8a in common_read ./libsepol/src/policydb.c:2119:7
-        #11 0x576681 in policydb_read ./libsepol/src/policydb.c:4417:8
-        #12 0x55a214 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:26:6
-        #13 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #14 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #15 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #16 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #17 0x7fe1ec88a7ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #18 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
-
-    ==13584== ERROR: libFuzzer: out-of-memory (malloc(2560137369))
-       To change the out-of-memory limit use -rss_limit_mb=<N>
-
-        #0 0x52dc61 in __sanitizer_print_stack_trace (./out/binpolicy-fuzzer+0x52dc61)
-        #1 0x475618 in fuzzer::PrintStackTrace() fuzzer.o
-        #2 0x458855 in fuzzer::Fuzzer::HandleMalloc(unsigned long) fuzzer.o
-        #3 0x45876a in fuzzer::MallocHook(void const volatile*, unsigned long) fuzzer.o
-        #4 0x534557 in __sanitizer::RunMallocHooks(void const*, unsigned long) (./out/binpolicy-fuzzer+0x534557)
-        #5 0x4aa7d7 in __asan::Allocator::Allocate(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*, __asan::AllocType, bool) (./out/binpolicy-fuzzer+0x4aa7d7)
-        #6 0x4aa143 in __asan::asan_malloc(unsigned long, __sanitizer::BufferedStackTrace*) (./out/binpolicy-fuzzer+0x4aa143)
-        #7 0x5259cb in malloc (./out/binpolicy-fuzzer+0x5259cb)
-        #8 0x581cc4 in common_read ./libsepol/src/policydb.c:2108:8
-        #9 0x576681 in policydb_read ./libsepol/src/policydb.c:4409:8
-        #10 0x55a214 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:26:6
-        #11 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #12 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #13 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #14 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #15 0x7fa6431787ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #16 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
-
-    ==12683== ERROR: libFuzzer: out-of-memory (malloc(2526451450))
-       To change the out-of-memory limit use -rss_limit_mb=<N>
-
-        #0 0x52dc61 in __sanitizer_print_stack_trace (./out/binpolicy-fuzzer+0x52dc61)
-        #1 0x475618 in fuzzer::PrintStackTrace() fuzzer.o
-        #2 0x458855 in fuzzer::Fuzzer::HandleMalloc(unsigned long) fuzzer.o
-        #3 0x45876a in fuzzer::MallocHook(void const volatile*, unsigned long) fuzzer.o
-        #4 0x534557 in __sanitizer::RunMallocHooks(void const*, unsigned long) (./out/binpolicy-fuzzer+0x534557)
-        #5 0x4aa7d7 in __asan::Allocator::Allocate(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*, __asan::AllocType, bool) (./out/binpolicy-fuzzer+0x4aa7d7)
-        #6 0x4aa143 in __asan::asan_malloc(unsigned long, __sanitizer::BufferedStackTrace*) (./out/binpolicy-fuzzer+0x4aa143)
-        #7 0x5259cb in malloc (./out/binpolicy-fuzzer+0x5259cb)
-        #8 0x575f8a in policydb_read ./libsepol/src/policydb.c:4356:18
-        #9 0x55a214 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:26:6
-        #10 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #11 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #12 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #13 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #14 0x7fa737b377ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #15 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
+Use the internal logging framework instead of directly writing to
+stdout as it might be undesired to do so within a library.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/private.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ libsepol/src/conditional.c | 30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
 
-diff --git a/libsepol/src/private.h b/libsepol/src/private.h
-index 71287282..6146f59f 100644
---- a/libsepol/src/private.h
-+++ b/libsepol/src/private.h
-@@ -44,7 +44,12 @@
+diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
+index e3ede694..a01350a6 100644
+--- a/libsepol/src/conditional.c
++++ b/libsepol/src/conditional.c
+@@ -25,6 +25,7 @@
+ #include <sepol/policydb/conditional.h>
  
- #define ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
+ #include "private.h"
++#include "debug.h"
  
--#define is_saturated(x) (x == (typeof(x))-1)
-+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-+# define is_saturated(x) (x == (typeof(x))-1 || (x) > (1U << 16))
-+#else
-+# define is_saturated(x) (x == (typeof(x))-1)
-+#endif
-+
- #define zero_or_saturated(x) ((x == 0) || is_saturated(x))
+ /* move all type rules to top of t/f lists to help kernel on evaluation */
+ static void cond_optimize(cond_av_list_t ** l)
+@@ -314,8 +315,7 @@ static int evaluate_cond_node(policydb_t * p, cond_node_t * node)
+ 	if (new_state != node->cur_state) {
+ 		node->cur_state = new_state;
+ 		if (new_state == -1)
+-			printf
+-			    ("expression result was undefined - disabling all rules.\n");
++			WARN(NULL, "expression result was undefined - disabling all rules.\n");
+ 		/* turn the rules on or off */
+ 		for (cur = node->true_list; cur != NULL; cur = cur->next) {
+ 			if (new_state <= 0) {
+@@ -368,8 +368,7 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
+ 		if (ne) {
+ 			ne->next = NULL;
+ 		} else {	/* ne should never be NULL */
+-			printf
+-			    ("Found expr with no bools and only a ! - this should never happen.\n");
++			ERR(NULL, "Found expr with no bools and only a ! - this should never happen.\n");
+ 			return -1;
+ 		}
+ 		/* swap the true and false lists */
+@@ -421,8 +420,7 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
+ 			}
+ 			k = cond_evaluate_expr(p, cn->expr);
+ 			if (k == -1) {
+-				printf
+-				    ("While testing expression, expression result "
++				ERR(NULL, "While testing expression, expression result "
+ 				     "was undefined - this should never happen.\n");
+ 				return -1;
+ 			}
+@@ -635,8 +633,7 @@ static int cond_insertf(avtab_t * a
+ 	 */
+ 	if (k->specified & AVTAB_TYPE) {
+ 		if (avtab_search(&p->te_avtab, k)) {
+-			printf
+-			    ("security: type rule already exists outside of a conditional.");
++			INFO(NULL, "security: type rule already exists outside of a conditional.");
+ 			goto err;
+ 		}
+ 		/*
+@@ -652,8 +649,7 @@ static int cond_insertf(avtab_t * a
+ 			if (node_ptr) {
+ 				if (avtab_search_node_next
+ 				    (node_ptr, k->specified)) {
+-					printf
+-					    ("security: too many conflicting type rules.");
++					ERR(NULL, "security: too many conflicting type rules.");
+ 					goto err;
+ 				}
+ 				found = 0;
+@@ -664,15 +660,13 @@ static int cond_insertf(avtab_t * a
+ 					}
+ 				}
+ 				if (!found) {
+-					printf
+-					    ("security: conflicting type rules.\n");
++					ERR(NULL, "security: conflicting type rules.\n");
+ 					goto err;
+ 				}
+ 			}
+ 		} else {
+ 			if (avtab_search(&p->te_cond_avtab, k)) {
+-				printf
+-				    ("security: conflicting type rules when adding type rule for true.\n");
++				ERR(NULL, "security: conflicting type rules when adding type rule for true.\n");
+ 				goto err;
+ 			}
+ 		}
+@@ -680,7 +674,7 @@ static int cond_insertf(avtab_t * a
  
- #define spaceship_cmp(a, b) (((a) > (b)) - ((a) < (b)))
+ 	node_ptr = avtab_insert_nonunique(&p->te_cond_avtab, k, d);
+ 	if (!node_ptr) {
+-		printf("security: could not insert rule.");
++		ERR(NULL, "security: could not insert rule.");
+ 		goto err;
+ 	}
+ 	node_ptr->parse_context = (void *)1;
+@@ -742,14 +736,12 @@ static int cond_read_av_list(policydb_t * p, void *fp,
+ static int expr_isvalid(policydb_t * p, cond_expr_t * expr)
+ {
+ 	if (expr->expr_type <= 0 || expr->expr_type > COND_LAST) {
+-		printf
+-		    ("security: conditional expressions uses unknown operator.\n");
++		INFO(NULL, "security: conditional expressions uses unknown operator.\n");
+ 		return 0;
+ 	}
+ 
+ 	if (expr->bool > p->p_bools.nprim) {
+-		printf
+-		    ("security: conditional expressions uses unknown bool.\n");
++		INFO(NULL, "security: conditional expressions uses unknown bool.\n");
+ 		return 0;
+ 	}
+ 	return 1;
 -- 
 2.33.0
 

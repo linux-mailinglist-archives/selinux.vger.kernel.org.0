@@ -2,171 +2,150 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9199E4291DB
-	for <lists+selinux@lfdr.de>; Mon, 11 Oct 2021 16:31:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94D80429475
+	for <lists+selinux@lfdr.de>; Mon, 11 Oct 2021 18:26:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241969AbhJKOdt (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 11 Oct 2021 10:33:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43756 "EHLO
+        id S231962AbhJKQ2X (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 11 Oct 2021 12:28:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231716AbhJKOdp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 11 Oct 2021 10:33:45 -0400
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [IPv6:2a0a:51c0:0:12e:520::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90182C061346;
-        Mon, 11 Oct 2021 07:25:41 -0700 (PDT)
-Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
-        (envelope-from <fw@breakpoint.cc>)
-        id 1mZwFF-0001Vl-OB; Mon, 11 Oct 2021 16:25:37 +0200
-From:   Florian Westphal <fw@strlen.de>
+        with ESMTP id S231976AbhJKQ2X (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 11 Oct 2021 12:28:23 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4A14C06161C
+        for <selinux@vger.kernel.org>; Mon, 11 Oct 2021 09:26:22 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id a25so54087074edx.8
+        for <selinux@vger.kernel.org>; Mon, 11 Oct 2021 09:26:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lPfLQeriQeS1w03uhCayH4gvwfaK5ehVrV0cIUrSzXI=;
+        b=Wr0cBpM0zgdUWK81clXZt2RD4WMJJuA1H30fN7Gv+o0jw5twbU/CcY0R7q8p19GxW4
+         rFSR28aSbula/dFvF87AW7VIxM30k9bo3MVRW79DWvalK0YbQ/iYVCu4egSROeMRQJUo
+         /EUS1p1KFaKTi6N7dghC94h8iIBO28HA9MycgMZ4u9Iw6xIM4yLyRDr7jv6R/Uu8TyVk
+         ShT0iguVIJ+ssXqmOLCBEjcHenaGqz3tjuy2obBEHYb8sL9HrOVnui99qDB2vD5jdNeA
+         g24Dntwymb/ilumO+gVNN4h59yN4ZUiiLx3sPlpLOaxnF7yoOTtmbF6HWPZoAcokw/yy
+         a0uQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=lPfLQeriQeS1w03uhCayH4gvwfaK5ehVrV0cIUrSzXI=;
+        b=z4W1MBuyKL6ELT2ye8ckdzSJcvwFhgMuIkjZdLHhqPtpbHqILebkPfhod4L15VD078
+         fgqHCIZWqqm4o6urXr29+npZzF1hP94C+XSinpYdT4ITc8LhDfK28LGnr3L7c6wZLZCh
+         wQTwbsH269eVObtP+IRSIuVeNpuLjhSYy6NlIXG9aKsZjO0UG+U4XHlBKqa/jjH4RbWX
+         5W8vMZBZyqDBZ+xgZ98EoqULaXsVHP9WfMlRL0QAwkNJb8GHn67OZQ5RYwrjtU/Bd1UX
+         C69LKXMbq3nNsicOEgl/4OMKZeTvHwwkY7PQhZeOSBm1u030kp2kjbzDCGlqM7BEOEpa
+         0IBw==
+X-Gm-Message-State: AOAM530be+YK/UBBm2SO02B0b0HqMxFABQ3zZzjQzgbzykCdlIkPKGb6
+        k9CLkxQhy1QeksZKBQlBUngwWkS0LBc=
+X-Google-Smtp-Source: ABdhPJy1/FkePu/HeI7k/pPf85B9OcbiNKzcB0lcb+bu17rrwAfcFKzcuQdHabqqV9v9rkGYYT90cg==
+X-Received: by 2002:aa7:c783:: with SMTP id n3mr42521580eds.122.1633969581329;
+        Mon, 11 Oct 2021 09:26:21 -0700 (PDT)
+Received: from debianHome.localdomain (dynamic-077-010-085-058.77.10.pool.telefonica.de. [77.10.85.58])
+        by smtp.gmail.com with ESMTPSA id a1sm4489514edu.43.2021.10.11.09.26.20
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Oct 2021 09:26:20 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Cc:     paul@paul-moore.com, stephen.smalley.work@gmail.com,
-        eparis@parisplace.org, linux-kernel@vger.kernel.org,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH v2 selinux] selinux: remove unneeded ipv6 hook wrappers
-Date:   Mon, 11 Oct 2021 16:24:16 +0200
-Message-Id: <20211011142416.26798-1-fw@strlen.de>
-X-Mailer: git-send-email 2.32.0
+Subject: [RFC PATCH 00/35] libsepol: add fuzzer for reading binary policies
+Date:   Mon, 11 Oct 2021 18:24:58 +0200
+Message-Id: <20211011162533.53404-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.33.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Netfilter places the protocol number the hook function is getting called
-from in state->pf, so we can use that instead of an extra wrapper.
+Add a libfuzz[1] based fuzzer testing the reading and parsing of binary policy
+files. This fuzzer will be run within the OSS-Fuzz service.
 
-Signed-off-by: Florian Westphal <fw@strlen.de>
----
- v2: add back '#endif /* CONFIG_NETFILTER */' erronously axed in v1.
- Applies to 'next' branch of
- https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git/
+Handle and reject a variety of edge cases causing crashes or resource leaks.
 
- security/selinux/hooks.c | 52 ++++++++++------------------------------
- 1 file changed, 12 insertions(+), 40 deletions(-)
+The fifth patch ("libsepol/fuzz: limit element sizes for fuzzing") needs some
+discussion: To avoid oom reports from the fuzzer, caused by huge memory
+allocations, all identifiers are limited to a length of 2^16 for the fuzzer
+build only.  Probably there should be a limit for the release build too.
+Is there a specification for the binary policy format saying something about
+the maximum length of identifiers?
+After a quick look at the kernel sources (most interesting is str_read()) I
+could not find any limits either.
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index e7ebd45ca345..831b857d5dd7 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -5746,22 +5746,13 @@ static unsigned int selinux_ip_forward(struct sk_buff *skb,
- 	return NF_ACCEPT;
- }
- 
--static unsigned int selinux_ipv4_forward(void *priv,
-+static unsigned int selinux_hook_forward(void *priv,
- 					 struct sk_buff *skb,
- 					 const struct nf_hook_state *state)
- {
--	return selinux_ip_forward(skb, state->in, PF_INET);
-+	return selinux_ip_forward(skb, state->in, state->pf);
- }
- 
--#if IS_ENABLED(CONFIG_IPV6)
--static unsigned int selinux_ipv6_forward(void *priv,
--					 struct sk_buff *skb,
--					 const struct nf_hook_state *state)
--{
--	return selinux_ip_forward(skb, state->in, PF_INET6);
--}
--#endif	/* IPV6 */
--
- static unsigned int selinux_ip_output(struct sk_buff *skb,
- 				      u16 family)
- {
-@@ -5804,21 +5795,12 @@ static unsigned int selinux_ip_output(struct sk_buff *skb,
- 	return NF_ACCEPT;
- }
- 
--static unsigned int selinux_ipv4_output(void *priv,
--					struct sk_buff *skb,
--					const struct nf_hook_state *state)
--{
--	return selinux_ip_output(skb, PF_INET);
--}
--
--#if IS_ENABLED(CONFIG_IPV6)
--static unsigned int selinux_ipv6_output(void *priv,
-+static unsigned int selinux_hook_output(void *priv,
- 					struct sk_buff *skb,
- 					const struct nf_hook_state *state)
- {
--	return selinux_ip_output(skb, PF_INET6);
-+	return selinux_ip_output(skb, state->pf);
- }
--#endif	/* IPV6 */
- 
- static unsigned int selinux_ip_postroute_compat(struct sk_buff *skb,
- 						int ifindex,
-@@ -5994,22 +5976,12 @@ static unsigned int selinux_ip_postroute(struct sk_buff *skb,
- 	return NF_ACCEPT;
- }
- 
--static unsigned int selinux_ipv4_postroute(void *priv,
-+static unsigned int selinux_hook_postroute(void *priv,
- 					   struct sk_buff *skb,
- 					   const struct nf_hook_state *state)
- {
--	return selinux_ip_postroute(skb, state->out, PF_INET);
-+	return selinux_ip_postroute(skb, state->out, state->pf);
- }
--
--#if IS_ENABLED(CONFIG_IPV6)
--static unsigned int selinux_ipv6_postroute(void *priv,
--					   struct sk_buff *skb,
--					   const struct nf_hook_state *state)
--{
--	return selinux_ip_postroute(skb, state->out, PF_INET6);
--}
--#endif	/* IPV6 */
--
- #endif	/* CONFIG_NETFILTER */
- 
- static int selinux_netlink_send(struct sock *sk, struct sk_buff *skb)
-@@ -7470,38 +7442,38 @@ DEFINE_LSM(selinux) = {
- 
- static const struct nf_hook_ops selinux_nf_ops[] = {
- 	{
--		.hook =		selinux_ipv4_postroute,
-+		.hook =		selinux_hook_postroute,
- 		.pf =		NFPROTO_IPV4,
- 		.hooknum =	NF_INET_POST_ROUTING,
- 		.priority =	NF_IP_PRI_SELINUX_LAST,
- 	},
- 	{
--		.hook =		selinux_ipv4_forward,
-+		.hook =		selinux_hook_forward,
- 		.pf =		NFPROTO_IPV4,
- 		.hooknum =	NF_INET_FORWARD,
- 		.priority =	NF_IP_PRI_SELINUX_FIRST,
- 	},
- 	{
--		.hook =		selinux_ipv4_output,
-+		.hook =		selinux_hook_output,
- 		.pf =		NFPROTO_IPV4,
- 		.hooknum =	NF_INET_LOCAL_OUT,
- 		.priority =	NF_IP_PRI_SELINUX_FIRST,
- 	},
- #if IS_ENABLED(CONFIG_IPV6)
- 	{
--		.hook =		selinux_ipv6_postroute,
-+		.hook =		selinux_hook_postroute,
- 		.pf =		NFPROTO_IPV6,
- 		.hooknum =	NF_INET_POST_ROUTING,
- 		.priority =	NF_IP6_PRI_SELINUX_LAST,
- 	},
- 	{
--		.hook =		selinux_ipv6_forward,
-+		.hook =		selinux_hook_forward,
- 		.pf =		NFPROTO_IPV6,
- 		.hooknum =	NF_INET_FORWARD,
- 		.priority =	NF_IP6_PRI_SELINUX_FIRST,
- 	},
- 	{
--		.hook =		selinux_ipv6_output,
-+		.hook =		selinux_hook_output,
- 		.pf =		NFPROTO_IPV6,
- 		.hooknum =	NF_INET_LOCAL_OUT,
- 		.priority =	NF_IP6_PRI_SELINUX_FIRST,
+[1]: https://llvm.org/docs/LibFuzzer.html
+
+Christian Göttsche (35):
+  cifuzz: enable report-unreproducible-crashes
+  cifuzz: use the default runtime of 600 seconds
+  libsepol/fuzz: silence secilc-fuzzer
+  libsepol: add libfuzz based fuzzer for reading binary policies
+  libsepol/fuzz: limit element sizes for fuzzing
+  libsepol: use logging framework in conditional.c
+  libsepol: use logging framework in ebitmap.c
+  libsepol: use mallocarray wrapper to avoid overflows
+  libsepol: use reallocarray wrapper to avoid overflows
+  libsepol: add checks for read sizes
+  libsepol: enforce avtab item limit
+  libsepol: clean memory on conditional read failure
+  libsepol: validate MLS levels
+  libsepol: reject invalid fsuse types
+  libsepol: reject invalid default targets
+  libsepol: validate expanded user range and level
+  libsepol: validate types
+  libsepol: use size_t for indexes in strs helpers
+  libsepol: reject abnormal huge sid ids
+  libsepol: do not crash on class gaps
+  libsepol: do not crash on user gaps
+  libsepol: validate permission count of classes
+  libsepol: resolve log message mismatch
+  libsepol: zero member before potential dereference
+  libsepol: validate avtab types
+  libsepol: validate constraint expression operators and attributes
+  libsepol: validate type of avtab type rules
+  libsepol: validate ocontexts
+  libsepol: validate genfs contexts
+  libsepol: validate permissive types
+  libsepol: validate policy properties
+  libsepol: do not underflow on short format arguments
+  libsepol: validate categories
+  libsepol: use correct size for initial string list
+  libsepol: do not create a string list with initial size zero
+
+ .github/workflows/cifuzz.yml     |   3 +-
+ libsepol/fuzz/binpolicy-fuzzer.c |  63 +++++++
+ libsepol/fuzz/policy.bin         | Bin 0 -> 1552 bytes
+ libsepol/fuzz/secilc-fuzzer.c    |   5 +
+ libsepol/src/Makefile            |   6 +
+ libsepol/src/avtab.c             |   6 +
+ libsepol/src/conditional.c       |  36 ++--
+ libsepol/src/ebitmap.c           |  27 ++-
+ libsepol/src/expand.c            |   4 +-
+ libsepol/src/hashtab.c           |   4 +-
+ libsepol/src/kernel_to_cil.c     |  10 ++
+ libsepol/src/kernel_to_common.c  |  23 ++-
+ libsepol/src/kernel_to_common.h  |   4 +-
+ libsepol/src/kernel_to_conf.c    |  13 +-
+ libsepol/src/link.c              |   3 +-
+ libsepol/src/module.c            |   4 +-
+ libsepol/src/module_to_cil.c     |  13 +-
+ libsepol/src/optimize.c          |  11 +-
+ libsepol/src/policydb.c          |  68 +++++++-
+ libsepol/src/policydb_validate.c | 274 +++++++++++++++++++++++++++++--
+ libsepol/src/private.h           |  27 ++-
+ libsepol/src/services.c          |  12 +-
+ libsepol/src/sidtab.c            |   3 +-
+ libsepol/src/user_record.c       |   8 +-
+ libsepol/src/users.c             |  12 +-
+ libsepol/src/util.c              |  11 +-
+ libsepol/src/write.c             |   2 +-
+ scripts/oss-fuzz.sh              |  19 ++-
+ 28 files changed, 556 insertions(+), 115 deletions(-)
+ create mode 100644 libsepol/fuzz/binpolicy-fuzzer.c
+ create mode 100644 libsepol/fuzz/policy.bin
+
 -- 
-2.32.0
+2.33.0
 

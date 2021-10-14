@@ -2,117 +2,120 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A76642DB2E
-	for <lists+selinux@lfdr.de>; Thu, 14 Oct 2021 16:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C0C42DC1F
+	for <lists+selinux@lfdr.de>; Thu, 14 Oct 2021 16:53:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231388AbhJNONI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 14 Oct 2021 10:13:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35872 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230177AbhJNONI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 14 Oct 2021 10:13:08 -0400
-Received: from mail-oi1-x229.google.com (mail-oi1-x229.google.com [IPv6:2607:f8b0:4864:20::229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B2D3C061570
-        for <selinux@vger.kernel.org>; Thu, 14 Oct 2021 07:11:03 -0700 (PDT)
-Received: by mail-oi1-x229.google.com with SMTP id q129so8707442oib.0
-        for <selinux@vger.kernel.org>; Thu, 14 Oct 2021 07:11:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=GAPwSrMlgstEqnt4oWmCp73phbCZIxt636RYBd96XCs=;
-        b=UlUGRlgxdl9UfE/CcaDPUp+946caiKvNqM30exkpm5LMoUKMBMtR2n4aOzVSDM9AL2
-         iO0TTigP+ggNTlcaqJ72gpcgv6HbSWhY/8py+Q0uAOmJ4UtSho+e4kKeEfc7VawjHBHm
-         /FCG7TwTSwQWJWWDW3n3tVp2HDVcLkAd4WkLsDJsbkumg0nbzli+20U0Wbjd+SW3ScJY
-         2VWWjF8amChH4F9cXMx81+weHnttYRSPWcQDSZtgKURnTcmNxkcvFIRleqywXZgRNDmq
-         /AG81rGCHLEWMyl7Ow+wL4slo/xtiNyffThqKtAYlRnXjm0NGvSFMuYm/B0ueUWzfHM1
-         3oEw==
+        id S231784AbhJNOzl (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 14 Oct 2021 10:55:41 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:55256 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231938AbhJNOzk (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 14 Oct 2021 10:55:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1634223215;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=Pc/PxkTJEkG61Iip5Le2urOnh92JCs0AOkQZTlXxBPQ=;
+        b=aB9ypTJNCSkByDPTYMv8q2Pf8pj10CNEo0C5IOXEw2tJh5ZY1FN8u+28R5IWgEx/f/uX1A
+        xfZOu1XEoNjeZnT70Coo43dtZ4hzMMy6VXOBPDqTu3Ge35Sio47TSGDDd+tYdtzA1f6vks
+        slDeh7+jGYDeMIKxXuRP4vffkrxOew4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-420-mdKTL2NANsKbcI8fgBkAMA-1; Thu, 14 Oct 2021 10:53:32 -0400
+X-MC-Unique: mdKTL2NANsKbcI8fgBkAMA-1
+Received: by mail-wr1-f71.google.com with SMTP id k2-20020adfc702000000b0016006b2da9bso4775334wrg.1
+        for <selinux@vger.kernel.org>; Thu, 14 Oct 2021 07:53:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=GAPwSrMlgstEqnt4oWmCp73phbCZIxt636RYBd96XCs=;
-        b=QWsIra74mYCPoqTg0fsO9C/rGmxYwIr00K42EKi7M0Pam0SpUL+jD/I4z/XTEEDTQ0
-         lAPfUsZgOKYHXm+FmfYCe59puJIOPmJz5ldCryYJIYTcLKbNAz55UfXCgzwjIxP7rbZ7
-         92RFAbD0C8JSuDBjkL1j5S5VbpTeJopO2JbevvcXz+i2a05YzvDQdNesJmXGeinWAHYq
-         6fUvQWplKPqZVB9L4D3P+6NZPebjSJeHHuGukhOKJCoMJMg0nEMTn4KyDlxBoILmfMJL
-         xLE7cEL0K4CuJ5lene/5j0D/0qefTVufI0Jzhp6NOuMZWdvpJmu2T8iTXfHBGOPB6OdX
-         pa5w==
-X-Gm-Message-State: AOAM531P6j/0VT9dlK8IGVi2Kg7hlXcvqC29/yIfLoTGGgd5PmpJQLR5
-        BYB0Wg8v9Wm9yp0XsbbWH50enXbOX9u9QIm/1f4=
-X-Google-Smtp-Source: ABdhPJzlrk4LNsYq/bijP7sxHUEIdQ6oyonwKrxqjjbgi5FLSafMTo++F6lDAm0emdyLvtxWfAaJxVMuLmx18aNK43Y=
-X-Received: by 2002:a05:6808:545:: with SMTP id i5mr4132683oig.16.1634220662867;
- Thu, 14 Oct 2021 07:11:02 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Pc/PxkTJEkG61Iip5Le2urOnh92JCs0AOkQZTlXxBPQ=;
+        b=yawpFYOP2ve4mOO2RsWX8Tis5Q7tzpVTrQYy+c4CBgu2KoKm/J7U+MbBSU5dpEaMdI
+         USFcLo40xMrcwKnaCRFawL3nqG2Mo+0Ix+MBklOcbmVEriVo1ie40hs83LWTsKg6zTzX
+         G5JRTuW2Mk0Kvo4nzNCyPNIKwX+ZvODlYZniVJKZBVNQnc6MfslUrAsU8WmdindjAtiR
+         6c5HutbBvCv0hPQ1DA8SP4bqiQY1fKxMgVibqLdKPVtgNSBntZD6kNP4Gqdr5+upd25U
+         pQO289/mXyBABtGTYawpTq5sfaYpAfZ2dC334weYH6AhPjOktaBpnzlW+sam4R8XjM41
+         sHtA==
+X-Gm-Message-State: AOAM531Rjy3JbDBjMomE/j2w2U7ibjKDH1bTWvT8YoYMH/WzE7zH4DzQ
+        3ggzqGKFu14/UaRXEwyHS6wC30dUGwkx3j27f8ajRmJKLeAHNHqsQefgFq9bVh2AhoAa+WnYHpt
+        T0xQxOMF8Uppe2O/UjbG+r1nOXEDPUVW29SQljjIGHfp1QcPBkbvYyxsRuvavc9QYMosSYQ==
+X-Received: by 2002:adf:a194:: with SMTP id u20mr7304620wru.275.1634223201224;
+        Thu, 14 Oct 2021 07:53:21 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyM5OSG5x2DHBDExX4H34pQZMDItOMLRRVDZCOVZyVzM0wgE/cCulydDW2OT4jAmYsVqd82ZQ==
+X-Received: by 2002:adf:a194:: with SMTP id u20mr7304574wru.275.1634223200887;
+        Thu, 14 Oct 2021 07:53:20 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id k17sm2485489wrc.93.2021.10.14.07.53.20
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 Oct 2021 07:53:20 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH userspace v2 0/6] Parallel setfiles/restorecon
+Date:   Thu, 14 Oct 2021 16:53:13 +0200
+Message-Id: <20211014145319.798740-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20211011162533.53404-1-cgzones@googlemail.com> <20211011162533.53404-30-cgzones@googlemail.com>
-In-Reply-To: <20211011162533.53404-30-cgzones@googlemail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Thu, 14 Oct 2021 10:10:52 -0400
-Message-ID: <CAP+JOzSkFNDjOMDWgP+xeJPS=Q5Xzwx=6wrYqx2_n0vLPA4dPg@mail.gmail.com>
-Subject: Re: [RFC PATCH 29/35] libsepol: validate genfs contexts
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Oct 11, 2021 at 12:41 PM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> ---
->  libsepol/src/policydb_validate.c | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
->
-> diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_val=
-idate.c
-> index 5c06e6f4..63fd935c 100644
-> --- a/libsepol/src/policydb_validate.c
-> +++ b/libsepol/src/policydb_validate.c
-> @@ -712,6 +712,25 @@ bad:
->         return -1;
->  }
->
-> +static int validate_genfs(sepol_handle_t *handle, policydb_t *p, validat=
-e_t flavors[])
-> +{
-> +       genfs_t *genfs;
-> +       ocontext_t *octx;
-> +
-> +       for (genfs =3D p->genfs; genfs; genfs =3D genfs->next) {
-> +               for (octx =3D genfs->head; octx; octx =3D octx->next) {
-> +                       if (validate_context(&octx->context[0], flavors, =
-p->mls))
-> +                               goto bad;
-> +               }
-> +       }
-> +
-> +       return 0;
-> +
-> +bad:
-> +       ERR(handle, "Invalid genfs");
-> +       return -1;
-> +}
-> +
->  /*
->   * Functions to validate a module policydb
->   */
-> @@ -898,6 +917,8 @@ int validate_policydb(sepol_handle_t *handle, policyd=
-b_t *p)
->                         goto bad;
->                 if (validate_ocontexts(handle, p, flavors))
->                         goto bad;
-> +               if (validate_genfs(handle, p, flavors))
-> +                       goto bad;
->                 if (p->policyvers >=3D POLICYDB_VERSION_FILENAME_TRANS)
->                         if (validate_filename_trans_hashtab(handle, p->fi=
-lename_trans, flavors))
->                                 goto bad;
-> --
-> 2.33.0
->
+This series adds basic support for parallel relabeling to the libselinux
+API and the setfiles/restorecon CLI tools. It turns out that doing the
+relabeling in parallel can significantly reduce the time even with a
+relatively simple approach.
 
-Like ocontexts, genfs rules can be in base modules.
-Jim
+The first patch is a small cleanup that was found along the way and can
+be applied independently. Patches 2-4 are small incremental changes that
+make the internal selinux_restorecon functions more thread-safe (I kept
+them separate for ease of of review, but maybe they should be rather
+folded into the netx patch...). Patch 5 then completes the parallel
+relabeling implementation at libselinux level and adds a new function
+to the API that allows to make use of it. Finally, patch 6 adds parallel
+relabeling support to he setfiles/restorecon tools.
+
+The relevant man pages are also updated to reflect the new
+functionality.
+
+The patch descriptions contain more details, namely the last patch has
+also some benchmark numbers.
+
+Changes v1->v2:
+- make selinux_log() synchronized instead of introducing selinux_log_sync()
+- fix -Wcomma warning
+- update the swig files as well
+- bump new symbol version to LIBSELINUX_3.3 (this may need further update
+  depending on when this gets merged)
+
+Ondrej Mosnacek (6):
+  selinux_restorecon: simplify fl_head allocation by using calloc()
+  selinux_restorecon: protect file_spec list with a mutex
+  libselinux: make selinux_log() thread-safe
+  selinux_restorecon: add a global mutex to synchronize progress output
+  selinux_restorecon: introduce selinux_restorecon_parallel(3)
+  setfiles/restorecon: support parallel relabeling
+
+ libselinux/include/selinux/restorecon.h       |  14 +
+ libselinux/man/man3/selinux_restorecon.3      |  29 ++
+ .../man/man3/selinux_restorecon_parallel.3    |   1 +
+ libselinux/src/callbacks.c                    |   8 +-
+ libselinux/src/callbacks.h                    |  13 +-
+ libselinux/src/libselinux.map                 |   5 +
+ libselinux/src/selinux_internal.h             |  14 +
+ libselinux/src/selinux_restorecon.c           | 466 ++++++++++++------
+ libselinux/src/selinuxswig_python.i           |   6 +-
+ libselinux/src/selinuxswig_python_exception.i |   8 +
+ policycoreutils/setfiles/Makefile             |   2 +-
+ policycoreutils/setfiles/restore.c            |   7 +-
+ policycoreutils/setfiles/restore.h            |   2 +-
+ policycoreutils/setfiles/restorecon.8         |   9 +
+ policycoreutils/setfiles/setfiles.8           |   9 +
+ policycoreutils/setfiles/setfiles.c           |  28 +-
+ 16 files changed, 444 insertions(+), 177 deletions(-)
+ create mode 100644 libselinux/man/man3/selinux_restorecon_parallel.3
+
+-- 
+2.31.1
+

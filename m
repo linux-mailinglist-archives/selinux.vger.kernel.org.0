@@ -2,94 +2,65 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B08264304DE
-	for <lists+selinux@lfdr.de>; Sat, 16 Oct 2021 22:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00343430B3D
+	for <lists+selinux@lfdr.de>; Sun, 17 Oct 2021 19:32:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244513AbhJPUKs convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Sat, 16 Oct 2021 16:10:48 -0400
-Received: from mx1.polytechnique.org ([129.104.30.34]:54658 "EHLO
-        mx1.polytechnique.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232786AbhJPUKr (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 16 Oct 2021 16:10:47 -0400
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by ssl.polytechnique.org (Postfix) with ESMTPSA id 6EDA25648E4
-        for <selinux@vger.kernel.org>; Sat, 16 Oct 2021 22:08:36 +0200 (CEST)
-Received: by mail-pj1-f45.google.com with SMTP id ls18-20020a17090b351200b001a00250584aso11756365pjb.4
-        for <selinux@vger.kernel.org>; Sat, 16 Oct 2021 13:08:36 -0700 (PDT)
-X-Gm-Message-State: AOAM533w/htveg1pq9vX2e9d/HgFEbtX/RuSx/q9RTLk3YT9B5DA5tnr
-        abORNcnDwupVH0vwHRAQQQ73Rym8Ew4nMRYtgmE=
-X-Google-Smtp-Source: ABdhPJxXLHEbr7Pe0TJs/KrPGw8lEO7xszKtAzlhG/mTqI2mKfr1dwSLD3tng8yvDkmepm1D9Db7kYPeLtCCr0Jb6gE=
-X-Received: by 2002:a17:90b:3a85:: with SMTP id om5mr22908139pjb.115.1634414915023;
- Sat, 16 Oct 2021 13:08:35 -0700 (PDT)
+        id S1344421AbhJQReW (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 17 Oct 2021 13:34:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51002 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1344366AbhJQReW (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 17 Oct 2021 13:34:22 -0400
+Received: from mail-ua1-x941.google.com (mail-ua1-x941.google.com [IPv6:2607:f8b0:4864:20::941])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1C0BC06161C
+        for <selinux@vger.kernel.org>; Sun, 17 Oct 2021 10:32:11 -0700 (PDT)
+Received: by mail-ua1-x941.google.com with SMTP id f3so3572458uap.6
+        for <selinux@vger.kernel.org>; Sun, 17 Oct 2021 10:32:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=jaCZSSAkbAMREaY/hqrdytvcXWwYWJ58MCP7XcU6bpM=;
+        b=EIZCwUKIraxay0eMA3LQk3dDjs+HGDnwuqUBHnMZYhsM6tyVoe0UhEnOQn3y2qtehG
+         UiuDUXHFPCGbm5tgWhbfuutxz38DiXf3IiZR9i2ihePuLpmYX+yhc1/ev/mmGj2ZUDO1
+         YgT+wRCJqK7i7iU6DSLXVg71x/3TkEdP0asiCtaZMwnIuSNo87d8JHf/cclfYIk3+lRf
+         Y9J+Qpuz5N19XKMQ/bZp1zI6gHioFoYmoNaBNvjZ5CeiWRCPw0HYAqUYllkwgPdWduCP
+         yFhrf5ftDYKxIgqArcghIF2NXHYe1YK7gSGR+8+wC+KJC4HV/HwrgpMPFqkTG/Z41sJd
+         bXOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=jaCZSSAkbAMREaY/hqrdytvcXWwYWJ58MCP7XcU6bpM=;
+        b=ptiTqvmTyu5L+YiRwLq8mEGWiYlzjhR6xsRbqg1vps85gIKbtgDi5Ore3rP5fenD2O
+         JQWjslMwJjGT3DwZ4e60oaIeXP2qc+Z6/pVW4qb6jCDL3wbBJGEjbCd1Jm26Yt5Wh4JV
+         4E+sCjuvebCcOqf6nKoC5QruQ7Siy5rJy2YdeOkAL0ZrvguyWA5HkWbKZ55tcMRQucpe
+         ls/U8FxmhNoDHJXMq9IVibOBcKco+4tQqh8XicPeA4P/ERNSnaefStZXWZOjDS+36zgZ
+         8OhAjIv7zh+3JZd1yCDTf5Gdp7IRT28rA74PSdwfF9u1Ml0DU6Fb2+piFp2KVQ679Xuh
+         xMOg==
+X-Gm-Message-State: AOAM5318rcErqFnGuVQv71jPLEhLT2Ku8j/eJEHEvse+tNZUxagcTpHP
+        RvCahPM4WzdjTD1T+SXpJAALwPGZLy9rMz2fJ8Q=
+X-Google-Smtp-Source: ABdhPJxrnNek1aW28iD8UQugJlG5xmo6c1gN/8G0XNf7QxoT775h8dgko1TLWjKDeFVGaN5dmcSVIqk27+voHCgcsxo=
+X-Received: by 2002:ab0:6089:: with SMTP id i9mr22018837ual.91.1634491931078;
+ Sun, 17 Oct 2021 10:32:11 -0700 (PDT)
 MIME-Version: 1.0
-References: <20211013125358.15534-1-cgzones@googlemail.com> <20211013125358.15534-3-cgzones@googlemail.com>
-In-Reply-To: <20211013125358.15534-3-cgzones@googlemail.com>
-From:   Nicolas Iooss <nicolas.iooss@m4x.org>
-Date:   Sat, 16 Oct 2021 22:08:23 +0200
-X-Gmail-Original-Message-ID: <CAJfZ7=mgB=8YYJ301fFKwYtG-yhvc6pQFRAbNn4Dn7sbZFq+gg@mail.gmail.com>
-Message-ID: <CAJfZ7=mgB=8YYJ301fFKwYtG-yhvc6pQFRAbNn4Dn7sbZFq+gg@mail.gmail.com>
-Subject: Re: [PATCH 3/3] libsemanage/tests: free memory
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+Received: by 2002:a59:dd88:0:b0:238:2fcb:84b with HTTP; Sun, 17 Oct 2021
+ 10:32:10 -0700 (PDT)
+Reply-To: lydiawright836@gmail.com
+From:   LYDIA WRIGHT <jacobbarney6@gmail.com>
+Date:   Sun, 17 Oct 2021 20:32:10 +0300
+Message-ID: <CAOPi97ZiGo=BD228u--peE5uEJ-2-vRjmM96N8D7w-X7thV9UA@mail.gmail.com>
+Subject: Greetings to You
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-AV-Checked: ClamAV using ClamSMTP at svoboda.polytechnique.org (Sat Oct 16 22:08:37 2021 +0200 (CEST))
-X-Spam-Flag: No, tests=bogofilter, spamicity=0.013640, queueID=172405648FA
-X-Org-Mail: nicolas.iooss.2010@polytechnique.org
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Oct 13, 2021 at 2:54 PM Christian Göttsche
-<cgzones@googlemail.com> wrote:
->
-> Free all memory in test cases, reported by LeakSanitizer.
->
-> Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-> ---
->  libsemanage/tests/test_bool.c      | 33 +++++++++++++++++++++++++++++-
->  libsemanage/tests/test_fcontext.c  | 31 +++++++++++++++++++++++++++-
->  libsemanage/tests/test_ibendport.c | 13 ++++++++++++
->  libsemanage/tests/test_iface.c     | 24 ++++++++++++++++++++++
->  libsemanage/tests/test_node.c      | 29 ++++++++++++++++++++++++++
->  libsemanage/tests/test_other.c     |  6 ++++++
->  libsemanage/tests/test_port.c      | 24 ++++++++++++++++++++++
->  libsemanage/tests/test_user.c      | 17 +++++++++++++++
->  libsemanage/tests/utilities.c      |  5 ++++-
->  libsemanage/tests/utilities.h      |  2 ++
->  10 files changed, 181 insertions(+), 3 deletions(-)
-
-The diff was very large, so I posted 3 comments on GitHub:
-https://github.com/SELinuxProject/selinux/pull/321/commits/322243ee7d34f1b3e23c04c75a6b5c4f597092f7#r730306247
-and https://github.com/SELinuxProject/selinux/pull/321/commits/322243ee7d34f1b3e23c04c75a6b5c4f597092f7#r730306949
-and https://github.com/SELinuxProject/selinux/pull/321/commits/322243ee7d34f1b3e23c04c75a6b5c4f597092f7#r730307266
-, about the same pattern which causes (in my humble opinion) issues.
-The pattern is in:
-
-CU_ASSERT(semanage_ibendport_query_local(sh, key,
-&ibendport_local) >= 0);
-CU_ASSERT_PTR_NOT_NULL_FATAL(ibendport_local);
-CU_ASSERT(semanage_ibendport_del_local(sh, key) >= 0);
-CU_ASSERT(semanage_ibendport_query_local(sh, key,
-&ibendport_local) < 0);
-
-/* cleanup */
-semanage_ibendport_key_free(key);
-semanage_ibendport_free(ibendport_local);
-
-The last ..._free occurs after a second call to
-semanage_ibendport_query_local. It seems more appropriate to free the
-memory right after CU_ASSERT_PTR_NOT_NULL_FATAL(ibendport_local),
-before the second semanage_ibendport_query_local. So if an error
-happens, there is no memory issue too.
-
-This pattern is similar when testing boolean, fiface, node, port, user
-and context objects.
-
-What do you think?
-
-Thanks,
-Nicolas
-
+Greetings dear,
+I'm a cancer patient and I intend to donate funds to a charity in your
+country with your help... Please respond for additional information
+here.=F0=9F=91=87 (lydiawright836@gmail.com), if you are interested.
+regards
+Mrs. Lydia A. Wright

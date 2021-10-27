@@ -2,183 +2,78 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A2C8C43BB91
-	for <lists+selinux@lfdr.de>; Tue, 26 Oct 2021 22:30:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBFC143C081
+	for <lists+selinux@lfdr.de>; Wed, 27 Oct 2021 05:06:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239184AbhJZUcw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 26 Oct 2021 16:32:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54590 "EHLO
+        id S238872AbhJ0DIp (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 26 Oct 2021 23:08:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239182AbhJZUcv (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 26 Oct 2021 16:32:51 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DC98C061348
-        for <selinux@vger.kernel.org>; Tue, 26 Oct 2021 13:30:27 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id w12so1292485edd.11
-        for <selinux@vger.kernel.org>; Tue, 26 Oct 2021 13:30:27 -0700 (PDT)
+        with ESMTP id S237627AbhJ0DIp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 26 Oct 2021 23:08:45 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D7EC061570
+        for <selinux@vger.kernel.org>; Tue, 26 Oct 2021 20:06:20 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id y12so4654100eda.4
+        for <selinux@vger.kernel.org>; Tue, 26 Oct 2021 20:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=QxDBfmjXP4YqwxsO+6iS7FY8iQGJLFVCJVXK+8EOsBg=;
-        b=RKFwvRvwD0sHEgLp5/JP2Pn/bmgSvqpkFt0UOxL7CSXOeehWPX/6PBaZ5st+hyD8CQ
-         YuJX4wga4jqjTh0ckLFk1zznRzP3zcIk55trAAWCIHVo5vrzNnXjsubCvSNd1scpo3jJ
-         klim90/2yWHehcKvdCTKyVNSbxyc2DzCmDWE8aPlX0YTZXO/vHDWHblkU/0gkKJgiRqf
-         lZ/Jip+7SB+ny/F4NL57MfbAl+lZvKtKnb66J5bpR+me02K2gS9G0/+J49YxAS0Ftmsj
-         CLlkxwKPV/PA5Qn2JIkrGvLI6WUYhIHWlLLzTSvUmcoawnSBy2mOpKIlNAaboGSHdrk+
-         YFxA==
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=MxmrGe/li/j+iXpZ+ug9zzGBRFHofLWMfgxiNMIGuFeBvpI/V+Vv+aYcJmXI5HIbW0
+         pzRNJ3W374E+TYmfvQBYwMjcWlKS3AE/AlYKKHJ6HFuXURf4byVN95itXZJEB0r6+uKn
+         nXZjdLlkwHRz/zU4lSul3Yon5S7qaegfYUiMmQalh8GZeecZJMPLWsH2ZiS2a/7zLFV4
+         mauW/JxVmekIX3mTA1adxcFBGXSorl5sb6LQ0HUT+kYAEEU3eXsTW+sm07lBJQ8lx37t
+         W/DisDxXskosksQJfZpXpW2v+zPLWKPZiPNi1ziWw7iIreUXDoEQ4L3jND5FGwexB02w
+         1ymA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=QxDBfmjXP4YqwxsO+6iS7FY8iQGJLFVCJVXK+8EOsBg=;
-        b=VYavvO+AiBkiv+U1FG8MCEp1s0xxI1lZToHoWLr3duCaaHAFfOL+a0gdjZgSmRiSGD
-         x9pVkvGm+CLAH0vHOfgOyOvZnypL71vdQLG2hTxD+/Q3HMljgJDSG6kaMhL79B+OAt/O
-         R03L/GZ41KIitTBxYtWhlQMWK6elUsNzYTo93hmPK81D73rzfDm3hfouuSr3kTd/N+yK
-         L9ff95GUH6yemCo5Nfd9I+aeV87ozNETOTEMZnVdEcUfbP7X+6BhhtJHq0r8SBH0C4Dg
-         dt5WJ1Q+6h8exyI9MZhhcLzRvjJIKG3e539FjnjGNa9dY4w/hiIRSSGG8XmLBiLwZ1nt
-         8/3Q==
-X-Gm-Message-State: AOAM533tER1SJosvPeO+p9Qzujxmq6qk9gmVPsiTwA4OJ1WbgJqR2cYy
-        TVRlWjPEjMzaD3HSG91MAyvkBhZ56UE2Hlz77toi
-X-Google-Smtp-Source: ABdhPJyprHJsbis7NLS+TOyUm7gG4e8ssfPeoqPQw6DPFNzjiQmJ8qsFB3iOWeedSscDOBDWRoDKcJtiBcZ6xI93uR0=
-X-Received: by 2002:a05:6402:5112:: with SMTP id m18mr38150360edd.101.1635280225664;
- Tue, 26 Oct 2021 13:30:25 -0700 (PDT)
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=+OhYyTKGmAf5Y61RBhMkXMlQv+hOjswu4u5NSWPSjMI=;
+        b=LDqXZp3c2qURiwmvRtQNu8yTPQAWjhw5BVY4wQv7cbEifFn/qv2g/eeROumZp1RHfe
+         JkASufLH0kPGK79sIknN+QqAddwPvU5kRwItYeGoPnEthSbJE8W0NFL5IqAaRuiQ0+JN
+         0mVssqpRHixLFz121+8kt1o1ojmD9u8PXnr0p7Tzugnt1lcTbDuLXOlbrqppf3DHg+rY
+         AJFriRmPxEnNWr8aubNKIdHLnRkz8amoflKizm2jjbGTdUZ/kxKQOdfizoLIOG8lXbQk
+         3fJ3oHiV2ulJBy03rhVGjUvBrWKAuwPdM0UNHuLq/8jNi8xV/S+bxM8+OBYGNe3LxMbe
+         Tg4Q==
+X-Gm-Message-State: AOAM5335AgmwsWUMlA//tLJHS4U5xZ/pOitWdaA+iqWXEyci4DQw8GgF
+        n7JBjXtMY8nQ7WgjCS08XCY4j3PRSaO/4LmPmYo=
+X-Google-Smtp-Source: ABdhPJwwQfIbGCDNkYZAYQhMba+msT/NliNC0uHXXoAc+662Q856trt0pJQxS1OtxZbThYHWH36V7MEW2ELkJKIgabs=
+X-Received: by 2002:a17:906:f6c8:: with SMTP id jo8mr6917951ejb.305.1635303978777;
+ Tue, 26 Oct 2021 20:06:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <cover.1634884487.git.lucien.xin@gmail.com> <53026dedd66beeaf18a4570437c4e6c9e760bb90.1634884487.git.lucien.xin@gmail.com>
- <CAFqZXNs89yGcoXumNwavLRQpYutfnLY-SM2qrHbvpjJxVtiniw@mail.gmail.com>
- <CADvbK_djVKxjfRaLS0EZRY2mkzWXTMnwvbe-b7cK-T3BR8jzKQ@mail.gmail.com>
- <CAFqZXNsnEwPcEXB-4O983bxGj5BfZVMB6sor7nZVkT-=uiZ2mw@mail.gmail.com>
- <CADvbK_eE9VhB2cWzHSk_LNm_VemEt9vm=FMMVYzo5eVH=zEhKw@mail.gmail.com>
- <CAHC9VhTfVmcLOG3NfgQ3Tjpe769XzPntG24fejzSCvnZt_XZ9A@mail.gmail.com> <CADvbK_dwLCOvS8YzFXcXoDF6F69_sc7voPbxn5Ov4ygBR_5FXw@mail.gmail.com>
-In-Reply-To: <CADvbK_dwLCOvS8YzFXcXoDF6F69_sc7voPbxn5Ov4ygBR_5FXw@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 26 Oct 2021 16:30:14 -0400
-Message-ID: <CAHC9VhREfztHQ8mqA_WM6NF=jKf0fTFTSRp_D5XhOVxckckwzw@mail.gmail.com>
-Subject: Re: [PATCH net 4/4] security: implement sctp_assoc_established hook
- in selinux
-To:     Xin Long <lucien.xin@gmail.com>
-Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        James Morris <jmorris@namei.org>,
-        Linux Security Module list 
-        <linux-security-module@vger.kernel.org>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Richard Haines <richard_c_haines@btinternet.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        "linux-sctp @ vger . kernel . org" <linux-sctp@vger.kernel.org>,
-        network dev <netdev@vger.kernel.org>
+Sender: sdavid46620@gmail.com
+Received: by 2002:a17:906:7094:0:0:0:0 with HTTP; Tue, 26 Oct 2021 20:06:18
+ -0700 (PDT)
+From:   "Mr. Mustafa Ali." <muafalia@gmail.com>
+Date:   Wed, 27 Oct 2021 04:06:18 +0100
+X-Google-Sender-Auth: 4WAfobC0extFW2cdGP8UAT-g5xw
+Message-ID: <CAE1Pi3re3gMOq6HbmMstw3=w8wZGA83+uPjVDuaOYc0WbrA7vA@mail.gmail.com>
+Subject: Greetings Dear Friend.
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Oct 26, 2021 at 12:47 AM Xin Long <lucien.xin@gmail.com> wrote:
-> On Tue, Oct 26, 2021 at 5:51 AM Paul Moore <paul@paul-moore.com> wrote:
-> > On Mon, Oct 25, 2021 at 10:11 AM Xin Long <lucien.xin@gmail.com> wrote:
-> > > On Mon, Oct 25, 2021 at 8:08 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > >> On Mon, Oct 25, 2021 at 12:51 PM Xin Long <lucien.xin@gmail.com> wrote:
-> > >> > On Mon, Oct 25, 2021 at 4:17 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > >> > > On Fri, Oct 22, 2021 at 8:36 AM Xin Long <lucien.xin@gmail.com> wrote:
-> > >> > > > Different from selinux_inet_conn_established(), it also gives the
-> > >> > > > secid to asoc->peer_secid in selinux_sctp_assoc_established(),
-> > >> > > > as one UDP-type socket may have more than one asocs.
-> > >> > > >
-> > >> > > > Note that peer_secid in asoc will save the peer secid for this
-> > >> > > > asoc connection, and peer_sid in sksec will just keep the peer
-> > >> > > > secid for the latest connection. So the right use should be do
-> > >> > > > peeloff for UDP-type socket if there will be multiple asocs in
-> > >> > > > one socket, so that the peeloff socket has the right label for
-> > >> > > > its asoc.
-> > >> > >
-> > >> > > Hm... this sounds like something we should also try to fix (if
-> > >> > > possible). In access control we can't trust userspace to do the right
-> > >> > > thing - receiving from multiple peers on one SOCK_SEQPACKET socket
-> > >> > > shouldn't cause checking against the wrong peer_sid. But that can be
-> > >> > > addressed separately. (And maybe it's even already accounted for
-> > >> > > somehow - I didn't yet look at the code closely.)
-> >
-> > There are a couple of things we need to worry about here: the
-> > per-packet access controls (e.g. can this packet be received by this
-> > socket?) and the userspace peer label queries (e.g. SO_GETPEERSEC and
-> > IP_CMSG_PASSSEC).
-> >
-> > The per-packet access controls work by checking the individual
-> > packet's security label against the corresponding sock label on the
-> > system (sk->sk_security->sid).  Because of this it is important that
-> > the sock's label is correct.  For unconnected sockets this is fairly
-> > straightforward as it follows the usual inherit-from-parent[1]
-> > behavior we see in other areas of SELinux.  For connected stream
-> > sockets this can be a bit more complicated.  However, since we are
-> > only discussing the client side things aren't too bad with the
-> > behavior essentially the same, inherit-from-parent, with the only
-> > interesting piece worth noting being the sksec->peer_sid
-> > (sk->sk_security->peer_sid) that we record from the packet passed to
-> > the LSM/SELinux hook (using selinux_skb_peerlbl_sid()).  The
-> > sksec->peer_sid is recorded primarily so that the kernel can correctly
-> > respond to SO_GETPEERSEC requests from userspace; it shouldn't be used
-> > in any access control decisions.
->
-> Hi, Paul
->
-> Understand now, the issue reported seems caused by when
-> doing peel-off the peel-off socket gets the uninitialised sid
-> from 'ep' on the client, though it should be "asoc".
+Hello Friend,
 
-Hi Xin Long,
+This message might meet you in utmost surprise. However, It's just my
+urgent need for a foreign partner that made me contact you for this
+transaction. I assured you of honesty and reliability to champion this
+business opportunity. I am a banker by profession in Turkey, and
+currently holding the post of Auditor in Standard Chartered Bank.
 
-Yes, that is my understanding.  I got the impression from the thread
-that there was some confusion about the different labels and what they
-were used for in SELinux, I was trying to provide some background in
-the text above.  If you are already familiar with how things should
-work you can disregard it :)
+I have the opportunity of transferring the leftover funds ($15 Million
+Dollars) of one of my clients who died along with his entire family in
+a crisis in Myanmar Asia. I am inviting you for a business deal where
+this money can be shared between us if you agree to my business
+proposal.
 
-> > In the case of SCTP, I would expect things to behave similarly: the
-> > sksec->peer_sid should match the packet label of the traffic which
-> > acknowledged/accepted the new connection, e.g. the other end of the
-> > connected socket.  You will have to forgive me some of the details,
-> > it's been a while since I last looked at the SCTP bits, but I would
-> > expect that if a client created a new connection and/or spun-off a new
-> > socket the new socket's sksec->peer_sid would have the same property,
-> > it would represent the security label of the other end of the
-> > connection/association.
->
-> In SCTP, a socket doesn't represent a peer connection, it's more an
-> object binding some addresses and receiving incoming connecting
-> request, then creates 'asoc' to represent the connection, so asoc->
-> peer_secid represents the security label of the other end of the
-> connection/association.
+Further details of the transfer will be forwarded to you immediately
+after I receive your return letter.
 
-As mentioned previously the asoc->peer_secid *should* be the security
-label of the remote end, so I think we are okay here.  My concern
-remains the asoc->secid label as I don't believe it is being set to
-the correct value (more on that below).
-
-> After doing peel-off, it makes one asoc 'bind' to one new socket,
-> and this socket is used for userspace to control this asoc (conection),
-> so naturally we set sksec->peer_sid to asoc->secid for access control
-> in socket.
-
-The sksec->peer_sid represents the security label of the remote end so
-it should be set to the asoc->peer_secid and *not* the asoc->secid
-value.  Yes, they are presently the same value in your patches, but I
-believe that is a mistake; I believe the asoc->secid value should be
-set to that of the parent (see the prior inherit-from-parent
-discussion) which in this case would likely be either the parent
-association or the client process, I'm not entirely clear on which is
-correct in the SCTP case.  The initial SCTP client association would
-need to take it's label from the parent process so perhaps that is the
-right answer for all SCTP client associations[2].
-
-[1] I would expect server side associations to follow the more
-complicated selinux_conn_sid() labeling, just as we do for TCP/stream
-connections today.
-
-[2] I'm guessing the client associations might also want to follow the
-setsockcreatecon(3) behavior, see selinux_sockcreate_sid() for more
-info.
-
--- 
-paul moore
-www.paul-moore.com
+Best Regards,
+Mr. Mustafa Ali.
+mustafa.ali@rahroco.com

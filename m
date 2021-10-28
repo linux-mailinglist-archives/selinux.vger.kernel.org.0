@@ -2,104 +2,113 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6799543D799
-	for <lists+selinux@lfdr.de>; Thu, 28 Oct 2021 01:36:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 849F043E805
+	for <lists+selinux@lfdr.de>; Thu, 28 Oct 2021 20:09:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229474AbhJ0XjY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 27 Oct 2021 19:39:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56742 "EHLO
+        id S230350AbhJ1SMI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 28 Oct 2021 14:12:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229437AbhJ0XjX (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 27 Oct 2021 19:39:23 -0400
-Received: from mail-ot1-x332.google.com (mail-ot1-x332.google.com [IPv6:2607:f8b0:4864:20::332])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D107AC061570
-        for <selinux@vger.kernel.org>; Wed, 27 Oct 2021 16:36:57 -0700 (PDT)
-Received: by mail-ot1-x332.google.com with SMTP id s23-20020a056830125700b00553e2ca2dccso1141458otp.3
-        for <selinux@vger.kernel.org>; Wed, 27 Oct 2021 16:36:57 -0700 (PDT)
+        with ESMTP id S230435AbhJ1SMD (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 28 Oct 2021 14:12:03 -0400
+Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A63CC061570
+        for <selinux@vger.kernel.org>; Thu, 28 Oct 2021 11:09:35 -0700 (PDT)
+Received: by mail-ot1-x331.google.com with SMTP id w12-20020a056830410c00b0054e7ceecd88so9833398ott.2
+        for <selinux@vger.kernel.org>; Thu, 28 Oct 2021 11:09:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=VyoOlx1f4bY9qJ0WEn854eIaH9saJD/psl6FGa9mBmM=;
-        b=K7hlO4boWaeYjBtjbM51c4Qe7Evd+u/1f4otURj6d3mPKxok2BjH7a24IPqjhmeTja
-         VB4xdXVEhzX9mYYQLnFJyuD+fWUOZMc2lQUFuzyW0LKs4Ozvs+FI5f8kUwn3RCh/QstE
-         /KuDlkIH5iXmvwGLRS1ZAVz1bZk+UNb5E3PuyCvjnebuvkU4+KOS5TFmx4cN+P086CAL
-         wjqH24TzqLNTvQPeYIx4W4vR2O9fREDqWaWZVnKfZP8nqyZl9fj19MUXBzoWWJTZhC/J
-         4rLu4FTTdxWoPa7darh1eNu98/0t1R8AjXB6LKvdaLLkcdO/3HedVSbXrK5kWuSyS4aS
-         T0UA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=ot1o4GhoW9du5qR4M3vXTohcaJA3muhiz2eCwZXukYg=;
+        b=G33P4siqju83LTwALK4apqJo9GG0Gnib0Fs7sMKOZdToTGE8gFVEDaB4I4CG6COqrn
+         P/0b76XB920gfOFMETtD5q4Nmr26wLXloImaynaposRT5Ysu3tBDgKyZB3+I46hHJBLl
+         xSig3EYMhU4Njh/SL432x3/RsYu6vQMUehkffBtXp5eGpMFs8FXsJHHV14c8zE1/F3VT
+         3TjrEPYu61Hsrvig64H3NW3BTHfw5Y/zuk2X8guSegqWOmA30T1SExAQ/J8lQQ2kzvCc
+         LtwsYN0NAVxC7c7vm8xzvJNx+Ngu147kOLhQ/Y4SjoxQDiuKfOnO+gfz/B2t3xqwIpgI
+         2unQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to:content-transfer-encoding;
-        bh=VyoOlx1f4bY9qJ0WEn854eIaH9saJD/psl6FGa9mBmM=;
-        b=XcN6rYo5siPVthVYznpPKQYZfTm7CQ7uNU7zIJVWj6+afpw4vDoehWMye/OqTTmkI1
-         qbWyf5Ehs0D8i1kTou2yOGvSh2kf1h8ThsC6gRTxko9/mwnlOEmni69dF5JQNxvu60W8
-         VW3NcBWlrILdO1F1wuTQQF1UalpHRNsC9Aa2kC9qPbaISMu1KtR+Kq5i5EZ+U7oNtixm
-         qE4/D69i6fk7ZKASRrGJf3vG/4dMZr6aMkmde925rTc/yKH72WTQw+rloYzJ2OcxCs7G
-         8MNEXYQScFD+e7qVIVSx5Dso5cvZC3RgcJLPh2UMsZREmolNJoaIZVhIOapE5UQl/YYf
-         djXQ==
-X-Gm-Message-State: AOAM533ZSXo2MiZ+Vn6t8xHvJ0zNbfYgaOG1IhUT71AHHXufDgcxymJn
-        CIa/kmbyiBCIz8djPKXvK8kEIe8OrxCeUY2nDjQ=
-X-Google-Smtp-Source: ABdhPJwFy35FZ6ng03wtqAuUJ19rYNwX9IJD0WRu81oaSWhhG7s8rk5Mopql8tuUGEURlWJ4y37URNc7UmOagPP6a8I=
-X-Received: by 2002:a05:6830:90e:: with SMTP id v14mr702548ott.14.1635377816968;
- Wed, 27 Oct 2021 16:36:56 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=ot1o4GhoW9du5qR4M3vXTohcaJA3muhiz2eCwZXukYg=;
+        b=aaM8ai21StYZDjJEZ+4kq3YMnTuEeOmOYJ4kFATRbqki1QSeZe6EOLSBedyhfA/SXD
+         WcR67mAxPfihkn6Nyb5LrKZCQ81vuaDKGFD2MD3DPtpPExtp5v9TG30rKkSsFQdTvoaP
+         1ufpbfd08kZ0TmJImdOtcYGUJhSz30T/nNpqtHjdlHLEnyPS4CQ3xsbjYeyHv4fczTFb
+         IujtVc3xfxaYoPNDWwvfgj2zAUhMRlTT99sHaWZQIthVk3vkXAsNGO3w0qzsfabUkdNH
+         GketDz1AvGEX0z+augsND/ocnKGO2irVrPHJ2SmVUOD8HjA8tUgycoQMNjbhGo4EFGKH
+         eyZg==
+X-Gm-Message-State: AOAM530XbM91zRL+5rOiSrMBohFs6V+TRNt0ldQ8t+EN65urPOScVn8J
+        B/9lBuTIkOUgdKdvSEJcv/n8cyUAgfH2GTAlItY=
+X-Google-Smtp-Source: ABdhPJzLEdKFZH4xCRgyU5hZxwbNBY56EkAsTTKNquCehyC5HPSA9Jlbbnu42q45OgD85fUW24sWVccPeE7L9kEE3/U=
+X-Received: by 2002:a9d:6346:: with SMTP id y6mr4861022otk.154.1635444574865;
+ Thu, 28 Oct 2021 11:09:34 -0700 (PDT)
 MIME-Version: 1.0
-Sender: ericgloriapaul@gmail.com
-Received: by 2002:a9d:5184:0:0:0:0:0 with HTTP; Wed, 27 Oct 2021 16:36:56
- -0700 (PDT)
-From:   DINA MCKENNA <dinamckennahowley@gmail.com>
-Date:   Wed, 27 Oct 2021 23:36:56 +0000
-X-Google-Sender-Auth: -DqzJgkZRyqGKzAensw9aQkLgYw
-Message-ID: <CAApFGfRVbr=XtvXS+asEJ==fYFiWjiNgG-BQqtCtBbO3TT4POQ@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
+References: <20211021140839.7439-1-cgzones@googlemail.com>
+In-Reply-To: <20211021140839.7439-1-cgzones@googlemail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Thu, 28 Oct 2021 14:09:23 -0400
+Message-ID: <CAP+JOzSRiwA9Vr3R6VYU2uYRQYDR6csY-BBS=Rr6dhO0WhXcLQ@mail.gmail.com>
+Subject: Re: [PATCH] libsepol: avoid passing NULL pointer to memcpy
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello my dear ,
+On Thu, Oct 21, 2021 at 10:09 AM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
+>
+> memcpy(3) might be annotated with the function attribute nonnull and
+> UBSan then complains:
+>
+>     module.c:296:3: runtime error: null pointer passed as argument 2, whi=
+ch is declared to never be null
+>         #0 0x7f2468efa5b3 in link_netfilter_contexts ./libsepol/src/modul=
+e.c:296
+>         #1 0x7f2468efa5b3 in sepol_link_packages ./libsepol/src/module.c:=
+337
+>         #2 0x562331e9e123 in main ./semodule-utils/semodule_link/semodule=
+_link.c:145
+>         #3 0x7f2467e247ec in __libc_start_main ../csu/libc-start.c:332
+>         #4 0x562331e9d2a9 in _start (./destdir/usr/bin/semodule_link+0x32=
+a9)
+>
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> ---
+>  libsepol/src/module.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/libsepol/src/module.c b/libsepol/src/module.c
+> index 02a5de2c..ed777f8e 100644
+> --- a/libsepol/src/module.c
+> +++ b/libsepol/src/module.c
+> @@ -293,9 +293,11 @@ static int link_netfilter_contexts(sepol_module_pack=
+age_t * base,
+>         }
+>         base->netfilter_contexts =3D base_context;
+>         for (i =3D 0; i < num_modules; i++) {
+> -               memcpy(base->netfilter_contexts + base->netfilter_context=
+s_len,
+> -                      modules[i]->netfilter_contexts,
+> -                      modules[i]->netfilter_contexts_len);
+> +               if (modules[i]->netfilter_contexts_len > 0) {
+> +                       memcpy(base->netfilter_contexts + base->netfilter=
+_contexts_len,
+> +                              modules[i]->netfilter_contexts,
+> +                              modules[i]->netfilter_contexts_len);
+> +               }
+>                 base->netfilter_contexts_len +=3D
+>                     modules[i]->netfilter_contexts_len;
 
- I sent this mail praying it will get to you in a good condition of
-health, since I myself are in a very critical health condition in
-which I sleep every night without knowing if I may be alive to see the
-next day. I bring peace and love to you. It is by the grace of God, I
-had no choice than to do what is lawful and right in the sight of God
-for eternal life and in the sight of man, for witness of God=E2=80=99s merc=
-y
-and glory upon my life. I am Mrs. Dina Mckenna Howley., a widow. I am
-suffering from a long time brain tumor, It has defiled all forms of
-medical treatment, and right now I have about a few months to leave,
-according to medical experts. The situation has gotten complicated
-recently with my inability to hear proper, am communicating with you
-with the help of the chief nurse herein the hospital, from all
-indication my conditions is really deteriorating and it is quite
-obvious that, according to my doctors they have advised me that I may
-not live too long, Because this illness has gotten to a very bad
-stage. I plead that you will not expose or betray this trust and
-confidence that I am about to repose on you for the mutual benefit of
-the orphans and the less privilege. I have some funds I inherited from
-my late husband, the sum of ($ 11,000,000.00, Eleven Million Dollars).
-Having known my condition, I decided to donate this fund to you
-believing that you will utilize it the way i am going to instruct
-herein. I need you to assist me and reclaim this money and use it for
-Charity works therein your country for orphanages and gives justice
-and help to the poor, needy and widows says The Lord." Jeremiah
-22:15-16.=E2=80=9C and also build schools for less privilege that will be
-named after my late husband if possible and to promote the word of God
-and the effort that the house of God is maintained. I do not want a
-situation where this money will be used in an ungodly manner. That's
-why I'm taking this decision. I'm not afraid of death, so I know where
-I'm going. I accept this decision because I do not have any child who
-will inherit this money after I die. Please I want your sincerely and
-urgent answer to know if you will be able to execute this project for
-the glory of God, and I will give you more information on how the fund
-will be transferred to your bank account. May the grace, peace, love
-and the truth in the Word of God be with you and all those that you
-love and care for.
+This line should be in the if statement as well. There is no point in
+adding a 0, since the check for > 0 is already being made.
+Jim
 
-I'm waiting for your immediate reply..
 
-May God Bless you,
-Mrs. Dina Mckenna..
+>         }
+> --
+> 2.33.0
+>

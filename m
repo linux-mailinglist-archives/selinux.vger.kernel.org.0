@@ -2,64 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E0C844001E
-	for <lists+selinux@lfdr.de>; Fri, 29 Oct 2021 18:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 651904410BB
+	for <lists+selinux@lfdr.de>; Sun, 31 Oct 2021 21:09:33 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229623AbhJ2QRM (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 29 Oct 2021 12:17:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41464 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229607AbhJ2QRM (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 29 Oct 2021 12:17:12 -0400
-Received: from mail-yb1-xb44.google.com (mail-yb1-xb44.google.com [IPv6:2607:f8b0:4864:20::b44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EC61C061570
-        for <selinux@vger.kernel.org>; Fri, 29 Oct 2021 09:14:43 -0700 (PDT)
-Received: by mail-yb1-xb44.google.com with SMTP id t127so25357303ybf.13
-        for <selinux@vger.kernel.org>; Fri, 29 Oct 2021 09:14:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ANhoqFIvutey4Kjwwv4uowGEBiP8Sw6NlRI3E6SZ9JM=;
-        b=BNAUbFUrlPkV0/orIroETObuvNLIECAKM7tWz0pgpXPRQC/qbDRqmXW2Jk4l2CGKde
-         wYEehH8II0sB3SWob4jthhHZMKXuqGKUQ/Jo5KNZND2qetU0Vyd0RuP5/TvMJcfTUxK0
-         OYO4XfPzdPHd7LyRurFhBrtB8S/Czd/pG1WuaqbTcHQoEJ9WqrxKcEaj1uv1D+LNiV3n
-         z5oAsPr8qLuLg041qt+zyNq1tP6TT1hwgoG0mmQcSIOiNW3+SwMh14FR0kBq/jPj3OUL
-         U0aBVuR6gWCmU0kYE+J+dosIJd7Yjm8LLJPKTKJvYvGoA2S+dUzk5zk46TupHuYMLqS6
-         b69w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ANhoqFIvutey4Kjwwv4uowGEBiP8Sw6NlRI3E6SZ9JM=;
-        b=PC3TrAz/uUTQXWUklMkFI8OQbqIBHCug2RPPOeHxuvNtN7AalfhOAVDia9WW/YsoUf
-         G3PS/Op57JCtGrPXUtWHvm5rkcssa7iGP+qyxlB7TE1URFSmsDXlau0BTubBdWWyAszT
-         Y4eRGIA0eq3O2xiNnoqiwyHfdUGkqYbnbmCWBvnbhdxrlorlCjiN61LXXcvlV7TQ0qeX
-         13b0zITgzf8D2ks2n8GkDlncZrkF975e9lcZCVsdJvFl76lwJNNliYQmchd49ZDDxOLH
-         jATuDpk6LrmBH9zS2o+onIHTFGS0zUcn/0GWgPrrCA64P7cslW9duSVRRxAzuKoxPv3F
-         M6TA==
-X-Gm-Message-State: AOAM5306aOgvP/zPvaftlSN294UvbjmbCp0Aee+rWYOv0sZrWUQxJFnT
-        JxWSKyE1e5Vh1jB9ZXFv2PXusiD6i/Mt2EuJoqM=
-X-Google-Smtp-Source: ABdhPJxnuzFf4shPktgFn4NLb6gTKBSqot2ZuYOlNTeaBYoipPc8iAjcHY2rskEA6HNK8ulSDxPf0cmEvydON7tb/BM=
-X-Received: by 2002:a25:bb52:: with SMTP id b18mr13626098ybk.506.1635524082687;
- Fri, 29 Oct 2021 09:14:42 -0700 (PDT)
+        id S230106AbhJaUMD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sun, 31 Oct 2021 16:12:03 -0400
+Received: from mailgate.kemenperin.go.id ([202.47.80.142]:58854 "EHLO
+        mailgate.kemenperin.go.id" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229939AbhJaUMC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 31 Oct 2021 16:12:02 -0400
+X-Greylist: delayed 5193 seconds by postgrey-1.27 at vger.kernel.org; Sun, 31 Oct 2021 16:11:58 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id 2A4A7828F1E;
+        Mon,  1 Nov 2021 01:00:16 +0700 (WIB)
+Received: from mailgate.kemenperin.go.id ([127.0.0.1])
+        by localhost (mailgate.kemenperin.go.id [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id aSDB9UjKRu4l; Mon,  1 Nov 2021 01:00:13 +0700 (WIB)
+Received: from localhost (localhost [127.0.0.1])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id DDB2F828CE9;
+        Mon,  1 Nov 2021 00:56:54 +0700 (WIB)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mailgate.kemenperin.go.id DDB2F828CE9
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kemenperin.go.id;
+        s=3298A942-BBC6-11E3-B333-483736368EC2; t=1635703015;
+        bh=+tje3x5yIAM91gcZZJ8xoRjx6IuR+B3ePoXPCKu2mgI=;
+        h=Date:From:Message-ID:MIME-Version;
+        b=KATUX992ge7D0qn9bU4D7zaeizgarlAYHOvy9yELrWAITGQnfQ7PTBkI/H7sn7ojK
+         6pYXvXirX8AfGfpGsZJ7vxq+ahjwtWBHvtg0siRTUmL0krLt/o2v2EbA8Sx2Bxubbh
+         OIJ8zNHAsG4Q9ZMaXzGon9a6CFzAJeqzE8v3/xHo=
+X-Virus-Scanned: amavisd-new at kemenperin.go.id
+Received: from mailgate.kemenperin.go.id ([127.0.0.1])
+        by localhost (mailgate.kemenperin.go.id [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id 3ZjV-aWozXQn; Mon,  1 Nov 2021 00:56:54 +0700 (WIB)
+Received: from mailgate.kemenperin.go.id (mailgate.kemenperin.go.id [10.1.0.89])
+        by mailgate.kemenperin.go.id (Postfix) with ESMTP id F1386828B2F;
+        Mon,  1 Nov 2021 00:55:03 +0700 (WIB)
+Date:   Mon, 1 Nov 2021 00:55:03 +0700 (WIB)
+From:   Manuel Franco <silitonga@kemenperin.go.id>
+Reply-To: Manuel Franco <manuelfrancospende1@gmail.com>
+Message-ID: <316885095.327001.1635702903906.JavaMail.zimbra@kemenperin.go.id>
+Subject: 2,000,000.00 Euro
 MIME-Version: 1.0
-Received: by 2002:a05:7110:369f:b0:fa:ef5e:984c with HTTP; Fri, 29 Oct 2021
- 09:14:42 -0700 (PDT)
-Reply-To: mrs.chantal166@gmail.com
-From:   mrs chantal <binmusa002@gmail.com>
-Date:   Fri, 29 Oct 2021 18:14:42 +0200
-Message-ID: <CAM8Zgx98ag4NCE+-4nkCxEGmJ2XbEXTy6Q+-VfyL-CKx-U5T9Q@mail.gmail.com>
-Subject: Dear Beneficiary
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.1.0.89]
+Thread-Index: cYoBZ9/HjDprLbzYDgjeQYDGCx21TQ==
+Thread-Topic: 2,000,000.00 Euro
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Dear Friend
-You have been compensated with the sum of 4.3 million dollars in this
-united nation the payment will be issue into atm visa card and send to
-you from the santander bank we need your address and your whatsapp
-number
-Fill the followings with your details;1. Your Name:2. Country:
-3. Age and Sex:4. Occupation:5. Id Card Identification
+
+
+-- 
+You have a donation of 2,000,000.00 Euro.Get back to me now so we can proceed.

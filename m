@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A5D5D44663E
-	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BB5F446641
+	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233160AbhKEPsm (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Nov 2021 11:48:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44836 "EHLO
+        id S233409AbhKEPst (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Nov 2021 11:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233267AbhKEPsl (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:41 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49155C061205
-        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:46:01 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id f4so34276502edx.12
-        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:46:01 -0700 (PDT)
+        with ESMTP id S233436AbhKEPsn (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:43 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C1DFC06120A
+        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:46:03 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id ee33so34759053edb.8
+        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:46:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=yHys3UiPKnhYsikWE9Oxx2ureNYyUBVxBSmN52aKrY0=;
-        b=q4ySG158+j1ZbER37u0JISnjewSQqEqsTdnTmMRuoa7O9+WUyYYtl37fC4CH3OMX8I
-         +1McFDFsgFoSrH1FsS4AM1NtY/+lamhi1ZlpDqHXGhr94sK/xlJ6UqR0x4Fa0Ol4pPd1
-         wrNdxeYRbiuENouXTnlPgxEJl2+hbIe3VP2yjlIhaloelRoTfIYEvJLv2t3OrP9sKOuF
-         UdpwGxKfptrFLwOt8UilH5xGONJuXSm1vJyUFMGchMvsNGJa4x4Wr7pByLkwQM5DTLX6
-         qY0XYPVOBto4ICBmPGy5HtePQD/hRwEZvN+b3BHy6xfBfuTV19vTH1MhRVzhLSzS0SEw
-         stTw==
+        bh=/QgjYSu1JvpgUvCJeefqojarJQO7cv7F5h+TErWmEHI=;
+        b=cJnDpoMPfZA2p7S7/v0M1GfVByNfzxATqrf0GoZEq+/E9D7vdmVLoPmrRI4yVV23ZX
+         rXRmYZEOztxYFhLQKcZWXhqO+1AUtjP5Lv1sjqtlqJEU/QNyqibUc8KpXk0ytSmqKQMN
+         c86ijiJamIrri2q3tKrqS5koSz85Nf4M4PC+4IozDbb0O/34pcrqC3tWH/7eaLmmDLaL
+         BItRVfWzz4Mj6n0cOro8PdBZHP9b1Oyvh9PSCrJxjurJ+LgpOZ/1iLMtvD7GNrgUNVN4
+         iG6jromAaOguqlKVyJE2KzGStnzNs6dfo0PYajIay9ZjmuJYJvqELq1SpwJ9uG1viG8J
+         /iiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=yHys3UiPKnhYsikWE9Oxx2ureNYyUBVxBSmN52aKrY0=;
-        b=HdRgndB8IrT/kWdliwZWBYYWGOP4/MMsvltf9Cbf23XTCdW0d4P644IY2CquuuX1CX
-         FDWSDlpxPlsX9e1NtSGAWG5YB1cFi/UJkjwBQ3Tu/CtGwmAFT3CAPwkA+ppvqLYmF7Vq
-         VovsJKoV9ahE43il4HvebN4iR+ejMCiTq1y2+rCgWdWQbZnQaJ2WrdE1rALzXaVFiqB1
-         7L8VAVdsI92/3FTWuvz+sxmWW8kGD505/+xs2MDFAyeVc6J91+I0ObjSuZ0Ns8h3ituB
-         h6wTZhHcpIO0uKcesRD8oFNtGOi5e/u5qKTq6H2z9B/7+jwt7az0b/XmSteVuVs4qP/g
-         ddEA==
-X-Gm-Message-State: AOAM533NqmnTWMZVxg2VG4MXl4z/33cGEcC/Is1JpzUV26FPM6UJ8KOj
-        Mrp7HpokU0jEbBEWzuWdYpNFgOqR/Ow=
-X-Google-Smtp-Source: ABdhPJy0fESnjVrkE0Xam6qjehINy3wNlOOJAje5TzAKdDy3qnOz7dS8gz1EXEY7iH+oSNe26jroCg==
-X-Received: by 2002:a17:907:97cc:: with SMTP id js12mr4372018ejc.175.1636127159324;
+        bh=/QgjYSu1JvpgUvCJeefqojarJQO7cv7F5h+TErWmEHI=;
+        b=1qDBuzkmPR7rxpBmWYSNQlH6LNGqrn7WR34dpWsGCd+/C2oA6wy61RSoschkvjeJ5k
+         sK+6XBmqKZAnC7vTesEqqxrvR6DoHTgqAdhNqy8AF0hBaOyedyKj5xRw0Lze11PuPmIJ
+         cVcZSC2h9whd2jwWe4JRj+noS4wdZP1FOVzwPy7089s35RsQ2BUhd0VNwWPEFN93D20F
+         uSGUwk7hPKVYi8UmJ4kkI/zqIiuaa4xajqvQH/WIzlADF3oynrThJo1IMNlRv0NYCAhw
+         fS/MUgI1BH26amsb8VYrLOqupIlHBFfi3glIJIMGt4/lx1ZTV0qxdAEc1x7/35X1EXV5
+         Ummg==
+X-Gm-Message-State: AOAM530RE3WnThoHLQC56lu2b3q2dG7+4/IhTwVxsMloGjHuz4uXsv7i
+        G/zkziwPG0WAsTb+Vxy8TR6pwnaVYoo=
+X-Google-Smtp-Source: ABdhPJz9l11NyhuIb4Fd8KvVvKxm1aBd+Y893v3qBFUjHRxsedp0iUlL1BPijSljhBGfR4CrcENwIw==
+X-Received: by 2002:a05:6402:2693:: with SMTP id w19mr15400181edd.257.1636127159984;
         Fri, 05 Nov 2021 08:45:59 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-001-185-074.77.1.pool.telefonica.de. [77.1.185.74])
-        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.45.58
+        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.45.59
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 05 Nov 2021 08:45:59 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v2 23/36] libsepol: validate MLS levels
-Date:   Fri,  5 Nov 2021 16:45:25 +0100
-Message-Id: <20211105154542.38434-24-cgzones@googlemail.com>
+Subject: [RFC PATCH v2 24/36] libsepol: validate expanded user range and level
+Date:   Fri,  5 Nov 2021 16:45:26 +0100
+Message-Id: <20211105154542.38434-25-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211105154542.38434-1-cgzones@googlemail.com>
 References: <20211011162533.53404-1-cgzones@googlemail.com>
@@ -64,41 +64,41 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Validate the level map of the policy to ensure no level refers to a non
-existent category.
+Check those contains valid values.
 
-READ of size 8 at 0x602000000c58 thread T0
-    #0 0x568d2c in cats_ebitmap_len ./libsepol/src/kernel_to_conf.c:1003:14
-    #1 0x568d2c in cats_ebitmap_to_str ./libsepol/src/kernel_to_conf.c:1038:19
-    #2 0x55e371 in write_level_rules_to_conf ./libsepol/src/kernel_to_conf.c:1106:11
-    #3 0x55e371 in write_mls_rules_to_conf ./libsepol/src/kernel_to_conf.c:1140:7
-    #4 0x55adb1 in sepol_kernel_policydb_to_conf ./libsepol/src/kernel_to_conf.c:3103:7
-    #5 0x55a34f in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:38:9
-    #6 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-    #7 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-    #8 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-    #9 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-    #10 0x7f741d0d67ec in __libc_start_main csu/../csu/libc-start.c:332:16
-    #11 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
+    ==57532==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x603000001178 at pc 0x000000564c04 bp 0x7ffed7a5ad90 sp 0x7ffed7a5ad88
+    READ of size 8 at 0x603000001178 thread T0
+        #0 0x564c03 in level_to_str ./libsepol/src/kernel_to_conf.c:1901:19
+        #1 0x564c03 in range_to_str ./libsepol/src/kernel_to_conf.c:1926:9
+        #2 0x564c03 in write_user_decl_rules_to_conf ./libsepol/src/kernel_to_conf.c:2367:12
+        #3 0x55b137 in sepol_kernel_policydb_to_conf ./libsepol/src/kernel_to_conf.c:3184:7
+        #4 0x55a34f in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:38:9
+        #5 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
+        #6 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
+        #7 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
+        #8 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
+        #9 0x7f2c2e1a77ec in __libc_start_main csu/../csu/libc-start.c:332:16
+        #10 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/policydb_validate.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ libsepol/src/policydb_validate.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
 diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
-index d4dfab5c..03ab4445 100644
+index 03ab4445..adaa3fb2 100644
 --- a/libsepol/src/policydb_validate.c
 +++ b/libsepol/src/policydb_validate.c
-@@ -319,6 +319,27 @@ bad:
- 	return -1;
+@@ -340,7 +340,20 @@ static int validate_level_datum(__attribute__ ((unused)) hashtab_key_t k, hashta
+ 	return validate_mls_level(level->level, &flavors[SYM_LEVELS], &flavors[SYM_CATS]);
  }
  
-+static int validate_mls_level(mls_level_t *level, validate_t *sens, validate_t *cats)
+-static int validate_user_datum(sepol_handle_t *handle, user_datum_t *user, validate_t flavors[])
++static int validate_mls_range(mls_range_t *range, validate_t *sens, validate_t *cats)
 +{
-+	if (validate_value(level->sens, sens))
++	if (validate_mls_level(&range->level[0], sens, cats))
 +		goto bad;
-+	if (validate_ebitmap(&level->cat, cats))
++	if (validate_mls_level(&range->level[1], sens, cats))
 +		goto bad;
 +
 +	return 0;
@@ -107,27 +107,30 @@ index d4dfab5c..03ab4445 100644
 +	return -1;
 +}
 +
-+static int validate_level_datum(__attribute__ ((unused)) hashtab_key_t k, hashtab_datum_t d, void *args)
-+{
-+	level_datum_t *level = d;
-+	validate_t *flavors = args;
-+
-+	return validate_mls_level(level->level, &flavors[SYM_LEVELS], &flavors[SYM_CATS]);
-+}
-+
- static int validate_user_datum(sepol_handle_t *handle, user_datum_t *user, validate_t flavors[])
++static int validate_user_datum(sepol_handle_t *handle, user_datum_t *user, validate_t flavors[], int mls)
  {
  	if (validate_value(user->s.value, &flavors[SYM_USERS]))
-@@ -399,6 +420,9 @@ static int validate_datum_array_entries(sepol_handle_t *handle, policydb_t *p, v
- 	if (hashtab_map(p->p_users.table, validate_user_datum_wrapper, &margs))
+ 		goto bad;
+@@ -350,6 +363,10 @@ static int validate_user_datum(sepol_handle_t *handle, user_datum_t *user, valid
+ 		goto bad;
+ 	if (validate_mls_semantic_level(&user->dfltlevel, &flavors[SYM_LEVELS], &flavors[SYM_CATS]))
+ 		goto bad;
++	if (mls && validate_mls_range(&user->exp_range, &flavors[SYM_LEVELS], &flavors[SYM_CATS]))
++		goto bad;
++	if (mls && validate_mls_level(&user->exp_dfltlevel, &flavors[SYM_LEVELS], &flavors[SYM_CATS]))
++		goto bad;
+ 	if (user->bounds && validate_value(user->bounds, &flavors[SYM_USERS]))
  		goto bad;
  
-+	if (p->mls && hashtab_map(p->p_levels.table, validate_level_datum, flavors))
-+		goto bad;
-+
- 	return 0;
+@@ -364,7 +381,7 @@ static int validate_user_datum_wrapper(__attribute__((unused)) hashtab_key_t k,
+ {
+ 	map_arg_t *margs = args;
  
- bad:
+-	return validate_user_datum(margs->handle, d, margs->flavors);
++	return validate_user_datum(margs->handle, d, margs->flavors, margs->mls);
+ }
+ 
+ static int validate_datum_array_gaps(sepol_handle_t *handle, policydb_t *p, validate_t flavors[])
 -- 
 2.33.1
 

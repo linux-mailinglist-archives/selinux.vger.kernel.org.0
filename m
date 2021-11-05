@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 601D3446649
-	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5790844664C
+	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231701AbhKEPsz (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Nov 2021 11:48:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
+        id S233436AbhKEPs4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Nov 2021 11:48:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233549AbhKEPst (ORCPT
+        with ESMTP id S233574AbhKEPst (ORCPT
         <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:49 -0400
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0033C06120B
-        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:46:08 -0700 (PDT)
-Received: by mail-ed1-x534.google.com with SMTP id c8so17815424ede.13
-        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:46:08 -0700 (PDT)
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C9C4C06120A
+        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:46:09 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id v11so31974229edc.9
+        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:46:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=TUlCeo2ndy15KZjUrKbJDXWsVa9xRreKhVZbeV9c6B4=;
-        b=ptisX0dE4bf4Vux3mzI8+IAf7ARgdKCOjOKr5mSrNbEPzLxJG6S8TFcrqmb2lw4EpQ
-         bOe95qEQp/qFkBwq1DLrc43i8S1trCWXxOcaBeHyZqKUE5oiCtpbFyejzfU0CcCQLblJ
-         hkYf8VZBIUxpeBSBItz8LSWMDvQjQjg/Qkvkqg/4lT9CNAK9RINqVWNyMCds4DiBqRQq
-         eAIPLDAfkiRA2irzXg+5fBwyB9CTzbE/EbLlQE+aiFCOdaMDcjxVAYMadsAKcPGMyxr2
-         8VM2JlveaukbS0PZpJlvfnkDE3ajMk0Zy0ihp6HTQcZqrF1wx5UCJDLlxTaOuABZLtRK
-         3N+Q==
+        bh=AFTYGqfNHrZJ1ACQz2/zGM09rICj9wugDVtYqFIeVTI=;
+        b=AYfA8F1kBcxiqBt98G0skwq9C5j24xz5OI8K8Dv7SI+AjRNWpbFThEfMBvh1hYmf55
+         Ban8GTYzXGclHUg3eT4Sboi4139w4Y0rzUu6Nz90tpzrebum/9Iwmy+nV+0uv7RcjQFo
+         UEhHd8BDeS8ISd17rYfs+zgqIGfuQ/uoqD2SewTGdFsrni52R4ct8zmQLzcEMNQg/9cZ
+         SsQcMt9ZR1zCApYEw+fCGd7Zrz1/WEZ7eiBb8X+8H40eM+dJt08h0KN7iRMwd9X40xAZ
+         0bseegvMLyNYquSGfkxMGmjgZymFxJOj6S3GHzm+jYyUBfqFqWNplO7mL9Yph0KgKTgj
+         rQmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=TUlCeo2ndy15KZjUrKbJDXWsVa9xRreKhVZbeV9c6B4=;
-        b=39qR5IBDN5QEHfFjgMErHPMvz00c3A0ncIy7XejpstCyUo3kF2Owz7D9o5y+XZLhqX
-         VJoFEpvinkLHpMW3Ni/v273Yg3g14JaaXvff4KramnDWG0v7TV1yY12WqjSitXbaoAOk
-         cvKdM/TGAbR8boznFXGqsAoMOayFGhwkoixGC+GE67LAmaXC8CFaVub3fK8BO0ZXk3jZ
-         FJ/9+SJtAbDZX+9pELXvcj6fmmQG0Rr5vDpZl1hV3l1Qs6PcHsMpb4bKM5/rOd1wWf7V
-         vVoN7IrxL23Iuw54ddwqKfg03U+TRZTzHHjmm79RWZIvyXSI0LqvCADRBqyGmKcndb3P
-         3NNw==
-X-Gm-Message-State: AOAM531JXz65NHk6Kqz5a2YoyQnQDF6EgTvaHfMs2RMF+uKhXFjv30r/
-        3ziSrZELvv0wGeALPCafjtVMhmGCxQQ=
-X-Google-Smtp-Source: ABdhPJwBT4VBtdADioAszkvzG8c/H0gkXso1VPkJl43RYYOdkw/fElRpJI4jdORuFlr0HsD9zZgVTQ==
-X-Received: by 2002:a17:906:1112:: with SMTP id h18mr4249915eja.50.1636127167305;
+        bh=AFTYGqfNHrZJ1ACQz2/zGM09rICj9wugDVtYqFIeVTI=;
+        b=3tN3rU7XY3lW4LOVoJHBZfp0ZtHy8HNw1dNwVPafnmB5sNSiWBNw6s3o2EGpPqcjgF
+         kr20U9e3ZWqK6BOZYtG2NT9Lo6TrlgvQYA2IKi1jeTUyd6pU7G9SdS6z1JldtwQqsS/X
+         OvkVvehL1skQV9nRciGTsYlDQ6jk+eSjdJJsT+r0nizgXUI3lhBUqDy07NSJBe0WUtWP
+         Ctxm2PlW15rtaRYwGRM0cxZr1dxhdyjVRSVKIIZkvTNlsahpcKlpT34jhp3z2S4YgPZo
+         1TNwZ0typjbK/zaxUvkpe9QKAATKGOYezSZm4+OKdHq+jlUnfQpl20U5mUF7ScvgVLVL
+         514Q==
+X-Gm-Message-State: AOAM532lw6gL9MuRoBSNf85WFw4oHByC6AAnOKIHidDpnAeBP/plg+j3
+        WNffF7CDtdQ146KkW5YRz7gnxNcvMDg=
+X-Google-Smtp-Source: ABdhPJy7dZXoIRfNYqGzdPzFBfLi1oMmodXMgqbbRVvtNN7X/SqM1QimyNzQ/QzGILhPmI7sURblSw==
+X-Received: by 2002:a17:906:5811:: with SMTP id m17mr73808420ejq.289.1636127167894;
         Fri, 05 Nov 2021 08:46:07 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-001-185-074.77.1.pool.telefonica.de. [77.1.185.74])
-        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.46.06
+        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.46.07
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 05 Nov 2021 08:46:07 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v2 34/36] libsepol: validate categories
-Date:   Fri,  5 Nov 2021 16:45:36 +0100
-Message-Id: <20211105154542.38434-35-cgzones@googlemail.com>
+Subject: [RFC PATCH v2 35/36] libsepol: validate fsuse types
+Date:   Fri,  5 Nov 2021 16:45:37 +0100
+Message-Id: <20211105154542.38434-36-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211105154542.38434-1-cgzones@googlemail.com>
 References: <20211011162533.53404-1-cgzones@googlemail.com>
@@ -64,71 +64,45 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Check all categories have valid values, especially important for
-aliases.
-
-        ==7888==ERROR: AddressSanitizer: SEGV on unknown address 0x602000400710 (pc 0x00000055debc bp 0x7ffe0ff2a9d0 sp 0x7ffe0ff2a8e0 T0)
-        ==7888==The signal is caused by a READ memory access.
-        #0 0x55debc in write_category_rules_to_conf ./libsepol/src/kernel_to_conf.c:946:9
-        #1 0x55debc in write_mls_rules_to_conf ./libsepol/src/kernel_to_conf.c:1137:7
-        #2 0x55adb1 in sepol_kernel_policydb_to_conf ./libsepol/src/kernel_to_conf.c:3106:7
-        #3 0x55a34f in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:37:9
-        #4 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #5 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #6 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #7 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #8 0x7fe80ccaf7ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #9 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
+Check the fsuse type is valid, e.g. of type xattr, trans or task.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+
 ---
- libsepol/src/policydb_validate.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+v2:
+   do not reject in binary reading, but check at validation step
+---
+ libsepol/src/policydb_validate.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
-index 27f25132..9b18ac68 100644
+index 9b18ac68..1c5ca0dd 100644
 --- a/libsepol/src/policydb_validate.c
 +++ b/libsepol/src/policydb_validate.c
-@@ -485,6 +485,14 @@ bad:
- 	return -1;
- }
+@@ -2,6 +2,7 @@
+ #include <sepol/policydb/conditional.h>
+ #include <sepol/policydb/ebitmap.h>
+ #include <sepol/policydb/policydb.h>
++#include <sepol/policydb/services.h>
  
-+static int validate_datum(__attribute__ ((unused))hashtab_key_t k, hashtab_datum_t d, void *args)
-+{
-+	symtab_datum_t *s = d;
-+	uint32_t *nprim = (uint32_t *)args;
-+
-+	return !value_isvalid(s->value, *nprim);
-+}
-+
- static int validate_datum_array_entries(sepol_handle_t *handle, policydb_t *p, validate_t flavors[])
- {
- 	map_arg_t margs = { flavors, handle, p->mls };
-@@ -507,6 +515,9 @@ static int validate_datum_array_entries(sepol_handle_t *handle, policydb_t *p, v
- 	if (p->mls && hashtab_map(p->p_levels.table, validate_level_datum, flavors))
- 		goto bad;
- 
-+	if (hashtab_map(p->p_cats.table, validate_datum, &flavors[SYM_CATS]))
-+		goto bad;
-+
- 	return 0;
- 
- bad:
-@@ -903,14 +914,6 @@ bad:
- 	return -1;
- }
- 
--static int validate_datum(__attribute__ ((unused))hashtab_key_t k, hashtab_datum_t d, void *args)
--{
--	symtab_datum_t *s = d;
--	uint32_t *nprim = (uint32_t *)args;
--
--	return !value_isvalid(s->value, *nprim);
--}
--
- static int validate_symtabs(sepol_handle_t *handle, symtab_t symtabs[], validate_t flavors[])
- {
- 	unsigned int i;
+ #include "debug.h"
+ #include "policydb_validate.h"
+@@ -777,6 +778,15 @@ static int validate_ocontexts(sepol_handle_t *handle, policydb_t *p, validate_t
+ 				if (validate_context(&octx->context[1], flavors, p->mls))
+ 					goto bad;
+ 				break;
++			case OCON_FSUSE:
++				switch (octx->v.behavior) {
++				case SECURITY_FS_USE_XATTR:
++				case SECURITY_FS_USE_TRANS:
++				case SECURITY_FS_USE_TASK:
++					break;
++				default:
++					goto bad;
++				}
+ 			}
+ 		}
+ 	}
 -- 
 2.33.1
 

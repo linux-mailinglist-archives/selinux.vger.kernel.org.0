@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CD59A446643
-	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC381446645
+	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233396AbhKEPsw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Nov 2021 11:48:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44874 "EHLO
+        id S229581AbhKEPsx (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Nov 2021 11:48:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233294AbhKEPsp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:45 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 571C1C06120D
+        with ESMTP id S231209AbhKEPsq (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:46 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D81CAC06120E
         for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:46:05 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id g14so34006512edz.2
+Received: by mail-ed1-x532.google.com with SMTP id c8so17814967ede.13
         for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=Q2yn6KlZEOXg6v4y/fwUWCIEnFK+T+hsemWr6Rl1Los=;
-        b=fVMCtOElDbAfmAq14BvUWzfwL8YhS2xkOrhqU3BHJzzSC6b+xfjktvCD3TEo0vE4yw
-         RikwPRBEG4Crc40TBVjX2Fl0VIBAnvq4b5gGNEEd6at4JSe7tdmm3sGs8WpP6Rqnxbob
-         WUkTZJBYGk4gh1Q69g9r/KM0bdeQ2+Qf3ZQHqeT/ksN8HUnSo2vQHlsvnBIA3SRh3x5M
-         EzGhKT22CTgcfcyXI+Ken+xXTg+ziMVFjmr+bF5xY+yO3NUDtw8WuIX6EsBKJUnQfGrL
-         QA1dGZ1qGI2vgJXJrtvS8RPH1NKJ7cYzA0sOauHMoMzVdiTFmTBkpsByuYbjIa8RCLtC
-         tEuw==
+        bh=3w7t+e9GEyPP8ldO763nnFplvtGbJWWrlSrOtODVyRc=;
+        b=LDHT2f7WOxaJ7FOw2nYyGNAbBhHfbHpkcFHs9qq71iMZQwh9um+qA0lhqkJq6cFY9Q
+         3+hbVWNUKzhQNEQ2fpTVdSY92WFCswwBJm5iYGkCRjylkGXS8XKW3GVM1gjlRuom+pqg
+         Y0cB0r3mSki6CiQvOOv+ELZta4CZjcq4tBRFmpk6aInpJRuMlhdjPn3pzwzjEbvI3IK9
+         ZENiYxdih7mtkLXFdfIC+/TYAatiOimQ2HAD4GOzstQ50zE3JbKOJOZ0GWLzBc0lSARJ
+         QV3XsDqtwZG8OUH+swgBMAfG3zL15RcjZ4RFKrjHgYTsWvMhAHtA6aEk2t01EIbhOqUp
+         KKOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Q2yn6KlZEOXg6v4y/fwUWCIEnFK+T+hsemWr6Rl1Los=;
-        b=EV6+tnrXPKy6csQ6Fgolbp+wufqIXfjUtf7fRZS8LPaf89qprry0+nDAvMFbWkAlmH
-         6V0N7ABfhhum6S17LYsUCY5nlzSiVWZ4TJTBuQVP6zxT+scP/uYBc/xK+PcCNvUiRVzd
-         487v7fkcUxDdKIZqnHKAha8PiS0rvVepJMJ5krru9xq/0Dq9MRydE8zcRQkUMKbmZVWF
-         0fH55sn11mOR1NKLpxxSBXfCu/rW5OOogdawALar8Y1kCEXsf3GaDUnYRl+KbJYV8JKF
-         DXm+fcH4uc0OBsUiqrfoqPYwgAwd+65/ObnKBnVvX8sqWmL/rbc/AMvZ+EG2XzccQcOl
-         YEhw==
-X-Gm-Message-State: AOAM530W9qIsrjPBF3E/WK1kfJNQuW9M50Y16qCxDuMX1XxxVCi9L7SH
-        hHNn+oZW2n4/TxRf4KiN7Y5D8ueWYD4=
-X-Google-Smtp-Source: ABdhPJyNJLKpBd1p8km9KN8NOVWbwLXeESVK3c5hCcuL4ZHARJCGX/gG23j4iSgSpGFje/bQkp4Jpg==
-X-Received: by 2002:a17:906:3f87:: with SMTP id b7mr63972795ejj.172.1636127163873;
-        Fri, 05 Nov 2021 08:46:03 -0700 (PDT)
+        bh=3w7t+e9GEyPP8ldO763nnFplvtGbJWWrlSrOtODVyRc=;
+        b=OkeMmDBBzmqyiklOfXg5mXe6pqDBIbfuYdHhMZkS9ECMdPI02Rnj9E6mrzXRK+ssqH
+         7E6z5HOq4928mW/EE3mTFvKDRAoI17S4yGdWGUTzOHrWdQMQ6/9hnCGq54ws7TwPux8i
+         m0ZZYW9mMPWsJrbtxdbmAhiXIVuGT4k4mv4woJRGFHwpOuUy3RW9kRL17Bg4bY8YZYbn
+         FZMHAFjbEs2uDcyHltpGsEGBk1596eFqPi9GCDgEotwlnjmDkWVNF1cOMziSAOh+QLJO
+         KmlrL5zZerIgplv8gska1Te16gm80AlpKkyKYPqBqXp2cSw3f1kn+LgUWhE4nouc+t6C
+         Wv3A==
+X-Gm-Message-State: AOAM531mBaY+F3IOUrUo3PaOKvEtXc+mTFEpNRpAAkXe1xiVQ5h0oD7z
+        KwNPWajZI8WBwkOne8Z/2QfAS12YrmU=
+X-Google-Smtp-Source: ABdhPJxcdPYWwuP/wnywhawZPXKnCCM4IEpfpGyVXbl+6hm6Di5aFFak0HKjwNLFQjuByP0Qx/989Q==
+X-Received: by 2002:a17:907:7d88:: with SMTP id oz8mr13740231ejc.173.1636127164453;
+        Fri, 05 Nov 2021 08:46:04 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-001-185-074.77.1.pool.telefonica.de. [77.1.185.74])
         by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.46.03
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Nov 2021 08:46:03 -0700 (PDT)
+        Fri, 05 Nov 2021 08:46:04 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v2 28/36] libsepol: validate constraint expression operators and attributes
-Date:   Fri,  5 Nov 2021 16:45:30 +0100
-Message-Id: <20211105154542.38434-29-cgzones@googlemail.com>
+Subject: [RFC PATCH v2 29/36] libsepol: validate type of avtab type rules
+Date:   Fri,  5 Nov 2021 16:45:31 +0100
+Message-Id: <20211105154542.38434-30-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211105154542.38434-1-cgzones@googlemail.com>
 References: <20211011162533.53404-1-cgzones@googlemail.com>
@@ -64,65 +64,57 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+    ==80903==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x6020000005c0 at pc 0x0000005696c8 bp 0x7ffdb11ea560 sp 0x7ffdb11ea558
+    READ of size 8 at 0x6020000005c0 thread T0
+        #0 0x5696c7 in avtab_node_to_str ./libsepol/src/kernel_to_conf.c:1736:9
+        #1 0x569013 in map_avtab_write_helper ./libsepol/src/kernel_to_conf.c:1767:10
+        #2 0x5ab837 in avtab_map ./libsepol/src/avtab.c:347:10
+        #3 0x561f9a in write_avtab_flavor_to_conf ./libsepol/src/kernel_to_conf.c:1798:7
+        #4 0x561f9a in write_avtab_to_conf ./libsepol/src/kernel_to_conf.c:1819:8
+        #5 0x55afba in sepol_kernel_policydb_to_conf ./libsepol/src/kernel_to_conf.c:3159:7
+        #6 0x55a34f in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:38:9
+        #7 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
+        #8 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
+        #9 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
+        #10 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
+        #11 0x7f97a83fd7ec in __libc_start_main csu/../csu/libc-start.c:332:16
+        #12 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/policydb_validate.c | 43 ++++++++++++++++++++++++++++++++
- 1 file changed, 43 insertions(+)
+ libsepol/src/policydb_validate.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
-index 5ef95c61..25c6f0db 100644
+index 25c6f0db..57eb2550 100644
 --- a/libsepol/src/policydb_validate.c
 +++ b/libsepol/src/policydb_validate.c
-@@ -193,6 +193,49 @@ static int validate_constraint_nodes(sepol_handle_t *handle, constraint_node_t *
- 				if (validate_type_set(cexp->type_names, &flavors[SYM_TYPES]))
- 					goto bad;
- 			}
-+
-+			if (cexp->expr_type == CEXPR_ATTR || cexp->expr_type == CEXPR_NAMES) {
-+				switch (cexp->op) {
-+				case CEXPR_EQ:
-+				case CEXPR_NEQ:
-+				case CEXPR_DOM:
-+				case CEXPR_DOMBY:
-+				case CEXPR_INCOMP:
-+					break;
-+				default:
-+					goto bad;
-+				}
-+
-+				switch (cexp->attr) {
-+				case CEXPR_USER:
-+				case CEXPR_USER | CEXPR_TARGET:
-+				case CEXPR_USER | CEXPR_XTARGET:
-+				case CEXPR_ROLE:
-+				case CEXPR_ROLE | CEXPR_TARGET:
-+				case CEXPR_ROLE | CEXPR_XTARGET:
-+				case CEXPR_TYPE:
-+				case CEXPR_TYPE | CEXPR_TARGET:
-+				case CEXPR_TYPE | CEXPR_XTARGET:
-+				case CEXPR_L1L2:
-+				case CEXPR_L1H2:
-+				case CEXPR_H1L2:
-+				case CEXPR_H1H2:
-+				case CEXPR_L1H1:
-+				case CEXPR_L2H2:
-+					break;
-+				default:
-+					goto bad;
-+				}
-+			} else {
-+				switch (cexp->expr_type) {
-+				case CEXPR_NOT:
-+				case CEXPR_AND:
-+				case CEXPR_OR:
-+					break;
-+				default:
-+					goto bad;
-+				}
-+			}
- 		}
- 	}
+@@ -547,15 +547,22 @@ bad:
+ 	return -1;
+ }
  
+-static int validate_avtab_key_wrapper(avtab_key_t *k,  __attribute__ ((unused)) avtab_datum_t *d, void *args)
++static int validate_avtab_key_and_datum(avtab_key_t *k, avtab_datum_t *d, void *args)
+ {
+ 	validate_t *flavors = (validate_t *)args;
+-	return validate_avtab_key(k, flavors);
++
++	if (validate_avtab_key(k, flavors))
++		return -1;
++
++	if ((k->specified & AVTAB_TYPE) && validate_value(d->data, &flavors[SYM_TYPES]))
++		return -1;
++
++	return 0;
+ }
+ 
+ static int validate_avtab(sepol_handle_t *handle, avtab_t *avtab, validate_t flavors[])
+ {
+-	if (avtab_map(avtab, validate_avtab_key_wrapper, flavors)) {
++	if (avtab_map(avtab, validate_avtab_key_and_datum, flavors)) {
+ 		ERR(handle, "Invalid avtab");
+ 		return -1;
+ 	}
 -- 
 2.33.1
 

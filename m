@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 40D1A44662E
-	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:45:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BAA8446633
+	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:45:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232676AbhKEPsd (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Nov 2021 11:48:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44760 "EHLO
+        id S232923AbhKEPsf (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Nov 2021 11:48:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232918AbhKEPsd (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:33 -0400
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9666DC061205
-        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:45:53 -0700 (PDT)
-Received: by mail-ed1-x530.google.com with SMTP id ee33so34756739edb.8
-        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:45:53 -0700 (PDT)
+        with ESMTP id S232864AbhKEPsf (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:35 -0400
+Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7B04C061714
+        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:45:54 -0700 (PDT)
+Received: by mail-ed1-x52f.google.com with SMTP id b15so15222599edd.7
+        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:45:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=03ijkIPa37XtPTKt2qx3E0ByYddbAWLXbWkCvX19zTw=;
-        b=Z9t99ovUWE4anP0URbPz5iv6AxPKUee9s7l0YhAyraDd++Hi+PcoJ+XAaYnEnTkhZu
-         8PVILVd7NTcF6+hmM/9G0a7VafJ+AnW3UqKPUigf1YPmYIcaHSCMOUW2uhW3RtvDWPZF
-         96PPd9bIU/SGqtsmVCyroYg/0yvPYzUXrKDQAIuQZZ8GqDJ2Zwjt387JO45/hISVai/W
-         NRk6ZtfwLklehCvvn261YGJHaUIZyXzY2j2xjanTqK4y0alu7Ze0bw63koEOCiUHQ0tk
-         kHNnL+i300goItiAClM0MEuhaCJ8TPF/AmvWXC4/wRtOenCgerbwq6jVET9kGWetaoyE
-         joMA==
+        bh=E3uhquq8thBUgDTs6GsBKpcBitVfPLdjYHlKjwigYZM=;
+        b=MJSx4VFNQ2bSV2X5FN1zfrXC82+AHuPZN3mpnSRzyoctyO9H38vbPqnWO0ZdN7+sbY
+         K/GVGh/CFLy29DJsDtQzCq+Apo59/CWeCVBO59fHx6FQIg97Ohaedo03Q0qyBX0C9QD/
+         kHia+uuMCgXWoDvPZIucN4UfA5P4ojmNDMphm9ZdPoa4Ag+7r88b7MvZGfTnUKjaBvjn
+         gy5s7wtqYEX3S31VgzPSIKnfJ7d+zq+Z1BWwiOabx0hAj8co4efsfZgUK9uNsG6iF2HD
+         J6RMdOlMiYJCiqdzSvTDjLtW7QU/3DdmtAblYnL5EpmaplQt3ucBnJIpY/Sb0hn5N6ei
+         cxlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=03ijkIPa37XtPTKt2qx3E0ByYddbAWLXbWkCvX19zTw=;
-        b=HzUN2S2rhLiZaGXiK8+HkMRJ89AsBeI2XilD/1097HoYu5ohfawLz0gy62RJo+z3RZ
-         YvWj+YtFPUACD32dG0ROgBbrNKgolzjB7nfL5hH/hXjOrpuG1viCgtNj/MWAkEv/mhNj
-         llTS5kWr5b96of3qah403ol7p24zzM2f67cejlMVs824XhwF/UZx+vbP+xwFmodLiKuc
-         1gAdcGgjPebUxT01i+aJSM9oDLA2Ls8K9Lh9UN6t5AjVRi4LgEve/4my+TaLYGNszdPu
-         siI4M4H0h0uRjNM2Ucf6xcxhyGblPRugOrAZSNgmiTF20SJZf3rHHNtV7K/FS2WEEdm1
-         4CwA==
-X-Gm-Message-State: AOAM533svbCmOEo1ePpOk12Fo5O6EwKIBOEy75Mlb9Ff5jRUWUPE/r/X
-        WVSEC+E1gNiKZzIYecpzzt9AWCEV6Ds=
-X-Google-Smtp-Source: ABdhPJwBVnJViZTrV7cGmCrD9jUOLH0lbylvShjybHSni6ZC+xTtgMK+gEHA+7CneH9uaOGIhcvMcg==
-X-Received: by 2002:aa7:cb86:: with SMTP id r6mr77550719edt.236.1636127152179;
+        bh=E3uhquq8thBUgDTs6GsBKpcBitVfPLdjYHlKjwigYZM=;
+        b=EhpKlDYi4ZgCpMofyel7hyxF7FgbzEzWkjj9k3Kkk/Af5M8P/Yp1bZRr7reMIqwBza
+         cg/5hXnRLDuBVNC1kcsr3V6Yz52SEDRuUD5wZFb10FKogI7IZvCCL1+ZQM4ggPowaEAl
+         tNyxPBLUuoXe/HyS1gZgyvq+ymL+o8xnV+LLG1YOR/GIbgOsjc5ufwwGlXFPe6o8Seaw
+         t9vHben6ZvwKqMUMz5Z0xEDuRzDA746md4YSzk7ieuSWkxTT+MvZrAtByonpc8jGFzkr
+         MPxFDdwiWUOdlpoZ06a+B6Z05IvwYM1b35pSt1yakAog33+IgJLO4Fn56GHwSGJCpvUF
+         V8TQ==
+X-Gm-Message-State: AOAM533inKsXR7rHMGFmpgBgG/hZ0QkzpSBou7oefoaxMUKmOTeCrljz
+        k3KdS04DekR5LLSBsvC3viH6yZJV+FE=
+X-Google-Smtp-Source: ABdhPJxrLThmAqYAzLIFAeAhdF/EhJo5j3453bTgQW6Nywih2Uur/oUM4ch+xSrW9Fr3Ni5F5c9k7g==
+X-Received: by 2002:aa7:d7cb:: with SMTP id e11mr43164711eds.295.1636127152735;
         Fri, 05 Nov 2021 08:45:52 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-001-185-074.77.1.pool.telefonica.de. [77.1.185.74])
-        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.45.51
+        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.45.52
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Nov 2021 08:45:51 -0700 (PDT)
+        Fri, 05 Nov 2021 08:45:52 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v2 10/36] libsepol: add checks for read sizes
-Date:   Fri,  5 Nov 2021 16:45:12 +0100
-Message-Id: <20211105154542.38434-11-cgzones@googlemail.com>
+Subject: [RFC PATCH v2 11/36] libsepol: enforce avtab item limit
+Date:   Fri,  5 Nov 2021 16:45:13 +0100
+Message-Id: <20211105154542.38434-12-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211105154542.38434-1-cgzones@googlemail.com>
 References: <20211011162533.53404-1-cgzones@googlemail.com>
@@ -64,113 +64,90 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add checks for invalid read sizes from a binary policy to guard
-allocations.
+Check the current item count does not exceed the maximum allowed to
+avoid stack overflows.
 
-The common and class permission counts needs to be limited more strict
-otherwise a too high count of common or class permissions can lead to
-permission values with a too high value, which can lead to overflows
-in shift operations.
+    ==33660==ERROR: AddressSanitizer: stack-buffer-overflow on address 0x7fa64b8fc070 at pc 0x0000005acba0 bp 0x7ffc1f0b2870 sp 0x7ffc1f0b2868
+    READ of size 4 at 0x7fa64b8fc070 thread T0
+        #0 0x5acb9f in avtab_read_item ./libsepol/src/avtab.c:507:18
+        #1 0x5acec4 in avtab_read ./libsepol/src/avtab.c:611:8
+        #2 0x576ae3 in policydb_read ./libsepol/src/policydb.c:4433:7
+        #3 0x55a1fe in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:24:6
+        #4 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
+        #5 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
+        #6 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
+        #7 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
+        #8 0x7fa64cc867ec in __libc_start_main csu/../csu/libc-start.c:332:16
+        #9 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
 
-In the fuzzer build the value will also be bounded to avoid oom reports.
+    Address 0x7fa64b8fc070 is located in stack of thread T0 at offset 112 in frame
+        #0 0x5aabdf in avtab_read_item ./libsepol/src/avtab.c:437
 
-    ==29857== ERROR: libFuzzer: out-of-memory (malloc(17179868160))
-       To change the out-of-memory limit use -rss_limit_mb=<N>
-
-        #0 0x52dc61 in __sanitizer_print_stack_trace (./out/binpolicy-fuzzer+0x52dc61)
-        #1 0x475618 in fuzzer::PrintStackTrace() fuzzer.o
-        #2 0x458855 in fuzzer::Fuzzer::HandleMalloc(unsigned long) fuzzer.o
-        #3 0x45876a in fuzzer::MallocHook(void const volatile*, unsigned long) fuzzer.o
-        #4 0x534557 in __sanitizer::RunMallocHooks(void const*, unsigned long) (./out/binpolicy-fuzzer+0x534557)
-        #5 0x4aa7d7 in __asan::Allocator::Allocate(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*, __asan::AllocType, bool) (./out/binpolicy-fuzzer+0x4aa7d7)
-        #6 0x4aa143 in __asan::asan_malloc(unsigned long, __sanitizer::BufferedStackTrace*) (./out/binpolicy-fuzzer+0x4aa143)
-        #7 0x5259cb in malloc (./out/binpolicy-fuzzer+0x5259cb)
-        #8 0x580b5d in mallocarray ./libsepol/src/./private.h:93:9
-        #9 0x57c2ed in scope_read ./libsepol/src/policydb.c:4120:7
-        #10 0x576b0d in policydb_read ./libsepol/src/policydb.c:4462:9
-        #11 0x55a214 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:26:6
-        #12 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #13 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #14 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #15 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #16 0x7ffad6e107ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #17 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
-
-    ==19462== ERROR: libFuzzer: out-of-memory (malloc(18253611008))
-       To change the out-of-memory limit use -rss_limit_mb=<N>
-
-        #0 0x52dc61 in __sanitizer_print_stack_trace (./out/binpolicy-fuzzer+0x52dc61)
-        #1 0x475618 in fuzzer::PrintStackTrace() fuzzer.o
-        #2 0x458855 in fuzzer::Fuzzer::HandleMalloc(unsigned long) fuzzer.o
-        #3 0x45876a in fuzzer::MallocHook(void const volatile*, unsigned long) fuzzer.o
-        #4 0x534557 in __sanitizer::RunMallocHooks(void const*, unsigned long) (./out/binpolicy-fuzzer+0x534557)
-        #5 0x4aa7d7 in __asan::Allocator::Allocate(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*, __asan::AllocType, bool) (./out/binpolicy-fuzzer+0x4aa7d7)
-        #6 0x4aa999 in __asan::asan_calloc(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*) (./out/binpolicy-fuzzer+0x4aa999)
-        #7 0x525b63 in __interceptor_calloc (./out/binpolicy-fuzzer+0x525b63)
-        #8 0x570938 in policydb_index_others ./libsepol/src/policydb.c:1245:6
-        #9 0x5771f3 in policydb_read ./src/policydb.c:4481:6
-        #10 0x55a214 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:26:6
-        #11 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #12 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #13 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #14 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #15 0x7f4d933157ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #16 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
+      This frame has 6 object(s):
+        [32, 33) 'buf8' (line 438)
+        [48, 56) 'buf16' (line 439)
+        [80, 112) 'buf32' (line 440) <== Memory access at offset 112 overflows this variable
+        [144, 152) 'key' (line 441)
+        [176, 192) 'datum' (line 442)
+        [208, 244) 'xperms' (line 443)
+    HINT: this may be a false positive if your program uses some custom stack unwind mechanism, swapcontext or vfork
+          (longjmp and C++ exceptions *are* supported)
+    SUMMARY: AddressSanitizer: stack-buffer-overflow ./libsepol/src/avtab.c:507:18 in avtab_read_item
+    Shadow bytes around the buggy address:
+      0x0ff5497177b0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+      0x0ff5497177c0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+      0x0ff5497177d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+      0x0ff5497177e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+      0x0ff5497177f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    =>0x0ff549717800: f1 f1 f1 f1 01 f2 00 f2 f2 f2 00 00 00 00[f2]f2
+      0x0ff549717810: f2 f2 00 f2 f2 f2 00 00 f2 f2 00 00 00 00 04 f3
+      0x0ff549717820: f3 f3 f3 f3 00 00 00 00 00 00 00 00 00 00 00 00
+      0x0ff549717830: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+      0x0ff549717840: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+      0x0ff549717850: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+    Shadow byte legend (one shadow byte represents 8 application bytes):
+      Addressable:           00
+      Partially addressable: 01 02 03 04 05 06 07
+      Heap left redzone:       fa
+      Freed heap region:       fd
+      Stack left redzone:      f1
+      Stack mid redzone:       f2
+      Stack right redzone:     f3
+      Stack after return:      f5
+      Stack use after scope:   f8
+      Global redzone:          f9
+      Global init order:       f6
+      Poisoned by user:        f7
+      Container overflow:      fc
+      Array cookie:            ac
+      Intra object redzone:    bb
+      ASan internal:           fe
+      Left alloca redzone:     ca
+      Right alloca redzone:    cb
+    ==33660==ABORTING
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/policydb.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ libsepol/src/avtab.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index dcea1807..1408405d 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -2103,6 +2103,8 @@ static int common_read(policydb_t * p, hashtab_t h, struct policy_file *fp)
- 	if (symtab_init(&comdatum->permissions, PERM_SYMTAB_SIZE))
- 		goto bad;
- 	comdatum->permissions.nprim = le32_to_cpu(buf[2]);
-+	if (comdatum->permissions.nprim > 32)
-+		goto bad;
- 	nel = le32_to_cpu(buf[3]);
+diff --git a/libsepol/src/avtab.c b/libsepol/src/avtab.c
+index 46e1e75d..64aab683 100644
+--- a/libsepol/src/avtab.c
++++ b/libsepol/src/avtab.c
+@@ -503,6 +503,12 @@ int avtab_read_item(struct policy_file *fp, uint32_t vers, avtab_t * a,
  
- 	key = malloc(len + 1);
-@@ -2251,6 +2253,8 @@ static int class_read(policydb_t * p, hashtab_t h, struct policy_file *fp)
- 	if (symtab_init(&cladatum->permissions, PERM_SYMTAB_SIZE))
- 		goto bad;
- 	cladatum->permissions.nprim = le32_to_cpu(buf[3]);
-+	if (cladatum->permissions.nprim > 32)
-+		goto bad;
- 	nel = le32_to_cpu(buf[4]);
- 
- 	ncons = le32_to_cpu(buf[5]);
-@@ -3980,6 +3984,8 @@ static int avrule_decl_read(policydb_t * p, avrule_decl_t * decl,
- 		if (rc < 0) 
- 			return -1;
- 		nprim = le32_to_cpu(buf[0]);
-+		if (is_saturated(nprim))
-+			return -1;
- 		nel = le32_to_cpu(buf[1]);
- 		for (j = 0; j < nel; j++) {
- 			if (read_f[i] (p, decl->symtab[i].table, fp)) {
-@@ -4106,7 +4112,7 @@ static int scope_read(policydb_t * p, int symnum, struct policy_file *fp)
- 		goto cleanup;
- 	scope->scope = le32_to_cpu(buf[0]);
- 	scope->decl_ids_len = le32_to_cpu(buf[1]);
--	if (scope->decl_ids_len == 0) {
-+	if (zero_or_saturated(scope->decl_ids_len)) {
- 		ERR(fp->handle, "invalid scope with no declaration");
- 		goto cleanup;
- 	}
-@@ -4396,6 +4402,8 @@ int policydb_read(policydb_t * p, struct policy_file *fp, unsigned verbose)
- 		if (rc < 0)
- 			goto bad;
- 		nprim = le32_to_cpu(buf[0]);
-+		if (is_saturated(nprim))
-+			goto bad;
- 		nel = le32_to_cpu(buf[1]);
- 		if (nel && !nprim) {
- 			ERR(fp->handle, "unexpected items in symbol table with no symbol");
+ 		for (i = 0; i < ARRAY_SIZE(spec_order); i++) {
+ 			if (val & spec_order[i]) {
++				if (items > items2) {
++					ERR(fp->handle,
++					    "entry has too many items (%d/%d)",
++					    items, items2);
++					return -1;
++				}
+ 				key.specified = spec_order[i] | enabled;
+ 				datum.data = le32_to_cpu(buf32[items++]);
+ 				rc = insertf(a, &key, &datum, p);
 -- 
 2.33.1
 

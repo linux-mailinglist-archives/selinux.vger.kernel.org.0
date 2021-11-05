@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A0A0446640
-	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C882446642
+	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:46:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233484AbhKEPss (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Nov 2021 11:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44858 "EHLO
+        id S233468AbhKEPsu (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Nov 2021 11:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233409AbhKEPsn (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:43 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C819C06120B
-        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:46:03 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id x15so3302643edv.1
-        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:46:03 -0700 (PDT)
+        with ESMTP id S233450AbhKEPso (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:44 -0400
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A94E4C061714
+        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:46:04 -0700 (PDT)
+Received: by mail-ed1-x52e.google.com with SMTP id f4so34277182edx.12
+        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:46:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=D25LEwVKPJc1kp1Gs1pKnU188dh+IRlwvQBUij1KciU=;
-        b=X+kKmtzbcq+1PAOE5FnzxVjf6NqUKQErp/HFW9Oub6uowVlXlEhEbMIl6HamTKciac
-         ANXbCohilqe3vMMIaUTiHWoMG2sdVeNhfoxxzqx1UNipf+cafeNdecvhLT6HO9n1a1SB
-         hzwZzNXisHzaXYQjKWZgTB+4qJvMZJOa8qnEQHM7kTXhzJNhs+tQ1wE+6YoTSM6N20ww
-         f0jHjlLyEFz+HJF7DbcSDkr1J8GNEU/rofC7nFjknYt+GzqoQR/MmYjaubTppVwSLT5b
-         QxMJEefKFZojn0IkCuSdv49gMPBZR4jrhbQb6mrbDWCdV1zt9BL5uRapqvVkQagxym2l
-         OzsQ==
+        bh=jzKfVZkV3dgFA3SsACKwZ8re2XytntIUNt5Z2i3tnFE=;
+        b=R2tZJLCIEEUvgiMGenk4xd/6qAR8tgE+Sk3+bX17u0r4ncY0GPkcY5UTr+4Ajjj592
+         FRCYvVhhCb+d6WWltZjJxIFQVtKTggqWcC9echPX5OD6YcNq5LkFh54ksEuGwIvHP3KN
+         f7Gl6B9Q3OaCZc1f4/Av8GMUWIkJmTwVk9al3G0qOMxzLM0GSggEtR0+QGVVf/HpYhrq
+         ZIwdgYu1ChPcnKveVdLZT8vyRUyl2DPxjSjrPiQD5aRFFGNIiEpuK24NkaHsX3xFEMAj
+         jPMl6COeI9mHn5Insz8sKXUpGbGegKE7g78VPW7UTXngIyD6I9srSzuEhDoIOY+ngA+U
+         lYOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=D25LEwVKPJc1kp1Gs1pKnU188dh+IRlwvQBUij1KciU=;
-        b=hDbF6uHny5X/Ogxi5wMRYrb3copaXIO4CKkRjiAiJJ07FkVP183jvCtwZeuM5o+LFD
-         /L5H1xs4XaNJisTaLfefk+Hpwo84g0aaNnqiGv4fuyGT3q4/nwunFNnjm4LuS8/aF0hl
-         Ogn0LV8CYtfLkq0BoaypaM+1w4NDzKjhmiTo0o6G8wW5Uw8Bv8cu4ZojZ+K6JX/ithgI
-         fXPdxiZPZRE4f3e7VUfBWKDe3cIRkwqpEamiNszRsilayGHYYnZIKPgMj5vp9I0uENX6
-         kTG7fUi73t4aDXz0MNRWTdYZ8he3l9FtiSgfJUeShjE28bWUFLzHYd9uzVdA1tDEXqBJ
-         wtCw==
-X-Gm-Message-State: AOAM533nMnT2rBv576SCtYLJW7njKkTzAFG4u9LCJ7UXfMGw0aNz4PPe
-        aWnFZCe4Uhe4Aq1mQUbqswTG/It1/sU=
-X-Google-Smtp-Source: ABdhPJyQUEs7oFd577Bhftwbb3iwIduV0femxbtJV0NNs5hVqerL9d7lazBQZwbaqyR0BoTxuAaMgw==
-X-Received: by 2002:a50:e0c3:: with SMTP id j3mr79058160edl.97.1636127162148;
+        bh=jzKfVZkV3dgFA3SsACKwZ8re2XytntIUNt5Z2i3tnFE=;
+        b=TgZUNhSuo4VlUrfH5u2Z0ANj5tl0HVQRaiD71HKzwEirC345G8Cgt0BpBnleuKu2n4
+         Zix/Uk/KXmzumSHrBVPtH0QzpM1HfgrNFDshvPG9ESWDxfLq3ghKbUbOE3/aTT1PMAzP
+         TPf9zl4viVYq3FfOHg0YCu9yU+6huyRB1ATXv02vUqs2lwXk3HmeNYx3YJKiJfj2V12W
+         GsEncbR1cZcmTWBq0XHSx7SCoyvDGvDgEmyoU3qnM5GLPyX8HTYbJcWEfCow3cj3RVjN
+         EZpw6zWor2cXhmIkx2L18ky2gkH92hoY0VgLI6kFPY4C9FySyWowXnUtZYco6g7uSFV2
+         y8Zg==
+X-Gm-Message-State: AOAM532S4U1dOHIgcanvGOecYq2Njnun0IxC9oyy8/ZjJJNaDwbHPuYi
+        OuiXK2gL7SWP6bbwus+4boMkh0sBxF4=
+X-Google-Smtp-Source: ABdhPJxHLEzw11V0ShfqRrbBEmTTjAkbkU0FcnS2m4QIeAk3n8MsKr94Rq9Wz8UBG7zT1Faxl+nmFA==
+X-Received: by 2002:a50:d4d1:: with SMTP id e17mr78909491edj.348.1636127162715;
         Fri, 05 Nov 2021 08:46:02 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-001-185-074.77.1.pool.telefonica.de. [77.1.185.74])
-        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.46.01
+        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.46.02
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Nov 2021 08:46:01 -0700 (PDT)
+        Fri, 05 Nov 2021 08:46:02 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v2 25/36] libsepol: validate permission count of classes
-Date:   Fri,  5 Nov 2021 16:45:27 +0100
-Message-Id: <20211105154542.38434-26-cgzones@googlemail.com>
+Subject: [RFC PATCH v2 26/36] libsepol: resolve log message mismatch
+Date:   Fri,  5 Nov 2021 16:45:28 +0100
+Message-Id: <20211105154542.38434-27-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211105154542.38434-1-cgzones@googlemail.com>
 References: <20211011162533.53404-1-cgzones@googlemail.com>
@@ -64,82 +64,23 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Check a common class or a class together with its common class parent
-does not have more than the supported 32 permissions.
-
-    ==28413==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x7f74ec3341a3 bp 0x7ffd0b7e5030 sp 0x7ffd0b7e47e8 T0)
-    ==28413==The signal is caused by a READ memory access.
-    ==28413==Hint: address points to the zero page.
-        #0 0x7f74ec3341a3  string/../sysdeps/x86_64/multiarch/../strchr.S:32
-        #1 0x4bfc78 in strchr (./out/binpolicy-fuzzer+0x4bfc78)
-        #2 0x55b7f2 in class_constraint_rules_to_strs ./libsepol/src/kernel_to_conf.c:288:7
-        #3 0x55b7f2 in constraint_rules_to_strs ./libsepol/src/kernel_to_conf.c:364:9
-        #4 0x55ac80 in sepol_kernel_policydb_to_conf ./libsepol/src/kernel_to_conf.c:3071:7
-        #5 0x55a34f in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:38:9
-        #6 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #7 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #8 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #9 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #10 0x7f74ec2be7ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #11 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
-
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-
 ---
-v2:
-   also check common classes
----
- libsepol/src/policydb_validate.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ libsepol/src/policydb_validate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
-index adaa3fb2..e8d70585 100644
+index e8d70585..82193379 100644
 --- a/libsepol/src/policydb_validate.c
 +++ b/libsepol/src/policydb_validate.c
-@@ -211,6 +211,8 @@ static int validate_class_datum(sepol_handle_t *handle, class_datum_t *class, va
- 		goto bad;
- 	if (validate_constraint_nodes(handle, class->validatetrans, flavors))
- 		goto bad;
-+	if (class->permissions.nprim > PERM_SYMTAB_SIZE)
-+		goto bad;
- 
+@@ -263,7 +263,7 @@ static int validate_role_datum(sepol_handle_t *handle, role_datum_t *role, valid
  	return 0;
  
-@@ -226,6 +228,25 @@ static int validate_class_datum_wrapper(__attribute__((unused)) hashtab_key_t k,
- 	return validate_class_datum(margs->handle, d, margs->flavors);
+ bad:
+-	ERR(handle, "Invalid class datum");
++	ERR(handle, "Invalid role datum");
+ 	return -1;
  }
- 
-+static int validate_common_datum(sepol_handle_t *handle, common_datum_t *common)
-+{
-+	if (common->permissions.nprim > PERM_SYMTAB_SIZE)
-+		goto bad;
-+
-+	return 0;
-+
-+bad:
-+	ERR(handle, "Invalid common class datum");
-+	return -1;
-+}
-+
-+static int validate_common_datum_wrapper(__attribute__((unused)) hashtab_key_t k, hashtab_datum_t d, void *args)
-+{
-+	map_arg_t *margs = args;
-+
-+	return validate_common_datum(margs->handle, d);
-+}
-+
- static int validate_role_datum(sepol_handle_t *handle, role_datum_t *role, validate_t flavors[])
- {
- 	if (validate_value(role->s.value, &flavors[SYM_ROLES]))
-@@ -425,6 +446,9 @@ static int validate_datum_array_entries(sepol_handle_t *handle, policydb_t *p, v
- {
- 	map_arg_t margs = { flavors, handle, p->mls };
- 
-+	if (hashtab_map(p->p_commons.table, validate_common_datum_wrapper, &margs))
-+		goto bad;
-+
- 	if (hashtab_map(p->p_classes.table, validate_class_datum_wrapper, &margs))
- 		goto bad;
  
 -- 
 2.33.1

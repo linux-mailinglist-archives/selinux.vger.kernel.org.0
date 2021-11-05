@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7F0544662D
-	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:45:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 15DA4446632
+	for <lists+selinux@lfdr.de>; Fri,  5 Nov 2021 16:45:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232650AbhKEPsd (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 5 Nov 2021 11:48:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44750 "EHLO
+        id S232952AbhKEPse (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 5 Nov 2021 11:48:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232734AbhKEPsc (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:32 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8848CC061208
-        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:45:52 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id c8so17812139ede.13
-        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:45:52 -0700 (PDT)
+        with ESMTP id S232734AbhKEPsd (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 5 Nov 2021 11:48:33 -0400
+Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 217D8C061714
+        for <selinux@vger.kernel.org>; Fri,  5 Nov 2021 08:45:54 -0700 (PDT)
+Received: by mail-ed1-x52c.google.com with SMTP id m14so33818038edd.0
+        for <selinux@vger.kernel.org>; Fri, 05 Nov 2021 08:45:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=AMzfFM6xBXewuhUXPR0M4o5FGlrilqzwlmHGI8+xQrg=;
-        b=omZKXnEkOr/P7SSAqOg/cedHseiHAtgsarFn4BP7ul4oC9aVU+EuR06xrAm5+pPjQc
-         Ipktdx8COpXAlnWo5yzqOpU6nMASolYmeU1GReI8WrPG73/V9p8N9O3m9bcmjP/H20HX
-         uS+/09DkZevFpTxVuESl2d0XabD40SRa3IiZ5JOxiTnO66m37ph5LdtOpT0cb41O6pec
-         uPdpiNxckOBh+J37zPHo2Df7Df93HvlIOQSvB807F/vvN5HF4KZlKtbQhLZQPr4gu+AS
-         A44ClAjS+jbeYIThgBZkYHPyy3kIBmgfZtgBCUKgUWd1o7MYs9nbtA+2TXDCcdxz0JlW
-         NYtQ==
+        bh=FyyVZbCFe9V3RPN8wdAKTt8hZXKpI15hbdHylXt5bx4=;
+        b=oDQGz1XHcfp4lnHmpFsYwBcY7NMAh2jeSss8QxjCMS66L9y4hpda2FISGzt8/2L1Ft
+         Zc1DhYkrqMBMUIoD0QbcKAfHghJCJ8iFIj+nbKebB1FzdT1yhdtTH4wFRd9yzbn6L46a
+         TdFpkj3F0cgHa6RAfD0+Td4DxCuHV371SnXWkReL2nb1IXiaEnQTbkExmbKKd4Yh73k/
+         wjUztPx0g325Hk+5793/UyRqSBGJoQXhxRW1gj34YTggV2wbDAaSNS2ggSEnR65O2AIS
+         9GCEANYE6QAlvbNL4Sl89R2wK5Areg1hN0MwMbSvyxrGKwp/zebBhM9U+yEPxyHK2vFD
+         BjkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=AMzfFM6xBXewuhUXPR0M4o5FGlrilqzwlmHGI8+xQrg=;
-        b=EZbblGhmwEVBw6UpCQYsoE3mbmrD6mwMfjHdC3D+dRqxPkLSNjPSTgW6bmLM/syAp7
-         TaK8bJacfv5X1OdEsmEttOpAHHF7cB+E8C7+u3X/i4NsB6xIEb0Q3xfubg2ndg1anPKi
-         Dsa9CrnO1lmLAyOwUUa6hWXuVTMjjFpppmHT8ZZ3ZAuiX++u43QViqUrcQnuHIBRBq0G
-         jYxDxeUmueic+E7/xNC3yk7YYIE9YsYR4oVo9EQtOUJ9FHjX9W7QJKX3dUP1dcMrt/6B
-         nu8MKzRUT/6xI1LUxvKMUMLZ7fI8CwW62kI63Lks//5F0nVF5ZzgQ8tEEGeDwhaotOiE
-         jRTg==
-X-Gm-Message-State: AOAM5301OKZUZebz+/8M4VvsXILGgac01v0NB01j4Tqj6DuKMdpFRHNP
-        Dhs4feDZDW7dE983ElG/EV6imvYpues=
-X-Google-Smtp-Source: ABdhPJyBU2gR2yJDdNe7hB4fPMvzHS7aoYjgqznKvA+XrNA2vsVvRMqFc0CEys0fBj0rqe1v22SIGw==
-X-Received: by 2002:aa7:c501:: with SMTP id o1mr78257444edq.99.1636127151057;
+        bh=FyyVZbCFe9V3RPN8wdAKTt8hZXKpI15hbdHylXt5bx4=;
+        b=ibfF2oVnENLNtsbncogDAVfiPN8yVcoX4bF6AZ7C4R3maNu6kGTKN6RyGi/S9CINQv
+         q3mr5ZcJyDc+MmhqYs2aBeyK3ntgcO+S6PlxErDMvIoTk4DHcEyVS8d30EGT1Un2Nhzu
+         OyGvpUvJQ874SO2Xci8igOniFDMVv1QpxQWrHIzoAHR22bj5Pub0jVtCdKBduPMxqx5g
+         NXhx9lSAKcLLYN+iwtPl22hVHLhsse0LAugIo9v2CneK0xYl9NjqlWGqDOQR+XbDDEAP
+         Q7snYdgfqlUv+KEIFM55/ODcxHy9CqIFGwblRiAevu2LabzlqGHvMmjlmOm3/HZ7HfD1
+         aW5w==
+X-Gm-Message-State: AOAM5311IPakjDosBNJOFqi1Fa1Vq0W4D7Kb81TF1rnP2lWlt3bh48uW
+        m0ZaX/UiRr7SCygrD2ujvfyt+zbbbEM=
+X-Google-Smtp-Source: ABdhPJybOOdsmSmyfMwPXQp+G+JX3u5HveH/kBDQiMDsTVGwWLp+I2Au6HdiX5GNl4bJBsnl50godA==
+X-Received: by 2002:a05:6402:5190:: with SMTP id q16mr41348249edd.123.1636127151615;
         Fri, 05 Nov 2021 08:45:51 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-001-185-074.77.1.pool.telefonica.de. [77.1.185.74])
-        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.45.50
+        by smtp.gmail.com with ESMTPSA id u16sm4245474ejy.16.2021.11.05.08.45.51
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Nov 2021 08:45:50 -0700 (PDT)
+        Fri, 05 Nov 2021 08:45:51 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v2 08/36] libsepol: use mallocarray wrapper to avoid overflows
-Date:   Fri,  5 Nov 2021 16:45:10 +0100
-Message-Id: <20211105154542.38434-9-cgzones@googlemail.com>
+Subject: [RFC PATCH v2 09/36] libsepol: use reallocarray wrapper to avoid overflows
+Date:   Fri,  5 Nov 2021 16:45:11 +0100
+Message-Id: <20211105154542.38434-10-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211105154542.38434-1-cgzones@googlemail.com>
 References: <20211011162533.53404-1-cgzones@googlemail.com>
@@ -64,300 +64,244 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Use a wrapper to guard `malloc(a * b)` type allocations, to detect
+Use a wrapper to guard `realloc(p, a * b)` type allocations, to detect
 multiplication overflows, which result in too few memory being
 allocated.
 
+Use a custom implementation if the used C library does not offer one.
+
+Also use temporary variables for realloc(3) results in add_i_to_a() and
+fp_to_buffer().
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/conditional.c   | 2 +-
- libsepol/src/expand.c        | 4 ++--
- libsepol/src/hashtab.c       | 4 +++-
- libsepol/src/link.c          | 3 ++-
- libsepol/src/module.c        | 4 ++--
- libsepol/src/module_to_cil.c | 4 ++--
- libsepol/src/optimize.c      | 6 ++++--
- libsepol/src/policydb.c      | 6 +++---
- libsepol/src/private.h       | 9 +++++++++
- libsepol/src/services.c      | 6 +++---
- libsepol/src/sidtab.c        | 3 ++-
- libsepol/src/user_record.c   | 3 ++-
- libsepol/src/write.c         | 2 +-
- 13 files changed, 36 insertions(+), 20 deletions(-)
+ libsepol/src/Makefile           |  6 ++++++
+ libsepol/src/kernel_to_common.c |  4 ++--
+ libsepol/src/module_to_cil.c    |  9 +++++----
+ libsepol/src/optimize.c         |  5 +++--
+ libsepol/src/private.h          | 11 +++++++++++
+ libsepol/src/services.c         |  6 +++---
+ libsepol/src/user_record.c      |  5 +++--
+ libsepol/src/users.c            | 12 ++++++------
+ libsepol/src/util.c             | 11 +++++++----
+ 9 files changed, 46 insertions(+), 23 deletions(-)
 
-diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
-index 1edac65d..cc3f4d82 100644
---- a/libsepol/src/conditional.c
-+++ b/libsepol/src/conditional.c
-@@ -522,7 +522,7 @@ int cond_init_bool_indexes(policydb_t * p)
- 	if (p->bool_val_to_struct)
- 		free(p->bool_val_to_struct);
- 	p->bool_val_to_struct = (cond_bool_datum_t **)
--	    malloc(p->p_bools.nprim * sizeof(cond_bool_datum_t *));
-+	    mallocarray(p->p_bools.nprim, sizeof(cond_bool_datum_t *));
- 	if (!p->bool_val_to_struct)
- 		return -1;
- 	return 0;
-diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
-index a6a466f7..8a7259a0 100644
---- a/libsepol/src/expand.c
-+++ b/libsepol/src/expand.c
-@@ -3146,9 +3146,9 @@ int expand_module(sepol_handle_t * handle,
- 		goto cleanup;
+diff --git a/libsepol/src/Makefile b/libsepol/src/Makefile
+index dc8b1773..13410c67 100644
+--- a/libsepol/src/Makefile
++++ b/libsepol/src/Makefile
+@@ -29,6 +29,12 @@ LOBJS += $(sort $(patsubst %.c,%.lo,$(sort $(wildcard $(CILDIR)/src/*.c)) $(CIL_
+ override CFLAGS += -I$(CILDIR)/include
+ endif
  
- 	/* Build the type<->attribute maps and remove attributes. */
--	state.out->attr_type_map = malloc(state.out->p_types.nprim *
-+	state.out->attr_type_map = mallocarray(state.out->p_types.nprim,
- 					  sizeof(ebitmap_t));
--	state.out->type_attr_map = malloc(state.out->p_types.nprim *
-+	state.out->type_attr_map = mallocarray(state.out->p_types.nprim,
- 					  sizeof(ebitmap_t));
- 	if (!state.out->attr_type_map || !state.out->type_attr_map) {
- 		ERR(handle, "Out of memory!");
-diff --git a/libsepol/src/hashtab.c b/libsepol/src/hashtab.c
-index 21143b76..2eb35212 100644
---- a/libsepol/src/hashtab.c
-+++ b/libsepol/src/hashtab.c
-@@ -32,6 +32,8 @@
- #include <string.h>
- #include <sepol/policydb/hashtab.h>
- 
-+#include "private.h"
++# check for reallocarray(3) availability
++H := \#
++ifeq (yes,$(shell printf '${H}define _GNU_SOURCE\n${H}include <stdlib.h>\nint main(void){void*p=reallocarray(NULL, 1, sizeof(char));return 0;}' | $(CC) -x c -o /dev/null - >/dev/null 2>&1 && echo yes))
++override CFLAGS += -DHAVE_REALLOCARRAY
++endif
 +
- hashtab_t hashtab_create(unsigned int (*hash_value) (hashtab_t h,
- 						     const_hashtab_key_t key),
- 			 int (*keycmp) (hashtab_t h,
-@@ -52,7 +54,7 @@ hashtab_t hashtab_create(unsigned int (*hash_value) (hashtab_t h,
- 	p->nel = 0;
- 	p->hash_value = hash_value;
- 	p->keycmp = keycmp;
--	p->htable = (hashtab_ptr_t *) malloc(sizeof(hashtab_ptr_t) * size);
-+	p->htable = (hashtab_ptr_t *) mallocarray(size, sizeof(hashtab_ptr_t));
- 	if (p->htable == NULL) {
- 		free(p);
- 		return NULL;
-diff --git a/libsepol/src/link.c b/libsepol/src/link.c
-index 7512a4d9..bd986b7b 100644
---- a/libsepol/src/link.c
-+++ b/libsepol/src/link.c
-@@ -34,6 +34,7 @@
- #include <assert.h>
+ LD_SONAME_FLAGS=-soname,$(LIBSO),--version-script=$(LIBMAP),-z,defs
  
- #include "debug.h"
-+#include "private.h"
- 
- #undef min
- #define min(a,b) (((a) < (b)) ? (a) : (b))
-@@ -1679,7 +1680,7 @@ static int copy_scope_index(scope_index_t * src, scope_index_t * dest,
- 	}
- 
- 	/* next copy the enabled permissions data  */
--	if ((dest->class_perms_map = malloc(largest_mapped_class_value *
-+	if ((dest->class_perms_map = mallocarray(largest_mapped_class_value,
- 					    sizeof(*dest->class_perms_map))) ==
- 	    NULL) {
- 		goto cleanup;
-diff --git a/libsepol/src/module.c b/libsepol/src/module.c
-index 02a5de2c..4a51f25c 100644
---- a/libsepol/src/module.c
-+++ b/libsepol/src/module.c
-@@ -406,14 +406,14 @@ static int module_package_read_offsets(sepol_module_package_t * mod,
- 		goto err;
- 	}
- 
--	off = (size_t *) malloc((nsec + 1) * sizeof(size_t));
-+	off = (size_t *) mallocarray(nsec + 1, sizeof(size_t));
- 	if (!off) {
- 		ERR(file->handle, "out of memory");
- 		goto err;
- 	}
- 
- 	free(buf);
--	buf = malloc(sizeof(uint32_t) * nsec);
-+	buf = mallocarray(nsec, sizeof(uint32_t));
- 	if (!buf) {
- 		ERR(file->handle, "out of memory");
- 		goto err;
+ LN=ln
+diff --git a/libsepol/src/kernel_to_common.c b/libsepol/src/kernel_to_common.c
+index a7453d3c..51df8c25 100644
+--- a/libsepol/src/kernel_to_common.c
++++ b/libsepol/src/kernel_to_common.c
+@@ -161,7 +161,7 @@ int strs_add(struct strs *strs, char *s)
+ 		char **new;
+ 		unsigned i = strs->size;
+ 		strs->size *= 2;
+-		new = realloc(strs->list, sizeof(char *)*strs->size);
++		new = reallocarray(strs->list, strs->size, sizeof(char *));
+ 		if (!new) {
+ 			sepol_log_err("Out of memory");
+ 			return -1;
+@@ -220,7 +220,7 @@ int strs_add_at_index(struct strs *strs, char *s, unsigned index)
+ 		while (index >= strs->size) {
+ 			strs->size *= 2;
+ 		}
+-		new = realloc(strs->list, sizeof(char *)*strs->size);
++		new = reallocarray(strs->list, strs->size, sizeof(char *));
+ 		if (!new) {
+ 			sepol_log_err("Out of memory");
+ 			return -1;
 diff --git a/libsepol/src/module_to_cil.c b/libsepol/src/module_to_cil.c
-index 16e4004e..ad0880bd 100644
+index ad0880bd..84e49c5b 100644
 --- a/libsepol/src/module_to_cil.c
 +++ b/libsepol/src/module_to_cil.c
-@@ -430,7 +430,7 @@ static int stack_init(struct stack **stack)
- 		goto exit;
+@@ -453,7 +453,7 @@ static int stack_push(struct stack *stack, void *ptr)
+ 	void *new_stack;
+ 
+ 	if (stack->pos + 1 == stack->size) {
+-		new_stack = realloc(stack->stack, sizeof(*stack->stack) * (stack->size * 2));
++		new_stack = reallocarray(stack->stack, stack->size * 2, sizeof(*stack->stack));
+ 		if (new_stack == NULL) {
+ 			goto exit;
+ 		}
+@@ -4123,7 +4123,7 @@ exit:
+ static int fp_to_buffer(FILE *fp, char **data, size_t *data_len)
+ {
+ 	int rc = -1;
+-	char *d = NULL;
++	char *d = NULL, *d_tmp;
+ 	size_t d_len = 0;
+ 	size_t read_len = 0;
+ 	size_t max_len = 1 << 17; // start at 128KB, this is enough to hold about half of all the existing pp files
+@@ -4139,12 +4139,13 @@ static int fp_to_buffer(FILE *fp, char **data, size_t *data_len)
+ 		d_len += read_len;
+ 		if (d_len == max_len) {
+ 			max_len *= 2;
+-			d = realloc(d, max_len);
+-			if (d == NULL) {
++			d_tmp = realloc(d, max_len);
++			if (d_tmp == NULL) {
+ 				log_err("Out of memory");
+ 				rc = -1;
+ 				goto exit;
+ 			}
++			d = d_tmp;
+ 		}
  	}
  
--	s->stack = malloc(sizeof(*s->stack) * STACK_SIZE);
-+	s->stack = mallocarray(STACK_SIZE, sizeof(*s->stack));
- 	if (s->stack == NULL) {
- 		goto exit;
- 	}
-@@ -1008,7 +1008,7 @@ static int ebitmap_to_names(struct ebitmap *map, char **vals_to_names, char ***n
- 		goto exit;
- 	}
- 
--	name_arr = malloc(sizeof(*name_arr) * num);
-+	name_arr = mallocarray(num, sizeof(*name_arr));
- 	if (name_arr == NULL) {
- 		log_err("Out of memory");
- 		rc = -1;
 diff --git a/libsepol/src/optimize.c b/libsepol/src/optimize.c
-index 6826155c..f8298fb7 100644
+index f8298fb7..8a048702 100644
 --- a/libsepol/src/optimize.c
 +++ b/libsepol/src/optimize.c
-@@ -31,6 +31,8 @@
- #include <sepol/policydb/policydb.h>
- #include <sepol/policydb/conditional.h>
- 
-+#include "private.h"
-+
- #define TYPE_VEC_INIT_SIZE 16
- 
- struct type_vec {
-@@ -42,7 +44,7 @@ static int type_vec_init(struct type_vec *v)
+@@ -59,8 +59,9 @@ static int type_vec_append(struct type_vec *v, uint32_t type)
  {
- 	v->capacity = TYPE_VEC_INIT_SIZE;
- 	v->count = 0;
--	v->types = malloc(v->capacity * sizeof(*v->types));
-+	v->types = mallocarray(v->capacity, sizeof(*v->types));
- 	if (!v->types)
- 		return -1;
- 	return 0;
-@@ -93,7 +95,7 @@ static struct type_vec *build_type_map(const policydb_t *p)
- {
- 	unsigned int i, k;
- 	ebitmap_node_t *n;
--	struct type_vec *map = malloc(p->p_types.nprim * sizeof(*map));
-+	struct type_vec *map = mallocarray(p->p_types.nprim, sizeof(*map));
- 	if (!map)
- 		return NULL;
+ 	if (v->capacity == v->count) {
+ 		unsigned int new_capacity = v->capacity * 2;
+-		uint32_t *new_types = realloc(v->types,
+-					      new_capacity * sizeof(*v->types));
++		uint32_t *new_types = reallocarray(v->types,
++						   new_capacity,
++						   sizeof(*v->types));
+ 		if (!new_types)
+ 			return -1;
  
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index 587ba64a..dcea1807 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -4111,7 +4111,7 @@ static int scope_read(policydb_t * p, int symnum, struct policy_file *fp)
- 		goto cleanup;
- 	}
- 	if ((scope->decl_ids =
--	     malloc(scope->decl_ids_len * sizeof(uint32_t))) == NULL) {
-+	     mallocarray(scope->decl_ids_len, sizeof(uint32_t))) == NULL) {
- 		goto cleanup;
- 	}
- 	rc = next_entry(scope->decl_ids, fp, sizeof(uint32_t) * scope->decl_ids_len);
-@@ -4500,8 +4500,8 @@ int policydb_read(policydb_t * p, struct policy_file *fp, unsigned verbose)
- 	}
- 
- 	if (policy_type == POLICY_KERN) {
--		p->type_attr_map = malloc(p->p_types.nprim * sizeof(ebitmap_t));
--		p->attr_type_map = malloc(p->p_types.nprim * sizeof(ebitmap_t));
-+		p->type_attr_map = mallocarray(p->p_types.nprim, sizeof(ebitmap_t));
-+		p->attr_type_map = mallocarray(p->p_types.nprim, sizeof(ebitmap_t));
- 		if (!p->type_attr_map || !p->attr_type_map)
- 			goto bad;
- 		for (i = 0; i < p->p_types.nprim; i++) {
 diff --git a/libsepol/src/private.h b/libsepol/src/private.h
-index 6146f59f..d3d65a57 100644
+index d3d65a57..a8cc1472 100644
 --- a/libsepol/src/private.h
 +++ b/libsepol/src/private.h
-@@ -83,3 +83,12 @@ extern int next_entry(void *buf, struct policy_file *fp, size_t bytes);
- extern size_t put_entry(const void *ptr, size_t size, size_t n,
- 		        struct policy_file *fp);
- extern int str_read(char **strp, struct policy_file *fp, size_t len);
+@@ -92,3 +92,14 @@ static inline void* mallocarray(size_t nmemb, size_t size) {
+ 
+ 	return malloc(nmemb * size);
+ }
 +
-+static inline void* mallocarray(size_t nmemb, size_t size) {
++#ifndef HAVE_REALLOCARRAY
++static inline void* reallocarray(void *ptr, size_t nmemb, size_t size) {
 +	if (size && nmemb > (size_t)-1 / size) {
 +		errno = ENOMEM;
 +		return NULL;
 +	}
 +
-+	return malloc(nmemb * size);
++	return realloc(ptr, nmemb * size);
 +}
++#endif
 diff --git a/libsepol/src/services.c b/libsepol/src/services.c
-index 3407058f..edcdde21 100644
+index edcdde21..0f36ac53 100644
 --- a/libsepol/src/services.c
 +++ b/libsepol/src/services.c
-@@ -712,7 +712,7 @@ mls_ops:
- 	 * Generate the same number of answer buffer entries as expression
- 	 * buffers (as there will never be more).
- 	 */
--	answer_list = malloc(expr_count * sizeof(*answer_list));
-+	answer_list = mallocarray(expr_count, sizeof(*answer_list));
- 	if (!answer_list) {
- 		ERR(NULL, "failed to allocate answer stack");
- 		rc = -ENOMEM;
-@@ -2163,7 +2163,7 @@ int sepol_get_user_sids(sepol_security_id_t fromsid,
- 	}
- 	usercon.user = user->s.value;
+@@ -94,7 +94,7 @@ static void push(char *expr_ptr)
+ 		else
+ 			new_stack_len = stack_len * 2;
  
--	mysids = malloc(maxnel * sizeof(sepol_security_id_t));
-+	mysids = mallocarray(maxnel, sizeof(sepol_security_id_t));
- 	if (!mysids) {
- 		rc = -ENOMEM;
- 		goto out;
-@@ -2199,7 +2199,7 @@ int sepol_get_user_sids(sepol_security_id_t fromsid,
- 			} else {
- 				maxnel += SIDS_NEL;
- 				mysids2 =
--				    malloc(maxnel *
-+				    mallocarray(maxnel,
- 					   sizeof(sepol_security_id_t));
+-		new_stack = realloc(stack, new_stack_len * sizeof(*stack));
++		new_stack = reallocarray(stack, new_stack_len, sizeof(*stack));
+ 		if (!new_stack) {
+ 			ERR(NULL, "unable to allocate stack space");
+ 			return;
+@@ -449,8 +449,8 @@ static int constraint_expr_eval_reason(context_struct_t *scontext,
+ 			else
+ 				new_expr_list_len = expr_list_len * 2;
  
- 				if (!mysids2) {
-diff --git a/libsepol/src/sidtab.c b/libsepol/src/sidtab.c
-index 255e0725..adeae6eb 100644
---- a/libsepol/src/sidtab.c
-+++ b/libsepol/src/sidtab.c
-@@ -15,6 +15,7 @@
- #include <sepol/policydb/sidtab.h>
- 
- #include "flask.h"
-+#include "private.h"
- 
- #define SIDTAB_HASH(sid) \
- (sid & SIDTAB_HASH_MASK)
-@@ -27,7 +28,7 @@ int sepol_sidtab_init(sidtab_t * s)
- {
- 	int i;
- 
--	s->htable = malloc(sizeof(sidtab_ptr_t) * SIDTAB_SIZE);
-+	s->htable = mallocarray(SIDTAB_SIZE, sizeof(sidtab_ptr_t));
- 	if (!s->htable)
- 		return -ENOMEM;
- 	for (i = 0; i < SIDTAB_SIZE; i++)
+-			new_expr_list = realloc(expr_list,
+-					new_expr_list_len * sizeof(*expr_list));
++			new_expr_list = reallocarray(expr_list,
++					new_expr_list_len, sizeof(*expr_list));
+ 			if (!new_expr_list) {
+ 				ERR(NULL, "failed to allocate expr buffer stack");
+ 				rc = -ENOMEM;
 diff --git a/libsepol/src/user_record.c b/libsepol/src/user_record.c
-index ac520060..c1356a6b 100644
+index c1356a6b..404fa3a8 100644
 --- a/libsepol/src/user_record.c
 +++ b/libsepol/src/user_record.c
-@@ -4,6 +4,7 @@
- 
- #include "user_internal.h"
- #include "debug.h"
-+#include "private.h"
- 
- struct sepol_user {
- 	/* This user's name */
-@@ -265,7 +266,7 @@ int sepol_user_get_roles(sepol_handle_t * handle,
- 
- 	unsigned int i;
- 	const char **tmp_roles =
--	    (const char **)malloc(sizeof(char *) * user->num_roles);
-+	    (const char **)mallocarray(user->num_roles, sizeof(char *));
- 	if (!tmp_roles)
+@@ -183,8 +183,9 @@ int sepol_user_add_role(sepol_handle_t * handle,
+ 	if (!role_cp)
  		goto omem;
  
-diff --git a/libsepol/src/write.c b/libsepol/src/write.c
-index 3bd034d6..9df5b0bd 100644
---- a/libsepol/src/write.c
-+++ b/libsepol/src/write.c
-@@ -2117,7 +2117,7 @@ static int scope_write(hashtab_key_t key, hashtab_datum_t datum, void *ptr)
- 		 * buffer.  this would have been easier with C99's
- 		 * dynamic arrays... */
- 		rc = POLICYDB_ERROR;
--		dyn_buf = malloc(items * sizeof(*dyn_buf));
-+		dyn_buf = mallocarray(items, sizeof(*dyn_buf));
- 		if (!dyn_buf)
- 			goto err;
- 		buf = dyn_buf;
+-	roles_realloc = realloc(user->roles,
+-				sizeof(char *) * (user->num_roles + 1));
++	roles_realloc = reallocarray(user->roles,
++				     user->num_roles + 1,
++				     sizeof(char *));
+ 	if (!roles_realloc)
+ 		goto omem;
+ 
+diff --git a/libsepol/src/users.c b/libsepol/src/users.c
+index b895b7f5..a7406214 100644
+--- a/libsepol/src/users.c
++++ b/libsepol/src/users.c
+@@ -226,17 +226,17 @@ int sepol_user_modify(sepol_handle_t * handle,
+ 		void *tmp_ptr;
+ 
+ 		/* Ensure reverse lookup array has enough space */
+-		tmp_ptr = realloc(policydb->user_val_to_struct,
+-				  (policydb->p_users.nprim +
+-				   1) * sizeof(user_datum_t *));
++		tmp_ptr = reallocarray(policydb->user_val_to_struct,
++				  policydb->p_users.nprim + 1,
++				  sizeof(user_datum_t *));
+ 		if (!tmp_ptr)
+ 			goto omem;
+ 		policydb->user_val_to_struct = tmp_ptr;
+ 		policydb->user_val_to_struct[policydb->p_users.nprim] = NULL;
+ 
+-		tmp_ptr = realloc(policydb->sym_val_to_name[SYM_USERS],
+-				  (policydb->p_users.nprim +
+-				   1) * sizeof(char *));
++		tmp_ptr = reallocarray(policydb->sym_val_to_name[SYM_USERS],
++				  policydb->p_users.nprim + 1,
++				  sizeof(char *));
+ 		if (!tmp_ptr)
+ 			goto omem;
+ 		policydb->sym_val_to_name[SYM_USERS] = tmp_ptr;
+diff --git a/libsepol/src/util.c b/libsepol/src/util.c
+index 902c63c5..b7230564 100644
+--- a/libsepol/src/util.c
++++ b/libsepol/src/util.c
+@@ -40,6 +40,8 @@ struct val_to_name {
+  * 0).  Return 0 on success, -1 on out of memory. */
+ int add_i_to_a(uint32_t i, uint32_t * cnt, uint32_t ** a)
+ {
++	uint32_t *new;
++
+ 	if (cnt == NULL || a == NULL)
+ 		return -1;
+ 
+@@ -48,17 +50,18 @@ int add_i_to_a(uint32_t i, uint32_t * cnt, uint32_t ** a)
+ 	 * than be smart about it, for now we realloc() the array each
+ 	 * time a new uint32_t is added! */
+ 	if (*a != NULL)
+-		*a = (uint32_t *) realloc(*a, (*cnt + 1) * sizeof(uint32_t));
++		new = (uint32_t *) reallocarray(*a, *cnt + 1, sizeof(uint32_t));
+ 	else {			/* empty list */
+ 
+ 		*cnt = 0;
+-		*a = (uint32_t *) malloc(sizeof(uint32_t));
++		new = (uint32_t *) malloc(sizeof(uint32_t));
+ 	}
+-	if (*a == NULL) {
++	if (new == NULL) {
+ 		return -1;
+ 	}
+-	(*a)[*cnt] = i;
++	new[*cnt] = i;
+ 	(*cnt)++;
++	*a = new;
+ 	return 0;
+ }
+ 
 -- 
 2.33.1
 

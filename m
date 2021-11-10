@@ -2,78 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F215F44BA78
-	for <lists+selinux@lfdr.de>; Wed, 10 Nov 2021 03:54:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5AB44BC5D
+	for <lists+selinux@lfdr.de>; Wed, 10 Nov 2021 08:50:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbhKJC4v (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 9 Nov 2021 21:56:51 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55176 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230050AbhKJC4u (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 9 Nov 2021 21:56:50 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46E0FC061766
-        for <selinux@vger.kernel.org>; Tue,  9 Nov 2021 18:54:03 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id x15so4637987edv.1
-        for <selinux@vger.kernel.org>; Tue, 09 Nov 2021 18:54:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5NrMuUd9RVmqho7c99VA37NGVpHVxkPeawl1QbeDoXI=;
-        b=2yM4rCWxPInERG+QCyDMHFmNyUNbegR+jId0SiuHkE89Wzr0tDc5okBgTaud2pA4Vi
-         7jf3/o3BP9LjeHm3rg+86O/H5jXKKG4MXeLKplYeNfELnniz1pvWsJtdsUkmtJTUCobj
-         JtpBoi6CE8VYw1UR2Y6+BT+rp+5zLMDaThwALhgb2tgWTHt0A7mys4pTOJWBvncrnopP
-         1Zssorsn+KqbkXrB4WljIaDEkW2h8T8JOFTFfZnsq/eaJ7Vs1vuI1djb2vZdQwHp3dcq
-         S3n5t5MhJOrIVxpXuF35A37S6QSUtTud87vs8yLCvd4uE8Pslys0fZJG+vQ9CDkKv30q
-         AJRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5NrMuUd9RVmqho7c99VA37NGVpHVxkPeawl1QbeDoXI=;
-        b=j+AEjvczLmLzjJVmR93H8q/HXGeP51jf1klGZyahImZB9REY367DiQXIShWZDAEf+C
-         YWy2WIZWbMX68H2O8PgRZ+0vV3zKnu0qUfaNwsNKBtG5xboVuWJ4eVAGSxfnVdADR9V9
-         28DjQIiJoD3+uPg19HJBtWnmY4qCotrkM2EpiD4jq8EroJjKOJOaaOXE+fNSUK8yvvZM
-         ZeFzPqnHm39ocZ+A8mdB4KojnxUXjFH0iUpD0HTQiRTal8IfScuJR/VSnjTO2jP6weM8
-         PY6O0hC10nM/qz67ODxpADA76NsBYCH2jtCjKIHBUC097lo4bjagXR5MAKDjHMgDZl1J
-         +ibQ==
-X-Gm-Message-State: AOAM530GqIEF1IPPKwI+j/QuWhSxiUwYmbIDSAthYWzoqVRGxexmOceu
-        STSTxcJKSS3jHmb0lAUmyOIcp+yDFqnggPLjimIA
-X-Google-Smtp-Source: ABdhPJyMhmWVAj7qXRN69GjcQqzUiWUIxkvFttCjH7BDsjQ4nsZY2Yn556DuYq3kC1SVqhSOraDOadJcoRHPhTuEbs4=
-X-Received: by 2002:a05:6402:4309:: with SMTP id m9mr17051941edc.93.1636512841577;
- Tue, 09 Nov 2021 18:54:01 -0800 (PST)
+        id S229582AbhKJHxZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Wed, 10 Nov 2021 02:53:25 -0500
+Received: from mail.ibiol.ro ([82.78.17.178]:48658 "EHLO mail.ibiol.ro"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229770AbhKJHxZ (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Wed, 10 Nov 2021 02:53:25 -0500
+X-Greylist: delayed 12195 seconds by postgrey-1.27 at vger.kernel.org; Wed, 10 Nov 2021 02:53:24 EST
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.ibiol.ro (Postfix) with ESMTP id E17B011BFA3F;
+        Wed, 10 Nov 2021 05:15:31 +0200 (EET)
+Received: from mail.ibiol.ro ([127.0.0.1])
+        by localhost (mail.ibiol.ro [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 2U02fKn7acH5; Wed, 10 Nov 2021 05:15:31 +0200 (EET)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by mail.ibiol.ro (Postfix) with ESMTP id 3A8C911B42A7;
+        Wed, 10 Nov 2021 04:39:40 +0200 (EET)
+X-Virus-Scanned: amavisd-new at ibiol.ro
+Received: from mail.ibiol.ro ([127.0.0.1])
+        by localhost (mail.ibiol.ro [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id Oa0B1R7eiQxO; Wed, 10 Nov 2021 04:39:40 +0200 (EET)
+Received: from MACBOOK7275.localdomain (unknown [41.147.0.246])
+        by mail.ibiol.ro (Postfix) with ESMTPSA id 8078311B9EC5;
+        Wed, 10 Nov 2021 04:07:32 +0200 (EET)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20211107142047.32727-1-richard_c_haines@btinternet.com>
- <20211107142047.32727-2-richard_c_haines@btinternet.com> <CAFqZXNvaChb_D4YFK6_WnXYVMZ3ZUpC4p9rDEbztOTa-Tb-znw@mail.gmail.com>
- <74823199cfc693defe0cbaca3623d8245d9454d1.camel@btinternet.com>
-In-Reply-To: <74823199cfc693defe0cbaca3623d8245d9454d1.camel@btinternet.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 9 Nov 2021 21:53:50 -0500
-Message-ID: <CAHC9VhSsLenLDXcgK-PSDy6_WOzftoTANDbpaPRQKdUi=D-RPQ@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/1] testsuite sctp: Add tests for sctp_socket
- transition rules
-To:     Richard Haines <richard_c_haines@btinternet.com>
-Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
-        SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Dringende Informationen
+To:     Recipients <minodora.stanescu@ibiol.ro>
+From:   "Mr. Haskel" <minodora.stanescu@ibiol.ro>
+Date:   Wed, 10 Nov 2021 10:07:25 +0800
+Reply-To: jonathanhaskel377@gmail.com
+Message-Id: <20211110020732.8078311B9EC5@mail.ibiol.ro>
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Nov 9, 2021 at 5:00 AM Richard Haines
-<richard_c_haines@btinternet.com> wrote:
-> The only thing I would like to see is that whichever way is
-> chosen, it's documented (preferably in Documentation/security/SCTP.rst,
-> but to keep Paul full of happiness & light also in the patch
-> description).
+Grüße von Jonathan Haskel, ich fühle mich geehrt, a vorteilhafter Vorschlag an Sie; Ich möchte Sie dringend um Hilfe bitten, um die Summe von 7,9 Millionen Dollar plus (6 kg) Goldbarren zu erhalten. Ich würde mich über Ihre sofortige Antwort freuen, damit ich Ihnen mehr Details mitteilen und diese Transaktion so schnell wie möglich ohne Risiko abschließen kann.
 
-/me chuckles
-
-It probably wasn't clear in my earlier comments, but yes, I also would
-like to see the approach documented under Documentation/, I just
-wanted to see something in the git log too.
-
--- 
-paul moore
-www.paul-moore.com
+Herzlich
+Jonathan Haskel

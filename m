@@ -2,200 +2,104 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C31254501CB
-	for <lists+selinux@lfdr.de>; Mon, 15 Nov 2021 10:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08408450E98
+	for <lists+selinux@lfdr.de>; Mon, 15 Nov 2021 19:14:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236773AbhKOJ6h (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 15 Nov 2021 04:58:37 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:26107 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230405AbhKOJ6L (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 15 Nov 2021 04:58:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1636970116;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=S1I9GgUzetQQheAnUhXE/nnpCn3z7bSeZFRmUEJlZQM=;
-        b=Ut6twjdva73CkzHJx92iIm5hZfp/c3zAjtz9rPgsrAj3ccMkc2ZYPYgqoYleV+0XYdCCk3
-        96J8xVa0KNNWhV8xDZxfUjRMjf8AJFEZGcYHqlKX2o2qrWqBmXfxWH21q9p+Qj0zgjoaxl
-        oNxmZIHS6od7B8rlDZIND+GZGWGHZDc=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-218-6IQKUluXMca7iFT6vhQmCw-1; Mon, 15 Nov 2021 04:55:12 -0500
-X-MC-Unique: 6IQKUluXMca7iFT6vhQmCw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id D37711023F5C;
-        Mon, 15 Nov 2021 09:55:11 +0000 (UTC)
-Received: from localhost (unknown [10.40.193.20])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6783960657;
-        Mon, 15 Nov 2021 09:55:11 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
-To:     markus.linnala@gmail.com, selinux@vger.kernel.org
-Subject: Re: [PATCH] Use IANA-managed domain example.com in examples
-In-Reply-To: <87lf1ux007.fsf@redhat.com>
-References: <20211109153956.472188-1-markus.linnala@gmail.com>
- <87lf1ux007.fsf@redhat.com>
-Date:   Mon, 15 Nov 2021 10:55:10 +0100
-Message-ID: <87czn1lp4x.fsf@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+        id S240598AbhKOSQl (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 15 Nov 2021 13:16:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49142 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240683AbhKOSLr (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 15 Nov 2021 13:11:47 -0500
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B0A6C0386D1
+        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 09:38:52 -0800 (PST)
+Received: by mail-pl1-x64a.google.com with SMTP id f16-20020a170902ce9000b001436ba39b2bso6539056plg.3
+        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 09:38:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=date:message-id:mime-version:subject:from:to:cc;
+        bh=gFHzpDmZVv3KTzaa99s4GcDQLq8lkQoNbMRzfWvXXRU=;
+        b=E0lMrhcUzQ+Xxg7MzzracGH2o8ZPywwPNThCN8B2PV1+YsxQ7pcG6fw/LsdoL5DhpJ
+         Po3s0ulyU4vPeedC/oWHYgY2QT/E5n8f1j7yGJCR4TH0EDLR7pHs43w4Fn0CYmqbDa0b
+         C0axRULUIX1exCYTmfoFg2/WV3luxC+wnavfxXcrma1naBKaP+Qwb/UAzxoe3aOMfF+9
+         /LhYB/QdqhlAwXaExqi0xERMWK/ww3Q0LLDDgsSqjoH2cQ6ymB4g9FuH95+4++E+m+gv
+         gJIlxXphc6ecxg7H1I/CcfAWBgO6rECPBHy08g79iQ2oAy5ZYNMdQUXVfhQ7q0IgGMdk
+         CAhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc;
+        bh=gFHzpDmZVv3KTzaa99s4GcDQLq8lkQoNbMRzfWvXXRU=;
+        b=uFGjgcMywQmY8lJKu5i5fvT8ojGVR/txKC9W8nyAKf/fDpvd8M0mpEOrf1JS/o6ogD
+         4pinlfQP9FGD/lb6+h770uiZri7tsypacTAcccLW+fRAJTyICm6W15sqNYjXIbPmZa1J
+         jnEweBZyNPOdjec85Wz7SbIh3g5+WQKNMfF1tFgWKdTBxD7ytcWjbFWB//h3kBGwCOQJ
+         v4gN+hbpEa247fGqY17Zg9DPVgkQYgLpJ7WEAlGX91rBEubKyU1Gg47TmQEXoZvQfqXd
+         AFeujO4fGyVoLJoT77IB8HKY84GPCnR6p5Z+ARBVG2O6KvHYM/MZqVmdjE1YKCkG5nH4
+         tRWA==
+X-Gm-Message-State: AOAM530CSSc9vy2Jh11ZKPPegdQBgkWD35vGe4gpPWEIiU3eywUL7jk8
+        5xIS5k0IjAAfZINK1VEz0rLVOn9eqnU=
+X-Google-Smtp-Source: ABdhPJwTAV+ZG+2XqLkeiSQpjZ7KK5I0FTpAB9sdXiyOS+6eC4Xc72hJckhedQD25PX8UC+kT43g6OJrmDU=
+X-Received: from adelva.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:b2b])
+ (user=adelva job=sendgmr) by 2002:a17:90a:c287:: with SMTP id
+ f7mr60754043pjt.114.1636997931798; Mon, 15 Nov 2021 09:38:51 -0800 (PST)
+Date:   Mon, 15 Nov 2021 17:38:50 +0000
+Message-Id: <20211115173850.3598768-1-adelva@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.34.0.rc1.387.gb447b232ab-goog
+Subject: [PATCH] block: Check ADMIN before NICE for IOPRIO_CLASS_RT
+From:   Alistair Delva <adelva@google.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Khazhismel Kumykov <khazhy@google.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Serge Hallyn <serge@hallyn.com>, Jens Axboe <axboe@kernel.dk>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org,
+        linux-security-module@vger.kernel.org, kernel-team@android.com,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Petr Lautrbach <plautrba@redhat.com> writes:
+Booting to Android userspace on 5.14 or newer triggers the following
+SELinux denial:
 
-> markus.linnala@gmail.com writes:
->
->> From: Markus Linnala <Markus.Linnala@knowit.fi>
->>
->> See: RFC 2606
->>
->> foo.com seems to be privately owned.
->>
->> Signed-off-by: Markus Linnala <Markus.Linnala@knowit.fi>
->
-> Acked-by: Petr Lautrbach <plautrba@redhat.com>
->
+avc: denied { sys_nice } for comm="init" capability=23
+     scontext=u:r:init:s0 tcontext=u:r:init:s0 tclass=capability
+     permissive=0
 
-This is merged now. Thanks!
+Init is PID 0 running as root, so it already has CAP_SYS_ADMIN. For
+better compatibility with older SEPolicy, check ADMIN before NICE.
 
+Fixes: 9d3a39a5f1e4 ("block: grant IOPRIO_CLASS_RT to CAP_SYS_NICE")
+Signed-off-by: Alistair Delva <adelva@google.com>
+Cc: Khazhismel Kumykov <khazhy@google.com>
+Cc: Bart Van Assche <bvanassche@acm.org>
+Cc: Serge Hallyn <serge@hallyn.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: selinux@vger.kernel.org
+Cc: linux-security-module@vger.kernel.org
+Cc: kernel-team@android.com
+Cc: stable@vger.kernel.org # v5.14+
+---
+ block/ioprio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
->> ---
->>  libsemanage/man/man5/semanage.conf.5    | 2 +-
->>  libsemanage/man/ru/man5/semanage.conf.5 | 2 +-
->>  libsemanage/src/semanage.conf           | 5 +++--
->>  3 files changed, 5 insertions(+), 4 deletions(-)
->>
->> diff --git a/libsemanage/man/man5/semanage.conf.5 b/libsemanage/man/man5=
-/semanage.conf.5
->> index 7d6f2fef..380b58be 100644
->> --- a/libsemanage/man/man5/semanage.conf.5
->> +++ b/libsemanage/man/man5/semanage.conf.5
->> @@ -23,7 +23,7 @@ Management library writes to the SELinux policy module=
- store directly (this is t
->>  Otherwise a socket path or a server name can be used for the argument.
->>  If the argument begins with "/" (as in "/foo/bar"), it represents the p=
-ath to a named socket that should be used to connect the policy management
->>  server.
->> -If the argument does not begin with a "/" (as in "foo.com:4242"), it sh=
-ould be interpreted as the name of a remote policy management server
->> +If the argument does not begin with a "/" (as in "example.com:4242"), i=
-t should be interpreted as the name of a remote policy management server
->>  to be used through a TCP connection (default port is 4242 unless a diff=
-erent one is specified after the server name using the colon to separate
->>  the two fields).
->>=20=20
->> diff --git a/libsemanage/man/ru/man5/semanage.conf.5 b/libsemanage/man/r=
-u/man5/semanage.conf.5
->> index cf65b3e6..548aa58d 100644
->> --- a/libsemanage/man/ru/man5/semanage.conf.5
->> +++ b/libsemanage/man/ru/man5/semanage.conf.5
->> @@ -19,7 +19,7 @@ semanage.conf \- =D0=B3=D0=BB=D0=BE=D0=B1=D0=B0=D0=BB=
-=D1=8C=D0=BD=D1=8B=D0=B9 =D1=84=D0=B0=D0=B9=D0=BB =D0=BA=D0=BE=D0=BD=D1=84=
-=D0=B8=D0=B3=D1=83=D1=80=D0=B0=D1=86=D0=B8=D0=B8 =D0=B4=D0=BB=D1=8F=20
->>  =D0=A3=D0=BA=D0=B0=D0=B7=D0=B0=D1=82=D1=8C, =D0=BA=D0=B0=D0=BA =D0=B1=
-=D0=B8=D0=B1=D0=BB=D0=B8=D0=BE=D1=82=D0=B5=D0=BA=D0=B0 =D1=83=D0=BF=D1=80=
-=D0=B0=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F SELinux =D0=B4=D0=BE=D0=BB=D0=B6=
-=D0=BD=D0=B0 =D0=B2=D0=B7=D0=B0=D0=B8=D0=BC=D0=BE=D0=B4=D0=B5=D0=B9=D1=81=
-=D1=82=D0=B2=D0=BE=D0=B2=D0=B0=D1=82=D1=8C =D1=81 =D1=85=D1=80=D0=B0=D0=BD=
-=D0=B8=D0=BB=D0=B8=D1=89=D0=B5=D0=BC =D0=BF=D0=BE=D0=BB=D0=B8=D1=82=D0=B8=
-=D0=BA=D0=B8 SELinux. =D0=95=D1=81=D0=BB=D0=B8 =D1=83=D1=81=D1=82=D0=B0=D0=
-=BD=D0=BE=D0=B2=D0=BB=D0=B5=D0=BD=D0=BE "direct", =D0=B1=D0=B8=D0=B1=D0=BB=
-=D0=B8=D0=BE=D1=82=D0=B5=D0=BA=D0=B0 =D1=83=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=
-=D0=B5=D0=BD=D0=B8=D1=8F SELinux =D0=B2=D1=8B=D0=BF=D0=BE=D0=BB=D0=BD=D1=8F=
-=D0=B5=D1=82 =D0=B7=D0=B0=D0=BF=D0=B8=D1=81=D1=8C =D0=BD=D0=B0=D0=BF=D1=80=
-=D1=8F=D0=BC=D1=83=D1=8E =D0=B2 =D1=85=D1=80=D0=B0=D0=BD=D0=B8=D0=BB=D0=B8=
-=D1=89=D0=B5 =D0=BC=D0=BE=D0=B4=D1=83=D0=BB=D0=B5=D0=B9 =D0=BF=D0=BE=D0=BB=
-=D0=B8=D1=82=D0=B8=D0=BA=D0=B8 SELinux (=D1=8D=D1=82=D0=BE =D0=B7=D0=BD=D0=
-=B0=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D0=BF=D0=BE =D1=83=D0=BC=D0=BE=D0=BB=D1=
-=87=D0=B0=D0=BD=D0=B8=D1=8E).
->>  =D0=92 =D0=B8=D0=BD=D0=BE=D0=BC =D1=81=D0=BB=D1=83=D1=87=D0=B0=D0=B5 =
-=D0=B2 =D0=BA=D0=B0=D1=87=D0=B5=D1=81=D1=82=D0=B2=D0=B5 =D0=B0=D1=80=D0=B3=
-=D1=83=D0=BC=D0=B5=D0=BD=D1=82=D0=B0 =D0=BC=D0=BE=D0=B6=D0=B5=D1=82 =D0=B8=
-=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D1=8C=D1=81=D1=
-=8F =D0=BF=D1=83=D1=82=D1=8C =D0=BA =D1=81=D0=BE=D0=BA=D0=B5=D1=82=D1=83 =
-=D0=B8=D0=BB=D0=B8 =D0=B8=D0=BC=D1=8F =D1=81=D0=B5=D1=80=D0=B2=D0=B5=D1=80=
-=D0=B0.
->>  =D0=95=D1=81=D0=BB=D0=B8 =D0=B0=D1=80=D0=B3=D1=83=D0=BC=D0=B5=D0=BD=D1=
-=82 =D0=BD=D0=B0=D1=87=D0=B8=D0=BD=D0=B0=D0=B5=D1=82=D1=81=D1=8F =D1=81 "/"=
- (=D0=BA=D0=B0=D0=BA =D0=B2 "/foo/bar"), =D0=BE=D0=BD =D0=BF=D1=80=D0=B5=D0=
-=B4=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D0=B5=D1=82 =D1=81=D0=BE=D0=B1=D0=
-=BE=D0=B9 =D0=BF=D1=83=D1=82=D1=8C =D0=BA =D0=B8=D0=BC=D0=B5=D0=BD=D0=BE=D0=
-=B2=D0=B0=D0=BD=D0=BD=D0=BE=D0=BC=D1=83 =D1=81=D0=BE=D0=BA=D0=B5=D1=82=D1=
-=83, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=8B=D0=B9 =D1=81=D0=BB=D0=B5=D0=B4=D1=
-=83=D0=B5=D1=82 =D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=
-=B0=D1=82=D1=8C =D0=B4=D0=BB=D1=8F =D0=BF=D0=BE=D0=B4=D0=BA=D0=BB=D1=8E=D1=
-=87=D0=B5=D0=BD=D0=B8=D1=8F =D1=81=D0=B5=D1=80=D0=B2=D0=B5=D1=80=D0=B0 =D1=
-=83=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F =D0=BF=D0=BE=D0=
-=BB=D0=B8=D1=82=D0=B8=D0=BA=D0=BE=D0=B9.
->> -=D0=95=D1=81=D0=BB=D0=B8 =D0=B0=D1=80=D0=B3=D1=83=D0=BC=D0=B5=D0=BD=D1=
-=82 =D0=BD=D0=B5 =D0=BD=D0=B0=D1=87=D0=B8=D0=BD=D0=B0=D0=B5=D1=82=D1=81=D1=
-=8F =D1=81 "/" (=D0=BA=D0=B0=D0=BA =D0=B2 "foo.com:4242"), =D0=BE=D0=BD =D0=
-=B4=D0=BE=D0=BB=D0=B6=D0=B5=D0=BD =D0=B8=D0=BD=D1=82=D0=B5=D1=80=D0=BF=D1=
-=80=D0=B5=D1=82=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D1=82=D1=8C=D1=81=D1=8F =D0=
-=BA=D0=B0=D0=BA =D0=B8=D0=BC=D1=8F =D1=83=D0=B4=D0=B0=D0=BB=D1=91=D0=BD=D0=
-=BD=D0=BE=D0=B3=D0=BE =D1=81=D0=B5=D1=80=D0=B2=D0=B5=D1=80=D0=B0 =D1=83=D0=
-=BF=D1=80=D0=B0=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F =D0=BF=D0=BE=D0=BB=D0=
-=B8=D1=82=D0=B8=D0=BA=D0=BE=D0=B9, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=8B=D0=
-=B9 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D0=B5=D1=82 =D0=B8=D1=81=D0=BF=D0=BE=D0=
-=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D1=8C =D1=87=D0=B5=D1=80=D0=B5=D0=
-=B7 TCP-=D0=BF=D0=BE=D0=B4=D0=BA=D0=BB=D1=8E=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =
-(=D0=BF=D0=BE=D1=80=D1=82 =D0=BF=D0=BE =D1=83=D0=BC=D0=BE=D0=BB=D1=87=D0=B0=
-=D0=BD=D0=B8=D1=8E 4242, =D0=B5=D1=81=D0=BB=D0=B8 =D1=82=D0=BE=D0=BB=D1=8C=
-=D0=BA=D0=BE =D0=BF=D0=BE=D1=81=D0=BB=D0=B5 =D0=B8=D0=BC=D0=B5=D0=BD=D0=B8 =
-=D1=81=D0=B5=D1=80=D0=B2=D0=B5=D1=80=D0=B0 =D1=87=D0=B5=D1=80=D0=B5=D0=B7 =
-=D0=B4=D0=B2=D0=BE=D0=B5=D1=82=D0=BE=D1=87=D0=B8=D0=B5, =D1=80=D0=B0=D0=B7=
-=D0=B4=D0=B5=D0=BB=D1=8F=D1=8E=D1=89=D0=B5=D0=B5 =D0=B4=D0=B2=D0=B0 =D0=BF=
-=D0=BE=D0=BB=D1=8F, =D0=BD=D0=B5 =D1=83=D0=BA=D0=B0=D0=B7=D0=B0=D0=BD =D0=
-=B4=D1=80=D1=83=D0=B3=D0=BE=D0=B9 =D0=BF=D0=BE=D1=80=D1=82).
->> +=D0=95=D1=81=D0=BB=D0=B8 =D0=B0=D1=80=D0=B3=D1=83=D0=BC=D0=B5=D0=BD=D1=
-=82 =D0=BD=D0=B5 =D0=BD=D0=B0=D1=87=D0=B8=D0=BD=D0=B0=D0=B5=D1=82=D1=81=D1=
-=8F =D1=81 "/" (=D0=BA=D0=B0=D0=BA =D0=B2 "example.com:4242"), =D0=BE=D0=BD=
- =D0=B4=D0=BE=D0=BB=D0=B6=D0=B5=D0=BD =D0=B8=D0=BD=D1=82=D0=B5=D1=80=D0=BF=
-=D1=80=D0=B5=D1=82=D0=B8=D1=80=D0=BE=D0=B2=D0=B0=D1=82=D1=8C=D1=81=D1=8F =
-=D0=BA=D0=B0=D0=BA =D0=B8=D0=BC=D1=8F =D1=83=D0=B4=D0=B0=D0=BB=D1=91=D0=BD=
-=D0=BD=D0=BE=D0=B3=D0=BE =D1=81=D0=B5=D1=80=D0=B2=D0=B5=D1=80=D0=B0 =D1=83=
-=D0=BF=D1=80=D0=B0=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F =D0=BF=D0=BE=D0=BB=
-=D0=B8=D1=82=D0=B8=D0=BA=D0=BE=D0=B9, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=8B=
-=D0=B9 =D1=81=D0=BB=D0=B5=D0=B4=D1=83=D0=B5=D1=82 =D0=B8=D1=81=D0=BF=D0=BE=
-=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D1=8C =D1=87=D0=B5=D1=80=D0=B5=
-=D0=B7 TCP-=D0=BF=D0=BE=D0=B4=D0=BA=D0=BB=D1=8E=D1=87=D0=B5=D0=BD=D0=B8=D0=
-=B5 (=D0=BF=D0=BE=D1=80=D1=82 =D0=BF=D0=BE =D1=83=D0=BC=D0=BE=D0=BB=D1=87=
-=D0=B0=D0=BD=D0=B8=D1=8E 4242, =D0=B5=D1=81=D0=BB=D0=B8 =D1=82=D0=BE=D0=BB=
-=D1=8C=D0=BA=D0=BE =D0=BF=D0=BE=D1=81=D0=BB=D0=B5 =D0=B8=D0=BC=D0=B5=D0=BD=
-=D0=B8 =D1=81=D0=B5=D1=80=D0=B2=D0=B5=D1=80=D0=B0 =D1=87=D0=B5=D1=80=D0=B5=
-=D0=B7 =D0=B4=D0=B2=D0=BE=D0=B5=D1=82=D0=BE=D1=87=D0=B8=D0=B5, =D1=80=D0=B0=
-=D0=B7=D0=B4=D0=B5=D0=BB=D1=8F=D1=8E=D1=89=D0=B5=D0=B5 =D0=B4=D0=B2=D0=B0 =
-=D0=BF=D0=BE=D0=BB=D1=8F, =D0=BD=D0=B5 =D1=83=D0=BA=D0=B0=D0=B7=D0=B0=D0=BD=
- =D0=B4=D1=80=D1=83=D0=B3=D0=BE=D0=B9 =D0=BF=D0=BE=D1=80=D1=82).
->>=20=20
->>  .TP
->>  .B root
->> diff --git a/libsemanage/src/semanage.conf b/libsemanage/src/semanage.co=
-nf
->> index dc8d46b8..98d769b5 100644
->> --- a/libsemanage/src/semanage.conf
->> +++ b/libsemanage/src/semanage.conf
->> @@ -24,8 +24,9 @@
->>  #  /foo/bar     - Write by way of a policy management server, whose
->>  #                 named socket is at /foo/bar.  The path must begin
->>  #                 with a '/'.
->> -#  foo.com:4242 - Establish a TCP connection to a remote policy
->> -#                 management server at foo.com.  If there is a colon
->> +#  example.com:4242
->> +#               - Establish a TCP connection to a remote policy
->> +#                 management server at example.com.  If there is a colon
->>  #                 then the remainder is interpreted as a port number;
->>  #                 otherwise default to port 4242.
->>  module-store =3D direct
->> --=20
->> 2.33.1
+diff --git a/block/ioprio.c b/block/ioprio.c
+index 0e4ff245f2bf..4d59c559e057 100644
+--- a/block/ioprio.c
++++ b/block/ioprio.c
+@@ -69,7 +69,7 @@ int ioprio_check_cap(int ioprio)
+ 
+ 	switch (class) {
+ 		case IOPRIO_CLASS_RT:
+-			if (!capable(CAP_SYS_NICE) && !capable(CAP_SYS_ADMIN))
++			if (!capable(CAP_SYS_ADMIN) && !capable(CAP_SYS_NICE))
+ 				return -EPERM;
+ 			fallthrough;
+ 			/* rt has prio field too */
+-- 
+2.34.0.rc1.387.gb447b232ab-goog
 

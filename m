@@ -2,57 +2,55 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B7A66451188
-	for <lists+selinux@lfdr.de>; Mon, 15 Nov 2021 20:07:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2741545155D
+	for <lists+selinux@lfdr.de>; Mon, 15 Nov 2021 21:34:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243870AbhKOTJf (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 15 Nov 2021 14:09:35 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:43311 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S243958AbhKOTHR (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 15 Nov 2021 14:07:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1637003060;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=v/SBXUx2gshVEpRR5lkDqOIRh1bD4WZmOak2pzCj75s=;
-        b=CI+RBIVCNAGb7wL9M+nRNMMmRAezEua6e/g7R20OS0FeZQTCD2CC1A6rYMFkFJw3Lk5GFv
-        e7sU5mUq5yW3DnnKwdkblnkjpJrelGP34BXl1Mw6pEaTLTfr7qrsvLetiklzFaJyzgVXlC
-        a9aF434o1u198t13DZSymtSjfAgGT6I=
-Received: from mail-yb1-f197.google.com (mail-yb1-f197.google.com
- [209.85.219.197]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-286-f-Q-f-gxOEuZ0oY9MkPlHQ-1; Mon, 15 Nov 2021 14:04:19 -0500
-X-MC-Unique: f-Q-f-gxOEuZ0oY9MkPlHQ-1
-Received: by mail-yb1-f197.google.com with SMTP id w5-20020a25ac05000000b005c55592df4dso27954651ybi.12
-        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 11:04:19 -0800 (PST)
+        id S1347266AbhKOUht (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 15 Nov 2021 15:37:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38286 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1346001AbhKOT3p (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 15 Nov 2021 14:29:45 -0500
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87043C06F6BD
+        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 11:09:00 -0800 (PST)
+Received: by mail-ua1-x92b.google.com with SMTP id p37so35438950uae.8
+        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 11:09:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=jvluQBYx8pG/L7kJ3qRM3jtClhdDAw2+NW4Rd+v+B5o=;
+        b=k8///Am4xR6opsWOw7aCBHV/G3MQR7Mj2Up2mhx14tGfDM7Y1gfWoAAULtQsAgjipv
+         coMm4HggdvV8WPLJdSiXY6QbamNijHgeE/oUyK5ovxDevsW4F71x5l8lRsJE25MkSGIF
+         aGZeo2Xc6BlUJRthxWxpHJbgBg/yWKnDTPGKGf5dcH+suasKmBNIdEXtdGq23h3g6VYe
+         mDyWrEUOORTj72inu+bmS97F169PX/PxQxduIFcRjgL5KRUFrjDZeoHHlRVIxzqW7Edb
+         09Y7ncYe/upBoCyerLk86m+RbnYLXdnWsaGEOs8AuO7GblY1Nt5MmHmSFnmnOefMZ72G
+         4F2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=v/SBXUx2gshVEpRR5lkDqOIRh1bD4WZmOak2pzCj75s=;
-        b=FTW/XcdhSU8u/PtRnHcKF+wlRvtFtdfv5UKii3x/7Pt/vsDwbyaT18GWUiA1uShbCK
-         +5MEmWh15SVhU9OhXGOhWcKiCPMvcFTXMbgOLABaxTqJbAAoztyRN0gFDGhEJN/HyrCz
-         S7LN9/moQaRGNALNiAbmvMRO0RBgMBVzq8fn528UXygHUdLpbC/k2L03dqkdoBnwldeH
-         lUmtVSkdQlTNXNQiatv73Yhxh+xq3NcSprSbkh4QEPAxNef5eOHpMYtlAcQ3aKYa3+Dx
-         p09/zk0NW/VB4NB1ehEll92XwzQPcwKmkCqqVOWqjQEsjeCcPU9T0YuyD6i7+Td14c6h
-         leLw==
-X-Gm-Message-State: AOAM531zeLybjmJEZiWtUWm3qEwfAgVYiquc4I0R8SCC5qq5PaXHHXHx
-        WJzjTxKHBBcK3L8mVMefVLnBMF9RO/GyhVDI/HWGmZAsCiBK4j9Y74pz3Z5Hk1Yl+liUA2RvM1f
-        F6dBbuIhr3edqwKLOdLGojO7oT9RdiN8FZw==
-X-Received: by 2002:a25:3283:: with SMTP id y125mr1233688yby.479.1637003058348;
-        Mon, 15 Nov 2021 11:04:18 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJzDg/2EKuxykc6+iQIz1Ve049nNfAryXwGXOETwxe8O1IwCanztgTBfr04ISJwL8oujwWmHkrKy78vI+kFMlCQ=
-X-Received: by 2002:a25:3283:: with SMTP id y125mr1233623yby.479.1637003057823;
- Mon, 15 Nov 2021 11:04:17 -0800 (PST)
+        bh=jvluQBYx8pG/L7kJ3qRM3jtClhdDAw2+NW4Rd+v+B5o=;
+        b=6FG6aN9fDObCtm3nnVt2EAV+RSbiLaUCtAlQQxGGgdVvelP6pkAb3Y8Gh/bWB7MIRk
+         H9DfWgeB4l5mF+q92HGuTPiVsioCoj7AesmX0aBXegI2mCqp28kQPYPEQ69gfHuKiEGX
+         fnYVerC3cb4Ky3trOa2I1rFa4dbI46ZGpZG4IGClP9q8X3pwcwQez6+LkxPYeUV9xqgx
+         CDMsYStj00Ch4hvJLc12YaUPJWCcSfcqgJnVg2lJDRkFwpcY3yVl/3b7YsfS1ZXNvF4m
+         YpYTNuZ+wNAlXq3pZA8dY/qaJQTyQF2fITChkoOHex5Q8MddU0ryxL48k40/d5HxU3yR
+         yVYQ==
+X-Gm-Message-State: AOAM533TUrG8iULIjSQqSM6PSbE4O6FI5FBopObw4em6GegYg/pxvndh
+        b5vyVWgSxv51AWECI8m/ojHLeHJcvsUFSzEp8mDN4Q==
+X-Google-Smtp-Source: ABdhPJzCnX/ohcFcUDAyDZuuzokLa4DCdliYRfxUxdhWLFCJ563nrBlSiSryIUu8Mjk/wdwF6WJZtyRzVaMblSajvxw=
+X-Received: by 2002:a67:ba0c:: with SMTP id l12mr45155412vsn.21.1637003339474;
+ Mon, 15 Nov 2021 11:08:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20211115173850.3598768-1-adelva@google.com>
-In-Reply-To: <20211115173850.3598768-1-adelva@google.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Mon, 15 Nov 2021 20:04:05 +0100
-Message-ID: <CAFqZXNvVHv8Oje-WV6MWMF96kpR6epTsbc-jv-JF+YJw=55i1w@mail.gmail.com>
+References: <20211115173850.3598768-1-adelva@google.com> <CAFqZXNvVHv8Oje-WV6MWMF96kpR6epTsbc-jv-JF+YJw=55i1w@mail.gmail.com>
+In-Reply-To: <CAFqZXNvVHv8Oje-WV6MWMF96kpR6epTsbc-jv-JF+YJw=55i1w@mail.gmail.com>
+From:   Alistair Delva <adelva@google.com>
+Date:   Mon, 15 Nov 2021 11:08:48 -0800
+Message-ID: <CANDihLEFZAz8DwkkMGiDJnDMjxiUuSCanYsJtkRwa9RoyruLFA@mail.gmail.com>
 Subject: Re: [PATCH] block: Check ADMIN before NICE for IOPRIO_CLASS_RT
-To:     Alistair Delva <adelva@google.com>
+To:     Ondrej Mosnacek <omosnace@redhat.com>
 Cc:     Linux kernel mailing list <linux-kernel@vger.kernel.org>,
         Khazhismel Kumykov <khazhy@google.com>,
         Bart Van Assche <bvanassche@acm.org>,
@@ -69,72 +67,83 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Nov 15, 2021 at 7:14 PM Alistair Delva <adelva@google.com> wrote:
-> Booting to Android userspace on 5.14 or newer triggers the following
-> SELinux denial:
+On Mon, Nov 15, 2021 at 11:04 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
 >
-> avc: denied { sys_nice } for comm="init" capability=23
->      scontext=u:r:init:s0 tcontext=u:r:init:s0 tclass=capability
->      permissive=0
+> On Mon, Nov 15, 2021 at 7:14 PM Alistair Delva <adelva@google.com> wrote:
+> > Booting to Android userspace on 5.14 or newer triggers the following
+> > SELinux denial:
+> >
+> > avc: denied { sys_nice } for comm="init" capability=23
+> >      scontext=u:r:init:s0 tcontext=u:r:init:s0 tclass=capability
+> >      permissive=0
+> >
+> > Init is PID 0 running as root, so it already has CAP_SYS_ADMIN. For
+> > better compatibility with older SEPolicy, check ADMIN before NICE.
 >
-> Init is PID 0 running as root, so it already has CAP_SYS_ADMIN. For
-> better compatibility with older SEPolicy, check ADMIN before NICE.
+> But with this patch you in turn punish the new/better policies that
+> try to avoid giving domains CAP_SYS_ADMIN unless necessary (using only
+> the more granular capabilities wherever possible), which may now get a
+> bogus sys_admin denial. IMHO the order is better as it is, as it
+> motivates the "good" policy writing behavior - i.e. spelling out the
+> capability permissions more explicitly and avoiding CAP_SYS_ADMIN.
+>
+> IOW, if you domain does CAP_SYS_NICE things, and you didn't explicitly
+> grant it that (and instead rely on the CAP_SYS_ADMIN fallback), then
+> the denial correctly flags it as an issue in your policy and
+> encourages you to add that sys_nice permission to the domain. Then
+> when one beautiful hypothetical day the CAP_SYS_ADMIN fallback is
+> removed, your policy will be ready for that and things will keep
+> working.
+>
+> Feel free to carry that patch downstream if patching the kernel is
+> easier for you than fixing the policy, but for the upstream kernel
+> this is just a step in the wrong direction.
 
-But with this patch you in turn punish the new/better policies that
-try to avoid giving domains CAP_SYS_ADMIN unless necessary (using only
-the more granular capabilities wherever possible), which may now get a
-bogus sys_admin denial. IMHO the order is better as it is, as it
-motivates the "good" policy writing behavior - i.e. spelling out the
-capability permissions more explicitly and avoiding CAP_SYS_ADMIN.
+I'm personally fine with this position, but I am curious why "never
+break userspace" doesn't apply to SELinux policies. At the end of the
+day, booting 5.13 or older, we don't get a denial, and there's nothing
+for the sysadmin to do. On 5.14 and newer, we get denials. This is a
+common pattern we see each year: some new capability or permission is
+required where it wasn't required before, and there's no compatibility
+mechanism to grandfather in old policies. So, we have to touch
+userspace. If this is just how things are, I can certainly update our
+init.te definitions.
 
-IOW, if you domain does CAP_SYS_NICE things, and you didn't explicitly
-grant it that (and instead rely on the CAP_SYS_ADMIN fallback), then
-the denial correctly flags it as an issue in your policy and
-encourages you to add that sys_nice permission to the domain. Then
-when one beautiful hypothetical day the CAP_SYS_ADMIN fallback is
-removed, your policy will be ready for that and things will keep
-working.
-
-Feel free to carry that patch downstream if patching the kernel is
-easier for you than fixing the policy, but for the upstream kernel
-this is just a step in the wrong direction.
-
+> > Fixes: 9d3a39a5f1e4 ("block: grant IOPRIO_CLASS_RT to CAP_SYS_NICE")
+> > Signed-off-by: Alistair Delva <adelva@google.com>
+> > Cc: Khazhismel Kumykov <khazhy@google.com>
+> > Cc: Bart Van Assche <bvanassche@acm.org>
+> > Cc: Serge Hallyn <serge@hallyn.com>
+> > Cc: Jens Axboe <axboe@kernel.dk>
+> > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Cc: Paul Moore <paul@paul-moore.com>
+> > Cc: selinux@vger.kernel.org
+> > Cc: linux-security-module@vger.kernel.org
+> > Cc: kernel-team@android.com
+> > Cc: stable@vger.kernel.org # v5.14+
+> > ---
+> >  block/ioprio.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/block/ioprio.c b/block/ioprio.c
+> > index 0e4ff245f2bf..4d59c559e057 100644
+> > --- a/block/ioprio.c
+> > +++ b/block/ioprio.c
+> > @@ -69,7 +69,7 @@ int ioprio_check_cap(int ioprio)
+> >
+> >         switch (class) {
+> >                 case IOPRIO_CLASS_RT:
+> > -                       if (!capable(CAP_SYS_NICE) && !capable(CAP_SYS_ADMIN))
+> > +                       if (!capable(CAP_SYS_ADMIN) && !capable(CAP_SYS_NICE))
+> >                                 return -EPERM;
+> >                         fallthrough;
+> >                         /* rt has prio field too */
+> > --
+> > 2.34.0.rc1.387.gb447b232ab-goog
+> >
 >
-> Fixes: 9d3a39a5f1e4 ("block: grant IOPRIO_CLASS_RT to CAP_SYS_NICE")
-> Signed-off-by: Alistair Delva <adelva@google.com>
-> Cc: Khazhismel Kumykov <khazhy@google.com>
-> Cc: Bart Van Assche <bvanassche@acm.org>
-> Cc: Serge Hallyn <serge@hallyn.com>
-> Cc: Jens Axboe <axboe@kernel.dk>
-> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Cc: Paul Moore <paul@paul-moore.com>
-> Cc: selinux@vger.kernel.org
-> Cc: linux-security-module@vger.kernel.org
-> Cc: kernel-team@android.com
-> Cc: stable@vger.kernel.org # v5.14+
-> ---
->  block/ioprio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/block/ioprio.c b/block/ioprio.c
-> index 0e4ff245f2bf..4d59c559e057 100644
-> --- a/block/ioprio.c
-> +++ b/block/ioprio.c
-> @@ -69,7 +69,7 @@ int ioprio_check_cap(int ioprio)
->
->         switch (class) {
->                 case IOPRIO_CLASS_RT:
-> -                       if (!capable(CAP_SYS_NICE) && !capable(CAP_SYS_ADMIN))
-> +                       if (!capable(CAP_SYS_ADMIN) && !capable(CAP_SYS_NICE))
->                                 return -EPERM;
->                         fallthrough;
->                         /* rt has prio field too */
 > --
-> 2.34.0.rc1.387.gb447b232ab-goog
+> Ondrej Mosnacek
+> Software Engineer, Linux Security - SELinux kernel
+> Red Hat, Inc.
 >
-
---
-Ondrej Mosnacek
-Software Engineer, Linux Security - SELinux kernel
-Red Hat, Inc.
-

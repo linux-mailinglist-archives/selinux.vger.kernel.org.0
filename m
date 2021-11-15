@@ -2,116 +2,91 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 26F9745181E
-	for <lists+selinux@lfdr.de>; Mon, 15 Nov 2021 23:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 522C74520A0
+	for <lists+selinux@lfdr.de>; Tue, 16 Nov 2021 01:53:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244981AbhKOWyy (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 15 Nov 2021 17:54:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50250 "EHLO
+        id S1345230AbhKPAzx (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 15 Nov 2021 19:55:53 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353336AbhKOWfi (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 15 Nov 2021 17:35:38 -0500
-Received: from mail-oi1-x233.google.com (mail-oi1-x233.google.com [IPv6:2607:f8b0:4864:20::233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43BF4C04A4A3
-        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 13:48:48 -0800 (PST)
-Received: by mail-oi1-x233.google.com with SMTP id m6so37780429oim.2
-        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 13:48:48 -0800 (PST)
+        with ESMTP id S1343548AbhKOTVT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 15 Nov 2021 14:21:19 -0500
+Received: from mail-ua1-x92b.google.com (mail-ua1-x92b.google.com [IPv6:2607:f8b0:4864:20::92b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF887C03D78B
+        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 10:17:43 -0800 (PST)
+Received: by mail-ua1-x92b.google.com with SMTP id b17so36907179uas.0
+        for <selinux@vger.kernel.org>; Mon, 15 Nov 2021 10:17:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
+        d=google.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=py/CXex18SAcFRZJmvl67h4q/xDxVFNRc6DMs/MUloI=;
-        b=VTtzAiIhSpbrUYRcpVTLayO02ulbSCV/dFgiJCxdO3EprzSccODG1iq5H5mhCWnZ6a
-         ju9nPuXhIgm0lenufamt7IRnqkAPkXkgc1FmuPDS//e4O4Dt63lMDNdALOWt4ILex/rx
-         zOcSikiMQIcyEjTQOVMT1uN3VqMbDOR8wJ2BwnIhG2wG8pwmOHb3RRNGhsNkmSIkhNLn
-         5JC1qL0CtIb10kFdZ0pBO2wrHl4k+a75o7c2PeFtkJ8dSdVtG1twQh7TI1x0QUy2ffDa
-         yzIJsXke7rl/363M/AizZLkpZJjzxwZf9qC0mhCvFhjPVmD63zi8tD4+jN/iyXyoHJff
-         Gimg==
+         :cc;
+        bh=+a8ZktNn6ZKD5SR+F36fH6n6kb1h7BS7jd1Wp45NaFM=;
+        b=gKjpO0lLV7NAzCVw+nwCxA8yC44R21WAWD2XjYYi0XvHIj7m390XTLd0lEN5Nn7rcB
+         BuK4C1Cfgw1j9IVR5y4ccOOC9HnZhA9Q9ERm3Q22nj0xyYhHPPZ+IYpHX27qbjUCyDa9
+         FjBo+0o5USkN9WjUnl/bLBY+ePanR03FsUeaamVOMTsyk1ZuvITwcd6QcOScign6Qmun
+         u7WUTMpODzERw1+OGJLsaUtAupMXVPh3UXvanz5tAdren74UjX5wDmMwtt0tuKXcncWg
+         TUyJQc40cjABQb16NUrbV/xR8FV0L6K9gaV5knCQzF0+juocFBSz2mXCLAEddrjvWuAo
+         708w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=py/CXex18SAcFRZJmvl67h4q/xDxVFNRc6DMs/MUloI=;
-        b=P0q1DwIcSCYt8RRqnSfcs+p4ccmgK5NiRwRVLL0O4+Aey3QO6Jg3MLHY7HzQrIgd6o
-         /KLCEy0d4/j9wJ6qFkCwYL1NVCiF9hU5GL6qZrrkrBGAqcFW3RylMb0hm/6ZozudGfA2
-         SWCMThPGBafM8ru3OdsdetJxzoOFWk3/Wkdkx/4o7lqfNL4fXRlxFVLMdK87wl55NHwP
-         nQC+4fdpdkanLy7NFblptMdJw2rUHOAS5In+rGM6jnuHyspEKLWMMn3TObKrNioToNfh
-         Pwnqi2Ri448L5aLlaIkJkSmL1kblHYwoe09Zmb3GqiMa49aZGl2sAAOsqmArz32rTwjw
-         obSw==
-X-Gm-Message-State: AOAM530eomKhT1eBTbsd0xOQHRZgdVII17EVYullqrT3xjyYLQDZItJD
-        sa5OL/Xd/7LaTlWz5ihS+FNI8u3ZbOzgNnrclU0=
-X-Google-Smtp-Source: ABdhPJxMiYLBQvlMViS7lJV2nRU6g8N8xxs3N3MCgU5DDlnfdAUa6tdmBNtjAP3P5Nq4Z6Xlc28DUIjiK4WPA/ICmV8=
-X-Received: by 2002:a54:4d05:: with SMTP id v5mr1903096oix.16.1637012927673;
- Mon, 15 Nov 2021 13:48:47 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=+a8ZktNn6ZKD5SR+F36fH6n6kb1h7BS7jd1Wp45NaFM=;
+        b=XJNuOyz3+Go6hipJcyh9D+Elp1PtPvWWAYyFJEkqC1UH45F9w4UTOVa6nx6y4zf+fY
+         Wb1xZ3+VgCe6o0Xq3iUScOxM1g9tFTFdAqbaE0n5A4ssIUeqWQFreWVt9B2PF6HSiaKT
+         1VMZui52wbaFrZFeQqj/zDuHXG3klg9KncOSEz3rfC27vUx8OqnYKNDga8ukywvmQDay
+         Csy5+s9qyL6aik5gQYTpVilsGQaFU3Z6IlQJGJTkZpp0HucgogN5eFSoYyGAO2wEujke
+         Ndxo8lYV5IS6ZLKMOKVP2z9akTRv2yeVfaUCFsi4UI+AASRSXxtqEVDEiKm2PvOq1ki7
+         FBrg==
+X-Gm-Message-State: AOAM532ecuhuAxNDAg/x9tMT47WojlJBZkqucBZt3ueZEmbI1SZrkLDB
+        UGcC7vyGOfA6URhpJy47QMl1tzltaYRlmC3aodam5A==
+X-Google-Smtp-Source: ABdhPJya8J9a4P+RjZgEeXSNntVJy86MJNmzIPw9P4CUF+9L+z4wnWDoOasaaQi9RrdEFaJXT3F+c+2vxQUEakzHjTg=
+X-Received: by 2002:a67:df96:: with SMTP id x22mr46045260vsk.9.1637000262835;
+ Mon, 15 Nov 2021 10:17:42 -0800 (PST)
 MIME-Version: 1.0
-References: <20211112154201.78217-1-cgzones@googlemail.com>
-In-Reply-To: <20211112154201.78217-1-cgzones@googlemail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Mon, 15 Nov 2021 16:48:36 -0500
-Message-ID: <CAP+JOzSNQbg_a+0Yu4NU0ki_0zrXBU_R_fh9Zrn_Twf8=_HTJw@mail.gmail.com>
-Subject: Re: [PATCH 01/12] checkpolicy: use correct unsigned format specifiers
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+References: <20211115173850.3598768-1-adelva@google.com> <74179f08-3529-7502-db33-2ea18cab3f58@kernel.dk>
+In-Reply-To: <74179f08-3529-7502-db33-2ea18cab3f58@kernel.dk>
+From:   Alistair Delva <adelva@google.com>
+Date:   Mon, 15 Nov 2021 10:17:30 -0800
+Message-ID: <CANDihLE5oO2=MDiPtGmUzZgaPuzT2_X7da-vKe+ybBJkXgnsAQ@mail.gmail.com>
+Subject: Re: [PATCH] block: Check ADMIN before NICE for IOPRIO_CLASS_RT
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-kernel@vger.kernel.org,
+        Khazhismel Kumykov <khazhy@google.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        Serge Hallyn <serge@hallyn.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org,
+        linux-security-module@vger.kernel.org, kernel-team@android.com,
+        stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Nov 12, 2021 at 10:42 AM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
+On Mon, Nov 15, 2021 at 10:04 AM Jens Axboe <axboe@kernel.dk> wrote:
 >
-> The two variables policydb_lineno and source_lineno are both of the type
-> unsigned long; use the appropriate format specifier.
+> On 11/15/21 10:38 AM, Alistair Delva wrote:
+> > Booting to Android userspace on 5.14 or newer triggers the following
+> > SELinux denial:
+> >
+> > avc: denied { sys_nice } for comm="init" capability=23
+> >      scontext=u:r:init:s0 tcontext=u:r:init:s0 tclass=capability
+> >      permissive=0
+> >
+> > Init is PID 0 running as root, so it already has CAP_SYS_ADMIN. For
+> > better compatibility with older SEPolicy, check ADMIN before NICE.
 >
-> Found by Cppcheck
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> Seems a bit wonky to me, but the end result is the same.
 
-For all 12 patches.
-Acked-by: James Carter <jwcart2@gmail.com>
+No argument from me..
 
-> ---
->  checkpolicy/policy_scan.l | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/checkpolicy/policy_scan.l b/checkpolicy/policy_scan.l
-> index 129a8a2a..ef9f1899 100644
-> --- a/checkpolicy/policy_scan.l
-> +++ b/checkpolicy/policy_scan.l
-> @@ -308,11 +308,11 @@ GLBLUB                            { return(GLBLUB);=
- }
->  int yyerror(const char *msg)
->  {
->         if (source_file[0])
-> -               fprintf(stderr, "%s:%ld:",
-> +               fprintf(stderr, "%s:%lu:",
->                         source_file, source_lineno);
->         else
->                 fprintf(stderr, "(unknown source)::");
-> -       fprintf(stderr, "ERROR '%s' at token '%s' on line %ld:\n%s\n%s\n"=
-,
-> +       fprintf(stderr, "ERROR '%s' at token '%s' on line %lu:\n%s\n%s\n"=
-,
->                         msg,
->                         yytext,
->                         policydb_lineno,
-> @@ -327,11 +327,11 @@ int yywarn(const char *msg)
->                 return yyerror(msg);
->
->         if (source_file[0])
-> -               fprintf(stderr, "%s:%ld:",
-> +               fprintf(stderr, "%s:%lu:",
->                         source_file, source_lineno);
->         else
->                 fprintf(stderr, "(unknown source)::");
-> -       fprintf(stderr, "WARNING '%s' at token '%s' on line %ld:\n%s\n%s\=
-n",
-> +       fprintf(stderr, "WARNING '%s' at token '%s' on line %lu:\n%s\n%s\=
-n",
->                         msg,
->                         yytext,
->                         policydb_lineno,
+> In any case,
+> this warrants a comment above it detailing why the ordering is
+> seemingly important.
+
+Sent v2.
+
 > --
-> 2.33.1
+> Jens Axboe
 >

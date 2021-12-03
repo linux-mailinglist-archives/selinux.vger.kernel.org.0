@@ -2,42 +2,42 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4FF746790E
+	by mail.lfdr.de (Postfix) with ESMTP id 65E4846790D
 	for <lists+selinux@lfdr.de>; Fri,  3 Dec 2021 15:05:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381326AbhLCOI7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S1379840AbhLCOI7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Fri, 3 Dec 2021 09:08:59 -0500
-Received: from mailomta30-sa.btinternet.com ([213.120.69.36]:63001 "EHLO
+Received: from mailomta10-sa.btinternet.com ([213.120.69.16]:37223 "EHLO
         sa-prd-fep-048.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1381325AbhLCOI6 (ORCPT
+        by vger.kernel.org with ESMTP id S1381326AbhLCOI6 (ORCPT
         <rfc822;selinux@vger.kernel.org>); Fri, 3 Dec 2021 09:08:58 -0500
 Received: from sa-prd-rgout-001.btmx-prd.synchronoss.net ([10.2.38.4])
           by sa-prd-fep-048.btinternet.com with ESMTP
-          id <20211203140533.IKOB22188.sa-prd-fep-048.btinternet.com@sa-prd-rgout-001.btmx-prd.synchronoss.net>;
+          id <20211203140533.IKOC22188.sa-prd-fep-048.btinternet.com@sa-prd-rgout-001.btmx-prd.synchronoss.net>;
           Fri, 3 Dec 2021 14:05:33 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1638540333; 
-        bh=GbV2RZQhsvjogUNK0TuxgG2yUmDuDQFGTULBRr9w8d8=;
+        bh=3+PPY81aVoixhZGQ2WTru8CUTKFlpDf4d18Ysi5yDjQ=;
         h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=CpX+RCIbj0BAEBGqJSzHsXgQ9T2Dc2I3Rgbz8Vy0ffVuhoAINUjf43dfsm+pBGejkTDm3DxKV7SCpONq+SRANsgOJAyTWNSh80pqrH9CI1Ek3Mt+md8NUW8AiQsaZaO96qsKhEh99fTzR7/hY9im7G0zi4Sff+ffQMZa/2k0ZX1kqNLXvqaJtlbjioaqWaI3xRjEZPTbJycrp5Bb+fnXIYUN00fZY028U9aYXs2UH8gQOX/qgSmUHnqdjJ2Ut44KzzMYJ9HRGLlwn5MsUp5smJGzKxg225fs6Bc89wCgH0nJBX03F0KzjAbq+xDoWp0okMA3ykeLNK/+A0zI0bmsLg==
+        b=OY66lIkq7mZLRlIQLGRh0p9QKJlLMHk/pqYejq8T+9MIdNvQfpwmWK6yi7LkgcCywQOlo61aYjSxpcofP95i+JPL+jFKIrkyAGKn4w4JDwrD3Zz3+WhUmU3y3qC6Oy+uZg/zwovA8vXm3mZ4z2kIJuz2eQ0uQeU2HTlmtW3u6J4XsGMjYtpmbfMj4+EOoUc29X1oVyB+V69XP77T1yb3rGP34xc01bYDWFr/1Vq2QGOEASFlm/g/ROo4Ukc9a7Cd8HDrYxCwXRBF9Y4HkaTO+K5/bp30ctYTtn10asN3sczH6uqo+Xmt+nqFTx/UiqgeKatbXtBx4+Ss6EJLzif9zA==
 Authentication-Results: btinternet.com; none
-X-SNCR-Rigid: 613006A90DA061BF
+X-SNCR-Rigid: 613006A90DA061CA
 X-Originating-IP: [81.147.31.174]
 X-OWM-Source-IP: 81.147.31.174 (GB)
 X-OWM-Env-Sender: richard_c_haines@btinternet.com
 X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvuddrieejgdeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepueejuddvjeekvedttdfgjeeitdevgffgkeegheduteejfeffkeetleegfeekveeinecuffhomhgrihhnpehgihhthhhusgdrtghomhenucfkphepkedurddugeejrdefuddrudejgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkedurddugeejrdefuddrudejgedpmhgrihhlfhhrohhmpehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmpdhrtghpthhtohepphgruhhlsehprghulhdqmhhoohhrvgdrtghomhdprhgtphhtthhopehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmpdhrtghpthhtohepshgvlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvuddrieejgdeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepuedttdelleehueeggfeihfeitdehueekffeviedtffegffeiueegleejgeevgfeinecukfhppeekuddrudegjedrfedurddujeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekuddrudegjedrfedurddujeegpdhmrghilhhfrhhomheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehprghulhesphgruhhlqdhmohhorhgvrdgtohhmpdhrtghpthhtoheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
 X-SNCR-hdrdom: btinternet.com
 Received: from localhost.localdomain (81.147.31.174) by sa-prd-rgout-001.btmx-prd.synchronoss.net (5.8.716.04) (authenticated as richard_c_haines@btinternet.com)
-        id 613006A90DA061BF; Fri, 3 Dec 2021 14:05:33 +0000
+        id 613006A90DA061CA; Fri, 3 Dec 2021 14:05:33 +0000
 From:   Richard Haines <richard_c_haines@btinternet.com>
 To:     selinux@vger.kernel.org
 Cc:     paul@paul-moore.com,
         Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH 4/7] policy_config_files.md: Update openrc_contexts contents
-Date:   Fri,  3 Dec 2021 14:05:16 +0000
-Message-Id: <20211203140519.30930-5-richard_c_haines@btinternet.com>
+Subject: [PATCH 5/7] policy_config_files.md: Update openssh_contexts contents
+Date:   Fri,  3 Dec 2021 14:05:17 +0000
+Message-Id: <20211203140519.30930-6-richard_c_haines@btinternet.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211203140519.30930-1-richard_c_haines@btinternet.com>
 References: <20211203140519.30930-1-richard_c_haines@btinternet.com>
@@ -47,54 +47,46 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-This config file will only be present if openrc is installed.
-See https://github.com/OpenRC/openrc
+Used by openssh for privilege separated processes in the
+preauthentication phase.
 
 Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
 ---
- src/policy_config_files.md | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ src/policy_config_files.md | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/src/policy_config_files.md b/src/policy_config_files.md
-index d186b98..4b2c091 100644
+index 4b2c091..9f2996c 100644
 --- a/src/policy_config_files.md
 +++ b/src/policy_config_files.md
-@@ -680,12 +680,34 @@ matching of network packets - Never been used.
+@@ -715,10 +715,26 @@ run_init=run_init_t
  
- ## *contexts/openrc_contexts*
+ ## *contexts/openssh_contexts*
  
 -**To be determined**
-+OpenRC is a dependency-based init system that works with the system-provided
-+*init* program, normally */sbin/init*. This config file will only be present
-+if *openrc* is installed, see
-+[**https://github.com/OpenRC/openrc**](https://github.com/OpenRC/openrc)
++Used by *openssh* (***ssh**(1)*) for privilege separated processes in the
++preauthentication phase.
  
  **The file format is as follows:**
  
 +```
-+run_init=[domain]
++privsep_preauth=[domain]
 +```
 +
 +**Where:**
 +
-+*run_init*
++*privsep_preauth*
 +
-+- The keyword *run_init*. Note that there must not be any spaces around
-+  the '=' sign.
++- The keyword *privsep_preauth*
 +
 +*domain*
 +
-+- The domain type for the process.
++- The domain type for the privilege separated processes in the
++  preauthentication phase.
 +
  **Example file contents:**
  
-+```
-+run_init=run_init_t
-+```
-+
- **Supporting libselinux API functions are:**
- 
- - ***selinux_context_path**(3)*
+ ```
 -- 
 2.33.1
 

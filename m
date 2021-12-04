@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 41C0546841B
-	for <lists+selinux@lfdr.de>; Sat,  4 Dec 2021 11:35:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4747E46841D
+	for <lists+selinux@lfdr.de>; Sat,  4 Dec 2021 11:35:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229982AbhLDKi4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 4 Dec 2021 05:38:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38986 "EHLO
+        id S233760AbhLDKi6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 4 Dec 2021 05:38:58 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233760AbhLDKiz (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 4 Dec 2021 05:38:55 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79FF6C061354
-        for <selinux@vger.kernel.org>; Sat,  4 Dec 2021 02:35:30 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id l25so21799841eda.11
-        for <selinux@vger.kernel.org>; Sat, 04 Dec 2021 02:35:30 -0800 (PST)
+        with ESMTP id S235417AbhLDKi5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 4 Dec 2021 05:38:57 -0500
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B90A7C061354
+        for <selinux@vger.kernel.org>; Sat,  4 Dec 2021 02:35:31 -0800 (PST)
+Received: by mail-ed1-x536.google.com with SMTP id y12so21586997eda.12
+        for <selinux@vger.kernel.org>; Sat, 04 Dec 2021 02:35:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=BSzVqEHQArCQJRZFOLvUMnwPXoWHlMnGm9yud/mfpfk=;
-        b=Eky2LaHzkRBKL0LmVOymsv/4f+QkBFjlnnWH8g028KliVI25z3+Odfz/5ZJ7aZISy5
-         nmogQKp37ZJZLVgXGs5CcW0KEU6eCvZQmDmAz+lWrsxodtxyNKt/+GQjuJtX5Nfp/hDv
-         9G0LbPhQtTt805fenfECHnqMwPrDORThAd57PH5z29XVYC7/3MtnmnBjyM3U5T4EAy/3
-         quBSnB6aT4mmlEv+AjcNvFFpWVTlge25rAGXlFfANOaDHbYjv2jFwEVIfVCzzfwxKHft
-         VlZPF/Nk/AZlvsD+P09Xx04p+edwea1EQSenL7oTDcwXi8EhTkCoOLg9A/rxzAgqoNYw
-         m+Jg==
+        bh=gkNuQU9ms7EgFT+DKwpoPdhHGJZYoVyol9y2DeXm44k=;
+        b=V5O8V9FuPrjEUPaS33aW1KHJ7p2qfzcRvEcldLhaVEPWVmRcUkUKT6CFsERbF0sT2s
+         wk7I+uzFbgeBBaI//dWv6LmSoFqS781K2yaStEf/lTQnsgJbVXyd12+e9B8z3QqrHEMT
+         J84DggH7ljBeOe9aRCjlEWBycA+6KTA0ntcjVWsV6U/HEr/WnhlV/WixkWM0W9r0pXop
+         gicooqWIiO/JvEmA2FkRvLsupzjkQNEBOd0usd28nmSXkq3IuO+Rad9pPBAiBtOFMvPA
+         mGb20MhqtVOrv5PcWWPwAe/uWNOwIlUgVjrRRsZTy7DhnUnpBBxajLU/CnyqneWtZUbT
+         byYg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=BSzVqEHQArCQJRZFOLvUMnwPXoWHlMnGm9yud/mfpfk=;
-        b=aoE1nrvy/tJN5HYBsM6cp8+YzF06RfR+woWGVhWULn1HF7ll3z6YCeTTJmgzFwXVhW
-         BcV3B9r4F5bnqWSO71oxgbYLMWpaAyZTbxcSF4mnUveezVT3Ji4Y4fsrzlyrRG92f9kk
-         p4j5hxtnyezivQdKb7a9N6NJ4/sEx4LIwkUdik8xOA9NlkVokuj4YEXIhRfr+Ug5+0xt
-         VNTK/ezS8CyjV2u8LUPsc+f7k0HNOl2ZYZcbfjolOVBl5rlhLKm/t2h3Ic29OIqCBmb2
-         SoGpsXrT4J6A9NIox1oSDEfpDa7CMYpobmZh2MGt9EjLWFh62F2W6/AUbSbkiTmepN5N
-         ymvw==
-X-Gm-Message-State: AOAM530LAOqcO76loT2BCfVkBwhn+AXTecq6xCB60xzSS2shbNlj+VvY
-        KFYKg8FNTeGDfr6ENyF7s7KmDtfp7Q8=
-X-Google-Smtp-Source: ABdhPJxIkhIfQ2OpdAZyFSgA709GK52EX3Jz63idKvw64sYa++3oN9zEO5Wz6LmlDFsWPAAlxLKuqg==
-X-Received: by 2002:a17:907:7f0f:: with SMTP id qf15mr31306233ejc.560.1638614128994;
-        Sat, 04 Dec 2021 02:35:28 -0800 (PST)
+        bh=gkNuQU9ms7EgFT+DKwpoPdhHGJZYoVyol9y2DeXm44k=;
+        b=3EhoMzKoQ3id1zTkzFCWuJJK/6foJl2N5f4QQOy8rRgQRKjoIFu41hnbgWD2ck3FFP
+         7exS6gYoQvgyQTVyxnxM31+n95rEvvTsbSYUd9IR/y9fhCLo/NV/9A0yefjpmzK3CmhH
+         H+l+TimkyIsHZjy2VMqyn7NzumwH/UaSIlUFRc0/Ji3grMvPnHecTOQ60w2vj4386BWG
+         Y54oaYawoVZacdq4yJOSI7wV5fZuPNpixxGYm8O3YVC4XGVK+CBm2xPv0awxkPfrANol
+         yYJZrowGcWUec/0wKPCwHt5aaNi1FPYqKZFpKLjwBSC4Unm6WfKTAixAwe0aH8yJ01gj
+         pnfg==
+X-Gm-Message-State: AOAM533LHJ8gBMEjguk2KClfmWK4v7iTn8brhnTw685fAM/VZ2aBDSpx
+        /NeMHwYm8N8CzySzTtwo+YTObNG2G+o=
+X-Google-Smtp-Source: ABdhPJzC4qQHG+39XbXv0dfxkAWbitjmSIVb0x2eYlxdIh0R/geZjOrxLzqzbELIXK/brYm8tbT+PA==
+X-Received: by 2002:a17:907:a426:: with SMTP id sg38mr30738654ejc.392.1638614129508;
+        Sat, 04 Dec 2021 02:35:29 -0800 (PST)
 Received: from debianHome.localdomain (dynamic-077-006-110-042.77.6.pool.telefonica.de. [77.6.110.42])
-        by smtp.gmail.com with ESMTPSA id hc16sm3192756ejc.12.2021.12.04.02.35.28
+        by smtp.gmail.com with ESMTPSA id hc16sm3192756ejc.12.2021.12.04.02.35.29
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Dec 2021 02:35:28 -0800 (PST)
+        Sat, 04 Dec 2021 02:35:29 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v3 2/5] libsepol: add not-self neverallow support
-Date:   Sat,  4 Dec 2021 11:35:13 +0100
-Message-Id: <20211204103516.17375-2-cgzones@googlemail.com>
+Subject: [RFC PATCH v3 3/5] checkpolicy: add not-self neverallow support
+Date:   Sat,  4 Dec 2021 11:35:14 +0100
+Message-Id: <20211204103516.17375-3-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211204103516.17375-1-cgzones@googlemail.com>
 References: <20211124190815.12757-1-cgzones@googlemail.com>
@@ -64,145 +64,150 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add support for not-self neverallow rules. These do not trigger on allow
-rules where the source type is exactly equal to the target type.
+Add support for using negated or complemented self in the target type of
+neverallow rules.
+
+Some refpolicy examples:
+
+    neverallow * ~self:{ capability cap_userns capability2 cap2_userns } *;
+    # no violations
+
+    neverallow domain domain:file ~{ append read_file_perms write };
+
+    libsepol.report_failure: neverallow on line 565 of policy/modules/kernel/kernel.te (or line 30300 of policy.conf) violated by allow sysadm_t httpd_bugzilla_script_t:file { create setattr relabelfrom relabelto unlink link rename };
+    libsepol.report_failure: neverallow on line 565 of policy/modules/kernel/kernel.te (or line 30300 of policy.conf) violated by allow chromium_t chromium_t:file { create };
+    libsepol.report_failure: neverallow on line 564 of policy/modules/kernel/kernel.te (or line 30299 of policy.conf) violated by allow sysadm_t httpd_bugzilla_script_t:dir { create };
+
+    neverallow domain { domain -self }:file ~{ append read_file_perms write };
+
+    libsepol.report_failure: neverallow on line 565 of policy/modules/kernel/kernel.te (or line 30300 of policy.conf) violated by allow sysadm_t httpd_bugzilla_script_t:file { create setattr relabelfrom relabelto unlink link rename };
+    libsepol.report_failure: neverallow on line 564 of policy/modules/kernel/kernel.te (or line 30299 of policy.conf) violated by allow sysadm_t httpd_bugzilla_script_t:dir { create };
+
+Using negated self in a complement `~{ domain -self }` is not supported.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 
 ---
 v3:
-  - use renamed ebitmap_relative_complement(), see previous commit
-  - cache not-self status of avrules and add loop shortcut on target and
-    source type match
+   - mention both neverallow rule types when using -self within an
+     unsupported rule type
 v2:
-  - do not change the value of RULE_SELF
----
- libsepol/include/sepol/policydb/policydb.h |  3 +-
- libsepol/src/assertion.c                   | 41 ++++++++++++++++++++--
- 2 files changed, 40 insertions(+), 4 deletions(-)
+   - fix neverallowxperm usage
 
-diff --git a/libsepol/include/sepol/policydb/policydb.h b/libsepol/include/sepol/policydb/policydb.h
-index 4bf9f05d..11637fe8 100644
---- a/libsepol/include/sepol/policydb/policydb.h
-+++ b/libsepol/include/sepol/policydb/policydb.h
-@@ -285,7 +285,8 @@ typedef struct avrule {
- #define AVRULE_XPERMS	(AVRULE_XPERMS_ALLOWED | AVRULE_XPERMS_AUDITALLOW | \
- 				AVRULE_XPERMS_DONTAUDIT | AVRULE_XPERMS_NEVERALLOW)
- 	uint32_t specified;
--#define RULE_SELF 1
-+#define RULE_SELF       (1U << 0)
-+#define RULE_NOTSELF    (1U << 1)
- 	uint32_t flags;
- 	type_set_t stypes;
- 	type_set_t ttypes;
-diff --git a/libsepol/src/assertion.c b/libsepol/src/assertion.c
-index dd2749a0..fe6b88ae 100644
---- a/libsepol/src/assertion.c
-+++ b/libsepol/src/assertion.c
-@@ -216,6 +216,7 @@ static int report_assertion_avtab_matches(avtab_key_t *k, avtab_datum_t *d, void
- 	uint32_t perms;
- 	ebitmap_t src_matches, tgt_matches, self_matches, matches;
- 	ebitmap_node_t *snode, *tnode;
-+	const int is_avrule_notself = (avrule->flags & RULE_NOTSELF) != 0;
- 	unsigned int i, j;
- 
- 	if ((k->specified & AVTAB_ALLOWED) == 0)
-@@ -241,7 +242,7 @@ static int report_assertion_avtab_matches(avtab_key_t *k, avtab_datum_t *d, void
- 	if (rc)
- 		goto oom;
- 
--	if (avrule->flags == RULE_SELF) {
-+	if (avrule->flags & RULE_SELF) {
- 		rc = ebitmap_and(&matches, &p->attr_type_map[k->source_type - 1], &p->attr_type_map[k->target_type - 1]);
- 		if (rc)
- 			goto oom;
-@@ -268,6 +269,8 @@ static int report_assertion_avtab_matches(avtab_key_t *k, avtab_datum_t *d, void
- 
- 		ebitmap_for_each_positive_bit(&src_matches, snode, i) {
- 			ebitmap_for_each_positive_bit(&tgt_matches, tnode, j) {
-+				if (is_avrule_notself && i == j)
-+					continue;
- 				if (avrule->specified == AVRULE_XPERMS_NEVERALLOW) {
- 					a->errors += report_assertion_extended_permissions(handle,p, avrule,
- 											i, j, cp, perms, k, avtab);
-@@ -381,6 +384,7 @@ static int check_assertion_extended_permissions(avrule_t *avrule, avtab_t *avtab
- 	unsigned int i, j;
- 	ebitmap_node_t *snode, *tnode;
- 	class_perm_node_t *cp;
-+	const int is_avrule_notself = (avrule->flags & RULE_NOTSELF) != 0;
- 	int rc;
- 	int ret = 1;
- 
-@@ -402,7 +406,7 @@ static int check_assertion_extended_permissions(avrule_t *avrule, avtab_t *avtab
- 	if (rc)
- 		goto oom;
- 
--	if (avrule->flags == RULE_SELF) {
-+	if (avrule->flags & RULE_SELF) {
- 		rc = ebitmap_and(&matches, &p->attr_type_map[k->source_type - 1],
- 				&p->attr_type_map[k->target_type - 1]);
- 		if (rc)
-@@ -418,6 +422,18 @@ static int check_assertion_extended_permissions(avrule_t *avrule, avtab_t *avtab
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ checkpolicy/policy_define.c | 46 ++++++++++++++++++++++++++++++++-----
+ checkpolicy/test/dismod.c   |  6 ++++-
+ 2 files changed, 45 insertions(+), 7 deletions(-)
+
+diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+index d3eb6111..e74b1a9a 100644
+--- a/checkpolicy/policy_define.c
++++ b/checkpolicy/policy_define.c
+@@ -2067,12 +2067,17 @@ static int define_te_avtab_xperms_helper(int which, avrule_t ** rule)
+ 	while ((id = queue_remove(id_queue))) {
+ 		if (strcmp(id, "self") == 0) {
+ 			free(id);
+-			if (add == 0) {
+-				yyerror("-self is not supported");
++			if (add == 0 && which != AVRULE_XPERMS_NEVERALLOW) {
++				yyerror("-self is only supported in neverallow and neverallowxperm rules");
++				ret = -1;
++				goto out;
++			}
++			avrule->flags |= (add ? RULE_SELF : RULE_NOTSELF);
++			if ((avrule->flags & RULE_SELF) && (avrule->flags & RULE_NOTSELF)) {
++				yyerror("self and -self is not supported");
+ 				ret = -1;
+ 				goto out;
+ 			}
+-			avrule->flags |= RULE_SELF;
+ 			continue;
+ 		}
+ 		if (set_types
+@@ -2083,6 +2088,18 @@ static int define_te_avtab_xperms_helper(int which, avrule_t ** rule)
  		}
  	}
  
-+	if (is_avrule_notself) {
-+		rc = ebitmap_and(&matches, &p->attr_type_map[k->source_type - 1], &p->attr_type_map[k->target_type - 1]);
-+		if (rc)
-+			goto oom;
-+		rc = ebitmap_and(&self_matches, &avrule->ttypes.types, &matches);
-+		if (rc)
-+			goto oom;
-+		rc = ebitmap_relative_complement(&tgt_matches, &self_matches);
-+		if (rc)
-+			goto oom;
++	if ((avrule->ttypes.flags & TYPE_COMP)) {
++		if (avrule->flags & RULE_NOTSELF) {
++			yyerror("-self is not supported in complements");
++			ret = -1;
++			goto out;
++		}
++		if (avrule->flags & RULE_SELF) {
++			avrule->flags &= ~RULE_SELF;
++			avrule->flags |= RULE_NOTSELF;
++		}
 +	}
 +
- 	if (ebitmap_is_empty(&tgt_matches))
- 		goto exit;
- 
-@@ -426,6 +442,9 @@ static int check_assertion_extended_permissions(avrule_t *avrule, avtab_t *avtab
+ 	ebitmap_init(&tclasses);
+ 	ret = read_classes(&tclasses);
+ 	if (ret)
+@@ -2528,12 +2545,17 @@ static int define_te_avtab_helper(int which, avrule_t ** rule)
+ 	while ((id = queue_remove(id_queue))) {
+ 		if (strcmp(id, "self") == 0) {
+ 			free(id);
+-			if (add == 0) {
+-				yyerror("-self is not supported");
++			if (add == 0 && which != AVRULE_NEVERALLOW) {
++				yyerror("-self is only supported in neverallow and neverallowxperm rules");
++				ret = -1;
++				goto out;
++			}
++			avrule->flags |= (add ? RULE_SELF : RULE_NOTSELF);
++			if ((avrule->flags & RULE_SELF) && (avrule->flags & RULE_NOTSELF)) {
++				yyerror("self and -self is not supported");
+ 				ret = -1;
+ 				goto out;
+ 			}
+-			avrule->flags |= RULE_SELF;
  			continue;
- 		ebitmap_for_each_positive_bit(&src_matches, snode, i) {
- 			ebitmap_for_each_positive_bit(&tgt_matches, tnode, j) {
-+				if (is_avrule_notself && i == j)
-+					continue;
-+
- 				ret = check_assertion_extended_permissions_avtab(
- 						avrule, avtab, i, j, k, p);
- 				if (ret)
-@@ -463,7 +482,7 @@ static int check_assertion_avtab_match(avtab_key_t *k, avtab_datum_t *d, void *a
- 	if (rc == 0)
- 		goto exit;
- 
--	if (avrule->flags == RULE_SELF) {
-+	if (avrule->flags & RULE_SELF) {
- 		/* If the neverallow uses SELF, then it is not enough that the
- 		 * neverallow's source matches the src and tgt of the rule being checked.
- 		 * It must match the same thing in the src and tgt, so AND the source
-@@ -479,6 +498,22 @@ static int check_assertion_avtab_match(avtab_key_t *k, avtab_datum_t *d, void *a
- 		ebitmap_destroy(&match);
+ 		}
+ 		if (set_types
+@@ -2544,6 +2566,18 @@ static int define_te_avtab_helper(int which, avrule_t ** rule)
+ 		}
  	}
  
-+	if (avrule->flags & RULE_NOTSELF) {
-+		ebitmap_t match;
-+		rc = ebitmap_cpy(&match, &p->attr_type_map[k->source_type - 1]);
-+		if (rc) {
-+			ebitmap_destroy(&match);
-+			goto oom;
++	if ((avrule->ttypes.flags & TYPE_COMP)) {
++		if (avrule->flags & RULE_NOTSELF) {
++			yyerror("-self is not supported in complements");
++			ret = -1;
++			goto out;
 +		}
-+		rc = ebitmap_relative_complement(&match, &p->attr_type_map[k->target_type - 1]);
-+		if (rc) {
-+			ebitmap_destroy(&match);
-+			goto oom;
++		if (avrule->flags & RULE_SELF) {
++			avrule->flags &= ~RULE_SELF;
++			avrule->flags |= RULE_NOTSELF;
 +		}
-+		rc2 = ebitmap_match_any(&avrule->ttypes.types, &match);
-+		ebitmap_destroy(&match);
 +	}
 +
- 	/* neverallow may have tgts even if it uses SELF */
- 	rc = ebitmap_match_any(&avrule->ttypes.types, &p->attr_type_map[k->target_type -1]);
- 	if (rc == 0 && rc2 == 0)
+ 	ebitmap_init(&tclasses);
+ 	ret = read_classes(&tclasses);
+ 	if (ret)
+diff --git a/checkpolicy/test/dismod.c b/checkpolicy/test/dismod.c
+index ec2a3e9a..a2d74d42 100644
+--- a/checkpolicy/test/dismod.c
++++ b/checkpolicy/test/dismod.c
+@@ -124,7 +124,7 @@ static int display_type_set(type_set_t * set, uint32_t flags, policydb_t * polic
+ 	}
+ 
+ 	num_types = 0;
+-	if (flags & RULE_SELF) {
++	if (flags & (RULE_SELF | RULE_NOTSELF)) {
+ 		num_types++;
+ 	}
+ 
+@@ -169,6 +169,10 @@ static int display_type_set(type_set_t * set, uint32_t flags, policydb_t * polic
+ 		fprintf(fp, " self");
+ 	}
+ 
++	if (flags & RULE_NOTSELF) {
++		fprintf(fp, " -self");
++	}
++
+ 	if (num_types > 1)
+ 		fprintf(fp, " }");
+ 
 -- 
 2.34.1
 

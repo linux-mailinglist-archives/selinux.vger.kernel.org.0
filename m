@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C85246841C
-	for <lists+selinux@lfdr.de>; Sat,  4 Dec 2021 11:35:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F88E46841E
+	for <lists+selinux@lfdr.de>; Sat,  4 Dec 2021 11:35:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236411AbhLDKi6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 4 Dec 2021 05:38:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38994 "EHLO
+        id S235417AbhLDKi7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 4 Dec 2021 05:38:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233760AbhLDKi5 (ORCPT
+        with ESMTP id S235954AbhLDKi5 (ORCPT
         <rfc822;selinux@vger.kernel.org>); Sat, 4 Dec 2021 05:38:57 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E260C061751
-        for <selinux@vger.kernel.org>; Sat,  4 Dec 2021 02:35:31 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id y12so21587069eda.12
-        for <selinux@vger.kernel.org>; Sat, 04 Dec 2021 02:35:31 -0800 (PST)
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25CDCC061359
+        for <selinux@vger.kernel.org>; Sat,  4 Dec 2021 02:35:32 -0800 (PST)
+Received: by mail-ed1-x529.google.com with SMTP id r25so21698648edq.7
+        for <selinux@vger.kernel.org>; Sat, 04 Dec 2021 02:35:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=QWgGrkFDgatjSy86S3rlLuRx6M4kWAYtj4lxNA8zols=;
-        b=qpGDey4ljBYsT+x4bChMRgRmwTsjhFxORng2aeCDZMq72oPlbZR0GkjsTEp5vNmsnm
-         g5smkrdw9CU4YHohJ3LCaY7FVM04rEDINtdyPny+m06ZmrXdx76VpMylw03iFZikn3A6
-         sxSqX+zyrakj9FXuWFCyLkgVaaMKsKJQ9Jl83kmsQ9ISDxskPwiwD0a944k21ivH5oAj
-         oEQxxfBNYhCh7P8tB+8mhNvcK9d7s4FPPIoX403vBWm9rgwepYiJ9cAOkmOQ/wLQ4WZ5
-         nwB0DdI+LHhs2tUJAZTLscPUV+/CUcvf2JxsnKyRK6RHoNFb2CGX41aKV65AcnLhrg7d
-         7e8w==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=d1WmDh1cJv8QCLCqmGr3r0sl/OFP6mPHXCEXM+PmEjc=;
+        b=lIUPYoVEkOtwK33wAyB/BwdZcQu5ltCsLZKTJUTPckmafhUCnTHJ0+rgQmP35Ce5cz
+         //COtJZMegpWP3Z6Poi5x/aXxshM7/m6jh4G0Imjm31A5Cp/e/CXIufdqlLBhlY6T6x8
+         iAT7agjGzZCzfMLCAq6iaYwxePARiS1yEcnbHPS4NQzVx0DYSUZbhM+wUA2rmRa2chAu
+         WRSI7HwStt0AOGZvaXK8cniBP5Ff/EsOH0k1LznqWN4U8BG35rJCVv4U0ed+b4zVNmvF
+         5vpXGndmM8x+zZCP2GklaTGCpgSNvmKOy31jY09LpcV2n+cKo5Ct9ihVWucbJR52PM+/
+         GA7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=QWgGrkFDgatjSy86S3rlLuRx6M4kWAYtj4lxNA8zols=;
-        b=z76thNpayzzXNDom8rFXEH1iLFP7n76CZ5IkZRd3ts8+R59SEKuTFl3Rs6Vo+1AfD5
-         awYN4fYqqcy1J9cdt3mOyf++N80qJgiOnhiBByE8RTMFZcDNGiOWLWQZqX9oZxi1kQxD
-         9QytgcULx8+28sYsanzMqDgKE0FCBbcQV6kQGrlx/kStTPK1yZD3Qc3rR+0Do4VzrPVS
-         LEt07CToOLc9u96K0OVZimZdT5FEJQOBqasspEqraG1I7jZg3rHUXTe+09NApadUZR8V
-         /Jf9iZPX/4ilKrmq/g/k9T2Wct7+8o8JrYJluYyk8RPMvznObgXBR4MegPLRCAxZM1o1
-         LlKg==
-X-Gm-Message-State: AOAM533lZy5FGsXO6GD9hjdesCR2r0OSj6jiC6CzzN14r0UvYT/oYAnu
-        96OpwpKgyejs1QunberRAXRPHbtN68c=
-X-Google-Smtp-Source: ABdhPJz24NkQ2Zq4jO+X6uP3xfTqBX+0wTLvxYHgLLjiEISx3dAqjcPZymTSm6Sozj4oRmThJ/NRcg==
-X-Received: by 2002:a05:6402:710:: with SMTP id w16mr34806956edx.218.1638614130141;
+        bh=d1WmDh1cJv8QCLCqmGr3r0sl/OFP6mPHXCEXM+PmEjc=;
+        b=s0Pp8GkWA9sLnAW1mn9oQXb62sBUT/2LrvDW28BKoM4F3aT5dw9u6WvLeVEgi34XWL
+         4rfiJaNs3D8D2ZPVRWxSyKHKUDZTCcbpfilSixNrFfPvrB8np80dWpS4v89h0EBIq0lK
+         0PIyRgn/EwuknnX9eWFTejgh5LYgsjdDTteUGSpqJPhToNQroC3IvadbW3p/WcU8W+FG
+         iniypL0BVHzWZljX0+o+5NXCF+SuqFkUiQsqqEuG0JrQJ5Ilktu6TrhKKUXeHEJZ1Zg4
+         goHh7STVgJunX0JY7Ug2QYAROG2VXrS3HEui9TZWYcbSqU+HOUbkENegSNQ9gVYVzJwt
+         Ixdw==
+X-Gm-Message-State: AOAM531DAsSq0iTI6P8nCtJneF8dEt2hyGeEd8D1X+UBAi86kFiiZQDS
+        JOayE98xqvWK4XqYl4lVQMr97kcOL+0=
+X-Google-Smtp-Source: ABdhPJwrQjLpaoOAXGOBcOVw9n0L51tWkGPeFSJAQpfDE9fG89ZHWTPeO2eCm12rypSophut3sUfFg==
+X-Received: by 2002:a17:907:868e:: with SMTP id qa14mr31334371ejc.564.1638614130676;
         Sat, 04 Dec 2021 02:35:30 -0800 (PST)
 Received: from debianHome.localdomain (dynamic-077-006-110-042.77.6.pool.telefonica.de. [77.6.110.42])
-        by smtp.gmail.com with ESMTPSA id hc16sm3192756ejc.12.2021.12.04.02.35.29
-        for <selinux@vger.kernel.org>
+        by smtp.gmail.com with ESMTPSA id hc16sm3192756ejc.12.2021.12.04.02.35.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 04 Dec 2021 02:35:29 -0800 (PST)
+        Sat, 04 Dec 2021 02:35:30 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v3 4/5] libsepol: free ebitmap on end of function
-Date:   Sat,  4 Dec 2021 11:35:15 +0100
-Message-Id: <20211204103516.17375-4-cgzones@googlemail.com>
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [RFC PATCH v3 5/5] libsepol: pass avtab to report function
+Date:   Sat,  4 Dec 2021 11:35:16 +0100
+Message-Id: <20211204103516.17375-5-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211204103516.17375-1-cgzones@googlemail.com>
 References: <20211124190815.12757-1-cgzones@googlemail.com>
@@ -64,23 +64,37 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+Populate the avtab member before passing as argument to the report
+function. Without the avtab avtab_search_node() is unable to find
+allowxperm rules and this results in false-positive reports, e.g. on:
+
+    allow TATTR1 TATTR1 : CLASS1 ioctl;
+    allowxperm TATTR1 TATTR1 : CLASS1 ioctl 0x9501;
+    neverallowxperm TYPE1 ~self : CLASS1 0x9501;
+
+Reported-by: James Carter <jwcart2@gmail.com>
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/assertion.c | 1 +
- 1 file changed, 1 insertion(+)
+ libsepol/src/assertion.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/libsepol/src/assertion.c b/libsepol/src/assertion.c
-index fe6b88ae..4600be41 100644
+index 4600be41..a0eebb93 100644
 --- a/libsepol/src/assertion.c
 +++ b/libsepol/src/assertion.c
-@@ -460,6 +460,7 @@ oom:
- exit:
- 	ebitmap_destroy(&src_matches);
- 	ebitmap_destroy(&tgt_matches);
-+	ebitmap_destroy(&self_matches);
- 	ebitmap_destroy(&matches);
- 	return ret;
- }
+@@ -304,10 +304,12 @@ static int report_assertion_failures(sepol_handle_t *handle, policydb_t *p, avru
+ 	args.avrule = avrule;
+ 	args.errors = 0;
+ 
++	args.avtab = &p->te_avtab;
+ 	rc = avtab_map(&p->te_avtab, report_assertion_avtab_matches, &args);
+ 	if (rc)
+ 		goto oom;
+ 
++	args.avtab = &p->te_cond_avtab;
+ 	rc = avtab_map(&p->te_cond_avtab, report_assertion_avtab_matches, &args);
+ 	if (rc)
+ 		goto oom;
 -- 
 2.34.1
 

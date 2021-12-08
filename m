@@ -2,42 +2,42 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 820D646D31A
-	for <lists+selinux@lfdr.de>; Wed,  8 Dec 2021 13:17:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3458546D31F
+	for <lists+selinux@lfdr.de>; Wed,  8 Dec 2021 13:17:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231418AbhLHMUm (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 8 Dec 2021 07:20:42 -0500
-Received: from mailomta10-sa.btinternet.com ([213.120.69.16]:30173 "EHLO
-        sa-prd-fep-041.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S233189AbhLHMUk (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 8 Dec 2021 07:20:40 -0500
+        id S233182AbhLHMUq (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 8 Dec 2021 07:20:46 -0500
+Received: from mailomta13-sa.btinternet.com ([213.120.69.19]:61045 "EHLO
+        sa-prd-fep-048.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S233196AbhLHMUl (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 8 Dec 2021 07:20:41 -0500
 Received: from sa-prd-rgout-002.btmx-prd.synchronoss.net ([10.2.38.5])
-          by sa-prd-fep-041.btinternet.com with ESMTP
-          id <20211208121706.DGXF30965.sa-prd-fep-041.btinternet.com@sa-prd-rgout-002.btmx-prd.synchronoss.net>;
+          by sa-prd-fep-048.btinternet.com with ESMTP
+          id <20211208121706.KUXM22188.sa-prd-fep-048.btinternet.com@sa-prd-rgout-002.btmx-prd.synchronoss.net>;
           Wed, 8 Dec 2021 12:17:06 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1638965826; 
-        bh=W7dvuQBGveBXMyrEhX/osg05mmZywTyB4Vwf/3RluVQ=;
+        bh=5RA/VN5JYNfEkn8QzUgtaoeQHs22yvKz8LpKsVcZB0Q=;
         h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:In-Reply-To:References:MIME-Version;
-        b=WuXE4frAaqzI1lFaf+/PQ/OhVrVeDUSaTOmGg2hyFuIfkkL10Sn6AhwwWBHbf14rA2d31KJH3Q4Byj1n9U+opSCW3wCeGlx91KVNc9STaK5XStEnprKnNoa17rfH63eUM5zgLjevsaTuwdmRojC2x3Icpqz6ytkJ/a7NHE8FaPLMxcYYJz/9EArvKWbX7WMKSzE8U8RQA0cchlmc/wcN8DZjEMFPWkrrnXfHBxOc/FHvurfWhjiGCNC63KO6TNoI5NBMNNKzc6xhnPz7lUNsOpUWj7jdm3aeOsZRoicwbB+EHJ/NYnx0JmVkUWMI7dpIuvDNGd2I4eNAekhUR+1ViA==
+        b=KP55vLl9e2gZmvG1ZjQyvvpi6Hyt/b+HJhga7xu62moRQxX4HMTWkx3JnB5luMo5bb8d0qOHTRCcYmuyhF6kue5YuQ4asfiXS9K+e7k3McOWrLAJH6o/aEeYNepUQ7BgFMahseL48SD5UWq4M48kNuzARTxEY9hI0MYoiiXHrQIy8xpgcuC7c3GiKL7a+6VesXDX624j20IcCVeXlXZAu+luROapWA4TVAbZgaRhpKLLgIaiCJYlOznwF5haiWWkZ1Ba6mjvQShZMb9BVp0tyBR4ovU3+VNEDQ8jNzS+uf2lUc0svMUW0t7rklbuqQeQIjxcYcyH5pS71gEVjxjkCQ==
 Authentication-Results: btinternet.com; none
-X-SNCR-Rigid: 6139417C0D2162C5
+X-SNCR-Rigid: 6139417C0D2162CA
 X-Originating-IP: [109.150.61.81]
 X-OWM-Source-IP: 109.150.61.81 (GB)
 X-OWM-Env-Sender: richard_c_haines@btinternet.com
 X-VadeSecure-score: verdict=clean score=0/300, class=clean
-X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvuddrjeekgdefjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepuedttdelleehueeggfeihfeitdehueekffeviedtffegffeiueegleejgeevgfeinecukfhppedutdelrdduhedtrdeiuddrkedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpedutdelrdduhedtrdeiuddrkedupdhmrghilhhfrhhomheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehprghulhesphgruhhlqdhmohhorhgvrdgtohhmpdhrtghpthhtoheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvuddrjeekgdefjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvffufffkofgjfhgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepjedtveeglefhvdetuedttdelffejvdetheekgfevkefggfeiueejkefhtdffteehnecuffhomhgrihhnpehgihhthhhusgdrtghomhdpsghuihhlugdrmhgunecukfhppedutdelrdduhedtrdeiuddrkedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpedutdelrdduhedtrdeiuddrkedupdhmrghilhhfrhhomheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehprghulhesphgruhhlqdhmohhorhgvrdgtohhmpdhrtghpthhtoheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
 X-RazorGate-Vade-Verdict: clean 0
 X-RazorGate-Vade-Classification: clean
 X-SNCR-hdrdom: btinternet.com
 Received: from localhost.localdomain (109.150.61.81) by sa-prd-rgout-002.btmx-prd.synchronoss.net (5.8.716.04) (authenticated as richard_c_haines@btinternet.com)
-        id 6139417C0D2162C5; Wed, 8 Dec 2021 12:17:06 +0000
+        id 6139417C0D2162CA; Wed, 8 Dec 2021 12:17:06 +0000
 From:   Richard Haines <richard_c_haines@btinternet.com>
 To:     selinux@vger.kernel.org
 Cc:     paul@paul-moore.com,
         Richard Haines <richard_c_haines@btinternet.com>
-Subject: [PATCH V2 6/7] policy_config_files.md: Update snapperd_contexts contents
-Date:   Wed,  8 Dec 2021 12:16:53 +0000
-Message-Id: <20211208121654.7591-7-richard_c_haines@btinternet.com>
+Subject: [PATCH V2 7/7] title.md: Clarify example code location
+Date:   Wed,  8 Dec 2021 12:16:54 +0000
+Message-Id: <20211208121654.7591-8-richard_c_haines@btinternet.com>
 X-Mailer: git-send-email 2.33.1
 In-Reply-To: <20211208121654.7591-1-richard_c_haines@btinternet.com>
 References: <20211208121654.7591-1-richard_c_haines@btinternet.com>
@@ -47,45 +47,31 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Used by snapper(8) for filesystem snapshot management.
+Clarify that the example code is not embedded, but linked.
 
 Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
 ---
- src/policy_config_files.md | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ src/title.md | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/src/policy_config_files.md b/src/policy_config_files.md
-index 0db80b4..c87cdfd 100644
---- a/src/policy_config_files.md
-+++ b/src/policy_config_files.md
-@@ -816,10 +816,26 @@ db_schema         *.*       system_u:object_r:sepgsql_schema_t:s0
+diff --git a/src/title.md b/src/title.md
+index caf5b41..03c5795 100644
+--- a/src/title.md
++++ b/src/title.md
+@@ -82,6 +82,13 @@ Android.
+ **Object Classes and Permissions** - Describes the SELinux object
+ classes and permissions.
  
- ## *contexts/snapperd_contexts*
++#### Notebook Examples
++
++The Notebook examples are not embedded into any of the document formats
++described in
++**<https://github.com/SELinuxProject/selinux-notebook/blob/main/BUILD.md>**,
++however they will have links to them in their build directories.
++
+ ### Updated Editions
  
--**To be determined**
-+Used by ***snapper**(8)* for filesystem snapshot management to set an SELinux
-+context on ***btrfs**(8)* subvolumes. This is a Red Hat specific policy
-+configuration file.
- 
- **The file format is as follows:**
- 
-+```
-+snapperd_data = user:role:type[:range]
-+```
-+
-+**Where:**
-+
-+*snapperd_data*
-+
-+- The keyword *snapperd_data*
-+
-+*user:role:type[:range]*
-+
-+- The security context including the MLS / MCS *level* or *range* if applicable.
-+
- **Example file contents:**
- 
- ```
+ The SELinux Notebook is being maintained as part of the SELinux project, more
 -- 
 2.33.1
 

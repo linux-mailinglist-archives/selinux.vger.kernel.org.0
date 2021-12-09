@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EBBD946EDA0
-	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:52:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 106F746ED90
+	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:51:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234627AbhLIQzg (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Dec 2021 11:55:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40092 "EHLO
+        id S238009AbhLIQzJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Dec 2021 11:55:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236251AbhLIQzf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:55:35 -0500
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C11F8C0617A1
-        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:52:01 -0800 (PST)
-Received: by mail-ed1-x52d.google.com with SMTP id e3so21818982edu.4
-        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:52:01 -0800 (PST)
+        with ESMTP id S232578AbhLIQzI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:55:08 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6E51C061746
+        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:51:34 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id o20so21701253eds.10
+        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:51:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=Oc3znJHUCEvujx6hfd1xEOQVqetFzLJCTBaljK2iw/A=;
-        b=T/gsNImGeOx//m0aCyO3BWkNe/mIHFAvh2ZxpnIEYKuhewpgTSFBgjlYp9EIJFNAuF
-         i0yWyCZ4xtxvjeYGdFjAMlmvOF1s1AwwAtpMjX5z6+neuqLr45k7UGFV4O8ylVDz7mr6
-         QaR9+dPDIew+9Q0JHOKXorjnN+e2kwa5M95S4nXG50iKTIfJweGDCHTNVDOkVKVBHxL6
-         nt4aIJTDugRsHbxDc6XK2apIvXnXR0FJUfmDwiYr2BjL86rjj9Co6B7RgiPstaAZ9spm
-         XiZgFUfrRQFLorgFJcJtmxquBQndwlUFuI0t+RHTi9v3vdi1Bir48wPD35mocoIM40kC
-         msog==
+        bh=fNb1TvcUD2aDc/iSCEfcSHcpWweiw/5MjB5LTKFUIX8=;
+        b=gfzHJRlDPtkggaWW+J0zxSfk4dvtkoEiS5wRP7MWgrkUjtnoldzT7JCx5dbDUiyf5x
+         Xfd6YM9t8XaSenicoMiZHmpAokbDzIOYXAFe2Lrkx58TbxGnuonaW4K0vbNdufD2erOz
+         kyKKBln0x9oUlE9J5QJzOARhDIer83i+KblV1tC1m68iQA7REHAumz80WfhDf83cn+XT
+         1owDMJ4Nu3t9cLFW53Ry2hYE0IkIt0JoaWlIdipW0ZQ8KS91FnRh8VBk22mYft7ZcQUy
+         aZqOAfUg1SQ/tkkkdGitMdwpa2y0lN7eiIYt6KU2gcgRIYGph8MqNWEtpM9Yf0e9aomn
+         tvQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Oc3znJHUCEvujx6hfd1xEOQVqetFzLJCTBaljK2iw/A=;
-        b=46JKkRcLk6ha/IS0Zlw1ZW61a0oVmwgQ2uzkPMgq2o8vGGz734d8HKuRv2qSicUIxn
-         A7yC/dZPabpZrVcn8jL40uvC4YrZl3v70KNT/OhNi3EljT6DucwBEiRROWawdCDu2hk4
-         qsZs456hyw/t/yGeOk6ZuvEs9HmK9b8wCavsuuxU0m6xjkTEeMz4LcDv8FM1sfjRNsr5
-         87F9xbgma2lesnxUI8KLX0K+lD95JusNwXRzP7hl3d2PlQ55sgAb291wVQS9KuzZQn5H
-         JhuhSMeskb51iUW308bLa9vY7rG32an4zpGQW8vjSzjr7CnGLl7+Tk8yuWzf7nQJz88F
-         o8Fw==
-X-Gm-Message-State: AOAM533hlkc1ZpkKywzprPMPGVukI8w3yhiFHWfnaWkbQcl1CArxTlrG
-        bsJPzFHMS+PMZTIBY1+Lp/WKTs/ngHQ=
-X-Google-Smtp-Source: ABdhPJzaKS/JA5a74Z9Wh3HCRNhG41jo4X5rPn6lzkEnNBxoqGAU9M/SOccPT4XWxR3sruKaoQ3D7g==
-X-Received: by 2002:a17:906:c14b:: with SMTP id dp11mr16964579ejc.294.1639068576305;
+        bh=fNb1TvcUD2aDc/iSCEfcSHcpWweiw/5MjB5LTKFUIX8=;
+        b=q778uJKbieTgYZbbUFRyyQMDauq8snPySEi+8zvR4++ONpEF5sNLGihlt+mSQQIB4u
+         +uLdq5H7nxhAjr6yaV2g1ku/2GYnPHHWG3Atkofj2Auko3qQ5cJ0DbQi/o27Rv2G15B2
+         /c30E8G2IE8ex9KGeP6jt/hdGe7NzRNpE724/NhdS937f3jKZJhsOw+RDMDsw8Q8QNH2
+         pK5X/BmMiEavfXEPfZIw3z4mLnoHZd59GHOw/1avlN9rMhmOE3hCH9qk25HX4QFfjquz
+         6zt4lZqG5v48SGP0UCuXSpuAQ4W5EKViKB0E7Ru16GalmtSdcIxow+T1dhdsWR6zHMA4
+         1JbA==
+X-Gm-Message-State: AOAM532iTKf0oftATPxKGbijOhBzTb3LIcIkqFcLveKEnCm/3i+HAhyw
+        6xiV9qTo6gGbKvQzZU92+tekRrUDveA=
+X-Google-Smtp-Source: ABdhPJzRUOLACYdd2L5qEkyNM6gqfqYiAY0+MjfMNEZ1FFpjjHsjn4dVNnmZev0B2JhLFgBhM0eLCA==
+X-Received: by 2002:a17:906:730f:: with SMTP id di15mr16973533ejc.22.1639068576852;
         Thu, 09 Dec 2021 08:49:36 -0800 (PST)
 Received: from debianHome.localdomain (dynamic-095-116-140-169.95.116.pool.telefonica.de. [95.116.140.169])
-        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.35
+        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.36
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Dec 2021 08:49:35 -0800 (PST)
+        Thu, 09 Dec 2021 08:49:36 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v3 01/36] cifuzz: enable report-unreproducible-crashes
-Date:   Thu,  9 Dec 2021 17:48:53 +0100
-Message-Id: <20211209164928.87459-2-cgzones@googlemail.com>
+Subject: [PATCH v3 02/36] cifuzz: use the default runtime of 600 seconds
+Date:   Thu,  9 Dec 2021 17:48:54 +0100
+Message-Id: <20211209164928.87459-3-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211209164928.87459-1-cgzones@googlemail.com>
 References: <20211105154542.38434-1-cgzones@googlemail.com>
@@ -64,28 +64,31 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Fail and report unreproducible fuzzing crashes and leaks. Such failures
-are probably related to some global state not properly reset in the
-fuzzer and can cause OSS-Fuzz to report flaky issues.
+The default runtime for CIFuzz[1] is 600 seconds; use it.
 
-Suggested-by: Evgeny Vereshchagin
+Since GitHub pull-requests are not the main contribution workflow the
+number of runs should be manageable.
+
+[1]: https://google.github.io/oss-fuzz/getting-started/continuous-integration/
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- .github/workflows/cifuzz.yml | 1 +
- 1 file changed, 1 insertion(+)
+ .github/workflows/cifuzz.yml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/.github/workflows/cifuzz.yml b/.github/workflows/cifuzz.yml
-index 5c2233a2..b28eb71a 100644
+index b28eb71a..92523db4 100644
 --- a/.github/workflows/cifuzz.yml
 +++ b/.github/workflows/cifuzz.yml
-@@ -30,6 +30,7 @@ jobs:
+@@ -28,7 +28,7 @@ jobs:
+         uses: google/oss-fuzz/infra/cifuzz/actions/run_fuzzers@master
+         with:
            oss-fuzz-project-name: 'selinux'
-           fuzz-seconds: 180
+-          fuzz-seconds: 180
++          fuzz-seconds: 600
            dry-run: false
-+          report-unreproducible-crashes: true
+           report-unreproducible-crashes: true
            sanitizer: ${{ matrix.sanitizer }}
-       - name: Upload Crash
-         uses: actions/upload-artifact@v1
 -- 
 2.34.1
 

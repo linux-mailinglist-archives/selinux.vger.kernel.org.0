@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id ED80C46EDAC
-	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:52:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE0E46ED8F
+	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:51:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232406AbhLIQ4E (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Dec 2021 11:56:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40232 "EHLO
+        id S237297AbhLIQzH (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Dec 2021 11:55:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241357AbhLIQ4E (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:56:04 -0500
-Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9930C061746
-        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:52:30 -0800 (PST)
-Received: by mail-ed1-x52e.google.com with SMTP id g14so20891280edb.8
-        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:52:30 -0800 (PST)
+        with ESMTP id S236044AbhLIQzH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:55:07 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 918E2C061746
+        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:51:33 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id l25so21579740eda.11
+        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:51:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=njRU7bLxjyOwbsy17KQnmIWSmP19HRbpEcxQ2c0CijM=;
-        b=UQdwQcErCXLeQZZcGbIQ/QPsilWrJPsMuXhJFhUNoJP6qLaHrZtjGoEJOuemxoCUeR
-         f3u2ASYfEHLLxYaiWkPgbpjcKYwgxWl2jqs5CynIj6qavqVibPVBWNRAtKnUeT7o0lmA
-         H/B0QEAPMpkcG58xjOB4mIBU1bS8CkQX4bryVII2VllH7KIHPjGbIzONunlRlGN3eXne
-         OH/IuFrHkAkYUXd5gEZWjFJRONruIMhJujpXSrx2LAy+ALjkoyGZnnOSadCrPxI/WZUB
-         RYdLr8hebvlA/ZBH/+xHIC/Dq86bIO7FeZ4p1aBix/9m+hrIbOr/sQ/MINJWJYixe0ua
-         T94A==
+        bh=SGoF1911AB4EV0Iv4ri18U1rOWqcokV6jCeV3aa52j4=;
+        b=TYw6ZyLAg9ev/lXLKqfninUqlnmszcxR9h5y3Bde/Y3zZ5TIQHZeTMpf0RP18/8Oci
+         5TERczKgFxAGMeBTQzVwH9ysyPtEmDfVpzB2eUuGpZYw8KTO6XW3Rzl/aXI+4K3Trbcy
+         kp5W9iT1v/PU1+NnI3Xq6h6Nc30ijT4nt7jh6d/hVY1DyFE6msjhM7dDRBWHA4dJvFQ/
+         uN2ZWPKt2+lUieLv8Z6ZiNu2Zk7BIxiyIm0hkmbhAsHnZnms1/7oqEflyZB4LfBDilOx
+         Xw5LCwIVtwxfKBNDA1t5tGCNwayXr7Gqvg9Ui0tuZ30C8zGXAzoM6Bm9eXTxipo8/9hi
+         T5PA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=njRU7bLxjyOwbsy17KQnmIWSmP19HRbpEcxQ2c0CijM=;
-        b=ZHVRRyesrQsg21jb4q6dawFo6NSM3Tb8BfE06JLX2jad4vny2/BXS5TNrnrgJ7/RuP
-         Mbs+aXtnT9V/USaKbmOdkNpidfXNNJcJ2dlzz7drPiv0fmAz4UB+tnmGJSLJ4RoR3rrN
-         Q5wHBsmsWN6TPHRPfYjQu5qC/6ITOktVcgGa760RmStWR17KmG7gLkhyVvWPAhv0xU1N
-         Cfl7LtmW5bKJIubTFJhaTaF82wqTnY2WGGUdMf2ky9zOGruLQ5f2HYn7MyHhSgy5L5Ot
-         aM5x1SJ5bQPBUy3j34ygSOGVR1cYp6kz9DKGce47r/L0dBuZ4mG6bTQMqOkDR9vYJ1H3
-         D0VA==
-X-Gm-Message-State: AOAM530S1zE4SLSawHEwaTa1N8PQGW5A4pivxcQcbJri3BkADSlNcNne
-        4N4Gfu5iXdhP3rgNyyI67W36Q85SlQc=
-X-Google-Smtp-Source: ABdhPJxm2//srjy7kMPBVQPa/zmCoQDcG6T0mPFUWJHLFV484rbo8Ipc+XASSCCXoqfJ0cXZSse2mQ==
-X-Received: by 2002:a50:fc10:: with SMTP id i16mr30357048edr.84.1639068579148;
+        bh=SGoF1911AB4EV0Iv4ri18U1rOWqcokV6jCeV3aa52j4=;
+        b=rgjP8Dbg9/FbCK1sV2Mn9t3SXsfdCENBA7sMIVrsmOJjYU9GNxEd7GgBmw7Bt/LzLq
+         JYWVb+nd6D0HHkPY9VZSSP0Cru4SQ4H1ixVO2R618odF1S0K3vSf2y7ToVnLTBldiTbY
+         mdtLFmQqPyQV/X+j1IZ9Rj2kA6OGBEOmCtTvaS/qFRoFWy4PLw1cY58ZXIqD71HTfXh7
+         LUExhMsd8QilZfzb2uCT2vGHzA5b+MdRm/2oVAuPGW2mvOKbyDzboN52Fcp3LdoaH+10
+         eZ2baIV8Adl88JJTjQuSQTp0Z561HUUL+9U4Wp2PX1C5145RQFfvNNLYe8IA6bgVv7ny
+         8vnw==
+X-Gm-Message-State: AOAM533LpqLjCWtAmk54hcV/6BZbu/oKJPgxZGPqURK4jBG6ywI+YutB
+        HxaRAg8LmnsCUt8kvZtEC2h3cWq5+Io=
+X-Google-Smtp-Source: ABdhPJz03b/8gdcuTLpqKvwKx/vQJgEF2/dcHdhM1Mip3m7llAJmxyrwZO0b6HsmzV4D+99A6/xCeQ==
+X-Received: by 2002:a05:6402:3596:: with SMTP id y22mr31057828edc.297.1639068579778;
         Thu, 09 Dec 2021 08:49:39 -0800 (PST)
 Received: from debianHome.localdomain (dynamic-095-116-140-169.95.116.pool.telefonica.de. [95.116.140.169])
-        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.38
+        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.39
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Dec 2021 08:49:38 -0800 (PST)
+        Thu, 09 Dec 2021 08:49:39 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v3 06/36] libsepol: use logging framework in conditional.c
-Date:   Thu,  9 Dec 2021 17:48:58 +0100
-Message-Id: <20211209164928.87459-7-cgzones@googlemail.com>
+Subject: [PATCH v3 07/36] libsepol: use logging framework in ebitmap.c
+Date:   Thu,  9 Dec 2021 17:48:59 +0100
+Message-Id: <20211209164928.87459-8-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211209164928.87459-1-cgzones@googlemail.com>
 References: <20211105154542.38434-1-cgzones@googlemail.com>
@@ -68,120 +68,99 @@ Use the internal logging framework instead of directly writing to
 stdout as it might be undesired to do so within a library.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-
 ---
-v2:
-   replace INFO calls by WARN since they are reasons of failure
----
- libsepol/src/conditional.c | 30 +++++++++++-------------------
- 1 file changed, 11 insertions(+), 19 deletions(-)
+ libsepol/src/ebitmap.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
-index 037dc7e2..1edac65d 100644
---- a/libsepol/src/conditional.c
-+++ b/libsepol/src/conditional.c
-@@ -25,6 +25,7 @@
- #include <sepol/policydb/conditional.h>
+diff --git a/libsepol/src/ebitmap.c b/libsepol/src/ebitmap.c
+index 1de3816a..fa728558 100644
+--- a/libsepol/src/ebitmap.c
++++ b/libsepol/src/ebitmap.c
+@@ -406,8 +406,7 @@ int ebitmap_read(ebitmap_t * e, void *fp)
+ 	count = le32_to_cpu(buf[2]);
  
- #include "private.h"
-+#include "debug.h"
- 
- /* move all type rules to top of t/f lists to help kernel on evaluation */
- static void cond_optimize(cond_av_list_t ** l)
-@@ -314,8 +315,7 @@ static int evaluate_cond_node(policydb_t * p, cond_node_t * node)
- 	if (new_state != node->cur_state) {
- 		node->cur_state = new_state;
- 		if (new_state == -1)
--			printf
--			    ("expression result was undefined - disabling all rules.\n");
-+			WARN(NULL, "expression result was undefined - disabling all rules.\n");
- 		/* turn the rules on or off */
- 		for (cur = node->true_list; cur != NULL; cur = cur->next) {
- 			if (new_state <= 0) {
-@@ -368,8 +368,7 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
- 		if (ne) {
- 			ne->next = NULL;
- 		} else {	/* ne should never be NULL */
--			printf
--			    ("Found expr with no bools and only a ! - this should never happen.\n");
-+			ERR(NULL, "Found expr with no bools and only a ! - this should never happen.\n");
- 			return -1;
- 		}
- 		/* swap the true and false lists */
-@@ -421,8 +420,7 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
- 			}
- 			k = cond_evaluate_expr(p, cn->expr);
- 			if (k == -1) {
--				printf
--				    ("While testing expression, expression result "
-+				ERR(NULL, "While testing expression, expression result "
- 				     "was undefined - this should never happen.\n");
- 				return -1;
- 			}
-@@ -635,8 +633,7 @@ static int cond_insertf(avtab_t * a
- 	 */
- 	if (k->specified & AVTAB_TYPE) {
- 		if (avtab_search(&p->te_avtab, k)) {
--			printf
--			    ("security: type rule already exists outside of a conditional.");
-+			WARN(NULL, "security: type rule already exists outside of a conditional.");
- 			goto err;
- 		}
- 		/*
-@@ -652,8 +649,7 @@ static int cond_insertf(avtab_t * a
- 			if (node_ptr) {
- 				if (avtab_search_node_next
- 				    (node_ptr, k->specified)) {
--					printf
--					    ("security: too many conflicting type rules.");
-+					ERR(NULL, "security: too many conflicting type rules.");
- 					goto err;
- 				}
- 				found = 0;
-@@ -664,15 +660,13 @@ static int cond_insertf(avtab_t * a
- 					}
- 				}
- 				if (!found) {
--					printf
--					    ("security: conflicting type rules.\n");
-+					ERR(NULL, "security: conflicting type rules.\n");
- 					goto err;
- 				}
- 			}
- 		} else {
- 			if (avtab_search(&p->te_cond_avtab, k)) {
--				printf
--				    ("security: conflicting type rules when adding type rule for true.\n");
-+				ERR(NULL, "security: conflicting type rules when adding type rule for true.\n");
- 				goto err;
- 			}
- 		}
-@@ -680,7 +674,7 @@ static int cond_insertf(avtab_t * a
- 
- 	node_ptr = avtab_insert_nonunique(&p->te_cond_avtab, k, d);
- 	if (!node_ptr) {
--		printf("security: could not insert rule.");
-+		ERR(NULL, "security: could not insert rule.");
- 		goto err;
- 	}
- 	node_ptr->parse_context = (void *)1;
-@@ -742,14 +736,12 @@ static int cond_read_av_list(policydb_t * p, void *fp,
- static int expr_isvalid(policydb_t * p, cond_expr_t * expr)
- {
- 	if (expr->expr_type <= 0 || expr->expr_type > COND_LAST) {
+ 	if (mapsize != MAPSIZE) {
 -		printf
--		    ("security: conditional expressions uses unknown operator.\n");
-+		WARN(NULL, "security: conditional expressions uses unknown operator.\n");
- 		return 0;
+-		    ("security: ebitmap: map size %d does not match my size %zu (high bit was %d)\n",
++		ERR(NULL, "security: ebitmap: map size %d does not match my size %zu (high bit was %d)\n",
+ 		     mapsize, MAPSIZE, e->highbit);
+ 		goto bad;
  	}
- 
- 	if (expr->bool > p->p_bools.nprim) {
+@@ -416,8 +415,7 @@ int ebitmap_read(ebitmap_t * e, void *fp)
+ 		goto ok;
+ 	}
+ 	if (e->highbit & (MAPSIZE - 1)) {
 -		printf
--		    ("security: conditional expressions uses unknown bool.\n");
-+		WARN(NULL, "security: conditional expressions uses unknown bool.\n");
- 		return 0;
+-		    ("security: ebitmap: high bit (%d) is not a multiple of the map size (%zu)\n",
++		ERR(NULL, "security: ebitmap: high bit (%d) is not a multiple of the map size (%zu)\n",
+ 		     e->highbit, MAPSIZE);
+ 		goto bad;
  	}
- 	return 1;
+@@ -429,12 +427,12 @@ int ebitmap_read(ebitmap_t * e, void *fp)
+ 	for (i = 0; i < count; i++) {
+ 		rc = next_entry(buf, fp, sizeof(uint32_t));
+ 		if (rc < 0) {
+-			printf("security: ebitmap: truncated map\n");
++			ERR(NULL, "security: ebitmap: truncated map\n");
+ 			goto bad;
+ 		}
+ 		n = (ebitmap_node_t *) malloc(sizeof(ebitmap_node_t));
+ 		if (!n) {
+-			printf("security: ebitmap: out of memory\n");
++			ERR(NULL, "security: ebitmap: out of memory\n");
+ 			rc = -ENOMEM;
+ 			goto bad;
+ 		}
+@@ -443,34 +441,30 @@ int ebitmap_read(ebitmap_t * e, void *fp)
+ 		n->startbit = le32_to_cpu(buf[0]);
+ 
+ 		if (n->startbit & (MAPSIZE - 1)) {
+-			printf
+-			    ("security: ebitmap start bit (%d) is not a multiple of the map size (%zu)\n",
++			ERR(NULL, "security: ebitmap start bit (%d) is not a multiple of the map size (%zu)\n",
+ 			     n->startbit, MAPSIZE);
+ 			goto bad_free;
+ 		}
+ 		if (n->startbit > (e->highbit - MAPSIZE)) {
+-			printf
+-			    ("security: ebitmap start bit (%d) is beyond the end of the bitmap (%zu)\n",
++			ERR(NULL, "security: ebitmap start bit (%d) is beyond the end of the bitmap (%zu)\n",
+ 			     n->startbit, (e->highbit - MAPSIZE));
+ 			goto bad_free;
+ 		}
+ 		rc = next_entry(&map, fp, sizeof(uint64_t));
+ 		if (rc < 0) {
+-			printf("security: ebitmap: truncated map\n");
++			ERR(NULL, "security: ebitmap: truncated map\n");
+ 			goto bad_free;
+ 		}
+ 		n->map = le64_to_cpu(map);
+ 
+ 		if (!n->map) {
+-			printf
+-			    ("security: ebitmap: null map in ebitmap (startbit %d)\n",
++			ERR(NULL, "security: ebitmap: null map in ebitmap (startbit %d)\n",
+ 			     n->startbit);
+ 			goto bad_free;
+ 		}
+ 		if (l) {
+ 			if (n->startbit <= l->startbit) {
+-				printf
+-				    ("security: ebitmap: start bit %d comes after start bit %d\n",
++				ERR(NULL, "security: ebitmap: start bit %d comes after start bit %d\n",
+ 				     n->startbit, l->startbit);
+ 				goto bad_free;
+ 			}
+@@ -481,8 +475,7 @@ int ebitmap_read(ebitmap_t * e, void *fp)
+ 		l = n;
+ 	}
+ 	if (count && l->startbit + MAPSIZE != e->highbit) {
+-		printf
+-		    ("security: ebitmap: high bit %u has not the expected value %zu\n",
++		ERR(NULL, "security: ebitmap: high bit %u has not the expected value %zu\n",
+ 		     e->highbit, l->startbit + MAPSIZE);
+ 		goto bad;
+ 	}
 -- 
 2.34.1
 

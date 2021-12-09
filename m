@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1861146EDA7
-	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:52:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED80C46EDAC
+	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:52:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230389AbhLIQz5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Dec 2021 11:55:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40190 "EHLO
+        id S232406AbhLIQ4E (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Dec 2021 11:56:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241356AbhLIQz4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:55:56 -0500
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99478C0617A1
-        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:52:22 -0800 (PST)
-Received: by mail-ed1-x531.google.com with SMTP id x10so4328020edd.5
-        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:52:22 -0800 (PST)
+        with ESMTP id S241357AbhLIQ4E (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:56:04 -0500
+Received: from mail-ed1-x52e.google.com (mail-ed1-x52e.google.com [IPv6:2a00:1450:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9930C061746
+        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:52:30 -0800 (PST)
+Received: by mail-ed1-x52e.google.com with SMTP id g14so20891280edb.8
+        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:52:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=56ERkEPPB0NDyae5UcCDF97OxHrlRxY7HkGnvnU0+ww=;
-        b=gnlcSgMThv+tO2awNYgkMReYqKgYscnVlvElAU9WCesehQn4utdUfTqY4fdtw5O7QJ
-         4wPfcnv1HlUmH96wg4p5XB8l+kg8/ZWo6L51qX1yjdzxvfEtgERCuL+9Su3O4xSQDJ8w
-         /eSeAqnTCQsos4Bflv+3k9kBiVLc2nlC8LWDDHJ43fELp1a9bttCgu4m7soSHpSuZpfn
-         YdPgCkfkD33YNhKqp92q5cSDCOieSNabu6xnsA2uOhVefT8V+5YyD/fGIn72WtmpROcx
-         6NCEU4Bh5jR9qj15rGoivl+MsjohmCCOCY6c1jzlm+RbZ9uOyLZA7k/zpUlE0GbpSBH1
-         gt7g==
+        bh=njRU7bLxjyOwbsy17KQnmIWSmP19HRbpEcxQ2c0CijM=;
+        b=UQdwQcErCXLeQZZcGbIQ/QPsilWrJPsMuXhJFhUNoJP6qLaHrZtjGoEJOuemxoCUeR
+         f3u2ASYfEHLLxYaiWkPgbpjcKYwgxWl2jqs5CynIj6qavqVibPVBWNRAtKnUeT7o0lmA
+         H/B0QEAPMpkcG58xjOB4mIBU1bS8CkQX4bryVII2VllH7KIHPjGbIzONunlRlGN3eXne
+         OH/IuFrHkAkYUXd5gEZWjFJRONruIMhJujpXSrx2LAy+ALjkoyGZnnOSadCrPxI/WZUB
+         RYdLr8hebvlA/ZBH/+xHIC/Dq86bIO7FeZ4p1aBix/9m+hrIbOr/sQ/MINJWJYixe0ua
+         T94A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=56ERkEPPB0NDyae5UcCDF97OxHrlRxY7HkGnvnU0+ww=;
-        b=jFBzslsXf7FAI103i3mH77T6RjI9kMXfvU7JyBmtrgBbA0Wel2QeaFI5ESAWpZa9HC
-         vBEnmPnWankEDQsWAsFO8FPrRocJEYlDpZAOL0tu+6pNSSqanYlfc1AXF+cmIZVDzLzT
-         21pNH1zNkveNhdiQGjImvBZANGGhfHSmh1S0pb50HP9Y5twjHb5chJPTCycB0LkFrZlh
-         noLUzTB067LgkT9DWg1vlCtOxGGfk1t09A3dtL95/TqmgP84JKG5DLHv3EYsDhIFKz3g
-         gdhhFPUPglX0hmudWqYRfARuTwtYtje+IKtXV5dZmz8rdsBzPQ4nhyBMA/e/WT1SSbql
-         XDeg==
-X-Gm-Message-State: AOAM533Rn4uljz5Pdt+wY5kK2ceKDx3IX1jKSNhrL92KLtqgXBBY5aub
-        rKEDb7iTLQPSIf0qBU8IOyB5kz8dz5Y=
-X-Google-Smtp-Source: ABdhPJybHNPkE+4ORsh1JXrlad926wD4yIMFdlDCC4l2dLYIaojxrKKl7RP+7S9LpO+r601bTj+i3A==
-X-Received: by 2002:a05:6402:2210:: with SMTP id cq16mr30870883edb.32.1639068578511;
-        Thu, 09 Dec 2021 08:49:38 -0800 (PST)
+        bh=njRU7bLxjyOwbsy17KQnmIWSmP19HRbpEcxQ2c0CijM=;
+        b=ZHVRRyesrQsg21jb4q6dawFo6NSM3Tb8BfE06JLX2jad4vny2/BXS5TNrnrgJ7/RuP
+         Mbs+aXtnT9V/USaKbmOdkNpidfXNNJcJ2dlzz7drPiv0fmAz4UB+tnmGJSLJ4RoR3rrN
+         Q5wHBsmsWN6TPHRPfYjQu5qC/6ITOktVcgGa760RmStWR17KmG7gLkhyVvWPAhv0xU1N
+         Cfl7LtmW5bKJIubTFJhaTaF82wqTnY2WGGUdMf2ky9zOGruLQ5f2HYn7MyHhSgy5L5Ot
+         aM5x1SJ5bQPBUy3j34ygSOGVR1cYp6kz9DKGce47r/L0dBuZ4mG6bTQMqOkDR9vYJ1H3
+         D0VA==
+X-Gm-Message-State: AOAM530S1zE4SLSawHEwaTa1N8PQGW5A4pivxcQcbJri3BkADSlNcNne
+        4N4Gfu5iXdhP3rgNyyI67W36Q85SlQc=
+X-Google-Smtp-Source: ABdhPJxm2//srjy7kMPBVQPa/zmCoQDcG6T0mPFUWJHLFV484rbo8Ipc+XASSCCXoqfJ0cXZSse2mQ==
+X-Received: by 2002:a50:fc10:: with SMTP id i16mr30357048edr.84.1639068579148;
+        Thu, 09 Dec 2021 08:49:39 -0800 (PST)
 Received: from debianHome.localdomain (dynamic-095-116-140-169.95.116.pool.telefonica.de. [95.116.140.169])
-        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.37
+        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.38
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 09 Dec 2021 08:49:38 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v3 05/36] libsepol/fuzz: limit element sizes for fuzzing
-Date:   Thu,  9 Dec 2021 17:48:57 +0100
-Message-Id: <20211209164928.87459-6-cgzones@googlemail.com>
+Subject: [PATCH v3 06/36] libsepol: use logging framework in conditional.c
+Date:   Thu,  9 Dec 2021 17:48:58 +0100
+Message-Id: <20211209164928.87459-7-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211209164928.87459-1-cgzones@googlemail.com>
 References: <20211105154542.38434-1-cgzones@googlemail.com>
@@ -64,79 +64,124 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Limit the maximum length of read sizes, like string length of module
-version and name or keys and number of symtab entries.  This avoids the
-fuzzer to report oom events for huge allocations (it also improves the
-number of executions per seconds of the fuzzer).
-
-This change only affects the fuzzer build.
-
-    ==15211== ERROR: libFuzzer: out-of-memory (malloc(3115956666))
-       To change the out-of-memory limit use -rss_limit_mb=<N>
-
-        #0 0x52dc61 in __sanitizer_print_stack_trace (./out/binpolicy-fuzzer+0x52dc61)
-        #1 0x475618 in fuzzer::PrintStackTrace() fuzzer.o
-        #2 0x458855 in fuzzer::Fuzzer::HandleMalloc(unsigned long) fuzzer.o
-        #3 0x45876a in fuzzer::MallocHook(void const volatile*, unsigned long) fuzzer.o
-        #4 0x534557 in __sanitizer::RunMallocHooks(void const*, unsigned long) (./out/binpolicy-fuzzer+0x534557)
-        #5 0x4aa7d7 in __asan::Allocator::Allocate(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*, __asan::AllocType, bool) (./out/binpolicy-fuzzer+0x4aa7d7)
-        #6 0x4aa143 in __asan::asan_malloc(unsigned long, __sanitizer::BufferedStackTrace*) (./out/binpolicy-fuzzer+0x4aa143)
-        #7 0x5259cb in malloc (./out/binpolicy-fuzzer+0x5259cb)
-        #8 0x59d307 in str_read ./libsepol/src/services.c:1746:8
-        #9 0x585b97 in perm_read ./libsepol/src/policydb.c:2063:5
-        #10 0x581f8a in common_read ./libsepol/src/policydb.c:2119:7
-        #11 0x576681 in policydb_read ./libsepol/src/policydb.c:4417:8
-        #12 0x55a214 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:26:6
-        #13 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #14 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #15 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #16 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #17 0x7fe1ec88a7ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #18 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
-
-    ==12683== ERROR: libFuzzer: out-of-memory (malloc(2526451450))
-       To change the out-of-memory limit use -rss_limit_mb=<N>
-
-        #0 0x52dc61 in __sanitizer_print_stack_trace (./out/binpolicy-fuzzer+0x52dc61)
-        #1 0x475618 in fuzzer::PrintStackTrace() fuzzer.o
-        #2 0x458855 in fuzzer::Fuzzer::HandleMalloc(unsigned long) fuzzer.o
-        #3 0x45876a in fuzzer::MallocHook(void const volatile*, unsigned long) fuzzer.o
-        #4 0x534557 in __sanitizer::RunMallocHooks(void const*, unsigned long) (./out/binpolicy-fuzzer+0x534557)
-        #5 0x4aa7d7 in __asan::Allocator::Allocate(unsigned long, unsigned long, __sanitizer::BufferedStackTrace*, __asan::AllocType, bool) (./out/binpolicy-fuzzer+0x4aa7d7)
-        #6 0x4aa143 in __asan::asan_malloc(unsigned long, __sanitizer::BufferedStackTrace*) (./out/binpolicy-fuzzer+0x4aa143)
-        #7 0x5259cb in malloc (./out/binpolicy-fuzzer+0x5259cb)
-        #8 0x575f8a in policydb_read ./libsepol/src/policydb.c:4356:18
-        #9 0x55a214 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:26:6
-        #10 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #11 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #12 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #13 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #14 0x7fa737b377ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #15 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
+Use the internal logging framework instead of directly writing to
+stdout as it might be undesired to do so within a library.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libsepol/src/private.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/libsepol/src/private.h b/libsepol/src/private.h
-index 71287282..6146f59f 100644
---- a/libsepol/src/private.h
-+++ b/libsepol/src/private.h
-@@ -44,7 +44,12 @@
+---
+v2:
+   replace INFO calls by WARN since they are reasons of failure
+---
+ libsepol/src/conditional.c | 30 +++++++++++-------------------
+ 1 file changed, 11 insertions(+), 19 deletions(-)
+
+diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
+index 037dc7e2..1edac65d 100644
+--- a/libsepol/src/conditional.c
++++ b/libsepol/src/conditional.c
+@@ -25,6 +25,7 @@
+ #include <sepol/policydb/conditional.h>
  
- #define ARRAY_SIZE(x) (sizeof(x)/sizeof((x)[0]))
+ #include "private.h"
++#include "debug.h"
  
--#define is_saturated(x) (x == (typeof(x))-1)
-+#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-+# define is_saturated(x) (x == (typeof(x))-1 || (x) > (1U << 16))
-+#else
-+# define is_saturated(x) (x == (typeof(x))-1)
-+#endif
-+
- #define zero_or_saturated(x) ((x == 0) || is_saturated(x))
+ /* move all type rules to top of t/f lists to help kernel on evaluation */
+ static void cond_optimize(cond_av_list_t ** l)
+@@ -314,8 +315,7 @@ static int evaluate_cond_node(policydb_t * p, cond_node_t * node)
+ 	if (new_state != node->cur_state) {
+ 		node->cur_state = new_state;
+ 		if (new_state == -1)
+-			printf
+-			    ("expression result was undefined - disabling all rules.\n");
++			WARN(NULL, "expression result was undefined - disabling all rules.\n");
+ 		/* turn the rules on or off */
+ 		for (cur = node->true_list; cur != NULL; cur = cur->next) {
+ 			if (new_state <= 0) {
+@@ -368,8 +368,7 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
+ 		if (ne) {
+ 			ne->next = NULL;
+ 		} else {	/* ne should never be NULL */
+-			printf
+-			    ("Found expr with no bools and only a ! - this should never happen.\n");
++			ERR(NULL, "Found expr with no bools and only a ! - this should never happen.\n");
+ 			return -1;
+ 		}
+ 		/* swap the true and false lists */
+@@ -421,8 +420,7 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
+ 			}
+ 			k = cond_evaluate_expr(p, cn->expr);
+ 			if (k == -1) {
+-				printf
+-				    ("While testing expression, expression result "
++				ERR(NULL, "While testing expression, expression result "
+ 				     "was undefined - this should never happen.\n");
+ 				return -1;
+ 			}
+@@ -635,8 +633,7 @@ static int cond_insertf(avtab_t * a
+ 	 */
+ 	if (k->specified & AVTAB_TYPE) {
+ 		if (avtab_search(&p->te_avtab, k)) {
+-			printf
+-			    ("security: type rule already exists outside of a conditional.");
++			WARN(NULL, "security: type rule already exists outside of a conditional.");
+ 			goto err;
+ 		}
+ 		/*
+@@ -652,8 +649,7 @@ static int cond_insertf(avtab_t * a
+ 			if (node_ptr) {
+ 				if (avtab_search_node_next
+ 				    (node_ptr, k->specified)) {
+-					printf
+-					    ("security: too many conflicting type rules.");
++					ERR(NULL, "security: too many conflicting type rules.");
+ 					goto err;
+ 				}
+ 				found = 0;
+@@ -664,15 +660,13 @@ static int cond_insertf(avtab_t * a
+ 					}
+ 				}
+ 				if (!found) {
+-					printf
+-					    ("security: conflicting type rules.\n");
++					ERR(NULL, "security: conflicting type rules.\n");
+ 					goto err;
+ 				}
+ 			}
+ 		} else {
+ 			if (avtab_search(&p->te_cond_avtab, k)) {
+-				printf
+-				    ("security: conflicting type rules when adding type rule for true.\n");
++				ERR(NULL, "security: conflicting type rules when adding type rule for true.\n");
+ 				goto err;
+ 			}
+ 		}
+@@ -680,7 +674,7 @@ static int cond_insertf(avtab_t * a
  
- #define spaceship_cmp(a, b) (((a) > (b)) - ((a) < (b)))
+ 	node_ptr = avtab_insert_nonunique(&p->te_cond_avtab, k, d);
+ 	if (!node_ptr) {
+-		printf("security: could not insert rule.");
++		ERR(NULL, "security: could not insert rule.");
+ 		goto err;
+ 	}
+ 	node_ptr->parse_context = (void *)1;
+@@ -742,14 +736,12 @@ static int cond_read_av_list(policydb_t * p, void *fp,
+ static int expr_isvalid(policydb_t * p, cond_expr_t * expr)
+ {
+ 	if (expr->expr_type <= 0 || expr->expr_type > COND_LAST) {
+-		printf
+-		    ("security: conditional expressions uses unknown operator.\n");
++		WARN(NULL, "security: conditional expressions uses unknown operator.\n");
+ 		return 0;
+ 	}
+ 
+ 	if (expr->bool > p->p_bools.nprim) {
+-		printf
+-		    ("security: conditional expressions uses unknown bool.\n");
++		WARN(NULL, "security: conditional expressions uses unknown bool.\n");
+ 		return 0;
+ 	}
+ 	return 1;
 -- 
 2.34.1
 

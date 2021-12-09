@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AAA6F46EDB2
-	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:52:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EA4046ED95
+	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:51:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232000AbhLIQ40 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Dec 2021 11:56:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40342 "EHLO
+        id S231567AbhLIQzT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Dec 2021 11:55:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231162AbhLIQ40 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:56:26 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1B66C061746
-        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:52:52 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id t5so21315057edd.0
-        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:52:52 -0800 (PST)
+        with ESMTP id S230221AbhLIQzT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:55:19 -0500
+Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8647BC0617A1
+        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:51:45 -0800 (PST)
+Received: by mail-ed1-x531.google.com with SMTP id o20so21703229eds.10
+        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:51:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=myk2fagbRYo56h35dbUdYxa5cd9Ca3ACjL3X2gVcXws=;
-        b=RLjBy8IqDas2j41HKrTQ1dQStYw2m4VdgY6Tz2qsimhW5pZO3rD3rFm6vKaEIg1Fn+
-         TYxakuoSEgPzKCZVxRfGi3FTrx9oRxxbsn2vfvP5OnYppn44PthtX0feuZftI0T12qu7
-         Q1lxGyK7vNb4fY1WbCA65IZsvXc6oQqZt6LRVge+fiQ1boP3s8a9btDO9HfuycTBWRK9
-         WipFb1fq2SFKurkxaYOgBSE8KVuPZ9hfpBrDjEt/DzlSkeA3wvRTdRe+RAYrM0gQUn6b
-         ld+srAABwRWs9ccuwl8vqEebY0aLdas2pFxllLDztlG7ElFd/WPs3+sKmqqFcKbHBbuZ
-         w4eA==
+        bh=lSrwhiJ2ZT1Mzum6DIUxM597iA6Z7ZtmZsNVPeScfFM=;
+        b=lAzzZ+6hMcZ2als8csFFL9MqQiVBcPLLXwVuezSmqmq6B1Pnb9ZL6NEe8pCyFrykER
+         HtQohGPC5xHdKWaCU7j1e2evrEWo/N4L6Wn9WTMKNcuhrVsvppfV5y5QdfdoVHf8g+22
+         XVxRKuTZZ2JBrAJo1KHRcVwVi0Sw4KpDlU5rEf3z/JqOcHum1965T3BRG5oJ+XXJsEV0
+         10CHBbuTN4mWQf3CwNRhOJEZBXuowx40tCJ7dvJekjcGwo+gabojezoMxKX9xhm/D3WT
+         K1toA1p3RYn34QVACly1huLtdAYNZJae/pLo3Q4nPMZ49m/jZ/fWKkB/5+e777jAQoMg
+         wdUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=myk2fagbRYo56h35dbUdYxa5cd9Ca3ACjL3X2gVcXws=;
-        b=sNZpj0jKSAZgIuKtvIbS4JS2E3WMBpN03GP/9LG/ZSUzuMIZ1ki2/76Lqtjl1z2cye
-         jiUiOuYPAjlwnBIV5JOM5woYhFPAYN0A9wpXY3KrgYsjsDfFqakrFoTfrL6TDDRwiart
-         NhWItAdre5+JUjXs1Ii4kB79yBbEfGx4xty1BuCkrUfJXwPRnAbFl5NsFkx0UJiQkijP
-         8L9rvGvvzfcljgb/bgeEkbaSqo2LYe3BuKsp2ow+HyTq3rPTeZDGyQbRboMrgWp6R7Aj
-         sofkI/jHa0PHKb88ZEj9B9fVMsaw4osOCsupUvFwILzJcwpOAOCu4MZ3w8ALkB291j8p
-         paQw==
-X-Gm-Message-State: AOAM5310AkJE0DaeeWbF4izZW1rPTe5vFSo95o3+Y1P9SrxWuL7uBnRR
-        71mfoyohwXmxRnLxZWzmHss2rWoBKn8=
-X-Google-Smtp-Source: ABdhPJyrurt4WbgY+BF4R3GCcogG6Z4GkgGfBeCOef9OWeLupuLGI7Hqo21xS+MKSCZWwF0V+ULucw==
-X-Received: by 2002:a05:6402:1c01:: with SMTP id ck1mr30337669edb.262.1639068588134;
+        bh=lSrwhiJ2ZT1Mzum6DIUxM597iA6Z7ZtmZsNVPeScfFM=;
+        b=FbeiJ8tQ+tm1snNKN97CTYUmjg/O1O1q9EmGAZi362pPt5qAZUwECptM11OHYG/Kt0
+         XpSBZHKRIDxrSpYB5UUm0+nqqG07ferlIYo8l5dQlZU2BzpHk07mAUl5o6YpG9jgvVV1
+         hznJYoDIDqcFydsiNQHCVVWEgCIhsgmuVYEGi6xIEj2U5/YESkpHKOWE4vILJMOIvE/8
+         g8075GzM5mjbbE95MsP2tTDqLuJubenlSWcVIYfqRgc8GWAzXlD65NvSh5xXzlQzR4eX
+         aXAZmYBlD9vlGl/OGQ0YtljuzcfAT+z1/vyUM7A9tWIlUDPul3uR3lOTlTD/v8eHoLQY
+         wTog==
+X-Gm-Message-State: AOAM531jV+B2Zk9xnoHOp3XNesk8B5oOuLiEFtlsqS2zN1H6iz1gDpg6
+        9KKH58z5vSa8KvdSqABEDVE2Jxfh9XI=
+X-Google-Smtp-Source: ABdhPJxGgR/jP4XU0cI2pEthBhoDWycHAX+HE5yjZzuRghbLa0Tx0ib+0cOcbN/HIkh5RcOyVbPMog==
+X-Received: by 2002:a17:906:1be2:: with SMTP id t2mr17293129ejg.399.1639068588750;
         Thu, 09 Dec 2021 08:49:48 -0800 (PST)
 Received: from debianHome.localdomain (dynamic-095-116-140-169.95.116.pool.telefonica.de. [95.116.140.169])
-        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.47
+        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.48
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Dec 2021 08:49:47 -0800 (PST)
+        Thu, 09 Dec 2021 08:49:48 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v3 19/36] libsepol: do not crash on user gaps
-Date:   Thu,  9 Dec 2021 17:49:11 +0100
-Message-Id: <20211209164928.87459-20-cgzones@googlemail.com>
+Subject: [PATCH v3 20/36] libsepol: use correct size for initial string list
+Date:   Thu,  9 Dec 2021 17:49:12 +0100
+Message-Id: <20211209164928.87459-21-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20211209164928.87459-1-cgzones@googlemail.com>
 References: <20211105154542.38434-1-cgzones@googlemail.com>
@@ -64,55 +64,27 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Handle gaps in the user table while printing a policy configuration.
-
-    ==24424==ERROR: AddressSanitizer: SEGV on unknown address 0x000000000000 (pc 0x0000004bdc55 bp 0x7ffc8790b810 sp 0x7ffc8790afb0 T0)
-    ==24424==The signal is caused by a READ memory access.
-    ==24424==Hint: address points to the zero page.
-        #0 0x4bdc55 in __interceptor_strcmp (./out/binpolicy-fuzzer+0x4bdc55)
-        #1 0x5ebdf6 in strs_cmp ./libsepol/src/kernel_to_common.c:253:9
-        #2 0x505669 in __interceptor_qsort (./out/binpolicy-fuzzer+0x505669)
-        #3 0x5ebd84 in strs_sort ./libsepol/src/kernel_to_common.c:261:2
-        #4 0x564550 in write_user_decl_rules_to_conf ./libsepol/src/kernel_to_conf.c:2333:2
-        #5 0x55b137 in sepol_kernel_policydb_to_conf ./libsepol/src/kernel_to_conf.c:3190:7
-        #6 0x55a34f in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:38:9
-        #7 0x45aed3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) fuzzer.o
-        #8 0x446a12 in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) fuzzer.o
-        #9 0x44c93b in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) fuzzer.o
-        #10 0x475dd2 in main (./out/binpolicy-fuzzer+0x475dd2)
-        #11 0x7f530128d7ec in __libc_start_main csu/../csu/libc-start.c:332:16
-        #12 0x423689 in _start (./out/binpolicy-fuzzer+0x423689)
+Use the number of categories not levels, which might be zero, for the
+string list initial size of categories.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/kernel_to_cil.c  | 1 +
- libsepol/src/kernel_to_conf.c | 1 +
- 2 files changed, 2 insertions(+)
+ libsepol/src/kernel_to_conf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-index d9afdda6..26868f2d 100644
---- a/libsepol/src/kernel_to_cil.c
-+++ b/libsepol/src/kernel_to_cil.c
-@@ -2397,6 +2397,7 @@ static int write_user_decl_rules_to_cil(FILE *out, struct policydb *pdb)
- 	}
- 
- 	for (i=0; i < pdb->p_users.nprim; i++) {
-+		if (!pdb->p_user_val_to_name[i]) continue;
- 		rc = strs_add(strs, pdb->p_user_val_to_name[i]);
- 		if (rc != 0) {
- 			goto exit;
 diff --git a/libsepol/src/kernel_to_conf.c b/libsepol/src/kernel_to_conf.c
-index 92a342d1..b2ad4e02 100644
+index b2ad4e02..09c08618 100644
 --- a/libsepol/src/kernel_to_conf.c
 +++ b/libsepol/src/kernel_to_conf.c
-@@ -2327,6 +2327,7 @@ static int write_user_decl_rules_to_conf(FILE *out, struct policydb *pdb)
- 	}
+@@ -918,7 +918,7 @@ static int write_category_rules_to_conf(FILE *out, struct policydb *pdb)
+ 	unsigned i, j, num;
+ 	int rc = 0;
  
- 	for (i=0; i < pdb->p_users.nprim; i++) {
-+		if (!pdb->p_user_val_to_name[i]) continue;
- 		rc = strs_add(strs, pdb->p_user_val_to_name[i]);
- 		if (rc != 0) {
- 			goto exit;
+-	rc = strs_init(&strs, pdb->p_levels.nprim);
++	rc = strs_init(&strs, pdb->p_cats.nprim);
+ 	if (rc != 0) {
+ 		goto exit;
+ 	}
 -- 
 2.34.1
 

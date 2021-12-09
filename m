@@ -2,177 +2,166 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C185E46E610
-	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 10:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FC0946ED91
+	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 17:51:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231725AbhLIKD1 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Dec 2021 05:03:27 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:38240 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230336AbhLIKD1 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 05:03:27 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1639043993;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=pUOR5I53OGqJSsk4CJuJI/xCDSxY8ZttZFgVhslyUfQ=;
-        b=O4dEOTHsuzqeA75h2/7K6pL7hdzNStz33YOVDEDg8NjJgahnVpUwhIJdUCdrUd7+DSyk/P
-        Kb7dVhaKbjqkagqApOLgDZWH/Gh0ivg+gGxK5B+KYO4Z/Cm2c7a3h+O99TCBpeu91gULMS
-        MaFL+YzFAplliQ4pj/e+ACW/IwWHBZA=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-121-Cb7UjHynNlC7jU_DKUiO-Q-1; Thu, 09 Dec 2021 04:59:52 -0500
-X-MC-Unique: Cb7UjHynNlC7jU_DKUiO-Q-1
-Received: by mail-yb1-f200.google.com with SMTP id l145-20020a25cc97000000b005c5d04a1d52so9572929ybf.23
-        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 01:59:52 -0800 (PST)
+        id S236044AbhLIQzJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Dec 2021 11:55:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39940 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232578AbhLIQzJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 11:55:09 -0500
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F32DC0617A1
+        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 08:51:35 -0800 (PST)
+Received: by mail-ed1-x52b.google.com with SMTP id z5so21855881edd.3
+        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 08:51:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20210112;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=oavRwPIIRgCFMPRQuPb0r0fkX490sZ/rwrcnjPaOdMk=;
+        b=ZsvZVNYZ2LHZ5oF68eSgmfVtqD9doArCgAOm1eZOrO+jcGLT3WoEQOgajWJefu97pU
+         sz4dcSJ0C30pCogrGNaId4iJaLyjjpxbtIRgMsfAvGk3Rc1OZV5Ss01LJsOO4SK3HuuW
+         844ngksSHZHpM6vgjOZn+SdPa77Rqr95Pu5xjAbPW9auh7QEiWgpdd3IH5kVE3lzG2hd
+         e9p6Ij06UbZpeF0pRU2+eXlqadWNXA4/7hUKv2AMVMguf902Pv4ls8G+NU4H2NkYqZ8L
+         tPPTrOnT1eVBCrm39980Jgn4BLPHoqZGodupDTMuo63Wp0CrguuZF703FIHnXfjIn3om
+         CS7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=pUOR5I53OGqJSsk4CJuJI/xCDSxY8ZttZFgVhslyUfQ=;
-        b=LE2YOu0aGGxcDiQ3anSXxRmTEdWOtJR6GkcpdbPsUN8RzZi3xZDfPREkYAsOqQFTx3
-         uP2Rqq2C0GlvA3REWqUosdkSyvc7ufvkXNbtk32auZwqqm6+BMfDX1BpByCUrakIbVSZ
-         NCcTuoEJNm60qrDE87oY2NnqaDLlly7mkyNhMuDJx084/BwTGmEK97jjtaZ8WIMKIJez
-         pnyCDOyapmYNui3wek7xxXE4NNzxDsa00ZDGfnn23nKzw57PA4QTOzvRLkPfoigJbi+R
-         H62OL5mwIRkcjbRoUezTcdDLe4RNzkE0mJ2zUKTALv3k3YoM66Xpel8Q8Tk3oY276K3M
-         K8iA==
-X-Gm-Message-State: AOAM530SxW5kDUC1568sDPkf+lKfUWB+Wp8P8QYIJECsp9wkTRTsKKqL
-        PzJDRnLRnAFNWCKSSPSimUQ+IrpOb7fhv6szfrzlAsG7gwDuf/bJxryVU5OSzLtHdIIVNDW1Sym
-        yHsXVn6efTGd9t10mofLFMRKmu1tmp958kQ==
-X-Received: by 2002:a05:6902:703:: with SMTP id k3mr5033687ybt.31.1639043992127;
-        Thu, 09 Dec 2021 01:59:52 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJyrr+vAHKPEZBQaEYYqOfoATRuulMF2VBeZzYmrE7yoOP/TwNriGBB1nhEwEobAQfMqOghOptG3Y2QK2Urm1i0=
-X-Received: by 2002:a05:6902:703:: with SMTP id k3mr5033658ybt.31.1639043991851;
- Thu, 09 Dec 2021 01:59:51 -0800 (PST)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=oavRwPIIRgCFMPRQuPb0r0fkX490sZ/rwrcnjPaOdMk=;
+        b=jnlCBGKIrDBX5eCe5AkhHT8lphQQ1lJNS7YIDapfDpJqrzGXn66bYG3iPezx7ivbX9
+         sCEtvjpYE9tIjQWA8qpXhrp/MVJ2rfbgjkdx+p0tSrT1klNzDq6vms0o5yIVJGfuybKP
+         QJG2xE4NEJCROGC7sLDqK2Z8++bh1zhd7cKxZ73/npijrQIYUinn6Xs+9OpvMhuZP84G
+         jMsyha4OiiZDs4CV5AvXAmoJp44zSK8VGfsdmRoVUcnqQ55z8bdtszLugETEOiS1lv5i
+         xQ4p2WpWlomsu2v5o/p3kxRk7I27VugiTZaQ13tTA+Kd9+K66CHoRvarq9BlGYS/fzqL
+         gtQQ==
+X-Gm-Message-State: AOAM531OQvJI4wjAwi94gJ5oQXwT4JEwF15vxJlzofymTdh/idQ+OIXS
+        GKRqk8NbILn6Dk18vYiHa5HTvBNnfhI=
+X-Google-Smtp-Source: ABdhPJyjxatvSaphkJQR58miDyZVakYgOKG9yiGDbjKz6T6sxDyGMIqGRacrunFu/TF6y/GDZCYtSg==
+X-Received: by 2002:a17:906:2c16:: with SMTP id e22mr17032215ejh.501.1639068575474;
+        Thu, 09 Dec 2021 08:49:35 -0800 (PST)
+Received: from debianHome.localdomain (dynamic-095-116-140-169.95.116.pool.telefonica.de. [95.116.140.169])
+        by smtp.gmail.com with ESMTPSA id hu7sm172135ejc.62.2021.12.09.08.49.34
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 09 Dec 2021 08:49:34 -0800 (PST)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH v3 00/36] libsepol: add fuzzer for reading binary policies
+Date:   Thu,  9 Dec 2021 17:48:52 +0100
+Message-Id: <20211209164928.87459-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20211105154542.38434-1-cgzones@googlemail.com>
+References: <20211105154542.38434-1-cgzones@googlemail.com>
 MIME-Version: 1.0
-References: <20211206071859.324729-1-bernard@vivo.com> <PSAPR06MB4021DF6A6135859C2332E5B9DF6E9@PSAPR06MB4021.apcprd06.prod.outlook.com>
-In-Reply-To: <PSAPR06MB4021DF6A6135859C2332E5B9DF6E9@PSAPR06MB4021.apcprd06.prod.outlook.com>
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-Date:   Thu, 9 Dec 2021 10:59:41 +0100
-Message-ID: <CAFqZXNsSDFKDJ8PX2bu9p4-pHH+3yAEoy=XZ+uHB=XqM=k5yhQ@mail.gmail.com>
-Subject: Re: [PATCH v2] security/selinux: fix potential memleak in error branch
-To:     =?UTF-8?B?6LW15Yab5aWO?= <bernard@vivo.com>
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        SElinux list <selinux@vger.kernel.org>,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Dec 7, 2021 at 1:05 PM =E8=B5=B5=E5=86=9B=E5=A5=8E <bernard@vivo.co=
-m> wrote:
-> -----=E9=82=AE=E4=BB=B6=E5=8E=9F=E4=BB=B6-----
-> =E5=8F=91=E4=BB=B6=E4=BA=BA: bernard@vivo.com <bernard@vivo.com> =E4=BB=
-=A3=E8=A1=A8 Ondrej Mosnacek
-> =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4: 2021=E5=B9=B412=E6=9C=886=E6=97=A5 =
-17:11
-> =E6=94=B6=E4=BB=B6=E4=BA=BA: =E8=B5=B5=E5=86=9B=E5=A5=8E <bernard@vivo.co=
-m>
-> =E6=8A=84=E9=80=81: Paul Moore <paul@paul-moore.com>; Stephen Smalley <st=
-ephen.smalley.work@gmail.com>; Eric Paris <eparis@parisplace.org>; SElinux =
-list <selinux@vger.kernel.org>; Linux kernel mailing list <linux-kernel@vge=
-r.kernel.org>
-> =E4=B8=BB=E9=A2=98: Re: [PATCH v2] security/selinux: fix potential memlea=
-k in error branch
->
-> On Mon, Dec 6, 2021 at 8:19 AM Bernard Zhao <bernard@vivo.com> wrote:
-> > This patch try to fix potential memleak in error branch.
-> >
-> > Signed-off-by: Bernard Zhao <bernard@vivo.com>
-> > ---
-> >  security/selinux/hooks.c | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c index
-> > 62d30c0a30c2..8dc140399a23 100644
-> > --- a/security/selinux/hooks.c
-> > +++ b/security/selinux/hooks.c
-> > @@ -983,18 +983,22 @@ static int selinux_sb_clone_mnt_opts(const
-> > struct super_block *oldsb,  static int selinux_add_opt(int token,
-> > const char *s, void **mnt_opts)  {
-> >         struct selinux_mnt_opts *opts =3D *mnt_opts;
-> > +       bool is_alloc_opts =3D false;
-> >
-> >         if (token =3D=3D Opt_seclabel)      /* eaten and completely ign=
-ored */
-> >                 return 0;
-> >
-> > +       if (!s)
-> > +               return -ENOMEM;
-> > +
-> >         if (!opts) {
-> >                 opts =3D kzalloc(sizeof(struct selinux_mnt_opts), GFP_K=
-ERNEL);
-> >                 if (!opts)
-> >                         return -ENOMEM;
-> >                 *mnt_opts =3D opts;
-> > +               is_alloc_opts =3D true;
-> >         }
-> > -       if (!s)
-> > -               return -ENOMEM;
-> > +
-> >         switch (token) {
-> >         case Opt_context:
-> >                 if (opts->context || opts->defcontext) @@ -1019,6
-> > +1023,8 @@ static int selinux_add_opt(int token, const char *s, void **=
-mnt_opts)
-> >         }
-> >         return 0;
-> >  Einval:
-> > +       if (is_alloc_opts)
-> > +               kfree(opts);
-> >         pr_warn(SEL_MOUNT_FAIL_MSG);
-> >         return -EINVAL;
-> >  }
-> > --
-> > 2.33.1
->
-> >The problem is a bit more tricky... As is, this patch will lead to doubl=
-e frees in some cases. Look at security_sb_eat_lsm_opts() callers, for exam=
-ple - some of them don't do anything when error is returned, some call
-> >security_free_mnt_opts() on the opts regardless, some will let it store =
-the opts in fc->security, where
-> >put_fs_context() will eventually call security_free_mnt_opts() on them.
->
-> >You need to at least *mnt_opts =3D NULL after kfree(opts), but it would =
-be also nice to make the LSM hook callers more consistent in what they do i=
-n the error path and document the fact that *mnt_opts will be NULL
-> >on error in lsm_hooks.h (in case of the sb_eat_lsm_opts hook).
-> Hi Ondrej Mosnacek:
->
-> Thanks for your comments!
-> I am not sure if there is some gap, for this part " it would be also nice=
- to make the LSM hook callers more consistent in what they do in the error =
-path and document the fact that *mnt_opts will be NULL
-> on error in lsm_hooks.h (in case of the sb_eat_lsm_opts hook)"
-> I am not sure if this is OK:
-> 116   * @sb_eat_lsm_opts:
-> 117   *         Eat (scan @orig options) and save them in @mnt_opts.
-> 118   *     If error is returned, then the *mnt_opts will be NULL.
-> Please help to double check, thanks!
+Add a libfuzz[1] based fuzzer testing the reading and parsing of binary policy
+files. This fuzzer will be run within the OSS-Fuzz service.
 
-I'd prefer something like:
+Handle and reject a variety of edge cases causing crashes or resource leaks.
 
-If the hook returns 0, the caller is responsible for destroying the
-returned @mnt_opts using the @sb_free_mnt_opts hook. The LSMs must not
-expect the callers to destroy @mnt_opts if the hook returns an error
-and should always set it to NULL in such case.
+The fifth patch ("libsepol/fuzz: limit element sizes for fuzzing") limits, to
+avoid oom reports from the fuzzer, caused by huge memory allocations, all
+identifiers to a length of 2^16 for the fuzzer build only.
+A potential limit for the release build needs further discussion.
 
-(You may want to double-check that the other implementations of this
-hook (i.e. security/smack/smack_lsm.c) follow that contract and fix
-them if necessary.)
+[1]: https://llvm.org/docs/LibFuzzer.html
 
-Thanks for your efforts to improve this!
+v3:
+  - Drop RFC status
+  - [10] libsepol: add checks for read sizes
+    use PERM_SYMTAB_SIZE instead of bare 32 as limit
+  - [11] libsepol: enforce avtab item limit
+    take zero based numbering of variable items into account
+  - [30] libsepol: validate ocontexts
+    only check FS and NETIF ocons in selinux policies (not xen)
 
---
-Ondrej Mosnacek
-Software Engineer, Linux Security - SELinux kernel
-Red Hat, Inc.
+v2:
+  - reorder patches
+    1. oss-fuzz related
+    2. libsepol parsing and other crashesand UB
+    3. enhance policy validation
+  - misc changes based on review by James Carter
+
+
+Christian Göttsche (36):
+  cifuzz: enable report-unreproducible-crashes
+  cifuzz: use the default runtime of 600 seconds
+  libsepol/fuzz: silence secilc-fuzzer
+  libsepol: add libfuzz based fuzzer for reading binary policies
+  libsepol/fuzz: limit element sizes for fuzzing
+  libsepol: use logging framework in conditional.c
+  libsepol: use logging framework in ebitmap.c
+  libsepol: use mallocarray wrapper to avoid overflows
+  libsepol: use reallocarray wrapper to avoid overflows
+  libsepol: add checks for read sizes
+  libsepol: enforce avtab item limit
+  libsepol: clean memory on conditional insertion failure
+  libsepol: reject abnormal huge sid ids
+  libsepol: reject invalid filetrans source type
+  libsepol: zero member before potential dereference
+  libsepol: use size_t for indexes in strs helpers
+  libsepol: do not underflow on short format arguments
+  libsepol: do not crash on class gaps
+  libsepol: do not crash on user gaps
+  libsepol: use correct size for initial string list
+  libsepol: do not create a string list with initial size zero
+  libsepol: split validation of datum array gaps and entries
+  libsepol: validate MLS levels
+  libsepol: validate expanded user range and level
+  libsepol: validate permission count of classes
+  libsepol: resolve log message mismatch
+  libsepol: validate avtab and avrule types
+  libsepol: validate constraint expression operators and attributes
+  libsepol: validate type of avtab type rules
+  libsepol: validate ocontexts
+  libsepol: validate genfs contexts
+  libsepol: validate permissive types
+  libsepol: validate policy properties
+  libsepol: validate categories
+  libsepol: validate fsuse types
+  libsepol: validate class default targets
+
+ .github/workflows/cifuzz.yml     |   3 +-
+ libsepol/fuzz/binpolicy-fuzzer.c |  63 ++++
+ libsepol/fuzz/policy.bin         | Bin 0 -> 1552 bytes
+ libsepol/fuzz/secilc-fuzzer.c    |   5 +
+ libsepol/src/Makefile            |   6 +
+ libsepol/src/avtab.c             |   6 +
+ libsepol/src/conditional.c       |  53 ++--
+ libsepol/src/ebitmap.c           |  27 +-
+ libsepol/src/expand.c            |   4 +-
+ libsepol/src/hashtab.c           |   4 +-
+ libsepol/src/kernel_to_cil.c     |  10 +
+ libsepol/src/kernel_to_common.c  |  23 +-
+ libsepol/src/kernel_to_common.h  |   4 +-
+ libsepol/src/kernel_to_conf.c    |  13 +-
+ libsepol/src/link.c              |   3 +-
+ libsepol/src/module.c            |   4 +-
+ libsepol/src/module_to_cil.c     |  13 +-
+ libsepol/src/optimize.c          |  11 +-
+ libsepol/src/policydb.c          |  27 +-
+ libsepol/src/policydb_validate.c | 477 +++++++++++++++++++++++++++----
+ libsepol/src/private.h           |  27 +-
+ libsepol/src/services.c          |  12 +-
+ libsepol/src/sidtab.c            |   3 +-
+ libsepol/src/user_record.c       |   8 +-
+ libsepol/src/users.c             |  12 +-
+ libsepol/src/util.c              |  11 +-
+ libsepol/src/write.c             |   2 +-
+ scripts/oss-fuzz.sh              |  17 +-
+ 28 files changed, 686 insertions(+), 162 deletions(-)
+ create mode 100644 libsepol/fuzz/binpolicy-fuzzer.c
+ create mode 100644 libsepol/fuzz/policy.bin
+
+-- 
+2.34.1
 

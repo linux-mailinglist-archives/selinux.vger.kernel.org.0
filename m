@@ -2,158 +2,87 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 45B5D46F4EF
-	for <lists+selinux@lfdr.de>; Thu,  9 Dec 2021 21:31:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31790470049
+	for <lists+selinux@lfdr.de>; Fri, 10 Dec 2021 12:43:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232023AbhLIUew (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Dec 2021 15:34:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36872 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229657AbhLIUev (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Dec 2021 15:34:51 -0500
-Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1442FC061746
-        for <selinux@vger.kernel.org>; Thu,  9 Dec 2021 12:31:18 -0800 (PST)
-Received: by mail-ot1-x334.google.com with SMTP id v15-20020a9d604f000000b0056cdb373b82so7478119otj.7
-        for <selinux@vger.kernel.org>; Thu, 09 Dec 2021 12:31:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=BBk9bJ4tZ6Q2cj+trV6cJACDNU3cf3hi5f4jsKPyY+s=;
-        b=EfpyY97Rhp+JnCiO0ASyRB9zvRGC3sxIUtgqi6rvAVX2WnK27QglLJf/rtWnKcogUk
-         /kitQ1h2HI3fcPMW252dZ432sTIF2viQliN7qKA1Br1jf8KSsojQ0vXJNLnqg28Li2Zi
-         rXn/DgrruU5zCE5BZGfvkUhmTJ8s/DJ0w+WmWlY381e4smSSTeRwislGT1MD07KDpSrM
-         6k41JerK+UUC10KyPBLvKU+l7W8hjgKVdu/YxiKM94XrQVvchoe61o+z4vMuAQIK7a+O
-         NlHrQMIq+RmJFPdXj/6SYlnioWKxwXxhW7UB9wUdlc6m1g2pZsZFMMuUZ0GWwmyuMXXX
-         QX0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=BBk9bJ4tZ6Q2cj+trV6cJACDNU3cf3hi5f4jsKPyY+s=;
-        b=SN1mOPMrvWMIFL+/h9sbc2UiYq4LzeEuHq0A3/maSQ8Pbz3TSn5E4i9CC4MU5EPBZK
-         RzyRk6yknC/vLlfME/meswB9C6q8oc5gKW8aFE+RJyYNQXw5up8aXzfwmDLtDxVtbDZv
-         vhDaq1wIQgrcdj5M3Q6MVcLjBGjt4Ovw0XCm04hTUTIeAJ00It4s+Vo5icae2zH/GZjW
-         XqcGiVPMPZv2HOMaiN05ouNCNYqyoPyXSo/zFjxuWKhhNNH5dqjfEJrD8Yt1aqtLor/N
-         nlpC/z5RDLPDvnH5tyoPjyn9ECINtXTb6u3j0XA1oUNGBqs1RkBV2ZnzOqz1gSdkzhh/
-         8PiA==
-X-Gm-Message-State: AOAM533LMMR9fncRKpjhrQBXFLNTu5OrOOTbP1mIYrlNEY/qtoABOQKn
-        4FOcQvgXJZosibsRWngpU+g719044eyoDXpDVxu1IQGShlI=
-X-Google-Smtp-Source: ABdhPJzM4wtM0sO0HRH7WoRtKekrZE44P1M26LdKvsvzlNs4p9OMX0qpEyReYBEbzFC2egExB4oHAMdjBAcbqQH7PwI=
-X-Received: by 2002:a9d:685:: with SMTP id 5mr7569086otx.53.1639081877467;
- Thu, 09 Dec 2021 12:31:17 -0800 (PST)
+        id S240667AbhLJLr2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 10 Dec 2021 06:47:28 -0500
+Received: from mailomta9-re.btinternet.com ([213.120.69.102]:15112 "EHLO
+        re-prd-fep-046.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S240723AbhLJLr2 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 10 Dec 2021 06:47:28 -0500
+Received: from re-prd-rgout-004.btmx-prd.synchronoss.net ([10.2.54.7])
+          by re-prd-fep-046.btinternet.com with ESMTP
+          id <20211210114351.KBLE24326.re-prd-fep-046.btinternet.com@re-prd-rgout-004.btmx-prd.synchronoss.net>;
+          Fri, 10 Dec 2021 11:43:51 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1639136631; 
+        bh=w0xJ9+iBzI2VZjPb7/Iyd0tF5eojJI/DbIe+gnSa+nI=;
+        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version;
+        b=Ng8+dQ3C+W2Ze6WRRaoSmiHad2TfcgHhuiN3C/4BxUCAXHIWR7az/E9MJWxLUk0SJ6Vl+hMWLrPmpfciZo08iQkGbwo5T+/XKgA0NCfAhkLV9umcYoDwh4U5fLjWdSSJgNcz16NRDuC+CezQ6SKQTGiodiivZbPUYk4zGMorzHfflKPmsv/MuAEyB8ZiJy/ZhOsRi9gnC6tentYR5ZAPSPamjSUjXEnLAcZ6eYmocBj/1Ae694h5/v4mvjFQ+JgM6eEDdP7B1U5XuAm8hIniQl6fBhVynHMnQwxLvv4z1cPPrUQvUu9q8VfZeCW58m9KLlT4vjtb//kp1QxIZOW+Wg==
+Authentication-Results: btinternet.com;
+    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com;
+    bimi=skipped
+X-SNCR-Rigid: 613A901C0CC4A231
+X-Originating-IP: [81.141.144.155]
+X-OWM-Source-IP: 81.141.144.155 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvuddrkedvgdefvdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucenucfjughrpefhvffufffkofgggfestdekredtredttdenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepleetffegveevjeehvefhtefgueevudettedutdffvdejkeeiteegheevfeejtdefnecukfhppeekuddrudeguddrudeggedrudehheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhinhgvthepkedurddugedurddugeegrdduheehpdhmrghilhhfrhhomheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehprghulhesphgruhhlqdhmohhorhgvrdgtohhmpdhrtghpthhtoheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from localhost.localdomain (81.141.144.155) by re-prd-rgout-004.btmx-prd.synchronoss.net (5.8.716.04) (authenticated as richard_c_haines@btinternet.com)
+        id 613A901C0CC4A231; Fri, 10 Dec 2021 11:43:51 +0000
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     selinux@vger.kernel.org
+Cc:     paul@paul-moore.com,
+        Richard Haines <richard_c_haines@btinternet.com>
+Subject: [PATCH 0/4] SELinux Notebook: Add eBook reader build
+Date:   Fri, 10 Dec 2021 11:43:36 +0000
+Message-Id: <20211210114340.13977-1-richard_c_haines@btinternet.com>
+X-Mailer: git-send-email 2.33.1
 MIME-Version: 1.0
-References: <20211130110034.12920-1-cgzones@googlemail.com> <20211130110034.12920-2-cgzones@googlemail.com>
-In-Reply-To: <20211130110034.12920-2-cgzones@googlemail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Thu, 9 Dec 2021 15:31:06 -0500
-Message-ID: <CAP+JOzTzU6gV0pP66URtnnoEURvpwdYA8BvqwqW8jfMfQAs-4A@mail.gmail.com>
-Subject: Re: [PATCH 2/2] checkpolicy: warn on bogus IP address or netmask in
- nodecon statement
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Nov 30, 2021 at 4:50 PM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
->
-> Warn if the netmask is not contiguous or the address has host bits set,
-> e.g.:
->
->     127.0.0.0 255.255.245.0
->     127.0.0.1 255.255.255.0
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+This allows an eBook to be built that can be read by readers such as
+Bookworm and Foliate. Note that Bookworm does not render tables or examples
+very well, whereas Foliate does.
 
-Acked-by: James Carter <jwcart2@gmail.com>
+As eBooks use a different cover format the current SELinux penguin
+has been replaced with one from the SELinux artwork repository.
 
-> ---
->  checkpolicy/policy_define.c | 50 +++++++++++++++++++++++++++++++++++++
->  1 file changed, 50 insertions(+)
->
-> diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
-> index d3eb6111..b2ae3263 100644
-> --- a/checkpolicy/policy_define.c
-> +++ b/checkpolicy/policy_define.c
-> @@ -5290,6 +5290,14 @@ int define_ipv4_node_context()
->                 goto out;
->         }
->
-> +       if (mask.s_addr !=3D 0 && ((~mask.s_addr + 1) & ~mask.s_addr) !=
-=3D 0) {
-> +               yywarn("ipv4 mask is not contiguous");
-> +       }
-> +
-> +       if ((~mask.s_addr & addr.s_addr) !=3D 0) {
-> +               yywarn("host bits in ipv4 address set");
-> +       }
-> +
->         newc =3D malloc(sizeof(ocontext_t));
->         if (!newc) {
->                 yyerror("out of memory");
-> @@ -5325,6 +5333,40 @@ out:
->         return rc;
->  }
->
-> +static int ipv6_is_mask_contiguous(const struct in6_addr *mask)
-> +{
-> +       int filled =3D 1;
-> +       unsigned i;
-> +
-> +       for (i =3D 0; i < 16; i++) {
-> +               if ((((~mask->s6_addr[i] & 0xFF) + 1) & (~mask->s6_addr[i=
-] & 0xFF)) !=3D 0) {
-> +                       return 0;
-> +               }
-> +               if (!filled && mask->s6_addr[i] !=3D 0) {
-> +                       return 0;
-> +               }
-> +
-> +               if (filled && mask->s6_addr[i] !=3D 0xFF) {
-> +                       filled =3D 0;
-> +               }
-> +       }
-> +
-> +       return 1;
-> +}
-> +
-> +static int ipv6_has_host_bits_set(const struct in6_addr *addr, const str=
-uct in6_addr *mask)
-> +{
-> +       unsigned i;
-> +
-> +       for (i =3D 0; i < 16; i++) {
-> +               if ((addr->s6_addr[i] & ~mask->s6_addr[i]) !=3D 0) {
-> +                       return 1;
-> +               }
-> +       }
-> +
-> +       return 0;
-> +}
-> +
->  int define_ipv6_node_context(void)
->  {
->         char *id;
-> @@ -5376,6 +5418,14 @@ int define_ipv6_node_context(void)
->                 goto out;
->         }
->
-> +       if (!ipv6_is_mask_contiguous(&mask)) {
-> +               yywarn("ipv6 mask is not contiguous");
-> +       }
-> +
-> +       if (ipv6_has_host_bits_set(&addr, &mask)) {
-> +               yywarn("host bits in ipv6 address set");
-> +       }
-> +
->         newc =3D malloc(sizeof(ocontext_t));
->         if (!newc) {
->                 yyerror("out of memory");
-> --
-> 2.34.1
->
+Richard Haines (4):
+  selinux-notebook: Make file links consistent
+  src/images: Remove current penguin
+  src/images: Add new SELinux penguin
+  selinux-notebook: Add epub build
+
+ BUILD.md                           |  17 +-
+ CONTRIBUTING.md                    |  10 +-
+ Makefile                           |  48 +++-
+ README.md                          |   9 +-
+ src/bounds_rules.md                |   2 +-
+ src/cil_overview.md                |   2 +-
+ src/cover.md                       |  16 ++
+ src/cover_epub.md                  |   2 +
+ src/embedded_systems.md            |  12 +-
+ src/images/selinux-penguin.svg     | 398 -----------------------------
+ src/images/selinux-penguin_400.png | Bin 0 -> 65728 bytes
+ src/network_support.md             |   4 +-
+ src/postgresql.md                  |   6 +-
+ src/styles_epub.css                |  44 ++++
+ src/title.md                       |  16 --
+ src/toc.md                         |   2 +-
+ 16 files changed, 139 insertions(+), 449 deletions(-)
+ create mode 100644 src/cover.md
+ create mode 100644 src/cover_epub.md
+ delete mode 100644 src/images/selinux-penguin.svg
+ create mode 100644 src/images/selinux-penguin_400.png
+ create mode 100644 src/styles_epub.css
+
+-- 
+2.33.1
+

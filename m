@@ -2,94 +2,81 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 09A6B4738C9
-	for <lists+selinux@lfdr.de>; Tue, 14 Dec 2021 00:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0998D473900
+	for <lists+selinux@lfdr.de>; Tue, 14 Dec 2021 00:55:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243068AbhLMXrF (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 13 Dec 2021 18:47:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58374 "EHLO
+        id S244322AbhLMXzP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 13 Dec 2021 18:55:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238259AbhLMXrD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 13 Dec 2021 18:47:03 -0500
-Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20AABC061574
-        for <selinux@vger.kernel.org>; Mon, 13 Dec 2021 15:47:03 -0800 (PST)
-Received: by mail-ed1-x535.google.com with SMTP id r25so56916024edq.7
-        for <selinux@vger.kernel.org>; Mon, 13 Dec 2021 15:47:03 -0800 (PST)
+        with ESMTP id S244323AbhLMXzO (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 13 Dec 2021 18:55:14 -0500
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE69C06173F
+        for <selinux@vger.kernel.org>; Mon, 13 Dec 2021 15:55:14 -0800 (PST)
+Received: by mail-ed1-x533.google.com with SMTP id r11so56704596edd.9
+        for <selinux@vger.kernel.org>; Mon, 13 Dec 2021 15:55:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=yUeE7msKHv/DMMj3J4utEZf04rsWizgw5ADZnYeBKqo=;
-        b=LXqDEGvQvEvjk7cH0kuUqQxdif38XX2JoC4GMRtG44rIsTkC+QOStQNU1YG+5RZO65
-         jJ9pvbjH+S5P/sTxboCU+EaDAtDj/+er4XoRRWKv2M3eW1hL39s8mJWFGEaBFxMLyNef
-         QXmhsk6iYoC90x+HP44uGZUxNZIIgtU5YQdLu8jNUFNYJzUCaL/bakEC5Ff6QRYRv8kq
-         DY0gWYaeEKV6KgE+x8908nTY/5G1LLt1/1bEluNPwNCpdy73k2vpjgm6Nd8MLr4yblM9
-         CMjsSOoxRAE8BYuiC1WMytQYCM2ayStenn83TxLa8ojZRUZ4jFtZnqPtEojYX76W+JKc
-         NXIA==
+        bh=Oef3m3+YzJ7E05zS4lp2MGqhBEG0m5iAQzLxBWp+Fk0=;
+        b=h1SvjqxbHMNniCZQeME0hyXCzBPE6SlGjWKnwoPsPGHlkq/KHJkwyVce26O09Y1WKJ
+         6y4jB7tTOEmO6xnVrUekwajXXmZK1MgK9zpcXSOGX/CgAHSv6dcQ4DbFp/3tiDWJtiC5
+         GC2lviGE4ciB/FJt9oTIZsFCshK/fh71zwYvC3/FI7lV0meHH7n2C1xOkG9WZGZjnUNe
+         xEm90HrQvhkM6FSZfTeEBzLMEofhpSPFDwDCdTemN6cjc8+P4uFpnWu/afKz6smLSfPd
+         2rhFYk9X+H861FIEU75Wf9nyv4Sk/IrSIohSz5cUeujz2myT0qWHdARI4qyQMaTOzg9O
+         mXew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=yUeE7msKHv/DMMj3J4utEZf04rsWizgw5ADZnYeBKqo=;
-        b=vWS5oxW9eP3+7oPDs1SmE7JxfqtUve2p3TefXfOnEKZWh6wWA7wzy/P8bZcEpzSB6N
-         gX7Bx1+pdtoYBc1yfuqsfuCkAiO5bHJu8+T/cZTGUS28YcDUhnbsyF7yts4QFyUQTtfs
-         cjSi2DHCAq7tYWDkc8GK5XaCEWh4Ptl0wofdd2g5qOSisNWUI7T10L+n2txb4sZQ4m+8
-         T10ttPMXh7sYlHCKco85Fv9w6JQ2hx2vwesXzwlHdmRtDbZPfiqWS7sT5k/yNOvbMMBq
-         G8zMrxH8jSjqZMz8orVfMNdjmTslupM61uxoJYft1Ui8fZBM64NbdhHdEux6EbmV7Wn/
-         bRJA==
-X-Gm-Message-State: AOAM531EZjkRAJiVmVEmX5b8GemKcnEKoA5WpaqMcT4vnQI96fEeK1TC
-        0FhvHllZW8lzanFLMsezbG11uJYKgP04pBZpeDoaQ5GM3A==
-X-Google-Smtp-Source: ABdhPJwkoXk3lRQKHEAAHvzwmhciYyxhvO6nGIMpvRwaPU7i6+AZ1iTIv7Keq+85IRli+KxxkNPBoZWek1RfQvns68w=
-X-Received: by 2002:a17:906:3a8c:: with SMTP id y12mr1573443ejd.517.1639439221557;
- Mon, 13 Dec 2021 15:47:01 -0800 (PST)
+        bh=Oef3m3+YzJ7E05zS4lp2MGqhBEG0m5iAQzLxBWp+Fk0=;
+        b=RCoacacHlrYIaWUynRUpnsch3FP9BXTBOAT65vJ2sfP7KqLO10Hf/3REPIY22SXn/i
+         x+tDY7QHZG4hNSYksnZdFPdc1HNQwD/NFqRsxoWKsodePWFsKaYxGqrm5LCiu5llWAZN
+         aLdeShiHamkgr/F9vLAfiFgq8S33vzOvnOwnq6fXUS9kxwvxhDjTLxLscKu7l5MN41ee
+         w72xgCF/9mabfrOf/NYZu0YXTutTU7iG3Rof80Kj7MIqee8GVHj4F82lx6b8W8LpOdtD
+         b1a8qZq5XSN9xrYVoGISzaOduqT2RUhzdOkJwU7a5KTXykQWPOEQL3rPKyp9Yx1Y11R9
+         nd4w==
+X-Gm-Message-State: AOAM531oU0ITZczSbTKJro0vsWAtn+HPeArm6Q050xBmzrewtAiuH23F
+        jOhts+YKzo3qfrZLlSOY3d28U7vepk8Vnx5L8WgI/fPKyA==
+X-Google-Smtp-Source: ABdhPJx3LtHl4WxymdfkAfFdAP4GUHMP7yumphGFax6Fuyg8cNZds2sVQ5fUB9T5hZ6kol0OQqUyUKSpViT0k/jto4M=
+X-Received: by 2002:a05:6402:35d2:: with SMTP id z18mr2885515edc.188.1639439713014;
+ Mon, 13 Dec 2021 15:55:13 -0800 (PST)
 MIME-Version: 1.0
-References: <20211212184142.7896-1-toiwoton@gmail.com>
-In-Reply-To: <20211212184142.7896-1-toiwoton@gmail.com>
+References: <20211213101622.29888-1-richard_c_haines@btinternet.com> <20211213101622.29888-2-richard_c_haines@btinternet.com>
+In-Reply-To: <20211213101622.29888-2-richard_c_haines@btinternet.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 13 Dec 2021 18:46:50 -0500
-Message-ID: <CAHC9VhRToysshDO8u5A2-wPwS9fv8zB5BhgfjQQCg454WiRxzQ@mail.gmail.com>
-Subject: Re: [PATCH v4] selinux-notebook: New chapter: Hardening SELinux
-To:     Topi Miettinen <toiwoton@gmail.com>
-Cc:     selinux@vger.kernel.org,
-        Daniel Burgener <dburgener@linux.microsoft.com>,
-        Dominick Grift <dominick.grift@defensec.nl>
+Date:   Mon, 13 Dec 2021 18:55:02 -0500
+Message-ID: <CAHC9VhTjwvcJQjK7veAwKnV__e9ZUvtbbd3e+d6-W8qrPdtYfw@mail.gmail.com>
+Subject: Re: [PATCH V2 1/4] selinux-notebook: Make file links consistent
+To:     Richard Haines <richard_c_haines@btinternet.com>
+Cc:     selinux@vger.kernel.org, dburgener@linux.microsoft.com
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Sun, Dec 12, 2021 at 1:42 PM Topi Miettinen <toiwoton@gmail.com> wrote:
+On Mon, Dec 13, 2021 at 5:16 AM Richard Haines
+<richard_c_haines@btinternet.com> wrote:
 >
-> Describe some easy and more difficult methods to harden SELinux
-> policies.
+> Before building EPUB book the file links to the notebook-examples
+> directory area needs to be consistent. This will allow sed to fix the path
+> during the build (as pandoc insists on defaulting to file:///EPUB/text).
 >
-> Reviewed-by: Daniel Burgener <dburgener@linux.microsoft.com>
-> Reviewed-by: Dominick Grift <dominick.grift@defensec.nl>
-> Signed-off-by: Topi Miettinen <toiwoton@gmail.com>
+> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
 > ---
-> v4:
->  - Fixed typo
->  - Added Reviewed-Bys
->
-> v3: https://lore.kernel.org/selinux/20211116105335.21864-1-toiwoton@gmail.com/
->  - Updated with comments from Daniel Burgener and Dominick Grift
->
-> v2: https://lore.kernel.org/selinux/20211113095547.19406-1-toiwoton@gmail.com/
->  - Updated with comments from Daniel Burgener
->  - Fixed issues with PDF generation
->
-> v1: https://lore.kernel.org/selinux/20211112125605.28915-1-toiwoton@gmail.com/
-> ---
->  src/hardening.md                 | 205 +++++++++++++++++++++++++++++++
->  src/implementing_seaware_apps.md |   2 +-
->  src/reference_policy.md          |   2 +-
->  src/section_list.txt             |   1 +
->  src/toc.md                       |   1 +
->  5 files changed, 209 insertions(+), 2 deletions(-)
->  create mode 100644 src/hardening.md
+>  src/bounds_rules.md     |  2 +-
+>  src/cil_overview.md     |  2 +-
+>  src/embedded_systems.md | 12 ++++++------
+>  src/network_support.md  |  4 ++--
+>  src/postgresql.md       |  6 +++---
+>  src/seandroid.md        |  4 ++--
+>  src/toc.md              |  2 +-
+>  7 files changed, 16 insertions(+), 16 deletions(-)
 
-Merged into the main branch, thanks everyone!
+Seems like a reasonable change independent of the ePUB work.  Merged
+into main, thanks Richard.
 
 -- 
 paul moore

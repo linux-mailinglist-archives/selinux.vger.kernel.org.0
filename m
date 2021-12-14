@@ -2,48 +2,49 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 54DE9473D30
-	for <lists+selinux@lfdr.de>; Tue, 14 Dec 2021 07:27:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 779B8474547
+	for <lists+selinux@lfdr.de>; Tue, 14 Dec 2021 15:38:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230425AbhLNG1W (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 14 Dec 2021 01:27:22 -0500
-Received: from out162-62-57-252.mail.qq.com ([162.62.57.252]:38231 "EHLO
-        out162-62-57-252.mail.qq.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230314AbhLNG1W (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 14 Dec 2021 01:27:22 -0500
+        id S231496AbhLNOid (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 14 Dec 2021 09:38:33 -0500
+Received: from xmbgsz7.mail.foxmail.com ([61.241.55.176]:54367 "EHLO
+        xmbgsz7.mail.foxmail.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230525AbhLNOic (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 14 Dec 2021 09:38:32 -0500
+X-Greylist: delayed 14415 seconds by postgrey-1.27 at vger.kernel.org; Tue, 14 Dec 2021 09:38:32 EST
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-        s=s201512; t=1639463239;
-        bh=KtC2JAo9Zv4oft7XPe6btVLuXHfV817m3kIZSg+ZITY=;
+        s=s201512; t=1639492707;
+        bh=55kVr0dlRkSZXsR+36o/Om7tpdn03/ssVT7jqMxOOgw=;
         h=From:To:Cc:Subject:Date;
-        b=HD5FKsZMLBm3PT2cvHOCxOx7zur7GOeR4uJvGzPLAypaKpmyYZYvUw1qorKL9jl0Q
-         1E9C4hJUxA9kPBZrM5+NWqnt2hssck9LdGRja4r0FmiUZ2ZjFm2IHJB88cqL9D4KFh
-         DixKYK7zmME+RwxCPTdaYIJnhfpScvQo1jMmMeBM=
-Received: from localhost.localdomain ([43.227.136.188])
-        by newxmesmtplogicsvrszc9.qq.com (NewEsmtp) with SMTP
-        id 505A2217; Tue, 14 Dec 2021 14:20:05 +0800
-X-QQ-mid: xmsmtpt1639462805tkfq958wh
-Message-ID: <tencent_D0F3F07E25927F681055E6A35C038E168A07@qq.com>
-X-QQ-XMAILINFO: MntsAqBg2ZZ5Fu3j93YYKkZ8AivXMvtN+g4XHjdxcoSj6+/RxlR3irJDF7Nprs
-         cT4v6fh8S8xID1f+R/x5prxnjXNbept0v7QjULzjwaSGFDJnhmdwLWfWEA2w4H7918Hh5XA9cypW
-         XnmPusASVTG8AJKzweNLhSH1eqzjO5TP5JFBsaCoL/aHOi3m9vrklPc+2femM+lBztb4SDwuyiEO
-         dn9OFjCoQFrA61i8DQAbavNYGS4MvyvriluwK/1pcvXgzKXBkFuSLwxpQruDSJdqS+gKj6krB9x7
-         eD/dHpZxS9i9WYhqbXB7LUSP9Bv500q6tLYdLeQwmsNvG/zZin1GYFSfFGwsw/CsEq3hcekAB2sO
-         6NAwVCMQIICpgIuxofEeoCSkYBvMADUkc4PJRwuKxMsI8/kDnUeEAoeLa3ERQg362f8kg7iCEs1s
-         8RdSvxIAMnqckb8KNnOcN6eQvOjdlRQbVPGR+FgOrg4Uu0D1PW8PC6SsSs16bL3VKAZhWQ7dHBbN
-         3ZmbINmXPjjnTUhYB6uzYbBQ/cZb+ybIXQv4A1VUKtDZNbf5dXh4PnMdqzSHUaG6XG51757b8UcX
-         wMpZG7PUR+GUKuEpBa2Gkuq/5Dp3M55inVZaDy33jp9R5wmxe3fIj4whBw9n3sWhVdkek8zmTkGh
-         7161et/k2aw+qFwgKcC+CrtZuJLC7JUjN6EVQEgG8zfvHB4c8zhhpmEb2/UkUoCd89s16yCmi2B/
-         EEM/VWRQCCzyeEQGtCR6eiNFkmC9i5l/anYpjXwRYScbNUJHNgvyhL6QPE8vQ1Db0s+duhSxtcWm
-         7rSeQ5rMaYf9TVOKqn8vWZMbgr2eQ8bVPlBObQpJL21YAYjB8ZNGNKC4zrgZVG/YF3Xgdf6dVPWq
-         ygtDdosANSJtKfbPoXSEZC/vBSkfi66OLir1XITD64ZTQ/6QXZ5n7E84ZU3tieWA==
+        b=uY+cE53BOtYQnUZAFOTFZNtwGMoXk3SeCwF6Mn5W3MqNog3DYh0jpZcvKdGuvgp0J
+         vQSqYL4+YL/eYSgYguJ+RBTIU1EYkTID3bQTR5V+eOaA5pxWpsc/GhT8nVc1YGurU5
+         h9VKxusoryKVtAUNBykANL+MCfvTbI1Vk/HfLyQM=
+Received: from localhost.localdomain ([218.197.153.188])
+        by newxmesmtplogicsvrsza23.qq.com (NewEsmtp) with SMTP
+        id 8B4AEE74; Tue, 14 Dec 2021 17:34:52 +0800
+X-QQ-mid: xmsmtpt1639474492tf5grh2gf
+Message-ID: <tencent_D6BF2948237359EE0A47338567B88512D106@qq.com>
+X-QQ-XMAILINFO: OTiXS/gPSsXglOJF3mLFeOzLbS3UUL5y3JXRYQ8mK9XYqNnQMxmCJi7lYLHhgM
+         bC/HxlsRN/59QASw2gt8sV6rtJlhVw3nWwHFGGkzI7kqge5NwX2xZyljQYveCSqknjSYlcUznOG0
+         NGoEy7sSXHK8iBgDUS1ykQxzuiIZkICTMiGXrdlc+bRXjgO9OF2f1ZSbOoe/DyG85zk0lrdAuXtv
+         LeVV5N3m8uVRASTKhVEmfRlCZa+NLWyvi9/tYMZ0Ne+q38HYy4SG7BMj7CPyD3igxrby0aLr3GO/
+         sS+dt8ETSKSlYNcrKYsOnW/KcT5TcyjvfEYLDJsV78Aevbmx8/Cg3TQG8//ixe9dA9tHmwrJjaSu
+         kcLaGDsLlNVaVRK6OP5duB8D0M7ro7vx8XcXwPgT8plbpKTfqEKATFTGq2+LleokB1LC5BZpoVVu
+         PYyXMIMRl9QU73oxLcxEbSOP1mJ85Fm9PY2YPA2uRAgAUi23AMEx19PyeuHTEVgzwjBs56WLNPPo
+         YJWfXKfbmMp4Fv8SSy+/tgPLZRXXNRv6ef9BHyQuyETZhf7z5P6XMsdlEwfH9w7eUl2Nm9vrVlFA
+         vW1zJlaSfur5U96bLEQZtG67rrGlqPx0QRnQ15/t4+Z7ocNKR8H4KPIQLqT2qwdilIh7iAhUGnwk
+         mxyP/lqP+7Xkj7TRLBA0xON8sBbqEybVl8dAuWOCYTWVBtQ4d/mpEE4qep5qWmygspKzuMFW2hDX
+         deo1UHPteQEV0nUEo6AmoQ1eWRGXJ5CfKGo/s284z27QNkM1Ht+9M8KyYCI72DWSPYyn25pjBO1I
+         7tBYd+CjdQXv6fwx2+WnhNgZ4+rVsFfx7LZLdm4VcxlFJsELtkQ/hCqTIWFhgFg1/CHQ8w8ic/OO
+         Ze++wBXvwLSizpLhmb6+HlbHnwcFST1gqaTyA3NCK0i4i2a2c5ZYP2aNfeKDDC9w==
 From:   xkernel.wang@foxmail.com
 To:     paul@paul-moore.com, stephen.smalley.work@gmail.com,
         eparis@parisplace.org
 Cc:     selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
         Xiaoke Wang <xkernel.wang@foxmail.com>
-Subject: [PATCH] selinux: check the return value of audit_log_start()
-Date:   Tue, 14 Dec 2021 14:19:51 +0800
-X-OQ-MSGID: <20211214061951.2158-1-xkernel.wang@foxmail.com>
+Subject: [PATCH] selinux: fix a wrong check condition of strcmp()
+Date:   Tue, 14 Dec 2021 17:34:43 +0800
+X-OQ-MSGID: <20211214093443.2415-1-xkernel.wang@foxmail.com>
 X-Mailer: git-send-email 2.33.0.windows.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -53,36 +54,27 @@ X-Mailing-List: selinux@vger.kernel.org
 
 From: Xiaoke Wang <xkernel.wang@foxmail.com>
 
-audit_log_start() returns audit_buffer pointer on success or NULL on
-error. It is better to check the return value of it so to prevent
-potential memory access error.
+strcmp() will return 0 when two strings(s1, s2 for example) are equal.
+And if a negative number means s1 < s2. Here seems should use == 0 as
+the condition. Otherwise, the value of genfs->fstype can not be
+guaranteed.
 
 Signed-off-by: Xiaoke Wang <xkernel.wang@foxmail.com>
 ---
- security/selinux/ss/services.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ security/selinux/ss/services.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index e5f1b27..759d878 100644
+index 759d878..c9f6c3a 100644
 --- a/security/selinux/ss/services.c
 +++ b/security/selinux/ss/services.c
-@@ -3277,11 +3277,13 @@ int security_sid_mls_copy(struct selinux_state *state,
- 				ab = audit_log_start(audit_context(),
- 						     GFP_ATOMIC,
- 						     AUDIT_SELINUX_ERR);
--				audit_log_format(ab,
--						 "op=security_sid_mls_copy invalid_context=");
--				/* don't record NUL with untrusted strings */
--				audit_log_n_untrustedstring(ab, s, len - 1);
--				audit_log_end(ab);
-+				if (ab) {
-+					audit_log_format(ab,
-+							"op=security_sid_mls_copy invalid_context=");
-+					/* don't record NUL with untrusted strings */
-+					audit_log_n_untrustedstring(ab, s, len - 1);
-+					audit_log_end(ab);
-+				}
- 				kfree(s);
- 			}
- 			goto out_unlock;
+@@ -2883,7 +2883,7 @@ static inline int __security_genfs_sid(struct selinux_policy *policy,
+ 
+ 	for (genfs = policydb->genfs; genfs; genfs = genfs->next) {
+ 		cmp = strcmp(fstype, genfs->fstype);
+-		if (cmp <= 0)
++		if (cmp == 0)
+ 			break;
+ 	}
+ 
 -- 

@@ -2,85 +2,112 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 144B74770B2
-	for <lists+selinux@lfdr.de>; Thu, 16 Dec 2021 12:42:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 82C1D47760D
+	for <lists+selinux@lfdr.de>; Thu, 16 Dec 2021 16:37:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233484AbhLPLmr (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 16 Dec 2021 06:42:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60220 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233589AbhLPLml (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 16 Dec 2021 06:42:41 -0500
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F390BC06139B
-        for <selinux@vger.kernel.org>; Thu, 16 Dec 2021 03:42:39 -0800 (PST)
-Received: by mail-qv1-xf32.google.com with SMTP id ke6so861694qvb.1
-        for <selinux@vger.kernel.org>; Thu, 16 Dec 2021 03:42:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=K+n9/Q643hF06qaRTfNZAWda8LVlgLOG5CgJcxFPWIFoMhWM1EYpXAS64XJojMwQQx
-         EqR+WcL8ZKNdKxI1rlI6J1X97CAv/GhyzN+frFPEhWEVujbKy2tsQcjkeqXCKP3RT5yd
-         lKeuN0Xs1P/9DhC82fVpgIS54J8emMt0iaVxeunUZuwWzCiKeFFLaXjlQtjXsDp+7Fh/
-         B+VWl/xgmUtxz+BtFM5UhxSltD/0zH4S4seawy0715by/jAvKD9YON3PqOtBI62SbWBD
-         jWpeya/GzA0ycvExWcOcBmWl/DCk9yUsFN2bNj9QfFGM6FIFkaKrPoGkEqRJBjgcerBq
-         tR0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=xre5um49Rnqa1tZMCD58Cd6UlD4MleswKAp3tzt2gjo=;
-        b=jdAWT12l8FA6gbpPC8/wroR5IR8itxMV69209xQXFR4/LRHm2OVsWtBpN2oIreQD/f
-         4vM7IFH2GhDo0pFiQ0ixzB9yhlTauvvyhl8U8KOk8vUXDY9IsK8kbzmPqCAb9lkGwbQJ
-         KAdw9Uxtw/oBj/06M9lC1UvjcORkh4fDvVlC3z4U88dtAkRqx212lQ9yfshoSetYFlBL
-         i+v2PmRiZO89s14nPqR1K/GejICW/xf82WFTz93suf1qom8+q00I5NHhjXbw401S2CHV
-         2S1VThCLvyLv/YHCiQRvIhuH6kfD5sL1fIg/WPw2i9H9WyV0b3i5fPTOJomhZ9lHSTsN
-         7mGA==
-X-Gm-Message-State: AOAM5322ZBl3QMKqUNMrd98saslEedkuHfIVp6sAE0bhCD5ad9JWsLBP
-        QKRvlRBm+KQD9E5s5l1Pu8g6BvpOABqGiOWpfdI=
-X-Google-Smtp-Source: ABdhPJw1cRuUMMVas+y+QgdrxBW0LuhuWfZ+tfQTS0xFMTT3zW1pjnPXSYKcurxzVoeaOVJevX3+oCe2P65vw9z9/aU=
-X-Received: by 2002:a0c:e5d1:: with SMTP id u17mr15209801qvm.120.1639654958961;
- Thu, 16 Dec 2021 03:42:38 -0800 (PST)
-MIME-Version: 1.0
-Received: by 2002:a05:622a:199c:0:0:0:0 with HTTP; Thu, 16 Dec 2021 03:42:38
- -0800 (PST)
-Reply-To: selviasantiago1@gmail.com
-From:   Selvia Santiago <mariamatinez119@gmail.com>
-Date:   Thu, 16 Dec 2021 11:42:38 +0000
-Message-ID: <CAONDhKPEx+GKyJvnzbcBxs-brt1E0c+b0jdG7u7Uf+rYJ1N+fA@mail.gmail.com>
-Subject: Urgent
-To:     undisclosed-recipients:;
+        id S235074AbhLPPhD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 16 Dec 2021 10:37:03 -0500
+Received: from mailomta27-re.btinternet.com ([213.120.69.120]:43481 "EHLO
+        re-prd-fep-049.btinternet.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232607AbhLPPhC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 16 Dec 2021 10:37:02 -0500
+Received: from re-prd-rgout-005.btmx-prd.synchronoss.net ([10.2.54.8])
+          by re-prd-fep-049.btinternet.com with ESMTP
+          id <20211216153700.NPXR8938.re-prd-fep-049.btinternet.com@re-prd-rgout-005.btmx-prd.synchronoss.net>;
+          Thu, 16 Dec 2021 15:37:00 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1639669020; 
+        bh=E+AgHOJMeGv+h73OzmyK8eZjBXPblw7PuqwK9IL/fo4=;
+        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:MIME-Version;
+        b=sx5eEdjgAG/CjPkb6ARRNKYaT9XGyuyZADllxEFwZzPReH8rgoyudD9qel78iB66g4kULu/OMyr8DN9lolgrAatGvv+IA8hMDfsZI3GBxHwR0KtGY+BB96yx2SJmKCsgdI9jKieG36UVxx8mI8OOPkQ0aSjkRrF9bMEvbMR4T/t361CeySe3N8SSOEkwsa5mNfIujFUIs1BnKK5l++x7Z8LFhDPmeP77lL7ASc52/1L2bo6YDUtWBs0vEg/4hgQqj293vegNrK1mjuvB9S/ga8eGFfLf342XWljsFpkJ8VOwewStZlzZUJTQgz/k0lYdq77M3bTHuiOoYQysD+CZig==
+Authentication-Results: btinternet.com;
+    auth=pass (LOGIN) smtp.auth=richard_c_haines@btinternet.com;
+    bimi=skipped
+X-SNCR-Rigid: 613A91240D796D10
+X-Originating-IP: [217.43.180.152]
+X-OWM-Source-IP: 217.43.180.152 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvuddrleeggdektdcutefuodetggdotefrodftvfcurfhrohhfihhlvgemuceutffkvffkuffjvffgnffgvefqofdpqfgfvfenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkffuhffvffgjfhgtfggggfesthekredttderjeenucfhrhhomheptfhitghhrghrugcujfgrihhnvghsuceorhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomheqnecuggftrfgrthhtvghrnhepveevgeeftdfhhfevtdejiedtvdduieegfeduleevleelgeeileefvdejieefiedtnecuffhomhgrihhnpegtrghlihgsrhgvqdgvsghoohhkrdgtohhmnecukfhppedvudejrdegfedrudektddrudehvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhephhgvlhhopegludelvddrudeikedruddrudelkegnpdhinhgvthepvddujedrgeefrddukedtrdduhedvpdhmrghilhhfrhhomheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopegusghurhhgvghnvghrsehlihhnuhigrdhmihgtrhhoshhofhhtrdgtohhmpdhrtghpthhtohepphgruhhlsehprghulhdqmhhoohhrvgdrtghomhdprhgtphhtthhopehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from [192.168.1.198] (217.43.180.152) by re-prd-rgout-005.btmx-prd.synchronoss.net (5.8.716.04) (authenticated as richard_c_haines@btinternet.com)
+        id 613A91240D796D10; Thu, 16 Dec 2021 15:37:00 +0000
+Message-ID: <b9655a10f2864a583ff880c810ea73a10c478c19.camel@btinternet.com>
+Subject: Re: [PATCH V2 4/4] selinux-notebook: Add epub build
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     selinux@vger.kernel.org, dburgener@linux.microsoft.com
+Date:   Thu, 16 Dec 2021 15:37:00 +0000
+In-Reply-To: <CAHC9VhT5hw1JcgqOGZdTxaVWK5mE0gKKWiPLbJ3aZts+qm387A@mail.gmail.com>
+References: <20211213101622.29888-1-richard_c_haines@btinternet.com>
+         <20211213101622.29888-5-richard_c_haines@btinternet.com>
+         <CAHC9VhT5hw1JcgqOGZdTxaVWK5mE0gKKWiPLbJ3aZts+qm387A@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.2 (3.42.2-1.fc35) 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
--- 
-Urgent
+On Mon, 2021-12-13 at 20:01 -0500, Paul Moore wrote:
+> On Mon, Dec 13, 2021 at 5:16 AM Richard Haines
+> <richard_c_haines@btinternet.com> wrote:
+> > 
+> > Build an epub document.
+> > 
+> > Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+> > ---
+> >  BUILD.md            | 23 +++++++++++++++-----
+> >  CONTRIBUTING.md     | 10 ++++-----
+> >  Makefile            | 48 +++++++++++++++++++++++++++++++++++------
+> >  README.md           |  9 ++++----
+> >  src/cover.md        | 16 ++++++++++++++
+> >  src/cover_epub.md   |  2 ++
+> >  src/metadata.yaml   | 14 ++++++++++++
+> >  src/styles_epub.css | 52
+> > +++++++++++++++++++++++++++++++++++++++++++++
+> >  src/styles_html.css |  8 +++++++
+> >  src/styles_pdf.css  |  8 +++++++
+> >  src/title.md        | 16 --------------
+> >  11 files changed, 169 insertions(+), 37 deletions(-)
+> >  create mode 100644 src/cover.md
+> >  create mode 100644 src/cover_epub.md
+> >  create mode 100644 src/styles_epub.css
+> 
+> I had to do some merge fixups due to the logo change, and I added a
+> few missing oxford commas (*cough*) but like others I had mixed
+> results rendering the EPUB on my Linux system.  Thankfully the HTML
+> and PDF formats still looked good.
+> 
+> However, one of the more unfortunate things is that when I tried to
+> read the EPUB on my Kindle it failed miserably; although oddly enough
+> the PDF worked fine, the text was just a bit too small to read
+> comfortably.  I think it would be good to be able to generate a
+> Kindle
+> compatible EPUB before we merge this.
 
-I am Mrs. Selvia Santiago from Abidjan, Cote D'Ivoire, I am a widow
-suffering from long time illness (Cancer), there is funds I inherited
-from my late loving husband Mr. Santiago Carlos, the sum of (US$2.7
-Million Dollars) which he deposited in bank before his death, I need a
-honest and Faithful person that can use these funds for humanity work.
+Thanks for merging the first three patches.
+As you have probably guessed I don't have a Kindle, although I did use
+Calibre to convert EPUB to:
 
-I took this decision because I don't have any child that will inherit
-this money and I don't want a situation where this money will be used
-in an ungodly way. That is why I am taking this decision, and my
-doctor has confirmed to me that I have less than two weeks to live,
-having known my condition I decided to donate this fund to a charity
-or individual that will utilize this money to assist the poor and the
-needy in accordance to my instructions.
+AZW3 (KF8) - This was readable using Foliate and Calibre E-Book Viewer
+with no problems (however the links to the examples didn't work with
+the Calibre E-Book Viewer).
 
-I want you to use 70% of this funds for orphanages, school, church,
-widows, propagating the word and other humanity works,The remaining
-30% should be yours for your efforts as the new beneficiary.
+MOBI - This was only readable using Calibre E-Book Viewer, however the
+tables lost their boarders.
 
-Please if you would be able to use these funds for humanity work
-kindly reply me. As soon as I have received your response, I will give
-you further directives on how you are to go about the claims of the
-said funds.
+So this Calibre command converts to AZW3:
 
-Remain blessed.
-Mrs Selvia Santiago.
+ebook-convert SELinux_Notebook.epub SELinux_Notebook.azw3
+
+Will this work on your Kindle with no issues ?? The command format is
+described in [1] and there are many options.
+
+[1] https://manual.calibre-ebook.com/generated/en/ebook-convert.html
+
+
+> 
+

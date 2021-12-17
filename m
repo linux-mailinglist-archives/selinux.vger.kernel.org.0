@@ -2,46 +2,46 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A7314793EA
-	for <lists+selinux@lfdr.de>; Fri, 17 Dec 2021 19:19:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D894793EB
+	for <lists+selinux@lfdr.de>; Fri, 17 Dec 2021 19:19:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbhLQST1 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 Dec 2021 13:19:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41762 "EHLO
+        id S234205AbhLQST2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 Dec 2021 13:19:28 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234149AbhLQST1 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 Dec 2021 13:19:27 -0500
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40498C06173E
+        with ESMTP id S234181AbhLQST2 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 Dec 2021 13:19:28 -0500
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D751AC061574
         for <selinux@vger.kernel.org>; Fri, 17 Dec 2021 10:19:27 -0800 (PST)
-Received: by mail-qv1-xf34.google.com with SMTP id kj6so3222614qvb.2
+Received: by mail-qk1-x735.google.com with SMTP id l25so2981877qkl.5
         for <selinux@vger.kernel.org>; Fri, 17 Dec 2021 10:19:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=x1f7Wd27K5moNxwApZyWDj3kwRyGoa6lCjO7N9A2Dlc=;
-        b=l/Aq3sWrgk5lyHfa8cD7LmGhlNxXuMXHNTqa8mk32+rQrVmSESGrreho8i0vOns2Ct
-         7wp1bXXtWVpg8An2tNN1GPqqN6fz+mk2RC80Z/+ggeSpad7/DH/09VxT4STetQPPvDrH
-         Zcunp+oV9+elkdnswsrMg+69UQAEkqTPJxGN1Bg+6K4hHSH/SyzeYTrM20yOsMNJ+HTb
-         ncYJ+KDNY/u6bHJrhHjuP/C3elUkZTGkMyaGb1gRDQJ8Qp2vdaMI3Li3wqXpqwjZXX3d
-         a7cHWHNllGm8SLNjGdhwOHWA8CNbNwG0n41a+kpcZ6HNFWWPxPMs3LxO8MNKzLHWMHg8
-         1EZQ==
+        bh=jPkVQCcebJo7Yq9WhSxtz3V4v3wlvtz3YCm1gFtNgv4=;
+        b=PRUoqmKQMviSSmLAJX6blUR4Bz5gnd1/S3+FIudpcaug2BpQzJ6n0reGrdZZ/dSYBn
+         HBILX/h9RmFOkMy88FryOZP1Ar8JEIx9DIMRjI8WYDn01DKGz6/je5+OQb88Otl7XOzn
+         Pow0CP2fqSviFSNQwuXWb/H5GW5wGzZv1UoSkle81ec2WHdczzXij29Jv5BfEzgmfs6s
+         vPHj4wrxHqT5W7Wp/c2F2TU8vd1sEEUgyqMwuGXFk/M4+RLuwkHkXJyOglpoysLaQ5tQ
+         CIf06Ru5xwYraaAns76BifFZZj6g7t/Mq7z2pXvwuviiufqLEynYAihHnNnyzOoqZxFU
+         oITQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=x1f7Wd27K5moNxwApZyWDj3kwRyGoa6lCjO7N9A2Dlc=;
-        b=1GgsXIJhwO5M0a3RpWPAOMkOSDIesxVoqXqXTNjbLyj0od2MVIoexilaK50VscuJic
-         Sunul9f39LWCgekkx5Th/uv+UUknzByd2oRocF1CgFmqEtON3SefUWPkUCulQINK1nl5
-         IMnj0vvjMbyS0f7fdjdhhdnPE/sTTb7l+FjZbOxboB8Hdq/JOyl2ibApByS+X/9++8mb
-         rfhisRwy4HJ81le46i4MGLRKak1IMTpFCEWqpAVlA4qsel/IJ1ZaH05kL/QEWufG1xRv
-         1745g6tPekJ6qH5GdGhRbjhfc+jrZX3TpGxVfsnfpyOK7wWwo2x9tPp8yE+DPUhTo4+g
-         31ng==
-X-Gm-Message-State: AOAM532AXc5SE8GHQ+iuWvBqx8CS9cu5wu1RFcXOlYpxwE8pldxp9OJ9
-        cJLamX+wDOjV7sy7WnFIXlodnHooe1M=
-X-Google-Smtp-Source: ABdhPJxe3fBfIALCXKd6cbU8M5grhiBRHiWEBg9e4XpaPGpdaR4O5wy+9cptsZikYHI7iSAuSZqnyQ==
-X-Received: by 2002:a05:6214:76e:: with SMTP id f14mr2585187qvz.43.1639765166380;
+        bh=jPkVQCcebJo7Yq9WhSxtz3V4v3wlvtz3YCm1gFtNgv4=;
+        b=o5o1kpUGTw4sVt//i76SzIvt2FQxyUU4eaGd+pFGPLXSXk2vzpAfI1Lj3nxOELJK79
+         jNKvGCDFHyaVinpiZOpSXAn9YeNA97HSP0x8HHrUZGcXxuz/YVrj3PdWF/AhFQAKJTde
+         STwPQ/VI8oVdJ8ldXyjtoMDEeowZoINtxQPBJmkMoDTxQiGF5kcyoPfRrgNsCR7etuqF
+         0jodTij1FLCBOcqjOTLSanGKGofYOT6xDdhhmHVTqQWViV6o0Z6L4mgAAMjWpBijtubW
+         pg3zb5kIEtbSDm6smt7Vh08RhakXyh4yQGW7bGs0l6vu0beicaD9C9NyHNCPHVa30QmT
+         f7Yw==
+X-Gm-Message-State: AOAM5300yHxNxVxVcEMUtyB3IEvpscJhDouglyN8qO1IaO/7u+urq+0Z
+        x9ef4DmDc1MJQ/hu3KVOw/RWBCUrZhQ=
+X-Google-Smtp-Source: ABdhPJxeGXnNvLzGapOc2b9X/g6kMl+gkt3tbtY7kW3kPsu260sd5/JWVQLUnDbFc7iQivEHpy4RpA==
+X-Received: by 2002:a05:620a:d87:: with SMTP id q7mr2587200qkl.377.1639765166937;
         Fri, 17 Dec 2021 10:19:26 -0800 (PST)
 Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.200.157.122])
         by smtp.gmail.com with ESMTPSA id o17sm7468094qtv.30.2021.12.17.10.19.26
@@ -50,9 +50,9 @@ Received: from localhost.localdomain (c-73-200-157-122.hsd1.md.comcast.net. [73.
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     cgzones@googlemail.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 03/16] libsepol: Remove uneeded error messages in assertion checking
-Date:   Fri, 17 Dec 2021 13:19:00 -0500
-Message-Id: <20211217181913.336360-4-jwcart2@gmail.com>
+Subject: [PATCH 04/16] libsepol: Check for error from check_assertion_extended_permissions()
+Date:   Fri, 17 Dec 2021 13:19:01 -0500
+Message-Id: <20211217181913.336360-5-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.31.1
 In-Reply-To: <20211217181913.336360-1-jwcart2@gmail.com>
 References: <20211217181913.336360-1-jwcart2@gmail.com>
@@ -62,47 +62,27 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-An out of memory condition is unlikely and the general message
-that an error occured while checking neverallows is sufficient.
+Return an error if check_assertion_extended_permissions() returns
+an error instead of treating it as an assertion violation.
 
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/src/assertion.c | 6 ------
- 1 file changed, 6 deletions(-)
+ libsepol/src/assertion.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/libsepol/src/assertion.c b/libsepol/src/assertion.c
-index d716450f..832d3749 100644
+index 832d3749..a2cbb74d 100644
 --- a/libsepol/src/assertion.c
 +++ b/libsepol/src/assertion.c
-@@ -278,11 +278,8 @@ static int report_assertion_avtab_matches(avtab_key_t *k, avtab_datum_t *d, void
- 			}
- 		}
+@@ -481,6 +481,8 @@ static int check_assertion_avtab_match(avtab_key_t *k, avtab_datum_t *d, void *a
+ 
+ 	if (avrule->specified == AVRULE_XPERMS_NEVERALLOW) {
+ 		rc = check_assertion_extended_permissions(avrule, avtab, k, p);
++		if (rc < 0)
++			goto oom;
+ 		if (rc == 0)
+ 			goto nomatch;
  	}
--	goto exit;
- 
- oom:
--	ERR(NULL, "Out of memory - unable to check neverallows");
--
- exit:
- 	ebitmap_destroy(&src_matches);
- 	ebitmap_destroy(&tgt_matches);
-@@ -436,8 +433,6 @@ static int check_assertion_extended_permissions(avrule_t *avrule, avtab_t *avtab
- 	goto exit;
- 
- oom:
--	ERR(NULL, "Out of memory - unable to check neverallows");
--
- exit:
- 	ebitmap_destroy(&src_matches);
- 	ebitmap_destroy(&tgt_matches);
-@@ -495,7 +490,6 @@ nomatch:
- 	return 0;
- 
- oom:
--	ERR(NULL, "Out of memory - unable to check neverallows");
- 	return rc;
- }
- 
 -- 
 2.31.1
 

@@ -2,65 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 621F9480D85
-	for <lists+selinux@lfdr.de>; Tue, 28 Dec 2021 22:36:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0F67482636
+	for <lists+selinux@lfdr.de>; Sat,  1 Jan 2022 01:42:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230085AbhL1VgG (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 28 Dec 2021 16:36:06 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:36984 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229682AbhL1VgF (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 28 Dec 2021 16:36:05 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5CD2CB81753;
-        Tue, 28 Dec 2021 21:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 10DA7C36AEC;
-        Tue, 28 Dec 2021 21:36:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1640727363;
-        bh=xULGxFfNxwW7rtndEsiZ5J+JMbFvfMhO/5s9xCT6ADs=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=BGdYMEijN8yxwcip3crFpnTG8FL8as47eKUnOvw/e2IsyMj5v7EqQRc1yIhmp0VXz
-         gM4ghc6KJe2LpgQ3MddSRWg1FrJif3ytsj0y/DhuPOhOqJ0tkhlmEKeiKz3Jv8Ja4y
-         JnFisw5HQYJ+mnLwYovJuwEmwQYnS433qr4Qz4WY7dAnhUci+au3HWDBIu+kIxOJnh
-         3pyGr4tpDTU4silA/FAK+fitkGjKGBMBxu06YudqTHydi2n5fzwVKFiYyp1f6Iojmf
-         cWmpRVksXJtcKngbsObsDNpi2FM3l7qwOFPFWagTKtsPek7BrfTuZJIVGcO9UbXFeA
-         QxBqYcgn3l06A==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F3F81C395E7;
-        Tue, 28 Dec 2021 21:36:02 +0000 (UTC)
-Subject: Re: [GIT PULL] SELinux fixes for v5.16 (#4)
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <CAHC9VhRrwLKn1mbMPjsaVwye8YVhP2Y6qxTz6pMyQoqcSFfXRg@mail.gmail.com>
-References: <CAHC9VhRrwLKn1mbMPjsaVwye8YVhP2Y6qxTz6pMyQoqcSFfXRg@mail.gmail.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <CAHC9VhRrwLKn1mbMPjsaVwye8YVhP2Y6qxTz6pMyQoqcSFfXRg@mail.gmail.com>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git tags/selinux-pr-20211228
-X-PR-Tracked-Commit-Id: 732bc2ff080c447f8524f40c970c481f5da6eed3
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: e7c124bd04631973a3cc0df19ab881b56d8a2d50
-Message-Id: <164072736298.12117.7062352280279532420.pr-tracker-bot@kernel.org>
-Date:   Tue, 28 Dec 2021 21:36:02 +0000
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        id S230152AbiAAAmP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 31 Dec 2021 19:42:15 -0500
+Received: from mail.osorio.rs.gov.br ([177.73.0.123]:33055 "EHLO
+        mail.osorio.rs.gov.br" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229473AbiAAAmP (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 31 Dec 2021 19:42:15 -0500
+Received: by mail.osorio.rs.gov.br (Postfix, from userid 999)
+        id BE95B488D773; Fri, 31 Dec 2021 16:33:26 -0200 (BRST)
+Received: from localhost (nac.osorio.rs.gov.br [127.0.0.1])
+        by nac (Postfix) with SMTP id 51AED487F504;
+        Fri, 31 Dec 2021 16:28:06 -0200 (BRST)
+Received: from User (unknown [84.38.132.16])
+        by mail.osorio.rs.gov.br (Postfix) with ESMTP id 6561E487C261;
+        Fri, 31 Dec 2021 14:28:58 -0200 (BRST)
+Reply-To: <andbaill228@mail2world.com>
+From:   "Ads" <projetos@gov.br>
+Subject: Very Importante Notice
+Date:   Fri, 31 Dec 2021 17:44:15 +0200
+MIME-Version: 1.0
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20211231162858.6561E487C261@mail.osorio.rs.gov.br>
+To:     undisclosed-recipients:;
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The pull request you sent on Tue, 28 Dec 2021 16:31:54 -0500:
+Sir/Madam,
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git tags/selinux-pr-20211228
+Good day to you.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/e7c124bd04631973a3cc0df19ab881b56d8a2d50
+I am Dr.Gertjan Vlieghe personal Secretary to Andrew Bailey who double as the Governor, Bank of England (https://en.wikipedia.org/wiki/Andrew_Bailey_%28banker%29). We have an inheritance of a deceased client, who bear the same name  with your surname. kindly contact Andrew Bailey through his personal email (andbaill228@mail2world.com) with your details for more information.
 
-Thank you!
+Thank you.
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Dr.Gertjan Vlieghe

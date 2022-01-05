@@ -2,138 +2,91 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 27AD8485824
-	for <lists+selinux@lfdr.de>; Wed,  5 Jan 2022 19:25:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AFF2485A80
+	for <lists+selinux@lfdr.de>; Wed,  5 Jan 2022 22:16:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242872AbiAESZW (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 5 Jan 2022 13:25:22 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39840 "EHLO
+        id S244378AbiAEVQR (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 5 Jan 2022 16:16:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242861AbiAESZT (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 5 Jan 2022 13:25:19 -0500
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C82EFC061245
-        for <selinux@vger.kernel.org>; Wed,  5 Jan 2022 10:25:18 -0800 (PST)
-Received: by mail-ot1-x32b.google.com with SMTP id i5-20020a05683033e500b0057a369ac614so282325otu.10
-        for <selinux@vger.kernel.org>; Wed, 05 Jan 2022 10:25:18 -0800 (PST)
+        with ESMTP id S244377AbiAEVQP (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 5 Jan 2022 16:16:15 -0500
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61BC7C061201
+        for <selinux@vger.kernel.org>; Wed,  5 Jan 2022 13:16:15 -0800 (PST)
+Received: by mail-qk1-x72c.google.com with SMTP id 131so744367qkk.2
+        for <selinux@vger.kernel.org>; Wed, 05 Jan 2022 13:16:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=nGy6LNPbS4vVkV/2jgq4TCyFJsvW+2En5nC0dpjNIsg=;
-        b=DvyRQZZheL0HMT3kJXFf8NuSL2ELNGAJLY/SQETeYx3ZYJSEl4uu0EvQcQ6T6MIG00
-         FEuhE+kqWiugMlg/3Cevw7VvexnMsbWMWxVcXUFAyRJM2liGhFPP+259uV+SIJqTFaLV
-         MIhoNR75J2QZmfsjLWAUKLave9fltceIKflDYmLUl8SEj2WNUNR/gwXa0MxXerYdwhgT
-         /TX5FSX8kacBdKZ7D9CRO4Mq2gLeocKJrYciyuEwqNMmLQUVL1mLSdmwXQiCtmcnQ1fq
-         eYLphm4Uu6dlyEAncdavxKVb1W5W52+hu2B9Kc985x65q24bfneoQ35XA/Aw9MJ68mj6
-         p6Hg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=76MauF8kdtXPkR+xoMbR8/fIK4qjtBHmkxy7ooSHQ50=;
+        b=elplV5j+EBX+EKWQhLTALO/efZEAif7icdR+t9VXcpxGUJ9M46BR5p0OKKJ0td2pTJ
+         RDSruo4hMn1bRHj+zhUsqeYwLl9jQvQNhMOmR7IHuosOCO9r+2oz8/KXS+b3r9VrnbUq
+         0yLeAiKWiYGczzU92SearoHHO8C/LNR1sOZefRxhmX1JeMlLAoq32URKiUNQ5l/eb1t4
+         wfwntA6ndOVCENKz0S5DUA0Z/aje8rXS1KjJoYy6YYpQiGhk4x1qPpyhbrRZPWKUNamF
+         vZZfj3HijpU4ZY0wr2vENMezabZoRer8ZvZ88vU6LeZGKzNMaD2BsnK5QGnsDqPEXdqe
+         yQRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=nGy6LNPbS4vVkV/2jgq4TCyFJsvW+2En5nC0dpjNIsg=;
-        b=iPmoFrdw/YhJwN/FvGWqDsWYYXQQ4SYK5cROQnFJKdw3HUlxyXxstq6WhR9mmAPiGZ
-         1f2VNdAMYJzLVIMSTZFjyED98Riv6JEWrlk92UGbT5Fru26GGA5n5lbMRdQuUzVvsfuS
-         Ph18hhEKar9+UJnR0hOwGQC0q2HCo1Gaodt3qZ0rIXqqk1646NK1RYWWyUvbi4KvopAJ
-         om6sYGPnN9Eyq7Io48AuL9Duvhxuiqn4u0pStWGiRbRR4wTM3rXdx/yJy+pWsfh8/nDY
-         t7sb8dsPJUf9Iin1/IaresralWcvggEiVauVJ/Uy3jGVzq4BTp+QUX32ayFZ56XTcxki
-         0jdQ==
-X-Gm-Message-State: AOAM530U4C63QKwaZpcw3vkKut9FdrT/Y1k5+yb9289+rWh2UUHxDpMo
-        u2rVn3K3PHAK9jmEYYvE4f81EUQaCIGPnIB0ZbXZuwbv
-X-Google-Smtp-Source: ABdhPJxK1hq9XsfVCPpJXVPmcFeZ5MzFnpNW36MEmhvf5vOvoTJBe3MvU86WUJuaB5dN/fyTBZ+5XfzQAzyhZBWUphs=
-X-Received: by 2002:a05:6830:1384:: with SMTP id d4mr2535018otq.139.1641407118217;
- Wed, 05 Jan 2022 10:25:18 -0800 (PST)
-MIME-Version: 1.0
-References: <20211223181945.68723-1-cgzones@googlemail.com> <CAP+JOzR-G0mre7PJcf=rvyapEAqP-nbwU3PJr_1TBw87XGQQ=A@mail.gmail.com>
-In-Reply-To: <CAP+JOzR-G0mre7PJcf=rvyapEAqP-nbwU3PJr_1TBw87XGQQ=A@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=76MauF8kdtXPkR+xoMbR8/fIK4qjtBHmkxy7ooSHQ50=;
+        b=isH0mO8KjP1QvUibk6u5frV+dpB8z3U7NuKoSyAuHR3sTzIs6Rlb+3QXhAYHfCD7ZD
+         RS5SLMjzyfbq3i6sOvuBz3N8UWq9e2BsflBncY0zU8hIcz75k0pyBKuVy58h6yE0X4TY
+         L5moAkLOF8TfhVS2smpQvvGBziUvzUX91Q0QelIL43szh+zzkayz6WhP2pn2QVLc0Zvs
+         oYwbJ1u06PF6zpK1EEyJ15tYhzpY/1IE9eqkMeZYIkNs9K7ec4Xa8Q4wNdNNzJ2I71y4
+         L0RjflZInd5ZFaceVml9DIOKJ8DwxMWYngCI1MsSOIBMKO4IHxhoJYMzyOghvT77UEez
+         28Fg==
+X-Gm-Message-State: AOAM530OKmuzW0pWUT4ZjaDu4hS58/A8cLJsCEwRrZgWAvunXh6V7opQ
+        JLKJbgpP+Q9gyD2OcQVBlW464aHMy6U=
+X-Google-Smtp-Source: ABdhPJy7LYFva8eEX0MxPOcYRR6rSpuzJCJRFeq0mSD7yGgHZDBb7zX+vUt6xM55Tw2SiqLhQFhleQ==
+X-Received: by 2002:a05:620a:4111:: with SMTP id j17mr39556996qko.593.1641417373198;
+        Wed, 05 Jan 2022 13:16:13 -0800 (PST)
+Received: from localhost.localdomain (c-69-250-217-147.hsd1.md.comcast.net. [69.250.217.147])
+        by smtp.gmail.com with ESMTPSA id m1sm36148502qkn.115.2022.01.05.13.16.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jan 2022 13:16:12 -0800 (PST)
 From:   James Carter <jwcart2@gmail.com>
-Date:   Wed, 5 Jan 2022 13:25:07 -0500
-Message-ID: <CAP+JOzSz7bKStGXTE0ahcGmkvu0OHr93s=YCgMUFMzMfBj_Ojw@mail.gmail.com>
-Subject: Re: [PATCH v2] libsepol: check for valid sensitivity before lookup
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To:     selinux@vger.kernel.org
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH 1/3] libsepol/cil: Do not copy blockabstracts when inheriting a block
+Date:   Wed,  5 Jan 2022 16:16:00 -0500
+Message-Id: <20220105211602.359300-1-jwcart2@gmail.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Jan 3, 2022 at 1:44 PM James Carter <jwcart2@gmail.com> wrote:
->
-> On Fri, Dec 24, 2021 at 8:09 PM Christian G=C3=B6ttsche
-> <cgzones@googlemail.com> wrote:
-> >
-> > Check the sensitivity is valid and thus the lookup in the name array
-> > `p_sens_val_to_name` is valid.
-> >
-> > Found by oss-fuzz (#42729, #42730, #42735, #42741)
-> >
-> >     =3D=3D54784=3D=3DThe signal is caused by a READ memory access.
-> >         #0 0x5a10f3 in mls_semantic_level_expand ./selinux/libsepol/src=
-/expand.c:934:11
-> >         #1 0x53839e in policydb_user_cache ./selinux/libsepol/src/polic=
-ydb.c:972:7
-> >         #2 0x5c6325 in hashtab_map ./selinux/libsepol/src/hashtab.c:236=
-:10
-> >         #3 0x5392e9 in policydb_index_others ./selinux/libsepol/src/pol=
-icydb.c:1274:6
-> >         #4 0x53f90a in policydb_read ./selinux/libsepol/src/policydb.c:=
-4496:6
-> >         #5 0x50c679 in LLVMFuzzerTestOneInput ./selinux/libsepol/fuzz/b=
-inpolicy-fuzzer.c:35:6
-> >         #6 0x4409e3 in fuzzer::Fuzzer::ExecuteCallback(unsigned char co=
-nst*, unsigned long) (./selinux/out/binpolicy-fuzzer+0x4409e3)
-> >         #7 0x4295bf in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*,=
- unsigned long) (./selinux/out/binpolicy-fuzzer+0x4295bf)
-> >         #8 0x42f850 in fuzzer::FuzzerDriver(int*, char***, int (*)(unsi=
-gned char const*, unsigned long)) (./selinux/out/binpolicy-fuzzer+0x42f850)
-> >         #9 0x45b6d2 in main (./selinux/out/binpolicy-fuzzer+0x45b6d2)
-> >         #10 0x7f059fcd71c9 in __libc_start_call_main csu/../sysdeps/npt=
-l/libc_start_call_main.h:58:16
-> >         #11 0x7f059fcd7277 in __libc_start_main csu/../csu/libc-start.c=
-:409:3
-> >         #12 0x423900 in _start (./out/binpolicy-fuzzer+0x423900)
-> >
-> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> >
->
-> Someday it would be nice to have this validation of contexts done with
-> the other policydb validation, but I don't want to mess with that
-> right now.
->
-> Acked-by: James Carter <jwcart2@gmail.com>
->
+Do not copy any blockabstract statements when copying a block to
+resolve a blockinherit statement. Inheriting a block from what was
+just inherited does not work, so there is no reason to create an
+abstract block.
 
-Merged.
-Thanks,
-Jim
+Signed-off-by: James Carter <jwcart2@gmail.com>
+---
+ libsepol/cil/src/cil_copy_ast.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> > ---
-> > v2: also check the entry is non-null
-> >
-> > ---
-> >  libsepol/src/expand.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> >
-> > diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
-> > index 8a7259a0..898e6b87 100644
-> > --- a/libsepol/src/expand.c
-> > +++ b/libsepol/src/expand.c
-> > @@ -929,6 +929,10 @@ int mls_semantic_level_expand(mls_semantic_level_t=
- * sl, mls_level_t * l,
-> >         if (!sl->sens)
-> >                 return 0;
-> >
-> > +       /* Invalid sensitivity */
-> > +       if (sl->sens > p->p_levels.nprim || !p->p_sens_val_to_name[sl->=
-sens - 1])
-> > +               return -1;
-> > +
-> >         l->sens =3D sl->sens;
-> >         levdatum =3D (level_datum_t *) hashtab_search(p->p_levels.table=
-,
-> >                                                     p->p_sens_val_to_na=
-me[l->sens - 1]);
-> > --
-> > 2.34.1
-> >
+diff --git a/libsepol/cil/src/cil_copy_ast.c b/libsepol/cil/src/cil_copy_ast.c
+index 2fad972c..a4ead9db 100644
+--- a/libsepol/cil/src/cil_copy_ast.c
++++ b/libsepol/cil/src/cil_copy_ast.c
+@@ -1725,6 +1725,12 @@ int __cil_copy_node_helper(struct cil_tree_node *orig, uint32_t *finished, void
+ 		copy_func = &cil_copy_block;
+ 		break;
+ 	case CIL_BLOCKABSTRACT:
++		if (args->orig_dest->flavor == CIL_BLOCKINHERIT) {
++			/* When inheriting a block, don't copy any blockabstract
++			 * statements. Inheriting a block from a block that was
++			 * just inherited never worked. */
++			return SEPOL_OK;
++		}
+ 		copy_func = &cil_copy_blockabstract;
+ 		break;
+ 	case CIL_BLOCKINHERIT:
+-- 
+2.31.1
+

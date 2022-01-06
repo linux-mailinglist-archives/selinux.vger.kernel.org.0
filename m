@@ -2,165 +2,203 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 00904485A7F
-	for <lists+selinux@lfdr.de>; Wed,  5 Jan 2022 22:16:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEE1F486822
+	for <lists+selinux@lfdr.de>; Thu,  6 Jan 2022 18:07:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244379AbiAEVQQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 5 Jan 2022 16:16:16 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50694 "EHLO
+        id S241561AbiAFRHC (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 6 Jan 2022 12:07:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244378AbiAEVQP (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 5 Jan 2022 16:16:15 -0500
-Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35AC4C061245
-        for <selinux@vger.kernel.org>; Wed,  5 Jan 2022 13:16:15 -0800 (PST)
-Received: by mail-qk1-x731.google.com with SMTP id m2so711369qkd.8
-        for <selinux@vger.kernel.org>; Wed, 05 Jan 2022 13:16:15 -0800 (PST)
+        with ESMTP id S241544AbiAFRHA (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 6 Jan 2022 12:07:00 -0500
+Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D808C061245
+        for <selinux@vger.kernel.org>; Thu,  6 Jan 2022 09:07:00 -0800 (PST)
+Received: by mail-ot1-x336.google.com with SMTP id 35-20020a9d08a6000000b00579cd5e605eso3836862otf.0
+        for <selinux@vger.kernel.org>; Thu, 06 Jan 2022 09:07:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=0lMY/kihy1HYhLdDNz3DdawjvP54+9gnZ5vo0C1c+R0=;
-        b=VGj++Ny7aU5NCmp/IrDd4rUFMenFlYBhzpgb8o0Ympy20a44x+fcLMbDlvRytHOKql
-         M/XNclFDI7ptGVqBlUJWoG8SA/LphkWVrUExMK788VYp7Y5kDMDksFmBbB2Q5T5lcNgZ
-         QKxYMrniLZMoMPJ6YtgAAt6BPmun88KgK+saiX9FDYAn+QAmeZq1aZ6HDMF+arDvK8AB
-         ufjhyMwE8dDeKazdQhWqN3ndKPbEyCnoO4WqhjqUQl5FeT0kvWHKktDGke+r48gUzSTL
-         1hUMLvCzDrg26jG+UJAtt9nqx0tuvIedqsBuHrLu+3svJFyW5Cb1nt90u/8FTbz94Wc8
-         olow==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=L7clMz0IMy15Kw2GARnCWLABVxEp3IVSmqh7v7H9KRw=;
+        b=c/4a3bX7yCwOc5bOg9mKRukEhVWx4egf1DsM5S/Nhn3H1LWMKwT0QpxGxip0Y8f4wB
+         K9g4pgq6dpHd6yY2t4DOpVigD/55TIdMchX6XrTs17zHPsDSWuUVklTIOA521rVkBcy2
+         x7lhwhutjZ3KkvJS7w+NmT2U4WAM8CiqyYjcZfaCw80o9iAQvSsYbPxA90QLIHEBfpEw
+         qtsD4K82yeOusX+MlmPROEENnagDjrfQpOEG/iBhDhZY0+3yFR5TWFr0x4sVAM6JnbjO
+         T2Lgk6v5j+Wk/UB1lvsYQ/ml4J1jF/cpcYfB2bkO0+0PhD8yH6abyWdBFRuFXy/Xpqrz
+         T7Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=0lMY/kihy1HYhLdDNz3DdawjvP54+9gnZ5vo0C1c+R0=;
-        b=4cYg0LDLNy6aqM69Cf4H7r+C5SYuaeSOH/jnurLsSilStTEel5XLelk7Gmj+YIeB2c
-         BqZOTGnAiZ7WSPkQogw453o6y3fZTQYCm9ufPo/G4uIvaNT8GWeXQokrESuAEJdpvHoL
-         RIRpK6ZPbsDn0Lj9huVMmcd4wBeKzsRpwBQvysIDi6QvYMZY7auxGt2o14GMQlUs+fM2
-         mPXAiHS5NraSfspJZKyUuRuHtDX6JBHrKfOYJIkUgKmdiPlaj9H4992BQRQTYSZtUTxO
-         NdQcJvUmbfkF1VBeMtdxUIYSKv79kyTZZe6lNaW7wwHdJSFiXZ313WuIZHcgZgwqK8ji
-         m7LQ==
-X-Gm-Message-State: AOAM532O3oCCem5jfKfvqDnhC7buTxYpZoXpO1nm3iAmy9tIF7kFg7Sp
-        0c2lAdV2wfeQBMkY6CCystXey/3xdD8=
-X-Google-Smtp-Source: ABdhPJy5hzzb7JE3qoWaW1Ol1bbZhD9fWduv4Nlnu0yL4XOwIOTmTR8Og9nr+0gymMkpN/3ebpuPQg==
-X-Received: by 2002:a05:620a:2905:: with SMTP id m5mr40262929qkp.598.1641417374313;
-        Wed, 05 Jan 2022 13:16:14 -0800 (PST)
-Received: from localhost.localdomain (c-69-250-217-147.hsd1.md.comcast.net. [69.250.217.147])
-        by smtp.gmail.com with ESMTPSA id m1sm36148502qkn.115.2022.01.05.13.16.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jan 2022 13:16:13 -0800 (PST)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     James Carter <jwcart2@gmail.com>
-Subject: [PATCH 3/3] libsepol/cil: Do not resolve names to declarations in abstract blocks
-Date:   Wed,  5 Jan 2022 16:16:02 -0500
-Message-Id: <20220105211602.359300-3-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220105211602.359300-1-jwcart2@gmail.com>
-References: <20220105211602.359300-1-jwcart2@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=L7clMz0IMy15Kw2GARnCWLABVxEp3IVSmqh7v7H9KRw=;
+        b=PyZb9OfShJ90PWtewRzwhUVHD/yIkBaEg2i5swFW2O1ylWI34bFjvaZjNG3F+5Gobx
+         F2T3khEbbw561vD7gV6uKiF2iotX7bzGpgtqd9Y7WxicZDva8B/ZVSMzvCgRwqZbkcYl
+         jLbLCAUQlEMSAKePGKsY52lS7J34jcMbZxWXdDM7S+oLdqe4HtAzJhiFtoNVvCm6E5lM
+         EU1/+ZFXxioHq4iuMp/A9wWQTvucLuiQBjs0eiuPnJsSRBH4ED2zfzzWLIixTAJQJWly
+         d2RWIBZKsPWvgcrRaBmoZzd4zEKetTkIAVYyIBpcLGKcU6F6HeF+qFdJHqYTxhFtXjAQ
+         p/jQ==
+X-Gm-Message-State: AOAM533TduHR/GVv0vHNtvNTAVjTo0M7j3QM/Y6n/w2U0Z8Ep3JPZt7r
+        LoZhjykPdE9/jEmnoEz1bEWjzlpDn8oXkMjD3BMteMjQy/Q=
+X-Google-Smtp-Source: ABdhPJxp8yt1z7O8U2/Ew7Vdrh0XOe6i07wlBtwUqeSyKtoee/cTaikcccTq/8XgJLYFOL1l0Dq5RTbTcOIC2b806yg=
+X-Received: by 2002:a05:6830:1384:: with SMTP id d4mr5568445otq.139.1641488819656;
+ Thu, 06 Jan 2022 09:06:59 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211115185829.85614-1-evvers@ya.ru>
+In-Reply-To: <20211115185829.85614-1-evvers@ya.ru>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Thu, 6 Jan 2022 12:06:48 -0500
+Message-ID: <CAP+JOzR=_J7T8s-89b6RqRt8qbZyS8iXCVe5Z6vxTgm2ZUc-yQ@mail.gmail.com>
+Subject: Re: [PATCH] ci: run the tests under ASan/UBsan on GHActions
+To:     Evgeny Vereshchagin <evvers@ya.ru>
+Cc:     SElinux list <selinux@vger.kernel.org>,
+        =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        Nicolas Iooss <nicolas.iooss@m4x.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Since abstract blocks will not appear in the final policy, do not
-resolve names to a declaration inside one.
+On Tue, Nov 16, 2021 at 7:03 AM Evgeny Vereshchagin <evvers@ya.ru> wrote:
+>
+> It was tested in https://github.com/SELinuxProject/selinux/pull/321 and
+> https://github.com/SELinuxProject/selinux/pull/320. In the process
+> it discovered a few issues all of which were fixed in
+> https://github.com/SELinuxProject/selinux/commit/b98d3c4c53f35cb2ab77dd5b2973591815932620
+> https://github.com/SELinuxProject/selinux/commit/ea539017fbbc972a8239a7944eaa5ce4960b0903
+> https://github.com/SELinuxProject/selinux/commit/fe01a91a79574c21712fac2c58af1b54b7f3d46b
+> https://github.com/SELinuxProject/selinux/commit/f95dbf2c74246f69fbdf0881434567576159e5f6
+>
+> Now that all the issues are gone it should be safe to turn it on
+> to make it easier to automatically catch bugs like that almost as soon as
+> they end up in the repository.
+>
+> Signed-off-by: Evgeny Vereshchagin <evvers@ya.ru>
 
-When resolving blockabstract rules, they must be collected in a list
-and processed at the end of the pass because if a parent block is
-marked as abstract, then a blockabstract rule for a sub-block will
-fail to resolve.
+Acked-by: James Carter <jwcart2@gmail.com>
 
-Found by oss-fuzz (#42981)
-
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- libsepol/cil/src/cil_resolve_ast.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
-
-diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
-index 0288b7dc..73115c55 100644
---- a/libsepol/cil/src/cil_resolve_ast.c
-+++ b/libsepol/cil/src/cil_resolve_ast.c
-@@ -65,6 +65,7 @@ struct cil_args_resolve {
- 	struct cil_list *sensitivityorder_lists;
- 	struct cil_list *in_list_before;
- 	struct cil_list *in_list_after;
-+	struct cil_list *abstract_blocks;
- };
- 
- static struct cil_name * __cil_insert_name(struct cil_db *db, hashtab_key_t key, struct cil_tree_node *ast_node)
-@@ -2397,6 +2398,7 @@ int cil_resolve_blockabstract(struct cil_tree_node *current, void *extra_args)
- 	struct cil_blockabstract *abstract = current->data;
- 	struct cil_symtab_datum *block_datum = NULL;
- 	struct cil_tree_node *block_node = NULL;
-+	struct cil_args_resolve *args = extra_args;
- 	int rc = SEPOL_ERR;
- 
- 	rc = cil_resolve_name(current, abstract->block_str, CIL_SYM_BLOCKS, extra_args, &block_datum);
-@@ -2411,7 +2413,7 @@ int cil_resolve_blockabstract(struct cil_tree_node *current, void *extra_args)
- 		goto exit;
- 	}
- 
--	cil_mark_subtree_abstract(block_node);
-+	cil_list_append(args->abstract_blocks, CIL_NODE, block_node);
- 
- 	return SEPOL_OK;
- 
-@@ -4097,6 +4099,7 @@ int cil_resolve_ast(struct cil_db *db, struct cil_tree_node *current)
- 	extra_args.sensitivityorder_lists = NULL;
- 	extra_args.in_list_before = NULL;
- 	extra_args.in_list_after = NULL;
-+	extra_args.abstract_blocks = NULL;
- 
- 	cil_list_init(&extra_args.to_destroy, CIL_NODE);
- 	cil_list_init(&extra_args.sidorder_lists, CIL_LIST_ITEM);
-@@ -4106,6 +4109,7 @@ int cil_resolve_ast(struct cil_db *db, struct cil_tree_node *current)
- 	cil_list_init(&extra_args.sensitivityorder_lists, CIL_LIST_ITEM);
- 	cil_list_init(&extra_args.in_list_before, CIL_IN);
- 	cil_list_init(&extra_args.in_list_after, CIL_IN);
-+	cil_list_init(&extra_args.abstract_blocks, CIL_NODE);
- 
- 	for (pass = CIL_PASS_TIF; pass < CIL_PASS_NUM; pass++) {
- 		extra_args.pass = pass;
-@@ -4129,6 +4133,13 @@ int cil_resolve_ast(struct cil_db *db, struct cil_tree_node *current)
- 			cil_list_destroy(&extra_args.in_list_after, CIL_FALSE);
- 		}
- 
-+		if (pass == CIL_PASS_BLKABS) {
-+			struct cil_list_item *item;
-+			cil_list_for_each(item, extra_args.abstract_blocks) {
-+				cil_mark_subtree_abstract(item->data);
-+			}
-+		}
-+
- 		if (pass == CIL_PASS_BLKIN_LINK) {
- 			rc = cil_check_for_bad_inheritance(current);
- 			if (rc != SEPOL_OK) {
-@@ -4247,6 +4258,7 @@ exit:
- 	cil_list_destroy(&extra_args.to_destroy, CIL_FALSE);
- 	cil_list_destroy(&extra_args.in_list_before, CIL_FALSE);
- 	cil_list_destroy(&extra_args.in_list_after, CIL_FALSE);
-+	cil_list_destroy(&extra_args.abstract_blocks, CIL_FALSE);
- 
- 	return rc;
- }
-@@ -4268,9 +4280,13 @@ static int __cil_resolve_name_with_parents(struct cil_tree_node *node, char *nam
- 		case CIL_ROOT:
- 			goto exit;
- 			break;
--		case CIL_BLOCK:
--			symtab = &((struct cil_block*)node->data)->symtab[sym_index];
--			rc = cil_symtab_get_datum(symtab, name, datum);
-+		case CIL_BLOCK: {
-+			struct cil_block *block = node->data;
-+			if (!block->is_abstract) {
-+				symtab = &block->symtab[sym_index];
-+				rc = cil_symtab_get_datum(symtab, name, datum);
-+			}
-+		}
- 			break;
- 		case CIL_BLOCKINHERIT: {
- 			struct cil_blockinherit *inherit = node->data;
--- 
-2.31.1
-
+> ---
+>  .github/workflows/run_tests.yml | 42 ++++++++++++++++++++-------------
+>  libsepol/tests/Makefile         | 10 ++++++--
+>  2 files changed, 34 insertions(+), 18 deletions(-)
+>
+> diff --git a/.github/workflows/run_tests.yml b/.github/workflows/run_tests.yml
+> index ef4be8af..fd3626da 100644
+> --- a/.github/workflows/run_tests.yml
+> +++ b/.github/workflows/run_tests.yml
+> @@ -29,6 +29,9 @@ jobs:
+>              python-ruby-version: {python: 3.9, ruby: 2.7, other: linker-bfd}
+>            - compiler: clang
+>              python-ruby-version: {python: 3.9, ruby: 2.7, other: linker-gold}
+> +        include:
+> +          - compiler: gcc
+> +            python-ruby-version: {python: 3.9, ruby: 2.7, other: sanitizers}
+>
+>      steps:
+>      - uses: actions/checkout@v2
+> @@ -88,6 +91,11 @@ jobs:
+>          elif [ "${{ matrix.python-ruby-version.other }}" = "test-debug" ] ; then
+>              # Test hat debug build works fine
+>              EXPLICIT_MAKE_VARS="DEBUG=1"
+> +        elif [ "${{ matrix.python-ruby-version.other }}" = "sanitizers" ] ; then
+> +            sanitizers='-fsanitize=address,undefined'
+> +            EXPLICIT_MAKE_VARS="CFLAGS='-g -I$DESTDIR/usr/include $sanitizers' LDFLAGS='-L$DESTDIR/usr/lib $sanitizers' LDLIBS= CPPFLAGS= OPT_SUBDIRS="
+> +            echo "ASAN_OPTIONS=strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1" >> $GITHUB_ENV
+> +            echo "UBSAN_OPTIONS=print_stacktrace=1:print_summary=1:halt_on_error=1" >> $GITHUB_ENV
+>          else
+>              EXPLICIT_MAKE_VARS=
+>          fi
+> @@ -139,18 +147,18 @@ jobs:
+>      - name: Run tests
+>        run: |
+>          echo "::group::make install"
+> -        make -j$(nproc) install $EXPLICIT_MAKE_VARS -k
+> +        eval make -j$(nproc) install $EXPLICIT_MAKE_VARS -k
+>          echo "::endgroup::"
+>          echo "::group::make install-pywrap"
+> -        make -j$(nproc) install-pywrap $EXPLICIT_MAKE_VARS -k
+> +        eval make -j$(nproc) install-pywrap $EXPLICIT_MAKE_VARS -k
+>          echo "::endgroup::"
+>          echo "::group::make install-rubywrap"
+> -        make -j$(nproc) install-rubywrap $EXPLICIT_MAKE_VARS -k
+> +        eval make -j$(nproc) install-rubywrap $EXPLICIT_MAKE_VARS -k
+>          echo "::endgroup::"
+>
+>          # Now that everything is installed, run "make all" to build everything which may have not been built
+>          echo "::group::make all"
+> -        make -j$(nproc) all $EXPLICIT_MAKE_VARS -k
+> +        eval make -j$(nproc) all $EXPLICIT_MAKE_VARS -k
+>          echo "::endgroup::"
+>
+>          # Set up environment variables for the tests and show variables (to help debugging issues)
+> @@ -164,19 +172,21 @@ jobs:
+>
+>          # Run tests
+>          echo "::group::make test"
+> -        make test $EXPLICIT_MAKE_VARS
+> +        eval make test $EXPLICIT_MAKE_VARS
+>          echo "::endgroup::"
+>
+> -        # Test Python and Ruby wrappers
+> -        echo "::group::Test Python and Ruby wrappers"
+> -        $PYTHON -c 'import selinux;import selinux.audit2why;import semanage;print(selinux.is_selinux_enabled())'
+> -        $RUBY -e 'require "selinux";require "semanage";puts Selinux::is_selinux_enabled()'
+> -        echo "::endgroup::"
+> -
+> -        # Run Python linter, but not on the downloaded refpolicy
+> -        echo "::group::scripts/run-flake8"
+> -        ./scripts/run-flake8
+> -        echo "::endgroup::"
+> +        if [ "${{ matrix.python-ruby-version.other }}" != "sanitizers" ] ; then
+> +            # Test Python and Ruby wrappers
+> +            echo "::group::Test Python and Ruby wrappers"
+> +            $PYTHON -c 'import selinux;import selinux.audit2why;import semanage;print(selinux.is_selinux_enabled())'
+> +            $RUBY -e 'require "selinux";require "semanage";puts Selinux::is_selinux_enabled()'
+> +            echo "::endgroup::"
+> +
+> +            # Run Python linter, but not on the downloaded refpolicy
+> +            echo "::group::scripts/run-flake8"
+> +            ./scripts/run-flake8
+> +            echo "::endgroup::"
+> +        fi
+>
+>          echo "::group::Test .gitignore and make clean distclean"
+>          # Remove every installed files
+> @@ -184,6 +194,6 @@ jobs:
+>          # Test that "git status" looks clean, or print a clear error message
+>          git status --short | sed -n 's/^??/error: missing .gitignore entry for/p' | (! grep '^')
+>          # Clean up everything and show which file needs to be added to "make clean"
+> -        make clean distclean $EXPLICIT_MAKE_VARS
+> +        eval make clean distclean $EXPLICIT_MAKE_VARS
+>          git ls-files --ignored --others --exclude-standard | sed 's/^/error: "make clean distclean" did not remove /' | (! grep '^')
+>          echo "::endgroup::"
+> diff --git a/libsepol/tests/Makefile b/libsepol/tests/Makefile
+> index fc9bd1a3..a72c327d 100644
+> --- a/libsepol/tests/Makefile
+> +++ b/libsepol/tests/Makefile
+> @@ -1,3 +1,4 @@
+> +ENV ?= env
+>  M4 ?= m4
+>  MKDIR ?= mkdir
+>  EXE ?= libsepol-tests
+> @@ -44,10 +45,15 @@ clean:
+>         rm -f $(objs) $(EXE)
+>         rm -f $(policies)
+>         rm -f policies/test-downgrade/policy.hi policies/test-downgrade/policy.lo
+> -
+>
+> +# mkdir is run in a clean environment created by env -i to avoid failing under ASan with:
+> +#
+> +#   ASan runtime does not come first in initial library list;
+> +#   you should either link runtime to your application or manually preload it with LD_PRELOAD
+> +#
+> +# when the source code is built with ASan
+>  test: $(EXE) $(policies)
+> -       $(MKDIR) -p policies/test-downgrade
+> +       $(ENV) -i $(MKDIR) -p policies/test-downgrade
+>         ../../checkpolicy/checkpolicy -M policies/test-cond/refpolicy-base.conf -o policies/test-downgrade/policy.hi
+>         ./$(EXE)
+>
+> --
+> 2.31.1
+>

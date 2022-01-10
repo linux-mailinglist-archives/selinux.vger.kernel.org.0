@@ -2,102 +2,139 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 28EF2486B5A
-	for <lists+selinux@lfdr.de>; Thu,  6 Jan 2022 21:43:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6EC84899A3
+	for <lists+selinux@lfdr.de>; Mon, 10 Jan 2022 14:14:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243930AbiAFUnp (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 6 Jan 2022 15:43:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
+        id S231724AbiAJNOM (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 10 Jan 2022 08:14:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232673AbiAFUno (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 6 Jan 2022 15:43:44 -0500
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90BE1C061245
-        for <selinux@vger.kernel.org>; Thu,  6 Jan 2022 12:43:44 -0800 (PST)
-Received: by mail-ed1-x52c.google.com with SMTP id c71so2562565edf.6
-        for <selinux@vger.kernel.org>; Thu, 06 Jan 2022 12:43:44 -0800 (PST)
+        with ESMTP id S230510AbiAJNOL (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 10 Jan 2022 08:14:11 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44DD8C06173F
+        for <selinux@vger.kernel.org>; Mon, 10 Jan 2022 05:14:11 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id x6so44153105lfa.5
+        for <selinux@vger.kernel.org>; Mon, 10 Jan 2022 05:14:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cn1zolYGrxU+W8ptlqDLu36n2yg4Bhh8Gdzg4arv01Q=;
-        b=qZP+q14dFwOxLkqaIlA/fpx27DzyVLEveXzLJpyO5+L8Rw+qZzUtcCS6/24NMSHElK
-         NWrBBN4ZOSTkKqC5q9qe9eyDsn2nWVCMCDHePCJUS3vOdLRhcWQ0XIEFNMagTF9cvfPN
-         GGiZW69aU+lYWOPWFo7YTdA4gfRxcImmYZSE+ghzot9x1DFFHo8Elf1YUc6SOyDaaVIN
-         pjAT9yrVYKpfOigyxLIVcOHDKy8aCcSuxwIYuVORyscj8mBcO9ZQvHHXNF6i+mEM4p0v
-         36o4OCa1N4x7PemQ1Y4i5j902ugKVkwvZ8aIF96JDGx/w07AfgWxReAIQo/MsnZRXgdo
-         vX4g==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=RUa3iiHQVnCGNM3LImQONai1GPVEeRvfJDttvdO2BADd0RZCAuICjteu+ZesXbDVCS
+         7rt67NsiEOI/Fjo0RI2F61CKXHSwnfUlBMFDBKoPmlVuqxLn8wven4iGHwDOf6HutO/5
+         HO+ShrYktVmmHNTFSTF8P+Gu6b0f4vJV+RF6EXccBEy8tuKQ5q6F/No+P+WPMTGhHjiV
+         MGaWsZaahDxGQrtfJmCaVe1KBaATy7V8JiHNFmCY/MrMGAYFEQ4iA5hJmE/7AFS8Y+eL
+         Qt7/krXapHJw3vA9M6xdjiKFFWojd57ZJ9AEWXy5UkMvnIuR6qU5ek5VudAqXC0/3VAo
+         UgZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cn1zolYGrxU+W8ptlqDLu36n2yg4Bhh8Gdzg4arv01Q=;
-        b=z1ix75ih0VK2TISemK+/oZSiBExYcyjSp0FvH6TskMz8QGj/j6Rxl2Lh+ucdn5UkdI
-         tFrYmD8nfWHSKeSnXpFwh4BWi5ELJZltnxLnyHRZP6v9w+2MNrcmybgbF0pmVXd3pqOM
-         +XXkmjh5bISx5bghRWkkoMOKP5wb4y4XsAIDQ9ocJ/D3kqo6vvBWo2NWDu7lgEk2yp7O
-         e4Rf2Md6G5jVYe83sCfpS8xh01nSvgGSpnfcwP6rRTnyuOxDzrCr8UpP35YxZJMdi1fd
-         XBBN+v2v55w6LEg5vZf9e5/FFAkXFtZiwUFRAiifULSco4suJlcI6AKpOZTRsHW+UMae
-         00OA==
-X-Gm-Message-State: AOAM533/RCyZ/FW8Zg6zNqmgl6cscz5VaqcKCC5tJEy79ZkeLorfMuh2
-        soA2bZ33eirAGaSxrz+40Pj23BCx3+M=
-X-Google-Smtp-Source: ABdhPJyOwvXJqg25C3UbU1bvANM+ovuLKSSL1RPmgie2By9fyVNI6T/lmI5cbG2ULyGjJTuy1ZpgkQ==
-X-Received: by 2002:a17:906:c111:: with SMTP id do17mr45589723ejc.270.1641501823145;
-        Thu, 06 Jan 2022 12:43:43 -0800 (PST)
-Received: from debianHome.localdomain (dynamic-077-001-024-211.77.1.pool.telefonica.de. [77.1.24.211])
-        by smtp.gmail.com with ESMTPSA id c10sm772777ejm.118.2022.01.06.12.43.42
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jan 2022 12:43:42 -0800 (PST)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH] libsepol: check for saturated class name length
-Date:   Thu,  6 Jan 2022 21:43:36 +0100
-Message-Id: <20220106204336.147180-1-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.34.1
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
+        b=CL9+GbmKLFiMaVDeJSAHgBdOug1wZxaxCfK88xTCu8B4/hlFjF7KRSPx5o9MkYGdaf
+         VWEuN0KxRnw5+4ZMGUo22ZL5MVJrWOQuvlIGDfojMv0Ut8ZhnJIQYhl/QKWBVhTIuasS
+         AJSYhmdhO+OCNR/WFnx13SIN16nk0Jvy9pRrIgxFr4RBgAwqcJxfvcb1OcK8l/9+67dI
+         213/CzX6+nqee6J8KRb0Fzzy3jLnOqjVEhioZ2ef9hmvGEVACDznMI6MKL8qrcSXP6cT
+         e6nHSYCXxb7Xvff6RZyiwZtnVs0ISyN97zmOql1QEzWR7c6Fzx+84vRKHDr5iUiVQDCF
+         jrow==
+X-Gm-Message-State: AOAM533YptWHxkcPSPgLa+H/wNbEV9w9Fxnwspe9B090qPxnJ8ga96Cs
+        YEfM8M87u6KCsWvQS0U5V4z9OrygONMUv5qMmtY=
+X-Google-Smtp-Source: ABdhPJzmym3k2C+0lplvpDPnjJ70CZhwSYTn+JlOcLkSp8BRN73Qb3miRHyDUR9r9ZqJp8k2JTKpxjoW9q9jDYWK4Js=
+X-Received: by 2002:a2e:9cc7:: with SMTP id g7mr53728954ljj.128.1641820449137;
+ Mon, 10 Jan 2022 05:14:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6504:15d1:0:0:0:0 with HTTP; Mon, 10 Jan 2022 05:14:07
+ -0800 (PST)
+Reply-To: gtbank107@yahoo.com
+From:   Barr Robert Richter <westernunion.benin982@gmail.com>
+Date:   Mon, 10 Jan 2022 14:14:08 +0100
+Message-ID: <CAP=nHBLXRm0c8NQb8ytEbpcUhCC+nPkiaqh8gL-mLUSsX7SiUQ@mail.gmail.com>
+Subject: Contact GT Bank-Benin to receive your transfer amount of $18.5m US Dollars.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Check the from the polciy read length value to guard allocations.
+Attn,Dear
+I need you to know that the fear of the LORD is
+the beginning of wisdom, and knowledge of the Holy One is
+understanding. As power of God Most High. And This is the confidence
+we have in approaching God, that if we ask anything according to his
+will, he hears us. I will make you know that Slow and steady wins the race.
+It is your turn to receive your overdue compensation funds total
+amount $18.5Milion  USD.
+I actualized that you will receive your transfer today without any more delay
+No More fee OK, Believe me , I am your Attorney standing here on your favor.
+I just concluded conversation with the Gt Bank Director, Mrs Mary Gate
+And She told me that your transfer is ready today
 
-In the fuzzer build the value will also be bounded to avoid oom reports.
+So the Bank Asked you to contact them immediately by re-confirming
+your Bank details asap.
+Because this is the Only thing holding this transfer
+If you did not trust me and Mrs Mary Gate,Who Else will you Trust?
+For we are the ones trying to protect your funds here
+and make sure that your funds is secure.
+So Promisingly, I am here to assure you, that Grate Miracle is coming on
+your way, and this funds total amount of $18.500,000 is your
+compensation, entitlement inheritance overdue funds on your name.
+Which you cannot let anything delay you from receiving your funds now,
 
-    ==143646==ERROR: AddressSanitizer: allocator is out of memory trying to allocate 0xd60000000 bytes
-        #0 0x4dac18 in __interceptor_calloc (./out/binpolicy-fuzzer+0x4dac18)
-        #1 0x55d388 in scope_index_read ./libsepol/src/policydb.c:3945:7
-        #2 0x550097 in avrule_decl_read ./libsepol/src/policydb.c:3984:6
-        #3 0x550097 in avrule_block_read ./libsepol/src/policydb.c:4044:8
-        #4 0x54b3ac in policydb_read ./libsepol/src/policydb.c:4456:7
-        #5 0x518fd9 in LLVMFuzzerTestOneInput ./libsepol/fuzz/binpolicy-fuzzer.c:35:6
-        #6 0x43f623 in fuzzer::Fuzzer::ExecuteCallback(unsigned char const*, unsigned long) (./out/binpolicy-fuzzer+0x43f623)
-        #7 0x42910f in fuzzer::RunOneTest(fuzzer::Fuzzer*, char const*, unsigned long) (./out/binpolicy-fuzzer+0x42910f)
-        #8 0x42ee76 in fuzzer::FuzzerDriver(int*, char***, int (*)(unsigned char const*, unsigned long)) (./out/binpolicy-fuzzer+0x42ee76)
-        #9 0x458ff2 in main (./out/binpolicy-fuzzer+0x458ff2)
-        #10 0x7fd37b7931c9 in __libc_start_call_main csu/../sysdeps/nptl/libc_start_call_main.h:58:16
+Finally i advised you to try your possible best and contact Gt Bank Benin
+once you get this message to receive your transfer $18.5 USD today.
+I know that a journey of thousand miles begins with a single step.
+Always put your best foot forward
+Try as hard as you can, God give you best.
+take my advice and follow the due process of your payment, the
+transfer will be released to
+you smoothly without any hitches or hindrance.
 
-Found by oss-fuzz (#42909)
+Contact DR.MRS MARY GATE, Director Gt bank-Benin to receive your
+transfer amount of $18.5m US Dollars
+It was deposited and registered to your name this morning.
+Contact the Bank now to know when they will transfer to your
+country today
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libsepol/src/policydb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Email id: gtbank107@yahoo.com
+Tel/mobile, +229 99069872
+Contact person, Mrs Mary Gate,Director Gt bank-Benin.
+Among the blind the one-eyed man is king
 
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index 79aba3af..562e044e 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -3937,7 +3937,7 @@ static int scope_index_read(scope_index_t * scope_index,
- 	if (rc < 0)
- 		return -1;
- 	scope_index->class_perms_len = le32_to_cpu(buf[0]);
--	if (scope_index->class_perms_len == 0) {
-+	if (zero_or_saturated(scope_index->class_perms_len)) {
- 		scope_index->class_perms_map = NULL;
- 		return 0;
- 	}
--- 
-2.34.1
+As you sow, so you shall reap, i want you to receive your funds
+Best things in life are free
+Send to her your Bank Details as i listed here.
 
+Your account name-------------
+Your Bank Name----------------
+Account Number----------
+your Bank address----------
+Country-----------
+Your private phone number---------
+Routing Numbers-------------
+Swift Code-----------
+
+Note, Your funds is %100 Percent ready for
+transfer.
+Everything you do remember that Good things come to those who wait.
+I have done this work for you with my personally effort, Honesty is
+the best policy.
+now your transfer is currently deposited with paying bank this morning.
+It is by the grace of God that I received Christ, having known the truth.
+I had no choice than to do what is lawful and justice in the
+sight of God for eternal life and in the sight of man for witness of
+God & His Mercies and glory upon my life.
+
+send this needed bank details to the bank today, so that you receive
+your transfer today as
+it is available for your confirmation today.
+Please do your best as a serious person and send the fee urgent, Note
+that this transfer of $18.500.000 M USD is a Gift from God to Bless
+you.
+
+If you did not contact the bank urgent, finally the Bank will release
+your transfer of $18.500.000M USD to  Mr. David Bollen as your
+representative.
+So not allow another to claim your Money.
+Thanks For your Understanding.
+
+Barr Robert Richter, UN Attorney At Law Court-Benin

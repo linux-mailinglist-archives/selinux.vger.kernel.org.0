@@ -2,157 +2,131 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BAA648F068
-	for <lists+selinux@lfdr.de>; Fri, 14 Jan 2022 20:20:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E57148F093
+	for <lists+selinux@lfdr.de>; Fri, 14 Jan 2022 20:44:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbiANTUP (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 14 Jan 2022 14:20:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33098 "EHLO
+        id S244141AbiANTo0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 14 Jan 2022 14:44:26 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231893AbiANTUO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 14 Jan 2022 14:20:14 -0500
-Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67B7AC061574
-        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 11:20:14 -0800 (PST)
-Received: by mail-qk1-x733.google.com with SMTP id b127so11932379qkd.0
-        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 11:20:14 -0800 (PST)
+        with ESMTP id S244143AbiANToZ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 14 Jan 2022 14:44:25 -0500
+Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74999C06173E
+        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 11:44:25 -0800 (PST)
+Received: by mail-wm1-x32c.google.com with SMTP id d187-20020a1c1dc4000000b003474b4b7ebcso7578344wmd.5
+        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 11:44:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=UWoF51O+dvgc/bZ2kdkF80dG6btf7djMvFSi0ffdaAk=;
-        b=je1d7rT4N/9cD2Rzt9O2HLwjBTBnGfimo1xHpVp3IphyGNtl8B7TtQamnUS6wD1KM3
-         IRoWrT6PuSG1468ByE+MsfxVmBih2zDtjzJVZntdiT6KGt+fF7FVJvheSlWeV1fr75So
-         n3E2jTlszInlxK9h9rP3qWThPBO63eGZaeSBYxRuIxtxE+4VMGsz7gf6V/G9qJLE/q+U
-         IPlyy2eDiVEkfrWdk9c6iWgz9PZhrSY8fAWVm19U/9Cf8HmqhnhpbkRJOrfIE62/CBgb
-         qRiKJwngaq4IGhN2aEdYodYlBQEfTEWyzxXeKo73NyuKJ4XaGj31RpkAVkD2ZVWcygKE
-         a7+Q==
+        d=googlemail.com; s=20210112;
+        h=from:message-id:date:mime-version:user-agent:subject
+         :content-language:to:references:in-reply-to
+         :content-transfer-encoding;
+        bh=NC94UKEH4E6rP1nDiXrKKk/+Ee1IAybdbP5bOp0+J+o=;
+        b=QTS0F5YUXkNhnD/dhnDk4IrgPadGu2hGDaa6pcpZRHI6+67yBuaR9j3FvgCRgUPaXM
+         neMZqtPdz9yFXfq9FV82Zv3OE0/bzlyD8RlSHbLSmkOH4eNkIWogfElJurDtI6ddDxX8
+         5wATMXbZzC+yQTgNYcDGXDUU10+FSBwiSBUpsliHdw/VEGwLKbaT1A60JM+a4jEecTaZ
+         /Wyow6cZ0XF6KgF/FQQKFLN1XA7NfjMZnCaZz0iBgcUnxvQGd9nKppHftG3bJrLbMOfg
+         Qn8e0/293ZemRI/CIv2/KcLk61ooCP+Il1MKcnH9HbGJJFran3c5DPl20mBnpq4ui3OZ
+         gXPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=UWoF51O+dvgc/bZ2kdkF80dG6btf7djMvFSi0ffdaAk=;
-        b=DDY+M9kaW5ZMS30U1bmaNYzVmA4sgp8WT5+MfxCpAhwOkcAEJ17VIrcqF+E10CJnBQ
-         P/021AfY/duXN8HixK0D6Kv3sjWomfRxqhdne2fwa2+iHu9WMpjkmOTo/daEtsTenm/G
-         VvMY4YwmdUn8bqxGHz3F8w6t+PZVCUjGcHtDHjOLffuImCruiMAH5ppaPbUUvrsmG1G3
-         oXySjZA8JswwATIDKFT7PysAVslX0+AIYVajoH+F8j5fcGOQHR6jIwT4632StATn3Feu
-         KSVdXgd47pTfGjRIbbtUgsQ9ZXA38F4gr9QI/LT/QMfkJhwQaAiQ2dP3sxYkyA4bkhQK
-         4fHw==
-X-Gm-Message-State: AOAM531zX91hxEr5haT3CBOTJzmfiYswOknu2HVN7NPCCUrMRt85clsB
-        5X9Brbm1mnzFywawnDdQusKfdy/UEng=
-X-Google-Smtp-Source: ABdhPJxXz4NCqZvf8YZGsBwDF8uacCgMyEmBn9xbX38tDpJciW7U7Pr740TW+zGhHnqbjK/vBuudWw==
-X-Received: by 2002:a05:620a:1253:: with SMTP id a19mr7579892qkl.665.1642188013227;
-        Fri, 14 Jan 2022 11:20:13 -0800 (PST)
-Received: from localhost.localdomain (c-69-250-217-147.hsd1.md.comcast.net. [69.250.217.147])
-        by smtp.gmail.com with ESMTPSA id t21sm3447676qtc.46.2022.01.14.11.20.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jan 2022 11:20:12 -0800 (PST)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     James Carter <jwcart2@gmail.com>
-Subject: [PATCH 2/2] libsepol/cil: Limit the amount of reporting for context rule conflicts
-Date:   Fri, 14 Jan 2022 14:20:02 -0500
-Message-Id: <20220114192002.730773-2-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220114192002.730773-1-jwcart2@gmail.com>
-References: <20220114192002.730773-1-jwcart2@gmail.com>
+        h=x-gm-message-state:from:message-id:date:mime-version:user-agent
+         :subject:content-language:to:references:in-reply-to
+         :content-transfer-encoding;
+        bh=NC94UKEH4E6rP1nDiXrKKk/+Ee1IAybdbP5bOp0+J+o=;
+        b=aB0xpyP0gp8BHwIXH1arPm0rHuPC09+ZMLIVcV8EN3ZaGi5Lbp3uBbhYSq0KsHc1a1
+         nA2Js82yxPCKV64R6pOFH8m/N76YDeF1PhEeeOxqP++k6E7wBiCXtlyUM34enImv3iAH
+         eZkWp6fN2yWr9mhl+NT211YkZ3n6U1Xr8YYF/eZlSMYeEOyfOHWm2qyYFiWTWdkNc3Lt
+         v0P6rBNx6vwL68mqHZovf8SJnoALLRG47VjMqKWm8Pryav1hK1AvKx117PwBky8Xs+RE
+         75Ht3/ITH/JZLT/+jQbasZsElKp+YHDPrKFpnRr7Qo+iCh4Ay6EM7pFGdAUQm/O0cNtd
+         Me6w==
+X-Gm-Message-State: AOAM532bonxatGwvUogBzTcE9GtXYZcW1A41GZbXr2p76KeyB5Ict3O6
+        B5cazNbuYZARTVeckx7rTSM=
+X-Google-Smtp-Source: ABdhPJyTKpVVP3tAEoFxua4i33R2w+chaVMP1PTgLnZqnQuhe6u5VUS+7LTvAjtcEvTcNzYShAK8ag==
+X-Received: by 2002:a5d:64a9:: with SMTP id m9mr4566169wrp.712.1642189463978;
+        Fri, 14 Jan 2022 11:44:23 -0800 (PST)
+Received: from ?IPV6:2001:a61:35cd:c301:2e0:4cff:febf:22de? ([2001:a61:35cd:c301:2e0:4cff:febf:22de])
+        by smtp.gmail.com with ESMTPSA id b13sm6203488wrh.32.2022.01.14.11.44.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 14 Jan 2022 11:44:23 -0800 (PST)
+From:   bauen1 <j2468h@googlemail.com>
+X-Google-Original-From: bauen1 <j2468h@gmail.com>
+Message-ID: <dd96ca20-2f8f-ea6c-48b8-6649915fac1c@gmail.com>
+Date:   Fri, 14 Jan 2022 20:44:17 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.1
+Subject: Re: [PATCH 1/2] libsepol/cil: Limit the amount of reporting for
+ neverallow violations
+Content-Language: en-US
+To:     James Carter <jwcart2@gmail.com>, selinux@vger.kernel.org
+References: <20220114192002.730773-1-jwcart2@gmail.com>
+In-Reply-To: <20220114192002.730773-1-jwcart2@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-When there are conflicting context rules, the location of the
-conflicting rules are written out. If there are many duplicates of
-the same context rule, there will be many pairs of conflicts written
-out. This hides the fact that all of the rules are the same and can
-make it hard to see the different conflicts.
+Hi,
 
-Report all the duplicate conflicting rules together and only report
-the first 10 conflicts of the same rule.
+as a heavy user of neverallow / neverallowx, please don't limit this.
 
-Fixes problem found by oss-fuzz (#39735)
+When adding a new neverallow rule there might quite a few types violating them, and having to rebuild the policy every 2 types would make fixing them incredibly annoying.
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- libsepol/cil/src/cil_post.c | 46 +++++++++++++++++++++----------------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+If you want to limit this, then please make it opt-in or add it as a command line option.
 
-diff --git a/libsepol/cil/src/cil_post.c b/libsepol/cil/src/cil_post.c
-index 7e2c2b9a..f0520abe 100644
---- a/libsepol/cil/src/cil_post.c
-+++ b/libsepol/cil/src/cil_post.c
-@@ -2280,7 +2280,8 @@ static int __cil_post_report_conflict(struct cil_tree_node *node, uint32_t *fini
- static int __cil_post_process_context_rules(struct cil_sort *sort, int (*compar)(const void *, const void *), int (*concompar)(const void *, const void *), struct cil_db *db, enum cil_flavor flavor, const char *flavor_str)
- {
- 	uint32_t count = sort->count;
--	uint32_t i, j = 0, removed = 0;
-+	uint32_t i = 0, j, removed = 0;
-+	int conflicting = 0;
- 	int rc = SEPOL_OK;
- 
- 	if (count < 2) {
-@@ -2289,36 +2290,41 @@ static int __cil_post_process_context_rules(struct cil_sort *sort, int (*compar)
- 
- 	qsort(sort->array, sort->count, sizeof(sort->array), compar);
- 
--	for (i=1; i<count; i++) {
-+	for (j=1; j<count; j++) {
- 		if (compar(&sort->array[i], &sort->array[j]) != 0) {
--			j++;
-+			i++;
-+			if (conflicting >= 10) {
-+				cil_log(CIL_WARN, "  Only first 10 of %d conflicting rules shown\n", conflicting);
-+			}
-+			conflicting = 0;
- 		} else {
- 			removed++;
- 			if (!db->multiple_decls ||
- 			   concompar(&sort->array[i], &sort->array[j]) != 0) {
- 				struct cil_list_item li;
- 				int rc2;
--				cil_log(CIL_WARN, "Found conflicting %s rules\n",
--					flavor_str);
--				rc = SEPOL_ERR;
--				li.flavor = flavor;
--				li.data = sort->array[i];
--				rc2 = cil_tree_walk(db->ast->root,
--						    __cil_post_report_conflict,
--						    NULL, NULL, &li);
--				if (rc2 != SEPOL_OK) goto exit;
--				li.data = sort->array[j];
--				rc2 = cil_tree_walk(db->ast->root,
--						    __cil_post_report_conflict,
--						    NULL, NULL, &li);
--				if (rc2 != SEPOL_OK) goto exit;
-+				conflicting++;
-+				if (conflicting == 1) {
-+					cil_log(CIL_WARN, "Found conflicting %s rules\n", flavor_str);
-+					rc = SEPOL_ERR;
-+					li.flavor = flavor;
-+					li.data = sort->array[i];
-+					rc2 = cil_tree_walk(db->ast->root, __cil_post_report_conflict,
-+										NULL, NULL, &li);
-+					if (rc2 != SEPOL_OK) goto exit;
-+				}
-+				if (conflicting < 10) {
-+					li.data = sort->array[j];
-+					rc2 = cil_tree_walk(db->ast->root, __cil_post_report_conflict,
-+										NULL, NULL, &li);
-+					if (rc2 != SEPOL_OK) goto exit;
-+				}
- 			}
- 		}
--		if (i != j) {
--			sort->array[j] = sort->array[i];
-+		if (i != j && !conflicting) {
-+			sort->array[i] = sort->array[j];
- 		}
- 	}
--
- 	sort->count = count - removed;
- 
- exit:
+On 1/14/22 20:20, James Carter wrote:
+> When there is a neverallow violation, a search is made for all of
+> the rules that violate the neverallow. The violating rules as well
+> as their parents are written out to make it easier to find these
+> rules.
+> 
+> If there is a lot of rules that violate a neverallow, then this
+> amount of reporting is too much. Instead, only print out the first
+> two rules (with their parents) that match the violated neverallow
+> rule along with the total number of rules that violate the
+> neverallow.
+> 
+> Signed-off-by: James Carter <jwcart2@gmail.com>
+> ---
+>   libsepol/cil/src/cil_binary.c | 10 ++++++++++
+>   1 file changed, 10 insertions(+)
+> 
+> diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+> index 4ac8ce8d..04a5d053 100644
+> --- a/libsepol/cil/src/cil_binary.c
+> +++ b/libsepol/cil/src/cil_binary.c
+> @@ -4640,6 +4640,8 @@ static int __cil_print_neverallow_failure(const struct cil_db *db, struct cil_tr
+>   	char *neverallow_str;
+>   	char *allow_str;
+>   	enum cil_flavor avrule_flavor;
+> +	int num_matching = 0;
+> +	int count_matching = 0;
+>   
+>   	target.rule_kind = CIL_AVRULE_ALLOWED;
+>   	target.is_extended = cil_rule->is_extended;
+> @@ -4666,11 +4668,19 @@ static int __cil_print_neverallow_failure(const struct cil_db *db, struct cil_tr
+>   		goto exit;
+>   	}
+>   
+> +	cil_list_for_each(i2, matching) {
+> +		num_matching++;
+> +	}
+>   	cil_list_for_each(i2, matching) {
+>   		n2 = i2->data;
+>   		r2 = n2->data;
+>   		__cil_print_parents("    ", n2);
+>   		__cil_print_rule("      ", allow_str, r2);
+> +		count_matching++;
+> +		if (count_matching >= 2) {
+> +			cil_log(CIL_ERR, "    Only first 2 of %d matching rules shown\n", num_matching);
+> +			break;
+> +		}
+>   	}
+>   	cil_log(CIL_ERR,"\n");
+>   	cil_list_destroy(&matching, CIL_FALSE);
+
 -- 
-2.31.1
-
+bauen1
+https://dn42.bauen1.xyz/

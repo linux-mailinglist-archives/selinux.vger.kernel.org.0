@@ -2,107 +2,113 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9616248EC0D
-	for <lists+selinux@lfdr.de>; Fri, 14 Jan 2022 15:55:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5093048F067
+	for <lists+selinux@lfdr.de>; Fri, 14 Jan 2022 20:20:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242088AbiANOzl (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 14 Jan 2022 09:55:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56734 "EHLO
+        id S231970AbiANTUP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 14 Jan 2022 14:20:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242005AbiANOzk (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 14 Jan 2022 09:55:40 -0500
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2BCC061574
-        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 06:55:40 -0800 (PST)
-Received: by mail-yb1-xb2a.google.com with SMTP id h14so24514376ybe.12
-        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 06:55:40 -0800 (PST)
+        with ESMTP id S229593AbiANTUO (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 14 Jan 2022 14:20:14 -0500
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E126C06161C
+        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 11:20:14 -0800 (PST)
+Received: by mail-qk1-x72c.google.com with SMTP id o135so948795qke.8
+        for <selinux@vger.kernel.org>; Fri, 14 Jan 2022 11:20:14 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=1BrRHaQL/QigfOcx+z1jU/TryMURgQRJZmEoEYGALYM=;
-        b=cLJy9FDkdxMYIl0AaggLyaURLrh8k8jWaYIRPpFGFiRAZjYDOdaXkZzVa2aOcHq3b3
-         3qGyNtAkxEQEHn4fMmhG3KDI/0AAEzkZ462u/MkAaLAS9qvBTDmfmPje3sKmVkRzGDYG
-         9zxdDGNmWjaf9ObI8aXz2bVx2pPGysreF+xPY57stdfB7XKtkCYrxJpqUs8Q0y5rk41f
-         xBtexg0/Hp87ZWhRwfs6wgavDM5iUuOC8zgoQFKTWQKYCN5eyHy2hZAAQHI0Zujiwx3b
-         k+l2bjZrPhkLK3P6Ritd6m9E7rWAt3MDwqOhsuuyvdnQK26RQIRAI7c/E8dponIYEOKg
-         RwtA==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XNVr1vz1Mf0/ObYD0mxo9CPAEiCOJTtZOfIyyz2KQp0=;
+        b=OnCHfT6tmk4zLOp2GaQDhFlrXauJq1L6o/GkaIfaqBqv0fXw9aSLps4aBUItHop/ID
+         y/0sIr0Jzus/LL27BmXmghhzHpOEkzksm6DvEUDvkT/D29PmFqr1hhz67Tb4VP1wwxSH
+         Fga1Xd+b5I4KS3pjt1fcLtjEhswZ6PWUAew0lP551AdSMqCGqozp/o4IS4ysw+l5hZT5
+         lxHTQjy/w9Zr+w3f5cT+8NLOIOaGhS+PQv9RS9TkTmBI0d7gpGDd6SMsRCix8khJjoBm
+         yjJOKV1f8q2IpM5nj0gL84P7QIHECV5j1zKt6LLFPrPdH7mbDrblkO4h0JjHuLVwijlR
+         gkdg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=1BrRHaQL/QigfOcx+z1jU/TryMURgQRJZmEoEYGALYM=;
-        b=SZw8U/B3kA+ZKyMYEYAHP9VBnnH1DRBcIoNCg44D4v5eRkUL75WpwkG4+5L2v8ijuT
-         nmKZ3p2bI+NxDPLkQi0ADn3bGJB+wGAhFT/f9iZzqG6EyMQpZkoPXCiy4Km8F3mqRFS7
-         7F3znpN/rSz4TsMibzJg3b7LZl3OnrDZfSzKnV2AnlameOwsVXlZVSFnF1VaYxxyERMt
-         X2qgBQlCphNiCzyy9Rn5IKaSYa+x8qhT272Wsl+V75fIrXoe9iJa8xcSlfB4tKIGuWck
-         G6FWXksVNBEAKx0eJXX6/XUg3hrkpQkPbliCsbUE1S311qRsCuRh5W/5EGPc5nimMsLZ
-         LgEw==
-X-Gm-Message-State: AOAM530rvyp384oDVut4xarl1oejAx3siIP+erK9VK0dCdQiVVatoEYf
-        9ZUkkrMEDLzYxbscbR4jvQzzYLuXTlmXmzyVSHi8iGd5t3Y=
-X-Google-Smtp-Source: ABdhPJxBUtPzOGas5Gbv2JujhuJ2XWKGrfrSIkbEfgwqVG4iASt62sO1levjiYe4b5vsE2KTp8DfDroESopYNyk+MWo=
-X-Received: by 2002:a25:cb14:: with SMTP id b20mr11898142ybg.327.1642172139558;
- Fri, 14 Jan 2022 06:55:39 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XNVr1vz1Mf0/ObYD0mxo9CPAEiCOJTtZOfIyyz2KQp0=;
+        b=RyjIHOu7ZyYfINZnQ+nDlOfUSmKTeuwVLWwYh08BRRDSaocdMCgM+rUTHqZxXzLGuv
+         OWWZ2Dgh3/fp8eFYo15eKVGlWIiUk2v7VONZe1xPgIMwPEA56h2o4xd7FN2+Z9Lb2DGs
+         A8EiEhjvKf4uQqOINu9dAobkgXLdhCuwUC9ZyF6fJjdqGx+Rs3S6iZTAr3oL0Pvyoj7L
+         I7REpKbcsQ92/J9zFBr3e+RBT8IVvSJ6LdtnL15bWg0ixTjMy7aotqijOluGCNAJ3ans
+         uoVX81vT+ipxhRNSEkZi0xW/vHd11qS2bet+QBmpeQLg9Xq8lJK43ahYGi26uPn2pH9f
+         LOUA==
+X-Gm-Message-State: AOAM532431bt3JSLPKCgTrctUZWnItQ3Vyo514UYE3hl6Kuw7ks6gbhb
+        UD3nlhAev3kFQSqaxlOXoM27tDcvgUA=
+X-Google-Smtp-Source: ABdhPJwiFFDHb3HZ/aKPk516gAzmejmyYAe7F8j7YuVg9SWwqBuXkCdGVAskfuv71LKomdyF9bhkaA==
+X-Received: by 2002:a05:620a:21dd:: with SMTP id h29mr7546251qka.80.1642188012686;
+        Fri, 14 Jan 2022 11:20:12 -0800 (PST)
+Received: from localhost.localdomain (c-69-250-217-147.hsd1.md.comcast.net. [69.250.217.147])
+        by smtp.gmail.com with ESMTPSA id t21sm3447676qtc.46.2022.01.14.11.20.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jan 2022 11:20:12 -0800 (PST)
+From:   James Carter <jwcart2@gmail.com>
+To:     selinux@vger.kernel.org
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH 1/2] libsepol/cil: Limit the amount of reporting for neverallow violations
+Date:   Fri, 14 Jan 2022 14:20:01 -0500
+Message-Id: <20220114192002.730773-1-jwcart2@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-References: <20220110173527.582954-1-vmojzis@redhat.com> <CAFftDdqxdrfp2ekq8feF4+naYUwf1=c1anu5-i9hpEu3tpCWqw@mail.gmail.com>
-In-Reply-To: <CAFftDdqxdrfp2ekq8feF4+naYUwf1=c1anu5-i9hpEu3tpCWqw@mail.gmail.com>
-From:   William Roberts <bill.c.roberts@gmail.com>
-Date:   Fri, 14 Jan 2022 08:55:28 -0600
-Message-ID: <CAFftDdq1F1_0HMuZSLFohcYnTadP3qc8vdgqAU4ctWCeUuwoRg@mail.gmail.com>
-Subject: Re: [PATCH] policycoreutils: Improve error message when selabel_open fails
-To:     Vit Mojzis <vmojzis@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Merged https://github.com/SELinuxProject/selinux/pull/338
+When there is a neverallow violation, a search is made for all of
+the rules that violate the neverallow. The violating rules as well
+as their parents are written out to make it easier to find these
+rules.
 
-Thanks,
-Bill
+If there is a lot of rules that violate a neverallow, then this
+amount of reporting is too much. Instead, only print out the first
+two rules (with their parents) that match the violated neverallow
+rule along with the total number of rules that violate the
+neverallow.
 
+Signed-off-by: James Carter <jwcart2@gmail.com>
+---
+ libsepol/cil/src/cil_binary.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index 4ac8ce8d..04a5d053 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -4640,6 +4640,8 @@ static int __cil_print_neverallow_failure(const struct cil_db *db, struct cil_tr
+ 	char *neverallow_str;
+ 	char *allow_str;
+ 	enum cil_flavor avrule_flavor;
++	int num_matching = 0;
++	int count_matching = 0;
+ 
+ 	target.rule_kind = CIL_AVRULE_ALLOWED;
+ 	target.is_extended = cil_rule->is_extended;
+@@ -4666,11 +4668,19 @@ static int __cil_print_neverallow_failure(const struct cil_db *db, struct cil_tr
+ 		goto exit;
+ 	}
+ 
++	cil_list_for_each(i2, matching) {
++		num_matching++;
++	}
+ 	cil_list_for_each(i2, matching) {
+ 		n2 = i2->data;
+ 		r2 = n2->data;
+ 		__cil_print_parents("    ", n2);
+ 		__cil_print_rule("      ", allow_str, r2);
++		count_matching++;
++		if (count_matching >= 2) {
++			cil_log(CIL_ERR, "    Only first 2 of %d matching rules shown\n", num_matching);
++			break;
++		}
+ 	}
+ 	cil_log(CIL_ERR,"\n");
+ 	cil_list_destroy(&matching, CIL_FALSE);
+-- 
+2.31.1
 
-On Tue, Jan 11, 2022 at 8:18 AM William Roberts
-<bill.c.roberts@gmail.com> wrote:
->
-> On Mon, Jan 10, 2022 at 9:32 PM Vit Mojzis <vmojzis@redhat.com> wrote:
-> >
-> > When selabel_open fails to locate file_context files and
-> > selabel_opt_path is not specified (e.g. when the policy type is
-> > missconfigured in /etc/selinux/config), perror only prints
-> > "No such file or directory".
-> > This can be confusing in case of "restorecon" since it's
-> > not apparent that the issue is in policy store.
-> >
-> > Before:
-> >   \# restorecon -v /tmp/foo.txt
-> >   No such file or directory
-> > After:
-> >   \# restorecon -v /tmp/foo.txt
-> >   /etc/selinux/yolo/contexts/files/file_contexts: No such file or directory
-> >
-> > Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
-> > ---
-> >  policycoreutils/setfiles/restore.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/policycoreutils/setfiles/restore.c b/policycoreutils/setfiles/restore.c
-> > index 74d48bb3..e9ae33ad 100644
-> > --- a/policycoreutils/setfiles/restore.c
-> > +++ b/policycoreutils/setfiles/restore.c
-> > @@ -29,7 +29,7 @@ void restore_init(struct restore_opts *opts)
-> >
-> >         opts->hnd = selabel_open(SELABEL_CTX_FILE, selinux_opts, 3);
-> >         if (!opts->hnd) {
-> > -               perror(opts->selabel_opt_path);
-> > +               perror(opts->selabel_opt_path ? opts->selabel_opt_path : selinux_file_context_path());
-> >                 exit(1);
-> >         }
-> >
-> > --
-> > 2.34.1
-> >
->
-> Acked-by: William Roberts <bill.c.roberts@gmail.com>

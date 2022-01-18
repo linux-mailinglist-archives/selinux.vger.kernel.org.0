@@ -2,76 +2,138 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AA4E49220A
-	for <lists+selinux@lfdr.de>; Tue, 18 Jan 2022 10:07:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0F44929DC
+	for <lists+selinux@lfdr.de>; Tue, 18 Jan 2022 16:49:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345181AbiARJGn (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 18 Jan 2022 04:06:43 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38450 "EHLO
+        id S1345834AbiARPtE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 18 Jan 2022 10:49:04 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46820 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345215AbiARJGl (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 18 Jan 2022 04:06:41 -0500
-Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA0EFC061753
-        for <selinux@vger.kernel.org>; Tue, 18 Jan 2022 01:06:40 -0800 (PST)
-Received: by mail-yb1-xb33.google.com with SMTP id z22so53244002ybi.11
-        for <selinux@vger.kernel.org>; Tue, 18 Jan 2022 01:06:40 -0800 (PST)
+        with ESMTP id S1346016AbiARPtC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 18 Jan 2022 10:49:02 -0500
+Received: from mail-ot1-x334.google.com (mail-ot1-x334.google.com [IPv6:2607:f8b0:4864:20::334])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDBFC061574
+        for <selinux@vger.kernel.org>; Tue, 18 Jan 2022 07:49:01 -0800 (PST)
+Received: by mail-ot1-x334.google.com with SMTP id l64-20020a9d1b46000000b005983a0a8aaaso12090380otl.3
+        for <selinux@vger.kernel.org>; Tue, 18 Jan 2022 07:49:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
-        b=Soz+QHT0dGLM8FndDi8+DmGrzF8Nand3R01M5J9drC3NXqHN7kmc4VY6l/NuWtUVfL
-         Pw1ipMH9eBCg/ZHqGLeAt2KZPu6XRfsWiJE2xzcq96Ba85LXlrKxOVNuY0HYvfKDfmKc
-         jAQ6EF695L6TTvaCdYqZtBN8gkAnqp1+r0RbNtIeu3qM6gm6h0M3GCKOMUuS25NPcq7T
-         m06EBwLGmWMwlcWjC1WtBCJ/c9tTXkQfsHougCLjPDZp39fgMD8pqVkLYWwbFdfOrAZL
-         FCMwtSnm8Hemf8tY2r2VyBfKOXtSL3AjGIsLn+yMreEST0ocUC4Xu0XEMGJmBV9pdbj2
-         rlHw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=y9nuHWcDRiQ+nU0IA7CvY0Rvz0dg68YqAwsju9zhKj0=;
+        b=Stn3EOn+Dil3fc1vdt5//xnNSK/SU6+MuImU8je7TyStJo0qi78yAuZBtYajscxJjO
+         7LZAehi2tlsH3eEDA3Wq34Lx/+hoD3Q8xZXYLiIwdhT4ABPWUmgkmemp88cjIxKbrlRc
+         8GzS1O+zsryWqY9o/46nibvDQHLHY8D6GMuizRgEjbajGHUrmiSIemWJDFAp2nFIPKPG
+         jG80Y0rj5gdeh8RXoz3fd/ivZxqEQKLh6T7LDjPUEycxG3//nIBXiwH0l2C5pO0ae8QA
+         +I+vfDfvTbRvfLLhvj3C0NOhugYPcWIrTM6gWrSlLjRfzFyz0Xjtmu1p7lRbO/cLn9X5
+         +EtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=AIHedDQeQ2nfeFyhlIY6iBZ7Eo/kAlP72EhStgPHV1I=;
-        b=fmBQ0EkbPpCxriEchxdpx/WQf7asWsfTnJ+8G98eJNiPf7Azt12qC6zOo3IS4iJEw5
-         ZP4OcyG0frso6jTzNI44yokm5OegAQMGp59a/+Y6FyTnjIMEtbnSaLqgGMtGaV83k5p9
-         N772BVR/outj1pbRIuqt3LOXT5TVAxCIcDE3f2hVk+j2u+lbM+FV84cY+LwNxo5gK6Rk
-         X0sjpVe8Wx1z5HZIMVsEwv8uRnnXP4pPx7a2Yh6T81Ha9cXXDoCpi1rRm5IIWH8T3LuY
-         TDNSiCLTLouz51A2jqSSnOevB+jKqGYQK2F8JvX3kKxSnRGOg4gMIDkz3UqJujD0LCA1
-         0LHQ==
-X-Gm-Message-State: AOAM5336WFqAvQljTUNFqGcn9UHYbPBKlnCToHIywiJzkFjRSTqbZfK9
-        XBI4Xpyu4PlyMm8YF/hF83mnHIl3b+buZdqTcrw=
-X-Google-Smtp-Source: ABdhPJyw0yTCzDjS933NePR8DAFAXJuHa33nOCZujulUZ2idVfAerV+90UYpawy22l7XlVZmlrM9B7gLM03XAJNOkeI=
-X-Received: by 2002:a25:37c2:: with SMTP id e185mr32076301yba.333.1642496799696;
- Tue, 18 Jan 2022 01:06:39 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=y9nuHWcDRiQ+nU0IA7CvY0Rvz0dg68YqAwsju9zhKj0=;
+        b=iOnlSKZ0MLTAwIq0JWZRnrSbzBe+T5nojJ5fmeeA+28buwPsgPu3L803c0K/wYQhMD
+         ZctuTGNzTFAzHPLNizDrrXBaAmA+7gV/rcCe/N/W4N0kvuZtstTeYHYr+Rfh2//631X8
+         l7JudZ2rQewTriIsUHtn96H4WCW4f1zGrbKe7HefmV3OFZwDTUzvfLHW9w2APL6XkUwr
+         L4yOGbB3id4mUDb8ZXNlBEt41YbfZC6l6vyXc5A0XFrXa4jhIebSyMp0kdE/yK5y9B8I
+         hsez2CMb5edpY3sAlX4MjnlDpWD12x8FQtyV7E1SEKNfLLzGG3G/SFaOS7qJCXd5TZ4N
+         MLgg==
+X-Gm-Message-State: AOAM531deLogZAlc7vzUyWlf5NIjeMas3qgqr0wx+D5oO2Atz8dusvdn
+        OKyruxWYG/yTCLQTzM1zKw25UGqIgkNsA0OED/4iAGf6
+X-Google-Smtp-Source: ABdhPJyvxJtq36AKgl3kg/qCmVg1lryLrv+N9xAf5jjqzbEcWTrDkXQifXyRrpFZtMeGT6GfuKZdUyuLLhDLtKqll0Q=
+X-Received: by 2002:a9d:4106:: with SMTP id o6mr14165330ote.139.1642520941372;
+ Tue, 18 Jan 2022 07:49:01 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:a05:7108:3655:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:06:38
- -0800 (PST)
-Reply-To: asil.ajwad@gmail.com
-From:   Asil Ajwad <graceyaogokamboule@gmail.com>
-Date:   Mon, 17 Jan 2022 21:06:38 -1200
-Message-ID: <CA+Yy_gDoLjOfusfXaCVeyK5wpATnnfHVgZ2fw-LqNg4nowYW8A@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
+References: <20220114192002.730773-1-jwcart2@gmail.com> <dd96ca20-2f8f-ea6c-48b8-6649915fac1c@gmail.com>
+In-Reply-To: <dd96ca20-2f8f-ea6c-48b8-6649915fac1c@gmail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Tue, 18 Jan 2022 10:48:15 -0500
+Message-ID: <CAP+JOzSeF50B5fYCLLKJpnGCXXWwxkEDEFU=61ZUY-TyLU7E+g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] libsepol/cil: Limit the amount of reporting for
+ neverallow violations
+To:     bauen1 <j2468h@googlemail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
--- 
-Greetings,
+On Fri, Jan 14, 2022 at 2:44 PM bauen1 <j2468h@googlemail.com> wrote:
+>
+> Hi,
+>
+> as a heavy user of neverallow / neverallowx, please don't limit this.
+>
+> When adding a new neverallow rule there might quite a few types violating them, and having to rebuild the policy every 2 types would make fixing them incredibly annoying.
+>
+> If you want to limit this, then please make it opt-in or add it as a command line option.
+>
 
-I am Mr.Asil Ajwad, I work with United Bank of Africa, can you use
-an ATM Visa Card to withdraw money at, ATM Cash Machine in your
-country, if yes I want to transfer abounded fund the sum of $10.5million
-US-Dollars, to you from my country, this is part of the money that was
-abounded by our late old client a politician who unfortunately lost
-his life and was forced out of power Du to his greedy act, the bank will
+I am trying to limit error messages because oss-fuzz seems to be good
+at creating policies that generate a lot of error messages and
+subsequently take a lot of time to process.
 
-change the account details to your name, and apply for a Visa Card
-with your details, the Visa Card will be send to you, and you can be
-withdrawing money with it always, whatever any amount you withdraw
-daily, you will send 60% to me and you will take 40%, the Visa Card
-and the bank account will be on your name, I will be waiting for your
-response for more details, thanks to you a lot for giving me your time.
+But I am not going to do that at the expense of people actually using secilc.
 
-regards,
-Mr.Asil Ajwad.
+I was already thinking about making the amount of error reporting
+depending on the verbosity level. What would think of it limiting it
+to two by default, but unlimited at any higher verbosity level. I can
+even add a message to use "-v" to see all of the errors.
+
+Jim
+
+
+> On 1/14/22 20:20, James Carter wrote:
+> > When there is a neverallow violation, a search is made for all of
+> > the rules that violate the neverallow. The violating rules as well
+> > as their parents are written out to make it easier to find these
+> > rules.
+> >
+> > If there is a lot of rules that violate a neverallow, then this
+> > amount of reporting is too much. Instead, only print out the first
+> > two rules (with their parents) that match the violated neverallow
+> > rule along with the total number of rules that violate the
+> > neverallow.
+> >
+> > Signed-off-by: James Carter <jwcart2@gmail.com>
+> > ---
+> >   libsepol/cil/src/cil_binary.c | 10 ++++++++++
+> >   1 file changed, 10 insertions(+)
+> >
+> > diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+> > index 4ac8ce8d..04a5d053 100644
+> > --- a/libsepol/cil/src/cil_binary.c
+> > +++ b/libsepol/cil/src/cil_binary.c
+> > @@ -4640,6 +4640,8 @@ static int __cil_print_neverallow_failure(const struct cil_db *db, struct cil_tr
+> >       char *neverallow_str;
+> >       char *allow_str;
+> >       enum cil_flavor avrule_flavor;
+> > +     int num_matching = 0;
+> > +     int count_matching = 0;
+> >
+> >       target.rule_kind = CIL_AVRULE_ALLOWED;
+> >       target.is_extended = cil_rule->is_extended;
+> > @@ -4666,11 +4668,19 @@ static int __cil_print_neverallow_failure(const struct cil_db *db, struct cil_tr
+> >               goto exit;
+> >       }
+> >
+> > +     cil_list_for_each(i2, matching) {
+> > +             num_matching++;
+> > +     }
+> >       cil_list_for_each(i2, matching) {
+> >               n2 = i2->data;
+> >               r2 = n2->data;
+> >               __cil_print_parents("    ", n2);
+> >               __cil_print_rule("      ", allow_str, r2);
+> > +             count_matching++;
+> > +             if (count_matching >= 2) {
+> > +                     cil_log(CIL_ERR, "    Only first 2 of %d matching rules shown\n", num_matching);
+> > +                     break;
+> > +             }
+> >       }
+> >       cil_log(CIL_ERR,"\n");
+> >       cil_list_destroy(&matching, CIL_FALSE);
+>
+> --
+> bauen1
+> https://dn42.bauen1.xyz/

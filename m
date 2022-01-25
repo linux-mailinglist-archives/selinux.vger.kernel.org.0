@@ -2,62 +2,83 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BBACC49AE08
-	for <lists+selinux@lfdr.de>; Tue, 25 Jan 2022 09:32:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BF9549AD78
+	for <lists+selinux@lfdr.de>; Tue, 25 Jan 2022 08:22:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353902AbiAYIb4 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Tue, 25 Jan 2022 03:31:56 -0500
-Received: from mail.perda.gov.my ([110.159.244.26]:57724 "EHLO
-        mail.perda.gov.my" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1450276AbiAYI0j (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 25 Jan 2022 03:26:39 -0500
-X-Greylist: delayed 21601 seconds by postgrey-1.27 at vger.kernel.org; Tue, 25 Jan 2022 03:26:38 EST
-Received: from localhost (localhost [127.0.0.1])
-        by mail.perda.gov.my (Postfix) with ESMTP id 1DBAB3061E27;
-        Tue, 25 Jan 2022 08:08:36 +0800 (+08)
-Received: from mail.perda.gov.my ([127.0.0.1])
-        by localhost (mail.perda.gov.my [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id yLxTVAIcnG0H; Tue, 25 Jan 2022 08:08:35 +0800 (+08)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.perda.gov.my (Postfix) with ESMTP id 0B6F8305FB51;
-        Tue, 25 Jan 2022 08:08:05 +0800 (+08)
-X-Virus-Scanned: amavisd-new at perda.gov.my
-Received: from mail.perda.gov.my ([127.0.0.1])
-        by localhost (mail.perda.gov.my [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Y0lPJn5RuLbl; Tue, 25 Jan 2022 08:08:04 +0800 (+08)
-Received: from MAC6E1E.localdomain (unknown [41.147.1.54])
-        by mail.perda.gov.my (Postfix) with ESMTPSA id 2423030610D1;
-        Tue, 25 Jan 2022 08:07:37 +0800 (+08)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1442917AbiAYHTE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 25 Jan 2022 02:19:04 -0500
+Received: from szxga02-in.huawei.com ([45.249.212.188]:30301 "EHLO
+        szxga02-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1442940AbiAYHM3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 25 Jan 2022 02:12:29 -0500
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.57])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4JjdLs2xN3zbkF5;
+        Tue, 25 Jan 2022 15:11:33 +0800 (CST)
+Received: from dggpemm500016.china.huawei.com (7.185.36.25) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.21; Tue, 25 Jan 2022 15:12:22 +0800
+Received: from huawei.com (10.67.174.102) by dggpemm500016.china.huawei.com
+ (7.185.36.25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.21; Tue, 25 Jan
+ 2022 15:12:22 +0800
+From:   "GONG, Ruiqi" <gongruiqi1@huawei.com>
+To:     Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>
+CC:     Ondrej Mosnacek <omosnace@redhat.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        Olga Kornievskaia <kolga@netapp.com>,
+        <selinux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Wang Weiyang <wangweiyang2@huawei.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>
+Subject: [PATCH -next] selinux: access superblock_security_struct in LSM blob way
+Date:   Tue, 25 Jan 2022 15:11:33 +0800
+Message-ID: <20220125071133.188172-1-gongruiqi1@huawei.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Investment Vorschlag
-To:     Recipients <info@gmail.com>
-From:   "Mr. Haskel" <info@gmail.com>
-Date:   Mon, 24 Jan 2022 16:07:28 -0800
-Reply-To: haskeljonathan50@gmail.com
-X-Antivirus: Avast (VPS 220124-12, 24/1/2022), Outbound message
-X-Antivirus-Status: Clean
-Message-Id: <20220125000738.2423030610D1@mail.perda.gov.my>
+Content-Type: text/plain
+X-Originating-IP: [10.67.174.102]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemm500016.china.huawei.com (7.185.36.25)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Grüße von Jonathan Haskel, ich fühle mich geehrt, a
-vorteilhafter Vorschlag an Sie; Ich möchte Sie dringend um Hilfe bitten, um die Summe von 70,9 Millionen Dollar zu erhalten. Ich würde mich über Ihre sofortige Antwort freuen, damit ich Ihnen mehr Details mitteilen und diese Transaktion so schnell wie möglich ohne Risiko abschließen kann.
+LSM blob has been involved for superblock's security struct. So fix the
+remaining direct access to sb->s_security by using the LSM blob
+mechanism.
 
-Herzlich
-Jonathan Haskel
+Fixes: 08abe46b2cfc ("selinux: fall back to SECURITY_FS_USE_GENFS if no xattr support")
+Fixes: 69c4a42d72eb ("lsm,selinux: add new hook to compare new mount to an existing mount")
+Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+---
+ security/selinux/hooks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-
-Greetings from Jonathan Haskel, I am honoured to introduce a
-beneficial proposal to you; I wish to request your urgent assistance to receive the sum of $70.9 Million dollars. I would appreciate your immediately response to enable me tell you more details and thus, finish this transaction as quickly as possible without any risk.
-
-Cordially
-Jonathan Haskel
-
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 5b6895e4fc29..a0243bae8423 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -479,7 +479,7 @@ static int selinux_is_sblabel_mnt(struct super_block *sb)
+ 
+ static int sb_check_xattr_support(struct super_block *sb)
+ {
+-	struct superblock_security_struct *sbsec = sb->s_security;
++	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+ 	struct dentry *root = sb->s_root;
+ 	struct inode *root_inode = d_backing_inode(root);
+ 	u32 sid;
+@@ -2647,7 +2647,7 @@ static int selinux_sb_eat_lsm_opts(char *options, void **mnt_opts)
+ static int selinux_sb_mnt_opts_compat(struct super_block *sb, void *mnt_opts)
+ {
+ 	struct selinux_mnt_opts *opts = mnt_opts;
+-	struct superblock_security_struct *sbsec = sb->s_security;
++	struct superblock_security_struct *sbsec = selinux_superblock(sb);
+ 	u32 sid;
+ 	int rc;
+ 
 -- 
-This email has been checked for viruses by Avast antivirus software.
-https://www.avast.com/antivirus
+2.17.1
 

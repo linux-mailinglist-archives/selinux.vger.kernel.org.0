@@ -2,17 +2,17 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6137549BA5E
-	for <lists+selinux@lfdr.de>; Tue, 25 Jan 2022 18:31:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17B4B49BA29
+	for <lists+selinux@lfdr.de>; Tue, 25 Jan 2022 18:22:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1444974AbiAYR3y (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 25 Jan 2022 12:29:54 -0500
-Received: from sonic304-27.consmr.mail.ne1.yahoo.com ([66.163.191.153]:35544
-        "EHLO sonic304-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1588231AbiAYR2d (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 25 Jan 2022 12:28:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1643131712; bh=ZTCfz9qMKBmQxEYPjsLwcn12fT4I6FbGX2UFSljuVnI=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=FV92+YSQohbp8ZD52B1RG/m8C6ntUDSqg1iN+mPDAfPtTFImZIeg9rYqvKcUjL+57JBOsof1qjl4g7D3ZCW5QB2K3i6mF9O2pXeVJxDtz2jxen+lEf8SfxvthXaUY8ezGUFmsjzLwTV9YTfgxuaKxAtqjSgdha5QFi9GaVLAm6Bu0ffBY2FzMcKEINJo6Ew2WGvCDFbYCPWFwNXU0lG8ng+q2IABk2cAp9gi/Jnnoc0Ntj8D52NrArxvOpevB6IuBIxLWFTir+qxO+CvZlWE3xCPsnB/X3EOyeVNKBjXSikU4lNJET4xvoHgchxGWiF77zXdJW4Ll2RtCWYwSX5AHg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1643131712; bh=e2rB0Xto0608CivvPaak6ytq/HrZuNo9qs90kQyhOib=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=cifC2dvwPbJB1UjDHkbGH5steG9SSCg5r3/wYQ3Ziq308oSDo0lS/R7Iiy16LwWphZIvWiZBEJScZMk0HgNNhnqy9JecQ/wSLLQ/Q3BLHiNXkeIOp2q2P56ymXy8sVXM+YODv6OrTMKASghTFd5l6QOCAGFBDDlpge+iFQpShqAj+vQuzSpxxEoY/anOfiUyJGw1/kpPHjLef0AyD1JkOZ9sv/1QVadYhLCr2Vo4uCd68j7vcM/Bk4B588AV3YR6nrUJM5hPedZl8qqfceeAJtXrLnY8cpKX0LHQfN+eGifH7JAjRdMe5TtqOa2YZo0huUxgHXoggRmyJPEOtgKIKw==
+        id S1587289AbiAYRTb (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 25 Jan 2022 12:19:31 -0500
+Received: from sonic306-27.consmr.mail.ne1.yahoo.com ([66.163.189.89]:39177
+        "EHLO sonic306-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1587265AbiAYRQb (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 25 Jan 2022 12:16:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1643130982; bh=ZTCfz9qMKBmQxEYPjsLwcn12fT4I6FbGX2UFSljuVnI=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=dmV3XM0SeEoMcteWg6kc1T+qUs9HrCcnhpjrAei9gRXKUb7i1a4bNYGSSGbEM+cFIdrdMjDMVqtJbFNio+41mSpvr3BbuWsDE/JipPgj7BnqlHYh18t5XHmyzFQY3FCZxOwFiXsj45UOAEV2ixI3uHz++VW2hokakbxNlyuS3mWEvI7nJILJ8hPv0QpZmIKxAwAgJcrv5DsrnODiyrItExBIXiND1ejxoR7ykSUlqb0P4JSkJaxn2bvbjHvvuD7Ebg8mM6Q5BZxfn8VAhY4IHjVhbUSomHrl7YmpimBeUbbAzLOUipS7E99oCFGLxchKRt+te58RG9P6qxYc3MAf3Q==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1643130982; bh=zoCBbjAxOZDlmvkZf4QZPLF9/77i8R5RMpAt4y34oNR=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=t1MqM/7+1Hayk/yyFYwLfGWavWqry7hVJ5huPWF27fA+w5At5u0pcXOX0Md1qWhgtRsBuYd9QbFjHkW2gtEjim6WJlpRQfVoNBxqm3g4RKcxzRjlZsfHt5DmUI0nZfR3WJUfVS1OnAWp8MGryoHC9LVFYH3RSIRHgodrv/AAcbalepRkpXriKe1+AyHxbLahS0if+j1q42fkuL0oL/WNDyl612A0M+xB86t27W8hz0F5ZLT3Ffz95lOVFE8kTcxHZmyMkdufQtiP8yJ4ajrd+OjSr19QYO8YxX2+pfTvSz9gOyEu6Ecky8/3piAberLkMp8lTvsTaZ7hnh77w6LRAA==
 X-YMail-OSG: gDxd_AkVM1mePA64EXGdbO.5PRnJIlSbLklFMpmMK_3TETqQ6oi1BXiEBLaJs4U
  e8ekYCHlQTgKPyM.1vvSlgo1bwOqpzi5eo_8Y3O7alsfCqBdg7WI.bMt63oiaJPOVQhAPlywSI2X
  ST_RSgYJHLTraHCL6KnSfF5QCX_z01S7fUkS.Z7RDiHVoZvBT4Ib.oN1qImtIeFAGsDJ2b0AXiJF
@@ -45,7 +45,7 @@ X-YMail-OSG: gDxd_AkVM1mePA64EXGdbO.5PRnJIlSbLklFMpmMK_3TETqQ6oi1BXiEBLaJs4U
  _ZrWlvXzwzvKX0Y7RbxkOKt06LejrflA8C7BJGGYPRXXTAlCQeczoO7lf58jDRoslwvGG8ywvsvC
  vYSkOFeXhQv.K2rW51A50FredcznA7zSjkZlOP8T6_7xknMKq7mZCRwuQJvvmtn4-
 X-Sonic-MF: <casey@schaufler-ca.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic304.consmr.mail.ne1.yahoo.com with HTTP; Tue, 25 Jan 2022 17:28:32 +0000
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Tue, 25 Jan 2022 17:16:22 +0000
 Received: by kubenode543.mail-prod1.omega.gq1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 9c14eaaa98df240cf64493acffbf7d7e;
           Tue, 25 Jan 2022 17:16:17 +0000 (UTC)
 Message-ID: <19ec3a66-6638-0526-0a96-8b6a5c0ffb26@schaufler-ca.com>

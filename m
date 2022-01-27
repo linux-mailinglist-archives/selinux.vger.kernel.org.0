@@ -2,106 +2,127 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C8AA49E8FC
-	for <lists+selinux@lfdr.de>; Thu, 27 Jan 2022 18:27:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB81F49E979
+	for <lists+selinux@lfdr.de>; Thu, 27 Jan 2022 18:57:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233255AbiA0R1w (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 27 Jan 2022 12:27:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35292 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244685AbiA0R1t (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 27 Jan 2022 12:27:49 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD598C061714
-        for <selinux@vger.kernel.org>; Thu, 27 Jan 2022 09:27:48 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id jx6so7562165ejb.0
-        for <selinux@vger.kernel.org>; Thu, 27 Jan 2022 09:27:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=rlan4PzCiljACVL7fehL/4B02ykJFYUpcK0nKt4UZ5A=;
-        b=4DQqFg3FDfh6r7JA03LvNbXcx/W8QbObXSb84zWYTDDmpWxCE+ejuvTaUme/lGAov9
-         q2u9RXr6y7rQN8Flk/nR6ht0sRWWUS7ZOwtg+QheHUdGUqM1AMsZ4wkYLpZKRIG3cNb/
-         LAT+UB3B/S5DlClgtvrRsoZ5fKM6XTS3C4b7OCgm3+Ge4Uy26nKoBgDzb4llfgR3Af43
-         JuNFUeEGMn75zf/wOr8jmNCsRFGSvloxYqeDdsOwOWehZ/6/c5Xdo/WgdbzBKGHtDQ93
-         P+dAKFEOhNDgt4+xvfRJG5HDJNqOwtVfhhTePD51YJ51LbYJpHOEK9Rfar7NGDk8chTm
-         YqkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=rlan4PzCiljACVL7fehL/4B02ykJFYUpcK0nKt4UZ5A=;
-        b=8C9hyCToNwC4tu+noYHLKqheMTi+Zg+WeWdh6AiDwLA+pvS9Ky3BbUri+r7N9SvGVO
-         DBijtQayR0gDPsYEnlIiIlUVdqJQOOj35ccHWr7HomSVq7fCa9x1+Bb0U2OS+mSsiLDs
-         sT4A+XO6NHBvAtiMLiUHGqC8cV0VGppwKZaUI4ntge21EoBQbwvNLLtAntarnvj6gbww
-         bbB4VO2kVPG19ihyzQJmr6NKUJaC9EGSvgsuMgZYGMe9pVR4UInB2pRuh4G85mFyFJ5T
-         wmi1jMRxbqfTlS6cevpqgTpiBFr/C7FcaxfBcWCmlDVHY7Zxl572kvS0zWoN6Mu49tjh
-         fX4w==
-X-Gm-Message-State: AOAM533IFK4gV3YgHwGmN1Ma1yaIl5WPJZs3SyKAA/5EA0jK6aXDUeL2
-        Gf3U4SW1h/t4p14N3WfmGR83IaLIAF+2ufTWmDTZlgFdHA==
-X-Google-Smtp-Source: ABdhPJzR+Kds1+tZtWtPbNAxjAiTzmQWyzvmSuEvKnKRRvDOotsz1kA7IYbFKlCcgmU2/F3x6QXK5Ok2TcIAooJgVA0=
-X-Received: by 2002:a17:907:7f29:: with SMTP id qf41mr3769224ejc.12.1643304467211;
- Thu, 27 Jan 2022 09:27:47 -0800 (PST)
+        id S245276AbiA0R4j (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 27 Jan 2022 12:56:39 -0500
+Received: from namei.org ([65.99.196.166]:52994 "EHLO mail.namei.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S244907AbiA0Rz7 (ORCPT <rfc822;selinux@vger.kernel.org>);
+        Thu, 27 Jan 2022 12:55:59 -0500
+X-Greylist: delayed 551 seconds by postgrey-1.27 at vger.kernel.org; Thu, 27 Jan 2022 12:55:58 EST
+Received: from localhost (localhost [127.0.0.1])
+        by mail.namei.org (Postfix) with ESMTPS id 600C71BC;
+        Thu, 27 Jan 2022 17:33:29 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.namei.org 600C71BC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=namei.org; s=2;
+        t=1643304809; bh=AGzt62snnTX+RhaQRcauWWHyp7x7hKo4JgECX14Qns0=;
+        h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+        b=OG0fZTdVPXr4s6bgq6Xx/7z/4tXB6PztAloBvarfSfkiTtlldoPyQcpvAuukv6ljv
+         FO16pBmarlXoFiA6tCsZCl0rJ/Py/sbxZxH7mcl08HhxtyGTH9xiUzEqtPc2+/mjps
+         rErYzBTGmXdVGf67tiaUOLeSoNUzY5/aCy0aS2So=
+Date:   Fri, 28 Jan 2022 04:33:29 +1100 (AEDT)
+From:   James Morris <jmorris@namei.org>
+To:     Casey Schaufler <casey@schaufler-ca.com>
+cc:     Paul Moore <paul@paul-moore.com>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Christian Brauner <christian@brauner.io>,
+        Linux Security Module list 
+        <linux-security-module@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        syzbot <syzbot+d1e3b1d92d25abf97943@syzkaller.appspotmail.com>,
+        David Howells <dhowells@redhat.com>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        selinux@vger.kernel.org
+Subject: Re: [PATCH v2] LSM: general protection fault in legacy_parse_param
+In-Reply-To: <a19e0338-5240-4a6d-aecf-145539aecbce@schaufler-ca.com>
+Message-ID: <3daaf037-2e67-e939-805f-57a61d67f7b8@namei.org>
+References: <018a9bb4-accb-c19a-5b0a-fde22f4bc822.ref@schaufler-ca.com> <018a9bb4-accb-c19a-5b0a-fde22f4bc822@schaufler-ca.com> <20211012103243.xumzerhvhklqrovj@wittgenstein> <d15f9647-f67e-2d61-d7bd-c364f4288287@schaufler-ca.com>
+ <CAHC9VhT=dZbWzhst0hMLo0n7=UzWC5OYTMY=0x=LZ97HwG0UsA@mail.gmail.com> <a19e0338-5240-4a6d-aecf-145539aecbce@schaufler-ca.com>
 MIME-Version: 1.0
-References: <164329905457.31174.9220154812163631144.stgit@olly> <CAFqZXNsKDLyz7E20uc7=1NaABcf8Gu8fhHExkttMN_5e59tY7g@mail.gmail.com>
-In-Reply-To: <CAFqZXNsKDLyz7E20uc7=1NaABcf8Gu8fhHExkttMN_5e59tY7g@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 27 Jan 2022 12:27:37 -0500
-Message-ID: <CAHC9VhRkeaicR-i1YvB--FMNLneO1ydf9dPmtHduOkD376GdOw@mail.gmail.com>
-Subject: Re: [PATCH] selinux: fix a type cast problem in cred_init_security()
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Jan 27, 2022 at 12:14 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> On Thu, Jan 27, 2022 at 4:57 PM Paul Moore <paul@paul-moore.com> wrote:
-> > In the process of removing an explicit type cast to preserve a cred
-> > const qualifier in cred_init_security() we ran into a problem where
-> > the task_struct::real_cred field is defined with the "__rcu"
-> > attribute but the selinux_cred() function parameter is not, leading
-> > to a sparse warning:
-> >
-> >   security/selinux/hooks.c:216:36: sparse: sparse:
-> >     incorrect type in argument 1 (different address spaces)
-> >     @@     expected struct cred const *cred
-> >     @@     got struct cred const [noderef] __rcu *real_cred
-> >
-> > As we don't want to add the "__rcu" attribute to the selinux_cred()
-> > parameter, we're going to add an explicit cast back to
-> > cred_init_security().
-> >
-> > Fixes: b084e189b01a ("selinux: simplify cred_init_security")
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Signed-off-by: Paul Moore <paul@paul-moore.com>
-> > ---
-> >  security/selinux/hooks.c |    2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> > index eae7dbd62df1..c057896e7dcd 100644
-> > --- a/security/selinux/hooks.c
-> > +++ b/security/selinux/hooks.c
-> > @@ -213,7 +213,7 @@ static void cred_init_security(void)
-> >  {
-> >         struct task_security_struct *tsec;
-> >
-> > -       tsec = selinux_cred(current->real_cred);
-> > +       tsec = selinux_cred((__force const struct cred *)current->real_cred);
-> >         tsec->osid = tsec->sid = SECINITSID_KERNEL;
-> >  }
->
-> How about using unrcu_pointer() instead of the cast? It seems to do
-> effectively the same while looking less ugly :)
+On Thu, 27 Jan 2022, Casey Schaufler wrote:
 
-Ah ha!  I didn't know that function/macro existed :)
+> The usual LSM hook "bail on fail" scheme doesn't work for cases where
+> a security module may return an error code indicating that it does not
+> recognize an input.  In this particular case Smack sees a mount option
+> that it recognizes, and returns 0. A call to a BPF hook follows, which
+> returns -ENOPARAM, which confuses the caller because Smack has processed
+> its data.
+> 
+> The SELinux hook incorrectly returns 1 on success. There was a time
+> when this was correct, however the current expectation is that it
+> return 0 on success. This is repaired.
+> 
+> Reported-by: syzbot+d1e3b1d92d25abf97943@syzkaller.appspotmail.com
+> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 
-I'm stuck in meetings most of the rest of today but I'll get out a v2
-as soon as I can.  Thanks.
+
+Acked-by: James Morris <jamorris@linux.microsoft.com>
+
+> ---
+>  security/security.c      | 17 +++++++++++++++--
+>  security/selinux/hooks.c |  5 ++---
+>  2 files changed, 17 insertions(+), 5 deletions(-)
+> 
+> diff --git a/security/security.c b/security/security.c
+> index 3d4eb474f35b..e649c8691be2 100644
+> --- a/security/security.c
+> +++ b/security/security.c
+> @@ -884,9 +884,22 @@ int security_fs_context_dup(struct fs_context *fc, struct
+> fs_context *src_fc)
+>  	return call_int_hook(fs_context_dup, 0, fc, src_fc);
+>  }
+>  
+> -int security_fs_context_parse_param(struct fs_context *fc, struct
+> fs_parameter *param)
+> +int security_fs_context_parse_param(struct fs_context *fc,
+> +				    struct fs_parameter *param)
+>  {
+> -	return call_int_hook(fs_context_parse_param, -ENOPARAM, fc, param);
+> +	struct security_hook_list *hp;
+> +	int trc;
+> +	int rc = -ENOPARAM;
+> +
+> +	hlist_for_each_entry(hp, &security_hook_heads.fs_context_parse_param,
+> +			     list) {
+> +		trc = hp->hook.fs_context_parse_param(fc, param);
+> +		if (trc == 0)
+> +			rc = 0;
+> +		else if (trc != -ENOPARAM)
+> +			return trc;
+> +	}
+> +	return rc;
+>  }
+>  
+>  int security_sb_alloc(struct super_block *sb)
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index 5b6895e4fc29..371f67a37f9a 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -2860,10 +2860,9 @@ static int selinux_fs_context_parse_param(struct
+> fs_context *fc,
+>  		return opt;
+>  
+>  	rc = selinux_add_opt(opt, param->string, &fc->security);
+> -	if (!rc) {
+> +	if (!rc)
+>  		param->string = NULL;
+> -		rc = 1;
+> -	}
+> +
+>  	return rc;
+>  }
+>  
+> 
+> 
 
 -- 
-paul-moore.com
+James Morris
+<jmorris@namei.org>
+

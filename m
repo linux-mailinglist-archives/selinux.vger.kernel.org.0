@@ -2,52 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F5A94A5955
-	for <lists+selinux@lfdr.de>; Tue,  1 Feb 2022 10:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A0BD84A5C5A
+	for <lists+selinux@lfdr.de>; Tue,  1 Feb 2022 13:34:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236072AbiBAJiV (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 1 Feb 2022 04:38:21 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43204 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234230AbiBAJiU (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 1 Feb 2022 04:38:20 -0500
-X-Greylist: delayed 489 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 01 Feb 2022 01:38:20 PST
-Received: from smtp.sws.net.au (smtp.sws.net.au [IPv6:2a01:4f8:201:1e6::dada:cafe])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EBE6C061714
-        for <selinux@vger.kernel.org>; Tue,  1 Feb 2022 01:38:19 -0800 (PST)
-Received: from xev.coker.com.au (localhost [127.0.0.1])
-        by smtp.sws.net.au (Postfix) with ESMTP id F2F45111B4
-        for <selinux@vger.kernel.org>; Tue,  1 Feb 2022 20:30:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=coker.com.au;
-        s=2008; t=1643707803;
-        bh=PWXwrag1b9WjmnstzKAgO9zDSZnsBtNY1t0rAsZJM6E=; l=427;
-        h=From:To:Reply-To:Subject:Date:From;
-        b=jDUflohHt9DBfgHiNoVd++V9szXXKMy2vy9a+OYJIe00xcCRijJIfG9PwhCOVt892
-         b3w/kzrc1E4dkVijPc+BkORCHSKd5G+I0wCu3JWoMsBRrhYjGkowYLwA54YcQ2TuK+
-         SfqSqiJPbPYwOb8IwGVISpkJCqGqBFZEbKtK60I4=
-Received: by xev.coker.com.au (Postfix, from userid 1001)
-        id 35254170B6AA; Tue,  1 Feb 2022 20:29:58 +1100 (AEDT)
-From:   Russell Coker <russell@coker.com.au>
-To:     selinux@vger.kernel.org
-Reply-To: russell@coker.com.au
-Subject: kmod and unsigned modules
-Date:   Tue, 01 Feb 2022 20:29:58 +1100
-Message-ID: <8839796.NKUDOvIH9j@xev>
+        id S237913AbiBAMeo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 1 Feb 2022 07:34:44 -0500
+Received: from linux.microsoft.com ([13.77.154.182]:58626 "EHLO
+        linux.microsoft.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237872AbiBAMem (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 1 Feb 2022 07:34:42 -0500
+Received: from [192.168.254.13] (unknown [72.85.44.115])
+        by linux.microsoft.com (Postfix) with ESMTPSA id EA16320B6C61;
+        Tue,  1 Feb 2022 04:34:41 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com EA16320B6C61
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+        s=default; t=1643718882;
+        bh=nGW3HqhBhqX2EuVnICCxjGmrKk/VP94AUZ2cZ6Oo3Hk=;
+        h=Date:Subject:To:References:From:In-Reply-To:From;
+        b=EaHgUcWro9vs5fTY3P1RFW/0SWHfR5kTs0ijPW1Sf5gaWrrbA7jTbA4vXlbPXwC2i
+         J23XfLqse5T2enRRyhxfT0Fy2acB4YSzzU+pAgrYfmt3m7IX2QBD1YQkvftNG3tLSx
+         +amKjvzXrFIz/uw+C4CyV7nJUtR39+W1Z5W0xG/s=
+Message-ID: <29a0bce7-0260-f403-a5d2-4a079aa14f3c@linux.microsoft.com>
+Date:   Tue, 1 Feb 2022 07:34:40 -0500
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.1
+Subject: Re: kmod and unsigned modules
+Content-Language: en-US
+To:     russell@coker.com.au,
+        SELinux Reference Policy mailing list 
+        <selinux-refpolicy@vger.kernel.org>
+References: <8839796.NKUDOvIH9j@xev>
+From:   Chris PeBenito <chpebeni@linux.microsoft.com>
+In-Reply-To: <8839796.NKUDOvIH9j@xev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-[    9.002945] audit: type=1400 audit(1643707510.152:4): avc:  denied  { 
-integrity } for  pid=371 comm="modprobe" lockdown_reason="unsigned module 
-loading" scontext=system_u:system_r:kmod_t:s0 
-tcontext=system_u:system_r:kmod_t:s0 tclass=lockdown permissive=0
+On 2/1/2022 04:29, Russell Coker wrote:
+> [    9.002945] audit: type=1400 audit(1643707510.152:4): avc:  denied  {
+> integrity } for  pid=371 comm="modprobe" lockdown_reason="unsigned module
+> loading" scontext=system_u:system_r:kmod_t:s0
+> tcontext=system_u:system_r:kmod_t:s0 tclass=lockdown permissive=0
+> 
+> We need to have a boolean for this.  Just sending email so I don't forget it.
 
-We need to have a boolean for this.  Just sending email so I don't forget it.
+Switching to the refpolicy mail list.
 
--- 
-My Main Blog         http://etbe.coker.com.au/
-My Documents Blog    http://doc.coker.com.au/
+The lockdown checks were removed in 5.16.  IMO we should allow all 
+domains both lockdown permissions until the lockdown class in the policy 
+is removed.
 
+
+--
+Chris PeBenito

@@ -2,206 +2,97 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFD6F4A891F
-	for <lists+selinux@lfdr.de>; Thu,  3 Feb 2022 17:53:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C0E74A90B5
+	for <lists+selinux@lfdr.de>; Thu,  3 Feb 2022 23:30:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352447AbiBCQxu (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 3 Feb 2022 11:53:50 -0500
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.129.124]:55632 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1352455AbiBCQxq (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 3 Feb 2022 11:53:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1643907225;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=3GN1YIOijkPerY3Twy/e4p+uRKzvmr+RrRlaKf/E0JU=;
-        b=c5pK/3NBuslRyeaU7HNazdv+rxrvta9qEqeMwmGXj7AS2JwueMq5xm1M5SH6Ecf5isNlKE
-        IS+1CJ62eul00Pj7qC+0n7rtlMaA/i+WA46V1hJQxE7NJA9Pewtsyd0tQCB5yaGjldh45t
-        aEWsobe43gA5eAlxKZNNSvHAXNlfyUo=
-Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
- [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-527-DC2aF5FUMyuVTq0yTsVVOA-1; Thu, 03 Feb 2022 11:53:44 -0500
-X-MC-Unique: DC2aF5FUMyuVTq0yTsVVOA-1
-Received: by mail-ed1-f70.google.com with SMTP id n7-20020a05640205c700b0040b7be76147so1774549edx.10
-        for <selinux@vger.kernel.org>; Thu, 03 Feb 2022 08:53:44 -0800 (PST)
+        id S1355823AbiBCWa4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 3 Feb 2022 17:30:56 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57790 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229910AbiBCWa4 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 3 Feb 2022 17:30:56 -0500
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03632C06173B
+        for <selinux@vger.kernel.org>; Thu,  3 Feb 2022 14:30:56 -0800 (PST)
+Received: by mail-ed1-x52a.google.com with SMTP id m11so9141658edi.13
+        for <selinux@vger.kernel.org>; Thu, 03 Feb 2022 14:30:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=U3YvCn/HrD/HLrQa4da2DKOuBsVCbCmCsg7ulvfRUQs=;
+        b=H+zIBOm0GBrFikps9VmjNbRgeZfS2yMDVxS8UeY8ew2OXA2DyyvV9emXLMoP3p8lJb
+         BWvqF/rEQCfVsmE1qKnIts7E6/ERYKcnYnqrHzdewOf36mcLwT/l1ttXBnBBlIzjMVnh
+         32un7hmF2TpE6jmuJnnjgzs0B9eUsNjxYCeyUEVg2MSWOXZ7xSsQk7UyFRIKSkKevdPP
+         HVrY6HKjIW9N0RzQlG90HJK0d1gDIMImksoSQUuM8bRkLEQ534NQaM1W6+Hw/GQmJzZr
+         1LPjWEf2ua+LdFT/CgLkqIUd9Wiin6mudKprQOtBXatlPm5tXRetlV4E0be0fSsHnNWK
+         /5eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=3GN1YIOijkPerY3Twy/e4p+uRKzvmr+RrRlaKf/E0JU=;
-        b=sU9Ikc07KDtdCrDHqy7IL4H2on+F/QRO+2oMocxQL041xpm49uIlU67S+tPY7BCP4V
-         fH/tXeO4acEwc6D+JoNDZMMqZyl5fAcCZbuIxxW7ir5dM4ppUTLzgCxQZIXNptkdxAMO
-         rgS909CMlTEJgOWihxahI9b6eWPlnnJZYrTfZUZt9s2YC2R107r68xB/rQ8NL8yCCLPH
-         Kte4vF1qzhyyK2rKUl9Q3MPDXssP3W2FHmW6CZi863Q2RQSxxypnlm2BUnzVzvJfIZYX
-         jzVfpboqVG9O2luBUyDGsImdOCqQeH7dbmiir07OvkGK0afrXjJDPmLpCuKrAchNDHRO
-         ElNw==
-X-Gm-Message-State: AOAM532afdGee4rkoT/JZIogJlTEwPdgm44u9XIo4z2jPZO1wlYGrA/6
-        d24aC/ZUAK53OHLeDrOK85KmlBucGcoe70S2i2z8vYiw0KcdSczYa8qS3M9GGthzcPIXLrRNA48
-        40pIX2qJIWdU05SxcDHp+ekzDLIOrGfMgz65hQP+5+u4HWvRyejX0SxNjU0CMps7pXhy2Bw==
-X-Received: by 2002:a17:907:16a9:: with SMTP id hc41mr31647787ejc.289.1643907223033;
-        Thu, 03 Feb 2022 08:53:43 -0800 (PST)
-X-Google-Smtp-Source: ABdhPJykxSuYn+vNbSuimbDdJurbxbYNH4o5GIpOUkDzigj+/kklijd78X33Qmygn8uvVchR3KVgTA==
-X-Received: by 2002:a17:907:16a9:: with SMTP id hc41mr31647758ejc.289.1643907222607;
-        Thu, 03 Feb 2022 08:53:42 -0800 (PST)
-Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
-        by smtp.gmail.com with ESMTPSA id bs4sm18141027edb.84.2022.02.03.08.53.41
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Feb 2022 08:53:42 -0800 (PST)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH userspace v2 6/6] semodule: add command-line option to detect module changes
-Date:   Thu,  3 Feb 2022 17:53:27 +0100
-Message-Id: <20220203165327.213601-7-omosnace@redhat.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220203165327.213601-1-omosnace@redhat.com>
-References: <20220203165327.213601-1-omosnace@redhat.com>
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=U3YvCn/HrD/HLrQa4da2DKOuBsVCbCmCsg7ulvfRUQs=;
+        b=FNRj3a07tvAj/7fSTbvB6R+jLnKzzdsJykwGBptkrYXWvObt8Da+YDeVF6O9mR7IOp
+         rni9LwaZvUEWTTaEuGByyets1aRcQARqQMamGR/VluWujpiILERlkAKOC6biYz0X3E7S
+         v4kKipb41c311rdPocEDdfwh68lNXP9oUd/MflPlEwh+7BS4yO0CXPLXpXa+PLr53+5L
+         4W5NfQwqPiu8c4ui6hvxtslpu+NGv610miNpkF+G3mfU1KhyjbKt1jTyRwgS0wINZjog
+         5zk4Q65cL6iwJHA7cRFT62i+dgejY0eQ0SN3RWE8/P8a4GtDZzEPnuXBWkIUdjsIxrJa
+         pjRg==
+X-Gm-Message-State: AOAM531pDB1LhposnOmXiTk+rHCrF/vcS7qgGGSokc7sqlWDekPezZYP
+        13PMK0gEnoBLivJoqoXPLZJG7K2UJs6FIw/n1bsa
+X-Google-Smtp-Source: ABdhPJx+OpOd8KdK7VhlWOaLYW3heLDcuXuVW0BTpITGujHHsQT/fbLIs07GJryAxfkW3PcNVDgV5myxMMt+/2hdOhk=
+X-Received: by 2002:a50:ec0d:: with SMTP id g13mr300369edr.427.1643927454425;
+ Thu, 03 Feb 2022 14:30:54 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Thu, 3 Feb 2022 17:30:43 -0500
+Message-ID: <CAHC9VhQcLpAAXgs1oqB2WvturqvkMguYM40d=AK+LDSTnzAARg@mail.gmail.com>
+Subject: [GIT PULL] SELinux fixes for v5.17 (#1)
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add a new command-line option "--rebuild-if-modules-changed" to control
-the newly introduced check_ext_changes libsemanage flag.
+Linus,
 
-For example, running `semodule --rebuild-if-modules-changed` will ensure
-that any externally added/removed modules (e.g. by an RPM transaction)
-are reflected in the compiled policy, while skipping the most expensive
-part of the rebuild if no module change was deteceted since the last
-libsemanage transaction.
+One small SELinux patch to ensure that a policy structure field is
+properly reset after freeing so that we don't inadvertently do a
+double-free on certain error conditions.  Please merge for the next
+-rcX release.
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- policycoreutils/semodule/semodule.8 |  7 +++++++
- policycoreutils/semodule/semodule.c | 32 ++++++++++++++++++++++-------
- 2 files changed, 32 insertions(+), 7 deletions(-)
+As a quick FYI, I didn't catch the missing 'Cc: stable...' marking on
+this patch until I was putting together this pull request, so if you
+see a force-pull on this branch/tag that's why.  The tag used in this
+pull request is signed and the patch itself is pretty trivial but I
+just wanted to mention it.
 
-diff --git a/policycoreutils/semodule/semodule.8 b/policycoreutils/semodule/semodule.8
-index 3a2fb21c..d1735d21 100644
---- a/policycoreutils/semodule/semodule.8
-+++ b/policycoreutils/semodule/semodule.8
-@@ -23,6 +23,13 @@ force a reload of policy
- .B \-B, \-\-build
- force a rebuild of policy (also reloads unless \-n is used)
- .TP
-+.B \-\-rebuild-if-modules-changed
-+Force a rebuild of the policy if any changes to module content are detected
-+(by comparing with checksum from the last transaction).  One can use this
-+instead of \-B to ensure that any changes to the module store done by an
-+external tool (e.g. a package manager) are applied, while automatically
-+skipping the rebuild if there are no new changes.
-+.TP
- .B \-D, \-\-disable_dontaudit
- Temporarily remove dontaudits from policy.  Reverts whenever policy is rebuilt
- .TP
-diff --git a/policycoreutils/semodule/semodule.c b/policycoreutils/semodule/semodule.c
-index f4a76289..1ed8e690 100644
---- a/policycoreutils/semodule/semodule.c
-+++ b/policycoreutils/semodule/semodule.c
-@@ -47,6 +47,7 @@ static int verbose;
- static int reload;
- static int no_reload;
- static int build;
-+static int check_ext_changes;
- static int disable_dontaudit;
- static int preserve_tunables;
- static int ignore_module_cache;
-@@ -149,6 +150,9 @@ static void usage(char *progname)
- 	printf("  -c, --cil extract module as cil. This only affects module extraction.\n");
- 	printf("  -H, --hll extract module as hll. This only affects module extraction.\n");
- 	printf("  -m, --checksum   print module checksum (SHA256).\n");
-+	printf("      --rebuild-if-modules-changed\n"
-+	       "                   force policy rebuild if module content changed since\n"
-+	       "                   last rebuild (based on checksum)\n");
- }
- 
- /* Sets the global mode variable to new_mode, but only if no other
-@@ -180,6 +184,7 @@ static void set_mode(enum client_modes new_mode, char *arg)
- static void parse_command_line(int argc, char **argv)
- {
- 	static struct option opts[] = {
-+		{"rebuild-if-modules-changed", 0, NULL, '\0'},
- 		{"store", required_argument, NULL, 's'},
- 		{"base", required_argument, NULL, 'b'},
- 		{"help", 0, NULL, 'h'},
-@@ -207,15 +212,26 @@ static void parse_command_line(int argc, char **argv)
- 	};
- 	int extract_selected = 0;
- 	int cil_hll_set = 0;
--	int i;
-+	int i, longind;
- 	verbose = 0;
- 	reload = 0;
- 	no_reload = 0;
-+	check_ext_changes = 0;
- 	priority = 400;
- 	while ((i =
--		getopt_long(argc, argv, "s:b:hi:l::vr:u:RnNBDCPX:e:d:p:S:E:cHm", opts,
--			    NULL)) != -1) {
-+		getopt_long(argc, argv, "s:b:hi:l::vr:u:RnNBDCPX:e:d:p:S:E:cHm",
-+			    opts, &longind)) != -1) {
- 		switch (i) {
-+		case '\0':
-+			switch(longind) {
-+			case 0: /* --rebuild-if-modules-changed */
-+				check_ext_changes = 1;
-+				break;
-+			default:
-+				usage(argv[0]);
-+				exit(1);
-+			}
-+			break;
- 		case 'b':
- 			fprintf(stderr, "The --base option is deprecated. Use --install instead.\n");
- 			set_mode(INSTALL_M, optarg);
-@@ -300,13 +316,13 @@ static void parse_command_line(int argc, char **argv)
- 			}
- 		}
- 	}
--	if ((build || reload) && num_commands) {
-+	if ((build || reload || check_ext_changes) && num_commands) {
- 		fprintf(stderr,
- 			"build or reload should not be used with other commands\n");
- 		usage(argv[0]);
- 		exit(1);
- 	}
--	if (num_commands == 0 && reload == 0 && build == 0) {
-+	if (num_commands == 0 && reload == 0 && build == 0 && check_ext_changes == 0) {
- 		fprintf(stderr, "At least one mode must be specified.\n");
- 		usage(argv[0]);
- 		exit(1);
-@@ -395,7 +411,7 @@ int main(int argc, char *argv[])
- 
- 	cil_set_log_level(CIL_ERR + verbose);
- 
--	if (build)
-+	if (build || check_ext_changes)
- 		commit = 1;
- 
- 	sh = semanage_handle_create();
-@@ -434,7 +450,7 @@ int main(int argc, char *argv[])
- 		}
- 	}
- 
--	if (build) {
-+	if (build || check_ext_changes) {
- 		if ((result = semanage_begin_transaction(sh)) < 0) {
- 			fprintf(stderr, "%s:  Could not begin transaction:  %s\n",
- 				argv[0], errno ? strerror(errno) : "");
-@@ -807,6 +823,8 @@ cleanup_disable:
- 			semanage_set_reload(sh, 0);
- 		if (build)
- 			semanage_set_rebuild(sh, 1);
-+		if (check_ext_changes)
-+			semanage_set_check_ext_changes(sh, 1);
- 		if (disable_dontaudit)
- 			semanage_set_disable_dontaudit(sh, 1);
- 		else if (build)
+-Paul
+
+--
+The following changes since commit e783362eb54cd99b2cac8b3a9aeac942e6f6ac07:
+
+ Linux 5.17-rc1 (2022-01-23 10:12:53 +0200)
+
+are available in the Git repository at:
+
+ git://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git
+   tags/selinux-pr-20220203
+
+for you to fetch changes up to 186edf7e368c40d06cf727a1ad14698ea67b74ad:
+
+ selinux: fix double free of cond_list on error paths
+   (2022-02-02 11:02:10 -0500)
+
+----------------------------------------------------------------
+selinux/stable-5.17 PR 20220203
+
+----------------------------------------------------------------
+Vratislav Bendel (1):
+     selinux: fix double free of cond_list on error paths
+
+security/selinux/ss/conditional.c | 3 ++-
+1 file changed, 2 insertions(+), 1 deletion(-)
+
 -- 
-2.34.1
-
+paul-moore.com

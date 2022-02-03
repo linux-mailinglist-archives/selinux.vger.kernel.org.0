@@ -2,132 +2,142 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 000BE4A7CD0
-	for <lists+selinux@lfdr.de>; Thu,  3 Feb 2022 01:25:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FEF64A8919
+	for <lists+selinux@lfdr.de>; Thu,  3 Feb 2022 17:53:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348518AbiBCAZL (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 2 Feb 2022 19:25:11 -0500
-Received: from sonic314-27.consmr.mail.ne1.yahoo.com ([66.163.189.153]:43488
-        "EHLO sonic314-27.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1348514AbiBCAZL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 2 Feb 2022 19:25:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1643847910; bh=ufFIfi+QJcABRY0VK+r+pIW1TjiSDfvy9tEFxMIQ5C8=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=R1mNa/Q794DYHK1XLg7zJ2HI+IeCme00pxQd7Ph6esvURqteiWhfOBYxwkMcotb7GtyMBiqsbovEbnfsiIO+aCNKhZUhmeYMnC/NSIBX3aOjnDe90jmSzdkamlwSuLRJfiIdVDieQYSdiDRtP50fAJ4MJTYNv8VMPigU125huGTJQgvh5nmbhW75o1A+Fs/M/0ilnSxvXrOSaxUnaCydDFObmTFrjvi+Z8SZ3M9ibH2YfIEYIJzA1z7bxnYoX0UtTaownHWh7w5nFL6CqwHrIIcNQT2wfF08Jj5WDSoQklMw+mM0PQSKO4n+w8l63SO7Ae741aF0YYRblA7aJMu4ig==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1643847910; bh=G5s4dn6DjGEuEutRnfaG5pRwh0unvfXgWtdEkUsCoo+=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=CPE8465Ta6XXIKGEV6XkJY9QXXaBxHynJKey0EF8WPuiD8wbzblHBL9nUjA7p7IkphGJWT4kiw4iTk/XhH47Vz5eVIFR0CKSbCvKZjJXXTSk3agK7olinzhU4zN3PnrfCXR+31JsSYQzplZwVupsib56CECSSXAx38ciIm7mh3YUI8h4PMJkx7/+xXIbhuINe0gh5gGKLSsaTAveOsJFSEE3ob93+1MU7fJlVWinyVbRyfd7fc993QCg3dbGOF0gPxXFKL8xSre4UyqIetfNQSn3oL5f6+H2E9OE6UoDlujjPC+ESPoFSMUbGsXHgi9YW2mGYwpWTRpV09G59q3ikQ==
-X-YMail-OSG: o9wezOAVM1mW_P0992CxGmY8y0GRsMMhQW05q7rvPao01lyxy13HDe25lOCY2fn
- 2qjELBW0htYWCqvVU_KrDkhhFDvu5zQR1hroeqDRikq0fqreVOcns0na7PMEvJ05pJ6jEmVeyTSG
- ArdWj3GdEPm2XXQM_9fTjkNigD5GLxFrYJ0Wzl6.geLJEmZdHa8khsKe15So9K_76x.VnslGJqRy
- 7aa143aYwdWWhcWy0CW1RWDRNUR7uXqO3kcjk1HMIwOXR_cg9R9PakbIsr3yLubl1uPan5KMMjfX
- o1.dTO237IkBvH1X_QlqIIxC8CsXW5fsR07jDv1P5zdUa7mK0uXXOz84Gs4NSF6jcXHcTJTit4rV
- YH.7DeJqfUs3WompJtU6iQ.YhC5pdvV0K9KJwEAyoXqIxXGRVcY3zrQVzPM3mYdkPQwrSizJg9Oe
- gBeCKcu3WFGcSmQYLlAYhKj4Yixo86RMjIX4OsmCN.gcR4tSwdm6oQnNq7Zwip705JSt8rc3Dv4x
- 3oLEzyWq50EieviGDh.xLw__RPA2WEatnXT2AvsqtMRe59Nx2pQW7REt9EOrvvOLsKZT5JatCwIS
- ADrwKPXUWy1kIrQ3pzcRSb7SN954ne8odDJSt8swhgpm8L0_pkQexGoXYoTLCBMpZc4cdJrQyO4y
- VRitT9Xn1FvAHiTPwxQd_PV1tZahPQLBvGPmo4Ec1Usyon8fLqxByQaPaJfpbCMnvH8k5MAS1z9g
- bvJr4k0HcSNHFm5wNjtfd4NDbpsEQua4eA0lgJnqTRZybGFjKhRJFbV_Zqfsj2lpuSowRDlCrqSB
- 6Cr7hmH4ext.z0rz7pONmFA5Yw2rjkJwBQYhQiCvj0tVT2pIKhrfc8TeBhwaCNy.f6oOC5bgtjEC
- bJjbk5S_3JgC5RgedtWdqbfMtb0E5mQmINaYDdk0m8CYmOkGNuB1miAJdpEr8r5fiwAc7i5dvx5M
- iqAqFkZRrjGQG0A.ikJEUsaZ0VCfOjLpsUaLXQcI_14cOmgXX_Avpnzg8NDkK_VaInHE4CmXRS3S
- RQELHS9cC7qTC5t9OH8ZrOrgRlwgXmXyHb9pMIBnaCFE04h4l.VEKpUMasnxl59U.S9ys6Zz0uMe
- 4ZzIH_y3A217.eFqNIFOInmvpZ2jVbxqwnRAXKSNdMoAfxxUUKNxE3Yo2ATJBAZzuHrvKhI.YL_k
- C9YxOQkrVsCgdvyHolcT0jBLn6N0IAMwEjWFeneRneFM6NDH_Esvr.y0SUyPaokxZNtRr5.mQ9dX
- lu4gHeIq8OEVktRuziHDe7.tt_ysvHmBv9kzWesZdK8HPBh7G4p9wfnu699Z7cnHlxA_Pd50e7gD
- AIjl4ei3FM9uc1BAcjku1dbXIQHcVtyJCn21uj4KQg_KhxqJd0oEgwz0tpF_emt4PI_OdOpa6.V1
- 3uHqqtuWExTo_gScuMyMvwf6My_4PsPxj3dCn5nW0HE0og.GnKjaSPCMp0JcPsIv7LBePYz2uAa8
- RSQ.QQA0es32rv2G38YPBL32VDO31Ev9LhJmfCk4q4e8g98m3wPaCJL4cGNtOU_ERhEV_OOAXFQB
- kH7bb7Q8angi61Kpm34AJyNVp12S0rpdyoWKUpzhANrNs256dzepPcs2ZaKtb6HassBefqKiJu9m
- 8wlu.rY24k6jndpnlz8UY_T1iYGmw23y1IW94GrDnAFCP.E5V9ofXctLqL8kXY9YF33nGdFyowMJ
- 1Di3kL5Ve1iQsbQsMiZaOj7gZ2kDnV3VzlgDukBYHdnenWnC1uSFPVDfyoXcC1pBWFLbjLeQO3jI
- 7.hCMdsGo4NpQeHqA0fL0mLl.NxkkscoA7CjoRp8cq49qBL41ePgXVFDJdMQ0xFG8MbQJNqFF6.J
- v0lRERFA.3Sths7vGHcW1TIShtWYHrsQvU.8dZJ9RB_1orfrXfr3sPHcpl2DbTPriWrlt_1KYkV9
- 1RdT4eGULU80634Wvy9R8sTTDYsA2ARSwy7VjTUMEfS3vanmg1OyTBThJfu9WFU1hze72RrsXYY_
- LiFVtPCiyNEh9KUy6rYMXjGo4.vh3hzmHoHXzhTzyh1kIzCggU6Hw198kdEXnFuZnd6rhyAY6qQ8
- DSDnh0oXk5NNKF3hVkaKKbWLLkO0FAn1WSG9jpv6poJwGcuqRp8cENNKIW.TAB4GGUBunFP8njZG
- Niqg_qtxTp7XMHbfDqusFmKevmqDzzcFPSxPzoJoTFWw24btCx805qOA20WcdfzMHhFdHqo6fibq
- RTfDKG9emF2xkvPpqvHjoqOYAyR6dmtmuWRzwVmHafSSV7Hy_jFw-
-X-Sonic-MF: <casey@schaufler-ca.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Thu, 3 Feb 2022 00:25:10 +0000
-Received: by kubenode526.mail-prod1.omega.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID eabcb31384f559dd1421d5f3a1b09447;
-          Thu, 03 Feb 2022 00:25:10 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, linux-audit@redhat.com,
-        keescook@chromium.org, john.johansen@canonical.com,
-        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com,
-        sds@tycho.nsa.gov, linux-kernel@vger.kernel.org,
-        Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v32 28/28] AppArmor: Remove the exclusive flag
-Date:   Wed,  2 Feb 2022 15:53:23 -0800
-Message-Id: <20220202235323.23929-29-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220202235323.23929-1-casey@schaufler-ca.com>
-References: <20220202235323.23929-1-casey@schaufler-ca.com>
+        id S229983AbiBCQxm (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 3 Feb 2022 11:53:42 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:41957 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1352441AbiBCQxm (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 3 Feb 2022 11:53:42 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1643907221;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=cSwCIpKuDz76hHrpmrwQyNFintUuOPvax3SLQQxfN5U=;
+        b=S8cSAUNN+t5Ui0hB4pSoDWHjsWkGWpISg4tfZ+ZufJPj3u55oL1QllagL1/6tnqG7wxW8a
+        DTxwerE74YA8mUFqmFyisGNv/MUaBOWjAAFWZ3DSfjBbxCDdVpoM0klHkYs8IG2/fUZ9oc
+        sjdr01aG3YJgdgWknDVBkONtRubcy6E=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-212-PsKeKNReMZOUjXT57IL70Q-1; Thu, 03 Feb 2022 11:53:40 -0500
+X-MC-Unique: PsKeKNReMZOUjXT57IL70Q-1
+Received: by mail-ed1-f69.google.com with SMTP id w3-20020a50c443000000b0040696821132so1740491edf.22
+        for <selinux@vger.kernel.org>; Thu, 03 Feb 2022 08:53:40 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=cSwCIpKuDz76hHrpmrwQyNFintUuOPvax3SLQQxfN5U=;
+        b=L13Jzm9IWF8f/bT1UZayjK1BEqwOhgzEeL4fSmShHnQKZDFkIG3dUEUhgDCMV3mF8a
+         /FfJMHfPJ9WSvTCX1l5DgA10J9vEKUGZHyuU7yE8OwDL4EjLdVrwmgqHoefbrjTqCIxx
+         7eA2MMBB3saCIKkpfEBot/tV1MCzcwuny+kiqscoGfFFB3r/oRKwHFktvDL1+q7e6jw2
+         WLj71titJ6DqRlUSH7cCCaM0i0rSWamRTRcQxXZsTSEauO7MAcGmZLkPQjmYT3T+hPuQ
+         80Xl3Tg4fcQLK4ttRPTconrzw/rMMxtrrhVkG/snqZrHQckeNM1MJ8nflzChNPBXdY1t
+         Z1SQ==
+X-Gm-Message-State: AOAM5303oGJAeCp9t9JMMWaP6J5HgCCed2z8urQX4AVK/JPom5ChKzdD
+        pgz8yTBx+m0SBsN8FgvfOTu+flRjzeOIkOFEE0VC7zsZhzIItR/YaDqTdwgbw3dfLtDOwxTgHwP
+        nZyBi4ltWEPnrVCMM85Ls+baTU3nsXdOHLKr0M8u2bOQzuEwKo3qjc/nkn/gBIWmFUpi34g==
+X-Received: by 2002:a17:906:7308:: with SMTP id di8mr29787733ejc.567.1643907217799;
+        Thu, 03 Feb 2022 08:53:37 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJyhKbhhFEgT5S1Kccz1FHmfosB4vE2ZWA8zv//iRS6dd4b+CIRmJp4zk5qem3NxV/TcvgNYpA==
+X-Received: by 2002:a17:906:7308:: with SMTP id di8mr29787662ejc.567.1643907216533;
+        Thu, 03 Feb 2022 08:53:36 -0800 (PST)
+Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
+        by smtp.gmail.com with ESMTPSA id bs4sm18141027edb.84.2022.02.03.08.53.35
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 03 Feb 2022 08:53:35 -0800 (PST)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH userspace v2 0/6] Optionally rebuild policy store only if there were external changes to modules
+Date:   Thu,  3 Feb 2022 17:53:21 +0100
+Message-Id: <20220203165327.213601-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-With the inclusion of the interface LSM process attribute
-mechanism AppArmor no longer needs to be treated as an
-"exclusive" security module. Remove the flag that indicates
-it is exclusive. Remove the stub getpeersec_dgram AppArmor
-hook as it has no effect in the single LSM case and
-interferes in the multiple LSM case.
+This series extends libsemanage and semodule with optional capability to
+detect external changes to modules and perform a rebuild if there are
+any. See patch 5 for motivation and more details.
 
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Acked-by: John Johansen <john.johansen@canonical.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
----
- security/apparmor/lsm.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+The first four patches are preparatory cleanup/refactoring, patch 5
+implements the libsemanage side of the feature described above, and
+patch 6 adds a command-line option to semodule that allows to turn on
+the feature.
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 1ee58c1491ab..388298a15556 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1145,22 +1145,6 @@ static int apparmor_socket_getpeersec_stream(struct socket *sock,
- 	return error;
- }
- 
--/**
-- * apparmor_socket_getpeersec_dgram - get security label of packet
-- * @sock: the peer socket
-- * @skb: packet data
-- * @secid: pointer to where to put the secid of the packet
-- *
-- * Sets the netlabel socket state on sk from parent
-- */
--static int apparmor_socket_getpeersec_dgram(struct socket *sock,
--					    struct sk_buff *skb, u32 *secid)
--
--{
--	/* TODO: requires secid support */
--	return -ENOPROTOOPT;
--}
--
- /**
-  * apparmor_sock_graft - Initialize newly created socket
-  * @sk: child sock
-@@ -1264,8 +1248,6 @@ static struct security_hook_list apparmor_hooks[] __lsm_ro_after_init = {
- #endif
- 	LSM_HOOK_INIT(socket_getpeersec_stream,
- 		      apparmor_socket_getpeersec_stream),
--	LSM_HOOK_INIT(socket_getpeersec_dgram,
--		      apparmor_socket_getpeersec_dgram),
- 	LSM_HOOK_INIT(sock_graft, apparmor_sock_graft),
- #ifdef CONFIG_NETWORK_SECMARK
- 	LSM_HOOK_INIT(inet_conn_request, apparmor_inet_conn_request),
-@@ -1919,7 +1901,7 @@ static int __init apparmor_init(void)
- 
- DEFINE_LSM(apparmor) = {
- 	.name = "apparmor",
--	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
-+	.flags = LSM_FLAG_LEGACY_MAJOR,
- 	.enabled = &apparmor_enabled,
- 	.blobs = &apparmor_blob_sizes,
- 	.init = apparmor_init,
+Default behavior of libsemanage and semodule is not changed (apart from
+added checksum calculation on each transaction, which however seems to
+add no noticeable overhead based on benchmarks - see patch 5 for
+details).
+
+Another minor difference is a slightly different format of the checksum
+string printed by `semodule --checksum ...` (see patch 2).
+
+v2:
+- fix a spelling mistake found by James Carter
+- eliminate 'rebuild' goto label from semanage_direct_commit()
+- extract some of the semanage_direct_commit() cleanups into a separate
+  patch
+- unify checksum string format (semodule --checksum and the internal
+  store checksum now use the same format and a common formatting helper)
+  - also the semanage_module_compute_checksum() is updated to do the
+    formatting rather than leaving it up to semodule
+- add missing space for null terminator to the checksum string buffers
+- make the semantics of check_ext_changes more natural (and make them
+  actually match the documentation)
+  - before: had to be used along with the rebuild flag to have an effect
+    if no other changes are being done in the transaction
+  - now: check_ext_changes == 1 simply forces a rebuild any time module
+    content changes are detected (i.e. it's kind of a conditional
+    version of -B)
+  - also now: rebuild + check_ext_changes == rebuild
+- rename --smart to --rebuild-if-modules-changed (it's long, but it's
+  the least ambiguous I could come up with)
+- also update semodule.8 man page
+- update commit messages to reflect new naming and behavior
+
+Ondrej Mosnacek (6):
+  libsemanage: add missing include to boolean_record.c
+  semodule,libsemanage: move module hashing into libsemanage
+  libsemanage: move compressed file handling into a separate object
+  libsemanage: clean up semanage_direct_commit() a bit
+  libsemanage: optionally rebuild policy when modules are changed
+    externally
+  semodule: add command-line option to detect module changes
+
+ libsemanage/include/semanage/handle.h         |   5 +
+ libsemanage/include/semanage/modules.h        |  26 +
+ libsemanage/src/boolean_record.c              |   4 +-
+ libsemanage/src/compressed_file.c             | 224 ++++++++
+ libsemanage/src/compressed_file.h             |  78 +++
+ libsemanage/src/direct_api.c                  | 541 ++++++++----------
+ libsemanage/src/direct_api.h                  |   4 -
+ libsemanage/src/handle.c                      |  11 +-
+ libsemanage/src/handle.h                      |   1 +
+ libsemanage/src/libsemanage.map               |   5 +
+ libsemanage/src/modules.c                     |  59 ++
+ libsemanage/src/modules.h                     |   3 +
+ libsemanage/src/semanage_store.c              |  53 +-
+ libsemanage/src/semanage_store.h              |   1 +
+ .../src/semanageswig_python_exception.i       |   8 +
+ .../semodule => libsemanage/src}/sha256.c     |   0
+ .../semodule => libsemanage/src}/sha256.h     |   0
+ policycoreutils/semodule/Makefile             |   2 +-
+ policycoreutils/semodule/semodule.8           |   7 +
+ policycoreutils/semodule/semodule.c           |  85 ++-
+ 20 files changed, 721 insertions(+), 396 deletions(-)
+ create mode 100644 libsemanage/src/compressed_file.c
+ create mode 100644 libsemanage/src/compressed_file.h
+ rename {policycoreutils/semodule => libsemanage/src}/sha256.c (100%)
+ rename {policycoreutils/semodule => libsemanage/src}/sha256.h (100%)
+
 -- 
-2.31.1
+2.34.1
 

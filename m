@@ -2,89 +2,94 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C8F384C502A
-	for <lists+selinux@lfdr.de>; Fri, 25 Feb 2022 21:55:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8916A4C5EF0
+	for <lists+selinux@lfdr.de>; Sun, 27 Feb 2022 21:59:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235848AbiBYUzg (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 25 Feb 2022 15:55:36 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33164 "EHLO
+        id S229778AbiB0U7p convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Sun, 27 Feb 2022 15:59:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232195AbiBYUzf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 25 Feb 2022 15:55:35 -0500
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F5C01D793B
-        for <selinux@vger.kernel.org>; Fri, 25 Feb 2022 12:54:59 -0800 (PST)
-Received: by mail-ej1-x62e.google.com with SMTP id qx21so13069641ejb.13
-        for <selinux@vger.kernel.org>; Fri, 25 Feb 2022 12:54:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=5uRsrBukF/OaHklKeUPxgxH16ty4e2SknPEAhNIbuzI=;
-        b=Oj2UeHh27U1O4N7l5DBWuAtV67Ay3IpEleEp+o54d3CxEXDSMdqy6DaeA+FVZB28VP
-         wIIn8hgELwuOTwz6hOaeVZtlebfiuq3gyTf4EaQ6Ptcgp36l3GNy4BKzj98oUPVXqbOH
-         gElIpqL5novCm4oHdfP/9MAthJ3028EkXQoYQhUxfrXY0LYmRD4bIlikE4dSBajq45EX
-         dVAVsJS2CRwsKGD6LJW4W2dl/l5Jh4mRy2v+obEo3Dwi1agtVRiunAVTbAg1P6EPHGZZ
-         O+Bq6Nnjd3C4m0q/YAKHsgvk6yajs4u7OTkygvn5yYQB0CV3QVVbUQ5prDm2Lyoc50HM
-         HAoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=5uRsrBukF/OaHklKeUPxgxH16ty4e2SknPEAhNIbuzI=;
-        b=R0dkq1qTWXdsdTzqgse8iB5Vd68StRBSTpI8GvnEDFuxkLX25gvu9H5qr2P/d5EJmG
-         LB4/RGoqTlN1Gxvwk667mb5YQNlcks1CTNwyS7IHP5G/HrQq81jNDnReuTiShQ9HLYJS
-         Uurc2O+xQM+P7Pw/yZkLGmR3NH0+9yrMAJ7JVbjHyKMg8XxsfbAVW1cy1sjAhLgOquFc
-         Och5zZoQcMaox492SLiGu7na3YaJz0mq3UELdSGqpSLKm/dXasnyPcGc3y1eq3X+q+7c
-         qfDUUCbYhchT4xbsW43jUTyxfWaI1B71rarCmivKQDaQuj4EwxFZd8b0VZR1yQcUFdWE
-         nTXA==
-X-Gm-Message-State: AOAM530ThG9OD1MkfHchQqtTZJstG7PhMs1srrN6Q7TyI9tHxSRIB8B5
-        cXPACi4n/bUkKElqmEb87jBVv5LSnIFOWZJr6XT4
-X-Google-Smtp-Source: ABdhPJy6ikiiG5Pgs8lsfgZefLhFTNca6qzZhUMHty1h0zpae8r/I4ovX2ynJs0741nV5ruzT5/eOwQ1CLGrCli+a3s=
-X-Received: by 2002:a17:907:2a54:b0:6d5:879d:aca4 with SMTP id
- fe20-20020a1709072a5400b006d5879daca4mr7473197ejc.29.1645822497528; Fri, 25
- Feb 2022 12:54:57 -0800 (PST)
+        with ESMTP id S229519AbiB0U7p (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sun, 27 Feb 2022 15:59:45 -0500
+Received: from cloud-lucky.263xmail.com (cloud-lucky.263xmail.com [119.61.0.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301982253D
+        for <selinux@vger.kernel.org>; Sun, 27 Feb 2022 12:59:04 -0800 (PST)
+Received: from sales?hengqin.gov.cn (unknown [192.168.165.100])
+        by cloud-lucky.263xmail.com (Postfix) with ESMTP id C918D33D382
+        for <selinux@vger.kernel.org>; Mon, 28 Feb 2022 04:58:59 +0800 (CST)
+X-263anti-spam: KSV:0;BIG:0;
+X-KSVirus-check: 0
+X-ABS-CHECKED: 0
+X-SKE-CHECKED: 0
+X-ANTISPAM-LEVEL: 2
+Received: from com (localhost [127.0.0.1])
+        by proxysmtp.263.net (Postfix) with ESMTP id 962E636EF8
+        for <selinux@vger.kernel.org>; Mon, 28 Feb 2022 04:59:00 +0800 (CST)
+X-RL-SENDER: sales@hengqin.gov.cn
+X-FST-TO: selinux@vger.kernel.org
+X-SENDER-IP: 218.104.194.131
+X-LOGIN-NAME: 
+X-UNIQUE-TAG: <80e664b13fabda8c99faf9d594234686>
+X-SENDER: sales@hengqin.gov.cn
+X-DNS-TYPE: 0
+Received: from com (unknown [218.104.194.131])
+        by proxysmtp.263.net (Postfix) whith ESMTP id 29711PVEW4X;
+        Mon, 28 Feb 2022 04:59:00 +0800 (CST)
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM:                                                                                        
+X-RM-SPAM-FLAG: 00000000
+Received: from info.rzwrcuo3dg3etndmcja2yrx4sh.nx.internal.cloudapp.net (unknown[20.206.114.120])
+        by rmsmtp-host001-12001 (RichMail) with SMTP id 2ee1621b85df6fd-317f5;
+        Mon, 28 Feb 2022 04:59:01 +0800 (CST)
+X-RM-TRANSID: 2ee1621b85df6fd-317f5
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20220224102417.42268-1-richard_c_haines@btinternet.com>
- <CAHC9VhT4V=d8LtNT2mbiB6m1eUypi5WxPdRux_YNJ9iCV=WjWg@mail.gmail.com> <CAFqZXNtLw_c1V7MvQ=uVO9da1LH0dP64Vy3eEvL8Por_o6NQ5A@mail.gmail.com>
-In-Reply-To: <CAFqZXNtLw_c1V7MvQ=uVO9da1LH0dP64Vy3eEvL8Por_o6NQ5A@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Fri, 25 Feb 2022 15:54:46 -0500
-Message-ID: <CAHC9VhTW+zZQb6a2QE2iRYfyyUxjMphRYfSWt6bgp2JvodrTgQ@mail.gmail.com>
-Subject: Re: [PATCH V3] security/selinux: Always allow FIOCLEX and FIONCLEX
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     Richard Haines <richard_c_haines@btinternet.com>,
-        SElinux list <selinux@vger.kernel.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>, demiobenour@gmail.com,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
-        selinux-refpolicy@vger.kernel.org,
-        Jeff Vander Stoep <jeffv@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Re:Investment
+To:     Recipients <sales@hengqin.gov.cn>
+From:   "Ms. Reem A.. " <sales@hengqin.gov.cn>
+Date:   Sun, 27 Feb 2022 20:58:35 +0000
+Reply-To: reem.alhashimi@yandex.com
+Message-Id: <20220227205900.962E636EF8@proxysmtp.263.net>
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,
+        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=no autolearn_force=no
         version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [119.61.0.162 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
+        *      https://senderscore.org/blocklistlookup/
+        *      [119.61.0.162 listed in bl.score.senderscore.com]
+        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [119.61.0.162 listed in wl.mailspike.net]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Feb 25, 2022 at 5:02 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> (IMHO the POLICYDB_CAPABILITY_ prefix is ridiculously long for no
-> reason and we should simply shorten it (just POLCAP_ would be
-> perfectly fine, IMHO) instead of trying to abbreviate the rest. Of
-> course, this doesn't have to be done now - I'm taking a note to myself
-> to splice in such rename next time I add a new capability, if not
-> earlier.)
+Hello,
 
-Yeah, that prefix is probably longer than it needs to be.  Since we're
-at -rc5 right now, with -rc6 just a few days away, I'll go ahead and
-toss out a patch to shorten the names next week.  While I have very
-mixed feelings on style/formatting-only patches, things like this
-should go into selinux/next at the end of the -rcX cycle so as not to
-cause unnecessary conflicts for people making "real" changes :)
+My name is Ms. Reem bint Ebrahim Al Hashimy. Cabinet Member and Minister of State for International Cooperation, UAE.
+I am also the Director General and board representative on the higher committee of the EXPO 2020/2021 in Dubai.
 
--- 
-paul-moore.com
+I would start by tendering my unreserved apologies for barging into your privacy. I have a financial investment proposition
+that might interest you. Please reply for more details if you are interested. Reply only to my private
+Email: reem2018@daum.net
+
+Best Regards,
+Ms. Reem Al-Hashimi
+
+

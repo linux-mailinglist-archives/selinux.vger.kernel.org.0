@@ -2,94 +2,96 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8916A4C5EF0
-	for <lists+selinux@lfdr.de>; Sun, 27 Feb 2022 21:59:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E6DF24C716C
+	for <lists+selinux@lfdr.de>; Mon, 28 Feb 2022 17:12:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229778AbiB0U7p convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Sun, 27 Feb 2022 15:59:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40428 "EHLO
+        id S237810AbiB1QNM (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 28 Feb 2022 11:13:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229519AbiB0U7p (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 27 Feb 2022 15:59:45 -0500
-Received: from cloud-lucky.263xmail.com (cloud-lucky.263xmail.com [119.61.0.162])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 301982253D
-        for <selinux@vger.kernel.org>; Sun, 27 Feb 2022 12:59:04 -0800 (PST)
-Received: from sales?hengqin.gov.cn (unknown [192.168.165.100])
-        by cloud-lucky.263xmail.com (Postfix) with ESMTP id C918D33D382
-        for <selinux@vger.kernel.org>; Mon, 28 Feb 2022 04:58:59 +0800 (CST)
-X-263anti-spam: KSV:0;BIG:0;
-X-KSVirus-check: 0
-X-ABS-CHECKED: 0
-X-SKE-CHECKED: 0
-X-ANTISPAM-LEVEL: 2
-Received: from com (localhost [127.0.0.1])
-        by proxysmtp.263.net (Postfix) with ESMTP id 962E636EF8
-        for <selinux@vger.kernel.org>; Mon, 28 Feb 2022 04:59:00 +0800 (CST)
-X-RL-SENDER: sales@hengqin.gov.cn
-X-FST-TO: selinux@vger.kernel.org
-X-SENDER-IP: 218.104.194.131
-X-LOGIN-NAME: 
-X-UNIQUE-TAG: <80e664b13fabda8c99faf9d594234686>
-X-SENDER: sales@hengqin.gov.cn
-X-DNS-TYPE: 0
-Received: from com (unknown [218.104.194.131])
-        by proxysmtp.263.net (Postfix) whith ESMTP id 29711PVEW4X;
-        Mon, 28 Feb 2022 04:59:00 +0800 (CST)
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG: 00000000
-Received: from info.rzwrcuo3dg3etndmcja2yrx4sh.nx.internal.cloudapp.net (unknown[20.206.114.120])
-        by rmsmtp-host001-12001 (RichMail) with SMTP id 2ee1621b85df6fd-317f5;
-        Mon, 28 Feb 2022 04:59:01 +0800 (CST)
-X-RM-TRANSID: 2ee1621b85df6fd-317f5
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S237823AbiB1QNK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 28 Feb 2022 11:13:10 -0500
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 565681263A
+        for <selinux@vger.kernel.org>; Mon, 28 Feb 2022 08:12:29 -0800 (PST)
+Received: by mail-ej1-x62c.google.com with SMTP id d10so25774239eje.10
+        for <selinux@vger.kernel.org>; Mon, 28 Feb 2022 08:12:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=C7YxRKyreH48dZQ9Yk60m9yefrarInHQlSucfyX1K2c=;
+        b=dytKXHw+tT3Dhd0aDmsdHtTQ6xXuj/mNxJogs8WbLKzqOu4qsyvH0GyZ4xkWtWw8gH
+         dPejxY/E3QgnqEiCvNufipZss0cvtgzkPSCLR+i6luHumAwcDeOqAhtCRMg/aJPIdR6w
+         9jS98MbQg4oI3x5yQ3RgLZHxhtWvyWv47ZuVix5koe5qTYoPi9hItK1fpfK+Kpeq2FbS
+         YOnGG8E/v5J88ghaG0S/BIbvFE5aukRhLxBesUdOYDjf7z4Costh80kY8EY5xinm3WIG
+         /5KFSLpnxXUa3lsMwFKNq6SJcca5swmpGpTS7vhNJKGN9r7MJdJI4/E36IM+u6hLNg+z
+         q8Yg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=C7YxRKyreH48dZQ9Yk60m9yefrarInHQlSucfyX1K2c=;
+        b=Q7NWvkx7BWR3LCzFig4Xhgupl1aez9YG2pawQ8AUJ3bcseHtx69aGbar6HoE7Aq7UX
+         nc9uvErEw9IBYNm+xXZPuHQ5OI36QprbrgBLq9Ndy5c2iRZ4wkGDis8/avAtYTXYcs0Y
+         iuE7d/rmR31ynr3EDOJMCkc1oALFNLSlWyOdKrEMAOqpLOyzkd29tOXBTPiT7EwaOxrx
+         06pDYxEI6QlNJJ66S2gcovyJy34eS8EzVboS8RFr4yYb4Jn/G5BaocSnFsfZ4iSno1tJ
+         vzKM/MrkHtns+/RUCcMA8nlD9V64dMCtuIqbkFHr5CShWBXrWzZCToVOHnyxmWuOuDbz
+         Hr6w==
+X-Gm-Message-State: AOAM531n2s++/j/Zkt7fMpYFrtWu8eSc1dSRUZI3qkBfz3yBzN6H0jRJ
+        dJdtDE4hPWN1weIcr965VDWJtVFpisNEei2pkoQe
+X-Google-Smtp-Source: ABdhPJwmNFw9jVOzTMa+rnTNBvLLbYSTrhnzeA8q7epUUzrGh/oXw1/rmJAMVcVzlFpgDwpFXk216nyT5GA8CYCzPbg=
+X-Received: by 2002:a17:907:216f:b0:6ce:d85f:35cf with SMTP id
+ rl15-20020a170907216f00b006ced85f35cfmr15832693ejb.517.1646064748150; Mon, 28
+ Feb 2022 08:12:28 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re:Investment
-To:     Recipients <sales@hengqin.gov.cn>
-From:   "Ms. Reem A.. " <sales@hengqin.gov.cn>
-Date:   Sun, 27 Feb 2022 20:58:35 +0000
-Reply-To: reem.alhashimi@yandex.com
-Message-Id: <20220227205900.962E636EF8@proxysmtp.263.net>
-X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,
-        T_SCC_BODY_TEXT_LINE,T_SPF_PERMERROR autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [119.61.0.162 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [119.61.0.162 listed in bl.score.senderscore.com]
-        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
-        *      [119.61.0.162 listed in wl.mailspike.net]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+References: <20220228025646.1665265-1-wanjiabing@vivo.com>
+In-Reply-To: <20220228025646.1665265-1-wanjiabing@vivo.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 28 Feb 2022 11:12:17 -0500
+Message-ID: <CAHC9VhTjKyfn5AJAOx6ZxDsFk7e8JTkV48JAk6PbHRyx=uy4HQ@mail.gmail.com>
+Subject: Re: [PATCH] docs: fix 'make htmldocs' warning in SCTP.rst
+To:     Wan Jiabing <wanjiabing@vivo.com>
+Cc:     Jonathan Corbet <corbet@lwn.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Xin Long <lucien.xin@gmail.com>,
+        Richard Haines <richard_c_haines@btinternet.com>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jiabing.wan@qq.com, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello,
+On Sun, Feb 27, 2022 at 9:57 PM Wan Jiabing <wanjiabing@vivo.com> wrote:
+>
+> Fix following 'make htmldocs' warnings:
+> ./Documentation/security/SCTP.rst:123: WARNING: Title underline too short.
+> security_sctp_assoc_established()
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ./Documentation/security/SCTP.rst:123: WARNING: Title underline too short.
+> security_sctp_assoc_established()
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ./Documentation/security/SCTP.rst:273: WARNING: Title underline too short.
+> security_sctp_assoc_established()
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> ./Documentation/security/SCTP.rst:273: WARNING: Title underline too short.
+> security_sctp_assoc_established()
+> ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>
+> Fixes: 5e50f5d4ff31 ("security: add sctp_assoc_established hook")
+> Signed-off-by: Wan Jiabing <wanjiabing@vivo.com>
+> ---
+>  Documentation/security/SCTP.rst | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-My name is Ms. Reem bint Ebrahim Al Hashimy. Cabinet Member and Minister of State for International Cooperation, UAE.
-I am also the Director General and board representative on the higher committee of the EXPO 2020/2021 in Dubai.
+Merged into selinux/next, thanks for the patch!
 
-I would start by tendering my unreserved apologies for barging into your privacy. I have a financial investment proposition
-that might interest you. Please reply for more details if you are interested. Reply only to my private
-Email: reem2018@daum.net
-
-Best Regards,
-Ms. Reem Al-Hashimi
-
-
+-- 
+paul-moore.com

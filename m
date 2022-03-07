@@ -2,75 +2,147 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B96804CE9FD
-	for <lists+selinux@lfdr.de>; Sun,  6 Mar 2022 09:03:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E84DF4CFCB0
+	for <lists+selinux@lfdr.de>; Mon,  7 Mar 2022 12:24:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231911AbiCFIEB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 6 Mar 2022 03:04:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43258 "EHLO
+        id S241931AbiCGLY7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 7 Mar 2022 06:24:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229913AbiCFID7 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 6 Mar 2022 03:03:59 -0500
-Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7139563D8
-        for <selinux@vger.kernel.org>; Sun,  6 Mar 2022 00:03:03 -0800 (PST)
-Received: by mail-lj1-x22d.google.com with SMTP id r22so866023ljd.4
-        for <selinux@vger.kernel.org>; Sun, 06 Mar 2022 00:03:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=dK2IBj9Xf0ksoMUcydoUjGbeK0dpHvUTFgX+zOcIN8msBgho+tSQ197zXxrno/Uyhl
-         tXUut0Lc5Q0uUJcHZjntFrat9rGIUlzC/4ASGJppRhGT2/vyHK1zcaPsKWwzag8IiXZ/
-         SOatDajFXeS3kO2LcAmzVP3nmqNwo5vaoEdG9QX9RYuZ2azR/rISCnEwHod1wuuZ8Bw0
-         Hbps4gqMDDaWulogABDKxNxsRTbimaX0y7kApQ84SI+qnzfFEwrXexfzSFslt7GFCvU7
-         iYyvrB2cRGV87Z8bCOsh18+VmxJmhrQZlQcPe9eq6Mha+eu/oZNiJPveOdlESxIPeevJ
-         pNlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=Z72gmlIMnn4mFY6s/TGe83dB/UpVUt7crDw2PXGUL68VMLIfhRaDZfr//ICi41y6Qw
-         hVvmk3s26gfrk58MoWpw/zfEVtP3aCigBt8e7BZnDTjDR15C0d1VXW2NNsHiyp1lb87w
-         fqHc9x2KtHlvK9qTy/49V/Ohpj734wZNztjnBiC0LVc7oZj5BNGyfxr2D6/lfxmqHFPM
-         9ca0cSDs9BvApSkVVPyKQGCpTVLpOIyhSrOQDlv3qSuNEQ1GsILyZAbU3al2wOHQljpp
-         clt5IGQUIpyMNrP+dZlKfTeTwVED9kLxYEijJgi0zkq0uUgxQo5KLt0FShMbEkT00HoY
-         gKYQ==
-X-Gm-Message-State: AOAM532kp2knU+ikyXV3ZR2Z9XyU6msPVm+55rpccZzHDBYsFL4ZXtIi
-        HGLam/UFItPmD5vl2cQ5WD2EJlsM9AiWlfl8rwE=
-X-Google-Smtp-Source: ABdhPJxwmk15dSxfNALqbbea1ivNexiQ+g6Kag3fv5J1f0Cu4sqUTxphjVqSl5Dg6igh1TSNIehF0XJkySBR5dDfviw=
-X-Received: by 2002:a2e:9a98:0:b0:247:e29f:fbd7 with SMTP id
- p24-20020a2e9a98000000b00247e29ffbd7mr1012123lji.509.1646553781792; Sun, 06
- Mar 2022 00:03:01 -0800 (PST)
+        with ESMTP id S242035AbiCGLYs (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 7 Mar 2022 06:24:48 -0500
+Received: from re-prd-fep-047.btinternet.com (mailomta10-re.btinternet.com [213.120.69.103])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E666F490
+        for <selinux@vger.kernel.org>; Mon,  7 Mar 2022 02:54:33 -0800 (PST)
+Received: from re-prd-rgout-004.btmx-prd.synchronoss.net ([10.2.54.7])
+          by re-prd-fep-047.btinternet.com with ESMTP
+          id <20220307105431.NUQF23513.re-prd-fep-047.btinternet.com@re-prd-rgout-004.btmx-prd.synchronoss.net>;
+          Mon, 7 Mar 2022 10:54:31 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1646650471; 
+        bh=jqdp3sHOrVQ8lHbwCVeKIDG5g17KE9JbIg5brht4lpQ=;
+        h=From:To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version;
+        b=X+IUU/1Rhy8hKS2JKcAUx4vltql/ZlUJB6QtEw1Nl5NEE6pE+fNjSLq0OKFu359YFrRIHOQRhgqxBQBn97uXdsp2AdIKFdU5HfbXsoH6Ztbthssm/+By3NDumw2FB3ii9omweZ5xKqLZkkdlAAbSBecATxq6ieZLGyeTt6MYpp+OTKieR6Q8EMAgsjPuRsaBOmY08ADXe30uKNxqB+hmc+WdZ/G+ok2QoyLwzToL5lvv9nh29l+X7I/IcKHByS5CcBTmkCyhPnRkK5W/0tjhU6lz5zL17U804YgVGkL7Q/65gygf4cjVPggrHS/1X1XLcqu3u6Eem56MRFDYlE7ksw==
+Authentication-Results: btinternet.com;
+    auth=pass (PLAIN) smtp.auth=richard_c_haines@btinternet.com;
+    bimi=skipped
+X-SNCR-Rigid: 613A901C17B585F4
+X-Originating-IP: [86.183.71.89]
+X-OWM-Source-IP: 86.183.71.89 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddruddugedgvddtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecunecujfgurhephffvufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpeelteffgeevveejheevhfetgfeuveduteetuddtffdvjeekieetgeehveefjedtfeenucfkphepkeeirddukeefrdejuddrkeelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplhhotggrlhhhohhsthdrlhhotggrlhguohhmrghinhdpihhnvghtpeekiedrudekfedrjedurdekledpmhgrihhlfhhrohhmpehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhitghhrghruggptggphhgrihhnvghssegsthhinhhtvghrnhgvthdrtghomhdprhgtphhtthhopehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from localhost.localdomain (86.183.71.89) by re-prd-rgout-004.btmx-prd.synchronoss.net (5.8.716.04) (authenticated as richard_c_haines@btinternet.com)
+        id 613A901C17B585F4; Mon, 7 Mar 2022 10:54:31 +0000
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     selinux@vger.kernel.org
+Cc:     Richard Haines <richard_c_haines@btinternet.com>
+Subject: [PATCH] libsepol: Shorten the policy capability enum names
+Date:   Mon,  7 Mar 2022 10:54:17 +0000
+Message-Id: <20220307105417.11913-1-richard_c_haines@btinternet.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Reply-To: mrs.susanelwoodhara17@gmail.com
-Sender: mrs.arawyann@gmail.com
-Received: by 2002:ab3:7d89:0:0:0:0:0 with HTTP; Sun, 6 Mar 2022 00:03:01 -0800 (PST)
-From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
-Date:   Sun, 6 Mar 2022 08:03:01 +0000
-X-Google-Sender-Auth: GYV5RmqR_geQXqVZNhIX-uunntE
-Message-ID: <CACppo45GwWYBo0x=XSnpbPzg8iFiPn39++pxbWc_5X6Gm6KeKg@mail.gmail.com>
-Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-GOD BLESS YOU AS YOU REPLY URGENTLY
+Shorten "CAPABILITY" to "CAP" following the kernel naming convention.
 
- Hello Dear,
-Greetings, I am contacting you regarding an important information i
-have for you please reply to confirm your email address and for more
-details Thanks
-Regards
-Mrs Susan Elwood Hara.
+The SELinux policy capability enum names should now follow the
+"POLICYDB_CAP_XXX" format.
+
+Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
+---
+ libsepol/include/sepol/policydb/polcaps.h | 20 ++++++++++----------
+ libsepol/src/polcaps.c                    | 20 ++++++++++----------
+ 2 files changed, 20 insertions(+), 20 deletions(-)
+
+diff --git a/libsepol/include/sepol/policydb/polcaps.h b/libsepol/include/sepol/policydb/polcaps.h
+index 39c99839..f5e32e60 100644
+--- a/libsepol/include/sepol/policydb/polcaps.h
++++ b/libsepol/include/sepol/policydb/polcaps.h
+@@ -7,17 +7,17 @@ extern "C" {
+ 
+ /* Policy capabilities */
+ enum {
+-	POLICYDB_CAPABILITY_NETPEER,
+-	POLICYDB_CAPABILITY_OPENPERM,
+-	POLICYDB_CAPABILITY_EXTSOCKCLASS,
+-	POLICYDB_CAPABILITY_ALWAYSNETWORK,
+-	POLICYDB_CAPABILITY_CGROUPSECLABEL,
+-	POLICYDB_CAPABILITY_NNP_NOSUID_TRANSITION,
+-	POLICYDB_CAPABILITY_GENFS_SECLABEL_SYMLINKS,
+-	POLICYDB_CAPABILITY_IOCTL_SKIP_CLOEXEC,
+-	__POLICYDB_CAPABILITY_MAX
++	POLICYDB_CAP_NETPEER,
++	POLICYDB_CAP_OPENPERM,
++	POLICYDB_CAP_EXTSOCKCLASS,
++	POLICYDB_CAP_ALWAYSNETWORK,
++	POLICYDB_CAP_CGROUPSECLABEL,
++	POLICYDB_CAP_NNP_NOSUID_TRANSITION,
++	POLICYDB_CAP_GENFS_SECLABEL_SYMLINKS,
++	POLICYDB_CAP_IOCTL_SKIP_CLOEXEC,
++	__POLICYDB_CAP_MAX
+ };
+-#define POLICYDB_CAPABILITY_MAX (__POLICYDB_CAPABILITY_MAX - 1)
++#define POLICYDB_CAP_MAX (__POLICYDB_CAP_MAX - 1)
+ 
+ /* Convert a capability name to number. */
+ extern int sepol_polcap_getnum(const char *name);
+diff --git a/libsepol/src/polcaps.c b/libsepol/src/polcaps.c
+index a5e515f2..687e971c 100644
+--- a/libsepol/src/polcaps.c
++++ b/libsepol/src/polcaps.c
+@@ -6,14 +6,14 @@
+ #include <sepol/policydb/polcaps.h>
+ 
+ static const char * const polcap_names[] = {
+-	"network_peer_controls",	/* POLICYDB_CAPABILITY_NETPEER */
+-	"open_perms",			/* POLICYDB_CAPABILITY_OPENPERM */
+-	"extended_socket_class",	/* POLICYDB_CAPABILITY_EXTSOCKCLASS */
+-	"always_check_network",		/* POLICYDB_CAPABILITY_ALWAYSNETWORK */
+-	"cgroup_seclabel",		/* POLICYDB_CAPABILITY_SECLABEL */
+-	"nnp_nosuid_transition",	/* POLICYDB_CAPABILITY_NNP_NOSUID_TRANSITION */
+-	"genfs_seclabel_symlinks",	/* POLICYDB_CAPABILITY_GENFS_SECLABEL_SYMLINKS */
+-	"ioctl_skip_cloexec",		/* POLICYDB_CAPABILITY_IOCTL_SKIP_CLOEXEC */
++	"network_peer_controls",	/* POLICYDB_CAP_NETPEER */
++	"open_perms",			/* POLICYDB_CAP_OPENPERM */
++	"extended_socket_class",	/* POLICYDB_CAP_EXTSOCKCLASS */
++	"always_check_network",		/* POLICYDB_CAP_ALWAYSNETWORK */
++	"cgroup_seclabel",		/* POLICYDB_CAP_SECLABEL */
++	"nnp_nosuid_transition",	/* POLICYDB_CAP_NNP_NOSUID_TRANSITION */
++	"genfs_seclabel_symlinks",	/* POLICYDB_CAP_GENFS_SECLABEL_SYMLINKS */
++	"ioctl_skip_cloexec",		/* POLICYDB_CAP_IOCTL_SKIP_CLOEXEC */
+ 	NULL
+ };
+ 
+@@ -21,7 +21,7 @@ int sepol_polcap_getnum(const char *name)
+ {
+ 	int capnum;
+ 
+-	for (capnum = 0; capnum <= POLICYDB_CAPABILITY_MAX; capnum++) {
++	for (capnum = 0; capnum <= POLICYDB_CAP_MAX; capnum++) {
+ 		if (polcap_names[capnum] == NULL)
+ 			continue;
+ 		if (strcasecmp(polcap_names[capnum], name) == 0)
+@@ -32,7 +32,7 @@ int sepol_polcap_getnum(const char *name)
+ 
+ const char *sepol_polcap_getname(unsigned int capnum)
+ {
+-	if (capnum > POLICYDB_CAPABILITY_MAX)
++	if (capnum > POLICYDB_CAP_MAX)
+ 		return NULL;
+ 
+ 	return polcap_names[capnum];
+-- 
+2.35.1
+

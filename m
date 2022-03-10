@@ -2,59 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F86C4D3E8C
-	for <lists+selinux@lfdr.de>; Thu, 10 Mar 2022 02:04:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 248F34D5219
+	for <lists+selinux@lfdr.de>; Thu, 10 Mar 2022 20:43:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234632AbiCJBFO (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 9 Mar 2022 20:05:14 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58828 "EHLO
+        id S236223AbiCJSed (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 10 Mar 2022 13:34:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229604AbiCJBFO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 9 Mar 2022 20:05:14 -0500
-Received: from mail-yw1-x1144.google.com (mail-yw1-x1144.google.com [IPv6:2607:f8b0:4864:20::1144])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBB4411C7C9
-        for <selinux@vger.kernel.org>; Wed,  9 Mar 2022 17:04:14 -0800 (PST)
-Received: by mail-yw1-x1144.google.com with SMTP id 00721157ae682-2db2add4516so42448797b3.1
-        for <selinux@vger.kernel.org>; Wed, 09 Mar 2022 17:04:14 -0800 (PST)
+        with ESMTP id S230273AbiCJSec (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 10 Mar 2022 13:34:32 -0500
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C035197B59
+        for <selinux@vger.kernel.org>; Thu, 10 Mar 2022 10:33:31 -0800 (PST)
+Received: by mail-oo1-xc35.google.com with SMTP id h16-20020a4a6f10000000b00320507b9ccfso7792458ooc.7
+        for <selinux@vger.kernel.org>; Thu, 10 Mar 2022 10:33:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=H2YfWCG0balrUsjNebe6NPqLv9wl/pqUnfwIaMT7BYE=;
-        b=pg/Hz+ITZrS1BArljqqwA7qHTLnEViajRKZp+wdmPJPxoPFjQQXmy0LNAQWteV4GgK
-         LGm552CsWxqw3l+YZUDdPz1sfGp6tFGod2o0CB0XvnyEArjcRkIM2QmuLH7Tz8tUbubk
-         BQhctpCgbljq0bb3Up+Fg28bbWwOVXP8MqwxP7O6Ll3xHb3p7/OBWPpf+BJYdLnVXaIR
-         MKJJhoL1rXvC+j57xD/7nGbVeEyslDrP8dqlsDbSqzli0oGz2/ooOvd0OsvYmXS8w/Er
-         8oCWSNMqvfG5LHuNerrIcTo3BT7AdugMEETL9rSczSIwDUsCN++1d7WeRPaJj6eJ742f
-         frhw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dBGzNBAEZ/o4Hxo+uV30uwr7f7xAZh3RxENsMZgnKwE=;
+        b=YWq2YmGPEjPzN/0Anh2o8quUQmd2p8YILYIC3WdSr+dycheGdQ3JgdItX7azDeBm0o
+         XHfNWAC7ThFHHfxulTZH9UaEAGsuMt8HN5zDMX3MC1+XELFeTsZqy7ErCTldU0US3Vyf
+         Ku8Fm2ekr2bV2Ibx4b2Pr70FDAvLUKNdH3pe3MGZ7a7nbFMQ+CryHNEjaeqzB34s3ekV
+         blezwL/Voeo8XdWEMPWrDh/KQzs9t5e2iKnODnVGFjgL0y7YEPsO/Elpg7ihJMp2Ec/H
+         QYGpzRm7h11WqEUmRcpHdmq7fK9/zKM6AX7j+lg9yQUR44l+ZUBXZK2QnWRbDaCmIDbh
+         gt/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=H2YfWCG0balrUsjNebe6NPqLv9wl/pqUnfwIaMT7BYE=;
-        b=FqZ8Nn0RMxEHZuSd08bWRcfQOP1dgLVeMfpxzadryn/KsP5KPNuvacbYWSw09+pPgj
-         s/ooNWT1oa/6vATnyOB/R+22XLys5AdYydpslQvuNvPZs41vUkO1aZjyrkXod4rpSJgC
-         +ZceS/dcbAIsv+sqYy4Sh/B+ztedi8hIWp97HKZ9H7RURKLVkBvuaiN7ufLuDqlrvoij
-         GjxTlrnyArJk13+glwuiY2kDGBMBlOB+cs8XhJYrCHmtnNqD59YF7AWw0vEUCzvkdGXc
-         Q6W7+RZ+ElDLYBUX62brum5Bx7qdTWzATTU8CPA+OBQ+6qnKtr59v5Rf98EJqukHnPkh
-         S2JA==
-X-Gm-Message-State: AOAM5309fWDICnPVswgzl1t+AfEcfh/c3kF0cFUiT5QJtefzTYrlnQNt
-        KZkibtFslJUprAlf+G6rfTMFfVZuIWdroB6Z9aM=
-X-Google-Smtp-Source: ABdhPJycM65D3w7cQT6WOjWerNMyD8yTXwRQU7cKHoVFMhS05m9F59A4tuvsImyvZ3+GK1DHLIHAxQ/C57P6EfQmWyc=
-X-Received: by 2002:a0d:e2c9:0:b0:2dc:1f22:e349 with SMTP id
- l192-20020a0de2c9000000b002dc1f22e349mr2158843ywe.10.1646874253735; Wed, 09
- Mar 2022 17:04:13 -0800 (PST)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dBGzNBAEZ/o4Hxo+uV30uwr7f7xAZh3RxENsMZgnKwE=;
+        b=xJWKAsiw8aqBsv20dz/FF4w+J882d2gkQEX/VUEb/ekYac84VJuDRb1Ijh88AFvnFi
+         7ynhoOdAFTXqrrHqzk8T3T1rF01hpGvCpItU7C7cCXcbEaHfe4purAV4nNdYI3xzccg8
+         V7tmR6efTwyVahkLxp0EwNZO393Q0Ef4nhoRgS1gyqxEkJ3XufyBbVmyDLAeAGNCdeVj
+         QrELWXF6NdzXW/QBHLwwPACqYFTR+2BBU//xMEHTiluFNthWNsKW3KWxuNpMKab/eeLb
+         IW3inkLd74SgwFcQd+Sx/451p93vKB0kSETvtWEoY2eB1Hwfdkr++fmQ6Sb02PaLv8DB
+         2Mqw==
+X-Gm-Message-State: AOAM530N4gU+UOcfEo6LriC7Ww5CtUnnrAOsJQDlsFG6El+ZGaIR7vXI
+        zItvv5PF+twKw0qgKrf9t/8aXYdNTfuB3Y2byLQ7qghdEZE=
+X-Google-Smtp-Source: ABdhPJyBIz+l3Tx4UK4jqJtBpzk2aAwVStLqKygE7o7aGv6Ty5Ro0Di3sBs0kEQz9ZUDmJZPQLQOaGwJPJixiJrOtr8=
+X-Received: by 2002:a05:6870:5a4:b0:da:b3f:3206 with SMTP id
+ m36-20020a05687005a400b000da0b3f3206mr3570177oap.182.1646937210685; Thu, 10
+ Mar 2022 10:33:30 -0800 (PST)
 MIME-Version: 1.0
-Sender: bintaahmed2030@gmail.com
-Received: by 2002:a05:7110:4b1c:b0:16f:cabd:46d0 with HTTP; Wed, 9 Mar 2022
- 17:04:13 -0800 (PST)
-From:   Lisa Williams <lw23675851@gmail.com>
-Date:   Thu, 10 Mar 2022 01:04:13 +0000
-X-Google-Sender-Auth: rAtS3QG6PBjYZKwRamZUATPN6Yc
-Message-ID: <CAGQNKtRaZY+r=E-ijOBXBnYZr4KAhs=_ad28N5ZE-9yyfvmd5w@mail.gmail.com>
-Subject: My name is Lisa Williams
-To:     undisclosed-recipients:;
+References: <20220307105417.11913-1-richard_c_haines@btinternet.com>
+In-Reply-To: <20220307105417.11913-1-richard_c_haines@btinternet.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Thu, 10 Mar 2022 13:33:19 -0500
+Message-ID: <CAP+JOzTa7t-LjQfTSqs5QFRvYaOpR95+jk_Xd5MoLu7otjqrmQ@mail.gmail.com>
+Subject: Re: [PATCH] libsepol: Shorten the policy capability enum names
+To:     Richard Haines <richard_c_haines@btinternet.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_40,DKIM_SIGNED,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -64,12 +64,100 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
--- 
-Hi Dear,
+On Tue, Mar 8, 2022 at 10:02 AM Richard Haines
+<richard_c_haines@btinternet.com> wrote:
+>
+> Shorten "CAPABILITY" to "CAP" following the kernel naming convention.
+>
+> The SELinux policy capability enum names should now follow the
+> "POLICYDB_CAP_XXX" format.
+>
+> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
 
-My name is Lisa  Williams, I am from the United States of America, Its
-my pleasure to contact you for new and special friendship, I will be
-glad to see your reply for us to know each other better.
+Acked-by: James Carter <jwcart2@gmail.com>
 
-Yours
-Lisa
+> ---
+>  libsepol/include/sepol/policydb/polcaps.h | 20 ++++++++++----------
+>  libsepol/src/polcaps.c                    | 20 ++++++++++----------
+>  2 files changed, 20 insertions(+), 20 deletions(-)
+>
+> diff --git a/libsepol/include/sepol/policydb/polcaps.h b/libsepol/include/sepol/policydb/polcaps.h
+> index 39c99839..f5e32e60 100644
+> --- a/libsepol/include/sepol/policydb/polcaps.h
+> +++ b/libsepol/include/sepol/policydb/polcaps.h
+> @@ -7,17 +7,17 @@ extern "C" {
+>
+>  /* Policy capabilities */
+>  enum {
+> -       POLICYDB_CAPABILITY_NETPEER,
+> -       POLICYDB_CAPABILITY_OPENPERM,
+> -       POLICYDB_CAPABILITY_EXTSOCKCLASS,
+> -       POLICYDB_CAPABILITY_ALWAYSNETWORK,
+> -       POLICYDB_CAPABILITY_CGROUPSECLABEL,
+> -       POLICYDB_CAPABILITY_NNP_NOSUID_TRANSITION,
+> -       POLICYDB_CAPABILITY_GENFS_SECLABEL_SYMLINKS,
+> -       POLICYDB_CAPABILITY_IOCTL_SKIP_CLOEXEC,
+> -       __POLICYDB_CAPABILITY_MAX
+> +       POLICYDB_CAP_NETPEER,
+> +       POLICYDB_CAP_OPENPERM,
+> +       POLICYDB_CAP_EXTSOCKCLASS,
+> +       POLICYDB_CAP_ALWAYSNETWORK,
+> +       POLICYDB_CAP_CGROUPSECLABEL,
+> +       POLICYDB_CAP_NNP_NOSUID_TRANSITION,
+> +       POLICYDB_CAP_GENFS_SECLABEL_SYMLINKS,
+> +       POLICYDB_CAP_IOCTL_SKIP_CLOEXEC,
+> +       __POLICYDB_CAP_MAX
+>  };
+> -#define POLICYDB_CAPABILITY_MAX (__POLICYDB_CAPABILITY_MAX - 1)
+> +#define POLICYDB_CAP_MAX (__POLICYDB_CAP_MAX - 1)
+>
+>  /* Convert a capability name to number. */
+>  extern int sepol_polcap_getnum(const char *name);
+> diff --git a/libsepol/src/polcaps.c b/libsepol/src/polcaps.c
+> index a5e515f2..687e971c 100644
+> --- a/libsepol/src/polcaps.c
+> +++ b/libsepol/src/polcaps.c
+> @@ -6,14 +6,14 @@
+>  #include <sepol/policydb/polcaps.h>
+>
+>  static const char * const polcap_names[] = {
+> -       "network_peer_controls",        /* POLICYDB_CAPABILITY_NETPEER */
+> -       "open_perms",                   /* POLICYDB_CAPABILITY_OPENPERM */
+> -       "extended_socket_class",        /* POLICYDB_CAPABILITY_EXTSOCKCLASS */
+> -       "always_check_network",         /* POLICYDB_CAPABILITY_ALWAYSNETWORK */
+> -       "cgroup_seclabel",              /* POLICYDB_CAPABILITY_SECLABEL */
+> -       "nnp_nosuid_transition",        /* POLICYDB_CAPABILITY_NNP_NOSUID_TRANSITION */
+> -       "genfs_seclabel_symlinks",      /* POLICYDB_CAPABILITY_GENFS_SECLABEL_SYMLINKS */
+> -       "ioctl_skip_cloexec",           /* POLICYDB_CAPABILITY_IOCTL_SKIP_CLOEXEC */
+> +       "network_peer_controls",        /* POLICYDB_CAP_NETPEER */
+> +       "open_perms",                   /* POLICYDB_CAP_OPENPERM */
+> +       "extended_socket_class",        /* POLICYDB_CAP_EXTSOCKCLASS */
+> +       "always_check_network",         /* POLICYDB_CAP_ALWAYSNETWORK */
+> +       "cgroup_seclabel",              /* POLICYDB_CAP_SECLABEL */
+> +       "nnp_nosuid_transition",        /* POLICYDB_CAP_NNP_NOSUID_TRANSITION */
+> +       "genfs_seclabel_symlinks",      /* POLICYDB_CAP_GENFS_SECLABEL_SYMLINKS */
+> +       "ioctl_skip_cloexec",           /* POLICYDB_CAP_IOCTL_SKIP_CLOEXEC */
+>         NULL
+>  };
+>
+> @@ -21,7 +21,7 @@ int sepol_polcap_getnum(const char *name)
+>  {
+>         int capnum;
+>
+> -       for (capnum = 0; capnum <= POLICYDB_CAPABILITY_MAX; capnum++) {
+> +       for (capnum = 0; capnum <= POLICYDB_CAP_MAX; capnum++) {
+>                 if (polcap_names[capnum] == NULL)
+>                         continue;
+>                 if (strcasecmp(polcap_names[capnum], name) == 0)
+> @@ -32,7 +32,7 @@ int sepol_polcap_getnum(const char *name)
+>
+>  const char *sepol_polcap_getname(unsigned int capnum)
+>  {
+> -       if (capnum > POLICYDB_CAPABILITY_MAX)
+> +       if (capnum > POLICYDB_CAP_MAX)
+>                 return NULL;
+>
+>         return polcap_names[capnum];
+> --
+> 2.35.1
+>

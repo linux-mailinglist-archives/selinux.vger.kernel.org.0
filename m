@@ -2,141 +2,156 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F25C4D5648
-	for <lists+selinux@lfdr.de>; Fri, 11 Mar 2022 01:02:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FCE34D5969
+	for <lists+selinux@lfdr.de>; Fri, 11 Mar 2022 05:10:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345129AbiCKACR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 10 Mar 2022 19:02:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33674 "EHLO
+        id S1346169AbiCKELL (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 10 Mar 2022 23:11:11 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345105AbiCKACP (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 10 Mar 2022 19:02:15 -0500
-Received: from sonic308-16.consmr.mail.ne1.yahoo.com (sonic308-16.consmr.mail.ne1.yahoo.com [66.163.187.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C10F71A06D0
-        for <selinux@vger.kernel.org>; Thu, 10 Mar 2022 16:01:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1646956873; bh=ufFIfi+QJcABRY0VK+r+pIW1TjiSDfvy9tEFxMIQ5C8=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=mobOI7BFWqlqOI7w/QW+5ttyB+ulpgTo4PDQaRD/jBdp+2Wfh1YOZxvXxNyaLR98fbfjDahOeS9YqUgr8/9vIxopbx9NAnU9RfzBr2DKSnc/DjlI38XWXjgBgruSCApK+RS87qbXVqlpfg+4/+78VoUkj7KcD89tGQ/GYzxN4eTSkFtv7Vo+RVWWLL83ekJ85YlDpBrYsfh3SVOebFlvoGQGGi88p/nu6aZZbEHM4XJsj+6aR3KLU+WR1fNR52B/AkJPnuX+UyXYboYaov3gnGTifxndR9MhUY4KA4klQWvy5YIuGIhwPbSwseabOu0vu8XId6cyn9glmoDiien5Tg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1646956873; bh=aOP+pLUA6Rg1M2NxD6rHfWgXBkXW4mkGNdVoDRvsjiM=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=shMzy+BtmeE6A3DzgYmaXqfLTz6WoN5sgnkOeXNrkQLk4tseVhM7PhFf1JYxC4AZY8WT2T0dQ7Jif6Wt6J+ZGLDAGC9HYc5KKFxp3iu1S+YvvEWzlI73pglKojfSFKfS7nCuF/B4xmhx9/zAIJMwxakCNPCr/jh2keuY6gtgyc7oad7rIN+ylDhtCrxP81iK0s2wrgq6LCo04210Zw587cNSb9F4Bly4LxMH5HvQxxhgWhsQeHaelu3PvMZHVCkGKpefjtdBagRUJ0c5ehL7fdgsAso3C12vLpZ3a7OUdckLzKazuxmF7bt7tNu9EvXNf70aCmyTEO4ugVBADA6S+A==
-X-YMail-OSG: 8tsblVoVM1nI3rfpUcBqY7AcjQtIvs70pdPMglNT3QeSGMzp9dxs31ZHCJhXjVX
- t5gBBAj1fvLEakpTj29YEQpvdu0fieT1EskkDOVGZvND2ZivH2ZsV1hlb6gMyMI3dxqPBFOBgGS4
- G0mx5j2L_IedkrgUA5FqH.aVVh0GZnbrcZUHNyiqqG.GQUS_lqiHpUdGTBBoFwPZYmvbu4c77npS
- RTiF46ziQa_AYalCVBw2M9ff2mPh1D6iCrBnZbhG_uAaR4T6jcIOzed9a28oMCqV_n4LdS2scrFW
- AAPXgm2G7p2.1.oRxIN6rf9uZ.XjxP_r49saJos7jS34_8UnrbMo5qSjdt.3KO8zvSHEc3xY9j93
- aOnvhEQeboGYs4B04.9br8y62VstH2Tjf2TQCnvFODqJR33DDEp.FIHtTNN.FTJyOg9wxFJbxvlk
- LLSmPBWaLwflZkd1k3ct1eME86cljZnxSM11ghf.yvLVpnGkZMb9cwMly6kuG5P2uyCtOz3Y8s.g
- UxC_Y1kCIecFCHkeXk7hshkFXPVKcPDKAKbOt3o5Yh1RlfiOehV8e6TH1nnC0TeIbXj8RQ9e1gp7
- 2FjWZbdcwYQqXWe.eKdU2vnmXV4ZZHqJ6K0G20tMAZEZ4BiU3Plj9WvUL8LSbk6CB53FsUzNuULo
- MVmR.PPLjWHiis0wE1ZauaGHI0T4EbZYBx4BqfvShe0STyP_YlKU07ZDQrK9omZ5y93FqXcDKMlX
- zQBNKnjp65vwkiF9yrVzODSxjP24ROQmiitjjaEfVhW1n8KvW1jJWUqcBXnoEYV2H34WJsUK4DtB
- up_7.RS0k26SoIofhu7Se6Brtd5BEmgOejK9YU8jgq_mL_fNTPm8LdlGD9iKdHByK6sBHSo21J3C
- 8_iN5yBO_gE.HDCznvZM7XmxUAn766pafUzwZQYPRK4Y0vcwyuuZMqnTnR4za2Q50EbtBSS6CNfC
- i29E9dcAWcZPSABroMhePiKPaeYF9VeWn.lKfx3C.rCmb2UA3FNUzxrh0hl4bco2cmMMIvrNR3s0
- YH5dSFsiOgJzNYm9gV9UogxL84565c0tseseKW26ovwJbel2d7wS.JQsq2LhA.TmCtaq.bhEWhpO
- V3LjzqCO6csOv.CSOy4hqiv4c7sRWnrCjSqOcKbwF0hV4kkfHBIs_U1aJviztz6FHAP5QLuK9DQk
- wAWQhcfSYzDU6xe6MBl0SrNIZiS_cBHL.Wr7QVm8zRI1ZWpH9KsiTryFVX4tgTWxw_bh5n9Y7zwl
- 6kbZcZ1xgPvJaSe.U1rxgTh1cyGKJj30ekwCEpenTGtC0mw_8hEMPo6QX8BN19Rvl6y0bsuJCjFu
- cYWzd6jIP8xD51S5u3IOEU__JXjOL7jK8KNAJuD1hJRy9bFvR9XqaYwcRC774O_MxscOjiQvgg9C
- YjzvvYdbLQ7sHKBeyesa5j6y2BnpTOBlx3nzfh2Oh8uo_21L4F9pwNvRQicGqw034MhZxjnGqhw3
- YcxIboMNKMOwyV6YWQCl3tNArEn2gguIIEwkl12pvoXWd0wWiQ77a2KcVSVCn1cEdYD0cV.vLYcw
- pI_cqTQuk0Sxi5Ur2vg9hNvIkMcKtdUPSgGIBQcRwgLyI0_OASXCP81H2QzUz6eO9ReiOt5UJ8C1
- yTKvA8dg8pr860.h05AlXFPaNuR5ioQTqZ9w0r3vg0CmONsXNnJAUoIlk4r04MH7O9iq6M83ut58
- F0RzZvoB4_mMRNYZURtJQU51A2fQOjQTHfIB_LvwPz2hbEhEwcglzzkvTXFMd8n3xSmPS98Nhfr8
- _Fem4h_bsffiLotJfH7dl15IdX5oqszM5YNFdTtLnZWzAbKLHLArFy_bX1Q2NC6a7Zg_FpNNxWtK
- 9GUfJSx5lBuDl6eYkpK_7BFXxYbdHPpMu4P8ZwJRHcjisqF_VebANcmturstjhRubdKapzDW40J.
- 0yEbpO7Ch9oUebTSDokcqCLyjdhVth2nnJ.kfPdghB7TOFEoD5QZXu.Ziz7TsbkC6XE.CwNT_wdh
- rdkXdVCsksqF.xlCiDQDr7NAGaAVSYKmJvKvQdGvWecivfInA0H0kC7P74HGzjiRNrHGVpjuavHj
- _YKiZIfy4lsVbHlWJl7X1C56lNprq2Q2GeC.T5CLmqNDPY6UyotdTWkegBmUFlv4_Uyou0fj23Qs
- 437TRYKqmWBBjV.RmUrKADS5.20OHPtbtbT5YZFOb6tqbbEabXyJFVOK7qsVYeD0yWfl5k9hHEI9
- D7QFH03.X_XHIqIO6CuhuV6f1Tjzelv6sHJbXcuG6BbqgzqHihvtecn9JqYPNqEkLGcxGq9rN8Mv
- qULYEJxB3UJLvmR2S7AXup7opwKzI
-X-Sonic-MF: <casey@schaufler-ca.com>
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic308.consmr.mail.ne1.yahoo.com with HTTP; Fri, 11 Mar 2022 00:01:13 +0000
-Received: by kubenode532.mail-prod1.omega.ne1.yahoo.com (VZM Hermes SMTP Server) with ESMTPA ID 14d447c144378bdd823ae563645b8a4f;
-          Fri, 11 Mar 2022 00:01:10 +0000 (UTC)
-From:   Casey Schaufler <casey@schaufler-ca.com>
-To:     casey.schaufler@intel.com, jmorris@namei.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
-Cc:     casey@schaufler-ca.com, linux-audit@redhat.com,
-        keescook@chromium.org, john.johansen@canonical.com,
-        penguin-kernel@i-love.sakura.ne.jp, paul@paul-moore.com,
-        stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org
-Subject: [PATCH v33 29/29] AppArmor: Remove the exclusive flag
-Date:   Thu, 10 Mar 2022 15:46:32 -0800
-Message-Id: <20220310234632.16194-30-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20220310234632.16194-1-casey@schaufler-ca.com>
-References: <20220310234632.16194-1-casey@schaufler-ca.com>
+        with ESMTP id S231511AbiCKELK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 10 Mar 2022 23:11:10 -0500
+Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37C26986FF;
+        Thu, 10 Mar 2022 20:10:08 -0800 (PST)
+Received: by mail-oi1-x234.google.com with SMTP id n7so8157799oif.5;
+        Thu, 10 Mar 2022 20:10:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=9QeKB4cZIGNALzfAGtAHD8EFO6aEieNDe1cqjoQ6gsM=;
+        b=W9vUjPbowBxn+x7F9t0T9ph91PQtdPdrKRG92teEt6N37XUEPsuq7+Semk0Sq7eBL6
+         dcYQ9Tv22KHCDJpJTZArvmF8RQJMWhrnNFrlH0Z9uAj420D8GZTtOsl5n/GtRwmZJ8IA
+         76XZx0gnVjqsOEJfE51RvM5322G6zPl57koGYA+BKcBlE7vuRS9sF5hcoMo88FJDRAK5
+         +kwRe4M+oG+gEgYFREXYAIe783yanNbzuJWyEOA9cbY052rFHSqbNMsxjUA23QLzXa3/
+         qwh29b/LmPrDFBeRC3n+EEkGfabc7nyxk2erQfzTI/vhMLMU2KsmYvLjrtBhha2kRRP/
+         ijHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=9QeKB4cZIGNALzfAGtAHD8EFO6aEieNDe1cqjoQ6gsM=;
+        b=NZW/LNPYvMyDD0iILIXVPwu3OT8GGJdCO4UJtixsPhNlztP4E6LlKBS9jgeqz3M2AM
+         tCweRqyvOVRbGq27iZiMFyj6xf9hBTs5S8ENRkCBDVeR/VMIqtbUWgyS4EBOl+dxKQyv
+         oXJoU/QrLAbMqXsBh7gJf5UONGHNHOuGO/1Remqi/V4Zvxp7xxViNvgu3GjM8sVDaVUU
+         PtWGGdBIa8dDl+hhhKskXt3wLUTunnprJFb2+bPoGJoEASC0r2yOWUklCuMwXl180Aa2
+         mAVzGzGSy3L9MNl1Qu+Xsy9+pIZUtR0RVos1mXFaURus2XzrenovKsHDXTNTGwlDlI5i
+         xZbA==
+X-Gm-Message-State: AOAM533+F5d23lhlFDMU4ZheXcb+Qdzb8jLj9KFs0TNCPnm0zsEmPZP0
+        +npyH6o6yAYkawv1QWEMDsCi5w59RZb1LbvWl9z6yTm6sBQ=
+X-Google-Smtp-Source: ABdhPJx+9DTvJp/p1u4f9zeF1IL/TTETZ9pXW0fHuKtmLByfNy/fessGS5yeAZyPOoS/6x3jVT2neAlc+D3agDdooSw=
+X-Received: by 2002:a05:6808:23c1:b0:2da:30fd:34d9 with SMTP id
+ bq1-20020a05680823c100b002da30fd34d9mr8741863oib.203.1646971807529; Thu, 10
+ Mar 2022 20:10:07 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+References: <20211117015806.2192263-1-dvander@google.com> <CAOQ4uxjjapFeOAFGLmsXObdgFVYLfNer-rnnee1RR+joxK3xYg@mail.gmail.com>
+ <Yao51m9EXszPsxNN@redhat.com> <CAOQ4uxjk4piLyx67Ena-FfypDVWzRqVN0xmFUXXPYa+SC4Q-vQ@mail.gmail.com>
+ <YapjNRrjpDu2a5qQ@redhat.com> <CAHC9VhQTUgBRBEz_wFX8daSA70nGJCJLXj8Yvcqr5+DHcfDmwA@mail.gmail.com>
+ <CA+FmFJA-r+JgMqObNCvE_X+L6jxWtDrczM9Jh0L38Fq-6mnbbA@mail.gmail.com>
+ <CAHC9VhRer7UWdZyizWO4VuxrgQDnLCOyj8LO7P6T5BGjd=s9zQ@mail.gmail.com> <CAHC9VhQkLSBGQ-F5Oi9p3G6L7Bf_jQMWAxug_G4bSOJ0_cYXxQ@mail.gmail.com>
+In-Reply-To: <CAHC9VhQkLSBGQ-F5Oi9p3G6L7Bf_jQMWAxug_G4bSOJ0_cYXxQ@mail.gmail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Fri, 11 Mar 2022 06:09:56 +0200
+Message-ID: <CAOQ4uxhfU+LGunL3cweorPPdoCXCZU0xMtF=MekOAe-F-68t_Q@mail.gmail.com>
+Subject: Re: [PATCH v19 0/4] overlayfs override_creds=off & nested get xattr fix
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Vivek Goyal <vgoyal@redhat.com>,
+        Miklos Szeredi <miklos@szeredi.hu>,
+        David Anderson <dvander@google.com>,
+        Mark Salyzyn <salyzyn@android.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        John Stultz <john.stultz@linaro.org>,
+        linux-doc@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        overlayfs <linux-unionfs@vger.kernel.org>,
+        LSM List <linux-security-module@vger.kernel.org>,
+        kernel-team <kernel-team@android.com>, selinux@vger.kernel.org,
+        paulmoore@microsoft.com, luca.boccassi@microsoft.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-With the inclusion of the interface LSM process attribute
-mechanism AppArmor no longer needs to be treated as an
-"exclusive" security module. Remove the flag that indicates
-it is exclusive. Remove the stub getpeersec_dgram AppArmor
-hook as it has no effect in the single LSM case and
-interferes in the multiple LSM case.
+On Fri, Mar 11, 2022 at 12:11 AM Paul Moore <paul@paul-moore.com> wrote:
+>
+> On Wed, Mar 9, 2022 at 4:13 PM Paul Moore <paul@paul-moore.com> wrote:
+> > On Tue, Mar 1, 2022 at 12:05 AM David Anderson <dvander@google.com> wro=
+te:
+> > > On Mon, Feb 28, 2022 at 5:09 PM Paul Moore <paul@paul-moore.com> wrot=
+e:
+>
+> ...
+>
+> > >> This patchset may not have been The Answer, but surely there is
+> > >> something we can do to support this use-case.
+> > >
+> > > Yup exactly, and we still need patches 3 & 4 to deal with this. My cu=
+rrent plan is to try and rework our sepolicy (we have some ideas on how it =
+could be made compatible with how overlayfs works). If that doesn't pan out=
+ we'll revisit these patches and think harder about how to deal with the co=
+herency issues.
+> >
+> > Can you elaborate a bit more on the coherency issues?  Is this the dir
+> > cache issue that is alluded to in the patchset?  Anything else that
+> > has come up on review?
+> >
+> > Before I start looking at the dir cache in any detail, did you have
+> > any thoughts on how to resolve the problems that have arisen?
+>
+> David, Vivek, Amir, Miklos, or anyone for that matter, can you please
+> go into more detail on the cache issues?  I *think* I may have found a
+> potential solution for an issue that could arise when the credential
+> override is not in place, but I'm not certain it's the only issue :)
+>
 
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Acked-by: John Johansen <john.johansen@canonical.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
----
- security/apparmor/lsm.c | 20 +-------------------
- 1 file changed, 1 insertion(+), 19 deletions(-)
+Hi Paul,
 
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 1ee58c1491ab..388298a15556 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -1145,22 +1145,6 @@ static int apparmor_socket_getpeersec_stream(struct socket *sock,
- 	return error;
- }
- 
--/**
-- * apparmor_socket_getpeersec_dgram - get security label of packet
-- * @sock: the peer socket
-- * @skb: packet data
-- * @secid: pointer to where to put the secid of the packet
-- *
-- * Sets the netlabel socket state on sk from parent
-- */
--static int apparmor_socket_getpeersec_dgram(struct socket *sock,
--					    struct sk_buff *skb, u32 *secid)
--
--{
--	/* TODO: requires secid support */
--	return -ENOPROTOOPT;
--}
--
- /**
-  * apparmor_sock_graft - Initialize newly created socket
-  * @sk: child sock
-@@ -1264,8 +1248,6 @@ static struct security_hook_list apparmor_hooks[] __lsm_ro_after_init = {
- #endif
- 	LSM_HOOK_INIT(socket_getpeersec_stream,
- 		      apparmor_socket_getpeersec_stream),
--	LSM_HOOK_INIT(socket_getpeersec_dgram,
--		      apparmor_socket_getpeersec_dgram),
- 	LSM_HOOK_INIT(sock_graft, apparmor_sock_graft),
- #ifdef CONFIG_NETWORK_SECMARK
- 	LSM_HOOK_INIT(inet_conn_request, apparmor_inet_conn_request),
-@@ -1919,7 +1901,7 @@ static int __init apparmor_init(void)
- 
- DEFINE_LSM(apparmor) = {
- 	.name = "apparmor",
--	.flags = LSM_FLAG_LEGACY_MAJOR | LSM_FLAG_EXCLUSIVE,
-+	.flags = LSM_FLAG_LEGACY_MAJOR,
- 	.enabled = &apparmor_enabled,
- 	.blobs = &apparmor_blob_sizes,
- 	.init = apparmor_init,
--- 
-2.31.1
+In this thread I claimed that the authors of the patches did not present
+a security model for overlayfs, such as the one currently in overlayfs.rst.
+If we had a model we could have debated its correctness and review its
+implementation.
 
+As a proof that there is no solid model, I gave an *example* regarding
+the overlay readdir cache.
+
+When listing a merged dir, meaning, a directory containing entries from
+several overlay layers, ovl_permission() is called to check user's permissi=
+on,
+but ovl_permission() does not currently check permissions to read all layer=
+s,
+because that is not the current overlayfs model.
+
+Overlayfs has a readdir cache, so without override_cred, a user with high
+credentials can populate the readdir cache and then a user will fewer
+credentials, not enough to access the lower layers, but enough to access
+the upper most layer, will pass ovl_permission() check and be allowed to
+read from readdir cache.
+
+This specific problem can be solved in several ways - disable readdir
+cache with override_cred=3Doff, check all layers in ovl_permission().
+That's not my point. My point is that I provided a proof that the current
+model of override_cred=3Doff is flawed and it is up to the authors of the
+patch to fix the model and provide the analysis of overlayfs code to
+prove the model's correctness.
+
+The core of the matter is there is no easy way to "merge" the permissions
+from all layers into a single permission blob that could be checked once.
+
+Maybe the example I gave is the only flaw in the model, maybe not
+I am not sure. I will be happy to help you in review of a model and the
+solution that you may have found.
+
+Thanks,
+Amir.

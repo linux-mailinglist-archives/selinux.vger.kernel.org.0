@@ -2,101 +2,196 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 502184E6156
-	for <lists+selinux@lfdr.de>; Thu, 24 Mar 2022 10:54:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D6B44E62DD
+	for <lists+selinux@lfdr.de>; Thu, 24 Mar 2022 13:00:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349364AbiCXJzk (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 24 Mar 2022 05:55:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55514 "EHLO
+        id S237338AbiCXMC2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 24 Mar 2022 08:02:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349173AbiCXJzj (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 24 Mar 2022 05:55:39 -0400
-Received: from mail-vs1-xe33.google.com (mail-vs1-xe33.google.com [IPv6:2607:f8b0:4864:20::e33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B81929F6C8
-        for <selinux@vger.kernel.org>; Thu, 24 Mar 2022 02:54:07 -0700 (PDT)
-Received: by mail-vs1-xe33.google.com with SMTP id i63so4300160vsi.5
-        for <selinux@vger.kernel.org>; Thu, 24 Mar 2022 02:54:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=13+rXwGRPr4a9k2vxA2bU+fJEZZ58Un4R7s1pCG1lS8=;
-        b=pCqWJ6IEwu7H3b21M6lq+dvU7KcWEFQXW27HSvhLVqkPIWfnScMDIznjzeHY1Xr/Cv
-         55ZuLtP2jdmG3QSehqyHH0kuEMDnb3Qtp2et43HmoQLF07HfQu2lE2+C3N+xyrZaqGbj
-         T4s+M73Go7/u/mAw/v6bZ0mD8SLaTVqSbiZtRiFgjV0eLlBt0jA2yU0C7Xb77O5FBPBs
-         lTJv5zW7nsvyyRFh5gCEDxLQm30fj9nmLTeieOawV22TZZ85rr6HeeRC0NO2AZ0Kmgbe
-         YHs/PmYW/awPgHnVdvodLHHHqkPFcpg/Zk+T64BuoiqrN7zyKk5ftgmtLx9Y4y3iEDYy
-         UgMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=13+rXwGRPr4a9k2vxA2bU+fJEZZ58Un4R7s1pCG1lS8=;
-        b=AjgBp8rFNAhFreG0Rci+dYehclTSNpnTsBco/MEStGjqbXF/VSH0P1bKKR5j4ZHXjl
-         DXAhKaazOZOjkKJ+MtY6m+Ie3vasaUFCU+ei1gVrpX4kOwkRWIlhjkMV2amtCusAMM9J
-         RksD49HBE1LGyjhIbC0B61NiTcytk2IZgdrsxF8iKUkEwMQsYMX0OA4vEHnYZW7Qhd/p
-         idaHwjxarHU8uobtXO8US+aUl0l5Jy56hbjGXForKV9eKiy3tmlsKE7th3w0wadYrB7A
-         orzu4jwxQyVdSkEZK6zPsedVAFa7moDolakgndhdSla/w3imWJEKxMrixHormlstWccV
-         LFHA==
-X-Gm-Message-State: AOAM53017sgd/BEqvdK2tpi1qOMSTtTOSJrWnotTDLWTLfKVc32D+bLD
-        L7BulY6Z+xSvDxBpKjzGunhsRcKLbLPjKs4BkIk=
-X-Google-Smtp-Source: ABdhPJw1WdongvX6cLj4accQ9JY6898x77nQqf/nyqhNrVP3DL+lMweVws+zRrqLv+M6shfeJovU3Xw1fXo7FCxwxvs=
-X-Received: by 2002:a67:eaca:0:b0:31b:f480:6de2 with SMTP id
- s10-20020a67eaca000000b0031bf4806de2mr2045479vso.24.1648115646656; Thu, 24
- Mar 2022 02:54:06 -0700 (PDT)
+        with ESMTP id S1346869AbiCXMC1 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 24 Mar 2022 08:02:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C3CA3986DD
+        for <selinux@vger.kernel.org>; Thu, 24 Mar 2022 05:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1648123253;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XjyJPjZw7hgHDv9scSONe3BJZRekLrE2cg4pNW8acEs=;
+        b=G+ailL2KY8iCjDEVyXO+7odCyiAmxYk57DODlAKmBNvWA7N0ny45MB5kTV1SzyeaYCMtlM
+        PyqtCDVFnRgZXBvecgY1u+b8RLLay6UYvg6eg/wAPIpVFCEQR9ytzneexrnF4bELxTKe3v
+        PxliWD+cl7WGKuNAEDuCXOqYEY0koo8=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-354-haW85swjN6eu59h7dNLDcQ-1; Thu, 24 Mar 2022 08:00:52 -0400
+X-MC-Unique: haW85swjN6eu59h7dNLDcQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2B154811E9B
+        for <selinux@vger.kernel.org>; Thu, 24 Mar 2022 12:00:52 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.40.192.75])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id D07FE400E122;
+        Thu, 24 Mar 2022 12:00:50 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     selinux@vger.kernel.org
+Cc:     Petr Lautrbach <plautrba@redhat.com>,
+        Joseph Marrero Corchado <jmarrero@redhat.com>
+Subject: [PATCH v3] libsemanage: Fall back to semanage_copy_dir when rename() fails
+Date:   Thu, 24 Mar 2022 13:00:34 +0100
+Message-Id: <20220324120034.1570408-1-plautrba@redhat.com>
+In-Reply-To: <20220324095251.1561597-1-plautrba@redhat.com>
+References: <20220324095251.1561597-1-plautrba@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a59:5c12:0:b0:2a3:1110:6996 with HTTP; Thu, 24 Mar 2022
- 02:54:06 -0700 (PDT)
-Reply-To: ozkansahin.gbbva@gmail.com
-From:   OZKAN SAHIN <ahmeddiarra25@gmail.com>
-Date:   Thu, 24 Mar 2022 12:54:06 +0300
-Message-ID: <CAMpRB37ektaDdT_H7KzOV36sq3mADrNJQyELZRbhQ-ROx-9Qxg@mail.gmail.com>
-Subject: Greetings to You
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:e33 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4250]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [ahmeddiarra25[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [ahmeddiarra25[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.8 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Greetings,
-I'm  Ozkan Sahin, and I work as a Financial Management Consultant. I'm
-thrilled to approach you and present you with a lucrative offer I've
-prepared. If you're interested in learning more, Please reply as soon
-as possible.
+In some circumstances, like semanage-store being on overlayfs, rename()
+could fail with EXDEV - Invalid cross-device link. This is due to the
+fact that overlays doesn't support rename() if source and target are not
+on the same layer, e.g. in containers built from several layers. Even
+though it's not atomic operation, it's better to try to copy files from
+src to dst on our own in this case. Next rebuild will probably not fail
+as the new directories will be on the same layer.
 
-Please contact me at (ozkansahin.gbbva@gmail.com).
-Respectfully,
-Ozkan Sahin
-Financial Management Consultant
+Fixes: https://github.com/SELinuxProject/selinux/issues/343
+
+Reproducer:
+
+    $ cd selinux1
+
+    $ cat Dockerfile
+    FROM fedora:35
+    RUN dnf install -y selinux-policy selinux-policy-targeted
+
+    $ podman build -t localhost/selinux . --no-cache
+
+    $ cd ../selinux2
+
+    $ cat Dockerfile
+    FROM localhost/selinux
+    RUN semodule -B
+
+    $ podman build -t localhost/selinux2 . --no-cache
+    STEP 2/2: RUN semodule -B
+    libsemanage.semanage_commit_sandbox: Error while renaming /var/lib/selinux/targeted/active to /var/lib/selinux/targeted/previous. (Invalid cross-device link).
+    semodule:  Failed!
+    Error: error building at STEP "RUN semodule -B": error while running runtime: exit status 1
+
+With the fix:
+
+    $ podman build -t localhost/selinux2 . --no-cache
+    STEP 2/2: RUN semodule -B
+    libsemanage.semanage_rename: Warning: rename(/var/lib/selinux/targeted/active, /var/lib/selinux/targeted/previous) failed: Invalid cross-device link, fall back to non-atomic semanage_copy_dir_flags()
+
+    COMMIT localhost/selinux2
+    --> d2cfcebc1a1
+    Successfully tagged localhost/selinux2:latest
+    d2cfcebc1a1b34f1c2cd661ac18292b0612c3e5fa71d6fa1441be244da91b1af
+
+Reported-by: Joseph Marrero Corchado <jmarrero@redhat.com>
+Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+---
+
+v2
+- improve the commit message
+- use WARN() instead of fprintf(stderr, 
+
+v3 
+- WARN without \n at the end
+- split long line
+
+libsemanage/src/semanage_store.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
+
+diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
+index 767f05cb2853..c6d2c5e72709 100644
+--- a/libsemanage/src/semanage_store.c
++++ b/libsemanage/src/semanage_store.c
+@@ -697,6 +697,10 @@ int semanage_store_access_check(void)
+ 
+ /********************* other I/O functions *********************/
+ 
++static int semanage_rename(semanage_handle_t * sh, const char *tmp, const char *dst);
++int semanage_remove_directory(const char *path);
++static int semanage_copy_dir_flags(const char *src, const char *dst, int flag);
++
+ /* Callback used by scandir() to select files. */
+ static int semanage_filename_select(const struct dirent *d)
+ {
+@@ -768,7 +772,21 @@ out:
+ 	return retval;
+ }
+ 
+-static int semanage_copy_dir_flags(const char *src, const char *dst, int flag);
++static int semanage_rename(semanage_handle_t * sh, const char *src, const char *dst) {
++	int retval;
++
++	retval = rename(src, dst);
++	if (retval == 0 || errno != EXDEV)
++		return retval;
++
++	/* we can't use rename() due to filesystem limitation, lets try to copy files manually */
++	WARN(sh, "WARNING: rename(%s, %s) failed: %s, fall back to non-atomic semanage_copy_dir_flags()",
++		 src, dst, strerror(errno));
++	if (semanage_copy_dir_flags(src, dst, 1) == -1) {
++		return -1;
++	}
++	return semanage_remove_directory(src);
++}
+ 
+ /* Copies all of the files from src to dst, recursing into
+  * subdirectories.  Returns 0 on success, -1 on error. */
+@@ -1770,7 +1788,7 @@ static int semanage_commit_sandbox(semanage_handle_t * sh)
+ 		goto cleanup;
+ 	}
+ 
+-	if (rename(active, backup) == -1) {
++	if (semanage_rename(sh, active, backup) == -1) {
+ 		ERR(sh, "Error while renaming %s to %s.", active, backup);
+ 		retval = -1;
+ 		goto cleanup;
+@@ -1779,12 +1797,12 @@ static int semanage_commit_sandbox(semanage_handle_t * sh)
+ 	/* clean up some files from the sandbox before install */
+ 	/* remove homedir_template from sandbox */
+ 
+-	if (rename(sandbox, active) == -1) {
++	if (semanage_rename(sh, sandbox, active) == -1) {
+ 		ERR(sh, "Error while renaming %s to %s.", sandbox, active);
+ 		/* note that if an error occurs during the next
+ 		 * function then the store will be left in an
+ 		 * inconsistent state */
+-		if (rename(backup, active) < 0)
++		if (semanage_rename(sh, backup, active) < 0)
+ 			ERR(sh, "Error while renaming %s back to %s.", backup,
+ 			    active);
+ 		retval = -1;
+@@ -1795,10 +1813,10 @@ static int semanage_commit_sandbox(semanage_handle_t * sh)
+ 		 * function then the store will be left in an
+ 		 * inconsistent state */
+ 		int errsv = errno;
+-		if (rename(active, sandbox) < 0)
++		if (semanage_rename(sh, active, sandbox) < 0)
+ 			ERR(sh, "Error while renaming %s back to %s.", active,
+ 			    sandbox);
+-		else if (rename(backup, active) < 0)
++		else if (semanage_rename(sh, backup, active) < 0)
+ 			ERR(sh, "Error while renaming %s back to %s.", backup,
+ 			    active);
+ 		else
+-- 
+2.35.1
+

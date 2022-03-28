@@ -2,50 +2,49 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF3F24E937C
-	for <lists+selinux@lfdr.de>; Mon, 28 Mar 2022 13:22:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C605A4E944A
+	for <lists+selinux@lfdr.de>; Mon, 28 Mar 2022 13:26:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240864AbiC1LYY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 28 Mar 2022 07:24:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60158 "EHLO
+        id S240951AbiC1L0o (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 28 Mar 2022 07:26:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241413AbiC1LXs (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 28 Mar 2022 07:23:48 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 009115675A;
-        Mon, 28 Mar 2022 04:20:51 -0700 (PDT)
+        with ESMTP id S241684AbiC1LYG (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 28 Mar 2022 07:24:06 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7DE455BC6;
+        Mon, 28 Mar 2022 04:21:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 884EFB80EAE;
-        Mon, 28 Mar 2022 11:20:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F3CC340EC;
-        Mon, 28 Mar 2022 11:20:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 55BC761126;
+        Mon, 28 Mar 2022 11:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A216C340EC;
+        Mon, 28 Mar 2022 11:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1648466448;
-        bh=ZZXCelo44+MreOv90le9g/ySVWXAiprAJScWYxAenWM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uzltlvWu/1a8WiFs7TLRD3yRNNaeLH2G+gbZXasaFh/WFA0d/PBNFj4qpUQkhvHbZ
-         r7kRI5HrBD5EI28YayYLpCMQ9oxr3TUQ0PlzDcPwY/kC9z1MLxXVMdO4bjrZbMP/Ld
-         i+Nq5KNQI+myU2IoLhGGPlC5Lh0IzXJTSAfJoAowZWhSqHqnlGbV/0tNe1PLdW8dEc
-         z7fALclSDc2GSoVFRAaDqqJdIwgSRR5I+ePwVNbEUUbbauSm0gCGBog/krpV2iVN0s
-         zjnQnWT+dagBd6ngw9ROBC3Ug3i9WBeDH2AhGWxVf6w2RZHKQFOJhi+4O5yAIivmc8
-         GjHGxTkPk3ngw==
+        s=k20201202; t=1648466495;
+        bh=sZEnXnuUT62lvH/RkwXQFswK4qQRzNgKlBXG342at3g=;
+        h=From:To:Cc:Subject:Date:From;
+        b=PYqj15Zl8d7Q4a6zFuYE6TQUHyPugKlGfvSgWezffhuTwXnvaWFZDTnY949FM9NYb
+         cVthpWMczw7ELgQTP00AAd5vgsm/XVT+vt9/yiJQ9KkA9ugnGezP/EIvNm+EPBEqyI
+         VwRLuzx4s58iDh6+JsCMEWbFhUfqmO0EBrYtt00JLYTtrmIulD8+nNd1U7wdwOWJHX
+         ERC0zGszsDcDxKp5Cdosupq8QWbbwD7ZWB74RkMaVL8lmOxmB52ESeiBVt00e29rzI
+         oKnzQCP0I4OsEtpRzpBuTCPsjw6FXS3XoQx7Wo1BNWWYajV1lep8pqmC9mET0W28jQ
+         UDtq9cDBXKmMQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Richard Haines <richard_c_haines@btinternet.com>,
-        Demi Marie Obenour <demiobenour@gmail.com>,
+Cc:     Casey Schaufler <casey@schaufler-ca.com>,
+        syzbot+d1e3b1d92d25abf97943@syzkaller.appspotmail.com,
+        James Morris <jamorris@linux.microsoft.com>,
         Paul Moore <paul@paul-moore.com>,
-        Sasha Levin <sashal@kernel.org>,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        cgzones@googlemail.com, ndesaulniers@google.com,
+        Sasha Levin <sashal@kernel.org>, jmorris@namei.org,
+        serge@hallyn.com, stephen.smalley.work@gmail.com,
+        eparis@parisplace.org, linux-security-module@vger.kernel.org,
         selinux@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.16 17/35] selinux: allow FIOCLEX and FIONCLEX with policy capability
-Date:   Mon, 28 Mar 2022 07:19:53 -0400
-Message-Id: <20220328112011.1555169-17-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 01/29] LSM: general protection fault in legacy_parse_param
+Date:   Mon, 28 Mar 2022 07:21:03 -0400
+Message-Id: <20220328112132.1555683-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220328112011.1555169-1-sashal@kernel.org>
-References: <20220328112011.1555169-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -60,90 +59,77 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-From: Richard Haines <richard_c_haines@btinternet.com>
+From: Casey Schaufler <casey@schaufler-ca.com>
 
-[ Upstream commit 65881e1db4e948614d9eb195b8e1197339822949 ]
+[ Upstream commit ecff30575b5ad0eda149aadad247b7f75411fd47 ]
 
-These ioctls are equivalent to fcntl(fd, F_SETFD, flags), which SELinux
-always allows too.  Furthermore, a failed FIOCLEX could result in a file
-descriptor being leaked to a process that should not have access to it.
+The usual LSM hook "bail on fail" scheme doesn't work for cases where
+a security module may return an error code indicating that it does not
+recognize an input.  In this particular case Smack sees a mount option
+that it recognizes, and returns 0. A call to a BPF hook follows, which
+returns -ENOPARAM, which confuses the caller because Smack has processed
+its data.
 
-As this patch removes access controls, a policy capability needs to be
-enabled in policy to always allow these ioctls.
+The SELinux hook incorrectly returns 1 on success. There was a time
+when this was correct, however the current expectation is that it
+return 0 on success. This is repaired.
 
-Based-on-patch-by: Demi Marie Obenour <demiobenour@gmail.com>
-Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
-[PM: subject line tweak]
+Reported-by: syzbot+d1e3b1d92d25abf97943@syzkaller.appspotmail.com
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Acked-by: James Morris <jamorris@linux.microsoft.com>
 Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/hooks.c                   | 6 ++++++
- security/selinux/include/policycap.h       | 1 +
- security/selinux/include/policycap_names.h | 3 ++-
- security/selinux/include/security.h        | 7 +++++++
- 4 files changed, 16 insertions(+), 1 deletion(-)
+ security/security.c      | 17 +++++++++++++++--
+ security/selinux/hooks.c |  5 ++---
+ 2 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index d582479dfd62..9b65ebc96b5d 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -3793,6 +3793,12 @@ static int selinux_file_ioctl(struct file *file, unsigned int cmd,
- 					    CAP_OPT_NONE, true);
- 		break;
- 
-+	case FIOCLEX:
-+	case FIONCLEX:
-+		if (!selinux_policycap_ioctl_skip_cloexec())
-+			error = ioctl_has_perm(cred, file, FILE__IOCTL, (u16) cmd);
-+		break;
-+
- 	/* default case assumes that the command will go
- 	 * to the file's ioctl() function.
- 	 */
-diff --git a/security/selinux/include/policycap.h b/security/selinux/include/policycap.h
-index 2ec038efbb03..a9e572ca4fd9 100644
---- a/security/selinux/include/policycap.h
-+++ b/security/selinux/include/policycap.h
-@@ -11,6 +11,7 @@ enum {
- 	POLICYDB_CAPABILITY_CGROUPSECLABEL,
- 	POLICYDB_CAPABILITY_NNP_NOSUID_TRANSITION,
- 	POLICYDB_CAPABILITY_GENFS_SECLABEL_SYMLINKS,
-+	POLICYDB_CAPABILITY_IOCTL_SKIP_CLOEXEC,
- 	__POLICYDB_CAPABILITY_MAX
- };
- #define POLICYDB_CAPABILITY_MAX (__POLICYDB_CAPABILITY_MAX - 1)
-diff --git a/security/selinux/include/policycap_names.h b/security/selinux/include/policycap_names.h
-index b89289f092c9..ebd64afe1def 100644
---- a/security/selinux/include/policycap_names.h
-+++ b/security/selinux/include/policycap_names.h
-@@ -12,7 +12,8 @@ const char *selinux_policycap_names[__POLICYDB_CAPABILITY_MAX] = {
- 	"always_check_network",
- 	"cgroup_seclabel",
- 	"nnp_nosuid_transition",
--	"genfs_seclabel_symlinks"
-+	"genfs_seclabel_symlinks",
-+	"ioctl_skip_cloexec"
- };
- 
- #endif /* _SELINUX_POLICYCAP_NAMES_H_ */
-diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
-index ac0ece01305a..c0d966020ebd 100644
---- a/security/selinux/include/security.h
-+++ b/security/selinux/include/security.h
-@@ -219,6 +219,13 @@ static inline bool selinux_policycap_genfs_seclabel_symlinks(void)
- 	return READ_ONCE(state->policycap[POLICYDB_CAPABILITY_GENFS_SECLABEL_SYMLINKS]);
+diff --git a/security/security.c b/security/security.c
+index 67264cb08fb3..da631339e969 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -884,9 +884,22 @@ int security_fs_context_dup(struct fs_context *fc, struct fs_context *src_fc)
+ 	return call_int_hook(fs_context_dup, 0, fc, src_fc);
  }
  
-+static inline bool selinux_policycap_ioctl_skip_cloexec(void)
-+{
-+	struct selinux_state *state = &selinux_state;
+-int security_fs_context_parse_param(struct fs_context *fc, struct fs_parameter *param)
++int security_fs_context_parse_param(struct fs_context *fc,
++				    struct fs_parameter *param)
+ {
+-	return call_int_hook(fs_context_parse_param, -ENOPARAM, fc, param);
++	struct security_hook_list *hp;
++	int trc;
++	int rc = -ENOPARAM;
 +
-+	return READ_ONCE(state->policycap[POLICYDB_CAPABILITY_IOCTL_SKIP_CLOEXEC]);
-+}
-+
- struct selinux_policy_convert_data;
++	hlist_for_each_entry(hp, &security_hook_heads.fs_context_parse_param,
++			     list) {
++		trc = hp->hook.fs_context_parse_param(fc, param);
++		if (trc == 0)
++			rc = 0;
++		else if (trc != -ENOPARAM)
++			return trc;
++	}
++	return rc;
+ }
  
- struct selinux_load_state {
+ int security_sb_alloc(struct super_block *sb)
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index baa12d1007c7..cb938890f40b 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -2908,10 +2908,9 @@ static int selinux_fs_context_parse_param(struct fs_context *fc,
+ 		return opt;
+ 
+ 	rc = selinux_add_opt(opt, param->string, &fc->security);
+-	if (!rc) {
++	if (!rc)
+ 		param->string = NULL;
+-		rc = 1;
+-	}
++
+ 	return rc;
+ }
+ 
 -- 
 2.34.1
 

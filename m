@@ -2,116 +2,84 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F8444EB433
-	for <lists+selinux@lfdr.de>; Tue, 29 Mar 2022 21:43:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5EEE24EB5C0
+	for <lists+selinux@lfdr.de>; Wed, 30 Mar 2022 00:18:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236494AbiC2Tp2 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 29 Mar 2022 15:45:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40194 "EHLO
+        id S236271AbiC2WUh (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 29 Mar 2022 18:20:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240582AbiC2TpZ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 29 Mar 2022 15:45:25 -0400
-Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37CA2316C
-        for <selinux@vger.kernel.org>; Tue, 29 Mar 2022 12:43:40 -0700 (PDT)
-Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-de48295467so19888592fac.2
-        for <selinux@vger.kernel.org>; Tue, 29 Mar 2022 12:43:40 -0700 (PDT)
+        with ESMTP id S229751AbiC2WUg (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 29 Mar 2022 18:20:36 -0400
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B5ED20F4B
+        for <selinux@vger.kernel.org>; Tue, 29 Mar 2022 15:18:53 -0700 (PDT)
+Received: by mail-wr1-x42e.google.com with SMTP id h23so26747232wrb.8
+        for <selinux@vger.kernel.org>; Tue, 29 Mar 2022 15:18:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=COLOv2W6kb98p/qqe60XK5otMso3FIUd0noWuXfSJQs=;
-        b=Z0DqcddA5jji77hcPYj4CLEDQI9cz5xj71rGzMj7Lq2av1lf+jqdtU/+55zukmxopA
-         /wkCOg7GggNcBPbl3M6LnA9cjpMdNYcIYovUxBUCCkK1HuglJWorxE64quPlJ3BlLSze
-         CDbtci/OsflT74wwL5lstgo+DppxZEHjzWdW6GCV8Exx6F68O7YA8PE8v223rAPrFkxG
-         3M0VXDwk3LqOKha57+rbQSeLNk7DHYKl7+IWuNreOPZP22m7ofPut/2FgpJvDG1uHXCH
-         m3BgTFFUbvtumb6f49THphLCAbzgU1xCAKNbhU44Fs9dRzIqpGHoTx/fxK+PGSecW0T2
-         FPSA==
+        d=gmail.com; s=20210112;
+        h=message-id:mime-version:content-transfer-encoding
+         :content-description:subject:to:from:date:reply-to;
+        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
+        b=S7mLD4Iavviogg/ZwjrHlTBDsTza5oHLKYVbMXPhMqzNK5t5VKdhB0aQE58nBn1lJX
+         UmOQVG2hNylKnPgZKEjbGD6457hSbhGDbqE3EWxoYhaAsQY+mZEWeAayrUVeWFCpTGZ7
+         EKEU4DF/hEzLU5hrUXqE0JfHyE2OSy58V1BA9No1DDfifUKORpQTdrkCPS3VGK3H91sy
+         yQ//X/om3/9iM0eBbZC/sU3//OkbQCALPDZE28+YDRuiVVmhy3Dw5ruUdy8sLRz5KKUa
+         z4FjZPfbziNcZQ/pBKEd+S906rLh5La9BD7oRl0dPXGLVo5bl4AS9d5hyHOq+GPSUet/
+         JbAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=COLOv2W6kb98p/qqe60XK5otMso3FIUd0noWuXfSJQs=;
-        b=2DLZxOa9EqAnLaWJiYnPwpJe5A0olU3G+0TATEgPw8B546BobtWWd6EXJM8UJw10Ob
-         ZfA+33d0tQ2cg1dDikiczg6NnCgG7n6xsj8NmN0EATmn9ozQfynXcRy0hJF6aUcSY+TI
-         iW7zx0KAC0csuLVMo/p8dSNAtUMC+CCeOyVsgf19U/VKrpN0bmAmAEvMNoxjAVCNRgBQ
-         hmVa/OuTHkDpKx1Af5sd8wFK+1JhKFfXhp/Z7/0JOZnrhiMa4JtdEYX/5K/hdPsDROiy
-         4KR03X5PVpZeJ0byrL0Kvw402PfLKllRN8LbkbGMT4jEZrQrlTL2JNRBj2n+kkIfbaca
-         uMuw==
-X-Gm-Message-State: AOAM532MvH0mSybGXoZAnWCWKqELOIAbsfXJScxL+WAmQ43X6yKMJ7nJ
-        8u5CjtUSpI1WGUtH8L8lgG/TUte9T4QJX7xs1jJAXbr94eI=
-X-Google-Smtp-Source: ABdhPJxjNYV3Uc1NboKexsaLontsUY6ju1rvTM9P28lfIAIdkdMlNlgnohaosE6VScx9JUJEQYsg9FwFaKNthT5LNYM=
-X-Received: by 2002:a05:6870:e408:b0:de:b929:5206 with SMTP id
- n8-20020a056870e40800b000deb9295206mr466615oag.71.1648583020092; Tue, 29 Mar
- 2022 12:43:40 -0700 (PDT)
+        h=x-gm-message-state:message-id:mime-version
+         :content-transfer-encoding:content-description:subject:to:from:date
+         :reply-to;
+        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
+        b=m5s4NGTAm0L0r6s0Bw/yscAo+vKgsqMuP49+ZBSw0Gu4lYvM3kwoxqYkmiNZ+37Em7
+         qdvPHRlhNXG8fNHjXa6f11EppuE452AvJoYZ7q1wWh+DnRO+AMQ65ei6+G7Wy7xQ8NxG
+         zZEAAN4wZe5/Mp05vA4TKtwGsHUb0gxv8Q9PuhCq124kVLUr0xJukPyTurdPpvCVstLX
+         Hq+TV33xASMZDwkbi+j1zbGBvwM+bPfuMYTGBi5RzH6eOeS9o6q8Pv12BrIQlgFLSyD+
+         Emj6z0iJzo1kfudpV5XKOCxpnKu/I/SJC70Kxqsli13fCASGc/ikseSbh34VrmpYUSaU
+         3GYA==
+X-Gm-Message-State: AOAM530fIU3N/6nU/7gUNiRxOIcCU55d8FbFRBCo5spFVvz9qY5rKMGh
+        Sm6KEBKR/b66qaSu2Kne1Qs=
+X-Google-Smtp-Source: ABdhPJy05/tllYlLm9jpiJKRt/dZ9XcPqRK7vhLQeocJeDdY6oo4OsutGF+N5p4nWvtDMOuud61YOA==
+X-Received: by 2002:a5d:5046:0:b0:1ed:9eac:bade with SMTP id h6-20020a5d5046000000b001ed9eacbademr33714786wrt.697.1648592331616;
+        Tue, 29 Mar 2022 15:18:51 -0700 (PDT)
+Received: from [172.20.10.4] ([197.210.71.189])
+        by smtp.gmail.com with ESMTPSA id g1-20020a1c4e01000000b003899c8053e1sm4263738wmh.41.2022.03.29.15.18.44
+        (version=TLS1 cipher=AES128-SHA bits=128/128);
+        Tue, 29 Mar 2022 15:18:50 -0700 (PDT)
+Message-ID: <624385ca.1c69fb81.dae14.1f3c@mx.google.com>
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-References: <20220314182400.121510-1-jwcart2@gmail.com>
-In-Reply-To: <20220314182400.121510-1-jwcart2@gmail.com>
-From:   =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date:   Tue, 29 Mar 2022 21:43:29 +0200
-Message-ID: <CAJ2a_Dd-c=xTsnz9q95dhQkwTD+iFcVuRyMCUAG2TopASY739Q@mail.gmail.com>
-Subject: Re: [PATCH] libsepol: Use calloc when initializing bool_val_to_struct array
-To:     James Carter <jwcart2@gmail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Gefeliciteerd, er is geld aan je gedoneerd
+To:     Recipients <adeboyejofolashade55@gmail.com>
+From:   adeboyejofolashade55@gmail.com
+Date:   Tue, 29 Mar 2022 23:18:36 +0100
+Reply-To: mike.weirsky.foundation003@gmail.com
+X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,T_US_DOLLARS_3
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, 14 Mar 2022 at 19:24, James Carter <jwcart2@gmail.com> wrote:
->
-> Use calloc() instead of mallocarray() so that everything is
-> initialized to zero to prevent the use of unitialized memory when
-> validating malformed binary policies.
->
-> Found by oss-fuzz (#45493)
->
-> Signed-off-by: James Carter <jwcart2@gmail.com>
-> ---
->  libsepol/src/conditional.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
-> index f78b38a2..a620451d 100644
-> --- a/libsepol/src/conditional.c
-> +++ b/libsepol/src/conditional.c
-> @@ -522,7 +522,7 @@ int cond_init_bool_indexes(policydb_t * p)
->         if (p->bool_val_to_struct)
->                 free(p->bool_val_to_struct);
->         p->bool_val_to_struct = (cond_bool_datum_t **)
-> -           mallocarray(p->p_bools.nprim, sizeof(cond_bool_datum_t *));
-> +           calloc(p->p_bools.nprim, sizeof(cond_bool_datum_t *));
->         if (!p->bool_val_to_struct)
->                 return -1;
->         return 0;
-> --
-> 2.34.1
->
+Beste begunstigde,
 
-Can this be merged? I think it might hurt the fuzzer, e.g. cause the
-flakiness in issue #45327.
+ Je hebt een liefdadigheidsdonatie van ($ 10.000.000,00) van Mr. Mike Weirs=
+ky, een winnaar van een powerball-jackpotloterij van $ 273 miljoen.  Ik don=
+eer aan 5 willekeurige personen als je deze e-mail ontvangt, dan is je e-ma=
+il geselecteerd na een spin-ball. Ik heb vrijwillig besloten om het bedrag =
+van $ 10 miljoen USD aan jou te doneren als een van de geselecteerde 5, om =
+mijn winst te verifi=EBren
+ =
 
-On a technical note:
-In src/policydb.c::policydb_index_others() the return value of
-cond_init_bool_indexes() is not checked.
-
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index fc71463e..e29cbd51 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -1252,7 +1252,8 @@ int policydb_index_others(sepol_handle_t * handle,
-       if (!p->type_val_to_struct)
-               return -1;
-
--       cond_init_bool_indexes(p);
-+       if (cond_init_bool_indexes(p) == -1)
-+               return -1;
-
-       for (i = SYM_ROLES; i < SYM_NUM; i++) {
-               free(p->sym_val_to_name[i]);
+  Vriendelijk antwoord op: mike.weirsky.foundation003@gmail.com
+ Voor uw claim.

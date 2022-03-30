@@ -2,84 +2,96 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EEE24EB5C0
-	for <lists+selinux@lfdr.de>; Wed, 30 Mar 2022 00:18:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA834EC609
+	for <lists+selinux@lfdr.de>; Wed, 30 Mar 2022 15:55:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236271AbiC2WUh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 29 Mar 2022 18:20:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57020 "EHLO
+        id S1346179AbiC3N4t (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 30 Mar 2022 09:56:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229751AbiC2WUg (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 29 Mar 2022 18:20:36 -0400
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B5ED20F4B
-        for <selinux@vger.kernel.org>; Tue, 29 Mar 2022 15:18:53 -0700 (PDT)
-Received: by mail-wr1-x42e.google.com with SMTP id h23so26747232wrb.8
-        for <selinux@vger.kernel.org>; Tue, 29 Mar 2022 15:18:52 -0700 (PDT)
+        with ESMTP id S245107AbiC3N4s (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 30 Mar 2022 09:56:48 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0247C6EB1E
+        for <selinux@vger.kernel.org>; Wed, 30 Mar 2022 06:55:03 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id q11so24790212iod.6
+        for <selinux@vger.kernel.org>; Wed, 30 Mar 2022 06:55:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=message-id:mime-version:content-transfer-encoding
-         :content-description:subject:to:from:date:reply-to;
-        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
-        b=S7mLD4Iavviogg/ZwjrHlTBDsTza5oHLKYVbMXPhMqzNK5t5VKdhB0aQE58nBn1lJX
-         UmOQVG2hNylKnPgZKEjbGD6457hSbhGDbqE3EWxoYhaAsQY+mZEWeAayrUVeWFCpTGZ7
-         EKEU4DF/hEzLU5hrUXqE0JfHyE2OSy58V1BA9No1DDfifUKORpQTdrkCPS3VGK3H91sy
-         yQ//X/om3/9iM0eBbZC/sU3//OkbQCALPDZE28+YDRuiVVmhy3Dw5ruUdy8sLRz5KKUa
-         z4FjZPfbziNcZQ/pBKEd+S906rLh5La9BD7oRl0dPXGLVo5bl4AS9d5hyHOq+GPSUet/
-         JbAg==
+        d=crunchydata.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8FcK7QmkIiYJSoQw2INEcc2ogTo2eh1Iq2n21s2DHUY=;
+        b=fXWvPM6W1jxz/Z7rQjc4QFPf1WnATQ69T+/sez9ryYVjX7UuxOgSoinJD5cUNr2EDz
+         Mxkci9hjz1mYPp4uCfdzwNzVQ5AO6CbOdcvu71RUgBB5jHLLdmiihyiNsTY7vJoxC+Ci
+         +WlSKoNM6tbmHTgtVRaVZ7UTLaZUaYosTKn6lxYKhJgdWaXSB2eu73zjGdwDb1x1aRa9
+         wPFGvkQT8HYqYlvH7l7lMi5gazpu6ZvecGgkFz2DsOa+Hk3zaKWIPIj8o3/kDIbECjVo
+         MVCB5A1cQXv2BQsM3RQDDk+oCm6o/yGo2D+LWhJ8PUN/S1KS5U79+4+Z9bn1Quuo3cYx
+         DUFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:mime-version
-         :content-transfer-encoding:content-description:subject:to:from:date
-         :reply-to;
-        bh=+v//v9bV1cKxYYqp6E5HrJfuFydY/JXcjMGnmfr7lM0=;
-        b=m5s4NGTAm0L0r6s0Bw/yscAo+vKgsqMuP49+ZBSw0Gu4lYvM3kwoxqYkmiNZ+37Em7
-         qdvPHRlhNXG8fNHjXa6f11EppuE452AvJoYZ7q1wWh+DnRO+AMQ65ei6+G7Wy7xQ8NxG
-         zZEAAN4wZe5/Mp05vA4TKtwGsHUb0gxv8Q9PuhCq124kVLUr0xJukPyTurdPpvCVstLX
-         Hq+TV33xASMZDwkbi+j1zbGBvwM+bPfuMYTGBi5RzH6eOeS9o6q8Pv12BrIQlgFLSyD+
-         Emj6z0iJzo1kfudpV5XKOCxpnKu/I/SJC70Kxqsli13fCASGc/ikseSbh34VrmpYUSaU
-         3GYA==
-X-Gm-Message-State: AOAM530fIU3N/6nU/7gUNiRxOIcCU55d8FbFRBCo5spFVvz9qY5rKMGh
-        Sm6KEBKR/b66qaSu2Kne1Qs=
-X-Google-Smtp-Source: ABdhPJy05/tllYlLm9jpiJKRt/dZ9XcPqRK7vhLQeocJeDdY6oo4OsutGF+N5p4nWvtDMOuud61YOA==
-X-Received: by 2002:a5d:5046:0:b0:1ed:9eac:bade with SMTP id h6-20020a5d5046000000b001ed9eacbademr33714786wrt.697.1648592331616;
-        Tue, 29 Mar 2022 15:18:51 -0700 (PDT)
-Received: from [172.20.10.4] ([197.210.71.189])
-        by smtp.gmail.com with ESMTPSA id g1-20020a1c4e01000000b003899c8053e1sm4263738wmh.41.2022.03.29.15.18.44
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Tue, 29 Mar 2022 15:18:50 -0700 (PDT)
-Message-ID: <624385ca.1c69fb81.dae14.1f3c@mx.google.com>
-Content-Type: text/plain; charset="iso-8859-1"
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8FcK7QmkIiYJSoQw2INEcc2ogTo2eh1Iq2n21s2DHUY=;
+        b=uy5uJIvTNWw7XzOrOek268DiPFdfndxgVHo1XXl2yXcUlu8/znu86//3VtD8HzZCrV
+         puO2t2X2AW0tEsZ8AczJipvczLElM+xiBYFwjSnB7TWvUFIvZx0TcFLWeYgWWs+965Tw
+         +ISCzYSQi0Ya/Cu67j2H6l2tNzmPsnaQbBcpDlnUmLgLBhm0TNA3Ly9KPTNv4468K7bw
+         E/MduFLz4wuG9im8ooAjLfavYCfmej5V/nTYOoazRoeFZaU1bLy8fn8BFO3uHkC2AMDa
+         irElWim1cDcU30u5hKzFJthWTbOjONT36hlT10zF4URvdbOxRIh3lUb/9ssMi7GukvSK
+         YG7w==
+X-Gm-Message-State: AOAM533Q2zY2s0yTSNcKBL5VimQKOhitPCCAwcSIZA7oojwpnc2OI6+a
+        m26ZyzDJ6+/k9loTQLTtBtFTwLLE8ET94eYnN1VFLg==
+X-Google-Smtp-Source: ABdhPJzTiUQTToFkyOPJRB/TwF70NjXdErTbh21wJZxtb2Vj3+tSzKzQ34sXnXPRabammXURjXgK+MNAb9Xq6V+xgDQ=
+X-Received: by 2002:a05:6602:2c0c:b0:5f0:793f:cb9e with SMTP id
+ w12-20020a0566022c0c00b005f0793fcb9emr10908223iov.122.1648648502126; Wed, 30
+ Mar 2022 06:55:02 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Gefeliciteerd, er is geld aan je gedoneerd
-To:     Recipients <adeboyejofolashade55@gmail.com>
-From:   adeboyejofolashade55@gmail.com
-Date:   Tue, 29 Mar 2022 23:18:36 +0100
-Reply-To: mike.weirsky.foundation003@gmail.com
-X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,T_US_DOLLARS_3
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: **
+References: <20220314182400.121510-1-jwcart2@gmail.com>
+In-Reply-To: <20220314182400.121510-1-jwcart2@gmail.com>
+From:   Joshua Brindle <joshua.brindle@crunchydata.com>
+Date:   Wed, 30 Mar 2022 09:54:51 -0400
+Message-ID: <CAGB+Vh59mbuLpAAXU2vikcF+3H9t_DY9N8GNHEkWv7bzP0hXGQ@mail.gmail.com>
+Subject: Re: [PATCH] libsepol: Use calloc when initializing bool_val_to_struct array
+To:     James Carter <jwcart2@gmail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Beste begunstigde,
+On Mon, Mar 14, 2022 at 2:24 PM James Carter <jwcart2@gmail.com> wrote:
+>
+> Use calloc() instead of mallocarray() so that everything is
+> initialized to zero to prevent the use of unitialized memory when
+> validating malformed binary policies.
+>
+> Found by oss-fuzz (#45493)
+>
+> Signed-off-by: James Carter <jwcart2@gmail.com>
+> ---
+>  libsepol/src/conditional.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
+> index f78b38a2..a620451d 100644
+> --- a/libsepol/src/conditional.c
+> +++ b/libsepol/src/conditional.c
+> @@ -522,7 +522,7 @@ int cond_init_bool_indexes(policydb_t * p)
+>         if (p->bool_val_to_struct)
+>                 free(p->bool_val_to_struct);
+>         p->bool_val_to_struct = (cond_bool_datum_t **)
+> -           mallocarray(p->p_bools.nprim, sizeof(cond_bool_datum_t *));
+> +           calloc(p->p_bools.nprim, sizeof(cond_bool_datum_t *));
+>         if (!p->bool_val_to_struct)
+>                 return -1;
+>         return 0;
+> --
+> 2.34.1
 
- Je hebt een liefdadigheidsdonatie van ($ 10.000.000,00) van Mr. Mike Weirs=
-ky, een winnaar van een powerball-jackpotloterij van $ 273 miljoen.  Ik don=
-eer aan 5 willekeurige personen als je deze e-mail ontvangt, dan is je e-ma=
-il geselecteerd na een spin-ball. Ik heb vrijwillig besloten om het bedrag =
-van $ 10 miljoen USD aan jou te doneren als een van de geselecteerde 5, om =
-mijn winst te verifi=EBren
- =
-
-  Vriendelijk antwoord op: mike.weirsky.foundation003@gmail.com
- Voor uw claim.
+Why not change the mallocarray macro to use calloc? I see a number of
+mallocarray calls that should be audited if this approach is taken.

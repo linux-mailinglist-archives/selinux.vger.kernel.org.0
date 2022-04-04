@@ -2,59 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7905B4F1D6F
-	for <lists+selinux@lfdr.de>; Mon,  4 Apr 2022 23:39:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 575144F1D5B
+	for <lists+selinux@lfdr.de>; Mon,  4 Apr 2022 23:39:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382568AbiDDVbT (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 4 Apr 2022 17:31:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46080 "EHLO
+        id S241640AbiDDVbC (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 4 Apr 2022 17:31:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380327AbiDDTer (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 4 Apr 2022 15:34:47 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 453182124E
-        for <selinux@vger.kernel.org>; Mon,  4 Apr 2022 12:32:48 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id p15so22100350ejc.7
-        for <selinux@vger.kernel.org>; Mon, 04 Apr 2022 12:32:48 -0700 (PDT)
+        with ESMTP id S1380380AbiDDTx1 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 4 Apr 2022 15:53:27 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BDA2559A
+        for <selinux@vger.kernel.org>; Mon,  4 Apr 2022 12:51:31 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id bh17so22215927ejb.8
+        for <selinux@vger.kernel.org>; Mon, 04 Apr 2022 12:51:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VgO6d6lm0OOGvRr20KO7FvSUCyunHGQ0dxV3M5k2OoQ=;
-        b=2bSfLduqOf9N4UfXpHNZdsaDD+XyuSZ5J8vz8j5+p8xi1SYGc7n/s/aPZOcFYrgFvc
-         aUyo5kHyGm99X07FpLh/0Ai8QoOSTFHLSrirz89twpYswHSZMveFLgqOEuYBH9XdLOl3
-         B7CLDra9Q8wn9CWqcToLjHntuivXWxOHUFWYrwnVhCJUyfBBsTzvyNbbaSx7/Tfu06wD
-         d6pojF+pMiY3XLmZV96L44We0CQfDAQ9njb8PyY2TNohBO8+4b7uygqC9u6dC07vklCy
-         ypeBfXYzw1mtuVlKk3BiLwJx6fOlooGLOlGWqGLUSL0cIbl6AjVQfyaDC309hj3ujywM
-         CBOQ==
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=lFAH71l5hLiHoLrZZzcQ02KILOzB/xZrhEV5P4Wdld0=;
+        b=Qtgc6aj81PF27HwqIjmLraR6kbD2g1Edk4JH8jLfIYET3iNb8qoEFoYXBH7BjQQ4GM
+         8tI8gHZon9drp8BlL8xeRuAcE5a116BvXuPVakbHx/K7tjVwbPt2Iv0EgfnkErFL7ZKb
+         GNPkfF0lafnWM+sKawmBrReiH9Tf1xoDFXKhOshkxy3PvO+49x7jxaf+NtrpcqbqDN0u
+         HF9O5wopaviUM8YsGqJWOON5RVGwN4Hc+4xtI+iR3JwhkL3kDBu86Vv5xOpzCU2D+Oi6
+         xN8IfSCARpRBNSNax9wqlfP4rVBgL6u1JtzjiRUMQAoOcFfi1RpuPbk7nXbPj+R2zLB6
+         Z+KA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VgO6d6lm0OOGvRr20KO7FvSUCyunHGQ0dxV3M5k2OoQ=;
-        b=L02rGOBRHqlEQ0JyU+r56qRlR/ZKmSzitQbwKnU/byT3LJNWLJLAcxa18Or1PnOINe
-         urrlC1VNHoSsUbV972fLs4Wxvt8zWTkshySSgKR6EZJdq6iZ6E8vsVR7auwVw1Ig7643
-         /wtozBLDL7Jqcb23faM8yqbKcY2d0OF/CGQtOZIesFLiTQ82ihNchzYVQqEPnEBCQchr
-         oF2monG0yc0gFgZGBRzcZglUlrbgqzGY2120ReApHGXCaoKHtSYGLcyZaw82irQy4HbJ
-         zNKfA31crpXbN/Ffb53oDodGIdGyOJQQycZD2T2nPm4XfpRvnScKPR6nIl8rYrxmFzwA
-         eLqg==
-X-Gm-Message-State: AOAM532BaGxWiUhHdISk4Y4akvaGCnyGSfKttwu9Fu5NchTk21dCG8Uh
-        FEbCFxP4b1j0i/jHAURvxpkLb7xvpnIKIDHvnQOg
-X-Google-Smtp-Source: ABdhPJxsTLUB7w9oB2hOLTKtDzWQmCZzgKHHd60hUfhlNmpWM9jqkS5JAcqO23xLdTBrptJbOzcirYLGRutmY6LBE6I=
-X-Received: by 2002:a17:907:7202:b0:6df:83a9:67d2 with SMTP id
- dr2-20020a170907720200b006df83a967d2mr1593177ejc.327.1649100763379; Mon, 04
- Apr 2022 12:32:43 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=lFAH71l5hLiHoLrZZzcQ02KILOzB/xZrhEV5P4Wdld0=;
+        b=um/9UXlT126Es1xRcnuKapIpznMDL1LvyZXfrisvxg38TqgwuyBcuFmmOyfbm2qV9N
+         ffInc8ZYxGDVotVv7L90Q1JsNX3Uy7wdtVut73TMaEhRw/7T41wucSUNOMy87XHn+R2C
+         8+DpCEOMeYMlRe/tTDIcGkcDEfjI6Bje2OegsWABYkRGpiMSaGKCKG6cyb8GCrHiWu+o
+         Y/RGZImgHDVM3QGea08BJT8okMTqvloGLDdP1zu6lTf45fM1jOwrbkPFuIjDuYDFdKDU
+         Wg+sdiD2vRhEpcwFy2Om1nITwCIEy3vij60Ev/Vh++NORc148bXj7VCl/afvQDQBRbMN
+         1B/A==
+X-Gm-Message-State: AOAM532yoI3wLqYU6iMqp5rDEomSf78IQWAx0zQ46r8p2VXtMO3SKhsm
+        d1CIFHbD3vNsJcwzpeyhaY6Vh3hxTNaZAdEfvthg
+X-Google-Smtp-Source: ABdhPJzZaJUJ9iytdCtow0Lr48mbggrWmuIS5YY0v6kb4vhoY/DawljwRSvPi9PvR8qF8W/yV7rYMKSCXNkibAXEfJE=
+X-Received: by 2002:a17:907:216f:b0:6ce:d85f:35cf with SMTP id
+ rl15-20020a170907216f00b006ced85f35cfmr1720054ejb.517.1649101889842; Mon, 04
+ Apr 2022 12:51:29 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220325173013.448231-1-jwcart2@gmail.com> <87v8vy30xz.fsf@redhat.com>
- <CAP+JOzQQ16Up41MjBKe2xpz6FMR0mhLzDhLpwu8oSahiptuN0g@mail.gmail.com>
-In-Reply-To: <CAP+JOzQQ16Up41MjBKe2xpz6FMR0mhLzDhLpwu8oSahiptuN0g@mail.gmail.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 4 Apr 2022 15:32:32 -0400
-Message-ID: <CAHC9VhR5f6CpfXZOHMgVK21npaVXzvCDJhTrxKmr=WfuEY_Qog@mail.gmail.com>
-Subject: Re: [PATCH] Add a file describing the security vulnerability handling process
-To:     James Carter <jwcart2@gmail.com>
-Cc:     Petr Lautrbach <plautrba@redhat.com>,
-        SElinux list <selinux@vger.kernel.org>
+Date:   Mon, 4 Apr 2022 15:51:19 -0400
+Message-ID: <CAHC9VhT2fgrZ5Kcv=-xizUnv0kpr0x+v827YsHYGfos88LjkcQ@mail.gmail.com>
+Subject: Re: [PATCH 4/5] selinux: Remove redundant assignments
+To:     michalorzel.eng@gmail.com
+Cc:     Eric Paris <eparis@parisplace.org>, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, nathan@kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org,
+        Stephen Smalley <stephen.smalley.work@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
@@ -65,22 +63,11 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Mar 30, 2022 at 3:07 PM James Carter <jwcart2@gmail.com> wrote:
-> On Mon, Mar 28, 2022 at 5:01 AM Petr Lautrbach <plautrba@redhat.com> wrote:
-> >
-> > James Carter <jwcart2@gmail.com> writes:
-> >
-> > > Add the file SECURITY.md which describes the SELinux userspace
-> > > security vulnerability handling process including who to contact.
-> > >
-> > > Signed-off-by: James Carter <jwcart2@gmail.com>
-> >
-> > Acked-by: Petr Lautrbach <plautrba@redhat.com>
->
-> Merged.
-> Jim
+For some reason this patch never hit my inbox, despite all the other
+patches in this series arriving ... who knows ... ?
 
-Thanks everyone :)
+Regardless, it looks good to me so I've just merged it into
+selinux/next, thanks!
 
 -- 
 paul-moore.com

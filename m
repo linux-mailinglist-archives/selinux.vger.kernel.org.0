@@ -2,173 +2,81 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 737B44F1D64
-	for <lists+selinux@lfdr.de>; Mon,  4 Apr 2022 23:39:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A05B44F1D6B
+	for <lists+selinux@lfdr.de>; Mon,  4 Apr 2022 23:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382547AbiDDVbK (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 4 Apr 2022 17:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48952 "EHLO
+        id S236208AbiDDVbO (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 4 Apr 2022 17:31:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380524AbiDDUVK (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 4 Apr 2022 16:21:10 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD7217E35
-        for <selinux@vger.kernel.org>; Mon,  4 Apr 2022 13:19:11 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id d10so7699048edj.0
-        for <selinux@vger.kernel.org>; Mon, 04 Apr 2022 13:19:11 -0700 (PDT)
+        with ESMTP id S1380556AbiDDUZg (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 4 Apr 2022 16:25:36 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3144ABCA
+        for <selinux@vger.kernel.org>; Mon,  4 Apr 2022 13:23:39 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id i27so15274285ejd.9
+        for <selinux@vger.kernel.org>; Mon, 04 Apr 2022 13:23:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=+IOD94qLZON7z5cpIIeb+KlBMTXlMtRyTG6pq9z/7sE=;
-        b=1XznDSFaeBL43LgBjOmEUUMnMaSzLra1EE4nshzUAR1prsSMutPqf14uLfx3FS29gE
-         /zkI90HkCOuxsuRP2wKobkOzkJoRkH4aGE/Ck197Xe6RG0BH3GbKpttQc1ooL8Q9e3yg
-         +gLc3YjjJaB4aSDB5M+CDRi94nmWY2YeNvMhm2V4ldT2wRMrwG69n0hS4g+7W7GUAJQZ
-         2Ok60fbFu7wN2BdPXmcfCY2S+BwuORU9QSDwOHElcoDt1LiLztnLrMft5lJCLqwObQx+
-         7IPdIEx2J94GEZ64jxysK9JK7eKTu9bq9aEBOteC/fYv0ksWMBgJ+dj9RQveG/satKBv
-         RT5Q==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=hMpZ1i92AzUQbXFyQZ2NlSP8xYByd2N+hlXPKFvi/WE=;
+        b=Y7/AwFpQO5/CiqE2LedVrELu3DzWxWPTKwe45mgAkAu7h/nIs3fbS/VxGA26QMA205
+         OaA5IkG4CwQSlLOAdDKlE990cN5GIY94tBqzQsa7Pt4vKdrB88Gl8lvK3gU6eyYYIRch
+         i73lt2vELotSokNmWIrtXVqmhOQw0bgIsOpUrvLYUAKnXxMEwYVMEZbyCj94ocjpv0xl
+         S6WGiHjUmN01olxpXyNittLlrBKmwsN3mNhVny6224t47dQnjE4uSQ9QhOi8jYq0+lCK
+         f55Q/+kx8z400q6104l3rTf2fzgq1n7z/HiqfDqmwDyrOhd4t0MVw8t4/9ej4KDxk5TU
+         5OtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=+IOD94qLZON7z5cpIIeb+KlBMTXlMtRyTG6pq9z/7sE=;
-        b=evkoU1kuZZBfX/SiVLEN/9DjT6jelpaWk5FxgAQVjU59fDQzWXs9LUDAhB8m7WYvU5
-         6W1z9tXXasULK3hpPskrATpGgeRYwxq+NjQxzjZSJ9mJsuC87dedlH4Vt/xBHOyllT21
-         oBxm71E19XnEgoHVtdKMBx+s8C818marFlgPMLeW0MkfcqPKl+1F+t55+QOzsadH3p4D
-         Bj+yAvHH/yZQgXTno6M0A1Jn10BnUDe9L0RfSq4Rsaqjt6kro2bF0lZZI+S1Pqk1HjO8
-         jXLwmuT+vL6SVtr9+j15BFnD3ly1zXn2TuZZF0qB2zWUnAyN3YDrTCjsILMKAxEV65g0
-         bMNA==
-X-Gm-Message-State: AOAM532dvIUzbNoGME39U3Pn+N1kd2E/VI9qbGoZncYvcj+xUKxsH7xJ
-        9VIkHyeXMGo+BNZkK1R/0C6nvnO44hbC5pi6VJAi
-X-Google-Smtp-Source: ABdhPJz7lr2QA4pAedBicmWoNNd3dV+nYeSKLZcGV0j1cS/xio7wu3dCf3exaEW4/+2Wf2hvpNbYqREZigKGexmGcxo=
-X-Received: by 2002:a05:6402:350d:b0:419:547f:134a with SMTP id
- b13-20020a056402350d00b00419547f134amr1969103edd.405.1649103550207; Mon, 04
- Apr 2022 13:19:10 -0700 (PDT)
+         :message-id:subject:to;
+        bh=hMpZ1i92AzUQbXFyQZ2NlSP8xYByd2N+hlXPKFvi/WE=;
+        b=ljPJrlxlSoWG+R8k3UWKsUoQEAMT+3UZVIG10fCUZlSmdCV1uk4mGlYhBdLfYKew/X
+         NG3W2Pd9s13Wg1NFWk4owW1gw2fH9bvjICfH8HWnv0xx4fDF/fTlDWPPf3q9zvHdK7ZX
+         +meP6Z8anUTZy9DvgseqIIN+X+5gyuqjlTQ2EbLGy5cF5OG9iZFtIynwAaZeDVQ5xW3D
+         we7P95ePcJWKaTusCKNv1Rh46cAFRYCt3Rsn8bnrsd2MSqcjHtUzQn4OWwc6AYL571kS
+         fRx/rXqJjQzxMWtswmcim6CI0XlbG2akCvF7xTkYb2u5Llk9XWHQiFB7blcTrEdUYcVy
+         n56w==
+X-Gm-Message-State: AOAM530Avl9qUpUPHvY7U4a4BiFVQP5Qhs9vTZvX/fmg3Y/6RIu2aROv
+        7GlyDEg+H+sYEkG+ns0ecACoEQJCq9wFElCphRXi/bSv5g==
+X-Google-Smtp-Source: ABdhPJxZWbQSzH6HVRHrotJ8TAUxEbndwrivCknG1kIqukFxNN/x5BP2th7Ss8S93kpX9E82nO3tA5ssyk2ZvZc1qLE=
+X-Received: by 2002:a17:906:4443:b0:6cf:6a7d:5f9b with SMTP id
+ i3-20020a170906444300b006cf6a7d5f9bmr1852843ejp.12.1649103817267; Mon, 04 Apr
+ 2022 13:23:37 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220217143457.75229-1-cgzones@googlemail.com> <20220308170928.58040-1-cgzones@googlemail.com>
-In-Reply-To: <20220308170928.58040-1-cgzones@googlemail.com>
+References: <164617518151.117500.8843073220563946007.stgit@olly>
+In-Reply-To: <164617518151.117500.8843073220563946007.stgit@olly>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 4 Apr 2022 16:18:59 -0400
-Message-ID: <CAHC9VhSiqvCbKQHYTGAj3vqECNto6eNm0MyzLd92kcJnvZSw1A@mail.gmail.com>
-Subject: Re: [PATCH v2] selinux: log anon inode class name
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     selinux@vger.kernel.org, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Richard Guy Briggs <rgb@redhat.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org
+Date:   Mon, 4 Apr 2022 16:23:26 -0400
+Message-ID: <CAHC9VhQarrSeBrcz5RB7PykdbYqujYmz_iBvYxHTrOvnN9A9QA@mail.gmail.com>
+Subject: Re: [RFC PATCH] selinux: runtime disable is deprecated, add some
+ ssleep() discomfort
+To:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Mar 8, 2022 at 12:09 PM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
+On Tue, Mar 1, 2022 at 5:53 PM Paul Moore <paul@paul-moore.com> wrote:
 >
-> Log the anonymous inode class name in the security hook
-> inode_init_security_anon.  This name is the key for name based type
-> transitions on the anon_inode security class on creation.  Example:
+> We deprecated the SELinux runtime disable functionality in Linux
+> v5.6, and it is time to get a bit more serious about removing it.
+> Add a five second sleep to anyone using it to help draw their
+> attention to the deprecation and provide a URL which helps explain
+> things in more detail, including how to add kernel command line
+> parameters to some of the more popular Linux distributions.
 >
->     type=3DAVC msg=3Daudit(02/16/22 22:02:50.585:216) : avc:  granted \
->         { create } for  pid=3D2136 comm=3Dmariadbd anonclass=3D"[io_uring=
-]" \
->         scontext=3Dsystem_u:system_r:mysqld_t:s0 \
->         tcontext=3Dsystem_u:system_r:mysqld_iouring_t:s0 tclass=3Danon_in=
-ode
->
-> Add a new LSM audit data type holding the inode and the class name.
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
->
+> Signed-off-by: Paul Moore <paul@paul-moore.com>
 > ---
-> v2:
->   - drop dev=3D and name=3D output for anonymous inodes, and hence simpli=
-fy
->     the common_audit_data union member.
->   - drop WARN_ON() on empty name passed to inode_init_security_anon hook
-> ---
->  include/linux/lsm_audit.h | 2 ++
->  security/lsm_audit.c      | 4 ++++
->  security/selinux/hooks.c  | 4 ++--
->  3 files changed, 8 insertions(+), 2 deletions(-)
->
-> diff --git a/include/linux/lsm_audit.h b/include/linux/lsm_audit.h
-> index 17d02eda9538..97a8b21eb033 100644
-> --- a/include/linux/lsm_audit.h
-> +++ b/include/linux/lsm_audit.h
-> @@ -76,6 +76,7 @@ struct common_audit_data {
->  #define LSM_AUDIT_DATA_IBENDPORT 14
->  #define LSM_AUDIT_DATA_LOCKDOWN 15
->  #define LSM_AUDIT_DATA_NOTIFICATION 16
-> +#define LSM_AUDIT_DATA_ANONINODE       17
->         union   {
->                 struct path path;
->                 struct dentry *dentry;
-> @@ -96,6 +97,7 @@ struct common_audit_data {
->                 struct lsm_ibpkey_audit *ibpkey;
->                 struct lsm_ibendport_audit *ibendport;
->                 int reason;
-> +               const char *anonclass;
->         } u;
->         /* this union contains LSM specific data */
->         union {
-> diff --git a/security/lsm_audit.c b/security/lsm_audit.c
-> index 1897cbf6fc69..981f6a4e4590 100644
-> --- a/security/lsm_audit.c
-> +++ b/security/lsm_audit.c
-> @@ -433,6 +433,10 @@ static void dump_common_audit_data(struct audit_buff=
-er *ab,
->                 audit_log_format(ab, " lockdown_reason=3D\"%s\"",
->                                  lockdown_reasons[a->u.reason]);
->                 break;
-> +       case LSM_AUDIT_DATA_ANONINODE:
-> +               audit_log_format(ab, " anonclass=3D");
-> +               audit_log_untrustedstring(ab, a->u.anonclass);
+>  security/selinux/selinuxfs.c |    2 ++
+>  1 file changed, 2 insertions(+)
 
-My apologies, I didn't notice this in the previous patch ... I don't
-think we need to log this as an untrusted string as the string value
-is coming from the kernel, not userspace, so we could rewrite the
-above as the following:
+Merged into selinux/next.
 
-  audit_log_format(ab, " anonclass=3D%s", a->u.anonclass);
-
-... if you are okay with that, I can make the change when I merge the
-patch or you can submit another revision, let me know which you would
-prefer.
-
-The rest of the patch looks good, thanks!
-
-> +               break;
->         } /* switch (a->type) */
->  }
->
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index b12e14b2797b..49c0abfd2f6a 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2965,8 +2965,8 @@ static int selinux_inode_init_security_anon(struct =
-inode *inode,
->          * allowed to actually create this type of anonymous inode.
->          */
->
-> -       ad.type =3D LSM_AUDIT_DATA_INODE;
-> -       ad.u.inode =3D inode;
-> +       ad.type =3D LSM_AUDIT_DATA_ANONINODE;
-> +       ad.u.anonclass =3D name ? (const char *)name->name : "?";
->
->         return avc_has_perm(&selinux_state,
->                             tsec->sid,
-> --
-> 2.35.1
-
---=20
+-- 
 paul-moore.com

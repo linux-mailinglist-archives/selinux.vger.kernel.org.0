@@ -2,56 +2,56 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 28EDC4F1EF3
-	for <lists+selinux@lfdr.de>; Tue,  5 Apr 2022 00:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A23914F1E0F
+	for <lists+selinux@lfdr.de>; Tue,  5 Apr 2022 00:24:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231368AbiDDVzA (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 4 Apr 2022 17:55:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42732 "EHLO
+        id S231133AbiDDVzD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 4 Apr 2022 17:55:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58380 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386961AbiDDVjq (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 4 Apr 2022 17:39:46 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0592F2E08E
-        for <selinux@vger.kernel.org>; Mon,  4 Apr 2022 14:31:29 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id f18so7621284edc.5
-        for <selinux@vger.kernel.org>; Mon, 04 Apr 2022 14:31:29 -0700 (PDT)
+        with ESMTP id S1386472AbiDDVmp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 4 Apr 2022 17:42:45 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5544C1EC6C
+        for <selinux@vger.kernel.org>; Mon,  4 Apr 2022 14:34:27 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id b24so12647952edu.10
+        for <selinux@vger.kernel.org>; Mon, 04 Apr 2022 14:34:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=nRcZB8T+tRRvFOzVRsj0VObje4ZdujR2wKTrNI4xIok=;
-        b=hsD17ZhZPYA/avCD0h1vXFG7B7yZz84BKtCbO8kiVz5w2oprqPIvnlTCQ4LOvKZ6CE
-         iriKUQW2xItiF4ysOoQp9S91s7xpdBCWJhzchh/YURfwZl3Dg+BtBS4ibggRXxjtQeWU
-         o8EX+2iuF0APkj67lTb5CeTn2A0TU7pPaGByvS/nIbTRKL/rLeMMn5XDcy2ldzZlREJ+
-         0NY7/AN/3ns3nyPwYtXOr8EoiZLrKF/BGego+W6BXSIv5UK2fBppBjCbl2C4VJ75Frnc
-         zL9947cmBn3WplbZY4cvN7kEGWORtywrJCvURz7WAsW6ChRRUeHHjDMDtL1LrfTAl64q
-         CO/w==
+        bh=YzwUyuTI5gSLqTotPRzVG9YIm07ovz4YulzYRDgpudU=;
+        b=XYhkRN8zHKNuTpYyHf/m75FKFfdLyDPCSnBAzycymo4yzHe57aEjX/WgnqUbN9ZT9W
+         mwTZ+LJgDsQPNF6hbA2G3eQ3zzR5ShIr2w11jKQAUZMlvDt7G1cuhTabgmkkGpJStajE
+         zsMsZIwBJm0WoCkwmfzoLejiiGk6JZn6ESj5R3hxg5zOIKbOGao/R9vud3sykfYNQK2m
+         eSqeNXz5mAsmFsF/SyCKr/j8oDl3szFEr6sqHUwcmz+hOW6RcVw8clof1BtSs6U5ojck
+         23I4YoPRUfPY+1LlMGpj8hnZZkOo8PBcDkKj9zvXUjDlbMVPwY26GXfFFS9YSE77CmI9
+         Gfww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=nRcZB8T+tRRvFOzVRsj0VObje4ZdujR2wKTrNI4xIok=;
-        b=4LfsJtMHhRO4luKy2n+G5Szp21fBD0HL1W9Qx88E6kBJlnxrjK7VTCl3uKz++ieRnf
-         w5n5Q5GdwV7WntUvJZrgObfsnVx/AKz0wtAFgcyiK619rvyxLFKvNw+35B7Gi2GLqfS3
-         z6G5r1gYIMZy+n5xlfTnaNLM9RRsKZiDaFW78ujpd00fTMNdq+gaQOliZQhPOIf0yy6L
-         XZnOJ9uHkzko2yJG6Xj3QvLV7oNp+vt9qYrsmfL+q3XCLc+iT4V0w3PlXRDmVJBLqnI3
-         EdQTxCoqh8T6lWR2mATBpAFqZw+K95yMFJxXQpNw8yIyzSUHmzrHFEVCenBtQaL+HGNa
-         0Pmw==
-X-Gm-Message-State: AOAM532hH7/33/F54imSSTp9J7Ym5pGGOAxwS1b+NtCkldjV/EUzV+r+
-        9/TDeq7w0FPddHKtMIHyoqCxULnJ7OyW8En30qYAWl+vZw==
-X-Google-Smtp-Source: ABdhPJxwTGeVhHQskn68X0MscJhQV5E5HZ9DPgFZ9S4Aps9Sxms8FnJq5vu6/dwYCWomacd4gEl6Wo7iCCFFFmQaRwk=
-X-Received: by 2002:a05:6402:42d4:b0:412:c26b:789 with SMTP id
- i20-20020a05640242d400b00412c26b0789mr176933edc.232.1649107878721; Mon, 04
- Apr 2022 14:31:18 -0700 (PDT)
+        bh=YzwUyuTI5gSLqTotPRzVG9YIm07ovz4YulzYRDgpudU=;
+        b=4BzgplxX4fEtoM6C+kSJjaNS6KFl60uY7dnO+U3HFD6up3y3E/rBk/lOKlEjxXduRZ
+         piyu+BIC4AwGUcjHQuczPPbzJNfNuCpFg4tLQTXqrRHRo5NmOQYEvi5RGmVKqBWmuCdm
+         ZyL9ecHUaYqKEFns44qDHIvYNVVyPKTddPqZ1m7Dx3IITCnJRfA9rVZm0TmmHC81ASvL
+         HxvXCjHOMS+tydkkS9+9p2ETZF0hcZDw8WZ4oscPDigCJ+kMUOAXqViVcyy3M8GJtT7G
+         5xL1wcv9+9ejg4naWAuj8TObqbaqVpiW2ZFlxWnnrWr8PgsOId4kM2X9w1yvLa0IPwL6
+         0xzg==
+X-Gm-Message-State: AOAM532z5BN7YzCC3SQRqMIYtw3FwczGpAH9xqWYDzIdKR0yW73NFfko
+        RuE2oyq5951xyczjncD6wosT/TKqTA+5JhA4rgVBrWF/lQ==
+X-Google-Smtp-Source: ABdhPJwZUICQSBI6XZgNY1ZNtweE3kg7XsWpHKlPeM0jut/3YrZ9DYqcrIoZH9ClEjf9xGusEPO19RyVkbrR6FOEIxQ=
+X-Received: by 2002:a05:6402:d2:b0:413:2e50:d6fd with SMTP id
+ i18-20020a05640200d200b004132e50d6fdmr157380edu.171.1649108065797; Mon, 04
+ Apr 2022 14:34:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220321105250.148231-1-dominick.grift@defensec.nl> <20220321115054.150336-1-dominick.grift@defensec.nl>
-In-Reply-To: <20220321115054.150336-1-dominick.grift@defensec.nl>
+References: <20220404083746.5929-1-richard_c_haines@btinternet.com>
+In-Reply-To: <20220404083746.5929-1-richard_c_haines@btinternet.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 4 Apr 2022 17:31:07 -0400
-Message-ID: <CAHC9VhT9mUov8M8D=7Hqu-M4-NZ20uq_ptTPmHt2uka2c3w7kw@mail.gmail.com>
-Subject: Re: [PATCH v2] optional statement is not valid in if and require statement
-To:     Dominick Grift <dominick.grift@defensec.nl>
+Date:   Mon, 4 Apr 2022 17:34:14 -0400
+Message-ID: <CAHC9VhTP7Ww4G6wK3eFbkTkH1BRdP6f7LVzKfVYGdRNEUWMjkQ@mail.gmail.com>
+Subject: Re: [PATCH Notebook] Reference Policy: Module versioning now optional
+To:     Richard Haines <richard_c_haines@btinternet.com>
 Cc:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -63,21 +63,20 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Mar 21, 2022 at 7:52 AM Dominick Grift
-<dominick.grift@defensec.nl> wrote:
+On Mon, Apr 4, 2022 at 4:37 AM Richard Haines
+<richard_c_haines@btinternet.com> wrote:
 >
-> the conditional-policy-statements chapter describes which statements
-> are allowed in if statements and optional is not one of them
+> Since Reference Policy release 2.20220106 the version_number argument
+> is optional. If missing '1' is set as a default to satisfy the policy
+> syntax.
 >
-> Signed-off-by: Dominick Grift <dominick.grift@defensec.nl>
+> Signed-off-by: Richard Haines <richard_c_haines@btinternet.com>
 > ---
-> v2: adjusts kernel_policy_language.md as well
->
->  src/kernel_policy_language.md    | 2 +-
->  src/modular_policy_statements.md | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
+>  src/modular_policy_statements.md | 4 +++-
+>  src/reference_policy.md          | 4 +++-
+>  2 files changed, 6 insertions(+), 2 deletions(-)
 
-Merged, thanks!
+Merged, thank you!
 
 -- 
 paul-moore.com

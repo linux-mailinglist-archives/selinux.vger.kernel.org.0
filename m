@@ -2,67 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 733734F4347
-	for <lists+selinux@lfdr.de>; Tue,  5 Apr 2022 23:58:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCB154F4886
+	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 02:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231672AbiDEOpY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 5 Apr 2022 10:45:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49458 "EHLO
+        id S232353AbiDEVl3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 5 Apr 2022 17:41:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381525AbiDEMya (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 5 Apr 2022 08:54:30 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C701ECEC;
-        Tue,  5 Apr 2022 04:58:36 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id d5so22747843lfj.9;
-        Tue, 05 Apr 2022 04:58:36 -0700 (PDT)
+        with ESMTP id S1383127AbiDEPOk (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 5 Apr 2022 11:14:40 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB30C17584D
+        for <selinux@vger.kernel.org>; Tue,  5 Apr 2022 06:26:38 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id r13so26688872ejd.5
+        for <selinux@vger.kernel.org>; Tue, 05 Apr 2022 06:26:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=kHEqj5M158n+dGH/l2poz1rrg1KKwE9IbzvYK9DFF6U=;
-        b=VoVtihAxFWewhd6ZlzhhBU39ctV48Q8C4dQJB6R/JTmzssVOUh5k1I5yDPQOAoA7vO
-         NxTh7DNeI5r/a5xP8vj98bA/UPIGYJ1xTbB9tRmoF/G+LtwRrhn/ytBOuFaT5knOifoz
-         DMgYASiCFphlLhS9HUtpEiv5kq5nbLKqAUGHUSscxGERDm9jK68tW0OUsI6GTct2LnEC
-         3dPzZuckfY9g+wyYOlgH/04UxxyI91UVyGWlk2LqtB+qRVxQALwE2kc+sys7jfggX1Jh
-         H/1fmf6grIF2KRC6rl2/2assPNDu9L02KhjMgH1aYEVEZ42UWAc7oNaBRBe5FvIprv8p
-         O3Cw==
+        d=googlemail.com; s=20210112;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=GEzap0/9F5oXhEiX19oOnrbM44NUaH+4hANHPd1nDm0=;
+        b=KAOoge+Ggkr4+qyfER7sKOGc9Lioljo9BSMg/JrcV2qqKVvzjzV0H2uKi7SgkwfqQb
+         6c1IqHQvBwXhFLmb/S3a4WEycN72mVxY9ikwYixsmrpQPuVt9IJnkEd5xLHM+VjmU9ir
+         8a9XaLQnZCW87U9dDmR6+xMqOqRyxfC2Ro7JOsKkH3OAmzCk+uaNofgyOvSrpWS6vFa9
+         HUIShUg5aqR/KG0aErUOzm9eRHy0j1GLnvhn+j7LuXuIkg8t6jFe6hBYaFHFM6oVuU3p
+         7HnacA/TjcKBfksDd8lsVEM6v/o8UY2OhDMme+Ofo390EWCyUf04YOe9ulv0TgYKrM8E
+         vn0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kHEqj5M158n+dGH/l2poz1rrg1KKwE9IbzvYK9DFF6U=;
-        b=fYFdrLDG3VBuuCsVn7lRHsmSNHIDFxCJZJYWlYbqq/Sj3WhnGL9QPNxWMaz70eegVK
-         2LI8uRdz2XYdv+u1MWSwyjUtrYdXbk3m/mxGTt/eMKO7WWoM6O58ckfEc0duKnh1xVSH
-         yhf/z64JBqIK2rDtTxBulmV5j5xODBQ03H7wqGSIgUJ4V++iRxujLYKeww7Omu0qqjhG
-         ekoLXwuqKkG3T6vwSYbXapArAR/fxMvfZ2Zgl++32dto6df1VVk55vQqeyC8us4qvOt4
-         pcXMwt0ntqWqfrdH0X8sGLD9WZdKAv+T0xEpyAEispGhrp1XqGSGKne8eINJzfmoFoDq
-         Z26A==
-X-Gm-Message-State: AOAM531W+pETYIJjM2Yy0af4w1hbMrBVKSys+YGEipTjR7aMXKX7tpP8
-        Fi1eni00cF+qv6+SSpHjbV1MFB+9REWP07H1sO8=
-X-Google-Smtp-Source: ABdhPJzHY2DzJ/dKMTTA6hLzbE+/2cS2FWiicU36xSAhh2CeuZ55sVJEEyj7egPZFO5r6QCyKTgaktYWG3fYXdcd9Rw=
-X-Received: by 2002:ac2:510f:0:b0:44a:5ccc:99fb with SMTP id
- q15-20020ac2510f000000b0044a5ccc99fbmr2399027lfb.38.1649159914944; Tue, 05
- Apr 2022 04:58:34 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=GEzap0/9F5oXhEiX19oOnrbM44NUaH+4hANHPd1nDm0=;
+        b=i+PkHl1Z8/nWMPuArrSoxtBGiBB38bpNhhfshWNLgMighex0utRVTH7o7M03Sz5CEl
+         o1lPKZkM+GSj+qhIl5TYMTMTLg9uYpcHHzARFFyhbMQAv2qEOQs41RJGAPOB8b5p6Xld
+         Eyn60TwZNSe9VsdJH5s3hIBIKgPTbPzDr18mBYbVMs1u82UmIlllXga09bV5K3gThtxb
+         Ga2uE1rrwee22fGIYijN5sKajcAXy/O6EDHzonZTmpJVBfRYYK33ORaG45EuB9QgH3jS
+         vXuIx9mdBouXe3T+3r0YFtpmGPBpDn6wt8UEADiH/qUjI1s5NReDnbJCwrm+EUGpopsC
+         pxbg==
+X-Gm-Message-State: AOAM530qLzdPHVcO2SLvKcplRDIB/b1bfhuwzDxNZUZhG6WD9P4aJzx4
+        yrpDoI/O1feWjgAeq+oksg2zjaCgNIE=
+X-Google-Smtp-Source: ABdhPJxL3X5TNZwldWm4bdj3/DsYCB3xLBnoj8aDau2Sa4OE8zy1/+ZN08DlDHOIK7NQPtJalLI7Mg==
+X-Received: by 2002:a17:907:7f8d:b0:6da:b3d6:a427 with SMTP id qk13-20020a1709077f8d00b006dab3d6a427mr3444310ejc.509.1649165197027;
+        Tue, 05 Apr 2022 06:26:37 -0700 (PDT)
+Received: from debianHome.localdomain (dynamic-077-008-134-094.77.8.pool.telefonica.de. [77.8.134.94])
+        by smtp.gmail.com with ESMTPSA id l26-20020a1709062a9a00b006e7ee7ad20bsm2769901eje.149.2022.04.05.06.26.36
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Apr 2022 06:26:36 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH v2] libselinux/utils: check for valid contexts to improve error causes
+Date:   Tue,  5 Apr 2022 15:26:30 +0200
+Message-Id: <20220405132630.47946-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.35.1
+In-Reply-To: <20220331144653.31178-1-cgzones@googlemail.com>
+References: <20220331144653.31178-1-cgzones@googlemail.com>
 MIME-Version: 1.0
-References: <a77a584b3ce9761eb5dda5828192e1cab94571f0.1649037151.git.lucien.xin@gmail.com>
- <CAFqZXNt=Ca+x7PaYgc1jXq-3cKxin-_=UNCSiyVHjbP7OYUKvA@mail.gmail.com>
-In-Reply-To: <CAFqZXNt=Ca+x7PaYgc1jXq-3cKxin-_=UNCSiyVHjbP7OYUKvA@mail.gmail.com>
-From:   Xin Long <lucien.xin@gmail.com>
-Date:   Tue, 5 Apr 2022 07:58:20 -0400
-Message-ID: <CADvbK_fTnWhnuxR7JkNYeoSB4a1nSX7O0jg4Mif6V_or-tOy3w@mail.gmail.com>
-Subject: Re: [PATCH net] sctp: use the correct skb for security_sctp_assoc_request
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     network dev <netdev@vger.kernel.org>,
-        "linux-sctp @ vger . kernel . org" <linux-sctp@vger.kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Neil Horman <nhorman@tuxdriver.com>,
-        Linux Security Module list 
-        <linux-security-module@vger.kernel.org>,
-        SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -73,87 +69,188 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Apr 4, 2022 at 6:15 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> Adding LSM and SELinux lists to CC for awareness; the original patch
-> is available at:
-> https://lore.kernel.org/netdev/a77a584b3ce9761eb5dda5828192e1cab94571f0.1649037151.git.lucien.xin@gmail.com/T/
-> https://patchwork.kernel.org/project/netdevbpf/patch/a77a584b3ce9761eb5dda5828192e1cab94571f0.1649037151.git.lucien.xin@gmail.com/
->
-> On Mon, Apr 4, 2022 at 3:53 AM Xin Long <lucien.xin@gmail.com> wrote:
-> >
-> > Yi Chen reported an unexpected sctp connection abort, and it occurred when
-> > COOKIE_ECHO is bundled with DATA Fragment by SCTP HW GSO. As the IP header
-> > is included in chunk->head_skb instead of chunk->skb, it failed to check
-> > IP header version in security_sctp_assoc_request().
-> >
-> > According to Ondrej, SELinux only looks at IP header (address and IPsec
-> > options) and XFRM state data, and these are all included in head_skb for
-> > SCTP HW GSO packets. So fix it by using head_skb when calling
-> > security_sctp_assoc_request() in processing COOKIE_ECHO.
->
-> The logic looks good to me, but I still have one unanswered concern.
-> The head_skb member of struct sctp_chunk is defined inside a union:
->
-> struct sctp_chunk {
->         [...]
->         union {
->                 /* In case of GSO packets, this will store the head one */
->                 struct sk_buff *head_skb;
->                 /* In case of auth enabled, this will point to the shkey */
->                 struct sctp_shared_key *shkey;
->         };
->         [...]
-> };
->
-> What guarantees that this chunk doesn't have "auth enabled" and the
-> head_skb pointer isn't actually a non-NULL shkey pointer? Maybe it's
-> obvious to a Linux SCTP expert, but at least for me as an outsider it
-> isn't - that's usually a good hint that there should be a code comment
-> explaining it.
-Hi Ondrej,
+Return more detailed error messages when the supplied contexts are
+invalid.
 
-shkey is for tx skbs only, while head_skb is for skbs on rx path.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 
-Thanks.
+---
+v2:
+   check new context in validatetrans
+---
+ libselinux/utils/compute_av.c      | 10 ++++++++++
+ libselinux/utils/compute_create.c  | 12 +++++++++++-
+ libselinux/utils/compute_member.c  | 12 +++++++++++-
+ libselinux/utils/compute_relabel.c | 10 ++++++++++
+ libselinux/utils/getdefaultcon.c   |  5 +++++
+ libselinux/utils/selinuxexeccon.c  |  6 +++++-
+ libselinux/utils/validatetrans.c   | 15 +++++++++++++++
+ 7 files changed, 67 insertions(+), 3 deletions(-)
 
->
-> >
-> > Fixes: e215dab1c490 ("security: call security_sctp_assoc_request in sctp_sf_do_5_1D_ce")
-> > Reported-by: Yi Chen <yiche@redhat.com>
-> > Signed-off-by: Xin Long <lucien.xin@gmail.com>
-> > ---
-> >  net/sctp/sm_statefuns.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
-> > index 7f342bc12735..883f9b849ee5 100644
-> > --- a/net/sctp/sm_statefuns.c
-> > +++ b/net/sctp/sm_statefuns.c
-> > @@ -781,7 +781,7 @@ enum sctp_disposition sctp_sf_do_5_1D_ce(struct net *net,
-> >                 }
-> >         }
-> >
-> > -       if (security_sctp_assoc_request(new_asoc, chunk->skb)) {
-> > +       if (security_sctp_assoc_request(new_asoc, chunk->head_skb ?: chunk->skb)) {
-> >                 sctp_association_free(new_asoc);
-> >                 return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-> >         }
-> > @@ -2262,7 +2262,7 @@ enum sctp_disposition sctp_sf_do_5_2_4_dupcook(
-> >         }
-> >
-> >         /* Update socket peer label if first association. */
-> > -       if (security_sctp_assoc_request(new_asoc, chunk->skb)) {
-> > +       if (security_sctp_assoc_request(new_asoc, chunk->head_skb ?: chunk->skb)) {
-> >                 sctp_association_free(new_asoc);
-> >                 return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
-> >         }
-> > --
-> > 2.31.1
-> >
->
-> --
-> Ondrej Mosnacek
-> Software Engineer, Linux Security - SELinux kernel
-> Red Hat, Inc.
->
+diff --git a/libselinux/utils/compute_av.c b/libselinux/utils/compute_av.c
+index df4a77e8..ef08338f 100644
+--- a/libselinux/utils/compute_av.c
++++ b/libselinux/utils/compute_av.c
+@@ -17,6 +17,16 @@ int main(int argc, char **argv)
+ 		exit(1);
+ 	}
+ 
++	if (security_check_context(argv[1])) {
++		fprintf(stderr, "%s:  invalid source context '%s'\n", argv[0], argv[1]);
++		exit(4);
++	}
++
++	if (security_check_context(argv[2])) {
++		fprintf(stderr, "%s:  invalid target context '%s'\n", argv[0], argv[2]);
++		exit(5);
++	}
++
+ 	tclass = string_to_security_class(argv[3]);
+ 	if (!tclass) {
+ 		fprintf(stderr, "%s:  invalid class '%s'\n", argv[0], argv[3]);
+diff --git a/libselinux/utils/compute_create.c b/libselinux/utils/compute_create.c
+index 449ccd90..63029c19 100644
+--- a/libselinux/utils/compute_create.c
++++ b/libselinux/utils/compute_create.c
+@@ -17,9 +17,19 @@ int main(int argc, char **argv)
+ 		exit(1);
+ 	}
+ 
++	if (security_check_context(argv[1])) {
++		fprintf(stderr, "%s:  invalid source context '%s'\n", argv[0], argv[1]);
++		exit(4);
++	}
++
++	if (security_check_context(argv[2])) {
++		fprintf(stderr, "%s:  invalid target context '%s'\n", argv[0], argv[2]);
++		exit(5);
++	}
++
+ 	tclass = string_to_security_class(argv[3]);
+ 	if (!tclass) {
+-		fprintf(stderr, "Invalid class '%s'\n", argv[3]);
++		fprintf(stderr, "%s:  invalid class '%s'\n", argv[0], argv[3]);
+ 		exit(2);
+ 	}
+ 
+diff --git a/libselinux/utils/compute_member.c b/libselinux/utils/compute_member.c
+index c6dad19e..1ef47c25 100644
+--- a/libselinux/utils/compute_member.c
++++ b/libselinux/utils/compute_member.c
+@@ -17,9 +17,19 @@ int main(int argc, char **argv)
+ 		exit(1);
+ 	}
+ 
++	if (security_check_context(argv[1])) {
++		fprintf(stderr, "%s:  invalid source context '%s'\n", argv[0], argv[1]);
++		exit(4);
++	}
++
++	if (security_check_context(argv[2])) {
++		fprintf(stderr, "%s:  invalid target context '%s'\n", argv[0], argv[2]);
++		exit(5);
++	}
++
+ 	tclass = string_to_security_class(argv[3]);
+ 	if (!tclass) {
+-		fprintf(stderr, "Invalid class '%s'\n", argv[3]);
++		fprintf(stderr, "%s:  invalid class '%s'\n", argv[0], argv[3]);
+ 		exit(2);
+ 	}
+ 
+diff --git a/libselinux/utils/compute_relabel.c b/libselinux/utils/compute_relabel.c
+index 85c760bc..f6a957da 100644
+--- a/libselinux/utils/compute_relabel.c
++++ b/libselinux/utils/compute_relabel.c
+@@ -17,6 +17,16 @@ int main(int argc, char **argv)
+ 		exit(1);
+ 	}
+ 
++	if (security_check_context(argv[1])) {
++		fprintf(stderr, "%s:  invalid source context '%s'\n", argv[0], argv[1]);
++		exit(4);
++	}
++
++	if (security_check_context(argv[2])) {
++		fprintf(stderr, "%s:  invalid target context '%s'\n", argv[0], argv[2]);
++		exit(5);
++	}
++
+ 	tclass = string_to_security_class(argv[3]);
+ 	if (!tclass) {
+ 		fprintf(stderr, "%s:  invalid class '%s'\n", argv[0], argv[3]);
+diff --git a/libselinux/utils/getdefaultcon.c b/libselinux/utils/getdefaultcon.c
+index 957c1cb2..590e98d9 100644
+--- a/libselinux/utils/getdefaultcon.c
++++ b/libselinux/utils/getdefaultcon.c
+@@ -68,6 +68,11 @@ int main(int argc, char **argv)
+ 	} else
+ 		cur_context = argv[optind + 1];
+ 
++	if (security_check_context(cur_context)) {
++		fprintf(stderr, "%s:  invalid from context '%s'\n", argv[0], cur_context);
++		return 3;
++	}
++
+ 	if ((ret = getseuser(user, service, &seuser, &dlevel)) == 0) {
+ 		if (! level) level=dlevel;
+ 		if (role != NULL && role[0]) 
+diff --git a/libselinux/utils/selinuxexeccon.c b/libselinux/utils/selinuxexeccon.c
+index b50e7886..66754b6a 100644
+--- a/libselinux/utils/selinuxexeccon.c
++++ b/libselinux/utils/selinuxexeccon.c
+@@ -16,7 +16,7 @@ static __attribute__ ((__noreturn__)) void usage(const char *name, const char *d
+ 	exit(rc);
+ }
+ 
+-static char * get_selinux_proc_context(const char *command, char * execcon) {
++static char * get_selinux_proc_context(const char *command, const char * execcon) {
+ 	char * fcon = NULL, *newcon = NULL;
+ 
+ 	int ret = getfilecon(command, &fcon);
+@@ -43,6 +43,10 @@ int main(int argc, char **argv)
+ 		}
+ 	} else {
+ 		con = strdup(argv[2]);
++		if (security_check_context(con)) {
++			fprintf(stderr, "%s:  invalid from context '%s'\n", argv[0], con);
++			return -1;
++		}
+ 	}
+ 
+ 	proccon = get_selinux_proc_context(argv[1], con);
+diff --git a/libselinux/utils/validatetrans.c b/libselinux/utils/validatetrans.c
+index 1db33e66..9d642a93 100644
+--- a/libselinux/utils/validatetrans.c
++++ b/libselinux/utils/validatetrans.c
+@@ -17,12 +17,27 @@ int main(int argc, char **argv)
+ 		exit(1);
+ 	}
+ 
++	if (security_check_context(argv[1])) {
++		fprintf(stderr, "%s:  invalid source context '%s'\n", argv[0], argv[1]);
++		exit(4);
++	}
++
++	if (security_check_context(argv[2])) {
++		fprintf(stderr, "%s:  invalid target context '%s'\n", argv[0], argv[2]);
++		exit(5);
++	}
++
+ 	tclass = string_to_security_class(argv[3]);
+ 	if (!tclass) {
+ 		fprintf(stderr, "%s:  invalid class '%s'\n", argv[0], argv[3]);
+ 		exit(2);
+ 	}
+ 
++	if (security_check_context(argv[4])) {
++		fprintf(stderr, "%s:  invalid new context '%s'\n", argv[0], argv[4]);
++		exit(6);
++	}
++
+ 	ret = security_validatetrans(argv[1], argv[2], tclass, argv[4]);
+ 	printf("security_validatetrans returned %d errno: %s\n", ret, strerror(errno));
+ 
+-- 
+2.35.1
+

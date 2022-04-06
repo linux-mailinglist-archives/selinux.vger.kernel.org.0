@@ -2,58 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2363C4F5E90
-	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 15:04:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC654F5EBC
+	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 15:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230314AbiDFNE1 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 6 Apr 2022 09:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46762 "EHLO
+        id S231476AbiDFNCQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 6 Apr 2022 09:02:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231919AbiDFNDp (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 6 Apr 2022 09:03:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0EC514DBFFB
-        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 02:32:09 -0700 (PDT)
+        with ESMTP id S231512AbiDFNBv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 6 Apr 2022 09:01:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A64FC5BE12F
+        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 02:26:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1649237472;
+        s=mimecast20190719; t=1649237131;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=cTn/X9Itj5mbXY8lzRe4R1XbyPDiJvHPpZSph7Uw4Jw=;
-        b=LwNQRN8ioe1YywvoiQXxA4MjCQpnLswfIexM37Deaygu+1GBEcAlKsnVaXtTKIUeBGv30s
-        MpJKBb6iiYKC0Hp/i8pwrjBrZjPeRaCUuDl6QNzlFz+rdkAe0scB2zOoA59a/sqMGTCq/c
-        dInhovu/XD/DBddxX9d0BXBCULPwOWU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=7KqfrsIUXKYO2fQy99gSa5dnT265nm7oP2c2id6CCNk=;
+        b=FjLp3Zizwef/Tl2CH6D9dPqP6lk2ENCLtFd7w9wdVkWMS5AJynBt6v1SMtOKOt7ogbh1SJ
+        7fxanM8BmkeiPkuatNK4tZB2dNAFuV9YBMZB9JmLkauqCdloASdtTZoKD4bKbmG7BmeuF5
+        We9KXJm/P/SPacF4JCZUxN476YpYM9I=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-664-lqb0voBwPm6LemCqEcQnxw-1; Wed, 06 Apr 2022 05:24:05 -0400
-X-MC-Unique: lqb0voBwPm6LemCqEcQnxw-1
+ us-mta-97-QPd1CmmPNj6cYzB50jd69w-1; Wed, 06 Apr 2022 05:25:28 -0400
+X-MC-Unique: QPd1CmmPNj6cYzB50jd69w-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5419B3811A2E
-        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 09:24:05 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D57B851784;
+        Wed,  6 Apr 2022 09:25:24 +0000 (UTC)
 Received: from localhost (unknown [10.40.193.153])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 05A11401E9C;
-        Wed,  6 Apr 2022 09:24:04 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 4321F403171;
+        Wed,  6 Apr 2022 09:25:24 +0000 (UTC)
 From:   Petr Lautrbach <plautrba@redhat.com>
 To:     SElinux list <selinux@vger.kernel.org>
-Cc:     Joseph Marrero Corchado <jmarrero@redhat.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>
-Subject: Re: [PATCH v3] libsemanage: Fall back to semanage_copy_dir when
- rename() fails
-In-Reply-To: <CAFqZXNstUu0s4P2iXPmdvdu-86_tajuV+RQKzMK_+xYBk-y+bw@mail.gmail.com>
-References: <20220324095251.1561597-1-plautrba@redhat.com>
- <20220324120034.1570408-1-plautrba@redhat.com>
- <CAFqZXNstUu0s4P2iXPmdvdu-86_tajuV+RQKzMK_+xYBk-y+bw@mail.gmail.com>
-Date:   Wed, 06 Apr 2022 11:24:04 +0200
-Message-ID: <87pmlupnt7.fsf@redhat.com>
+Cc:     James Carter <jwcart2@gmail.com>,
+        Christian =?utf-8?Q?G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: Re: [PATCH] libsepol/cil: silence GCC 12 array-bounds false positive
+In-Reply-To: <CAP+JOzSvNxZP86C5xvQbbQ_JopwoYCj5AikS3-djjww4fVVu7Q@mail.gmail.com>
+References: <20220331144343.30689-1-cgzones@googlemail.com>
+ <CAP+JOzSvNxZP86C5xvQbbQ_JopwoYCj5AikS3-djjww4fVVu7Q@mail.gmail.com>
+Date:   Wed, 06 Apr 2022 11:25:23 +0200
+Message-ID: <87mtgypnr0.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,75 +61,75 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Ondrej Mosnacek <omosnace@redhat.com> writes:
+James Carter <jwcart2@gmail.com> writes:
 
-> On Thu, Mar 24, 2022 at 1:01 PM Petr Lautrbach <plautrba@redhat.com> wrote:
->> In some circumstances, like semanage-store being on overlayfs, rename()
->> could fail with EXDEV - Invalid cross-device link. This is due to the
->> fact that overlays doesn't support rename() if source and target are not
->> on the same layer, e.g. in containers built from several layers. Even
->> though it's not atomic operation, it's better to try to copy files from
->> src to dst on our own in this case. Next rebuild will probably not fail
->> as the new directories will be on the same layer.
+> On Thu, Mar 31, 2022 at 11:34 AM Christian G=C3=B6ttsche
+> <cgzones@googlemail.com> wrote:
 >>
->> Fixes: https://github.com/SELinuxProject/selinux/issues/343
+>> GCC 12 produces an array-bounds warning:
 >>
->> Reproducer:
+>>     In file included from ../include/sepol/policydb/context.h:23,
+>>                      from ../include/sepol/policydb/policydb.h:62,
+>>                      from ../cil/src/cil_binary.c:41:
+>>     In function =E2=80=98mls_level_init=E2=80=99,
+>>         inlined from =E2=80=98mls_level_destroy=E2=80=99 at ../include/s=
+epol/policydb/mls_types.h:99:2,
+>>         inlined from =E2=80=98mls_level_destroy=E2=80=99 at ../include/s=
+epol/policydb/mls_types.h:92:20,
+>>         inlined from =E2=80=98mls_range_destroy=E2=80=99 at ../include/s=
+epol/policydb/mls_types.h:149:2,
+>>         inlined from =E2=80=98cil_rangetransition_to_policydb=E2=80=99 a=
+t ../cil/src/cil_binary.c:3231:6:
+>>     ../include/sepol/policydb/mls_types.h:89:9: error: =E2=80=98memset=
+=E2=80=99 offset [0, 23] is out of the bounds [0, 0] [-Werror=3Darray-bound=
+s]
+>>        89 |         memset(level, 0, sizeof(mls_level_t));
+>>           |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>     ../include/sepol/policydb/mls_types.h:89:9: error: =E2=80=98memset=
+=E2=80=99 offset [0, 23] is out of the bounds [0, 0] [-Werror=3Darray-bound=
+s]
+>>     cc1: all warnings being treated as errors
 >>
->>     $ cd selinux1
+>> This is a false positive, by inspecting the code and compiling with -O3
+>> and -flto.
 >>
->>     $ cat Dockerfile
->>     FROM fedora:35
->>     RUN dnf install -y selinux-policy selinux-policy-targeted
+>> Closes: https://github.com/SELinuxProject/selinux/issues/339
 >>
->>     $ podman build -t localhost/selinux . --no-cache
->>
->>     $ cd ../selinux2
->>
->>     $ cat Dockerfile
->>     FROM localhost/selinux
->>     RUN semodule -B
->>
->>     $ podman build -t localhost/selinux2 . --no-cache
->>     STEP 2/2: RUN semodule -B
->>     libsemanage.semanage_commit_sandbox: Error while renaming /var/lib/selinux/targeted/active to /var/lib/selinux/targeted/previous. (Invalid cross-device link).
->>     semodule:  Failed!
->>     Error: error building at STEP "RUN semodule -B": error while running runtime: exit status 1
->>
->> With the fix:
->>
->>     $ podman build -t localhost/selinux2 . --no-cache
->>     STEP 2/2: RUN semodule -B
->>     libsemanage.semanage_rename: Warning: rename(/var/lib/selinux/targeted/active, /var/lib/selinux/targeted/previous) failed: Invalid cross-device link, fall back to non-atomic semanage_copy_dir_flags()
->>
->>     COMMIT localhost/selinux2
->>     --> d2cfcebc1a1
->>     Successfully tagged localhost/selinux2:latest
->>     d2cfcebc1a1b34f1c2cd661ac18292b0612c3e5fa71d6fa1441be244da91b1af
->>
->> Reported-by: Joseph Marrero Corchado <jmarrero@redhat.com>
->> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
->> ---
->>
->> v2
->> - improve the commit message
->> - use WARN() instead of fprintf(stderr,
->>
->> v3
->> - WARN without \n at the end
->> - split long line
+>> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 >
-> Acked-by: Ondrej Mosnacek <omosnace@redhat.com>
->
-> Note that I didn't give the logic a thorough review, so I'd prefer
-> someone else to give it a final look and merge it.
+> Acked-by: James Carter <jwcart2@gmail.com>
 
 Merged.
 
-
-
-> -- 
-> Ondrej Mosnacek
-> Software Engineer, Linux Security - SELinux kernel
-> Red Hat, Inc.
+>> ---
+>>  libsepol/cil/src/cil_binary.c | 9 +++++++++
+>>  1 file changed, 9 insertions(+)
+>>
+>> diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary=
+.c
+>> index 53017e2d..d5211f69 100644
+>> --- a/libsepol/cil/src/cil_binary.c
+>> +++ b/libsepol/cil/src/cil_binary.c
+>> @@ -3222,7 +3222,16 @@ int cil_rangetransition_to_policydb(policydb_t *p=
+db, const struct cil_db *db, st
+>>                                         } else {
+>>                                                 cil_log(CIL_ERR, "Out of=
+ memory\n");
+>>                                         }
+>> +// TODO: add upper version bound once fixed in upstream GCC
+>> +#if defined(__GNUC__) && (__GNUC__ >=3D 12)
+>> +# pragma GCC diagnostic push
+>> +# pragma GCC diagnostic ignored "-Warray-bounds"
+>> +# pragma GCC diagnostic ignored "-Wstringop-overflow"
+>> +#endif
+>>                                         mls_range_destroy(newdatum);
+>> +#if defined(__GNUC__) && (__GNUC__ >=3D 12)
+>> +# pragma GCC diagnostic pop
+>> +#endif
+>>                                         free(newdatum);
+>>                                         free(newkey);
+>>                                         if (rc !=3D SEPOL_OK) {
+>> --
+>> 2.35.1
+>>
 

@@ -2,120 +2,134 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60BD24F4888
-	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 02:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2363C4F5E90
+	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 15:04:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241428AbiDEVlh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 5 Apr 2022 17:41:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34568 "EHLO
+        id S230314AbiDFNE1 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 6 Apr 2022 09:04:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1391026AbiDEPdj (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 5 Apr 2022 11:33:39 -0400
-Received: from mail-ej1-x635.google.com (mail-ej1-x635.google.com [IPv6:2a00:1450:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6FE34AE2B
-        for <selinux@vger.kernel.org>; Tue,  5 Apr 2022 06:40:03 -0700 (PDT)
-Received: by mail-ej1-x635.google.com with SMTP id bg10so26821259ejb.4
-        for <selinux@vger.kernel.org>; Tue, 05 Apr 2022 06:40:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ets4y11vEqdCFUKXiCZb839pOE0bfEf4L2YjS8uHhl0=;
-        b=gxFz5Kugw9U2jKXQ8redqBJdzaaUgoxd210NsbC9XofNiFuErDVqjNZs8SrQSdR1xv
-         rBjSuD+dt17VV5hxv0LnBl+Ac/Y98YlRGDZUUrhG+g7eWh045AFlrh7zEmVdYjv1l8bU
-         fybBIQyBJHepkhAoxr3wPq0md9jGRUAdDKpBi56DOnExDXjtz5TdsOhof/HhRhTr7N0g
-         mbnD7gERCHsskyUhjOIamnYHsnFkSPcYkLZQdVEtfn7Q3rVo2W8zFRWFT9Vqaabx/Ymb
-         38heccVXZawgW/wnjTmhBgv/DNxDEp7qZ47D8wwemVL98WebTP86FAyumutFBA0RSMUh
-         SnBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=Ets4y11vEqdCFUKXiCZb839pOE0bfEf4L2YjS8uHhl0=;
-        b=6NUywVZiLNqY5gXp0ukNYd1f3wWLnyMxlyJbiaCk8v70ic4JKtBO5W7rb/H9GcZVit
-         baiGE8WWQU0t+caF5wNPQXg9ApEBXY8lj/ygpnfZEaOPNmvSjf5pUajc/VxcSbbjoUim
-         ipCGqtTLbBFv/dnm7gSEQAw0w8ewZR+g7UPiCWyE9K3Xf4pUcq/YJsN2mBiA8SzU/Jdm
-         74D1ZkOH4h+QkXHYreM5YREL/IKObNBTYUKdoOjeoL4XIjQtZYPULiwNBmDtH8tk8GYy
-         ssW6Vk2/TrjXdfgUpEte48t6ckI9qILIJ++joG4bqbJNcqy/WoAokrzw/be0brGcLpXk
-         7w9g==
-X-Gm-Message-State: AOAM5300QhkiCFENeQPU3M6KlNbDn7K+hZUtsE8PNQOr46RptvUT8f+6
-        M8WeIm3xxumEOOKHHrQpDLsC58HYSQ0=
-X-Google-Smtp-Source: ABdhPJzSFU3RDunmPPfgs7RXBkRmZ3No6AO2nlcC/nO94kWQb0TYTdt8w/lODiQkGPhvBsOYkeH8xA==
-X-Received: by 2002:a17:907:8a19:b0:6e8:a7e:5f50 with SMTP id sc25-20020a1709078a1900b006e80a7e5f50mr3717126ejc.322.1649166002378;
-        Tue, 05 Apr 2022 06:40:02 -0700 (PDT)
-Received: from debianHome.localdomain (dynamic-077-008-134-094.77.8.pool.telefonica.de. [77.8.134.94])
-        by smtp.gmail.com with ESMTPSA id c5-20020a170906d18500b006ce371f09d4sm5472863ejz.57.2022.04.05.06.40.01
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Apr 2022 06:40:01 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH] policycoreutils: drop usage of egrep in fixfiles
-Date:   Tue,  5 Apr 2022 15:39:58 +0200
-Message-Id: <20220405133958.52460-1-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.35.1
+        with ESMTP id S231919AbiDFNDp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 6 Apr 2022 09:03:45 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0EC514DBFFB
+        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 02:32:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1649237472;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=cTn/X9Itj5mbXY8lzRe4R1XbyPDiJvHPpZSph7Uw4Jw=;
+        b=LwNQRN8ioe1YywvoiQXxA4MjCQpnLswfIexM37Deaygu+1GBEcAlKsnVaXtTKIUeBGv30s
+        MpJKBb6iiYKC0Hp/i8pwrjBrZjPeRaCUuDl6QNzlFz+rdkAe0scB2zOoA59a/sqMGTCq/c
+        dInhovu/XD/DBddxX9d0BXBCULPwOWU=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-664-lqb0voBwPm6LemCqEcQnxw-1; Wed, 06 Apr 2022 05:24:05 -0400
+X-MC-Unique: lqb0voBwPm6LemCqEcQnxw-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5419B3811A2E
+        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 09:24:05 +0000 (UTC)
+Received: from localhost (unknown [10.40.193.153])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 05A11401E9C;
+        Wed,  6 Apr 2022 09:24:04 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     SElinux list <selinux@vger.kernel.org>
+Cc:     Joseph Marrero Corchado <jmarrero@redhat.com>,
+        Ondrej Mosnacek <omosnace@redhat.com>
+Subject: Re: [PATCH v3] libsemanage: Fall back to semanage_copy_dir when
+ rename() fails
+In-Reply-To: <CAFqZXNstUu0s4P2iXPmdvdu-86_tajuV+RQKzMK_+xYBk-y+bw@mail.gmail.com>
+References: <20220324095251.1561597-1-plautrba@redhat.com>
+ <20220324120034.1570408-1-plautrba@redhat.com>
+ <CAFqZXNstUu0s4P2iXPmdvdu-86_tajuV+RQKzMK_+xYBk-y+bw@mail.gmail.com>
+Date:   Wed, 06 Apr 2022 11:24:04 +0200
+Message-ID: <87pmlupnt7.fsf@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-egrep(1) is deprecated, use `grep -E`.
+Ondrej Mosnacek <omosnace@redhat.com> writes:
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- policycoreutils/scripts/fixfiles | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+> On Thu, Mar 24, 2022 at 1:01 PM Petr Lautrbach <plautrba@redhat.com> wrote:
+>> In some circumstances, like semanage-store being on overlayfs, rename()
+>> could fail with EXDEV - Invalid cross-device link. This is due to the
+>> fact that overlays doesn't support rename() if source and target are not
+>> on the same layer, e.g. in containers built from several layers. Even
+>> though it's not atomic operation, it's better to try to copy files from
+>> src to dst on our own in this case. Next rebuild will probably not fail
+>> as the new directories will be on the same layer.
+>>
+>> Fixes: https://github.com/SELinuxProject/selinux/issues/343
+>>
+>> Reproducer:
+>>
+>>     $ cd selinux1
+>>
+>>     $ cat Dockerfile
+>>     FROM fedora:35
+>>     RUN dnf install -y selinux-policy selinux-policy-targeted
+>>
+>>     $ podman build -t localhost/selinux . --no-cache
+>>
+>>     $ cd ../selinux2
+>>
+>>     $ cat Dockerfile
+>>     FROM localhost/selinux
+>>     RUN semodule -B
+>>
+>>     $ podman build -t localhost/selinux2 . --no-cache
+>>     STEP 2/2: RUN semodule -B
+>>     libsemanage.semanage_commit_sandbox: Error while renaming /var/lib/selinux/targeted/active to /var/lib/selinux/targeted/previous. (Invalid cross-device link).
+>>     semodule:  Failed!
+>>     Error: error building at STEP "RUN semodule -B": error while running runtime: exit status 1
+>>
+>> With the fix:
+>>
+>>     $ podman build -t localhost/selinux2 . --no-cache
+>>     STEP 2/2: RUN semodule -B
+>>     libsemanage.semanage_rename: Warning: rename(/var/lib/selinux/targeted/active, /var/lib/selinux/targeted/previous) failed: Invalid cross-device link, fall back to non-atomic semanage_copy_dir_flags()
+>>
+>>     COMMIT localhost/selinux2
+>>     --> d2cfcebc1a1
+>>     Successfully tagged localhost/selinux2:latest
+>>     d2cfcebc1a1b34f1c2cd661ac18292b0612c3e5fa71d6fa1441be244da91b1af
+>>
+>> Reported-by: Joseph Marrero Corchado <jmarrero@redhat.com>
+>> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+>> ---
+>>
+>> v2
+>> - improve the commit message
+>> - use WARN() instead of fprintf(stderr,
+>>
+>> v3
+>> - WARN without \n at the end
+>> - split long line
+>
+> Acked-by: Ondrej Mosnacek <omosnace@redhat.com>
+>
+> Note that I didn't give the logic a thorough review, so I'd prefer
+> someone else to give it a final look and merge it.
 
-diff --git a/policycoreutils/scripts/fixfiles b/policycoreutils/scripts/fixfiles
-index 7df4303a..c72ca0eb 100755
---- a/policycoreutils/scripts/fixfiles
-+++ b/policycoreutils/scripts/fixfiles
-@@ -45,9 +45,9 @@ FS="`cat /proc/self/mounts | sort | uniq | awk '{print $2}'`"
- for i in $FS; do
- 	if [ `useseclabel` -ge 0 ]
- 	then
--		grep " $i " /proc/self/mounts | awk '{print $4}' | egrep --silent '(^|,)seclabel(,|$)' && echo $i
-+		grep " $i " /proc/self/mounts | awk '{print $4}' | grep -E --silent '(^|,)seclabel(,|$)' && echo $i
- 	else
--		grep " $i " /proc/self/mounts | grep -v "context=" | egrep --silent '(ext[234]| ext4dev | gfs2 | xfs | jfs | btrfs )' && echo $i
-+		grep " $i " /proc/self/mounts | grep -v "context=" | grep -E --silent '(ext[234]| ext4dev | gfs2 | xfs | jfs | btrfs )' && echo $i
- 	fi
- done
- }
-@@ -55,14 +55,14 @@ done
- get_rw_labeled_mounts() {
- FS=`get_all_labeled_mounts | sort | uniq`
- for i in $FS; do
--	grep " $i " /proc/self/mounts | awk '{print $4}' | egrep --silent '(^|,)rw(,|$)' && echo $i
-+	grep " $i " /proc/self/mounts | awk '{print $4}' | grep -E --silent '(^|,)rw(,|$)' && echo $i
- done
- }
- 
- get_ro_labeled_mounts() {
- FS=`get_all_labeled_mounts | sort | uniq`
- for i in $FS; do
--	grep " $i " /proc/self/mounts | awk '{print $4}' | egrep --silent '(^|,)ro(,|$)' && echo $i
-+	grep " $i " /proc/self/mounts | awk '{print $4}' | grep -E --silent '(^|,)ro(,|$)' && echo $i
- done
- }
- 
-@@ -176,7 +176,7 @@ if [ -f ${PREFC} -a -x /usr/bin/diff ]; then
- 	sed -r -e 's,:s0, ,g' $FC | sort -u | \
- 	/usr/bin/diff -b ${PREFCTEMPFILE} - | \
- 	    grep '^[<>]'|cut -c3-| grep ^/ | \
--	    egrep -v '(^/home|^/root|^/tmp)' |\
-+	    grep -Ev '(^/home|^/root|^/tmp)' |\
- 	sed -r -e 's,[[:blank:]].*,,g' \
- 	       -e 's|\(([/[:alnum:]]+)\)\?|{\1,}|g' \
- 	       -e 's|([/[:alnum:]])\?|{\1,}|g' \
--- 
-2.35.1
+Merged.
+
+
+
+> -- 
+> Ondrej Mosnacek
+> Software Engineer, Linux Security - SELinux kernel
+> Red Hat, Inc.
 

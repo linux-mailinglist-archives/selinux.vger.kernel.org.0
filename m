@@ -2,60 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 291504F6887
-	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 19:59:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7282E4F6C6B
+	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 23:16:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239479AbiDFSAX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 6 Apr 2022 14:00:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43676 "EHLO
+        id S233955AbiDFVST (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 6 Apr 2022 17:18:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240066AbiDFSAN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 6 Apr 2022 14:00:13 -0400
-Received: from mail-oa1-x31.google.com (mail-oa1-x31.google.com [IPv6:2001:4860:4864:20::31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 185378A6CE
-        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 09:16:10 -0700 (PDT)
-Received: by mail-oa1-x31.google.com with SMTP id 586e51a60fabf-de3ca1efbaso3419933fac.9
-        for <selinux@vger.kernel.org>; Wed, 06 Apr 2022 09:16:10 -0700 (PDT)
+        with ESMTP id S235429AbiDFVRw (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 6 Apr 2022 17:17:52 -0400
+Received: from mail-oo1-xc2e.google.com (mail-oo1-xc2e.google.com [IPv6:2607:f8b0:4864:20::c2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F17D100A5B
+        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 13:06:13 -0700 (PDT)
+Received: by mail-oo1-xc2e.google.com with SMTP id p34-20020a4a95e5000000b003248d73d460so567819ooi.1
+        for <selinux@vger.kernel.org>; Wed, 06 Apr 2022 13:06:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=7SZNBJWXDjJ7hxZcvxuAOM0n0DY6zjfGG6h+Dgpu2A8=;
-        b=CfoaEb6lJmSdzzaZN7HNt14PBGW44suB/xrD2QOGltFISxk6wfL3YqOaTC2mMRRCDv
-         julKS1Ujut8plUEu71RQttJDVwYyp0t6RanMMxl8tkyanQ3GvU1qcvhQbxryn+m1zMys
-         G+SiWG692idSk8U9+NyhJeLH64f9kTfQkeQpFnhfrBQIP8fEm0ET/WJvAAI3vB0Ki+HT
-         SI4jCUp2/1N0POkXKvdo2TsAv4YxiogBw11BgP703LI+gJoMNZN4IHGhCJUFsudq/qxb
-         MVf0oPpj9W7Ue8964FeUXM4w/qbCqa7Badbt58sFAGtrVEjHDI3fkMoPiGdzhMy+tKsD
-         XdEQ==
+         :cc;
+        bh=vmOWZBP7okeImYUJcRiGfsgwNbamA1MYGu8Uo37Cz4Y=;
+        b=jt3ilwJe8zQpBs49iVzbeXET1F59So42hQS7so4K78mAoa6DZ3gXOzTsh1/0SEv/Jn
+         x9ob02rRUirGP+JT2BBQnTKYCIxaHMh0dS4MNVGRimIaA7ujLDxrG8hqWTfM1MRRbNdG
+         DyJ+l6F7vdo2Y46E3qsMtUn46sU9i8N0ecM25/SnJxFGZ8ZBGGBT4sjSjPshDBuwk4NH
+         7ylz87PkJo4KKnRBmU8o3y6tmXve0mnK+shmXmlMjzk0WKI/z+ZNLAmNh9muHqWowtME
+         FwAmGrwfZQQp4KqGwaMtRAfV32zBAyBwpVJY9MjG/xdzWt7axOzGAezpJ+KFZDW2/J/0
+         YnwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=7SZNBJWXDjJ7hxZcvxuAOM0n0DY6zjfGG6h+Dgpu2A8=;
-        b=LfzkHHIdJmNWAwIsSXpSb+AFXYbeJsUFr07SCNxGXLsf/j5xgOTv0RNy5KgtDKVVL1
-         TUIWh5hJNSh+EAIhj8HIhutCkeS4BIbAX/4GiMKgRdtlwrYk7tNFBrnZI5vyz5vEQelT
-         s/fznBdknxkPWV1a7YahU/EacwK+4wRp2J9gZzmt9t0DrfA86XsBwDcvV1UbHXPiAufo
-         Uhqpi/ExAcxFlH+V0RTSaQFgid4EhBU7rWPAums+5MqhKpjbnZ9RPqUbcs85QhP3/OEk
-         tEujptBuWWbWJObnDaHElMqhP0uru4Wl4DT78vDPlsmcgUCaX6nXRI1FiLGkFsCD+ZbY
-         IHgw==
-X-Gm-Message-State: AOAM530aOVd5S0yi/a+fgr5hul8n6hBeon4wGX7hHU87Bb7yyNwujm+Q
-        rYyq82LiqkTt/gZYFln0ubHQ6J5QaRxpD5WY+ZY=
-X-Google-Smtp-Source: ABdhPJwnpXOTMABgxo70ILLBHzG3cTuuTlSWDlMu/PK1PWFsgmr5pjf6L+fc95SnOE0niuQPhtnZBChv7gm3AL3VZPs=
-X-Received: by 2002:a05:6870:f624:b0:e1:c071:121c with SMTP id
- ek36-20020a056870f62400b000e1c071121cmr4317683oab.182.1649261769463; Wed, 06
- Apr 2022 09:16:09 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=vmOWZBP7okeImYUJcRiGfsgwNbamA1MYGu8Uo37Cz4Y=;
+        b=s1o5+qg3+vQOxLUIG3dEDkDar/oqDd9UxaEbS60u3jE7HnwN/Mxs+A2L5EpUJccTxq
+         FGUbmMlwsb76DBqTbcqQZb0mQB9mObZlG6paKdZB8QkxdpAbR5X5k3MLLZk+NSsM0iui
+         pu7MqS0hJJyRKcIjjFY25AJmgnBr2UtaqjT8gtpkpsbXY4NII/HTHJVsMoPBPGaF2U59
+         krX++TPCkEOTgZZPJ+UJ0RizHgfUEqvqxowMPuGqdEV1JdW3iber6HhsYclaPqqKNDXK
+         JRip9TCx/uh7SYvmspXIkMg7/tDpzyliYmbIuuTzEiZKH8WaCPejYFnXJhZeWQ7Ey9cV
+         s6pw==
+X-Gm-Message-State: AOAM533Qs5VI8XGuYYyhyBVqkHTEzbITUQGfaMD3Wr+PojfbEULREzR5
+        3zsLYnbLDc9teNawuU2pEnoqZCx0ZbIDBJb+K7U=
+X-Google-Smtp-Source: ABdhPJzGNH8cOztme0oQMHOwrXZo/vAJZexsjkVVfxyGZ3mLHdzwZItBWPzmZ49Sh/lwkmzDooottb7H2BT+RDYVPow=
+X-Received: by 2002:a4a:8904:0:b0:323:7039:6c68 with SMTP id
+ f4-20020a4a8904000000b0032370396c68mr3288798ooi.8.1649275572814; Wed, 06 Apr
+ 2022 13:06:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220331144752.31495-1-cgzones@googlemail.com>
- <20220405133548.51598-1-cgzones@googlemail.com> <20220405133548.51598-4-cgzones@googlemail.com>
-In-Reply-To: <20220405133548.51598-4-cgzones@googlemail.com>
+References: <CAP+JOzTVdo2N8YKuhaS7xBVYCUjNFfb7NHk=yqTN1LZRncB+gA@mail.gmail.com>
+ <20220405071735.251995-1-plautrba@redhat.com>
+In-Reply-To: <20220405071735.251995-1-plautrba@redhat.com>
 From:   James Carter <jwcart2@gmail.com>
-Date:   Wed, 6 Apr 2022 12:15:58 -0400
-Message-ID: <CAP+JOzTXBr_jMK8PjoYJt2CXashgO1jyKkWhrVGKrdmLV-6EVw@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] libsepol/cil: comment out unused function __cil_verify_rule
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Date:   Wed, 6 Apr 2022 16:06:02 -0400
+Message-ID: <CAP+JOzQq2oEwLoe=AzguxnyA4oLnSyAdUjeSWa0Dg4RqSJ2zaA@mail.gmail.com>
+Subject: Re: [PATCH v2] setfiles.8: -q is deprecated and has no effect
+To:     Petr Lautrbach <plautrba@redhat.com>
 Cc:     SElinux list <selinux@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -66,50 +65,41 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Apr 6, 2022 at 9:28 AM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
+On Tue, Apr 5, 2022 at 3:38 AM Petr Lautrbach <plautrba@redhat.com> wrote:
 >
-> The function __cil_verify_rule() is currently not used as all call sites
-> are commented out.  Keep the function for future references.
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-
-Patches 1-3 have already been merged.
-
-For patches 4-6:
-Acked-by: James Carter <jwcart2@gmail.com>
-
+> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
 > ---
->  libsepol/cil/src/cil_verify.c | 4 +++-
+>  policycoreutils/setfiles/setfiles.8 | 4 +++-
 >  1 file changed, 3 insertions(+), 1 deletion(-)
 >
-> diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.=
-c
-> index aecbdc19..4640dc59 100644
-> --- a/libsepol/cil/src/cil_verify.c
-> +++ b/libsepol/cil/src/cil_verify.c
-> @@ -970,7 +970,8 @@ exit:
->         return rc;
->  }
->
-> -int __cil_verify_rule(struct cil_tree_node *node, struct cil_complex_sym=
-tab *symtab)
-> +/*
-> +static int __cil_verify_rule(struct cil_tree_node *node, struct cil_comp=
-lex_symtab *symtab)
->  {
->
->         int rc =3D SEPOL_ERR;
-> @@ -1016,6 +1017,7 @@ exit:
->         cil_tree_log(node, CIL_ERR, "Invalid rule");
->         return rc;
->  }
-> +*/
->
->  static int __cil_verify_booleanif_helper(struct cil_tree_node *node, __a=
-ttribute__((unused)) uint32_t *finished, __attribute__((unused)) void *extr=
-a_args)
->  {
+> diff --git a/policycoreutils/setfiles/setfiles.8 b/policycoreutils/setfiles/setfiles.8
+> index 15f939d1bee0..5267064de3b5 100644
+> --- a/policycoreutils/setfiles/setfiles.8
+> +++ b/policycoreutils/setfiles/setfiles.8
+> @@ -124,7 +124,9 @@ and
+>  options are mutually exclusive.
+>  .TP
+>  .B \-q
+> -Deprecated, was only used to stop printing inode association parameters.
+> +Deprecated and replaced by
+> +.B \-v
+> +. Has no effect on other options or on program behavior.
+
+The "." at the beginning causes that line to not appear.
+
+I am no man page expert, but this seems to work.
+
+.B \-q
+Deprecated and replaced by \fB\-v\fR. Has no effect on other options
+or on program
+behavior.
+
+Thanks,
+Jim
+
+>  .TP
+>  .BI \-r \ rootpath
+>  use an alternate root path. Used in meta-selinux for OpenEmbedded/Yocto builds
 > --
 > 2.35.1
 >

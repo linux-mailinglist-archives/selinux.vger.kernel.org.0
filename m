@@ -2,102 +2,153 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D53464F66E1
-	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 19:19:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D5A44F65C1
+	for <lists+selinux@lfdr.de>; Wed,  6 Apr 2022 18:43:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238672AbiDFROr (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 6 Apr 2022 13:14:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59638 "EHLO
+        id S237714AbiDFQlk (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 6 Apr 2022 12:41:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238218AbiDFROY (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 6 Apr 2022 13:14:24 -0400
+        with ESMTP id S238070AbiDFQlJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 6 Apr 2022 12:41:09 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7F3B05C36C
-        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 07:35:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4D1241834CA
+        for <selinux@vger.kernel.org>; Wed,  6 Apr 2022 08:04:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1649255717;
+        s=mimecast20190719; t=1649257489;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=Oa9IrWW1yC/fjYlbuyw6FpW5U9ArsNZTK8AMqSSDbWM=;
-        b=DwwmkEGvS2q2llVj9/3SLgkEXWtdVJ59oPWMsLI3RQ1ZoJcj8jGw0YotQbsw1iJrrBkJR/
-        4UsPYs4sginKt6P4vFZ36qPMVV3KBHobSsDRnxcu9EnHz/PYv2JNNtdixYgmh1aaWueUIb
-        gSEcMbyA0GPW3CmUzm+dybSUAhBq2QA=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=cyjimK819yPxnZHWaFtWitdwwu7f3wgO8V+dYrrbSSE=;
+        b=Ae2XWNJSCbzizM/Nbq7+FAoR8v/k0lWduZtST9bdRiPk5ENVvTeynTD8oLz1dD0enbqkWg
+        uUj9dUBqhLSXz7FRXzuGicFeQZr2BR0vOGWuPJhEr0t8VqRfWz7PoQB1ppIeUVWsJKNOgi
+        V9YP1mkk2druZdUx+LHIzHON+6Pl7WE=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-441-h3USeqbcOYKTbN-T7YHP_Q-1; Wed, 06 Apr 2022 10:35:16 -0400
-X-MC-Unique: h3USeqbcOYKTbN-T7YHP_Q-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 528EF28025AB;
-        Wed,  6 Apr 2022 14:35:16 +0000 (UTC)
-Received: from localhost (unknown [10.40.193.153])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 017D940D1B98;
-        Wed,  6 Apr 2022 14:35:15 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
-To:     Christian =?utf-8?Q?G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        selinux@vger.kernel.org
-Subject: Re: [PATCH v2 3/6] libsepol/cil: post process pirqcon rules
-In-Reply-To: <20220405133548.51598-3-cgzones@googlemail.com>
-References: <20220331144752.31495-1-cgzones@googlemail.com>
- <20220405133548.51598-1-cgzones@googlemail.com>
- <20220405133548.51598-3-cgzones@googlemail.com>
-Date:   Wed, 06 Apr 2022 16:35:15 +0200
-Message-ID: <87v8vmnuu4.fsf@redhat.com>
+ us-mta-495-Orv3xsXgOMaV1b9qrFgouQ-1; Wed, 06 Apr 2022 11:04:48 -0400
+X-MC-Unique: Orv3xsXgOMaV1b9qrFgouQ-1
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-2dc7bdd666fso23429047b3.7
+        for <selinux@vger.kernel.org>; Wed, 06 Apr 2022 08:04:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=cyjimK819yPxnZHWaFtWitdwwu7f3wgO8V+dYrrbSSE=;
+        b=OG+9A6+pXz7qhq0FWpZIBWEQiGFBnkWcX6kBqRZJ7WushH4jWP+s47zRBBUbmdXO76
+         pS1R/qCuafF2AWsK6D7zwfK1W6L3AHomQJglz/0bBFuGhZD622O9D2m2kizgPE4yD5Gm
+         lHCcllZyN9tpRRfY7G1xZvo7Z0aa/FpwTG0Vo6DOzjh2tWJt5QeNBouVtns9mDsFRVd7
+         VcxCcN2Lrmd6r+SAdF/xmnS+qGjhV6apWRNjD7A2iUWInF74yyFZLDSJF4dF/56YYXSk
+         hkcnYtHlzprByU32ds6GHIDeSNO+iatkVUgxDHhbSgsYRUPqw1bntD27bnc8CI28KJok
+         3iVQ==
+X-Gm-Message-State: AOAM532hWjsNJDFDSC/tCzrvYZGbf8VVA+tiJ53IsUuk0V6sFPi3k/dU
+        +Me5zxdrA0XN3Bd9fizGKeuBbqQvCVDUaKD+hpNlwsbyxpaMEtH63ckHE7qzvkTv5BDrJ9iOY4U
+        Luh4wRAb5mdHGWfRUjFdSaM6hpxrMZ+6R7w==
+X-Received: by 2002:a0d:e64d:0:b0:2e6:43f8:234f with SMTP id p74-20020a0de64d000000b002e643f8234fmr7381123ywe.12.1649257482334;
+        Wed, 06 Apr 2022 08:04:42 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwi57EDl8WItb74z/7L8utC2w7SXBqElEsa2UOoaaU9K5V0wWqTxRa9sp4i925j3fbv1x0UwNzKa+BI/yXXXcU=
+X-Received: by 2002:a0d:e64d:0:b0:2e6:43f8:234f with SMTP id
+ p74-20020a0de64d000000b002e643f8234fmr7380669ywe.12.1649257477489; Wed, 06
+ Apr 2022 08:04:37 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
+References: <a77a584b3ce9761eb5dda5828192e1cab94571f0.1649037151.git.lucien.xin@gmail.com>
+ <CAFqZXNt=Ca+x7PaYgc1jXq-3cKxin-_=UNCSiyVHjbP7OYUKvA@mail.gmail.com>
+ <CADvbK_fTnWhnuxR7JkNYeoSB4a1nSX7O0jg4Mif6V_or-tOy3w@mail.gmail.com>
+ <CAFqZXNss=7DMb=75ZBDwL9HrrubkxJK=xu7-kqxX-Mw1FtRuuA@mail.gmail.com> <CADvbK_ciV+evm6JY=uVpsHn1W-Cevp+FRzaQtxJO-CpQ392htQ@mail.gmail.com>
+In-Reply-To: <CADvbK_ciV+evm6JY=uVpsHn1W-Cevp+FRzaQtxJO-CpQ392htQ@mail.gmail.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Wed, 6 Apr 2022 17:04:25 +0200
+Message-ID: <CAFqZXNvk0i+WC8O=BhETCPYgaKm1zE29JQHfMety8CA7EKhDtg@mail.gmail.com>
+Subject: Re: [PATCH net] sctp: use the correct skb for security_sctp_assoc_request
+To:     Xin Long <lucien.xin@gmail.com>
+Cc:     network dev <netdev@vger.kernel.org>,
+        "linux-sctp @ vger . kernel . org" <linux-sctp@vger.kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Neil Horman <nhorman@tuxdriver.com>,
+        Linux Security Module list 
+        <linux-security-module@vger.kernel.org>,
+        SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Christian G=C3=B6ttsche <cgzones@googlemail.com> writes:
+On Wed, Apr 6, 2022 at 4:21 PM Xin Long <lucien.xin@gmail.com> wrote:
+> On Wed, Apr 6, 2022 at 9:34 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> >
+> > On Tue, Apr 5, 2022 at 1:58 PM Xin Long <lucien.xin@gmail.com> wrote:
+> > > On Mon, Apr 4, 2022 at 6:15 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+> > > >
+> > > > Adding LSM and SELinux lists to CC for awareness; the original patch
+> > > > is available at:
+> > > > https://lore.kernel.org/netdev/a77a584b3ce9761eb5dda5828192e1cab94571f0.1649037151.git.lucien.xin@gmail.com/T/
+> > > > https://patchwork.kernel.org/project/netdevbpf/patch/a77a584b3ce9761eb5dda5828192e1cab94571f0.1649037151.git.lucien.xin@gmail.com/
+> > > >
+> > > > On Mon, Apr 4, 2022 at 3:53 AM Xin Long <lucien.xin@gmail.com> wrote:
+> > > > >
+> > > > > Yi Chen reported an unexpected sctp connection abort, and it occurred when
+> > > > > COOKIE_ECHO is bundled with DATA Fragment by SCTP HW GSO. As the IP header
+> > > > > is included in chunk->head_skb instead of chunk->skb, it failed to check
+> > > > > IP header version in security_sctp_assoc_request().
+> > > > >
+> > > > > According to Ondrej, SELinux only looks at IP header (address and IPsec
+> > > > > options) and XFRM state data, and these are all included in head_skb for
+> > > > > SCTP HW GSO packets. So fix it by using head_skb when calling
+> > > > > security_sctp_assoc_request() in processing COOKIE_ECHO.
+> > > >
+> > > > The logic looks good to me, but I still have one unanswered concern.
+> > > > The head_skb member of struct sctp_chunk is defined inside a union:
+> > > >
+> > > > struct sctp_chunk {
+> > > >         [...]
+> > > >         union {
+> > > >                 /* In case of GSO packets, this will store the head one */
+> > > >                 struct sk_buff *head_skb;
+> > > >                 /* In case of auth enabled, this will point to the shkey */
+> > > >                 struct sctp_shared_key *shkey;
+> > > >         };
+> > > >         [...]
+> > > > };
+> > > >
+> > > > What guarantees that this chunk doesn't have "auth enabled" and the
+> > > > head_skb pointer isn't actually a non-NULL shkey pointer? Maybe it's
+> > > > obvious to a Linux SCTP expert, but at least for me as an outsider it
+> > > > isn't - that's usually a good hint that there should be a code comment
+> > > > explaining it.
+> > > Hi Ondrej,
+> > >
+> > > shkey is for tx skbs only, while head_skb is for skbs on rx path.
+> >
+> > That makes sense, thanks. I would still be happier if this was
+> > documented, but the comment would best fit in the struct sctp_chunk
+> > definition and that wouldn't fit in this patch...
+> >
+> > Actually I have one more question - what about the
+> > security_sctp_assoc_established() call in sctp_sf_do_5_1E_ca()? Is
+> > COOKIE ACK guaranteed to be never bundled?
+> COOKIE ACK could also be bundled with DATA.
+> I didn't change it as it would not break SCTP.
+> (security_inet_conn_established() returns void)
+> But I don't mind changing it if you think it's necessary.
 
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+security_inet_conn_established? Are you looking at an old version of
+the code, perhaps? In mainline, sctp_sf_do_5_1E_ca() now calls the new
+security_sctp_assoc_established() hook, which may return an error. But
+even if it didn't, I believe we want to make sure that an skb with
+valid inet headers and XFRM state is passed to the hooks as SELinux
+relies on these to correctly process the SCTP association.
 
-Already merged from
-https://patchwork.kernel.org/project/selinux/patch/20220331144752.31495-3-c=
-gzones@googlemail.com/
-based on ack from
-https://lore.kernel.org/all/CAP+JOzTokM6k+wTVneEeSLGGhH5A2r7XayLLotiu8XuFn=
-=3DGW7g@mail.gmail.com/
-
-
-> ---
->  libsepol/cil/src/cil_post.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/libsepol/cil/src/cil_post.c b/libsepol/cil/src/cil_post.c
-> index 7f33cd9e..714ce227 100644
-> --- a/libsepol/cil/src/cil_post.c
-> +++ b/libsepol/cil/src/cil_post.c
-> @@ -2434,6 +2434,12 @@ static int cil_post_db(struct cil_db *db)
->  		goto exit;
->  	}
->=20=20
-> +	rc =3D __cil_post_process_context_rules(db->pirqcon, cil_post_pirqcon_c=
-ompare, cil_post_pirqcon_context_compare, db, CIL_PIRQCON, CIL_KEY_IOMEMCON=
-);
-> +	if (rc !=3D SEPOL_OK) {
-> +		cil_log(CIL_ERR, "Problems processing pirqcon rules\n");
-> +		goto exit;
-> +	}
-> +
->  	rc =3D __cil_post_process_context_rules(db->iomemcon, cil_post_iomemcon=
-_compare, cil_post_iomemcon_context_compare, db, CIL_IOMEMCON, CIL_KEY_IOME=
-MCON);
->  	if (rc !=3D SEPOL_OK) {
->  		cil_log(CIL_ERR, "Problems processing iomemcon rules\n");
-> --=20
-> 2.35.1
+-- 
+Ondrej Mosnacek
+Software Engineer, Linux Security - SELinux kernel
+Red Hat, Inc.
 

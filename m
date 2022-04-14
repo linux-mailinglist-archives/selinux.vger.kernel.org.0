@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DBBA50132E
-	for <lists+selinux@lfdr.de>; Thu, 14 Apr 2022 17:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E53CB501146
+	for <lists+selinux@lfdr.de>; Thu, 14 Apr 2022 16:56:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243184AbiDNOnT (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 14 Apr 2022 10:43:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45550 "EHLO
+        id S238969AbiDNOnR (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 14 Apr 2022 10:43:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347713AbiDNN7a (ORCPT
+        with ESMTP id S1347704AbiDNN7a (ORCPT
         <rfc822;selinux@vger.kernel.org>); Thu, 14 Apr 2022 09:59:30 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1137BB92B
-        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 06:51:59 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id 3so3894285qkj.5
-        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 06:51:59 -0700 (PDT)
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 511E7BBE20
+        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 06:52:02 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id o18so3540909qtk.7
+        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 06:52:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=JPkcYaoCdXPmt5BfP2hpJt5PFeSvlxU15eONNBphi8w=;
-        b=GP1+K1wfUxb3sK8wpBCrzyKGvWB1BjAtMjuTny2FLO2kzlU3ViX0jP+HnnStNGwM/n
-         t9PAOjJhT4RcP0UYaD9fIh4WIrsq0+utLs6GXQ6DhtNHK42LnfgDzj9+xIHqvhq1rCpe
-         gpUuKHv1fY0cwvOf5haQdoZUML15Ipa1UUz51SU4oA6/ICwtq23pu6eUQDYHfBk2I3/A
-         MK3e7iUcqUUiYPED/vOIv6x0QcJZDEOrEWnNJUyt+fFfd2kVQin+XnikMqsFra82aSIq
-         GqazghSL/qZ6VYRnMVIDgPloaQt36L6pPhk/1+zIXzeAmuIJwTs/EXpL1nlFh3wHFXCy
-         vmRA==
+        bh=ZXVecjHHthg2gOVFiNcdfcarsEfa6CXU2XGClV9sI9g=;
+        b=m0uaFN/O0KjEpM7uJH2d20tq4aPQLE3+MuOH0fbCD4J5zwmf+MZJUYmNQZl4YC1rNi
+         qmWkBBQvBHyQXjmuW6LMw8UdK+c4Xj+vHAepZdMEux1TIRJnb8NXd0jkfpvsDTUrptWE
+         hjyKzsV3fVIFqjINAjRdpKfEOx92ki3JMLswkgWjo0lQFa/AM3mKAnwOLqGmHqdSAZn+
+         5ys4CjkDKRD2a2oiDQ8njz3shCyYr84IuRl9x648hoRMeAE5RLSUAd5ZMQ7LMF4WfmQO
+         +WHyUgu5HFTO/CNKljCs6vYzEM/P2pEh16xIVbElJpVTNORMPR7SseM6uqo16kRlP9ZK
+         AEAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=JPkcYaoCdXPmt5BfP2hpJt5PFeSvlxU15eONNBphi8w=;
-        b=TDtxQK4yh8wa4uCaMpbbLlAXpiIC4yE+QnFjiROKhO/myVOoL177ceGprQDjtUBreu
-         yi3vWDMveGdiaO25TeTvRqQiokKr5syCPOpEbRrvviBEUA7omMfqgKO8rCo/bJwFReMb
-         oLWE5uZ+KRNo3Qcx4s+Z8YjQxCoQ8lY73QlA2Rd3HeELG/sH+jzU0CQPNP6dlytcT16t
-         8hiE0SNYlI7p+8HfyVwgB9jY8ORRyVGv3VfPB4qI+wbJQO8G6ttvDHB/meITX/hw0y2e
-         qd/33YD+qJcJik4/MRV2lwpryRZUBFs8o+AoCw4AlfQt0672DKLB+I6dosex2a0gUPmb
-         XpUw==
-X-Gm-Message-State: AOAM532iVgxIH5/iG5sWR5OomWBpSXuvgfrx+OuRWUf5wYBGVdjI6D14
-        PCMiU0yRkxwpDJFE6AoZPC8otSqSNas=
-X-Google-Smtp-Source: ABdhPJxDrtvrBEEBpsBGxuLqAYTRngrIVkOjHecW5XcevrBEHM3E9u8DlCNtrXNCMSAYb3Q5d1JbDQ==
-X-Received: by 2002:a37:587:0:b0:69c:7c03:52d9 with SMTP id 129-20020a370587000000b0069c7c0352d9mr1443726qkf.520.1649944318779;
-        Thu, 14 Apr 2022 06:51:58 -0700 (PDT)
+        bh=ZXVecjHHthg2gOVFiNcdfcarsEfa6CXU2XGClV9sI9g=;
+        b=iPA55k1oOWYZUXScGc+wJHccx+I0+92gcT3/X+8dvVox6+6RGBm0Sl72oTbKDxEuh+
+         uGL+1ixTH/S3LS9Hgm80a/uRZbnkBXd0QWd86pNsrZbhIX4hKjKJOmuFa7Gw+mR6wJbP
+         8qVTBqCQKL/Usk0L/+CSNRE8dscFxGdFPWNJsSrnuyaPkRaBOEz/hy0t80fJbhSUBNOV
+         gOq79g4u0wf76WYK57IXzDP/ROeuwsvcSCHik11Wtrhk6lseSvovuaRE50RsmC8jX70T
+         /bQwH98x/O/hNdfzAnG7QFEIAD17OKzt/wsw20Vq4UHpeliDmNmT1+EN73CpuRilMru+
+         rmhA==
+X-Gm-Message-State: AOAM530VatN8W8kji5XxlS5JiVy4n0YHstc7BdRFGgzWESUApSDqdAiW
+        iUi6TD8A9sWeHOceykZ6CpwtRVnhGJM=
+X-Google-Smtp-Source: ABdhPJxrOTnacuUe2wcayDJAikDV+kaV+X15tiYDQU2oQMUCDxdvPTJHQC04Jh2Eg87r61ouhl9bNA==
+X-Received: by 2002:ac8:70da:0:b0:2f1:d195:cfaf with SMTP id g26-20020ac870da000000b002f1d195cfafmr1806017qtp.247.1649944321298;
+        Thu, 14 Apr 2022 06:52:01 -0700 (PDT)
 Received: from localhost.localdomain (c-69-250-217-147.hsd1.md.comcast.net. [69.250.217.147])
-        by smtp.gmail.com with ESMTPSA id 14-20020a37090e000000b0069bfe98662csm999748qkj.17.2022.04.14.06.51.58
+        by smtp.gmail.com with ESMTPSA id 14-20020a37090e000000b0069bfe98662csm999748qkj.17.2022.04.14.06.52.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 06:51:58 -0700 (PDT)
+        Thu, 14 Apr 2022 06:52:00 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     cgzones@googlemail.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 2/5] libsepol/test: Include paired headers for prototypes
-Date:   Thu, 14 Apr 2022 09:51:38 -0400
-Message-Id: <20220414135141.1723610-2-jwcart2@gmail.com>
+Subject: [PATCH 3/5] libsepol/test: Declare file local functions as static
+Date:   Thu, 14 Apr 2022 09:51:39 -0400
+Message-Id: <20220414135141.1723610-3-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220414135141.1723610-1-jwcart2@gmail.com>
 References: <20220414135141.1723610-1-jwcart2@gmail.com>
@@ -72,60 +72,45 @@ This is needed to use "-Wmissing-prototypes".
 
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/tests/test-common.c          | 1 +
- libsepol/tests/test-linker-cond-map.c | 1 +
- libsepol/tests/test-linker-roles.c    | 1 +
- libsepol/tests/test-linker-types.c    | 1 +
- 4 files changed, 4 insertions(+)
+ libsepol/tests/test-expander.c        | 2 +-
+ libsepol/tests/test-linker-cond-map.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/libsepol/tests/test-common.c b/libsepol/tests/test-common.c
-index f690635e..8f2807b2 100644
---- a/libsepol/tests/test-common.c
-+++ b/libsepol/tests/test-common.c
-@@ -26,6 +26,7 @@
- 
- #include <CUnit/Basic.h>
- 
-+#include "test-common.h"
- #include "helpers.h"
- 
- void test_sym_presence(policydb_t * p, const char *id, int sym_type, unsigned int scope_type, unsigned int *decls, unsigned int len)
+diff --git a/libsepol/tests/test-expander.c b/libsepol/tests/test-expander.c
+index ee70e220..a9e66ed8 100644
+--- a/libsepol/tests/test-expander.c
++++ b/libsepol/tests/test-expander.c
+@@ -67,7 +67,7 @@ extern int mls;
+ /* Takes base, some number of modules, links them, and expands them
+    reads source from myfiles array, which has the base string followed by
+    each module string */
+-int expander_policy_init(policydb_t * mybase, int num_modules, policydb_t ** mymodules, policydb_t * myexpanded, const char *const *myfiles)
++static int expander_policy_init(policydb_t * mybase, int num_modules, policydb_t ** mymodules, policydb_t * myexpanded, const char *const *myfiles)
+ {
+ 	char *filename[num_modules + 1];
+ 	int i;
 diff --git a/libsepol/tests/test-linker-cond-map.c b/libsepol/tests/test-linker-cond-map.c
-index b02e7881..5400c46b 100644
+index 5400c46b..694a7346 100644
 --- a/libsepol/tests/test-linker-cond-map.c
 +++ b/libsepol/tests/test-linker-cond-map.c
-@@ -18,6 +18,7 @@
-  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  */
+@@ -55,7 +55,7 @@ typedef struct test_cond_expr {
+ 	uint32_t expr_type;
+ } test_cond_expr_t;
  
-+#include "test-linker-cond-map.h"
- #include "parse_util.h"
- #include "helpers.h"
- #include "test-common.h"
-diff --git a/libsepol/tests/test-linker-roles.c b/libsepol/tests/test-linker-roles.c
-index 6843252b..2b17dffd 100644
---- a/libsepol/tests/test-linker-roles.c
-+++ b/libsepol/tests/test-linker-roles.c
-@@ -18,6 +18,7 @@
-  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  */
+-void test_cond_expr_mapping(policydb_t * p, avrule_decl_t * d, test_cond_expr_t * bools, int len)
++static void test_cond_expr_mapping(policydb_t * p, avrule_decl_t * d, test_cond_expr_t * bools, int len)
+ {
+ 	int i;
+ 	cond_expr_t *expr;
+@@ -76,7 +76,7 @@ void test_cond_expr_mapping(policydb_t * p, avrule_decl_t * d, test_cond_expr_t
+ 	}
+ }
  
-+#include "test-linker-roles.h"
- #include "parse_util.h"
- #include "helpers.h"
- #include "test-common.h"
-diff --git a/libsepol/tests/test-linker-types.c b/libsepol/tests/test-linker-types.c
-index b41e08e0..048dd422 100644
---- a/libsepol/tests/test-linker-types.c
-+++ b/libsepol/tests/test-linker-types.c
-@@ -19,6 +19,7 @@
-  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-  */
+-void test_bool_state(policydb_t * p, const char *bool, int state)
++static void test_bool_state(policydb_t * p, const char *bool, int state)
+ {
+ 	cond_bool_datum_t *b;
  
-+#include "test-linker-types.h"
- #include "parse_util.h"
- #include "helpers.h"
- #include "test-common.h"
 -- 
 2.34.1
 

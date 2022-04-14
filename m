@@ -2,62 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A71F501279
-	for <lists+selinux@lfdr.de>; Thu, 14 Apr 2022 17:08:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A4D5015AD
+	for <lists+selinux@lfdr.de>; Thu, 14 Apr 2022 17:45:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235941AbiDNOnO (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 14 Apr 2022 10:43:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43256 "EHLO
+        id S237655AbiDNOnP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 14 Apr 2022 10:43:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347719AbiDNN7a (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 14 Apr 2022 09:59:30 -0400
-Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CECC0BC874
-        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 06:52:05 -0700 (PDT)
-Received: by mail-qv1-xf2c.google.com with SMTP id b17so4024137qvp.6
-        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 06:52:05 -0700 (PDT)
+        with ESMTP id S1352945AbiDNOea (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 14 Apr 2022 10:34:30 -0400
+Received: from mail-oi1-x22e.google.com (mail-oi1-x22e.google.com [IPv6:2607:f8b0:4864:20::22e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFF08CF482
+        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 07:25:46 -0700 (PDT)
+Received: by mail-oi1-x22e.google.com with SMTP id bj24so95329oib.11
+        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 07:25:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=4TX4YZ8zOwWjMt4q23dnW3jEy+KYdMB8U5wMRUw2ohU=;
-        b=jUz91eyUDT8psp2aF4iICnEJWTtLYIeSuqhBcH/nIvL6VcEILfYmgDdpbry+zPXwh7
-         RxdOxl6NzvuwYE+y4UKFJAWxvMxx/v2mQmyo4Jr+/soDwKPGoaCoZsacuDFvo3s+0EZP
-         /fVl8yXJEfcjW9hnYRDZWI9XBOpNF5najabg+ZAduegWRuY7humAgES8F7tpjy5s5QHF
-         sFuB3/jJixpTPkw25BiPOMefK0DoL0tmEdZdubron8qiziXVErC/rmWdnCAPqf1J/Z63
-         qqUT4Oj67Qo3LEG/NFapMt9Gxtxa8jFBOZyTUMXynW3OR9Uzs8eLrBIeL9jelvNms0KB
-         Zcig==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=Jj9OEJTyWm3xDCCui8xZy8jF6aYNcjLzHCfjiakGvCU=;
+        b=pZRCPMIjTlkZUGKo5UvQc0q6QOepdzihHwTQJD2p9ykGlndp26hRGkLZUXraXfggZ8
+         hu9COXl/J3iW8yO7AfPNayHntZbhFXQqPB6HjwU9rZAqeTbWAhSLY4uswI20/tAGy/qv
+         7Q1OLAW2CUMruqAURuxzpCvAe4oROQMI7tKq+rolzpfGQ8ZXz9v7Vx4FDe6UMdz6rre+
+         cZsCkK73dHffMxtbI51TqSWwqMGXI0/SlRueFXLGXBKBRVeYPROvl1cYTMLtpwpc7yB6
+         SqnWwqrNwrdqsHw7qSh5phaMZQyJ8HHFbNERKyohFhvarpw759+X/siSN6MZq99gnPIJ
+         xgHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=4TX4YZ8zOwWjMt4q23dnW3jEy+KYdMB8U5wMRUw2ohU=;
-        b=jSfp4xckOabZwvM+C416ofWxbZhLmlgDwx5YY5Opk0389WhJhATUBUidtcIk3Vju5f
-         ZZyiKPqMQCghutaubOjk3kK89E5DmZ93fpcmyzWNHb/yq+P8c9XgVafOaR6P7OwkxYT5
-         9ZJshuWErRrQKBeit/yTtRaavX/4T69ajdQYcty8Yrff8qFsZ1Aa9WQGgjBiPMHGlsWa
-         hRrDBj4ZoET4WY7iN9qtnfeU+jDBw/iw3v/ddqHtaFhXnDXOtCzcYBPRg5AvOm/1bVZA
-         ptCLpYHm1/h5UXM5tr/Te0wGGt9u5qGvCUz1LB9HFnMN4PWS3lS1oN2/QafbknpXnr8X
-         Es2A==
-X-Gm-Message-State: AOAM531kuGF1sLy9YbYUqlmB5eLDR2nuGq5PWakGrGJ2uN3jw2/a+549
-        o8Lr+Kat66PYokeHx/iP5lck+biBnK8=
-X-Google-Smtp-Source: ABdhPJz4M4O4nIKSDSXT+dDilU9APZjKKmmQyleoESi4fe8qML4bqW++Evu49EXGAZc9B/IKOvj9bQ==
-X-Received: by 2002:a05:6214:4017:b0:443:e335:efd3 with SMTP id kd23-20020a056214401700b00443e335efd3mr3494688qvb.131.1649944324694;
-        Thu, 14 Apr 2022 06:52:04 -0700 (PDT)
-Received: from localhost.localdomain (c-69-250-217-147.hsd1.md.comcast.net. [69.250.217.147])
-        by smtp.gmail.com with ESMTPSA id 14-20020a37090e000000b0069bfe98662csm999748qkj.17.2022.04.14.06.52.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Apr 2022 06:52:04 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     cgzones@googlemail.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 5/5] libsemanage/tests: Remove unused functions
-Date:   Thu, 14 Apr 2022 09:51:41 -0400
-Message-Id: <20220414135141.1723610-5-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220414135141.1723610-1-jwcart2@gmail.com>
-References: <20220414135141.1723610-1-jwcart2@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=Jj9OEJTyWm3xDCCui8xZy8jF6aYNcjLzHCfjiakGvCU=;
+        b=vBxkjd6Xf06iBiH+NqzIYf24f/blI72y4DxRM7qb3welU0xAroFeSVnKLxu1z90Ln0
+         est917OxpeadX0lIke3fI2NPCZSC+ElLPcBIvkgFu8j/MKsnY2P0aAfisRukiQWJC6w0
+         6TqDFPjyLnnSfN1C+5kh1JhJ4MmR3hYp5mNzTUMgRvh8imtbu5+mOyjWxaGKOViGowq7
+         WBJK2hDdG9ZZk0hz8CdRo5jEFSxXQmq2msETMobhLPGJNBpRLqP/IoeZFoY/sseTG0Bq
+         X6Xe32aE4QZAEoRe5/iX2Mc0nCa4UjB2mBgtGtM4YzHoGL91ArDfYWsw7ZsbkvPPhSxX
+         euLw==
+X-Gm-Message-State: AOAM532eAiZUrPAsI/MpQ8o46sTALVRr1sOYmS8kipZguovznRFpmlHE
+        pJTb6TupDQYhjkM2PggSg+2hRmbT30gylb3MjxUeuVoenNA=
+X-Google-Smtp-Source: ABdhPJwxDwSSAefUShdeYCFMNmOfz2QhUpDOt/i3MWGX1mlYtcSStdMxBP24neeUsAXw+LApqGKSnK772q4JUS5P1Q4=
+X-Received: by 2002:a05:6808:14c1:b0:2fa:72d6:5dfa with SMTP id
+ f1-20020a05680814c100b002fa72d65dfamr1436747oiw.182.1649946346155; Thu, 14
+ Apr 2022 07:25:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220413160517.64145-1-cgzones@googlemail.com>
+In-Reply-To: <20220413160517.64145-1-cgzones@googlemail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Thu, 14 Apr 2022 10:25:35 -0400
+Message-ID: <CAP+JOzTsbTBE9BC5+Oku_wQysYzcgcA63JBppb0zNWHaSM9knA@mail.gmail.com>
+Subject: Re: [PATCH] libsepol/tests: adjust IPv6 netmasks
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
@@ -68,137 +65,206 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The functions helper_port_validate_local_proto(), get_type(), and
-get_fcontext_new() are not used, so remove them.
+On Wed, Apr 13, 2022 at 9:25 PM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
+>
+> checkpolicy(8) since 01b88ac3 ("checkpolicy: warn on bogus IP address or
+> netmask in nodecon statement") warns about host bits set in IPv6
+> addresses.
+> Adjust IPv6 netmasks in the libsepol tests so that the used address ::1
+> does not set any host bits and running the tests does not print several
+> of the following warnings:
+>
+>     net_contexts:15:WARNING 'host bits in ipv6 address set' at token '' o=
+n line 594:
+>
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- libsemanage/tests/test_fcontext.c | 31 ----------------
- libsemanage/tests/test_port.c     | 62 -------------------------------
- 2 files changed, 93 deletions(-)
+Acked-by: James Carter <jwcart2@gmail.com>
 
-diff --git a/libsemanage/tests/test_fcontext.c b/libsemanage/tests/test_fcontext.c
-index 5104989e..8943d741 100644
---- a/libsemanage/tests/test_fcontext.c
-+++ b/libsemanage/tests/test_fcontext.c
-@@ -73,28 +73,6 @@ static void test_fcontext_list_local(void);
- 
- extern semanage_handle_t *sh;
- 
--static int get_type(char *t)
--{
--	if (strcmp(t, "--") == 0)
--		return SEMANAGE_FCONTEXT_ALL;
--	else if (strcmp(t, "-f") == 0)
--		return SEMANAGE_FCONTEXT_REG;
--	else if (strcmp(t, "-d") == 0)
--		return SEMANAGE_FCONTEXT_DIR;
--	else if (strcmp(t, "-c") == 0)
--		return SEMANAGE_FCONTEXT_CHAR;
--	else if (strcmp(t, "-b") == 0)
--		return SEMANAGE_FCONTEXT_BLOCK;
--	else if (strcmp(t, "-s") == 0)
--		return SEMANAGE_FCONTEXT_SOCK;
--	else if (strcmp(t, "-l") == 0)
--		return SEMANAGE_FCONTEXT_LINK;
--	else if (strcmp(t, "-p") == 0)
--		return SEMANAGE_FCONTEXT_PIPE;
--	else
--		return -1;
--}
--
- static int write_file_contexts(const char *data, unsigned int data_len)
- {
- 	FILE *fptr = fopen("test-policy/store/active/file_contexts", "w+");
-@@ -187,15 +165,6 @@ int fcontext_add_tests(CU_pSuite suite)
- 
- /* Helpers */
- 
--static semanage_fcontext_t *get_fcontext_new(void)
--{
--	semanage_fcontext_t *fcontext;
--
--	CU_ASSERT_FATAL(semanage_fcontext_create(sh, &fcontext) >= 0);
--
--	return fcontext;
--}
--
- static semanage_fcontext_t *get_fcontext_nth(int idx)
- {
- 	semanage_fcontext_t **records;
-diff --git a/libsemanage/tests/test_port.c b/libsemanage/tests/test_port.c
-index 19213f6d..e6393d78 100644
---- a/libsemanage/tests/test_port.c
-+++ b/libsemanage/tests/test_port.c
-@@ -863,68 +863,6 @@ static void helper_port_validate_local_twoports(void)
- 	cleanup_handle(SH_TRANS);
- }
- 
--static void helper_port_validate_local_proto(void)
--{
--	semanage_port_key_t *key1 = NULL;
--	semanage_port_key_t *key2 = NULL;
--	semanage_port_key_t *key3 = NULL;
--	semanage_port_t *port1 = NULL;
--	semanage_port_t *port2 = NULL;
--	semanage_port_t *port3 = NULL;
--	semanage_context_t *con1 = NULL;
--	semanage_context_t *con2 = NULL;
--	semanage_context_t *con3 = NULL;
--
--	/* setup */
--	setup_handle(SH_TRANS);
--
--	CU_ASSERT(semanage_port_key_create(sh, 101, 200, 0, &key1) >= 0);
--	CU_ASSERT(semanage_port_key_create(sh,  51, 250, 1, &key2) >= 0);
--	CU_ASSERT(semanage_port_key_create(sh, 201, 300, 0, &key3) >= 0);
--
--	CU_ASSERT(semanage_port_create(sh, &port1) >= 0);
--	CU_ASSERT(semanage_port_create(sh, &port2) >= 0);
--	CU_ASSERT(semanage_port_create(sh, &port3) >= 0);
--
--	semanage_port_set_range(port1, 101, 200);
--	semanage_port_set_range(port2,  51, 250);
--	semanage_port_set_range(port3, 201, 300);
--
--	semanage_port_set_proto(port1, 0);
--	semanage_port_set_proto(port2, 0);
--	semanage_port_set_proto(port3, 0);
--
--	CU_ASSERT(semanage_context_from_string(sh,
--			       "system_u:object_r:user_home_t:s0", &con1) >= 0);
--	CU_ASSERT(semanage_context_from_string(sh,
--			       "system_u:object_r:user_home_t:s0", &con2) >= 0);
--	CU_ASSERT(semanage_context_from_string(sh,
--				"system_u:object_r:user_tmp_t:s0", &con3) >= 0);
--
--	semanage_port_set_con(sh, port1, con1);
--	semanage_port_set_con(sh, port2, con2);
--	semanage_port_set_con(sh, port3, con3);
--
--	CU_ASSERT(semanage_port_modify_local(sh, key1, port1) >= 0);
--	CU_ASSERT(semanage_port_modify_local(sh, key2, port2) >= 0);
--	CU_ASSERT(semanage_port_modify_local(sh, key3, port3) >= 0);
--
--	/* test */
--	helper_commit();
--
--	/* cleanup */
--	CU_ASSERT(semanage_port_del_local(sh, key1) >= 0);
--	CU_ASSERT(semanage_port_del_local(sh, key2) >= 0);
--	CU_ASSERT(semanage_port_del_local(sh, key3) >= 0);
--	semanage_port_key_free(key1);
--	semanage_port_key_free(key2);
--	semanage_port_key_free(key3);
--	semanage_port_free(port1);
--	semanage_port_free(port2);
--	semanage_port_free(port3);
--	cleanup_handle(SH_TRANS);
--}
--
- static void test_port_validate_local(void)
- {
- 	helper_port_validate_local_noport();
--- 
-2.34.1
-
+> ---
+>  libsepol/tests/policies/test-deps/base-metreq.conf    | 2 +-
+>  libsepol/tests/policies/test-deps/base-notmetreq.conf | 2 +-
+>  libsepol/tests/policies/test-deps/small-base.conf     | 2 +-
+>  libsepol/tests/policies/test-expander/alias-base.conf | 2 +-
+>  libsepol/tests/policies/test-expander/role-base.conf  | 2 +-
+>  libsepol/tests/policies/test-expander/small-base.conf | 2 +-
+>  libsepol/tests/policies/test-expander/user-base.conf  | 2 +-
+>  libsepol/tests/policies/test-hooks/cmp_policy.conf    | 2 +-
+>  libsepol/tests/policies/test-hooks/small-base.conf    | 2 +-
+>  libsepol/tests/policies/test-linker/small-base.conf   | 2 +-
+>  10 files changed, 10 insertions(+), 10 deletions(-)
+>
+> diff --git a/libsepol/tests/policies/test-deps/base-metreq.conf b/libsepo=
+l/tests/policies/test-deps/base-metreq.conf
+> index 3e2f8407..b7528dde 100644
+> --- a/libsepol/tests/policies/test-deps/base-metreq.conf
+> +++ b/libsepol/tests/policies/test-deps/base-metreq.conf
+> @@ -516,7 +516,7 @@ genfscon proc /                             gen_conte=
+xt(system_u:object_r:sys_foo_t, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 system_u:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(system_u:object_r:net_foo_=
+t, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(system_u=
+:object_r:net_foo_t, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-deps/base-notmetreq.conf b/libs=
+epol/tests/policies/test-deps/base-notmetreq.conf
+> index 8ff3d204..eee36dca 100644
+> --- a/libsepol/tests/policies/test-deps/base-notmetreq.conf
+> +++ b/libsepol/tests/policies/test-deps/base-notmetreq.conf
+> @@ -503,7 +503,7 @@ genfscon proc /                             gen_conte=
+xt(system_u:object_r:sys_foo_t, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 system_u:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(system_u:object_r:net_foo_=
+t, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(system_u=
+:object_r:net_foo_t, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-deps/small-base.conf b/libsepol=
+/tests/policies/test-deps/small-base.conf
+> index 1411e624..98f49c23 100644
+> --- a/libsepol/tests/policies/test-deps/small-base.conf
+> +++ b/libsepol/tests/policies/test-deps/small-base.conf
+> @@ -504,7 +504,7 @@ genfscon proc /                             gen_conte=
+xt(system_u:object_r:sys_foo_t, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 system_u:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(system_u:object_r:net_foo_=
+t, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(system_u=
+:object_r:net_foo_t, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-expander/alias-base.conf b/libs=
+epol/tests/policies/test-expander/alias-base.conf
+> index 57d4520e..b950039d 100644
+> --- a/libsepol/tests/policies/test-expander/alias-base.conf
+> +++ b/libsepol/tests/policies/test-expander/alias-base.conf
+> @@ -494,7 +494,7 @@ genfscon proc /                             gen_conte=
+xt(system_u:object_r:system_t, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 system_u:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(system_u:object_r:system_t=
+, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(system_u=
+:object_r:system_t, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-expander/role-base.conf b/libse=
+pol/tests/policies/test-expander/role-base.conf
+> index a603390b..8e88b4be 100644
+> --- a/libsepol/tests/policies/test-expander/role-base.conf
+> +++ b/libsepol/tests/policies/test-expander/role-base.conf
+> @@ -476,7 +476,7 @@ genfscon proc /                             gen_conte=
+xt(system_u:object_r:system_t, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 system_u:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(system_u:object_r:system_t=
+, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(system_u=
+:object_r:system_t, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-expander/small-base.conf b/libs=
+epol/tests/policies/test-expander/small-base.conf
+> index 20005e3f..055ea054 100644
+> --- a/libsepol/tests/policies/test-expander/small-base.conf
+> +++ b/libsepol/tests/policies/test-expander/small-base.conf
+> @@ -714,7 +714,7 @@ genfscon proc /                             gen_conte=
+xt(system_u:object_r:sys_foo_t, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 system_u:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(system_u:object_r:net_foo_=
+t, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(system_u=
+:object_r:net_foo_t, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-expander/user-base.conf b/libse=
+pol/tests/policies/test-expander/user-base.conf
+> index 1f84fd76..b31ee8cd 100644
+> --- a/libsepol/tests/policies/test-expander/user-base.conf
+> +++ b/libsepol/tests/policies/test-expander/user-base.conf
+> @@ -480,7 +480,7 @@ genfscon proc /                             gen_conte=
+xt(system_u:object_r:system_t, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 system_u:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(system_u:object_r:system_t=
+, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(system_u=
+:object_r:system_t, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-hooks/cmp_policy.conf b/libsepo=
+l/tests/policies/test-hooks/cmp_policy.conf
+> index 1eccf4a8..9082b333 100644
+> --- a/libsepol/tests/policies/test-hooks/cmp_policy.conf
+> +++ b/libsepol/tests/policies/test-hooks/cmp_policy.conf
+> @@ -464,7 +464,7 @@ genfscon proc /                             gen_conte=
+xt(g_b_user_1:object_r:g_b_type_1, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 g_b_user_1:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(g_b_user_1:object_r:g_b_ty=
+pe_1, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(g_b_user=
+_1:object_r:g_b_type_1, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-hooks/small-base.conf b/libsepo=
+l/tests/policies/test-hooks/small-base.conf
+> index 1eccf4a8..9082b333 100644
+> --- a/libsepol/tests/policies/test-hooks/small-base.conf
+> +++ b/libsepol/tests/policies/test-hooks/small-base.conf
+> @@ -464,7 +464,7 @@ genfscon proc /                             gen_conte=
+xt(g_b_user_1:object_r:g_b_type_1, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 g_b_user_1:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(g_b_user_1:object_r:g_b_ty=
+pe_1, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(g_b_user=
+_1:object_r:g_b_type_1, s0)
+>
+>
+>
+> diff --git a/libsepol/tests/policies/test-linker/small-base.conf b/libsep=
+ol/tests/policies/test-linker/small-base.conf
+> index 2bc14656..890ebbeb 100644
+> --- a/libsepol/tests/policies/test-linker/small-base.conf
+> +++ b/libsepol/tests/policies/test-linker/small-base.conf
+> @@ -593,7 +593,7 @@ genfscon proc /                             gen_conte=
+xt(g_b_user_1:object_r:g_b_type_1, s0)
+>  #
+>  #nodecon 127.0.0.1 255.255.255.255 g_b_user_1:object_r:net_foo_t:s0
+>
+> -nodecon ::1 FFFF:FFFF:FFFF:FFFF:: gen_context(g_b_user_1:object_r:g_b_ty=
+pe_1, s0)
+> +nodecon ::1 FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF:FFFF gen_context(g_b_user=
+_1:object_r:g_b_type_1, s0)
+>
+>
+>
+> --
+> 2.35.2
+>

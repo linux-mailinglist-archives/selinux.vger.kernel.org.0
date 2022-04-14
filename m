@@ -2,72 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B4E04FFBB4
-	for <lists+selinux@lfdr.de>; Wed, 13 Apr 2022 18:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D671D500CD1
+	for <lists+selinux@lfdr.de>; Thu, 14 Apr 2022 14:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234532AbiDMQul (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 13 Apr 2022 12:50:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36500 "EHLO
+        id S241176AbiDNMNF (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 14 Apr 2022 08:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235385AbiDMQui (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 13 Apr 2022 12:50:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 44641692B5
-        for <selinux@vger.kernel.org>; Wed, 13 Apr 2022 09:48:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1649868496;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=6rnhRM9s7OjNJewdWTy2bviOlrGMf1a39vu1l1OhdVY=;
-        b=CemJfzV5RXa7amPFe7ZKBOb6nu4Q2qYnf0tY0Hg5XWqNmFkhNhO6FYG2AEUDJdeusKnoNH
-        KUnDyxZkdRFNWqXgJVnuKxttjKpR40KLPH93LDLOV8fOjeRp4FNgMnjWbvlpCSh5FuCuq8
-        tLgD+yDa7OBDnlcL9XSuckhuuMxsneY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-341-DNFWaNx6PteJ-fvebkJjew-1; Wed, 13 Apr 2022 12:48:15 -0400
-X-MC-Unique: DNFWaNx6PteJ-fvebkJjew-1
-Received: by mail-wm1-f72.google.com with SMTP id g13-20020a1c4e0d000000b0038eba16aa46so994609wmh.7
-        for <selinux@vger.kernel.org>; Wed, 13 Apr 2022 09:48:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=6rnhRM9s7OjNJewdWTy2bviOlrGMf1a39vu1l1OhdVY=;
-        b=mEiEUwlwWo91KaXbHLSiVmyeXPcO7NSKAbHtema9IrhOOZzvSCWjy+hTx4g4dpmBFb
-         sMF9KEbc9NTnisSahSXmwhme3WuxD1ohuG5zukv92dA+SDpIlfk1nza5PTALJmIZoUTc
-         8kdu+00UOUaSS9rwWN0LBg/K0y2Oh2efi/86PTDqDRCiYZu0ZVp/jc0mHX+W4/O8gOf5
-         65cz3mMU7c0aEYha/RN3+AWJjsAZiiVnuPCapTTgv7akFWLG4R8EDudGu6TETADxpy4e
-         8c2O2nMtqKZTQdsaPOIR94/QUtOaUjHereDx/8LlL26Cxf0zinsS6zYzvFizb4fRGHk3
-         Szbg==
-X-Gm-Message-State: AOAM5314sRedf3NnkGUe+KustS8F5n6H6WOJX9/0UqR7mtoXPmkSArw9
-        RCwTDnYAd9kCoZJCwW2tS4PRvdh0JCQao/85rxcoM0RXskhEWqe9UFvBUXwjSjlkwVd79yAzcKJ
-        WUuw0qskMctK3AIwZH0KkpXuXF/t5OlxNCF/mmWvUTyBHtNc8TFJ3P8q0V/ShSjsC2FUwXQ==
-X-Received: by 2002:a5d:514e:0:b0:207:ac9c:878b with SMTP id u14-20020a5d514e000000b00207ac9c878bmr8077257wrt.252.1649868493652;
-        Wed, 13 Apr 2022 09:48:13 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJx2i138Mb9Hn/EuKNMUS8E5RE9zePzxOlY+E7iW5Rvznoi03U8TIdWdautNruNmzIjp1uG9gQ==
-X-Received: by 2002:a5d:514e:0:b0:207:ac9c:878b with SMTP id u14-20020a5d514e000000b00207ac9c878bmr8077244wrt.252.1649868493336;
-        Wed, 13 Apr 2022 09:48:13 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
-        by smtp.gmail.com with ESMTPSA id l126-20020a1c2584000000b00387d4f35651sm2991747wml.10.2022.04.13.09.48.12
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Apr 2022 09:48:12 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite 2/2] tests: check more thoroughly for SCTP support
-Date:   Wed, 13 Apr 2022 18:48:10 +0200
-Message-Id: <20220413164810.2122305-3-omosnace@redhat.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220413164810.2122305-1-omosnace@redhat.com>
-References: <20220413164810.2122305-1-omosnace@redhat.com>
+        with ESMTP id S243012AbiDNMM3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 14 Apr 2022 08:12:29 -0400
+Received: from re-prd-fep-043.btinternet.com (mailomta21-re.btinternet.com [213.120.69.114])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A14411C91B
+        for <selinux@vger.kernel.org>; Thu, 14 Apr 2022 05:10:01 -0700 (PDT)
+Received: from re-prd-rgout-003.btmx-prd.synchronoss.net ([10.2.54.6])
+          by re-prd-fep-043.btinternet.com with ESMTP
+          id <20220414121000.LCWW3055.re-prd-fep-043.btinternet.com@re-prd-rgout-003.btmx-prd.synchronoss.net>;
+          Thu, 14 Apr 2022 13:10:00 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=btinternet.com; s=btmx201904; t=1649938200; 
+        bh=g7d9fxhKMKILDTTKmjvoXj32aXm/MyqTyb0ey/mvK4M=;
+        h=Message-ID:Subject:From:To:Date:In-Reply-To:References:MIME-Version;
+        b=LzZBvwiRwPCD2cNFtd/aIZdNx/a/+qVKksQUtgyC+evodb5qY+/7IXATpnOvQQxcJ4Z+Z+PkXH2I64pTr3xFuIq8FF3J/HwfxwklR+zFtlD5blBaH89cRZCS1+1B9lp87qsvEEuqD2NKunyZVaUerN9N9+cxXLDC1tzw54ahg56akf61XjWHl1YWAxoTQdGX63VyeCp2F4D5DfeQ+NoFQi288CLQ+dVjAN6zyJKfN/clbKj9nxLwfVMfCkti8Say3WzIDsiM22RqWFgGbJ2KOTPu5p8b3z4NYNiu03BBPNV11K47uQXDJUVApyDSCf5mHpJSyvEscex7atAb6b4slQ==
+Authentication-Results: btinternet.com;
+    auth=pass (LOGIN) smtp.auth=richard_c_haines@btinternet.com;
+    bimi=skipped
+X-SNCR-Rigid: 61A69BAC12983E3B
+X-Originating-IP: [86.133.207.109]
+X-OWM-Source-IP: 86.133.207.109 (GB)
+X-OWM-Env-Sender: richard_c_haines@btinternet.com
+X-VadeSecure-score: verdict=clean score=0/300, class=clean
+X-RazorGate-Vade: gggruggvucftvghtrhhoucdtuddrgedvvddrudelfedggeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuueftkffvkffujffvgffngfevqffopdfqfgfvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkuffhvfffjghftggfggfgsehtkeertddtreejnecuhfhrohhmpeftihgthhgrrhguucfjrghinhgvshcuoehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmqeenucggtffrrghtthgvrhhnpefhkeegheduudeggfffkeehheettefgjedugefhhfevuedvveduhedtleejkeduveenucfkphepkeeirddufeefrddvtdejrddutdelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehhvghloheplgduledvrdduieekrddurdduleekngdpihhnvghtpeekiedrudeffedrvddtjedruddtledpmhgrihhlfhhrohhmpehrihgthhgrrhgupggtpghhrghinhgvshessghtihhnthgvrhhnvghtrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepohhmohhsnhgrtggvsehrvgguhhgrthdrtghomhdprhgtphhtthhopehsvghlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+X-SNCR-hdrdom: btinternet.com
+Received: from [192.168.1.198] (86.133.207.109) by re-prd-rgout-003.btmx-prd.synchronoss.net (5.8.716.04) (authenticated as richard_c_haines@btinternet.com)
+        id 61A69BAC12983E3B; Thu, 14 Apr 2022 13:10:00 +0100
+Message-ID: <2634e3d64c31ef611d93e2b13c03dbb542969426.camel@btinternet.com>
+Subject: Re: [PATCH testsuite v4] tests/sctp: add client peeloff tests
+From:   Richard Haines <richard_c_haines@btinternet.com>
+To:     Ondrej Mosnacek <omosnace@redhat.com>, selinux@vger.kernel.org
+Date:   Thu, 14 Apr 2022 13:10:00 +0100
+In-Reply-To: <20220413114734.1704750-1-omosnace@redhat.com>
+References: <20220413114734.1704750-1-omosnace@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.42.4 (3.42.4-2.fc35) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,150 +57,38 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-1. Add SCTP support checking also to extended_socket_class test, where
-   it was missing previously.
-2. Attempt to explicitly load the 'sctp' module as part of the check to
-   ensure that SCTP support is activated and detected also when it is
-   excluded from autoloading (as is the case e.g. on RHEL 8+).
+On Wed, 2022-04-13 at 13:47 +0200, Ondrej Mosnacek wrote:
+> Currently the testsuite only verifies that SCTP peeloff works on the
+> server side. However, it can just as well be used on the client side
+> as
+> well, which isn't being tested (and actually is buggy at the time of
+> writing).
+> 
+> To correct this, add a simple SCTP peeloff client and a couple tests
+> that verify that the client-side peeloff works well with SELinux.
+> 
+> The new tests are enabled on kernels 5.18+, where the fixes were
+> introduced. While the fixes are now queued also for some stable
+> streams,
+> it's much simpler to just check the version against 5.18 and skip the
+> test for all older kernels.
+> 
+> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+> ---
+> 
+> v4: added a kernel version check
+> v3: fixed uninitialized "sinlen" variable in sctp_peeloff_client.c
+> v2: rebased and resolved a conflict
+> 
+>  tests/sctp/.gitignore            |   1 +
+>  tests/sctp/Makefile              |   3 +-
+>  tests/sctp/sctp_peeloff_client.c | 254
+> +++++++++++++++++++++++++++++++
+>  tests/sctp/test                  | 170 ++++++++++++++++++++-
+>  4 files changed, 419 insertions(+), 9 deletions(-)
+>  create mode 100644 tests/sctp/sctp_peeloff_client.c
+> 
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- tests/extended_socket_class/test | 77 ++++++++++++++++++--------------
- tests/sctp/test                  |  4 +-
- 2 files changed, 46 insertions(+), 35 deletions(-)
+Tested on kernel 5.18-rc2
 
-diff --git a/tests/extended_socket_class/test b/tests/extended_socket_class/test
-index 022993d..86c706b 100755
---- a/tests/extended_socket_class/test
-+++ b/tests/extended_socket_class/test
-@@ -3,14 +3,22 @@
- use Test;
- 
- BEGIN {
--    $test_count     = 14;
-+    $test_count     = 6;
-     $test_bluetooth = 0;
-+    $test_sctp      = 0;
-+
-+    # check if SCTP is enabled
-+    if ( system("modprobe sctp 2>/dev/null && checksctp 2>/dev/null") eq 0 ) {
-+        $test_count += 8;
-+        $test_sctp = 1;
-+    }
- 
-     # check if Bluetooth is supported (commonly disabled e.g. on s390x)
-     if ( system("modprobe bluetooth 2>/dev/null") eq 0 ) {
-         $test_count += 2;
-         $test_bluetooth = 1;
-     }
-+
-     plan tests => $test_count;
- }
- 
-@@ -46,53 +54,56 @@ ok($result);
- # Restore to the kernel defaults - no one allowed to create ICMP sockets.
- system("echo 1 0 > /proc/sys/net/ipv4/ping_group_range");
- 
--# Verify that test_sctp_socket_t can create an IPv4 stream SCTP socket.
--$result = system(
--    "runcon -t test_sctp_socket_t -- $basedir/sockcreate inet stream sctp 2>&1"
--);
--ok( $result, 0 );
-+if ($test_sctp) {
- 
--# Verify that test_no_sctp_socket_t cannot create an IPv4 stream SCTP socket.
--$result = system(
-+    # Verify that test_sctp_socket_t can create an IPv4 stream SCTP socket.
-+    $result = system(
-+"runcon -t test_sctp_socket_t -- $basedir/sockcreate inet stream sctp 2>&1"
-+    );
-+    ok( $result, 0 );
-+
-+   # Verify that test_no_sctp_socket_t cannot create an IPv4 stream SCTP socket.
-+    $result = system(
- "runcon -t test_no_sctp_socket_t -- $basedir/sockcreate inet stream sctp 2>&1"
--);
--ok($result);
-+    );
-+    ok($result);
- 
--# Verify that test_sctp_socket_t can create an IPv4 seqpacket SCTP socket.
--$result = system(
-+    # Verify that test_sctp_socket_t can create an IPv4 seqpacket SCTP socket.
-+    $result = system(
- "runcon -t test_sctp_socket_t -- $basedir/sockcreate inet seqpacket sctp 2>&1"
--);
--ok( $result, 0 );
-+    );
-+    ok( $result, 0 );
- 
- # Verify that test_no_sctp_socket_t cannot create an IPv4 seqpacket SCTP socket.
--$result = system(
-+    $result = system(
- "runcon -t test_no_sctp_socket_t -- $basedir/sockcreate inet seqpacket sctp 2>&1"
--);
--ok($result);
-+    );
-+    ok($result);
- 
--# Verify that test_sctp_socket_t can create an IPv6 stream SCTP socket.
--$result = system(
--    "runcon -t test_sctp_socket_t -- $basedir/sockcreate inet6 stream sctp 2>&1"
--);
--ok( $result, 0 );
-+    # Verify that test_sctp_socket_t can create an IPv6 stream SCTP socket.
-+    $result = system(
-+"runcon -t test_sctp_socket_t -- $basedir/sockcreate inet6 stream sctp 2>&1"
-+    );
-+    ok( $result, 0 );
- 
--# Verify that test_no_sctp_socket_t cannot create an IPv6 stream SCTP socket.
--$result = system(
-+   # Verify that test_no_sctp_socket_t cannot create an IPv6 stream SCTP socket.
-+    $result = system(
- "runcon -t test_no_sctp_socket_t -- $basedir/sockcreate inet6 stream sctp 2>&1"
--);
--ok($result);
-+    );
-+    ok($result);
- 
--# Verify that test_sctp_socket_t can create an IPv6 seqpacket SCTP socket.
--$result = system(
-+    # Verify that test_sctp_socket_t can create an IPv6 seqpacket SCTP socket.
-+    $result = system(
- "runcon -t test_sctp_socket_t -- $basedir/sockcreate inet6 seqpacket sctp 2>&1"
--);
--ok( $result, 0 );
-+    );
-+    ok( $result, 0 );
- 
- # Verify that test_no_sctp_socket_t cannot create an IPv6 seqpacket SCTP socket.
--$result = system(
-+    $result = system(
- "runcon -t test_no_sctp_socket_t -- $basedir/sockcreate inet6 seqpacket sctp 2>&1"
--);
--ok($result);
-+    );
-+    ok($result);
-+}
- 
- if ($test_bluetooth) {
- 
-diff --git a/tests/sctp/test b/tests/sctp/test
-index 0f017e8..1258de4 100755
---- a/tests/sctp/test
-+++ b/tests/sctp/test
-@@ -28,8 +28,8 @@ BEGIN {
-         $v = " ";
-     }
- 
--    # check if sctp enabled
--    if ( system("checksctp 2> /dev/null") != 0 ) {
-+    # check if SCTP is enabled
-+    if ( system("modprobe sctp 2>/dev/null && checksctp 2>/dev/null") != 0 ) {
-         plan skip_all => "SCTP not supported";
-     }
-     else {
--- 
-2.35.1
-
+Tested-by: Richard Haines <richard_c_haines@btinternet.com>

@@ -2,106 +2,122 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 463245035CC
-	for <lists+selinux@lfdr.de>; Sat, 16 Apr 2022 11:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E459504E74
+	for <lists+selinux@lfdr.de>; Mon, 18 Apr 2022 11:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230240AbiDPJnI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sat, 16 Apr 2022 05:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55774 "EHLO
+        id S235399AbiDRJs6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 18 Apr 2022 05:48:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229705AbiDPJnH (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sat, 16 Apr 2022 05:43:07 -0400
-Received: from mail-yb1-xb42.google.com (mail-yb1-xb42.google.com [IPv6:2607:f8b0:4864:20::b42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAA38165B0
-        for <selinux@vger.kernel.org>; Sat, 16 Apr 2022 02:40:36 -0700 (PDT)
-Received: by mail-yb1-xb42.google.com with SMTP id j2so18060885ybu.0
-        for <selinux@vger.kernel.org>; Sat, 16 Apr 2022 02:40:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=nrlzoYnX2HzC7L2W0manjiMBZn8QNNY0VjN2AEU72NRBFKiOkx74m2tx5gh2SksgDW
-         UR2RmSf3b31j1BX2jk5NtB4Iw6KnCXxh7jUe+ZA39GJ99vV8iTcH1wiM/iH8ZGalr/6J
-         xVY+UPI1ayKWt6ORdQ3z5F/LzXA16sRFzLKX32qCqBs40yErQLXlXpas9WrMZtcN7VI0
-         ozf4CUSH61eXegQH5QC7PpayVoZkr33ahmHfQqlOxXZkm1j1uU6LpIKX5s5umpzNnWja
-         jIoiagbmMu2A2OuF+q6MvBdC1kJNZEUpYL09uxcwCVI2K2cNdlQb1LwLx+5IlyrGrZa5
-         BuQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=KeMi8W+p20zdR41YZoRj2EapY7imNsLYkAgQIQsIzqY=;
-        b=xagoZUuqHppjLumYagd/BZgUaMgHZEFa4iKNXwzU1dbYMZfFGoGyJV5ax0sk7oSlRR
-         EtAr0Q9eTYSdKOid5oOnbZD4OTyq2GDQ229wFLsYQU9g6EHJJjx6lX2Lqbh9vZryXE3Y
-         uq6kD/8sQAP6CdLQ97y8yFGmXMlC+aLjeZi47ScftixWTB/W6nTcrAyvjRsfEgoc8FD2
-         S/Wp35a24fRLEpz9xiRvXIadGrCp8Gr+Dq6oK8NXVnMCGh3tGm54Pw7xQZhuKPrQZXw2
-         v3ZMcyvFqgjCQDBwQGwiJkshTKpdG71SkGwWSJhC+4tTEYGIjebUZMT9qLfJNZJjzhEg
-         ujPA==
-X-Gm-Message-State: AOAM531kA2Z7Ufk1U8psnMGtF95Eh/4UgW8/Od7XJI7z1auB2puhXrQ7
-        mhNI+G47r1xyAoRzhlDqJbwZxmIjJtyhB8aRMxg=
-X-Google-Smtp-Source: ABdhPJya6c1sRIqVGq1XKCFfJ2Pom6Hd7ZKu8Wpre2FbIaxNJJEUE775bLasOyEBpeu7P6kogyu1y5HmKYR5s5hHaOQ=
-X-Received: by 2002:a05:6902:1083:b0:633:68fc:f82a with SMTP id
- v3-20020a056902108300b0063368fcf82amr2470885ybu.276.1650102035391; Sat, 16
- Apr 2022 02:40:35 -0700 (PDT)
+        with ESMTP id S233208AbiDRJs5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 18 Apr 2022 05:48:57 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F0B51659D;
+        Mon, 18 Apr 2022 02:46:18 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.56])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Khhm111NHzCr93;
+        Mon, 18 Apr 2022 17:41:53 +0800 (CST)
+Received: from dggpemm500011.china.huawei.com (7.185.36.110) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 18 Apr 2022 17:46:16 +0800
+Received: from mscphmkozh00002.huawei.com (10.219.174.70) by
+ dggpemm500011.china.huawei.com (7.185.36.110) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Mon, 18 Apr 2022 17:46:14 +0800
+From:   Alexander Kozhevnikov <alexander.kozhevnikov@huawei.com>
+To:     <paul@paul-moore.com>
+CC:     <alexander.kozhevnikov@huawei.com>, <artem.kuzin@huawei.com>,
+        <hw.likun@huawei.com>, <igor.baranov@huawei.com>,
+        <jamorris@linux.microsoft.com>,
+        <linux-security-module@vger.kernel.org>, <selinux@vger.kernel.org>,
+        <stephen.smalley.work@gmail.com>, <xiujianfeng@huawei.com>,
+        <yusongping@huawei.com>, <anton.sirazetdinov@huawei.com>
+Subject: [RFC PATCH 0/7] SELinux-namespace
+Date:   Mon, 18 Apr 2022 17:45:45 +0800
+Message-ID: <20220418094552.128898-1-alexander.kozhevnikov@huawei.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <CAHC9VhTDu1GDxJwFg5gAMWhuMKUWEU5eXuTr_6eG=tGwiGsMTw@mail.gmail.com>
+References: <CAHC9VhTDu1GDxJwFg5gAMWhuMKUWEU5eXuTr_6eG=tGwiGsMTw@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:70f:0:0:0:0 with HTTP; Sat, 16 Apr 2022 02:40:34
- -0700 (PDT)
-Reply-To: danielseyba@yahoo.com
-From:   Seyba Daniel <chi.solo111@gmail.com>
-Date:   Sat, 16 Apr 2022 11:40:34 +0200
-Message-ID: <CAMuaJnMNXF8-Z6H87SDC11v6bFa582PF+y-dWThEmUw9vq9sAQ@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:b42 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [chi.solo111[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [chi.solo111[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.219.174.70]
+X-ClientProxiedBy: mscpeml500001.china.huawei.com (7.188.26.142) To
+ dggpemm500011.china.huawei.com (7.185.36.110)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello,
+From: Igor Baranov <igor.baranov@huawei.com>
 
-I am so sorry contacting you in this means especially when we have never
-met before. I urgently seek your service to represent me in investing in
-your region / country and you will be rewarded for your service without
-affecting your present job with very little time invested in it.
+Continue with the previous discussion, we decided to do the following: publish all of our patches.
+The aim of these series patches is to extend the functionality and
+stability of selinux namespace base-on the existing work for a basic
+PoC.
 
-My interest is in buying real estate, private schools or companies with
-potentials for rapid growth in long terms.
+To try our patches you need to:
+* Checkout https://github.com/stephensmalley/selinux-kernel/commit/3a3b3ad9bd266f0199a2db6c0aa15c343c2307f1
+* Apply our patches.
+* Compile the kernel and boot into it.
+* Next, we recommend creating a privileged Docker container with a SELinux-based distribution (we used CentOS 7) with mapping /sys/fs/selinux:/sys/fs/selinux
+* Then log into into the container and do the following:
 
-So please confirm interest by responding back.
+# create new namespace with name "ns", unshare previous one
+echo "ns" > /sys/fs/selinux/unshare; unshare --fork -m
+# remount selinuxfs, load policy
+umount /sys/fs/selinux; mount -t selinuxfs none /sys/fs/selinux/; load_policy
+# relabel everything
+restorecon / -Rv
+# check xattr's
+ls -Z
+# now enter enforcing mode
+setenforce 1
+# check enforce
+getenforce
 
-My dearest regards
+First of all, there is a need to build the solid code base for the
+workable PoC with the latest branch working-selinux, hence the related
+commits picked from the sources comprise the first two patches.
+And the rest five patches are the major work, detailed description
+can be check in each commit message:
 
-Seyba Daniel
+  (1) Infrastructure management of the superblock
+  (2) support per-namespace superblock security structures
+  (3) Fix initilization of the superblock security under spinlock
+  (4) Namespacing for xattrs
+  (5) Migrate all open files and all vma to new namespace
+  (6) Fixing superblock security structure memory leakage
+  (7) Fixing concurrency issues
+
+Hope the initial efforts in this direction could re-initiate the discussion.
+Thanks.
+
+ README.SELINUX-NAMESPACES           |  22 +
+ include/linux/lsm_hooks.h           |   1 +
+ security/security.c                 |  46 +-
+ security/selinux/hooks.c            | 682 +++++++++++++++++++++-------
+ security/selinux/include/objsec.h   |  41 +-
+ security/selinux/include/security.h |  23 +-
+ security/selinux/selinuxfs.c        | 368 +++++++++++----
+ security/selinux/ss/services.c      |  32 +-
+ security/smack/smack.h              |   6 +
+ security/smack/smack_lsm.c          |  35 +-
+ 10 files changed, 950 insertions(+), 306 deletions(-)
+ create mode 100644 README.SELINUX-NAMESPACES
+
+-- 
+2.34.1
+
+Alexander Kozhevnikov,
+Igor Baranov,
+
+Advanced Software Technology Lab
+
+Huawei

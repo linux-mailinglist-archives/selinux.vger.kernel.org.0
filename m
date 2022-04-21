@@ -2,124 +2,88 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BFE8508FEF
-	for <lists+selinux@lfdr.de>; Wed, 20 Apr 2022 21:05:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D11509A7E
+	for <lists+selinux@lfdr.de>; Thu, 21 Apr 2022 10:17:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231933AbiDTTHo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 20 Apr 2022 15:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49544 "EHLO
+        id S243019AbiDUIUR (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 21 Apr 2022 04:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244725AbiDTTHo (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 20 Apr 2022 15:07:44 -0400
-Received: from mail-oa1-x2f.google.com (mail-oa1-x2f.google.com [IPv6:2001:4860:4864:20::2f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6B7F2DCF
-        for <selinux@vger.kernel.org>; Wed, 20 Apr 2022 12:04:56 -0700 (PDT)
-Received: by mail-oa1-x2f.google.com with SMTP id 586e51a60fabf-e2fa360f6dso2991098fac.2
-        for <selinux@vger.kernel.org>; Wed, 20 Apr 2022 12:04:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=t12hWkQ2kzE7o1cXRZwgNHN5x8A8hkeT0c+TOsHYBUs=;
-        b=HjKvubL7JNQYj4jFIDn8jtavGc8+8TGn1mf5lGOdSRabH220uFqjQ5YXWvhC/OD0V6
-         htLxGkwhPcKGYumAJrWjGxrYeqHRcl1N4h7+JH9e0vrLp1J1JyIgLpVY2lf9OtBNXZFB
-         rj0oRpzNUNAnZK4e9qxH/5yj+VkR3knBhHXr3WZr16zvrqPrF7polNNDaOA94lb4r9VR
-         jJIRC2o3NdgytKaxZ7TPREWeEET33zwa89tiRZKBn+U+g9czGH6E4FckjGS5aWPuFwn7
-         IVIToVD7AIwRNk99hPtr49Re1bgIJLRmMdQsRUcsFiaUUDpHvgacwgpSkxWzRF1IQeVv
-         zVwA==
+        with ESMTP id S1386569AbiDUIUP (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 21 Apr 2022 04:20:15 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DAAE33889
+        for <selinux@vger.kernel.org>; Thu, 21 Apr 2022 01:17:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1650529044;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=P4kJavn5PBrmWzsESk4ISOm+fTVxQqvuKJcfv7gCmHs=;
+        b=AwYxuU8gLwCwip3WMwDBzcUyjSEDG3TwAJL7DVvVK0L0XCTVLMtZpBUrVpngblMSHZYqUy
+        1WvPqF2ba3EOKCsAEMsa/ecQ3CEYM8asi7apvxnDMzTuNnkAI3AOM2Jiqf8Zon4l2jrdnV
+        CVXlv9dBbKmUb/Raz4gckFt9gjTokb0=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-258-wwtlGMuGMRm6OzZYPA1GWg-1; Thu, 21 Apr 2022 04:17:23 -0400
+X-MC-Unique: wwtlGMuGMRm6OzZYPA1GWg-1
+Received: by mail-ed1-f72.google.com with SMTP id cy25-20020a0564021c9900b0041d84fd5d8fso2787142edb.4
+        for <selinux@vger.kernel.org>; Thu, 21 Apr 2022 01:17:23 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=t12hWkQ2kzE7o1cXRZwgNHN5x8A8hkeT0c+TOsHYBUs=;
-        b=dbvrliIEE/bTSAzCq1377+sqd++sPpf1iiTmhXBVVcJp1FqGPFnWfWLT8/efyGsdoH
-         CeuAYzLtXqccoVHlr/oVn0D/UHvbBh3svcOwOs4Ns4xeZfehVSY5WXqDgW2wRgjopHzI
-         wknJ3D7p7Y9ol35gRn6sWFQHzJjrbxuEGqEuZPKhwIoENOqxbLA7x062GwaA4xzLSuid
-         FP/h2lU0ej1CrlkRqT1eQbUEERcLR1UGevgEXhIEqiECxDj5tnXXdWUngoiFPNERH1KC
-         +uyRyDdKsnxcCak6smX6nQfP8oMtkzv49HV/G6Bk3FIjU4bP2fFD05BMbU+LsDcyMXOY
-         8cmQ==
-X-Gm-Message-State: AOAM530PUPzY6fpdsNTTbrhWxyZjop3eVgdAzNuqRutU5KEir56EbVsu
-        DfoMU6KWqXbjMP4amtCVPy7hF1+0Gjq/5Zc7ksQydTRM
-X-Google-Smtp-Source: ABdhPJx33+pH70P1CFR7KGF7Zdyft11fzN52tCi4Izzh3PkHHoJTkdLNjam/85dl/yrKjIEJd2Y7HqrF9zUzfMxG80k=
-X-Received: by 2002:a05:6870:d68e:b0:e2:861:8b15 with SMTP id
- z14-20020a056870d68e00b000e208618b15mr2324134oap.156.1650481495939; Wed, 20
- Apr 2022 12:04:55 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=P4kJavn5PBrmWzsESk4ISOm+fTVxQqvuKJcfv7gCmHs=;
+        b=vj5MIH4I3lUFcLuKYFrz7j413FxMVxeEK3L+/FAIGxqPTyT1h8neszc5tanYfqmNqz
+         R7UVCfH1IV78uKWvZpzl+djATYlLLkcQ589KkMxisNc8V78BKUANpr2DJQcPTgVp+qcK
+         gnqzTjq5UMcRiJwjwrVkj+mp50Apua3vQHKAqKb7EJCpYDZCGEPEbFGoWfBtmwAZMKcp
+         gKT4+SQKOKulKr+uTnJ1zJExdlpa7NMKzXEcrOrWFPlg20ZjESDQjzqSwNpCqTEPd3L3
+         pXlwJg/zCuV4KatL+giSF9Eb2OBoSDr9/KYijaaJO1P97Y1FLgDGBw27ADuxGXZFDHI7
+         y90A==
+X-Gm-Message-State: AOAM530ApKTWKlrpHkbF5VTdqyo6t6BW8kw4+zQixajks3mGImxjhKDC
+        u4TtsANeaN/vUA3nqp9VDnsNysB7BK+j4cKrF762vXUlDri+4NgDKsqS21KmIbI6y1NVx/5YQ2s
+        FrFhpMrLdO4yKOSXQ8+ze9Sez6JR/T+x5mVzhEL/03J0r1rM4x14SBI8HqM96U0sWlt+jKQ==
+X-Received: by 2002:a17:907:7f0a:b0:6ef:cc08:bd73 with SMTP id qf10-20020a1709077f0a00b006efcc08bd73mr13407985ejc.210.1650529042090;
+        Thu, 21 Apr 2022 01:17:22 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxxCKvFQFcZI3TOeV4/JveqOG5EYCwSTsN12VN2mTdbgLIwcX4IWDg84i9sclnpivZO0vht2g==
+X-Received: by 2002:a17:907:7f0a:b0:6ef:cc08:bd73 with SMTP id qf10-20020a1709077f0a00b006efcc08bd73mr13407965ejc.210.1650529041767;
+        Thu, 21 Apr 2022 01:17:21 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
+        by smtp.gmail.com with ESMTPSA id q17-20020a170906771100b006ef7d5b7a83sm5436830ejm.2.2022.04.21.01.17.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Apr 2022 01:17:21 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Cc:     Richard Haines <richard_c_haines@btinternet.com>
+Subject: [PATCH testsuite 0/2] FIOQSIZE followup fixes
+Date:   Thu, 21 Apr 2022 10:17:18 +0200
+Message-Id: <20220421081720.744534-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-References: <20220331144752.31495-1-cgzones@googlemail.com>
- <20220405133548.51598-1-cgzones@googlemail.com> <20220405133548.51598-4-cgzones@googlemail.com>
- <CAP+JOzTXBr_jMK8PjoYJt2CXashgO1jyKkWhrVGKrdmLV-6EVw@mail.gmail.com>
-In-Reply-To: <CAP+JOzTXBr_jMK8PjoYJt2CXashgO1jyKkWhrVGKrdmLV-6EVw@mail.gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Wed, 20 Apr 2022 15:04:45 -0400
-Message-ID: <CAP+JOzSZPE66RgwqL6Yvx1EKwmExuZK1gCrc--pXigmk2Dq4fA@mail.gmail.com>
-Subject: Re: [PATCH v2 4/6] libsepol/cil: comment out unused function __cil_verify_rule
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Apr 6, 2022 at 12:15 PM James Carter <jwcart2@gmail.com> wrote:
->
-> On Wed, Apr 6, 2022 at 9:28 AM Christian G=C3=B6ttsche
-> <cgzones@googlemail.com> wrote:
-> >
-> > The function __cil_verify_rule() is currently not used as all call site=
-s
-> > are commented out.  Keep the function for future references.
-> >
-> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
->
-> Patches 1-3 have already been merged.
->
-> For patches 4-6:
-> Acked-by: James Carter <jwcart2@gmail.com>
->
+Two small fixes for the recently merged switch to FIOQSIZE. One was
+found when the testsuite was run on ppc64le and s390x arches, the other
+one when looking at the code.
 
-Now that the libsepol and libsemanage tests work for
-"-Wmissing-prototypes", patches 4-6 have been merged.
-Thanks,
-Jim
+Ondrej Mosnacek (2):
+  policy/test_ioctl_xperms.te: add ioctl numbers for other arches
+  tests/ioctl: adjust size of variable passed to ioctl(2)
 
-> > ---
-> >  libsepol/cil/src/cil_verify.c | 4 +++-
-> >  1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verif=
-y.c
-> > index aecbdc19..4640dc59 100644
-> > --- a/libsepol/cil/src/cil_verify.c
-> > +++ b/libsepol/cil/src/cil_verify.c
-> > @@ -970,7 +970,8 @@ exit:
-> >         return rc;
-> >  }
-> >
-> > -int __cil_verify_rule(struct cil_tree_node *node, struct cil_complex_s=
-ymtab *symtab)
-> > +/*
-> > +static int __cil_verify_rule(struct cil_tree_node *node, struct cil_co=
-mplex_symtab *symtab)
-> >  {
-> >
-> >         int rc =3D SEPOL_ERR;
-> > @@ -1016,6 +1017,7 @@ exit:
-> >         cil_tree_log(node, CIL_ERR, "Invalid rule");
-> >         return rc;
-> >  }
-> > +*/
-> >
-> >  static int __cil_verify_booleanif_helper(struct cil_tree_node *node, _=
-_attribute__((unused)) uint32_t *finished, __attribute__((unused)) void *ex=
-tra_args)
-> >  {
-> > --
-> > 2.35.1
-> >
+ policy/test_ioctl_xperms.te | 3 ++-
+ tests/ioctl/test_ioctl.c    | 2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+-- 
+2.35.1
+

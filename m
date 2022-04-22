@@ -2,141 +2,102 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C703950BA38
-	for <lists+selinux@lfdr.de>; Fri, 22 Apr 2022 16:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E62D50BBF7
+	for <lists+selinux@lfdr.de>; Fri, 22 Apr 2022 17:44:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1448733AbiDVOkG (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 22 Apr 2022 10:40:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54608 "EHLO
+        id S1449541AbiDVPrd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 22 Apr 2022 11:47:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1448731AbiDVOkF (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 22 Apr 2022 10:40:05 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B30E05BD27;
-        Fri, 22 Apr 2022 07:37:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:
-        Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-        Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description;
-        bh=roXSkgp7AcHF/lcjOHhcpN8Xmx+GkKmLRVoKkTd+Adg=; b=tX4y9UPOAPrnbbwo+/TBmRkSgf
-        Cd+ngehcbDyo3TrDTO3BCcy391X73BF1SaPWigbX5EapQk26CDRz6dG0tPasYpTSLP1peYb0l4qoY
-        AX98pK4gmSd5wkhfSS3AN14hwwtaQsUTgY7eOTw8BegTdF5/jf9nLkymP0poHrcfm/fxwSP3ihL8K
-        G3Us+PEcBvBHfg3idr6YvVakesrsHKHuzeVh+AMsNjStnSCZksWcm2tHNaQ8fJkqtYsceAJlwji9U
-        VETXSFsHDrB2gRtRHgnYzmOlCq8vY0ZoNoHICEcEzD1h2VknMwJQESlD8UJFJNxb3pLU6Fgf8BZDi
-        hUfxK/hA==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nhuPG-000qpU-B7; Fri, 22 Apr 2022 14:37:10 +0000
-Date:   Fri, 22 Apr 2022 07:37:10 -0700
-From:   Luis Chamberlain <mcgrof@kernel.org>
-To:     =?iso-8859-1?Q?Thi=E9baud?= Weksteen <tweek@google.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jeffrey Vander Stoep <jeffv@google.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Alistair Delva <adelva@google.com>,
-        Adam Shih <adamshih@google.com>, selinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] firmware_loader: use kernel credentials when reading
- firmware
-Message-ID: <YmK9lhEENKFnr6sd@bombadil.infradead.org>
-References: <20220422013215.2301793-1-tweek@google.com>
+        with ESMTP id S1449555AbiDVPrX (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 22 Apr 2022 11:47:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B44F15DE6B
+        for <selinux@vger.kernel.org>; Fri, 22 Apr 2022 08:43:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1650642192;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=CNLD/AktzEEic80RSyEVfvLl500YFX1PwWTE6hWvuJA=;
+        b=F2YruDqIv3DTQCOH2IAV9gRHslebTXcEMh2VGVV33/WrK3wAli/BthKHAW03tsM/wQCW6k
+        vjrS1f+29OViymI9hBEnMPptG5ImgYwf1XfRtSbQbLXO+eHdGrtnp9rygcWk8lszWznOjg
+        zJ7VTSMpfF4v0py1bfv2OqnMwhQq+1I=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-642-dAfUxXt-PBuu9TyLsIpAGg-1; Fri, 22 Apr 2022 11:43:11 -0400
+X-MC-Unique: dAfUxXt-PBuu9TyLsIpAGg-1
+Received: by mail-wm1-f69.google.com with SMTP id az19-20020a05600c601300b003914ac8efb8so3890666wmb.2
+        for <selinux@vger.kernel.org>; Fri, 22 Apr 2022 08:43:10 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CNLD/AktzEEic80RSyEVfvLl500YFX1PwWTE6hWvuJA=;
+        b=GpgWR+shUOuIfnQ+9zSJZ25rA1jHW2pw/sunOZVbWEYqIIDbN6GptXEfLvnkhcU9Gh
+         SaDFh/I/ED4qjSFD6XTyKg3ZLJuUHlvu/yugQkBf1kGc0RIwOIs4dzCbKpjvAw++OT5n
+         jpJwKloiIUQlMNS7xq5df/Sj6SO/lkB5o91+ZnyGqcrsrt5i/diPLfU5UBFcizBXJrnU
+         TeJxdfs4oHlVVYMmQFVYTTkeenelRJVqpt768JWa8TJWaqKlPs1BU8JmvgqoH/Bz7HNF
+         NqgJK8THtTTv5q3+FXKTPiNanc3UC1yzZtn3T7LWepxcv0FFLGBv5WSvVLdZURExtjUC
+         WsXg==
+X-Gm-Message-State: AOAM532NPa5ZpcDoR1zUUQ9FIe8t+t5BXffM5WKeGiVyWwpEWedSjJNL
+        Eh6Jg2jdWdtIXFZrojE2BPONxCo8nogjNqoXyAcuTI/C4XXjChEja9cO93eA0niRuM87FP/FIwL
+        BAM8uv/4bUMgOzVfech8z5+RWFmhom67uE+FHDn7XmIANFKOGp+F/HbImSuqkMe3lvWE2AQ==
+X-Received: by 2002:a5d:6caf:0:b0:207:ab83:64c7 with SMTP id a15-20020a5d6caf000000b00207ab8364c7mr4389049wra.668.1650642189547;
+        Fri, 22 Apr 2022 08:43:09 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwmW2gGGaXnqu0fmVj3BgsnWDWitQEV9edOU31tVCFo82N8SnvQoxZaZMoyhSE5+4mYIgFeJw==
+X-Received: by 2002:a5d:6caf:0:b0:207:ab83:64c7 with SMTP id a15-20020a5d6caf000000b00207ab8364c7mr4389032wra.668.1650642189268;
+        Fri, 22 Apr 2022 08:43:09 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id t9-20020adfa2c9000000b002061561d4a7sm2044080wra.96.2022.04.22.08.43.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 22 Apr 2022 08:43:08 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Cc:     Dominick Grift <dominick.grift@defensec.nl>
+Subject: [PATCH userspace 0/2] Support the 'self' keyword in type transitions
+Date:   Fri, 22 Apr 2022 17:43:05 +0200
+Message-Id: <20220422154307.968527-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220422013215.2301793-1-tweek@google.com>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Apr 22, 2022 at 11:32:15AM +1000, Thiébaud Weksteen wrote:
-> Device drivers may decide to not load firmware when probed to avoid
-> slowing down the boot process should the firmware filesystem not be
-> available yet. In this case, the firmware loading request may be done
-> when a device file associated with the driver is first accessed. The
-> credentials of the userspace process accessing the device file may be
-> used to validate access to the firmware files requested by the driver.
-> Ensure that the kernel assumes the responsibility of reading the
-> firmware.
-> 
-> This was observed on Android for a graphic driver loading their firmware
-> when the device file (e.g. /dev/mali0) was first opened by userspace
-> (i.e. surfaceflinger). The security context of surfaceflinger was used
-> to validate the access to the firmware file (e.g.
-> /vendor/firmware/mali.bin).
-> 
-> Because previous configurations were relying on the userspace fallback
-> mechanism, the security context of the userspace daemon (i.e. ueventd)
-> was consistently used to read firmware files. More devices are found to
-> use the command line argument firmware_class.path which gives the kernel
-> the opportunity to read the firmware directly, hence surfacing this
-> misattribution.
+With the addition of the anon_inode class in the kernel, 'self'
+transition rules became useful, but haven't been implemented.
 
-Can you elaborate on the last sentence? It's unclear how what you
-describe is used exactly to allow driver to use direct filesystem
-firmware loading.
+This series implements the self keyword support in the CIL & TE
+languages and the module policydb format. The kernel policydb format
+doesn't need any changes, as type transitions are always expanded in the
+kernel policydb.
 
-And, given the feedback from Android it would seem this is a fix
-which likely may be desirable to backport to some stable kernels?
+The patches have been tested using the following WIP beakerlib/tmt test:
+https://src.fedoraproject.org/fork/omos/tests/selinux/blob/self-in-tt/f/libsepol/self-keyword-in-type-transitions
 
-Otherwise looks good
+Ondrej Mosnacek (2):
+  libsepol/cil: add support for self keyword in type transitions
+  libsepol,checkpolicy: add support for self keyword in type transitions
 
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+ checkpolicy/policy_define.c                |  42 +++++-
+ libsepol/cil/src/cil_binary.c              | 168 +++++++++++++++------
+ libsepol/cil/src/cil_resolve_ast.c         |  25 ++-
+ libsepol/include/sepol/policydb/policydb.h |   4 +-
+ libsepol/src/expand.c                      |  69 ++++++---
+ libsepol/src/link.c                        |   1 +
+ libsepol/src/module_to_cil.c               |  30 ++--
+ libsepol/src/policydb.c                    |  33 +++-
+ libsepol/src/write.c                       |  19 ++-
+ secilc/test/policy.cil                     |   3 +
+ 10 files changed, 293 insertions(+), 101 deletions(-)
 
-> Signed-off-by: Thiébaud Weksteen <tweek@google.com>
-> ---
-> v2: Add comment
-> 
->  drivers/base/firmware_loader/main.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
-> index 94d1789a233e..8f3c2b2cfc61 100644
-> --- a/drivers/base/firmware_loader/main.c
-> +++ b/drivers/base/firmware_loader/main.c
-> @@ -735,6 +735,8 @@ _request_firmware(const struct firmware **firmware_p, const char *name,
->  		  size_t offset, u32 opt_flags)
->  {
->  	struct firmware *fw = NULL;
-> +	struct cred *kern_cred = NULL;
-> +	const struct cred *old_cred;
->  	bool nondirect = false;
->  	int ret;
->  
-> @@ -751,6 +753,18 @@ _request_firmware(const struct firmware **firmware_p, const char *name,
->  	if (ret <= 0) /* error or already assigned */
->  		goto out;
->  
-> +	/*
-> +	 * We are about to try to access the firmware file. Because we may have been
-> +	 * called by a driver when serving an unrelated request from userland, we use
-> +	 * the kernel credentials to read the file.
-> +	 */
-> +	kern_cred = prepare_kernel_cred(NULL);
-> +	if (!kern_cred) {
-> +		ret = -ENOMEM;
-> +		goto out;
-> +	}
-> +	old_cred = override_creds(kern_cred);
-> +
->  	ret = fw_get_filesystem_firmware(device, fw->priv, "", NULL);
->  
->  	/* Only full reads can support decompression, platform, and sysfs. */
-> @@ -776,6 +790,8 @@ _request_firmware(const struct firmware **firmware_p, const char *name,
->  	} else
->  		ret = assign_fw(fw, device);
->  
-> +	revert_creds(old_cred);
-> +
->   out:
->  	if (ret < 0) {
->  		fw_abort_batch_reqs(fw);
-> -- 
-> 2.36.0.rc2.479.g8af0fa9b8e-goog
-> 
+-- 
+2.35.1
+

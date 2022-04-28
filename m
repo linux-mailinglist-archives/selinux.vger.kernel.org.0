@@ -2,94 +2,83 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 226D2512E8B
-	for <lists+selinux@lfdr.de>; Thu, 28 Apr 2022 10:33:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F6BF512FD5
+	for <lists+selinux@lfdr.de>; Thu, 28 Apr 2022 11:47:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344402AbiD1Ifu (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 28 Apr 2022 04:35:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48040 "EHLO
+        id S231610AbiD1JuJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 28 Apr 2022 05:50:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344532AbiD1IeI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 28 Apr 2022 04:34:08 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB6E5A27FF;
-        Thu, 28 Apr 2022 01:28:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S1346620AbiD1J0J (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 28 Apr 2022 05:26:09 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8E83B7B571
+        for <selinux@vger.kernel.org>; Thu, 28 Apr 2022 02:22:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1651137774;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=YJP5mV4jzpHRZn0otYuAKveMulHHSOpNMyewdi5952M=;
+        b=Bo2Gck3xY1rVt7OJHQoJwI3lwN56qzGxyE6OXGheiOrfBVjyc73r80K3oiIz2o5l2UspSX
+        R0aTqIthlOG70Lrmo22iOs07oArNuiMa7Wda0bBLIVxsolA2QAQDe6W4sGuQbPuUA3qxGl
+        /7qDjZilcr9FaNgwAul8TpUZAP3Oybo=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-594-gyGbr_e9PoK711oauwU2xw-1; Thu, 28 Apr 2022 05:22:53 -0400
+X-MC-Unique: gyGbr_e9PoK711oauwU2xw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 6E257B82B47;
-        Thu, 28 Apr 2022 08:28:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CBA8C385A9;
-        Thu, 28 Apr 2022 08:28:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1651134524;
-        bh=FQ7tkUBDxzmIQSIuGVBUfG+AlREALsjEt5yG5PjK1+Y=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WTZb83o9GLYWJwu5A6wCFd9vhs9TWHnnQMLn9YPQvTKTWatkDPxOxcRjCCLvpt0xE
-         gdX0ZvAECJ1PkQafYq81Fr0s2sYLtY1y2R5LiQ2sI8ZmPtJymzoy0SUU9i79cr57fM
-         AMB1B2Xuzv0sDgWi8K2qlDCtllq7+6Ywl+OMBYeI=
-Date:   Thu, 28 Apr 2022 10:28:41 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     =?iso-8859-1?Q?Thi=E9baud?= Weksteen <tweek@google.com>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>,
-        Qian Cai <quic_qiancai@quicinc.com>,
-        Jeffrey Vander Stoep <jeffv@google.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Alistair Delva <adelva@google.com>,
-        Adam Shih <adamshih@google.com>, selinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] firmware_loader: use kernel credentials when reading
- firmware
-Message-ID: <YmpQOSf0bdOcIZSU@kroah.com>
-References: <20220428061707.768468-1-tweek@google.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 162641E17FE3
+        for <selinux@vger.kernel.org>; Thu, 28 Apr 2022 09:22:53 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.129])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BCD30C44CD6;
+        Thu, 28 Apr 2022 09:22:52 +0000 (UTC)
+Date:   Thu, 28 Apr 2022 10:22:51 +0100
+From:   "Richard W.M. Jones" <rjones@redhat.com>
+To:     Laszlo Ersek <lersek@redhat.com>
+Cc:     SELinux List <selinux@vger.kernel.org>,
+        Petr Lautrbach <plautrba@redhat.com>
+Subject: Re: [PATCH for-3.5 0/5] selinux_restorecon(3), setfiles(8): skip
+ relabeling errors
+Message-ID: <20220428092251.GJ1127@redhat.com>
+References: <20220428065354.27605-1-lersek@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220428061707.768468-1-tweek@google.com>
-X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20220428065354.27605-1-lersek@redhat.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Apr 28, 2022 at 04:17:07PM +1000, Thiébaud Weksteen wrote:
-> Device drivers may decide to not load firmware when probed to avoid
-> slowing down the boot process should the firmware filesystem not be
-> available yet. In this case, the firmware loading request may be done
-> when a device file associated with the driver is first accessed. The
-> credentials of the userspace process accessing the device file may be
-> used to validate access to the firmware files requested by the driver.
-> Ensure that the kernel assumes the responsibility of reading the
-> firmware.
-> 
-> This was observed on Android for a graphic driver loading their firmware
-> when the device file (e.g. /dev/mali0) was first opened by userspace
-> (i.e. surfaceflinger). The security context of surfaceflinger was used
-> to validate the access to the firmware file (e.g.
-> /vendor/firmware/mali.bin).
-> 
-> Previously, Android configurations were not setting up the
-> firmware_class.path command line argument and were relying on the
-> userspace fallback mechanism. In this case, the security context of the
-> userspace daemon (i.e. ueventd) was consistently used to read firmware
-> files. More Android devices are now found to set firmware_class.path
-> which gives the kernel the opportunity to read the firmware directly
-> (via kernel_read_file_from_path_initns). In this scenario, the current
-> process credentials were used, even if unrelated to the loading of the
-> firmware file.
-> 
-> Signed-off-by: Thiébaud Weksteen <tweek@google.com>
-> ---
 
-As stated before, should this go to stable kernels?  If so, how far
-back?
+A couple of comments:
 
-And you forgot to cc: John?
+I'm not clear from the patch series what the difference is between an
+error which ignored (and counted) and an error that would actually
+stop setfiles immediately.  With setfiles -C, will all errors now be
+counted and cause setfiles to exit with 1, or will some errors still
+be fatal (exit with 255)?
 
-thanks,
+Why on earth is setfiles originally calling exit(-1) at all?!  I
+didn't even know that was allowed.  I wrote a test program and this
+does indeed cause the exit status to be 255 (because the status is
+&-ed with 0xff).  Never seen a program before calling exit(-1).
 
-greg k-h
+Rich.
+
+-- 
+Richard Jones, Virtualization Group, Red Hat http://people.redhat.com/~rjones
+Read my programming and virtualization blog: http://rwmj.wordpress.com
+nbdkit - Flexible, fast NBD server with plugins
+https://gitlab.com/nbdkit/nbdkit
+

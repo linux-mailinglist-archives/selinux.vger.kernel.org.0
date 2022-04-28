@@ -2,69 +2,54 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF121512B56
-	for <lists+selinux@lfdr.de>; Thu, 28 Apr 2022 08:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BDF5512C06
+	for <lists+selinux@lfdr.de>; Thu, 28 Apr 2022 08:54:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243442AbiD1GUd (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 28 Apr 2022 02:20:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48030 "EHLO
+        id S244597AbiD1G5R (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 28 Apr 2022 02:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236458AbiD1GUc (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 28 Apr 2022 02:20:32 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 471B14ECC0
-        for <selinux@vger.kernel.org>; Wed, 27 Apr 2022 23:17:19 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id b12-20020a056902030c00b0061d720e274aso3680102ybs.20
-        for <selinux@vger.kernel.org>; Wed, 27 Apr 2022 23:17:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:message-id:mime-version:subject:from:to:cc
-         :content-transfer-encoding;
-        bh=u7wndHCcjBCq9MjMJkcDUIkWDGiU0w6bmfVGxnonv/M=;
-        b=CU8+6WTyf1pgwQElEqOndsoRs3YaZpcUu6opi0AGd0maXtTGR66G7zc0icaWW+rvmI
-         fNakozFmiEMeGyRPID/2ka15r4ZHFybMklZkkHG4zdTdW5QlEu9dHt4h0N5hWI0DLOA5
-         0wMkkmUpd8+K/ukZh5NY1svWbqmv8GvukIeuN6F/wOrc8NwfFMRUZZzANhQCk8bBQ+XP
-         ByDw5XH4oOMoc91SwKVfBjZwuefrCyfzusxwI1Fhdm3xFHDbM/J6nwyDWtUwqUeBlKn1
-         R7DKon5BmObE9FeTpmkMGVfT9azOthpaUEb4/ZFCmnC/Ek5949LbpcLB9jzoqtzndJgt
-         +IwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:message-id:mime-version:subject:from:to:cc
-         :content-transfer-encoding;
-        bh=u7wndHCcjBCq9MjMJkcDUIkWDGiU0w6bmfVGxnonv/M=;
-        b=U1Djesn52rYk5VN2QLWWCso+0aqErFyomVAlNzeUW4Zv/GvLy6PWnyoPpU7Ekk8Xlr
-         1H4XfeNgi9CEFJbElJ0A2RGbkvwntb5mdhPMYE4orAE5w9faTZk+1ScdG7ySqdmk1TR7
-         1NdyMWKpVcZ6EVEJBwkuiBuPuU6OYpyhop5ZMaOB3vOr1aFRWGAHJ6qMYuqeCO9ef3YL
-         H5I6q8bmMKCFUlX6nUACY0kZKyfZugi+N2ZZTZMDTEvUqwHGxfYodl461PidNp406YXv
-         Wl7fEJWFoJQ0uZ713y8+aICqYpo2lR5brFxafVSRVgIdWG2W0AD7JGUBW5TKMj2R1l08
-         eFdA==
-X-Gm-Message-State: AOAM530AeStL4n+JaTqLej6et15xc3wcv2JuAjKkrvchYlzaBWYZeXMG
-        Fd2go1Mnzep+px1aPoLcpg7DsYklbg==
-X-Google-Smtp-Source: ABdhPJyFLVRpkOEbdtAoedpI4qeWJmLVRCV37Z9hNxVqgKTlw13xrBWkN+DFyXvA81TiAVYfpAcbjp+Bnw==
-X-Received: from tweek-sin.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:2bfd])
- (user=tweek job=sendgmr) by 2002:a25:d55:0:b0:648:7008:61e0 with SMTP id
- 82-20020a250d55000000b00648700861e0mr16601052ybn.282.1651126638534; Wed, 27
- Apr 2022 23:17:18 -0700 (PDT)
-Date:   Thu, 28 Apr 2022 16:17:07 +1000
-Message-Id: <20220428061707.768468-1-tweek@google.com>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.36.0.464.gb9c8b46e94-goog
-Subject: [PATCH v3] firmware_loader: use kernel credentials when reading firmware
-From:   "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>
-To:     Luis Chamberlain <mcgrof@kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Qian Cai <quic_qiancai@quicinc.com>
-Cc:     Jeffrey Vander Stoep <jeffv@google.com>,
-        Saravana Kannan <saravanak@google.com>,
-        Alistair Delva <adelva@google.com>,
-        Adam Shih <adamshih@google.com>, selinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        "=?UTF-8?q?Thi=C3=A9baud=20Weksteen?=" <tweek@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        with ESMTP id S244625AbiD1G5R (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 28 Apr 2022 02:57:17 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 0A59C98F5C
+        for <selinux@vger.kernel.org>; Wed, 27 Apr 2022 23:54:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1651128840;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=zwX4PiGzcipWSNJvCybHe1EDP9yF7u/VOFfGLmOeC8g=;
+        b=WnUEwP6PjpmvyROI73EPlYKleWU1squ/gYPH5/t1Yj/Rl5M9mAU0SJyRkiuoexYo/0XFJ/
+        37nOlEPO/zuYGk0+JvYXAzkr1n5wVvcwYRuiAj/At5Sz5RwepN2k7HGE+xMo300ivFFFB5
+        BC4wZf6UEPSq2VhFR/tJWLyEDz4z7YU=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-3-dQzDunfMOnKVZDBTmt6bew-1; Thu, 28 Apr 2022 02:53:59 -0400
+X-MC-Unique: dQzDunfMOnKVZDBTmt6bew-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CC4BD3C0E182
+        for <selinux@vger.kernel.org>; Thu, 28 Apr 2022 06:53:58 +0000 (UTC)
+Received: from lacos-laptop-7.usersys.redhat.com (unknown [10.39.192.29])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DFECC416384;
+        Thu, 28 Apr 2022 06:53:57 +0000 (UTC)
+From:   Laszlo Ersek <lersek@redhat.com>
+To:     SELinux List <selinux@vger.kernel.org>,
+        Laszlo Ersek <lersek@redhat.com>
+Cc:     "Richard W.M. Jones" <rjones@redhat.com>,
+        Petr Lautrbach <plautrba@redhat.com>
+Subject: [PATCH for-3.5 0/5] selinux_restorecon(3), setfiles(8): skip relabeling errors
+Date:   Thu, 28 Apr 2022 08:53:49 +0200
+Message-Id: <20220428065354.27605-1-lersek@redhat.com>
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_BASE64_TEXT,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,90 +57,57 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Device drivers may decide to not load firmware when probed to avoid
-slowing down the boot process should the firmware filesystem not be
-available yet. In this case, the firmware loading request may be done
-when a device file associated with the driver is first accessed. The
-credentials of the userspace process accessing the device file may be
-used to validate access to the firmware files requested by the driver.
-Ensure that the kernel assumes the responsibility of reading the
-firmware.
-
-This was observed on Android for a graphic driver loading their firmware
-when the device file (e.g. /dev/mali0) was first opened by userspace
-(i.e. surfaceflinger). The security context of surfaceflinger was used
-to validate the access to the firmware file (e.g.
-/vendor/firmware/mali.bin).
-
-Previously, Android configurations were not setting up the
-firmware_class.path command line argument and were relying on the
-userspace fallback mechanism. In this case, the security context of the
-userspace daemon (i.e. ueventd) was consistently used to read firmware
-files. More Android devices are now found to set firmware_class.path
-which gives the kernel the opportunity to read the firmware directly
-(via kernel_read_file_from_path_initns). In this scenario, the current
-process credentials were used, even if unrelated to the loading of the
-firmware file.
-
-Signed-off-by: Thi=C3=A9baud Weksteen <tweek@google.com>
----
-v3:=20
-	- Add call to put_cred to avoid a memory leak. Confirmed that no new
-		memory leak occurs on a Pixel 4a.
-	- Update commit log.
-v2: Add comment
-
- drivers/base/firmware_loader/main.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_lo=
-ader/main.c
-index 94d1789a233e..406a907a4cae 100644
---- a/drivers/base/firmware_loader/main.c
-+++ b/drivers/base/firmware_loader/main.c
-@@ -735,6 +735,8 @@ _request_firmware(const struct firmware **firmware_p, c=
-onst char *name,
- 		  size_t offset, u32 opt_flags)
- {
- 	struct firmware *fw =3D NULL;
-+	struct cred *kern_cred =3D NULL;
-+	const struct cred *old_cred;
- 	bool nondirect =3D false;
- 	int ret;
-=20
-@@ -751,6 +753,18 @@ _request_firmware(const struct firmware **firmware_p, =
-const char *name,
- 	if (ret <=3D 0) /* error or already assigned */
- 		goto out;
-=20
-+	/*
-+	 * We are about to try to access the firmware file. Because we may have b=
-een
-+	 * called by a driver when serving an unrelated request from userland, we=
- use
-+	 * the kernel credentials to read the file.
-+	 */
-+	kern_cred =3D prepare_kernel_cred(NULL);
-+	if (!kern_cred) {
-+		ret =3D -ENOMEM;
-+		goto out;
-+	}
-+	old_cred =3D override_creds(kern_cred);
-+
- 	ret =3D fw_get_filesystem_firmware(device, fw->priv, "", NULL);
-=20
- 	/* Only full reads can support decompression, platform, and sysfs. */
-@@ -776,6 +790,9 @@ _request_firmware(const struct firmware **firmware_p, c=
-onst char *name,
- 	} else
- 		ret =3D assign_fw(fw, device);
-=20
-+	revert_creds(old_cred);
-+	put_cred(kern_cred);
-+
-  out:
- 	if (ret < 0) {
- 		fw_abort_batch_reqs(fw);
---=20
-2.36.0.464.gb9c8b46e94-goog
+QnVnemlsbGE6IGh0dHBzOi8vYnVnemlsbGEucmVkaGF0LmNvbS9zaG93X2J1Zy5jZ2k/aWQ9MTc5
+NDUxOAoKVGhlIGZpcnN0IHRocmVlIHBhdGNoZXMgaW4gdGhlIHNlcmllcyBhcmUgY2xlYW51cHMu
+CgpUaGUgZm91cnRoIHBhdGNoIGludHJvZHVjZXMgYSBuZXcgZmVhdHVyZSAoYW5kIEFQSSkgdG8g
+bGlic2VsaW51eCwgYW5kCnRoZSBmaWZ0aCBwYXRjaCBleHBvc2VzIHRoZSBmZWF0dXJlIHRocm91
+Z2ggYSBuZXcgc2V0ZmlsZXMoOCkgY29tbWFuZApsaW5lIG9wdGlvbi4KCkluIGxpYmd1ZXN0ZnMs
+IHdlIGludm9rZSBzZXRmaWxlcyg4KSBvbiBtYXNzZXMgb2YgZGlyZWN0b3J5IHRyZWVzIChpbiBh
+CmxhcmdlIGFtb3VudCBvZiB2aXJ0dWFsIG1hY2hpbmVzKS4gV2UgZG9uJ3QgY2FyZSBpZiByZWxh
+YmVsaW5nIGZhaWxzIG9uCmEgZmV3IGluZGl2aWR1YWwgZmlsZXMsIGJ1dCB3ZSBzdGlsbCB3YW50
+IHRvIGNhdGNoIGZhdGFsIGVycm9ycy4KQ3VycmVudGx5IHRoZXNlIGVycm9yIGNvbmRpdGlvbnMg
+YXJlIGltcG9zc2libGUgdG8gdGVsbCBhcGFydCwgYmVjYXVzZQpzZWxpbnV4X3Jlc3RvcmVjb25b
+X3BhcmFsbGVsKCldLCBldmVuIHRob3VnaCBpdCBpcyBjYXBhYmxlIG9mIGNvbnRpbnVpbmcKdGhy
+b3VnaCByZWxhYmVsaW5nIGVycm9ycywgdWx0aW1hdGVseSByZXBvcnRzIGV2ZW4gdGhlIGNhc2Ug
+b2YgKm9ubHkqCnJlbGFiZWxpbmcgZXJyb3JzLCB3aXRoIHJldHVybiB2YWx1ZSAoLTEpLiBTZXRm
+aWxlcyg4KSB0aGVuIGhhcyBubwpjaG9pY2UgYnV0IHRvIGV4aXQgd2l0aCBzdGF0dXMgMjU1IGlu
+IHRoaXMgY2FzZSBhcyB3ZWxsLgoKVGhlIGZvdXJ0aCBwYXRjaCBpbnRyb2R1Y2VzIGEgbmV3IHNl
+bGludXhfcmVzdG9yZWNvbltfcGFyYWxsZWwoKV0gZmxhZywKbmFtZWx5IFNFTElOVVhfUkVTVE9S
+RUNPTl9DT1VOVF9FUlJPUlMsIHdoaWNoIGNvdW50cywgYnV0IG90aGVyd2lzZQppZ25vcmVzLCBy
+ZWxhYmVsaW5nIGVycm9ycyBlbmNvdW50ZXJlZCBkdXJpbmcgdGhlIGZpbGUgdHJlZSB3YWxrLiBJ
+bgpjYXNlIHRoZSBmdW5jdGlvbiBzdWNjZWVkcywgdGhlIHNraXBwZWQgZXJyb3IgY291bnQgY2Fu
+IGJlIGZldGNoZWQgd2l0aAphIG5ldyBBUEksIHNlbGludXhfcmVzdG9yZWNvbl9nZXRfc2tpcHBl
+ZF9lcnJvcnMoKS4gVGhpcyByZWxpZXMgb24Kc3RhdGljIGxpYnJhcnkgZGF0YSwgd2hpY2ggaXMg
+aW5zcGlyZWQgYnkgZXhpc3RlbnQgQVBJcyBzdWNoIGFzCnNlbGludXhfcmVzdG9yZWNvbl9zZXRf
+c2VoYW5kbGUoMykgYW5kCnNlbGludXhfcmVzdG9yZWNvbl9zZXRfZXhjbHVkZV9saXN0KDMpIC0t
+IHRob3NlIGRvIHRoZSBzYW1lIChhbGJlaXQKYmVmb3JlIGNhbGxpbmcgc2VsaW51eF9yZXN0b3Jl
+Y29uW19wYXJhbGxlbCgpXSwgbm90IGFmdGVyKS4KClRoZSBmaWZ0aCBwYXRjaCB3aXJlcyB0aGUg
+bmV3IGZsYWcgdG8gdGhlIG5ldyBzZXRmaWxlcyg4KSBvcHRpb24gIi1DIi4KClBsZWFzZSBDQyBt
+ZSBvbiBhbGwgcmVwbGllcyB0byB0aGUgc2VyaWVzOyBJJ20gbm90IHN1YnNjcmliZWQgdG8gdGhl
+ClNFTGludXggbWFpbGluZyBsaXN0LiAoIkNPTlRSSUJVVElORy5tZCIgZG9lcyBub3Qgc2F5IHRo
+YXQgc3Vic2NyaWJpbmcKaXMgYSByZXF1aXJlbWVudC4pCgpDYzogIlJpY2hhcmQgVy5NLiBKb25l
+cyIgPHJqb25lc0ByZWRoYXQuY29tPgpDYzogUGV0ciBMYXV0cmJhY2ggPHBsYXV0cmJhQHJlZGhh
+dC5jb20+CgpUaGFua3MsCkxhc3psbwoKTGFzemxvIEVyc2VrICg1KToKICBzZXRmaWxlczogZml4
+IHVwIGluY29uc2lzdGVudCBpbmRlbnRhdGlvbgogIHNldGZpbGVzOiByZW1vdmUgdXNlbGVzcyBh
+c3NpZ25tZW50IGFuZCBjb21tZW50IChhZnRlciBSSEJaIzE5MjYzODYpCiAgc2V0ZmlsZXM6IHJl
+bW92ZSB1c2VsZXNzICJpYW1yZXN0b3JlY29uIiBjaGVja3MgaW4gb3B0aW9uIHBhcnNpbmcKICBz
+ZWxpbnV4X3Jlc3RvcmVjb246IGludHJvZHVjZSBTRUxJTlVYX1JFU1RPUkVDT05fQ09VTlRfRVJS
+T1JTCiAgc2V0ZmlsZXM6IGludHJvZHVjZSB0aGUgLUMgb3B0aW9uIGZvciBkaXN0aW5ndWlzaGlu
+ZyBmaWxlIHRyZWUgd2FsawogICAgZXJyb3JzCgogbGlic2VsaW51eC9pbmNsdWRlL3NlbGludXgv
+cmVzdG9yZWNvbi5oICAgICAgICAgICAgICAgICAgICAgfCAxNSArKysrKysrKwogbGlic2VsaW51
+eC9tYW4vbWFuMy9zZWxpbnV4X3Jlc3RvcmVjb24uMyAgICAgICAgICAgICAgICAgICAgfCAyMiAr
+KysrKysrKysrKy0KIGxpYnNlbGludXgvbWFuL21hbjMvc2VsaW51eF9yZXN0b3JlY29uX2dldF9z
+a2lwcGVkX2Vycm9ycy4zIHwgMjggKysrKysrKysrKysrKysrCiBsaWJzZWxpbnV4L3NyYy9saWJz
+ZWxpbnV4Lm1hcCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8ICA1ICsrKwogbGlic2Vs
+aW51eC9zcmMvc2VsaW51eF9yZXN0b3JlY29uLmMgICAgICAgICAgICAgICAgICAgICAgICAgfCAz
+NCArKysrKysrKysrKysrKystLS0KIHBvbGljeWNvcmV1dGlscy9zZXRmaWxlcy9yZXN0b3JlLmMg
+ICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDggKysrLS0KIHBvbGljeWNvcmV1dGlscy9zZXRm
+aWxlcy9yZXN0b3JlLmggICAgICAgICAgICAgICAgICAgICAgICAgIHwgIDQgKystCiBwb2xpY3lj
+b3JldXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuOCAgICAgICAgICAgICAgICAgICAgICAgICB8IDIy
+ICsrKysrKysrKysrKwogcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3NldGZpbGVzLmMgICAgICAg
+ICAgICAgICAgICAgICAgICAgfCAzNiArKysrKysrKystLS0tLS0tLS0tLQogOSBmaWxlcyBjaGFu
+Z2VkLCAxNDUgaW5zZXJ0aW9ucygrKSwgMjkgZGVsZXRpb25zKC0pCiBjcmVhdGUgbW9kZSAxMDA2
+NDQgbGlic2VsaW51eC9tYW4vbWFuMy9zZWxpbnV4X3Jlc3RvcmVjb25fZ2V0X3NraXBwZWRfZXJy
+b3JzLjMKCgpiYXNlLWNvbW1pdDogMmExNjdkMTE1NjU3OGZjMjk1NDFmNmZiNjBhZjY1NDUyZjQz
+MWFhZQotLSAKMi4xOS4xLjMuZzMwMjQ3YWE1ZDIwMQoK
 

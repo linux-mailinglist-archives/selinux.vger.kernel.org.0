@@ -2,177 +2,105 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51AB0517FAB
-	for <lists+selinux@lfdr.de>; Tue,  3 May 2022 10:23:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8305F5188AB
+	for <lists+selinux@lfdr.de>; Tue,  3 May 2022 17:35:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231926AbiECI1I (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 3 May 2022 04:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35518 "EHLO
+        id S238605AbiECPjT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 3 May 2022 11:39:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231240AbiECI1I (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 3 May 2022 04:27:08 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 908EF29800
-        for <selinux@vger.kernel.org>; Tue,  3 May 2022 01:23:36 -0700 (PDT)
+        with ESMTP id S238676AbiECPjA (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 3 May 2022 11:39:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 944BA286EF
+        for <selinux@vger.kernel.org>; Tue,  3 May 2022 08:35:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651566215;
+        s=mimecast20190719; t=1651592125;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kIz0Cu4Ol620es4MTJLbyzZp+QPTEI2gwSpjPd+S0kY=;
-        b=Ep4JcY5U16/QRFJKOlc1yR8CYyBxAvgmsOpA44NToxefPTBo2wHFqmVQ14iZed4sJMyoRP
-        t2CdzsN0t07krrW1k1JLnXrbqP1tLPn77i+p6pb/e0jIv/i2X3ciI3JYR/KpJ14Z3ENZoM
-        8mAmMPND6L5Uwogi2lLW37V1QcecRqQ=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+         to:to:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=o0txM+GFG4iMUQB+eA6hS3snjLHf3Yl4GBkx7ebo+4k=;
+        b=Cxi2vuRPYjRSVL5FS6xZcpi2XAjnjNqHISBQY6fdLK2O3qPOErYQEyKwQFOw/ru5xzq6A8
+        pQtoV5KOPWqQmk6xwwGUPUGqwCsgNEjlzCkuqbGD7PRiLNiwWyxZjbEVQG0KWElZ58rq7K
+        apD55RcqPcVQucHJKo/szSuXYcMt8iE=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-652-gNm7vGJ4P9OjRINiG40keQ-1; Tue, 03 May 2022 04:23:34 -0400
-X-MC-Unique: gNm7vGJ4P9OjRINiG40keQ-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+ us-mta-491-wAfD7DMuPcCFmJo7hvTL2A-1; Tue, 03 May 2022 11:35:13 -0400
+X-MC-Unique: wAfD7DMuPcCFmJo7hvTL2A-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 787A9811E81
-        for <selinux@vger.kernel.org>; Tue,  3 May 2022 08:23:34 +0000 (UTC)
-Received: from lacos-laptop-7.usersys.redhat.com (unknown [10.39.192.166])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9374B40CFD29;
-        Tue,  3 May 2022 08:23:33 +0000 (UTC)
-From:   Laszlo Ersek <lersek@redhat.com>
-To:     SELinux List <selinux@vger.kernel.org>,
-        Laszlo Ersek <lersek@redhat.com>
-Cc:     "Richard W.M. Jones" <rjones@redhat.com>,
-        Petr Lautrbach <plautrba@redhat.com>
-Subject: [PATCH v2 5/5] setfiles: introduce the -C option for distinguishing file tree walk errors
-Date:   Tue,  3 May 2022 10:23:26 +0200
-Message-Id: <20220503082326.11621-6-lersek@redhat.com>
-In-Reply-To: <20220503082326.11621-1-lersek@redhat.com>
-References: <20220503082326.11621-1-lersek@redhat.com>
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2953E29ABA2B
+        for <selinux@vger.kernel.org>; Tue,  3 May 2022 11:43:05 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.40.194.139])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BC159401E0B
+        for <selinux@vger.kernel.org>; Tue,  3 May 2022 11:43:04 +0000 (UTC)
+From:   Vit Mojzis <vmojzis@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH] gui: Make sure sepolicy calls are translated properly
+Date:   Tue,  3 May 2022 13:42:44 +0200
+Message-Id: <20220503114244.39441-1-vmojzis@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: base64
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,MIME_BASE64_TEXT,
-        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_NONE,T_FILL_THIS_FORM_SHORT,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.9
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-c2V0ZmlsZXMoOCkgZXhpdHMgd2l0aCBzdGF0dXMgMjU1IGlmIGl0IGVuY291bnRlcnMgYW55IGVy
-cm9yLiBJbnRyb2R1Y2UKdGhlICItQyIgb3B0aW9uOiBpZiB0aGUgb25seSBlcnJvcnMgdGhhdCBz
-ZXRmaWxlcyg4KSBlbmNvdW50ZXJzIGFyZQpsYWJlbGluZyBlcnJvcnMgc2VlbiBkdXJpbmcgdGhl
-IGZpbGUgdHJlZSB3YWxrKHMpLCB0aGVuIGxldCBzZXRmaWxlcyg4KQpleGl0IHdpdGggc3RhdHVz
-IDEuCgpDYzogIlJpY2hhcmQgVy5NLiBKb25lcyIgPHJqb25lc0ByZWRoYXQuY29tPgpDYzogUGV0
-ciBMYXV0cmJhY2ggPHBsYXV0cmJhQHJlZGhhdC5jb20+CkJ1Z3ppbGxhOiBodHRwczovL2J1Z3pp
-bGxhLnJlZGhhdC5jb20vc2hvd19idWcuY2dpP2lkPTE3OTQ1MTgKU2lnbmVkLW9mZi1ieTogTGFz
-emxvIEVyc2VrIDxsZXJzZWtAcmVkaGF0LmNvbT4KLS0tCiBwb2xpY3ljb3JldXRpbHMvc2V0Zmls
-ZXMvcmVzdG9yZS5oICB8ICA0ICsrKy0KIHBvbGljeWNvcmV1dGlscy9zZXRmaWxlcy9yZXN0b3Jl
-LmMgIHwgIDggKysrKystLQogcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3NldGZpbGVzLmMgfCAx
-OSArKysrKysrKysrKy0tLS0tLQogcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3NldGZpbGVzLjgg
-fCAyMiArKysrKysrKysrKysrKysrKysrKwogNCBmaWxlcyBjaGFuZ2VkLCA0NCBpbnNlcnRpb25z
-KCspLCA5IGRlbGV0aW9ucygtKQoKZGlmZiAtLWdpdCBhL3BvbGljeWNvcmV1dGlscy9zZXRmaWxl
-cy9yZXN0b3JlLmggYi9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvcmVzdG9yZS5oCmluZGV4IGJi
-MzVhMWRiOWUzNC4uYTVhZjgxZmUzYmI0IDEwMDY0NAotLS0gYS9wb2xpY3ljb3JldXRpbHMvc2V0
-ZmlsZXMvcmVzdG9yZS5oCisrKyBiL3BvbGljeWNvcmV1dGlscy9zZXRmaWxlcy9yZXN0b3JlLmgK
-QEAgLTM1LDYgKzM1LDcgQEAgc3RydWN0IHJlc3RvcmVfb3B0cyB7CiAJdW5zaWduZWQgaW50IGln
-bm9yZV9ub2VudDsKIAl1bnNpZ25lZCBpbnQgaWdub3JlX21vdW50czsKIAl1bnNpZ25lZCBpbnQg
-Y29uZmxpY3RfZXJyb3I7CisJdW5zaWduZWQgaW50IGNvdW50X2Vycm9yczsKIAkvKiByZXN0b3Jl
-Y29uX2ZsYWdzIGhvbGRzIHwgb2YgYWJvdmUgZm9yIHJlc3RvcmVfaW5pdCgpICovCiAJdW5zaWdu
-ZWQgaW50IHJlc3RvcmVjb25fZmxhZ3M7CiAJY2hhciAqcm9vdHBhdGg7CkBAIC00OSw3ICs1MCw4
-IEBAIHN0cnVjdCByZXN0b3JlX29wdHMgewogdm9pZCByZXN0b3JlX2luaXQoc3RydWN0IHJlc3Rv
-cmVfb3B0cyAqb3B0cyk7CiB2b2lkIHJlc3RvcmVfZmluaXNoKHZvaWQpOwogdm9pZCBhZGRfZXhj
-bHVkZShjb25zdCBjaGFyICpkaXJlY3RvcnkpOwotaW50IHByb2Nlc3NfZ2xvYihjaGFyICpuYW1l
-LCBzdHJ1Y3QgcmVzdG9yZV9vcHRzICpvcHRzLCBzaXplX3QgbnRocmVhZHMpOworaW50IHByb2Nl
-c3NfZ2xvYihjaGFyICpuYW1lLCBzdHJ1Y3QgcmVzdG9yZV9vcHRzICpvcHRzLCBzaXplX3QgbnRo
-cmVhZHMsCisJCSBsb25nIHVuc2lnbmVkICpza2lwcGVkX2Vycm9ycyk7CiBleHRlcm4gY2hhciAq
-KmV4Y2x1ZGVfbGlzdDsKIAogI2VuZGlmCmRpZmYgLS1naXQgYS9wb2xpY3ljb3JldXRpbHMvc2V0
-ZmlsZXMvcmVzdG9yZS5jIGIvcG9saWN5Y29yZXV0aWxzL3NldGZpbGVzL3Jlc3RvcmUuYwppbmRl
-eCBlOWFlMzNhZDAzOWEuLjYxMzFmNDZhNzUyMyAxMDA2NDQKLS0tIGEvcG9saWN5Y29yZXV0aWxz
-L3NldGZpbGVzL3Jlc3RvcmUuYworKysgYi9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvcmVzdG9y
-ZS5jCkBAIC00MSw3ICs0MSw4IEBAIHZvaWQgcmVzdG9yZV9pbml0KHN0cnVjdCByZXN0b3JlX29w
-dHMgKm9wdHMpCiAJCQkgICBvcHRzLT54ZGV2IHwgb3B0cy0+YWJvcnRfb25fZXJyb3IgfAogCQkJ
-ICAgb3B0cy0+c3lzbG9nX2NoYW5nZXMgfCBvcHRzLT5sb2dfbWF0Y2hlcyB8CiAJCQkgICBvcHRz
-LT5pZ25vcmVfbm9lbnQgfCBvcHRzLT5pZ25vcmVfbW91bnRzIHwKLQkJCSAgIG9wdHMtPm1hc3Nf
-cmVsYWJlbCB8IG9wdHMtPmNvbmZsaWN0X2Vycm9yOworCQkJICAgb3B0cy0+bWFzc19yZWxhYmVs
-IHwgb3B0cy0+Y29uZmxpY3RfZXJyb3IgfAorCQkJICAgb3B0cy0+Y291bnRfZXJyb3JzOwogCiAJ
-LyogVXNlIHNldGZpbGVzLCByZXN0b3JlY29uIGFuZCByZXN0b3JlY29uZCBvd24gaGFuZGxlcyAq
-LwogCXNlbGludXhfcmVzdG9yZWNvbl9zZXRfc2VoYW5kbGUob3B0cy0+aG5kKTsKQEAgLTcyLDcg
-KzczLDggQEAgdm9pZCByZXN0b3JlX2ZpbmlzaCh2b2lkKQogCX0KIH0KIAotaW50IHByb2Nlc3Nf
-Z2xvYihjaGFyICpuYW1lLCBzdHJ1Y3QgcmVzdG9yZV9vcHRzICpvcHRzLCBzaXplX3QgbnRocmVh
-ZHMpCitpbnQgcHJvY2Vzc19nbG9iKGNoYXIgKm5hbWUsIHN0cnVjdCByZXN0b3JlX29wdHMgKm9w
-dHMsIHNpemVfdCBudGhyZWFkcywKKwkJIGxvbmcgdW5zaWduZWQgKnNraXBwZWRfZXJyb3JzKQog
-ewogCWdsb2JfdCBnbG9iYnVmOwogCXNpemVfdCBpID0gMDsKQEAgLTk2LDYgKzk4LDggQEAgaW50
-IHByb2Nlc3NfZ2xvYihjaGFyICpuYW1lLCBzdHJ1Y3QgcmVzdG9yZV9vcHRzICpvcHRzLCBzaXpl
-X3QgbnRocmVhZHMpCiAJCQkJCQkgbnRocmVhZHMpOwogCQlpZiAocmMgPCAwKQogCQkJZXJyb3Jz
-ID0gcmM7CisJCWVsc2UgaWYgKG9wdHMtPnJlc3RvcmVjb25fZmxhZ3MgJiBTRUxJTlVYX1JFU1RP
-UkVDT05fQ09VTlRfRVJST1JTKQorCQkJKnNraXBwZWRfZXJyb3JzICs9IHNlbGludXhfcmVzdG9y
-ZWNvbl9nZXRfc2tpcHBlZF9lcnJvcnMoKTsKIAl9CiAKIAlnbG9iZnJlZSgmZ2xvYmJ1Zik7CmRp
-ZmYgLS1naXQgYS9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuYyBiL3BvbGljeWNv
-cmV1dGlscy9zZXRmaWxlcy9zZXRmaWxlcy5jCmluZGV4IGFlZWMxZmRjYzJhYi4uNGRkMGQwZGMz
-ODM1IDEwMDY0NAotLS0gYS9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuYworKysg
-Yi9wb2xpY3ljb3JldXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuYwpAQCAtNDAsOCArNDAsOCBAQCBz
-dGF0aWMgX19hdHRyaWJ1dGVfXygoX19ub3JldHVybl9fKSkgdm9pZCB1c2FnZShjb25zdCBjaGFy
-ICpjb25zdCBuYW1lKQogCQkJbmFtZSwgbmFtZSk7CiAJfSBlbHNlIHsKIAkJZnByaW50ZihzdGRl
-cnIsCi0JCQkidXNhZ2U6ICAlcyBbLWRpSURsbW5wcXZFRldUXSBbLWUgZXhjbHVkZWRpcl0gWy1y
-IGFsdF9yb290X3BhdGhdIFstYyBwb2xpY3lmaWxlXSBzcGVjX2ZpbGUgcGF0aG5hbWUuLi5cbiIK
-LQkJCSJ1c2FnZTogICVzIFstZGlJRGxtbnBxdkVGV1RdIFstZSBleGNsdWRlZGlyXSBbLXIgYWx0
-X3Jvb3RfcGF0aF0gWy1jIHBvbGljeWZpbGVdIHNwZWNfZmlsZSAtZiBmaWxlbmFtZVxuIgorCQkJ
-InVzYWdlOiAgJXMgWy1kaUlEbG1ucHF2Q0VGV1RdIFstZSBleGNsdWRlZGlyXSBbLXIgYWx0X3Jv
-b3RfcGF0aF0gWy1jIHBvbGljeWZpbGVdIHNwZWNfZmlsZSBwYXRobmFtZS4uLlxuIgorCQkJInVz
-YWdlOiAgJXMgWy1kaUlEbG1ucHF2Q0VGV1RdIFstZSBleGNsdWRlZGlyXSBbLXIgYWx0X3Jvb3Rf
-cGF0aF0gWy1jIHBvbGljeWZpbGVdIHNwZWNfZmlsZSAtZiBmaWxlbmFtZVxuIgogCQkJInVzYWdl
-OiAgJXMgLXMgWy1kaUlEbG1ucHF2RldUXSBzcGVjX2ZpbGVcbiIsCiAJCQluYW1lLCBuYW1lLCBu
-YW1lKTsKIAl9CkBAIC0xNTAsOSArMTUwLDEwIEBAIGludCBtYWluKGludCBhcmdjLCBjaGFyICoq
-YXJndikKIAljb25zdCBjaGFyICpiYXNlOwogCWludCBlcnJvcnMgPSAwOwogCWNvbnN0IGNoYXIg
-KnJvcHRzID0gImU6ZjpoaUlEbG1ubzpwcXJzdkZSVzB4VDoiOwotCWNvbnN0IGNoYXIgKnNvcHRz
-ID0gImM6ZGU6ZjpoaUlEbG1ubzpwcXI6c3ZFRlI6VzBUOiI7CisJY29uc3QgY2hhciAqc29wdHMg
-PSAiYzpkZTpmOmhpSURsbW5vOnBxcjpzdkNFRlI6VzBUOiI7CiAJY29uc3QgY2hhciAqb3B0czsK
-IAl1bmlvbiBzZWxpbnV4X2NhbGxiYWNrIGNiOworCWxvbmcgdW5zaWduZWQgc2tpcHBlZF9lcnJv
-cnM7CiAKIAkvKiBJbml0aWFsaXplIHZhcmlhYmxlcyAqLwogCW1lbXNldCgmcl9vcHRzLCAwLCBz
-aXplb2Yocl9vcHRzKSk7CkBAIC0xNjEsNiArMTYyLDcgQEAgaW50IG1haW4oaW50IGFyZ2MsIGNo
-YXIgKiphcmd2KQogCXdhcm5fbm9fbWF0Y2ggPSAwOwogCXJlcXVlc3RfZGlnZXN0ID0gMDsKIAlw
-b2xpY3lmaWxlID0gTlVMTDsKKwlza2lwcGVkX2Vycm9ycyA9IDA7CiAKIAlpZiAoIWFyZ3ZbMF0p
-IHsKIAkJZnByaW50ZihzdGRlcnIsICJDYWxsZWQgd2l0aG91dCByZXF1aXJlZCBwcm9ncmFtIG5h
-bWUhXG4iKTsKQEAgLTI4OCw2ICsyOTAsOSBAQCBpbnQgbWFpbihpbnQgYXJnYywgY2hhciAqKmFy
-Z3YpCiAJCQlyX29wdHMuc3lzbG9nX2NoYW5nZXMgPQogCQkJCQkgICBTRUxJTlVYX1JFU1RPUkVD
-T05fU1lTTE9HX0NIQU5HRVM7CiAJCQlicmVhazsKKwkJY2FzZSAnQyc6CisJCQlyX29wdHMuY291
-bnRfZXJyb3JzID0gU0VMSU5VWF9SRVNUT1JFQ09OX0NPVU5UX0VSUk9SUzsKKwkJCWJyZWFrOwog
-CQljYXNlICdFJzoKIAkJCXJfb3B0cy5jb25mbGljdF9lcnJvciA9CiAJCQkJCSAgIFNFTElOVVhf
-UkVTVE9SRUNPTl9DT05GTElDVF9FUlJPUjsKQEAgLTQ0NywxMyArNDUyLDE1IEBAIGludCBtYWlu
-KGludCBhcmdjLCBjaGFyICoqYXJndikKIAkJCWJ1ZltsZW4gLSAxXSA9IDA7CiAJCQlpZiAoIXN0
-cmNtcChidWYsICIvIikpCiAJCQkJcl9vcHRzLm1hc3NfcmVsYWJlbCA9IFNFTElOVVhfUkVTVE9S
-RUNPTl9NQVNTX1JFTEFCRUw7Ci0JCQllcnJvcnMgfD0gcHJvY2Vzc19nbG9iKGJ1ZiwgJnJfb3B0
-cywgbnRocmVhZHMpIDwgMDsKKwkJCWVycm9ycyB8PSBwcm9jZXNzX2dsb2IoYnVmLCAmcl9vcHRz
-LCBudGhyZWFkcywKKwkJCQkJICAgICAgICZza2lwcGVkX2Vycm9ycykgPCAwOwogCQl9CiAJCWlm
-IChzdHJjbXAoaW5wdXRfZmlsZW5hbWUsICItIikgIT0gMCkKIAkJCWZjbG9zZShmKTsKIAl9IGVs
-c2UgewogCQlmb3IgKGkgPSBvcHRpbmQ7IGkgPCBhcmdjOyBpKyspCi0JCQllcnJvcnMgfD0gcHJv
-Y2Vzc19nbG9iKGFyZ3ZbaV0sICZyX29wdHMsIG50aHJlYWRzKSA8IDA7CisJCQllcnJvcnMgfD0g
-cHJvY2Vzc19nbG9iKGFyZ3ZbaV0sICZyX29wdHMsIG50aHJlYWRzLAorCQkJCQkgICAgICAgJnNr
-aXBwZWRfZXJyb3JzKSA8IDA7CiAJfQogCiAJbWF5YmVfYXVkaXRfbWFzc19yZWxhYmVsKHJfb3B0
-cy5tYXNzX3JlbGFiZWwsIGVycm9ycyk7CkBAIC00NjcsNSArNDc0LDUgQEAgaW50IG1haW4oaW50
-IGFyZ2MsIGNoYXIgKiphcmd2KQogCWlmIChyX29wdHMucHJvZ3Jlc3MpCiAJCWZwcmludGYoc3Rk
-b3V0LCAiXG4iKTsKIAotCWV4aXQoZXJyb3JzID8gLTEgOiAwKTsKKwlleGl0KGVycm9ycyA/IC0x
-IDogc2tpcHBlZF9lcnJvcnMgPyAxIDogMCk7CiB9CmRpZmYgLS1naXQgYS9wb2xpY3ljb3JldXRp
-bHMvc2V0ZmlsZXMvc2V0ZmlsZXMuOCBiL3BvbGljeWNvcmV1dGlscy9zZXRmaWxlcy9zZXRmaWxl
-cy44CmluZGV4IDE5YjU5YTJjYzkwZC4uYmYyNmUxNjFhNzFkIDEwMDY0NAotLS0gYS9wb2xpY3lj
-b3JldXRpbHMvc2V0ZmlsZXMvc2V0ZmlsZXMuOAorKysgYi9wb2xpY3ljb3JldXRpbHMvc2V0Zmls
-ZXMvc2V0ZmlsZXMuOApAQCAtNiw2ICs2LDcgQEAgc2V0ZmlsZXMgXC0gc2V0IFNFTGludXggZmls
-ZSBzZWN1cml0eSBjb250ZXh0cy4KIC5CIHNldGZpbGVzCiAuUkIgWyBcLWMKIC5JUiBwb2xpY3kg
-XQorLlJCIFsgXC1DIF0KIC5SQiBbIFwtZCBdCiAuUkIgWyBcLWwgXQogLlJCIFsgXC1tIF0KQEAg
-LTU4LDYgKzU5LDEzIEBAIG9wdGlvbiB3aWxsIGZvcmNlIGEgcmVwbGFjZW1lbnQgb2YgdGhlIGVu
-dGlyZSBjb250ZXh0LgogLkIgXC1jCiBjaGVjayB0aGUgdmFsaWRpdHkgb2YgdGhlIGNvbnRleHRz
-IGFnYWluc3QgdGhlIHNwZWNpZmllZCBiaW5hcnkgcG9saWN5LgogLlRQCisuQiBcLUMKK0lmIG9u
-bHkgcmVsYWJlbGluZyBlcnJvcnMgYXJlIGVuY291bnRlcmVkIGR1cmluZyB0aGUgZmlsZSB0cmVl
-IHdhbGtzLAorZXhpdCB3aXRoIHN0YXR1cworLkIgMQorcmF0aGVyIHRoYW4KKy5CUiAyNTUgLgor
-LlRQCiAuQiBcLWQKIHNob3cgd2hhdCBzcGVjaWZpY2F0aW9uIG1hdGNoZWQgZWFjaCBmaWxlLgog
-LlRQCkBAIC0yMTksNiArMjI3LDIwIEBAIG9yIHRoZQogLkIgXC1zCiBvcHRpb24gaXMgdXNlZC4K
-IAorLlNIICJFWElUIFNUQVRVUyIKKy5CIHNldGZpbGVzCitleGl0cyB3aXRoIHN0YXR1cworLkIg
-MAoraWYgaXQgZW5jb3VudGVycyBubyBlcnJvcnMuIEZhdGFsIGVycm9ycyByZXN1bHQgaW4gc3Rh
-dHVzCisuQlIgMjU1IC4KK0xhYmVsaW5nIGVycm9ycyBlbmNvdW50ZXJlZCBkdXJpbmcgZmlsZSB0
-cmVlIHdhbGsocykgcmVzdWx0IGluIHN0YXR1cworLkIgMQoraWYgdGhlCisuQiAtQworb3B0aW9u
-IGlzIHNwZWNpZmllZCBhbmQgbm8gb3RoZXIga2luZCBvZiBlcnJvciBpcyBlbmNvdW50ZXJlZCwg
-YW5kIGluIHN0YXR1cworLkIgMjU1CitvdGhlcndpc2UuCisKIC5TSCAiTk9URVMiCiAuSVAgIjEu
-IiA0CiAuQiBzZXRmaWxlcwotLSAKMi4xOS4xLjMuZzMwMjQ3YWE1ZDIwMQoK
+The policy is generated using sepolicy.generate, but since its
+translations are in a different translation domain (selinux-python as
+opposed to selinux-gui), the confirmation dialog is not translated.
+
+- Add selinux-python as a fallback translation domain
+- Set the whole "generate()" confirmation as translatable
+- Drop "codeset" parameter since it is deprecated
+
+Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
+---
+ gui/polgengui.py                     | 7 +++++--
+ python/sepolicy/sepolicy/generate.py | 2 +-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/gui/polgengui.py b/gui/polgengui.py
+index 01f541ba..dcd5df47 100644
+--- a/gui/polgengui.py
++++ b/gui/polgengui.py
+@@ -69,10 +69,13 @@ try:
+     kwargs = {}
+     if sys.version_info < (3,):
+         kwargs['unicode'] = True
+-    gettext.install(PROGNAME,
++    t = gettext.translation(PROGNAME,
+                     localedir="/usr/share/locale",
+-                    codeset='utf-8',
+                     **kwargs)
++    t.install()
++    t.add_fallback(gettext.translation("selinux-python",
++                    localedir="/usr/share/locale",
++                    **kwargs))
+ except:
+     try:
+         import builtins
+diff --git a/python/sepolicy/sepolicy/generate.py b/python/sepolicy/sepolicy/generate.py
+index 43180ca6..42d52109 100644
+--- a/python/sepolicy/sepolicy/generate.py
++++ b/python/sepolicy/sepolicy/generate.py
+@@ -1372,7 +1372,7 @@ Warning %s does not exist
+         fd.close()
+ 
+     def generate(self, out_dir=os.getcwd()):
+-        out = "Created the following files:\n"
++        out = _("Created the following files:\n")
+         out += "%s # %s\n" % (self.write_te(out_dir), _("Type Enforcement file"))
+         out += "%s # %s\n" % (self.write_if(out_dir), _("Interface file"))
+         out += "%s # %s\n" % (self.write_fc(out_dir), _("File Contexts file"))
+-- 
+2.35.1
 

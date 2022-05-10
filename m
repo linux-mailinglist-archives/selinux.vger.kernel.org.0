@@ -2,98 +2,121 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B99C520363
-	for <lists+selinux@lfdr.de>; Mon,  9 May 2022 19:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B207552140B
+	for <lists+selinux@lfdr.de>; Tue, 10 May 2022 13:39:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239646AbiEIRTJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 9 May 2022 13:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60954 "EHLO
+        id S238057AbiEJLnd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 10 May 2022 07:43:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239592AbiEIRTI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 9 May 2022 13:19:08 -0400
-X-Greylist: delayed 149 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 09 May 2022 10:15:12 PDT
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3BF3D6D;
-        Mon,  9 May 2022 10:15:10 -0700 (PDT)
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-        id 72354AC7; Mon,  9 May 2022 12:15:09 -0500 (CDT)
-Date:   Mon, 9 May 2022 12:15:09 -0500
-From:   "Serge E. Hallyn" <serge@hallyn.com>
-To:     Christian =?iso-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>
-Cc:     selinux@vger.kernel.org, Serge Hallyn <serge@hallyn.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
-        Alexander Aring <aahringo@redhat.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Eric Dumazet <edumazet@google.com>,
-        linux-security-module@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 8/8] net: use new capable_or functionality
-Message-ID: <20220509171509.GB28406@mail.hallyn.com>
-References: <20220217145003.78982-2-cgzones@googlemail.com>
- <20220502160030.131168-1-cgzones@googlemail.com>
- <20220502160030.131168-7-cgzones@googlemail.com>
+        with ESMTP id S238495AbiEJLnc (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 10 May 2022 07:43:32 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9D81424BB18
+        for <selinux@vger.kernel.org>; Tue, 10 May 2022 04:39:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1652182773;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=EdeFh9Bix50UVBlmt8JJzJ2deQwguEbqWXaOBtKfQ+c=;
+        b=DeDDuyMvTo16fyBbsWeF7Stb52XKeGclF0vooK0H1HgmbJi6F16bXKHUIOgNwiqqMvmlXD
+        XIzefXPw3lM6gUnda/4e6Qhl3Xsl95+eF5+L73OvPrnW+gS+zAMZFlyz2Nk5Wz89LuMlv+
+        qO+CA319cCCrCUxYXwzJmkOUaz5z72U=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-186-lZaOf2XLOuScvvINy-4DzQ-1; Tue, 10 May 2022 07:39:32 -0400
+X-MC-Unique: lZaOf2XLOuScvvINy-4DzQ-1
+Received: by mail-wm1-f70.google.com with SMTP id s14-20020a05600c29ce00b00394611a8059so1157527wmd.4
+        for <selinux@vger.kernel.org>; Tue, 10 May 2022 04:39:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EdeFh9Bix50UVBlmt8JJzJ2deQwguEbqWXaOBtKfQ+c=;
+        b=y+vB90g349YrFIqrrrB+ur4FcpA7FCbccaDRxqK7O+HdcDVaM0/hFzV3NMVtMBCO20
+         id1cSKKYPXmmQB1kcSTv86RLaSJfYEI5rsiF8A6hoe9oJl18FjHtU9EZnh3Kd+OtTMhV
+         MHQMtKWPcdxGto5M+dPZ+Y432zhR4L4c2YhZhMfDHMJJugx4l9OwXD+zZjA1Dxnr5ChI
+         BUDnZIOUlz4KVFc3wY0HZSOWwbw04lf3yGzfquOR2irygmUB+Go8g8TiEhwSqBegbCvC
+         Aa3p7uAo38vzH/ccyDW4bf0UhSebTREoDhdkhPJ/BCTHhqA0OZU9MUR/yAW/j07pm0uc
+         gfbg==
+X-Gm-Message-State: AOAM532KAez/09/2AP7mCZmAclT+9ylEwb3YR44X0KC/pJmO0NuaHQ4V
+        NGw+vbsnGi7yVd+SPjUuIuJAgMvjOJrqluyDAAA+szu+IoICEbytlsQFUMhHf0MWdftSkD9U1TA
+        EBhNdNXqVnNgyKgU+3t59ZQowhW9WvQZUYbPXkToFU1Qk6EYkNpLOUPFazavYKpzi9EI8yw==
+X-Received: by 2002:adf:ec8c:0:b0:20a:dfe5:749e with SMTP id z12-20020adfec8c000000b0020adfe5749emr18568135wrn.615.1652182771059;
+        Tue, 10 May 2022 04:39:31 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwV0rQ+CC755S/DDj49dP63MuJtW/nsTBAVoCfX0rm2n+KoFCnO9MlDbJeZEflrGVN1g8M5ZQ==
+X-Received: by 2002:adf:ec8c:0:b0:20a:dfe5:749e with SMTP id z12-20020adfec8c000000b0020adfe5749emr18568116wrn.615.1652182770803;
+        Tue, 10 May 2022 04:39:30 -0700 (PDT)
+Received: from localhost.localdomain (nat-pool-brq-t.redhat.com. [213.175.37.10])
+        by smtp.gmail.com with ESMTPSA id n37-20020a05600c502500b003942a244ee7sm2368855wmr.44.2022.05.10.04.39.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 May 2022 04:39:30 -0700 (PDT)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     selinux@vger.kernel.org
+Cc:     Dominick Grift <dominick.grift@defensec.nl>,
+        =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        James Carter <jwcart2@gmail.com>
+Subject: [PATCH userspace v3 0/2] Support the 'self' keyword in type transitions
+Date:   Tue, 10 May 2022 13:39:27 +0200
+Message-Id: <20220510113929.2780308-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.35.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220502160030.131168-7-cgzones@googlemail.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, May 02, 2022 at 06:00:29PM +0200, Christian Göttsche wrote:
-> Use the new added capable_or function in appropriate cases, where a task
-> is required to have any of two capabilities.
-> 
-> Reorder CAP_SYS_ADMIN last.
-> 
-> Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+With the addition of the anon_inode class in the kernel, 'self'
+transition rules became useful, but haven't been implemented.
 
-Thanks, for 2-8:
+This series implements the self keyword support in the CIL & TE
+languages and the module policydb format. The kernel policydb format
+doesn't need any changes, as type transitions are always expanded in the
+kernel policydb. Since type_change and type_member rules are handled by
+the same common code, these are extended with self keyword support as
+well.
 
-Reviewed-by: Serge Hallyn <serge@hallyn.com>
+The patches have been tested using the following WIP beakerlib/tmt test:
+https://src.fedoraproject.org/fork/omos/tests/selinux/blob/self-in-tt/f/libsepol/self-keyword-in-type-transitions
 
-though I'd still like to talk about the name :)
+Changes in v3:
+- update commit messages and cover letter to state that other type rules
+  also gain self keyword support with these patches (James Carter)
+- error out in case a policy module containing the newly supported rules
+  is downgraded to an earlier module policy version (James Carter)
 
-> ---
->  net/caif/caif_socket.c | 2 +-
->  net/unix/scm.c         | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/net/caif/caif_socket.c b/net/caif/caif_socket.c
-> index 2b8892d502f7..60498148126c 100644
-> --- a/net/caif/caif_socket.c
-> +++ b/net/caif/caif_socket.c
-> @@ -1036,7 +1036,7 @@ static int caif_create(struct net *net, struct socket *sock, int protocol,
->  		.usersize = sizeof_field(struct caifsock, conn_req.param)
->  	};
->  
-> -	if (!capable(CAP_SYS_ADMIN) && !capable(CAP_NET_ADMIN))
-> +	if (!capable_or(CAP_NET_ADMIN, CAP_SYS_ADMIN))
->  		return -EPERM;
->  	/*
->  	 * The sock->type specifies the socket type to use.
-> diff --git a/net/unix/scm.c b/net/unix/scm.c
-> index aa27a02478dc..821be80e6c85 100644
-> --- a/net/unix/scm.c
-> +++ b/net/unix/scm.c
-> @@ -99,7 +99,7 @@ static inline bool too_many_unix_fds(struct task_struct *p)
->  	struct user_struct *user = current_user();
->  
->  	if (unlikely(user->unix_inflight > task_rlimit(p, RLIMIT_NOFILE)))
-> -		return !capable(CAP_SYS_RESOURCE) && !capable(CAP_SYS_ADMIN);
-> +		return !capable_or(CAP_SYS_RESOURCE, CAP_SYS_ADMIN);
->  	return false;
->  }
->  
-> -- 
-> 2.36.0
+Changes in v2:
+- validate the flags member of filename_trans_rule_t in
+  policy_validate.c (Christian GÃ¶ttsche)
+- add missing error check in filename_trans_rule_write()
+  (Christian GÃ¶ttsche)
+
+Ondrej Mosnacek (2):
+  libsepol/cil: add support for self keyword in type transitions
+  libsepol,checkpolicy: add support for self keyword in type transitions
+
+ checkpolicy/policy_define.c                |  42 +++++-
+ libsepol/cil/src/cil_binary.c              | 168 +++++++++++++++------
+ libsepol/cil/src/cil_resolve_ast.c         |  25 ++-
+ libsepol/include/sepol/policydb/policydb.h |   4 +-
+ libsepol/src/expand.c                      |  69 ++++++---
+ libsepol/src/link.c                        |   1 +
+ libsepol/src/module_to_cil.c               |  30 ++--
+ libsepol/src/policydb.c                    |  33 +++-
+ libsepol/src/policydb_validate.c           |   4 +
+ libsepol/src/write.c                       |  32 +++-
+ secilc/test/policy.cil                     |   7 +
+ 11 files changed, 315 insertions(+), 100 deletions(-)
+
+-- 
+2.35.3
+

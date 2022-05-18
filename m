@@ -2,117 +2,99 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9924052AFC3
-	for <lists+selinux@lfdr.de>; Wed, 18 May 2022 03:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFCC552AFFA
+	for <lists+selinux@lfdr.de>; Wed, 18 May 2022 03:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233393AbiERBRV (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 17 May 2022 21:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52600 "EHLO
+        id S233696AbiERBj0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 17 May 2022 21:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233385AbiERBRU (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 17 May 2022 21:17:20 -0400
-Received: from mail-wr1-x436.google.com (mail-wr1-x436.google.com [IPv6:2a00:1450:4864:20::436])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46A1F2BB39
-        for <selinux@vger.kernel.org>; Tue, 17 May 2022 18:17:18 -0700 (PDT)
-Received: by mail-wr1-x436.google.com with SMTP id w4so523539wrg.12
-        for <selinux@vger.kernel.org>; Tue, 17 May 2022 18:17:18 -0700 (PDT)
+        with ESMTP id S233695AbiERBj0 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 17 May 2022 21:39:26 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1435631DF6
+        for <selinux@vger.kernel.org>; Tue, 17 May 2022 18:39:25 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id t6so602401wra.4
+        for <selinux@vger.kernel.org>; Tue, 17 May 2022 18:39:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=66BpVpX1hmsXLIKfSSFdSpdl5oqz90D5jwxwG9o6mz4=;
-        b=xRYWEaCNYX3CRkGbSb4Lw1NbuD1fUhSJXWVeeeS+fYrLui8cAamp3GLZ5IrJmOwlHL
-         cIwxRHBDy2EYZaX5HQlzo5cHlmXO4fc6AkevIifcdVt3aqG/EefBANpLhfO/IgGNThLi
-         XXLG+lLTKSGbegkuAdO/g7AGpPVLaAUdZSBWcy+FO+q+hMmllMvXwCPop9daonKuHsTB
-         tglkvTKV9qIWdLh0wlZz6dVSqg1zMF7WsuVzxKms+6AHzX2isFrEv75VOukGFsUyZy5D
-         pNTnRKdGNlqV7iWjgnlst45h2wwejrXC1qf/n4xNGqx+LtpHMX4qYW1fo7tfBm8x3pQy
-         1pRQ==
+        bh=LL3H9bOTckY/7Xan2LfhWnx0Z1oLcqou2P+lDaiBNmc=;
+        b=wGdLgb5HKF8h+/La5xopKVe/+HHHx44vtw/quDkURe706W/Tm0OnV4EPbPSFPFro9N
+         ARXfvQTktGgFXp3Zg16RxKUOy65t4vUSSHvyByx4wUTVlHey9WjWvDVoCcvhmli+lq0Q
+         lFmTiwR9m51fiQ0ut4PUu1aDMiq+lsLNpm2/rDteANJaU7nndDgWDHkg51Y1IIqHJOse
+         3TFdWbV1R58HlUTGaIREY3ACno3b53g+g3xpmGrhJOtsWGTtRz50VscoqBH8cMRbGjeH
+         hf4Fyi4D3j0wCNU1DdY4xS9zexsEndNxP8+DaemXYxB3noWGcwCDOOqqSd0TaOoa0Iyh
+         mozA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=66BpVpX1hmsXLIKfSSFdSpdl5oqz90D5jwxwG9o6mz4=;
-        b=UBcl9JqkM1uCHYZebqdg7sVjfmlqEGbVo6p4yT/1pjy29LQOolvsJOKJ3ioyc4QjFt
-         YH+Ug/enb0R52qd9/yLfxT+2kv16m3ANbX5Ok2DpxeZ6IHtqDTstOlI7lzuOAbFmvbS+
-         n+6c57QKgbfug6RK1lOjYYyRmr1mwxsoA3bMxP76to9F9FVhiXfOIcDm50UaQc8qa2+a
-         rIqbozeNB/lsF1AsC/j8ZouKYrQ159kLJpIJOkuaK0JxG6H+p1M0ror0kfCZVATm4M47
-         TJuifDDPDMR1n2VT2rnnDlM2QlVPgnQjbmvSx1Nuw8d2gEjAAGiRPlXGg+rVB9Ituuwj
-         Qb5w==
-X-Gm-Message-State: AOAM531J5BwiDZFdntJRaLbJaS4i61q4x+sPinRctBVx2663utSYbNZe
-        D7nv0itCq2+jrgiXQ5+GeQ/902i0IH8omj2SRFY+
-X-Google-Smtp-Source: ABdhPJwgGJ20dTMB4rX7QcbmClGxzMeLSl+5R1372QnAoz8I90LnDWXFMl7B7wWxBi+NGEuc+n5MNXshqKaGIp7Rhoc=
-X-Received: by 2002:a5d:5888:0:b0:20c:9868:9d94 with SMTP id
- n8-20020a5d5888000000b0020c98689d94mr19998482wrf.433.1652836636768; Tue, 17
- May 2022 18:17:16 -0700 (PDT)
+        bh=LL3H9bOTckY/7Xan2LfhWnx0Z1oLcqou2P+lDaiBNmc=;
+        b=OMq1oyt1gJzPhxFxphDAAFY/jwytZ/Wi3TSSqEmPgYBddQq8aqYXc/bfSoTaqe8+yO
+         WBFIiA1moy2mdMoaxk53pzDuW3voAkC2mQDMaJNPUFdUof2HsXJBYHks06ii9KGee+Ns
+         EIJaA4XKbsbHnaieCs8UHugpcg/NnCwfm4gqyNcCRvjWI4Ja+5j+5mXrG67jYVVVMq0a
+         sO9J4onJrec0EVT+9w55p8p1kFs/Am007Y+dMhFM/rC3F+GrG2ygO90dKCDc2ThhDmu3
+         d6l4VlD+D1ndJHptOA6M3qj+VvskXunEDWdT3TgrLU6dLPeVt1frBmwIneK9FuqsstS1
+         rgvQ==
+X-Gm-Message-State: AOAM533tjNIexWQBUWAjLSScFNlPodRjrfNVXyT6YAUfN6XBNgYw2P32
+        PfZTJyVBLEuojiviZqohOON2i8+mA2lNqqCxDRx5
+X-Google-Smtp-Source: ABdhPJwgXzcQqp+qsCuXhI1T3kSRnpn/dMCr16+89NV1ksE5peSM9ZTQq4LNSlAI++MFvQsW5IRrYEehMJLIHjmaUt0=
+X-Received: by 2002:a05:6000:3c2:b0:20c:584b:6a3 with SMTP id
+ b2-20020a05600003c200b0020c584b06a3mr20295590wrg.260.1652837963605; Tue, 17
+ May 2022 18:39:23 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220503183750.1977-1-duguoweisz@gmail.com>
-In-Reply-To: <20220503183750.1977-1-duguoweisz@gmail.com>
+References: <20220518092137.141626-1-gongruiqi1@huawei.com>
+In-Reply-To: <20220518092137.141626-1-gongruiqi1@huawei.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 17 May 2022 21:17:06 -0400
-Message-ID: <CAHC9VhRfRKS_-A6LGhgMp06wsvHtRj6ZaiQWp8c7U_LXozTeYg@mail.gmail.com>
-Subject: Re: [PATCH] fsnotify: add generic perm check for unlink/rmdir
-To:     Guowei Du <duguoweisz@gmail.com>
-Cc:     jack@suse.cz, amir73il@gmail.com, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, viro@zeniv.linux.org.uk,
-        jmorris@namei.org, serge@hallyn.com, ast@kernel.org,
-        daniel@iogearbox.net, andrii@kernel.org, kafai@fb.com,
-        songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
-        kpsingh@kernel.org, linux-security-module@vger.kernel.org,
-        netdev@vger.kernel.org, bpf@vger.kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        keescook@chromium.org, anton@enomsg.org, ccross@android.com,
-        tony.luck@intel.com, selinux@vger.kernel.org,
-        duguowei <duguowei@xiaomi.com>
+Date:   Tue, 17 May 2022 21:39:13 -0400
+Message-ID: <CAHC9VhTj365p3SJvX+8eBqRO3wddnj0sXtRDp=jEhSdADwiGrg@mail.gmail.com>
+Subject: Re: [PATCH] selinux: add __randomize_layout to selinux_audit_data
+To:     "GONG, Ruiqi" <gongruiqi1@huawei.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Kees Cook <keescook@chromium.org>, selinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Wang Weiyang <wangweiyang2@huawei.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, May 3, 2022 at 2:38 PM Guowei Du <duguoweisz@gmail.com> wrote:
+On Tue, May 17, 2022 at 9:21 PM GONG, Ruiqi <gongruiqi1@huawei.com> wrote:
 >
-> From: duguowei <duguowei@xiaomi.com>
+> Randomize the layout of struct selinux_audit_data as suggested in [1],
+> since it contains a pointer to struct selinux_state, an already
+> randomized strucure.
 >
-> For now, there have been open/access/open_exec perms for file operation,
-> so we add new perms check with unlink/rmdir syscall. if one app deletes
-> any file/dir within pubic area, fsnotify can sends fsnotify_event to
-> listener to deny that, even if the app have right dac/mac permissions.
+> [1]: https://github.com/KSPP/linux/issues/188
 >
-> Signed-off-by: duguowei <duguowei@xiaomi.com>
+> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
 > ---
->  fs/notify/fsnotify.c             |  2 +-
->  include/linux/fs.h               |  2 ++
->  include/linux/fsnotify.h         | 16 ++++++++++++++++
->  include/linux/fsnotify_backend.h |  6 +++++-
->  security/security.c              | 12 ++++++++++--
->  security/selinux/hooks.c         |  4 ++++
->  6 files changed, 38 insertions(+), 4 deletions(-)
-
-...
-
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index e9e959343de9..f0780f0eb903 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -1801,8 +1801,12 @@ static int may_create(struct inode *dir,
->  }
+>  security/selinux/include/avc.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->  #define MAY_LINK       0
-> +#ifndef MAY_UNLINK
->  #define MAY_UNLINK     1
-> +#endif
-> +#ifndef MAY_RMDIR
->  #define MAY_RMDIR      2
-> +#endif
+> diff --git a/security/selinux/include/avc.h b/security/selinux/include/avc.h
+> index 2b372f98f2d7..5525b94fd266 100644
+> --- a/security/selinux/include/avc.h
+> +++ b/security/selinux/include/avc.h
+> @@ -53,7 +53,7 @@ struct selinux_audit_data {
+>         u32 denied;
+>         int result;
+>         struct selinux_state *state;
+> -};
+> +} __randomize_layout;
 
-In the future if you run into a symbol collision here I would prefer
-if you renamed the SELinux constants to something like SEL_MAY_LINK,
-etc.
+I'll apologize in advance for the stupid question, but does
+__randomize_layout result in any problems when the struct is used in a
+trace event?  (see include/trace/events/avc.h)
 
 -- 
 paul-moore.com

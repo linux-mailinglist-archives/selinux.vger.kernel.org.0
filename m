@@ -2,107 +2,99 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DAD9534514
-	for <lists+selinux@lfdr.de>; Wed, 25 May 2022 22:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 794AA53549F
+	for <lists+selinux@lfdr.de>; Thu, 26 May 2022 22:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345239AbiEYUkC (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 25 May 2022 16:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59700 "EHLO
+        id S1348570AbiEZUkt (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 26 May 2022 16:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344655AbiEYUjx (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 25 May 2022 16:39:53 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BB0964BE8
-        for <selinux@vger.kernel.org>; Wed, 25 May 2022 13:39:51 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id f21so30268359ejh.11
-        for <selinux@vger.kernel.org>; Wed, 25 May 2022 13:39:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=LDBqQh/PztHeiDiV9Pr0v62BTTaDnPQyU98FGi1REkw=;
-        b=V8ZoB3zlHdgZ2R2A4vgEAj70aKyCnGGpFtRZ9b0oTxUWZCuNT/gtyTwACRo1CCwI4R
-         IK4Nm9PfwKHWvA3UrYMHrWxHVZx/Fd1WN7EUywQ1Bx9EGwE2G5w+zQhx2dxTEJx/Qhvx
-         kZHC0CLj7Sf9TB4hKuFbYrHXEwFsp8ZlF2JEwj0d8Z6q0YaBJ7Gfmb4lwLJwI4EdSv4O
-         UtqL/rx7DREYH1tyNT+z+VgaTm8jRy/Jx3K7Yn8LdMubX2Ahh10T0v0ikCTHCFRQ16rV
-         PtrFcIYGMYWfojivKhNlerEa9N1T3tnRrDG9EOuK3KSgvDiYyowahaCPNsF4eF/kmTY3
-         r85w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=LDBqQh/PztHeiDiV9Pr0v62BTTaDnPQyU98FGi1REkw=;
-        b=Ju1eHDdiiDKDOn7SIxb5BUOT4HsgGgSF4UJMrtJylSahZMMvofjmV2LqFifJrwD1Jv
-         Db30PqppuB2iUXL9ixmLrFoJEcwlNvE7loUJMhWlyYnlYtl1Q2H+SRLQotGPuzbDCqnp
-         v2LnPf2nA8aGImAGHa3J6aGHoLtOBVbxTzn6dqhhxBSPI/kSEtLHhmjo2WbsB6AUYoqS
-         oAnLfvyHrVaQuM1+yxVNJeAm2+e0hIycAWcHrDfLHEdDEIkQI80pYkacyjrs5cv82DT6
-         sHhYKhMzM7xkpCt4KtIVXnm0v3gINqeI7x9bSM6JRaZtDSXOWSfPT3CLYzw7WMVYhO1W
-         xhiA==
-X-Gm-Message-State: AOAM533cTEZQV2xT+nRTjER3YPpnNrymUp6wDkKhDv304wEY1IPRwIl8
-        ayxT7Q0usvaS96mXXHOjFQW91gU534bmpVaXtoU=
-X-Google-Smtp-Source: ABdhPJwUsfb5OrQ3vcRS6HNq0+X7djtQ2eKtPHczM9HgH7+6P7FYocdSAR9l/DYJudx0gCT9N+SQNUs9NxBhx4GBA2I=
-X-Received: by 2002:a17:906:8301:b0:6e4:896d:59b1 with SMTP id
- j1-20020a170906830100b006e4896d59b1mr29792721ejx.396.1653511190094; Wed, 25
- May 2022 13:39:50 -0700 (PDT)
+        with ESMTP id S1348492AbiEZUkt (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 26 May 2022 16:40:49 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id F24D9E15FA
+        for <selinux@vger.kernel.org>; Thu, 26 May 2022 13:40:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1653597647;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=qeYoBwClMquOdM4mrLC20XcvsQqVIaRivM3jxGFd6y4=;
+        b=HnW5YvT/CNE98hB+yAgSz4RYvJqP+rhKqlDPhE2XLOeCSr5VifyqjLemmzEEoBUV1fhBRR
+        4JVT67ecmsm9ew+VkKgSSt2El3hYNWYx/QZyYCzTr1J+CcQwiFa9NlUIDyguPFO3rKn4Vz
+        n8d6HUjhSFv1CLRI1eWSfrVfrdurHc0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-112-mc-1D6SBM96eFkb1G_VMfw-1; Thu, 26 May 2022 16:40:40 -0400
+X-MC-Unique: mc-1D6SBM96eFkb1G_VMfw-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A2A5D185A7A4;
+        Thu, 26 May 2022 20:40:39 +0000 (UTC)
+Received: from segfault.boston.devel.redhat.com (segfault.boston.devel.redhat.com [10.19.60.26])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 31DDF1121315;
+        Thu, 26 May 2022 20:40:39 +0000 (UTC)
+From:   Jeff Moyer <jmoyer@redhat.com>
+To:     Frederick Lawler <fred@cloudflare.com>
+Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
+        linux-cachefs@redhat.com, linux-cifs@vger.kernel.org,
+        samba-technical@lists.samba.org, linux-mm@kvack.org,
+        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
+        keyrings@vger.kernel.org, selinux@vger.kernel.org,
+        serge@hallyn.com, amir73il@gmail.com, kernel-team@cloudflare.com
+Subject: Re: [PATCH v2] cred: Propagate security_prepare_creds() error code
+References: <20220525183703.466936-1-fred@cloudflare.com>
+X-PGP-KeyID: 1F78E1B4
+X-PGP-CertKey: F6FE 280D 8293 F72C 65FD  5A58 1FF8 A7CA 1F78 E1B4
+Date:   Thu, 26 May 2022 16:43:44 -0400
+In-Reply-To: <20220525183703.466936-1-fred@cloudflare.com> (Frederick Lawler's
+        message of "Wed, 25 May 2022 13:37:03 -0500")
+Message-ID: <x49o7zkvxbz.fsf@segfault.boston.devel.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Received: by 2002:a17:907:16a0:0:0:0:0 with HTTP; Wed, 25 May 2022 13:39:49
- -0700 (PDT)
-From:   Deterin Falcao <falcaodeterin@gmail.com>
-Date:   Wed, 25 May 2022 22:39:49 +0200
-Message-ID: <CABCO4Z34L5Ob2sRJ+JwD5j-Hmd-m2wJ6TEysrc=k65vmAnA3cw@mail.gmail.com>
-Subject: Bitte kontaktaufnahme Erforderlich !!! Please Contact Required !!!
-To:     info@firstdiamondbk.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.3
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Guten Tag,
+Frederick Lawler <fred@cloudflare.com> writes:
 
-Ich habe mich nur gefragt, ob Sie meine vorherige E-Mail bekommen
+> While experimenting with the security_prepare_creds() LSM hook, we
+> noticed that our EPERM error code was not propagated up the callstack.
+> Instead ENOMEM is always returned.  As a result, some tools may send a
+> confusing error message to the user:
+>
+> $ unshare -rU
+> unshare: unshare failed: Cannot allocate memory
+>
+> A user would think that the system didn't have enough memory, when
+> instead the action was denied.
+>
+> This problem occurs because prepare_creds() and prepare_kernel_cred()
+> return NULL when security_prepare_creds() returns an error code. Later,
+> functions calling prepare_creds() and prepare_kernel_cred() return
+> ENOMEM because they assume that a NULL meant there was no memory
+> allocated.
+>
+> Fix this by propagating an error code from security_prepare_creds() up
+> the callstack.
+>
+> Signed-off-by: Frederick Lawler <fred@cloudflare.com>
 
-haben ?
+The fs/aio.c part looks ok to me.  We should probably also update the
+man page for io_submit, though, to document the conditions under which
+EPERM can be returned.
 
-Ich habe versucht, Sie per E-Mail zu erreichen.
+Acked-by: Jeff Moyer <jmoyer@redhat.com>
 
-Kommen Sie bitte schnell zu mir zur=C3=BCck, es ist sehr wichtig.
-
-Danke
-
-Falcao Deterin
-
-falcaodeterin@gmail.com
-
-
-
-
-
-
-
-
-----------------------------------
-
-
-
-
-Good Afternoon,
-
-I was just wondering if you got my Previous E-mail
-have ?
-
-I tried to reach you by E-mail.
-
-Please come back to me quickly, it is very Important.
-
-Thanks
-
-Falcao Deterin
-
-falcaodeterin@gmail.com

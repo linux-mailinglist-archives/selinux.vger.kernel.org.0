@@ -2,74 +2,99 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 915A653634B
-	for <lists+selinux@lfdr.de>; Fri, 27 May 2022 15:23:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EEAC536676
+	for <lists+selinux@lfdr.de>; Fri, 27 May 2022 19:15:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242354AbiE0NXd convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Fri, 27 May 2022 09:23:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38192 "EHLO
+        id S1354285AbiE0ROZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 27 May 2022 13:14:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236504AbiE0NXc (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 27 May 2022 09:23:32 -0400
-X-Greylist: delayed 7899 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 27 May 2022 06:23:31 PDT
-Received: from mail.composit.net (mail.composit.net [195.49.185.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 875863B54D
-        for <selinux@vger.kernel.org>; Fri, 27 May 2022 06:23:31 -0700 (PDT)
-Received: from mail.composit.net (localhost.localdomain [127.0.0.1])
-        by mail.composit.net (Proxmox) with ESMTP id 228F838633F;
-        Fri, 27 May 2022 14:08:56 +0300 (MSK)
-Received: from mail.composit.net (unknown [192.168.101.14])
-        by mail.composit.net (Proxmox) with SMTP id E8A7238E20E;
-        Fri, 27 May 2022 14:08:55 +0300 (MSK)
-Received: from [192.168.1.105] (Unknown [197.234.219.23])
-        by mail.composit.net with ESMTPSA
-        (version=TLSv1 cipher=DHE-RSA-AES256-SHA bits=256)
-        ; Fri, 27 May 2022 14:08:57 +0300
-Message-ID: <51B33FBA-6E83-4D81-86F5-1349E26C31FF@mail.composit.net>
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S1354316AbiE0ROT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 27 May 2022 13:14:19 -0400
+Received: from mail-wm1-x329.google.com (mail-wm1-x329.google.com [IPv6:2a00:1450:4864:20::329])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89CDF14087E
+        for <selinux@vger.kernel.org>; Fri, 27 May 2022 10:14:13 -0700 (PDT)
+Received: by mail-wm1-x329.google.com with SMTP id v4-20020a1cac04000000b00397001398c0so4897603wme.5
+        for <selinux@vger.kernel.org>; Fri, 27 May 2022 10:14:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to:cc;
+        bh=g51q2mXb5+k06N8gFDAqwQ5DjvCeX9211CYuazQZoFg=;
+        b=bWX3ACTE/Ce6Bl14Ahy3qgQZG5yNzXzmO22seTgEbUzK8s4B9qzlwgk+aRV1cIi5UO
+         XoEj7wzSLklM85BJ+Lcy4/nSZ//iuiOnBvFjs83etGBt+fRkliAH12yd9Li8qXnP6/BD
+         riOvbCjUCPpJof+Y8j+1D6ZTdlfXSUjoyqtoV+Utp9tjsBZIDNpui8Ib2XIIwoQLST3s
+         zXgdoeTsfOWU8mgzme7ROlL9ZXm2lWXbF+AD/Nx/XHqp+fHVk4FGsB4gdbuq94DxppoE
+         DVTVqYgWB/P3WxflI4lmynXv6y7zQ/x2yqcnjGnA9v5m1Esorkki6TMb/m/i2Nw3Cvs4
+         HZig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to:cc;
+        bh=g51q2mXb5+k06N8gFDAqwQ5DjvCeX9211CYuazQZoFg=;
+        b=pF9dTH90C9ufH0OLyTnplGuFq6oca2e2Vd+pJ1bnlAGTRJlmZ++BNlzlWN8DX11D2A
+         qtgWWLwZJIFyfD+bWPgeV82dgduv1pz0lQkOtfJ6O5ZU6yDvUu4dRQ+DG7aWR4GTRVMr
+         xdKyEPgIyJX5ELWfvPa5oXQr6Lw1rnr7T+J3tFi+BoMROvXZuBFbF8pYJgeBN/m7I6G6
+         c4uL20WhFXmoZXBCHrrYjAlXBG6Gy61Ac0sVcnPlqUdvS3onaYXA4+AthXkiR6TDef7g
+         tufVHWxZlciaUx4dDEFl4regPJ5Dp4a0IYIvikZBTR1nQZ8bhmEi/jUI1/JdLf8NySJi
+         G5xw==
+X-Gm-Message-State: AOAM531i3o7fKvHciRK+SKbi9Mu6XU29uTtTn2owNsUmInTNOOsMDz/L
+        zOEOKC32DdJphVLUeTtPBLFvvwsjhk0R9+2cfO8K4StONO1C
+X-Google-Smtp-Source: ABdhPJwb4OlsR2Rmie8UABaWhXWnAaZXKDNkNVOD8nJxes0qMmbddpWlhdDPefigwLyqrDSR/lYexF2IBEOj9gorXCQ=
+X-Received: by 2002:a7b:c5c6:0:b0:397:8a39:37b with SMTP id
+ n6-20020a7bc5c6000000b003978a39037bmr3939550wmk.182.1653671651975; Fri, 27
+ May 2022 10:14:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Greetings From Ukraine.  
-To:     Recipients <heiss@dnet.it>
-From:   "Kostiantyn Chichkov" <heiss@dnet.it>
-Date:   Fri, 27 May 2022 12:07:53 +0100
-Reply-To: kostiantync@online.ee
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_50,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_SBL,RCVD_IN_SORBS_WEB,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: *  1.3 RCVD_IN_BL_SPAMCOP_NET RBL: Received via a relay in
-        *      bl.spamcop.net
-        *      [Blocked - see <https://www.spamcop.net/bl.shtml?195.49.185.119>]
-        *  1.5 RCVD_IN_SORBS_WEB RBL: SORBS: sender is an abusable web server
-        *      [197.234.219.23 listed in dnsbl.sorbs.net]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [197.234.219.23 listed in zen.spamhaus.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  1.3 RCVD_IN_VALIDITY_RPBL RBL: Relay in Validity RPBL,
-        *      https://senderscore.org/blocklistlookup/
-        *      [195.49.185.119 listed in bl.score.senderscore.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 SPF_NONE SPF: sender does not publish an SPF Record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Fri, 27 May 2022 13:14:00 -0400
+Message-ID: <CAHC9VhSJUmLmeNQBc5-ornFqtB1v1ogjmwfVBN+VKg4qK7PSuA@mail.gmail.com>
+Subject: Re: [SELinux-notebook PATCH] network_support.md: clarify local port
+ range and name_bind
+To:     Dominick Grift <dominick.grift@defensec.nl>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Good Morning,
+My apologies for not replying directly to the original posting, for
+some reason this never hit my inbox.
 
-We are Kostiantyn Chychkov and Maryna Chudnovska from Ukraine, we need your service, we have gone through your profile and we will like to work with you on an important service that needs urgent attention due to the ongoing war in our country. Kindly acknowledge this inquiry as soon as possible for a detailed discussion about the service.
+From: Dominick Grift @ 2022-05-23
+> diff --git a/src/network_support.md b/src/network_support.md
+> index bec725e..05ec0e8 100644
+> --- a/src/network_support.md
+> +++ b/src/network_support.md
+> @@ -668,6 +668,17 @@ statements):
+> semanage port -a -t my_server_port_t -p tcp -r s0 12345
+> ```
+>
+> +Ports in the local port range can be auto-assigned by the kernel to
+> +unbound sockets on first use. Controlling binding to ports is only
+> +useful when the port number is a "name" (i.e. a well-defined value that
+> +is expected to correspond to a specific service).
+> +
+> +The *name_bind* operation is not controlled on sockets associated
+> +with ports in the local port range:
+> +```
+> +sysctl net.ipv4.ip_local_port_range
+> +```
+> +
 
-Thank you.
+Despite the sysctl name, these ports are typically referred to as
+"ephemeral ports" and not "local ports".  I would suggest the text
+below as an alternate solution, what do you think?
 
-Yours expectantly,
+Only ports that fall outside the local, or ephemeral, port range are
+subject to the additional *name_bind* access check.  You can see the
+current ephemeral port range on your system by checking the
+*net.ipv4.ip_local_port_range* sysctl:
+```
+sysctl net.ipv4.ip_local_port_range
+```
 
-Kostiantyn Chichkov & Ms. Maryna Chudnovska,
-From Ukraine.
-
-
+-- 
+paul-moore.com

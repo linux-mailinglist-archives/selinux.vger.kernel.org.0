@@ -2,130 +2,394 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F4B53DDD4
-	for <lists+selinux@lfdr.de>; Sun,  5 Jun 2022 21:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EC7853F13D
+	for <lists+selinux@lfdr.de>; Mon,  6 Jun 2022 22:57:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346378AbiFETSg (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Sun, 5 Jun 2022 15:18:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58202 "EHLO
+        id S236925AbiFFU4q (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 6 Jun 2022 16:56:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234938AbiFETSf (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Sun, 5 Jun 2022 15:18:35 -0400
-Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DDFC120B5
-        for <selinux@vger.kernel.org>; Sun,  5 Jun 2022 12:18:34 -0700 (PDT)
-Received: by mail-lj1-x231.google.com with SMTP id q1so13716264ljb.5
-        for <selinux@vger.kernel.org>; Sun, 05 Jun 2022 12:18:34 -0700 (PDT)
+        with ESMTP id S234805AbiFFUx5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 6 Jun 2022 16:53:57 -0400
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29E563CA79
+        for <selinux@vger.kernel.org>; Mon,  6 Jun 2022 13:43:15 -0700 (PDT)
+Received: by mail-oi1-x230.google.com with SMTP id w16so11399763oie.5
+        for <selinux@vger.kernel.org>; Mon, 06 Jun 2022 13:43:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=3x72/ah7oVy1n7hZQ2TRq4JYjiu8oyFxE5Jon1kCtcA=;
-        b=jiyYhjzBWJM6FmPWrrhH4thJrsKxgousxPbmw9SL12EkYTY/GcMCZedfzgm3ND0XKC
-         Ag18nb02E9yL7vmTt51XHuMgWEQV0yH6oyIQiB+aMm84RQOTGAOfY4eSyJ2Zzq/R+HGk
-         hnPNYUr6Z1agdxUvJeAkYefI2Du1FNYmrwYtKT/+bx6LLGXHj2/y+LKDuW3XtezGaXXo
-         /tPOwk0lRoB2pjiyL2fowT8eleCYfOJJxGkamH2nYT3ajT9lvWXjENsVArNohOoeUT8/
-         dSDa7I8Bh9W2YbzyUOkepBsCjf29oAcfy7KfqVsf7zdGXNiDdsAQNBzMqCzy4M/rCZ7f
-         Q2Sw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=2OutflHjL85jYRZqIMQYMGpu1xW36rDISfvqMlM4zjE=;
+        b=bs3oZyiySIt5ldTZELe9yn5iYjVDVswKerj0rUw7Bx6BB5HxX1V5/UtU3EqgkMmZut
+         8ytpvx+CDjm0L7DJryrQXpjApzp9Uuc+3ja9GbQPFR9leEVX53omeBdYmlikpax6K6I8
+         pTIMdJ5ZYR7L06nPO6TuGixgbbAW2WZw68H8jFhefFb+L2L0zp0tC/uL6eabcdAE2zDT
+         yAvtnvT+iCyqYJis8oe1y+wdwtZ/fzQlnCEddeDzKWTW5ScmFICWUUa682cFd0wzq0N0
+         +1iMzaNCoT5z2fnAymxKtUsT+WwLIS/S9+YJkxLRpaouHly5hucOtvAXjpvEjWfaH9ay
+         Z3Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=3x72/ah7oVy1n7hZQ2TRq4JYjiu8oyFxE5Jon1kCtcA=;
-        b=yZxNDwIKQxm3bzsWb2euXs0EarDQ86ETW3r8Zsjx1mI1eTQiIXJ4z0xVQYCatiAmM4
-         CwbSbbiyQ23yA7rSmYkm0fYfx9F6XE4oXZKfudl8Cl4vvllT5zGg6bq0U01a3qbVq0US
-         RoygMnyEBXh3F0jfo0SFemK4nirIxMqUt3zok/unjz6PYDXRCAmXaxKMc1rX9zeyxjCw
-         dqBbUCiBZIHtm+MuNmUZDCCwe2IY8l41dzFhIxKixCq58ngSE+CLYsODbGI3aN0Wty3S
-         9vf+xqZY+GAkKMDa5RDDqdq443FEDfPB1qS5D6jK9mbXumY2kPZlwtdgcKcMOhzGdYfk
-         ltLw==
-X-Gm-Message-State: AOAM530DG7x/1xLQndVRpgfxutWMna2d92nrBZYu/oV+xCrMtkTZwfEb
-        DLIGVxVMWfLbm6/W4J58XmLyn+GcjOL6fgFhBF8=
-X-Google-Smtp-Source: ABdhPJw2qCziW77onTX/MyJUfR6fsIjw9Y6oYU4lslxneYdxPlELlFpQNxoJMbh6+7660UPnonysSVoAmFHYSONRv1U=
-X-Received: by 2002:a05:651c:b93:b0:255:7a92:1795 with SMTP id
- bg19-20020a05651c0b9300b002557a921795mr8542462ljb.6.1654456712129; Sun, 05
- Jun 2022 12:18:32 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=2OutflHjL85jYRZqIMQYMGpu1xW36rDISfvqMlM4zjE=;
+        b=NvcBXovlxpINd2gAnQ647oUHRANyvH5n42LMmdAGPrhbICr2Pc/oRWTtPlPHiZONou
+         TL6ew+YHENvfMxx2dzk8oro0QUIRZ10vud6/0HKJBHCsALie+vBMJFlxC584PAQFEV4s
+         p+OqUyeoku/D58N0cQL1FkLeOk3g2H+Z8abCibxOS3EKSZ0vW/IQDJILPEVVhhNRpXtt
+         sx23VeYdnjV9R1h6jTd3yG/igekVzzBc6FgtEXt/SAi6iOErbOz82wF7RRJxjtiV158I
+         QwAbWtch8DUZ6pZQR/sD9Rxe/Kkxt9z662PjSFavEEEVxvJwtuBE+PnKy88+kMeoq9a+
+         HTQQ==
+X-Gm-Message-State: AOAM533IdFeNOoR4CE9bQhJs9tHruhvWbFWaEe2YKCcHROz6hgVOui7/
+        Uy7Qvl5RMeEl5AbLUyt39wRbb+T3Scrklz5n5X0=
+X-Google-Smtp-Source: ABdhPJzJtUiVyGUApu/l6pnedOUoCtqWMvQQvKG0G/X2kK5D0hy76Mc4PqE5zQkax8iR7M/lCvQZtuouCE9eOvgZZc8=
+X-Received: by 2002:a05:6808:ec5:b0:2f9:a7fb:4dfb with SMTP id
+ q5-20020a0568080ec500b002f9a7fb4dfbmr31090410oiv.156.1654548194845; Mon, 06
+ Jun 2022 13:43:14 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:ab2:6806:0:b0:141:cdcc:4d83 with HTTP; Sun, 5 Jun 2022
- 12:18:31 -0700 (PDT)
-Reply-To: mrstheresaheidi8@gmail.com
-From:   Ms Theresa Heidi <mariannesocial4@gmail.com>
-Date:   Sun, 5 Jun 2022 12:18:31 -0700
-Message-ID: <CAPSQfjueD_AUr4HQy94qNch2Q6EYFSONEewESgJHe5d6ygOt5Q@mail.gmail.com>
-Subject: =?UTF-8?B?5oCl5LqL5rGC5Yqp77yB?=
-To:     undisclosed-recipients:;
+References: <20220529180111.408899-1-nicolas.iooss@m4x.org> <CAP+JOzQ4+PWSQUjb+TjfaPEa7FYEimXeYbJLU-u4npWD0TyZJw@mail.gmail.com>
+In-Reply-To: <CAP+JOzQ4+PWSQUjb+TjfaPEa7FYEimXeYbJLU-u4npWD0TyZJw@mail.gmail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Mon, 6 Jun 2022 16:43:03 -0400
+Message-ID: <CAP+JOzTxJFw9+ofWQ7Zw87QNEykgo9iFGOatei262idG95BZ=w@mail.gmail.com>
+Subject: Re: [PATCH 1/1] libselinux: do not return the cached prev_current
+ value when using getpidcon()
+To:     Nicolas Iooss <nicolas.iooss@m4x.org>
+Cc:     SElinux list <selinux@vger.kernel.org>, jsegitz@suse.de
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: Yes, score=7.1 required=5.0 tests=BAYES_99,DKIM_SIGNED,
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:231 listed in]
-        [list.dnswl.org]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 0.9951]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mariannesocial4[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [mariannesocial4[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mrstheresaheidi8[at]gmail.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *******
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-5oWI5ZaE5o2Q5qy+77yBDQoNCuivt+S7lOe7humYheivu++8jOaIkeefpemBk+i/meWwgeS/oeeh
-ruWunuWPr+iDveS8mue7meS9oOS4gOS4quaDiuWWnOOAgiDmiJHlnKjpnIDopoHkvaDluK7liqnn
-moTml7blgJnpgJrov4fnp4HkurrmkJzntKLpgYfliLDkuobkvaDnmoTnlLXlrZDpgq7ku7bogZTn
-s7vjgIINCuaIkeaAgOedgOayiemHjeeahOaCsuS8pOWGmei/meWwgemCruS7tue7meS9oO+8jOaI
-kemAieaLqemAmui/h+S6kuiBlOe9keS4juS9oOiBlOezu++8jOWboOS4uuWug+S7jeeEtuaYr+ac
-gOW/q+eahOayn+mAmuWqkuS7i+OAgg0KDQrmiJHmmK82MuWygeeahOeJueiVvuiOjirmtbfokoLl
-pKvkurrvvIznm67liY3lm6DogrrnmYzlnKjku6XoibLliJfnmoTkuIDlrrbnp4Hnq4vljLvpmaLk
-vY/pmaLmsrvnlpfjgIINCjTlubTliY3vvIzmiJHnmoTkuIjlpKvljrvkuJblkI7vvIzmiJHnq4vl
-jbPooqvor4rmlq3lh7rmgqPmnInogrrnmYzvvIzku5bmiorku5bmiYDmnInnmoTkuIDliIfpg73n
-lZnnu5nkuobmiJHjgIIg5oiR5bim552A5oiR55qE56yU6K6w5pys55S16ISR5Zyo5LiA5a625Yy7
-6Zmi6YeM77yM5oiR5LiA55u05Zyo5o6l5Y+X6IK66YOo55mM55eH55qE5rK755aX44CCDQoNCuaI
-keS7juaIkeW3suaVheeahOS4iOWkq+mCo+mHjOe7p+aJv+S6huS4gOeslOi1hOmHke+8jOWPquac
-iTI1MOS4h+e+juWFg++8iDI1MOS4h+e+juWFg++8ieOAgueOsOWcqOW+iOaYjuaYvu+8jOaIkeat
-o+WcqOaOpei/keeUn+WRveeahOacgOWQjuWHoOWkqe+8jOaIkeiupOS4uuaIkeS4jeWGjemcgOim
-gei/meeslOmSseS6huOAgg0K5oiR55qE5Yy755Sf6K6p5oiR5piO55m977yM55Sx5LqO6IK655mM
-55qE6Zeu6aKY77yM5oiR5LiN5Lya5oyB57ut5LiA5bm044CCDQoNCui/meeslOmSsei/mOWcqOWb
-veWklumTtuihjO+8jOeuoeeQhuWxguS7peecn+ato+eahOS4u+S6uueahOi6q+S7veWGmeS/oee7
-meaIke+8jOimgeaxguaIkeWHuumdouaUtumSse+8jOaIluiAheetvuWPkeaOiOadg+S5pu+8jOiu
-qeWIq+S6uuS7o+aIkeaUtumSse+8jOWboOS4uuaIkeeUn+eXheS4jeiDvei/h+adpeOAgg0K5aaC
-5p6c5LiN6YeH5Y+W6KGM5Yqo77yM6ZO26KGM5Y+v6IO95Lya5Zug5Li65L+d5oyB6L+Z5LmI6ZW/
-5pe26Ze06ICM6KKr5rKh5pS26LWE6YeR44CCDQoNCuaIkeWGs+WumuS4juaCqOiBlOezu++8jOWm
-guaenOaCqOaEv+aEj+W5tuacieWFtOi2o+W4ruWKqeaIkeS7juWkluWbvemTtuihjOaPkOWPlui/
-meeslOmSse+8jOeEtuWQjuWwhui1hOmHkeeUqOS6juaFiOWWhOS6i+S4mu+8jOW4ruWKqeW8seWK
-v+e+pOS9k+OAgg0K5oiR6KaB5L2g5Zyo5oiR5Ye65LqL5LmL5YmN55yf6K+a5Zyw5aSE55CG6L+Z
-5Lqb5L+h5omY5Z+66YeR44CCIOi/meS4jeaYr+S4gOeslOiiq+ebl+eahOmSse+8jOS5n+ayoeac
-iea2ieWPiueahOWNsemZqeaYrzEwMCXnmoTpo47pmanlhY3otLnkuI7lhYXliIbnmoTms5Xlvovo
-r4HmmI7jgIINCg0K5oiR6KaB5L2g5ou/NDUl55qE6ZKx57uZ5L2g5Liq5Lq65L2/55So77yM6ICM
-NTUl55qE6ZKx5bCG55So5LqO5oWI5ZaE5bel5L2c44CCDQrmiJHlsIbmhJ/osKLmgqjlnKjov5nk
-u7bkuovkuIrmnIDlpKfnmoTkv6Hku7vlkozkv53lr4bvvIzku6Xlrp7njrDmiJHnmoTlhoXlv4Pm
-hL/mnJvvvIzlm6DkuLrmiJHkuI3mg7PopoHku7vkvZXkvJrljbHlj4rmiJHmnIDlkI7nmoTmhL/m
-nJvnmoTkuJzopb/jgIINCuaIkeW+iOaKseatie+8jOWmguaenOaCqOaUtuWIsOi/meWwgeS/oeWc
-qOaCqOeahOWeg+WcvumCruS7tu+8jOaYr+eUseS6juacgOi/keeahOi/nuaOpemUmeivr+WcqOi/
-memHjOeahOWbveWutuOAgg0KDQrkvaDkurLniLHnmoTlprnlprnjgIINCueJueiVvuiOjirmtbfo
-koLlpKvkuroNCg==
+On Thu, Jun 2, 2022 at 9:56 AM James Carter <jwcart2@gmail.com> wrote:
+>
+> On Mon, May 30, 2022 at 3:09 AM Nicolas Iooss <nicolas.iooss@m4x.org> wrote:
+> >
+> > libselinux implements a cache mechanism for get*con() functions, such
+> > that when a thread calls setcon(...) then getcon(...), the context is
+> > directly returned. Unfortunately, getpidcon(pid, &context) uses the same
+> > cached variable, so when a program uses setcon("something"), all later
+> > calls to getpidcon(pid, ...) returns "something". This is a bug.
+> >
+> > Here is a program which illustrates this bug:
+> >
+> >     #include <stdio.h>
+> >     #include <selinux/selinux.h>
+> >
+> >     int main() {
+> >         char *context = "";
+> >         if (getpidcon(1, &context) < 0) {
+> >             perror("getpidcon(1)");
+> >         }
+> >         printf("getpidcon(1) = %s\n", context);
+> >
+> >         if (getcon(&context) < 0) {
+> >             perror("getcon()");
+> >         }
+> >         printf("getcon() = %s\n", context);
+> >         if (setcon(context) < 0) {
+> >             perror("setcon()");
+> >         }
+> >         if (getpidcon(1, &context) < 0) {
+> >             perror("getpidcon(1)");
+> >         }
+> >         printf("getpidcon(1) = %s\n", context);
+> >
+> >         return 0;
+> >     }
+> >
+> > On an Arch Linux system using unconfined user, this program displays:
+> >
+> >     getpidcon(1) = system_u:system_r:init_t
+> >     getcon() = unconfined_u:unconfined_r:unconfined_t
+> >     getpidcon(1) = unconfined_u:unconfined_r:unconfined_t
+> >
+> > With this commit, this program displays:
+> >
+> >     getpidcon(1) = system_u:system_r:init_t
+> >     getcon() = unconfined_u:unconfined_r:unconfined_t
+> >     getpidcon(1) = system_u:system_r:init_t
+> >
+> > This bug was present in the first commit of
+> > https://github.com/SELinuxProject/selinux git history. It was reported
+> > in https://lore.kernel.org/selinux/20220121084012.GS7643@suse.com/ and a
+> > patch to fix it was sent in
+> > https://patchwork.kernel.org/project/selinux/patch/20220127130741.31940-1-jsegitz@suse.de/
+> > without a clear explanation. This patch added pid checks, which made
+> > sense but were difficult to read. Instead, it is possible to change the
+> > way the functions are called so that they directly know which cache
+> > variable to use.
+> >
+> > Moreover, as the code is not clear at all (I spent too much time trying
+> > to understand what the switch did and what the thread-local variable
+> > contained), this commit also reworks libselinux/src/procattr.c to:
+> > - not use hard-to-understand switch/case constructions on strings (they
+> >   are replaced by a new argument filled by macros)
+> > - remove getpidattr_def macro (it was only used once, for pidcon, and
+> >   the code is clearer with one less macro)
+> > - remove the pid parameter of setprocattrcon() and setprocattrcon_raw()
+> >   (it is always zero)
+> >
+> > Signed-off-by: Nicolas Iooss <nicolas.iooss@m4x.org>
+> > Cc: Johannes Segitz <jsegitz@suse.de>
+>
+> Acked-by: James Carter <jwcart2@gmail.com>
+>
+
+Merged.
+Thanks,
+Jim
+
+> > ---
+> >  libselinux/src/procattr.c | 147 +++++++++++++-------------------------
+> >  1 file changed, 50 insertions(+), 97 deletions(-)
+> >
+> > diff --git a/libselinux/src/procattr.c b/libselinux/src/procattr.c
+> > index 142fbf3a80e0..6f4cfb82479d 100644
+> > --- a/libselinux/src/procattr.c
+> > +++ b/libselinux/src/procattr.c
+> > @@ -11,11 +11,14 @@
+> >
+> >  #define UNSET (char *) -1
+> >
+> > +/* Cached values so that when a thread calls set*con() then gen*con(), the value
+> > + * which was set is directly returned.
+> > + */
+> >  static __thread char *prev_current = UNSET;
+> > -static __thread char * prev_exec = UNSET;
+> > -static __thread char * prev_fscreate = UNSET;
+> > -static __thread char * prev_keycreate = UNSET;
+> > -static __thread char * prev_sockcreate = UNSET;
+> > +static __thread char *prev_exec = UNSET;
+> > +static __thread char *prev_fscreate = UNSET;
+> > +static __thread char *prev_keycreate = UNSET;
+> > +static __thread char *prev_sockcreate = UNSET;
+> >
+> >  static pthread_once_t once = PTHREAD_ONCE_INIT;
+> >  static pthread_key_t destructor_key;
+> > @@ -111,43 +114,18 @@ out:
+> >         return fd;
+> >  }
+> >
+> > -static int getprocattrcon_raw(char ** context,
+> > -                             pid_t pid, const char *attr)
+> > +static int getprocattrcon_raw(char **context, pid_t pid, const char *attr,
+> > +                             const char *prev_context)
+> >  {
+> >         char *buf;
+> >         size_t size;
+> >         int fd;
+> >         ssize_t ret;
+> >         int errno_hold;
+> > -       char * prev_context;
+> >
+> >         __selinux_once(once, init_procattr);
+> >         init_thread_destructor();
+> >
+> > -       switch (attr[0]) {
+> > -               case 'c':
+> > -                       prev_context = prev_current;
+> > -                       break;
+> > -               case 'e':
+> > -                       prev_context = prev_exec;
+> > -                       break;
+> > -               case 'f':
+> > -                       prev_context = prev_fscreate;
+> > -                       break;
+> > -               case 'k':
+> > -                       prev_context = prev_keycreate;
+> > -                       break;
+> > -               case 's':
+> > -                       prev_context = prev_sockcreate;
+> > -                       break;
+> > -               case 'p':
+> > -                       prev_context = NULL;
+> > -                       break;
+> > -               default:
+> > -                       errno = ENOENT;
+> > -                       return -1;
+> > -       }
+> > -
+> >         if (prev_context && prev_context != UNSET) {
+> >                 *context = strdup(prev_context);
+> >                 if (!(*context)) {
+> > @@ -194,13 +172,13 @@ static int getprocattrcon_raw(char ** context,
+> >         return ret;
+> >  }
+> >
+> > -static int getprocattrcon(char ** context,
+> > -                         pid_t pid, const char *attr)
+> > +static int getprocattrcon(char **context, pid_t pid, const char *attr,
+> > +                         const char *prev_context)
+> >  {
+> >         int ret;
+> >         char * rcontext;
+> >
+> > -       ret = getprocattrcon_raw(&rcontext, pid, attr);
+> > +       ret = getprocattrcon_raw(&rcontext, pid, attr, prev_context);
+> >
+> >         if (!ret) {
+> >                 ret = selinux_raw_to_trans_context(rcontext, context);
+> > @@ -210,45 +188,24 @@ static int getprocattrcon(char ** context,
+> >         return ret;
+> >  }
+> >
+> > -static int setprocattrcon_raw(const char * context,
+> > -                             pid_t pid, const char *attr)
+> > +static int setprocattrcon_raw(const char *context, const char *attr,
+> > +                             char **prev_context)
+> >  {
+> >         int fd;
+> >         ssize_t ret;
+> >         int errno_hold;
+> > -       char **prev_context, *context2 = NULL;
+> > +       char *context2 = NULL;
+> >
+> >         __selinux_once(once, init_procattr);
+> >         init_thread_destructor();
+> >
+> > -       switch (attr[0]) {
+> > -               case 'c':
+> > -                       prev_context = &prev_current;
+> > -                       break;
+> > -               case 'e':
+> > -                       prev_context = &prev_exec;
+> > -                       break;
+> > -               case 'f':
+> > -                       prev_context = &prev_fscreate;
+> > -                       break;
+> > -               case 'k':
+> > -                       prev_context = &prev_keycreate;
+> > -                       break;
+> > -               case 's':
+> > -                       prev_context = &prev_sockcreate;
+> > -                       break;
+> > -               default:
+> > -                       errno = ENOENT;
+> > -                       return -1;
+> > -       }
+> > -
+> >         if (!context && !*prev_context)
+> >                 return 0;
+> >         if (context && *prev_context && *prev_context != UNSET
+> >             && !strcmp(context, *prev_context))
+> >                 return 0;
+> >
+> > -       fd = openattr(pid, attr, O_RDWR | O_CLOEXEC);
+> > +       fd = openattr(0, attr, O_RDWR | O_CLOEXEC);
+> >         if (fd < 0)
+> >                 return -1;
+> >         if (context) {
+> > @@ -279,8 +236,8 @@ out:
+> >         }
+> >  }
+> >
+> > -static int setprocattrcon(const char * context,
+> > -                         pid_t pid, const char *attr)
+> > +static int setprocattrcon(const char *context, const char *attr,
+> > +                         char **prev_context)
+> >  {
+> >         int ret;
+> >         char * rcontext;
+> > @@ -288,62 +245,58 @@ static int setprocattrcon(const char * context,
+> >         if (selinux_trans_to_raw_context(context, &rcontext))
+> >                 return -1;
+> >
+> > -       ret = setprocattrcon_raw(rcontext, pid, attr);
+> > +       ret = setprocattrcon_raw(rcontext, attr, prev_context);
+> >
+> >         freecon(rcontext);
+> >
+> >         return ret;
+> >  }
+> >
+> > -#define getselfattr_def(fn, attr) \
+> > +#define getselfattr_def(fn, attr, prev_context) \
+> >         int get##fn##_raw(char **c) \
+> >         { \
+> > -               return getprocattrcon_raw(c, 0, #attr); \
+> > +               return getprocattrcon_raw(c, 0, attr, prev_context); \
+> >         } \
+> >         int get##fn(char **c) \
+> >         { \
+> > -               return getprocattrcon(c, 0, #attr); \
+> > +               return getprocattrcon(c, 0, attr, prev_context); \
+> >         }
+> >
+> > -#define setselfattr_def(fn, attr) \
+> > +#define setselfattr_def(fn, attr, prev_context) \
+> >         int set##fn##_raw(const char * c) \
+> >         { \
+> > -               return setprocattrcon_raw(c, 0, #attr); \
+> > +               return setprocattrcon_raw(c, attr, &prev_context); \
+> >         } \
+> >         int set##fn(const char * c) \
+> >         { \
+> > -               return setprocattrcon(c, 0, #attr); \
+> > +               return setprocattrcon(c, attr, &prev_context); \
+> >         }
+> >
+> > -#define all_selfattr_def(fn, attr) \
+> > -       getselfattr_def(fn, attr)        \
+> > -       setselfattr_def(fn, attr)
+> > +#define all_selfattr_def(fn, attr, prev_context) \
+> > +       getselfattr_def(fn, attr, prev_context)  \
+> > +       setselfattr_def(fn, attr, prev_context)
+> >
+> > -#define getpidattr_def(fn, attr) \
+> > -       int get##fn##_raw(pid_t pid, char **c)  \
+> > -       { \
+> > -               if (pid <= 0) { \
+> > -                       errno = EINVAL; \
+> > -                       return -1; \
+> > -               } else { \
+> > -                       return getprocattrcon_raw(c, pid, #attr); \
+> > -               } \
+> > -       } \
+> > -       int get##fn(pid_t pid, char **c)        \
+> > -       { \
+> > -               if (pid <= 0) { \
+> > -                       errno = EINVAL; \
+> > -                       return -1; \
+> > -               } else { \
+> > -                       return getprocattrcon(c, pid, #attr); \
+> > -               } \
+> > -       }
+> > +all_selfattr_def(con, "current", prev_current)
+> > +    getselfattr_def(prevcon, "prev", NULL)
+> > +    all_selfattr_def(execcon, "exec", prev_exec)
+> > +    all_selfattr_def(fscreatecon, "fscreate", prev_fscreate)
+> > +    all_selfattr_def(sockcreatecon, "sockcreate", prev_sockcreate)
+> > +    all_selfattr_def(keycreatecon, "keycreate", prev_keycreate)
+> >
+> > -all_selfattr_def(con, current)
+> > -    getpidattr_def(pidcon, current)
+> > -    getselfattr_def(prevcon, prev)
+> > -    all_selfattr_def(execcon, exec)
+> > -    all_selfattr_def(fscreatecon, fscreate)
+> > -    all_selfattr_def(sockcreatecon, sockcreate)
+> > -    all_selfattr_def(keycreatecon, keycreate)
+> > +int getpidcon_raw(pid_t pid, char **c)
+> > +{
+> > +       if (pid <= 0) {
+> > +               errno = EINVAL;
+> > +               return -1;
+> > +       }
+> > +       return getprocattrcon_raw(c, pid, "current", NULL);
+> > +}
+> >
+> > +int getpidcon(pid_t pid, char **c)
+> > +{
+> > +       if (pid <= 0) {
+> > +               errno = EINVAL;
+> > +               return -1;
+> > +       }
+> > +       return getprocattrcon(c, pid, "current", NULL);
+> > +}
+> > --
+> > 2.36.1
+> >

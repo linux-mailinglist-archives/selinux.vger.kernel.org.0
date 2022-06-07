@@ -2,144 +2,108 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDD8D542476
-	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 08:52:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 936FD542648
+	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 08:56:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231342AbiFHAms (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 7 Jun 2022 20:42:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34652 "EHLO
+        id S231205AbiFHCRJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 7 Jun 2022 22:17:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1444024AbiFGXBh (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 7 Jun 2022 19:01:37 -0400
-Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B21E27CD42
-        for <selinux@vger.kernel.org>; Tue,  7 Jun 2022 13:10:40 -0700 (PDT)
-Received: by mail-wm1-x330.google.com with SMTP id n124-20020a1c2782000000b003972dfca96cso10062319wmn.4
-        for <selinux@vger.kernel.org>; Tue, 07 Jun 2022 13:10:40 -0700 (PDT)
+        with ESMTP id S1446259AbiFHCOL (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 7 Jun 2022 22:14:11 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFC2F2533F2
+        for <selinux@vger.kernel.org>; Tue,  7 Jun 2022 14:22:46 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id a10so7409151wmj.5
+        for <selinux@vger.kernel.org>; Tue, 07 Jun 2022 14:22:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=PLD8bMvN51Cij4xdm7K//UbBPopjl8IHgVt7TPHocZY=;
-        b=i2kaYQ6j5Q8SFA4O5Y3knelSOyr95qvMEWqsg29kMrTB8PQiNOrW1HRsCY0v9REmUA
-         MNnKCXpGrmr8D7QexF3moz6L5iuMd8l0FTkbqhLRp9QxBQGVBe5LGE+DngOXpbQ4nww3
-         Wqj82xBn8bye0OsYOcmrN7MAU43F5L73GrSpnM9BEnREQ3yUW7+Y4RtVEJvawoK1TVmG
-         KDlhsp2EQmehusDg2ubUvtXKe4RhIwrl2QTJWx3/Ak+80wjoOQjkOY4jdj+2Ft54GtSK
-         m6l5rpqDgdvNoh0XKRLtkEBAokvaVGkzqAgRX8uGk/gxtUkMhKVTqvkK/W+JyI4JYSJY
-         L63A==
+        bh=I0TYj0aY/TkdqOtA53I+eFE0LIyvHOAIiCLx8hJBREw=;
+        b=e40+dm/Z0W0bIfob5pTvP0J2RyA4XpxF11pWtEW7puVHQEiUnWvd2CVD5XctVds9Bn
+         PShLixF5Z4+GFBxqf2YR+q4TKyj0YAyTh8B08UoCUcVGBEeXJw3LB3TDHcgY0OphiaBw
+         BeuKOWXH2i+K+No4ln5jeT/AJUK5T9VEOcG8dUQckKV3KbXWODCdTYeGYur0rCBwOLoT
+         rKutET82TgGy2BgoaxPWUnW8sGs6P4YskJacxjyO7dDtvzcbFv1zJoPmg+MuHPjFSbt/
+         RweF/zHNN6q+a6d0MWPovexRLYenU/ASh1h0PWKSbW10Qc96jNP5Nk2Ls3O4zqDzQnL6
+         fOZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=PLD8bMvN51Cij4xdm7K//UbBPopjl8IHgVt7TPHocZY=;
-        b=R37y4Gh68xTd/snbdlvwwwJlpv0j9V16yuf4VRLv+obEAVlo61RhVDZ/IvlwWoHRAB
-         UPZVwhlFoSBjkA4wmciDWWzijZskT2vIUe0OsZvgktW+o5U+0nZV0Rc8pFjmzAWS/RGy
-         CNT5GpLMWN/sAcU/wf4owQPxPAqIpI8G6g9QH/cYJAII6T8WkDp4gFNYDrTSA3P0HE3F
-         xkAlV0No1UC2iSyK1jDK9RFDd0W5qLKN59l1eDaxTcak5T2Kh096YcGVw+aE9rXzZWbN
-         78m3vEYIA2M8IzEjxRsteSzTuHl66TFTODcMEsMegaFtn1sEG3o0u4rjEhUhhm+2n+1d
-         SUqQ==
-X-Gm-Message-State: AOAM530SiSBGoYdb+euibkKzxpdN6wq/0qDF6lczZyaIyNJ1xqbhF6Mf
-        5d/jugcqW8SE2a13fB2IU/51/GabncxFhsbnrN96
-X-Google-Smtp-Source: ABdhPJwyFkl5Wu37OltnZgyQnBX2dD7guis4PxRqva+UdiTXRjPsIzjBlv+N77/IeKSH93JcMAUzMvIjfEltCOeIf0g=
+        bh=I0TYj0aY/TkdqOtA53I+eFE0LIyvHOAIiCLx8hJBREw=;
+        b=bkWZi4aVPSgRs0dHiQg8wzRNC4yXEbq5hCJ81MiXRHk1x2uHwaxmCE0hQ55N9+CP5J
+         YrbDnukGoiMFSC4zCev/QmYHihx+fKLMfUOJ4dBgX1gKNzMSuyuwUXZFSctS8kcZ69rJ
+         4i+YPJE/8c29CKMJtvfR3jqBTs7KvdClsQVgvr9exLpdRdfhNDXXhtEzP21o7fokzoc0
+         wQr42ts1/grLbbk7wX6+Fd/pbOVKymTI7TAZYgQrZQgsycut0+Z5Y55F7DGI3BR21gvC
+         zc2hxmOzMLA7S10G3aV25EZHyDBrWoQPyCc1MUL9zREGU5jscHvLwhbQD9gGwcrUgJTT
+         YMXQ==
+X-Gm-Message-State: AOAM532rhFmjCyRO55Gp0PpenkX/Rk3VH8VtmmpDG/BMYY8b55Q0YS2v
+        2YpLJqwRg839se8wmYEmenu0J4qHkQPVWDEUV5mg
+X-Google-Smtp-Source: ABdhPJyYw/U5+gWoypUqkMl2O59z0OyPFHm7PAW4ahOWZ6+WyOnqtBiiwAIn75Yllh4b0x6DATOkqoiYJsazfLTYCeU=
 X-Received: by 2002:a05:600c:414e:b0:397:55aa:ccc0 with SMTP id
- h14-20020a05600c414e00b0039755aaccc0mr61318457wmm.51.1654632638942; Tue, 07
- Jun 2022 13:10:38 -0700 (PDT)
+ h14-20020a05600c414e00b0039755aaccc0mr61566727wmm.51.1654636964669; Tue, 07
+ Jun 2022 14:22:44 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220125143304.34628-1-cgzones@googlemail.com>
- <CAHC9VhSdGeZ9x-0Hvk9mE=YMXbpk-tC5Ek+uGFGq5U+51qjChw@mail.gmail.com>
- <CAJ2a_DeAUcGTGm_fk8viVbeFXr6FLrJ-oLw-abwFND6Kv0u0gQ@mail.gmail.com>
- <CAHC9VhRRBrLVtvmbJSTZ7fOkD-8AN4iM0WRmeL4ND001d3viJg@mail.gmail.com> <CAJ2a_DeT6AG0jp4gTdsEy7nh=s6cLR7QCsYXAz2+3vsdRKxddg@mail.gmail.com>
-In-Reply-To: <CAJ2a_DeT6AG0jp4gTdsEy7nh=s6cLR7QCsYXAz2+3vsdRKxddg@mail.gmail.com>
+References: <20220217142133.72205-1-cgzones@googlemail.com> <20220217142133.72205-4-cgzones@googlemail.com>
+In-Reply-To: <20220217142133.72205-4-cgzones@googlemail.com>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 7 Jun 2022 16:10:28 -0400
-Message-ID: <CAHC9VhQXdNieG8_uWBfCCFSow6AVaxNBhB3GNU8ea1j5rjgZiA@mail.gmail.com>
-Subject: Re: [RFC PATCH] mm: create security context for memfd_secret inodes
+Date:   Tue, 7 Jun 2022 17:22:34 -0400
+Message-ID: <CAHC9VhRatc13ZsBSsjZeGtBfz0ouUGL9n0LTjbQtuZtYv2M43w@mail.gmail.com>
+Subject: Re: [PATCH 5/5] selinux: drop unnecessary NULL check
 To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     SElinux list <selinux@vger.kernel.org>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        linux-security-module@vger.kernel.org,
+Cc:     selinux@vger.kernel.org,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
-        Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-        Linux kernel mailing list <linux-kernel@vger.kernel.org>
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        Serge Hallyn <serge@hallyn.com>,
+        Austin Kim <austin.kim@lge.com>,
+        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, May 2, 2022 at 9:45 AM Christian G=C3=B6ttsche
+On Thu, Feb 17, 2022 at 9:22 AM Christian G=C3=B6ttsche
 <cgzones@googlemail.com> wrote:
-> On Thu, 17 Feb 2022 at 23:32, Paul Moore <paul@paul-moore.com> wrote:
-> > On Thu, Feb 17, 2022 at 9:24 AM Christian G=C3=B6ttsche
-> > <cgzones@googlemail.com> wrote:
-> > > On Thu, 27 Jan 2022 at 00:01, Paul Moore <paul@paul-moore.com> wrote:
-> > > > On Tue, Jan 25, 2022 at 9:33 AM Christian G=C3=B6ttsche
-> > > > <cgzones@googlemail.com> wrote:
-> > > > >
-> > > > > Create a security context for the inodes created by memfd_secret(=
-2) via
-> > > > > the LSM hook inode_init_security_anon to allow a fine grained con=
-trol.
-> > > > > As secret memory areas can affect hibernation and have a global s=
-hared
-> > > > > limit access control might be desirable.
-> > > > >
-> > > > > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> > > > > ---
-> > > > > An alternative way of checking memfd_secret(2) is to create a new=
- LSM
-> > > > > hook and e.g. for SELinux check via a new process class permissio=
-n.
-> > > > > ---
-> > > > >  mm/secretmem.c | 9 +++++++++
-> > > > >  1 file changed, 9 insertions(+)
-> > > >
-> > > > This seems reasonable to me, and I like the idea of labeling the an=
-on
-> > > > inode as opposed to creating a new set of LSM hooks.  If we want to
-> > > > apply access control policy to the memfd_secret() fds we are going =
-to
-> > > > need to attach some sort of LSM state to the inode, we might as wel=
-l
-> > > > use the mechanism we already have instead of inventing another one.
-> > >
-> > > Any further comments (on design or implementation)?
-> > >
-> > > Should I resend a non-rfc?
-> >
-> > I personally would really like to see a selinux-testsuite for this so
-> > that we can verify it works not just now but in the future too.  I
-> > think having a test would also help demonstrate the usefulness of the
-> > additional LSM controls.
-> >
 >
-> Any comments (especially from the mm people)?
+> Commit e3489f8974e1 ("selinux: kill selinux_sb_get_mnt_opts()")
+> introduced a NULL check on the context after a successful call to
+> security_sid_to_context().  This is on the one hand redundant after
+> checking for success and on the other hand insufficient on an actual
+> NULL pointer, since the context is passed to seq_escape() leading to a
+> call of strlen() on it.
 >
-> Draft SELinux testsuite patch:
-> https://github.com/SELinuxProject/selinux-testsuite/pull/80
+> Reported by Clang analyzer:
 >
-> > > One naming question:
-> > > Should the anonymous inode class be named "[secretmem]", like
-> > > "[userfaultfd]", or "[secret_mem]" similar to "[io_uring]"?
-> >
-> > The pr_fmt() string in mm/secretmem.c uses "secretmem" so I would
-> > suggest sticking with "[secretmem]", although that is question best
-> > answered by the secretmem maintainer.
+>     In file included from security/selinux/hooks.c:28:
+>     In file included from ./include/linux/tracehook.h:50:
+>     In file included from ./include/linux/memcontrol.h:13:
+>     In file included from ./include/linux/cgroup.h:18:
+>     ./include/linux/seq_file.h:136:25: warning: Null pointer passed as 1s=
+t argument to string length function [unix.cstring.NullArg]
+>             seq_escape_mem(m, src, strlen(src), flags, esc);
+>                                    ^~~~~~~~~~~
+>
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> ---
+>  security/selinux/hooks.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-I think this patchset has been posted for long enough with no
-comments, and no objections, that I can pull this into the
-selinux/next tree.  However, I'll give it until the end of this week
-just to give folks one last chance to comment.  If I don't hear any
-objections by the end of day on Friday, June 10th I'll go ahead and
-merge this.
+I was waiting for Nick to reply, but he never did, and this looks good
+to me so I just merged it into selinux/next.  Thanks for your patience
+Christian.
 
 --=20
 paul-moore.com

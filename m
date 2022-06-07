@@ -2,137 +2,110 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8567753F13B
-	for <lists+selinux@lfdr.de>; Mon,  6 Jun 2022 22:57:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 936B353F70F
+	for <lists+selinux@lfdr.de>; Tue,  7 Jun 2022 09:22:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbiFFU4r (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 6 Jun 2022 16:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46286 "EHLO
+        id S231633AbiFGHWG (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 7 Jun 2022 03:22:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235168AbiFFUyQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 6 Jun 2022 16:54:16 -0400
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 912A8CE5E1
-        for <selinux@vger.kernel.org>; Mon,  6 Jun 2022 13:43:36 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id w16so11399763oie.5
-        for <selinux@vger.kernel.org>; Mon, 06 Jun 2022 13:43:36 -0700 (PDT)
+        with ESMTP id S230106AbiFGHWF (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 7 Jun 2022 03:22:05 -0400
+Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEEC0A30AA
+        for <selinux@vger.kernel.org>; Tue,  7 Jun 2022 00:22:04 -0700 (PDT)
+Received: by mail-ej1-x641.google.com with SMTP id n10so33350742ejk.5
+        for <selinux@vger.kernel.org>; Tue, 07 Jun 2022 00:22:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=D7jJEBeTUMr1Mwg2FeytohJBRezv9oQflB/Xy2VJVWo=;
-        b=V11yT2TMbN3dRCP7LJi7Q/AZ2SyQNEEBLZSdczf1xrQKgF06KZQIK4axKjpeQVul0u
-         kIumak7wCW4DaIoorllg3JB1m4LuDQjAWl3wwnxXJajZuX7lbebjtP/YZgZy+8a/+lFQ
-         PwuE2CDfG5PDWsatCn7FsEbq6dRpLSWGH46F8dYVT7I75QRh+rA1sHItkRFsYgeS7ZC9
-         5MTc0U5wEGUvVI/H0+PVvHLeEmstM/4KYw2lik3cu0Ab/8GaVSAGyhP45i24P4omdt9P
-         xiqyDdvDqxFH97/XfSKTSqulqvjwjAHLmZsgYbvNpS9JZI3dAPxyPOwOOAAbyLDhBSK0
-         KZQg==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=OHbou33WPhW0PDy9/CZae9mIrL4buN3/FALSld4obAM=;
+        b=mEVr19+VSZ/83sDRbKknLnN3qZueLzDK6EaCVPYtUcl+KZAGjN2ocOWFML1LKTWbge
+         M/q4uufTMYcqM2tjf2BmRwrlG/O+Q0av8U3L4XOQAKwFPhMyKD6xeyV7XjfwUVPIF84q
+         VSAb5zWYseEoKmrRlGnrNWKkcl3YvBPCnQGaBEjlHvAeyJz8Tt7lhc6J15ou8HClcvUB
+         Rxktvd62VPHOMXfXxJx3+TkPAzY9NNSF3AeFNCZwimi1froPRX/OFCzINXwlkoagT86v
+         4dhJHkxwjveOlb6F1vaIQ08lIW8A9WD0c9aKVpzP45fxDsMayuNgu7CPkbw0w0ECeqYR
+         b0xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=D7jJEBeTUMr1Mwg2FeytohJBRezv9oQflB/Xy2VJVWo=;
-        b=UtG0+3jMdCzuvQZakk3uXtnyUEBPO+XTAtLwasU6v1t7vAiESJOvPdiaOfWjsIs6Sp
-         Dno+onAkcZfCJwJ3Dj9jirhQ33EjDa14AFyxdYGjzrSu3Hu3S1nH5DIFTtN1Yk9I+o58
-         CNAd8Rrt3mdYrnvGEWSG0NZO3HWJyZKY0Jr9zyvUsTYSRDWG3UqVjIza9Xre01x5aw7d
-         g8UWD2Gpv1Lctt+Vm0UbbWL4zBApEcj5DqaMWmrt61aCEy/leQWHS56oPjEO6+LzT8LN
-         TIm31DCtv+He1LZzKXs3LdDoDx6h8Yuzwn1J0iUh4Vjp+dDVXuSrurPR1Kjac9RVo1kH
-         cUqg==
-X-Gm-Message-State: AOAM530lMJxaQA7l/G7bVVD2OngkWvmomxWI1GhO6eujtUN4xZZEje7K
-        VZrKl1i1gmhlYmeeo8Epgs32dyUPwfTrbcsMOzCaYYRT
-X-Google-Smtp-Source: ABdhPJxNdg54tFs0j+j95DaZgSc0ZFAEdsPqIBoVQfB/phOKfpAyZA8q1Vhmjt/aBiecfjuAotJVn/j8Mc/afkB3gFA=
-X-Received: by 2002:a05:6808:208c:b0:32b:91e4:32e1 with SMTP id
- s12-20020a056808208c00b0032b91e432e1mr15385584oiw.182.1654548216258; Mon, 06
- Jun 2022 13:43:36 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=OHbou33WPhW0PDy9/CZae9mIrL4buN3/FALSld4obAM=;
+        b=8SQsdBYGGbDy1u0SK3rH6+M31lLa1oT0g92yg3Uj1BPPcQ9Z5LkvwImUSIzk9EQU8f
+         R1pMARl9rC2To/XUSv+71dAyGFBSccE+6Sxm/XyQpugL7bLuCO5UzH10PSXffPKdcPDO
+         u9cah/qtcgIp8tIC/gZ0SPXW1DPQQOzIlvVVe8M1o9Gy+NNNY5AksXS9cnDuCaYmgam1
+         N9IUqX/as0kF1fWjtaFikZgp1czfaa8fBbQliW1lbe7CQLLBlfeB70uIkhcpczNngius
+         kB921IDviCA1Ir2bRQCYuTbqKTdwNcL5bMMoIBX6D/mRTU5DhXNASr7XkoDkVGB5WJBu
+         M3kQ==
+X-Gm-Message-State: AOAM532vSRiqaz3wnjoIYCIIVYlh65xwKrWA3iNCFqeC0x/KBhgy6dHN
+        AIFHU+HAF+AoRK3uLpgKUrsp5fIUACiRw4O80MM=
+X-Google-Smtp-Source: ABdhPJyLjzEdlzN4HQF89WABuec4QL2zzJChSl3VP1IQ1WMW56+1Ppj5U6lJLBFGuea9rxkX+H1sBjn7scdJrrfwalI=
+X-Received: by 2002:a17:906:85cb:b0:70b:ffb4:b0e with SMTP id
+ i11-20020a17090685cb00b0070bffb40b0emr21760576ejy.533.1654586524331; Tue, 07
+ Jun 2022 00:22:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220530122021.3952270-1-vmojzis@redhat.com> <CAP+JOzSq_rQtFfNxw7zLB22P6SM=qxVwYLsqPRZub25XECH7MQ@mail.gmail.com>
-In-Reply-To: <CAP+JOzSq_rQtFfNxw7zLB22P6SM=qxVwYLsqPRZub25XECH7MQ@mail.gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Mon, 6 Jun 2022 16:43:25 -0400
-Message-ID: <CAP+JOzS3PfFJG65SANNgQ-NCE_5je0SDE+3ZHHJUAGrC21BbcQ@mail.gmail.com>
-Subject: Re: [PATCH] python: Split "semanage import" into two transactions
-To:     Vit Mojzis <vmojzis@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
+Received: by 2002:a05:6402:26c8:0:0:0:0 with HTTP; Tue, 7 Jun 2022 00:22:03
+ -0700 (PDT)
+Reply-To: andyhalford22@gmail.com
+From:   Andy Halford <fameyemrf@gmail.com>
+Date:   Tue, 7 Jun 2022 00:22:03 -0700
+Message-ID: <CAATdNatjS+6a5geC1q=944yxHXivcePN0wb4YCSSvv1_FxC5nQ@mail.gmail.com>
+Subject: Dear Friend
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=BAYES_50,DEAR_FRIEND,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:641 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5006]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [fameyemrf[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [andyhalford22[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  2.6 DEAR_FRIEND BODY: Dear Friend? That's not very dear!
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.3 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, Jun 3, 2022 at 10:40 AM James Carter <jwcart2@gmail.com> wrote:
->
-> On Mon, May 30, 2022 at 9:32 AM Vit Mojzis <vmojzis@redhat.com> wrote:
-> >
-> > First transaction applies all deletion operations, so that there are no
-> > collisions when applying the rest of the changes.
-> >
-> > Fixes:
-> >   # semanage port -a -t http_cache_port_t -r s0 -p tcp 3024
-> >   # semanage export | semanage import
-> >   ValueError: Port tcp/3024 already defined
-> >
-> > Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
->
-> Acked-by: James Carter <jwcart2@gmail.com>
->
+-- 
+Hello Sir
 
-Merged.
-Thanks,
-Jim
 
->
-> > ---
-> >  python/semanage/semanage | 21 +++++++++++++++++++--
-> >  1 file changed, 19 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/python/semanage/semanage b/python/semanage/semanage
-> > index 8f4e44a7..1d828128 100644
-> > --- a/python/semanage/semanage
-> > +++ b/python/semanage/semanage
-> > @@ -852,10 +852,29 @@ def handleImport(args):
-> >      trans = seobject.semanageRecords(args)
-> >      trans.start()
-> >
-> > +    deleteCommands = []
-> > +    commands = []
-> > +    # separate commands for deletion from the rest so they can be
-> > +    # applied in a separate transaction
-> >      for l in sys.stdin.readlines():
-> >          if len(l.strip()) == 0:
-> >              continue
-> > +        if "-d" in l or "-D" in l:
-> > +            deleteCommands.append(l)
-> > +        else:
-> > +            commands.append(l)
-> > +
-> > +    if deleteCommands:
-> > +        importHelper(deleteCommands)
-> > +        trans.finish()
-> > +        trans.start()
-> > +
-> > +    importHelper(commands)
-> > +    trans.finish()
-> >
-> > +
-> > +def importHelper(commands):
-> > +    for l in commands:
-> >          try:
-> >              commandParser = createCommandParser()
-> >              args = commandParser.parse_args(mkargv(l))
-> > @@ -869,8 +888,6 @@ def handleImport(args):
-> >          except KeyboardInterrupt:
-> >              sys.exit(0)
-> >
-> > -    trans.finish()
-> > -
-> >
-> >  def setupImportParser(subparsers):
-> >      importParser = subparsers.add_parser('import', help=_('Import local customizations'))
-> > --
-> > 2.35.1
-> >
+
+  I am Andy Halford from London, UK. Nice to meet you. Sorry for the
+inconvenience it's because of the time difference. I contacted you
+specifically regarding an important piece of information I intend
+sharing with you that will be of interest to you. Having gone through
+an intelligent methodical search, I decided to specifically contact
+you hoping that you will find this information useful. Kindly confirm
+I got the correct email by replying via same email to ensure I don't
+send the information to the wrong person.
+
+
+
+REGARDS
+Andy Halford

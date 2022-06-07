@@ -2,52 +2,130 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D09E542191
-	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 08:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 554B2542711
+	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 08:59:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238934AbiFHAm5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 7 Jun 2022 20:42:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35446 "EHLO
+        id S237191AbiFHAmx (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 7 Jun 2022 20:42:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1386774AbiFHAWb (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 7 Jun 2022 20:22:31 -0400
-Received: from markus.defensec.nl (markus.defensec.nl [IPv6:2a10:3781:2099::123])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89E4F19EC34
-        for <selinux@vger.kernel.org>; Tue,  7 Jun 2022 12:26:36 -0700 (PDT)
-Received: from brutus (brutus.lan [IPv6:2a10:3781:2099::438])
-        by markus.defensec.nl (Postfix) with ESMTPSA id 6F1EAFC0457
-        for <selinux@vger.kernel.org>; Tue,  7 Jun 2022 21:26:30 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=defensec.nl;
-        s=default; t=1654629990;
-        bh=QB89DkTpuF7sUb0CfKXSaLJDojnJy4YDdXjG7b70S0U=;
-        h=From:To:Subject:Date:From;
-        b=D//0RwOklNspqJhg7iVs0/iFh0e8H2fH/we+gt3xwSX35kKtIvF+FR7tRrEIpNoy1
-         609hQbNz6z9Yn6bbvERTRUhIJ9ICPKxOxfSarD5bhi/btN9CNjrCadtpz9thggRErH
-         p+KVdXhEyWAneONNSvedfhSu2J0XEL82c8BP2RC8=
-From:   Dominick Grift <dominick.grift@defensec.nl>
-To:     selinux@vger.kernel.org
-Subject: why arent we checking MS_BIND?
-Date:   Tue, 07 Jun 2022 21:26:29 +0200
-Message-ID: <87v8tccm1m.fsf@defensec.nl>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S1442756AbiFGW7d (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 7 Jun 2022 18:59:33 -0400
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA23227A91F
+        for <selinux@vger.kernel.org>; Tue,  7 Jun 2022 13:05:43 -0700 (PDT)
+Received: by mail-wr1-x42f.google.com with SMTP id p10so25586187wrg.12
+        for <selinux@vger.kernel.org>; Tue, 07 Jun 2022 13:05:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pd5HmXzw2LiQl7Nbi5AmuOCXhxxQgLw+foKsZ+NlrZ8=;
+        b=YSpmaKxMgWWXWlkkxWlzGY152XPpIKdfkW2FYUJ0o2OzjW8oslWYxLwlxMVkDxQm31
+         s232FPT5okj5Amzsq9Kax2MHFPwDtgcEfsdFCIiQM8g9ILorj+a13NTCdvYwWk5zRlv6
+         Dp4X+p6w9PBdDbdxntT/6zVjAhqLz0aMkbzXJnBfi7RSxhUsHnrTIAk5UbtfzSeYQ0Q0
+         CQWZtPnV2X3WXO1ulVOZkztNFWDAgPOlWdbMuxOSgkjZUVZ0H1WEIANoeVrtjTqnKYco
+         bX1gAbs5yHuHcxi6rYpuSQ3mK0+H53uEbyM46hwmBf122WwOgQd1v3mM9qx8nyvYjBM1
+         wSZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pd5HmXzw2LiQl7Nbi5AmuOCXhxxQgLw+foKsZ+NlrZ8=;
+        b=wLkcxShD1xWBh3VdtXb5IFsUCFW+CBhC0i0ngyAgNrXAtyujyvw6/3IhKlOsyvdTMv
+         lynhK7wsxHNA54VIDV3KqLaVsA10g5I12CcgGqJuaVS9NhluxmIzYlkW3d/cL80AobRE
+         qxPk02O4zq64xKWR5Dc+OSzyIEweRKVET5iWVT0fHinLitN9VJgAXnAsvQRYM/u84e00
+         GkslysBq0BTvX8tmwUgO2Ju00dzxbuh8s0JIhX4lXzWkgdaQrsKiVCRUesVLeJrkhrhb
+         jEes7GMuWfz36yg8VrOswD69mb/Chgfk5FusZhzsnD7SyqtBpBfs+CeyBIMJsI/U96kQ
+         veJg==
+X-Gm-Message-State: AOAM530ntWNgF5e45AgchTEbnkkmd9Cq+HUf7MoWGtLvjUIES9JiMfSS
+        UDqlXSy3b1nPIsrIKGsROFvxMdqM03nxzRkAWRL1
+X-Google-Smtp-Source: ABdhPJyut9JzrwEhHN7uQfxWKSV6Z0lT4wSLEWR6jyWzpXrAYWB13JGzRQc+WT0vDTTfKFSSVrE7yduFRivHG5t6/js=
+X-Received: by 2002:a5d:6d8c:0:b0:217:a419:c3f8 with SMTP id
+ l12-20020a5d6d8c000000b00217a419c3f8mr15256654wrs.260.1654632342187; Tue, 07
+ Jun 2022 13:05:42 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220518092137.141626-1-gongruiqi1@huawei.com>
+ <CAHC9VhTj365p3SJvX+8eBqRO3wddnj0sXtRDp=jEhSdADwiGrg@mail.gmail.com>
+ <6e2534c3-9af1-0c84-96ac-79075f79ab39@huawei.com> <CAHC9VhQRPqyMrja5L+8VTb-dsUrmb1cJq+wrQ5GyA5NupPLfZg@mail.gmail.com>
+In-Reply-To: <CAHC9VhQRPqyMrja5L+8VTb-dsUrmb1cJq+wrQ5GyA5NupPLfZg@mail.gmail.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Tue, 7 Jun 2022 16:05:31 -0400
+Message-ID: <CAHC9VhQypD0NdqVk2uW4NhMjf=zhv5Vb+LmATaEwY-RT+tF9hA@mail.gmail.com>
+Subject: Re: [PATCH] selinux: add __randomize_layout to selinux_audit_data
+To:     Gong Ruiqi <gongruiqi1@huawei.com>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Kees Cook <keescook@chromium.org>, selinux@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Wang Weiyang <wangweiyang2@huawei.com>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+On Wed, May 18, 2022 at 12:03 PM Paul Moore <paul@paul-moore.com> wrote:
+>
+> On Wed, May 18, 2022 at 2:53 AM Gong Ruiqi <gongruiqi1@huawei.com> wrote:
+> > On 2022/05/18 9:39, Paul Moore wrote:
+> > > On Tue, May 17, 2022 at 9:21 PM GONG, Ruiqi <gongruiqi1@huawei.com> wrote:
+> > >>
+> > >> Randomize the layout of struct selinux_audit_data as suggested in [1],
+> > >> since it contains a pointer to struct selinux_state, an already
+> > >> randomized strucure.
+> > >>
+> > >> [1]: https://github.com/KSPP/linux/issues/188
+> > >>
+> > >> Signed-off-by: GONG, Ruiqi <gongruiqi1@huawei.com>
+> > >> ---
+> > >>  security/selinux/include/avc.h | 2 +-
+> > >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >>
+> > >> diff --git a/security/selinux/include/avc.h b/security/selinux/include/avc.h
+> > >> index 2b372f98f2d7..5525b94fd266 100644
+> > >> --- a/security/selinux/include/avc.h
+> > >> +++ b/security/selinux/include/avc.h
+> > >> @@ -53,7 +53,7 @@ struct selinux_audit_data {
+> > >>         u32 denied;
+> > >>         int result;
+> > >>         struct selinux_state *state;
+> > >> -};
+> > >> +} __randomize_layout;
+> > >
+> > > I'll apologize in advance for the stupid question, but does
+> >
+> > Not at all :)
+> >
+> > > __randomize_layout result in any problems when the struct is used in a
+> > > trace event?  (see include/trace/events/avc.h)
+> >
+> > No, as least it doesn't in the testing I did. I believe we can use the
+> > struct tagged with __randomize_layout as normal except that 1) it should
+> > be initialized with a designated initializer, and 2) pointers to this
+> > type can't be cast to/from pointers to another type. Other operations
+> > like dereferencing members of the struct (as in
+> > include/trace/events/avc.h) shouldn't be a problem.
+> >
+> > I did a testing to the patch on a qemu vm by running the selinux
+> > testsuite with tracing events "avc:selinux_audited" enabled. The
+> > testsuite completed successfully and from the tracing log I saw nothing
+> > abnormal with my bare eyes. You can do more testing if you want or you
+> > have other ideas of how to do so ;)
+>
+> That's great, thanks for verifying this.  I was aware of the other
+> restrictions but wasn't sure about tracing.  Now I know :)
+>
+> It's too late to go into selinux/next for this dev cycle, but I'll
+> queue this up for selinux/next once the merge window closes.
 
-I suppose there is a reason why we cannot control bind mounts with
-SELinux. I would like to determine whether the decision not to provide
-controls for bind mounts is still feasible in this day and age.
+I just merged this into my local selinux/next branch and I'll be
+pushing it up to the mail selinux tree later today - thanks!
 
 -- 
-gpg --locate-keys dominick.grift@defensec.nl
-Key fingerprint = FCD2 3660 5D6B 9D27 7FC6  E0FF DA7E 521F 10F6 4098
-Dominick Grift
+paul-moore.com

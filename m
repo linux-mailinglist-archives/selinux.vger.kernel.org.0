@@ -2,64 +2,67 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2EEC0543A24
-	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 19:22:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEF9C543A2C
+	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 19:23:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230476AbiFHRWG (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 8 Jun 2022 13:22:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46680 "EHLO
+        id S229654AbiFHRXE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 8 Jun 2022 13:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231260AbiFHRV4 (ORCPT
+        with ESMTP id S231678AbiFHRV4 (ORCPT
         <rfc822;selinux@vger.kernel.org>); Wed, 8 Jun 2022 13:21:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 67990476465
-        for <selinux@vger.kernel.org>; Wed,  8 Jun 2022 10:09:58 -0700 (PDT)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 98DE7476C52
+        for <selinux@vger.kernel.org>; Wed,  8 Jun 2022 10:09:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1654708197;
+        s=mimecast20190719; t=1654708198;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=25JTg/nosGe2gqOZaDilJWQ+SF+g6VnDW83fvdKgXeQ=;
-        b=C+t9ebF9jNWwXWEsiADcIfGyO/NBXASLYNv3AdYCaKsFPI33ZPpIKW+toja9m/0BDL6t7h
-        YaxeDjuKXi5nNotVGhEihMuYs2NQrlRn/8Iej0Lzh6Qfi3Vb8qVy3HX8dUj8yPY+pqXQbd
-        xHg6PjU/ZMWTg1jqoWxQS2YzwuX3U4M=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=ndTkbnQlx6y+cgjOJCPSW+ftUDh4rgMyrSCvpsy9I2c=;
+        b=Dk0C4htE41lwtr2uJ6UrE/NqgqqxNwGF0NqpDcKzJH+hLSqwQF3DGeeZQ/Y79Sm9UQE3tR
+        FO+/yJPq4AizQjxVttkns19JrK/ltdwgCQ5In5FpUnupy67ZhVQK0aycPlVj7kGtrhfkyG
+        EwFUzjLu/OJod9zHu1bp+Vf4yu5VG0I=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-416-w9XIpyrDM2m7fxrg1VSsMQ-1; Wed, 08 Jun 2022 13:09:56 -0400
-X-MC-Unique: w9XIpyrDM2m7fxrg1VSsMQ-1
-Received: by mail-wm1-f72.google.com with SMTP id k5-20020a05600c1c8500b003974c5d636dso10142428wms.1
-        for <selinux@vger.kernel.org>; Wed, 08 Jun 2022 10:09:56 -0700 (PDT)
+ us-mta-137-YqefBKW_MlmW2IUD1k0_ew-1; Wed, 08 Jun 2022 13:09:57 -0400
+X-MC-Unique: YqefBKW_MlmW2IUD1k0_ew-1
+Received: by mail-wr1-f69.google.com with SMTP id w8-20020adfde88000000b00213b7fa3a37so4241032wrl.2
+        for <selinux@vger.kernel.org>; Wed, 08 Jun 2022 10:09:57 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=25JTg/nosGe2gqOZaDilJWQ+SF+g6VnDW83fvdKgXeQ=;
-        b=Vv7I+xv7RkkOV585saBcwQO1X7GYcqNe4kBB3VaEZX/0i8Wlr1gNgiDQza11Dzzq4m
-         Lt+CHwcRrGgHbZ+5sMA+BhtspF1DHqk5beoB+9KgtKyXlftNQgcQWtJGesB0+5x8Vjn4
-         yfCbHxaIqD3BSdBlEOt8LlwrfcyWcVnuiduebRwXLoAWhbJtFYoRgA9ZbUblG47ghG/H
-         y9n5Qs6o8ukoJh4bj5E8rRN0LUDYdBUa0MtNs45GYUFFxfF3TgTDwO+0QKwWpq6MwlaY
-         wvr/g0bn0f8GLwyZR4p6l1xT1E4W8TIaeMiuOiZcuhpyG4Otiwl/7kkjT10GzOCtbAi/
-         pi2Q==
-X-Gm-Message-State: AOAM531WrnTB4a5QLkuQgbhc8Bh4S6c9ACx/yNU242EvPfJW3LHdS7KU
-        lvjmj/ZCg1sUYbue7YSBCu0oVxyJ3MdQEvDZWcTxsDN65aNVZ0hRpWlK8ASyiYZjPKL+0rvdYYS
-        8J/w6/ocGcY/kpbTyJ55yqSoOaSK9t3jh5qE+iHITK3fWa43kI3GzQkmie8ljgdZvD0UeYw==
-X-Received: by 2002:a5d:5c07:0:b0:218:544d:4347 with SMTP id cc7-20020a5d5c07000000b00218544d4347mr8174586wrb.107.1654708194906;
-        Wed, 08 Jun 2022 10:09:54 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyM6QExF485LVWbEo5415V+BR390+BQF2nayJ9M9JJ9XJzjCLjufEQGxvtlDzU+nPHkU3w/vQ==
-X-Received: by 2002:a5d:5c07:0:b0:218:544d:4347 with SMTP id cc7-20020a5d5c07000000b00218544d4347mr8174570wrb.107.1654708194602;
-        Wed, 08 Jun 2022 10:09:54 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=ndTkbnQlx6y+cgjOJCPSW+ftUDh4rgMyrSCvpsy9I2c=;
+        b=0Lf6IcXEjLFj+5H4FCdVajDaYOcDbeUq7fLn+yb9vEpneZcCJdgLSHvcyB/0GdYI3s
+         0f5pNxo/bxAYaNOLE84MsJ+rN/BUeV1cWJV/yNvBRVvw96szJDRvsDkubg/4xpzDkjzc
+         Hmc1jcW8M9/RByqgRepShOer/U0YGyu0uttu3gwUofkITXXhFNg7IfoXvC8qa7RY7KWz
+         ZlzeAfoSBC5820dY52H2e9pztOQ4fka9i6U0lj53o+o8nNJsBvUSClP1z5OgZo2ab7vr
+         z1x2AouBsN5HcYs5Ip5nFovIhLyro8dkmwLq3vXmm5LHuMbe15TpXyowv69Ye6y5K346
+         ZQuA==
+X-Gm-Message-State: AOAM530jdv6f+/YaY25o4nPchjKBjfsC+K3OAjIOE5QI6XHR0qY3z9t9
+        o9diNpDLDQGUvtWhPgLAJiwSZFyNU90Z4nskif5ZiiFACobLiXEQYg+bKepgWplHaDqLm5rs5fG
+        SozDaOkmNluWJwC35L9xiFnXn8kC0z5xW57CBseg0nTGlQVP2tKI/nvGVR3u/CmVdx4PwYA==
+X-Received: by 2002:adf:d1c9:0:b0:20f:c3dc:e980 with SMTP id b9-20020adfd1c9000000b0020fc3dce980mr33970785wrd.552.1654708196042;
+        Wed, 08 Jun 2022 10:09:56 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJwQupNqRSCE1jeTztGIYqZQSLrlmzH/ExWzZiylv2HY1nb3f33HyKDxHQOJJajq3/NwaRiZNw==
+X-Received: by 2002:adf:d1c9:0:b0:20f:c3dc:e980 with SMTP id b9-20020adfd1c9000000b0020fc3dce980mr33970763wrd.552.1654708195721;
+        Wed, 08 Jun 2022 10:09:55 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
-        by smtp.gmail.com with ESMTPSA id m2-20020adfe942000000b0020fcaba73bcsm22176194wrn.104.2022.06.08.10.09.53
+        by smtp.gmail.com with ESMTPSA id m2-20020adfe942000000b0020fcaba73bcsm22176194wrn.104.2022.06.08.10.09.54
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jun 2022 10:09:53 -0700 (PDT)
+        Wed, 08 Jun 2022 10:09:55 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH userspace 0/2] Refine semantics of libsemanage's check_ext_changes
-Date:   Wed,  8 Jun 2022 19:09:52 +0200
-Message-Id: <20220608170954.114668-1-omosnace@redhat.com>
+Subject: [PATCH userspace 1/2] libsemanage: always write kernel policy when check_ext_changes is specified
+Date:   Wed,  8 Jun 2022 19:09:53 +0200
+Message-Id: <20220608170954.114668-2-omosnace@redhat.com>
 X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220608170954.114668-1-omosnace@redhat.com>
+References: <20220608170954.114668-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -72,27 +75,55 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Make it always do the "do_write_kernel" step so that the semantic is
-essentially "--build but with the module content checksum optimization",
-as otherwise the final policy doesn't get updated when there are no
-changes in modules, but other customizations are applied.
+For the use case of rebuilding the policy afte package updates, we need
+the check_ext_changes operation to always do at least the do_write_kernel
+step, because the various semanage dbs may have also changed content
+relative to the current binary policy. As this step is itself relatively
+fast, we can do it unconditionally.
 
-Since the name --rebuild-if-modules-changed no longer matches the
-semantics, also change that to just --refresh, which fits better.
+Fixes: 286a679fadc4 ("libsemanage: optionally rebuild policy when modules are changed externally")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+---
+ libsemanage/include/semanage/handle.h | 2 +-
+ libsemanage/src/direct_api.c          | 8 +++++---
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-Also update man pages and code comments.
-
-Ondrej Mosnacek (2):
-  libsemanage: always write kernel policy when check_ext_changes is
-    specified
-  semodule: rename --rebuild-if-modules-changed to --refresh
-
- libsemanage/include/semanage/handle.h |  2 +-
- libsemanage/src/direct_api.c          |  8 +++++---
- policycoreutils/semodule/semodule.8   | 12 ++++++------
- policycoreutils/semodule/semodule.c   | 13 ++++++++++---
- 4 files changed, 22 insertions(+), 13 deletions(-)
-
+diff --git a/libsemanage/include/semanage/handle.h b/libsemanage/include/semanage/handle.h
+index 0157be4f..4cf30815 100644
+--- a/libsemanage/include/semanage/handle.h
++++ b/libsemanage/include/semanage/handle.h
+@@ -67,7 +67,7 @@ extern void semanage_set_reload(semanage_handle_t * handle, int do_reload);
+ extern void semanage_set_rebuild(semanage_handle_t * handle, int do_rebuild);
+ 
+ /* set whether to rebuild the policy on commit when potential changes
+- * to module files since last rebuild are detected,
++ * to store files since last rebuild are detected,
+  * 1 for yes (default), 0 for no */
+ extern void semanage_set_check_ext_changes(semanage_handle_t * handle, int do_check);
+ 
+diff --git a/libsemanage/src/direct_api.c b/libsemanage/src/direct_api.c
+index 7206483a..7aa081ab 100644
+--- a/libsemanage/src/direct_api.c
++++ b/libsemanage/src/direct_api.c
+@@ -1437,13 +1437,15 @@ static int semanage_direct_commit(semanage_handle_t * sh)
+ 	 * Determine what else needs to be done.
+ 	 * We need to write the kernel policy if we are rebuilding
+ 	 * or if any other policy component that lives in the kernel
+-	 * policy has been modified.
++	 * policy has been modified. We also want to force it when
++	 * check_ext_changes was specified as the various dbases may have
++	 * changes as well.
+ 	 * We need to install the policy files if any of the managed files
+ 	 * that live under /etc/selinux (kernel policy, seusers, file contexts)
+ 	 * will be modified.
+ 	 */
+-	do_write_kernel = do_rebuild | ports_modified | ibpkeys_modified |
+-		ibendports_modified |
++	do_write_kernel = do_rebuild | sh->check_ext_changes |
++		ports_modified | ibpkeys_modified | ibendports_modified |
+ 		bools->dtable->is_modified(bools->dbase) |
+ 		ifaces->dtable->is_modified(ifaces->dbase) |
+ 		nodes->dtable->is_modified(nodes->dbase) |
 -- 
 2.36.1
 

@@ -2,151 +2,138 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8EA8543A25
-	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 19:22:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FFFA543AD2
+	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 19:52:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230286AbiFHRWH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 8 Jun 2022 13:22:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50092 "EHLO
+        id S232988AbiFHRwK (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 8 Jun 2022 13:52:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231687AbiFHRV4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jun 2022 13:21:56 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2DE59477111
-        for <selinux@vger.kernel.org>; Wed,  8 Jun 2022 10:10:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1654708200;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=KMrJ6VeTuLRTvpxP1c3lGep9mWv5DtHALsuJT7lSfyQ=;
-        b=J391lPwvnsn0vfauQK3qFpjFibfCUqoTTd7iBoZd2uR78hAbGgGZZ9u+7ogvoasKS/NttE
-        U/+mnecQMQncpRJmOK4opMy/d8arO0+OtxlYzhmIJuFdU5reOvacLNycN9dQYJKlYaXAb6
-        aya8TYbq+UUTfX5n254VALI9nbHMt3M=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-518-p6j2Y9D5OlSO8DZ1--AOtA-1; Wed, 08 Jun 2022 13:09:59 -0400
-X-MC-Unique: p6j2Y9D5OlSO8DZ1--AOtA-1
-Received: by mail-wr1-f70.google.com with SMTP id v4-20020adfebc4000000b002102c69be5eso5010229wrn.13
-        for <selinux@vger.kernel.org>; Wed, 08 Jun 2022 10:09:59 -0700 (PDT)
+        with ESMTP id S232964AbiFHRwK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jun 2022 13:52:10 -0400
+Received: from mail-oi1-x232.google.com (mail-oi1-x232.google.com [IPv6:2607:f8b0:4864:20::232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2350C1038
+        for <selinux@vger.kernel.org>; Wed,  8 Jun 2022 10:52:09 -0700 (PDT)
+Received: by mail-oi1-x232.google.com with SMTP id s8so23736825oib.6
+        for <selinux@vger.kernel.org>; Wed, 08 Jun 2022 10:52:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=iUsNZk6WBVBqJY6hlv8/dtp5xEv4tV2ozWKO2I7G6eQ=;
+        b=YS8qu+ZbjalnVcmtKHVhTYK6B8DMyhNZbGatccsqyc8m0g0Smsd6x1PKHp1tlkvpuq
+         FHhk5N1YpFrj8NYhy8VTqbPhRyAPEt6lJYT4L5PZHHoPSFV3CfVJffDxYgFlBWkhzqDK
+         1SlGFS9etdqLnBNQDomr3z1G1p4jympLiDfCHCW9fl0LPpEWqw0wVPgTrlfaz8q5EHtT
+         iUenzk/LcCANi2tnyT9CYIxa/od1EgRu8WIIEj78aCNZWdiE+H1uMFtFQiARZzYRQTQl
+         hb8AB3NPbsiwigMK4FZXKOIuQgn5+0Qx9HZAOl2YP4e5GjW69mwjymcEBwieMdtxBtys
+         rJtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=KMrJ6VeTuLRTvpxP1c3lGep9mWv5DtHALsuJT7lSfyQ=;
-        b=1qDQcvzBTuqnGqJLDnMKUWmmul02aiwxMMu/g1zkvPUzGvMoCKx0OMvtSf99uA0EDr
-         Ybky3o16SeYkKSzXb6ERpSUNTK7ltB9zoCPAqMIvXfQO83sX08GdNKRPkv0ZM193z10a
-         /SrCTQvOhOWuFu1zOtp1PSQFlnKMXjdsQ0W6nQuQRIKkKXxttQc758rJ1P2PYIgWZAi9
-         nbeI4GYCGDqVkMtafhHKgnLL5884JvH95M4cutsUkJBLYgNHTl/IeFGa2pvgXtwkE+XR
-         Mlsvqz/MTdjlcfVU3wzw2S+9tgXc7dWhoIC8sMwS79pn6z2sSy4dKiVYHIdOcsUbDM//
-         Gmvw==
-X-Gm-Message-State: AOAM531UQKIyLgg2yLRo7sF6oWVaSwh2VcK09yZAHpZDuueeJpSnhZWp
-        gJv9b8aPbx0MGEtARFLV1Nf08JPDCG4YmKJV2jBiZqxAKQYHyXSb+jBZZQ4448Vm6HqEPNJhG/s
-        wXadGgU+owrAO/8SfV9APR9JK07YtFj87bfgcx+DcyotXKFwn7Zg/uiahCko7R46qTw7D/Q==
-X-Received: by 2002:a5d:6510:0:b0:216:f04d:3c50 with SMTP id x16-20020a5d6510000000b00216f04d3c50mr21536960wru.628.1654708197579;
-        Wed, 08 Jun 2022 10:09:57 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJxM9WrfjefKbDZ9LIH0pSZPF4qaO1x8/BKvfJmcgtCJE1bHOxfcNGhJn4vZkv0Vjk/Ugbhb6w==
-X-Received: by 2002:a5d:6510:0:b0:216:f04d:3c50 with SMTP id x16-20020a5d6510000000b00216f04d3c50mr21536940wru.628.1654708197223;
-        Wed, 08 Jun 2022 10:09:57 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
-        by smtp.gmail.com with ESMTPSA id m2-20020adfe942000000b0020fcaba73bcsm22176194wrn.104.2022.06.08.10.09.55
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 Jun 2022 10:09:56 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH userspace 2/2] semodule: rename --rebuild-if-modules-changed to --refresh
-Date:   Wed,  8 Jun 2022 19:09:54 +0200
-Message-Id: <20220608170954.114668-3-omosnace@redhat.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220608170954.114668-1-omosnace@redhat.com>
-References: <20220608170954.114668-1-omosnace@redhat.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=iUsNZk6WBVBqJY6hlv8/dtp5xEv4tV2ozWKO2I7G6eQ=;
+        b=vuSIK+HeejhY2SmaWuWIS8+qkbUriDWhiNOks7jcvzFl7DOqb/wpzPh+G6eJWa858P
+         mrQ9t8PlRbXJvyUC5Jj1zn6kPfJwdZ5wBfBe1HfHzeByoFAQM/bz1Iv3hWmN8sKkxNJ9
+         +gZAmZqRsYAmRDy0DGypWrfNUkRPq7lr2OllN+3faepAg+6zVd72GgwzO2QsvJxhpsEO
+         Fuvk3LSAf1i/3A4IEsnWWrdwm6rfLuCik1J05tHYvE9Rf8vA+fT+awHSRWzn798aUl9G
+         qhL01O+LhJ6GbT+Ay1YYwMAiqpBMawcAJAA53AAKtyXPVnJROM+KsQ53cXS8KC6vOPkM
+         2uPg==
+X-Gm-Message-State: AOAM533BWOsCKaoR1dFj6HDIn5UpEQBdx4cRVMxN41FRZ9HzPNWKoodC
+        2Su4nkzAidLBXdaIzbhZHqWqNwbTiIjGnKezpF74efGQPR4=
+X-Google-Smtp-Source: ABdhPJwG6yR3Fm0jR7FoQB89T5rzrCNQTkIKVxWvGSLWPT35bAIiuaj6laJfYbQtR71dO1RKwZJI8gd9UxtKneN3YkE=
+X-Received: by 2002:a05:6808:208c:b0:32b:91e4:32e1 with SMTP id
+ s12-20020a056808208c00b0032b91e432e1mr3111086oiw.182.1654710728518; Wed, 08
+ Jun 2022 10:52:08 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20220520130847.10958-1-cgzones@googlemail.com>
+In-Reply-To: <20220520130847.10958-1-cgzones@googlemail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Wed, 8 Jun 2022 13:51:57 -0400
+Message-ID: <CAP+JOzSmYALmPjrKYaL4kLJY7RaY8+ypzR9evHmrWUih58vyHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/4] libselinux: add man page redirections
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-After the last commit this option's name and description no longer
-matches the semantic, so give it a new one and update the descriptions.
-The old name is still recognized and aliased to the new one for
-backwards compatibility.
+On Fri, May 20, 2022 at 9:36 AM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
+>
+> The following interfaces are documented but do not have a redirection:
+>
+>   - context_str(3)
+>   - security_get_checkreqprot(3)
+>   - security_set_boolean_list(3)
+>   - selinux_sepgsql_context_path(3)
+>   - setexecfilecon(3)
+>
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- policycoreutils/semodule/semodule.8 | 12 ++++++------
- policycoreutils/semodule/semodule.c | 13 ++++++++++---
- 2 files changed, 16 insertions(+), 9 deletions(-)
+For these four patches:
+Acked-by: James Carter <jwcart2@gmail.com>
 
-diff --git a/policycoreutils/semodule/semodule.8 b/policycoreutils/semodule/semodule.8
-index d1735d21..c56e580f 100644
---- a/policycoreutils/semodule/semodule.8
-+++ b/policycoreutils/semodule/semodule.8
-@@ -23,12 +23,12 @@ force a reload of policy
- .B \-B, \-\-build
- force a rebuild of policy (also reloads unless \-n is used)
- .TP
--.B \-\-rebuild-if-modules-changed
--Force a rebuild of the policy if any changes to module content are detected
--(by comparing with checksum from the last transaction).  One can use this
--instead of \-B to ensure that any changes to the module store done by an
--external tool (e.g. a package manager) are applied, while automatically
--skipping the rebuild if there are no new changes.
-+.B \-\-refresh
-+Like \-\-build, but reuses existing linked policy if no changes to module
-+files are detected (by comparing with checksum from the last transaction).
-+One can use this instead of \-B to ensure that any changes to the module
-+store done by an external tool (e.g. a package manager) are applied, while
-+automatically skipping the module re-linking if there are no module changes.
- .TP
- .B \-D, \-\-disable_dontaudit
- Temporarily remove dontaudits from policy.  Reverts whenever policy is rebuilt
-diff --git a/policycoreutils/semodule/semodule.c b/policycoreutils/semodule/semodule.c
-index 1ed8e690..ec079486 100644
---- a/policycoreutils/semodule/semodule.c
-+++ b/policycoreutils/semodule/semodule.c
-@@ -150,9 +150,12 @@ static void usage(char *progname)
- 	printf("  -c, --cil extract module as cil. This only affects module extraction.\n");
- 	printf("  -H, --hll extract module as hll. This only affects module extraction.\n");
- 	printf("  -m, --checksum   print module checksum (SHA256).\n");
--	printf("      --rebuild-if-modules-changed\n"
--	       "                   force policy rebuild if module content changed since\n"
--	       "                   last rebuild (based on checksum)\n");
-+	printf("      --refresh    like --build, but reuses existing linked policy if no\n"
-+	       "                   changes to module files are detected (via checksum)\n");
-+	printf("Deprecated options:\n");
-+	printf("  -b,--base	   same as --install\n");
-+	printf("  --rebuild-if-modules-changed\n"
-+	       "                   same as --refresh\n");
- }
- 
- /* Sets the global mode variable to new_mode, but only if no other
-@@ -185,6 +188,7 @@ static void parse_command_line(int argc, char **argv)
- {
- 	static struct option opts[] = {
- 		{"rebuild-if-modules-changed", 0, NULL, '\0'},
-+		{"refresh", 0, NULL, '\0'},
- 		{"store", required_argument, NULL, 's'},
- 		{"base", required_argument, NULL, 'b'},
- 		{"help", 0, NULL, 'h'},
-@@ -225,6 +229,9 @@ static void parse_command_line(int argc, char **argv)
- 		case '\0':
- 			switch(longind) {
- 			case 0: /* --rebuild-if-modules-changed */
-+				fprintf(stderr, "The --rebuild-if-modules-changed option is deprecated. Use --refresh instead.\n");
-+				/* fallthrough */
-+			case 1: /* --refresh */
- 				check_ext_changes = 1;
- 				break;
- 			default:
--- 
-2.36.1
-
+> ---
+>  libselinux/man/man3/context_str.3                  | 1 +
+>  libselinux/man/man3/security_get_checkreqprot.3    | 1 +
+>  libselinux/man/man3/security_set_boolean_list.3    | 1 +
+>  libselinux/man/man3/selinux_sepgsql_context_path.3 | 1 +
+>  libselinux/man/man3/setexecfilecon.3               | 1 +
+>  5 files changed, 5 insertions(+)
+>  create mode 100644 libselinux/man/man3/context_str.3
+>  create mode 100644 libselinux/man/man3/security_get_checkreqprot.3
+>  create mode 100644 libselinux/man/man3/security_set_boolean_list.3
+>  create mode 100644 libselinux/man/man3/selinux_sepgsql_context_path.3
+>  create mode 100644 libselinux/man/man3/setexecfilecon.3
+>
+> diff --git a/libselinux/man/man3/context_str.3 b/libselinux/man/man3/cont=
+ext_str.3
+> new file mode 100644
+> index 00000000..f4f03a6d
+> --- /dev/null
+> +++ b/libselinux/man/man3/context_str.3
+> @@ -0,0 +1 @@
+> +.so man3/context_new.3
+> diff --git a/libselinux/man/man3/security_get_checkreqprot.3 b/libselinux=
+/man/man3/security_get_checkreqprot.3
+> new file mode 100644
+> index 00000000..d59e5c2c
+> --- /dev/null
+> +++ b/libselinux/man/man3/security_get_checkreqprot.3
+> @@ -0,0 +1 @@
+> +.so man3/security_getenforce.3
+> diff --git a/libselinux/man/man3/security_set_boolean_list.3 b/libselinux=
+/man/man3/security_set_boolean_list.3
+> new file mode 100644
+> index 00000000..29731efa
+> --- /dev/null
+> +++ b/libselinux/man/man3/security_set_boolean_list.3
+> @@ -0,0 +1 @@
+> +.so man3/security_load_booleans.3
+> diff --git a/libselinux/man/man3/selinux_sepgsql_context_path.3 b/libseli=
+nux/man/man3/selinux_sepgsql_context_path.3
+> new file mode 100644
+> index 00000000..175a611a
+> --- /dev/null
+> +++ b/libselinux/man/man3/selinux_sepgsql_context_path.3
+> @@ -0,0 +1 @@
+> +.so man3/selinux_binary_policy_path.3
+> diff --git a/libselinux/man/man3/setexecfilecon.3 b/libselinux/man/man3/s=
+etexecfilecon.3
+> new file mode 100644
+> index 00000000..b2e6ab81
+> --- /dev/null
+> +++ b/libselinux/man/man3/setexecfilecon.3
+> @@ -0,0 +1 @@
+> +.so man3/getexeccon.3
+> --
+> 2.36.1
+>

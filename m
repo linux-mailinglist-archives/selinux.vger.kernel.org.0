@@ -2,135 +2,184 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D2033542375
-	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 08:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 14F99542757
+	for <lists+selinux@lfdr.de>; Wed,  8 Jun 2022 09:03:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242959AbiFHAm6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 7 Jun 2022 20:42:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40792 "EHLO
+        id S234650AbiFHG5Q (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 8 Jun 2022 02:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1574249AbiFGXZU (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 7 Jun 2022 19:25:20 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B7EC18CA87
-        for <selinux@vger.kernel.org>; Tue,  7 Jun 2022 14:35:18 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id l2-20020a05600c1d0200b0039c35ef94c4so8152278wms.4
-        for <selinux@vger.kernel.org>; Tue, 07 Jun 2022 14:35:18 -0700 (PDT)
+        with ESMTP id S241477AbiFHGI0 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 8 Jun 2022 02:08:26 -0400
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B279417CD3;
+        Tue,  7 Jun 2022 22:14:49 -0700 (PDT)
+Received: by mail-vs1-f51.google.com with SMTP id q14so18642885vsr.12;
+        Tue, 07 Jun 2022 22:14:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=idUSaa8gwuIihbYaNise3w2YYlg1vymPz92K2rveSzI=;
-        b=wY3H2AQEuie1/H+ZQCrqw2Ym3cijoyGcBYEMvPGe9A5rikiCwOacYWiEdL3NyP2w2Z
-         eo04kdxyDvMIkeOR8ujpECEK+FXPvIxUMUxtKiUtBXfofJPtpFLoJ4GQBvP5bdRV6ldz
-         0XH1WzwMyYxol5CWC5TZWoNr2ATnRQGkvcEd67Edp2p18nOBHXNf6yjZs+Z3OiCLPevD
-         L7NiIsh2CW/Ic9meQ5kHtpnf29EwRNoD37iX3W4eMu2QmBkJ1tv5gtPh/ilPDuk5p8WY
-         yiLsWJNV7zvgdxEZWcei+KFmjz3ac/StH0E7gjzcUS0y/83flr16hMuMDLYCT8OMcRIu
-         qEEg==
+        bh=QBGwtKpyTYcwHawGkkLJIlVc8uYMzI2DXbLnehmXfbE=;
+        b=SB0WOTvPTBDL580CNJpBSrVLBNq9/eKKCK8hLOT6KVBVv0TrGp2zn/JM1IUJQw6u9G
+         eK8IYj3exswHjhWEXQrSbAZHl8f5WSnJ6kfjSaI8FwZM4nJ8zOM+lwXCPaFkazROYF+R
+         hyhMO1E8boquWtsici45GjRKvi9pPRiAar2Ozft3hQec274g2MwkIgoEJD1Y9bByBJJf
+         FVbLqu7oDS75iva6nVklYe4zTkwweuUxGq+mWeccpUXcr+xwOEKkmVfMcRpVbOkClACN
+         5gYHGH9BHx2AY9PLsi+YeDZSFKy2I3p+HojZR8U2QLhLQ78UHqRbK+044hBz3mbTDBrB
+         A1fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=idUSaa8gwuIihbYaNise3w2YYlg1vymPz92K2rveSzI=;
-        b=OhIvrHdVeRWntv81QV2C0gicv6GqIUJQtM6fgK1wE3ELqq99Xk3Elczbe+D3Z5a2Ma
-         SdCOf9jV0AcYGR+t7iHn80PyYD+Zlj13eJUtSBZwVPx4Rb2JysBUJswOj8HNFELppLAE
-         2PbVkHy+Xp0DRFdzdSiDc5PmoKFNF3yYJb6Y8uPwlM1t/TbOkS1PB9ZP4tfj/qVsLshK
-         fKYaPxZXcQqGayrygy1xnGAwyww8U+RFf9bX1awcjwWT2otGfUNfXBDEQh3rnnCNbNId
-         BZItj9R8lWVmEKGSARZ4Ore/x34e2oxBNeSZQpqcsnMeDFzOssul3DU6QF5hmLB9v6P9
-         BRug==
-X-Gm-Message-State: AOAM532mRnH4QCg+Uc3Pz10x/VwK3SXJDrmwYctygLupdaZfj1GCo7UD
-        8PeHTgXCjO/WVkmgwLTCuDt0HdOVzQq9X5MZrCFB
-X-Google-Smtp-Source: ABdhPJzzLkpNybysE8NlMkiaHbeXlwUKDCOTZfOlVYt3X5t6eWLvpTTJqqVFNh7+BVmCLhqfAO1qp23jQiYri0wULZ4=
-X-Received: by 2002:a05:600c:4e16:b0:397:6d34:76a4 with SMTP id
- b22-20020a05600c4e1600b003976d3476a4mr31706600wmq.0.1654637716853; Tue, 07
- Jun 2022 14:35:16 -0700 (PDT)
+        bh=QBGwtKpyTYcwHawGkkLJIlVc8uYMzI2DXbLnehmXfbE=;
+        b=vfjEH6tL6pGAbJyASqQG5WbS/Ag5XyyI7q5UeULH5sX9JE0sFjtJkH9jsoIvlVZCKh
+         H+K2jVlrn7AyYTinmHpl1EZpYMQgp9uI1eBE27mVvnvxVIZTkoyZKE6RBKzcKNYQoW0Q
+         oBgxAsW+4AAH9KMwdFAUpD+ScMS9DzPBCxnZYpNPLwUberHgU6Kj9hPw5kwCBWJoWCIw
+         +MitgL7bwvT5yNNL+dIURoo+PHs75qmfUfbQlIotq7jixvPiAZ6GJMeJCuzVDdAgeBor
+         AJ0wHreZEFFc+4vJCbFqxzYQ4OryTTPyjp5/OCo7mjzW5rROBydLilIYQXd/0n91pWos
+         xTOg==
+X-Gm-Message-State: AOAM533uNSVOURNrmncryBxkn+g5cM8iCM2gyDhiRe/AUR4SO+fJPohb
+        rdrkaIb68yT7TAMIeUrSeY8PmYuLprHG+MbxwYA=
+X-Google-Smtp-Source: ABdhPJzt4gBGzWHwFbcparAl2vI/ut9cXMxIMjE1fE+uM8+vrXAB9MlTphllB1wBrc+bU0jzx0MMIHnKz47kUKFMKSQ=
+X-Received: by 2002:a67:70c4:0:b0:349:d442:f287 with SMTP id
+ l187-20020a6770c4000000b00349d442f287mr15008426vsc.2.1654665199165; Tue, 07
+ Jun 2022 22:13:19 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220217142133.72205-1-cgzones@googlemail.com>
- <20220217142133.72205-4-cgzones@googlemail.com> <CAHC9VhRatc13ZsBSsjZeGtBfz0ouUGL9n0LTjbQtuZtYv2M43w@mail.gmail.com>
- <CAKwvOdkpA-P5763rt39q4HRjOdqC2Ca_Wu4suHU-qxpz3FkO8Q@mail.gmail.com>
-In-Reply-To: <CAKwvOdkpA-P5763rt39q4HRjOdqC2Ca_Wu4suHU-qxpz3FkO8Q@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 7 Jun 2022 17:35:05 -0400
-Message-ID: <CAHC9VhQ=tDdbTeugwiZtWkZxupDkdt7QBDr8a4txtSg0D+Q46w@mail.gmail.com>
-Subject: Re: [PATCH 5/5] selinux: drop unnecessary NULL check
-To:     Nick Desaulniers <ndesaulniers@google.com>
-Cc:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        selinux@vger.kernel.org,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Serge Hallyn <serge@hallyn.com>,
-        Austin Kim <austin.kim@lge.com>,
-        Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+References: <20220607153139.35588-1-cgzones@googlemail.com>
+In-Reply-To: <20220607153139.35588-1-cgzones@googlemail.com>
+From:   Amir Goldstein <amir73il@gmail.com>
+Date:   Wed, 8 Jun 2022 08:13:07 +0300
+Message-ID: <CAOQ4uxhu3urLps09B8zxnJPJpQXO7g67mEv3yoPRKBeZRdJb7g@mail.gmail.com>
+Subject: Re: [RFC PATCH] f*xattr: allow O_PATH descriptors
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     selinux@vger.kernel.org, Miklos Szeredi <mszeredi@redhat.com>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-man <linux-man@vger.kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        Alejandro Colomar <alx.manpages@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Jun 7, 2022 at 5:26 PM Nick Desaulniers <ndesaulniers@google.com> w=
-rote:
+On Wed, Jun 8, 2022 at 5:23 AM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
 >
-> On Tue, Jun 7, 2022 at 2:22 PM Paul Moore <paul@paul-moore.com> wrote:
-> >
-> > On Thu, Feb 17, 2022 at 9:22 AM Christian G=C3=B6ttsche
-> > <cgzones@googlemail.com> wrote:
-> > >
-> > > Commit e3489f8974e1 ("selinux: kill selinux_sb_get_mnt_opts()")
-> > > introduced a NULL check on the context after a successful call to
-> > > security_sid_to_context().  This is on the one hand redundant after
-> > > checking for success and on the other hand insufficient on an actual
-> > > NULL pointer, since the context is passed to seq_escape() leading to =
-a
-> > > call of strlen() on it.
-> > >
-> > > Reported by Clang analyzer:
-> > >
-> > >     In file included from security/selinux/hooks.c:28:
-> > >     In file included from ./include/linux/tracehook.h:50:
-> > >     In file included from ./include/linux/memcontrol.h:13:
-> > >     In file included from ./include/linux/cgroup.h:18:
-> > >     ./include/linux/seq_file.h:136:25: warning: Null pointer passed a=
-s 1st argument to string length function [unix.cstring.NullArg]
-> > >             seq_escape_mem(m, src, strlen(src), flags, esc);
-> > >                                    ^~~~~~~~~~~
-> > >
-> > > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> > > ---
-> > >  security/selinux/hooks.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > I was waiting for Nick to reply, but he never did, and this looks good
-> > to me so I just merged it into selinux/next.  Thanks for your patience
-> > Christian.
+> From: Miklos Szeredi <mszeredi@redhat.com>
 >
-> LGTM; you can ping me on irc #ndesaulniers on most kernel channels if
-> you're waiting on me. ;)
+> Support file descriptors obtained via O_PATH for extended attribute
+> operations.
+>
+> Extended attributes are for example used by SELinux for the security
+> context of file objects. To avoid time-of-check-time-of-use issues while
+> setting those contexts it is advisable to pin the file in question and
+> operate on a file descriptor instead of the path name. This can be
+> emulated in userspace via /proc/self/fd/NN [1] but requires a procfs,
+> which might not be mounted e.g. inside of chroots, see[2].
+>
+> [1]: https://github.com/SELinuxProject/selinux/commit/7e979b56fd2cee28f64=
+7376a7233d2ac2d12ca50
+> [2]: https://github.com/SELinuxProject/selinux/commit/de285252a1801397306=
+032e070793889c9466845
+>
+> Original patch by Miklos Szeredi <mszeredi@redhat.com>
+> https://patchwork.kernel.org/project/linux-fsdevel/patch/20200505095915.1=
+1275-6-mszeredi@redhat.com/
+>
+> > While this carries a minute risk of someone relying on the property of
+> > xattr syscalls rejecting O_PATH descriptors, it saves the trouble of
+> > introducing another set of syscalls.
 
-Thanks, but I generally don't have the spare cycles to keep track of
-everyone's prefered method of interaction, that's why we've got the
-mailing list (warts and all) :)
+The bitter irony is that we now want to add another set of syscalls ;-)
 
-For what it's worth, I was waiting on you because you asked about the
-additional trace info and without any context I thought you might be
-looking for something else (?).  In the end, I think everyone agreed
-that the patch was good so I merged it.  I think as a general rule
-it's a good practice to follow-up with a reply when people provide
-additional information that you've requested.  Not only is it the
-polite thing to do, it helps clarify things with everyone else that
-there is no hidden "gotcha!" in the patch.
+https://lore.kernel.org/linux-fsdevel/CAOQ4uxiqG-w8s+zRqk945UtJcE4u0zjPhSs=
+=3DMSYJ0jMLLjUTFg@mail.gmail.com/
 
-Regardless, thanks for checking back on this :)
+> >
+> > Only file->f_path and file->f_inode are accessed in these functions.
+> >
+> > Current versions return EBADF, hence easy to detect the presense of
+> > this feature and fall back in case it's missing.
+>
+> CC: linux-api@vger.kernel.org
+> CC: linux-man@vger.kernel.org
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 
---=20
-paul-moore.com
+I think it is important to inspect this with consistency of the UAPI in min=
+d.
+What I see is that fchdir(), fcntl(), fstat(), fstatat() already accept O_P=
+ATH
+so surely they behave the same w.r.t old kernels and EBADF.
+Those could all be better documented in their man pages.
+
+w.r.t permission checks, this is no different than what *xattr() variants
+already provide.
+
+Therefore, I see no reason to object to this UAPI change.
+
+You may add:
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+
+Thanks,
+Amir.
+
+> ---
+>  fs/xattr.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/fs/xattr.c b/fs/xattr.c
+> index e8dd03e4561e..16360ac4eb1b 100644
+> --- a/fs/xattr.c
+> +++ b/fs/xattr.c
+> @@ -656,7 +656,7 @@ SYSCALL_DEFINE5(lsetxattr, const char __user *, pathn=
+ame,
+>  SYSCALL_DEFINE5(fsetxattr, int, fd, const char __user *, name,
+>                 const void __user *,value, size_t, size, int, flags)
+>  {
+> -       struct fd f =3D fdget(fd);
+> +       struct fd f =3D fdget_raw(fd);
+>         int error =3D -EBADF;
+>
+>         if (!f.file)
+> @@ -768,7 +768,7 @@ SYSCALL_DEFINE4(lgetxattr, const char __user *, pathn=
+ame,
+>  SYSCALL_DEFINE4(fgetxattr, int, fd, const char __user *, name,
+>                 void __user *, value, size_t, size)
+>  {
+> -       struct fd f =3D fdget(fd);
+> +       struct fd f =3D fdget_raw(fd);
+>         ssize_t error =3D -EBADF;
+>
+>         if (!f.file)
+> @@ -844,7 +844,7 @@ SYSCALL_DEFINE3(llistxattr, const char __user *, path=
+name, char __user *, list,
+>
+>  SYSCALL_DEFINE3(flistxattr, int, fd, char __user *, list, size_t, size)
+>  {
+> -       struct fd f =3D fdget(fd);
+> +       struct fd f =3D fdget_raw(fd);
+>         ssize_t error =3D -EBADF;
+>
+>         if (!f.file)
+> @@ -910,7 +910,7 @@ SYSCALL_DEFINE2(lremovexattr, const char __user *, pa=
+thname,
+>
+>  SYSCALL_DEFINE2(fremovexattr, int, fd, const char __user *, name)
+>  {
+> -       struct fd f =3D fdget(fd);
+> +       struct fd f =3D fdget_raw(fd);
+>         int error =3D -EBADF;
+>
+>         if (!f.file)
+> --
+> 2.36.1
+>

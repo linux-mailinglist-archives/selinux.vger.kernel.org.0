@@ -2,168 +2,139 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CC98545875
-	for <lists+selinux@lfdr.de>; Fri, 10 Jun 2022 01:19:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89577545A54
+	for <lists+selinux@lfdr.de>; Fri, 10 Jun 2022 05:06:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346175AbiFIXS7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Jun 2022 19:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38704 "EHLO
+        id S242654AbiFJDGK (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Jun 2022 23:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345664AbiFIXSz (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Jun 2022 19:18:55 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2AE5E202D09;
-        Thu,  9 Jun 2022 16:18:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 29401B82D85;
-        Thu,  9 Jun 2022 23:18:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580E0C34114;
-        Thu,  9 Jun 2022 23:18:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1654816723;
-        bh=jV7HoOubF6PTB2ncQUr11grjqLBwpz0PFhGJjzU5azE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GFF+OvYad586MW1XA098aEQbKkZR/csWDoiuq1bsWvvpmFu96w9PTb+Q1L3yeRM1m
-         VAQ+RTjn4X2LdsCEMPHLp+CNprlppcO5JeRczRLxBIU1dqd7wuwnMztQ1p3TivfCv7
-         QeuvQoxzm+hJduo9ugf698Ws4UIxvWCW5t02Dp5WudTA0MgpCC3Xr4bMlV1XSyXC+w
-         82JghlyQfOk4n9LKvTCSGs7c1YyjvAUNaU6cQwM0Eam2KZQWOo9xuw5GAsvw09pIWK
-         aSXRHVRr6b1g0LBCSakH0Z+xC/42BzxxKYxyGQqii4lUPxH4F4ECgdxEZl6EY1sRJW
-         ilwdH5o4JlgeA==
-Date:   Thu, 9 Jun 2022 16:18:41 -0700
-From:   Eric Biggers <ebiggers@kernel.org>
-To:     Frederick Lawler <fred@cloudflare.com>
-Cc:     linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-aio@kvack.org, linux-fsdevel@vger.kernel.org,
-        linux-cachefs@redhat.com, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, linux-mm@kvack.org,
-        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
-        keyrings@vger.kernel.org, selinux@vger.kernel.org,
-        serge@hallyn.com, amir73il@gmail.com, kernel-team@cloudflare.com,
-        Jeff Moyer <jmoyer@redhat.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: Re: [PATCH v3] cred: Propagate security_prepare_creds() error code
-Message-ID: <YqJ/0W3wxPThWqgC@sol.localdomain>
-References: <20220608150942.776446-1-fred@cloudflare.com>
+        with ESMTP id S229833AbiFJDGG (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Jun 2022 23:06:06 -0400
+Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C077ED6808;
+        Thu,  9 Jun 2022 20:06:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654830364; x=1686366364;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=gRcy7BQKK63352f1zmSLdIX3MvUmuKXHb1hOn5O+pkI=;
+  b=FN6dLAt3XGILEbRSw87CM50q70z/t1qErlu3FTuOL0ieZu+gVPnFdrM/
+   QRvrAnzNOjrtNGMh6jrC/6PqwwMF2Tmn7laDoch0Ytgd/E6oFjA69LNol
+   t5Ic8zGZNfDAIhj6U2TLpBsG9NsUDr3f2MgqAmWwMDV3dbi19vnLY0Htc
+   j4glyVkCBvWkJM2X3TV3CETkz3CXRT3Un4CVLu4IpKgf152CnqUK1NGWQ
+   7mWolRRbjHmHSEGgxd80ayVPO3n1bsMf1M5DooRl8HcSKBpgBuI4aqn4t
+   2JyGUW8M7Yf+O6p23i3NAYmVjBu3ackrYs2aj9kDhSaOBaDh2TThbaFHQ
+   g==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="257924957"
+X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
+   d="scan'208";a="257924957"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jun 2022 20:06:04 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,288,1647327600"; 
+   d="scan'208";a="908673308"
+Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
+  by fmsmga005.fm.intel.com with ESMTP; 09 Jun 2022 20:05:59 -0700
+Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
+        (envelope-from <lkp@intel.com>)
+        id 1nzUyE-000Ge6-HS;
+        Fri, 10 Jun 2022 03:05:58 +0000
+Date:   Fri, 10 Jun 2022 11:05:21 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Casey Schaufler <casey@schaufler-ca.com>,
+        casey.schaufler@intel.com, jmorris@namei.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Cc:     kbuild-all@lists.01.org, casey@schaufler-ca.com,
+        linux-audit@redhat.com, keescook@chromium.org,
+        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
+        paul@paul-moore.com, stephen.smalley.work@gmail.com,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v36 18/33] LSM: Use lsmcontext in
+ security_dentry_init_security
+Message-ID: <202206101053.7FemxCmO-lkp@intel.com>
+References: <20220609230146.319210-19-casey@schaufler-ca.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220608150942.776446-1-fred@cloudflare.com>
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220609230146.319210-19-casey@schaufler-ca.com>
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jun 08, 2022 at 10:09:42AM -0500, Frederick Lawler wrote:
-> diff --git a/fs/aio.c b/fs/aio.c
-> index 3c249b938632..5abbe88c3ca7 100644
-> --- a/fs/aio.c
-> +++ b/fs/aio.c
-> @@ -1620,6 +1620,8 @@ static void aio_fsync_work(struct work_struct *work)
->  static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
->  		     bool datasync)
->  {
-> +	int err;
-> +
->  	if (unlikely(iocb->aio_buf || iocb->aio_offset || iocb->aio_nbytes ||
->  			iocb->aio_rw_flags))
->  		return -EINVAL;
-> @@ -1628,8 +1630,11 @@ static int aio_fsync(struct fsync_iocb *req, const struct iocb *iocb,
->  		return -EINVAL;
->  
->  	req->creds = prepare_creds();
-> -	if (!req->creds)
-> -		return -ENOMEM;
-> +	if (IS_ERR(req->creds)) {
-> +		err = PTR_ERR(req->creds);
-> +		req->creds = NULL;
-> +		return err;
-> +	}
+Hi Casey,
 
-This part is a little ugly.  How about doing:
+I love your patch! Perhaps something to improve:
 
-	creds = prepare_creds();
-	if (IS_ERR(creds))
-		return PTR_ERR(creds);
-	req->creds = creds;
+[auto build test WARNING on pcmoore-audit/next]
+[also build test WARNING on pcmoore-selinux/next linus/master]
+[cannot apply to jmorris-security/next-testing]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch]
 
-> diff --git a/fs/exec.c b/fs/exec.c
-> index 0989fb8472a1..02624783e40e 100644
-> --- a/fs/exec.c
-> +++ b/fs/exec.c
-> @@ -1468,15 +1468,19 @@ EXPORT_SYMBOL(finalize_exec);
->   */
->  static int prepare_bprm_creds(struct linux_binprm *bprm)
->  {
-> +	int err = -ERESTARTNOINTR;
->  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
-> -		return -ERESTARTNOINTR;
-> +		return err;
->  
->  	bprm->cred = prepare_exec_creds();
-> -	if (likely(bprm->cred))
-> -		return 0;
-> +	if (IS_ERR(bprm->cred)) {
-> +		err = PTR_ERR(bprm->cred);
-> +		bprm->cred = NULL;
-> +		mutex_unlock(&current->signal->cred_guard_mutex);
-> +		return err;
-> +	}
->  
-> -	mutex_unlock(&current->signal->cred_guard_mutex);
-> -	return -ENOMEM;
-> +	return 0;
->  }
+url:    https://github.com/intel-lab-lkp/linux/commits/Casey-Schaufler/integrity-disassociate-ima_filter_rule-from-security_audit_rule/20220610-080129
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/audit.git next
+config: s390-randconfig-r044-20220608 (https://download.01.org/0day-ci/archive/20220610/202206101053.7FemxCmO-lkp@intel.com/config)
+compiler: s390-linux-gcc (GCC) 11.3.0
+reproduce (this is a W=1 build):
+        wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+        chmod +x ~/bin/make.cross
+        # https://github.com/intel-lab-lkp/linux/commit/86d33e271bed739fe32367e703b054ea253bb471
+        git remote add linux-review https://github.com/intel-lab-lkp/linux
+        git fetch --no-tags linux-review Casey-Schaufler/integrity-disassociate-ima_filter_rule-from-security_audit_rule/20220610-080129
+        git checkout 86d33e271bed739fe32367e703b054ea253bb471
+        # save the config file
+        mkdir build_dir && cp config build_dir/.config
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-11.3.0 make.cross W=1 O=build_dir ARCH=s390 SHELL=/bin/bash fs/fuse/
 
-Similarly:
+If you fix the issue, kindly add following tag where applicable
+Reported-by: kernel test robot <lkp@intel.com>
 
-static int prepare_bprm_creds(struct linux_binprm *bprm)
-{
-	struct cred *cred;
+All warnings (new ones prefixed by >>):
 
-	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
-		return -ERESTARTNOINTR;
+   In file included from include/linux/build_bug.h:5,
+                    from include/linux/container_of.h:5,
+                    from include/linux/list.h:5,
+                    from include/linux/wait.h:7,
+                    from include/linux/wait_bit.h:8,
+                    from include/linux/fs.h:6,
+                    from fs/fuse/fuse_i.h:17,
+                    from fs/fuse/dir.c:9:
+   fs/fuse/dir.c: In function 'get_security_context.constprop':
+>> include/linux/compiler.h:70:46: warning: 'lsmctx.len' is used uninitialized [-Wuninitialized]
+      70 |                 (__if_trace.miss_hit[1]++,1) :          \
+         |                                              ^
+   fs/fuse/dir.c:467:27: note: 'lsmctx.len' was declared here
+     467 |         struct lsmcontext lsmctx;
+         |                           ^~~~~~
 
-	cred = prepare_exec_creds();
-	if (IS_ERR(cred)) {
-		mutex_unlock(&current->signal->cred_guard_mutex);
-		return PTR_ERR(cred);
-	}
-	bprm->cred = cred;
-	return 0;
-}
 
-> diff --git a/kernel/nsproxy.c b/kernel/nsproxy.c
-> index eec72ca962e2..6cf75aa83b6c 100644
-> --- a/kernel/nsproxy.c
-> +++ b/kernel/nsproxy.c
-> @@ -311,6 +311,7 @@ static void put_nsset(struct nsset *nsset)
->  
->  static int prepare_nsset(unsigned flags, struct nsset *nsset)
->  {
-> +	int err = -ENOMEM;
->  	struct task_struct *me = current;
->  
->  	nsset->nsproxy = create_new_namespaces(0, me, current_user_ns(), me->fs);
-> @@ -324,6 +325,12 @@ static int prepare_nsset(unsigned flags, struct nsset *nsset)
->  	if (!nsset->cred)
->  		goto out;
->  
-> +	if (IS_ERR(nsset->cred)) {
-> +		err = PTR_ERR(nsset->cred);
-> +		nsset->cred = NULL;
-> +		goto out;
-> +	}
+vim +70 include/linux/compiler.h
 
-Why is the NULL check above being kept?
+a15fd609ad53a6 Linus Torvalds 2019-03-20  59  
+a15fd609ad53a6 Linus Torvalds 2019-03-20  60  #define __trace_if_value(cond) ({			\
+2bcd521a684cc9 Steven Rostedt 2008-11-21  61  	static struct ftrace_branch_data		\
+e04462fb82f8dd Miguel Ojeda   2018-09-03  62  		__aligned(4)				\
+33def8498fdde1 Joe Perches    2020-10-21  63  		__section("_ftrace_branch")		\
+a15fd609ad53a6 Linus Torvalds 2019-03-20  64  		__if_trace = {				\
+2bcd521a684cc9 Steven Rostedt 2008-11-21  65  			.func = __func__,		\
+2bcd521a684cc9 Steven Rostedt 2008-11-21  66  			.file = __FILE__,		\
+2bcd521a684cc9 Steven Rostedt 2008-11-21  67  			.line = __LINE__,		\
+2bcd521a684cc9 Steven Rostedt 2008-11-21  68  		};					\
+a15fd609ad53a6 Linus Torvalds 2019-03-20  69  	(cond) ?					\
+a15fd609ad53a6 Linus Torvalds 2019-03-20 @70  		(__if_trace.miss_hit[1]++,1) :		\
+a15fd609ad53a6 Linus Torvalds 2019-03-20  71  		(__if_trace.miss_hit[0]++,0);		\
+a15fd609ad53a6 Linus Torvalds 2019-03-20  72  })
+a15fd609ad53a6 Linus Torvalds 2019-03-20  73  
 
-Also, drivers/crypto/ccp/sev-dev.c needs to be updated.
-
-- Eric
+-- 
+0-DAY CI Kernel Test Service
+https://01.org/lkp

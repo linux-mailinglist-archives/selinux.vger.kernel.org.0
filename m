@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD64854C878
+	by mail.lfdr.de (Postfix) with ESMTP id 430DC54C877
 	for <lists+selinux@lfdr.de>; Wed, 15 Jun 2022 14:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347762AbiFOM1V (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 15 Jun 2022 08:27:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58480 "EHLO
+        id S1343846AbiFOM1Y (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 Jun 2022 08:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238446AbiFOM1V (ORCPT
+        with ESMTP id S1348484AbiFOM1V (ORCPT
         <rfc822;selinux@vger.kernel.org>); Wed, 15 Jun 2022 08:27:21 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B8C842A02
-        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:19 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id kq6so22879060ejb.11
-        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:19 -0700 (PDT)
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D2CF43AC8
+        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:20 -0700 (PDT)
+Received: by mail-ed1-x530.google.com with SMTP id 25so15851546edw.8
+        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=8/on9opuZ920YXronzGYq3QYxz/vSqgkVDQs6K5nWz4=;
-        b=f+VeU2DYuF/43+uey/jhEgyn6PDMEy8myOg2OPVat1RAgVRfu5vrNiEQDwuF3v+BTh
-         ZfVyIxj7idruGbZU+TWkw5th3wSiM82Nkzh4bOODdPMxIrSgMwPBF97sVEIBzKL/4YH7
-         SlO/7EIjRcDQVqa7CvMiZRtpcKGbRlCarQittUqcyqQ7JPVdY1kbtlu/+oh4F3oMASVp
-         5AkDWCel24z23NfOPeG5QzOlNcBEUkJYSUTYVRT1Y+R+uVSZoMkIsUUguluP19t2Udzz
-         TbKXJgp8Kdv8j86xu5dvuWQI+7G/I+oc1o0fwusGBOv3z7KgcPIFE6o9iMbgG6sBi/zf
-         CShQ==
+        bh=JvgN82kSDnFHT1qIJj3dyspOHbh7t9/i8LuvQ1xWf88=;
+        b=eKpJGROU5xWUQbLu/zKam2uRHgD7WbS/F9GI2v/y7G0lsgSnPY7Rb486aIGy98MZ0T
+         DX3rhX8squCqbuplSY3K8qgSV32O5DlLkkKnFe1QncJ/eBniyU3mZApy9GwW3SdqAQMC
+         +DAh2+x9C8RYqohu+lu8ATXmYRI+mR3gEHC+TkuexiAjieQJU6YwKG8jgaDuVZLw3DKB
+         2fa79EdIdX80GNoKhUoI7Gkf0rZKqbfOm5nDi+kvXZUT4e+8s+lokjnkmI6i+pHRyDFL
+         Odah5pAL1H+LDNReJoqDl6YEdT77opOyiAkhjpajQUJyhulQynqYNn/tOhstPjqzaOIT
+         ftXg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=8/on9opuZ920YXronzGYq3QYxz/vSqgkVDQs6K5nWz4=;
-        b=eddtaIA+Q3bRaKsFb6As8WpNIbrVBpeccKrDJ+YD57HLCWOCiUkQb4cJi9ikoJ6RKg
-         iqyzvuFGjLnO4TEPkTo35ezjqD5ByDEN3+ANNo9s+6PFC9/mxgXLH0lS+VUea6SG9Kq2
-         yNMs7w+UB03FOaTGuuE0ORAtflJq06/qbW34hdtLCCWcdBkXR2Uoa3ExXXohiGjXxiB/
-         Ed3UfXpUjkCoRWG6kZHFg+vWJhJPkbl8mLIwiYtRlB6xyL7sYYCGSYthMisodZgaDqJr
-         S26WGUiuJMEWfuGBwyAIFvoFTHVMaq0oZX88TXRSseG5053p0EXSX4qgijFgENiDqWj6
-         Vcfw==
-X-Gm-Message-State: AJIora87SJzAsN2azRG5JuG+lzOZ4ywtxbq4HHsFygBVjFp1J99Bqj4f
-        TSgYJnYVqT0bKg6pDmhuiYmltsXztpg=
-X-Google-Smtp-Source: ABdhPJxJbIxkyQp3SnByQ0rlyreKsgBc9gJHFVmQpd8A7CceXQ/S9YWTQGAlw6Oumd+QJVB8L66BTg==
-X-Received: by 2002:a17:906:728f:b0:711:f680:3c83 with SMTP id b15-20020a170906728f00b00711f6803c83mr8576630ejl.122.1655296038062;
+        bh=JvgN82kSDnFHT1qIJj3dyspOHbh7t9/i8LuvQ1xWf88=;
+        b=7LNsWJZwd7aasPfOmu49AkRtFq3tIcRWGYLG/Npx52d1aeCeCIy5B97aoHv6QW+Lw/
+         L34o3hB0+ixACXDhg5JEXm9RcoORahUWntOX+jnNunz4cnG+GHBk6VImc4OALWilLPQj
+         YVtlqLjIzMiGNK8LfsFZ3pUu3CRoFINovlXiJ3t4mpYX1MPJKNOm2V8G+dN+HI6xuO4r
+         JJ2dL7UzemCQadct7qZnRKFeLytpSQFkIga9wMkbNTiX6dVR3+a0Dzd+0EPOSB1l95hd
+         4CXYGKNSknc1pMFXhGSyWxb1yXpLyLO33DjLYLtfZCRAoTPbfAEVXB7OaG5eIzMuB9WQ
+         5IZQ==
+X-Gm-Message-State: AOAM530Po3pnq3EIVlqRl4ebnZ9VEGrfNfUPs8R/oZKru6xyIB/mOwG0
+        pLL10pkuiIUd3Aytlzqc1b12AMyZjuU=
+X-Google-Smtp-Source: ABdhPJx2C3WFwu8Ra3n1JDwfhc15wZgbSN3ZSLOZbnY3tDCSJYYt5l+ZeAfgdrjZmcjEMbOQj1t7MA==
+X-Received: by 2002:a05:6402:278d:b0:42e:d3d5:922e with SMTP id b13-20020a056402278d00b0042ed3d5922emr12322324ede.154.1655296038651;
         Wed, 15 Jun 2022 05:27:18 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-003-151-196.77.3.pool.telefonica.de. [77.3.151.196])
-        by smtp.gmail.com with ESMTPSA id l9-20020a056402028900b0042dd3bf1403sm9190336edv.54.2022.06.15.05.27.17
+        by smtp.gmail.com with ESMTPSA id l9-20020a056402028900b0042dd3bf1403sm9190336edv.54.2022.06.15.05.27.18
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 05:27:17 -0700 (PDT)
+        Wed, 15 Jun 2022 05:27:18 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v2 2/4] support perf_event_paranoid=3
-Date:   Wed, 15 Jun 2022 14:27:09 +0200
-Message-Id: <20220615122711.9895-2-cgzones@googlemail.com>
+Subject: [PATCH v2 3/4] filesystem: allow getfilecon(3) to pass test
+Date:   Wed, 15 Jun 2022 14:27:10 +0200
+Message-Id: <20220615122711.9895-3-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220615122711.9895-1-cgzones@googlemail.com>
 References: <20220614102029.13006-1-cgzones@googlemail.com>
@@ -70,69 +70,40 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Debian uses a downstream patch[1] to allow further restriction of
-perf_event_open, which requires CAP_SYS_ADMIN for all perf_event_open(2)
-operations.
+    filesystem/ext4/test .. 67/83 getfilecon(3) Failed: Permission denied
+    filesystem/ext4/test .. 71/83
+    filesystem/ext4/test .. 75/83 # Looks like you failed 1 test of 83.
+    filesystem/ext4/test .. Dubious, test returned 1 (wstat 256, 0x100)
 
-Set the parameter to a value of 2 during the tests and reset afterwards.
+    type=PROCTITLE msg=audit(02/05/22 11:47:03.170:7047) : proctitle=/root/workspace/selinux/selinux-testsuite/tests/filesystem/ext4/check_mount_context -r -m /root/workspace/selinux/selinux-testsu
+    type=PATH msg=audit(02/05/22 11:47:03.170:7047) : item=0 name=/root/workspace/selinux/selinux-testsuite/tests/filesystem/ext4/mntpoint/mp1 inode=390506 dev=fe:01 mode=dir,750 ouid=root ogid=root rdev=00:00 obj=unconfined_u:object_r:unlabeled_t:s0 nametype=NORMAL cap_fp=none cap_fi=none cap_fe=0 cap_fver=0 cap_frootid=0
+    type=CWD msg=audit(02/05/22 11:47:03.170:7047) : cwd=/root/workspace/selinux/selinux-testsuite/tests
+    type=SYSCALL msg=audit(02/05/22 11:47:03.170:7047) : arch=x86_64 syscall=getxattr success=no exit=EACCES(Permission denied) a0=0x7ffcd27c5651 a1=0x7fec8529078d a2=0x645b39a13550 a3=0xff items=1 ppid=76535 pid=77228 auid=root uid=root gid=root euid=root suid=root fsuid=root egid=root sgid=root fsgid=root tty=pts1 ses=1 comm=check_mount_con exe=/root/workspace/selinux/selinux-testsuite/tests/filesystem/check_mount_context subj=unconfined_u:unconfined_r:test_filesystem_context_t:s0-s0:c0.c1023 key=(null)
+    type=AVC msg=audit(02/05/22 11:47:03.170:7047) : avc:  denied  { getattr } for  pid=77228 comm=check_mount_con name=mp1 dev="vda1" ino=390506 scontext=unconfined_u:unconfined_r:test_filesystem_context_t:s0-s0:c0.c1023 tcontext=unconfined_u:object_r:unlabeled_t:s0 tclass=dir permissive=0
 
-[1]: https://salsa.debian.org/kernel-team/linux/-/blob/debian/5.17.3-1/debian/patches/features/all/security-perf-allow-further-restriction-of-perf_event_open.patch
+In fedora-policy unlabeled_t is associated with the attribute file_type
+and thus the access granted by the rule
+
+    allow test_filesystem_context_t file_type:dir { getattr open search };
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
-v2:
-   set parameter to 2 instead of granting CAP_SYS_ADMIN
----
- tests/perf_event/test | 20 ++++++++++++++++++--
- 1 file changed, 18 insertions(+), 2 deletions(-)
+ policy/test_filesystem.te | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/perf_event/test b/tests/perf_event/test
-index c336477..cc1247b 100755
---- a/tests/perf_event/test
-+++ b/tests/perf_event/test
-@@ -32,12 +32,18 @@ BEGIN {
-             print "\tNot paranoid\n";
-         }
-         elsif ( $level eq 0 ) {
--            print "\tDisallow raw tracepoint/ftrace without CAP_SYS_ADMIN\n";
-+            print
-+"\tDisallow raw tracepoint/ftrace without CAP_PERFMON or CAP_SYS_ADMIN\n";
-         }
-         elsif ( $level eq 1 ) {
--            print "\tDisallow CPU event access without CAP_SYS_ADMIN\n";
-+            print
-+"\tDisallow CPU event access without CAP_PERFMON or CAP_SYS_ADMIN\n";
-         }
-         elsif ( $level eq 2 ) {
-+            print
-+"\tDisallow kernel profiling without CAP_PERFMON or CAP_SYS_ADMIN\n";
-+        }
-+        elsif ( $level eq 3 ) {
-             print "\tDisallow kernel profiling without CAP_SYS_ADMIN\n";
-         }
-         else {
-@@ -48,6 +54,11 @@ BEGIN {
-     plan tests => $test_count;
- }
+diff --git a/policy/test_filesystem.te b/policy/test_filesystem.te
+index 4e27134..46e3f1a 100644
+--- a/policy/test_filesystem.te
++++ b/policy/test_filesystem.te
+@@ -382,7 +382,7 @@ allow test_filesystem_fscontext_t test_filesystem_context_file_t:file { create g
  
-+# Downgrade to only require CAP_PERFMON for operations
-+if ( $level eq 3 ) {
-+    system("echo 2 > /proc/sys/kernel/perf_event_paranoid 2> /dev/null");
-+}
-+
- # find some CPU that is online
- for ( $cpu = 0 ; -e "/sys/devices/system/cpu/cpu$cpu" ; $cpu++ ) {
+ # For testing rootcontext= Set mountpoint to unlabeled first
+ allow test_filesystem_context_t test_file_t:dir { relabelfrom };
+-allow test_filesystem_context_t unlabeled_t:dir { mounton relabelto };
++allow test_filesystem_context_t unlabeled_t:dir { getattr mounton relabelto };
  
-@@ -114,4 +125,9 @@ $result =
-   "runcon -t test_perf_no_write_t $basedir/perf_event $v $cpu $event_id 2>&1";
- ok( $result >> 8 eq 2 );
- 
-+# Reset if downgraded
-+if ( $level eq 3 ) {
-+    system("echo 3 > /proc/sys/kernel/perf_event_paranoid 2> /dev/null");
-+}
-+
- exit;
+ #
+ ####################### Rules for nfs_filesystem/test ###################
 -- 
 2.36.1
 

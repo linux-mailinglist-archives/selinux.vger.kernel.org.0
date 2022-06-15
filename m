@@ -2,153 +2,144 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB9E754C879
-	for <lists+selinux@lfdr.de>; Wed, 15 Jun 2022 14:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD5DF54CA1B
+	for <lists+selinux@lfdr.de>; Wed, 15 Jun 2022 15:46:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348482AbiFOM1Y (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 15 Jun 2022 08:27:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58504 "EHLO
+        id S1345449AbiFONqA (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 Jun 2022 09:46:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348494AbiFOM1W (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 15 Jun 2022 08:27:22 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1E71427E1
-        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:20 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id fu3so22876102ejc.7
-        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:20 -0700 (PDT)
+        with ESMTP id S240502AbiFONp7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 15 Jun 2022 09:45:59 -0400
+Received: from mail-oi1-x22c.google.com (mail-oi1-x22c.google.com [IPv6:2607:f8b0:4864:20::22c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BA130F55
+        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 06:45:58 -0700 (PDT)
+Received: by mail-oi1-x22c.google.com with SMTP id w16so15524952oie.5
+        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 06:45:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=7VNzrf9N9on0pZw/ulEe0+iUxUxkUUrBsRi9ypBHtK4=;
-        b=h48I6NpzstMGT/Lx7Uzik6RBIqZ3zPz+O2dXjfMzWMoc74Qq6p3QDAX132/5uNiElC
-         sVJ4qiWODN8Igq8BknBiYzA/SDpuN8xt0PNWhO4Ix7feS/ztCPMTNTFrQ2Uw1ERAwSkh
-         5Ww1tJqOIq2GtWmhD6Mdm8k/u4Q3ia9RHEdB4Gh/YTIzm0cU+K+IF6R0LVg8uwAaVXlI
-         VS/GKkubJ46qOiWOMGqki7FgpL+RtF126wyqNv05aVglEAwJ7o87WN5rKbETe+1ggrEO
-         pmJs08nEB5KI5rQwT/6XCoshJoqRFDQpKmrWY7fhjdi3/mXq6YmHfQG/dNpKTyOWiMPV
-         tNMg==
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=6eTjngrprdXJVGw0/PyyfipfbqRJPdyZIMuHpHkzqME=;
+        b=o+IGmCl4qQb5HfIzcAo1yHP7unTcFy8ZuVuSl9ThCyL4CdQAeCi+deYdpsbzoeWx6y
+         +lU9nes72lXogGFCAb8SMw14oRFGSjjnLa01oOKWHyBdXufk00ZW4Ph0YXnTyiLqRtZ1
+         j447qSR0+DTcO1CdcOOdEdu8LW3PNoOQmM8sA4JdJDYadxHwmI8ejBM0gQjs/jTeGIug
+         NtI54eM6SDb/UJvUb0Od5ZN301Q6BLBVEfW/GmKwsQCsvYCqnIHtZcY6no8Azb+fwHb/
+         +KI1m4R2u+G8QtfyuNmKnsrxKLOAu8lTnUclqTV+GORSZzyVk7yXyei27D3g17j08BPa
+         qSRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=7VNzrf9N9on0pZw/ulEe0+iUxUxkUUrBsRi9ypBHtK4=;
-        b=5oLzzV63LBXHWbAi6527FwbZDgciIjE+sYezlcJC/yHKk3qbOAtMZkiGiQsGBIfrD5
-         p8X4vZtYsWVaMMOaK40zvWGc/ZyhIA8O60vSbaXuC3ZZ6IckuIYxbkYiFfxX3JtTnhqE
-         6ra5RBSxqVK6D88LQfGliVZohqqoLTFxHgEgHkEtWMUHARbQCIf8BZXtu9gyF36El5tD
-         Cuva7zeTdBb7SdpYoeXz1r+kWn3r8JssAmpodt6mD9wlbQfm480iAYOvhMjb4jZDylnC
-         6kRTirEiClpGZsSDjppmYoCRE3BinersezZ+SEYWQzUZKsiZKxYoXVfTSKatsToykn10
-         d/vw==
-X-Gm-Message-State: AOAM530iYyaFuM0ppzkIGNSeFYuPeHEGgEm2njpNw50cgSbQE+96JavZ
-        3D3Q0NjYw6o4417B8ARhhtZpVs6Z1CU=
-X-Google-Smtp-Source: AGRyM1siUAk/PaqJ+OMhfb379P0GTMTacFqsNF8PL4MEOkkwtuIfImKWpE908wIqLTkl6Ri9NtkXrA==
-X-Received: by 2002:a17:907:1629:b0:70c:7beb:52 with SMTP id hb41-20020a170907162900b0070c7beb0052mr8398974ejc.440.1655296039299;
-        Wed, 15 Jun 2022 05:27:19 -0700 (PDT)
-Received: from debianHome.localdomain (dynamic-077-003-151-196.77.3.pool.telefonica.de. [77.3.151.196])
-        by smtp.gmail.com with ESMTPSA id l9-20020a056402028900b0042dd3bf1403sm9190336edv.54.2022.06.15.05.27.18
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 05:27:18 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH v2 4/4] watchkey: skip if CONFIG_WATCH_QUEUE not set
-Date:   Wed, 15 Jun 2022 14:27:11 +0200
-Message-Id: <20220615122711.9895-4-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220615122711.9895-1-cgzones@googlemail.com>
-References: <20220614102029.13006-1-cgzones@googlemail.com>
- <20220615122711.9895-1-cgzones@googlemail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=6eTjngrprdXJVGw0/PyyfipfbqRJPdyZIMuHpHkzqME=;
+        b=hnuqtHayjnfceSXDgY9dqqf2JHmoY/5tHMT0oqy5PAG7eaMyR7MpCwHugG6PJnPFNC
+         U42wiRj2z2mHxaJLjP9OaU7T+UHFmT5X81/x/4YaW/r00j6o/9IFCwUehx4NUxbkeuip
+         aCFKIUXtEfwyUjNChpGtp/lHYkyUMCdJOcNbWwjn+y2BdaYtYlwJC7ofDAT4D2Sj/M7F
+         ytitnEgkrF6R51lsiG7Bz3lBsLjmKH4qwxuq8WMnku1G5CSjFZRyp883iCZhQ1oErYPr
+         QBjR11CtrxfY7tqkC59YzUGJeKnNRKNPrkHGJKUOJxVVn71CwCAjcN5qTrp119icwWAA
+         YjOg==
+X-Gm-Message-State: AOAM5323nV6vAegFd5fRiHuDV72p2csLJ2eLdoaDpoGhy/lf4qqnl5Ms
+        c669dkL2F/Ew164pTZkXhQ3Ecs8uUic2LJzi1pUSos2v
+X-Google-Smtp-Source: ABdhPJy8dM7MosvUlba+gBjWzLNfZ5EiJEWHtArM8fMaiI4oyFCxWgo82/fZjbsTKe9H1vGPP1ivydD+kkcv8RVSakk=
+X-Received: by 2002:a05:6808:20a6:b0:32f:3376:46f1 with SMTP id
+ s38-20020a05680820a600b0032f337646f1mr5135002oiw.182.1655300757123; Wed, 15
+ Jun 2022 06:45:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220520130847.10958-1-cgzones@googlemail.com> <CAP+JOzSmYALmPjrKYaL4kLJY7RaY8+ypzR9evHmrWUih58vyHQ@mail.gmail.com>
+In-Reply-To: <CAP+JOzSmYALmPjrKYaL4kLJY7RaY8+ypzR9evHmrWUih58vyHQ@mail.gmail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Wed, 15 Jun 2022 09:45:46 -0400
+Message-ID: <CAP+JOzQvro7Wfk0aBQNGZingdecsL5eSu=-VXbhD4Ne8Ou5j+w@mail.gmail.com>
+Subject: Re: [PATCH 1/4] libselinux: add man page redirections
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Debian does not set CONFIG_WATCH_QUEUE, whereby pipe2(2) returns ENOPKG
-for the option O_NOTIFICATION_PIPE.
+On Wed, Jun 8, 2022 at 1:51 PM James Carter <jwcart2@gmail.com> wrote:
+>
+> On Fri, May 20, 2022 at 9:36 AM Christian G=C3=B6ttsche
+> <cgzones@googlemail.com> wrote:
+> >
+> > The following interfaces are documented but do not have a redirection:
+> >
+> >   - context_str(3)
+> >   - security_get_checkreqprot(3)
+> >   - security_set_boolean_list(3)
+> >   - selinux_sepgsql_context_path(3)
+> >   - setexecfilecon(3)
+> >
+> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+>
+> For these four patches:
+> Acked-by: James Carter <jwcart2@gmail.com>
+>
+This series has been merged.
+Thanks,
+Jim
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
-v2:
-   return ENOPKG when availability check fails
----
- tests/watchkey/test       | 11 ++++++++++-
- tests/watchkey/watchkey.c | 16 ++++++++++++++--
- 2 files changed, 24 insertions(+), 3 deletions(-)
-
-diff --git a/tests/watchkey/test b/tests/watchkey/test
-index f61ff78..3faba51 100755
---- a/tests/watchkey/test
-+++ b/tests/watchkey/test
-@@ -16,7 +16,16 @@ BEGIN {
-         $v = " ";
-     }
- 
--    plan tests => 2;
-+    $result = system "runcon -t test_watchkey_t $basedir/watchkey $v -c";
-+
-+    # check if O_NOTIFICATION_PIPE is supported - ENOPKG
-+    if ( $result >> 8 eq 65 ) {
-+        plan skip_all =>
-+"pipe2(2) does not support O_NOTIFICATION_PIPE; CONFIG_WATCH_QUEUE probably not set";
-+    }
-+    else {
-+        plan tests => 2;
-+    }
- }
- 
- $result = system "runcon -t test_watchkey_t $basedir/watchkey $v";
-diff --git a/tests/watchkey/watchkey.c b/tests/watchkey/watchkey.c
-index c7f3274..c5db313 100644
---- a/tests/watchkey/watchkey.c
-+++ b/tests/watchkey/watchkey.c
-@@ -27,8 +27,9 @@ static long keyctl_watch_key(int key, int watch_fd, int watch_id)
- static void print_usage(char *progname)
- {
- 	fprintf(stderr,
--		"usage:  %s [-v]\n"
-+		"usage:  %s [-cv]\n"
- 		"Where:\n\t"
-+		"-c  Check for availability.\n"
- 		"-v  Print information.\n", progname);
- 	exit(-1);
- }
-@@ -37,10 +38,14 @@ int main(int argc, char **argv)
- {
- 	int opt, fd, pipefd[2], result, save_errno;
- 	char *context;
-+	bool check = false;
- 	bool verbose = false;
- 
--	while ((opt = getopt(argc, argv, "v")) != -1) {
-+	while ((opt = getopt(argc, argv, "cv")) != -1) {
- 		switch (opt) {
-+		case 'c':
-+			check = true;
-+			break;
- 		case 'v':
- 			verbose = true;
- 			break;
-@@ -60,6 +65,13 @@ int main(int argc, char **argv)
- 		free(context);
- 	}
- 
-+	if (check) {
-+		result = pipe2(pipefd, O_NOTIFICATION_PIPE);
-+		if (!result || errno != ENOPKG)
-+			exit(0);
-+		exit(ENOPKG);
-+	}
-+
- 	result = pipe2(pipefd, O_NOTIFICATION_PIPE);
- 	if (result < 0) {
- 		fprintf(stderr, "Failed to create pipe2(2): %s\n",
--- 
-2.36.1
-
+> > ---
+> >  libselinux/man/man3/context_str.3                  | 1 +
+> >  libselinux/man/man3/security_get_checkreqprot.3    | 1 +
+> >  libselinux/man/man3/security_set_boolean_list.3    | 1 +
+> >  libselinux/man/man3/selinux_sepgsql_context_path.3 | 1 +
+> >  libselinux/man/man3/setexecfilecon.3               | 1 +
+> >  5 files changed, 5 insertions(+)
+> >  create mode 100644 libselinux/man/man3/context_str.3
+> >  create mode 100644 libselinux/man/man3/security_get_checkreqprot.3
+> >  create mode 100644 libselinux/man/man3/security_set_boolean_list.3
+> >  create mode 100644 libselinux/man/man3/selinux_sepgsql_context_path.3
+> >  create mode 100644 libselinux/man/man3/setexecfilecon.3
+> >
+> > diff --git a/libselinux/man/man3/context_str.3 b/libselinux/man/man3/co=
+ntext_str.3
+> > new file mode 100644
+> > index 00000000..f4f03a6d
+> > --- /dev/null
+> > +++ b/libselinux/man/man3/context_str.3
+> > @@ -0,0 +1 @@
+> > +.so man3/context_new.3
+> > diff --git a/libselinux/man/man3/security_get_checkreqprot.3 b/libselin=
+ux/man/man3/security_get_checkreqprot.3
+> > new file mode 100644
+> > index 00000000..d59e5c2c
+> > --- /dev/null
+> > +++ b/libselinux/man/man3/security_get_checkreqprot.3
+> > @@ -0,0 +1 @@
+> > +.so man3/security_getenforce.3
+> > diff --git a/libselinux/man/man3/security_set_boolean_list.3 b/libselin=
+ux/man/man3/security_set_boolean_list.3
+> > new file mode 100644
+> > index 00000000..29731efa
+> > --- /dev/null
+> > +++ b/libselinux/man/man3/security_set_boolean_list.3
+> > @@ -0,0 +1 @@
+> > +.so man3/security_load_booleans.3
+> > diff --git a/libselinux/man/man3/selinux_sepgsql_context_path.3 b/libse=
+linux/man/man3/selinux_sepgsql_context_path.3
+> > new file mode 100644
+> > index 00000000..175a611a
+> > --- /dev/null
+> > +++ b/libselinux/man/man3/selinux_sepgsql_context_path.3
+> > @@ -0,0 +1 @@
+> > +.so man3/selinux_binary_policy_path.3
+> > diff --git a/libselinux/man/man3/setexecfilecon.3 b/libselinux/man/man3=
+/setexecfilecon.3
+> > new file mode 100644
+> > index 00000000..b2e6ab81
+> > --- /dev/null
+> > +++ b/libselinux/man/man3/setexecfilecon.3
+> > @@ -0,0 +1 @@
+> > +.so man3/getexeccon.3
+> > --
+> > 2.36.1
+> >

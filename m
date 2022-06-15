@@ -2,60 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8429454C85E
-	for <lists+selinux@lfdr.de>; Wed, 15 Jun 2022 14:22:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3544954C876
+	for <lists+selinux@lfdr.de>; Wed, 15 Jun 2022 14:27:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348252AbiFOMWI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 15 Jun 2022 08:22:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53150 "EHLO
+        id S238446AbiFOM1Y (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 Jun 2022 08:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348025AbiFOMWI (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 15 Jun 2022 08:22:08 -0400
-Received: from mail-oa1-x33.google.com (mail-oa1-x33.google.com [IPv6:2001:4860:4864:20::33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC8CE36E3D
-        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:22:05 -0700 (PDT)
-Received: by mail-oa1-x33.google.com with SMTP id 586e51a60fabf-10113b4c2b5so14566339fac.6
-        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:22:05 -0700 (PDT)
+        with ESMTP id S1348483AbiFOM1V (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 15 Jun 2022 08:27:21 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E15D42496
+        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:19 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id kq6so22879028ejb.11
+        for <selinux@vger.kernel.org>; Wed, 15 Jun 2022 05:27:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=VUYD0zFmYLMVpsNItP9vcq/hw8v+BvGM93qMhNh8YH0=;
-        b=IvBkFPFQ5YxfqobFjfViaZwqpea4jbGFoNCw+0VJrdvgRbKMHCImza4j7ExVPM8NXv
-         9q9M2a4y3INpCqFpNayyeiuUL6UWyC25eKQMV73xBBHIXkqkmZmMii27odlLVPr14tuJ
-         HciCZSTI0jBC2clJkTQ0gVwg69XG9sjaXT0kqn4aNRQD0Fuko9sZrLnKMG1eXLsDhZDn
-         F+l0uBSBzkZaxBKeEyYPf00CqQ/GLrwlBMJY7ARrM5c4VvmDX//VNWXGx0TYtORWkFGU
-         e3WYNtxKMZLyZ9REvv81SYxmt0gfDkFCgTRy5IMz1qxKKBPPnavLGTX66K3tenzpgt+v
-         TC+Q==
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=PT0gnIdyqzvvHf8lbqq/E54d3Q5OywAp4K3MJ0E/XxU=;
+        b=RnZM+2jGpca6aUEaHJp1g6tp++0wS34dHwxmRRXD4XHzcRkurXQiVBP7erzouXVpT/
+         DhPEbqwf2lb6LdJrI2Vw0alo5M/qhmolB54ZTG2cE1ZBtu2kC33JUY2+/JFBrUFGrWzB
+         lvg12sC0i6CNvgwCYVBcPSkDCNTMDrvedx6HwdSpj977Q2K0LSozqi2QBZyUA6wz5CHw
+         LdlZhe+29QXGyrWjQd5beabp/E5xaMKCit3ZUOycNh1iehr8xnIUvN7yqlmAE3QB2sK3
+         ZNQ1mjsKOR/fX6249EQWwS9ae4lmRANOwAKVdSCHXyEyhfD4y9CS05H1r+TionSBK085
+         Xd+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=VUYD0zFmYLMVpsNItP9vcq/hw8v+BvGM93qMhNh8YH0=;
-        b=kWVsStfq6FMa4KP0s5Mo+hUi8f4ytpU7FDPclUFMq37b09smH4Ge7myl6mun0GfN2S
-         IyH5COBZ6kfTva8T0srdM8hVNO1cpr2xq5AN+T8ti7DXjWspRLJ+7prqY8boECNYFpBK
-         LmJyfBrAy1fH8lM85NXE3HVqIW03DKmkJjRUMn+XLbsLL3z7gc9Jc+FoOQe5zRNMwUIL
-         tuzBu7dQ7eCsPXwJzv/RMZ/BaHOFRHjUp2qjYPzHQEUw6DGTTvsqj/Gh/VczAedP3h+C
-         zcCVMoD1evMKYiA2U16hyhzqeO3GYQf1ZsfKV1GaeD2X5hKcGu8ON5lG2JKOqcYKItsO
-         znaA==
-X-Gm-Message-State: AJIora+HDGyj/ZQb9qnb5xZyLrpkh5ztr4bEvEVfJh11JAaev+OdA4np
-        Wsn8nN4HnXJFT6X4OsWkdoTfqTar3+biVxMMwkY=
-X-Google-Smtp-Source: AGRyM1u1oI4ILNoyYQgHS3JYkKy3QdxgBJ8KLHyII5GZ9gQau7cBhn3Si0Vu8EDNHrvZ+6KD44cVeEKZMBWw5nhvY4E=
-X-Received: by 2002:a05:6870:e40c:b0:f3:2f32:7c3d with SMTP id
- n12-20020a056870e40c00b000f32f327c3dmr5271869oag.71.1655295725034; Wed, 15
- Jun 2022 05:22:05 -0700 (PDT)
-MIME-Version: 1.0
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=PT0gnIdyqzvvHf8lbqq/E54d3Q5OywAp4K3MJ0E/XxU=;
+        b=IDOGu6rVgXlnml43hwn58ZQL0vR2rYe4MTOeDpBkEuq9MURJUN26Y8dE7T36hNP18p
+         PXLufnQOAnPIuIESRotNuYUr8lVtyH/er1F2DCwWYH1sWyIE1BiBALC8u0MyLoU7EyTW
+         Vg+OUtSoQ4qgkaAvuPjCIrYGJOGL9srSKWI5PD7cjQqS0Ra2+KuluDOW3qGBW7x09Z3V
+         aQd9b7ZusYpGA6aLVKLGbJ95NjrjhvjMja18zwXiTIdaTPEMGjXfIYIc8O02p+VXuKP1
+         9cIf9yhiEYPDLTccdPT4cUqt6E/sdBvS+tSppj97VlIdNmWSKXileA88M68s1nwG0NGo
+         hRtw==
+X-Gm-Message-State: AOAM531q8to1ikBzwD95oGbrzi0JleL3DHsVeCzh3o2k8ObZfepKTJg6
+        8dJ028EMHmfmumwjTLafZBLJGMsPb3s=
+X-Google-Smtp-Source: ABdhPJwUAlrZVU/cHILP3GMw71YY6JqhwhgyTRf1UIwm3w07S6nJRCt2tdASBAF/mYenphJ6lpp8EA==
+X-Received: by 2002:a17:906:9f1e:b0:711:d8bc:bbc6 with SMTP id fy30-20020a1709069f1e00b00711d8bcbbc6mr8682287ejc.266.1655296037462;
+        Wed, 15 Jun 2022 05:27:17 -0700 (PDT)
+Received: from debianHome.localdomain (dynamic-077-003-151-196.77.3.pool.telefonica.de. [77.3.151.196])
+        by smtp.gmail.com with ESMTPSA id l9-20020a056402028900b0042dd3bf1403sm9190336edv.54.2022.06.15.05.27.16
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jun 2022 05:27:17 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH v2 1/4] support Dash as default shell
+Date:   Wed, 15 Jun 2022 14:27:08 +0200
+Message-Id: <20220615122711.9895-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.36.1
+In-Reply-To: <20220614102029.13006-1-cgzones@googlemail.com>
 References: <20220614102029.13006-1-cgzones@googlemail.com>
- <20220614102029.13006-3-cgzones@googlemail.com> <CAFqZXNti4xMdGVo-D+a7-0=D3UFD2pJdZjPP3Kz0GpnU8O3UnQ@mail.gmail.com>
-In-Reply-To: <CAFqZXNti4xMdGVo-D+a7-0=D3UFD2pJdZjPP3Kz0GpnU8O3UnQ@mail.gmail.com>
-From:   =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date:   Wed, 15 Jun 2022 14:21:53 +0200
-Message-ID: <CAJ2a_DcwmtEz=4YA+5v0UCYoSjudxOy+6vKFJwUCprjdaHDhqg@mail.gmail.com>
-Subject: Re: [PATCH 3/4] filesystem: allow getfilecon(3) to pass test
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
@@ -66,80 +69,349 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, 14 Jun 2022 at 15:21, Ondrej Mosnacek <omosnace@redhat.com> wrote:
->
-> On Tue, Jun 14, 2022 at 12:21 PM Christian G=C3=B6ttsche
-> <cgzones@googlemail.com> wrote:
-> >
-> >     filesystem/ext4/test .. 67/83 getfilecon(3) Failed: Permission deni=
-ed
-> >     filesystem/ext4/test .. 71/83
-> >     filesystem/ext4/test .. 75/83 # Looks like you failed 1 test of 83.
-> >     filesystem/ext4/test .. Dubious, test returned 1 (wstat 256, 0x100)
-> >
-> >     type=3DPROCTITLE msg=3Daudit(02/05/22 11:47:03.170:7047) : proctitl=
-e=3D/root/workspace/selinux/selinux-testsuite/tests/filesystem/ext4/check_m=
-ount_context -r -m /root/workspace/selinux/selinux-testsu
-> >     type=3DPATH msg=3Daudit(02/05/22 11:47:03.170:7047) : item=3D0 name=
-=3D/root/workspace/selinux/selinux-testsuite/tests/filesystem/ext4/mntpoint=
-/mp1 inode=3D390506 dev=3Dfe:01 mode=3Ddir,750 ouid=3Droot ogid=3Droot rdev=
-=3D00:00 obj=3Dunconfined_u:object_r:unlabeled_t:s0 nametype=3DNORMAL cap_f=
-p=3Dnone cap_fi=3Dnone cap_fe=3D0 cap_fver=3D0 cap_frootid=3D0
-> >     type=3DCWD msg=3Daudit(02/05/22 11:47:03.170:7047) : cwd=3D/root/wo=
-rkspace/selinux/selinux-testsuite/tests
-> >     type=3DSYSCALL msg=3Daudit(02/05/22 11:47:03.170:7047) : arch=3Dx86=
-_64 syscall=3Dgetxattr success=3Dno exit=3DEACCES(Permission denied) a0=3D0=
-x7ffcd27c5651 a1=3D0x7fec8529078d a2=3D0x645b39a13550 a3=3D0xff items=3D1 p=
-pid=3D76535 pid=3D77228 auid=3Droot uid=3Droot gid=3Droot euid=3Droot suid=
-=3Droot fsuid=3Droot egid=3Droot sgid=3Droot fsgid=3Droot tty=3Dpts1 ses=3D=
-1 comm=3Dcheck_mount_con exe=3D/root/workspace/selinux/selinux-testsuite/te=
-sts/filesystem/check_mount_context subj=3Dunconfined_u:unconfined_r:test_fi=
-lesystem_context_t:s0-s0:c0.c1023 key=3D(null)
-> >     type=3DAVC msg=3Daudit(02/05/22 11:47:03.170:7047) : avc:  denied  =
-{ getattr } for  pid=3D77228 comm=3Dcheck_mount_con name=3Dmp1 dev=3D"vda1"=
- ino=3D390506 scontext=3Dunconfined_u:unconfined_r:test_filesystem_context_=
-t:s0-s0:c0.c1023 tcontext=3Dunconfined_u:object_r:unlabeled_t:s0 tclass=3Dd=
-ir permissive=3D0
->
-> Does this happen on Debian only? Do you know why it isn't/hasn't been
-> happening on Fedora/RHEL?
+Debian uses Dash as default shell and switching via
 
-In fefora-policy unlabeled_t is associated with the attribute
-file_type and thus the common rule
+    dpkg-reconfigure dash
 
-    allow test_filesystem_context_t file_type:dir { getattr open search };
+has become deprecated.
 
-grants the permission in question.
+* Use POSIX compliant `> target 2>&1` instead of `>& target`.
+* Call runcon directly to avoid a fork within Dash, which breaks tests
+  requiring to not change the PID of executing commands
+* Use bash explicitly for non POSIX read option -t
 
->
-> >
-> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> > ---
-> >  policy/test_filesystem.te | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/policy/test_filesystem.te b/policy/test_filesystem.te
-> > index 4e27134..46e3f1a 100644
-> > --- a/policy/test_filesystem.te
-> > +++ b/policy/test_filesystem.te
-> > @@ -382,7 +382,7 @@ allow test_filesystem_fscontext_t test_filesystem_c=
-ontext_file_t:file { create g
-> >
-> >  # For testing rootcontext=3D Set mountpoint to unlabeled first
-> >  allow test_filesystem_context_t test_file_t:dir { relabelfrom };
-> > -allow test_filesystem_context_t unlabeled_t:dir { mounton relabelto };
-> > +allow test_filesystem_context_t unlabeled_t:dir { getattr mounton rela=
-belto };
-> >
-> >  #
-> >  ####################### Rules for nfs_filesystem/test ################=
-###
-> > --
-> > 2.36.1
-> >
->
-> --
-> Ondrej Mosnacek
-> Software Engineer, Linux Security - SELinux kernel
-> Red Hat, Inc.
->
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+v2:
+   use system("bash -c ...") instead of `bash -c ...`
+---
+ README.md                      |  7 -------
+ tests/Makefile                 |  2 +-
+ tests/binder/test              |  2 +-
+ tests/bpf/test                 |  4 ++--
+ tests/fdreceive/test           |  2 +-
+ tests/filesystem/Filesystem.pm | 14 +++++++-------
+ tests/inet_socket/test         |  2 +-
+ tests/ptrace/test              |  6 +++---
+ tests/sctp/test                |  2 +-
+ tests/sigkill/test             |  2 +-
+ tests/task_getpgid/test        |  6 +++---
+ tests/task_getscheduler/test   |  6 +++---
+ tests/task_getsid/test         |  6 +++---
+ tests/task_setnice/test        |  6 +++---
+ tests/task_setscheduler/test   |  6 +++---
+ tests/unix_socket/test         |  2 +-
+ tests/vsock_socket/test        |  2 +-
+ 17 files changed, 35 insertions(+), 42 deletions(-)
+
+diff --git a/README.md b/README.md
+index 29e3421..e90a20d 100644
+--- a/README.md
++++ b/README.md
+@@ -147,13 +147,6 @@ On Debian prior to version 11 (bullseye) you need to build and install netlabel_
+     # make
+     # sudo make install
+ 
+-Debian further requires reconfiguring the default /bin/sh to be bash
+-to support bashisms employed in the testsuite Makefiles and scripts:
+-
+-    # dpkg-reconfigure dash
+-
+-Select "No" when asked if you want to use dash as the default system shell.
+-
+ #### Other Distributions
+ 
+ The testsuite requires a pre-existing base policy configuration of SELinux,
+diff --git a/tests/Makefile b/tests/Makefile
+index c384e11..8abd438 100644
+--- a/tests/Makefile
++++ b/tests/Makefile
+@@ -19,7 +19,7 @@ MAX_KERNEL_POLICY := $(shell cat $(SELINUXFS)/policyvers)
+ POL_TYPE := $(shell ./pol_detect $(SELINUXFS))
+ 
+ # Filter out unavailable filesystems
+-FILESYSTEMS := $(foreach fs,$(FILESYSTEMS),$(shell modprobe $(fs) &>/dev/null && echo $(fs)))
++FILESYSTEMS := $(foreach fs,$(FILESYSTEMS),$(shell modprobe $(fs) > /dev/null 2>&1 && echo $(fs)))
+ 
+ SUBDIRS:= domain_trans entrypoint execshare exectrace execute_no_trans \
+ 	fdreceive inherit link mkdir msg open ptrace readlink relabel rename \
+diff --git a/tests/binder/test b/tests/binder/test
+index 14f2096..9b6f377 100755
+--- a/tests/binder/test
++++ b/tests/binder/test
+@@ -80,7 +80,7 @@ sub service_start {
+     }
+ 
+     # Wait for it to initialize.
+-    system("read -t 5 <>$basedir/$flag");
++    system("bash -c 'read -t 5 <>$basedir/$flag'");
+     return $pid;
+ }
+ 
+diff --git a/tests/bpf/test b/tests/bpf/test
+index 6ab7686..44b4f03 100755
+--- a/tests/bpf/test
++++ b/tests/bpf/test
+@@ -106,7 +106,7 @@ if ( ( $pid = fork() ) == 0 ) {
+ }
+ 
+ # Wait for it to initialize.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Test BPF map & prog fd on transfer:
+ $result = system
+@@ -149,7 +149,7 @@ sub service_start {
+     }
+ 
+     # Wait for it to initialize.
+-    system("read -t 5 <>$basedir/$flag");
++    system("bash -c 'read -t 5 <>$basedir/$flag'");
+     return $pid;
+ }
+ 
+diff --git a/tests/fdreceive/test b/tests/fdreceive/test
+index 2415361..ec2d9bc 100755
+--- a/tests/fdreceive/test
++++ b/tests/fdreceive/test
+@@ -22,7 +22,7 @@ if ( ( $pid = fork() ) == 0 ) {
+ }
+ 
+ # Wait for it to initialize.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Verify that test_fdreceive_server_t can receive a rw fd to the test_file
+ # from test_fdreceive_client_t.
+diff --git a/tests/filesystem/Filesystem.pm b/tests/filesystem/Filesystem.pm
+index c14e760..e3cd8ee 100644
+--- a/tests/filesystem/Filesystem.pm
++++ b/tests/filesystem/Filesystem.pm
+@@ -49,12 +49,12 @@ sub udisks2_stop {
+     $status = 0;
+ 
+     if ( -e "/usr/bin/systemctl" ) {
+-        $u_status_cmd = "/usr/bin/systemctl status udisks2 >& /dev/null";
+-        $u_stop_cmd   = "/usr/bin/systemctl stop udisks2 >& /dev/null";
++        $u_status_cmd = "/usr/bin/systemctl status udisks2 > /dev/null 2>&1";
++        $u_stop_cmd   = "/usr/bin/systemctl stop udisks2 > /dev/null 2>&1";
+     }
+     elsif ( -e "/usr/sbin/service" ) {
+-        $u_status_cmd = "/usr/sbin/service udisks2 status >& /dev/null";
+-        $u_stop_cmd   = "/usr/sbin/service udisks2 stop >& /dev/null";
++        $u_status_cmd = "/usr/sbin/service udisks2 status > /dev/null 2>&1";
++        $u_stop_cmd   = "/usr/sbin/service udisks2 stop > /dev/null 2>&1";
+     }
+ 
+     if ($u_status_cmd) {
+@@ -78,10 +78,10 @@ sub udisks2_restart {
+     if ( $status eq 3 ) {
+         print "Restarting udisks2 service.\n";
+         if ( -e "/usr/bin/systemctl" ) {
+-            system("/usr/bin/systemctl start udisks2 >& /dev/null");
++            system("/usr/bin/systemctl start udisks2 > /dev/null 2>&1");
+         }
+         elsif ( -e "/usr/sbin/service" ) {
+-            system("/usr/sbin/service udisks2 start >& /dev/null");
++            system("/usr/sbin/service udisks2 start > /dev/null 2>&1");
+         }
+     }
+ }
+@@ -133,7 +133,7 @@ sub make_fs {
+     attach_dev( $mk_dev, $mk_dir );
+ 
+     print "Make $mk_type filesystem on $mk_dev\n";
+-    $result = system("yes | mkfs.$mk_type $mk_dev >& /dev/null");
++    $result = system("yes | mkfs.$mk_type $mk_dev > /dev/null 2>&1");
+     if ( $result != 0 ) {
+         system("losetup -d $mk_dev 2>/dev/null");
+         print "mkfs.$mk_type failed to create filesystem on $mk_dev\n";
+diff --git a/tests/inet_socket/test b/tests/inet_socket/test
+index f09b4e3..df883d9 100755
+--- a/tests/inet_socket/test
++++ b/tests/inet_socket/test
+@@ -59,7 +59,7 @@ sub server_start {
+     }
+ 
+     # Wait for it to initialize.
+-    system("read -t 5 <>$basedir/flag");
++    system("bash -c 'read -t 5 <>$basedir/flag'");
+     return $pid;
+ }
+ 
+diff --git a/tests/ptrace/test b/tests/ptrace/test
+index 78589c6..117f260 100755
+--- a/tests/ptrace/test
++++ b/tests/ptrace/test
+@@ -9,13 +9,13 @@ $basedir =~ s|(.*)/[^/]*|$1|;
+ # Start the process to be traced.
+ system("mkfifo $basedir/flag");
+ if ( ( $pid = fork() ) == 0 ) {
+-    exec
+-"runcon -t test_ptrace_traced_t sh -c 'echo >$basedir/flag; while :; do :; done'";
++    exec 'runcon', '-t', 'test_ptrace_traced_t', 'sh', '-c',
++      "echo >$basedir/flag; while :; do :; done";
+     exit;
+ }
+ 
+ # Wait for it to start.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Verify that the nottracer domain cannot attach to the process.
+ # Should fail on the ptrace permission check.
+diff --git a/tests/sctp/test b/tests/sctp/test
+index e28d214..13358ae 100755
+--- a/tests/sctp/test
++++ b/tests/sctp/test
+@@ -120,7 +120,7 @@ sub server_start {
+     }
+ 
+     # Wait for it to initialize.
+-    system("read -t 5 <>$basedir/flag");
++    system("bash -c 'read -t 5 <>$basedir/flag'");
+     return $pid;
+ }
+ 
+diff --git a/tests/sigkill/test b/tests/sigkill/test
+index 6c7289a..e90af13 100755
+--- a/tests/sigkill/test
++++ b/tests/sigkill/test
+@@ -13,7 +13,7 @@ if ( ( $pid = fork() ) == 0 ) {
+ }
+ 
+ # Wait for it to initialize.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Verify that test_kill_signal_t cannot send CHLD, STOP, or KILL to the server.
+ $result = system "runcon -t test_kill_signal_t -- kill -s CHLD $pid 2>&1";
+diff --git a/tests/task_getpgid/test b/tests/task_getpgid/test
+index ff9ccc6..e2032e3 100755
+--- a/tests/task_getpgid/test
++++ b/tests/task_getpgid/test
+@@ -9,12 +9,12 @@ $basedir =~ s|(.*)/[^/]*|$1|;
+ # Start the target process.
+ system("mkfifo $basedir/flag");
+ if ( ( $pid = fork() ) == 0 ) {
+-    exec
+-"runcon -t test_getpgid_target_t sh -c 'echo >$basedir/flag; while :; do :; done'";
++    exec 'runcon', '-t', 'test_getpgid_target_t', 'sh', '-c',
++      "echo >$basedir/flag; while :; do :; done";
+ }
+ 
+ # Wait for it to start.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Verify that test_getpgid_yes_t can get the target's process group ID.
+ $result = system "runcon -t test_getpgid_yes_t -- $basedir/source $pid 2>&1";
+diff --git a/tests/task_getscheduler/test b/tests/task_getscheduler/test
+index ce7f047..909dfa3 100755
+--- a/tests/task_getscheduler/test
++++ b/tests/task_getscheduler/test
+@@ -9,12 +9,12 @@ $basedir =~ s|(.*)/[^/]*|$1|;
+ # Start the target process.
+ system("mkfifo $basedir/flag");
+ if ( ( $pid = fork() ) == 0 ) {
+-    exec
+-"runcon -t test_getsched_target_t sh -c 'echo >$basedir/flag; while :; do :; done'";
++    exec 'runcon', '-t', 'test_getsched_target_t', 'sh', '-c',
++      "echo >$basedir/flag; while :; do :; done";
+ }
+ 
+ # Wait for it to start.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Verify that test_getsched_yes_t can get the scheduling.
+ # SCHED_OTHER	0	priority must == 0
+diff --git a/tests/task_getsid/test b/tests/task_getsid/test
+index 16190c5..2b6350f 100755
+--- a/tests/task_getsid/test
++++ b/tests/task_getsid/test
+@@ -9,12 +9,12 @@ $basedir =~ s|(.*)/[^/]*|$1|;
+ # Start the target process.
+ system("mkfifo $basedir/flag");
+ if ( ( $pid = fork() ) == 0 ) {
+-    exec
+-"runcon -t test_getsid_target_t sh -c 'echo >$basedir/flag; while :; do :; done'";
++    exec 'runcon', '-t', 'test_getsid_target_t', 'sh', '-c',
++      "echo >$basedir/flag; while :; do :; done";
+ }
+ 
+ # Wait for it to start.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Verify that test_getsid_yes_t can get the session ID.
+ $result = system "runcon -t test_getsid_yes_t -- $basedir/source $pid 2>&1";
+diff --git a/tests/task_setnice/test b/tests/task_setnice/test
+index 09352ed..8c101d8 100755
+--- a/tests/task_setnice/test
++++ b/tests/task_setnice/test
+@@ -9,12 +9,12 @@ $basedir =~ s|(.*)/[^/]*|$1|;
+ # Start the process that will have its priority changed.
+ system("mkfifo $basedir/flag");
+ if ( ( $pid = fork() ) == 0 ) {
+-    exec
+-"runcon -t test_setsched_target_t sh -c 'echo >$basedir/flag; while :; do :; done'";
++    exec 'runcon', '-t', 'test_setsched_target_t', 'sh', '-c',
++      "echo >$basedir/flag; while :; do :; done";
+ }
+ 
+ # Wait for it to start.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ # Verify that test_setsched_yes_t can change the priority up and down.
+ $result = system "runcon -t test_setsched_yes_t -- renice +10 -p $pid 2>&1";
+diff --git a/tests/task_setscheduler/test b/tests/task_setscheduler/test
+index fa7d9cb..0cfb498 100755
+--- a/tests/task_setscheduler/test
++++ b/tests/task_setscheduler/test
+@@ -9,12 +9,12 @@ $basedir =~ s|(.*)/[^/]*|$1|;
+ # Start the process that will have its priority and scheduling changed.
+ system("mkfifo $basedir/flag");
+ if ( ( $pid = fork() ) == 0 ) {
+-    exec
+-"runcon -t test_setsched_target_t sh -c 'echo >$basedir/flag; while :; do sleep 1; done'";
++    exec 'runcon', '-t', 'test_setsched_target_t', 'sh', '-c',
++      "echo >$basedir/flag; while :; do sleep 1; done";
+ }
+ 
+ # Wait for it to start.
+-system("read -t 5 <>$basedir/flag");
++system("bash -c 'read -t 5 <>$basedir/flag'");
+ 
+ $cgroup_cpu = "/sys/fs/cgroup/cpu/tasks";
+ if ( -w $cgroup_cpu ) {
+diff --git a/tests/unix_socket/test b/tests/unix_socket/test
+index c48d1ad..fc3ddf7 100755
+--- a/tests/unix_socket/test
++++ b/tests/unix_socket/test
+@@ -38,7 +38,7 @@ sub server_start {
+     }
+ 
+     # Wait for it to initialize.
+-    system("read -t 5 <>$basedir/flag");
++    system("bash -c 'read -t 5 <>$basedir/flag'");
+     return $pid;
+ }
+ 
+diff --git a/tests/vsock_socket/test b/tests/vsock_socket/test
+index 41d9bc8..70fde70 100755
+--- a/tests/vsock_socket/test
++++ b/tests/vsock_socket/test
+@@ -34,7 +34,7 @@ sub server_start {
+     }
+ 
+     # Wait for it to initialize, read port number.
+-    my $port = `read -t 5 <>$basedir/flag; echo \$REPLY`;
++    my $port = `bash -c 'read -t 5 <>$basedir/flag; echo \$REPLY'`;
+ 
+     return ( $pid, $port );
+ }
+-- 
+2.36.1
+

@@ -2,108 +2,79 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEF5454F490
-	for <lists+selinux@lfdr.de>; Fri, 17 Jun 2022 11:46:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E11554FA34
+	for <lists+selinux@lfdr.de>; Fri, 17 Jun 2022 17:26:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233978AbiFQJqS (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 17 Jun 2022 05:46:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34204 "EHLO
+        id S1382640AbiFQP01 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 17 Jun 2022 11:26:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235845AbiFQJqR (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jun 2022 05:46:17 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCD4B692A1;
-        Fri, 17 Jun 2022 02:46:16 -0700 (PDT)
-Received: from dggpeml500023.china.huawei.com (unknown [172.30.72.57])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4LPYz23g2bz1K9tp;
-        Fri, 17 Jun 2022 17:44:14 +0800 (CST)
-Received: from ubuntu1804.huawei.com (10.67.174.58) by
- dggpeml500023.china.huawei.com (7.185.36.114) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 17 Jun 2022 17:46:14 +0800
-From:   Xiu Jianfeng <xiujianfeng@huawei.com>
-To:     <paul@paul-moore.com>, <stephen.smalley.work@gmail.com>,
-        <eparis@parisplace.org>
-CC:     <selinux@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH RESEND -next] selinux: Let the caller free the momory in *mnt_opts on error
-Date:   Fri, 17 Jun 2022 17:44:12 +0800
-Message-ID: <20220617094412.197479-1-xiujianfeng@huawei.com>
-X-Mailer: git-send-email 2.17.1
+        with ESMTP id S1382720AbiFQP01 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 17 Jun 2022 11:26:27 -0400
+X-Greylist: delayed 523 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Jun 2022 08:26:26 PDT
+Received: from sv220.xserver.jp (sv220.xserver.jp [202.226.39.121])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3A7E2AC78;
+        Fri, 17 Jun 2022 08:26:26 -0700 (PDT)
+X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw2.xserver.jp)
+Received: from webmail.xserver.ne.jp (webmail.xserver.ne.jp [210.188.201.183])
+        by sv220.xserver.jp (Postfix) with ESMTPA id 28A0F1201A300A;
+        Sat, 18 Jun 2022 00:17:23 +0900 (JST)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [10.67.174.58]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpeml500023.china.huawei.com (7.185.36.114)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Fri, 17 Jun 2022 23:17:23 +0800
+From:   Steve Dibenedetto <y-kitsuya@bell-group.co.jp>
+To:     undisclosed-recipients:;
+Subject: THIS IS VERY CONFIDENTIAL
+Reply-To: stevedibenedetto17@gmail.com
+Mail-Reply-To: stevedibenedetto17@gmail.com
+Message-ID: <7a699e4cf287b2852d6b7488660663b4@bell-group.co.jp>
+X-Sender: y-kitsuya@bell-group.co.jp
+User-Agent: Roundcube Webmail/1.2.0
+X-Spam-Status: Yes, score=7.6 required=5.0 tests=BAYES_60,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,ODD_FREEM_REPTO,
+        SPF_HELO_PASS,SPF_SOFTFAIL,SUBJ_ALL_CAPS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
+        *      [score: 0.6764]
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  0.7 SPF_SOFTFAIL SPF: sender does not match SPF record (softfail)
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [stevedibenedetto17[at]gmail.com]
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.6 ODD_FREEM_REPTO Has unusual reply-to header
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-It may allocate memory for @mnt_opts if NULL in selinux_add_opt(), and
-now some error paths goto @err label to free memory while others don't,
-as suggested by Paul, don't free memory in case of error and let the
-caller to cleanup on error.
 
-And also this patch changes the @s NULL check to return -EINVAL instead.
 
-Link: https://lore.kernel.org/lkml/20220611090550.135674-1-xiujianfeng@huawei.com/T/
-Suggested-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
----
- security/selinux/hooks.c | 11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
-
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 4d20a139a86d..9d08b91e05a2 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -944,10 +944,12 @@ static int selinux_sb_clone_mnt_opts(const struct super_block *oldsb,
- 	return rc;
- }
- 
-+/*
-+ * NOTE: the caller is resposible for freeing the memory even if on error.
-+ */
- static int selinux_add_opt(int token, const char *s, void **mnt_opts)
- {
- 	struct selinux_mnt_opts *opts = *mnt_opts;
--	bool is_alloc_opts = false;
- 	u32 *dst_sid;
- 	int rc;
- 
-@@ -955,7 +957,7 @@ static int selinux_add_opt(int token, const char *s, void **mnt_opts)
- 		/* eaten and completely ignored */
- 		return 0;
- 	if (!s)
--		return -ENOMEM;
-+		return -EINVAL;
- 
- 	if (!selinux_initialized(&selinux_state)) {
- 		pr_warn("SELinux: Unable to set superblock options before the security server is initialized\n");
-@@ -967,7 +969,6 @@ static int selinux_add_opt(int token, const char *s, void **mnt_opts)
- 		if (!opts)
- 			return -ENOMEM;
- 		*mnt_opts = opts;
--		is_alloc_opts = true;
- 	}
- 
- 	switch (token) {
-@@ -1002,10 +1003,6 @@ static int selinux_add_opt(int token, const char *s, void **mnt_opts)
- 	return rc;
- 
- err:
--	if (is_alloc_opts) {
--		kfree(opts);
--		*mnt_opts = NULL;
--	}
- 	pr_warn(SEL_MOUNT_FAIL_MSG);
- 	return -EINVAL;
- }
 -- 
-2.17.1
+Hello,
 
+My name is Steve Dibenedetto.I apologize to have contacted you this way
+without a direct relationship. There is an opportunity to collaborate
+with me in the sourcing of some materials needed by our company for
+production of the different medicines we are researching.
+
+I'm aware that this might be totally outside your professional
+specialization, but it will be a great source for generating extra
+revenue. I  discovered a manufacturer who can supply us at a lower rate
+than our company's previous purchases.
+I will give you more specific details when/if I receive feedback from
+you showing interest.
+
+Warm Regards
+Steve Dibenedetto
+Production & Control Manager,
+Green Field Laboratories
+Gothic House, Barker Gate,
+Nottingham, NG1 1JU,
+United Kingdom.

@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7482A572062
-	for <lists+selinux@lfdr.de>; Tue, 12 Jul 2022 18:09:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F917572065
+	for <lists+selinux@lfdr.de>; Tue, 12 Jul 2022 18:09:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234245AbiGLQJR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 12 Jul 2022 12:09:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
+        id S234247AbiGLQJS (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 12 Jul 2022 12:09:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234247AbiGLQJJ (ORCPT
+        with ESMTP id S234256AbiGLQJJ (ORCPT
         <rfc822;selinux@vger.kernel.org>); Tue, 12 Jul 2022 12:09:09 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A27D12D2F
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93FE02625
         for <selinux@vger.kernel.org>; Tue, 12 Jul 2022 09:09:08 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id l23so15162788ejr.5
-        for <selinux@vger.kernel.org>; Tue, 12 Jul 2022 09:09:07 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id fd6so10713311edb.5
+        for <selinux@vger.kernel.org>; Tue, 12 Jul 2022 09:09:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=KWFaMKkeTX17vWaSfNfz/271fEVh8cMtoLZ4z8S3Jx4=;
-        b=fLcJ1m4nNv8gZ7N3qf8XZBQujtQk9hgp8tJNt6f0PASQI6hkpRS2P12nEVtCdje/af
-         yc0CmFTRN/CukgyXw7BXh7/pFt0cg/YPEt/3LgdVWJFCfpnz7EATJjhsYeSJ+PzhBcgV
-         8twqlAO0QT1h+bC1DodH+94P6pp1X/mK/bOlhImNSs7b52f0uKXctDJhYRZsTTjMWKjE
-         wF029lrvPjBeMuqCZ9lEQY4dCXzgYjvKnQLFUdzWo6SsW9Si7zN9Q+sNBamE6K6ccxS4
-         JemHsMBEja7ylnl4Xi/AS3g68MaKjBRsSOBTJ0tqyHCNIDoQCxSdzICLPvNsQlqBO7hX
-         o2qA==
+        bh=CAWUvuH2vtDhqU49owxtq8l4iLBUVe5BvEM74A+7J58=;
+        b=ihzDE9ZDUa8Rv4WAGGJAZHJP/X2olFgES+L0/REfLv0Yfo4azjSCIKwexv5VbzqXpw
+         7Fk507AELQz15VFcJEQq3D99DbiuxPTMWaOK/lC3lJKs8x0goosXuMbhsKfNMREJ648A
+         Q8S3yNSDEr2heQeDDiUcczkCYxgpCc2O9EujazCasQHbZU/zEUpjiyHtRQPtftYAWRv9
+         WeiQtQKBm0h6ARK8kW65HyIKAjUL4MdmEe2pSIgy4YpOpIn8EtqWiy4M0EqjTRn0H05d
+         db7jIl5FyHxlsvyFozRgY+ENIZsUgV32pZHYsf2zHuarLNfVRE+gPx2W/2toeAcahRMQ
+         0aWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=KWFaMKkeTX17vWaSfNfz/271fEVh8cMtoLZ4z8S3Jx4=;
-        b=c5Br/fp+b7BawIzI8ioUKJRZ68Gfln4CyJdloMKc5QxbhzpGS7jAQaALoCDDNGfqmZ
-         rsYhx7OdVYUSr8q5IKAHJyrPW7KcmcfYEM4HPvdps4TiSF7s/z++crNdonn2lcWl/A3i
-         npOqX99q5gTze9rycoBgtI4E4gq3+21QqHIn1yHW2GIY8Z18PfjZKfxkUheAUpW8Fbxc
-         T4hSg4xR84gu4fwbBsv6Sxe4/CZQSKzkcw0A0kVnbfDMnkmdTsAp25AnsAOjhCpW/pyp
-         HOO5NBdSM92S5rxzaqAh452v/REP6RCg60KodrfFG/7eJ8AiKDcMzdL9WcRuQ76ZF62l
-         NRwQ==
-X-Gm-Message-State: AJIora+qApYdO7jNFgftHRxe5wislIYnWM+KLpphLGoxOzm0e2M+tIMx
-        i3zXTfQJuKBsxloZ1ucsz2ukgPgXg0Fh/g==
-X-Google-Smtp-Source: AGRyM1ut6BDqhGpX/481ErKRi/JTFt5cqyDNWyAyccsRWrU1BpS1WwVC4YDk50FCK2Xmx/0XcaG8dw==
-X-Received: by 2002:a17:907:a074:b0:72b:5851:361b with SMTP id ia20-20020a170907a07400b0072b5851361bmr10274999ejc.310.1657642146573;
-        Tue, 12 Jul 2022 09:09:06 -0700 (PDT)
+        bh=CAWUvuH2vtDhqU49owxtq8l4iLBUVe5BvEM74A+7J58=;
+        b=v1hCSPbUGuFGew3WqEGq1lm/sEpL6b1V0ACdtiPg3mLPU3ODyMh1YjL1SQnmkDAp1y
+         NWVWQjpEwNLIABNeDO9xCkEELdQ23K+LX44StNj7UkSFFwha1vTcray5IbHfvO6BgO6M
+         W+gp8UEqGx6PN7Z5oY8Ko3xDUZGWjQC1oCI7UF9rJb0JHTmdIpgRdDo9GPTgrlzqTG+K
+         giUD7xsPio857U3YuHMYrczruMkwBxpLCMr3aW+w5OjiUb6BRxTXaPVBQKXbwFtFXqqw
+         LwVFQ/hx0yCBwxqz0d3FSUjliVjOt28Jl0gFE2SCYATtCEdUWP+2KJ0g0KMC6xAVlcju
+         QQVw==
+X-Gm-Message-State: AJIora9ulhUczzLDDqVO2AYRCsHoAtkazn4xB7lJgm8H4roSVhiGNaVI
+        A3CLHB9Doyz2it1vClDGLVeWdb98ZkoLZw==
+X-Google-Smtp-Source: AGRyM1ur4U/tMvTNIEa5TIdQkRMwx8ddFqT6R2nxqo5rH5JHiaI6yGKZ7WGfb83OVNUob9kLxw7JYQ==
+X-Received: by 2002:a05:6402:909:b0:435:a8b:5232 with SMTP id g9-20020a056402090900b004350a8b5232mr32659034edz.240.1657642147114;
+        Tue, 12 Jul 2022 09:09:07 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-010-190-079.77.10.pool.telefonica.de. [77.10.190.79])
         by smtp.gmail.com with ESMTPSA id p13-20020a17090653cd00b006fed85c1a8fsm3887127ejo.202.2022.07.12.09.09.06
         for <selinux@vger.kernel.org>
@@ -50,9 +50,9 @@ Received: from debianHome.localdomain (dynamic-077-010-190-079.77.10.pool.telefo
         Tue, 12 Jul 2022 09:09:06 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 5/7] libsepol: optimize ebitmap_and
-Date:   Tue, 12 Jul 2022 18:08:56 +0200
-Message-Id: <20220712160858.22677-5-cgzones@googlemail.com>
+Subject: [PATCH 6/7] libsepol: optimize ebitmap_xor
+Date:   Tue, 12 Jul 2022 18:08:57 +0200
+Message-Id: <20220712160858.22677-6-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220712160858.22677-1-cgzones@googlemail.com>
 References: <20220712160858.22677-1-cgzones@googlemail.com>
@@ -74,56 +74,63 @@ single bit.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/ebitmap.c | 42 +++++++++++++++++++++++++++++++++++-------
- 1 file changed, 35 insertions(+), 7 deletions(-)
+ libsepol/src/ebitmap.c | 49 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 43 insertions(+), 6 deletions(-)
 
 diff --git a/libsepol/src/ebitmap.c b/libsepol/src/ebitmap.c
-index 6a63e559..c3d706e9 100644
+index c3d706e9..e0541abb 100644
 --- a/libsepol/src/ebitmap.c
 +++ b/libsepol/src/ebitmap.c
-@@ -74,15 +74,43 @@ int ebitmap_union(ebitmap_t * dst, const ebitmap_t * e1)
+@@ -116,14 +116,51 @@ int ebitmap_and(ebitmap_t *dst, const ebitmap_t *e1, const ebitmap_t *e2)
  
- int ebitmap_and(ebitmap_t *dst, const ebitmap_t *e1, const ebitmap_t *e2)
+ int ebitmap_xor(ebitmap_t *dst, const ebitmap_t *e1, const ebitmap_t *e2)
  {
--	unsigned int i, length = min(ebitmap_length(e1), ebitmap_length(e2));
+-	unsigned int i, length = max(ebitmap_length(e1), ebitmap_length(e2));
 +	const ebitmap_node_t *n1, *n2;
 +	ebitmap_node_t *new, *prev = NULL;
++	uint32_t startbit;
++	MAPTYPE map;
 +
  	ebitmap_init(dst);
 -	for (i=0; i < length; i++) {
--		if (ebitmap_get_bit(e1, i) && ebitmap_get_bit(e2, i)) {
--			int rc = ebitmap_set_bit(dst, i, 1);
--			if (rc < 0)
--				return rc;
--		}
+-		int val = ebitmap_get_bit(e1, i) ^ ebitmap_get_bit(e2, i);
+-		int rc = ebitmap_set_bit(dst, i, val);
+-		if (rc < 0)
+-			return rc;
 +
 +	n1 = e1->node;
 +	n2 = e2->node;
-+	while (n1 && n2) {
-+		if (n1->startbit == n2->startbit) {
-+			if (n1->map & n2->map) {
-+				new = malloc(sizeof(ebitmap_node_t));
-+				if (!new) {
-+					ebitmap_destroy(dst);
-+					return -ENOMEM;
-+				}
-+				new->startbit = n1->startbit;
-+				new->map = n1->map & n2->map;
-+				new->next = NULL;
++	while (n1 || n2) {
++		if (n1 && n2 && n1->startbit == n2->startbit) {
++			startbit = n1->startbit;
++			map = n1->map ^ n2->map;
++			n1 = n1->next;
++			n2 = n2->next;
++		} else if (!n2 || (n1 && n1->startbit < n2->startbit)) {
++			startbit = n1->startbit;
++			map = n1->map;
++			n1 = n1->next;
++		} else {
++			startbit = n2->startbit;
++			map = n2->map;
++			n2 = n2->next;
++		}
 +
-+				if (prev)
-+					prev->next = new;
-+				else
-+					dst->node = new;
-+				prev = new;
++		if (map != 0) {
++			new = malloc(sizeof(ebitmap_node_t));
++			if (!new) {
++				ebitmap_destroy(dst);
++				return -ENOMEM;
 +			}
-+
-+			n1 = n1->next;
-+			n2 = n2->next;
-+		} else if (n1->startbit > n2->startbit)
-+			n2 = n2->next;
-+		else
-+			n1 = n1->next;
++			new->startbit = startbit;
++			new->map = map;
++			new->next = NULL;
++			if (prev)
++				prev->next = new;
++			else
++				dst->node = new;
++			prev = new;
++		}
  	}
 +
 +	if (prev)

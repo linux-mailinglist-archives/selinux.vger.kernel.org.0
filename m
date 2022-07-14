@@ -2,97 +2,231 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B5857473C
-	for <lists+selinux@lfdr.de>; Thu, 14 Jul 2022 10:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95FDD5750C4
+	for <lists+selinux@lfdr.de>; Thu, 14 Jul 2022 16:27:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236586AbiGNIiH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 14 Jul 2022 04:38:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33264 "EHLO
+        id S239526AbiGNO1s (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 14 Jul 2022 10:27:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237380AbiGNIhQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 14 Jul 2022 04:37:16 -0400
-Received: from mail-lf1-x12b.google.com (mail-lf1-x12b.google.com [IPv6:2a00:1450:4864:20::12b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6A153ED48
-        for <selinux@vger.kernel.org>; Thu, 14 Jul 2022 01:37:14 -0700 (PDT)
-Received: by mail-lf1-x12b.google.com with SMTP id n18so1667662lfq.1
-        for <selinux@vger.kernel.org>; Thu, 14 Jul 2022 01:37:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=eOKhIHPUU5qPTZbjyQcWfvRUY0zDAP8hnIUzGBjF2Jn5DfdNsbEWN2bt7ALPYmKFVp
-         Dxr1gDHkbIBW6Zt+nHPJYVynuk8AW0yQZ/Zbg6Hs/Db/0s9SnaRXX8dPxs4FUxGCTJqt
-         PUYZva9zdBfTCaw+ACjLsUUgRvbYiV1yKAF3EhOBh+YW55bYBsAw2vjNobpxCrdB648X
-         A9Vj0WSfJubet8viXTg/I9X1Zmn6KwP7YNCJiSogQMOb5VTL9XQBYGsxHSC28kklqMwQ
-         Xqm1mx/as6lOSd/UexvuUJPMkR0uIfSfLSUsGSd7SP6mXh7BeziDYVk18AfHAMhcFado
-         ZNLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=H3bGT1ZyGPu3PRQJlJHyQI9TvTjBPuNSyHjFOzNfiP0=;
-        b=Rk539ONQxWs5pko0BKbopc42NUhoLuJn1vYnQX5LYEVQ8T+QBvE0CrOC7mVqXQnZM5
-         +9y2E/NdbktC2F3RvgZup5iIq+vX5NmsyZrerBsJZVNarR8dOLh/4o9oJJFfwaQkdp2b
-         E77xGQTRWxG9Gw/4Pe2FjAKV/8EQWQhNo0/X1mjCf1Tbae5TUB9LAaHdT31OuEKeY+tL
-         vP26Kc7SUgrxFHqn1xDTT6ORtZI18ZsmvBXiAFjS8tnZu1KpxdCuwLM9cExBuLQ5NVeC
-         AnuKhy37e/M31BQBOengxv/3HPe1Drd53eZHmzmJU0L+Xz1hOYwskOOJu0cbmIsi5OMN
-         kaBw==
-X-Gm-Message-State: AJIora8N51WS2prb9I4i4HfTxXiP88Rl5MP5IcOPGj/gbDG4xIxSyjKl
-        kwQS93SeqocBlE+hthvZ5HybDl+PLYD1DTvUicE=
-X-Google-Smtp-Source: AGRyM1suH6kpL0bxxrdPqBdRw7fjg6QmbYsIJ5KtUWeYknhIH8CIkHpjEQ1bnLxbFcENJg0E8wYhVlYhJeESVTPizkI=
-X-Received: by 2002:a05:6512:12c8:b0:489:efbf:18d1 with SMTP id
- p8-20020a05651212c800b00489efbf18d1mr4734610lfg.192.1657787832538; Thu, 14
- Jul 2022 01:37:12 -0700 (PDT)
+        with ESMTP id S240400AbiGNO1o (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 14 Jul 2022 10:27:44 -0400
+Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD5B95F126;
+        Thu, 14 Jul 2022 07:27:42 -0700 (PDT)
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+        id E128966C; Thu, 14 Jul 2022 09:27:40 -0500 (CDT)
+Date:   Thu, 14 Jul 2022 09:27:40 -0500
+From:   "Serge E. Hallyn" <serge@hallyn.com>
+To:     Casey Schaufler <casey@schaufler-ca.com>
+Cc:     Frederick Lawler <fred@cloudflare.com>,
+        Christian =?iso-8859-1?Q?G=F6ttsche?= <cgzones@googlemail.com>,
+        KP Singh <kpsingh@kernel.org>, revest@chromium.org,
+        jackmanb@chromium.org, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>, shuah@kernel.org,
+        Christian Brauner <brauner@kernel.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>, bpf@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        SElinux list <selinux@vger.kernel.org>,
+        linux-kselftest@vger.kernel.org,
+        Linux kernel mailing list <linux-kernel@vger.kernel.org>,
+        netdev@vger.kernel.org, kernel-team@cloudflare.com
+Subject: Re: [PATCH v2 0/4] Introduce security_create_user_ns()
+Message-ID: <20220714142740.GA10621@mail.hallyn.com>
+References: <20220707223228.1940249-1-fred@cloudflare.com>
+ <CAJ2a_DezgSpc28jvJuU_stT7V7et-gD7qjy409oy=ZFaUxJneg@mail.gmail.com>
+ <3dbd5b30-f869-b284-1383-309ca6994557@cloudflare.com>
+ <84fbd508-65da-1930-9ed3-f53f16679043@schaufler-ca.com>
 MIME-Version: 1.0
-Received: by 2002:a2e:9041:0:0:0:0:0 with HTTP; Thu, 14 Jul 2022 01:37:11
- -0700 (PDT)
-Reply-To: abdwabbomaddahm@gmail.com
-From:   Abdwabbo Maddah <abdwabbomaddah746@gmail.com>
-Date:   Thu, 14 Jul 2022 09:37:11 +0100
-Message-ID: <CAFC-3icPrpmNqEMcqzAOFvzCPc-r5yv89mNAZ9SsCQvcOZ=+9g@mail.gmail.com>
-Subject: Get back to me... URGENT
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:12b listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4900]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [abdwabbomaddah746[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [abdwabbomaddah746[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  3.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <84fbd508-65da-1930-9ed3-f53f16679043@schaufler-ca.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
--- 
-Dear,
-I had sent you a mail but i don't think you received it that's why am
-writing you again.It is important you get back to me as soon as you
-can.
-Abd-Wabbo Maddah
+On Fri, Jul 08, 2022 at 09:11:15AM -0700, Casey Schaufler wrote:
+> On 7/8/2022 7:01 AM, Frederick Lawler wrote:
+> > On 7/8/22 7:10 AM, Christian Göttsche wrote:
+> >> ,On Fri, 8 Jul 2022 at 00:32, Frederick Lawler <fred@cloudflare.com>
+> >> wrote:
+> >>>
+> >>> While creating a LSM BPF MAC policy to block user namespace
+> >>> creation, we
+> >>> used the LSM cred_prepare hook because that is the closest hook to
+> >>> prevent
+> >>> a call to create_user_ns().
+> >>>
+> >>> The calls look something like this:
+> >>>
+> >>>      cred = prepare_creds()
+> >>>          security_prepare_creds()
+> >>>              call_int_hook(cred_prepare, ...
+> >>>      if (cred)
+> >>>          create_user_ns(cred)
+> >>>
+> >>> We noticed that error codes were not propagated from this hook and
+> >>> introduced a patch [1] to propagate those errors.
+> >>>
+> >>> The discussion notes that security_prepare_creds()
+> >>> is not appropriate for MAC policies, and instead the hook is
+> >>> meant for LSM authors to prepare credentials for mutation. [2]
+> >>>
+> >>> Ultimately, we concluded that a better course of action is to introduce
+> >>> a new security hook for LSM authors. [3]
+> >>>
+> >>> This patch set first introduces a new security_create_user_ns()
+> >>> function
+> >>> and create_user_ns LSM hook, then marks the hook as sleepable in BPF.
+> >>
+> >> Some thoughts:
+> >>
+> >> I.
+> >>
+> >> Why not make the hook more generic, e.g. support all other existing
+> >> and potential future namespaces?
+> >
+> > The main issue with a generic hook is that different namespaces have
+> > different calling contexts. We decided in a previous discussion to
+> > opt-out of a generic hook for this reason. [1]
+> >
+> >> Also I think the naming scheme is <object>_<verb>.
+> >
+> > That's a good call out. I was originally hoping to keep the
+> > security_*() match with the hook name matched with the caller function
+> > to keep things all aligned. If no one objects to renaming the hook, I
+> > can rename the hook for v3.
+> >
+> >>
+> >>      LSM_HOOK(int, 0, namespace_create, const struct cred *cred,
+> >> unsigned int flags)
+> >>
+> >> where flags is a bitmap of CLONE flags from include/uapi/linux/sched.h
+> >> (like CLONE_NEWUSER).
+> >>
+> >> II.
+> >>
+> >> While adding policing for namespaces maybe also add a new hook for
+> >> setns(2)
+> >>
+> >>      LSM_HOOK(int, 0, namespace_join, const struct cred *subj,  const
+> >> struct cred *obj, unsigned int flags)
+> >>
+> >
+> > IIUC, setns() will create a new namespace for the other namespaces
+> > except for user namespace. If we add a security hook for the other
+> > create_*_ns() functions, then we can catch setns() at that point.
+> >
+> >> III.
+> >>
+> >> Maybe even attach a security context to namespaces so they can be
+> >> further governed?
+> 
+> That would likely add confusion to the existing security module namespace
+> efforts. SELinux, Smack and AppArmor have all developed namespace models.
+> That, or it could replace the various independent efforts with a single,
+
+I feel like you're attaching more meaning to this than there needs to be.
+I *think* he's just talking about a user_namespace->u_security void*.
+So that for instance while deciding whether to allow some transition,
+selinux could check whether the caller's user namespace was created by
+a task in an selinux context authorized to create user namespaces.
+
+The "user namespaces are DAC and orthogonal to MAC" is of course true
+(where the LSM does not itself tie them together), except that we all
+know that a process running as root in a user namespace gains access to
+often-less-trustworthy code gated under CAP_SYS_ADMIN.
+
+> unified security module namespace effort. There's more work to that than
+> adding a context to a namespace. Treating namespaces as objects is almost,
+> but not quite, solidifying containers as a kernel construct. We know we
+> can't do that.
+
+What we "can't do" (imo) is to create a "full container" construct which
+ties together the various namespaces and other concepts in a restrictive
+way.
+
+> >> SELinux example:
+> >>
+> >>      type domainA_userns_t;
+> >>      type_transition domainA_t domainA_t : namespace domainA_userns_t
+> >> "user";
+> >>      allow domainA_t domainA_userns_t:namespace create;
+> >>
+> >>      # domainB calling setns(2) with domainA as target
+> >>      allow domainB_t domainA_userns_t:namespace join;
+> 
+> While I'm not an expert on SELinux policy, I'd bet a refreshing beverage
+> that there's already a way to achieve this with existing constructs.
+> Smack, which is subject+object MAC couldn't care less about the user
+> namespace configuration. User namespaces are DAC constructs.
+> 
+> >>
+> >
+> > Links:
+> > 1.
+> > https://lore.kernel.org/all/CAHC9VhSTkEMT90Tk+=iTyp3npWEm+3imrkFVX2qb=XsOPp9F=A@mail.gmail.com/
+> >
+> >>>
+> >>> Links:
+> >>> 1.
+> >>> https://lore.kernel.org/all/20220608150942.776446-1-fred@cloudflare.com/
+> >>>
+> >>> 2.
+> >>> https://lore.kernel.org/all/87y1xzyhub.fsf@email.froward.int.ebiederm.org/
+> >>> 3.
+> >>> https://lore.kernel.org/all/9fe9cd9f-1ded-a179-8ded-5fde8960a586@cloudflare.com/
+> >>>
+> >>> Changes since v1:
+> >>> - Add selftests/bpf: Add tests verifying bpf lsm create_user_ns hook
+> >>> patch
+> >>> - Add selinux: Implement create_user_ns hook patch
+> >>> - Change function signature of security_create_user_ns() to only take
+> >>>    struct cred
+> >>> - Move security_create_user_ns() call after id mapping check in
+> >>>    create_user_ns()
+> >>> - Update documentation to reflect changes
+> >>>
+> >>> Frederick Lawler (4):
+> >>>    security, lsm: Introduce security_create_user_ns()
+> >>>    bpf-lsm: Make bpf_lsm_create_user_ns() sleepable
+> >>>    selftests/bpf: Add tests verifying bpf lsm create_user_ns hook
+> >>>    selinux: Implement create_user_ns hook
+> >>>
+> >>>   include/linux/lsm_hook_defs.h                 |  1 +
+> >>>   include/linux/lsm_hooks.h                     |  4 +
+> >>>   include/linux/security.h                      |  6 ++
+> >>>   kernel/bpf/bpf_lsm.c                          |  1 +
+> >>>   kernel/user_namespace.c                       |  5 ++
+> >>>   security/security.c                           |  5 ++
+> >>>   security/selinux/hooks.c                      |  9 ++
+> >>>   security/selinux/include/classmap.h           |  2 +
+> >>>   .../selftests/bpf/prog_tests/deny_namespace.c | 88
+> >>> +++++++++++++++++++
+> >>>   .../selftests/bpf/progs/test_deny_namespace.c | 39 ++++++++
+> >>>   10 files changed, 160 insertions(+)
+> >>>   create mode 100644
+> >>> tools/testing/selftests/bpf/prog_tests/deny_namespace.c
+> >>>   create mode 100644
+> >>> tools/testing/selftests/bpf/progs/test_deny_namespace.c
+> >>>
+> >>> -- 
+> >>> 2.30.2
+> >>>
+> >

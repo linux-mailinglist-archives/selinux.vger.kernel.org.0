@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34F6857CE88
+	by mail.lfdr.de (Postfix) with ESMTP id 82DD057CE89
 	for <lists+selinux@lfdr.de>; Thu, 21 Jul 2022 17:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231470AbiGUPFc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S231497AbiGUPFc (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Thu, 21 Jul 2022 11:05:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52460 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231514AbiGUPF2 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 21 Jul 2022 11:05:28 -0400
+        with ESMTP id S231503AbiGUPFa (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 21 Jul 2022 11:05:30 -0400
 Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E73103C
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE0A713CF6
         for <selinux@vger.kernel.org>; Thu, 21 Jul 2022 08:05:27 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id tk8so3657729ejc.7
+Received: by mail-ej1-x62f.google.com with SMTP id va17so3725395ejb.0
         for <selinux@vger.kernel.org>; Thu, 21 Jul 2022 08:05:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=HPb0WywPmHCsodz3CE1XuwT7afX8HUvoV56PY6zvrcI=;
-        b=m1Rn83iwGLHtWcGM1JAJYUHGqCcaNNvd3Q820LBSEVsZ6bCvX804p1rEwRALfW+tG7
-         IJ3OH3OZn7+sqw4Rlgp1Uf9efR6DV+hcZ/OrV4/nLiueKR7b/XETbqBZqUsty0MVHpir
-         Q3tCRY3NQWQiX3Y8eBhWU4Tlu0nfKpMCb3byw/9FogtdoGE1B8nmPESm2u/DWjakVizP
-         hdPGSDsOR/hGI83zClFbIsLHuSAtsijw32Z3Z7siQ7hIiujgoYxR5KcgRZtAvtg2CjSQ
-         duK2f7Z9H1iR1/ck3OgyG/n7NpHhM6yJ4iR6Crd5EdhkQPj8YTxL+d9WNfutMR37tF3y
-         mB7w==
+        bh=yUyNwXeOZPUcZE3O3R/KJFa91mJuvG5xcxHODidsA7Y=;
+        b=C94A7wOWO9b/h+gOkZ4DhltStYkgGNdfXPOHvsAPQyhwFbuQeK9J4flDcgN2ZOL7Yo
+         qhqWyENsp3Ob4VSCnwtrwqSAcc9HVbZNqDCOsHFzK97oW2ok2hoYlUl7aQmCbQ6uj4zg
+         OVbltil64MgPz7BYV4wHt+CcuneLlYUTHsVNbn5tD3QUlYyZfic1jni7+9zIO8Dh2dwg
+         xfhi7kdzjs+7MCkUj7+OzDiZ3bw78sxNgqlA3hH3ZU2VakHtqN38dvo9XjbJD2hFW3+O
+         I/97CdZJxlGwFxW1S0UfYqdpbtUJBMbv8O3+KvUQF0JHxFFRODN+lRHlHzTq3Z+NMl20
+         6Jiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=HPb0WywPmHCsodz3CE1XuwT7afX8HUvoV56PY6zvrcI=;
-        b=TSTiyy0XfGxFP+PihGh4/t9PYvXQ8tianCy8Nu2kXoAjh9y4LIxXhb++qDAbVSvqoj
-         RqUDHUMD7DKZnYi4K94g7noYi8rQ/ujoAPOYYkt21pjWR8hvFaDq3iM+Z//vNW8j3wAC
-         HULumdNIwR+w20wyFSbP7Ja1xJF/aE6HcTx2HoUZy43TVn/m3/icWZcO7lvYMoTe6Y+B
-         iky3jW4gvRqbF5CMX4euoTm+0WRDhKmUAQt+1HULNJPqcZ1vvCpg/bMQyJLpuOm+fC96
-         IBnaUN6nUw/Fd28fipVQebVY1yRbM982hInkl8v1YxGrWHkCISoLQg6mwuauG1Cauiwl
-         x+4Q==
-X-Gm-Message-State: AJIora/rNF6oRjRCt6oMyL4kuSwNLpa+lMiUIiTzYj6WZX9Mg2KtqxRH
-        KogXfri3ow6LjLj8ZnVvl2orlnfCELTRtg==
-X-Google-Smtp-Source: AGRyM1tH7nIcO4wbTlABBwAVepw8iJg5/ziMHkF2U5xEXvg5jqebKCpI1VP2VeTnZDIPazlwt0i9bg==
-X-Received: by 2002:a17:907:2d12:b0:72b:67fb:89a5 with SMTP id gs18-20020a1709072d1200b0072b67fb89a5mr39709219ejc.507.1658415925479;
-        Thu, 21 Jul 2022 08:05:25 -0700 (PDT)
+        bh=yUyNwXeOZPUcZE3O3R/KJFa91mJuvG5xcxHODidsA7Y=;
+        b=N1X7rWqtc3gW9wdMZVJbXK4oX7OfWuP3XY7GGlILjfbWKLmUJ15C9udmQx5lsap9R1
+         Yzp7u6th3+BT63N15Ne/NivJC3c74D0zppK/vGFXXI3K6c9t9qdssMqfovNP9blvRyVt
+         p9ORKV7qg1KDO6pY/YAFeVNnXDyPui0I9FVfBNaN0dLraF1b3tm7Q8OoOgmxvRYc11Vg
+         fpnQ8u9d0cWQEaLRjJT49Bsv39F+9s/5xe7vZ8sLNG7+upK6y52/YOY/yEf/V/goJlnT
+         vPR4zaAzSHodtLTl896i8HYtKugv7SAbqgCLUYhh1I0FEH1Gi10rNho0pIzKSTUZJYXP
+         vUBQ==
+X-Gm-Message-State: AJIora+Zd6t4OFhJnadXNlXIntKc1rBNDM7kuvBvdVrz9H5CCUXeXEFD
+        WWQ1yH1UN/7q6yIKswj8mCezDr+Ei2pCIg==
+X-Google-Smtp-Source: AGRyM1u00JzAxnbbDGLNwet/F7hr/dTXRWns+Vv3bRJQcVsYoduaA3AigUL28J6gKjjlIze+6BHe8g==
+X-Received: by 2002:a17:906:9c84:b0:6e0:7c75:6f01 with SMTP id fj4-20020a1709069c8400b006e07c756f01mr41603719ejc.103.1658415926219;
+        Thu, 21 Jul 2022 08:05:26 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-000-209-027.77.0.pool.telefonica.de. [77.0.209.27])
-        by smtp.gmail.com with ESMTPSA id s7-20020aa7c547000000b0043a1255bc68sm1120992edr.94.2022.07.21.08.05.24
+        by smtp.gmail.com with ESMTPSA id s7-20020aa7c547000000b0043a1255bc68sm1120992edr.94.2022.07.21.08.05.25
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 21 Jul 2022 08:05:25 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v3 5/8] libsepol/tests: add test for segregate attributes
-Date:   Thu, 21 Jul 2022 17:05:12 +0200
-Message-Id: <20220721150515.19843-5-cgzones@googlemail.com>
+Subject: [PATCH v3 6/8] libsepol/cil: add support for segregate attributes
+Date:   Thu, 21 Jul 2022 17:05:13 +0200
+Message-Id: <20220721150515.19843-6-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220721150515.19843-1-cgzones@googlemail.com>
 References: <20220721150515.19843-1-cgzones@googlemail.com>
@@ -69,461 +69,703 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+Support the compile time constraint with the following syntax:
+
+    (segregateattributes (attr1 attr2 [...]))
+
+and reports like:
+
+    ...
+    Qualifying Names
+    Compile post process
+    Building policy binary
+    Checking Neverallows
+    Checking Segregate Attributes
+    Segregate Attributes violation, type test_type associated with attributes attr1 attr2
+    Checking User Bounds
+    Checking Role Bounds
+    Checking Type Bounds
+    Failed to generate binary
+    Failed to build policydb
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/tests/libsepol-tests.c               |   2 +
- .../tests/policies/test-sattrs/single.conf    |  87 ++++++++
- .../policies/test-sattrs/split_base.conf      |  53 +++++
- .../policies/test-sattrs/split_module1.conf   |   9 +
- .../policies/test-sattrs/split_module2.conf   |   9 +
- .../policies/test-sattrs/split_module3.conf   |   9 +
- libsepol/tests/test-segregateattributes.c     | 197 ++++++++++++++++++
- libsepol/tests/test-segregateattributes.h     |  10 +
- 8 files changed, 376 insertions(+)
- create mode 100644 libsepol/tests/policies/test-sattrs/single.conf
- create mode 100644 libsepol/tests/policies/test-sattrs/split_base.conf
- create mode 100644 libsepol/tests/policies/test-sattrs/split_module1.conf
- create mode 100644 libsepol/tests/policies/test-sattrs/split_module2.conf
- create mode 100644 libsepol/tests/policies/test-sattrs/split_module3.conf
- create mode 100644 libsepol/tests/test-segregateattributes.c
- create mode 100644 libsepol/tests/test-segregateattributes.h
+ libsepol/cil/src/cil.c             | 17 +++++++
+ libsepol/cil/src/cil_binary.c      | 75 ++++++++++++++++++++++++++++++
+ libsepol/cil/src/cil_build_ast.c   | 58 +++++++++++++++++++++++
+ libsepol/cil/src/cil_build_ast.h   |  2 +
+ libsepol/cil/src/cil_copy_ast.c    | 18 +++++++
+ libsepol/cil/src/cil_flavor.h      |  1 +
+ libsepol/cil/src/cil_internal.h    |  8 ++++
+ libsepol/cil/src/cil_policy.c      | 26 +++++++++++
+ libsepol/cil/src/cil_reset_ast.c   |  8 ++++
+ libsepol/cil/src/cil_resolve_ast.c | 38 +++++++++++++++
+ libsepol/cil/src/cil_resolve_ast.h |  1 +
+ libsepol/cil/src/cil_write_ast.c   | 11 +++++
+ libsepol/src/kernel_to_cil.c       | 32 +++++++++++++
+ secilc/docs/README.md              |  1 +
+ secilc/docs/cil_type_statements.md | 50 ++++++++++++++++++++
+ 15 files changed, 346 insertions(+)
 
-diff --git a/libsepol/tests/libsepol-tests.c b/libsepol/tests/libsepol-tests.c
-index dc8fd5ce..989c7cd3 100644
---- a/libsepol/tests/libsepol-tests.c
-+++ b/libsepol/tests/libsepol-tests.c
-@@ -23,6 +23,7 @@
- #include "test-expander.h"
- #include "test-deps.h"
- #include "test-downgrade.h"
-+#include "test-segregateattributes.h"
+diff --git a/libsepol/cil/src/cil.c b/libsepol/cil/src/cil.c
+index 38edcf8e..cc6adb90 100644
+--- a/libsepol/cil/src/cil.c
++++ b/libsepol/cil/src/cil.c
+@@ -225,6 +225,7 @@ char *CIL_KEY_SRC_CIL;
+ char *CIL_KEY_SRC_HLL_LMS;
+ char *CIL_KEY_SRC_HLL_LMX;
+ char *CIL_KEY_SRC_HLL_LME;
++char *CIL_KEY_SEGREGATEATTRIBUTES;
  
- #include <CUnit/Basic.h>
- #include <CUnit/Console.h>
-@@ -69,6 +70,7 @@ static bool do_tests(int interactive, int verbose)
- 	DECLARE_SUITE(expander);
- 	DECLARE_SUITE(deps);
- 	DECLARE_SUITE(downgrade);
-+	DECLARE_SUITE(sattrs);
+ static void cil_init_keys(void)
+ {
+@@ -394,6 +395,7 @@ static void cil_init_keys(void)
+ 	CIL_KEY_SRC_HLL_LMS = cil_strpool_add("lms");
+ 	CIL_KEY_SRC_HLL_LMX = cil_strpool_add("lmx");
+ 	CIL_KEY_SRC_HLL_LME = cil_strpool_add("lme");
++	CIL_KEY_SEGREGATEATTRIBUTES = cil_strpool_add("segregateattributes");
+ }
  
- 	if (verbose)
- 		CU_basic_set_mode(CU_BRM_VERBOSE);
-diff --git a/libsepol/tests/policies/test-sattrs/single.conf b/libsepol/tests/policies/test-sattrs/single.conf
-new file mode 100644
-index 00000000..1666f842
---- /dev/null
-+++ b/libsepol/tests/policies/test-sattrs/single.conf
-@@ -0,0 +1,87 @@
-+class process
-+class blk_file
-+class chr_file
-+class dir
-+class fifo_file
-+class file
-+class lnk_file
-+class sock_file
+ void cil_db_init(struct cil_db **db)
+@@ -426,6 +428,7 @@ void cil_db_init(struct cil_db **db)
+ 	cil_list_init(&(*db)->userprefixes, CIL_LIST_ITEM);
+ 	cil_list_init(&(*db)->selinuxusers, CIL_LIST_ITEM);
+ 	cil_list_init(&(*db)->names, CIL_LIST_ITEM);
++	cil_list_init(&(*db)->segregateattributes, CIL_LIST_ITEM);
+ 
+ 	cil_type_init(&(*db)->selftype);
+ 	(*db)->selftype->datum.name = CIL_KEY_SELF;
+@@ -481,6 +484,7 @@ void cil_db_destroy(struct cil_db **db)
+ 	cil_list_destroy(&(*db)->userprefixes, CIL_FALSE);
+ 	cil_list_destroy(&(*db)->selinuxusers, CIL_FALSE);
+ 	cil_list_destroy(&(*db)->names, CIL_TRUE);
++	cil_list_destroy(&(*db)->segregateattributes, CIL_FALSE);
+ 
+ 	cil_destroy_type((*db)->selftype);
+ 
+@@ -1005,6 +1009,9 @@ void cil_destroy_data(void **data, enum cil_flavor flavor)
+ 	case CIL_SRC_INFO:
+ 		cil_destroy_src_info(*data);
+ 		break;
++	case CIL_SEGREGATEATTRIBUTES:
++		cil_destroy_segregateattributes(*data);
++		break;
+ 	case CIL_OP:
+ 	case CIL_CONS_OPERAND:
+ 		break;
+@@ -1413,6 +1420,8 @@ const char * cil_node_to_string(struct cil_tree_node *node)
+ 		return CIL_KEY_CONS_H1;
+ 	case CIL_CONS_H2:
+ 		return CIL_KEY_CONS_H2;
++	case CIL_SEGREGATEATTRIBUTES:
++		return CIL_KEY_SEGREGATEATTRIBUTES;
+ 
+ 	default:
+ 		break;
+@@ -2904,3 +2913,11 @@ void cil_src_info_init(struct cil_src_info **info)
+ 	(*info)->hll_line = 0;
+ 	(*info)->path = NULL;
+ }
 +
-+sid kernel
-+sid security
-+sid unlabeled
-+sid file
-+sid port
-+sid netif
-+sid netmsg
-+sid node
-+sid devnull
-+
-+class process { dyntransition transition }
-+class file { write }
-+
-+ifdef(`enable_mls',`
-+sensitivity s0;
-+dominance { s0 }
-+category c0; category c1; category c2; category c3;
-+category c4; category c5; category c6; category c7;
-+category c8; category c9; category c10; category c11;
-+category c12; category c13; category c14; category c15;
-+category c16; category c17; category c18; category c19;
-+category c20; category c21; category c22; category c23;
-+
-+level s0:c0.c23;
-+
-+mlsconstrain file { write } ( h1 dom h2 );
-+')
-+
-+#
-+# Test start
-+#
-+
-+attribute test1_attr1;
-+attribute test1_attr2;
-+type test1_type;
-+typeattribute test1_type test1_attr1;
-+typeattribute test1_type test1_attr2;
-+segregate_attributes test1_attr1, test1_attr2;
-+
-+
-+attribute test2_attr1;
-+attribute test2_attr2;
-+attribute test2_attr3;
-+type test2_type1;
-+type test2_type2;
-+type test2_type3;
-+type test2_type4;
-+typeattribute test2_type1 test2_attr1;
-+typeattribute test2_type1 test2_attr2;
-+typeattribute test2_type2 test2_attr1;
-+typeattribute test2_type2 test2_attr3;
-+typeattribute test2_type3 test2_attr2;
-+typeattribute test2_type3 test2_attr3;
-+typeattribute test2_type4 test2_attr1;
-+typeattribute test2_type4 test2_attr2;
-+typeattribute test2_type4 test2_attr3;
-+segregate_attributes test2_attr1, test2_attr2, test2_attr3;
-+
-+#
-+# Test End
-+#
-+
-+type sys_isid;
-+allow sys_isid self : process { dyntransition transition };
-+role sys_role;
-+role sys_role types sys_isid;
-+gen_user(sys_user,, sys_role, s0, s0 - s0:c0.c23)
-+sid kernel gen_context(sys_user:sys_role:sys_isid, s0)
-+sid security gen_context(sys_user:sys_role:sys_isid, s0)
-+sid unlabeled gen_context(sys_user:sys_role:sys_isid, s0)
-+sid file gen_context(sys_user:sys_role:sys_isid, s0)
-+sid port gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netif gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netmsg gen_context(sys_user:sys_role:sys_isid, s0)
-+sid node gen_context(sys_user:sys_role:sys_isid, s0)
-+sid devnull gen_context(sys_user:sys_role:sys_isid, s0)
-+fs_use_trans devpts gen_context(sys_user:sys_role:sys_isid, s0);
-+fs_use_trans devtmpfs gen_context(sys_user:sys_role:sys_isid, s0);
-diff --git a/libsepol/tests/policies/test-sattrs/split_base.conf b/libsepol/tests/policies/test-sattrs/split_base.conf
-new file mode 100644
-index 00000000..6fba8cdd
---- /dev/null
-+++ b/libsepol/tests/policies/test-sattrs/split_base.conf
-@@ -0,0 +1,53 @@
-+class process
-+class blk_file
-+class chr_file
-+class dir
-+class fifo_file
-+class file
-+class lnk_file
-+class sock_file
-+
-+sid kernel
-+sid security
-+sid unlabeled
-+sid file
-+sid port
-+sid netif
-+sid netmsg
-+sid node
-+sid devnull
-+
-+class process { dyntransition transition }
-+class file { write }
-+
-+ifdef(`enable_mls',`
-+sensitivity s0;
-+dominance { s0 }
-+category c0; category c1; category c2; category c3;
-+category c4; category c5; category c6; category c7;
-+category c8; category c9; category c10; category c11;
-+category c12; category c13; category c14; category c15;
-+category c16; category c17; category c18; category c19;
-+category c20; category c21; category c22; category c23;
-+
-+level s0:c0.c23;
-+
-+mlsconstrain file { write } ( h1 dom h2 );
-+')
-+
-+type sys_isid;
-+allow sys_isid self : process { dyntransition transition };
-+role sys_role;
-+role sys_role types sys_isid;
-+gen_user(sys_user,, sys_role, s0, s0 - s0:c0.c23)
-+sid kernel gen_context(sys_user:sys_role:sys_isid, s0)
-+sid security gen_context(sys_user:sys_role:sys_isid, s0)
-+sid unlabeled gen_context(sys_user:sys_role:sys_isid, s0)
-+sid file gen_context(sys_user:sys_role:sys_isid, s0)
-+sid port gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netif gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netmsg gen_context(sys_user:sys_role:sys_isid, s0)
-+sid node gen_context(sys_user:sys_role:sys_isid, s0)
-+sid devnull gen_context(sys_user:sys_role:sys_isid, s0)
-+fs_use_trans devpts gen_context(sys_user:sys_role:sys_isid, s0);
-+fs_use_trans devtmpfs gen_context(sys_user:sys_role:sys_isid, s0);
-diff --git a/libsepol/tests/policies/test-sattrs/split_module1.conf b/libsepol/tests/policies/test-sattrs/split_module1.conf
-new file mode 100644
-index 00000000..52b5f248
---- /dev/null
-+++ b/libsepol/tests/policies/test-sattrs/split_module1.conf
-@@ -0,0 +1,9 @@
-+module sattrs_test_1 1.0;
-+
-+require {
-+	type test_type_t;
-+}
-+
-+attribute attr1;
-+
-+typeattribute test_type_t attr1;
-diff --git a/libsepol/tests/policies/test-sattrs/split_module2.conf b/libsepol/tests/policies/test-sattrs/split_module2.conf
-new file mode 100644
-index 00000000..6b6128f7
---- /dev/null
-+++ b/libsepol/tests/policies/test-sattrs/split_module2.conf
-@@ -0,0 +1,9 @@
-+module sattrs_test_2 1.0;
-+
-+require {
-+	type test_type_t;
-+}
-+
-+attribute attr2;
-+
-+typeattribute test_type_t attr2;
-diff --git a/libsepol/tests/policies/test-sattrs/split_module3.conf b/libsepol/tests/policies/test-sattrs/split_module3.conf
-new file mode 100644
-index 00000000..050b9228
---- /dev/null
-+++ b/libsepol/tests/policies/test-sattrs/split_module3.conf
-@@ -0,0 +1,9 @@
-+module sattrs_test_3 1.0;
-+
-+require {
-+	attribute attr1, attr2;
-+}
-+
-+type test_type_t;
-+
-+segregate_attributes attr1, attr2;
-diff --git a/libsepol/tests/test-segregateattributes.c b/libsepol/tests/test-segregateattributes.c
-new file mode 100644
-index 00000000..4a21fb06
---- /dev/null
-+++ b/libsepol/tests/test-segregateattributes.c
-@@ -0,0 +1,197 @@
-+#define _GNU_SOURCE
-+
-+#include "test-segregateattributes.h"
-+
-+#include "helpers.h"
-+#include "test-common.h"
-+
-+#include <sepol/debug.h>
-+#include <sepol/policydb/link.h>
-+#include <sepol/policydb/expand.h>
-+
-+#include <stdio.h>
-+#include <stdarg.h>
-+
-+extern int mls;
-+
-+int sattrs_test_init(void)
++void cil_segregateattributes_init(struct cil_segregateattributes **sattrs)
 +{
-+	return 0;
++	*sattrs = cil_malloc(sizeof(**sattrs));
++
++	(*sattrs)->str_expr = NULL;
++	(*sattrs)->datum_expr = NULL;
 +}
-+
-+int sattrs_test_cleanup(void)
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index 40615db2..0301d739 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -3818,6 +3818,38 @@ exit:
+ 	return SEPOL_ERR;
+ }
+ 
++static int cil_segregateattributes_to_policydb(policydb_t *pdb, const struct cil_segregateattributes *sattrs)
 +{
-+	return 0;
-+}
++	segregate_attributes_rule_t *sattr;
++	struct cil_list_item *curr;
++	type_datum_t *sepol_type;
++	int rc = SEPOL_ERR;
 +
-+static struct msg_list {
-+	char *msg;
-+	struct msg_list *next;
-+} *messages;
++	sattr = cil_malloc(sizeof(segregate_attributes_rule_t));
++	ebitmap_init(&sattr->attrs);
 +
-+static void messages_clean(void)
-+{
-+	while (messages) {
-+		struct msg_list *n = messages->next;
-+		free(messages->msg);
-+		free(messages);
-+		messages = n;
-+	}
-+}
++	cil_list_for_each(curr, sattrs->datum_expr) {
++		rc = __cil_get_sepol_type_datum(pdb, DATUM(curr->data), &sepol_type);
++		if (rc != SEPOL_OK) goto exit;
 +
-+static void messages_check(unsigned count, const char *const expected[count])
-+{
-+	unsigned i;
-+	const struct msg_list *m = messages;
-+
-+	for (i = 0; i < count; i++, m = m->next) {
-+		if (!m) {
-+			CU_FAIL("less messages than expected");
-+			return;
-+		}
-+
-+		if (strcmp(expected[i], m->msg) != 0) {
-+			CU_FAIL("messages differs from expected");
-+			fprintf(stderr, "\n<expected: '%s', got: '%s'>\n", expected[i], m->msg);
++		if (ebitmap_set_bit(&sattr->attrs, sepol_type->s.value - 1, 1)) {
++			goto exit;
 +		}
 +	}
 +
-+	if (m) {
-+		CU_FAIL("more messages than expected");
-+		fprintf(stderr, "\n<next message: '%s'>\n", m->msg);
++	sattr->next = pdb->segregate_attributes;
++	pdb->segregate_attributes = sattr;
++
++	return SEPOL_OK;
++
++exit:
++	if (sattr) {
++		ebitmap_destroy(&sattr->attrs);
++		free(sattr);
 +	}
++	return rc;
 +}
 +
-+#ifdef __GNUC__
-+__attribute__ ((format(printf, 3, 4)))
-+#endif
-+static void msg_handler(void *varg __attribute__ ((unused)),
-+			sepol_handle_t * handle,
-+			const char *fmt, ...)
+ static int __cil_node_to_policydb(struct cil_tree_node *node, void *extra_args)
+ {
+ 	int rc = SEPOL_OK;
+@@ -3960,6 +3992,9 @@ static int __cil_node_to_policydb(struct cil_tree_node *node, void *extra_args)
+ 		case CIL_DEFAULTRANGE:
+ 			rc = cil_defaultrange_to_policydb(pdb, node->data);
+ 			break;
++		case CIL_SEGREGATEATTRIBUTES:
++			rc = cil_segregateattributes_to_policydb(pdb, node->data);
++			break;
+ 		default:
+ 			break;
+ 		}
+@@ -4890,6 +4925,42 @@ exit:
+ 	return rc;
+ }
+ 
++static int cil_check_segregateattributes(const policydb_t *pdb, int *violation)
 +{
-+	char *msg;
-+	va_list ap;
++	const segregate_attributes_rule_t *sattr;
 +
-+	va_start(ap, fmt);
-+	vasprintf(&msg, fmt, ap);
-+	va_end(ap);
++	for (sattr = pdb->segregate_attributes; sattr; sattr = sattr->next) {
++		ebitmap_node_t *first_node;
++		unsigned int first_bit;
 +
-+	struct msg_list *new = malloc(sizeof(struct msg_list));
-+	new->msg = msg;
-+	new->next = messages;
-+	messages = new;
++		ebitmap_for_each_positive_bit(&sattr->attrs, first_node, first_bit) {
++			ebitmap_node_t *second_node;
++			unsigned int second_bit;
++
++			ebitmap_for_each_positive_bit_after(&sattr->attrs, second_node, second_bit, first_node, first_bit) {
++				ebitmap_t attr_union;
++				ebitmap_node_t *type_node;
++				unsigned int type_bit;
++
++				if (ebitmap_and(&attr_union, &pdb->attr_type_map[first_bit], &pdb->attr_type_map[second_bit]))
++					return SEPOL_ERR;
++
++				ebitmap_for_each_positive_bit(&attr_union, type_node, type_bit) {
++					cil_log(CIL_ERR, "Segregate Attributes violation, type %s associated with attributes %s and %s\n",
++					                 pdb->p_type_val_to_name[type_bit],
++					                 pdb->p_type_val_to_name[first_bit],
++					                 pdb->p_type_val_to_name[second_bit]);
++					*violation = CIL_TRUE;
++				}
++
++				ebitmap_destroy(&attr_union);
++			}
++		}
++	}
++
++	return SEPOL_OK;
 +}
 +
-+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(*a))
+ static struct cil_list *cil_classperms_from_sepol(policydb_t *pdb, uint16_t class, uint32_t data, struct cil_class *class_value_to_cil[], struct cil_perm **perm_value_to_cil[])
+ {
+ 	struct cil_classperms *cp;
+@@ -5160,6 +5231,10 @@ int cil_binary_create_allocated_pdb(const struct cil_db *db, sepol_policydb_t *p
+ 		rc = cil_check_neverallows(db, pdb, neverallows, &violation);
+ 		if (rc != SEPOL_OK) goto exit;
+ 
++		cil_log(CIL_INFO, "Checking Segregate Attributes\n");
++		rc = cil_check_segregateattributes(pdb, &violation);
++		if (rc != SEPOL_OK) goto exit;
 +
-+static void test_sattrs_single(void)
+ 		cil_log(CIL_INFO, "Checking User Bounds\n");
+ 		rc = bounds_check_users(NULL, pdb);
+ 		if (rc) {
+diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
+index 4177c9f6..611aade8 100644
+--- a/libsepol/cil/src/cil_build_ast.c
++++ b/libsepol/cil/src/cil_build_ast.c
+@@ -6164,6 +6164,62 @@ void cil_destroy_src_info(struct cil_src_info *info)
+ 	free(info);
+ }
+ 
++int cil_gen_segregateattributes(struct cil_db *db, struct cil_tree_node *parse_current, struct cil_tree_node *ast_node)
 +{
-+	policydb_t basemod, base_expanded;
-+	sepol_handle_t *handle;
-+	const char *const expected_messages[] = {
-+		"7 Segregate Attributes failures occurred",
-+		"Segregate Attributes violation, type test1_type associated with attributes test1_attr1 and test1_attr2",
-+		"Segregate Attributes violation, type test2_type3 associated with attributes test2_attr2 and test2_attr3",
-+		"Segregate Attributes violation, type test2_type4 associated with attributes test2_attr2 and test2_attr3",
-+		"Segregate Attributes violation, type test2_type2 associated with attributes test2_attr1 and test2_attr3",
-+		"Segregate Attributes violation, type test2_type4 associated with attributes test2_attr1 and test2_attr3",
-+		"Segregate Attributes violation, type test2_type1 associated with attributes test2_attr1 and test2_attr2",
-+		"Segregate Attributes violation, type test2_type4 associated with attributes test2_attr1 and test2_attr2",
++	enum cil_syntax syntax[] = {
++		CIL_SYN_STRING,
++		CIL_SYN_LIST,
++		CIL_SYN_END
 +	};
++	size_t syntax_len = sizeof(syntax)/sizeof(*syntax);
++	struct cil_segregateattributes *sattrs = NULL;
++	int rc = SEPOL_ERR;
 +
-+	if (policydb_init(&base_expanded))
-+		CU_FAIL_FATAL("Failed to initialize policy");
++	if (db == NULL || parse_current == NULL || ast_node == NULL) {
++		goto exit;
++	}
 +
-+	if (test_load_policy(&basemod, POLICY_BASE, mls, "test-sattrs", "single.conf"))
-+		CU_FAIL_FATAL("Failed to load policy");
++	rc = __cil_verify_syntax(parse_current, syntax, syntax_len);
++	if (rc != SEPOL_OK) {
++		goto exit;
++	}
 +
-+	if (link_modules(NULL, &basemod, NULL, 0, 0))
-+		CU_FAIL_FATAL("Failed to link base module");
++	cil_segregateattributes_init(&sattrs);
 +
-+	if (expand_module(NULL, &basemod, &base_expanded, 0, 0))
-+		CU_FAIL_FATAL("Failed to expand policy");
++	rc = cil_gen_expr(parse_current->next, CIL_TYPEATTRIBUTE, &sattrs->str_expr);
++	if (rc != SEPOL_OK) {
++		goto exit;
++	}
 +
-+	if ((handle = sepol_handle_create()) == NULL)
-+		CU_FAIL_FATAL("Failed to initialize handle");
++	/* require at least two attributes */
++	if (sattrs->str_expr->head == sattrs->str_expr->tail) {
++		rc = SEPOL_ERR;
++		goto exit;
++	}
 +
-+	sepol_msg_set_callback(handle, msg_handler, NULL);
++	ast_node->data = sattrs;
++	ast_node->flavor = CIL_SEGREGATEATTRIBUTES;
 +
-+	if (check_assertions(handle, &base_expanded, NULL) != -1)
-+		CU_FAIL("Assertions did not trigger");
++	return SEPOL_OK;
 +
-+	messages_check(ARRAY_SIZE(expected_messages), expected_messages);
-+
-+	sepol_handle_destroy(handle);
-+	messages_clean();
-+	policydb_destroy(&basemod);
-+	policydb_destroy(&base_expanded);
++exit:
++	cil_tree_log(parse_current, CIL_ERR, "Bad segregate attributes declaration");
++	cil_destroy_segregateattributes(sattrs);
++	return rc;
 +}
 +
-+#define NUM_MODS 3
-+
-+static void test_sattrs_split(void)
++void cil_destroy_segregateattributes(struct cil_segregateattributes *sattrs)
 +{
-+	policydb_t basemod, base_expanded;
-+	policydb_t *modules[NUM_MODS];
-+	const char *policies[NUM_MODS] = { "split_module1.conf", "split_module2.conf", "split_module3.conf" };
-+	sepol_handle_t *handle;
-+	const char *const expected_messages[] = {
-+		"1 Segregate Attributes failures occurred",
-+		"Segregate Attributes violation, type test_type_t associated with attributes attr1 and attr2",
-+	};
-+	unsigned i;
-+
-+	if (policydb_init(&base_expanded))
-+		CU_FAIL_FATAL("Failed to initialize policy");
-+
-+	if (test_load_policy(&basemod, POLICY_BASE, mls, "test-sattrs", "split_base.conf"))
-+		CU_FAIL_FATAL("Failed to load policy");
-+
-+	for (i = 0; i < NUM_MODS; i++) {
-+		modules[i] = calloc(1, sizeof(*modules[i]));
-+		if (!modules[i])
-+			CU_FAIL_FATAL("Failed to allocate module");
-+
-+		if (test_load_policy(modules[i], POLICY_MOD, mls, "test-sattrs", policies[i]))
-+			CU_FAIL_FATAL("Failed to load module");
++	if (sattrs == NULL) {
++		return;
 +	}
 +
-+	if (link_modules(NULL, &basemod, modules, 3, 0))
-+		CU_FAIL_FATAL("Failed to link base module");
++	cil_list_destroy(&sattrs->str_expr, CIL_TRUE);
++	cil_list_destroy(&sattrs->datum_expr, CIL_FALSE);
 +
-+	if (expand_module(NULL, &basemod, &base_expanded, 0, 0))
-+		CU_FAIL_FATAL("Failed to expand policy");
-+
-+	if ((handle = sepol_handle_create()) == NULL)
-+		CU_FAIL_FATAL("Failed to initialize handle");
-+
-+	sepol_msg_set_callback(handle, msg_handler, NULL);
-+
-+	if (check_assertions(handle, &base_expanded, NULL) != -1)
-+		CU_FAIL("Assertions did not trigger");
-+
-+	messages_check(ARRAY_SIZE(expected_messages), expected_messages);
-+
-+	sepol_handle_destroy(handle);
-+	messages_clean();
-+	for (i = 0; i < NUM_MODS; i++) {
-+		policydb_destroy(modules[i]);
-+		free(modules[i]);
-+	}
-+	policydb_destroy(&basemod);
-+	policydb_destroy(&base_expanded);
++	free(sattrs);
 +}
 +
-+int sattrs_add_tests(CU_pSuite suite)
+ static int check_for_illegal_statement(struct cil_tree_node *parse_current, struct cil_args_build *args)
+ {
+ 	if (args->tunif != NULL) {
+@@ -6455,6 +6511,8 @@ static struct cil_tree_node * parse_statement(struct cil_db *db, struct cil_tree
+ 		rc = cil_gen_mls(parse_current, new_ast_node);
+ 	} else if (parse_current->data == CIL_KEY_SRC_INFO) {
+ 		rc = cil_gen_src_info(parse_current, new_ast_node);
++	} else if (parse_current->data == CIL_KEY_SEGREGATEATTRIBUTES) {
++		rc = cil_gen_segregateattributes(db, parse_current, new_ast_node);
+ 	} else {
+ 		cil_log(CIL_ERR, "Error: Unknown keyword %s\n", (char *)parse_current->data);
+ 		rc = SEPOL_ERR;
+diff --git a/libsepol/cil/src/cil_build_ast.h b/libsepol/cil/src/cil_build_ast.h
+index fd9053ce..d815a22f 100644
+--- a/libsepol/cil/src/cil_build_ast.h
++++ b/libsepol/cil/src/cil_build_ast.h
+@@ -225,6 +225,8 @@ int cil_gen_defaultrange(struct cil_tree_node *parse_current, struct cil_tree_no
+ void cil_destroy_defaultrange(struct cil_defaultrange *def);
+ int cil_gen_src_info(struct cil_tree_node *parse_current, struct cil_tree_node *ast_node);
+ void cil_destroy_src_info(struct cil_src_info *info);
++int cil_gen_segregateattributes(struct cil_db *db, struct cil_tree_node *parse_current, struct cil_tree_node *ast_node);
++void cil_destroy_segregateattributes(struct cil_segregateattributes *sattrs);
+ 
+ int cil_fill_cats(struct cil_tree_node *curr, struct cil_cats **cats);
+ void cil_destroy_cats(struct cil_cats *cats);
+diff --git a/libsepol/cil/src/cil_copy_ast.c b/libsepol/cil/src/cil_copy_ast.c
+index 17f05021..e0f3ba4f 100644
+--- a/libsepol/cil/src/cil_copy_ast.c
++++ b/libsepol/cil/src/cil_copy_ast.c
+@@ -1697,6 +1697,21 @@ static int cil_copy_src_info(__attribute__((unused)) struct cil_db *db, void *da
+ 	return SEPOL_OK;
+ }
+ 
++static int cil_copy_segregateattributes(__attribute__((unused)) struct cil_db *db, void *data, void **copy, __attribute__((unused)) symtab_t *symtab)
 +{
-+	if (NULL == CU_add_test(suite, "sattrs_single", test_sattrs_single)) {
-+		CU_cleanup_registry();
-+		return CU_get_error();
++	struct cil_segregateattributes *orig = data;
++	struct cil_segregateattributes *new = NULL;
++
++	cil_segregateattributes_init(&new);
++
++	cil_copy_expr(db, orig->str_expr, &new->str_expr);
++	cil_copy_expr(db, orig->datum_expr, &new->datum_expr);
++
++	*copy = new;
++
++	return SEPOL_OK;
++}
++
+ static int __cil_copy_node_helper(struct cil_tree_node *orig, uint32_t *finished, void *extra_args)
+ {
+ 	int rc = SEPOL_ERR;
+@@ -1990,6 +2005,9 @@ static int __cil_copy_node_helper(struct cil_tree_node *orig, uint32_t *finished
+ 	case CIL_SRC_INFO:
+ 		copy_func = &cil_copy_src_info;
+ 		break;
++	case CIL_SEGREGATEATTRIBUTES:
++		copy_func = &cil_copy_segregateattributes;
++		break;
+ 	default:
+ 		goto exit;
+ 	}
+diff --git a/libsepol/cil/src/cil_flavor.h b/libsepol/cil/src/cil_flavor.h
+index c2f0cee7..ffbd5877 100644
+--- a/libsepol/cil/src/cil_flavor.h
++++ b/libsepol/cil/src/cil_flavor.h
+@@ -115,6 +115,7 @@ enum cil_flavor {
+ 	CIL_SRC_INFO,
+ 	CIL_IBPKEYCON,
+ 	CIL_IBENDPORTCON,
++	CIL_SEGREGATEATTRIBUTES,
+ 
+ /*
+  *          boolean  constraint  set  catset
+diff --git a/libsepol/cil/src/cil_internal.h b/libsepol/cil/src/cil_internal.h
+index a7604762..e22c2f87 100644
+--- a/libsepol/cil/src/cil_internal.h
++++ b/libsepol/cil/src/cil_internal.h
+@@ -242,6 +242,7 @@ extern char *CIL_KEY_SRC_CIL;
+ extern char *CIL_KEY_SRC_HLL_LMS;
+ extern char *CIL_KEY_SRC_HLL_LMX;
+ extern char *CIL_KEY_SRC_HLL_LME;
++extern char *CIL_KEY_SEGREGATEATTRIBUTES;
+ 
+ /*
+ 	Symbol Table Array Indices
+@@ -309,6 +310,7 @@ struct cil_db {
+ 	struct cil_list *userprefixes;
+ 	struct cil_list *selinuxusers;
+ 	struct cil_list *names;
++	struct cil_list *segregateattributes;
+ 	int num_types_and_attrs;
+ 	int num_classes;
+ 	int num_cats;
+@@ -975,6 +977,11 @@ struct cil_src_info {
+ 	char *path;
+ };
+ 
++struct cil_segregateattributes {
++	struct cil_list *str_expr;
++	struct cil_list *datum_expr;
++};
++
+ void cil_db_init(struct cil_db **db);
+ void cil_db_destroy(struct cil_db **db);
+ 
+@@ -1085,5 +1092,6 @@ void cil_mls_init(struct cil_mls **mls);
+ void cil_src_info_init(struct cil_src_info **info);
+ void cil_userattribute_init(struct cil_userattribute **attribute);
+ void cil_userattributeset_init(struct cil_userattributeset **attrset);
++void cil_segregateattributes_init(struct cil_segregateattributes **sattrs);
+ 
+ #endif
+diff --git a/libsepol/cil/src/cil_policy.c b/libsepol/cil/src/cil_policy.c
+index 7c543c47..36f6780d 100644
+--- a/libsepol/cil/src/cil_policy.c
++++ b/libsepol/cil/src/cil_policy.c
+@@ -69,6 +69,7 @@ enum cil_statement_list {
+ 	CIL_LIST_USER,
+ 	CIL_LIST_CONSTRAINT,
+ 	CIL_LIST_VALIDATETRANS,
++	CIL_LIST_SEGREGATEATTRIBUTES,
+ 	CIL_LIST_NUM_LISTS
+ };
+ 
+@@ -168,6 +169,9 @@ static int __cil_gather_statements_helper(struct cil_tree_node *node, uint32_t *
+ 	case CIL_VALIDATETRANS:
+ 		kind = CIL_LIST_VALIDATETRANS;
+ 		break;
++	case CIL_SEGREGATEATTRIBUTES:
++		kind = CIL_LIST_SEGREGATEATTRIBUTES;
++		break;
+ 	default:
+ 		break;
+ 	}
+@@ -1911,6 +1915,27 @@ static void cil_devicetreecons_to_policy(FILE *out, struct cil_sort *devicetreec
+ 	}
+ }
+ 
++static void cil_segregateattributes_to_policy(FILE *out, struct cil_list *sattrs_list)
++{
++	struct cil_list_item *curr_sattrs, *curr_attr;
++	struct cil_segregateattributes *sattrs;
++	int first = 1;
++
++	cil_list_for_each(curr_sattrs, sattrs_list) {
++		sattrs = curr_sattrs->data;
++		fprintf(out, "segregate_attriutes ");
++		cil_list_for_each(curr_attr, sattrs->datum_expr) {
++			if (!first) {
++				first = 0;
++			} else {
++				fprintf(out, ", ");
++			}
++			fprintf(out, "%s", DATUM(curr_attr->data)->fqn);
++		}
++		fprintf(out, ";\n");
 +	}
-+	if (NULL == CU_add_test(suite, "sattrs_split", test_sattrs_split)) {
-+		CU_cleanup_registry();
-+		return CU_get_error();
++}
++
+ void cil_gen_policy(FILE *out, struct cil_db *db)
+ {
+ 	unsigned i;
+@@ -1956,6 +1981,7 @@ void cil_gen_policy(FILE *out, struct cil_db *db)
+ 	cil_typebounds_to_policy(out, lists[CIL_LIST_TYPE]);
+ 	cil_typeattributes_to_policy(out, lists[CIL_LIST_TYPE], lists[CIL_LIST_TYPEATTRIBUTE]);
+ 	cil_te_rules_to_policy(out, head, db->mls);
++	cil_segregateattributes_to_policy(out, db->segregateattributes);
+ 
+ 	cil_roles_to_policy(out, lists[CIL_LIST_ROLE]);
+ 	cil_role_types_to_policy(out, lists[CIL_LIST_ROLE], lists[CIL_LIST_TYPE]);
+diff --git a/libsepol/cil/src/cil_reset_ast.c b/libsepol/cil/src/cil_reset_ast.c
+index 0864d7ef..c5ac83c8 100644
+--- a/libsepol/cil/src/cil_reset_ast.c
++++ b/libsepol/cil/src/cil_reset_ast.c
+@@ -475,6 +475,11 @@ static void cil_reset_booleanif(struct cil_booleanif *bif)
+ 	cil_list_destroy(&bif->datum_expr, CIL_FALSE);
+ }
+ 
++static void cil_reset_segregateattributes(struct cil_segregateattributes *sattrs)
++{
++	cil_list_destroy(&sattrs->datum_expr, CIL_FALSE);
++}
++
+ static int __cil_reset_node(struct cil_tree_node *node,  __attribute__((unused)) uint32_t *finished, __attribute__((unused)) void *extra_args)
+ {
+ 	switch (node->flavor) {
+@@ -630,6 +635,9 @@ static int __cil_reset_node(struct cil_tree_node *node,  __attribute__((unused))
+ 	case CIL_BOOLEANIF:
+ 		cil_reset_booleanif(node->data);
+ 		break;
++	case CIL_SEGREGATEATTRIBUTES:
++		cil_reset_segregateattributes(node->data);
++		break;
+ 	case CIL_TUNABLEIF:
+ 	case CIL_CALL:
+ 		break; /* Not effected by optional block disabling */
+diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
+index f5e22c97..36a96199 100644
+--- a/libsepol/cil/src/cil_resolve_ast.c
++++ b/libsepol/cil/src/cil_resolve_ast.c
+@@ -3265,6 +3265,7 @@ int cil_resolve_expr(enum cil_flavor expr_type, struct cil_list *str_expr, struc
+ 		sym_index = CIL_SYM_TUNABLES;
+ 		break;
+ 	case CIL_TYPE:
++	case CIL_TYPEATTRIBUTE:
+ 		sym_index = CIL_SYM_TYPES;
+ 		break;
+ 	case CIL_ROLE:
+@@ -3312,6 +3313,13 @@ int cil_resolve_expr(enum cil_flavor expr_type, struct cil_list *str_expr, struc
+ 			} else {
+ 				if (sym_index == CIL_SYM_TYPES && (expr_type == CIL_CONSTRAIN || expr_type == CIL_VALIDATETRANS)) {
+ 					cil_type_used(res_datum, CIL_ATTR_CONSTRAINT);
++				} else if (expr_type == CIL_SEGREGATEATTRIBUTES) {
++					if (FLAVOR(res_datum) != CIL_TYPEATTRIBUTE) {
++						cil_tree_log(parent, CIL_ERR, "Type or type alias not supported in segregate attributes declaration");
++						rc = SEPOL_ERR;
++						goto exit;
++					}
++					cil_type_used(res_datum, CIL_ATTR_NEVERALLOW);
+ 				}
+ 				cil_list_append(*datum_expr, CIL_DATUM, res_datum);
+ 			}
+@@ -3508,6 +3516,33 @@ exit:
+ 	return rc;
+ }
+ 
++int cil_resolve_segregateattributes(struct cil_tree_node *current, void *extra_args)
++{
++	struct cil_segregateattributes *sattrs = current->data;
++	struct cil_list_item *first, *second;
++	int rc;
++
++	rc = cil_resolve_expr(CIL_SEGREGATEATTRIBUTES, sattrs->str_expr, &sattrs->datum_expr, current, extra_args);
++	if (rc != SEPOL_OK) {
++		goto exit;
++	}
++
++	cil_list_for_each(first, sattrs->datum_expr) {
++		for (second = first->next; second; second = second->next) {
++			if (first->data == second->data) {
++				cil_tree_log(current, CIL_ERR, "Repeated attribute in segregate attributes declaration");
++				rc = SEPOL_ERR;
++				goto exit;
++			}
++		}
++	}
++
++	return SEPOL_OK;
++
++exit:
++	return rc;
++}
++
+ /*
+  * Degenerate inheritance leads to exponential growth of the policy
+  * It can take many forms, but here is one example.
+@@ -3888,6 +3923,9 @@ static int __cil_resolve_ast_node(struct cil_tree_node *node, void *extra_args)
+ 		case CIL_USERATTRIBUTESET:
+ 			rc = cil_resolve_userattributeset(node, args);
+ 			break;
++		case CIL_SEGREGATEATTRIBUTES:
++			rc = cil_resolve_segregateattributes(node, args);
++			break;
+ 		default:
+ 			break;
+ 		}
+diff --git a/libsepol/cil/src/cil_resolve_ast.h b/libsepol/cil/src/cil_resolve_ast.h
+index 1d971fd6..31594954 100644
+--- a/libsepol/cil/src/cil_resolve_ast.h
++++ b/libsepol/cil/src/cil_resolve_ast.h
+@@ -96,6 +96,7 @@ int cil_resolve_expr(enum cil_flavor expr_type, struct cil_list *str_expr, struc
+ int cil_resolve_boolif(struct cil_tree_node *current, void *extra_args);
+ int cil_evaluate_expr(struct cil_list *datum_expr, uint16_t *result);
+ int cil_resolve_tunif(struct cil_tree_node *current, void *extra_args);
++int cil_resolve_segregateattributes(struct cil_tree_node *current, void *extra_args);
+ 
+ int cil_resolve_ast(struct cil_db *db, struct cil_tree_node *current);
+ int cil_resolve_name(struct cil_tree_node *ast_node, char *name, enum cil_sym_index sym_index, void *extra_args, struct cil_symtab_datum **datum);
+diff --git a/libsepol/cil/src/cil_write_ast.c b/libsepol/cil/src/cil_write_ast.c
+index b75784ef..d0fb555b 100644
+--- a/libsepol/cil/src/cil_write_ast.c
++++ b/libsepol/cil/src/cil_write_ast.c
+@@ -1474,7 +1474,18 @@ void cil_write_ast_node(FILE *out, struct cil_tree_node *node)
+ 		fprintf(out, "(ipaddr %s %s)\n", datum_to_str(&ipaddr->datum), buf);
+ 		break;
+ 	}
++	case CIL_SEGREGATEATTRIBUTES: {
++		struct cil_segregateattributes *sattrs = node->data;
++		fprintf(out, "(segregateattributes ");
++		if (sattrs->datum_expr)
++			write_expr(out, sattrs->datum_expr);
++		else
++			write_expr(out, sattrs->str_expr);
++		fprintf(out, ")\n");
++		break;
++	}
+ 	default :
++		cil_log(CIL_ERR, "Unsupported flavor: %d\n", node->flavor);
+ 		fprintf(out, "(<?RULE:%s>)\n", cil_node_to_string(node));
+ 		break;
+ 	}
+diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
+index 9128ac55..4b99208d 100644
+--- a/libsepol/src/kernel_to_cil.c
++++ b/libsepol/src/kernel_to_cil.c
+@@ -1906,6 +1906,33 @@ static int map_filename_trans_to_str(hashtab_key_t key, void *data, void *arg)
+ 	return 0;
+ }
+ 
++static int write_segregate_attributes_to_cil(FILE *out, const struct policydb *pdb)
++{
++	const segregate_attributes_rule_t *sattr;
++
++	for (sattr = pdb->segregate_attributes; sattr; sattr = sattr->next) {
++		struct ebitmap_node *node;
++		unsigned int bit;
++		int first = 1;
++
++		sepol_printf(out, "(segregateattributes (");
++
++		ebitmap_for_each_positive_bit(&sattr->attrs, node, bit) {
++			if (first) {
++				first = 0;
++			} else {
++				sepol_printf(out, " ");
++			}
++
++			sepol_printf(out, "%s", pdb->p_type_val_to_name[bit - 1]);
++		}
++
++		sepol_printf(out, "))\n");
 +	}
 +
 +	return 0;
 +}
-diff --git a/libsepol/tests/test-segregateattributes.h b/libsepol/tests/test-segregateattributes.h
-new file mode 100644
-index 00000000..a63c59f4
---- /dev/null
-+++ b/libsepol/tests/test-segregateattributes.h
-@@ -0,0 +1,10 @@
-+#ifndef TEST_SEGREGATEATTRIBUTES_H__
-+#define TEST_SEGREGATEATTRIBUTES_H__
 +
-+#include <CUnit/Basic.h>
+ static int write_filename_trans_rules_to_cil(FILE *out, struct policydb *pdb)
+ {
+ 	struct map_filename_trans_args args;
+@@ -3329,6 +3356,11 @@ int sepol_kernel_policydb_to_cil(FILE *out, struct policydb *pdb)
+ 		goto exit;
+ 	}
+ 
++	rc = write_segregate_attributes_to_cil(out, pdb);
++	if (rc != 0) {
++		goto exit;
++	}
 +
-+int sattrs_test_init(void);
-+int sattrs_test_cleanup(void);
-+int sattrs_add_tests(CU_pSuite suite);
+ 	rc = write_filename_trans_rules_to_cil(out, pdb);
+ 	if (rc != 0) {
+ 		goto exit;
+diff --git a/secilc/docs/README.md b/secilc/docs/README.md
+index efab2a71..8f584019 100644
+--- a/secilc/docs/README.md
++++ b/secilc/docs/README.md
+@@ -132,6 +132,7 @@ CIL (Common Intermediate Language)
+   * [typemember](cil_type_statements.md#typemember)
+   * [typetransition](cil_type_statements.md#typetransition)
+   * [typepermissive](cil_type_statements.md#typepermissive)
++  * [segregateattributes](cil_type_statements.md#segregateattributes)
+ 
+ * [User Statements](cil_user_statements.md#user-statements)
+   * [user](cil_user_statements.md#user)
+diff --git a/secilc/docs/cil_type_statements.md b/secilc/docs/cil_type_statements.md
+index 19438417..56533eea 100644
+--- a/secilc/docs/cil_type_statements.md
++++ b/secilc/docs/cil_type_statements.md
+@@ -601,3 +601,53 @@ This example will allow SELinux to run the `healthd.process` domain in permissiv
+         (allow ...)
+     )
+ ```
 +
-+#endif  /* TEST_SEGREGATEATTRIBUTES_H__ */
++segregateattributes
++-------------------
++
++Libsepol and secilc version 3.5 introduced the segregateattributes statement
++to mark two or more type attributes mutual exclusive. This is a compiler
++enforced action that will stop compilation until the offending associations
++are modified.
++
++Note that these constraints can be over-ridden by the CIL compiler command
++line parameter `-N` or `--disable-neverallow` flags.
++
++**Statement definition:**
++
++```secil
++    (segregateattributes (typeattribute_id typeattribute_id...))
++```
++
++**Where:**
++
++<table>
++<colgroup>
++<col width="27%" />
++<col width="72%" />
++</colgroup>
++<tbody>
++<tr class="odd">
++<td align="left"><p><code>segregateattributes</code></p></td>
++<td align="left"><p>The <code>segregateattributes</code> keyword.</p></td>
++</tr>
++<tr class="even">
++<td align="left"><p><code>typeattribute_id</code></p></td>
++<td align="left"><p>At least two previously declared <code>typeattribute</code> identifier.</p>
++<p>Note that the same <code>typeattribute</code> identifier must not be repeated.</p></td>
++</tr>
++</tbody>
++</table>
++
++**Example:**
++
++This example will not compile as `type_1` is associated with type attributes `attr_1` and `attr_2`:
++
++```secil
++    (type type_1)
++    (typeattribute attr_1)
++    (typeattribute attr_2)
++    (typeattributeset attr_1 (type_1))
++    (typeattributeset attr_2 (type_1))
++    (segregateattributes (attr_1 attr_2))
++```
 -- 
 2.36.1
 

@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8CA1B57CE86
-	for <lists+selinux@lfdr.de>; Thu, 21 Jul 2022 17:05:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34F6857CE88
+	for <lists+selinux@lfdr.de>; Thu, 21 Jul 2022 17:05:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229475AbiGUPFb (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 21 Jul 2022 11:05:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52492 "EHLO
+        id S231470AbiGUPFc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 21 Jul 2022 11:05:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231497AbiGUPF2 (ORCPT
+        with ESMTP id S231514AbiGUPF2 (ORCPT
         <rfc822;selinux@vger.kernel.org>); Thu, 21 Jul 2022 11:05:28 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90BB59FFB
-        for <selinux@vger.kernel.org>; Thu, 21 Jul 2022 08:05:26 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id m8so2513649edd.9
-        for <selinux@vger.kernel.org>; Thu, 21 Jul 2022 08:05:26 -0700 (PDT)
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31E73103C
+        for <selinux@vger.kernel.org>; Thu, 21 Jul 2022 08:05:27 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id tk8so3657729ejc.7
+        for <selinux@vger.kernel.org>; Thu, 21 Jul 2022 08:05:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=YwBQH7wecA99fS23bg/tAycE9d7BB96fbZ1PFmxJwYk=;
-        b=RMcTwk2+/dSxN7F99G9oWAJe9+03BciUrLaRBXn3UffEK7W1Kl9NPKWQytH4hx/X7I
-         tIUqSZiZib74dIcpgRmgC2juPuSbj1zk7EoByJS7dxXs5TqBUTtyU2t/4K/+nt7PdlJt
-         m8y8fUE+AnolRQ9k1YPlKBoMUt9WMR/B+bCPCpRO9fgUgchgOC5HZVi1BzYTlStHmHLQ
-         fmW7qlH0fOUeVSa+9RcUcY6saHWjLpwfepYor9vd2xZ32JepY9ph6vnSCOHVV+9ox3oV
-         x3+9TrAldmfwb8BBCISJf7SCEGfKipjNYoKT/dFsKWRmhPY7w8vBRRc1orVarxh94ini
-         WFrg==
+        bh=HPb0WywPmHCsodz3CE1XuwT7afX8HUvoV56PY6zvrcI=;
+        b=m1Rn83iwGLHtWcGM1JAJYUHGqCcaNNvd3Q820LBSEVsZ6bCvX804p1rEwRALfW+tG7
+         IJ3OH3OZn7+sqw4Rlgp1Uf9efR6DV+hcZ/OrV4/nLiueKR7b/XETbqBZqUsty0MVHpir
+         Q3tCRY3NQWQiX3Y8eBhWU4Tlu0nfKpMCb3byw/9FogtdoGE1B8nmPESm2u/DWjakVizP
+         hdPGSDsOR/hGI83zClFbIsLHuSAtsijw32Z3Z7siQ7hIiujgoYxR5KcgRZtAvtg2CjSQ
+         duK2f7Z9H1iR1/ck3OgyG/n7NpHhM6yJ4iR6Crd5EdhkQPj8YTxL+d9WNfutMR37tF3y
+         mB7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=YwBQH7wecA99fS23bg/tAycE9d7BB96fbZ1PFmxJwYk=;
-        b=F9qLI68RUwW0LoQihF5VB8cxpcrbC7/q73xL57O/OG5IFcO706DWJGP9fvIKksNljn
-         +KJl8dfPaBJPv2/zBeADe57Rw8HMsvDkrCHoUXP/uSH0mChSXaNZl+AaFBlNdypR8OXt
-         nQ5jfpvJSw+z3kvkQxNw8Tu3+yrhq1P6ePi+tCsOnrJ94sRJM8z/JjTcIEKwWqYP80xb
-         ux4FjqmLlkYHJBou1S+BWMlqhbcoQZ+VJO31UTZSlx7rLKfiq+J++c7zREyFGjMEODhW
-         F2y+cg+7Ag5pLlO1S8qHphdMIh9NQJYQe/anVCrG/0g1CzUjiIGyDOKXJqN6Sm0Kcvz3
-         ehWw==
-X-Gm-Message-State: AJIora/mJJ1vSscNrLLci7ovlhdVtJVxVt/rPVFTiMlyVX97tdljuGyT
-        9fpNSwh5+La+EKtXxvxElZcxSftBaKHIJQ==
-X-Google-Smtp-Source: AGRyM1vaO8xVbDZi/6w0Ng4JnW1U+1IlCW8jTwBwtnimTrEZSg+OJlil6PzyAPb8diiEZnqQDoe2rg==
-X-Received: by 2002:a05:6402:510e:b0:43a:c671:7cd0 with SMTP id m14-20020a056402510e00b0043ac6717cd0mr57904188edd.103.1658415924802;
-        Thu, 21 Jul 2022 08:05:24 -0700 (PDT)
+        bh=HPb0WywPmHCsodz3CE1XuwT7afX8HUvoV56PY6zvrcI=;
+        b=TSTiyy0XfGxFP+PihGh4/t9PYvXQ8tianCy8Nu2kXoAjh9y4LIxXhb++qDAbVSvqoj
+         RqUDHUMD7DKZnYi4K94g7noYi8rQ/ujoAPOYYkt21pjWR8hvFaDq3iM+Z//vNW8j3wAC
+         HULumdNIwR+w20wyFSbP7Ja1xJF/aE6HcTx2HoUZy43TVn/m3/icWZcO7lvYMoTe6Y+B
+         iky3jW4gvRqbF5CMX4euoTm+0WRDhKmUAQt+1HULNJPqcZ1vvCpg/bMQyJLpuOm+fC96
+         IBnaUN6nUw/Fd28fipVQebVY1yRbM982hInkl8v1YxGrWHkCISoLQg6mwuauG1Cauiwl
+         x+4Q==
+X-Gm-Message-State: AJIora/rNF6oRjRCt6oMyL4kuSwNLpa+lMiUIiTzYj6WZX9Mg2KtqxRH
+        KogXfri3ow6LjLj8ZnVvl2orlnfCELTRtg==
+X-Google-Smtp-Source: AGRyM1tH7nIcO4wbTlABBwAVepw8iJg5/ziMHkF2U5xEXvg5jqebKCpI1VP2VeTnZDIPazlwt0i9bg==
+X-Received: by 2002:a17:907:2d12:b0:72b:67fb:89a5 with SMTP id gs18-20020a1709072d1200b0072b67fb89a5mr39709219ejc.507.1658415925479;
+        Thu, 21 Jul 2022 08:05:25 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-077-000-209-027.77.0.pool.telefonica.de. [77.0.209.27])
-        by smtp.gmail.com with ESMTPSA id s7-20020aa7c547000000b0043a1255bc68sm1120992edr.94.2022.07.21.08.05.23
+        by smtp.gmail.com with ESMTPSA id s7-20020aa7c547000000b0043a1255bc68sm1120992edr.94.2022.07.21.08.05.24
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Jul 2022 08:05:23 -0700 (PDT)
+        Thu, 21 Jul 2022 08:05:25 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v3 4/8] checkpolicy: add front-end support for segregate attributes
-Date:   Thu, 21 Jul 2022 17:05:11 +0200
-Message-Id: <20220721150515.19843-4-cgzones@googlemail.com>
+Subject: [PATCH v3 5/8] libsepol/tests: add test for segregate attributes
+Date:   Thu, 21 Jul 2022 17:05:12 +0200
+Message-Id: <20220721150515.19843-5-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.36.1
 In-Reply-To: <20220721150515.19843-1-cgzones@googlemail.com>
 References: <20220721150515.19843-1-cgzones@googlemail.com>
@@ -69,156 +69,461 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Support specifying segregate attributes.
-
-The following two blocks are equivalent:
-
-    segregate_attributes attr1, attr2, attr3;
-
-    segregate_attributes attr1, attr2;
-    segregate_attributes attr1, attr3;
-    segregate_attributes attr2, attr3;
-
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/policy_define.c | 66 +++++++++++++++++++++++++++++++++++++
- checkpolicy/policy_define.h |  1 +
- checkpolicy/policy_parse.y  |  5 +++
- checkpolicy/policy_scan.l   |  2 ++
- 4 files changed, 74 insertions(+)
+ libsepol/tests/libsepol-tests.c               |   2 +
+ .../tests/policies/test-sattrs/single.conf    |  87 ++++++++
+ .../policies/test-sattrs/split_base.conf      |  53 +++++
+ .../policies/test-sattrs/split_module1.conf   |   9 +
+ .../policies/test-sattrs/split_module2.conf   |   9 +
+ .../policies/test-sattrs/split_module3.conf   |   9 +
+ libsepol/tests/test-segregateattributes.c     | 197 ++++++++++++++++++
+ libsepol/tests/test-segregateattributes.h     |  10 +
+ 8 files changed, 376 insertions(+)
+ create mode 100644 libsepol/tests/policies/test-sattrs/single.conf
+ create mode 100644 libsepol/tests/policies/test-sattrs/split_base.conf
+ create mode 100644 libsepol/tests/policies/test-sattrs/split_module1.conf
+ create mode 100644 libsepol/tests/policies/test-sattrs/split_module2.conf
+ create mode 100644 libsepol/tests/policies/test-sattrs/split_module3.conf
+ create mode 100644 libsepol/tests/test-segregateattributes.c
+ create mode 100644 libsepol/tests/test-segregateattributes.h
 
-diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
-index 8bf36859..cf6fbf08 100644
---- a/checkpolicy/policy_define.c
-+++ b/checkpolicy/policy_define.c
-@@ -1220,6 +1220,72 @@ exit:
- 	return rc;
- }
+diff --git a/libsepol/tests/libsepol-tests.c b/libsepol/tests/libsepol-tests.c
+index dc8fd5ce..989c7cd3 100644
+--- a/libsepol/tests/libsepol-tests.c
++++ b/libsepol/tests/libsepol-tests.c
+@@ -23,6 +23,7 @@
+ #include "test-expander.h"
+ #include "test-deps.h"
+ #include "test-downgrade.h"
++#include "test-segregateattributes.h"
  
-+int define_segregate_attributes(void)
-+{
-+	char *id = NULL;
-+	segregate_attributes_rule_t *sattr = NULL;
-+	int rc = -1;
+ #include <CUnit/Basic.h>
+ #include <CUnit/Console.h>
+@@ -69,6 +70,7 @@ static bool do_tests(int interactive, int verbose)
+ 	DECLARE_SUITE(expander);
+ 	DECLARE_SUITE(deps);
+ 	DECLARE_SUITE(downgrade);
++	DECLARE_SUITE(sattrs);
+ 
+ 	if (verbose)
+ 		CU_basic_set_mode(CU_BRM_VERBOSE);
+diff --git a/libsepol/tests/policies/test-sattrs/single.conf b/libsepol/tests/policies/test-sattrs/single.conf
+new file mode 100644
+index 00000000..1666f842
+--- /dev/null
++++ b/libsepol/tests/policies/test-sattrs/single.conf
+@@ -0,0 +1,87 @@
++class process
++class blk_file
++class chr_file
++class dir
++class fifo_file
++class file
++class lnk_file
++class sock_file
 +
-+	if (pass == 1) {
-+		while ((id = queue_remove(id_queue)))
-+			free(id);
-+		return 0;
-+	}
++sid kernel
++sid security
++sid unlabeled
++sid file
++sid port
++sid netif
++sid netmsg
++sid node
++sid devnull
 +
-+	sattr = malloc(sizeof(segregate_attributes_rule_t));
-+	if (!sattr) {
-+		yyerror("Out of memory!");
-+		goto exit;
-+	}
++class process { dyntransition transition }
++class file { write }
 +
-+	ebitmap_init(&sattr->attrs);
++ifdef(`enable_mls',`
++sensitivity s0;
++dominance { s0 }
++category c0; category c1; category c2; category c3;
++category c4; category c5; category c6; category c7;
++category c8; category c9; category c10; category c11;
++category c12; category c13; category c14; category c15;
++category c16; category c17; category c18; category c19;
++category c20; category c21; category c22; category c23;
 +
-+	while ((id = queue_remove(id_queue))) {
-+		const type_datum_t *attr;
++level s0:c0.c23;
 +
-+		if (!is_id_in_scope(SYM_TYPES, id)) {
-+			yyerror2("attribute %s is not within scope", id);
-+			goto exit;
-+		}
++mlsconstrain file { write } ( h1 dom h2 );
++')
 +
-+		attr = hashtab_search(policydbp->p_types.table, id);
-+		if (!attr) {
-+			yyerror2("attribute %s is not declared", id);
-+			goto exit;
-+		}
++#
++# Test start
++#
 +
-+		if (attr->flavor != TYPE_ATTRIB) {
-+			yyerror2("%s is a type, not an attribute", id);
-+			goto exit;
-+		}
++attribute test1_attr1;
++attribute test1_attr2;
++type test1_type;
++typeattribute test1_type test1_attr1;
++typeattribute test1_type test1_attr2;
++segregate_attributes test1_attr1, test1_attr2;
 +
-+		if (ebitmap_get_bit(&sattr->attrs, attr->s.value - 1)) {
-+			yyerror2("attribute %s used multiple times", id);
-+			goto exit;
-+		}
 +
-+		if (ebitmap_set_bit(&sattr->attrs, attr->s.value - 1, TRUE)) {
-+			yyerror("Out of memory!");
-+			goto exit;
-+		}
++attribute test2_attr1;
++attribute test2_attr2;
++attribute test2_attr3;
++type test2_type1;
++type test2_type2;
++type test2_type3;
++type test2_type4;
++typeattribute test2_type1 test2_attr1;
++typeattribute test2_type1 test2_attr2;
++typeattribute test2_type2 test2_attr1;
++typeattribute test2_type2 test2_attr3;
++typeattribute test2_type3 test2_attr2;
++typeattribute test2_type3 test2_attr3;
++typeattribute test2_type4 test2_attr1;
++typeattribute test2_type4 test2_attr2;
++typeattribute test2_type4 test2_attr3;
++segregate_attributes test2_attr1, test2_attr2, test2_attr3;
 +
-+		free(id);
-+	}
++#
++# Test End
++#
 +
-+	sattr->next = policydbp->segregate_attributes;
-+	policydbp->segregate_attributes = sattr;
++type sys_isid;
++allow sys_isid self : process { dyntransition transition };
++role sys_role;
++role sys_role types sys_isid;
++gen_user(sys_user,, sys_role, s0, s0 - s0:c0.c23)
++sid kernel gen_context(sys_user:sys_role:sys_isid, s0)
++sid security gen_context(sys_user:sys_role:sys_isid, s0)
++sid unlabeled gen_context(sys_user:sys_role:sys_isid, s0)
++sid file gen_context(sys_user:sys_role:sys_isid, s0)
++sid port gen_context(sys_user:sys_role:sys_isid, s0)
++sid netif gen_context(sys_user:sys_role:sys_isid, s0)
++sid netmsg gen_context(sys_user:sys_role:sys_isid, s0)
++sid node gen_context(sys_user:sys_role:sys_isid, s0)
++sid devnull gen_context(sys_user:sys_role:sys_isid, s0)
++fs_use_trans devpts gen_context(sys_user:sys_role:sys_isid, s0);
++fs_use_trans devtmpfs gen_context(sys_user:sys_role:sys_isid, s0);
+diff --git a/libsepol/tests/policies/test-sattrs/split_base.conf b/libsepol/tests/policies/test-sattrs/split_base.conf
+new file mode 100644
+index 00000000..6fba8cdd
+--- /dev/null
++++ b/libsepol/tests/policies/test-sattrs/split_base.conf
+@@ -0,0 +1,53 @@
++class process
++class blk_file
++class chr_file
++class dir
++class fifo_file
++class file
++class lnk_file
++class sock_file
 +
-+	sattr = NULL;
-+	rc = 0;
-+exit:
-+	if (sattr) {
-+		ebitmap_destroy(&sattr->attrs);
-+		free(sattr);
-+	}
-+	free(id);
-+	return rc;
++sid kernel
++sid security
++sid unlabeled
++sid file
++sid port
++sid netif
++sid netmsg
++sid node
++sid devnull
++
++class process { dyntransition transition }
++class file { write }
++
++ifdef(`enable_mls',`
++sensitivity s0;
++dominance { s0 }
++category c0; category c1; category c2; category c3;
++category c4; category c5; category c6; category c7;
++category c8; category c9; category c10; category c11;
++category c12; category c13; category c14; category c15;
++category c16; category c17; category c18; category c19;
++category c20; category c21; category c22; category c23;
++
++level s0:c0.c23;
++
++mlsconstrain file { write } ( h1 dom h2 );
++')
++
++type sys_isid;
++allow sys_isid self : process { dyntransition transition };
++role sys_role;
++role sys_role types sys_isid;
++gen_user(sys_user,, sys_role, s0, s0 - s0:c0.c23)
++sid kernel gen_context(sys_user:sys_role:sys_isid, s0)
++sid security gen_context(sys_user:sys_role:sys_isid, s0)
++sid unlabeled gen_context(sys_user:sys_role:sys_isid, s0)
++sid file gen_context(sys_user:sys_role:sys_isid, s0)
++sid port gen_context(sys_user:sys_role:sys_isid, s0)
++sid netif gen_context(sys_user:sys_role:sys_isid, s0)
++sid netmsg gen_context(sys_user:sys_role:sys_isid, s0)
++sid node gen_context(sys_user:sys_role:sys_isid, s0)
++sid devnull gen_context(sys_user:sys_role:sys_isid, s0)
++fs_use_trans devpts gen_context(sys_user:sys_role:sys_isid, s0);
++fs_use_trans devtmpfs gen_context(sys_user:sys_role:sys_isid, s0);
+diff --git a/libsepol/tests/policies/test-sattrs/split_module1.conf b/libsepol/tests/policies/test-sattrs/split_module1.conf
+new file mode 100644
+index 00000000..52b5f248
+--- /dev/null
++++ b/libsepol/tests/policies/test-sattrs/split_module1.conf
+@@ -0,0 +1,9 @@
++module sattrs_test_1 1.0;
++
++require {
++	type test_type_t;
 +}
 +
- static int add_aliases_to_type(type_datum_t * type)
- {
- 	char *id;
-diff --git a/checkpolicy/policy_define.h b/checkpolicy/policy_define.h
-index 50a7ba78..f55d0b17 100644
---- a/checkpolicy/policy_define.h
-+++ b/checkpolicy/policy_define.h
-@@ -68,6 +68,7 @@ int define_type(int alias);
- int define_user(void);
- int define_validatetrans(constraint_expr_t *expr);
- int expand_attrib(void);
-+int define_segregate_attributes(void);
- int insert_id(const char *id,int push);
- int insert_separator(int push);
- role_datum_t *define_role_dom(role_datum_t *r);
-diff --git a/checkpolicy/policy_parse.y b/checkpolicy/policy_parse.y
-index 45f973ff..acd6096d 100644
---- a/checkpolicy/policy_parse.y
-+++ b/checkpolicy/policy_parse.y
-@@ -104,6 +104,7 @@ typedef int (* require_func_t)(int pass);
- %token ALIAS
- %token ATTRIBUTE
- %token EXPANDATTRIBUTE
-+%token SEGREGATEATTRIBUTES
- %token BOOL
- %token TUNABLE
- %token IF
-@@ -320,6 +321,7 @@ rbac_decl		: attribute_role_def
- 			;
- te_decl			: attribute_def
-                         | expandattribute_def
-+                        | segregateattributes_def
-                         | type_def
-                         | typealias_def
-                         | typeattribute_def
-@@ -337,6 +339,9 @@ attribute_def           : ATTRIBUTE identifier ';'
- expandattribute_def     : EXPANDATTRIBUTE names bool_val ';'
-                         { if (expand_attrib()) return -1;}
-                         ;
-+segregateattributes_def : SEGREGATEATTRIBUTES identifier ',' id_comma_list ';'
-+                        { if (define_segregate_attributes()) return -1;}
-+                        ;
- type_def		: TYPE identifier alias_def opt_attr_list ';'
-                         {if (define_type(1)) return -1;}
- 	                | TYPE identifier opt_attr_list ';'
-diff --git a/checkpolicy/policy_scan.l b/checkpolicy/policy_scan.l
-index 9fefea7b..d865dcb6 100644
---- a/checkpolicy/policy_scan.l
-+++ b/checkpolicy/policy_scan.l
-@@ -123,6 +123,8 @@ ATTRIBUTE |
- attribute			{ return(ATTRIBUTE); }
- EXPANDATTRIBUTE |
- expandattribute                 { return(EXPANDATTRIBUTE); }
-+SEGREGATE_ATTRIBUTES |
-+segregate_attributes		{ return(SEGREGATEATTRIBUTES); }
- TYPE_TRANSITION |
- type_transition			{ return(TYPE_TRANSITION); }
- TYPE_MEMBER |
++attribute attr1;
++
++typeattribute test_type_t attr1;
+diff --git a/libsepol/tests/policies/test-sattrs/split_module2.conf b/libsepol/tests/policies/test-sattrs/split_module2.conf
+new file mode 100644
+index 00000000..6b6128f7
+--- /dev/null
++++ b/libsepol/tests/policies/test-sattrs/split_module2.conf
+@@ -0,0 +1,9 @@
++module sattrs_test_2 1.0;
++
++require {
++	type test_type_t;
++}
++
++attribute attr2;
++
++typeattribute test_type_t attr2;
+diff --git a/libsepol/tests/policies/test-sattrs/split_module3.conf b/libsepol/tests/policies/test-sattrs/split_module3.conf
+new file mode 100644
+index 00000000..050b9228
+--- /dev/null
++++ b/libsepol/tests/policies/test-sattrs/split_module3.conf
+@@ -0,0 +1,9 @@
++module sattrs_test_3 1.0;
++
++require {
++	attribute attr1, attr2;
++}
++
++type test_type_t;
++
++segregate_attributes attr1, attr2;
+diff --git a/libsepol/tests/test-segregateattributes.c b/libsepol/tests/test-segregateattributes.c
+new file mode 100644
+index 00000000..4a21fb06
+--- /dev/null
++++ b/libsepol/tests/test-segregateattributes.c
+@@ -0,0 +1,197 @@
++#define _GNU_SOURCE
++
++#include "test-segregateattributes.h"
++
++#include "helpers.h"
++#include "test-common.h"
++
++#include <sepol/debug.h>
++#include <sepol/policydb/link.h>
++#include <sepol/policydb/expand.h>
++
++#include <stdio.h>
++#include <stdarg.h>
++
++extern int mls;
++
++int sattrs_test_init(void)
++{
++	return 0;
++}
++
++int sattrs_test_cleanup(void)
++{
++	return 0;
++}
++
++static struct msg_list {
++	char *msg;
++	struct msg_list *next;
++} *messages;
++
++static void messages_clean(void)
++{
++	while (messages) {
++		struct msg_list *n = messages->next;
++		free(messages->msg);
++		free(messages);
++		messages = n;
++	}
++}
++
++static void messages_check(unsigned count, const char *const expected[count])
++{
++	unsigned i;
++	const struct msg_list *m = messages;
++
++	for (i = 0; i < count; i++, m = m->next) {
++		if (!m) {
++			CU_FAIL("less messages than expected");
++			return;
++		}
++
++		if (strcmp(expected[i], m->msg) != 0) {
++			CU_FAIL("messages differs from expected");
++			fprintf(stderr, "\n<expected: '%s', got: '%s'>\n", expected[i], m->msg);
++		}
++	}
++
++	if (m) {
++		CU_FAIL("more messages than expected");
++		fprintf(stderr, "\n<next message: '%s'>\n", m->msg);
++	}
++}
++
++#ifdef __GNUC__
++__attribute__ ((format(printf, 3, 4)))
++#endif
++static void msg_handler(void *varg __attribute__ ((unused)),
++			sepol_handle_t * handle,
++			const char *fmt, ...)
++{
++	char *msg;
++	va_list ap;
++
++	va_start(ap, fmt);
++	vasprintf(&msg, fmt, ap);
++	va_end(ap);
++
++	struct msg_list *new = malloc(sizeof(struct msg_list));
++	new->msg = msg;
++	new->next = messages;
++	messages = new;
++}
++
++#define ARRAY_SIZE(a) (sizeof(a) / sizeof(*a))
++
++static void test_sattrs_single(void)
++{
++	policydb_t basemod, base_expanded;
++	sepol_handle_t *handle;
++	const char *const expected_messages[] = {
++		"7 Segregate Attributes failures occurred",
++		"Segregate Attributes violation, type test1_type associated with attributes test1_attr1 and test1_attr2",
++		"Segregate Attributes violation, type test2_type3 associated with attributes test2_attr2 and test2_attr3",
++		"Segregate Attributes violation, type test2_type4 associated with attributes test2_attr2 and test2_attr3",
++		"Segregate Attributes violation, type test2_type2 associated with attributes test2_attr1 and test2_attr3",
++		"Segregate Attributes violation, type test2_type4 associated with attributes test2_attr1 and test2_attr3",
++		"Segregate Attributes violation, type test2_type1 associated with attributes test2_attr1 and test2_attr2",
++		"Segregate Attributes violation, type test2_type4 associated with attributes test2_attr1 and test2_attr2",
++	};
++
++	if (policydb_init(&base_expanded))
++		CU_FAIL_FATAL("Failed to initialize policy");
++
++	if (test_load_policy(&basemod, POLICY_BASE, mls, "test-sattrs", "single.conf"))
++		CU_FAIL_FATAL("Failed to load policy");
++
++	if (link_modules(NULL, &basemod, NULL, 0, 0))
++		CU_FAIL_FATAL("Failed to link base module");
++
++	if (expand_module(NULL, &basemod, &base_expanded, 0, 0))
++		CU_FAIL_FATAL("Failed to expand policy");
++
++	if ((handle = sepol_handle_create()) == NULL)
++		CU_FAIL_FATAL("Failed to initialize handle");
++
++	sepol_msg_set_callback(handle, msg_handler, NULL);
++
++	if (check_assertions(handle, &base_expanded, NULL) != -1)
++		CU_FAIL("Assertions did not trigger");
++
++	messages_check(ARRAY_SIZE(expected_messages), expected_messages);
++
++	sepol_handle_destroy(handle);
++	messages_clean();
++	policydb_destroy(&basemod);
++	policydb_destroy(&base_expanded);
++}
++
++#define NUM_MODS 3
++
++static void test_sattrs_split(void)
++{
++	policydb_t basemod, base_expanded;
++	policydb_t *modules[NUM_MODS];
++	const char *policies[NUM_MODS] = { "split_module1.conf", "split_module2.conf", "split_module3.conf" };
++	sepol_handle_t *handle;
++	const char *const expected_messages[] = {
++		"1 Segregate Attributes failures occurred",
++		"Segregate Attributes violation, type test_type_t associated with attributes attr1 and attr2",
++	};
++	unsigned i;
++
++	if (policydb_init(&base_expanded))
++		CU_FAIL_FATAL("Failed to initialize policy");
++
++	if (test_load_policy(&basemod, POLICY_BASE, mls, "test-sattrs", "split_base.conf"))
++		CU_FAIL_FATAL("Failed to load policy");
++
++	for (i = 0; i < NUM_MODS; i++) {
++		modules[i] = calloc(1, sizeof(*modules[i]));
++		if (!modules[i])
++			CU_FAIL_FATAL("Failed to allocate module");
++
++		if (test_load_policy(modules[i], POLICY_MOD, mls, "test-sattrs", policies[i]))
++			CU_FAIL_FATAL("Failed to load module");
++	}
++
++	if (link_modules(NULL, &basemod, modules, 3, 0))
++		CU_FAIL_FATAL("Failed to link base module");
++
++	if (expand_module(NULL, &basemod, &base_expanded, 0, 0))
++		CU_FAIL_FATAL("Failed to expand policy");
++
++	if ((handle = sepol_handle_create()) == NULL)
++		CU_FAIL_FATAL("Failed to initialize handle");
++
++	sepol_msg_set_callback(handle, msg_handler, NULL);
++
++	if (check_assertions(handle, &base_expanded, NULL) != -1)
++		CU_FAIL("Assertions did not trigger");
++
++	messages_check(ARRAY_SIZE(expected_messages), expected_messages);
++
++	sepol_handle_destroy(handle);
++	messages_clean();
++	for (i = 0; i < NUM_MODS; i++) {
++		policydb_destroy(modules[i]);
++		free(modules[i]);
++	}
++	policydb_destroy(&basemod);
++	policydb_destroy(&base_expanded);
++}
++
++int sattrs_add_tests(CU_pSuite suite)
++{
++	if (NULL == CU_add_test(suite, "sattrs_single", test_sattrs_single)) {
++		CU_cleanup_registry();
++		return CU_get_error();
++	}
++	if (NULL == CU_add_test(suite, "sattrs_split", test_sattrs_split)) {
++		CU_cleanup_registry();
++		return CU_get_error();
++	}
++
++	return 0;
++}
+diff --git a/libsepol/tests/test-segregateattributes.h b/libsepol/tests/test-segregateattributes.h
+new file mode 100644
+index 00000000..a63c59f4
+--- /dev/null
++++ b/libsepol/tests/test-segregateattributes.h
+@@ -0,0 +1,10 @@
++#ifndef TEST_SEGREGATEATTRIBUTES_H__
++#define TEST_SEGREGATEATTRIBUTES_H__
++
++#include <CUnit/Basic.h>
++
++int sattrs_test_init(void);
++int sattrs_test_cleanup(void);
++int sattrs_add_tests(CU_pSuite suite);
++
++#endif  /* TEST_SEGREGATEATTRIBUTES_H__ */
 -- 
 2.36.1
 

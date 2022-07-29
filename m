@@ -2,69 +2,64 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2F0F584FEB
-	for <lists+selinux@lfdr.de>; Fri, 29 Jul 2022 14:03:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FA15585014
+	for <lists+selinux@lfdr.de>; Fri, 29 Jul 2022 14:28:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236075AbiG2MDQ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 29 Jul 2022 08:03:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41050 "EHLO
+        id S235978AbiG2M2D (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 29 Jul 2022 08:28:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236133AbiG2MDO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 29 Jul 2022 08:03:14 -0400
+        with ESMTP id S232085AbiG2M2C (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 29 Jul 2022 08:28:02 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D5B4C863E0
-        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:03:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2170FBE3D
+        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:28:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1659096192;
+        s=mimecast20190719; t=1659097679;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=DATQCWIR03hU/ccPvSYPy3tgByaOjFMT4pg9Mm9t3a0=;
-        b=HkrsECdg7XDJFVgXyruOKdOZTze48fbzbahpU7uyKdVvxvLFKyWFRGoHz0vyln59h41dcm
-        uPsshuWKjrAKcGD/G9jkRy+vsnMj/jX4LD0luNGZSpdC/U862tYSG4QGEMa/9O4e3ausQf
-        hhKyROG3JyoU3gsAihEnN5qBjyLNlvQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=zuOIThWLHPQrIV9Xk3qs7WdEGfL6EXCSxRj75kPC1Yg=;
+        b=BlkEq6UM5vWAF9BelzClMZRTFdz0qSOK1q5iBRC9ZMVdb+7DnnKKIZozVVSnk0KsFv5Skt
+        gwyIWM9WMvtbONZV11fdkYvRPa2UHhyRwj1uh6L0zbt+f7+pMQS9Ay+J66R9/wLrxDisvn
+        z6Ck6+sSpVvUH1gIGWvmp10194wNp+k=
+Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
+ [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-547-Ao09-mDrMaG29C04PKAd5Q-1; Fri, 29 Jul 2022 08:03:10 -0400
-X-MC-Unique: Ao09-mDrMaG29C04PKAd5Q-1
-Received: by mail-wm1-f69.google.com with SMTP id c17-20020a7bc011000000b003a2bfaf8d3dso2131690wmb.0
-        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:03:10 -0700 (PDT)
+ us-mta-93-oPWcnYVxNhClrk7yPaq7Kg-1; Fri, 29 Jul 2022 08:27:50 -0400
+X-MC-Unique: oPWcnYVxNhClrk7yPaq7Kg-1
+Received: by mail-yb1-f200.google.com with SMTP id v19-20020a252f13000000b0067174f085e9so3773592ybv.1
+        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:27:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc;
-        bh=DATQCWIR03hU/ccPvSYPy3tgByaOjFMT4pg9Mm9t3a0=;
-        b=0a7PvZ+kFQGISQHi3WbLeqASGVK8Vm8ve0Md++LMW5TnjrNM5Sne+csqSVUYR5RpZO
-         PuuMqP4jnZnOFYs7PT3m9EmIRZUxXzPq7oSRhdeRRMyWLqlEKtaxHxAsyy33jOt2R+Sr
-         fK9jExB1wGRW2Pqc0F/e1212RvmV6a3Yauj5EvhZiHHDJZnjw0P5TpSLyxud0rnA25J9
-         ZI/zmsoCquaxY/X9mY42bHXhD3EiA0u+LPGCAzWZcl33subzF0Shz9nlQPaSz0zmBGxD
-         WRijrXu1T1rtH4WmMolg9fgJYSpa1wxAoQV08uxancBYD03a9onfqEF6oAxvfWbYpdQA
-         yqTQ==
-X-Gm-Message-State: ACgBeo2N0W6ezu0MHadM2vKclKkPf6PNmRwHYOIL/RQOoGoBtx2Xo8hg
-        7xIlIiLFTG6yNNm/QruodJ1/zOK6je/PFrUOhiNo9gnYgkJNkUhfZjv/wV/aMOflctjPYChzVQP
-        6yolPMPK0X24BGCRnyDDmsdaeC/Obt4PT/uUIAjM4KPBzfA7+Iqp9YN8YmicPeuTi+5HZFw==
-X-Received: by 2002:a05:6000:1789:b0:21e:87cd:beba with SMTP id e9-20020a056000178900b0021e87cdbebamr2309754wrg.252.1659096188756;
-        Fri, 29 Jul 2022 05:03:08 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6qs9ELY4tw1dw/oOZqfgtljlmCa5fhFtzPsZLPu4Bf5BzcrheUa5czdw5x4BZglbAobrZCZQ==
-X-Received: by 2002:a05:6000:1789:b0:21e:87cd:beba with SMTP id e9-20020a056000178900b0021e87cdbebamr2309736wrg.252.1659096188494;
-        Fri, 29 Jul 2022 05:03:08 -0700 (PDT)
-Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
-        by smtp.gmail.com with ESMTPSA id i3-20020a05600c354300b003a2e92edeccsm9590622wmq.46.2022.07.29.05.03.07
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Jul 2022 05:03:07 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite 24/24] ci: add sysadm_t to the test matrix
-Date:   Fri, 29 Jul 2022 14:02:29 +0200
-Message-Id: <20220729120229.207584-25-omosnace@redhat.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20220729120229.207584-1-omosnace@redhat.com>
-References: <20220729120229.207584-1-omosnace@redhat.com>
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=zuOIThWLHPQrIV9Xk3qs7WdEGfL6EXCSxRj75kPC1Yg=;
+        b=wZ5ThB4nosLlwk5uNFYiSxO4e/ebiicJGwt4Fs2KSInEpAZpNKEsMmXiG83SZiurWA
+         bPvs8HLd84QRyKjDfZKvC28j3+kK9uOfU64r63PFBebI+wvB5jNByauDK7hqzoNbWPKS
+         cGUvmTtkRZMYgF9I48UYX7mAt8PhUakN/xEDbJqXt2w+fW3Wo0mcEQKsX948AMVD4ymN
+         n2gHe52PhlpuRprpSfKm6MQWxwSHgP48DYTHqajsrqVJg6Uk4x5cpfYr1uC5ZsdnWjsF
+         wwt+r1vYejNze9OEmxwtLKt4JrjLU6q1JxUKmn79+qO5fmKel4cOYBQeLjiEvRWCQ37e
+         s1Pg==
+X-Gm-Message-State: ACgBeo1H3jKf1LhDpibZPKTUbtZU7w50UlOxbfyGaSaXGtV20+9RUOV3
+        wO1RO+fWCvBlghK9vUYssJG4bvgLnLAO0R6exe4oSjy8CPEGthVYdrnMF2kIJSO1MPf7CfD2Ajf
+        +t4/65uqh5ajSaYgXIrE9sRJT4i9bTElvmw==
+X-Received: by 2002:a81:844c:0:b0:322:b95f:5a35 with SMTP id u73-20020a81844c000000b00322b95f5a35mr2832989ywf.29.1659097670256;
+        Fri, 29 Jul 2022 05:27:50 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR63SiRgClJDsYzTXax0tPSPMSEXeWbYkxO0cmEN5Sl4ff3LqIuBWD4NPnXfkSSjT6Ddx+VFLSA4qiF2ipOZPr0=
+X-Received: by 2002:a81:844c:0:b0:322:b95f:5a35 with SMTP id
+ u73-20020a81844c000000b00322b95f5a35mr2832979ywf.29.1659097670026; Fri, 29
+ Jul 2022 05:27:50 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20220729120229.207584-1-omosnace@redhat.com>
+In-Reply-To: <20220729120229.207584-1-omosnace@redhat.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Fri, 29 Jul 2022 14:27:37 +0200
+Message-ID: <CAFqZXNvZFeOcgRtVKG3JPCPMb2E42Ot-B+BxbnRxWF9Jz-TvhA@mail.gmail.com>
+Subject: Re: [PATCH testsuite 00/24] Clean up testsuite policy and support
+ running as sysadm_t
+To:     SElinux list <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
@@ -74,77 +69,32 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The testsuite should now be passing under the sysadm user as well, so
-test it.
+On Fri, Jul 29, 2022 at 2:02 PM Ondrej Mosnacek <omosnace@redhat.com> wrote:
+>
+> This series aim for two things:
+> 1. Refactor the policy so that it is easier to work with.
+> 2. Leverage the refactoring to fully support running the testsuite
+>    as sysadm_u:sysadm_r:sysadm_t.
+>
+> The gist of this work lies in unifying how test domains are defined,
+> deduplicating the various boilerplate spread out all across the
+> individual files (and not even used consistently), and in abstracting
+> the policy caller domain/role away from the individual test policies
+> into test_general.te. Some tests also had to be massaged to not
+> hard-code unconfined_* and be generic against the context of the
+> testsuite caller.
+>
+> The series also extends the CI to test running the testsuite as sysadm_*
+> and also verify that no unconfined_t/sysadm_t unexpected denials are
+> produced (which would usually indicate a missing dontaudit rule in the
+> testsuite policy).
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- .github/workflows/checks.yml |  4 +++-
- Vagrantfile                  | 16 ++++++++++++++++
- 2 files changed, 19 insertions(+), 1 deletion(-)
+Lol, I got a bounce for patches 4 and 5 because they are too long :D
+Hopefully the list owners can approve them manually. If not, I'll
+submit this series as a GitHub PR and post a link here.
 
-diff --git a/.github/workflows/checks.yml b/.github/workflows/checks.yml
-index 96843e4..37455ea 100644
---- a/.github/workflows/checks.yml
-+++ b/.github/workflows/checks.yml
-@@ -15,6 +15,7 @@ jobs:
-     strategy:
-       fail-fast: false
-       matrix:
-+        domain: [unconfined_t, sysadm_t]
-         env:
-           - { version: 35, kernel: default }
-           - { version: 36, kernel: default }
-@@ -22,6 +23,7 @@ jobs:
-     env:
-       FEDORA_VERSION: ${{ matrix.env.version }}
-       KERNEL_TYPE: ${{ matrix.env.kernel }}
-+      ROOT_DOMAIN: ${{ matrix.domain }}
-     steps:
-       - uses: actions/checkout@v2
-       # macOS sometimes allows symlinks to have permissions other than 777,
-@@ -39,6 +41,6 @@ jobs:
-       - name: Run SELinux testsuite
-         run: vagrant ssh -- sudo make -C /root/testsuite test
-       - name: Check unwanted denials
--        run: vagrant ssh -- '! sudo ausearch -m avc -i </dev/null | grep unconfined_t'
-+        run: vagrant ssh -- '! sudo ausearch -m avc -i </dev/null | grep ${{ matrix.domain }}'
-       - name: Check .gitignore coverage
-         run: test "$(vagrant ssh -- sudo git -C /root/testsuite ls-files -o --exclude-standard | wc -l)" -eq 0
-diff --git a/Vagrantfile b/Vagrantfile
-index 783df5d..ec3a492 100644
---- a/Vagrantfile
-+++ b/Vagrantfile
-@@ -51,6 +51,21 @@ Vagrant.configure("2") do |config|
-     abort
-   end
- 
-+  extra_commands = ''
-+  case ENV['ROOT_DOMAIN']
-+  when 'unconfined_t'
-+  when 'sysadm_t'
-+    extra_commands = <<EOF
-+      semanage boolean --modify --on ssh_sysadm_login
-+      semanage login --modify -s sysadm_u root
-+      semanage login --add -s sysadm_u -r s0-s0:c0.c1023 vagrant
-+EOF
-+    reboot_cmd = 'reboot'
-+  else
-+    print("Invalid ROOT_DOMAIN '#{ENV['ROOT_DOMAIN']}'")
-+    abort
-+  end
-+
-   config.vm.provision :shell, inline: <<SCRIPT
-     dnf install -y #{dnf_opts} \
-       --allowerasing \
-@@ -79,6 +94,7 @@ Vagrant.configure("2") do |config|
-       jfsutils \
-       dosfstools \
-       #{kernel_pkgs}
-+    #{extra_commands}
-     #{reboot_cmd}
- SCRIPT
- end
 -- 
-2.37.1
+Ondrej Mosnacek
+Senior Software Engineer, Linux Security - SELinux kernel
+Red Hat, Inc.
 

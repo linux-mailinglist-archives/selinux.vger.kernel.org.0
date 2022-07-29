@@ -2,17 +2,17 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFAFA584FE5
-	for <lists+selinux@lfdr.de>; Fri, 29 Jul 2022 14:03:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA8AF584FE7
+	for <lists+selinux@lfdr.de>; Fri, 29 Jul 2022 14:03:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235996AbiG2MDG (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 29 Jul 2022 08:03:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40942 "EHLO
+        id S236061AbiG2MDI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 29 Jul 2022 08:03:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40950 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236038AbiG2MDF (ORCPT
+        with ESMTP id S236073AbiG2MDF (ORCPT
         <rfc822;selinux@vger.kernel.org>); Fri, 29 Jul 2022 08:03:05 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A5447863DF
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B9A66863E5
         for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:03:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
         s=mimecast20190719; t=1659096183;
@@ -20,46 +20,46 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
          to:to:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=LCF9DGlA9T4PWbunOsop8821ncNHZnLOj3MQvujaMv4=;
-        b=MBOWZ3KpstogPo1kopzMWkyyB8HQTnTVv2A4Ky6ot4nbQ+unJZld86mcUgRE8Jhgc9nT1t
-        0YykTf1xPqE+uLc9Gd0oiVzxkP2GvPSXA/DsrjTPzi9lnOkWs26bU6udi1PaAKRmUE+4Pm
-        nsm6IHJRTmS7AfDZ6jVfOtKQy4PNvZ4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=GbCjmxUiP/tIech4xXkc3qjysK5htqEa2Co7tm7TyO0=;
+        b=IAqxRob6NurnAPDFxhv2o7lzM3PO040Hnt3hzwHBRfMXURPf3BBr/OwGO3VD3jaPGsfTOz
+        uvvE/6hPkECB4lWwbGdauqZP0zAgK54EnVPFE9/Pi9HYStnqDFn5aFX9DwpWiQcsddNCQK
+        WNMUGuTXP1CNSjrO4kUl0aUaRktyCq0=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-635-3rp0qJnVM1qxWRkS_n59rg-1; Fri, 29 Jul 2022 08:03:02 -0400
-X-MC-Unique: 3rp0qJnVM1qxWRkS_n59rg-1
-Received: by mail-wm1-f71.google.com with SMTP id h189-20020a1c21c6000000b003a2fdf9bd2aso2107837wmh.8
+ us-mta-635-6gQGMfE1NxW8YBNMn7jquw-1; Fri, 29 Jul 2022 08:03:02 -0400
+X-MC-Unique: 6gQGMfE1NxW8YBNMn7jquw-1
+Received: by mail-wr1-f72.google.com with SMTP id h18-20020adfaa92000000b0021ec200d50fso1143407wrc.14
         for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:03:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc;
-        bh=LCF9DGlA9T4PWbunOsop8821ncNHZnLOj3MQvujaMv4=;
-        b=nPVrICQPzQ3tMsphMOQPxPpeqcSuamIq9FzY6yJWzMUbmWWNay+h4IlSclxWNL9cRT
-         ipD/mHXqQRzoEqBEyx4j16Rdx7r3JlhyRxdFaB3vMSIdfeuQNyL2NjITQ86YQmMpkOPj
-         RnkmfKXUDBfOa8HqRM3Xi8dXCp2U2JiH+54j7ROMsVw03lIg+lDRMJmIweY+YOvHTWWI
-         7gp2sOsFqGzz5pbes9p81VwyR38+6kF6J952m8PJUb52/XeFUv5WP/sHNHMy8XE0CZfK
-         qx0VA9i89cgvWdDi5PI4BFphnb+Z7IImtI0bWkMrnZ0wgNosySdh/GCVZZkOWCgPhLA1
-         U34A==
-X-Gm-Message-State: ACgBeo3vkEBtTm9WNNAmgbzrBMKwyhpASz9pe61DIHh3b3BpLLqboJlZ
-        1RYQDllOi4s8tOBf7PP6o5i5wKe0aUEGLZyLamBlqrb5g/KgmaceacfYIQ2I2S/dMUYE2PhkvWP
-        PbFVSFAKMTyVCwYAdq5prsVvX3A/TtTQy2hV0E+HXsfZUp9BH8BQx8OFktYayUCwkc4AYbA==
-X-Received: by 2002:a05:6000:1789:b0:21e:87cd:beba with SMTP id e9-20020a056000178900b0021e87cdbebamr2309243wrg.252.1659096180590;
+        bh=GbCjmxUiP/tIech4xXkc3qjysK5htqEa2Co7tm7TyO0=;
+        b=TUSLESBpHVn2O81AgttP8czZU/eU6qcsjTHYvjwYax3aFr+MboRYTh2LsYhEeXiswC
+         H56pEQ+gE18zLS8v7s5k0CLX6PLAxspTHkikeRcoxwlIC4s8BzUpOjVofih5DrIDXt0S
+         CYCx6Nc+mBsfORrLepVWZrhEKAXk4CYt2SOXf0nALcbDQN6WczRNPKg01UXRZ0O73UW2
+         +ga940sIhrCChdPfMXakX5EI6ar8O0iLKEQO8jZ5cdJFRPpU6ByBfmwM4KW3+SyzKctr
+         gLmT97trFxowvyLztw/4B7G8qqR+Xg341mxmQTtzLZTqT/EDwjCzxDk5VwJ2EurL7sHc
+         ll6A==
+X-Gm-Message-State: ACgBeo3d0HA09yOPfCH04Ry4vb9LJ57INx6nFBYPD7QiJuN3eEIMqPOk
+        J4UEyHuBXGXdCj04F8okU8B2WvdjqHKGIIEAHdFJNiutfohVkm5ruMjLgVrH9mL6qvPPPRNSh81
+        f3xRqoC7XiKSRtKJ2yZWd0cOZp0BV/D6GbF7b0H0jrqRXqt09SfJ6ulpgF5kQxJz0UUD3yQ==
+X-Received: by 2002:a05:6000:38c:b0:21e:b38d:6bad with SMTP id u12-20020a056000038c00b0021eb38d6badmr2236564wrf.130.1659096180992;
         Fri, 29 Jul 2022 05:03:00 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6LWcSeZ/2dyMJOgdPJKSxU/lbRqcgCBH76GA/oNNfjSQK/sI346EGv1/DQ/IxVUS2craAT5A==
-X-Received: by 2002:a05:6000:1789:b0:21e:87cd:beba with SMTP id e9-20020a056000178900b0021e87cdbebamr2309181wrg.252.1659096179732;
-        Fri, 29 Jul 2022 05:02:59 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR5dqebbAA9IMbPa6Q9JdE/1o7qR1uP8aU5mYYqxQYniWCclb1Ndz4znfDJlle25M1v9Y2iCNQ==
+X-Received: by 2002:a05:6000:38c:b0:21e:b38d:6bad with SMTP id u12-20020a056000038c00b0021eb38d6badmr2236541wrf.130.1659096180706;
+        Fri, 29 Jul 2022 05:03:00 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
-        by smtp.gmail.com with ESMTPSA id i3-20020a05600c354300b003a2e92edeccsm9590622wmq.46.2022.07.29.05.02.58
+        by smtp.gmail.com with ESMTPSA id i3-20020a05600c354300b003a2e92edeccsm9590622wmq.46.2022.07.29.05.02.59
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Jul 2022 05:02:58 -0700 (PDT)
+        Fri, 29 Jul 2022 05:03:00 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite 18/24] policy: don't audit testsuite programs searching the caller's keys
-Date:   Fri, 29 Jul 2022 14:02:23 +0200
-Message-Id: <20220729120229.207584-19-omosnace@redhat.com>
+Subject: [PATCH testsuite 19/24] ci: check for unconfined_t AVCs
+Date:   Fri, 29 Jul 2022 14:02:24 +0200
+Message-Id: <20220729120229.207584-20-omosnace@redhat.com>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220729120229.207584-1-omosnace@redhat.com>
 References: <20220729120229.207584-1-omosnace@redhat.com>
@@ -74,28 +74,26 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-During the test such denials may occur. Since they don't affect testing,
-prevent them from being audited to have a cleaner AVC log.
+These would likely signify a bug in the testsuite policy. Make sure
+there are none.
 
 Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- policy/test_global.te | 3 +++
- 1 file changed, 3 insertions(+)
+ .github/workflows/checks.yml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/policy/test_global.te b/policy/test_global.te
-index 91bddd8..7d399e6 100644
---- a/policy/test_global.te
-+++ b/policy/test_global.te
-@@ -66,6 +66,9 @@ optional_policy(`
- # Needed for domains outside domain_type()
- dontaudit testsuite_caller_domain testsuite_domain:process { noatsecure rlimitinh siginh };
- 
-+# keys test may trigger search AVCs for root's keys
-+dontaudit testsuite_domain testsuite_caller_domain:key { search };
-+
- # Allow the test domains to access the sysadm terminal.
- # This allows read and write sysadm ttys and ptys.
- term_use_all_terms(testsuite_domain)
+diff --git a/.github/workflows/checks.yml b/.github/workflows/checks.yml
+index 59076cb..96843e4 100644
+--- a/.github/workflows/checks.yml
++++ b/.github/workflows/checks.yml
+@@ -38,5 +38,7 @@ jobs:
+         run: while ! vagrant ssh -- true; do sleep 1s; done
+       - name: Run SELinux testsuite
+         run: vagrant ssh -- sudo make -C /root/testsuite test
++      - name: Check unwanted denials
++        run: vagrant ssh -- '! sudo ausearch -m avc -i </dev/null | grep unconfined_t'
+       - name: Check .gitignore coverage
+         run: test "$(vagrant ssh -- sudo git -C /root/testsuite ls-files -o --exclude-standard | wc -l)" -eq 0
 -- 
 2.37.1
 

@@ -2,71 +2,71 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D25F584FE0
-	for <lists+selinux@lfdr.de>; Fri, 29 Jul 2022 14:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E870584FE1
+	for <lists+selinux@lfdr.de>; Fri, 29 Jul 2022 14:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230456AbiG2MC6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 29 Jul 2022 08:02:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40850 "EHLO
+        id S235978AbiG2MDB (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 29 Jul 2022 08:03:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235751AbiG2MC5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 29 Jul 2022 08:02:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 33AAC863E0
-        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:02:57 -0700 (PDT)
+        with ESMTP id S235885AbiG2MDA (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 29 Jul 2022 08:03:00 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1BBA1863DF
+        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1659096176;
+        s=mimecast20190719; t=1659096178;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=/g4KdbrfQrpiJaYWhcxsqfMuvp6LnddOW2zQzTFx9Bg=;
-        b=QIyqg9ur2bXn2tMz3rPn65ZOJPP8bIeEl1osmTdOy52U+jQkdzH1eqj6pOajW07c2MglAu
-        Mp30Z9s8O+hzR1j6pP7rdMgFrOKvhqtZr6wscMxa5M/nb3uoYvE4VVeU9SKxB+xb1udDnG
-        4NWl+4yWT/cmi7HN2C3Ibjg7O8c1ZeI=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=Cocu316jVRhoeyTW9cWYvYQslMZseX7yCYpwaa9v45w=;
+        b=ZsU74dsL5WTjgovQnOXPBTGZKpLVeXpq84RERAPxZGIqF/+FD9AHBLJstEGu8tV77VOIr1
+        91kcTK3YWYgWQtbRdD334++xxJp8dgr5jJik/hkJlKjYr21tiR8U1Cbmn5+TEc6MXzzjxV
+        rWOU1rCVMu51Ocg0Hnq6VAT0Z+4907Q=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-586-Aqrd76MvPtKkKQzkXL5NbA-1; Fri, 29 Jul 2022 08:02:55 -0400
-X-MC-Unique: Aqrd76MvPtKkKQzkXL5NbA-1
-Received: by mail-wr1-f72.google.com with SMTP id t13-20020adfe10d000000b0021bae3def1eso1130648wrz.3
-        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:02:54 -0700 (PDT)
+ us-mta-517-5bDkV_AnMSSOpwGMOq7IMQ-1; Fri, 29 Jul 2022 08:02:56 -0400
+X-MC-Unique: 5bDkV_AnMSSOpwGMOq7IMQ-1
+Received: by mail-wr1-f70.google.com with SMTP id m2-20020adfc582000000b0021e28acded7so1141298wrg.13
+        for <selinux@vger.kernel.org>; Fri, 29 Jul 2022 05:02:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc;
-        bh=/g4KdbrfQrpiJaYWhcxsqfMuvp6LnddOW2zQzTFx9Bg=;
-        b=UZ3pbNjaxCuFs8RrPlTN6q+4RGmaoQ61SDXBO3Jc89y5pgt6PB9A5jf3wUIR25zaJR
-         XSzOAKEs4m0ZRXPhrcUZFkUoTB+p5T87RQUA2grXAHYlneRt3nXCdae6KFd61KxL80hi
-         W3oltLVxG8B4c1pdg9pwG9exZ7GPhgy724/xEz9dN5+EjIXnNukQURJYEjEAuX/Vg790
-         LR+j5lsJvEPmhvdSGSnP0W8dJy0FSJg5+w12L/o02qteTYRoTgi1UzYT1nLfRCTAiN4d
-         shAA2SU4fuJcr8ijXbrmHZloORHD0sf7zeULFyL/OaAkIWBEsxO7XYBe8uObOxd941ne
-         osEw==
-X-Gm-Message-State: ACgBeo2GhnhbsmcBazvj51M6wN5r35b9aN0cCU0NjH0Lh/ov0LCrcwu/
-        ixNXkP8xNTfD/sk0y7th1uDV0ioaKVG5EemWAIS1Ec2mbmN5Fu6IA+DeAJC57MaaIZnIKCBoXPb
-        N/uld89y6hTFv/3i2tiXGvKoAA/7I9jgKLmWA21ogfa/csZ8mcjGv3qpMtT9zLdnpatOIew==
-X-Received: by 2002:a5d:5223:0:b0:21e:fc10:b818 with SMTP id i3-20020a5d5223000000b0021efc10b818mr2219543wra.676.1659096173237;
-        Fri, 29 Jul 2022 05:02:53 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR6XL/V3Tq4t2XBhT2W4HGpz+hlANmazydhPyvgrUPi/TkCXyLMyNcqrlsPe/IdaoVBOcH8new==
-X-Received: by 2002:a5d:5223:0:b0:21e:fc10:b818 with SMTP id i3-20020a5d5223000000b0021efc10b818mr2219517wra.676.1659096172914;
-        Fri, 29 Jul 2022 05:02:52 -0700 (PDT)
+        bh=Cocu316jVRhoeyTW9cWYvYQslMZseX7yCYpwaa9v45w=;
+        b=Z6fmh1wCwG2v69F0VM47SFmYKIeQkIl0VRNJGUEcMDwlveDpBl6W/0JjMgCU7bdQ4q
+         rJlHGc0upxr+KS7/+EnylK/6gY5oqEDIfv7nnZLPoEh4azI+/FHZ9IdnLzRIAzTvJuVc
+         +HK5WU6HEzRIyXNHZNpqYcf4ldgNHNkKy8pbwCg9y1zWqJicj/l1f/5DZWpmdT54I3Vb
+         lvVCeQ9+bNoDZk512oOKBCwHhuFGsYggwUzE4VgcoVfvWo7ivO7zvb70OFECEVEG2yki
+         9OtaPg3tKmSWS2AFR+O2lMSCP8PRDTrBcvmC+dM8KvptMKEMgnfi6Mx4uRrqOXyjom4b
+         230A==
+X-Gm-Message-State: ACgBeo3DGtw12xxm5f0XzvopRsTr3/+kuBlAyFXUHRyPWcyZfziWD1yI
+        83BsDhDADbxh704yj6OVHcXtlrY7dB+10IOkDH6pH5BXeOybjpm3DxW4xJi19jmQEcduW2Gr1FJ
+        UYhwYhzYhZnILwvg8pFDrmf/N2SohArNO7l3PTcQ1BhWlSUckTd2Tq87pDI9cIyioKhwzUQ==
+X-Received: by 2002:a5d:4704:0:b0:21e:c011:c7ce with SMTP id y4-20020a5d4704000000b0021ec011c7cemr2194231wrq.197.1659096175123;
+        Fri, 29 Jul 2022 05:02:55 -0700 (PDT)
+X-Google-Smtp-Source: AA6agR4ljWnZBlNYNv+cZjyfmdoQSjWF1+Q97vld4Aac8+Gmno4kSMPjghlAnwyEzESl37T214J11Q==
+X-Received: by 2002:a5d:4704:0:b0:21e:c011:c7ce with SMTP id y4-20020a5d4704000000b0021ec011c7cemr2194191wrq.197.1659096174496;
+        Fri, 29 Jul 2022 05:02:54 -0700 (PDT)
 Received: from localhost.localdomain ([2a02:8308:b106:e300:32b0:6ebb:8ca4:d4d3])
-        by smtp.gmail.com with ESMTPSA id i3-20020a05600c354300b003a2e92edeccsm9590622wmq.46.2022.07.29.05.02.52
+        by smtp.gmail.com with ESMTPSA id i3-20020a05600c354300b003a2e92edeccsm9590622wmq.46.2022.07.29.05.02.53
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 29 Jul 2022 05:02:52 -0700 (PDT)
+        Fri, 29 Jul 2022 05:02:53 -0700 (PDT)
 From:   Ondrej Mosnacek <omosnace@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite 13/24] test_filesystem.te: remove suspicious rules
-Date:   Fri, 29 Jul 2022 14:02:18 +0200
-Message-Id: <20220729120229.207584-14-omosnace@redhat.com>
+Subject: [PATCH testsuite 14/24] tests/nnp_nosuid: avoid hardcoding unconfined_t in the policy
+Date:   Fri, 29 Jul 2022 14:02:19 +0200
+Message-Id: <20220729120229.207584-15-omosnace@redhat.com>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20220729120229.207584-1-omosnace@redhat.com>
 References: <20220729120229.207584-1-omosnace@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,51 +74,252 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-These don't seem to make sense. Get rid of them.
+Add an intermediate domain which is entered first to avoid the need to
+reference the calling domain in the policy.
 
 Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
 ---
- policy/test_filesystem.te | 6 ------
- 1 file changed, 6 deletions(-)
+ policy/test_nnp_nosuid.te | 26 +++++++++++++---------
+ tests/nnp_nosuid/test     | 45 +++++++++++++++++++++++----------------
+ 2 files changed, 43 insertions(+), 28 deletions(-)
 
-diff --git a/policy/test_filesystem.te b/policy/test_filesystem.te
-index 4942e0d..d8c5c51 100644
---- a/policy/test_filesystem.te
-+++ b/policy/test_filesystem.te
-@@ -126,7 +126,6 @@ fs_getattr_xattr_fs(test_filesystem_may_create_no_associate_t)
- # Create test file
- # neverallow unlabeled_t test_filesystem_may_create_no_associate_t:filesystem { associate };
- allow test_filesystem_may_create_no_associate_t self:file { create relabelfrom relabelto };
--allow test_filesystem_may_create_no_associate_t unconfined_t:file { open read write };
- allow test_filesystem_may_create_no_associate_t unlabeled_t:dir { add_name search write };
- allow test_filesystem_may_create_no_associate_t unlabeled_t:file { create open relabelfrom write };
+diff --git a/policy/test_nnp_nosuid.te b/policy/test_nnp_nosuid.te
+index ad5f742..8d5a1c6 100644
+--- a/policy/test_nnp_nosuid.te
++++ b/policy/test_nnp_nosuid.te
+@@ -3,19 +3,25 @@
+ # Policy for testing NO_NEW_PRIVS and nosuid transitions.
+ #
  
-@@ -266,9 +265,6 @@ fs_associate(test_filesystem_inode_setxattr_no_associate_t)
++# An intermediate domain to avoid referencing the caller domain.
++type test_intermediate_t;
++testsuite_domain_type(test_intermediate_t)
++# executes runcon
++corecmd_exec_bin(test_intermediate_t)
++
+ # A domain bounded by the unconfined domain.
+ type test_bounded_t;
+ testsuite_domain_type(test_bounded_t)
+-typebounds unconfined_t test_bounded_t;
++typebounds test_intermediate_t test_bounded_t;
  
- # Create test file
- allow test_filesystem_inode_setxattr_no_associate_t self:file { create relabelfrom relabelto };
--# neverallow unconfined_t test_filesystem_inode_setxattr_no_associate_t:filesystem { associate };
--allow test_filesystem_inode_setxattr_no_associate_t unconfined_t:dir { add_name write };
--allow test_filesystem_inode_setxattr_no_associate_t unconfined_t:file { create relabelfrom relabelto };
+ # The entrypoint type for this domain.
+ type test_bounded_exec_t;
+ files_type(test_bounded_exec_t)
+ domain_entry_file(test_bounded_t, test_bounded_exec_t)
+-domain_entry_file(unconfined_t, test_bounded_exec_t)
++domain_entry_file(test_intermediate_t, test_bounded_exec_t)
  
- ################# Test process { setfscreate } #############
- type test_setfscreatecon_t;
-@@ -357,7 +353,6 @@ allow test_filesystem_sb_relabel_no_relabelfrom_t self:filesystem { mount relabe
- allow test_filesystem_sb_relabel_no_relabelfrom_t self:filesystem { mount };
+ # Run it!  This should succeed on v3.18 or later, fail on older kernels.
+-unconfined_run_to(test_bounded_t, test_bounded_exec_t)
++domtrans_pattern(test_intermediate_t, test_bounded_exec_t, test_bounded_t)
  
- allow test_filesystem_may_create_no_associate_t nfs_t:filesystem { associate };
--allow test_filesystem_may_create_no_associate_t unconfined_t:file { getattr relabelto };
- allow test_filesystem_may_create_no_associate_t test_file_t:dir { add_name };
- allow test_filesystem_may_create_no_associate_t test_file_t:file { create write relabelfrom };
- allow test_filesystem_may_create_no_associate_t test_filesystem_file_t:filesystem { mount unmount relabelto };
-@@ -365,7 +360,6 @@ allow test_file_t test_filesystem_may_create_no_associate_t:filesystem { associa
- allow unconfined_t test_filesystem_may_create_no_associate_t:filesystem { getattr mount relabelto unmount };
- # neverallow unconfined_t test_filesystem_may_create_no_associate_t:filesystem { associate };
+ # A domain that is not bounded by the unconfined domain.
+ type test_notbounded_t;
+@@ -27,7 +33,7 @@ files_type(test_notbounded_exec_t)
+ domain_entry_file(test_notbounded_t, test_notbounded_exec_t)
  
--allow test_filesystem_inode_setxattr_no_associate_t unconfined_t:file { getattr open read write };
- allow test_filesystem_inode_setxattr_no_associate_t nfs_t:filesystem { associate };
- allow test_filesystem_inode_setxattr_no_associate_t test_file_t:dir { add_name };
- allow test_filesystem_inode_setxattr_no_associate_t test_file_t:file { create relabelfrom write };
+ # Run it!  This should fail always.
+-unconfined_run_to(test_notbounded_t, test_notbounded_exec_t)
++domtrans_pattern(test_intermediate_t, test_notbounded_exec_t, test_notbounded_t)
+ 
+ # A domain to which the unconfined domain is allowed nnp_transition.
+ type test_nnptransition_t;
+@@ -39,9 +45,9 @@ files_type(test_nnptransition_exec_t)
+ domain_entry_file(test_nnptransition_t, test_nnptransition_exec_t)
+ 
+ # Run it!  This should succeed on v4.14 or later.
+-unconfined_run_to(test_nnptransition_t, test_nnptransition_exec_t)
++domtrans_pattern(test_intermediate_t, test_nnptransition_exec_t, test_nnptransition_t)
+ ifdef(`nnp_nosuid_transition_permission_defined', `
+-allow unconfined_t test_nnptransition_t:process2 nnp_transition;
++allow test_intermediate_t test_nnptransition_t:process2 nnp_transition;
+ ')
+ 
+ # A domain to which the unconfined domain is allowed nosuid_transition.
+@@ -54,9 +60,9 @@ files_type(test_nosuidtransition_exec_t)
+ domain_entry_file(test_nosuidtransition_t, test_nosuidtransition_exec_t)
+ 
+ # Run it!  This should succeed on v4.14 or later.
+-unconfined_run_to(test_nosuidtransition_t, test_nosuidtransition_exec_t)
++domtrans_pattern(test_intermediate_t, test_nosuidtransition_exec_t, test_nosuidtransition_t)
+ ifdef(`nnp_nosuid_transition_permission_defined', `
+-allow unconfined_t test_nosuidtransition_t:process2 nosuid_transition;
++allow test_intermediate_t test_nosuidtransition_t:process2 nosuid_transition;
+ ')
+ 
+ # A domain to which the unconfined domain is allowed both nosuid_transition and nnp_transition.
+@@ -69,7 +75,7 @@ files_type(test_nosuidtransition_exec_t)
+ domain_entry_file(test_nnpnosuidtransition_t, test_nnpnosuidtransition_exec_t)
+ 
+ # Run it!  This should succeed on v4.14 or later.
+-unconfined_run_to(test_nnpnosuidtransition_t, test_nnpnosuidtransition_exec_t)
++domtrans_pattern(test_intermediate_t, test_nnpnosuidtransition_exec_t, test_nnpnosuidtransition_t)
+ ifdef(`nnp_nosuid_transition_permission_defined', `
+-allow unconfined_t test_nnpnosuidtransition_t:process2 { nnp_transition nosuid_transition };
++allow test_intermediate_t test_nnpnosuidtransition_t:process2 { nnp_transition nosuid_transition };
+ ')
+diff --git a/tests/nnp_nosuid/test b/tests/nnp_nosuid/test
+index 4e13927..bebe575 100755
+--- a/tests/nnp_nosuid/test
++++ b/tests/nnp_nosuid/test
+@@ -31,31 +31,36 @@ system("chcon -t test_bounded_exec_t $basedir/checkcon");
+ # Create nosuid mount.
+ system("mkdir -p $basedir/testdir");
+ system("mount -t tmpfs -o nosuid none $basedir/testdir");
++system("chcon -t test_file_t $basedir/testdir");
+ 
+ # Set entrypoint type for bounded domain under nosuid.
+ system("cp $basedir/checkcon $basedir/testdir");
+ system("chcon -t test_bounded_exec_t $basedir/testdir/checkcon");
+ 
++# Run everything from test_intermediate_t (to simplify the policy)
++$run = "runcon -t test_intermediate_t --";
++
+ # Transition under NNP to bounded type via setexec.
+ $result = system(
+-"$basedir/execnnp -n -- runcon -t test_bounded_t $basedir/checkcon test_bounded_t 2>&1"
++"$run $basedir/execnnp -n -- runcon -t test_bounded_t $basedir/checkcon test_bounded_t 2>&1"
+ );
+ ok( $result, 0 );    #this should pass
+ 
+ # Transition on nosuid to bounded type via setexec.
+ $result = system(
+-"$basedir/execnnp -- runcon -t test_bounded_t $basedir/testdir/checkcon test_bounded_t 2>&1"
++"$run $basedir/execnnp -- runcon -t test_bounded_t $basedir/testdir/checkcon test_bounded_t 2>&1"
+ );
+ ok( $result, 0 );    #this should pass
+ 
+ # Automatic transition under NNP to bounded domain via exec.
+ $result =
+-  system("$basedir/execnnp -n -- $basedir/checkcon test_bounded_t 2>&1");
++  system("$run $basedir/execnnp -n -- $basedir/checkcon test_bounded_t 2>&1");
+ ok( $result, 0 );    #this should pass
+ 
+ # Automatic transition on nosuid to bounded domain via exec.
+ $result =
+-  system("$basedir/execnnp -- $basedir/testdir/checkcon test_bounded_t 2>&1");
++  system(
++    "$run $basedir/execnnp -- $basedir/testdir/checkcon test_bounded_t 2>&1");
+ ok( $result, 0 );    #this should pass
+ 
+ # Use true as an entrypoint program to test ability to exec at all.
+@@ -71,25 +76,28 @@ system(
+ # Transition under NNP to notbounded domain via setexec.
+ $result =
+   system(
+-    "$basedir/execnnp -n -- runcon -t test_notbounded_t $basedir/true 2>&1");
++    "$run $basedir/execnnp -n -- runcon -t test_notbounded_t $basedir/true 2>&1"
++  );
+ ok($result);    #this should fail
+ 
+ # Transition on nosuid to notbounded domain via setexec.
+ $result =
+   system(
+-    "$basedir/execnnp -- runcon -t test_notbounded_t $basedir/testdir/true 2>&1"
++"$run $basedir/execnnp -- runcon -t test_notbounded_t $basedir/testdir/true 2>&1"
+   );
+ ok($result);    #this should fail
+ 
+ # Automatic transition under NNP to notbounded domain via exec.
+ $result =
+-  system("$basedir/execnnp -n -- $basedir/checkcon test_notbounded_t 2>&1");
++  system(
++    "$run $basedir/execnnp -n -- $basedir/checkcon test_notbounded_t 2>&1");
+ ok($result);    #this should fail
+ 
+ # Automatic transition on nosuid to notbounded domain via exec.
+ $result =
+   system(
+-    "$basedir/execnnp -- $basedir/testdir/checkcon test_notbounded_t 2>&1");
++    "$run $basedir/execnnp -- $basedir/testdir/checkcon test_notbounded_t 2>&1"
++  );
+ ok($result);    #this should fail
+ 
+ if ($test_nnp_nosuid_transition) {
+@@ -104,27 +112,28 @@ if ($test_nnp_nosuid_transition) {
+     # Transition under NNP to nnptransition domain via setexec.
+     $result =
+       system(
+-"$basedir/execnnp -n -- runcon -t test_nnptransition_t $basedir/true 2>&1"
++"$run $basedir/execnnp -n -- runcon -t test_nnptransition_t $basedir/true 2>&1"
+       );
+     ok( $result, 0 );    #this should succeed
+ 
+     # Transition under NNP+nosuid to nnptransition domain via setexec.
+     $result =
+       system(
+-"$basedir/execnnp -n -- runcon -t test_nnptransition_t $basedir/testdir/true 2>&1"
++"$run $basedir/execnnp -n -- runcon -t test_nnptransition_t $basedir/testdir/true 2>&1"
+       );
+     ok($result);         #this should fail
+ 
+     # Automatic transition under NNP to nnptransition domain via exec.
+     $result =
+       system(
+-        "$basedir/execnnp -n -- $basedir/checkcon test_nnptransition_t 2>&1");
++"$run $basedir/execnnp -n -- $basedir/checkcon test_nnptransition_t 2>&1"
++      );
+     ok( $result, 0 );    #this should succeed
+ 
+     # Automatic transition under NNP+nosuid to nnptransition domain via exec.
+     $result =
+       system(
+-"$basedir/execnnp -n -- $basedir/testdir/checkcon test_nnptransition_t 2>&1"
++"$run $basedir/execnnp -n -- $basedir/testdir/checkcon test_nnptransition_t 2>&1"
+       );
+     ok($result);         #this should fail
+ 
+@@ -136,28 +145,28 @@ if ($test_nnp_nosuid_transition) {
+     # Transition under nosuid to nosuidtransition domain via setexec.
+     $result =
+       system(
+-"$basedir/execnnp -- runcon -t test_nosuidtransition_t $basedir/testdir/true 2>&1"
++"$run $basedir/execnnp -- runcon -t test_nosuidtransition_t $basedir/testdir/true 2>&1"
+       );
+     ok( $result, 0 );    #this should succeed
+ 
+     # Transition under NNP+nosuid to nosuidtransition domain via setexec.
+     $result =
+       system(
+-"$basedir/execnnp -n -- runcon -t test_nosuidtransition_t $basedir/testdir/true 2>&1"
++"$run $basedir/execnnp -n -- runcon -t test_nosuidtransition_t $basedir/testdir/true 2>&1"
+       );
+     ok($result);         #this should fail
+ 
+     # Automatic transition under nosuid to nosuidtransition domain via exec.
+     $result =
+       system(
+-"$basedir/execnnp -- $basedir/testdir/checkcon test_nosuidtransition_t 2>&1"
++"$run $basedir/execnnp -- $basedir/testdir/checkcon test_nosuidtransition_t 2>&1"
+       );
+     ok( $result, 0 );    #this should succeed
+ 
+     # Automatic transition under NNP+nosuid to nosuidtransition domain via exec.
+     $result =
+       system(
+-"$basedir/execnnp -n -- $basedir/testdir/checkcon test_nosuidtransition_t 2>&1"
++"$run $basedir/execnnp -n -- $basedir/testdir/checkcon test_nosuidtransition_t 2>&1"
+       );
+     ok($result);         #this should fail
+ 
+@@ -169,14 +178,14 @@ if ($test_nnp_nosuid_transition) {
+     # Transition under NNP+nosuid to nnpnosuidtransition domain via setexec.
+     $result =
+       system(
+-"$basedir/execnnp -n -- runcon -t test_nnpnosuidtransition_t $basedir/testdir/true 2>&1"
++"$run $basedir/execnnp -n -- runcon -t test_nnpnosuidtransition_t $basedir/testdir/true 2>&1"
+       );
+     ok( $result, 0 );    #this should succeed
+ 
+  # Automatic transition under NNP+nosuid to nnpnosuidtransition domain via exec.
+     $result =
+       system(
+-"$basedir/execnnp -n -- $basedir/testdir/checkcon test_nnpnosuidtransition_t 2>&1"
++"$run $basedir/execnnp -n -- $basedir/testdir/checkcon test_nnpnosuidtransition_t 2>&1"
+       );
+     ok( $result, 0 );    #this should succeed
+ }
 -- 
 2.37.1
 

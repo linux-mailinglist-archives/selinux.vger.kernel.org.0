@@ -2,128 +2,107 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49F4458E229
-	for <lists+selinux@lfdr.de>; Tue,  9 Aug 2022 23:52:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9439258E22F
+	for <lists+selinux@lfdr.de>; Tue,  9 Aug 2022 23:53:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229861AbiHIVwa (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 9 Aug 2022 17:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58802 "EHLO
+        id S229747AbiHIVxz (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 9 Aug 2022 17:53:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59944 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229853AbiHIVwT (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 9 Aug 2022 17:52:19 -0400
-Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D33F265662;
-        Tue,  9 Aug 2022 14:52:18 -0700 (PDT)
-Received: from in01.mta.xmission.com ([166.70.13.51]:51104)
-        by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1oLX97-0045M3-3O; Tue, 09 Aug 2022 15:52:17 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:49750 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1oLX95-003Mhu-4e; Tue, 09 Aug 2022 15:52:16 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     Casey Schaufler <casey@schaufler-ca.com>
-Cc:     Paul Moore <paul@paul-moore.com>,
-        Frederick Lawler <fred@cloudflare.com>, kpsingh@kernel.org,
-        revest@chromium.org, jackmanb@chromium.org, ast@kernel.org,
-        daniel@iogearbox.net, andrii@kernel.org, kafai@fb.com,
-        songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
-        jmorris@namei.org, serge@hallyn.com,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        shuah@kernel.org, brauner@kernel.org, bpf@vger.kernel.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
-        netdev@vger.kernel.org, kernel-team@cloudflare.com,
-        cgzones@googlemail.com, karl@bigbadwolfsecurity.com
-References: <20220801180146.1157914-1-fred@cloudflare.com>
-        <87les7cq03.fsf@email.froward.int.ebiederm.org>
-        <CAHC9VhRpUxyxkPaTz1scGeRm+i4KviQQA7WismOX2q5agzC+DQ@mail.gmail.com>
-        <87wnbia7jh.fsf@email.froward.int.ebiederm.org>
-        <CAHC9VhS3udhEecVYVvHm=tuqiPGh034-xPqXYtFjBk23+p-Szg@mail.gmail.com>
-        <877d3ia65v.fsf@email.froward.int.ebiederm.org>
-        <87bksu8qs2.fsf@email.froward.int.ebiederm.org>
-        <CAHC9VhTEwD2y9Witj-1z3e2TC-NGjghQ4KT4Dqf3UOLzDcDc3Q@mail.gmail.com>
-        <87czd95rjc.fsf@email.froward.int.ebiederm.org>
-        <f38216d8-8ee4-d6fd-a5b1-0d21013e09c6@schaufler-ca.com>
-Date:   Tue, 09 Aug 2022 16:52:06 -0500
-In-Reply-To: <f38216d8-8ee4-d6fd-a5b1-0d21013e09c6@schaufler-ca.com> (Casey
-        Schaufler's message of "Tue, 9 Aug 2022 10:43:30 -0700")
-Message-ID: <87bkstaxvd.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S229448AbiHIVxy (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 9 Aug 2022 17:53:54 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836506AA27
+        for <selinux@vger.kernel.org>; Tue,  9 Aug 2022 14:53:53 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id uj29so24639712ejc.0
+        for <selinux@vger.kernel.org>; Tue, 09 Aug 2022 14:53:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=OreQW8LduJ+3/sytHN1UMAwYouobUY5jZBcqHsdHYnw=;
+        b=DgjUGjISdN/ceUngb6gECyv9X9xvFmWmkJjYJ9NiU+bGKPDzWdyLxNVpUsp0KqrsE5
+         tQksOC9cOH4tMjH+EFm3yE0bK1452APYMvQqyZx35HcCzI/oHYeoAozQpaj+xHubeTxc
+         5/kSHwSVEE/kYqtJ2p0YjQ6xr3jqv5dCpw/s9PNXnXLUEwSNtrNwD2NS8e8QtrDQ1FCX
+         xO7zXO2k6dO5wKpRnDaxw2W42FkqWvD7TnYEBMXz3EiM3DMcAmv8h+F5G/TZXtEpCZlB
+         tuHossRY3Et+52es+EYnqirwpe7BXOkjznBiIN5ivJU/vIei9yIuTGTXFCFC4XRQofn5
+         jIjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=OreQW8LduJ+3/sytHN1UMAwYouobUY5jZBcqHsdHYnw=;
+        b=H1FDH8vwSCRND/9YeZJVIQDRJvYOl4j/tJAu47ZoDOaqIr6umujmlomZ27lOYsKDhY
+         b+x+VoYA2Q0puH6R2YKCnkxORNi8rFaEIIe/I+AWHD56rlt1b6xsJ9Hz0MYwvmMjnYsa
+         c6920N0Dbo/P8VaLS0iKqHUKm5GsfZptgxDqIWURZ1zpzE+J3Lwf2N70xClAO1VqPEpa
+         dzDyShLwnw38isj0IaOLz5WwXFRrG1xc72ZErjcUJ5H3xu/pJyeG+xI7uvH9+p3XTusI
+         kjZV7td+PIotMzTOQdlbrjqQIZrI//NJvxcOiOj4FrR3Timb0bDl4NDnwXzYn/4ADU0R
+         xESQ==
+X-Gm-Message-State: ACgBeo1HJquaFfGpl/8VHdGNwMMFq8nfrOg+lITMrG7rwuhGO7PdSItX
+        HnLAQDllVSz1jucHLRXn70L2GhagUC40G6BaGCM=
+X-Google-Smtp-Source: AA6agR7W3qZCsp4jNC4wOdIZoLl0kx2nYGgRTCxuze9scILg89RVekYvEWKy01+5MtMW0O7fhRRWskcR3rYa/gIGklo=
+X-Received: by 2002:a17:907:b590:b0:730:9e03:95a8 with SMTP id
+ qx16-20020a170907b59000b007309e0395a8mr18122348ejc.384.1660082032006; Tue, 09
+ Aug 2022 14:53:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1oLX95-003Mhu-4e;;;mid=<87bkstaxvd.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
-X-XM-AID: U2FsdGVkX19MEtOIAQH6CwOw14KNBbhM4tqX1/pJm0A=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+Received: by 2002:a50:7e82:0:0:0:0:0 with HTTP; Tue, 9 Aug 2022 14:53:51 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Mrs. Mimi Aminu" <mimiaminu319@gmail.com>
+Date:   Tue, 9 Aug 2022 14:53:51 -0700
+Message-ID: <CAD-C4f6AE-LpsyEMs4cHz7rKdWGv0dD-hnPq4jQWq0uCyvH7QQ@mail.gmail.com>
+Subject: Greetings,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:62a listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [mimiaminu319[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [mimiaminu319[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Virus: No
-X-Spam-DCC: XMission; sa03 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: **;Casey Schaufler <casey@schaufler-ca.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 1377 ms - load_scoreonly_sql: 0.03 (0.0%),
-        signal_user_changed: 4.2 (0.3%), b_tie_ro: 3.0 (0.2%), parse: 0.70
-        (0.1%), extract_message_metadata: 8 (0.6%), get_uri_detail_list: 1.09
-        (0.1%), tests_pri_-1000: 7 (0.5%), tests_pri_-950: 1.12 (0.1%),
-        tests_pri_-900: 0.84 (0.1%), tests_pri_-90: 77 (5.6%), check_bayes: 76
-        (5.5%), b_tokenize: 6 (0.5%), b_tok_get_all: 9 (0.7%), b_comp_prob:
-        2.1 (0.2%), b_tok_touch_all: 55 (4.0%), b_finish: 0.80 (0.1%),
-        tests_pri_0: 1263 (91.7%), check_dkim_signature: 0.38 (0.0%),
-        check_dkim_adsp: 1.66 (0.1%), poll_dns_idle: 0.25 (0.0%),
-        tests_pri_10: 3.0 (0.2%), tests_pri_500: 9 (0.7%), rewrite_mail: 0.00
-        (0.0%)
-Subject: Re: [PATCH v4 0/4] Introduce security_create_user_ns()
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Casey Schaufler <casey@schaufler-ca.com> writes:
+-- 
+Hello,
+We the Board Directors believe you are in good health, doing great and
+with the hope that this mail will meet you in good condition, We are
+privileged and delighted to reach you via email" And we are urgently
+waiting to hear from you. and again your number is not connecting.
 
-> Smack has no interest in using the proposed hook because user namespaces
-> are neither subjects nor objects. They are collections of DAC and/or
-> privilege configuration alternatives. Or something like that. From the
-> viewpoint of a security module that only implements old fashioned MAC
-> there is no value in constraining user namespaces.
+My regards,
+Mrs. Mimi Aminu.
 
-The goal is to simply enable things that become safe when you don't have
-to worry about confusing setuid executables.
-
-> SELinux, on the other hand, seeks to be comprehensive well beyond
-> controlling accesses between subjects and objects. Asking the question
-> "should there be a control on this operation?" seems sufficient to justify
-> adding the control to SELinux policy. This is characteristic of
-> "Fine Grain" control.
-
-I see that from a theoretical standpoint.  On the flip side I prefer
-arguments grounded in something more than what an abstract framework
-could appreciate.  We are so far from any theoretical purity in the
-linux kernel that I can't see theoretical purity being enough to justify
-a decision like this.
-
-> So I'm of two minds on this. I don't need the hook, but I also understand
-> why SELinux and BPF want it. I don't necessarily agree with their logic,
-> but it is consistent with existing behavior. Any system that uses either
-> of those security modules needs to be ready for unexpected denials based
-> on any potential security concern. Keeping namespaces completely orthogonal
-> to LSM seems doomed to failure eventually.
-
-I can cross that bridge when there is a healthy conversation about such
-a change.
-
-Too often I get "ouch! Creating a user namespace was used as the easiest
-way to exploit a security bug. Let's solve the issue by denying user
-namespaces."  Which leads to half thought out policies made out of fear.
-
-Which is where I think this conversation started.  I haven't seen it
-make it's way to any healthy reasons to deny user namespaces yet.
-
-Eric
+Sincerely,
+Prof. Chin Guang

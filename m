@@ -2,273 +2,173 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71A00593290
-	for <lists+selinux@lfdr.de>; Mon, 15 Aug 2022 17:54:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 517F65932F8
+	for <lists+selinux@lfdr.de>; Mon, 15 Aug 2022 18:21:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230443AbiHOPy4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 15 Aug 2022 11:54:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43716 "EHLO
+        id S232544AbiHOQUv (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 15 Aug 2022 12:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232078AbiHOPyz (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 15 Aug 2022 11:54:55 -0400
-Received: from mail-oa1-x29.google.com (mail-oa1-x29.google.com [IPv6:2001:4860:4864:20::29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1548417077
-        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 08:54:54 -0700 (PDT)
-Received: by mail-oa1-x29.google.com with SMTP id 586e51a60fabf-10ee900cce0so8587488fac.5
-        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 08:54:54 -0700 (PDT)
+        with ESMTP id S232559AbiHOQUm (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 15 Aug 2022 12:20:42 -0400
+Received: from mail-oa1-x34.google.com (mail-oa1-x34.google.com [IPv6:2001:4860:4864:20::34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81F9F12AD8
+        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 09:20:36 -0700 (PDT)
+Received: by mail-oa1-x34.google.com with SMTP id 586e51a60fabf-1168e046c85so8638027fac.13
+        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 09:20:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc;
-        bh=2MeqZ9YpBhcxMePhf4XyuZxiB8DSxsSa93MuJDVwhuY=;
-        b=VeUWuDhtkcP2mFTGI43BzGM9oZ/WHWyS1F8Zjg9YnGHOM/0w8XKSWKjTsEUnbWPzJG
-         k/C/t4y1rTMr8geaxkoWok7FRzrDPn/LiG8PT2/MfqxVBh3RJ1LL+Km9f9VeW/e3aNAV
-         76z2SXIwRfu+Wpf65hl2AkYljEhSJha2QMGw6BA0ue7ub/yMvK3NtPkDhrSXBLcYdQOt
-         sviLLtENu0Bvk5nr5jWK+RZzoIVfl0+uFRfbmnK3AFVWaCklQnhLARLgJxtCy6MbOh4n
-         OFFasu3YkXIaOpdZIMgoq1+bCigCyYMofY6z01j33cS4GRWdI6cDOLNZGpiMRyVWBsVj
-         gZfw==
+        d=cloudflare.com; s=google;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=BSoTNICrMj7u/TGLx7cm1e33DdNye1p3mIhcbsI607s=;
+        b=KInnq098LCWs5kg+cX63AWfFPPNfgicW4dz+z/PeD/+DN4q0G1c4WxPhxdS0HovuP6
+         Gw20+HN0SO+KQ+dpOPTgZ40IlusbkswAnwxW4ppuftQgEHziJp1APc6lf78h5nLctEqK
+         jJBxZ2sv/gFyKvOO4233k+8J81NsYuEOlODUQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc;
-        bh=2MeqZ9YpBhcxMePhf4XyuZxiB8DSxsSa93MuJDVwhuY=;
-        b=yUP3la9w2d+ttrr9OlqHb6dfvh5h12IWT2tbtG9iAg60YU5S07OKlRK6J0IVZwDOtk
-         uew10HCtdsGKqgoJ5fCcKxxNhGibhonJYlnGWGFyaZHStBKK348Wnhnubmg6IoOjap3l
-         mrPv08XyKUuHQjNA6BY7niuIkQOjpX1VFVPGr2oZplZQODQS3GzffBkTrhQdfgC+CEMj
-         aVVmLTVwG8G3W8bgJQuSgjxqWiy8+TinHM91l4Hx+WUaQrYsgONrL8MdC3CcsBYg9v4Q
-         NBDqLLGBwe02INwsHbOqzUZhMH2EvTr9GMGuliI7FCynlAYnqBanl14Ts2dTyknr2DuN
-         XL9A==
-X-Gm-Message-State: ACgBeo3/QViCAhk14wv+A1yYz/mkeXN3Jc8/gEikel5QsHGcVEyirT/P
-        1fmCC1F3YAAkH+kcnuIvHoL64Dzjpb/qmBVfL0E=
-X-Google-Smtp-Source: AA6agR7L5fqEilQapkf09kgA9IlM5Uy2WN67NYaTfFkZv2wWWeDikhTvjnk4rz47ShkX9HQA8BytKzPRRwm8N4E5I6w=
-X-Received: by 2002:a05:6870:89a5:b0:116:ca99:6de7 with SMTP id
- f37-20020a05687089a500b00116ca996de7mr6962005oaq.182.1660578893328; Mon, 15
- Aug 2022 08:54:53 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=BSoTNICrMj7u/TGLx7cm1e33DdNye1p3mIhcbsI607s=;
+        b=FQeJLZdKJ8ik9Gs8GGkeaeFjS7yaC5nFOV1xWw1X8BC1JwWe+GuWaTJxsQPV8mZvGP
+         jWCQAOjR9JGG9SJp6ZRuhn1w72CFgksRFsXX0iduyUwNiTN6RIcsayJvm5IyZd02Wo/c
+         dV9h9E8iGZRLglm9ypmdYytB+S2zwLfryv0GHxEcviJFFlDuGhxyuvkvKks/dCrO24jC
+         w13MCaGQqkxlHjfnx2iFmPw0+C6h4EF4pbtJgtFViuHYkpdUL95DJ3SBWJWKkutU2nR/
+         nzgpLomoaB2YTi35cJr1eIoPVS+eF/ibzloDVYSZ1qgoquWskkCeB3B7VibKaz/S8qpJ
+         Uh6g==
+X-Gm-Message-State: ACgBeo2xYBH/iJN5Ukc3pnH42A3oXBgeK8V1edEmgw087Zh9IyfwtXC9
+        j+ZTpqimPszNihM6K29vcjz2Bw==
+X-Google-Smtp-Source: AA6agR78nAzd1nRQswnX5CWOif43etOxtDbBfDmKa4nzMrWkz8NAms1Thrx+XPtPcVl4miGYXiqyuQ==
+X-Received: by 2002:a05:6870:d60a:b0:10e:4333:d773 with SMTP id a10-20020a056870d60a00b0010e4333d773mr7168256oaq.78.1660580435563;
+        Mon, 15 Aug 2022 09:20:35 -0700 (PDT)
+Received: from localhost.localdomain ([184.4.90.121])
+        by smtp.gmail.com with ESMTPSA id x91-20020a9d37e4000000b00636ee04e7aesm2163371otb.67.2022.08.15.09.20.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Aug 2022 09:20:35 -0700 (PDT)
+From:   Frederick Lawler <fred@cloudflare.com>
+To:     kpsingh@kernel.org, revest@chromium.org, jackmanb@chromium.org,
+        ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
+        kafai@fb.com, songliubraving@fb.com, yhs@fb.com,
+        john.fastabend@gmail.com, jmorris@namei.org, serge@hallyn.com,
+        paul@paul-moore.com, stephen.smalley.work@gmail.com,
+        eparis@parisplace.org, shuah@kernel.org, brauner@kernel.org,
+        casey@schaufler-ca.com, ebiederm@xmission.com, bpf@vger.kernel.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        linux-kselftest@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+        kernel-team@cloudflare.com, cgzones@googlemail.com,
+        karl@bigbadwolfsecurity.com, tixxdz@gmail.com,
+        Frederick Lawler <fred@cloudflare.com>
+Subject: [PATCH v5 0/4] Introduce security_create_user_ns()
+Date:   Mon, 15 Aug 2022 11:20:24 -0500
+Message-Id: <20220815162028.926858-1-fred@cloudflare.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-References: <20220808173655.16867-1-cgzones@googlemail.com> <CAP+JOzSSptmKyETXZakgEGogdxdAaDqGT06uPyspk4jKETtF6A@mail.gmail.com>
-In-Reply-To: <CAP+JOzSSptmKyETXZakgEGogdxdAaDqGT06uPyspk4jKETtF6A@mail.gmail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Mon, 15 Aug 2022 11:54:42 -0400
-Message-ID: <CAP+JOzQvc=kAAJK6LGDNLH_WSwnVBoN=FSWR+t0xr1rQqSveKg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] ci: bump versions in GitHub Actions
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Aug 11, 2022 at 12:55 PM James Carter <jwcart2@gmail.com> wrote:
->
-> On Mon, Aug 8, 2022 at 1:38 PM Christian G=C3=B6ttsche
-> <cgzones@googlemail.com> wrote:
-> >
-> > * Move from deprecated actions/setup-ruby to ruby/setup-ruby.
-> > * Bump python and ruby upper versions.
-> > * Bump Reference Policy version
-> > * Do not install recommend packages and output package resolution
-> > * Bump to macOS 12
-> >
-> >   macOS 10 is deprecated since 5/31/22 [1].
-> >   VirtualBox and Vagrant seems to be supported [2][3].
-> >
-> > [1]: https://github.com/actions/virtual-environments/issues/5583
-> > [2]: https://github.com/actions/virtual-environments/pull/5594
-> > [3]: https://github.com/actions/virtual-environments/pull/5854
-> >
-> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
->
-> For this series:
-> Acked-by: James Carter <jwcart2@gmail.com>
->
-This series has been merged.
-Thanks,
-Jim
+While user namespaces do not make the kernel more vulnerable, they are however
+used to initiate exploits. Some users do not want to block namespace creation
+for the entirety of the system, which some distributions provide. Instead, we
+needed a way to have some applications be blocked, and others allowed. This is
+not possible with those tools. Managing hierarchies also did not fit our case
+because we're determining which tasks are allowed based on their attributes.
 
-> > ---
-> >  .github/workflows/run_tests.yml    | 62 +++++++++++++++++-------------
-> >  .github/workflows/vm_testsuite.yml |  5 +--
-> >  2 files changed, 38 insertions(+), 29 deletions(-)
-> >
-> > diff --git a/.github/workflows/run_tests.yml b/.github/workflows/run_te=
-sts.yml
-> > index 8b7cb720..db0e1af5 100644
-> > --- a/.github/workflows/run_tests.yml
-> > +++ b/.github/workflows/run_tests.yml
-> > @@ -10,48 +10,51 @@ jobs:
-> >        matrix:
-> >          compiler: [gcc, clang]
-> >          python-ruby-version:
-> > -          - {python: 3.9, ruby: 2.7}
-> > -          - {python: 3.9, ruby: 2.7, other: test-flags-override}
-> > -          - {python: 3.9, ruby: 2.7, other: test-debug}
-> > -          - {python: 3.9, ruby: 2.7, other: linker-bfd}
-> > -          - {python: 3.9, ruby: 2.7, other: linker-gold}
-> > +          - {python: '3.10', ruby: '3.1'}
-> > +          - {python: '3.10', ruby: '3.1', other: test-flags-override}
-> > +          - {python: '3.10', ruby: '3.1', other: test-debug}
-> > +          - {python: '3.10', ruby: '3.1', other: linker-bfd}
-> > +          - {python: '3.10', ruby: '3.1', other: linker-gold}
-> >            # Test several Python versions with the latest Ruby version
-> > -          - {python: 3.8, ruby: 2.7}
-> > -          - {python: 3.7, ruby: 2.7}
-> > -          - {python: 3.6, ruby: 2.7}
-> > -          - {python: 3.5, ruby: 2.7}
-> > -          - {python: pypy3, ruby: 2.7}
-> > +          - {python: '3.9', ruby: '3.1'}
-> > +          - {python: '3.8', ruby: '3.1'}
-> > +          - {python: '3.7', ruby: '3.1'}
-> > +          - {python: '3.6', ruby: '3.1'}
-> > +          - {python: '3.5', ruby: '3.1'}
-> > +          - {python: 'pypy3.7', ruby: '3.1'}
-> >            # Test several Ruby versions with the latest Python version
-> > -          - {python: 3.9, ruby: 2.6}
-> > -          - {python: 3.9, ruby: 2.5}
-> > +          - {python: '3.10', ruby: '3.0'}
-> > +          - {python: '3.10', ruby: '2.7'}
-> > +          - {python: '3.10', ruby: '2.6'}
-> > +          - {python: '3.10', ruby: '2.5'}
-> >          exclude:
-> >            - compiler: clang
-> > -            python-ruby-version: {python: 3.9, ruby: 2.7, other: linke=
-r-bfd}
-> > +            python-ruby-version: {python: '3.10', ruby: '3.1', other: =
-linker-bfd}
-> >            - compiler: clang
-> > -            python-ruby-version: {python: 3.9, ruby: 2.7, other: linke=
-r-gold}
-> > +            python-ruby-version: {python: '3.10', ruby: '3.1', other: =
-linker-gold}
-> >          include:
-> >            - compiler: gcc
-> > -            python-ruby-version: {python: 3.9, ruby: 2.7, other: sanit=
-izers}
-> > +            python-ruby-version: {python: '3.10', ruby: '3.1', other: =
-sanitizers}
-> >
-> >      steps:
-> > -    - uses: actions/checkout@v2
-> > +    - uses: actions/checkout@v3
-> >
-> >      - name: Set up Python ${{ matrix.python-ruby-version.python }}
-> > -      uses: actions/setup-python@v2
-> > +      uses: actions/setup-python@v4
-> >        with:
-> >          python-version: ${{ matrix.python-ruby-version.python }}
-> >
-> >      - name: Set up Ruby ${{ matrix.python-ruby-version.ruby }}
-> > -      uses: actions/setup-ruby@v1
-> > +      uses: ruby/setup-ruby@v1
-> >        with:
-> >          ruby-version: ${{ matrix.python-ruby-version.ruby }}
-> > +        bundler-cache: true
-> >
-> >      - name: Install dependencies
-> >        run: |
-> > -        sudo apt-get update -qq
-> > -        sudo apt-get install -qqy \
-> > +        sudo apt-get update -q
-> > +        sudo apt-get install -qy --no-install-recommends \
-> >              bison \
-> > -            clang \
-> >              flex \
-> >              gawk \
-> >              gettext \
-> > @@ -61,14 +64,16 @@ jobs:
-> >              libcunit1-dev \
-> >              libdbus-glib-1-dev \
-> >              libpcre2-dev \
-> > -            python3-dev \
-> > -            python-dev \
-> >              ruby-dev \
-> >              swig \
-> >              xmlto
-> >
-> >          pip install flake8
-> >
-> > +    - name: Install Clang
-> > +      if: ${{ matrix.compiler =3D=3D 'clang' }}
-> > +      run: sudo apt-get install -qqy clang
-> > +
-> >      - name: Configure the environment
-> >        run: |
-> >          DESTDIR=3D/tmp/destdir
-> > @@ -82,6 +87,11 @@ jobs:
-> >          elif [ "${{ matrix.python-ruby-version.other }}" =3D "linker-g=
-old" ] ; then
-> >              CC=3D"$CC -fuse-ld=3Dgold"
-> >          fi
-> > +        # https://bugs.ruby-lang.org/issues/18616
-> > +        # https://github.com/llvm/llvm-project/issues/49958
-> > +        if [ "${{ matrix.compiler }}" =3D "clang" ] && [[ "${{ matrix.=
-python-ruby-version.ruby }}" =3D 3* ]] ; then
-> > +            CC=3D"$CC -fdeclspec"
-> > +        fi
-> >          echo "CC=3D$CC" >> $GITHUB_ENV
-> >
-> >          EXPLICIT_MAKE_VARS=3D
-> > @@ -110,7 +120,7 @@ jobs:
-> >          PYTHON_SYS_PREFIX=3D"$(python -c 'import sys;print(sys.prefix)=
-')"
-> >          echo "PKG_CONFIG_PATH=3D${PYTHON_SYS_PREFIX}/lib/pkgconfig" >>=
- $GITHUB_ENV
-> >
-> > -        if [ "${{ matrix.python-ruby-version.python }}" =3D "pypy3" ] =
-; then
-> > +        if [[ "${{ matrix.python-ruby-version.python }}" =3D pypy* ]] =
-; then
-> >              # PyPy does not provide a config file for pkg-config
-> >              # libpypy-c.so is provided in bin/libpypy-c.so for PyPy an=
-d bin/libpypy3-c.so for PyPy3
-> >              echo "PYINC=3D-I${PYTHON_SYS_PREFIX}/include" >> $GITHUB_E=
-NV
-> > @@ -122,10 +132,10 @@ jobs:
-> >
-> >      - name: Download and install refpolicy headers for sepolgen tests
-> >        run: |
-> > -        curl --location --retry 10 -o refpolicy.tar.bz2 https://github=
-.com/SELinuxProject/refpolicy/releases/download/RELEASE_2_20180701/refpolic=
-y-2.20180701.tar.bz2
-> > +        curl --location --retry 10 -o refpolicy.tar.bz2 https://github=
-.com/SELinuxProject/refpolicy/releases/download/RELEASE_2_20220520/refpolic=
-y-2.20220520.tar.bz2
-> >          tar -xvjf refpolicy.tar.bz2
-> >          sed -e "s,^PREFIX :=3D.*,PREFIX :=3D $DESTDIR/usr," -i refpoli=
-cy/support/Makefile.devel
-> > -        sudo make -C refpolicy install-headers clean
-> > +        sudo make -C refpolicy install-headers bare
-> >          sudo mkdir -p /etc/selinux
-> >          echo 'SELINUXTYPE=3Drefpolicy' | sudo tee /etc/selinux/config
-> >          echo 'SELINUX_DEVEL_PATH =3D /usr/share/selinux/refpolicy' | s=
-udo tee /etc/selinux/sepolgen.conf
-> > diff --git a/.github/workflows/vm_testsuite.yml b/.github/workflows/vm_=
-testsuite.yml
-> > index 601276dd..92155da2 100644
-> > --- a/.github/workflows/vm_testsuite.yml
-> > +++ b/.github/workflows/vm_testsuite.yml
-> > @@ -6,11 +6,10 @@ jobs:
-> >    vm_testsuite:
-> >
-> >      # Use VirtualBox+vagrant on macOS, as described in https://github.=
-com/actions/virtual-environments/issues/433
-> > -    # Use an old version of macOS until https://github.com/actions/vir=
-tual-environments/pull/4010 is merged.
-> > -    runs-on: macos-10.15
-> > +    runs-on: macos-12
-> >
-> >      steps:
-> > -    - uses: actions/checkout@v2
-> > +    - uses: actions/checkout@v3
-> >
-> >      - name: Create Vagrant VM
-> >        run: |
-> > --
-> > 2.36.1
-> >
+While exploring a solution, we first leveraged the LSM cred_prepare hook
+because that is the closest hook to prevent a call to create_user_ns().
+
+The calls look something like this:
+
+    cred = prepare_creds()
+        security_prepare_creds()
+            call_int_hook(cred_prepare, ...
+    if (cred)
+        create_user_ns(cred)
+
+We noticed that error codes were not propagated from this hook and
+introduced a patch [1] to propagate those errors.
+
+The discussion notes that security_prepare_creds() is not appropriate for
+MAC policies, and instead the hook is meant for LSM authors to prepare
+credentials for mutation. [2]
+
+Additionally, cred_prepare hook is not without problems. Handling the clone3
+case is a bit more tricky due to the user space pointer passed to it. This
+makes checking the syscall subject to a possible TOCTTOU attack.
+
+Ultimately, we concluded that a better course of action is to introduce
+a new security hook for LSM authors. [3]
+
+This patch set first introduces a new security_create_user_ns() function
+and userns_create LSM hook, then marks the hook as sleepable in BPF. The
+following patches after include a BPF test and a patch for an SELinux
+implementation.
+
+We want to encourage use of user namespaces, and also cater the needs
+of users/administrators to observe and/or control access. There is no
+expectation of an impact on user space applications because access control 
+is opt-in, and users wishing to observe within a LSM context 
+
+
+Links:
+1. https://lore.kernel.org/all/20220608150942.776446-1-fred@cloudflare.com/
+2. https://lore.kernel.org/all/87y1xzyhub.fsf@email.froward.int.ebiederm.org/
+3. https://lore.kernel.org/all/9fe9cd9f-1ded-a179-8ded-5fde8960a586@cloudflare.com/
+
+Past discussions:
+V4: https://lore.kernel.org/all/20220801180146.1157914-1-fred@cloudflare.com/
+V3: https://lore.kernel.org/all/20220721172808.585539-1-fred@cloudflare.com/
+V2: https://lore.kernel.org/all/20220707223228.1940249-1-fred@cloudflare.com/
+V1: https://lore.kernel.org/all/20220621233939.993579-1-fred@cloudflare.com/
+
+Changes since v4:
+- Update commit description
+- Update cover letter
+Changes since v3:
+- Explicitly set CAP_SYS_ADMIN to test namespace is created given
+  permission
+- Simplify BPF test to use sleepable hook only
+- Prefer unshare() over clone() for tests
+Changes since v2:
+- Rename create_user_ns hook to userns_create
+- Use user_namespace as an object opposed to a generic namespace object
+- s/domB_t/domA_t in commit message
+Changes since v1:
+- Add selftests/bpf: Add tests verifying bpf lsm create_user_ns hook patch
+- Add selinux: Implement create_user_ns hook patch
+- Change function signature of security_create_user_ns() to only take
+  struct cred
+- Move security_create_user_ns() call after id mapping check in
+  create_user_ns()
+- Update documentation to reflect changes
+
+Frederick Lawler (4):
+  security, lsm: Introduce security_create_user_ns()
+  bpf-lsm: Make bpf_lsm_userns_create() sleepable
+  selftests/bpf: Add tests verifying bpf lsm userns_create hook
+  selinux: Implement userns_create hook
+
+ include/linux/lsm_hook_defs.h                 |   1 +
+ include/linux/lsm_hooks.h                     |   4 +
+ include/linux/security.h                      |   6 ++
+ kernel/bpf/bpf_lsm.c                          |   1 +
+ kernel/user_namespace.c                       |   5 +
+ security/security.c                           |   5 +
+ security/selinux/hooks.c                      |   9 ++
+ security/selinux/include/classmap.h           |   2 +
+ .../selftests/bpf/prog_tests/deny_namespace.c | 102 ++++++++++++++++++
+ .../selftests/bpf/progs/test_deny_namespace.c |  33 ++++++
+ 10 files changed, 168 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/deny_namespace.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_deny_namespace.c
+
+-- 
+2.30.2
+

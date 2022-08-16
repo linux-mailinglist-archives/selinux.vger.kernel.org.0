@@ -2,59 +2,61 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A910C59518D
-	for <lists+selinux@lfdr.de>; Tue, 16 Aug 2022 07:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B9A65952FB
+	for <lists+selinux@lfdr.de>; Tue, 16 Aug 2022 08:50:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231504AbiHPFBt (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 16 Aug 2022 01:01:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41268 "EHLO
+        id S230177AbiHPGuP (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 16 Aug 2022 02:50:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234602AbiHPFBO (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 16 Aug 2022 01:01:14 -0400
-Received: from mail-oi1-x234.google.com (mail-oi1-x234.google.com [IPv6:2607:f8b0:4864:20::234])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17724E87D
-        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 13:56:27 -0700 (PDT)
-Received: by mail-oi1-x234.google.com with SMTP id w197so9845566oie.5
-        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 13:56:27 -0700 (PDT)
+        with ESMTP id S230138AbiHPGtu (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 16 Aug 2022 02:49:50 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D602AE14
+        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 18:58:26 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id cb8so7227197qtb.0
+        for <selinux@vger.kernel.org>; Mon, 15 Aug 2022 18:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc;
-        bh=bZvFfLdmisv8ZmBmyGTlD8WQkr7MyMlLkvc8x5GfkIg=;
-        b=cM0YcKCbdYEioSBk54JmMjcaPYvF2uw30kA6AhPPiq/t9gJwk3inIEf3EFt20xGqKP
-         ZlsGuwNqALFaG1mysWBRis7rB6vjKJLaIvFlNP20SFtbh2eHMbNuQ8lC2PVdedR+Eh8S
-         N9fPPWmhEVnuJsTEcXR669UglB8Lgq6s43BsNNF0hiYjykwyn7Zot0zy81Xn4yNExjjc
-         Zz1ogRJ5ga3sZSlghGke9LAh/I44z7bQPfb0uTzsYWRSMyJ/wmyXCM5ONHeayAb8j153
-         0+Mv7PPSFVcULYkFZwFOgcODr22u00SgUHIYOibPPi+TNiCSYjrrYS1SPJOYidNPav6C
-         h0uQ==
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :to:from:subject:from:to:cc;
+        bh=t/JmZmaBgMo1VbFS+IDv9IqKCnrbySZ35BOsym3YnPU=;
+        b=GCGy9L6jiFOah1mv6mHSa6YvQlN0DpPSYc/KCrS7p/MGONo58nEkqlftUtndE0rOUq
+         rP7giPuSYz3g1mBHdTq5LbBtkte6m7rNcoGYJ8VH65i9Dw6syA3ym5M9K2+pel+Uutvx
+         QghiL4lVEIVPIUD0+fdVqLQqP9lIN/0sGEZhNzCeC01DqhEaw098QkEbBtsBp4GtrH33
+         b4mqI6/RAT7/Qf20q+FcX48FaGIK9i6HVtgkRQxM3+/9uzEVFBFUWNDe+1L7A1l3Xff7
+         KMfJw/EmihiMOMOON6sdFGueqSISdLvbSIdda1gsLpgpNdv2FvZeNjhvY0BO2Sn9Ls8I
+         //Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc;
-        bh=bZvFfLdmisv8ZmBmyGTlD8WQkr7MyMlLkvc8x5GfkIg=;
-        b=pSCXYhHnFLRAKBkiCaQEs6cZCy5u6OmT9n8d4r10XQ3WMgLbN/gNUYzD/N192vzkxa
-         4T1QTNHCJicPjtBRQqiVtT1P/v+WfvWenAJKnhnL1XRb3Wy/RkHZ1BJ4ga3htqTE8ly+
-         AdkAkiBvlGNVFp5W7gaaaA48upsy6466bCOiIuRf1ABBrPwVElDh/vSgMEfhOEEB/ceN
-         YWohy7NMuwXPtHRAOkImHwbdHlSWMPWV1IX+Mg/Uwq6DAwxTvo5AdEfvQtcn+2N5d4q6
-         E3C4Juf589P7EfMDpmgQFndLnfudQxa/YBjt76Y3uVlQSbx/xIkQ+Ka5337YKh3mpkSB
-         7pDQ==
-X-Gm-Message-State: ACgBeo0CzH4gSs+z2BdLf0zo9/5Oc52OY7v9P5am+H2r68FsGkMrUrYH
-        Scc7luBl22iu7B4mCtFu40OT5zUxo5ImD9Rj4HrV5PBBhg==
-X-Google-Smtp-Source: AA6agR6Q0qVJWpxSDRMTWwDizXjT5Myaa+MmdxMHBEyIOyRAgQgYt4StAdp3SjTVZwOQCfxxa7WwHSrnuGsmXBO6D24=
-X-Received: by 2002:a05:6808:3a9:b0:343:4b14:ccce with SMTP id
- n9-20020a05680803a900b003434b14cccemr9304558oie.41.1660596987219; Mon, 15 Aug
- 2022 13:56:27 -0700 (PDT)
-MIME-Version: 1.0
-References: <166008317384.447519.7250489605112175227.stgit@olly>
- <CAFqZXNshzY2L1yUMyCxTa2njgScUg5gwzmq-UP4SSnFnph-XuA@mail.gmail.com> <CAHC9VhRpTR_zdj+cdeGGKoe1vZKBy4FK4JP6iyurXR0NOr2tXw@mail.gmail.com>
-In-Reply-To: <CAHC9VhRpTR_zdj+cdeGGKoe1vZKBy4FK4JP6iyurXR0NOr2tXw@mail.gmail.com>
+        h=content-transfer-encoding:mime-version:user-agent:message-id:date
+         :to:from:subject:x-gm-message-state:from:to:cc;
+        bh=t/JmZmaBgMo1VbFS+IDv9IqKCnrbySZ35BOsym3YnPU=;
+        b=vw0tX3Q5yGi6UZmwLMsKUJdCcanO78SEPZcVKq04+XHrCyLIzGmEwwut6f4As7O+LT
+         MsMbMrA5El5x3B/NMi86qCAP2ynRc7CgWyRC2P7JXWypGZGzTjj1WgzndyEd3YYcRsxi
+         aTQ2WHJR2goiAXI5cFiPThIrqWMglwpUOo30I4SID4T9Dh24yCuwqlUsEXFhwVCDZMfD
+         Nc8vo0NzUsPOi1sRgwZfcpvmjC0ysnSEeK0RfnIh4HDvACUdXRJOYiWkSTGEQzRGcAHm
+         dezDI2E/I5Lmi9O4vMLcXLvk5c1sAeeifyD5LPZ5a4xNNp0T69KyloqUUDN+nUVfUMqQ
+         wgTw==
+X-Gm-Message-State: ACgBeo00AGD2cyyY8Z93mtUMGnkzdY+M+S6b9Seog9CFD24f5SpOQSWX
+        j9EF5UismPUIISStMFF7Jm0jMREgibzK
+X-Google-Smtp-Source: AA6agR5/TDFFsX+FiQB/Cp6BpBlHwqUurfXOnmeHGK5LndI29fS6qsWZs2NmsLIXRx/1zkwD7kVyug==
+X-Received: by 2002:a05:622a:3cc:b0:343:7396:4824 with SMTP id k12-20020a05622a03cc00b0034373964824mr15014789qtx.680.1660615105557;
+        Mon, 15 Aug 2022 18:58:25 -0700 (PDT)
+Received: from localhost (pool-96-237-52-46.bstnma.fios.verizon.net. [96.237.52.46])
+        by smtp.gmail.com with ESMTPSA id h10-20020a05620a400a00b006bb4494ebd9sm3555363qko.62.2022.08.15.18.58.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 15 Aug 2022 18:58:25 -0700 (PDT)
+Subject: [selinux-testsuite PATCH] tests/binder: remove stray flag files with
+ 'make clean'
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 15 Aug 2022 16:56:16 -0400
-Message-ID: <CAHC9VhSTg1BZNF86SjH0uzyuwp5_wpaB_BKvyWML4k+7aTt0YA@mail.gmail.com>
-Subject: Re: [PATCH] selinux: SCTP fixes, including ASCONF
-To:     Ondrej Mosnacek <omosnace@redhat.com>
-Cc:     SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+To:     selinux@vger.kernel.org
+Date:   Mon, 15 Aug 2022 21:58:24 -0400
+Message-ID: <166061510477.614432.940552725841920786.stgit@olly>
+User-Agent: StGit/1.5
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
@@ -64,26 +66,29 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Aug 11, 2022 at 11:04 AM Paul Moore <paul@paul-moore.com> wrote:
-> On Thu, Aug 11, 2022 at 6:03 AM Ondrej Mosnacek <omosnace@redhat.com> wrote:
-> > On Wed, Aug 10, 2022 at 12:14 AM Paul Moore <paul@paul-moore.com> wrote:
+Failed or incomplete test runs can leave temporary test files in
+the binder test directory, remove them with 'make clean'.
 
-...
+  mkfifo: cannot create fifo \
+    'binder/manager_flag': File exists
+  mkfifo: cannot create fifo \
+    'binder/service_provider_flag': File exists
 
-> > I believe you forgot to modify also
-> > selinux_netlbl_sctp_assoc_request() in a similar fashion as the other
-> > functions below?
->
-> Good point.  I suspect selinux_netlbl_sctp_assoc_request() will be
-> greatly simplified too, that will be nice.
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+---
+ tests/binder/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'm beginning to think the SELinux/SCTP code is cursed :/
+diff --git a/tests/binder/Makefile b/tests/binder/Makefile
+index e78ad16..b89d4db 100644
+--- a/tests/binder/Makefile
++++ b/tests/binder/Makefile
+@@ -18,6 +18,6 @@ endif
+ all: $(TARGETS)
+ 
+ clean:
+-	rm -f $(TARGETS)
++	rm -f $(TARGETS) manager_flag service_provider_flag
+ 
+ $(TARGETS): $(DEPS)
 
-That change brought up some other issues (more of the
-multiple-associations-on-a-single-socket variety) which I need to
-think about some more, so I'm putting this on the back-burner for a
-little bit while I sort out the io_uring and other things which are
-more straightforward and need to get into linux-next ASAP.
-
--- 
-paul-moore.com

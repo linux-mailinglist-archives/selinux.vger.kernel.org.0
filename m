@@ -2,179 +2,114 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD6E159F885
-	for <lists+selinux@lfdr.de>; Wed, 24 Aug 2022 13:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 905A759FC81
+	for <lists+selinux@lfdr.de>; Wed, 24 Aug 2022 16:01:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232143AbiHXLTt (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 24 Aug 2022 07:19:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44116 "EHLO
+        id S238970AbiHXOBO (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 24 Aug 2022 10:01:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236554AbiHXLTs (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 24 Aug 2022 07:19:48 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA67CC3F
-        for <selinux@vger.kernel.org>; Wed, 24 Aug 2022 04:19:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1661339985;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7GrtVYVUd3gAO8oy6EMHnf3XwlfU5vRzOjOD7CnDU8o=;
-        b=SZMHmRelRjcOzkqmQ2hGxT7oAfjRKTYBeIv6Jov3Fc+Qi4EQG65NL9wKWRAxj2pJigFge+
-        AmGgDtKkAnBsf6jwCCr3TV+L88dtZaIYYvTIPn6FkvatFsg0DRyxR3KiqnEFL7Opcr1fkz
-        k66vAX5FDOSLJhJRf8TJVKFquw79oNI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-26-YYoqMNluPBmVkdztHlUTrg-1; Wed, 24 Aug 2022 07:19:43 -0400
-X-MC-Unique: YYoqMNluPBmVkdztHlUTrg-1
-Received: by mail-ed1-f71.google.com with SMTP id r20-20020a05640251d400b00446e3eee8a1so4891231edd.21
-        for <selinux@vger.kernel.org>; Wed, 24 Aug 2022 04:19:43 -0700 (PDT)
+        with ESMTP id S238898AbiHXOBB (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 24 Aug 2022 10:01:01 -0400
+Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204C7895DE
+        for <selinux@vger.kernel.org>; Wed, 24 Aug 2022 07:00:57 -0700 (PDT)
+Received: by mail-ot1-x32b.google.com with SMTP id h20-20020a056830165400b00638ac7ddba5so11851856otr.4
+        for <selinux@vger.kernel.org>; Wed, 24 Aug 2022 07:00:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc;
+        bh=GvEowS2EBvbq9VPRlHSQopSA/WqPdS2i0F+uxDlmGjU=;
+        b=gAY4IAxElEgpBa+x9apxUjbCl+lGxNxRg6XyyZpOeKjrnbArjqF8CqEPO0VFuEDm2a
+         E4HQfbGQ7mndFQ8AdI+sbFsy2bvSPccu96OADLHEpJ6XAuYCaP4u0WmnzkUGDGMqnZDc
+         fp+BHBG17q5aGStyvIUn+A0BQnuHJXogmv2rYm7S51pQNOs6hget3p1Fj98UchKbYw9L
+         ZKJ5bx39sHz6QG0r5EXUJWOvHjSC4ZntB6YgihySFVyS6siDgDM4MOiae5x0la+NTuJc
+         8pG4otueF2WmPmepkBkV/hpeeX5kz+RHGEtBf1nSK6VH34gw65G6hzATjunjzhx+Np3Q
+         CrLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc;
-        bh=7GrtVYVUd3gAO8oy6EMHnf3XwlfU5vRzOjOD7CnDU8o=;
-        b=4ZvmuinAiyUoSWVOw86LPrTdWwF/o76D1QMQW+rFihR05l23Pag/yJFMOu58wIFt7G
-         ebOxANkqv8eNoRBOQhvX2lD0Wzpn+5wEYPu//+15A1NG6iGXpjko/HwWjneQvyiDcZ8T
-         buny10TTj7o1KkIo44kKeSOaiJAfHanyQuQmUGUB07p9XrXNqhyBX2+5ad1uG3wB0XJv
-         WeDHpIPkavvGeX0k+3mtI7LL68+oYAwWCQ+I1cjz0Wn6PTb0UAo6vxBKpWxLLlzWl+c8
-         I5GOEpEpjjVda7HO8rdZe9GLS4VQTsG2RFPsCZhcaG4/TtO71EYFOxPloPZ+Ioa1HQI/
-         3Z4g==
-X-Gm-Message-State: ACgBeo35NDL/dbaDlf1JbCRbNmJaSD1KUz2KNlnyOL1j7CXHLE1mtNmg
-        vmwKpbI52BKXA8HWzZo8IRnjaBhes2g7wM7mRbCNH0lCMcCl6N0q3z/psNWBfuQvUOEDwDHGmlZ
-        aZF7dkBDy4ggvvoVe3NnpTUue+ormmd1ZBFTARcqfyG0WldS4Tla+fKjhSfT5abU2beFF2w==
-X-Received: by 2002:a05:6402:5292:b0:446:80b0:4a5d with SMTP id en18-20020a056402529200b0044680b04a5dmr7259741edb.285.1661339982569;
-        Wed, 24 Aug 2022 04:19:42 -0700 (PDT)
-X-Google-Smtp-Source: AA6agR5P6sY3WySjT4LIxfjI7DV91cX8T1V1galKbs7HvYl/BPR95BMYcfpj9U9rgdXcrXBns1HD+Q==
-X-Received: by 2002:a05:6402:5292:b0:446:80b0:4a5d with SMTP id en18-20020a056402529200b0044680b04a5dmr7259724edb.285.1661339982332;
-        Wed, 24 Aug 2022 04:19:42 -0700 (PDT)
-Received: from localhost.localdomain (nat-pool-brq-t.redhat.com. [213.175.37.10])
-        by smtp.gmail.com with ESMTPSA id z6-20020a17090665c600b0073d6d1990e2sm1016047ejn.140.2022.08.24.04.19.41
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Aug 2022 04:19:41 -0700 (PDT)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite 2/2] test_userfaultfd.te: adapt to upcoming Fedora policy changes
-Date:   Wed, 24 Aug 2022 13:19:38 +0200
-Message-Id: <20220824111938.567993-3-omosnace@redhat.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20220824111938.567993-1-omosnace@redhat.com>
-References: <20220824111938.567993-1-omosnace@redhat.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc;
+        bh=GvEowS2EBvbq9VPRlHSQopSA/WqPdS2i0F+uxDlmGjU=;
+        b=bUtDvQWXYODKHv8pJUX8VpK+R5sMT5F8bzMGHc1ququ4zpaOvkcJ5lh7GeoLL8+dWA
+         WAl3fOW9N12p3ii6wOHwVSGl1CwhGO0uXFlV7+zyDYyrlrJk/8/kegW2/Bvol5co3kjT
+         UoPeUNr0Pc0pdHY+yMxQ8KLY9B6aICu7T7IUJXJdialkzkkSX+s5sr523IWjb1U3W/F3
+         +iii3JXw52tcsGHltCPZxiGoFZxoWZZoIeH06f2w01bEjGixa0LfZ0lvz89oZRWjtri2
+         Oy7+ypsL/buZCf94OUeyM87HAHXQnWsn7UHAugXk3l4GjgEQ3Gz+VL9UBZFR5zxiIQce
+         T1WA==
+X-Gm-Message-State: ACgBeo0koVcWNiQYwXwzXnjBaDbEWRwsKnHH1mw7jXUBOV3F0yOyDI05
+        /27O6bzxLpDD2igon30MWixb57F6fR6BXu4DWjHSevlxnQ==
+X-Google-Smtp-Source: AA6agR6rtq2//tF95faC3o2HMbcYUfu3MoZDPOrj9rwG3FBcm4aIM9IQ+a48RDONgXu720yClBtTDCTitpiMFHdVzAM=
+X-Received: by 2002:a9d:2de3:0:b0:638:e210:c9da with SMTP id
+ g90-20020a9d2de3000000b00638e210c9damr10944491otb.69.1661349655908; Wed, 24
+ Aug 2022 07:00:55 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <166120321387.369593.7400426327771894334.stgit@olly>
+ <166120326788.369593.18304806499678048620.stgit@olly> <YwR5fDR0Whp0W3sG@kroah.com>
+ <CAHC9VhSkmJCXbKBOLDJjnap1+pYYnSVt2CzO3iQXmV7TZ+17SA@mail.gmail.com> <YwXBMmdIJu3C5dPK@kroah.com>
+In-Reply-To: <YwXBMmdIJu3C5dPK@kroah.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 24 Aug 2022 10:00:44 -0400
+Message-ID: <CAHC9VhS3F-B848ZLvid9QFO4jT9B7T-vD7tmF7oVpf92b-53MA@mail.gmail.com>
+Subject: Re: [PATCH 1/3] lsm,io_uring: add LSM hooks for the new uring_cmd
+ file op
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        io-uring@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-We plan to add automatic transitions for anon_inodes to the whole domain
-attribute, which would conflict with the testsuite's userfaultfd test.
-To avoid th conflict, use testsuite_domain_type_minimal() for the
-userfaultfd test domains, which doesn't add the types to the domain
-attribute.
+On Wed, Aug 24, 2022 at 2:12 AM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+> On Tue, Aug 23, 2022 at 12:48:30PM -0400, Paul Moore wrote:
+> > On Tue, Aug 23, 2022 at 2:53 AM Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org> wrote:
+> > > On Mon, Aug 22, 2022 at 05:21:07PM -0400, Paul Moore wrote:
+> > > > From: Luis Chamberlain <mcgrof@kernel.org>
+> > > >
+> > > > io-uring cmd support was added through ee692a21e9bf ("fs,io_uring:
+> > > > add infrastructure for uring-cmd"), this extended the struct
+> > > > file_operations to allow a new command which each subsystem can use
+> > > > to enable command passthrough. Add an LSM specific for the command
+> > > > passthrough which enables LSMs to inspect the command details.
+> > > >
+> > > > This was discussed long ago without no clear pointer for something
+> > > > conclusive, so this enables LSMs to at least reject this new file
+> > > > operation.
+> > > >
+> > > > [0] https://lkml.kernel.org/r/8adf55db-7bab-f59d-d612-ed906b948d19@schaufler-ca.com
+> > > >
+> > > > Fixes: ee692a21e9bf ("fs,io_uring: add infrastructure for uring-cmd")
+> > >
+> > > You are not "fixing" anything, you are adding new functionality.
+> > > Careful with using "Fixes:" for something like this, you will trigger
+> > > the bug-detection scripts and have to fend off stable bot emails for a
+> > > long time for stuff that should not be backported to stable trees.
+> >
+> > This patch, as well as the SELinux and (soon to come) Smack hook
+> > implementations, fix a LSM access control regression that occured when
+> > the IORING_OP_URING_CMD functionality was merged in v5.19.  You may
+> > disagree about this being a regression Greg, but there are at least
+> > three people with their name on this patch that believe it is
+> > important: Luis (patch author), Jens (io_uring maintainer), and myself
+> > (LSM, SELinux maintainer).
+>
+> Ok, I'll let it be, but note that "Fixes:" tags do not mean that a patch
+> will ever get backported to a stable tree, so I guess we don't have to
+> worry about it :)
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- policy/test_userfaultfd.te | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+Ha!  Now that's the *proper* LSM dismissing GregKH comment this thread
+was missing :)
 
-diff --git a/policy/test_userfaultfd.te b/policy/test_userfaultfd.te
-index fe7f9c6..3046349 100644
---- a/policy/test_userfaultfd.te
-+++ b/policy/test_userfaultfd.te
-@@ -10,14 +10,14 @@ type uffd_t;
- # Domain for confirming that without transition rule the userfaultfd
- # gets process' context
- type test_notransition_uffd_t;
--testsuite_domain_type(test_notransition_uffd_t)
-+testsuite_domain_type_minimal(test_notransition_uffd_t)
- typeattribute test_notransition_uffd_t test_uffd_domain;
- 
- allow test_notransition_uffd_t self:anon_inode { create getattr ioctl read };
- 
- # Domain for process that has all the permissions to use userfaultfd
- type test_uffd_t;
--testsuite_domain_type(test_uffd_t)
-+testsuite_domain_type_minimal(test_uffd_t)
- typeattribute test_uffd_t test_uffd_domain;
- 
- type_transition test_uffd_t test_uffd_t:anon_inode uffd_t "[userfaultfd]";
-@@ -25,14 +25,14 @@ allow test_uffd_t uffd_t:anon_inode { create getattr ioctl read };
- 
- # Domain for process that cannot create userfaultfd
- type test_nocreate_uffd_t;
--testsuite_domain_type(test_nocreate_uffd_t)
-+testsuite_domain_type_minimal(test_nocreate_uffd_t)
- typeattribute test_nocreate_uffd_t test_uffd_domain;
- 
- type_transition test_nocreate_uffd_t test_nocreate_uffd_t:anon_inode uffd_t "[userfaultfd]";
- 
- # Domain for process that cannot get attributed of userfaultfd
- type test_nogetattr_uffd_t;
--testsuite_domain_type(test_nogetattr_uffd_t)
-+testsuite_domain_type_minimal(test_nogetattr_uffd_t)
- typeattribute test_nogetattr_uffd_t test_uffd_domain;
- 
- type_transition test_nogetattr_uffd_t test_nogetattr_uffd_t:anon_inode uffd_t "[userfaultfd]";
-@@ -40,7 +40,7 @@ allow test_nogetattr_uffd_t uffd_t:anon_inode { create };
- 
- # Domain for process which can only use UFFDIO_API ioctl on userfaultfd
- type test_api_ioctl_uffd_t;
--testsuite_domain_type(test_api_ioctl_uffd_t)
-+testsuite_domain_type_minimal(test_api_ioctl_uffd_t)
- typeattribute test_api_ioctl_uffd_t test_uffd_domain;
- 
- type_transition test_api_ioctl_uffd_t test_api_ioctl_uffd_t:anon_inode uffd_t "[userfaultfd]";
-@@ -50,7 +50,7 @@ allowxperm test_api_ioctl_uffd_t uffd_t:anon_inode ioctl { 0xaa3f };
- # Domain for process which can use UFFDIO_API and UFFDIO_REGISTER ioctls
- # on userfaultfd
- type test_register_ioctl_uffd_t;
--testsuite_domain_type(test_register_ioctl_uffd_t)
-+testsuite_domain_type_minimal(test_register_ioctl_uffd_t)
- typeattribute test_register_ioctl_uffd_t test_uffd_domain;
- 
- type_transition test_register_ioctl_uffd_t test_register_ioctl_uffd_t:anon_inode uffd_t "[userfaultfd]";
-@@ -60,7 +60,7 @@ allowxperm test_register_ioctl_uffd_t uffd_t:anon_inode ioctl { 0xaa3f 0xaa00 };
- # Domain for process which can use UFFDIO_API, UFFDIO_REGISTER and
- # UFFDIO_COPY ioctls on userfaultfd
- type test_copy_ioctl_uffd_t;
--testsuite_domain_type(test_copy_ioctl_uffd_t)
-+testsuite_domain_type_minimal(test_copy_ioctl_uffd_t)
- typeattribute test_copy_ioctl_uffd_t test_uffd_domain;
- 
- type_transition test_copy_ioctl_uffd_t test_copy_ioctl_uffd_t:anon_inode uffd_t "[userfaultfd]";
-@@ -69,7 +69,7 @@ allowxperm test_copy_ioctl_uffd_t uffd_t:anon_inode ioctl { 0xaa3f 0xaa00 0xaa03
- 
- # Domain for process that cannot perform any ioctl operations on userfaultfd
- type test_noioctl_uffd_t;
--testsuite_domain_type(test_noioctl_uffd_t)
-+testsuite_domain_type_minimal(test_noioctl_uffd_t)
- typeattribute test_noioctl_uffd_t test_uffd_domain;
- 
- type_transition test_noioctl_uffd_t test_noioctl_uffd_t:anon_inode uffd_t "[userfaultfd]";
-@@ -77,11 +77,13 @@ allow test_noioctl_uffd_t uffd_t:anon_inode { create getattr };
- 
- # Domain for process that cannot read from userfaultfd
- type test_noread_uffd_t;
--testsuite_domain_type(test_noread_uffd_t)
-+testsuite_domain_type_minimal(test_noread_uffd_t)
- typeattribute test_noread_uffd_t test_uffd_domain;
- 
- type_transition test_noread_uffd_t test_noread_uffd_t:anon_inode uffd_t "[userfaultfd]";
- allow test_noread_uffd_t uffd_t:anon_inode { create getattr ioctl };
- 
-+# testsuite_domain_type_minimal() doesn't allow fork by default
-+allow test_uffd_domain self:process { fork };
- # userfaultfd(2) requires CAP_SYS_PTRACE
- allow test_uffd_domain self:capability { sys_ptrace };
 -- 
-2.37.2
-
+paul-moore.com

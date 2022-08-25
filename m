@@ -2,51 +2,61 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F09E35A128A
-	for <lists+selinux@lfdr.de>; Thu, 25 Aug 2022 15:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF3045A1235
+	for <lists+selinux@lfdr.de>; Thu, 25 Aug 2022 15:31:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240825AbiHYNmc (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 25 Aug 2022 09:42:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60166 "EHLO
+        id S242736AbiHYNbI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 25 Aug 2022 09:31:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240614AbiHYNmb (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 25 Aug 2022 09:42:31 -0400
-X-Greylist: delayed 904 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 25 Aug 2022 06:42:30 PDT
-Received: from sender11-of-o52.zoho.eu (sender11-of-o52.zoho.eu [31.186.226.238])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 994B8B2492
-        for <selinux@vger.kernel.org>; Thu, 25 Aug 2022 06:42:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1661434042; cv=none; 
-        d=zohomail.eu; s=zohoarc; 
-        b=O2rB+LEiaefWlGbPUkWAaFktM1LcD0XUvdnXXSCOtqaj2li6J6FsKVDzZ6Zlp+9/rc+YGbggvmR8RPpGx4fweITHbcJ8nhX48P6P0Aj2eSbpz26NLQh319k90PQUx6+FSXiEXHEvo0YDQtAlI1TqsyWkwT6FYLGErhYGquRFrpk=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-        t=1661434042; h=Content-Type:Date:From:MIME-Version:Message-ID:Subject:To; 
-        bh=1qZgDIDt25pRE5+EXbLbSSRkzjPpqP6nsW35Acsaf7M=; 
-        b=Z42nrdKCz78b36ydCt4dW/ogwPXAYxJ991qs2gkL5zPcJXq9Y235segWJuGYEujD9CYaQAcm14vZ9G4Wh+P9Otc1dVsCX3tk9XXa/VHfszgmplmWvxcoMO9rsgaEZejAQcailY69hHPCuf73cl0CUjJQV+yx+KQqgIrrSXSpzR8=
-ARC-Authentication-Results: i=1; mx.zohomail.eu;
-        dkim=pass  header.i=jurajmarcin.com;
-        spf=pass  smtp.mailfrom=juraj@jurajmarcin.com;
-        dmarc=pass header.from=<juraj@jurajmarcin.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1661434042;
-        s=zoho; d=jurajmarcin.com; i=juraj@jurajmarcin.com;
-        h=Date:Date:From:From:To:To:Subject:Subject:Message-ID:MIME-Version:Content-Type:Message-Id:Reply-To:Cc;
-        bh=1qZgDIDt25pRE5+EXbLbSSRkzjPpqP6nsW35Acsaf7M=;
-        b=fj14wBhLTC03PwZCZgP8ANTOtLJ+CR9YH54rXeQTE3H6dzegY9eXMEkrGlwy5JRW
-        8jrycLNl6ZnwUotA7/C/cRsUtTtQB8uQSiPfhX2mODRL6hx1jn6oQ4SpR1fHtqsLDzR
-        RzyG51XbcIBgYrnvhwTGe5KmDOOpQQMdRrN4HzZ8=
-Received: from morty01.jurajmarcin.com (129.159.244.31 [129.159.244.31]) by mx.zoho.eu
-        with SMTPS id 1661434040737153.12025910810894; Thu, 25 Aug 2022 15:27:20 +0200 (CEST)
-Date:   Thu, 25 Aug 2022 15:27:18 +0200
-From:   Juraj Marcin <juraj@jurajmarcin.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH] libsepol: fix missing double quotes in typetransition CIL
- rule
-Message-ID: <20220825132718.jnuxg7oqkmm3dx2l@jmarcin-t14s-01>
+        with ESMTP id S242737AbiHYNaz (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 25 Aug 2022 09:30:55 -0400
+Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAF61AE9C1
+        for <selinux@vger.kernel.org>; Thu, 25 Aug 2022 06:30:51 -0700 (PDT)
+Received: by mail-ed1-x532.google.com with SMTP id z8so5501757edb.0
+        for <selinux@vger.kernel.org>; Thu, 25 Aug 2022 06:30:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc;
+        bh=KNjA4cQAAO5QQ7PNhhdmyZ23v2evQaBvMUQAkp3nwxc=;
+        b=E+OQSMZTzgSWx9eHowcdctMF4cbRMX2BKTI/5+m/YLe7Jl/vgcMCz174HWSVDMkEO7
+         oC56Mtt8DZzSSv6o37qUeQcbb+J1VkJDxWwQZd28PPJWgIs1EZqX5S0BqbZDnQFB2p7z
+         vy6ybIKFqhQvZI2+2wZgbaIT8RCfcA1eiSltNjPXfeAnjl6q+2Vqh3dqj3f9yOap+nPE
+         xZHff/2r4YE8E5Ot6TbyjvwELqMcwt2ExYgo7URG0WlqMBOiz9vUnjYpSW8Ch4xWt4dd
+         o38jMOxgrnogJ0izCSuYCe1/beYJthIO5iMj9mD/MAsOg3dqTG41Xhg96SukIi0kTZUO
+         T9Og==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=KNjA4cQAAO5QQ7PNhhdmyZ23v2evQaBvMUQAkp3nwxc=;
+        b=qli24x+0kLf2+QDY5uYP7YB0jbICxeoVzcVp8YJCLpsNncKl/9pw3Wa/9uCNkwUyLY
+         sWzy5qjlCJdxdX/IZFyE5fodP/lrpzVdau/COo6VrfSCI0aA2nuqcAhm+8VIls9swckq
+         jk8tBxP/iQv3Yya2Bu1jd9IrHUgkANfQP76niUVHs8RGHNhY6aqOBPuZFgMiKr4iwT/C
+         8vbu9en0fVXPWnKdcWjNlXbReZDBhzl+Q+lUeJDQWOTflYim5yrX5RwiCL5zx01u/rWA
+         9iBPm3DXRXQ8ZDxDCfOL1DU5aM5SEqMjGWW20Ubjca6CLvnVAKnRdIB3DFfNguN0iqss
+         9GGA==
+X-Gm-Message-State: ACgBeo169ERmoVNhmH1h7NbZG6UsI5b1u/FOjYcoUeZJPM4HXqGXEhc6
+        KV08r9aDI5WZ6yCWXdcuWqHd4aKYl5P70v2Mh+fGvWy8
+X-Google-Smtp-Source: AA6agR648sjjsgPZQRo+ZIoBLhb2R6viZFL+u2TA1roRuSF+2RH3tyMj3pZLdNarYMWTNxEVI44UXe+aRp34Vbfe9OA=
+X-Received: by 2002:a50:baa1:0:b0:43e:5e95:3eda with SMTP id
+ x30-20020a50baa1000000b0043e5e953edamr3355818ede.340.1661434249970; Thu, 25
+ Aug 2022 06:30:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <CAFPpqQHS_v7gqXsdCpE3LXA4JzL=-K0U7Q9jiGY5EqT6XCoQbg@mail.gmail.com>
+ <Ywc+pjOFkAEswVuQ@gardel-login> <CAFPpqQEva6Z339ZXKxF2=ueug7YFrsFD0Tk6W88cZQxx0sg7OQ@mail.gmail.com>
+In-Reply-To: <CAFPpqQEva6Z339ZXKxF2=ueug7YFrsFD0Tk6W88cZQxx0sg7OQ@mail.gmail.com>
+From:   Ted Toth <txtoth@gmail.com>
+Date:   Thu, 25 Aug 2022 08:30:38 -0500
+Message-ID: <CAFPpqQFCjUksVa6YN0uV1-77OB0ZQyrQnDDqjA7LKoyOjZU8tg@mail.gmail.com>
+Subject: Re: [systemd-devel] socket activation selinux context on create
+To:     SELinux <selinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,30 +64,44 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-CIL Reference Guide defines typetransition rule with double quotes
-around object name, but those are not present in the format string.
+Maybe if I set the port type using semanage then a type transition
+will happen automatically?
 
-This patch fixes this issue, so the CIL output produced by
-sepol_kernel_policydb_to_cil() is in the correct format.
-
-Signed-off-by: Juraj Marcin <juraj@jurajmarcin.com>
----
- libsepol/src/kernel_to_cil.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-index 5a1336a3..ad4121d5 100644
---- a/libsepol/src/kernel_to_cil.c
-+++ b/libsepol/src/kernel_to_cil.c
-@@ -1894,7 +1894,7 @@ static int map_filename_trans_to_str(hashtab_key_t key, void *data, void *arg)
- 		ebitmap_for_each_positive_bit(&datum->stypes, node, bit) {
- 			src = pdb->p_type_val_to_name[bit];
- 			rc = strs_create_and_add(strs,
--						 "(typetransition %s %s %s %s %s)",
-+						 "(typetransition %s %s %s \"%s\" %s)",
- 						 5, src, tgt, class, filename, new);
- 			if (rc)
- 				return rc;
--- 
-2.37.1
-
+On Thu, Aug 25, 2022 at 8:22 AM Ted Toth <txtoth@gmail.com> wrote:
+>
+> I asked on the systemd-devel list about enabling systemd to set the
+> context of a socket and got the answer I've included below. I don't
+> know how a transition rule can be written to transition tcp sockets to
+> multiple different target contexts, is this possible and if so how?
+>
+> ---------- Forwarded message ---------
+> From: Lennart Poettering <lennart@poettering.net>
+> Date: Thu, Aug 25, 2022 at 4:19 AM
+> Subject: Re: [systemd-devel] socket activation selinux context on create
+> To: Ted Toth <txtoth@gmail.com>
+> Cc: <systemd-devel@lists.freedesktop.org>
+>
+>
+> On Mi, 24.08.22 11:50, Ted Toth (txtoth@gmail.com) wrote:
+>
+> > I don't see a way to set the context of the socket that systemd
+> > listens on. If there is a way to do this please tell me otherwise I'd
+> > like to see an option (SELinuxCreateContext?) added to be able to set
+> > the context (setsockcreatecon) to be used by systemd when creating the
+> > socket. Currently as an extra layer of security I add code called in
+> > the socket activation ExecStartPre process to check that the source
+> > context (peercon) can connect to the target context (getcon). If a
+> > sockets context was set by systemd I would have to perform this
+> > additional check as my SELinux policy would do it for me.
+>
+> This was proposed before, but SELinux maintainers really want that the
+> loaded selinux policy picks the label, and not unit files.
+>
+> i.e. as I understand their philosophy: how labels are assigned should
+> be encoded in the database and in the policy but not elsewhere,
+> i.e. in unit files. I think that philosophy does make sense.
+>
+> Lennart
+>
+> --
+> Lennart Poettering, Berlin

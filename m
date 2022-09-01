@@ -2,175 +2,115 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A5ED55AA180
-	for <lists+selinux@lfdr.de>; Thu,  1 Sep 2022 23:30:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 366675AA2FA
+	for <lists+selinux@lfdr.de>; Fri,  2 Sep 2022 00:27:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233846AbiIAVaw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 1 Sep 2022 17:30:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51688 "EHLO
+        id S234777AbiIAW06 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 1 Sep 2022 18:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231447AbiIAVav (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 1 Sep 2022 17:30:51 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7FE65FF60
-        for <selinux@vger.kernel.org>; Thu,  1 Sep 2022 14:30:49 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id t11-20020a05683014cb00b0063734a2a786so197651otq.11
-        for <selinux@vger.kernel.org>; Thu, 01 Sep 2022 14:30:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=rN5CPt7nw3uEAzcCrq0p48l3tGPTCfoaJzTvRgTvhaY=;
-        b=RExgY6pcLbrzvIhFfwy+2fJB8NPuRDYs1S130rMvHH00zZ3X9PQ4+m/d68VupVexAL
-         EPTzawHwwpoMK2H/4TNmxTiFrA/o1eDz7ZaXoOufRA3+b6QhkpdGlBk+wXvMv0F0XOeN
-         v9wgOpdG1c7Ef8x1e1ENSg0059CcpH0ydQhzWuw4vGmi3ccRmFYdeiB8diJN8j9K144i
-         d65oXTCIZ0rOpUDpzNm+TmRp020jycWfdv6PtCcsmt4dOABNX/U/N/ZVI3VQtf1afWie
-         6eFemy9pZT2StimbHGYlvnen1HxzTL6uUcq8lSP+1Q8SXekjsY1dHjLHwJCla9f4qTCV
-         EXSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=rN5CPt7nw3uEAzcCrq0p48l3tGPTCfoaJzTvRgTvhaY=;
-        b=ban/Swpzi7vBRTEi6P0AQVUObnopvVBeJfZqVb2xuturfvyT1KNTyyGKZrGNDxymLC
-         7mRBAcZgjkcxB9udY0vJ00mjnGnO7UXN9n08RcZhTRMHuLUGRtnazPa/YyyiSk8iUuE9
-         +8DurtHF/69eY27uPNEvLjtnguNdZoF2NuvkSgxsFKEIWBl1GHkvHEtyrwXpvx6nWC/m
-         wpta9JeobJbZDEFLHyHQsUt3QnpcqEQAA5ElcC6gPCuzdRRjeaQmCuVtn7uZPQ5AsYNB
-         HRjnEaeO5lO3HU1bk0Oox/KJpMcXk8BGBGcJSMM101Q1OzQa8PcmC59kZYdLXzeGYYkb
-         FBTA==
-X-Gm-Message-State: ACgBeo3XfEd6TfLN0qHQo24BUEp3w/WAh9X0PyPPI1hrY+w+ZpqWc85I
-        jwjfxJViaPs7yElcbGq8O53db6D3WoFgmYKQmGvI
-X-Google-Smtp-Source: AA6agR4NbZ4JykWGcOB7bzAC3ww/8F3lpZt3ltG1qkwMMyQuIHjLvYZp+xlmwDR2E/Sr/kVIsBI4fD1UMl5Mkoe0gms=
-X-Received: by 2002:a05:6830:449e:b0:638:c72b:68ff with SMTP id
- r30-20020a056830449e00b00638c72b68ffmr13195069otv.26.1662067849022; Thu, 01
- Sep 2022 14:30:49 -0700 (PDT)
+        with ESMTP id S234751AbiIAW0l (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 1 Sep 2022 18:26:41 -0400
+Received: from burlywood.elm.relay.mailchannels.net (burlywood.elm.relay.mailchannels.net [23.83.212.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F3745A837
+        for <selinux@vger.kernel.org>; Thu,  1 Sep 2022 15:24:21 -0700 (PDT)
+X-Sender-Id: techassets|x-authuser|susanlee23@ingodihop.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+        by relay.mailchannels.net (Postfix) with ESMTP id 206C02267A;
+        Thu,  1 Sep 2022 22:22:45 +0000 (UTC)
+Received: from vmcp128.myhostcenter.com (unknown [127.0.0.6])
+        (Authenticated sender: techassets)
+        by relay.mailchannels.net (Postfix) with ESMTPA id 10D5A229A5;
+        Thu,  1 Sep 2022 22:22:32 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1662070963; a=rsa-sha256;
+        cv=none;
+        b=oEb+WPBJVf2aTS9er6Ea6ZWjbj6V3QeF22czPTvKx8UhU5uIp8gLzkiSGcqHIObs6GqxqS
+        4FnZKzndzrTWleVOKgYRg8F2I+ib14ab1AyQX+6cGt0U+1su+iDIr5nklcwlPh5PJT1aaU
+        Pn+t+kIfmTRV7b0B+PmElIQ/+OCODqv+Frxe3wcCXp0Rtje0xlpgkYMqLQ5owI/Lg2g9Qp
+        seCQyActHHjax1WnM2VmuH46+eBbWjS5YWkf9WCciGTmnVC1PhHII0z7Yr1teMgCnUGvhR
+        LW8duOtUvasdxSPQu2Gcl7QZ2yOFToTnxJpbpfueqaDc/g4Mqqpl/X5C//kAvg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+        s=arc-2022; t=1662070963;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=lk3bJyd8y857dJgjG4s8NjFXdOCsb6gQAFjio/VR4EE=;
+        b=AP97RdAmZOO8qmdTXi2YFl5TkJ5PzCfx9TEFFvaRFI52wWa34PrjK+GIt1rCNEBYye096f
+        izXJ6/aNlSZFrqlsn8XcUucyMf3IL5OpXOfB9Ajv8gbCPP84cBz+VxTuChlCT7LpgRqy0X
+        iaFtmXblD5ur1xWlLIBWe23PeFYLRX+dIjoTJXJQtbrJg9F8d9vdTvrAaicTIbHq1AyTS8
+        4BMSs4PEP65Sh8ArfIc9sckoOaGeKyhg2dqFNJdcCLsWGYNrNHQSX2Dzrj4/b42UjkKktv
+        sxiqvwlOjapwmN3+d8GVTMXRYhGaYXwcMk8js3K2u7sMz0pAEyU8UdZeqz1liA==
+ARC-Authentication-Results: i=1;
+        rspamd-64cc6f7466-tg55j;
+        auth=pass smtp.auth=techassets smtp.mailfrom=susanlee23@ingodihop.com
+X-Sender-Id: techassets|x-authuser|susanlee23@ingodihop.com
+X-MC-Relay: Junk
+X-MailChannels-SenderId: techassets|x-authuser|susanlee23@ingodihop.com
+X-MailChannels-Auth-Id: techassets
+X-Plucky-Industry: 28f3d86b4ce57f88_1662070963575_889637051
+X-MC-Loop-Signature: 1662070963575:1613952542
+X-MC-Ingress-Time: 1662070963575
+Received: from vmcp128.myhostcenter.com (vmcp128.myhostcenter.com
+ [66.84.29.18])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+        by 100.108.161.89 (trex/6.7.1);
+        Thu, 01 Sep 2022 22:22:43 +0000
+Received: from [::1] (port=51546 helo=vmcp128.myhostcenter.com)
+        by vmcp128.myhostcenter.com with esmtpa (Exim 4.95)
+        (envelope-from <susanlee23@ingodihop.com>)
+        id 1oTsZd-00ExCA-TO;
+        Thu, 01 Sep 2022 18:22:07 -0400
 MIME-Version: 1.0
-References: <166120321387.369593.7400426327771894334.stgit@olly>
- <CGME20220901201553eucas1p258ee1cba97c888aab172d31d9c06e922@eucas1p2.samsung.com>
- <166120327379.369593.4939320600435400704.stgit@olly> <20220901201551.hmdrvthtin4gkdz3@localhost>
-In-Reply-To: <20220901201551.hmdrvthtin4gkdz3@localhost>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 1 Sep 2022 17:30:38 -0400
-Message-ID: <CAHC9VhTDJogwcYhm2xc29kyO74CZ4wcCysySUr1CX6GcUkPf0Q@mail.gmail.com>
-Subject: Re: [PATCH 2/3] selinux: implement the security_uring_cmd() LSM hook
-To:     Joel Granados <j.granados@samsung.com>
-Cc:     linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        io-uring@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Date:   Thu, 01 Sep 2022 18:21:55 -0400
+From:   "Mrs. Susan Lee Yu-Chen " <susanlee23@ingodihop.com>
+To:     undisclosed-recipients:;
+Subject: INFORMATION
+Reply-To: mrs.susanlee22@gmail.com
+Mail-Reply-To: mrs.susanlee22@gmail.com
+User-Agent: Roundcube Webmail/1.5.2
+Message-ID: <7b949f3b6dbc60abd0bbade323de8111@ingodihop.com>
+X-Sender: susanlee23@ingodihop.com
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-AuthUser: susanlee23@ingodihop.com
+X-Originating-IP: ::1
+X-Spam-Status: Yes, score=6.3 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,HK_NAME_MR_MRS,
+        ODD_FREEM_REPTO,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE,
+        T_SPF_PERMERROR autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4824]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [mrs.susanlee22[at]gmail.com]
+        *  0.0 T_SPF_PERMERROR SPF: test of record failed (permerror)
+        * -0.0 RCVD_IN_MSPIKE_H2 RBL: Average reputation (+2)
+        *      [23.83.212.26 listed in wl.mailspike.net]
+        *  2.1 ODD_FREEM_REPTO Has unusual reply-to header
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  1.0 HK_NAME_MR_MRS No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Sep 1, 2022 at 4:15 PM Joel Granados <j.granados@samsung.com> wrote=
-:
-> Hey Paul
->
-> I realize that you have already sent this upstream but I wanted to share
-> the Selinux part of the testing that we did to see if there is any
-> feedback.
->
-> With my tests I see that the selinux_uring_cmd hook is run and it
-> results in a "avc : denied" when I run it with selinux in permissive
-> mode with an unpriviledged user. I assume that this is the expected
-> behavior. Here is how I tested
->
-> *** With the patch:
-> * I ran the io_uring_passthrough.c test on a char device with an
->   unpriviledged user.
-> * I took care of changing the permissions of /dev/ng0n1 to 666 prior
->   to any testing.
-> * made sure that Selinux was in permissive mode.
-> * Made sure to have audit activated by passing "audit=3D1" to the kernel
-> * After noticing that some audit messages where getting lost I upped the
->   backlog limit to 256
-> * Prior to executing the test, I also placed a breakpoint inside
->   selinux_uring_cmd to make sure that it was executed.
-> * This is the output of the audit when I executed the test:
->
->   [  136.615924] audit: type=3D1400 audit(1662043624.701:94): avc:  denie=
-d  { create } for  pid=3D263 comm=3D"io_uring_passth" anonclass=3D[io_uring=
-] scontext=3Dsystem_u:system_r:kernel_t tcontext=3Dsystem_u:object_r:kernel=
-_t tclass=3Danon_inode permissive=3D1
->   [  136.621036] audit: type=3D1300 audit(1662043624.701:94): arch=3Dc000=
-003e syscall=3D425 success=3Dyes exit=3D3 a0=3D40 a1=3D7ffca29835a0 a2=3D7f=
-fca29835a0 a3=3D561529be2300 items=3D0 ppid=3D252 pid=3D263 auid=3D1001 uid=
-=3D1001 gid=3D1002 euid=3D1001 suid=3D1001 fsuid=3D1001 egid=3D1002 sgid=3D=
-1002 fsgid=3D1002 tty=3Dpts1 ses=3D3 comm=3D"io_uring_passth" exe=3D"/mnt/s=
-rc/liburing/test/io_uring_passthrough.t" subj=3Dsystem_u:system_r:kernel_t =
-key=3D(null)
->   [  136.624812] audit: type=3D1327 audit(1662043624.701:94): proctitle=
-=3D2F6D6E742F7372632F6C69627572696E672F746573742F696F5F7572696E675F70617373=
-7468726F7567682E74002F6465762F6E67306E31
->   [  136.626074] audit: type=3D1400 audit(1662043624.702:95): avc:  denie=
-d  { map } for  pid=3D263 comm=3D"io_uring_passth" path=3D"anon_inode:[io_u=
-ring]" dev=3D"anon_inodefs" ino=3D11715 scontext=3Dsystem_u:system_r:kernel=
-_t tcontext=3Dsystem_u:object_r:kernel_t tclass=3Danon_inode permissive=3D1
->   [  136.628012] audit: type=3D1400 audit(1662043624.702:95): avc:  denie=
-d  { read write } for  pid=3D263 comm=3D"io_uring_passth" path=3D"anon_inod=
-e:[io_uring]" dev=3D"anon_inodefs" ino=3D11715 scontext=3Dsystem_u:system_r=
-:kernel_t tcontext=3Dsystem_u:object_r:kernel_t tclass=3Danon_inode permiss=
-ive=3D1
->   [  136.629873] audit: type=3D1300 audit(1662043624.702:95): arch=3Dc000=
-003e syscall=3D9 success=3Dyes exit=3D140179765297152 a0=3D0 a1=3D1380 a2=
-=3D3 a3=3D8001 items=3D0 ppid=3D252 pid=3D263 auid=3D1001 uid=3D1001 gid=3D=
-1002 euid=3D1001 suid=3D1001 fsuid=3D1001 egid=3D1002 sgid=3D1002 fsgid=3D1=
-002 tty=3Dpts1 ses=3D3 comm=3D"io_uring_passth" exe=3D"/mnt/src/liburing/te=
-st/io_uring_passthrough.t" subj=3Dsystem_u:system_r:kernel_t key=3D(null)
->   [  136.632415] audit: type=3D1327 audit(1662043624.702:95): proctitle=
-=3D2F6D6E742F7372632F6C69627572696E672F746573742F696F5F7572696E675F70617373=
-7468726F7567682E74002F6465762F6E67306E31
->   [  136.633652] audit: type=3D1400 audit(1662043624.705:96): avc:  denie=
-d  { cmd } for  pid=3D263 comm=3D"io_uring_passth" path=3D"/dev/ng0n1" dev=
-=3D"devtmpfs" ino=3D120 scontext=3Dsystem_u:system_r:kernel_t tcontext=3Dsy=
-stem_u:object_r:device_t tclass=3Dio_uring permissive=3D1
->   [  136.635384] audit: type=3D1336 audit(1662043624.705:96): uring_op=3D=
-46 items=3D0 ppid=3D252 pid=3D263 uid=3D1001 gid=3D1002 euid=3D1001 suid=3D=
-1001 fsuid=3D1001 egid=3D1002 sgid=3D1002 fsgid=3D1002 subj=3Dsystem_u:syst=
-em_r:kernel_t key=3D(null)
->   [  136.636863] audit: type=3D1336 audit(1662043624.705:96): uring_op=3D=
-46 items=3D0 ppid=3D252 pid=3D263 uid=3D1001 gid=3D1002 euid=3D1001 suid=3D=
-1001 fsuid=3D1001 egid=3D1002 sgid=3D1002 fsgid=3D1002 subj=3Dsystem_u:syst=
-em_r:kernel_t key=3D(null)
->
-> * From the output on time 136.633652 I see that the access should have
->   been denied had selinux been enforcing.
-> * I also saw that the breakpoint hit.
->
-> *** Without the patch:
-> * I ran the io_uring_passthrough.c test on a char device with an
->   unpriviledged user.
-> * I took care of changing the permissions of /dev/ng0n1 to 666 prior
->   to any testing.
-> * made sure that Selinux was in permissive mode.
-> * Made sure to have audit activated by passing "audit=3D1" to the kernel
-> * After noticing that some audit messages where getting lost I upped the
->   backlog limit to 256
-> * There were no audit messages when I executed the test.
->
-> As with my smack tests I would really appreciate feecback on the
-> approach I took to testing and it's validity.
 
-Hi Joel,
 
-Thanks for the additional testing and verification!  Work like this is
-always welcome, regardless if the patch has already been merged
-upstream.
+-- 
+Hello,
 
-As far as you test approach is concerned, I think you are on the right
-track, I might suggest resolving the other SELinux/AVC denials you are
-seeing with your test application to help reduce the noise in the
-logs.  Are you familiar with the selinux-testsuite (link below)?
+I have sent you two emails and you did not respond, I even sent another 
+message a few days ago with more details still no response from you. 
+Please are you still using this email address? I am VERY SORRY if 
+sincerely you did not receive those emails, I will resend it now as soon 
+as you confirm you never received them.
 
-* https://github.com/SELinuxProject/selinux-testsuite
-
---=20
-paul-moore.com
+Regards,
+Susan Lee Yu-Chen

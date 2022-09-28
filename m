@@ -2,117 +2,120 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 118A35ED85F
-	for <lists+selinux@lfdr.de>; Wed, 28 Sep 2022 11:01:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77FC95EE0D4
+	for <lists+selinux@lfdr.de>; Wed, 28 Sep 2022 17:49:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233050AbiI1JBr (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 28 Sep 2022 05:01:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
+        id S233506AbiI1PtB (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 28 Sep 2022 11:49:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231702AbiI1JBq (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 28 Sep 2022 05:01:46 -0400
-Received: from mail-ed1-x532.google.com (mail-ed1-x532.google.com [IPv6:2a00:1450:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBCEEE05E6
-        for <selinux@vger.kernel.org>; Wed, 28 Sep 2022 02:01:44 -0700 (PDT)
-Received: by mail-ed1-x532.google.com with SMTP id z13so16316758edb.13
-        for <selinux@vger.kernel.org>; Wed, 28 Sep 2022 02:01:44 -0700 (PDT)
+        with ESMTP id S233488AbiI1Ps7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 28 Sep 2022 11:48:59 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24E8ED98F0
+        for <selinux@vger.kernel.org>; Wed, 28 Sep 2022 08:48:59 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id l65so12866071pfl.8
+        for <selinux@vger.kernel.org>; Wed, 28 Sep 2022 08:48:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date;
-        bh=ozbRc09m+KMSRpuulJkP04SxaVVdONoG7Acmu97WJto=;
-        b=aPS6MuoWbTrgcy+g/WJHYHRbxsTd9MakQvNDkye6N7g3fKhtPtguGPh4WNpgYSsxGN
-         E3ptp0S4+GJlOBAoTYFwHWXTSSfwD8PwWDRXDZbY9uLN6pQ3qK1B1S7R/Wg1+vkLD0JG
-         OUqoJoqM+xqSrWzqWj+3wyeU4FvqtbXJVAN9fxYLvvuOjGR2R60vl/0HC0Nl3qJK9v9Q
-         1biCvEe0iIW6Oju4FisswPrf+vcc6UXXASUFF+vmYq8HqGmpD17Uw5yMsHrD41MISSzx
-         +jfL4xlIsIMZ0jfI5s7E4CR5H6Tmn84kCNg94csdn8O0hverA9mQbLX2pyAo8aAkVNWQ
-         lXaQ==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=hEjounuBSA/KW3kVhM5kYRCaO2yofzNOsxkh/GTBwbw=;
+        b=jMFMN8fZWU8A8t2DaUg3klBVUnC14ZxLkUK+57voLVPyzQVKQnaebtZFGBBt9bGnpc
+         XTqoKBPgyG1aLW48PQ3YzypsJkyutt0K6OM95EIwW9kNYSzK/Bgvjv0TWeMvouQ807LY
+         sJDfSvPdEd0Dp+5son/W6I667Ycl03sZEZUq3+DP7hKYM03xWSNMcwC7TCUbMczr6wBc
+         pALpWlvO7tC01Ra5lIlbLOWrA3VRTdIX+dM/cEMAxX1clLl4VsSvim00zOrG460uM9N6
+         vJiTmcTsYPP/0qTg0ZXeRJ/9U06OVi3fteOi1Mtr4txi5+jCCogqK/STciDcSgG/BJ+l
+         7OSw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date;
-        bh=ozbRc09m+KMSRpuulJkP04SxaVVdONoG7Acmu97WJto=;
-        b=v80tntcMLQvbQYRfFe4t+UX3tvMvc68Ug5L9dV4iFdUf1Um4MT/mpfOa6HGjVYh+d6
-         u2hTFe2yFt406gavGflTgWtVdrf0qHCk+BlsXGik+noQQP5AHT7zHz/Z2mJtV++skKEj
-         Le79P0FUrbBBrLbl/QugzIE//XZEP9NmKKC3ZLd164ZvdNUbi6xRv6BsiPZ0MpgjJ9l/
-         ttujH5WpzTBPagiyCxAfbGjaLrxfTlCLUQ+sQexGx8181XjXaevWpfcA3eVowLiYKfQp
-         Ud3JpvUlZ56CHGdBeW8wsEWws2JY66VPV7OoqMINtkzexFZCRu4VydAJhYYko30lb8gd
-         gq4A==
-X-Gm-Message-State: ACrzQf1YcFV+dFehhxaXYyoEouC7xf/GfJD3uz7g1iJ9mY4VGpZqojho
-        aZ3PSNPMUliHcjIl+J2L/dTXJNIYF1Yjc5F01bs=
-X-Google-Smtp-Source: AMsMyM7hWFlWVJTdhMiAhtagACMrE8rNVXz5tjHduap6nhpHblfKJu2DShh0Z9nvQTMHi0/yoKUUJiuHrINfYiUWxlY=
-X-Received: by 2002:aa7:c849:0:b0:453:9543:6ef3 with SMTP id
- g9-20020aa7c849000000b0045395436ef3mr32601299edt.105.1664355703058; Wed, 28
- Sep 2022 02:01:43 -0700 (PDT)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=hEjounuBSA/KW3kVhM5kYRCaO2yofzNOsxkh/GTBwbw=;
+        b=2FFkuENhDOdw5Ayr3pDy+HwwvhliiQthqImdElZipLstHjQVBapdNAyAC6nbQptfYj
+         7FLNWO7PWmDdqAEVneuUFAwMCCJAq99Y1d7OSf1gKMq5bpwFHsGrXeMbOugjZTBDu9rL
+         TEqRpDPfGOya0Zr6FNj17nIQM60GMmmsLE0XnBYUvWRXB0BFBC7a83+P6W2xcQSFX3lV
+         1tqkxjZiVD3CZY8CBFzbXRHaPDO9KHJTfKMPzjtONWEQv9rCM8iZ9u66wKFlJdZoReV1
+         GbbSRTTot82GOokSeBLIt+LCxmE1dxGWHmD/BGF7eATSfS7WfRmU0nremxvxjv4gAGGR
+         rxCQ==
+X-Gm-Message-State: ACrzQf1DElFVoVtRvXDcWyIEacaIvhoeUxTHfW7TOI6+nqqnGTQ6lq5w
+        0+fKP4HCCeZJS7pHBIUzC8qQIBUfW68OAGiWGvHfWjjGN94=
+X-Google-Smtp-Source: AMsMyM5r+n7wGX2GxEKK6P3RR0/PHXhT9SosI2xOzJG4+d0RkLcX7T4nOiO2CI0fUPXURI4pR0BNicePhuR/qf5UCjI=
+X-Received: by 2002:a05:6a00:1a07:b0:541:6060:705d with SMTP id
+ g7-20020a056a001a0700b005416060705dmr36057826pfv.61.1664380138477; Wed, 28
+ Sep 2022 08:48:58 -0700 (PDT)
 MIME-Version: 1.0
-Sender: peppersben3@gmail.com
-Received: by 2002:a05:6402:1d55:b0:451:74ca:49f2 with HTTP; Wed, 28 Sep 2022
- 02:01:41 -0700 (PDT)
-From:   Mrs Aisha Gaddafi <aishagaddafiaisha20@gmail.com>
-Date:   Wed, 28 Sep 2022 02:01:41 -0700
-X-Google-Sender-Auth: UYJx3yHogwh2oP-M36uR8Ciqj0U
-Message-ID: <CAF6h66oEB+upAbdg-PRKP7K_HVUojqz3WaRTBsZHhDoHL2u75Q@mail.gmail.com>
-Subject: GREETIPNGS REAR BELOVED
-To:     undisclosed-recipients:;
+References: <20220922180255.2923-1-masheets@linux.microsoft.com>
+ <c614d089-31e2-573a-17d0-91eca5e9b218@linux.microsoft.com> <1486279f-a1e9-0f03-203c-4a1ee52264d5@linux.microsoft.com>
+In-Reply-To: <1486279f-a1e9-0f03-203c-4a1ee52264d5@linux.microsoft.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Wed, 28 Sep 2022 11:48:47 -0400
+Message-ID: <CAP+JOzTZ-pdooG1xXPiuaGX+4LnHvCCQGEXESk5xAdMadRToLg@mail.gmail.com>
+Subject: Re: [PATCH] libsemanage: Allow user to set SYSCONFDIR
+To:     Daniel Burgener <dburgener@linux.microsoft.com>
+Cc:     Matt Sheets <masheets@linux.microsoft.com>, selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_99,BAYES_999,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MILLION_HUNDRED,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:532 listed in]
-        [list.dnswl.org]
-        *  0.2 BAYES_999 BODY: Bayes spam probability is 99.9 to 100%
-        *      [score: 1.0000]
-        *  3.5 BAYES_99 BODY: Bayes spam probability is 99 to 100%
-        *      [score: 1.0000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [peppersben3[at]gmail.com]
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [peppersben3[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        *  0.0 MILLION_HUNDRED BODY: Million "One to Nine" Hundred
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-PIlease pardon me to use this medium to create a mutual conversations
-with you. My name is aisha gaddafi and presently living in Oman, I am
-a Widow and single Mother with three Children, the only biological
-Daughter of late Libyan President (Late Colonel Muammar Gaddafi) and
-presently I am under political asylum protection by the Omani
-Government.
+On Thu, Sep 22, 2022 at 2:16 PM Daniel Burgener
+<dburgener@linux.microsoft.com> wrote:
+>
+> On 9/22/2022 2:04 PM, Daniel Burgener wrote:
+> > On 9/22/2022 2:02 PM, Matt Sheets wrote:
+> >> This change will allow a user to set the location of their
+> >> sysconfdir, defaulted to /etc, if they are installing into
+> >> nonstandard locations.
+> >>
+> >> Signed-off-by: Matt Sheets <masheets@linux.microsoft.com>
 
-I have funds worth " Seven Million Five Hundred Thousand United State
-Dollars {USD$7.500.000.00} US Dollars which I want to entrust to you
-for investment projects in your country.
+Acked-by: James Carter <jwcart2@gmail.com>
 
-If you are willing to handle this project on my behalf, kindly reply
-urgent to enable me provide you more details to start the transfer
-process.
-
-You can know more through the BBC news links below:
-http://www.bbc.com/news/world-africa-19966059
-
-Thanks
-Aisha Gaddafi
+> >> ---
+> >>   libsemanage/src/Makefile | 3 ++-
+> >>   1 file changed, 2 insertions(+), 1 deletion(-)
+> >>
+> >> diff --git a/libsemanage/src/Makefile b/libsemanage/src/Makefile
+> >> index 71c2a1d2..01df0181 100644
+> >> --- a/libsemanage/src/Makefile
+> >> +++ b/libsemanage/src/Makefile
+> >> @@ -11,6 +11,7 @@ PKG_CONFIG ?= pkg-config
+> >>   PREFIX ?= /usr
+> >>   LIBDIR ?= $(PREFIX)/lib
+> >>   INCLUDEDIR ?= $(PREFIX)/include
+> >> +SYSCONFDIR ?= /etc
+> >>   PYINC ?= $(shell $(PKG_CONFIG) --cflags $(PYPREFIX))
+> >>   PYLIBS ?= $(shell $(PKG_CONFIG) --libs $(PYPREFIX))
+> >>   PYTHONLIBDIR ?= $(shell $(PYTHON) -c "from distutils.sysconfig
+> >> import *; print(get_python_lib(plat_specific=1, prefix='$(PREFIX)'))")
+> >> @@ -19,7 +20,7 @@ RUBYINC ?= $(shell $(RUBY) -e 'puts "-I" +
+> >> RbConfig::CONFIG["rubyarchhdrdir"] +
+> >>   RUBYLIBS ?= $(shell $(RUBY) -e 'puts "-L" +
+> >> RbConfig::CONFIG["libdir"] + " -L" + RbConfig::CONFIG["archlibdir"] +
+> >> " " + RbConfig::CONFIG["LIBRUBYARG_SHARED"]')
+> >>   RUBYINSTALL ?= $(shell $(RUBY) -e 'puts
+> >> RbConfig::CONFIG["vendorarchdir"]')
+> >> -DEFAULT_SEMANAGE_CONF_LOCATION=/etc/selinux/semanage.conf
+> >> +DEFAULT_SEMANAGE_CONF_LOCATION=$(SYSCONFDIR)/selinux/semanage.conf
+> >>   ifeq ($(DEBUG),1)
+> >>       export CFLAGS ?= -g3 -O0 -gdwarf-2 -fno-strict-aliasing -Wall
+> >> -Wshadow -Werror
+> >
+> > That looks good thanks.  Sorry, one last request.  This is a generic
+> > yocto issue, right?  Are you able to provide publicly visible links to
+> > the upstream yocto project in the git commit message to justify why
+> > using a nonstandard /etc is a normal/reasonable thing to do?
+>
+> Oops, I'd been discussing this with Matt, and didn't realize this one
+> hit the public list :)  Just trying to improve the rationale/justification.
+>
+> Regarding the actual change:
+>
+> Reviewed-by: Daniel Burgener <dburgener@linux.microsoft.com>

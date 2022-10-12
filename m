@@ -2,118 +2,89 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30FA95FC88A
-	for <lists+selinux@lfdr.de>; Wed, 12 Oct 2022 17:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE25A5FCD0C
+	for <lists+selinux@lfdr.de>; Wed, 12 Oct 2022 23:22:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbiJLPj0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 12 Oct 2022 11:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55326 "EHLO
+        id S229494AbiJLVWs (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 12 Oct 2022 17:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229663AbiJLPjZ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 12 Oct 2022 11:39:25 -0400
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804D7D9978
-        for <selinux@vger.kernel.org>; Wed, 12 Oct 2022 08:39:24 -0700 (PDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 70so15572313pjo.4
-        for <selinux@vger.kernel.org>; Wed, 12 Oct 2022 08:39:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0dsueB/dMOnbFqHpOUuMu8wJmabTScgHkEHlP2QHWX8=;
-        b=AFeylghzz7KTCSgYvO429ZptrqOGZbMbPHrFn1pi7tHLiLPn+YENbzcpaWhIMliCnF
-         5T0F0AAt4d/VgXWtAGm3OY7p44CLEKLakmJpQDXV6C/1uidv3Bzswz60QNIkTjJga1Os
-         ex+P1fZpYp8DYhkaiK94hIp8bIwk+Ydvc80d6IW5A5CYkFDq7GiZuHJuG39ELxRQLNp1
-         CSS7Gxg2MFQ3Wnm0RzmNL894DG7mY62OgSy/oHbaUmMGUFCngG4tgFEn3rRVmbpwcS80
-         R4X2c+dQX9Pib7q+jg0SmaM3PuumMqsAmfw1xMduStA5UXRRnSSpxvwDNHeO+mWY+48H
-         Ak9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0dsueB/dMOnbFqHpOUuMu8wJmabTScgHkEHlP2QHWX8=;
-        b=5FXkcjMibb/p4nJAGI4C1kpXR1rzWoYKo930a9rAedkG0pYIP/HTAkHQdVoADmsttv
-         SluWpp2VupOF8ngWmwZAVxbh+HAwGA/A2ozwCTzcSrRhkz3+yujMKWtJ1R4uYMwoBtQf
-         EYM0S5hoWBjra+HjpCIoeSbprXsA+JREQsSvZNwRzm6zNyovNndMLbstBQnVqKqXQWXx
-         lg40IXhr59FCL2XrgA9THrFL+IWaPIFeeIjzx3iT+qEBAGCKXyQezaD3SeJtMfsC8/J9
-         MSiLIE3H5Z3W/8knWbYHxBX8EzSHX9QuNuBedOJ0MPlCjjjCEQ3fKv+kHaN0aeqw78LR
-         6aNQ==
-X-Gm-Message-State: ACrzQf1KAMQYcigoSbXPqdgSFJKbOfIPdb4N8gljZ4uFlm2M1ERdBeaO
-        xG6vW7u9hpYd873wYqRZJblObik/7km3mVnjxiIIholahl8=
-X-Google-Smtp-Source: AMsMyM5P18JujaL2tbURGE00D0dsu4B/u5GpK67K6dLMW2RcVB2Z3mF9iD63AVjg68Y3fOJH9E1nO5PR3EJM4+HbLB8=
-X-Received: by 2002:a17:902:d4c6:b0:180:9675:3eac with SMTP id
- o6-20020a170902d4c600b0018096753eacmr25339313plg.77.1665589163968; Wed, 12
- Oct 2022 08:39:23 -0700 (PDT)
+        with ESMTP id S230104AbiJLVWr (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 12 Oct 2022 17:22:47 -0400
+Received: from smtp-42ae.mail.infomaniak.ch (smtp-42ae.mail.infomaniak.ch [IPv6:2001:1600:4:17::42ae])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACA6A11B2F4
+        for <selinux@vger.kernel.org>; Wed, 12 Oct 2022 14:22:45 -0700 (PDT)
+Received: from smtp-2-0001.mail.infomaniak.ch (unknown [10.5.36.108])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4MnllX3JxtzMpvW1;
+        Wed, 12 Oct 2022 23:14:32 +0200 (CEST)
+Received: from ns3096276.ip-94-23-54.eu (unknown [23.97.221.149])
+        by smtp-2-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4MnllV5LYyzMppqp;
+        Wed, 12 Oct 2022 23:14:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+        s=20191114; t=1665609272;
+        bh=XmjSicC4hYC+1A7pG8Edb0BlTaLN98y6T76Fm2lChYo=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=BijU0W5dbOqFEFzsl42HfXcLOIRcNx7g0Klz4LVSfmnZqFAy4Qxx0wt6JRLC7LiiN
+         +paCvtyQ0UpEOMj55k8K0WeVinscf7pla44LU2QUC3Q+/R7J0K4nrI+g5Hs28jfKYk
+         edyM/vBF0Q2h4ZfnwsFxrXizYQ0cf3wTkI9lwI0M=
+Message-ID: <b5ddec1b-c086-9421-bc64-cdb59324594d@digikod.net>
+Date:   Wed, 12 Oct 2022 23:14:30 +0200
 MIME-Version: 1.0
-References: <20220830175455.40660-1-cgzones@googlemail.com>
-In-Reply-To: <20220830175455.40660-1-cgzones@googlemail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Wed, 12 Oct 2022 11:39:13 -0400
-Message-ID: <CAP+JOzTxAjJ0SKL-eDxn0GmY0ZJTfqa9BpdorfTvjXajK68ibQ@mail.gmail.com>
-Subject: Re: [PATCH] libselinux: support objname in compute_create
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: 
+Subject: Re: [PATCH v38 01/39] LSM: Identify modules by more than name
+Content-Language: en-US
+To:     Casey Schaufler <casey@schaufler-ca.com>,
+        casey.schaufler@intel.com, paul@paul-moore.com,
+        linux-security-module@vger.kernel.org
+Cc:     linux-audit@redhat.com, jmorris@namei.org, selinux@vger.kernel.org,
+        keescook@chromium.org, john.johansen@canonical.com,
+        penguin-kernel@i-love.sakura.ne.jp, stephen.smalley.work@gmail.com,
+        linux-kernel@vger.kernel.org
+References: <20220927195421.14713-1-casey@schaufler-ca.com>
+ <20220927195421.14713-2-casey@schaufler-ca.com>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <20220927195421.14713-2-casey@schaufler-ca.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Aug 30, 2022 at 2:04 PM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
->
-> Support passing an optional object name to compute_create for name
-> based type transitions.
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+Please Cc me for the next versions.
 
-Acked-by: James Carter <jwcart2@gmail.com>
 
+On 27/09/2022 21:53, Casey Schaufler wrote:
+> Create a struct lsm_id to contain identifying information
+> about Linux Security Modules (LSMs). At inception this contains
+> a single member, which is the name of the module. Change the
+> security_add_hooks() interface to use this structure. Change
+> the individual modules to maintain their own struct lsm_id and
+> pass it to security_add_hooks().
+> 
+> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 > ---
->  libselinux/utils/compute_create.c | 9 ++++++---
->  1 file changed, 6 insertions(+), 3 deletions(-)
->
-> diff --git a/libselinux/utils/compute_create.c b/libselinux/utils/compute=
-_create.c
-> index c6481f4b..5401fe96 100644
-> --- a/libselinux/utils/compute_create.c
-> +++ b/libselinux/utils/compute_create.c
-> @@ -10,10 +10,11 @@ int main(int argc, char **argv)
->  {
->         char *buf;
->         security_class_t tclass;
-> +       const char *objname;
->         int ret;
->
-> -       if (argc !=3D 4) {
-> -               fprintf(stderr, "usage:  %s scontext tcontext tclass\n",
-> +       if (argc !=3D 4 && argc !=3D 5) {
-> +               fprintf(stderr, "usage:  %s scontext tcontext tclass [obj=
-name]\n",
->                         argv[0]);
->                 exit(1);
->         }
-> @@ -34,7 +35,9 @@ int main(int argc, char **argv)
->                 exit(2);
->         }
->
-> -       ret =3D security_compute_create(argv[1], argv[2], tclass, &buf);
-> +       objname =3D (argc =3D=3D 5) ? argv[4] : NULL;
-> +
-> +       ret =3D security_compute_create_name(argv[1], argv[2], tclass, ob=
-jname, &buf);
->         if (ret < 0) {
->                 fprintf(stderr, "%s:  security_compute_create failed:  %s=
-\n",
->                         argv[0], strerror(errno));
-> --
-> 2.37.2
->
+
+[...]
+
+> diff --git a/security/landlock/setup.c b/security/landlock/setup.c
+> index f8e8e980454c..fc7b69c5839e 100644
+> --- a/security/landlock/setup.c
+> +++ b/security/landlock/setup.c
+> @@ -23,6 +23,10 @@ struct lsm_blob_sizes landlock_blob_sizes __lsm_ro_after_init = {
+>   	.lbs_superblock = sizeof(struct landlock_superblock_security),
+>   };
+>   
+> +struct lsm_id landlock_lsmid __lsm_ro_after_init = {
+> +	.lsm      = LANDLOCK_NAME,
+
+Please only use one space after ".lsm". This applies for other commits 
+as well.
+
+This command will do the trick:
+FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --tree-filter 
+"clang-format-14 -i security/landlock/*.[ch]" v6.0-rc7..

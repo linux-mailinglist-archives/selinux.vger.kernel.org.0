@@ -2,73 +2,301 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54D83600D47
-	for <lists+selinux@lfdr.de>; Mon, 17 Oct 2022 13:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2625600E6B
+	for <lists+selinux@lfdr.de>; Mon, 17 Oct 2022 14:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231168AbiJQLAh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 17 Oct 2022 07:00:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45920 "EHLO
+        id S229997AbiJQMAi (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 17 Oct 2022 08:00:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231173AbiJQLAK (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 17 Oct 2022 07:00:10 -0400
-Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CE9961DA9
-        for <selinux@vger.kernel.org>; Mon, 17 Oct 2022 03:59:02 -0700 (PDT)
-Received: by mail-ej1-x632.google.com with SMTP id ot12so24056908ejb.1
-        for <selinux@vger.kernel.org>; Mon, 17 Oct 2022 03:59:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=h6TAvh2KhlPwZbZl975on9cPhNtC4Qh0FGtOTBu2EFs=;
-        b=PDjiHM7bGIhQTP/Turi+vuI1BFgexsVbEG+L89/lbncumznjbfUJFa1/0Gz62grn/9
-         Y2QLrxnBYBUWjf/MvcMnhmj+sVg173QqtzJ7Q1XnfbYRxlgIdzO5l7vkEtyhMLeFSSR/
-         6j2Sbb/VRTjDGhrHxw6wCiY5FhuyLLVnZ2bqJXEDorRvnDLVg3cuXI4sgP+DSCEMCqMc
-         hnUA304202r1Qjo4lnbg0t3Xdv8SONA9lQqanLqLQPoqJE2vDqEqhw/NJzVJNWJhKixm
-         X9hLhg+S0C+Eu0oeoz3b/9lFcb61u9nRRDrgCxRliILqlV5qJynxjdw0BtUDHvmE4tN/
-         /ROg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=h6TAvh2KhlPwZbZl975on9cPhNtC4Qh0FGtOTBu2EFs=;
-        b=Lh+xQEKdRMkDXFkWr+A4mt9Xmz2TH6VHmqOJpVb5+Nkcaycdo/iVn/WnXOuTCHomo3
-         SPBA6fKAp9ygWwgJ+/tFvD2o4s4vnyiZ9XZ3g/oStWhkYCt0e4BcEa4/48HX5ZDjyZNG
-         MNF5PLHGigKQunSthOItCflSSGPE52+5hj94jtkhTgXjaYPMd0FbqgZ/tXLRbJnutjtX
-         qMDM9dJNPjk1M6oV5X0uek2a1Ezb7On+ykDS0sa6fJTKNWeWDL3nmrJTDEpSXN2qyXDK
-         CcApyA06ZVKOYLONwy/WsMCjpwh21lGHIwVS5bjev0H5GzxZQ6xGRD265g9O+MyoU07Q
-         FuYQ==
-X-Gm-Message-State: ACrzQf24VltuYl1osfTK6RwxB+LOUiDQx3A9qJWqPIwudOe4DgE9pSvN
-        WPvb++1FLlLABFHDCtnEAi8fIOzM/RAp5F3DXJs=
-X-Google-Smtp-Source: AMsMyM6l8n/aSHAoC59UwKtZX+xbq6KQythXIhXEFLyWseZNn1h2u78aMKDqYef8hiTT0XRHemZ8WnR5rDUwnv1mA/A=
-X-Received: by 2002:a17:906:36d1:b0:76c:a723:9445 with SMTP id
- b17-20020a17090636d100b0076ca7239445mr7809869ejc.548.1666004337624; Mon, 17
- Oct 2022 03:58:57 -0700 (PDT)
+        with ESMTP id S229919AbiJQMAH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 17 Oct 2022 08:00:07 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18B79275E3
+        for <selinux@vger.kernel.org>; Mon, 17 Oct 2022 05:00:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1666008004;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=MvPpfomsgvZnZ7vBer1zgWV4wPg9G3zOFyUwWHsExjk=;
+        b=S4fhhR42PqQZBv0XrVzaRtbUUbg6UciAV/nCj5htsuGbnwq0Rpp1I/Nr/qFdfbp7vS6/cq
+        F/ghZysrXmLn56f2Xbzp+cK421FrMCZQjjSUEsF6F2GMfUGGUE9GCCNohaAN4B78h8LWc0
+        cy53I5fflgIotzSMQfmsyKBMM0tmE00=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-551-GRrpkDOBMN6e-5Yvc5PlJw-1; Mon, 17 Oct 2022 08:00:00 -0400
+X-MC-Unique: GRrpkDOBMN6e-5Yvc5PlJw-1
+Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5D34C833A06;
+        Mon, 17 Oct 2022 12:00:00 +0000 (UTC)
+Received: from localhost (unknown [10.39.192.119])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DC4B640CA40C;
+        Mon, 17 Oct 2022 11:59:59 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     Christian =?utf-8?Q?G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        selinux@vger.kernel.org
+Cc:     Daniel Burgener <dburgener@linux.microsoft.com>
+Subject: Re: [PATCH] libselinux: Add missing '\n' to avc_log() messages
+In-Reply-To: <CAJ2a_DeMFWTmZLQhekME+Qr9VDYaknq+vvDjrP=5qA25PeV1Bg@mail.gmail.com>
+References: <20221011112733.194079-1-plautrba@redhat.com>
+ <877d12sn5v.fsf@redhat.com>
+ <3e5a0cb1-73e5-6268-2c0b-4f470080073e@linux.microsoft.com>
+ <87wn92qxmq.fsf@redhat.com>
+ <CAJ2a_DeMFWTmZLQhekME+Qr9VDYaknq+vvDjrP=5qA25PeV1Bg@mail.gmail.com>
+Date:   Mon, 17 Oct 2022 13:59:58 +0200
+Message-ID: <87sfjmr77l.fsf@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a50:71a:0:b0:1df:c5cd:1b43 with HTTP; Mon, 17 Oct 2022
- 03:58:57 -0700 (PDT)
-From:   M Cheickna Toure <metraoretk5@gmail.com>
-Date:   Mon, 17 Oct 2022 11:58:57 +0100
-Message-ID: <CACw7F=aNX0Xz1KovRx7K3MtpP7sAjRGXxDvPLF8K5-3WjDRDMg@mail.gmail.com>
-Subject: Hello, Good morning
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLY,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: *
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello,
-Good morning and how are you?
-I have an important and favourable information/proposal which might
-interest you to know,
-let me hear from you to detail you, it's important
-Sincerely,
-M.Cheickna
-tourecheickna@consultant.com
+Christian G=C3=B6ttsche <cgzones@googlemail.com> writes:
+
+> On Fri, 14 Oct 2022 at 16:37, Petr Lautrbach <plautrba@redhat.com> wrote:
+>>
+>> Daniel Burgener <dburgener@linux.microsoft.com> writes:
+>>
+>> > On 10/14/2022 6:41 AM, Petr Lautrbach wrote:
+>> >> Petr Lautrbach <plautrba@redhat.com> writes:
+>> >>
+>> >>> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+>> >>> ---
+>> >>>   libselinux/src/avc.c          | 2 +-
+>> >>>   libselinux/src/avc_internal.c | 4 ++--
+>> >>>   libselinux/src/checkAccess.c  | 4 ++--
+>> >>>   3 files changed, 5 insertions(+), 5 deletions(-)
+>> >>>
+>> >>> diff --git a/libselinux/src/avc.c b/libselinux/src/avc.c
+>> >>> index 8d5983a2fe0c..98a3fcae41c8 100644
+>> >>> --- a/libselinux/src/avc.c
+>> >>> +++ b/libselinux/src/avc.c
+>> >>> @@ -725,7 +725,7 @@ void avc_audit(security_id_t ssid, security_id_t=
+ tsid,
+>> >>>     if (denied)
+>> >>>             log_append(avc_audit_buf, " permissive=3D%u", result ? 0=
+ : 1);
+>> >>>
+>> >>> -   avc_log(SELINUX_AVC, "%s", avc_audit_buf);
+>> >>> +   avc_log(SELINUX_AVC, "%s\n", avc_audit_buf);
+>> >>
+>> >>
+>> >> There is a conflict between this change and commit 142372522c7e ("lib=
+selinux: avoid
+>> >> newline in avc message").
+>> >>
+>> >> I'll send another version without it.
+>> >
+>> > Now that you've pointed out Christian's patch, this feels like
+>> > potentially the wrong level to solve this.
+>> >
+>> > As I understand it, the issue Christian was trying to solve is that
+>> > audit doesn't parse as we intend if there is a newline in the middle of
+>> > the message, and userspace object managers append additional material =
+to
+>> > USER_AVC messages.  Hence his removal of newline above.
+>> >
+>> > The problem this patch is trying to solve is that when SELinux aware
+>> > applications call logging functions in libselinux, they get printed
+>> > directly to standard error, and in that case really should end in a ne=
+wline.
+>> >
+>> > Secondarily, this patch solves the fact that previously the messages
+>> > logged by SELinux were just inconsistent with regards to final newline=
+s.
+>> >
+>> > It happens that in the current state of things, userspace object
+>> > managers append to AVCs above, and rpm had issues with setenforce and
+>> > policyload, so segregating newlines based on message type as this patch
+>> > with the above hunk dropped would do addresses all the issues.
+>> >
+>> > I feel like that's sort of a happenstance that this is the current sta=
+te
+>> > of the code though, and if a future change results in SELinux aware
+>> > applications dumping AVCs directly to standard error for example, then
+>> > there won't be a good solution in the current approach.
+>> >
+>> > Would it be perhaps a cleaner solution to standardize all libselinux
+>> > messages on no newline and then changing default_selinux_log() to appe=
+nd
+>> > a newline since that's writing directly to stderr and relying on calle=
+rs
+>> > into libselinux to add a newline if needed?
+>>
+>> This is exactly my thoughts and reason why I haven't sent the new patch
+>> yet.
+>>
+>> If we do this we would need to check all main consumers whether they
+>> depend on the new line or not.
+>
+> First of all I agree that log messages should fbe consistent in
+> whether they end with a newline or not, and that bahavior should be
+> documented (probably in selinux_set_callback(3)).
+>
+> Looking at some callers of selinux_set_callback(3):
+>
+>
+> I. systemd
+>
+> log_callback() [1] forwards the message either to
+> audit_log_user_avc_message(3), which does not expect a trailing
+> newline, or to the internal function log_internalv(), which to my
+> analysis also do not.
+>
+> [1]: https://github.com/systemd/systemd/blob/3e15bed410ff616f5015b4e87eb2=
+5d1fee8828e5/src/core/selinux-access.c#L97
+>
+>
+> II. dbus-broker
+>
+> bus_selinux_log() [2] forwards the message to the internal function
+> util_audit_log() [3], which either forwards it to
+> audit_log_user_avc_message(3) or explitcitly add a newline when
+> printing to stderr.
+>
+> [2]: https://github.com/bus1/dbus-broker/blob/ef1c9f03a6be40474486044b6a2=
+8780d12107d9b/src/util/selinux.c#L288
+> [3]: https://github.com/bus1/dbus-broker/blob/ef1c9f03a6be40474486044b6a2=
+8780d12107d9b/src/util/audit.c#L104
+>
+>
+> III. dbus
+>
+> log_callback() [4] forwards the message either to
+> audit_log_user_avc_message(3) or vsyslog(3), which both do not expect
+> a trailing newline.
+>
+> [4]: https://gitlab.freedesktop.org/dbus/dbus/-/blob/master/bus/selinux.c=
+#L95
+>
+>
+> IV. pam
+>
+> log_callback() [5] forwards the message either to
+> audit_log_user_avc_message(3) or vsyslog(3), which both do not expect
+> a trailing newline.
+>
+> [5]: https://github.com/linux-pam/linux-pam/blob/f69a6042da801096c94b3046=
+5c118e17c803f5c2/modules/pam_rootok/pam_rootok.c#L54
+>
+>
+> V. shadow
+>
+> selinux_log_cb() [6] forwards the message either to
+> audit_log_user_avc_message(3) or via a SYSLOG wrapper to syslog(3),
+> which both do not expect a trailing newline.
+>
+> [6]: https://github.com/shadow-maint/shadow/blob/16afe18142bf8e0ba8b315aa=
+c10526b8998fa98e/lib/selinux.c#L113
+>
+>
+> Summary:
+>
+> All of the checked applications expect a message without a trailing
+> newline, so I would favor dropping all newlines from existing
+> libselinux log messages and explicitly add a newline in the default
+> handler, default_selinux_log(), printing to stderr.
+>
+
+Thanks!
+
+I will prepare a patch that removes all newline characters from
+avc_log() messages, adds a newline character to the default handler, and
+adds a note to the selinux_set_callback() man page stating that messages
+do not contain newline characters.
+
+
+Petr
+
+
+
+
+
+>>
+>> Or given the number of avc_log() with "\n" vs those without, we could
+>> revert Christian's patch, document that messages are always ended with
+>> "\n" and let consumers strip it.
+>>
+>>
+>> Petr
+>>
+>>
+>>
+>> >
+>> > -Daniel
+>> >
+>> >>
+>> >>
+>> >>>
+>> >>>     avc_release_lock(avc_log_lock);
+>> >>>   }
+>> >>> diff --git a/libselinux/src/avc_internal.c b/libselinux/src/avc_inte=
+rnal.c
+>> >>> index 71a1357bc564..c550e5788527 100644
+>> >>> --- a/libselinux/src/avc_internal.c
+>> >>> +++ b/libselinux/src/avc_internal.c
+>> >>> @@ -59,7 +59,7 @@ int avc_process_setenforce(int enforcing)
+>> >>>     int rc =3D 0;
+>> >>>
+>> >>>     avc_log(SELINUX_SETENFORCE,
+>> >>> -           "%s:  op=3Dsetenforce lsm=3Dselinux enforcing=3D%d res=
+=3D1",
+>> >>> +           "%s:  op=3Dsetenforce lsm=3Dselinux enforcing=3D%d res=
+=3D1\n",
+>> >>>             avc_prefix, enforcing);
+>> >>>     if (avc_setenforce)
+>> >>>             goto out;
+>> >>> @@ -81,7 +81,7 @@ int avc_process_policyload(uint32_t seqno)
+>> >>>     int rc =3D 0;
+>> >>>
+>> >>>     avc_log(SELINUX_POLICYLOAD,
+>> >>> -           "%s:  op=3Dload_policy lsm=3Dselinux seqno=3D%u res=3D1",
+>> >>> +           "%s:  op=3Dload_policy lsm=3Dselinux seqno=3D%u res=3D1\=
+n",
+>> >>>             avc_prefix, seqno);
+>> >>>     rc =3D avc_ss_reset(seqno);
+>> >>>     if (rc < 0) {
+>> >>> diff --git a/libselinux/src/checkAccess.c b/libselinux/src/checkAcce=
+ss.c
+>> >>> index 022cd6b5ecab..319af267c6a7 100644
+>> >>> --- a/libselinux/src/checkAccess.c
+>> >>> +++ b/libselinux/src/checkAccess.c
+>> >>> @@ -44,7 +44,7 @@ int selinux_check_access(const char *scon, const c=
+har *tcon, const char *class,
+>> >>>          sclass =3D string_to_security_class(class);
+>> >>>          if (sclass =3D=3D 0) {
+>> >>>            rc =3D errno;
+>> >>> -          avc_log(SELINUX_ERROR, "Unknown class %s", class);
+>> >>> +          avc_log(SELINUX_ERROR, "Unknown class %s\n", class);
+>> >>>            if (security_deny_unknown() =3D=3D 0)
+>> >>>                    return 0;
+>> >>>            errno =3D rc;
+>> >>> @@ -54,7 +54,7 @@ int selinux_check_access(const char *scon, const c=
+har *tcon, const char *class,
+>> >>>          av =3D string_to_av_perm(sclass, perm);
+>> >>>          if (av =3D=3D 0) {
+>> >>>            rc =3D errno;
+>> >>> -          avc_log(SELINUX_ERROR, "Unknown permission %s for class %=
+s", perm, class);
+>> >>> +          avc_log(SELINUX_ERROR, "Unknown permission %s for class %=
+s\n", perm, class);
+>> >>>            if (security_deny_unknown() =3D=3D 0)
+>> >>>                    return 0;
+>> >>>            errno =3D rc;
+>> >>> --
+>> >>> 2.37.3
+>>
+

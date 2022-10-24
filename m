@@ -2,44 +2,44 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C51BE60A484
-	for <lists+selinux@lfdr.de>; Mon, 24 Oct 2022 14:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F04F60B807
+	for <lists+selinux@lfdr.de>; Mon, 24 Oct 2022 21:40:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232915AbiJXMLz (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Oct 2022 08:11:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59528 "EHLO
+        id S233301AbiJXTkt (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Oct 2022 15:40:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232827AbiJXMLR (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Oct 2022 08:11:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 053C2356CF;
-        Mon, 24 Oct 2022 04:53:39 -0700 (PDT)
+        with ESMTP id S233316AbiJXTkM (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Oct 2022 15:40:12 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3CB536A48B;
+        Mon, 24 Oct 2022 11:10:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0C3A26126B;
-        Mon, 24 Oct 2022 11:41:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23222C433D6;
-        Mon, 24 Oct 2022 11:40:59 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id A45B3B8117D;
+        Mon, 24 Oct 2022 11:48:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B17EC433C1;
+        Mon, 24 Oct 2022 11:48:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1666611660;
-        bh=DGqJfFMgG4TmWzz5+DVYmlWy4iPs6CceCKlcZx+zjH0=;
+        s=korg; t=1666612125;
+        bh=TaOMZ641qK5g+ToI/uLs8Ny1TZ131P0sMACZ7/5HZuc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mjqP74QWXeQ7HQQrrYjVZlGIKufqgePio8NWllMPn6f791M8k/KnodrKKNW26s5Mu
-         7Mzg5aWa24I4G1wN4S30p21NxDNgPymC75hAI7QoVNYOx6zFoRsGcrrKarkYeA+x6D
-         8Lu/wkusFwn6xSGgQhPyjNx4nyYAEEMJRhaERPcY=
+        b=F1JiIZfhPA2oQcXKMXgAphIqMxsJLvQXM7vGMsGGjC3JZBmDaASGO9/SXIa+iPlRy
+         Gu7pzhWPrB1UgjW8XW0LBnVdFsbTpNPvTW23gJWj/0L9Xi7G9QEiYGJ59EeC9p1UKm
+         9+t+amYbNJmeLBE/lO/UvKKmIrwzkUqeakoYRkBQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>, selinux@vger.kernel.org
-Subject: [PATCH 4.9 063/159] selinux: use "grep -E" instead of "egrep"
-Date:   Mon, 24 Oct 2022 13:30:17 +0200
-Message-Id: <20221024112951.764643056@linuxfoundation.org>
+Subject: [PATCH 4.14 080/210] selinux: use "grep -E" instead of "egrep"
+Date:   Mon, 24 Oct 2022 13:29:57 +0200
+Message-Id: <20221024112959.656887511@linuxfoundation.org>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221024112949.358278806@linuxfoundation.org>
-References: <20221024112949.358278806@linuxfoundation.org>
+In-Reply-To: <20221024112956.797777597@linuxfoundation.org>
+References: <20221024112956.797777597@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -76,7 +76,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/scripts/selinux/install_policy.sh
 +++ b/scripts/selinux/install_policy.sh
-@@ -56,7 +56,7 @@ fi
+@@ -57,7 +57,7 @@ fi
  cd /etc/selinux/dummy/contexts/files
  $SF file_contexts /
  

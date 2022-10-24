@@ -2,149 +2,113 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F3B460BC99
-	for <lists+selinux@lfdr.de>; Mon, 24 Oct 2022 23:57:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BEBF260BAF0
+	for <lists+selinux@lfdr.de>; Mon, 24 Oct 2022 22:43:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231384AbiJXV5m (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 24 Oct 2022 17:57:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44046 "EHLO
+        id S234902AbiJXUnH (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 24 Oct 2022 16:43:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230112AbiJXV51 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 24 Oct 2022 17:57:27 -0400
-Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFE0B2BC6DB;
-        Mon, 24 Oct 2022 13:11:29 -0700 (PDT)
-Received: from fsav115.sakura.ne.jp (fsav115.sakura.ne.jp [27.133.134.242])
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 29OFDhBf078266;
-        Tue, 25 Oct 2022 00:13:43 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Received: from www262.sakura.ne.jp (202.181.97.72)
- by fsav115.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp);
- Tue, 25 Oct 2022 00:13:43 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav115.sakura.ne.jp)
-Received: from [192.168.1.9] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
-        (authenticated bits=0)
-        by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 29OFDhop078262
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
-        Tue, 25 Oct 2022 00:13:43 +0900 (JST)
-        (envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
-Message-ID: <55f27f99-3a2b-3482-6dc2-12203948dd35@I-love.SAKURA.ne.jp>
-Date:   Tue, 25 Oct 2022 00:13:40 +0900
+        with ESMTP id S235006AbiJXUmi (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 24 Oct 2022 16:42:38 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3CBD170DD7
+        for <selinux@vger.kernel.org>; Mon, 24 Oct 2022 11:51:03 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id i3so9698606pfc.11
+        for <selinux@vger.kernel.org>; Mon, 24 Oct 2022 11:51:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kw0EQk96e8PgIdq063hoyVOX6G9C4s/eA/tfD0DyP5E=;
+        b=PuQDuJNc0NH6bI3SR/i/TbZtDWFl3bQWtUDisIe7vScgaxiiSzAY8S34behgwfLg63
+         fsxVmYPlFmMyGEvZJj0G4rcPWZa0DdYw85a06h8rOOKGV3uwGMk91VTjHFW0Ks8K3/u8
+         hUIESUvOg2/3elntAlVsHILYQBNWpc39SvZBY8tsBfi17shGdaWOuDQ84P7gQ2vVTZ+h
+         JMO6YZ6Oe9JJqmub9bfNeaLG+co5mf516GqzhKQxbFS3JxMK07Vn2zRxiHwNS/SlMLWU
+         8M44I8oziKhx44EQQNslhE+c+v0V0wRYVJuVaqsTYS2JZa6Msa17zlQG1/95iYaE6u5U
+         zxrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Kw0EQk96e8PgIdq063hoyVOX6G9C4s/eA/tfD0DyP5E=;
+        b=0d+RhLY6sP8O6cEY0jEg9B7KEW9xTX4W1WLMOxPov3vxt3p6Zgvbq26ulfzAof+hD9
+         xLB9VtSJiBkv5NkygNoQa9h2Rgv2Dxem963VrWq/d2Uf/C8nx+og6XT/9PyEJhMadzaE
+         CQyaOX61lE05Mv38pxxbCkDN6DB7MijdHONDglrOzivECsXDxGh0byZvDUedAndRPe5b
+         doH27NdPpCOx847T81nkzKtHz4cwxJzxHrR/UV3zXJ9nQNi1BY9Rma5xEiG/Zhxr1nHJ
+         eY3Lv0PueYHRIv3/j/HdhGwaaR1Ty4KuQ5OZvigV1Uyc5Hc6kzFk1kMPV6CHXoZYia3u
+         WuYw==
+X-Gm-Message-State: ACrzQf1UzSShW48SUb+jc1dsqsfRJmTLNl/sR7hhm3H8rBH6us1d4K60
+        UhtplTQ7wu6HpQFebxFLs/9/g7fVNk5vNW0nk4ePU6ly
+X-Google-Smtp-Source: AMsMyM5k17eWxnbPuXOPOQmzn01Vemhz8k+/4CD4dtZ0GXFffdUSmqf89g1TVyoNGbwyt/u+L5LxNLSqXM+90H0xhAQ=
+X-Received: by 2002:a05:6a00:1a07:b0:541:6060:705d with SMTP id
+ g7-20020a056a001a0700b005416060705dmr35306166pfv.61.1666637412090; Mon, 24
+ Oct 2022 11:50:12 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 6.3; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.0
-Subject: Re: [PATCH v38 04/39] LSM: Maintain a table of LSM attribute data
-Content-Language: en-US
-To:     Casey Schaufler <casey@schaufler-ca.com>,
-        casey.schaufler@intel.com, paul@paul-moore.com,
-        linux-security-module@vger.kernel.org
-Cc:     linux-audit@redhat.com, jmorris@namei.org, selinux@vger.kernel.org,
-        keescook@chromium.org, john.johansen@canonical.com,
-        stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org
-References: <20220927195421.14713-1-casey@schaufler-ca.com>
- <20220927195421.14713-5-casey@schaufler-ca.com>
- <9907d724-4668-cd50-7454-1a8ca86542b0@I-love.SAKURA.ne.jp>
- <f6b8ac05-6900-f57d-0daf-02d5ae53bc47@schaufler-ca.com>
- <a130dc1f-a187-2957-25c1-974fb9c2569f@I-love.SAKURA.ne.jp>
- <753dfbe8-c68c-5e16-c4d0-1e14cd831c2e@schaufler-ca.com>
-From:   Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-In-Reply-To: <753dfbe8-c68c-5e16-c4d0-1e14cd831c2e@schaufler-ca.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20221017122151.2837373-1-jwcart2@gmail.com> <CAHC9VhRkX17eXYqhA4-E1SxoXhqVr0j7NM3uHPBbRyG6c5CROw@mail.gmail.com>
+In-Reply-To: <CAHC9VhRkX17eXYqhA4-E1SxoXhqVr0j7NM3uHPBbRyG6c5CROw@mail.gmail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Mon, 24 Oct 2022 14:50:01 -0400
+Message-ID: <CAP+JOzSTM5R9zUmrXDabhvBV26QhSVoD_ROS41CkvResPhAxLA@mail.gmail.com>
+Subject: Re: [PATCH V2] docs: Add GPG fingerprints
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     selinux@vger.kernel.org, perfinion@gentoo.org,
+        nicolas.iooss@m4x.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 2022/10/24 2:13, Casey Schaufler wrote:
->> We won't be able to accept whatever LSM modules to upstream, and we won't
->> be able to enable whatever LSM modules in distributor kernels.
-> 
-> A built in module loader security module would address this issue.
-> Getting such a module accepted upstream is not going to be trivial,
-> but the BPF people seem to have managed it.
+On Mon, Oct 17, 2022 at 1:51 PM Paul Moore <paul@paul-moore.com> wrote:
+>
+> On Mon, Oct 17, 2022 at 8:23 AM James Carter <jwcart2@gmail.com> wrote:
+> >
+> > For Nicolas Iooss, James Carter, and Jason Zaman.
+> >
+> > Signed-off-by: James Carter <jwcart2@gmail.com>
+> > ---
+> > v2: Removed Ondrej Mosnacek's GPG fingerprint
+> >
+> >  SECURITY.md | 3 +++
+> >  1 file changed, 3 insertions(+)
+>
+> Nicolas, James, and Jason's keys all match keys that I have verified with them.
+>
+> Acked-by: Paul Moore <paul@paul-moore.com>
+>
 
-How can we guarantee that a built-in module loader security module is
-always built-in ? What I'm insisting is that "warrant the freedom to load
-loadable LSM modules without recompiling the whole kernel".
+This has been merged.
+Jim
 
-Sure, we can load LSM modules which were not built into distributor kernels
-if we can recompile the whole kernel". But give me a break, that's a stupid
-opinion for non-kernel developers. People won't replace distributor kernels
-with rebuilt kernels only for enabling LSM modules which were not built into
-distributor kernels.
-
-Quoting from https://lkml.kernel.org/r/7f9ffd77-a329-ab13-857b-f8e34b2bfc77@schaufler-ca.com
-
-  > I'm waiting to see what happens if eBPF security modules
-  > become popular. I can easily see distributions turning the BPF LSM off.
-
-Even if TOMOYO could be rewritten in eBPF (I don't think it is possible), how TOMOYO
-can be loaded into distributor kernels if distributions turn the BPF LSM off ?
-
-  > Before I go any further, I think that the loadable module manager LSM would be
-  > very hard to get upstream.
-
-Not only it will be very hard to get the loadable module manager LSM upstream,
-it will be also very hard to keep the loadable module manager LSM enabled in
-distributor kernels.
-
-Again, how can we guarantee that a built-in module loader security module is
-always built-in ?
-
-What I'm insisting is that "warrant the freedom to load loadable LSM modules
-without recompiling the whole kernel".
-
-Adding EXPORT_SYMBOL_GPL(security_hook_heads) is the only way that can "allow
-LSM modules which distributors cannot support to be legally loaded".
-
-Any fixed-sized array like lsm_idlist[LSMID_ENTRIES] that defines max capacity
-based on whether that LSM module is built-in will lock out loadable LSM modules.
-Thus, I'm not happy with LSMID_ENTRIES.
-
-
-
-On 2022/10/24 2:20, Casey Schaufler wrote:
-> On 10/23/2022 3:10 AM, Tetsuo Handa wrote:
->> On 2022/10/23 16:27, Tetsuo Handa wrote:
->>> On 2022/10/21 8:42, Casey Schaufler wrote:
->>>> I will, on the other hand, listen to compelling arguments. It is not the
->>>> intention of this code to lock out loadable modules. If I thought it would
->>>> I would not have proposed it.
->>> This code is exactly for locking out loadable modules.
->>>
->> Imagine a situation where two individuals independently develop their own
->> web applications using the same identifier, and then their web applications
->> started working together with other web applications using that identifier.
->> When they published their web applications for public and wider use, a problem
->> that both web applications are already using the same identifier arises.
->> It is too late to reassign the identifier.
->>
->> The same trouble can happen with loadable LSM modules. Unless the upstream kernel
->> behaves as if a DNS registerer that assigns a unique domainname for whatever web
->> sites (regardless of whether a web site is for public or not), defining a permanent
->> constant for LSM module is a way towards locking out loadable LSM modules. And it
->> is well possible that a loadable LSM module wants to run on older kernels which
->> do not have LSM id defined yet.
->>
->> This "define LSM id as userspace visible constant" is more dangerous than just
->> reserving some space for future use. You are trying to control all IP addresses
->> for the sake of only in-tree LSM modules. No, no, no, please don't do that...
-> 
-> It's really no more dangerous than using the LSM name. What if two developers
-> implement modules and both name it "belllapadula"? User space won't be able to
-> tell the difference if they base behavior on the module name. That's one thing
-> that a loadable module mechanism is going to need to address that a built-in
-> mechanism doesn't. 
-
-If the upstream kernel assigns an LSM id for all LSM modules including out-of-tree
-and/or private LSM modules (that's why I described that the upstream kernel behaves
-as if a DNS registerer), we can assign LSM id = 100 to "belllapadula" from A and
-LSM id = 101 to "belllapadula" from B, and both "belllapadula" modules can work
-without conflicts by using LSM id. Of course, this implies that we need to preserve
-unused space in lsm_idlist[LSMID_ENTRIES] etc. for such LSM modules (if we use
-fixed-sized array rather than a linked list).
-
+> > diff --git a/SECURITY.md b/SECURITY.md
+> > index c817eac9..4f624f5d 100644
+> > --- a/SECURITY.md
+> > +++ b/SECURITY.md
+> > @@ -26,12 +26,15 @@ the issue as quickly as possible and shorten the disclosure window.
+> >
+> >  * Petr Lautrbach, plautrba@redhat.com
+> >  * Nicolas Iooss, nicolas.iooss@m4x.org
+> > +  *  (GPG fingerprint) E25E 254C 8EE4 D303 554B  F5AF EC70 1A1D A494 C5EB
+> >  * Jeffrey Vander Stoep, jeffv@google.com
+> >  * Joshua Brindle, brindle@gmail.com
+> >  * James Carter, jwcart2@gmail.com
+> > +  *  (GPG fingerprint) 4568 1128 449B 65F8 80C6  1797 3A84 A946 B4BA 62AE
+> >  * Paul Moore, paul@paul-moore.com
+> >    *  (GPG fingerprint) 7100 AADF AE6E 6E94 0D2E  0AD6 55E4 5A5A E8CA 7C8A
+> >  * Jason Zaman, perfinion@gentoo.org
+> > +  *  (GPG fingerprint) 6319 1CE9 4183 0986 89CA  B8DB 7EF1 37EC 935B 0EAF
+> >  * Steve Lawrence, slawrence@tresys.com
+> >  * William Roberts, bill.c.roberts@gmail.com
+> >  * Ondrej Mosnacek, omosnace@redhat.com
+> > --
+> > 2.37.3
+>
+> --
+> paul-moore.com

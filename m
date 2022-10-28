@@ -2,79 +2,101 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1F9C611B94
-	for <lists+selinux@lfdr.de>; Fri, 28 Oct 2022 22:35:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBB5F611BA3
+	for <lists+selinux@lfdr.de>; Fri, 28 Oct 2022 22:39:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229552AbiJ1UfI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 28 Oct 2022 16:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45460 "EHLO
+        id S229619AbiJ1UjD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 28 Oct 2022 16:39:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229935AbiJ1UfH (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 28 Oct 2022 16:35:07 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD9813C8CD
-        for <selinux@vger.kernel.org>; Fri, 28 Oct 2022 13:35:03 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id y10so3890853wma.0
-        for <selinux@vger.kernel.org>; Fri, 28 Oct 2022 13:35:03 -0700 (PDT)
+        with ESMTP id S229501AbiJ1UjC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 28 Oct 2022 16:39:02 -0400
+Received: from mail-qv1-xf29.google.com (mail-qv1-xf29.google.com [IPv6:2607:f8b0:4864:20::f29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62FEF236423
+        for <selinux@vger.kernel.org>; Fri, 28 Oct 2022 13:39:00 -0700 (PDT)
+Received: by mail-qv1-xf29.google.com with SMTP id h10so4836373qvq.7
+        for <selinux@vger.kernel.org>; Fri, 28 Oct 2022 13:39:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:references:in-reply-to:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iE7IhtVgSANrFfZCwoQWHQYPjevWDZiQHLKyCUc9u3s=;
-        b=KtKLzoid6Kv/3z6vtiRIsBy3PUpVgWeQ3jSgCENj6pHCmE2EGQGp+cs7HVekH9xldh
-         NdIU92BTZaSkH2kmRnr7ts2AF78Vl1W9QjuvPytHQ83Fm2X7lWy1KX2Nx2kAiD8eNmQY
-         q8CvHQewcrFFJYEP2Xhqs1lIpWKpH5wxjm4aTpBRLqDiA3iVivN8tO+zfJcokPZWsGB5
-         vkDZtYpnDn7hMYLdoWCHJtocb0JdV3vd+dZCKJy1KYpH5+VPQ6kzPyBfgVQUraIsDWcI
-         NQqZhquzNLlP91iRk4KnTaLdm+9bIAD/ZzPwTwYOd7JJjKscxXbiFc1t9RtBy9+AeUrQ
-         FE+g==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=A+09TYYlWE9fURqTDdsiTm429HbvRZOh1WZLQt8N7+8=;
+        b=S0TGer4QlcKIbiwXHp+2p3BONXR7S8f6lU9Bj9ieaHk7OMa0FATOV8Opydpq+F5qRi
+         gA3TDUh7Tza5L3tk7OE7avhQzv2Y0xgZZ/a9hLK1w45Ujiaru4h0iXgjyFvzw7Fj2VLZ
+         ZzbvXTZp/PyDh21hR3f4CW+azG9qhKV1YhQ7Jr2BVfivT7o/uOY1Kxo7pbVFFyjeMN8B
+         T3qcITzhc8XSWPoaM3BZzyj14NvikSF61T7mih4QPFmWyP+zz6O98kc40Ldtd0m0aRte
+         +HQWAVVeENI1s8K38jDq3/I5pPo9g0H3i9lBrPAxctEAKdcnBCMjJSAOLYg1OA9vd1oY
+         F+vQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:references:in-reply-to:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iE7IhtVgSANrFfZCwoQWHQYPjevWDZiQHLKyCUc9u3s=;
-        b=X4kS4SwVjOeeTgEE0f2Q4/VNJtNB6eOqAuCnhdQvL0+nVcTQmfm/sXml7iqMpKabc8
-         d7m9OshJlUg062pknULIL3aU6g6rhNtkhODWdGosousSNGnuIZl4zEZdug/+kI33ev/4
-         VzUysuiLJ5vP1Wq46tvYaylB/ki4YvtZjMmlAUNoOMxv7HRgcXN0F8hisHnYK6YkQJTW
-         P86tElfk+vLjAEsksuZRVIOMaJvj5HphnrT/HXMVi6l2gDisbenZjeu82bBikhoTSKHU
-         PQUYE0Mh6CRj4JFOadUeBuXONjqq6PI//8Ah20mdrksL5rR7F+xo6DzTG1X5CV0QdHi7
-         zhkw==
-X-Gm-Message-State: ACrzQf2+XRxEt459LkI5nfRjJKs4Us3RIe1g1FPQtc4Emp+Y+ivyBW9G
-        x1YNv8x5UBVfwLQQVPuK0MQz3ErZgbYwOYP78fQ=
-X-Google-Smtp-Source: AMsMyM6mMZ3fhxDwfttu01DUobm5XWoNAX5w1N87Ig07xhmYMqwVV6g+oU2BkWOwLNQ+8j8/pQkX9x8GGxoE0D3dlHk=
-X-Received: by 2002:a05:600c:a4c:b0:3b4:fc1b:81 with SMTP id
- c12-20020a05600c0a4c00b003b4fc1b0081mr611137wmq.125.1666989302021; Fri, 28
- Oct 2022 13:35:02 -0700 (PDT)
+        bh=A+09TYYlWE9fURqTDdsiTm429HbvRZOh1WZLQt8N7+8=;
+        b=WO+cv1uVURCfxn+d6rpD4Vb57aO2AHL9FU9iuNVGP4DjoVVUg3BfbT56VwiYZ/mrHZ
+         DIE3YQcnwujUdyQ4Av6Ubu1SsvVcnMe3q8/l/NTF9RvMKye7BJqtr3XibrGyrFHPI5pD
+         rP6f01y7e/hIvxfvKFCODBoTZb8lo2HktSvpKxFKS3o7BpdglEP/knH2JsYzgA9u4P6O
+         MgxIp3YTdbRhURhFcrPyI+pitCdT/saOPKrCruMe64hyybDxpWkm9Vrk6WESf5+7ocJW
+         h49zNWtT8eSefliCwZvmVDm8E+SNdEzm3btOtVYxllDW8ImyW2RwVzlhCvNdIg2oIBRO
+         lpvQ==
+X-Gm-Message-State: ACrzQf3aupmFUiY/2HVgWGRwulEMM8b2nqW/Kd8dchK3GHC8lEAgaWyh
+        cN1G1gqkmEE4U4aaEdQaiSKp3bva7/E=
+X-Google-Smtp-Source: AMsMyM6tui2Y/OPGjLM+N51Qhilr9rABHFJyhxtTAK/PRziT8agFGmJV8K/gvvzdixMmEzJNzG1DjQ==
+X-Received: by 2002:a05:6214:b6b:b0:4bb:9fea:f53a with SMTP id ey11-20020a0562140b6b00b004bb9feaf53amr1214107qvb.7.1666989539080;
+        Fri, 28 Oct 2022 13:38:59 -0700 (PDT)
+Received: from electric.. (c-73-200-155-132.hsd1.md.comcast.net. [73.200.155.132])
+        by smtp.gmail.com with ESMTPSA id v17-20020a05620a0f1100b006ecfb2c86d3sm3606642qkl.130.2022.10.28.13.38.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Oct 2022 13:38:58 -0700 (PDT)
+From:   James Carter <jwcart2@gmail.com>
+To:     selinux@vger.kernel.org
+Cc:     James Carter <jwcart2@gmail.com>
+Subject: [PATCH 0/5] Remove dependency on the Python module distutils
+Date:   Fri, 28 Oct 2022 16:38:47 -0400
+Message-Id: <20221028203852.526472-1-jwcart2@gmail.com>
+X-Mailer: git-send-email 2.37.3
 MIME-Version: 1.0
-Received: by 2002:a5d:64ca:0:0:0:0:0 with HTTP; Fri, 28 Oct 2022 13:35:01
- -0700 (PDT)
-Reply-To: jane.fergusons1011@gmail.com
-In-Reply-To: <CABBvTcdBboQXRkow9RcRbZyQTrJpuSZ1GjPUjwYqY12FsDOKmQ@mail.gmail.com>
-References: <CABBvTcfF=BYTnHFTGgXQfzbiFCMA6TRY+C8joe=ApF-1HO1VVw@mail.gmail.com>
- <CABBvTccz2tZjAjU+u_k=A88Zj-vXyYxbS7nru-poPhBD2FESBw@mail.gmail.com>
- <CABBvTcdxjtrJQ347f0bAqziPv+7u34wXJ+it9u26TfLt83NPEA@mail.gmail.com> <CABBvTcdBboQXRkow9RcRbZyQTrJpuSZ1GjPUjwYqY12FsDOKmQ@mail.gmail.com>
-From:   "jane.fergusons" <mtewytvtuupuuu17@gmail.com>
-Date:   Fri, 28 Oct 2022 22:35:01 +0200
-Message-ID: <CABBvTceuzyT9BgAAWcKj+trivWqsHJjfOJhX3NtUua5A0G-+0w@mail.gmail.com>
-Subject: Hello my love
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hello my love, how are you my name is Jane Ferguson and i read through
-your profile today and i became interested in you, i am a woman and i
-will like to have a long lasting relationship with you and as soon as
-i hear from you i will send to you my pictures for me and you to
-proceed to know each other more better in future. thank and do have a
-nice day.please contact me on this email jane.fergusons10111@gmail.com
-Miss Jane
+The distutils package is deprecated and scheduled to be removed in
+Python 3.12.
+
+When building the SELinux userspace we currently get warnings like the following:
+<string>:1: DeprecationWarning: The distutils.sysconfig module is deprecated, use sysconfig instead
+<string>:1: DeprecationWarning: The distutils package is deprecated and slated for removal in Python 3.12. Use setuptools or check PEP 632 for potential alternatives
+
+I am not a Python expert, but everything seems to work with these patches.
+I would appreciate other people testing this and any Python experts to let
+me know if this is the right way of replacing distutils.
+
+James Carter (5):
+  libselinux: Remove dependency on the Python module distutils
+  libsemanage: Remove dependency on the Python module distutils
+  python: Remove dependency on the Python module distutils
+  scripts: Remove dependency on the Python module distutils
+  README.md: Remove mention of python3-distutils dependency
+
+ README.md                             | 1 -
+ libselinux/src/Makefile               | 2 +-
+ libselinux/src/setup.py               | 2 +-
+ libsemanage/src/Makefile              | 2 +-
+ python/semanage/Makefile              | 2 +-
+ python/sepolgen/src/sepolgen/Makefile | 2 +-
+ python/sepolicy/sepolicy/gui.py       | 2 +-
+ python/sepolicy/setup.py              | 2 +-
+ scripts/env_use_destdir               | 2 +-
+ scripts/run-scan-build                | 2 +-
+ 10 files changed, 9 insertions(+), 10 deletions(-)
+
+-- 
+2.37.3
+

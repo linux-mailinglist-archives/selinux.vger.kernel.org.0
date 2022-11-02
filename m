@@ -2,59 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 303D8616441
-	for <lists+selinux@lfdr.de>; Wed,  2 Nov 2022 15:01:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D387616444
+	for <lists+selinux@lfdr.de>; Wed,  2 Nov 2022 15:01:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231347AbiKBOBX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 2 Nov 2022 10:01:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53346 "EHLO
+        id S230345AbiKBOBZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 2 Nov 2022 10:01:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231264AbiKBOA6 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 2 Nov 2022 10:00:58 -0400
+        with ESMTP id S231287AbiKBOA7 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 2 Nov 2022 10:00:59 -0400
 Received: from mail-qk1-x72d.google.com (mail-qk1-x72d.google.com [IPv6:2607:f8b0:4864:20::72d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3AE464EF
-        for <selinux@vger.kernel.org>; Wed,  2 Nov 2022 07:00:44 -0700 (PDT)
-Received: by mail-qk1-x72d.google.com with SMTP id l9so11727181qkk.11
-        for <selinux@vger.kernel.org>; Wed, 02 Nov 2022 07:00:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13AB6DFED
+        for <selinux@vger.kernel.org>; Wed,  2 Nov 2022 07:00:45 -0700 (PDT)
+Received: by mail-qk1-x72d.google.com with SMTP id 8so11749997qka.1
+        for <selinux@vger.kernel.org>; Wed, 02 Nov 2022 07:00:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kqDtXeFfWv2gZhDvQ4womtLYb+MTsxI4bWvw4H/ch84=;
-        b=mAr0tvyFlIeiabYazfKYJoTrABSThe5+eYLaLG4bqCj03smD1r5SmVHlmxNlgMIHJP
-         eXPXKCUzzeBDKoPofB9HTe4JbggJS6Haron8NB1KR+pvpoG97Wdos+rVfCVGme8DZRn1
-         e5fye2iIaGCNmcXaLmFmKTaD5sle7sxD5eAa4ER+SEXMPWz7awafEXSvU8rpKERgcDfG
-         ItXj+AXKmQ7n+vn/v8sX0QUTVuQn/Z53YjOJLr7z9Uv/LEycybqp6S8NAx+/XKt3ZSn/
-         3ljiGf3qhDhu/VPEAUhajgiQjKLUuGYVCLM4YWqDG2nNyT8wVJ3qsZLwyEVaXMZuAlYn
-         69JA==
+        bh=VJgLaJIHQwsJdTBM+S8HMlIfnDte9qMBTNt2CXSUjDg=;
+        b=mGIxBPssMn8sXzUhHSoWFBhwxO+z+AMcOa3zZLPXv6wbBZMvhB0zG4MO7SRaPezpfT
+         ptiQeW2gmH/B5toP8FQ9399wbM7me1INTcdNgPgjKg7GndoUaS/TVZtNknaE13uhQddR
+         HzFasS4demOM9mQqBKjcC8KEOPglloDiBlZ6nUCz5e0UIQRHwcv2QZaxj83NtwT07PD+
+         +40iw4ygNBcmMMcgAjcTafR68/1pDcrVRaLxhG5+aq2RlmGJdDENNlKIbiORyJ470ybM
+         2LxxssE+7GouRjGlCZhD89HN1QMFxMgefa5iGrGVOWfMyYI4phlqXqgx/4AodRTQ22mm
+         468w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kqDtXeFfWv2gZhDvQ4womtLYb+MTsxI4bWvw4H/ch84=;
-        b=U+ZTOUduGd5E5csBqCYsEurPde/PulY65EjxY6WT43582HfBo793CDAX/ifdOAPwBA
-         0j9gkxxbGkFypL8dtgmcz1kqv0MomBEFnMDUkqQb9MEf4hsCWAiwbl+x3T7qrV5pd2Dd
-         FFV3x+erPctS+OwSZp20hWrpgK41zuOPQAtz0ilGMLnjIUzKKh+yn5KcwdxUya4KLjVM
-         /ujYFsxKvMpmdF/lX14lZ0VTStjImmvziQ9T/WY9Ev6PFppYJ6rh2X5BZQvba5XePPiE
-         x92spzLVjUZqzDVqKJ2gtitDavhEfqHN7COJY/pj6bGkek+ztYGN/TtrKrf53BJyys7B
-         ljow==
-X-Gm-Message-State: ACrzQf0PuNZoDGTIFi8qSSpT0tiQhpZNCNxaV6Ku6FeZc5UIUibE+XRf
-        pi0U5TEuIbOtu/3SPOKMqG3lE5hR06g=
-X-Google-Smtp-Source: AMsMyM7OzM/2a8mqBQLhkzAd1aUaMalinHOXYi5ss+n+E+Hq2NLPRlgVxey1TpbZomrYTW+koPy/7g==
-X-Received: by 2002:a05:620a:132e:b0:6fa:5082:f870 with SMTP id p14-20020a05620a132e00b006fa5082f870mr5279442qkj.391.1667397643629;
-        Wed, 02 Nov 2022 07:00:43 -0700 (PDT)
+        bh=VJgLaJIHQwsJdTBM+S8HMlIfnDte9qMBTNt2CXSUjDg=;
+        b=EYolX2S7pPUrvphQSZz4G0ICwdGF0o/RGLa4IhujnM4uSZrjQk5ydlJcdyXJDipvnx
+         M0/k5fI30+DsYc/mYr155bgsSJdrOcl0izkBnUO7AQthpcjWrFJIp3ifeEj5ddQ7gn+t
+         VsggZ8yjyrm3BZTswTsaIPDkIqSBDXYu/Aj6EEgE8bg8/Im1Vs+HvuBEmvSTP4JGeFnN
+         6eVDPunb38p69xBG1Iiv17HttUKcSTR/RYLTLjK9Us44kr+9Njsl9e9N4a+99gDinZhV
+         ImvN/zd7AgJeVvo6INukim/KtXRa3UunkCchLtAKyL9L7BcNsMpv1Tf8dxhmaIaEJ7pI
+         jx3A==
+X-Gm-Message-State: ACrzQf0fNfS1Rk9NXkB/P/Px2t+VlmPdDuC6EF7qWwtThH5R/6digTvY
+        F2NCd/mws4XcK8WBwsgygFnY2GJ9nFQ=
+X-Google-Smtp-Source: AMsMyM4qjwaBbEnF/PH1Gd6XXdmg0qRLPjzpo3EMfUltlfTo8ZXiIVWtisyz456eE0+0iBlU99KvqA==
+X-Received: by 2002:ae9:f406:0:b0:6fa:395d:1480 with SMTP id y6-20020ae9f406000000b006fa395d1480mr9533754qkl.555.1667397644591;
+        Wed, 02 Nov 2022 07:00:44 -0700 (PDT)
 Received: from electric.. (c-73-200-155-132.hsd1.md.comcast.net. [73.200.155.132])
-        by smtp.gmail.com with ESMTPSA id q6-20020a37f706000000b006ce0733caebsm8449846qkj.14.2022.11.02.07.00.42
+        by smtp.gmail.com with ESMTPSA id q6-20020a37f706000000b006ce0733caebsm8449846qkj.14.2022.11.02.07.00.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Nov 2022 07:00:42 -0700 (PDT)
+        Wed, 02 Nov 2022 07:00:43 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     plautrba@redhat.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 1/5 v2] libselinux: Remove dependency on the Python module distutils
-Date:   Wed,  2 Nov 2022 10:00:35 -0400
-Message-Id: <20221102140039.914518-2-jwcart2@gmail.com>
+Subject: [PATCH 2/5 v2] libsemanage: Remove dependency on the Python module distutils
+Date:   Wed,  2 Nov 2022 10:00:36 -0400
+Message-Id: <20221102140039.914518-3-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.38.1
 In-Reply-To: <20221102140039.914518-1-jwcart2@gmail.com>
 References: <20221102140039.914518-1-jwcart2@gmail.com>
@@ -71,20 +71,19 @@ List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
 The distutils package is deprecated and scheduled to be removed in
-Python 3.12. Use the setuptools and sysconfig modules instead.
+Python 3.12. Use the sysconfig module instead.
 
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libselinux/src/Makefile | 2 +-
- libselinux/src/setup.py | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ libsemanage/src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libselinux/src/Makefile b/libselinux/src/Makefile
-index 49b7d60a..dc284832 100644
---- a/libselinux/src/Makefile
-+++ b/libselinux/src/Makefile
-@@ -14,7 +14,7 @@ SHLIBDIR ?= /lib
- INCLUDEDIR ?= $(PREFIX)/include
+diff --git a/libsemanage/src/Makefile b/libsemanage/src/Makefile
+index 01df0181..589e4a70 100644
+--- a/libsemanage/src/Makefile
++++ b/libsemanage/src/Makefile
+@@ -14,7 +14,7 @@ INCLUDEDIR ?= $(PREFIX)/include
+ SYSCONFDIR ?= /etc
  PYINC ?= $(shell $(PKG_CONFIG) --cflags $(PYPREFIX))
  PYLIBS ?= $(shell $(PKG_CONFIG) --libs $(PYPREFIX))
 -PYTHONLIBDIR ?= $(shell $(PYTHON) -c "from distutils.sysconfig import *; print(get_python_lib(plat_specific=1, prefix='$(PREFIX)'))")
@@ -92,18 +91,6 @@ index 49b7d60a..dc284832 100644
  PYCEXT ?= $(shell $(PYTHON) -c 'import importlib.machinery;print(importlib.machinery.EXTENSION_SUFFIXES[0])')
  RUBYINC ?= $(shell $(RUBY) -e 'puts "-I" + RbConfig::CONFIG["rubyarchhdrdir"] + " -I" + RbConfig::CONFIG["rubyhdrdir"]')
  RUBYLIBS ?= $(shell $(RUBY) -e 'puts "-L" + RbConfig::CONFIG["libdir"] + " -L" + RbConfig::CONFIG["archlibdir"] + " " + RbConfig::CONFIG["LIBRUBYARG_SHARED"]')
-diff --git a/libselinux/src/setup.py b/libselinux/src/setup.py
-index 71e69a10..6cbe3a0e 100644
---- a/libselinux/src/setup.py
-+++ b/libselinux/src/setup.py
-@@ -1,6 +1,6 @@
- #!/usr/bin/python3
- 
--from distutils.core import Extension, setup
-+from setuptools import Extension, setup
- 
- setup(
-     name="selinux",
 -- 
 2.38.1
 

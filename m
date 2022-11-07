@@ -2,128 +2,167 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A77561F049
-	for <lists+selinux@lfdr.de>; Mon,  7 Nov 2022 11:22:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B81C661F197
+	for <lists+selinux@lfdr.de>; Mon,  7 Nov 2022 12:11:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbiKGKWB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 7 Nov 2022 05:22:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33022 "EHLO
+        id S231577AbiKGLLu (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 7 Nov 2022 06:11:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231587AbiKGKVt (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 7 Nov 2022 05:21:49 -0500
-Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94B61186EB
-        for <selinux@vger.kernel.org>; Mon,  7 Nov 2022 02:21:27 -0800 (PST)
-Received: by mail-oi1-x242.google.com with SMTP id g10so11617132oif.10
-        for <selinux@vger.kernel.org>; Mon, 07 Nov 2022 02:21:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=L9okY7Icb0Gf5ctoFsS3m7Ms6FyffuhIG/wumllqb99pGSDM0eKoVdXRomu4k2Vvje
-         vaAAA5b5CG4T9vL3DYzTbt6i7ilTYVRiZHeAf51qWroCKMi/06UV8twkwYbbvcb58b0c
-         O8aiXYIeKLPGKFxD8AeTNjdm9XiiwAwYXXYnxXnBzQtt4ZaPQYbu2mn3d4/wBF5dq0sI
-         fYgKey8dWac3TMQ3pm+aZLL8XgADS0c8wc9DQhJYDoGLimjkDspSigMMA/pe1/be4Mmf
-         FTMTprRtatoAeN10/4e16TIuQYPcJ6zZ7AsqjnUqg8Bde3BWUPkO4V20s/KjpolOjYbD
-         1dVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AOmtRIzmF5dcnWrT0j3skK83MYTC+QvduwZ6ndeN2Ks=;
-        b=U+CIbL00BFz7u8+jpUNRhNb+tTJNGLVsNB5zVX5PiJJ/TIoq5+3DLTqSmvqV/56K1E
-         IIP8PXeJJ0bOdxYgqe6gi1BePoJcvQFyo7bzB8LRk4ShnljuefF+pp8fsk0VHvcq7p5V
-         gM0WqLETgpjvBp7AUZfsVDIzTvMgF4P56cdIxEoQNr5h3BluiFl2jyAq9tgU5eS6NTPH
-         2Dgvy+NgLFQ+h7bTXIFBoKbI1zRyatG2nQDUu48vgrk14BxKX1zwxerw/rikJpO2GjLS
-         EYwR6wCRpp5I+cdJhYxxbClXZsLxvtHFMPA1CeEVEBAo1kb+MTnUrX7sEJuW5bd4NdtI
-         1iZQ==
-X-Gm-Message-State: ACrzQf2cpQO9vdXincF5vri9QQLLV24ck9u5CS1Of1T6h2c1vm07uEtx
-        /E1zsXkheEjuYlghZHkyiCxUDDPklsSKr3Q5HkCPw3nwy9k=
-X-Google-Smtp-Source: AMsMyM4Z92xjGZXgCyg2wym9Bu3/u65n6EL2ZpWI9kWf7s8xWZden0QG/zdZVfFd3uCVmOfceIs+YigxV7lXSF4Af+Y=
-X-Received: by 2002:a17:90b:2393:b0:213:ecb2:2e04 with SMTP id
- mr19-20020a17090b239300b00213ecb22e04mr38944517pjb.100.1667816475223; Mon, 07
- Nov 2022 02:21:15 -0800 (PST)
+        with ESMTP id S231888AbiKGLLi (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 7 Nov 2022 06:11:38 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2825CF5
+        for <selinux@vger.kernel.org>; Mon,  7 Nov 2022 03:10:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1667819437;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=xKObO2xkXBLOedp4GFNWRraEd9f36b5PNZhV6f12p+I=;
+        b=bO999Nq9ajiXprg4uLHLbjlNyYZJIjfgbXQwS5qNwp0rQHbLH1f6j8qheEY3AehEd/SHXK
+        Dxr2nfjawnDLEjNY4x1alFF6gM0u6Udlg6gnHIOt6vu4jSmiu0Z5SrzEMXRFwTXp8ZjixR
+        /p1M3LU0QdoBwdALUmH2jbhavMY0h6U=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-133-CALlWQbuPaK2KkkqJDqw5A-1; Mon, 07 Nov 2022 06:10:36 -0500
+X-MC-Unique: CALlWQbuPaK2KkkqJDqw5A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C588585A583
+        for <selinux@vger.kernel.org>; Mon,  7 Nov 2022 11:10:35 +0000 (UTC)
+Received: from localhost (ovpn-192-172.brq.redhat.com [10.40.192.172])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 7CA162166B29
+        for <selinux@vger.kernel.org>; Mon,  7 Nov 2022 11:10:35 +0000 (UTC)
+From:   Petr Lautrbach <plautrba@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: Re: [PATCH v2] fixfiles: Unmount temporary bind mounts on SIGINT
+In-Reply-To: <20221107092504.1088612-1-plautrba@redhat.com>
+References: <20221107092504.1088612-1-plautrba@redhat.com>
+Date:   Mon, 07 Nov 2022 12:10:34 +0100
+Message-ID: <87leonc95h.fsf@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:a05:6a06:925:b0:587:19e0:c567 with HTTP; Mon, 7 Nov 2022
- 02:21:14 -0800 (PST)
-Reply-To: contact@ammico.it
-From:   =?UTF-8?Q?Mrs=2E_Monika_Everenov=C3=A1?= <977638ib@gmail.com>
-Date:   Mon, 7 Nov 2022 11:21:14 +0100
-Message-ID: <CAHAXD+Z_SoFK+TjW_6apBCCLtc_awXEjaqOdf77jdLRxxup3TA@mail.gmail.com>
-Subject: Re:
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.8 required=5.0 tests=ADVANCE_FEE_2_NEW_MONEY,
-        BAYES_40,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_FROM,FROM_STARTS_WITH_NUMS,LOTS_OF_MONEY,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,UNDISC_MONEY autolearn=no
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:242 listed in]
-        [list.dnswl.org]
-        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
-        *      [score: 0.2207]
-        *  0.7 FROM_STARTS_WITH_NUMS From: starts with several numbers
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [977638ib[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        *  3.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  2.0 ADVANCE_FEE_2_NEW_MONEY Advance Fee fraud and lots of money
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hei ja miten voit?
-Nimeni on rouva Evereen, l=C3=A4het=C3=A4n t=C3=A4m=C3=A4n viestin suurella=
- toivolla
-v=C3=A4lit=C3=B6n vastaus, koska minun on teht=C3=A4v=C3=A4 uusi syd=C3=A4n=
-leikkaus
-t=C3=A4ll=C3=A4 hetkell=C3=A4 huonokuntoinen ja v=C3=A4h=C3=A4iset mahdolli=
-suudet selviyty=C3=A4.
-Mutta ennen kuin min=C3=A4
-Tee toinen vaarallinen operaatio, annan sen sinulle
-Minulla on 6 550 000 dollaria yhdysvaltalaisella pankkitilill=C3=A4
-sijoittamista, hallinnointia ja k=C3=A4ytt=C3=B6=C3=A4 varten
-voittoa hyv=C3=A4ntekev=C3=A4isyysprojektin toteuttamiseen. Tarkoitan saira=
-iden auttamista
-ja k=C3=B6yh=C3=A4t ovat viimeinen haluni maan p=C3=A4=C3=A4ll=C3=A4, sill=
-=C3=A4 minulla ei ole niit=C3=A4
-kenelt=C3=A4 perii rahaa.
-Vastaa minulle nopeasti
-terveisi=C3=A4
-Rouva Monika Evereen
-Florida, Amerikan Yhdysvallat
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-Hi and how are you?
-My name is Mrs. Evereen, I am sending this message with great hope for
-an immediate response, as I have to undergo heart reoperation in my
-current poor health with little chance of survival. But before I
-undertake the second dangerous operation, I will give you the
-$6,550,000 I have in my US bank account to invest well, manage and use
-the profits to run a charity project for me. I count helping the sick
-and the poor as my last wish on earth, because I have no one to
-inherit money from.
-Please give me a quick reply
-regards
-Mrs. Monika Evereen
-Florida, United States of America
+Petr Lautrbach <plautrba@redhat.com> writes:
+
+> `fixfiles -M relabel` temporary bind mounts file systems before
+> relabeling, but it left the / directory mounted in /tmp/tmp.XXXX when a
+> user hit CTRL-C. It means that if the user run `fixfiles -M relabel`
+> again and answered Y to clean out /tmp directory, it would remove all
+> data from mounted fs.
+>
+> This patch changes the location where `fixfiles` mounts fs to /run, uses
+> private mount namespace via unshare and adds a handler for exit signals
+> which tries to umount fs mounted by `fixfiles`.
+>
+> Fixes: https://bugzilla.redhat.com/show_bug.cgi?id=3D2125355
+>
+> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+> ---
+
+Actually, it's v5:
+
+v2:
+
+- set trap on EXIT instead of SIGINT
+
+v3:
+
+- use /run instead of /tmp for mountpoints
+
+v4:
+
+- use mount namespace as suggested by Christian G=C3=B6ttsche <cgzones@goog=
+lemail.com>
+
+v5
+
+- fixed issues reported by Christian G=C3=B6ttsche <cgzones@googlemail.com>
+
+
+>
+>
+>  policycoreutils/scripts/fixfiles | 36 +++++++++++++++++++++++++-------
+>  1 file changed, 28 insertions(+), 8 deletions(-)
+>
+> diff --git a/policycoreutils/scripts/fixfiles b/policycoreutils/scripts/f=
+ixfiles
+> index c72ca0eb9d61..166af6f360a2 100755
+> --- a/policycoreutils/scripts/fixfiles
+> +++ b/policycoreutils/scripts/fixfiles
+> @@ -207,6 +207,25 @@ rpm -q --qf '[%{FILESTATES} %{FILENAMES}\n]' "$1" | =
+grep '^0 ' | cut -f2- -d ' '
+>  [ ${PIPESTATUS[0]} !=3D 0 ] && echo "$1 not found" >/dev/stderr
+>  }
+>=20=20
+> +# unmount tmp bind mount before exit
+> +umount_TMP_MOUNT() {
+> +	if [ -n "$TMP_MOUNT" ]; then
+> +	     umount "${TMP_MOUNT}${m}" || exit 130
+> +	     rm -rf "${TMP_MOUNT}" || echo "Error cleaning up."
+> +	fi
+> +	exit 130
+> +}
+> +
+> +fix_labels_on_mountpoint() {
+> +	test -z ${TMP_MOUNT+x} && echo "Unable to find temporary directory!" &&=
+ exit 1
+> +	mkdir -p "${TMP_MOUNT}${m}" || exit 1
+> +	mount --bind "${m}" "${TMP_MOUNT}${m}" || exit 1
+> +	${SETFILES} ${VERBOSE} ${EXCLUDEDIRS} ${FORCEFLAG} ${THREADS} $* -q ${F=
+C} -r "${TMP_MOUNT}" "${TMP_MOUNT}${m}"
+> +	umount "${TMP_MOUNT}${m}" || exit 1
+> +	rm -rf "${TMP_MOUNT}" || echo "Error cleaning up."
+> +}
+> +export -f fix_labels_on_mountpoint
+> +
+>  #
+>  # restore
+>  # if called with -n will only check file context
+> @@ -252,14 +271,15 @@ case "$RESTORE_MODE" in
+>  	        # we bind mount so we can fix the labels of files that have alr=
+eady been
+>  	        # mounted over
+>  	        for m in `echo $FILESYSTEMSRW`; do
+> -	            TMP_MOUNT=3D"$(mktemp -d)"
+> -	            test -z ${TMP_MOUNT+x} && echo "Unable to find temporary di=
+rectory!" && exit 1
+> -
+> -	            mkdir -p "${TMP_MOUNT}${m}" || exit 1
+> -	            mount --bind "${m}" "${TMP_MOUNT}${m}" || exit 1
+> -	            ${SETFILES} ${VERBOSE} ${EXCLUDEDIRS} ${FORCEFLAG} ${THREAD=
+S} $* -q ${FC} -r "${TMP_MOUNT}" "${TMP_MOUNT}${m}"
+> -	            umount "${TMP_MOUNT}${m}" || exit 1
+> -	            rm -rf "${TMP_MOUNT}" || echo "Error cleaning up."
+> +	            TMP_MOUNT=3D"$(mktemp -p /run -d fixfiles.XXXXXXXXXX)"
+> +	            export SETFILES VERBOSE EXCLUDEDIRS FORCEFLAG THREADS FC TM=
+P_MOUNT m
+> +	            if type unshare &> /dev/null; then
+> +	                unshare -m bash -c "fix_labels_on_mountpoint $*" || exi=
+t $?
+> +	            else
+> +	                trap umount_TMP_MOUNT EXIT
+> +	                fix_labels_on_mountpoint $*
+> +	                trap EXIT
+> +	            fi
+>  	        done;
+>  	    fi
+>  	else
+> --=20
+> 2.37.3
+

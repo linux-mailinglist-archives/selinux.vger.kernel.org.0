@@ -2,97 +2,99 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB80D6216AF
-	for <lists+selinux@lfdr.de>; Tue,  8 Nov 2022 15:31:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C0C46219D5
+	for <lists+selinux@lfdr.de>; Tue,  8 Nov 2022 17:54:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233878AbiKHObY (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Nov 2022 09:31:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36764 "EHLO
+        id S233816AbiKHQyU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Nov 2022 11:54:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233938AbiKHOa4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Nov 2022 09:30:56 -0500
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98A5F58BF1
-        for <selinux@vger.kernel.org>; Tue,  8 Nov 2022 06:30:45 -0800 (PST)
-Received: by mail-pl1-x636.google.com with SMTP id c2so14310895plz.11
-        for <selinux@vger.kernel.org>; Tue, 08 Nov 2022 06:30:45 -0800 (PST)
+        with ESMTP id S233704AbiKHQyT (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Nov 2022 11:54:19 -0500
+Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B39FC11145
+        for <selinux@vger.kernel.org>; Tue,  8 Nov 2022 08:54:18 -0800 (PST)
+Received: by mail-lj1-x22f.google.com with SMTP id b9so22008125ljr.5
+        for <selinux@vger.kernel.org>; Tue, 08 Nov 2022 08:54:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=WDX8jESP5o0hYsqTRNV0E33I+UiuXo6QrBUYHK2m8yjd+yVsSQJ670MLuInnJ00AAn
-         lBBWrOntbuVMAue0wE2TrwsZKXEfFDNMqC5R6tCWqKEgGFxQxkRlJNdbKjRsJjGNfBru
-         KH2TG+ATlAWpLsgkVeBpn6IJJwDTPIZ2HiIrsZ0Wc9Fh2CfiYZRH2JVCtla2mAhfrDcv
-         WfczoRhEaDFduiY4E6NZmxTOoipjt0njg7MBnJjMGOYDxF1sJVrs/1Vd3642UyDZ3J2M
-         wtJ+Kd2QePZiVLlJxgLdMXSB8gNW9u9/Dkv2pwXgXMeRUPq+88NYf11ItH6tmWpWacMI
-         UUsw==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zMbnSO113QTxSGmFbYdeH2Gb9WPgBsB6b2OUJQTY00M=;
+        b=a4zJou/e8QFE9VeWoBMLCyCkLa131pXd+h6F+kedSiO/JDFqWtLk5lZFWNiMIWQ9fq
+         aF71eswsEGld6unUrNKpO81xg0rg0ljYiq49BApffZheafkSSveWSgUIrZuAervNn+Zt
+         //Y9bsNwXn5F5oAQcy9nNfNjqT0U7MMK254xXReD0HQ20b2WF/kF+LVrSsLXtHs4gOHY
+         ZkNCjw4D9bND/L9mA+4z7/uPCHuJaHms10/UUqyLPdAuN4x8CPxT3ywKafFevrQUZyo8
+         Qznnyu6beqKFSvID/pNEu3CVSDMp1nG5/774QUCQJmXCjwBSL7rx9soyvfLY1o41107b
+         AZfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SzBlYeGeT15Xra75w9IZDBjQ7Da3XKSmRdlnDJDYrko=;
-        b=0k+iV9X8+AII5ar7cxwnpYVjsGNC+bpXK7q63yyo2lbOn2lEFHW+z7AmMSHv13kVKW
-         bAOY2qk7maz9EG137VNL7VUXnrUgOZfIxO4IXhwa+4AWnC1BmZpbMexQVze66Wntz0PK
-         tVIzOdLgYP5wRcj5Nxv6DSUNyFWRB+Nu21NXpxmBm+DPf8jJkQdSE56hRHUF+0dmGID8
-         WExSuSw+tlPUvH85CsypnkM0lFirE7VJ6P1YaFhmFHVPmFUbKn560p2YPKu7d/z2DYg5
-         a2y5jM5vfMOH9RkCN7snbe9OzxzqbYgzCS59QONxHVO0FO2XrE+pw3Ob6poJ1aNuJrFq
-         TbmA==
-X-Gm-Message-State: ACrzQf33DwIeGe8Jggttl2v3U8IAgz9xT53WO7sknfnPPM2am5NYT29I
-        pCPloSwdRWDA3Iu0Ymj8vG6p2N9NDGx0ePiOkXICDO7ysc5blA==
-X-Google-Smtp-Source: AMsMyM4L9V3t32r7uko+t8YxF1/SxpO/2u5BqPtEP2fFULrP29Yi88sG/7O0kyMBFpxPmDfBvPymU/6htrkybSwddAw=
-X-Received: by 2002:a17:90a:77c1:b0:214:2921:41c9 with SMTP id
- e1-20020a17090a77c100b00214292141c9mr35377782pjs.104.1667917844700; Tue, 08
- Nov 2022 06:30:44 -0800 (PST)
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zMbnSO113QTxSGmFbYdeH2Gb9WPgBsB6b2OUJQTY00M=;
+        b=iz8zLSuR0+m22eUexLSWcAmqIGvjMEZPB0LxJHSTdyysYPPHmzqSfSLGKGgZM7lTSH
+         zJ44touaWHzSyDnVPqXVvloc3ptdbMxy33mOGZRRD0XKgajcSlGb/02vXTkhbWw7J1F6
+         NJgcLMstprtCq55XZMIGVfF6xKWkrC1nM9HkDPAt/f+q4lSFCs9V8kwHILgtUZir0Aid
+         r5pSmDNYCFv7KzidhUqP+KCMJkGvN9L366bfsBOr0x7tS9Io/EO6nVL4S/vHl3l5Uzj4
+         izP5Dszl4ehXFc47fS4OK/6QML0eeq2VNFXVsbZy/USxmL8ce8o5fki5eSannLFq+6qQ
+         R+rQ==
+X-Gm-Message-State: ACrzQf178KDBa8h2OPYI0su8EvMK4ZX0VZZh1wkhd+mYB2fOxuk9WcHA
+        odu574uVu3D3keHcaqFLwB9Xh2NF+l0Ct9b/ni9QZPj9ZLIRYQ==
+X-Google-Smtp-Source: AMsMyM5LZRCJH2qaDD4HRJrND/loMXJRbQmW9CUqwiR3/CQ+tzPE0z4792WcwHfB6Xs5HpYsGinetWaM/5Znx/uPEDU=
+X-Received: by 2002:a2e:904b:0:b0:277:a9d:9355 with SMTP id
+ n11-20020a2e904b000000b002770a9d9355mr6541874ljg.102.1667926456918; Tue, 08
+ Nov 2022 08:54:16 -0800 (PST)
 MIME-Version: 1.0
-Received: by 2002:ac4:c8c2:0:b0:56a:d900:eb11 with HTTP; Tue, 8 Nov 2022
- 06:30:43 -0800 (PST)
-Reply-To: mr.abraham022@gmail.com
-From:   "Mr.Abraham" <davidbraddy01@gmail.com>
-Date:   Tue, 8 Nov 2022 14:30:43 +0000
-Message-ID: <CAHGOU4PbuaQmBHRnRdx0u3UurwX2NABaxQZ3A0KbDYPAmYk7uQ@mail.gmail.com>
-Subject: Greeting
-To:     undisclosed-recipients:;
+References: <20221108101854.1136685-1-plautrba@redhat.com>
+In-Reply-To: <20221108101854.1136685-1-plautrba@redhat.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Tue, 8 Nov 2022 11:54:05 -0500
+Message-ID: <CAP+JOzTenjFNOAPd-bWppmpoPCq79Hfov523hrVxp6tvvzxwjg@mail.gmail.com>
+Subject: Re: [PATCH] python: Fix typo in audit2allow.1 example
+To:     Petr Lautrbach <plautrba@redhat.com>
+Cc:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:636 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.4988]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [mr.abraham022[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [davidbraddy01[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [davidbraddy01[at]gmail.com]
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 T_HK_NAME_FM_MR_MRS No description available.
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-My Greeting, Did you receive the letter i sent to you. Please answer me.
-Regard, Mr.Abraham
+On Tue, Nov 8, 2022 at 5:20 AM Petr Lautrbach <plautrba@redhat.com> wrote:
+>
+> Signed-off-by: Petr Lautrbach <plautrba@redhat.com>
+> ---
+>  python/audit2allow/audit2allow.1 | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/python/audit2allow/audit2allow.1 b/python/audit2allow/audit2allow.1
+> index c61067b33688..f1a4b8ea33b3 100644
+> --- a/python/audit2allow/audit2allow.1
+> +++ b/python/audit2allow/audit2allow.1
+> @@ -151,7 +151,7 @@ policy_module(local, 1.0)
+>  gen_require(`
+>          type myapp_t;
+>          type etc_t;
+> - };
+> +');
+
+Should be:
++\[aq]);
+
+Otherwise, the line does not show up.
+You can't use \' because that is translated into a closing single quote.
+
+Thanks,
+Jim
+
+>
+>  files_read_etc_files(myapp_t)
+>  <review local.te and customize as desired>
+> --
+> 2.37.3
+>

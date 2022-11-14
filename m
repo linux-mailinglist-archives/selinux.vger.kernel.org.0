@@ -2,62 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD01A628986
-	for <lists+selinux@lfdr.de>; Mon, 14 Nov 2022 20:40:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2733C628A28
+	for <lists+selinux@lfdr.de>; Mon, 14 Nov 2022 21:11:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230030AbiKNTkl (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Nov 2022 14:40:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44016 "EHLO
+        id S236152AbiKNULH (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Nov 2022 15:11:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbiKNTkj (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Nov 2022 14:40:39 -0500
-Received: from mail-ej1-x62d.google.com (mail-ej1-x62d.google.com [IPv6:2a00:1450:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED1B61A235
-        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 11:40:37 -0800 (PST)
-Received: by mail-ej1-x62d.google.com with SMTP id m22so30825277eji.10
-        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 11:40:37 -0800 (PST)
+        with ESMTP id S237515AbiKNUKv (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Nov 2022 15:10:51 -0500
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00AE91CB29
+        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 12:10:49 -0800 (PST)
+Received: by mail-ej1-x631.google.com with SMTP id bj12so30980507ejb.13
+        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 12:10:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wWxyOqo1fpHKqM1GvKu8sQbSBYBSBX/tkUMHB6hnKqY=;
-        b=hFHYFM6ifSfE7X9pgqV3PRkV6AzQFHcsCHldk8lj+KBQvnlXXCqf0f7/5KiPsMB+X1
-         Q/CEF1QhA4BsN7D9vsjlL2tHVpH0Hg/jUY34Ln8n30iElNeEplhmMZM8VBsG+Y7k2PpT
-         EjDRM6qZZm3EWA+eXjguPiElrmE3af0MuaKsHUvH0QYwTlvSQOE4dSweCYxfJYtJIxz8
-         DH8+dK8Te94bRd/jXzYMAu+LTxrJZ6Xoe8vZgJD40WeHda2LtTvG4SqPAbmbcGl+WUwZ
-         pq/bVYrV8XmccL/ROZePPuNcZxZT2FsBqwRabDr0bPBLQ8HvRfWsSrRc0fz4G1ggqBYY
-         ROyw==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=587qEsaR1mpGvlHQmhJbzOygiLuJmaGFsN85HEqniJw=;
+        b=ZndzQqc3jFTdEWbKnA3n35fJ1cq7r+3doBt94C0o7hT6xFreHNIv5w5xu12JA2d6Ey
+         uk5S7Nl5OIzDwM4lAA0GuVmy1wSd5qOg5wyULBeT4yQD8P+J3FdNm4AePWPCOuqxZG7z
+         wPZdnH1vppQnS+F+ym2hzGN18zIDWa/JjRULSbg+0zo7tB1lWXi6k+oBFJjmu/IyvVE4
+         HafVd01+NMc3DoijXK128wjqq10ELFQ3pkyR6ho7Nz3j9+c5nc5WAeouasNf1LO2a7KC
+         Rrr8EAiXqSnR5Gvo0hiqIzzlDJTaGZjM0ew1a6Lh9Ir+a8yHbTZXXG6dSCIol32d8yhn
+         gAcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wWxyOqo1fpHKqM1GvKu8sQbSBYBSBX/tkUMHB6hnKqY=;
-        b=ZM0MlroARSNJICn6MiHk8NNItlLGHgAParxF6YZbIeQI0B97YR7GFOjzcbdAFi0cgC
-         7Hv+HguXDXIKCwwJDKvkKd79JBYk7Z1P1KIabsNpT/4Kd08v2Z/EEQterOJpY8x9xEwa
-         vDL5bbo0t/Q8tjan9ZpNwWu/uvqYseczheumkBcoMdNoRJI/D8b8Y0xULWOjeLY5l8pv
-         83lRQ2rGAHzvFTgahKMucVLuo4lXYx8h2G4O8w3Rse66scvMq41fmoDmGLZh58fVaamu
-         1g5wr8J8EM7TsaUEb0T6MEXt/FHquNaWs1SxCJiv/k7zdNlQdgwm2WArD6hOvyma7RUy
-         LKnQ==
-X-Gm-Message-State: ANoB5plytwztq+CXE7wpe1CZpGbEi+HlwWdTAKIyqZ+eZV1k6kvoX3Bg
-        xesPC7gJAR84jXyg4BonwkU1IOdu90o=
-X-Google-Smtp-Source: AA0mqf7tY1CXQQVqzHmXv7rM6m3ZZ2L+1LBBvO4bZdVanxkspbKX1JzqLFBmT1/XRed5PwRXGxYmqg==
-X-Received: by 2002:a17:907:1b89:b0:7ad:b51d:39d0 with SMTP id mz9-20020a1709071b8900b007adb51d39d0mr11055325ejc.571.1668454836394;
-        Mon, 14 Nov 2022 11:40:36 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=587qEsaR1mpGvlHQmhJbzOygiLuJmaGFsN85HEqniJw=;
+        b=mN/nDJ0J71Wott8u+G8rIs5LesGxL1qvKpAjjGI3Tp4zqGfWYNgzNK/+h4TpbVqV8G
+         uzsXeEUlhr4BOyUfa1OSBbjYoWKVP5IztatmmqQXtiKaZRIvhVkceSkEJBUlTLhhmPmu
+         lSG2AjbmJhFwUcmei6dudbw3L1oMndHJ8vuD+puAH5vnoQvcU1kA6DOApDDcu1QDQcon
+         RG4VP6jYGHHYwAQ9Sn8KI1xRooin/W6QqWdo96i/U52fYgrMoUNAB9DOaSZFotptVS6O
+         jZ9vL0gRuypLnCOG4B7xhwl3X1paO50KRQ3do9JBrFH2MT8mehwB43F5G/RvwFnRkMFN
+         VWDg==
+X-Gm-Message-State: ANoB5pmFv1BwsHL+/vTW3dhxHfbPhX26eWt3IoSr0M92/q3/w+12LFSa
+        afyG5DI6zDfw1sZLhP8XFen1Soe8efs=
+X-Google-Smtp-Source: AA0mqf6PIekGEMq0bkbZlcnhd+qK7ytbv7i+Bmk2r7SGq6Bd/fVf/jLlok2/TyvQVmskLileI2TRvw==
+X-Received: by 2002:a17:906:b45:b0:78d:b65a:aabe with SMTP id v5-20020a1709060b4500b0078db65aaabemr11694609ejg.5.1668456648306;
+        Mon, 14 Nov 2022 12:10:48 -0800 (PST)
 Received: from debianHome.localdomain (dynamic-077-003-090-138.77.3.pool.telefonica.de. [77.3.90.138])
-        by smtp.gmail.com with ESMTPSA id kz7-20020a17090777c700b00772061034dbsm4500016ejc.182.2022.11.14.11.40.35
+        by smtp.gmail.com with ESMTPSA id cb13-20020a170906a44d00b007abafe43c3bsm4558377ejb.86.2022.11.14.12.10.47
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 11:40:36 -0800 (PST)
+        Mon, 14 Nov 2022 12:10:47 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 2/2] libsepol/tests: add tests for neverallow assertions
-Date:   Mon, 14 Nov 2022 20:40:31 +0100
-Message-Id: <20221114194031.12245-2-cgzones@googlemail.com>
+Subject: [RFC PATCH 1/6] libsepol: rename struct member
+Date:   Mon, 14 Nov 2022 21:10:37 +0100
+Message-Id: <20221114201042.17773-1-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221114194031.12245-1-cgzones@googlemail.com>
-References: <20221114194031.12245-1-cgzones@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -71,540 +67,272 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add tests for neverallow assertion checks.
-This creates a foundation for the status quo, and enables to spot
-regressions in future changes to the - quite complex - assertion logic.
-One example is the support for not-self rules.
+Avoid using the identifier `bool` to improve support with future C
+standards.  C23 is about to make `bool` a predefined macro (see N2654).
+
+Since the struct cond_expr_t is part of the public API it will break
+client applications.  A quick code search of the Debian code shows only
+usage in checkpolicy and setools.
+
+Define a new macro signaling the renaming to simplify support of client
+applications for new and older versions of libsepol.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/tests/libsepol-tests.c               |   2 +
- .../policies/test-neverallow/policy.conf      | 298 ++++++++++++++++++
- libsepol/tests/test-neverallow.c              | 172 ++++++++++
- libsepol/tests/test-neverallow.h              |  10 +
- 4 files changed, 482 insertions(+)
- create mode 100644 libsepol/tests/policies/test-neverallow/policy.conf
- create mode 100644 libsepol/tests/test-neverallow.c
- create mode 100644 libsepol/tests/test-neverallow.h
+ libsepol/cil/src/cil_binary.c                 |  6 +++---
+ libsepol/include/sepol/policydb/conditional.h |  4 +++-
+ libsepol/src/conditional.c                    | 14 +++++++-------
+ libsepol/src/expand.c                         |  6 +++---
+ libsepol/src/kernel_to_cil.c                  |  2 +-
+ libsepol/src/kernel_to_conf.c                 |  2 +-
+ libsepol/src/link.c                           |  6 +++---
+ libsepol/src/module_to_cil.c                  |  2 +-
+ libsepol/src/policydb_validate.c              |  2 +-
+ libsepol/src/write.c                          |  2 +-
+ libsepol/tests/debug.c                        |  2 +-
+ libsepol/tests/test-linker-cond-map.c         |  2 +-
+ 12 files changed, 26 insertions(+), 24 deletions(-)
 
-diff --git a/libsepol/tests/libsepol-tests.c b/libsepol/tests/libsepol-tests.c
-index 5ae6bedc..968e3cc2 100644
---- a/libsepol/tests/libsepol-tests.c
-+++ b/libsepol/tests/libsepol-tests.c
-@@ -24,6 +24,7 @@
- #include "test-expander.h"
- #include "test-deps.h"
- #include "test-downgrade.h"
-+#include "test-neverallow.h"
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index 40615db2..ef7f4d70 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -2123,7 +2123,7 @@ static int __cil_cond_item_to_sepol_expr(policydb_t *pdb, struct cil_list_item *
+ 		*head = cil_malloc(sizeof(cond_expr_t));
+ 		(*head)->next = NULL;
+ 		(*head)->expr_type = COND_BOOL;
+-		(*head)->bool = sepol_bool->s.value;
++		(*head)->boolean = sepol_bool->s.value;
+ 		*tail = *head;
+ 	} else if (item->flavor == CIL_LIST) {
+ 		struct cil_list *l = item->data;
+@@ -2159,7 +2159,7 @@ static int __cil_cond_expr_to_sepol_expr_helper(policydb_t *pdb, struct cil_list
+ 		enum cil_flavor cil_op = (enum cil_flavor)(uintptr_t)item->data;
  
- #include <CUnit/Basic.h>
- #include <CUnit/Console.h>
-@@ -71,6 +72,7 @@ static bool do_tests(int interactive, int verbose)
- 	DECLARE_SUITE(expander);
- 	DECLARE_SUITE(deps);
- 	DECLARE_SUITE(downgrade);
-+	DECLARE_SUITE(neverallow);
+ 		op = cil_malloc(sizeof(*op));
+-		op->bool = 0;
++		op->boolean = 0;
+ 		op->next = NULL;
  
- 	if (verbose)
- 		CU_basic_set_mode(CU_BRM_VERBOSE);
-diff --git a/libsepol/tests/policies/test-neverallow/policy.conf b/libsepol/tests/policies/test-neverallow/policy.conf
-new file mode 100644
-index 00000000..67a16372
---- /dev/null
-+++ b/libsepol/tests/policies/test-neverallow/policy.conf
-@@ -0,0 +1,298 @@
-+class process
-+class blk_file
-+class chr_file
-+class dir
-+class fifo_file
-+class file
-+class lnk_file
-+class sock_file
-+
-+sid kernel
-+sid security
-+sid unlabeled
-+sid file
-+sid port
-+sid netif
-+sid netmsg
-+sid node
-+sid devnull
-+
-+class process { dyntransition transition }
-+class file { getattr ioctl open read write }
-+
-+ifdef(`enable_mls',`
-+sensitivity s0;
-+dominance { s0 }
-+category c0; category c1; category c2; category c3;
-+category c4; category c5; category c6; category c7;
-+category c8; category c9; category c10; category c11;
-+category c12; category c13; category c14; category c15;
-+category c16; category c17; category c18; category c19;
-+category c20; category c21; category c22; category c23;
-+
-+level s0:c0.c23;
-+
-+mlsconstrain file { write } ( h1 dom h2 );
-+')
-+
-+
-+########################################
-+#
-+# Test start
-+#
-+########################################
-+
-+
-+## Test 1 (basic)
-+
-+type test1_t;
-+allow      test1_t test1_t : file { read write };
-+neverallow test1_t test1_t : file read;
-+
-+
-+## Test 2 (wildcard permission)
-+
-+type test2_t;
-+allow      test2_t test2_t : file { read write };
-+neverallow test2_t test2_t : file *;
-+
-+
-+## Test 3 (complement permission)
-+
-+type test3_t;
-+allow      test3_t test3_t : file { read write };
-+neverallow test3_t test3_t : file ~{ write };
-+
-+
-+## Test 4 (wildcard source)
-+
-+type test4_t;
-+allow      test4_t test4_t : file { read write };
-+neverallow *       test4_t : file read;
-+
-+
-+## Test 5 (wildcard target)
-+
-+type test5_t;
-+allow      test5_t test5_t : file { read write };
-+neverallow test5_t *       : file read;
-+
-+
-+## Test 6 (complement source)
-+
-+type test6_1_t;
-+type test6_2_t;
-+allow      { test6_1_t test6_2_t } { test6_1_t test6_2_t } : file { read write };
-+neverallow ~{ test6_2_t }          test6_1_t               : file read;
-+
-+
-+## Test 7 (complement target)
-+
-+type test7_1_t;
-+type test7_2_t;
-+allow      { test7_1_t test7_2_t } { test7_1_t test7_2_t } : file { read write };
-+neverallow test7_1_t               ~{ test7_2_t }          : file read;
-+
-+
-+## Test 8 (source attribute)
-+
-+attribute test8_a;
-+type test8_t, test8_a;
-+allow      test8_a test8_a : file read;
-+allow      test8_t test8_t : file write;
-+neverallow test8_a test8_t : file { read write };
-+
-+
-+## Test 9 (target attribute)
-+
-+attribute test9_a;
-+type test9_t, test9_a;
-+allow      test9_a test9_a : file read;
-+allow      test9_t test9_t : file write;
-+neverallow test9_t test9_a : file { read write };
-+
-+
-+## Test 10 (self)
-+
-+attribute test10_a;
-+type test10_1_t, test10_a;
-+type test10_2_t;
-+allow      { test10_1_t test10_2_t } { test10_1_t test10_2_t } : file read;
-+neverallow test10_a                  self                      : file *;
-+
-+
-+## Test 11 (wildcard)
-+
-+type test11_t;
-+allow      test11_t self : process *;
-+neverallow *        *    : process *;
-+
-+
-+## Test 12 (complement attributes)
-+
-+attribute test12_1_a;
-+attribute test12_2_a;
-+attribute test12_3_a;
-+type test12_1_t, test12_1_a;
-+type test12_2_t, test12_2_a;
-+type test12_3_t, test12_3_a;
-+allow     { test12_1_a test12_2_a test12_3_a } { test12_1_a test12_2_a test12_3_a } : file *;
-+neverallow ~{ test12_1_a test12_2_t }          ~{ test12_3_a }                      : file getattr;
-+neverallow ~{ test12_1_a }                     ~{ test12_2_a test12_3_t }           : file open;
-+
-+
-+## Test 13 (excludes)
-+
-+attribute test13_1_a;
-+attribute test13_2_a;
-+attribute test13_3_a;
-+type test13_1_t, test13_1_a;
-+type test13_2_t, test13_2_a;
-+type test13_3_t, test13_3_a;
-+allow      { test13_1_a test13_2_a test13_3_a }                         { test13_1_a test13_2_a test13_3_a }                         : file { read write };
-+neverallow { test13_1_a test13_2_a test13_3_a -test13_2_a -test13_3_t } { test13_1_a test13_2_a test13_3_a -test13_2_t -test13_3_a } : file read;
-+
-+
-+## Test 14 (misc avrules)
-+
-+type test14_t;
-+auditallow      test14_t test14_t : file read;
-+dontaudit       test14_t test14_t : file write;
-+neverallow      test14_t test14_t : file { read write };
-+type_transition test14_t test14_t : file test14_t;
-+type_transition test14_t test14_t : file test14_t "objname";
-+neverallow      test14_t test14_t : file *;  # nofail
-+
-+
-+## Test 15 (extended permissions - standard allow)
-+
-+type test15_t;
-+allow           test15_t self : file ioctl;
-+neverallowxperm test15_t self : file ioctl 0x1111;
-+
-+
-+## Test 16 (extended permissions - allowxperm)
-+
-+type test16_t;
-+allow           test16_t self : file ioctl;
-+allowxperm      test16_t self : file ioctl 0x1111;
-+neverallowxperm test16_t self : file ioctl 0x1111;
-+
-+
-+## Test 17 (extended permissions - allowxperm mismatch)
-+
-+type test17_t;
-+allow           test17_t self : file ioctl;
-+allowxperm      test17_t self : file ioctl 0x1111;
-+neverallowxperm test17_t self : file ioctl 0x2222;  # nofail
-+
-+
-+## Test 18 (extended permissions - allowxperm range I)
-+
-+type test18_t;
-+allow           test18_t self : file ioctl;
-+allowxperm      test18_t self : file ioctl { 0x1100-0x1300 };
-+neverallowxperm test18_t self : file ioctl 0x1111;
-+
-+
-+## Test 19 (extended permissions - allowxperm range II)
-+
-+type test19_t;
-+allow           test19_t self : file ioctl;
-+allowxperm      test19_t self : file ioctl 0x1111;
-+neverallowxperm test19_t self : file ioctl { 0x1100-0x1300 };
-+
-+
-+## Test 20 (extended permissions - misc targets I)
-+
-+attribute test20_a;
-+type test20_t, test20_a;
-+
-+allow           test20_a test20_a : file ioctl;
-+allowxperm      test20_a test20_a : file ioctl 0x1111;
-+neverallowxperm test20_a self     : file ioctl 0x1111;
-+
-+
-+## Test 21 (extended permissions - misc targets II)
-+
-+attribute test21_1_a;
-+attribute test21_2_a;
-+type test21_t, test21_1_a, test21_2_a;
-+
-+allow           test21_1_a test21_1_a : file ioctl;
-+allowxperm      test21_1_a test21_2_a : file ioctl 0x1111;
-+neverallowxperm test21_1_a self       : file ioctl 0x1111;
-+
-+
-+## Test 22 (extended permissions - misc targets III)
-+
-+attribute test22_a;
-+type test22_t, test22_a;
-+
-+allow           test22_a test22_a : file ioctl;
-+allowxperm      test22_t self     : file ioctl 0x1111;
-+neverallowxperm test22_a self     : file ioctl 0x1111;
-+
-+
-+## Test 23 (extended permissions - misc targets IV)
-+
-+attribute test23_a;
-+type test23_t, test23_a;
-+
-+allow           test23_a test23_a : file ioctl;
-+allowxperm      test23_t test23_t : file ioctl 0x1111;
-+neverallowxperm test23_a self     : file ioctl 0x1111;
-+
-+
-+## Test 24 (extended permissions - misc targets V)
-+
-+attribute test24_a;
-+type test24_t, test24_a;
-+
-+allow           test24_a test24_a : file ioctl;
-+allowxperm      test24_t test24_a : file ioctl 0x1111;
-+neverallowxperm test24_a self     : file ioctl 0x1111;
-+
-+
-+## Test 25 (extended permissions - misc targets VI)
-+
-+attribute test25_a;
-+type test25_t, test25_a;
-+
-+allow           test25_a test25_a : file ioctl;
-+allowxperm      test25_a self     : file ioctl 0x1111;
-+neverallowxperm test25_a self     : file ioctl 0x1111;
-+
-+
-+## Test 26 (extended permissions - assert twice)
-+
-+attribute test26_a;
-+type test26_1_t, test26_a;
-+type test26_2_t, test26_a;
-+allow           test26_a   test26_a : file ioctl;
-+allowxperm      test26_a   test26_a : file ioctl 0x1111;
-+neverallowxperm test26_1_t test26_a : file ioctl 0x1111;
-+
-+
-+########################################
-+#
-+# Test End
-+#
-+########################################
-+
-+
-+type sys_isid;
-+role sys_role;
-+role sys_role types sys_isid;
-+gen_user(sys_user,, sys_role, s0, s0 - s0:c0.c23)
-+sid kernel gen_context(sys_user:sys_role:sys_isid, s0)
-+sid security gen_context(sys_user:sys_role:sys_isid, s0)
-+sid unlabeled gen_context(sys_user:sys_role:sys_isid, s0)
-+sid file gen_context(sys_user:sys_role:sys_isid, s0)
-+sid port gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netif gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netmsg gen_context(sys_user:sys_role:sys_isid, s0)
-+sid node gen_context(sys_user:sys_role:sys_isid, s0)
-+sid devnull gen_context(sys_user:sys_role:sys_isid, s0)
-+fs_use_trans devpts gen_context(sys_user:sys_role:sys_isid, s0);
-+fs_use_trans devtmpfs gen_context(sys_user:sys_role:sys_isid, s0);
-diff --git a/libsepol/tests/test-neverallow.c b/libsepol/tests/test-neverallow.c
-new file mode 100644
-index 00000000..d973a0e3
---- /dev/null
-+++ b/libsepol/tests/test-neverallow.c
-@@ -0,0 +1,172 @@
-+#define _GNU_SOURCE  /* vasprintf(3) */
-+
-+#include "test-neverallow.h"
-+
-+#include "helpers.h"
-+#include "test-common.h"
-+
-+#include <sepol/debug.h>
-+#include <sepol/policydb/link.h>
-+#include <sepol/policydb/expand.h>
-+
-+#include <stdio.h>
-+#include <stdarg.h>
-+
-+extern int mls;
-+
-+int neverallow_test_init(void)
-+{
-+	return 0;
-+}
-+
-+int neverallow_test_cleanup(void)
-+{
-+	return 0;
-+}
-+
-+static struct msg_list {
-+	char *msg;
-+	struct msg_list *next;
-+} *messages;
-+
-+static void messages_clean(void)
-+{
-+	while (messages) {
-+		struct msg_list *n = messages->next;
-+		free(messages->msg);
-+		free(messages);
-+		messages = n;
-+	}
-+}
-+
-+static void messages_check(unsigned count, const char *const expected[count])
-+{
-+	unsigned i;
-+	const struct msg_list *m = messages;
-+
-+	for (i = 0; i < count; i++, m = m->next) {
-+		if (!m) {
-+			CU_FAIL("less messages than expected");
-+			fprintf(stderr, "\n<expected %u, got %u>\n", count, i);
-+			return;
-+		}
-+
-+		if (strcmp(expected[i], m->msg) != 0) {
-+			CU_FAIL("messages differ from expected");
-+			fprintf(stderr, "\n<expected: '''%s''', got: '''%s'''>\n", expected[i], m->msg);
-+		}
-+	}
-+
-+	if (m) {
-+		CU_FAIL("more messages than expected");
-+		fprintf(stderr, "\n<expected %u; next message: '''%s'''>\n", count, m->msg);
-+	}
-+}
-+
-+__attribute__ ((format(printf, 3, 4)))
-+static void msg_handler(void *varg __attribute__ ((unused)),
-+			sepol_handle_t * handle __attribute__ ((unused)),
-+			const char *fmt, ...)
-+{
-+	char *msg;
-+	va_list ap;
-+	int r;
-+
-+	va_start(ap, fmt);
-+	r = vasprintf(&msg, fmt, ap);
-+	if (r < 0)
-+		CU_FAIL_FATAL("oom");
-+	va_end(ap);
-+
-+	struct msg_list *new = malloc(sizeof(*new));
-+	if (!new)
-+		CU_FAIL_FATAL("oom");
-+	new->msg = msg;
-+	new->next = messages;
-+	messages = new;
-+}
-+
-+#define ARRAY_SIZE(a) (sizeof(a) / sizeof(*a))
-+
-+static void test_neverallow_basic(void)
-+{
-+	policydb_t basemod, base_expanded;
-+	sepol_handle_t *handle;
-+	static const char *const expected_messages[] = {
-+		"30 neverallow failures occurred",
-+		"neverallow on line 53 of policies/test-neverallow/policy.conf.std (or line 53 of policies/test-neverallow/policy.conf.std) violated by allow test1_t test1_t:file { read };",
-+		"neverallow on line 60 of policies/test-neverallow/policy.conf.std (or line 60 of policies/test-neverallow/policy.conf.std) violated by allow test2_t test2_t:file { read write };",
-+		"neverallow on line 67 of policies/test-neverallow/policy.conf.std (or line 67 of policies/test-neverallow/policy.conf.std) violated by allow test3_t test3_t:file { read };",
-+		"neverallow on line 74 of policies/test-neverallow/policy.conf.std (or line 74 of policies/test-neverallow/policy.conf.std) violated by allow test4_t test4_t:file { read };",
-+		"neverallow on line 81 of policies/test-neverallow/policy.conf.std (or line 81 of policies/test-neverallow/policy.conf.std) violated by allow test5_t test5_t:file { read };",
-+		"neverallow on line 89 of policies/test-neverallow/policy.conf.std (or line 89 of policies/test-neverallow/policy.conf.std) violated by allow test6_1_t test6_1_t:file { read };",
-+		"neverallow on line 97 of policies/test-neverallow/policy.conf.std (or line 97 of policies/test-neverallow/policy.conf.std) violated by allow test7_1_t test7_1_t:file { read };",
-+		"neverallow on line 106 of policies/test-neverallow/policy.conf.std (or line 106 of policies/test-neverallow/policy.conf.std) violated by allow test8_t test8_t:file { write };",
-+		"neverallow on line 106 of policies/test-neverallow/policy.conf.std (or line 106 of policies/test-neverallow/policy.conf.std) violated by allow test8_t test8_t:file { read };",
-+		"neverallow on line 115 of policies/test-neverallow/policy.conf.std (or line 115 of policies/test-neverallow/policy.conf.std) violated by allow test9_t test9_t:file { read };",
-+		"neverallow on line 115 of policies/test-neverallow/policy.conf.std (or line 115 of policies/test-neverallow/policy.conf.std) violated by allow test9_t test9_t:file { write };",
-+		"neverallow on line 124 of policies/test-neverallow/policy.conf.std (or line 124 of policies/test-neverallow/policy.conf.std) violated by allow test10_1_t test10_1_t:file { read };",
-+		"neverallow on line 131 of policies/test-neverallow/policy.conf.std (or line 131 of policies/test-neverallow/policy.conf.std) violated by allow test11_t test11_t:process { dyntransition transition };",
-+		"neverallow on line 143 of policies/test-neverallow/policy.conf.std (or line 143 of policies/test-neverallow/policy.conf.std) violated by allow test12_3_t test12_1_t:file { getattr };",
-+		"neverallow on line 143 of policies/test-neverallow/policy.conf.std (or line 143 of policies/test-neverallow/policy.conf.std) violated by allow test12_3_t test12_2_t:file { getattr };",
-+		"neverallow on line 144 of policies/test-neverallow/policy.conf.std (or line 144 of policies/test-neverallow/policy.conf.std) violated by allow test12_3_t test12_1_t:file { open };",
-+		"neverallow on line 144 of policies/test-neverallow/policy.conf.std (or line 144 of policies/test-neverallow/policy.conf.std) violated by allow test12_2_t test12_1_t:file { open };",
-+		"neverallow on line 156 of policies/test-neverallow/policy.conf.std (or line 156 of policies/test-neverallow/policy.conf.std) violated by allow test13_1_t test13_1_t:file { read };",
-+		"neverallowxperm on line 174 of policies/test-neverallow/policy.conf.std (or line 174 of policies/test-neverallow/policy.conf.std) violated by\nallow test15_t test15_t:file { ioctl };",
-+		"neverallowxperm on line 182 of policies/test-neverallow/policy.conf.std (or line 182 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test16_t test16_t:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 198 of policies/test-neverallow/policy.conf.std (or line 198 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test18_t test18_t:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 206 of policies/test-neverallow/policy.conf.std (or line 206 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test19_t test19_t:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 216 of policies/test-neverallow/policy.conf.std (or line 216 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test20_a test20_a:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 227 of policies/test-neverallow/policy.conf.std (or line 227 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test21_1_a test21_2_a:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 237 of policies/test-neverallow/policy.conf.std (or line 237 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test22_t test22_t:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 247 of policies/test-neverallow/policy.conf.std (or line 247 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test23_t test23_t:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 257 of policies/test-neverallow/policy.conf.std (or line 257 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test24_t test24_a:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 267 of policies/test-neverallow/policy.conf.std (or line 267 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test25_t test25_t:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 277 of policies/test-neverallow/policy.conf.std (or line 277 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test26_a test26_a:file ioctl { 0x1111 };",
-+		"neverallowxperm on line 277 of policies/test-neverallow/policy.conf.std (or line 277 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test26_a test26_a:file ioctl { 0x1111 };",
-+	};
-+
-+	if (policydb_init(&base_expanded))
-+		CU_FAIL_FATAL("Failed to initialize policy");
-+
-+	if (test_load_policy(&basemod, POLICY_BASE, mls, "test-neverallow", "policy.conf"))
-+		CU_FAIL_FATAL("Failed to load policy");
-+
-+	if (link_modules(NULL, &basemod, NULL, 0, 0))
-+		CU_FAIL_FATAL("Failed to link base module");
-+
-+	if (expand_module(NULL, &basemod, &base_expanded, 0, 0))
-+		CU_FAIL_FATAL("Failed to expand policy");
-+
-+	if ((handle = sepol_handle_create()) == NULL)
-+		CU_FAIL_FATAL("Failed to initialize handle");
-+
-+	sepol_msg_set_callback(handle, msg_handler, NULL);
-+
-+	if (check_assertions(handle, &base_expanded, base_expanded.global->branch_list->avrules) != -1)
-+		CU_FAIL("Assertions did not trigger");
-+
-+	messages_check(ARRAY_SIZE(expected_messages), expected_messages);
-+
-+	sepol_handle_destroy(handle);
-+	messages_clean();
-+	policydb_destroy(&basemod);
-+	policydb_destroy(&base_expanded);
-+}
-+
-+int neverallow_add_tests(CU_pSuite suite)
-+{
-+	/*
-+	 * neverallow rules operate only on types and are unaffected by MLS
-+	 * (avoid adjusting the messages for std and mls)
-+	 */
-+	if (mls)
-+		return 0;
-+
-+	if (NULL == CU_add_test(suite, "neverallow_basic", test_neverallow_basic)) {
-+		CU_cleanup_registry();
-+		return CU_get_error();
-+	}
-+
-+	return 0;
-+}
-diff --git a/libsepol/tests/test-neverallow.h b/libsepol/tests/test-neverallow.h
-new file mode 100644
-index 00000000..d3c2a74e
---- /dev/null
-+++ b/libsepol/tests/test-neverallow.h
-@@ -0,0 +1,10 @@
-+#ifndef TEST_NEVERALLOW_H__
-+#define TEST_NEVERALLOW_H__
-+
-+#include <CUnit/Basic.h>
-+
-+int neverallow_test_init(void);
-+int neverallow_test_cleanup(void);
-+int neverallow_add_tests(CU_pSuite suite);
-+
-+#endif  /* TEST_NEVERALLOW_H__ */
+ 		switch (cil_op) {
+@@ -2226,7 +2226,7 @@ static int __cil_cond_expr_to_sepol_expr_helper(policydb_t *pdb, struct cil_list
+ 				goto exit;
+ 			}
+ 			op = cil_malloc(sizeof(*op));
+-			op->bool = 0;
++			op->boolean = 0;
+ 			op->next = NULL;
+ 			op->expr_type = COND_OR;
+ 			t1->next = h2;
+diff --git a/libsepol/include/sepol/policydb/conditional.h b/libsepol/include/sepol/policydb/conditional.h
+index 49c0d766..8d4741d3 100644
+--- a/libsepol/include/sepol/policydb/conditional.h
++++ b/libsepol/include/sepol/policydb/conditional.h
+@@ -54,7 +54,9 @@ typedef struct cond_expr {
+ #define COND_NEQ	7	/* bool != bool */
+ #define COND_LAST	COND_NEQ
+ 	uint32_t expr_type;
+-	uint32_t bool;
++	/* The member `boolean` was renamed from `bool` in version 3.5 */
++#define COND_EXPR_T_RENAME_BOOL_BOOLEAN
++	uint32_t boolean;
+ 	struct cond_expr *next;
+ } cond_expr_t;
+ 
+diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
+index a620451d..24380ea0 100644
+--- a/libsepol/src/conditional.c
++++ b/libsepol/src/conditional.c
+@@ -125,7 +125,7 @@ int cond_expr_equal(cond_node_t * a, cond_node_t * b)
+ 		if (cur_a->expr_type != cur_b->expr_type)
+ 			return 0;
+ 		if (cur_a->expr_type == COND_BOOL) {
+-			if (cur_a->bool != cur_b->bool)
++			if (cur_a->boolean != cur_b->boolean)
+ 				return 0;
+ 		}
+ 		cur_a = cur_a->next;
+@@ -223,7 +223,7 @@ int cond_evaluate_expr(policydb_t * p, cond_expr_t * expr)
+ 			if (sp == (COND_EXPR_MAXDEPTH - 1))
+ 				return -1;
+ 			sp++;
+-			s[sp] = p->bool_val_to_struct[cur->bool - 1]->state;
++			s[sp] = p->bool_val_to_struct[cur->boolean - 1]->state;
+ 			break;
+ 		case COND_NOT:
+ 			if (sp < 0)
+@@ -279,7 +279,7 @@ cond_expr_t *cond_copy_expr(cond_expr_t * expr)
+ 		memset(new_expr, 0, sizeof(cond_expr_t));
+ 
+ 		new_expr->expr_type = cur->expr_type;
+-		new_expr->bool = cur->bool;
++		new_expr->boolean = cur->boolean;
+ 
+ 		if (!head)
+ 			head = new_expr;
+@@ -388,10 +388,10 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
+ 		switch (e->expr_type) {
+ 		case COND_BOOL:
+ 			/* see if we've already seen this bool */
+-			if (!bool_present(e->bool, cn->bool_ids, cn->nbools)) {
++			if (!bool_present(e->boolean, cn->bool_ids, cn->nbools)) {
+ 				/* count em all but only record up to COND_MAX_BOOLS */
+ 				if (cn->nbools < COND_MAX_BOOLS)
+-					cn->bool_ids[cn->nbools++] = e->bool;
++					cn->bool_ids[cn->nbools++] = e->boolean;
+ 				else
+ 					cn->nbools++;
+ 			}
+@@ -737,7 +737,7 @@ static int expr_isvalid(policydb_t * p, cond_expr_t * expr)
+ 		return 0;
+ 	}
+ 
+-	if (expr->bool > p->p_bools.nprim) {
++	if (expr->boolean > p->p_bools.nprim) {
+ 		WARN(NULL, "security: conditional expressions uses unknown bool.");
+ 		return 0;
+ 	}
+@@ -775,7 +775,7 @@ static int cond_read_node(policydb_t * p, cond_node_t * node, void *fp)
+ 		memset(expr, 0, sizeof(cond_expr_t));
+ 
+ 		expr->expr_type = le32_to_cpu(buf[0]);
+-		expr->bool = le32_to_cpu(buf[1]);
++		expr->boolean = le32_to_cpu(buf[1]);
+ 
+ 		if (!expr_isvalid(p, expr)) {
+ 			free(expr);
+diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
+index 8d19850e..1337c32f 100644
+--- a/libsepol/src/expand.c
++++ b/libsepol/src/expand.c
+@@ -2025,8 +2025,8 @@ static int cond_node_map_bools(expand_state_t * state, cond_node_t * cn)
+ 
+ 	cur = cn->expr;
+ 	while (cur) {
+-		if (cur->bool)
+-			cur->bool = state->boolmap[cur->bool - 1];
++		if (cur->boolean)
++			cur->boolean = state->boolmap[cur->boolean - 1];
+ 		cur = cur->next;
+ 	}
+ 
+@@ -2899,7 +2899,7 @@ static void discard_tunables(sepol_handle_t *sh, policydb_t *pol)
+ 			     cur_expr = cur_expr->next) {
+ 				if (cur_expr->expr_type != COND_BOOL)
+ 					continue;
+-				booldatum = pol->bool_val_to_struct[cur_expr->bool - 1];
++				booldatum = pol->bool_val_to_struct[cur_expr->boolean - 1];
+ 				if (booldatum->flags & COND_BOOL_FLAGS_TUNABLE)
+ 					tmp[tunables++] = booldatum;
+ 				else
+diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
+index ad4121d5..e9cd89c2 100644
+--- a/libsepol/src/kernel_to_cil.c
++++ b/libsepol/src/kernel_to_cil.c
+@@ -43,7 +43,7 @@ static char *cond_expr_to_str(struct policydb *pdb, struct cond_expr *expr)
+ 
+ 	for (curr = expr; curr != NULL; curr = curr->next) {
+ 		if (curr->expr_type == COND_BOOL) {
+-			char *val1 = pdb->p_bool_val_to_name[curr->bool - 1];
++			char *val1 = pdb->p_bool_val_to_name[curr->boolean - 1];
+ 			new_val = create_str("%s", 1, val1);
+ 		} else {
+ 			const char *op;
+diff --git a/libsepol/src/kernel_to_conf.c b/libsepol/src/kernel_to_conf.c
+index 63dffd9b..59083479 100644
+--- a/libsepol/src/kernel_to_conf.c
++++ b/libsepol/src/kernel_to_conf.c
+@@ -42,7 +42,7 @@ static char *cond_expr_to_str(struct policydb *pdb, struct cond_expr *expr)
+ 
+ 	for (curr = expr; curr != NULL; curr = curr->next) {
+ 		if (curr->expr_type == COND_BOOL) {
+-			char *val1 = pdb->p_bool_val_to_name[curr->bool - 1];
++			char *val1 = pdb->p_bool_val_to_name[curr->boolean - 1];
+ 			new_val = create_str("%s", 1, val1);
+ 		} else {
+ 			const char *op;
+diff --git a/libsepol/src/link.c b/libsepol/src/link.c
+index cbe4cea4..3b7742bc 100644
+--- a/libsepol/src/link.c
++++ b/libsepol/src/link.c
+@@ -1524,9 +1524,9 @@ static int copy_cond_list(cond_node_t * list, cond_node_t ** dst,
+ 			/* expression nodes don't have a bool value of 0 - don't map them */
+ 			if (cur_expr->expr_type != COND_BOOL)
+ 				continue;
+-			assert(module->map[SYM_BOOLS][cur_expr->bool - 1] != 0);
+-			cur_expr->bool =
+-			    module->map[SYM_BOOLS][cur_expr->bool - 1];
++			assert(module->map[SYM_BOOLS][cur_expr->boolean - 1] != 0);
++			cur_expr->boolean =
++			    module->map[SYM_BOOLS][cur_expr->boolean - 1];
+ 		}
+ 		new_node->nbools = cur->nbools;
+ 		/* FIXME should COND_MAX_BOOLS be used here? */
+diff --git a/libsepol/src/module_to_cil.c b/libsepol/src/module_to_cil.c
+index b900290a..4e15f8e4 100644
+--- a/libsepol/src/module_to_cil.c
++++ b/libsepol/src/module_to_cil.c
+@@ -1272,7 +1272,7 @@ static int cond_expr_to_cil(int indent, struct policydb *pdb, struct cond_expr *
+ 
+ 	for (curr = cond_expr; curr != NULL; curr = curr->next) {
+ 		if (curr->expr_type == COND_BOOL) {
+-			val1 = pdb->p_bool_val_to_name[curr->bool - 1];
++			val1 = pdb->p_bool_val_to_name[curr->boolean - 1];
+ 			// length of boolean + 2 parens + null terminator
+ 			len = strlen(val1) + 2 + 1;
+ 			new_val = malloc(len);
+diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
+index 521ea4ff..d1bc7f03 100644
+--- a/libsepol/src/policydb_validate.c
++++ b/libsepol/src/policydb_validate.c
+@@ -957,7 +957,7 @@ static int validate_cond_expr(sepol_handle_t *handle, const struct cond_expr *ex
+ 	for (; expr; expr = expr->next) {
+ 		switch(expr->expr_type) {
+ 		case COND_BOOL:
+-			if (validate_value(expr->bool, boolean))
++			if (validate_value(expr->boolean, boolean))
+ 				goto bad;
+ 			if (depth == (COND_EXPR_MAXDEPTH - 1))
+ 				goto bad;
+diff --git a/libsepol/src/write.c b/libsepol/src/write.c
+index a9fdf93a..024fe628 100644
+--- a/libsepol/src/write.c
++++ b/libsepol/src/write.c
+@@ -834,7 +834,7 @@ static int cond_write_node(policydb_t * p,
+ 	for (cur_expr = node->expr; cur_expr != NULL; cur_expr = cur_expr->next) {
+ 		items = 0;
+ 		buf[items++] = cpu_to_le32(cur_expr->expr_type);
+-		buf[items++] = cpu_to_le32(cur_expr->bool);
++		buf[items++] = cpu_to_le32(cur_expr->boolean);
+ 		items2 = put_entry(buf, sizeof(uint32_t), items, fp);
+ 		if (items2 != items)
+ 			return POLICYDB_ERROR;
+diff --git a/libsepol/tests/debug.c b/libsepol/tests/debug.c
+index 90aa6e0a..8494dd25 100644
+--- a/libsepol/tests/debug.c
++++ b/libsepol/tests/debug.c
+@@ -41,7 +41,7 @@ void display_expr(policydb_t * p, cond_expr_t * exp, FILE * fp)
+ 	for (cur = exp; cur != NULL; cur = cur->next) {
+ 		switch (cur->expr_type) {
+ 		case COND_BOOL:
+-			fprintf(fp, "%s ", p->p_bool_val_to_name[cur->bool - 1]);
++			fprintf(fp, "%s ", p->p_bool_val_to_name[cur->boolean - 1]);
+ 			break;
+ 		case COND_NOT:
+ 			fprintf(fp, "! ");
+diff --git a/libsepol/tests/test-linker-cond-map.c b/libsepol/tests/test-linker-cond-map.c
+index 694a7346..6ea0e4c2 100644
+--- a/libsepol/tests/test-linker-cond-map.c
++++ b/libsepol/tests/test-linker-cond-map.c
+@@ -70,7 +70,7 @@ static void test_cond_expr_mapping(policydb_t * p, avrule_decl_t * d, test_cond_
+ 
+ 		CU_ASSERT(expr->expr_type == bools[i].expr_type);
+ 		if (bools[i].bool) {
+-			CU_ASSERT(strcmp(p->sym_val_to_name[SYM_BOOLS][expr->bool - 1], bools[i].bool) == 0);
++			CU_ASSERT(strcmp(p->sym_val_to_name[SYM_BOOLS][expr->boolean - 1], bools[i].bool) == 0);
+ 		}
+ 		expr = expr->next;
+ 	}
 -- 
 2.38.1
 

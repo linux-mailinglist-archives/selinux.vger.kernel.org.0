@@ -2,68 +2,74 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E4B35628A2A
-	for <lists+selinux@lfdr.de>; Mon, 14 Nov 2022 21:11:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D8E9562918E
+	for <lists+selinux@lfdr.de>; Tue, 15 Nov 2022 06:39:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236238AbiKNULI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Nov 2022 15:11:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37098 "EHLO
+        id S230199AbiKOFjn (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 15 Nov 2022 00:39:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237536AbiKNUKy (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Nov 2022 15:10:54 -0500
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 197FB1B1EA
-        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 12:10:53 -0800 (PST)
-Received: by mail-ej1-x62a.google.com with SMTP id n20so10479199ejh.0
-        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 12:10:53 -0800 (PST)
+        with ESMTP id S229664AbiKOFjm (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 15 Nov 2022 00:39:42 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54361B79E
+        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 21:39:40 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id k2so33496207ejr.2
+        for <selinux@vger.kernel.org>; Mon, 14 Nov 2022 21:39:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=McTStY4ftkbj5eldoW2InOIwOrA58RR2T/ju5cLV/Yo=;
-        b=RkbL+BVIpNeOm5ewOvR6U0HZ8J/KJJFrp5mkgEluPh0LgjoTv/uFv3lQQw2tyU4jpK
-         ojO8gzn2TQntS1lN6P2o5Bo5bCfY1kb7H59dK/OBKqul5O6+shd1Eirdmt7Mg9jNtU/V
-         w/dvS1H3m/aRSqGEgJqU1APwyEHqtqCdKDKLGvbt4QwvLlark8Muyyha1TAESSP0EuRM
-         ihSzW/s5n0o/c3nyFmjQyTkR8BPY53bmf3yrBcRQzBt6LdNpa/ztb1iRC1FZAY8ajV+p
-         4+pqOJmlyLekiEfWCyaQoUXGYOuUymw7Kqt3v30pPODftPlDRFfyNIYG7PEnyzJQqC2A
-         ggCg==
+        d=google.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=9K3V25osQLREMG6ZUk7AC0ZkFnZLHBbL3WZnP0tsfH4=;
+        b=lP1c+QctBSuAkoA0Voq5SO1rZHAodr96QmUnxvNWlD5+dWN0+a+G2GJSKPjIWX/FP2
+         yEf+NE2GSx/2I5MZekALkcGZ8fWAnnGpaxXL47vF1dPwqA/e4AVM2x9VT96NMomw6PIM
+         NFiXrtCZPAgVWLg3AbpT7mEzwkJKD1dRuwghDCmDown3PemV71JAfKEJAK18qY+R1drY
+         yTGHzc6xOjYGTZJL1+eK79Pf9py2dwz8vvc49geY7D98Q+v/bHXRmmcO7rWyP1SxOSp3
+         wLBijaAXnhZPHyAAk0yHwAwelCZATdN4NJbqmolDb7AvnOEHfNz/ut64iBqOyb6ykDlT
+         f76g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=McTStY4ftkbj5eldoW2InOIwOrA58RR2T/ju5cLV/Yo=;
-        b=y5HX7e9RRYdqS6jmhTxgfuUS66aOsNdVDNZsEY5Tp8eaqZwR6iUeBjoDbeyLmiDwRD
-         BL27RqCI3DeMdTHLBr3FLdlCpgbMhiqPPnbgg2XbJ2C5SRVGYq5+XLteX5dlBGpZPrG7
-         UIvbUrgfVKVFLX1krOGdOa6A9KzXxKuC+AouiIxOVlWsSYFLk7n6JlYkyfBxZ8P40Z1z
-         jbiJpqMukHns2rFj7EI77aghbvxwwuh2A9gQhyz06Kgy23JzZGhnsIE+t13WZ8IFktYm
-         MFsmNB7m/+oS6hx2iuV7Kvni4EALne8M5ITPOyZAGuZS2Mhw1lN6IJvNDAkJWH+4UQ2O
-         Dsgw==
-X-Gm-Message-State: ANoB5pmb1blFvfTsejcQjgewtj+ft640BwPZcBiU4La5LnjwlZzNo3+W
-        xcGPQ31shaFeMXuBypQhS/xPz87b2uI=
-X-Google-Smtp-Source: AA0mqf5VbV3i2FumGVR9WJ7RFINvXP1ycdpF3kflOOlfMfuKWJN/P8Frws4EncbRQXMP+TIxW6PL5A==
-X-Received: by 2002:a17:906:d8d:b0:7af:883:ec72 with SMTP id m13-20020a1709060d8d00b007af0883ec72mr3272646eji.727.1668456651574;
-        Mon, 14 Nov 2022 12:10:51 -0800 (PST)
-Received: from debianHome.localdomain (dynamic-077-003-090-138.77.3.pool.telefonica.de. [77.3.90.138])
-        by smtp.gmail.com with ESMTPSA id cb13-20020a170906a44d00b007abafe43c3bsm4558377ejb.86.2022.11.14.12.10.51
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 14 Nov 2022 12:10:51 -0800 (PST)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [RFC PATCH 6/6] libsemanage/tests: rename bool identifiers
-Date:   Mon, 14 Nov 2022 21:10:42 +0100
-Message-Id: <20221114201042.17773-6-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221114201042.17773-1-cgzones@googlemail.com>
-References: <20221114201042.17773-1-cgzones@googlemail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9K3V25osQLREMG6ZUk7AC0ZkFnZLHBbL3WZnP0tsfH4=;
+        b=V1TI+9PfYyP58m4W5QXSivX6SA/OGMKahMF0vO+xB2bvCmh2FgVrE2gn5SXYU5tnrt
+         OfdteA7ETMKZ9S4xLPuhlKu6qbKdTtPI14jy6DIwuKkmDwmfcUVH0kFakMwSJJMYWlea
+         gKp5RXy6fYBhtUWs+KEejBUsI1hUgwft/IYwx72LqjJpPwmDCSIEVnXMEY/LU/ZHLYfZ
+         RtTmdVGVEfuEZwFQj8e43Jpviqe8bqG0qUJTfQxFWoGptBSxKB2Bb850GiDZXxAen62g
+         1p7bnKX4XGkpQDCRsTRpZMc+r3w5ro84Ualmflq/CE/DLFZeAjxJfDIQ2HbfqRv/QR90
+         g27Q==
+X-Gm-Message-State: ANoB5pnl2jKTOUhfLZZ7gOK1y4hc8CQHhSMG8RLld0q3WwGuHgm6X6LY
+        ANMvq7yx/glM0A8Do+RliK6xdSKleeJaD5OC854AFA==
+X-Google-Smtp-Source: AA0mqf493ZLOHNguaLcfeGRl3oJcG1IBsHoRBk8cyDf4TKkHQT186EwcYZmwKDfunLnNwgS4fJ8HQ1Oe3Tv40FbbsyU=
+X-Received: by 2002:a17:906:71b:b0:7ad:9892:91e8 with SMTP id
+ y27-20020a170906071b00b007ad989291e8mr12896729ejb.620.1668490779010; Mon, 14
+ Nov 2022 21:39:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20221107205754.2635439-1-cukie@google.com> <CAHC9VhTLBWkw2XzqdFx1LFVKDtaAL2pEfsmm+LEmS0OWM1mZgA@mail.gmail.com>
+ <CABXk95ChjusTneWJgj5a58CZceZv0Ay-P-FwBcH2o4rO0g2Ggw@mail.gmail.com>
+ <CGME20221114143147eucas1p1902d9b4afc377fdda25910a5d083e3dc@eucas1p1.samsung.com>
+ <CAHC9VhRTWGuiMpJJiFrUpgsm7nQaNA-n1CYRMPS-24OLvzdA2A@mail.gmail.com> <20221114143145.ha22rdxphhpgd53u@localhost>
+In-Reply-To: <20221114143145.ha22rdxphhpgd53u@localhost>
+From:   Jeffrey Vander Stoep <jeffv@google.com>
+Date:   Tue, 15 Nov 2022 06:39:26 +0100
+Message-ID: <CABXk95BxnZWPEg397cAW0uXi2NxZpODVYPByyQOxP2LO08Gjug@mail.gmail.com>
+Subject: Re: [PATCH v1 0/2] Add LSM access controls for io_uring_setup
+To:     Joel Granados <j.granados@samsung.com>
+Cc:     Paul Moore <paul@paul-moore.com>, Gil Cukierman <cukie@google.com>,
+        Jens Axboe <axboe@kernel.dk>,
+        Pavel Begunkov <asml.silence@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,76 +77,101 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Avoid using the identifier `bool` to improve support with future C
-standards.  C23 is about to make `bool` a predefined macro (see N2654).
+Super helpful, thanks Paul! We'll look into this and get back to you
+if it doesn't fit our needs.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libsemanage/tests/libsemanage-tests.c | 2 +-
- libsemanage/tests/test_bool.c         | 6 +++---
- libsemanage/tests/test_bool.h         | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/libsemanage/tests/libsemanage-tests.c b/libsemanage/tests/libsemanage-tests.c
-index ee176703..1d41a03b 100644
---- a/libsemanage/tests/libsemanage-tests.c
-+++ b/libsemanage/tests/libsemanage-tests.c
-@@ -73,7 +73,7 @@ static bool do_tests(int interactive, int verbose)
- 	DECLARE_SUITE(semanage_store);
- 	DECLARE_SUITE(semanage_utilities);
- 	DECLARE_SUITE(handle);
--	DECLARE_SUITE(bool);
-+	DECLARE_SUITE(boolean);
- 	DECLARE_SUITE(fcontext);
- 	DECLARE_SUITE(iface);
- 	DECLARE_SUITE(ibendport);
-diff --git a/libsemanage/tests/test_bool.c b/libsemanage/tests/test_bool.c
-index 672544bb..9356a1ae 100644
---- a/libsemanage/tests/test_bool.c
-+++ b/libsemanage/tests/test_bool.c
-@@ -57,7 +57,7 @@ static void test_bool_list_local(void);
- 
- extern semanage_handle_t *sh;
- 
--int bool_test_init(void)
-+int boolean_test_init(void)
- {
- 	if (create_test_store() < 0) {
- 		fprintf(stderr, "Could not create test store\n");
-@@ -72,7 +72,7 @@ int bool_test_init(void)
- 	return 0;
- }
- 
--int bool_test_cleanup(void)
-+int boolean_test_cleanup(void)
- {
- 	if (destroy_test_store() < 0) {
- 		fprintf(stderr, "Could not destroy test store\n");
-@@ -82,7 +82,7 @@ int bool_test_cleanup(void)
- 	return 0;
- }
- 
--int bool_add_tests(CU_pSuite suite)
-+int boolean_add_tests(CU_pSuite suite)
- {
- 	CU_add_test(suite, "bool_key_create", test_bool_key_create);
- 	CU_add_test(suite, "bool_key_extract", test_bool_key_extract);
-diff --git a/libsemanage/tests/test_bool.h b/libsemanage/tests/test_bool.h
-index b5b5a603..985c1f06 100644
---- a/libsemanage/tests/test_bool.h
-+++ b/libsemanage/tests/test_bool.h
-@@ -24,8 +24,8 @@
- #include <CUnit/Basic.h>
- #include "semanage/semanage.h"
- 
--int bool_test_init(void);
--int bool_test_cleanup(void);
--int bool_add_tests(CU_pSuite suite);
-+int boolean_test_init(void);
-+int boolean_test_cleanup(void);
-+int boolean_add_tests(CU_pSuite suite);
- 
- #endif
--- 
-2.38.1
-
+On Mon, Nov 14, 2022 at 3:31 PM Joel Granados <j.granados@samsung.com> wrote:
+>
+> On Thu, Nov 10, 2022 at 04:04:46PM -0500, Paul Moore wrote:
+> > On Thu, Nov 10, 2022 at 12:54 PM Jeffrey Vander Stoep <jeffv@google.com> wrote:
+> > > On Mon, Nov 7, 2022 at 10:17 PM Paul Moore <paul@paul-moore.com> wrote:
+> > > >
+> > > > On Mon, Nov 7, 2022 at 3:58 PM Gil Cukierman <cukie@google.com> wrote:
+> > > > >
+> > > > > This patchset provides the changes required for controlling access to
+> > > > > the io_uring_setup system call by LSMs. It does this by adding a new
+> > > > > hook to io_uring. It also provides the SELinux implementation for a new
+> > > > > permission, io_uring { setup }, using the new hook.
+> > > > >
+> > > > > This is important because existing io_uring hooks only support limiting
+> > > > > the sharing of credentials and access to the sensitive uring_cmd file
+> > > > > op. Users of LSMs may also want the ability to tightly control which
+> > > > > callers can retrieve an io_uring capable fd from the kernel, which is
+> > > > > needed for all subsequent io_uring operations.
+> > > >
+> > > > It isn't immediately obvious to me why simply obtaining a io_uring fd
+> > > > from io_uring_setup() would present a problem, as the security
+> > > > relevant operations that are possible with that io_uring fd *should*
+> > > > still be controlled by other LSM hooks.  Can you help me understand
+> > > > what security issue you are trying to resolve with this control?
+> > >
+> > > I think there are a few reasons why we want this particular hook.
+> > >
+> > > 1.  It aligns well with how other resources are managed by selinux
+> > > where access to the resource is the first control point (e.g. "create"
+> > > for files, sockets, or bpf_maps, "prog_load" for bpf programs, and
+> > > "open" for perf_event) and then additional functionality or
+> > > capabilities require additional permissions.
+> >
+> > [NOTE: there were two reply sections in your email, and while similar,
+> > they were not identical; I've trimmed the other for the sake of
+> > clarity]
+> >
+> > The resources you mention are all objects which contain some type of
+> > information (either user data, configuration, or program
+> > instructions), with the resulting fd being a handle to those objects.
+> > In the case of io_uring the fd is a handle to the io_uring
+> > interface/rings, which by itself does not contain any information
+> > which is not already controlled by other permissions.
+> >
+> > I/O operations which transfer data between the io_uring buffers and
+> > other system objects, e.g. IORING_OP_READV, are still subject to the
+> > same file access controls as those done by the application using
+> > syscalls.  Even the IORING_OP_OPENAT command goes through the standard
+> > VFS code path which means it will trigger the same access control
+> > checks as an open*() done by the application normally.
+> >
+> > The 'interesting' scenarios are those where the io_uring operation
+> > servicing credentials, aka personalities, differ from the task
+> > controlling the io_uring.  However in those cases we have the new
+> > io_uring controls to gate these delegated operations.  Passing an
+> > io_uring fd is subject to the fd/use permission like any other fd.
+> >
+> > Although perhaps the most relevant to your request is the fact that
+> > the io_uring inode is created using the new(ish) secure anon inode
+> > interface which ensures that the creating task has permission to
+> > create an io_uring.  This io_uring inode label also comes into play
+> > when a task attempts to mmap() the io_uring rings, a critical part of
+> > the io_uring API.
+> >
+> > If I'm missing something you believe to be important, please share the details.
+> >
+> > > 2. It aligns well with how resources are managed on Android. We often
+> > > do not grant direct access to resources (like memory buffers).
+> >
+> > Accessing the io_uring buffers requires a task to mmap() the io_uring
+> > fd which is controlled by the normal SELinux mmap() access controls.
+> >
+> > > 3. Attack surface management. One of the primary uses of selinux on
+> > > Android is to assess and limit attack surface (e.g.
+> > > https://twitter.com/jeffvanderstoep/status/1422771606309335043) . As
+> > > io_uring vulnerabilities have made their way through our vulnerability
+> > > management system, it's become apparent that it's complicated to
+> > > assess the impact. Is a use-after-free reachable? Creating
+> > > proof-of-concept exploits takes a lot of time, and often functionality
+> > > can be reached by multiple paths. How many of the known io_uring
+> > > vulnerabilities would be gated by the existing checks? How many future
+> > > ones will be gated by the existing checks? I don't know the answer to
+> > > either of these questions and it's not obvious. This hook makes that
+> > > initial assessment simple and effective.
+> >
+> > It should be possible to deny access to io_uring via the anonymous
+> > inode labels, the mmap() controls, and the fd/use permission.  If you
+> > find a way to do meaningful work with an io_uring fd that can't be
+> > controlled via an existing permission check please let me know.
+>
+> Also interested in a more specific case. Sending reply so I get added to
+> the group response.
+> >
+> > --
+> > paul-moore.com

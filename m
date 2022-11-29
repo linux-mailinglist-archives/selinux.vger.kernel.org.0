@@ -2,204 +2,81 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7CEDE63BED3
-	for <lists+selinux@lfdr.de>; Tue, 29 Nov 2022 12:23:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F2CB663C2A0
+	for <lists+selinux@lfdr.de>; Tue, 29 Nov 2022 15:33:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229676AbiK2LXo (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 29 Nov 2022 06:23:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
+        id S235717AbiK2OdU (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 29 Nov 2022 09:33:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229616AbiK2LXo (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 29 Nov 2022 06:23:44 -0500
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25FD3B4BB;
-        Tue, 29 Nov 2022 03:23:43 -0800 (PST)
-Received: from pps.filterd (m0098404.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2AT9sSRj007122;
-        Tue, 29 Nov 2022 11:23:09 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- mime-version : content-transfer-encoding; s=pp1;
- bh=/smMidFxcLEK4Y856DjTwLSzF8Q3YTSpTIA5p2GvUGU=;
- b=eRi59DIx2C4Ca4cE0OnoZVdlifqtjwY/MWyqfRlVN84SfXsstwm2/oYjWLk6E2/9rVxI
- FP/N7i6JJpYFLNu2orGqZ/YR/9CJsQJg/OyJqh3WfQxCal8ifCZ3D95scAy0lAeWjwTI
- 4bhO9BjLF0jUzoren5m/XzUzZUyjyBTL6BUkNA8vIkbB3EvJ0MaC5u+URFNIg6Kz5RiT
- +fk7gy/HKc9FAdI5uLzl15jCo4NJcjzmjP2AuCQhxEn8jsMS+lCUo/mKeG7qyNiioAuf
- XIIqHHo5vKeHejKR6nS8fNTGHajPCa2cLbOker9afRlgGqI2kd0wzM+cB5gjP0OJBD/0 YA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5djwnt6n-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Nov 2022 11:23:08 +0000
-Received: from m0098404.ppops.net (m0098404.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2ATATLta012268;
-        Tue, 29 Nov 2022 11:23:08 GMT
-Received: from ppma03wdc.us.ibm.com (ba.79.3fa9.ip4.static.sl-reverse.com [169.63.121.186])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3m5djwnt67-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Nov 2022 11:23:07 +0000
-Received: from pps.filterd (ppma03wdc.us.ibm.com [127.0.0.1])
-        by ppma03wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2ATBLSfQ030091;
-        Tue, 29 Nov 2022 11:23:06 GMT
-Received: from b01cxnp22035.gho.pok.ibm.com (b01cxnp22035.gho.pok.ibm.com [9.57.198.25])
-        by ppma03wdc.us.ibm.com with ESMTP id 3m3ae9c5uu-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 29 Nov 2022 11:23:06 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com ([9.208.128.115])
-        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2ATBN5tU11993706
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 29 Nov 2022 11:23:05 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 1F0175803F;
-        Tue, 29 Nov 2022 11:23:05 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 384785804E;
-        Tue, 29 Nov 2022 11:23:03 +0000 (GMT)
-Received: from li-f45666cc-3089-11b2-a85c-c57d1a57929f.ibm.com (unknown [9.160.96.78])
-        by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 29 Nov 2022 11:23:03 +0000 (GMT)
-Message-ID: <9859294adb0a9b9587ea7fb70a836a312aaf3c69.camel@linux.ibm.com>
-Subject: Re: [PATCH v6 4/6] security: Allow all LSMs to provide xattrs for
- inode_init_security hook
-From:   Mimi Zohar <zohar@linux.ibm.com>
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>, mark@fasheh.com,
-        jlbec@evilplan.org, joseph.qi@linux.alibaba.com,
-        dmitry.kasatkin@gmail.com, paul@paul-moore.com, jmorris@namei.org,
-        serge@hallyn.com, stephen.smalley.work@gmail.com,
-        eparis@parisplace.org, casey@schaufler-ca.com
-Cc:     ocfs2-devel@oss.oracle.com, reiserfs-devel@vger.kernel.org,
-        linux-integrity@vger.kernel.org,
-        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, keescook@chromium.org,
-        nicolas.bouchinet@clip-os.org,
-        Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Tue, 29 Nov 2022 06:23:02 -0500
-In-Reply-To: <bb63eba9a9f24558f4a1acd9bf012b59b5c6e98e.camel@huaweicloud.com>
-References: <20221123154712.752074-1-roberto.sassu@huaweicloud.com>
-         <20221123154712.752074-5-roberto.sassu@huaweicloud.com>
-         <13350b79f708cb089e2ff2ee5cead52bafb10982.camel@linux.ibm.com>
-         <bb63eba9a9f24558f4a1acd9bf012b59b5c6e98e.camel@huaweicloud.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: YWJ0UkKGLkx-v1vHUCLv3jRvVEbAFJIi
-X-Proofpoint-GUID: 1QSg_Kxvz3AePdR0NFcitQgRW4PGc6pb
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.219,Aquarius:18.0.895,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-11-29_07,2022-11-28_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
- mlxscore=0 bulkscore=0 priorityscore=1501 mlxlogscore=999 spamscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 suspectscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2210170000 definitions=main-2211290067
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S235730AbiK2OdH (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 29 Nov 2022 09:33:07 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9D0E421BD
+        for <selinux@vger.kernel.org>; Tue, 29 Nov 2022 06:33:06 -0800 (PST)
+Received: from dggpeml500022.china.huawei.com (unknown [172.30.72.56])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NM4YP4DtWzmVJq
+        for <selinux@vger.kernel.org>; Tue, 29 Nov 2022 22:32:25 +0800 (CST)
+Received: from dggpeml500008.china.huawei.com (7.185.36.147) by
+ dggpeml500022.china.huawei.com (7.185.36.66) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.31; Tue, 29 Nov 2022 22:33:05 +0800
+Received: from huawei.com (10.175.124.27) by dggpeml500008.china.huawei.com
+ (7.185.36.147) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Tue, 29 Nov
+ 2022 22:33:04 +0800
+From:   Jie Lu <lujie54@huawei.com>
+To:     <selinux@vger.kernel.org>
+Subject: [PATCH] libselinux:add check for malloc
+Date:   Tue, 29 Nov 2022 20:00:20 +0800
+Message-ID: <20221129120020.1915666-1-lujie54@huawei.com>
+X-Mailer: git-send-email 2.27.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.124.27]
+X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
+ dggpeml500008.china.huawei.com (7.185.36.147)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, 2022-11-24 at 09:17 +0100, Roberto Sassu wrote:
-> On Wed, 2022-11-23 at 20:14 -0500, Mimi Zohar wrote:
-> > Hi Roberto,
-> > 
-> > On Wed, 2022-11-23 at 16:47 +0100, Roberto Sassu wrote:
-> > >  int security_inode_init_security(struct inode *inode, struct inode *dir,
-> > >                                  const struct qstr *qstr,
-> > >                                  const initxattrs initxattrs, void *fs_data)
-> > >  {
-> > > -       struct xattr new_xattrs[MAX_LSM_EVM_XATTR + 1];
-> > > -       struct xattr *lsm_xattr, *evm_xattr, *xattr;
-> > > -       int ret;
-> > > +       struct security_hook_list *P;
-> > > +       struct xattr *new_xattrs;
-> > > +       struct xattr *xattr;
-> > > +       int ret = -EOPNOTSUPP, num_filled_xattrs = 0;
-> > >  
-> > >         if (unlikely(IS_PRIVATE(inode)))
-> > >                 return 0;
-> > >  
-> > > +       if (!blob_sizes.lbs_xattr)
-> > > +               return 0;
-> > > +
-> > >         if (!initxattrs)
-> > >                 return call_int_hook(inode_init_security, -EOPNOTSUPP, inode,
-> > > -                                    dir, qstr, NULL, NULL, NULL);
-> > > -       memset(new_xattrs, 0, sizeof(new_xattrs));
-> > > -       lsm_xattr = new_xattrs;
-> > > -       ret = call_int_hook(inode_init_security, -EOPNOTSUPP, inode, dir, qstr,
-> > > -                                               &lsm_xattr->name,
-> > > -                                               &lsm_xattr->value,
-> > > -                                               &lsm_xattr->value_len);
-> > > -       if (ret)
-> > > +                                   dir, qstr, NULL);
-> > > +       /* Allocate +1 for EVM and +1 as terminator. */
-> > > +       new_xattrs = kcalloc(blob_sizes.lbs_xattr + 2, sizeof(*new_xattrs),
-> > > +                            GFP_NOFS);
-> > > +       if (!new_xattrs)
-> > > +               return -ENOMEM;
-> > > +
-> > > +       hlist_for_each_entry(P, &security_hook_heads.inode_init_security,
-> > > +                            list) {
-> > > +               ret = P->hook.inode_init_security(inode, dir, qstr, new_xattrs);
-> > > +               if (ret && ret != -EOPNOTSUPP)
-> > > +                       goto out;
-> > > +               if (ret == -EOPNOTSUPP)
-> > > +                       continue;
-> > 
-> > In this context, -EOPNOTSUPP originally signified that the filesystem
-> > does not support writing xattrs.  Writing any xattr would fail. 
-> > Returning -ENODATA for no LSM xattr(s) data would seem to be more
-> > appropriate than -EOPNOTSUPP.
-> 
-> Hi Mimi
-> 
-> I thought about adding new return values. Currently only -EOPNOTSUPP
-> and -ENOMEM are expected as errors.
-> 
-> However, changing the conventions would mean revisiting the LSMs code
-> and ensuring that they follow the new conventions.
-> 
-> I would be more in favor of not touching it.
+Add return check for regex_data_create() to avoid NULL reference of regex_data
 
-Casey, Paul, any comment?
+(gdb) bt
+ #0  0x00007fbde5caec14 in pthread_mutex_init () from /usr/lib64/libc.so.6
+ #1  0x00007fbde5e3a489 in regex_data_create () at regex.c:260
+ #2  0x00007fbde5e3a4af in regex_prepare_data (regex=regex@entry=0x7fbde4613770, pattern_string=pattern_string@entry=0x563c6799a820 "^/home$", errordata=errordata@entry=0x7ffeb83fa950) at regex.c:76
+ #3  0x00007fbde5e32fe6 in compile_regex (errbuf=0x0, spec=0x7fbde4613748) at label_file.h:407
+ #4  lookup_all (key=0x563c679974e5 "/var/log/kadmind.log", type=<optimized out>, partial=partial@entry=false, match_count=match_count@entry=0x0, rec=<optimized out>, rec=<optimized out>)
+     at label_file.c:949
+ #5  0x00007fbde5e33350 in lookup (rec=<optimized out>, key=<optimized out>, type=<optimized out>) at label_file.c:1092
+ #6  0x00007fbde5e31878 in selabel_lookup_common (rec=0x563c67998cc0, translating=1, key=<optimized out>, type=<optimized out>) at label.c:167
 
-> > 
-> > > +               /*
-> > > +                * As the number of xattrs reserved by LSMs is not directly
-> > > +                * available, directly use the total number blob_sizes.lbs_xattr
-> > > +                * to keep the code simple, while being not the most efficient
-> > > +                * way.
-> > > +                */
-> > > +               ret = security_check_compact_filled_xattrs(new_xattrs,
-> > > +                                                          blob_sizes.lbs_xattr,
-> > > +                                                          &num_filled_xattrs);
-> > > +               if (ret < 0) {
-> > > +                       ret = -ENOMEM;
-> > > +                       goto out;
-> > > +               }
-> > > +       }
-> > > +
-> > > +       if (!num_filled_xattrs)
-> > >                 goto out;
-> > >  
-> > > -       evm_xattr = lsm_xattr + 1;
-> > > -       ret = evm_inode_init_security(inode, lsm_xattr, evm_xattr);
-> > > +       ret = evm_inode_init_security(inode, new_xattrs,
-> > > +                                     new_xattrs + num_filled_xattrs);
-> > >         if (ret)
-> > >                 goto out;
-> > >         ret = initxattrs(inode, new_xattrs, fs_data);
-> > >  out:
-> > >         for (xattr = new_xattrs; xattr->value != NULL; xattr++)
-> > >                 kfree(xattr->value);
-> > > +       kfree(new_xattrs);
-> > >         return (ret == -EOPNOTSUPP) ? 0 : ret;
-> > >  }
-> > b
-> 
+Signed-off-by: Jie Lu <lujie54@huawei.com>
+---
+ libselinux/src/regex.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/libselinux/src/regex.c b/libselinux/src/regex.c
+index 73987d9f..149a7973 100644
+--- a/libselinux/src/regex.c
++++ b/libselinux/src/regex.c
+@@ -257,6 +257,9 @@ struct regex_data *regex_data_create(void)
+ {
+ 	struct regex_data *regex_data =
+ 		(struct regex_data *)calloc(1, sizeof(struct regex_data));
++	if (!regex_data)
++		return NULL;
++
+ 	__pthread_mutex_init(&regex_data->match_mutex, NULL);
+ 	return regex_data;
+ }
+-- 
+2.27.0
 

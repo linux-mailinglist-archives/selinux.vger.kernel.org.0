@@ -2,31 +2,33 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C5C64281D
+	by mail.lfdr.de (Postfix) with ESMTP id D3B5264281F
 	for <lists+selinux@lfdr.de>; Mon,  5 Dec 2022 13:09:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231640AbiLEMJl (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 5 Dec 2022 07:09:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47846 "EHLO
+        id S231327AbiLEMJn (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 5 Dec 2022 07:09:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230306AbiLEMJk (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 5 Dec 2022 07:09:40 -0500
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81501B9E
+        with ESMTP id S231644AbiLEMJl (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 5 Dec 2022 07:09:41 -0500
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD80960ED
         for <selinux@vger.kernel.org>; Mon,  5 Dec 2022 04:09:39 -0800 (PST)
-Received: from dggpeml500008.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4NQj4z1Tjkz15N7p
-        for <selinux@vger.kernel.org>; Mon,  5 Dec 2022 20:08:51 +0800 (CST)
+Received: from dggpeml500008.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4NQj4y4vVSzmWMV
+        for <selinux@vger.kernel.org>; Mon,  5 Dec 2022 20:08:50 +0800 (CST)
 Received: from huawei.com (10.175.124.27) by dggpeml500008.china.huawei.com
  (7.185.36.147) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.31; Mon, 5 Dec
  2022 20:09:37 +0800
 From:   Jie Lu <lujie54@huawei.com>
 To:     <selinux@vger.kernel.org>
-Subject: [PATCH 1/3] libselinux: fix potential NULL reference and memory leak in audit2why
-Date:   Mon, 5 Dec 2022 17:36:42 +0800
-Message-ID: <20221205093644.703107-1-lujie54@huawei.com>
+Subject: [PATCH 2/3] libsepol: fix potential memory leak in common_copy_callback
+Date:   Mon, 5 Dec 2022 17:36:43 +0800
+Message-ID: <20221205093644.703107-2-lujie54@huawei.com>
 X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20221205093644.703107-1-lujie54@huawei.com>
+References: <20221205093644.703107-1-lujie54@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7BIT
 Content-Type:   text/plain; charset=US-ASCII
@@ -42,72 +44,25 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-In audit2why.c add return check for memory allocation. And free every element
-in the boollist when function fails.
+In common_copy_callback(), destroy new_common->permissions when the function fails.
 
 Signed-off-by: Jie Lu <lujie54@huawei.com>
 ---
- libselinux/src/audit2why.c | 26 ++++++++++++++++++++++++--
- 1 file changed, 24 insertions(+), 2 deletions(-)
+ libsepol/src/expand.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/libselinux/src/audit2why.c b/libselinux/src/audit2why.c
-index ba1a66eb..742b4ff5 100644
---- a/libselinux/src/audit2why.c
-+++ b/libselinux/src/audit2why.c
-@@ -55,7 +55,16 @@ static int load_booleans(const sepol_bool_t * boolean,
- 			 void *arg __attribute__ ((__unused__)))
- {
- 	boollist[boolcnt] = malloc(sizeof(struct boolean_t));
-+	if (!boollist[boolcnt]) {
-+		PyErr_SetString( PyExc_MemoryError, "Out of memory\n");
-+		return -1;
-+	}
- 	boollist[boolcnt]->name = strdup(sepol_bool_get_name(boolean));
-+	if (!boollist[boolcnt]->name) {
-+		PyErr_SetString( PyExc_MemoryError, "Out of memory\n");
-+		free(boollist[boolcnt]);
-+		return -1;
-+	}
- 	boollist[boolcnt]->active = sepol_bool_get_value(boolean);
- 	boolcnt++;
- 	return 0;
-@@ -149,6 +158,11 @@ static int check_booleans(struct boolean_t **bools)
- 
- 	if (fcnt > 0) {
- 		*bools = calloc(sizeof(struct boolean_t), fcnt + 1);
-+		if (!*bools) {
-+			PyErr_SetString( PyExc_MemoryError, "Out of memory\n");
-+			free(foundlist);
-+			return 0;
-+		}
- 		struct boolean_t *b = *bools;
- 		for (i = 0; i < fcnt; i++) {
- 			int ctr = foundlist[i];
-@@ -278,14 +292,22 @@ static int __policy_init(const char *init_path)
- 	return 0;
- 
- err:
--	if (boollist)
--		free(boollist);
-+	if (boollist) {
-+		for (i = 0; i < boolcnt; i++) {
-+                        free(boollist[i]->name);
-+                        free(boollist[i]);
-+                }
-+                free(boollist);
-+                boollist = NULL;
-+                boolcnt = 0;
-+	}
- 	if (avc){
- 		if (avc->handle)
- 			sepol_handle_destroy(avc->handle);
- 		if (avc->policydb)
- 			sepol_policydb_free(avc->policydb);
- 		free(avc);
-+		avc = NULL;
- 	}
- 	if (pf)
- 		sepol_policy_file_free(pf);
+diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
+index 8d19850e..b44cfd4f 100644
+--- a/libsepol/src/expand.c
++++ b/libsepol/src/expand.c
+@@ -297,6 +297,7 @@ static int common_copy_callback(hashtab_key_t key, hashtab_datum_t datum,
+ 			   (hashtab_datum_t) new_common);
+ 	if (ret) {
+ 		ERR(state->handle, "hashtab overflow");
++		symtab_destroy(&new_common->permissions);
+ 		free(new_common);
+ 		free(new_id);
+ 		return -1;
 -- 
 2.27.0
 

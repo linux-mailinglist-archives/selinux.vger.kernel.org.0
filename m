@@ -2,73 +2,78 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9F596470BD
-	for <lists+selinux@lfdr.de>; Thu,  8 Dec 2022 14:26:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FE82647332
+	for <lists+selinux@lfdr.de>; Thu,  8 Dec 2022 16:35:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230232AbiLHN01 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 8 Dec 2022 08:26:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45210 "EHLO
+        id S230171AbiLHPfd (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 8 Dec 2022 10:35:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54084 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229807AbiLHN0Z (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 8 Dec 2022 08:26:25 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D6181D94
-        for <selinux@vger.kernel.org>; Thu,  8 Dec 2022 05:25:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1670505933;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=nW44aju1qfI1gxJAPS2WTlQCjEVlhWUW9iP6OGUExJU=;
-        b=D2eK1SJYFv8gdjXDVt5nA9ZzP4fpx1UcNukQZfXq0XebBOrmPe4zccThEqDgPR+NxTO8D5
-        gaFJ8FQtJr3d645wnfgLx7KFa8pMOJUF9mbyo+nKQA8Pze3jbDxvILuVxcwM/iL4snuySa
-        HH3pBHSyl+uT537D8dbh56GenQFgcaw=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-341-APmgWZ0yN66676F4nCIvgA-1; Thu, 08 Dec 2022 08:25:31 -0500
-X-MC-Unique: APmgWZ0yN66676F4nCIvgA-1
-Received: by mail-ej1-f72.google.com with SMTP id sb2-20020a1709076d8200b007bdea97e799so1074355ejc.22
-        for <selinux@vger.kernel.org>; Thu, 08 Dec 2022 05:25:31 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nW44aju1qfI1gxJAPS2WTlQCjEVlhWUW9iP6OGUExJU=;
-        b=RuhmzyOL/gONStW+III4uO840t0cETPrK+d9AAkFslti2Vy38gEAm37fArxF9O/k4s
-         cCxe2o4L1vOS9uLoXUX7+IrccK+zMgS66RFZVh6AqtGBPgQhHv8KYAY1m19uWxnsYo+A
-         hW18LxaPOb3PT3ZZeYX/TrFih7+afKmBFH8cT2Wt+zvZRSw0ILzePI32rWcahtsisU37
-         g2cnYbWHhvAu+EtId2VRgcTDeEkFfHer8ImCnPLi4Pv0LWdlmBg+6g/5EKFX0Hl/a9Yz
-         vZW5H138/nSe13ojX4YqIdPvGPWyyCU7HzdT4gEhRsLaNuYtdAVR1h9NoRo092LnrqM5
-         nyrg==
-X-Gm-Message-State: ANoB5pn/ohqzwle+8PA3y81iuVKbjKRO3mHLptHBY75ElTCHCJWc5d0M
-        qWxxhiXtBtNftssoh2F2ZtvaRoxyvxNv3YHk18Lcu7S/n5UzGSAt2Fz5MmjpmL9KE0sjo7bTsDR
-        6xORfcXHbiiHyA0TXknUs4sDn0xJPjxtMWbreUnHm0NODcXIjB85VrtZZRxRnMhsBL44Ovg==
-X-Received: by 2002:a17:906:4d8f:b0:7c0:e535:13fc with SMTP id s15-20020a1709064d8f00b007c0e53513fcmr2237377eju.37.1670505929979;
-        Thu, 08 Dec 2022 05:25:29 -0800 (PST)
-X-Google-Smtp-Source: AA0mqf6b0qU9MflPnbzr6xSk2a1VM3Ga5NslnfPGDeiA7wqJ+VnndcXUSjl249ZYh8beffiUoO9Eow==
-X-Received: by 2002:a17:906:4d8f:b0:7c0:e535:13fc with SMTP id s15-20020a1709064d8f00b007c0e53513fcmr2237360eju.37.1670505929682;
-        Thu, 08 Dec 2022 05:25:29 -0800 (PST)
-Received: from localhost.localdomain ([2a02:8308:b104:2c00:2e8:ec99:5760:fb52])
-        by smtp.gmail.com with ESMTPSA id q18-20020a1709066b1200b007bf988ce9f7sm9753959ejr.38.2022.12.08.05.25.28
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 Dec 2022 05:25:28 -0800 (PST)
-From:   Ondrej Mosnacek <omosnace@redhat.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH testsuite 4/4] ci: bump Fedora versions
-Date:   Thu,  8 Dec 2022 14:25:22 +0100
-Message-Id: <20221208132522.309657-5-omosnace@redhat.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221208132522.309657-1-omosnace@redhat.com>
-References: <20221208132522.309657-1-omosnace@redhat.com>
+        with ESMTP id S230249AbiLHPfK (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 8 Dec 2022 10:35:10 -0500
+Received: from sonic303-27.consmr.mail.ne1.yahoo.com (sonic303-27.consmr.mail.ne1.yahoo.com [66.163.188.153])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ED01A13D2
+        for <selinux@vger.kernel.org>; Thu,  8 Dec 2022 07:33:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1670513586; bh=bAXj1zQgUqxwL+NfnAA1mkuO8NrpRS0bZrRSsA8Ai7Y=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=U14M7xTTSXpURi3inbYBNTdhtj223knANIrG/B2KBhnUkwomX8mydA/+fx12kpNIevxfRsr0Ik1/LOdg5Ukjn6+eB0uY65GoehNun4CRY+YKv/0hER0Njlz62Lh3nJgm4sZaEiKoS46qyp+7BmwKprodsb17NLKUF1SRhuxvzTsR22hWiemnLuE4WS9kH9/YRi+uJ3I1hrlphjiXy+FHrWpM3VgjfmhgH0R8hH/x6v1nJdEy6JWqYbYrbv0yBPg1e8vmfseruvTscvkMJTeXxp2QA6oJZDLpcAqFYJfn8k9gVAqEmrl8Oc0SSGSdBO+ePYykL5tCc73dQhQNOn7hug==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1670513586; bh=+j3fx/y3x/+OH2L2dtdrscsnx1t3lpp1vtanp8nTyjh=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=DWzDvXcugVCgIEMyqPpJ5zJWN97QSQlAwF4FAfyY/kfwO+VLxR5JEg1eIHofwzoqotHdz9d0XvHbte0hGEMQdM+9LFaR+GiAPH+11qhNmSOYf4gBwMnkD2atES4f93SzeUa9jMgH2dQ2i37wTSc5wX3AwDqx/JbAjKlvdU4B6JYGjtGROsa6Y7FfXEoQQmKHQP1sC6xmC2BjAgrlIqQX3BzxvOPMwD/qD99E3orRNIXjsLgRzFRb0byp6ptmurvbx8o4fnMouE/Gv1dXpJLgYOupe4D8zWqJZxkoeturQ5d+I5MYAYV0yp9Fxy39VVljRgCq8Pb1SorHD6Jf5Ae7NQ==
+X-YMail-OSG: C28rwg8VM1n6hHhnKM4z1AJ_F0w_AVTXer8C.OcgniARUCy0D8hRGlcagCSHTr0
+ X6pyHz7vBNIMtvBOupJ6mQPRdbHv4e1rQfvRTvBS5vEZCkyTDUmMb.3XfgPK9aPAARM..kvKN9j2
+ eZKrN7v46ocVwBKbz6N0KtocsTIBbfh7v0r6HATsDhWlpO9lRHpOLdXA5hj7gpABEuR8xvqMbP7u
+ lbjFJEKypu_PS6XuUxYcymXA4NRBn7_UHvmdE1MTkiDj3tP.Npl2g0eGsX1otX7LEEdDNj.gNbcj
+ 9PNmNzgMT9MYGeyl3DhGc5rW1_ZTR0OfU.ZaUDcE6C5HX0LgAsuIIcY8QsglUd8NGo70Ku5C__d3
+ BGPhPfug8f7MS5oIq1oiCHpLdxIU3grNhn.sY2WExwdsvm2KT43PttjXxYe2LtImGK2HGysjGO7s
+ obylB8R.uDiJFmjllvocMuswyT3O2qM5OKH0xJHCOrpIv.7Qs0UhC.a9lCa_q3OTYYR20Hly7N2k
+ ArhIfPNWNzNLt__pGNY5gOFTXUAjbFfL5ljWG9IkkTo7iWK9O6TQ0VAiDbMCqaaYzClNnvnoOSZM
+ T5elUJOm6Rq2Pk3khW2t2HXKuL3xEty0tAbwEtBKHDuP1kavkYL.EkZVvxHuDS6ypykYEDqnuHUS
+ NnCVoi8pLZku1UxRnjdFbkbJODudFuSfmakikilw8941GIeXOyFRqG0sGT02vU_xbQ27y3txTike
+ OKpyngC7gWGqbRvcZydhfWF.6rDO4wZe7Ub4RrX8W9JlbLgl0Zj7_2WbgMDmOXBjRKJERWL6yVqx
+ _.PL_IgbUlPZfl_i2NkAio8nCzQ8brfX2orTt01xkEJIBJ2nqpwIhU_QwXZmmP.ayDCg5evb3VUT
+ nO6hL.TLaS6godP2LgQCoYR1jN7e564QcMGQf7AagGgfB.5RrN0AMLIhuQlM7SjJvqxMH6s4VKqx
+ 0T.Seq9xeRU6WuIywOBM2A9.NnSgym3sjdNt2Uvt.91lidl_Fd6CFCpwBDGqH91NnVZSIl8KDmXC
+ sFFFRPlHGwNF_c.JXxEbmjP0inKzCyInjDunq1gHjV7PoDyolG5h7CpBrjkB85e5LKIobMXt0Eu.
+ ZDvaR7vJJadbgFHYlOlhnY4T_JiXMLMnWae3PD9dLdI.66AmILCWZ.8TQWHX5.ZMGrwcOhaAkPrP
+ pJWvENoNg.s02ucRFAnCs7.4senoRwBTfcEd1mGlad4qh24eKhayGjo21MMWLYUvKJ4TUlk4Gs4n
+ GOF4Z..EZmrBSPG.6A0wqnO8Av79mcXixS2yAjf5ZpJdh6BU5qJHfPAjYziB5VNqTeBOX9RF3tl2
+ ZkCeqJpqgCyjKX09J1SlI0vs5ERPEjLDMWimHj8uR3GnaVSHfMEr8YOMuJhOdbTa.VDIDnM9Gugu
+ w0GUmPjG2jgLQ25lCy6h4uds29uHC.g5qtJPBDeX0o6bhuaE4_FYJrjUPTOyKFZSaeNDBowV04ZJ
+ _Y9qlFxsA8NKfZ0JjrDvEqLOE.rrqHWj__TYhgf.tsGJYS2I8XULgqxJotTAXuBvOMeRipneATCw
+ nGNz4LCUMgY.u3jD11lEp8lGhZcWIGnDzuxSobACeJS3iw2PIJSeJbHpVg_Qy3Z9zOLNI_YkQLnO
+ ZHx0D5iNkmyhUwTltOBnG8qpG_o3w4ymwCaBQknS3p0muN6Fyw2zgJBV95jQ71u0OdHLkfbIjyfU
+ CWpI9ZPHDevONIcG4zj08EYfm6TIztY1lkwAGKQuS0fnbKr_gUYP8yYyY41xNcQ8ecEc5KqdAGTk
+ qONAgggW084qDEcQA7JKHtCeIk4F44YoFalvtXNG6RY1WcH9YydWllU_oPTOtvZpva_TTKTlvA0M
+ 8Yuau0lXOApmaTOSZs2sdKu6sqYjYrzmlXOpFkwNa4vJv6o7xT1ucKjYjCl7gGjwajmWRZVRq6no
+ 1mUoMelmmQE7.rLC3y8V3MZji44P6RiwYvtyb_6I8pKSbqNWmCDIVt9JWoX3ucBQSJpNx_OSQUVO
+ 7ubCPwzteRYEpmCPF42IWGa5Vm6H8jubAZ2LXnwuXdfBWEK0eITXwsjXs_V6iesV7qOH3YFFNgfc
+ qNDftQNAkCVvhFRfi9u9nNxhJQR33uHnyiKfrUTN1qwRiPlzcv8dRAOdBIElZVNqHDkpu4pZ1JKD
+ MhLtivA10DZ6pa5Mh9N_R.H3bXC9o2bSYocC7psXBycMC9q9Va8z0HFdUUh_5FUQieOTXVEvEF6j
+ elZEMMo0Pl.GBnynGGTdv9YktXCcXscw-
+X-Sonic-MF: <casey@schaufler-ca.com>
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Thu, 8 Dec 2022 15:33:06 +0000
+Received: by hermes--production-gq1-d898c4779-lkhfb (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e73aadf127eff01f7a55e8a7a7a39458;
+          Thu, 08 Dec 2022 15:33:02 +0000 (UTC)
+Message-ID: <fc052c3c-7545-4d84-05d8-adb5659348a1@schaufler-ca.com>
+Date:   Thu, 8 Dec 2022 07:33:01 -0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.1
+Subject: Re: [PATCH mptcp-net] mptcp: fix LSM labeling for passive msk
+Content-Language: en-US
+To:     Mat Martineau <mathew.j.martineau@linux.intel.com>,
+        Paolo Abeni <pabeni@redhat.com>
+Cc:     mptcp@lists.linux.dev, Paul Moore <paul@paul-moore.com>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
+        SElinux list <selinux@vger.kernel.org>,
+        Linux Security Module list 
+        <linux-security-module@vger.kernel.org>, casey@schaufler-ca.com
+References: <ffee337de5d6e447185b87ade65cc27f0b3576db.1670434580.git.pabeni@redhat.com>
+ <a3c81322-36b5-a289-c07b-15d2be75b02d@linux.intel.com>
+From:   Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <a3c81322-36b5-a289-c07b-15d2be75b02d@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
+X-Mailer: WebService/1.1.20926 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,29 +81,207 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Fedora 37 has been released, 35 will soon be EOL.
+On 12/7/2022 6:19 PM, Mat Martineau wrote:
+> On Wed, 7 Dec 2022, Paolo Abeni wrote:
+>
+>> MPTCP sockets created via accept() inherit their LSM label
+>> from the initial request socket, which in turn get it from the
+>> listener socket's first subflow. The latter is a kernel socket,
+>> and get the relevant labeling at creation time.
+>>
+>> Due to all the above even the accepted MPTCP socket get a kernel
+>> label, causing unexpected behaviour and failure on later LSM tests.
+>>
+>> Address the issue factoring out a socket creation helper that does
+>> not include the post-creation LSM checks. Use such helper to create
+>> mptcp subflow as in-kernel sockets and doing explicitly LSM validation:
+>> vs the current user for the first subflow, as a kernel socket otherwise.
+>>
+>> Fixes: 0c14846032f2 ("mptcp: fix security context on server socket")
+>> Reported-by: Ondrej Mosnacek <omosnace@redhat.com>
+>> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+>
+> The MPTCP content looks good to me:
+>
+> Acked-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
+>
+>
+> I didn't see issues with the socket.c changes but I'd like to get some
+> security community feedback before upstreaming - Paul or other
+> security reviewers, what do you think?
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
----
- .github/workflows/checks.yml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I haven't had the opportunity to work out what impact, if any, this will
+have on Smack. I haven't seen a reproducer for the problem, is one available?
+Sorry to chime in late.
 
-diff --git a/.github/workflows/checks.yml b/.github/workflows/checks.yml
-index ae81925..b1b93c6 100644
---- a/.github/workflows/checks.yml
-+++ b/.github/workflows/checks.yml
-@@ -17,9 +17,9 @@ jobs:
-       matrix:
-         domain: [unconfined_t, sysadm_t]
-         env:
--          - { version: 35, kernel: default }
-           - { version: 36, kernel: default }
--          - { version: 36, kernel: secnext }
-+          - { version: 37, kernel: default }
-+          - { version: 37, kernel: secnext }
-     env:
-       FEDORA_VERSION: ${{ matrix.env.version }}
-       KERNEL_TYPE: ${{ matrix.env.kernel }}
--- 
-2.38.1
-
+>
+>
+> Thanks,
+>
+> Mat
+>
+>
+>> ---
+>> include/linux/net.h |  2 ++
+>> net/mptcp/subflow.c | 19 ++++++++++++--
+>> net/socket.c        | 60 ++++++++++++++++++++++++++++++---------------
+>> 3 files changed, 59 insertions(+), 22 deletions(-)
+>>
+>> diff --git a/include/linux/net.h b/include/linux/net.h
+>> index b73ad8e3c212..91713012504d 100644
+>> --- a/include/linux/net.h
+>> +++ b/include/linux/net.h
+>> @@ -251,6 +251,8 @@ int sock_wake_async(struct socket_wq *sk_wq, int
+>> how, int band);
+>> int sock_register(const struct net_proto_family *fam);
+>> void sock_unregister(int family);
+>> bool sock_is_registered(int family);
+>> +int __sock_create_nosec(struct net *net, int family, int type, int
+>> proto,
+>> +            struct socket **res, int kern);
+>> int __sock_create(struct net *net, int family, int type, int proto,
+>>           struct socket **res, int kern);
+>> int sock_create(int family, int type, int proto, struct socket **res);
+>> diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+>> index d5ff502c88d7..e7e6f17df7ef 100644
+>> --- a/net/mptcp/subflow.c
+>> +++ b/net/mptcp/subflow.c
+>> @@ -1646,11 +1646,26 @@ int mptcp_subflow_create_socket(struct sock
+>> *sk, struct socket **new_sock)
+>>     if (unlikely(!sk->sk_socket))
+>>         return -EINVAL;
+>>
+>> -    err = sock_create_kern(net, sk->sk_family, SOCK_STREAM,
+>> IPPROTO_TCP,
+>> -                   &sf);
+>> +    /* the subflow is created by the kernel, and we need kernel
+>> annotation
+>> +     * for lockdep's sake...
+>> +     */
+>> +    err = __sock_create_nosec(net, sk->sk_family, SOCK_STREAM,
+>> IPPROTO_TCP,
+>> +                  &sf, 1);
+>>     if (err)
+>>         return err;
+>>
+>> +    /* ... but the MPC subflow will be indirectly exposed to the
+>> +     * user-space via accept(). Let's attach the current user security
+>> +     * label to the first subflow, that is when msk->first is not yet
+>> +     * initialized.
+>> +     */
+>> +    err = security_socket_post_create(sf, sk->sk_family, SOCK_STREAM,
+>> +                      IPPROTO_TCP, !!mptcp_sk(sk)->first);
+>> +    if (err) {
+>> +        sock_release(sf);
+>> +        return err;
+>> +    }
+>> +
+>>     lock_sock(sf->sk);
+>>
+>>     /* the newly created socket has to be in the same cgroup as its
+>> parent */
+>> diff --git a/net/socket.c b/net/socket.c
+>> index 55c5d536e5f6..d5d51e4e26ae 100644
+>> --- a/net/socket.c
+>> +++ b/net/socket.c
+>> @@ -1426,23 +1426,11 @@ int sock_wake_async(struct socket_wq *wq, int
+>> how, int band)
+>> }
+>> EXPORT_SYMBOL(sock_wake_async);
+>>
+>> -/**
+>> - *    __sock_create - creates a socket
+>> - *    @net: net namespace
+>> - *    @family: protocol family (AF_INET, ...)
+>> - *    @type: communication type (SOCK_STREAM, ...)
+>> - *    @protocol: protocol (0, ...)
+>> - *    @res: new socket
+>> - *    @kern: boolean for kernel space sockets
+>> - *
+>> - *    Creates a new socket and assigns it to @res, passing through LSM.
+>> - *    Returns 0 or an error. On failure @res is set to %NULL. @kern
+>> must
+>> - *    be set to true if the socket resides in kernel space.
+>> - *    This function internally uses GFP_KERNEL.
+>> - */
+>>
+>> -int __sock_create(struct net *net, int family, int type, int protocol,
+>> -             struct socket **res, int kern)
+>> +
+>> +/*creates a socket leaving LSM post-creation checks to the caller */
+>> +int __sock_create_nosec(struct net *net, int family, int type, int
+>> protocol,
+>> +            struct socket **res, int kern)
+>> {
+>>     int err;
+>>     struct socket *sock;
+>> @@ -1528,11 +1516,8 @@ int __sock_create(struct net *net, int family,
+>> int type, int protocol,
+>>      * module can have its refcnt decremented
+>>      */
+>>     module_put(pf->owner);
+>> -    err = security_socket_post_create(sock, family, type, protocol,
+>> kern);
+>> -    if (err)
+>> -        goto out_sock_release;
+>> -    *res = sock;
+>>
+>> +    *res = sock;
+>>     return 0;
+>>
+>> out_module_busy:
+>> @@ -1548,6 +1533,41 @@ int __sock_create(struct net *net, int family,
+>> int type, int protocol,
+>>     rcu_read_unlock();
+>>     goto out_sock_release;
+>> }
+>> +
+>> +/**
+>> + *    __sock_create - creates a socket
+>> + *    @net: net namespace
+>> + *    @family: protocol family (AF_INET, ...)
+>> + *    @type: communication type (SOCK_STREAM, ...)
+>> + *    @protocol: protocol (0, ...)
+>> + *    @res: new socket
+>> + *    @kern: boolean for kernel space sockets
+>> + *
+>> + *    Creates a new socket and assigns it to @res, passing through LSM.
+>> + *    Returns 0 or an error. On failure @res is set to %NULL. @kern
+>> must
+>> + *    be set to true if the socket resides in kernel space.
+>> + *    This function internally uses GFP_KERNEL.
+>> + */
+>> +
+>> +int __sock_create(struct net *net, int family, int type, int protocol,
+>> +          struct socket **res, int kern)
+>> +{
+>> +    struct socket *sock;
+>> +    int err;
+>> +
+>> +    err = __sock_create_nosec(net, family, type, protocol, &sock,
+>> kern);
+>> +    if (err)
+>> +        return err;
+>> +
+>> +    err = security_socket_post_create(sock, family, type, protocol,
+>> kern);
+>> +    if (err) {
+>> +        sock_release(sock);
+>> +        return err;
+>> +    }
+>> +
+>> +    *res = sock;
+>> +    return 0;
+>> +}
+>> EXPORT_SYMBOL(__sock_create);
+>>
+>> /**
+>> -- 
+>> 2.38.1
+>>
+>>
+>>
+>
+> -- 
+> Mat Martineau
+> Intel

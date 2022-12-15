@@ -2,64 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6B6164E346
-	for <lists+selinux@lfdr.de>; Thu, 15 Dec 2022 22:34:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D4E0F64E3B4
+	for <lists+selinux@lfdr.de>; Thu, 15 Dec 2022 23:13:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbiLOVes (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 15 Dec 2022 16:34:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38144 "EHLO
+        id S229718AbiLOWNu (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 15 Dec 2022 17:13:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54752 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229740AbiLOVeq (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 15 Dec 2022 16:34:46 -0500
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B14B1E3D8
-        for <selinux@vger.kernel.org>; Thu, 15 Dec 2022 13:34:45 -0800 (PST)
-Received: by mail-yb1-xb32.google.com with SMTP id 186so319987ybe.8
-        for <selinux@vger.kernel.org>; Thu, 15 Dec 2022 13:34:45 -0800 (PST)
+        with ESMTP id S229674AbiLOWNt (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 15 Dec 2022 17:13:49 -0500
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 105B623EBA
+        for <selinux@vger.kernel.org>; Thu, 15 Dec 2022 14:13:47 -0800 (PST)
+Received: by mail-ej1-x632.google.com with SMTP id gh17so1934767ejb.6
+        for <selinux@vger.kernel.org>; Thu, 15 Dec 2022 14:13:46 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T8qB1CPKsP53+qhuipWgaZJi+ttYg5AGjCd4plxN8D0=;
-        b=BcJjf72SBByW7ZpBJPSYsp4RmwMaKRmhCi3Y1wiyr7+wDO35+hNNlEcX95BUVxMo1s
-         yJXAEsh51hH8o1jDlU89BcOLJHb2ABZueZq97MwPdyVNgIuEjn3ELGo1IynND4iSJ9w2
-         l9EZYbRrv0NUZJ0fyFjnRaU3+/aoufPrjP8Hapnnf266ZLGfeAxHOidpw1REPxPSCoT2
-         8iuINHUysewleWGUBc4LYn/VkVBf8Z7v+GOjGLsZyiStrTqjiOMmtPlU14Bw8SFTSj6u
-         paXF0tVIFJJn9DtCSwv0ugi7HzJ+gm9AjOW9r9ae0rNJMDsKVeCwkiUqyiCH/7bDDeA1
-         8JnQ==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YhkZLNhKEEn24H4OXf7a07iXlGtqmqfAx/BabrO/yws=;
+        b=KWmDvPDyDZ4c26fHRSx5yatGltHvvKTR9KV5Ko9vHGB6K8Ofqu+rIrbzXTYeyf8BD3
+         PrI9v+R8A79UaQnGYhO3GswgZLmH981eWxBrquEdHU88lEQZCCokkvWksbvAAl2Ff0mO
+         6Wr+LfBt4r5b+ipM5zchP67u/bE1f1sUoVOkzGjwxnr/mAl8BQGdsf9tySvXTniDUV0c
+         XMCurJLkT37nDIEg1T/XlxyrAEEgOiyR/HKK6ap/sEolOlF7rywKL7C8ILE2pS5sq7kB
+         K+JY5uzJDrAazNm0gSifhq7YLKEJwrZTVUI0XibsaEPcq5kLehlbvPtj7Bo7iocSiGlS
+         uK+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T8qB1CPKsP53+qhuipWgaZJi+ttYg5AGjCd4plxN8D0=;
-        b=5rHc8eVsMjRgqWpQ352JXmf5fXdJqt3VRBhnz3eRWGbyLY/z9YaPpTskag2WJRvMUU
-         5nb5zilwnivlNTG7e/I70QlhFR/+u+B99zu4KXP7BGztsgu7LcNToA2NFzJVJicj/j/n
-         22YJdZYMYya1K7v/HCrlQ7Q8U/fOrxdfukBEi38qOEdC1xaXLAv8OsVSeainZgP6r0tf
-         efKkoxJNlquIcQlzgGuIvlzX3X3Osm84b/PSiHsMbB3C9Dy7tGEtWZuCpf4ciQk2dsC5
-         tk/Ba8svS5PqOaERT4jum1V9NCFCZbkYkwqS84GDZra+MQh9idRadTkDzZ+D9QaUlaXD
-         YLKg==
-X-Gm-Message-State: ANoB5pn+8hmJoq0vbadcVIMR+4KnMTtQewp8NQdGg6rYE7g7wcSz/x7Q
-        YlndNFqxl7tYCrfhil2SvnPf3KdfWwc=
-X-Google-Smtp-Source: AA0mqf5a2R/29AOcGpZXsP8FVp2ab+72rasipnGuqSADK+Ey9uJ75gS8VC7e/7LsATT0XpULsHzazg==
-X-Received: by 2002:a25:d911:0:b0:6fb:a7f8:8b55 with SMTP id q17-20020a25d911000000b006fba7f88b55mr25282031ybg.38.1671140084508;
-        Thu, 15 Dec 2022 13:34:44 -0800 (PST)
-Received: from electric.. (c-73-200-155-132.hsd1.md.comcast.net. [73.200.155.132])
-        by smtp.gmail.com with ESMTPSA id w10-20020a05620a424a00b006a6ebde4799sm21066qko.90.2022.12.15.13.34.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Dec 2022 13:34:43 -0800 (PST)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     dburgener@linux.microsoft.com, James Carter <jwcart2@gmail.com>
-Subject: [RFC PATCH 9/9] secilc/docs: Add deny rule to CIL documentation
-Date:   Thu, 15 Dec 2022 16:34:29 -0500
-Message-Id: <20221215213429.998948-10-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.38.1
-In-Reply-To: <20221215213429.998948-1-jwcart2@gmail.com>
-References: <20221215213429.998948-1-jwcart2@gmail.com>
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YhkZLNhKEEn24H4OXf7a07iXlGtqmqfAx/BabrO/yws=;
+        b=PrfwiU7csMPkGATum6Ay8dZnxmo+Eb3otk+zcvlFKn3Bjnl0wuqpAAoE60aUAi9hS5
+         e6xiYwHeFWdmj/rX9nd9uEcoasiE/u5LlW8O2Cfn4/jWPm9DCMfyjy+Ih23F6PVtRkhp
+         dm+WAfqslm95uhk8DvY8+D9OJ493Dcj6S+PmlZcDdIkUq4dvl5O8IcDTg1D6b5i1I9Ur
+         8hzdn9ptNZV8dR/VysObfWLdekHc1nDYdUBxKeJSvR3qWBu7NfNB/H5X2CaUP3f83kQw
+         f4BZKgrvd9TE51VNYLouJolXu0jXqGig71XY83uLscmAM9kqV2nanUAvDZ6oEH5PNShh
+         7CBg==
+X-Gm-Message-State: ANoB5pnStBMZ7OR994p+LdzTkSqaFAxwu3a3t7WKCacaSeNiBYgmyWHn
+        PZ0cFbb/FC1HxB3Ik2G2RsWmlaO9MMb9+MRg/4AripMEk4s=
+X-Google-Smtp-Source: AA0mqf4o8WowsYvopu96pmO+UPjoLv17QoqaxIM0NNkyJ6QbvNk++Bavydf2sodBEaLgTJKDQuTT/LYwffAbI3SXmAo=
+X-Received: by 2002:a17:907:6d8c:b0:7c1:675d:2620 with SMTP id
+ sb12-20020a1709076d8c00b007c1675d2620mr2581120ejc.100.1671142425557; Thu, 15
+ Dec 2022 14:13:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20221124163153.500945-1-vmojzis@redhat.com>
+In-Reply-To: <20221124163153.500945-1-vmojzis@redhat.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Thu, 15 Dec 2022 17:13:34 -0500
+Message-ID: <CAP+JOzSGcmHHzaZOWS=wPqa-o-psgGJddLsFLJ15WDWg=KGDtQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] checkpolicy: Improve error message for type bounds
+To:     Vit Mojzis <vmojzis@redhat.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -70,90 +65,35 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- secilc/docs/cil_access_vector_rules.md | 68 ++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+On Thu, Nov 24, 2022 at 11:40 AM Vit Mojzis <vmojzis@redhat.com> wrote:
+>
+> Make the error message consistent with other occurrences of the
+> same issue:
+> https://github.com/SELinuxProject/selinux/blob/master/checkpolicy/module_compiler.c#L243
+> https://github.com/SELinuxProject/selinux/blob/master/checkpolicy/module_compiler.c#L488
+>
+> Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
 
-diff --git a/secilc/docs/cil_access_vector_rules.md b/secilc/docs/cil_access_vector_rules.md
-index f0ba4a90..35825283 100644
---- a/secilc/docs/cil_access_vector_rules.md
-+++ b/secilc/docs/cil_access_vector_rules.md
-@@ -247,6 +247,74 @@ This example will not compile as `type_3` is not allowed to be a source type for
-         (allow type_3 self (property_service (set)))
-     )
- ```
-+deny
-+----------
-+
-+Remove the access rights defined from any matching allow rules. These rules are processed before [`neverallow`](cil_access_vector_rules.md#neverallow) checking.
-+
-+**Rule definition:**
-+
-+```secil
-+    (deny source_id target_id|self classpermissionset_id ...)
-+```
-+
-+**Where:**
-+
-+<table>
-+<colgroup>
-+<col width="27%" />
-+<col width="72%" />
-+</colgroup>
-+<tbody>
-+<tr class="odd">
-+<td align="left"><p><code>deny</code></p></td>
-+<td align="left"><p>The <code>deny</code> keyword.</p></td>
-+</tr>
-+<tr class="even">
-+<td align="left"><p><code>source_id</code></p></td>
-+<td align="left"><p>A single previously defined source <code>type</code>, <code>typealias</code> or <code>typeattribute</code> identifier.</p></td>
-+</tr>
-+<tr class="odd">
-+<td align="left"><p><code>target_id</code></p></td>
-+<td align="left"><p>A single previously defined target <code>type</code>, <code>typealias</code> or <code>typeattribute</code> identifier.</p>
-+<p>The <code>self</code> keyword may be used instead to signify that source and target are the same.</p></td>
-+</tr>
-+<tr class="even">
-+<td align="left"><p><code>classpermissionset_id</code></p></td>
-+<td align="left"><p>A single named or anonymous <code>classpermissionset</code> or a single set of <code>classmap</code>/<code>classmapping</code> identifiers.</p></td>
-+</tr>
-+</tbody>
-+</table>
-+
-+**Example:**
-+
-+```secil
-+    (class class1 (perm1 perm2))
-+
-+	(type type_1)
-+    (type type_2)
-+	(allow type_1 type_2 (class1 (perm1))) ; Allow_1
-+	(deny type_1 type_2 (class1 (perm1)))  ; Deny_1
-+  	; Allow_1 will be complete removed by Deny_1.
-+
-+    (type type_3)
-+	(type type_4)
-+	(allow type_3 type_4 (class1 (perm1 perm2))) ; Allow_2
-+	(deny type_3 type_4 (class1 (perm1)))        ; Deny_2
-+	; Allow_2 will be removed and replaced with the following when Deny_2 is evaluated
-+    ; (allow type_3 type_4 (class1 (perm2)))
-+
-+	(type type_5)
-+	(type type_6)
-+	(typeattribute attr_1)
-+	(typeattributeset attr_1 (type_5 type_6))
-+	(allow attr_1 attr_1 (class1 (perm1))) ; Allow_3
-+	(deny type_5 type_6 (class1 (perm1)))  ; Deny_3
-+	; Allow_3 will be removed and replaced with the following when Deny_3 is evaluated
-+	; (allow type_6 attr_1 (class1 (perm1)))
-+	; (allow attr_1 type_5 (class1 (perm1)))
-+    )
-+```
- 
- allowx
- ------
--- 
-2.38.1
+For these two patches:
+Acked-by: James Carter <jwcart2@gmail.com>
 
+> ---
+>  checkpolicy/policy_define.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+> index 41e44631..86d57017 100644
+> --- a/checkpolicy/policy_define.c
+> +++ b/checkpolicy/policy_define.c
+> @@ -1416,7 +1416,7 @@ static int define_typebounds_helper(char *bounds_id, char *type_id)
+>         if (!type->bounds)
+>                 type->bounds = bounds->s.value;
+>         else if (type->bounds != bounds->s.value) {
+> -               yyerror2("type %s has inconsistent master {%s,%s}",
+> +               yyerror2("type %s has inconsistent bounds %s/%s",
+>                          type_id,
+>                          policydbp->p_type_val_to_name[type->bounds - 1],
+>                          policydbp->p_type_val_to_name[bounds->s.value - 1]);
+> --
+> 2.37.3
+>

@@ -2,56 +2,75 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44454651141
-	for <lists+selinux@lfdr.de>; Mon, 19 Dec 2022 18:35:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC1E4651164
+	for <lists+selinux@lfdr.de>; Mon, 19 Dec 2022 18:55:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232231AbiLSRe7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 19 Dec 2022 12:34:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56582 "EHLO
+        id S231739AbiLSRzk (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 19 Dec 2022 12:55:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232243AbiLSRe4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 19 Dec 2022 12:34:56 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C1112AAA
-        for <selinux@vger.kernel.org>; Mon, 19 Dec 2022 09:34:12 -0800 (PST)
+        with ESMTP id S229895AbiLSRzj (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 19 Dec 2022 12:55:39 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FD5412748
+        for <selinux@vger.kernel.org>; Mon, 19 Dec 2022 09:54:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1671471251;
+        s=mimecast20190719; t=1671472495;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Mge2WhqWFyM9HhE8E4llCSfJEuyu5fUhFFg1FKTv2b0=;
-        b=Xsaf6XEdWD688xboZ5B4j3QBg9VzAlaXyKnYQDIsNdJetGOSyJNsfY8h0AUmYFujNFlfgQ
-        AMmrgW6NAYJjgU3+odCEh5FfuK2c/m4Lp1WhGfjtoQtoKD8Tf9AEEsv1WFt+CoDMScEtaf
-        RTz9juhEoslv4B+pb86pvFXxGLuI8fM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-590-RwNk93g1NoyypRfJLiLUAg-1; Mon, 19 Dec 2022 12:34:06 -0500
-X-MC-Unique: RwNk93g1NoyypRfJLiLUAg-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id EA3251802D50;
-        Mon, 19 Dec 2022 17:34:05 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.39.193.37])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E4D5D2166B26;
-        Mon, 19 Dec 2022 17:34:04 +0000 (UTC)
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     linux-security-module@vger.kernel.org
-Cc:     Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org,
-        mptcp@lists.linux.dev
-Subject: [PATCH v2 2/2] selinux: Implement mptcp_add_subflow hook
-Date:   Mon, 19 Dec 2022 18:33:49 +0100
-Message-Id: <3074022fdca04676443a9c74f57328eb729f150e.1671469167.git.pabeni@redhat.com>
-In-Reply-To: <cover.1671469167.git.pabeni@redhat.com>
-References: <cover.1671469167.git.pabeni@redhat.com>
+         content-transfer-encoding:content-transfer-encoding;
+        bh=A9vuU5Z4D8BDai4R1MtulQviiaupoVVoxrdaniDuSmc=;
+        b=aQxSb+01YqBYuFvh+3cEAZDtOgp59uKNyCPibQPJdo0ZFpu6LC0+0lj38iiJrUvwT4Rn1X
+        uqYYQYS/+CJPjcLWNqPjnxXy+zW4MwdKLio2A4tEb8ujoWsmwc9a/esiz4UHZ316UcRrhb
+        HKUzTmIDpxejSwjEu2qAeXbznIxoAuQ=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-227-147t_bBkMaeLJ8aotynIWQ-1; Mon, 19 Dec 2022 12:54:54 -0500
+X-MC-Unique: 147t_bBkMaeLJ8aotynIWQ-1
+Received: by mail-ej1-f71.google.com with SMTP id qw20-20020a1709066a1400b007c1727f7c55so6563461ejc.2
+        for <selinux@vger.kernel.org>; Mon, 19 Dec 2022 09:54:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=A9vuU5Z4D8BDai4R1MtulQviiaupoVVoxrdaniDuSmc=;
+        b=E2zjAg7v8djeeSRXN4DRbi5Qtlmon9LkAaVpV/s5acWGumgdrcsH46XNWcBsym7ZsM
+         758drxbixnDPB5zdwGffZiFmK/jM/JmwjsMwhqhZVZPfHu1tcLedpAhxSpAptJ/2/uv5
+         rXNdgcuB2ipCW6uRW0//oj49dnZzUb3esk4XzUFaeIl1SnPwgF/t+WXP9afbiAU8JbaI
+         JgEwYlAvC2BTwWI966McTq1eqGJL0HOEU+l0cHUz855IrjQKIOo/FV2mAbkyU5Z0plqp
+         6DG5PBPofz5ILFDs1YkxYF0SsWHfmuHHBM0AmeRvPQVhXRrNC4xu9XyE3SdOut/vHPqs
+         Vt2w==
+X-Gm-Message-State: ANoB5pnNEU1+dbu8UPLyToembGGmKtWd9fsSvZ0XpT2DjiPFQQuXkB88
+        +rjBh3Xo1qLEExa1TYHx3Vr9EFX95zeAG7YmpwOwAxt0uh8zrlZ5GgmzQteIVEfB+ATt917O8YV
+        8hJiNE4tYwvvd6BBUvw==
+X-Received: by 2002:a17:906:6d0:b0:7c1:33b2:6a02 with SMTP id v16-20020a17090606d000b007c133b26a02mr25072789ejb.30.1671472493086;
+        Mon, 19 Dec 2022 09:54:53 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf7QnSsvJl0qbchhgN7/T6EmdIMrXYMaGvctjJdaBF70LE3Z1Z3Ja+l487e1h6E1lUWBbvbMPg==
+X-Received: by 2002:a17:906:6d0:b0:7c1:33b2:6a02 with SMTP id v16-20020a17090606d000b007c133b26a02mr25072780ejb.30.1671472492946;
+        Mon, 19 Dec 2022 09:54:52 -0800 (PST)
+Received: from localhost.localdomain ([2a02:8308:b104:2c00:2e8:ec99:5760:fb52])
+        by smtp.gmail.com with ESMTPSA id g4-20020a1709063b0400b007bdc2de90e6sm4604210ejf.42.2022.12.19.09.54.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Dec 2022 09:54:52 -0800 (PST)
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     selinux@vger.kernel.org, linux-audit@redhat.com,
+        linux-security-module@vger.kernel.org,
+        =?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>,
+        Peter Enderborg <peter.enderborg@sony.com>,
+        Michal Sekletar <msekleta@redhat.com>,
+        Zdenek Pytela <zpytela@redhat.com>
+Subject: [PATCH 0/2] Provide matching audit timestamp in the SELinux AVC trace event
+Date:   Mon, 19 Dec 2022 18:54:47 +0100
+Message-Id: <20221219175449.1657640-1-omosnace@redhat.com>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,87 +78,22 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Newly added subflows should inherit the associated label
-from the current process context, regarless of the sk_kern_sock
-flag value.
+This series allows to match the SELinux AVC trace events to the
+corresponding audit events via the audit event timestamp. This
+will help with troubleshooting SELinux denials.
 
-This patch implements the above resetting the subflow sid, deleting
-the existing subflow label, if any, and then re-creating a new one.
+Ondrej Mosnacek (2):
+  audit: introduce a struct to represent an audit timestamp
+  selinux: provide matching audit timestamp in the AVC trace event
 
-The new helper reuses the selinux_netlbl_sk_security_free() function,
-and it can end-up being called multiple times with the same argument;
-we additionally need to make it idempotent.
+ include/linux/audit.h      | 13 +++++++++++++
+ include/trace/events/avc.h | 25 +++++++++++++++++--------
+ kernel/audit.c             | 23 +++++++++++++++--------
+ kernel/audit.h             |  4 ++--
+ kernel/auditsc.c           |  9 ++++-----
+ security/selinux/avc.c     |  4 +++-
+ 6 files changed, 54 insertions(+), 24 deletions(-)
 
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
----
-v1 -> v2:
- - fix build issue with !CONFIG_NETLABEL
----
- security/selinux/hooks.c    | 27 +++++++++++++++++++++++++++
- security/selinux/netlabel.c |  4 +++-
- 2 files changed, 30 insertions(+), 1 deletion(-)
-
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 3c5be76a9199..f785600b666a 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -5476,6 +5476,32 @@ static void selinux_sctp_sk_clone(struct sctp_association *asoc, struct sock *sk
- 	selinux_netlbl_sctp_sk_clone(sk, newsk);
- }
- 
-+static int selinux_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
-+{
-+	const struct task_security_struct *tsec = selinux_cred(current_cred());
-+	struct sk_security_struct *ssksec = ssk->sk_security;
-+	u16 sclass;
-+	u32 sid;
-+	int err;
-+
-+	/* create the sid using the current cred, regardless of the ssk kern
-+	 * flag
-+	 */
-+	sclass = socket_type_to_security_class(ssk->sk_family, ssk->sk_type,
-+					       ssk->sk_protocol);
-+	err = socket_sockcreate_sid(tsec, sclass, &sid);
-+	if (err)
-+		return err;
-+
-+	ssksec->sid = sid;
-+
-+	/* replace the existing subflow label deleting the existing one
-+	 * and re-recrating a new label using the current context
-+	 */
-+	selinux_netlbl_sk_security_free(ssksec);
-+	return selinux_netlbl_socket_post_create(ssk, ssk->sk_family);
-+}
-+
- static int selinux_inet_conn_request(const struct sock *sk, struct sk_buff *skb,
- 				     struct request_sock *req)
- {
-@@ -7216,6 +7242,7 @@ static struct security_hook_list selinux_hooks[] __lsm_ro_after_init = {
- 	LSM_HOOK_INIT(sctp_sk_clone, selinux_sctp_sk_clone),
- 	LSM_HOOK_INIT(sctp_bind_connect, selinux_sctp_bind_connect),
- 	LSM_HOOK_INIT(sctp_assoc_established, selinux_sctp_assoc_established),
-+	LSM_HOOK_INIT(mptcp_add_subflow, selinux_mptcp_add_subflow),
- 	LSM_HOOK_INIT(inet_conn_request, selinux_inet_conn_request),
- 	LSM_HOOK_INIT(inet_csk_clone, selinux_inet_csk_clone),
- 	LSM_HOOK_INIT(inet_conn_established, selinux_inet_conn_established),
-diff --git a/security/selinux/netlabel.c b/security/selinux/netlabel.c
-index 1321f15799e2..8e0080b8a8ef 100644
---- a/security/selinux/netlabel.c
-+++ b/security/selinux/netlabel.c
-@@ -155,8 +155,10 @@ void selinux_netlbl_err(struct sk_buff *skb, u16 family, int error, int gateway)
-  */
- void selinux_netlbl_sk_security_free(struct sk_security_struct *sksec)
- {
--	if (sksec->nlbl_secattr != NULL)
-+	if (sksec->nlbl_secattr != NULL) {
- 		netlbl_secattr_free(sksec->nlbl_secattr);
-+		sksec->nlbl_secattr = NULL;
-+	}
- }
- 
- /**
 -- 
 2.38.1
 

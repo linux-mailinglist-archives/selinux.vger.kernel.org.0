@@ -2,340 +2,127 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C31265F281
-	for <lists+selinux@lfdr.de>; Thu,  5 Jan 2023 18:22:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0434265F88F
+	for <lists+selinux@lfdr.de>; Fri,  6 Jan 2023 02:06:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234381AbjAERVk (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 5 Jan 2023 12:21:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37698 "EHLO
+        id S234263AbjAFBGb (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 5 Jan 2023 20:06:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234222AbjAERVD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 5 Jan 2023 12:21:03 -0500
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F10F5564CC
-        for <selinux@vger.kernel.org>; Thu,  5 Jan 2023 09:13:48 -0800 (PST)
-Received: by mail-ej1-x629.google.com with SMTP id qk9so91364812ejc.3
-        for <selinux@vger.kernel.org>; Thu, 05 Jan 2023 09:13:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Agz5gCn9j4yyqOjfETzpJ3M/PpGVgpQ3czZumZXo7dM=;
-        b=m0tHO8IkiZOEobR7C5DfiPZ/OZx43GxQL5jXKD1f7EEzg0DaOSTBTfQWDP2PbmED5E
-         tXcc/0pnXdN07pyZXPR/N7x3VQOmuuES5pP5DEc/1JFgRjeWbtVTpBQcq9aD+QJdOXlX
-         O50TEPzgZRk9SEIkLhXToYhmOC7xAwfrwVzMgAenIJxYbKPRDlqAh9+JxBNrEtiewhqX
-         vgIHfKRLTEps2Bygdis8HrXuaXCNs+4g8B/So3yHIfsUc4IftSHrQRNPMdCFZdYGe1Ok
-         MbTX0GA9iHa/1O4+3BIn9l/p179Npl7ymmtYuOMMuam7HxAG/61tj96v0Iyuz6Xy/oFP
-         qAlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Agz5gCn9j4yyqOjfETzpJ3M/PpGVgpQ3czZumZXo7dM=;
-        b=cnHQtqbxi5O0ga92VdTHxMPYPaQ8Mc7p02RWRBS29SkmTjyKnF79Joj5XfD77/enKM
-         hbxumK223A/JU1R+bJ1OfwVkeD4pIw7oBu2hwJmU7Y562U9JIIhKadYHNmtkfbk25119
-         ahGvVUbJ0GQUKbkfFKiQH9wH5vCvWjwqqhLvpB5T3jNnTX8tlNiOyuQ3zK4rk2CzfdQt
-         7u3Gk/VcWZd3Kv73Gvn7zJFFpOW6hbZTb8k4VQf4Hl7AKHeOUAYvWU46GoQ7oKFBNuhG
-         3eB9gTsQxXglSF38qdlOfUEQNTxZInWAOT05RRVpNue0ueT3iEXJ1FDCnzxG07n+l/lr
-         vafg==
-X-Gm-Message-State: AFqh2kokHg/JmqmRvz7pnv/1d6NCRMUxRQgenml62WmnOfiV3e/VbMyk
-        48hWItTJwLWhXBPWc43BxYmF6/teHpOvGg==
-X-Google-Smtp-Source: AMrXdXsZYSmLdYFHELe6b7NLnOhFR0Pp7ISoL+eFZr9wNLGOO4bmUDOS/fRoMXkf753rp/NTV/PWtw==
-X-Received: by 2002:a17:906:85d9:b0:842:1627:77b4 with SMTP id i25-20020a17090685d900b00842162777b4mr45543227ejy.3.1672938827488;
-        Thu, 05 Jan 2023 09:13:47 -0800 (PST)
-Received: from debianHome.localdomain (dynamic-077-010-153-041.77.10.pool.telefonica.de. [77.10.153.41])
-        by smtp.gmail.com with ESMTPSA id v1-20020a170906292100b0073c10031dc9sm16585182ejd.80.2023.01.05.09.13.46
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Jan 2023 09:13:47 -0800 (PST)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH 2/2] checkpolicy: add simple round-trip test
-Date:   Thu,  5 Jan 2023 18:13:40 +0100
-Message-Id: <20230105171340.18444-2-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20230105171340.18444-1-cgzones@googlemail.com>
-References: <20230105171340.18444-1-cgzones@googlemail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S235861AbjAFBGI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 5 Jan 2023 20:06:08 -0500
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0A856E404;
+        Thu,  5 Jan 2023 17:06:07 -0800 (PST)
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 30615LES025582;
+        Fri, 6 Jan 2023 01:05:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
+ from : to : cc : date : in-reply-to : references : content-type :
+ mime-version : content-transfer-encoding; s=pp1;
+ bh=h3R+ncZtwTwM04Y652MAPleCpx6WeYs0XK5yDgNWu4k=;
+ b=NrTYQumvjvkZ60eixvR7THlaP76SXXmUybLYhC4yjONEqY+mwkIge/Rl37mV8CEJLOI9
+ ns33uJhI9dKhOP/xT3A+g7Mg+mTpmX986U2SZICqcNQWA5iHOlqTk4FCsnc+jB8bSLcX
+ 8yB6niUIGqH9JnD7G/8n0XJ8Og4kUOY1zw40aBYYozH8hDu4DMX2MYfvdwqfAIPlBmL+
+ OCKoFRuI3mH5kBSw0rFX3UVyO2z8w1HbMc7IUPXakxTX6vTnj2FH0Sqp3gYQ7BY6HYg0
+ WL3753cV6qXrXvhG9fwk++66bNPrg+gNqBqBa6xaEfYidipBNVk1SKpIg7t4DEJe40VT dA== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mx9p0g0e5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 06 Jan 2023 01:05:51 +0000
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 30615Ypn025982;
+        Fri, 6 Jan 2023 01:05:51 GMT
+Received: from ppma02dal.us.ibm.com (a.bd.3ea9.ip4.static.sl-reverse.com [169.62.189.10])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3mx9p0g0dx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 06 Jan 2023 01:05:51 +0000
+Received: from pps.filterd (ppma02dal.us.ibm.com [127.0.0.1])
+        by ppma02dal.us.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 305MYJ63019814;
+        Fri, 6 Jan 2023 01:05:50 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([9.208.129.113])
+        by ppma02dal.us.ibm.com (PPS) with ESMTPS id 3mtcq80wue-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 06 Jan 2023 01:05:50 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+        by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 30615mmb59834644
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 6 Jan 2023 01:05:49 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C90A35805E;
+        Fri,  6 Jan 2023 01:05:48 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C333B58058;
+        Fri,  6 Jan 2023 01:05:47 +0000 (GMT)
+Received: from sig-9-65-221-162.ibm.com (unknown [9.65.221.162])
+        by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+        Fri,  6 Jan 2023 01:05:47 +0000 (GMT)
+Message-ID: <1b89bdf8c57b3381d15d60a1d20a86277355ed0b.camel@linux.ibm.com>
+Subject: Re: [RFC] IMA LSM based rule race condition issue on 4.19 LTS
+From:   Mimi Zohar <zohar@linux.ibm.com>
+To:     Paul Moore <paul@paul-moore.com>,
+        "Guozihua (Scott)" <guozihua@huawei.com>
+Cc:     dmitry.kasatkin@gmail.com, sds@tycho.nsa.gov,
+        eparis@parisplace.org, Greg KH <gregkh@linuxfoundation.org>,
+        sashal@kernel.org, selinux@vger.kernel.org,
+        "linux-integrity@vger.kernel.org" <linux-integrity@vger.kernel.org>,
+        stable@vger.kernel.org
+Date:   Thu, 05 Jan 2023 20:05:47 -0500
+In-Reply-To: <CAHC9VhT0SRWMi2gQKaBPOj1owqUh-24O9L2DyOZ8JDgEr+ZQiQ@mail.gmail.com>
+References: <389334fe-6e12-96b2-6ce9-9f0e8fcb85bf@huawei.com>
+         <efd4ce83299a10b02b1c04cc94934b8d51969e1c.camel@linux.ibm.com>
+         <6a5bc829-b788-5742-cbfc-dba348065dbe@huawei.com>
+         <566721e9e8d639c82d841edef4d11d30a4d29694.camel@linux.ibm.com>
+         <fffb29b7-a1ac-33fb-6aca-989e5567f565@huawei.com>
+         <40cf70a96d2adbff1c0646d3372f131413989854.camel@linux.ibm.com>
+         <a63d5d4b-d7a9-fdcb-2b90-b5e2a974ca4c@huawei.com>
+         <757bc525f7d3fe6db5f3ee1f86de2f4d02d8286b.camel@linux.ibm.com>
+         <CAHC9VhR2mfaVjXz3sBzbkBamt8nE-9aV+jSOs9jH1ESnKvDrvw@mail.gmail.com>
+         <fc11076f-1760-edf3-c0e4-8f58d5e0335c@huawei.com>
+         <CAHC9VhT0SRWMi2gQKaBPOj1owqUh-24O9L2DyOZ8JDgEr+ZQiQ@mail.gmail.com>
+Content-Type: text/plain; charset="ISO-8859-15"
+X-Mailer: Evolution 3.28.5 (3.28.5-18.el8) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: rAZ72JXT0Q7Ew0yU5iDhbEv3-PtwyesX
+X-Proofpoint-ORIG-GUID: vr6mObpDFcGOA2fgGeNzPR9fBGy9MDIM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
+ definitions=2023-01-05_14,2023-01-05_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 spamscore=0
+ impostorscore=0 phishscore=0 bulkscore=0 malwarescore=0 mlxscore=0
+ adultscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2212070000 definitions=main-2301060006
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Add simple round-trip tests on a minimal standard and MLS policy.
+On Thu, 2022-12-15 at 22:04 -0500, Paul Moore wrote:
+> On Thu, Dec 15, 2022 at 9:36 PM Guozihua (Scott) <guozihua@huawei.com> wrote:
+> > On 2022/12/16 5:04, Paul Moore wrote:
+> 
+> ...
+> 
+> > > How bad is the backport really?  Perhaps it is worth doing it to see
+> > > what it looks like?
+> > >
+> > It might not be that bad, I'll try to post a version next Monday.
+> 
+> Thanks for giving it a shot.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- checkpolicy/.gitignore              |  2 +
- checkpolicy/Makefile                |  6 +-
- checkpolicy/tests/polmin.conf       | 81 +++++++++++++++++++++++++++
- checkpolicy/tests/polmin.mls.conf   | 85 +++++++++++++++++++++++++++++
- checkpolicy/tests/test_roundtrip.sh | 33 +++++++++++
- 5 files changed, 206 insertions(+), 1 deletion(-)
- create mode 100644 checkpolicy/tests/polmin.conf
- create mode 100644 checkpolicy/tests/polmin.mls.conf
- create mode 100755 checkpolicy/tests/test_roundtrip.sh
+FYI, in the end backporting the atomic to blocking LSM notifier change
+was the best solution.  Other than one minor correction, v6 of the
+"ima: Fix IMA mishandling of LSM based rule during" looks good.
 
-diff --git a/checkpolicy/.gitignore b/checkpolicy/.gitignore
-index a7bd076d..01a694d4 100644
---- a/checkpolicy/.gitignore
-+++ b/checkpolicy/.gitignore
-@@ -3,3 +3,5 @@ checkpolicy
- lex.yy.c
- y.tab.c
- y.tab.h
-+tests/testpol.bin
-+tests/testpol.conf
-diff --git a/checkpolicy/Makefile b/checkpolicy/Makefile
-index f9e1fc7c..86c4a197 100644
---- a/checkpolicy/Makefile
-+++ b/checkpolicy/Makefile
-@@ -50,6 +50,10 @@ y.tab.c: policy_parse.y
- lex.yy.c: policy_scan.l y.tab.c
- 	$(LEX) policy_scan.l
- 
-+.PHONY: test
-+test: checkpolicy
-+	./tests/test_roundtrip.sh
-+
- install: all
- 	-mkdir -p $(DESTDIR)$(BINDIR)
- 	-mkdir -p $(DESTDIR)$(MANDIR)/man8
-@@ -68,7 +72,7 @@ relabel: install
- 	/sbin/restorecon $(DESTDIR)$(BINDIR)/checkmodule
- 
- clean:
--	-rm -f $(TARGETS) $(CHECKPOLOBJS) $(CHECKMODOBJS) y.tab.c y.tab.h lex.yy.c
-+	-rm -f $(TARGETS) $(CHECKPOLOBJS) $(CHECKMODOBJS) y.tab.c y.tab.h lex.yy.c tests/testpol.conf tests/testpol.bin
- 	$(MAKE) -C test clean
- 
- indent:
-diff --git a/checkpolicy/tests/polmin.conf b/checkpolicy/tests/polmin.conf
-new file mode 100644
-index 00000000..7a652de8
---- /dev/null
-+++ b/checkpolicy/tests/polmin.conf
-@@ -0,0 +1,81 @@
-+# handle_unknown deny
-+class process
-+class blk_file
-+class chr_file
-+class dir
-+class fifo_file
-+class file
-+class lnk_file
-+class sock_file
-+sid kernel
-+sid security
-+sid unlabeled
-+sid fs
-+sid file
-+sid file_labels
-+sid init
-+sid any_socket
-+sid port
-+sid netif
-+sid netmsg
-+sid node
-+sid igmp_packet
-+sid icmp_socket
-+sid tcp_socket
-+sid sysctl_modprobe
-+sid sysctl
-+sid sysctl_fs
-+sid sysctl_kernel
-+sid sysctl_net
-+sid sysctl_net_unix
-+sid sysctl_vm
-+sid sysctl_dev
-+sid kmod
-+sid policy
-+sid scmp_packet
-+sid devnull
-+class process { dyntransition transition }
-+default_role { blk_file } source;
-+default_role { chr_file } source;
-+default_role { dir } source;
-+default_role { fifo_file } source;
-+default_role { file } source;
-+default_role { lnk_file } source;
-+default_role { sock_file } source;
-+type sys_isid;
-+typealias sys_isid alias dpkg_script_t;
-+typealias sys_isid alias rpm_script_t;
-+allow sys_isid self:process { dyntransition transition };
-+role sys_role;
-+role sys_role types { sys_isid };
-+user sys_user roles sys_role;
-+constrain process { transition } u1 == u2;
-+sid kernel sys_user:sys_role:sys_isid
-+sid security sys_user:sys_role:sys_isid
-+sid unlabeled sys_user:sys_role:sys_isid
-+sid fs sys_user:sys_role:sys_isid
-+sid file sys_user:sys_role:sys_isid
-+sid file_labels sys_user:sys_role:sys_isid
-+sid init sys_user:sys_role:sys_isid
-+sid any_socket sys_user:sys_role:sys_isid
-+sid port sys_user:sys_role:sys_isid
-+sid netif sys_user:sys_role:sys_isid
-+sid netmsg sys_user:sys_role:sys_isid
-+sid node sys_user:sys_role:sys_isid
-+sid igmp_packet sys_user:sys_role:sys_isid
-+sid icmp_socket sys_user:sys_role:sys_isid
-+sid tcp_socket sys_user:sys_role:sys_isid
-+sid sysctl_modprobe sys_user:sys_role:sys_isid
-+sid sysctl sys_user:sys_role:sys_isid
-+sid sysctl_fs sys_user:sys_role:sys_isid
-+sid sysctl_kernel sys_user:sys_role:sys_isid
-+sid sysctl_net sys_user:sys_role:sys_isid
-+sid sysctl_net_unix sys_user:sys_role:sys_isid
-+sid sysctl_vm sys_user:sys_role:sys_isid
-+sid sysctl_dev sys_user:sys_role:sys_isid
-+sid kmod sys_user:sys_role:sys_isid
-+sid policy sys_user:sys_role:sys_isid
-+sid scmp_packet sys_user:sys_role:sys_isid
-+sid devnull sys_user:sys_role:sys_isid
-+fs_use_trans devpts sys_user:sys_role:sys_isid;
-+fs_use_trans devtmpfs sys_user:sys_role:sys_isid;
-diff --git a/checkpolicy/tests/polmin.mls.conf b/checkpolicy/tests/polmin.mls.conf
-new file mode 100644
-index 00000000..b045a60f
---- /dev/null
-+++ b/checkpolicy/tests/polmin.mls.conf
-@@ -0,0 +1,85 @@
-+# handle_unknown deny
-+class process
-+class blk_file
-+class chr_file
-+class dir
-+class fifo_file
-+class file
-+class lnk_file
-+class sock_file
-+sid kernel
-+sid security
-+sid unlabeled
-+sid fs
-+sid file
-+sid file_labels
-+sid init
-+sid any_socket
-+sid port
-+sid netif
-+sid netmsg
-+sid node
-+sid igmp_packet
-+sid icmp_socket
-+sid tcp_socket
-+sid sysctl_modprobe
-+sid sysctl
-+sid sysctl_fs
-+sid sysctl_kernel
-+sid sysctl_net
-+sid sysctl_net_unix
-+sid sysctl_vm
-+sid sysctl_dev
-+sid kmod
-+sid policy
-+sid scmp_packet
-+sid devnull
-+class process { dyntransition transition }
-+default_role { blk_file } source;
-+default_role { chr_file } source;
-+default_role { dir } source;
-+default_role { fifo_file } source;
-+default_role { file } source;
-+default_role { lnk_file } source;
-+default_role { sock_file } source;
-+sensitivity s0;
-+dominance { s0 }
-+category c0;
-+level s0:c0;
-+mlsconstrain process { transition } l1 == l2;
-+type sys_isid;
-+typealias sys_isid alias dpkg_script_t;
-+typealias sys_isid alias rpm_script_t;
-+allow sys_isid self:process { dyntransition transition };
-+role sys_role;
-+role sys_role types { sys_isid };
-+user sys_user roles sys_role level s0 range s0 - s0:c0;
-+sid kernel sys_user:sys_role:sys_isid:s0 - s0
-+sid security sys_user:sys_role:sys_isid:s0 - s0
-+sid unlabeled sys_user:sys_role:sys_isid:s0 - s0
-+sid fs sys_user:sys_role:sys_isid:s0 - s0
-+sid file sys_user:sys_role:sys_isid:s0 - s0
-+sid file_labels sys_user:sys_role:sys_isid:s0 - s0
-+sid init sys_user:sys_role:sys_isid:s0 - s0
-+sid any_socket sys_user:sys_role:sys_isid:s0 - s0
-+sid port sys_user:sys_role:sys_isid:s0 - s0
-+sid netif sys_user:sys_role:sys_isid:s0 - s0
-+sid netmsg sys_user:sys_role:sys_isid:s0 - s0
-+sid node sys_user:sys_role:sys_isid:s0 - s0
-+sid igmp_packet sys_user:sys_role:sys_isid:s0 - s0
-+sid icmp_socket sys_user:sys_role:sys_isid:s0 - s0
-+sid tcp_socket sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl_modprobe sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl_fs sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl_kernel sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl_net sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl_net_unix sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl_vm sys_user:sys_role:sys_isid:s0 - s0
-+sid sysctl_dev sys_user:sys_role:sys_isid:s0 - s0
-+sid kmod sys_user:sys_role:sys_isid:s0 - s0
-+sid policy sys_user:sys_role:sys_isid:s0 - s0
-+sid scmp_packet sys_user:sys_role:sys_isid:s0 - s0
-+sid devnull sys_user:sys_role:sys_isid:s0 - s0
-+fs_use_trans devpts sys_user:sys_role:sys_isid:s0 - s0;
-+fs_use_trans devtmpfs sys_user:sys_role:sys_isid:s0 - s0;
-diff --git a/checkpolicy/tests/test_roundtrip.sh b/checkpolicy/tests/test_roundtrip.sh
-new file mode 100755
-index 00000000..15b1b3bc
---- /dev/null
-+++ b/checkpolicy/tests/test_roundtrip.sh
-@@ -0,0 +1,33 @@
-+#!/bin/sh
-+
-+set -eu
-+
-+BASEDIR=$(dirname "$0")
-+CHECKPOLICY="${BASEDIR}/../checkpolicy"
-+
-+check_policy() {
-+	POLICY=$1
-+	MLS=$2
-+
-+	if [ "$MLS" = 'mls' ]; then
-+		OPT='-M'
-+	else
-+		OPT=
-+	fi
-+
-+	echo "==== Testing ${1}"
-+
-+	${CHECKPOLICY} ${OPT} -E "${BASEDIR}/${POLICY}" -o "${BASEDIR}/testpol.bin"
-+	${CHECKPOLICY} ${OPT} -E -b -F "${BASEDIR}/testpol.bin" -o "${BASEDIR}/testpol.conf"
-+	diff -u "${BASEDIR}/${POLICY}" "${BASEDIR}/testpol.conf"
-+
-+	${CHECKPOLICY} ${OPT} -S -O -E "${BASEDIR}/${POLICY}" -o "${BASEDIR}/testpol.bin"
-+	${CHECKPOLICY} ${OPT} -S -O -E -b -F "${BASEDIR}/testpol.bin" -o "${BASEDIR}/testpol.conf"
-+	diff -u "${BASEDIR}/${POLICY}" "${BASEDIR}/testpol.conf"
-+
-+	echo "==== ${1} success"
-+}
-+
-+
-+check_policy polmin.conf std
-+check_policy polmin.mls.conf mls
 -- 
-2.39.0
+thanks,
+
+Mimi
 

@@ -2,112 +2,102 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8832675A59
-	for <lists+selinux@lfdr.de>; Fri, 20 Jan 2023 17:45:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A11E675CE4
+	for <lists+selinux@lfdr.de>; Fri, 20 Jan 2023 19:41:00 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229840AbjATQpK (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 20 Jan 2023 11:45:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56090 "EHLO
+        id S229575AbjATSk7 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 20 Jan 2023 13:40:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229537AbjATQpJ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 20 Jan 2023 11:45:09 -0500
-Received: from mail-ua1-x92f.google.com (mail-ua1-x92f.google.com [IPv6:2607:f8b0:4864:20::92f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2452CDF5
-        for <selinux@vger.kernel.org>; Fri, 20 Jan 2023 08:45:04 -0800 (PST)
-Received: by mail-ua1-x92f.google.com with SMTP id m17so1486896uap.7
-        for <selinux@vger.kernel.org>; Fri, 20 Jan 2023 08:45:04 -0800 (PST)
+        with ESMTP id S229379AbjATSk6 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 20 Jan 2023 13:40:58 -0500
+Received: from mail-ua1-x944.google.com (mail-ua1-x944.google.com [IPv6:2607:f8b0:4864:20::944])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C91FCC25
+        for <selinux@vger.kernel.org>; Fri, 20 Jan 2023 10:40:58 -0800 (PST)
+Received: by mail-ua1-x944.google.com with SMTP id bx24so1572529uab.4
+        for <selinux@vger.kernel.org>; Fri, 20 Jan 2023 10:40:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=boZ0dqIpKAH785rpqEYhFf53N8uHdCYZGulaRtCPwlg=;
-        b=TVQaI7HiHCVIlj6zEGYEbXX+XKuoYNwYTOjzlPportjxZHOiU8e5jpWfQxleHEBVB5
-         632Ngvuxn8DoeTwBHIPaWkPqRF0Iq4Eu4DjeOfVczVi693CAaxS8LSWFc+ERadDDNtgG
-         jE14vqARySpLV9TPULDCx8yp1gwGWL6WOHhVxE+lROv5gCYao17Th9jX+BrQ3tcWCLm3
-         m1zcBYJ8HZ0sNauOQprbj0e+V8FPRz3wiN8WtLCiFfpBzIhwCjg++r6eKwHMe5HBtWZr
-         eOLB/aQ1R6IjPzQH1KYR88Ogs5bZix2WxQC66BV5fbtpz2JB6jleb/sQMPH+yBdrPZY+
-         T+Mg==
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=29acQNA8Cumm02CGyUpVCLdeAEc2jQcZ1RkMPZNG+yw=;
+        b=TISUpCkG8s6YQ7jnd/NwNFeD8bhtx9V/BosAh7S9Uj1XF+ItZ+kow40fauDzevqb+J
+         GjPuw8CF4irsGWDZGfV/9h7gPtERSf+ygryq00d2rvoHATaQnzXbnWE5FK9KJh9nivFW
+         sQtOam9EwkykuR5Yaimjm2kwuOqyV3DkLax4LR3Y+b+zxVIC4p9u12C8+NRKMbvqiXfY
+         bUuDrFOg1hIscOBOJVkN0S87wAk0ExWYaPzJY4RUACQS25qwN9CGL9qsiTd+OmSmtybt
+         ih0baD5c08SpZ64WhUlDjcTPJNodevLWEzNEibzAe5j+oYYO9KjFNjtooYYoYC8lJwBa
+         D+cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=boZ0dqIpKAH785rpqEYhFf53N8uHdCYZGulaRtCPwlg=;
-        b=OUVRnuxRHj7dmqDdU7NVWpUqLR1PRjSeUdauwcF88spZsjPNvlZ10H/l1XHPjfWORu
-         CYaNui128WCrEnwCw8mt2WwmgJXdmVIwAnhaRnxFkgpJ9gyRLXTyNB69lN9WaIOMxtfe
-         mgfNPCMu8y8Y5XN2b3NG5OG8msjE3NxRkxrofQnaaskNcw6nSGo4o4ZCCc4o2nueVJnR
-         t0wKjEZ4RHgw3BIAR73eJPSp7SlGhc8Pp45LNQwqOQ9Qk4+2C2y49dpGlLFyP9EuqkL1
-         F8Zsbeo7pxccXhBgPRAz9zMAcZ8DIqFlQ6umxfseP4XSMir799+T4g2FDP91huSC0mER
-         eIXw==
-X-Gm-Message-State: AFqh2koMiUHWoKO5hWUfZKwgKj/RS52n1N/JMbR5eOyycqMahtMtJPIt
-        K0XeesECS63ruQOHks3Lgp6MwZ87TLgUiBw5tPYHPA==
-X-Google-Smtp-Source: AMrXdXtdwU7/czYs54x51aVYHuClvYtp579EFc9KBin2CLEyM75ufjP4aaw03DcsrfcymIFQkppReTzHyVcdsmzZNFE=
-X-Received: by 2002:ab0:6c54:0:b0:424:e8b8:7bcb with SMTP id
- q20-20020ab06c54000000b00424e8b87bcbmr1985318uas.123.1674233103918; Fri, 20
- Jan 2023 08:45:03 -0800 (PST)
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=29acQNA8Cumm02CGyUpVCLdeAEc2jQcZ1RkMPZNG+yw=;
+        b=ar3zvWozGpiaVRzUSvXrIFeogCEj7noqHfDmylUgMJZzRcFa3ZzNquR341159lvFZS
+         lGW1ue/dp5LOnOczrVcr0yEzaIuugKFz+IkZTavAm9jvK5zzEVRruaTH7u+PHQIYTVlL
+         95Nn6KCwRGK1UMDGO/Q+PUGBLEj9xoSmshcNkyxyApLH6B9/CPEokMIPj3vvlEtx3L21
+         d/zwlVwthnby1jM6/9ixNYPDoenauuVjc3VOZ3XzjbPK1y7qH5TXCi9laZmu4gOZPABL
+         70RQNBcuIMG8jcorvbQLSzGYtWDIJl8qByFeolfHbvMORrXoJG6CXp0oLMzZvjTzGsPf
+         Uh8A==
+X-Gm-Message-State: AFqh2krCGqa/JYJEf89qcsBSc6qenCAX670k02jGI08gVnbSKg0zhP4m
+        bfMgcsPlCBnQyBO1FWyXCBo07rva3JwXDTG+bbw=
+X-Google-Smtp-Source: AMrXdXs7efJRZMZcCiNJAldsYlk+6asy+GakOcOqt249OBLOxRBrgF9cy315MJAgZjilEpYMpww1ohqTpV0F54SVlgc=
+X-Received: by 2002:a9f:368c:0:b0:5cd:6bf2:d8b3 with SMTP id
+ p12-20020a9f368c000000b005cd6bf2d8b3mr1835893uap.122.1674240056798; Fri, 20
+ Jan 2023 10:40:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20221221-sockopt-port-range-v3-0-36fa5f5996f4@cloudflare.com>
-In-Reply-To: <20221221-sockopt-port-range-v3-0-36fa5f5996f4@cloudflare.com>
-From:   Neal Cardwell <ncardwell@google.com>
-Date:   Fri, 20 Jan 2023 11:44:47 -0500
-Message-ID: <CADVnQy=GCiBHDu0PYETh2nbaAeMtCwGgSG00wyJ8ezRgRBbABQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v3 0/2] Add IP_LOCAL_PORT_RANGE socket option
-To:     Jakub Sitnicki <jakub@cloudflare.com>
-Cc:     netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>, selinux@vger.kernel.org,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>, kernel-team@cloudflare.com
+Received: by 2002:a59:d999:0:b0:381:7392:937b with HTTP; Fri, 20 Jan 2023
+ 10:40:55 -0800 (PST)
+Reply-To: avamedicinemed1@gmail.com
+From:   DR AVA SMITH <davasm66@gmail.com>
+Date:   Fri, 20 Jan 2023 10:40:55 -0800
+Message-ID: <CAOyNY03us1brqR7=ktEjBkdpJDhQVfgyPOoR_sw4jRr=exDPvg@mail.gmail.com>
+Subject: HI DEAR
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=7.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:944 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5004]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [davasm66[at]gmail.com]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [davasm66[at]gmail.com]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [avamedicinemed1[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.9 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-)On Fri, Jan 20, 2023 at 6:53 AM Jakub Sitnicki <jakub@cloudflare.com> wrot=
-e:
->
-> This patch set is a follow up to the "How to share IPv4 addresses by
-> partitioning the port space" talk given at LPC 2022 [1].
->
-> Please see patch #1 for the motivation & the use case description.
-> Patch #2 adds tests exercising the new option in various scenarios.
->
-> Documentation
-> -------------
->
-> Proposed update to the ip(7) man-page:
->
->        IP_LOCAL_PORT_RANGE (since Linux X.Y)
->               Set or get the per-socket default local port range. This
->               option  can  be used to clamp down the global local port
->               range, defined by the ip_local_port_range  /proc  inter=E2=
-=80=90
->               face described below, for a given socket.
->
->               The option takes an uint32_t value with the high 16 bits
->               set to the upper range bound, and the low 16 bits set to
->               the lower range bound. Range bounds are inclusive.
-
-IMHO it would be nice for this text to document whether the port
-numbers are in host order or network order, and perhaps whether "high"
-and "low" here refer to host or network order. Key parts of the
-sockets API express port numbers in network order, but this new API
-seems to express port numbers in host order, so it seem worth (a)
-deciding carefully, and (b) documenting explicitly in the man page
-text (here in the cover letter) and commit message for the patch
-(patch #1).
-
-thanks,
-neal
+Hello Dear,
+how are you today?hope you are fine
+My name is Dr Ava Smith ,Am an English and French nationalities.
+I will give you pictures and more details about me as soon as i hear from you
+Reply me through my official email (avamedicinemed1@gmail.com)
+Thanks
+Ava

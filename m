@@ -2,403 +2,170 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D91B6A9CF3
-	for <lists+selinux@lfdr.de>; Fri,  3 Mar 2023 18:15:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 831376A9F20
+	for <lists+selinux@lfdr.de>; Fri,  3 Mar 2023 19:38:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231551AbjCCRPH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 3 Mar 2023 12:15:07 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34224 "EHLO
+        id S231467AbjCCSiT (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 3 Mar 2023 13:38:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231276AbjCCRPF (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 3 Mar 2023 12:15:05 -0500
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D93014999
-        for <selinux@vger.kernel.org>; Fri,  3 Mar 2023 09:15:03 -0800 (PST)
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 882F9442D3
-        for <selinux@vger.kernel.org>; Fri,  3 Mar 2023 17:15:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1677863701;
-        bh=DgYuLHBDbdAWqdmpPBV0ZgLbsqK4fpD+XI7eYMml57w=;
-        h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-         Content-Type:MIME-Version;
-        b=aK++xD32DM3EgMB+f5RFHhpkTO3IKZecZoM4xsFT0IWr93bAX1j4rbw6MgF9Jh+bV
-         Kz7Qr56Q1+ypImWtx0EL/ctEYQmH5EoNin84SR56anTXzS+wPuztVY8mf4xth7/ryp
-         O2sITWSg0a1fBwutMAyq0j8MqPoxhlRuw1ck/8VxsHURX9b+YR5ZnjA5dBNx0Cdkr3
-         AV5H756n2GnU5nwGNgiwWO12gENqLQTquGDYJfkQyq2X0xgBAIQ1ZY62GLSIMgMF0/
-         vQtU5xpJUDhfoMyMEG+Uo4fejwGw1rXpLHNAkwHRnlSkD0KlOByDbmqw33unjYaWNS
-         jmxJB25YUfvrg==
-Received: by mail-ot1-f69.google.com with SMTP id r23-20020a05683001d700b0068bc6c8621eso1454668ota.9
-        for <selinux@vger.kernel.org>; Fri, 03 Mar 2023 09:15:01 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677863698;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DgYuLHBDbdAWqdmpPBV0ZgLbsqK4fpD+XI7eYMml57w=;
-        b=ZJpYbSKJNcmESlrskel20wMNwMdqx/Odr0oJCHus8kGYACAlXfkXXSZPpH7uISK0E0
-         p9/eHMuZ9UOX64syC6C4/fNGoJs9q6iqI//OhgZUyEbtsznw57YoadH0/JH+6uxjgl50
-         X8nYm64oq3NS9z4v1p93NGT5f/S8Qrrh1Wf/NnHld7u+ugqwq+WJLONYS4v4KMKPW9nL
-         4xlucpZ4QNXVLfJpvEgTOBL0v4CBS4p3PKGY8bZxPXjHQiNVFLFZOur2THvrLQwB86+8
-         anFJhJrn01E6nW655j4t2kqwwXwKS44aTT/Q3cpna+CvX97jBWeicePl9dhR+C6qPgSm
-         QW0A==
-X-Gm-Message-State: AO0yUKWIiU5tQCsJmPCbjA+tIEqlmGr955dN3UUCzjkwZIg1H9tFu/s5
-        tj5tnG2sbUdI9lwWoJHkev4x6t4O34xSGwTAucB5L5TOZ6GPPRQUGQvt61Zw1PG7QutpD4RQH6Q
-        Q//6P6A/g34306YjYxabxEy4zlV1NBFqVAh0=
-X-Received: by 2002:a05:6808:2da:b0:383:f572:2646 with SMTP id a26-20020a05680802da00b00383f5722646mr1024915oid.5.1677863698246;
-        Fri, 03 Mar 2023 09:14:58 -0800 (PST)
-X-Google-Smtp-Source: AK7set91nMG7k4hO2azPicxGrh/XawJFU9THxqJLa8ekYeoTNuviyDUD4h3iG2EGjdO8YhglzEJxMg==
-X-Received: by 2002:a05:6808:2da:b0:383:f572:2646 with SMTP id a26-20020a05680802da00b00383f5722646mr1024907oid.5.1677863697929;
-        Fri, 03 Mar 2023 09:14:57 -0800 (PST)
-Received: from ?IPv6:2804:1b3:a7c3:d46d:73b6:f440:93a4:30? ([2804:1b3:a7c3:d46d:73b6:f440:93a4:30])
-        by smtp.gmail.com with ESMTPSA id bb16-20020a056808169000b00383ebc74edasm1122650oib.7.2023.03.03.09.14.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Mar 2023 09:14:57 -0800 (PST)
-Message-ID: <d04cf3d047712ff7f705c3f895ea5a09b9a81211.camel@canonical.com>
-Subject: Re: [PATCH v38 02/39] LSM: Add an LSM identifier for external use
-From:   Georgia Garcia <georgia.garcia@canonical.com>
-To:     Casey Schaufler <casey@schaufler-ca.com>,
-        casey.schaufler@intel.com, paul@paul-moore.com,
-        linux-security-module@vger.kernel.org
-Cc:     linux-audit@redhat.com, jmorris@namei.org, selinux@vger.kernel.org,
-        keescook@chromium.org, john.johansen@canonical.com,
-        penguin-kernel@i-love.sakura.ne.jp, stephen.smalley.work@gmail.com,
-        linux-kernel@vger.kernel.org
-Date:   Fri, 03 Mar 2023 14:14:52 -0300
-In-Reply-To: <20220927195421.14713-3-casey@schaufler-ca.com>
-References: <20220927195421.14713-1-casey@schaufler-ca.com>
-         <20220927195421.14713-3-casey@schaufler-ca.com>
-Organization: Canonical
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu1 
+        with ESMTP id S231401AbjCCSiD (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 3 Mar 2023 13:38:03 -0500
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E6260D50;
+        Fri,  3 Mar 2023 10:37:40 -0800 (PST)
+Received: from mail02.huawei.com (unknown [172.18.147.227])
+        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4PSwxM4lW4z9xtRk;
+        Sat,  4 Mar 2023 02:10:15 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.204.63.22])
+        by APP2 (Coremail) with SMTP id GxC2BwBnMVgKOgJk5iFpAQ--.12605S2;
+        Fri, 03 Mar 2023 19:19:02 +0100 (CET)
+From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
+To:     viro@zeniv.linux.org.uk, chuck.lever@oracle.com,
+        jlayton@kernel.org, zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        dhowells@redhat.com, jarkko@kernel.org,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org,
+        casey@schaufler-ca.com, brauner@kernel.org
+Cc:     linux-fsdevel@vger.kernel.org, linux-nfs@vger.kernel.org,
+        linux-integrity@vger.kernel.org,
+        linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+        selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stefanb@linux.ibm.com, Roberto Sassu <roberto.sassu@huawei.com>
+Subject: [PATCH 00/28] security: Move IMA and EVM to the LSM infrastructure
+Date:   Fri,  3 Mar 2023 19:18:14 +0100
+Message-Id: <20230303181842.1087717-1-roberto.sassu@huaweicloud.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: GxC2BwBnMVgKOgJk5iFpAQ--.12605S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxGrWUAw47GF4UXFW5uF4fuFg_yoWrKFW7pF
+        s0ga15GrykJFyUurWfAF4xua1SgFWrWryUJrnxJw10v3Z0vr1FqFW0yryrury5GrW8JF1v
+        q3ZFv3909r1DZFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvSb4IE77IF4wAFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k2
+        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
+        xVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVCY1x
+        0267AKxVWxJr0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8C
+        rVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4
+        IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x02
+        62kKe7AKxVW8ZVWrXwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s
+        026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_
+        GFv_WrylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW5JVW7JwCI42IY6xIIjxv20x
+        vEc7CjxVAFwI0_Cr1j6rxdMIIF0xvE42xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280
+        aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVWxJr0_GcJvcSsGvfC2KfnxnUUI43
+        ZEXa7IU0bAw3UUUUU==
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAFBF1jj4otUwAAsF
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, 2022-09-27 at 12:53 -0700, Casey Schaufler wrote:
-> Add an integer member "id" to the struct lsm_id. This value is
-> a unique identifier associated with each security module. The
-> values are defined in a new UAPI header file. Each existing LSM
-> has been updated to include it's LSMID in the lsm_id.
->=20
-> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+From: Roberto Sassu <roberto.sassu@huawei.com>
 
-Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+This patch set depends on:
+- https://lore.kernel.org/linux-integrity/20221201104125.919483-1-roberto.sassu@huaweicloud.com/ (there will be a v8 shortly)
+- https://lore.kernel.org/linux-security-module/20230217032625.678457-1-paul@paul-moore.com/
 
-> ---
->  include/linux/lsm_hooks.h    |  1 +
->  include/uapi/linux/lsm.h     | 32 ++++++++++++++++++++++++++++++++
->  security/apparmor/lsm.c      |  2 ++
->  security/bpf/hooks.c         |  2 ++
->  security/commoncap.c         |  2 ++
->  security/landlock/setup.c    |  2 ++
->  security/loadpin/loadpin.c   |  2 ++
->  security/lockdown/lockdown.c |  4 +++-
->  security/safesetid/lsm.c     |  2 ++
->  security/selinux/hooks.c     |  2 ++
->  security/smack/smack_lsm.c   |  2 ++
->  security/tomoyo/tomoyo.c     |  2 ++
->  security/yama/yama_lsm.c     |  2 ++
->  13 files changed, 56 insertions(+), 1 deletion(-)
->  create mode 100644 include/uapi/linux/lsm.h
->=20
-> diff --git a/include/linux/lsm_hooks.h b/include/linux/lsm_hooks.h
-> index 23054881eb08..407f57aaa6ef 100644
-> --- a/include/linux/lsm_hooks.h
-> +++ b/include/linux/lsm_hooks.h
-> @@ -1603,6 +1603,7 @@ struct security_hook_heads {
->   */
->  struct lsm_id {
->  	const char	*lsm;		/* Name of the LSM */
-> +	int		id;		/* LSM ID */
->  };
-> =20
->  /*
-> diff --git a/include/uapi/linux/lsm.h b/include/uapi/linux/lsm.h
-> new file mode 100644
-> index 000000000000..5647c3e220c0
-> --- /dev/null
-> +++ b/include/uapi/linux/lsm.h
-> @@ -0,0 +1,32 @@
-> +/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-> +/*
-> + * Linus Security Modules (LSM) - User space API
-> + *
-> + * Copyright (C) 2022 Casey Schaufler <casey@schaufler-ca.com>
-> + * Copyright (C) Intel Corporation
-> + */
-> +
-> +#ifndef _UAPI_LINUX_LSM_H
-> +#define _UAPI_LINUX_LSM_H
-> +
-> +/*
-> + * ID values to identify security modules.
-> + * A system may use more than one security module.
-> + *
-> + * LSM_ID_XXX values 32 and below are reserved for future use
-> + */
-> +#define LSM_ID_INVALID		-1
-> +#define LSM_ID_SELINUX		33
-> +#define LSM_ID_SMACK		34
-> +#define LSM_ID_TOMOYO		35
-> +#define LSM_ID_IMA		36
-> +#define LSM_ID_APPARMOR		37
-> +#define LSM_ID_YAMA		38
-> +#define LSM_ID_LOADPIN		39
-> +#define LSM_ID_SAFESETID	40
-> +#define LSM_ID_LOCKDOWN		41
-> +#define LSM_ID_BPF		42
-> +#define LSM_ID_LANDLOCK		43
-> +#define LSM_ID_CAPABILITY	44
-> +
-> +#endif /* _UAPI_LINUX_LSM_H */
-> diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-> index b71f7d4159d7..fb6c7edd5393 100644
-> --- a/security/apparmor/lsm.c
-> +++ b/security/apparmor/lsm.c
-> @@ -24,6 +24,7 @@
->  #include <linux/zlib.h>
->  #include <net/sock.h>
->  #include <uapi/linux/mount.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  #include "include/apparmor.h"
->  #include "include/apparmorfs.h"
-> @@ -1204,6 +1205,7 @@ struct lsm_blob_sizes apparmor_blob_sizes __lsm_ro_=
-after_init =3D {
-> =20
->  static struct lsm_id apparmor_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "apparmor",
-> +	.id       =3D LSM_ID_APPARMOR,
->  };
-> =20
->  static struct security_hook_list apparmor_hooks[] __lsm_ro_after_init =
-=3D {
-> diff --git a/security/bpf/hooks.c b/security/bpf/hooks.c
-> index e50de3abfde2..c462fc41dd57 100644
-> --- a/security/bpf/hooks.c
-> +++ b/security/bpf/hooks.c
-> @@ -5,6 +5,7 @@
->   */
->  #include <linux/lsm_hooks.h>
->  #include <linux/bpf_lsm.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  static struct security_hook_list bpf_lsm_hooks[] __lsm_ro_after_init =3D=
- {
->  	#define LSM_HOOK(RET, DEFAULT, NAME, ...) \
-> @@ -21,6 +22,7 @@ static struct security_hook_list bpf_lsm_hooks[] __lsm_=
-ro_after_init =3D {
->   */
->  struct lsm_id bpf_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "bpf",
-> +	.id       =3D LSM_ID_BPF,
->  };
-> =20
->  static int __init bpf_lsm_init(void)
-> diff --git a/security/commoncap.c b/security/commoncap.c
-> index dab1b5f5e6aa..4e9b140159d8 100644
-> --- a/security/commoncap.c
-> +++ b/security/commoncap.c
-> @@ -25,6 +25,7 @@
->  #include <linux/binfmts.h>
->  #include <linux/personality.h>
->  #include <linux/mnt_idmapping.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  /*
->   * If a non-root user executes a setuid-root binary in
-> @@ -1448,6 +1449,7 @@ int cap_mmap_file(struct file *file, unsigned long =
-reqprot,
-> =20
->  static struct lsm_id capability_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "capability",
-> +	.id       =3D LSM_ID_CAPABILITY,
->  };
-> =20
->  static struct security_hook_list capability_hooks[] __lsm_ro_after_init =
-=3D {
-> diff --git a/security/landlock/setup.c b/security/landlock/setup.c
-> index fc7b69c5839e..1242c61c9de4 100644
-> --- a/security/landlock/setup.c
-> +++ b/security/landlock/setup.c
-> @@ -8,6 +8,7 @@
-> =20
->  #include <linux/init.h>
->  #include <linux/lsm_hooks.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  #include "common.h"
->  #include "cred.h"
-> @@ -25,6 +26,7 @@ struct lsm_blob_sizes landlock_blob_sizes __lsm_ro_afte=
-r_init =3D {
-> =20
->  struct lsm_id landlock_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D LANDLOCK_NAME,
-> +	.id       =3D LSM_ID_LANDLOCK,
->  };
-> =20
->  static int __init landlock_init(void)
-> diff --git a/security/loadpin/loadpin.c b/security/loadpin/loadpin.c
-> index 7e5c897ccbb2..276c8a7cd6fe 100644
-> --- a/security/loadpin/loadpin.c
-> +++ b/security/loadpin/loadpin.c
-> @@ -20,6 +20,7 @@
->  #include <linux/string_helpers.h>
->  #include <linux/dm-verity-loadpin.h>
->  #include <uapi/linux/loadpin.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  static void report_load(const char *origin, struct file *file, char *ope=
-ration)
->  {
-> @@ -197,6 +198,7 @@ static int loadpin_load_data(enum kernel_load_data_id=
- id, bool contents)
-> =20
->  static struct lsm_id loadpin_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "loadpin",
-> +	.id       =3D LSM_ID_LOADPIN,
->  };
-> =20
->  static struct security_hook_list loadpin_hooks[] __lsm_ro_after_init =3D=
- {
-> diff --git a/security/lockdown/lockdown.c b/security/lockdown/lockdown.c
-> index 2af4bff8d101..3d3347f3dbd1 100644
-> --- a/security/lockdown/lockdown.c
-> +++ b/security/lockdown/lockdown.c
-> @@ -13,6 +13,7 @@
->  #include <linux/security.h>
->  #include <linux/export.h>
->  #include <linux/lsm_hooks.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  static enum lockdown_reason kernel_locked_down;
-> =20
-> @@ -76,7 +77,8 @@ static struct security_hook_list lockdown_hooks[] __lsm=
-_ro_after_init =3D {
->  };
-> =20
->  static struct lsm_id lockdown_lsmid __lsm_ro_after_init =3D {
-> -	.lsm     =3D "lockdown",
-> +	.lsm      =3D "lockdown",
-> +	.id       =3D LSM_ID_LOCKDOWN,
->  };
-> =20
->  static int __init lockdown_lsm_init(void)
-> diff --git a/security/safesetid/lsm.c b/security/safesetid/lsm.c
-> index 3a94103f3c5b..88002731e603 100644
-> --- a/security/safesetid/lsm.c
-> +++ b/security/safesetid/lsm.c
-> @@ -19,6 +19,7 @@
->  #include <linux/ptrace.h>
->  #include <linux/sched/task_stack.h>
->  #include <linux/security.h>
-> +#include <uapi/linux/lsm.h>
->  #include "lsm.h"
-> =20
->  /* Flag indicating whether initialization completed */
-> @@ -263,6 +264,7 @@ static int safesetid_task_fix_setgroups(struct cred *=
-new, const struct cred *old
-> =20
->  static struct lsm_id safesetid_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "safesetid",
-> +	.id       =3D LSM_ID_SAFESETID,
->  };
-> =20
->  static struct security_hook_list safesetid_security_hooks[] =3D {
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 5e4938f3ce11..9803bbbc6747 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -92,6 +92,7 @@
->  #include <linux/fsnotify.h>
->  #include <linux/fanotify.h>
->  #include <linux/io_uring.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  #include "avc.h"
->  #include "objsec.h"
-> @@ -7014,6 +7015,7 @@ static int selinux_uring_cmd(struct io_uring_cmd *i=
-oucmd)
-> =20
->  static struct lsm_id selinux_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "selinux",
-> +	.id       =3D LSM_ID_SELINUX,
->  };
-> =20
->  /*
-> diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-> index 5d8bc13feb09..2a88b4e7669e 100644
-> --- a/security/smack/smack_lsm.c
-> +++ b/security/smack/smack_lsm.c
-> @@ -43,6 +43,7 @@
->  #include <linux/fs_parser.h>
->  #include <linux/watch_queue.h>
->  #include <linux/io_uring.h>
-> +#include <uapi/linux/lsm.h>
->  #include "smack.h"
-> =20
->  #define TRANS_TRUE	"TRUE"
-> @@ -4776,6 +4777,7 @@ struct lsm_blob_sizes smack_blob_sizes __lsm_ro_aft=
-er_init =3D {
-> =20
->  static struct lsm_id smack_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "smack",
-> +	.id       =3D LSM_ID_SMACK,
->  };
-> =20
->  static struct security_hook_list smack_hooks[] __lsm_ro_after_init =3D {
-> diff --git a/security/tomoyo/tomoyo.c b/security/tomoyo/tomoyo.c
-> index 38342c1fa4bc..71eab206ba6e 100644
-> --- a/security/tomoyo/tomoyo.c
-> +++ b/security/tomoyo/tomoyo.c
-> @@ -6,6 +6,7 @@
->   */
-> =20
->  #include <linux/lsm_hooks.h>
-> +#include <uapi/linux/lsm.h>
->  #include "common.h"
-> =20
->  /**
-> @@ -532,6 +533,7 @@ static void tomoyo_task_free(struct task_struct *task=
-)
-> =20
->  static struct lsm_id tomoyo_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "tomoyo",
-> +	.id       =3D LSM_ID_TOMOYO,
->  };
-> =20
->  /*
-> diff --git a/security/yama/yama_lsm.c b/security/yama/yama_lsm.c
-> index ed6d45e62e0d..b178d74bb00b 100644
-> --- a/security/yama/yama_lsm.c
-> +++ b/security/yama/yama_lsm.c
-> @@ -18,6 +18,7 @@
->  #include <linux/task_work.h>
->  #include <linux/sched.h>
->  #include <linux/spinlock.h>
-> +#include <uapi/linux/lsm.h>
-> =20
->  #define YAMA_SCOPE_DISABLED	0
->  #define YAMA_SCOPE_RELATIONAL	1
-> @@ -423,6 +424,7 @@ static int yama_ptrace_traceme(struct task_struct *pa=
-rent)
-> =20
->  static struct lsm_id yama_lsmid __lsm_ro_after_init =3D {
->  	.lsm      =3D "yama",
-> +	.id       =3D LSM_ID_YAMA,
->  };
-> =20
->  static struct security_hook_list yama_hooks[] __lsm_ro_after_init =3D {
+IMA and EVM are not effectively LSMs, especially due the fact that in the
+past they could not provide a security blob while there is another LSM
+active.
+
+That changed in the recent years, the LSM stacking feature now makes it
+possible to stack together multiple LSMs, and allows them to provide a
+security blob for most kernel objects. While the LSM stacking feature has
+some limitations being worked out, it is already suitable to make IMA and
+EVM as LSMs.
+
+In short, while this patch set is big, it does not make any functional
+change to IMA and EVM. IMA and EVM functions are called by the LSM
+infrastructure in the same places as before (except ima_post_path_mknod()),
+rather being hardcoded calls, and the inode metadata pointer is directly
+stored in the inode security blob rather than in a separate rbtree.
+
+More specifically, patches 1-13 make IMA and EVM functions suitable to
+be registered to the LSM infrastructure, by aligning function parameters.
+
+Patches 14-22 add new LSM hooks in the same places where IMA and EVM
+functions are called, if there is no LSM hook already.
+
+Patch 23 adds the 'last' ordering strategy for LSMs, so that IMA and EVM
+functions are called in the same order as of today. Also, like with the
+'first' strategy, LSMs using it are always enabled, so IMA and EVM
+functions will be always called (if IMA and EVM are compiled built-in).
+
+Patches 24-27 do the bulk of the work, remove hardcoded calls to IMA and
+EVM functions, register those functions in the LSM infrastructure, and let
+the latter call them. In addition, they also reserve one slot for EVM to 
+supply an xattr to the inode_init_security hook.
+
+Finally, patch 28 removes the rbtree used to bind metadata to the inodes,
+and instead reserve a space in the inode security blob to store the pointer
+to metadata. This also brings performance improvements due to retrieving
+metadata in constant time, as opposed to logarithmic.
+
+Roberto Sassu (28):
+  ima: Align ima_inode_post_setattr() definition with LSM infrastructure
+  ima: Align ima_post_path_mknod() definition with LSM infrastructure
+  ima: Align ima_post_create_tmpfile() definition with LSM
+    infrastructure
+  ima: Align ima_file_mprotect() definition with LSM infrastructure
+  ima: Align ima_inode_setxattr() definition with LSM infrastructure
+  ima: Align ima_inode_removexattr() definition with LSM infrastructure
+  ima: Align ima_post_read_file() definition with LSM infrastructure
+  evm: Align evm_inode_post_setattr() definition with LSM infrastructure
+  evm: Align evm_inode_setxattr() definition with LSM infrastructure
+  evm: Align evm_inode_post_setxattr() definition with LSM
+    infrastructure
+  evm: Complete description of evm_inode_setattr()
+  fs: Fix description of vfs_tmpfile()
+  security: Align inode_setattr hook definition with EVM
+  security: Introduce inode_post_setattr hook
+  security: Introduce inode_post_removexattr hook
+  security: Introduce file_post_open hook
+  security: Introduce file_pre_free_security hook
+  security: Introduce path_post_mknod hook
+  security: Introduce inode_post_create_tmpfile hook
+  security: Introduce inode_post_set_acl hook
+  security: Introduce inode_post_remove_acl hook
+  security: Introduce key_post_create_or_update hook
+  security: Introduce LSM_ORDER_LAST
+  ima: Move to LSM infrastructure
+  ima: Move IMA-Appraisal to LSM infrastructure
+  evm: Move to LSM infrastructure
+  integrity: Move integrity functions to the LSM infrastructure
+  integrity: Switch from rbtree to LSM-managed blob for
+    integrity_iint_cache
+
+ fs/attr.c                             |   5 +-
+ fs/file_table.c                       |   3 +-
+ fs/namei.c                            |  13 +-
+ fs/nfsd/vfs.c                         |   3 +-
+ fs/open.c                             |   1 -
+ fs/posix_acl.c                        |   5 +-
+ fs/xattr.c                            |   3 +-
+ include/linux/evm.h                   | 112 -----------
+ include/linux/ima.h                   | 142 -------------
+ include/linux/integrity.h             |  26 ---
+ include/linux/lsm_hook_defs.h         |  21 +-
+ include/linux/lsm_hooks.h             |   1 +
+ include/linux/security.h              |  65 ++++++
+ security/integrity/evm/evm_main.c     | 109 ++++++++--
+ security/integrity/iint.c             |  90 +++------
+ security/integrity/ima/ima.h          |  12 ++
+ security/integrity/ima/ima_appraise.c |  38 +++-
+ security/integrity/ima/ima_main.c     |  77 +++++--
+ security/integrity/integrity.h        |  44 +++-
+ security/keys/key.c                   |  10 +-
+ security/security.c                   | 276 ++++++++++++++++----------
+ security/selinux/hooks.c              |   3 +-
+ security/smack/smack_lsm.c            |   4 +-
+ 23 files changed, 550 insertions(+), 513 deletions(-)
+
+-- 
+2.25.1
 

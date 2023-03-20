@@ -2,220 +2,130 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A617B6C1926
-	for <lists+selinux@lfdr.de>; Mon, 20 Mar 2023 16:31:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4874B6C1B53
+	for <lists+selinux@lfdr.de>; Mon, 20 Mar 2023 17:24:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232926AbjCTPbK (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 20 Mar 2023 11:31:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48214 "EHLO
+        id S231510AbjCTQYm (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 20 Mar 2023 12:24:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232920AbjCTPat (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 20 Mar 2023 11:30:49 -0400
-Received: from markus.defensec.nl (markus.defensec.nl [45.80.168.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 933AD38B5F
-        for <selinux@vger.kernel.org>; Mon, 20 Mar 2023 08:23:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=defensec.nl;
-        s=default; t=1679325793;
-        bh=+ySz2mPcxa9srRP6kSa+uD7AEiMeQRSeCAzzDejNbe4=;
-        h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-        b=X5cnkLLrgZNTDrmbp+4VYiTvU8WT3q49tp47ie6YAm5I9kN4xZeApxYDCCKb8cWbq
-         RAPYnwvYeVbKHjZczcPlXm/38/2Sju2Ox3/QwxX5jRpZyTfacr4UVC2a3R9+1dhABj
-         OPsy4ny5Kr4FmK+wooTAGtsQxZsg/SZe7pwr5V60=
-Received: from paulus (paulus.lan [IPv6:2a10:3781:2099::515])
-        by markus.defensec.nl (Postfix) with ESMTPSA id 778843CC;
-        Mon, 20 Mar 2023 16:23:13 +0100 (CET)
-From:   Dominick Grift <dominick.grift@defensec.nl>
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     Ondrej Mosnacek <omosnace@redhat.com>,
-        Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org
-Subject: Re: cgroup2 labeling question
-References: <87mt47ga29.fsf@defensec.nl>
-        <CAEjxPJ51N4sguZZ6EkXDuCkaQSp1=Z8NODFbLS9B1_143ktuxA@mail.gmail.com>
-        <871qljfrtz.fsf@defensec.nl>
-        <CAFqZXNvJdb8e2b6NzC4yO7DfMc32wrRsyU160YN2Us7oZmKBeQ@mail.gmail.com>
-        <87wn3bec97.fsf@defensec.nl>
-        <CAFqZXNvULBzqMbN5ymB6fam6=CiUzikp3iWfvFj2cK++5wOwrA@mail.gmail.com>
-        <CAEjxPJ6tYSPEVJV1usgpsT=kXBisQwAcYDkUv20br=gxQZV9eA@mail.gmail.com>
-Date:   Mon, 20 Mar 2023 16:23:13 +0100
-In-Reply-To: <CAEjxPJ6tYSPEVJV1usgpsT=kXBisQwAcYDkUv20br=gxQZV9eA@mail.gmail.com>
-        (Stephen Smalley's message of "Mon, 20 Mar 2023 11:16:16 -0400")
-Message-ID: <87lejre9b2.fsf@defensec.nl>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        with ESMTP id S229929AbjCTQYY (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 20 Mar 2023 12:24:24 -0400
+Received: from mail-yb1-xb29.google.com (mail-yb1-xb29.google.com [IPv6:2607:f8b0:4864:20::b29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BEB49EF6
+        for <selinux@vger.kernel.org>; Mon, 20 Mar 2023 09:17:46 -0700 (PDT)
+Received: by mail-yb1-xb29.google.com with SMTP id r1so13771446ybu.5
+        for <selinux@vger.kernel.org>; Mon, 20 Mar 2023 09:17:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1679329065;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mu3q0qWkHZbzQYy+ssNMyHCnAXMki/3wSo/9vrZjZl0=;
+        b=J12Cco/dBiTw2EvVZrUx6xjelvX9oPev6yH/XXnRs3UENdJKQA/Ej2y7nHeFzBYa+7
+         7+rqVAvwhj/dQ8WxD4gTfGokAOkGVjQM68d4I+OnTdwAQRGyVj+4T8ihihudRNiHRa99
+         NdskRO9K7P992UsCecn36OC70OUlB/izHg4jwExzW9yQkeTE7gM9BriTYsrmxeY1/NGn
+         ABrDMBQjZkfovyNsWFVQ7PST+6Mppjo17vA6BsZwRntRApXydX8/ikM4LAB8Os9nnjOg
+         IxYgTV2NiBa6NL/1hQkZm0xfpH+q+E2fCK6fkWAZHF4PphyO/Hwnb9TWypt9NtaSSBUa
+         biCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1679329065;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mu3q0qWkHZbzQYy+ssNMyHCnAXMki/3wSo/9vrZjZl0=;
+        b=nwnVai4+BzxPE4tyDac9gNKYnJfRab5g8PQW9hb4BaPDN4tFPM54r2BH1hxP2Y7EKZ
+         K0JE2IXj3iK4/zEyUC4W5UmVmCeCrQgS2FTad6ozKJUI/ttX6JfjckvbJJ+5QHWfc0Yq
+         vsuJp92YCYVdZP73UMtDmF4x4QSEwbgLl+DM5siIPdJcEPCtfyhmKOmtcdXRHH4bCZdW
+         0ETvbuFHZnqWIurwH9UXlzfdRGICIuFm9a3OXK09+wLEV2hmn5TF6+hHBl/x9PqcxrqX
+         3PDP6Vi9NScbgTq/3lb/hV/6slsjkx0TsjPpSEMueUy1fgtxiTnIZb0GQ49UPP/SdL2m
+         l1Iw==
+X-Gm-Message-State: AO0yUKWzqYlpzmwYuS5N5THcCJtyoXA2z80YVUGCdnRGdkZrvc1hbQar
+        Cn46fmlV28gNSoLW61xK7NKoaPMLBYSHHBYF+83d
+X-Google-Smtp-Source: AK7set8cpwA2U51TAifGczY6dKrNFq8jZSJ1gkBU62uYvI2X3gg2IwjxPyeB4IWe1FZ3mPfU7ZH38JM8JAEKzzZt6VU=
+X-Received: by 2002:a05:6902:708:b0:b6c:f26c:e58d with SMTP id
+ k8-20020a056902070800b00b6cf26ce58dmr2119424ybt.3.1679329065125; Mon, 20 Mar
+ 2023 09:17:45 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20230317195615.281810-1-paul@paul-moore.com> <da4e7d33-29ab-2dd0-ef46-20f60998bae9@schaufler-ca.com>
+In-Reply-To: <da4e7d33-29ab-2dd0-ef46-20f60998bae9@schaufler-ca.com>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 20 Mar 2023 12:17:34 -0400
+Message-ID: <CAHC9VhRg5kxoYUPCb21iPdM=54JQQJjB6i4PPoiWK+4nJqK9uA@mail.gmail.com>
+Subject: Re: [PATCH] selinux: remove the runtime disable functionality
+To:     Casey Schaufler <casey@schaufler-ca.com>
+Cc:     selinux@vger.kernel.org, linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Stephen Smalley <stephen.smalley.work@gmail.com> writes:
-
-> On Mon, Mar 20, 2023 at 10:46=E2=80=AFAM Ondrej Mosnacek <omosnace@redhat=
+On Fri, Mar 17, 2023 at 7:15=E2=80=AFPM Casey Schaufler <casey@schaufler-ca=
 .com> wrote:
->>
->> On Mon, Mar 20, 2023 at 3:19=E2=80=AFPM Dominick Grift
->> <dominick.grift@defensec.nl> wrote:
->> >
->> > Ondrej Mosnacek <omosnace@redhat.com> writes:
->> >
->> > > On Mon, Mar 20, 2023 at 2:59=E2=80=AFPM Dominick Grift
->> > > <dominick.grift@defensec.nl> wrote:
->> > >>
->> > >> Stephen Smalley <stephen.smalley.work@gmail.com> writes:
->> > >>
->> > >> > On Mon, Mar 20, 2023 at 3:25=E2=80=AFAM Dominick Grift
->> > >> > <dominick.grift@defensec.nl> wrote:
->> > >> >>
->> > >> >>
->> > >> >> Hi,
->> > >> >>
->> > >> >> I was reading this pull request [1] and looked into how I might =
-be able
->> > >> >> to implement this in policy but there seem to be some technical
->> > >> >> difficulties.
->> > >> >>
->> > >> >> * I already use getfscon to seperate the systemd user.slice beca=
-use the
->> > >> >>   system manager delegates the user.slice to the user manager.
->> > >> >>
->> > >> >>   (genfscon "cgroup2" "/user.slice" cgroupfile_context)
->> > >> >>
->> > >> >>   In the past the proved to be a racy where systemd attempts to
->> > >> >>   write before the object has the context associated with the ge=
-nfscon.
->> > >> >
->> > >> > I don't understand how this could be racy - genfscon-assigned con=
-texts
->> > >> > should be assigned when the dentry is first instantiated via
->> > >> > inode_donit_with_dentry and therefore the inode shouldn't be
->> > >> > accessible to userspace prior to this initial assignment AFAIK.
->> > >> > Possibly I am missing something.
->> > >>
->> > >> I recall encountering this sporadically, but I admit that it has be=
-en a
->> > >> while since I supressed it in policy. I might try to reproduce. AFA=
-IK my
->> > >> policy is the only policy that actually labels some trees on cgroup=
-2 fs
->> > >> with private types currently.
->> > >>
->> > >> >
->> > >> >>   I decided to dontaudit attempts to write to the mislabeled obj=
-ect and
->> > >> >>   it *seems* as if systemd retries until it can write it i.e. wh=
-en the
->> > >> >>   object carries the expected label and so that seems to work ev=
-entually
->> > >> >>   but it looks fragile.
->> > >> >>
->> > >> >> * The challenge with memory pressure implementation [2] is that =
-these
->> > >> >>   "memory.pressure" files end up in random locations under
->> > >> >>   "/system.slice" for example:
->> > >> >>
->> > >> >>   /sys/fs/cgroup/system.slice/systemd-journald.service/memory.pr=
-essure
->> > >> >>
->> > >> >>   Where in the above systemd-journald.service might be
->> > >> >>   templated (systemd-journald@FOO.service). Point is that the pa=
-th is
->> > >> >>   random. genfscon does not support regex and glob. I can't do f=
-or example:
->> > >> >>
->> > >> >>   (genfscon "cgroup2" "/system.slice/.*/memory.pressure"
->> > >> >>   cgroupfile_context)
->> > >> >>
->> > >> >>   Fortunately cgroup2fs supports relabeling but if systemd has to
->> > >> >>   manually relabel the cgroup files then I would imagine that th=
-is is
->> > >> >>   racy as well, and that does not really solve the underlying is=
-sue.
->> > >> >>
->> > >> >>   I am looking for ideas and suggestions
->> > >> >
->> > >> > Optimally one of two things would happen:
->> > >> > 1. The kernel would label the inode correctly when it is first cr=
-eated
->> > >> > (e.g. by augmenting genfscon to support more general matching), or
->> > >> > 2. The userspace component that creates these files would label t=
-hem
->> > >> > correctly at creation (via setfscreatecon() prior to creation).
->> > >>
->> > >> Agree but 1. would require regex/glob support for genfscon and 2. t=
-hese
->> > >> files aren't "created" by userspace AFAIK and so setfscreatecon or
->> > >> automatic object type transitions are probably not an option here.
->> > >>
->> > >> >
->> > >> > Pardon my ignorance but what creates these files initially? The k=
-ernel
->> > >> > in response to some event or systemd or some other userspace
->> > >> > component?
->> > >>
->> > >> Yes AFAIK it is the former (psuedo filesystem similar to procfs, de=
-bugfs
->> > >> in that sense). This is also why I don't think that the PR mentione=
-d is
->> > >> tested because cgroup2 fs labeling is done with genfscon and not fs=
-use
->> > >> trans or fsuse xattr so even if the files would be created by
->> > >> userspace (which I think is not the case) the specified automatic o=
-bject
->> > >> type transition rule wouldnt work.
->> > >
->> > > Actually, type transitions on cgroupfs should work - I added special
->> > > hooks for kernfs just for that some time ago - see kernel commits
->> > > d0c9c153b4bd6963c8fcccbc0caa12e8fa8d971d..e19dfdc83b60f196e0653d6834=
-99f7bc5548128f.
->> >
->> > Interesting. I will try this out. Would this not require at least a
->> > "fsuse trans" statement in policy?
->>
->> No, it should work alongside genfscon. cgroupfs already was special
->> before that as it allowed relabeling despite genfscon being used.
->>
->> >
->> > https://github.com/SELinuxProject/refpolicy/blob/master/policy/modules=
-/kernel/filesystem.te#L89
->> >
->> > Also I am not sure if that support would make much sense on a filesyst=
-em
->> > where files are created my the kernel in reaction to some event.
->>
->> It does make sense with named transitions, plus it was needed to make
->> even a simple parent-child inheritance work. Also, I believe some
->> cgroupfs files/directories (I think only directories?) can be created
->> by userspace, too.
 >
-> We should likely check that the SELinux Notebook and/or other
-> documentation reflects this support and which filesystem types are
-> supported, both wrt the filesystem types that support both genfscon +
-> setxattr and those that support genfscon+setxattr+type_transition
-> rules.
+> On 3/17/2023 12:56 PM, Paul Moore wrote:
+> > After working with the larger SELinux-based distros for several
+> > years, we're finally at a place where we can disable the SELinux
+> > runtime disable functionality.  The existing kernel deprecation
+> > notice explains the functionality and why we want to remove it:
+> >
+> >   The selinuxfs "disable" node allows SELinux to be disabled at
+> >   runtime prior to a policy being loaded into the kernel.  If
+> >   disabled via this mechanism, SELinux will remain disabled until
+> >   the system is rebooted.
+> >
+> >   The preferred method of disabling SELinux is via the "selinux=3D0"
+> >   boot parameter, but the selinuxfs "disable" node was created to
+> >   make it easier for systems with primitive bootloaders that did not
+> >   allow for easy modification of the kernel command line.
+> >   Unfortunately, allowing for SELinux to be disabled at runtime makes
+> >   it difficult to secure the kernel's LSM hooks using the
+> >   "__ro_after_init" feature.
+> >
+> > It is that last sentence, mentioning the '__ro_after_init' hardening,
+> > which is the real motivation for this change, and if you look at the
+> > diffstat you'll see that the impact of this patch reaches across all
+> > the different LSMs, helping prevent tampering at the LSM hook level.
+> >
+> > >From a SELinux perspective, it is important to note that if you
+> > continue to disable SELinux via "/etc/selinux/config" it may appear
+> > that SELinux is disabled, but it is simply in an uninitialized state.
+> > If you load a policy with `load_policy -i`, you will see SELinux
+> > come alive just as if you had loaded the policy during early-boot.
+> >
+> > It is also worth noting that the "/sys/fs/selinux/disable" file is
+> > always writable now, regardless of the Kconfig settings, but writing
+> > to the file has no effect on the system, other than to display an
+> > error on the console if a non-zero/true value is written.
+> >
+> > Finally, in the several years where we have been working on
+> > deprecating this functionality, there has only been one instance of
+> > someone mentioning any user visible breakage.  In this particular
+> > case it was an individual's kernel test system, and the workaround
+> > documented in the deprecation notice ("selinux=3D0" on the kernel
+> > command line) resolved the issue without problem.
+> >
+> > Signed-off-by: Paul Moore <paul@paul-moore.com>
+>
+> Except for the Documentation fumble noted below,
 
-I tried this out:
+Yes, Daniel also pointed that out and it's fixed in my dev branch.
 
-1. yes you can create dirs on cgroup2 fs (but not files)
-2. you can have a genfscon "cgroup2" alongside fsuse trans "cgroup2" but
-if you do then any genfscon statements you might have like for example
-genfscon "cgroup2" "/user.slice" cgroupfile_context) no longer
-work. i.e. its pointless to have then both
-3. even with a fsuse trans statement I could not make type transitions
-work for directories created on cgroup2 fs.
+> enthusiastically ...
+> Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+> or, if you'd prefer ...
+> Acked-by: Casey Schaufler <casey@schaufler-ca.com>
 
-Even if you could create directories on a cgroupfs with a type
-transition, and if the files under that directory would inherited the
-type of the parent, then that still would not be good enough to address
-the memory.pressure file challenge because the point is to allow a
-service to write the memory.pressure file but not other files in that
-same directory.
+Generally I prefer 'Reviewed-by' tags as they imply that someone
+actually read/reviewed the code, but since this patch does technically
+touch the Smack code I think the ACK is probably more appropriate
+here.  Regardless, thanks for the review/ACK.
 
 --=20
-gpg --locate-keys dominick.grift@defensec.nl
-Key fingerprint =3D FCD2 3660 5D6B 9D27 7FC6  E0FF DA7E 521F 10F6 4098
-Dominick Grift
+paul-moore.com

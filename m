@@ -2,67 +2,82 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3897D6D2760
-	for <lists+selinux@lfdr.de>; Fri, 31 Mar 2023 19:59:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD2A06D27A2
+	for <lists+selinux@lfdr.de>; Fri, 31 Mar 2023 20:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229998AbjCaR7Q (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 31 Mar 2023 13:59:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33228 "EHLO
+        id S230371AbjCaSPX (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 31 Mar 2023 14:15:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231127AbjCaR7P (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 31 Mar 2023 13:59:15 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C31252369D
-        for <selinux@vger.kernel.org>; Fri, 31 Mar 2023 10:58:50 -0700 (PDT)
-Received: from [192.168.1.10] (pool-96-241-71-43.washdc.fios.verizon.net [96.241.71.43])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 799B020FFC9F;
-        Fri, 31 Mar 2023 10:58:17 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 799B020FFC9F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1680285497;
-        bh=SGeTlQ8+JRaKzXPnKYzAJn4AiTYNT3gQae+7QQTAnV0=;
-        h=Date:Subject:To:References:From:In-Reply-To:From;
-        b=e0QfJIbZkq5vC7QkNS2zZYrIF4/9KjzxZrlwcJXEGPKtuz4+MNrh79GSBA1dejHUU
-         4Fvo0lcH93nvwmnHmrjWlC/qjb01bgsGNvF9gyhwXiBNgk7ZfUdPLAXj7Zg9tQ+cjY
-         r9lDR/zsKSdpQ6IuC0PZ3Ym8HS9gbp9weJ7ctLyE=
-Message-ID: <361e270e-ff0f-681b-5354-fc8fe98bb26c@linux.microsoft.com>
-Date:   Fri, 31 Mar 2023 13:58:17 -0400
+        with ESMTP id S230112AbjCaSPW (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 31 Mar 2023 14:15:22 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D9D0DBF8
+        for <selinux@vger.kernel.org>; Fri, 31 Mar 2023 11:15:22 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id ja10so22036953plb.5
+        for <selinux@vger.kernel.org>; Fri, 31 Mar 2023 11:15:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112; t=1680286521;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VedPNtZbSXDqqBb6d5W5oDafkL0l0anKpCjF6pvc5nc=;
+        b=HpPd4QGhFu0rHlT2o2pmTk08+2Wc73nqz85TE1RvY707DPl6Ar0mxPDoXbJAAJWEYx
+         hiMCaAws3XED8wEQn8eQ6qPcORnFOuXQ25EPTmiol3dUHOh+4OBefngHGsVH3APZSM5w
+         NTQODxyjH4aDv3BlRIif5b52IhbyR45t8uFErOW+Rufs+Pjgyx3dRkeoRWaffTRDMMMQ
+         x0Z5Wd4xeEgVv+uGFcP0tJ/O7ULP0NCzothrFiPLlc++AOnzrRhuOMPYh6JhfcJ8zTTn
+         2e6RF7Zs8V3vYlXwzG7uTBIIiVvy9nou7frodYDdA9k9KNXTW6MeSKPmU/wP4pNWq+LW
+         3G6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680286521;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VedPNtZbSXDqqBb6d5W5oDafkL0l0anKpCjF6pvc5nc=;
+        b=WviZZ+rwxPCbzFKxagUaHrFe7rTPkr12TY5w0Ca6+ZfizqJ+YEXpsxdnqd8puDy0Et
+         BNLdDT8QuX/6K5/9mBWKq61WBq/7IUQRW2Ge3d34mpw3PikW3l422tKZ769b7/Lk/e/G
+         QFJMKZXPxGjZLEyQ5cltLKMjqGdTw/dVRw38AdSdmAL0Q9nm178mWa0unhBeSnwqYnY9
+         Z4Nhj145gnl2GyOx5xifKAosppmgO04vm9FNBLv2s4ZmGo2k6H7GhjUMkcY8jZiqNVlA
+         9VtVQcfXKHMTfWWqkbHC/aHi0ltce5/7dFT1G6MgB9FXopEOHgnEvFVvFxBnRz4dHtpr
+         w2oQ==
+X-Gm-Message-State: AAQBX9d5vSXX+aDYaSpPwomUOr6HqgWt5f8hIuQTt6gu9fgfS4gLBsq9
+        B924kDNmQqRAHlMp/2fXs618S9zjZDMK4SD9jthWtDOU
+X-Google-Smtp-Source: AKy350ZLlOSL/2B+JXmvNNegQ7Mp3QgC+sioHCcgb60MsKlT1wVLQ4DGtw8qNyJ51TYPfvCX7R9dfzIX9dgH7QVLM/Q=
+X-Received: by 2002:a17:90a:600c:b0:240:9d66:cd54 with SMTP id
+ y12-20020a17090a600c00b002409d66cd54mr4717085pji.8.1680286521522; Fri, 31 Mar
+ 2023 11:15:21 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH 1/3] checkpolicy: add option to skip checking neverallow
- rules
-Content-Language: en-US
-To:     =?UTF-8?Q?Christian_G=c3=b6ttsche?= <cgzones@googlemail.com>,
-        selinux@vger.kernel.org
-References: <20230331173442.101678-1-cgzones@googlemail.com>
-From:   Daniel Burgener <dburgener@linux.microsoft.com>
-In-Reply-To: <20230331173442.101678-1-cgzones@googlemail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-17.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <87ileh5ckg.fsf@redhat.com>
+In-Reply-To: <87ileh5ckg.fsf@redhat.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Fri, 31 Mar 2023 14:15:10 -0400
+Message-ID: <CAEjxPJ675EhOoKXHzXKaVOoSXfqkqKudPzCL=F4aAG0vbd+Cdg@mail.gmail.com>
+Subject: Re: sesearch --neverallow
+To:     Petr Lautrbach <lautrbach@redhat.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 3/31/2023 1:34 PM, Christian Göttsche wrote:
-> Add the command line argument `-N/--disable-neverallow`, similar to
-> secilc(8), to checkpolicy(8) and checkmodule(8) to skip the check of
-> neverallow rule violations.
-> 
-> This is mainly useful in development, e.g. to quickly add rules to a
-> policy without fulfilling all neverallow rules or build policies with
-> known violations.
+On Fri, Mar 31, 2023 at 8:37=E2=80=AFAM Petr Lautrbach <lautrbach@redhat.co=
+m> wrote:
+>
+> Hi,
+>
+> I've got a question what is `sesearch --neverallow` good for and how to
+> make it work. I wasn't able to get any output from this command.
+>
+> Is it supposed to work with current userspace and policies? How?
 
-I think it might be helpful to print a quick warning along the lines of 
-"Warning: neverallow checking is disabled, compiled policy may violate 
-neverallow rules" or similar when the flag is set, just to double-check 
-against accidental misuse.
-
--Daniel
-
+I don't see how it could work. neverallow rules aren't preserved in
+the kernel policies.
+It would only make sense if sesearch could be run on source policies or mod=
+ules.

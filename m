@@ -2,67 +2,70 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83F496E006C
-	for <lists+selinux@lfdr.de>; Wed, 12 Apr 2023 23:04:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42E126E0198
+	for <lists+selinux@lfdr.de>; Thu, 13 Apr 2023 00:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230268AbjDLVEe (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 12 Apr 2023 17:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36768 "EHLO
+        id S229930AbjDLWBa (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 12 Apr 2023 18:01:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230170AbjDLVES (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 12 Apr 2023 17:04:18 -0400
-Received: from mail-qv1-xf2b.google.com (mail-qv1-xf2b.google.com [IPv6:2607:f8b0:4864:20::f2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14F915244
-        for <selinux@vger.kernel.org>; Wed, 12 Apr 2023 14:04:17 -0700 (PDT)
-Received: by mail-qv1-xf2b.google.com with SMTP id z3so4642123qvs.8
-        for <selinux@vger.kernel.org>; Wed, 12 Apr 2023 14:04:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681333453; x=1683925453;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v3or0EyPzoOoHWymTfEZiSJxfKOg7J1n6Iw5ufQ3oWU=;
-        b=ZmiEH/RdrHsMyn4NRPbyxTYKhDu52zca7hyHB3fqQY/WsjGjx2jk44j7wSPJy6jAaS
-         EvXWQsxc8RWdg9EztVWEwoOV5BzDZc/WTN9QolRW4I3scKHMtO3bxD2bNJiB7Ku/z5Gs
-         eFDmcdd5IfIEQCpk6VCPp5jxDNpaLD6dJPEdgjvQ50G+uwwLze8sNSSogKrFiuHNpBH4
-         Jo7dBCkf80ceyWq8+JKZUHskP6/PNszSZtEqQJ00J8skUFhRbyn/p6bOZwqeucwuY3Gq
-         dt24z4/3KFvNwdg0TDmpe1vLgAqbFXrVYjyIdICW9vmhrq6xERUhRA+OvcDymq+Gc2LF
-         yECA==
+        with ESMTP id S229830AbjDLWB3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 12 Apr 2023 18:01:29 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0556C0
+        for <selinux@vger.kernel.org>; Wed, 12 Apr 2023 15:00:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1681336853;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YDp7AtnleiC6yCgNIL7FvJVoRt9tHP8JgBYdAukk04s=;
+        b=G97Vetxn+omf+nwGBeD+qGIelvRY1el0C47iej24qhBF8nq86ZbdLD2yQz9Yh8fNFn1grp
+        vtgakuXJmCl9ot4AzoKv/4+OwsVphjzHhHcW6HzLJpDRN16J6FetCjfsTZD6RGTH5/GdcS
+        C19Oqlz+F/Kb90ivzDYlf9Or4tbMevQ=
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com
+ [209.85.216.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-339-2cxTJAZXNEuHKObcNKKDDA-1; Wed, 12 Apr 2023 18:00:51 -0400
+X-MC-Unique: 2cxTJAZXNEuHKObcNKKDDA-1
+Received: by mail-pj1-f71.google.com with SMTP id m21-20020a17090ab79500b00247099b5e7dso570318pjr.8
+        for <selinux@vger.kernel.org>; Wed, 12 Apr 2023 15:00:51 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681333453; x=1683925453;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1681336850; x=1683928850;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=v3or0EyPzoOoHWymTfEZiSJxfKOg7J1n6Iw5ufQ3oWU=;
-        b=WthSkm83i73DfgYvxynMDjrf4WgeseUTwjhvK6qlIuNGexo/U9NWLbp/VRSGdAFeaQ
-         rZbFqy16HFSWBuv/eRsfTbF88SMKeUgcvS545vrS9xQFEe1GsQYyl/OUuvxcDOnDQ+/n
-         6t5Qa3Oxt+JVHXMRyuR68JrObX5NFGodJYXIQouULi60G+4t4+cm5OhZfcxlxzW8BB0o
-         Pq0oBz0qvny/vM6ZEo58iSZnYLLOWVz04toKU65vAyd0wAAuRss5KamzwHkjy14oiSS5
-         Hvyk/FU/EpXdSoS2M1HlYNZ1s5IsU4ppIcn2QMB5gnY/tqM8qcu937UppU2hskyxd+pr
-         C/SQ==
-X-Gm-Message-State: AAQBX9dxXrgQsr1OJaTjDEB687+X+DdLlJSzlhBCQrMWxIpLBzxQFL+U
-        1gTexwIRGNkxfPLH5gg9dkTbPrASpFU=
-X-Google-Smtp-Source: AKy350af+U4smig58IfgPX/h/WNJi9jUnVdIGjS+OFHOFMOUGa57OGSoq3ZxvTQwb8NkhevESvEVSw==
-X-Received: by 2002:ad4:5743:0:b0:5e9:46d:fb52 with SMTP id q3-20020ad45743000000b005e9046dfb52mr987247qvx.34.1681333453309;
-        Wed, 12 Apr 2023 14:04:13 -0700 (PDT)
-Received: from electric.. (c-73-172-54-2.hsd1.md.comcast.net. [73.172.54.2])
-        by smtp.gmail.com with ESMTPSA id oe6-20020a056214430600b005e16003edc9sm5025758qvb.104.2023.04.12.14.04.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Apr 2023 14:04:13 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     cgzones@googlemail.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 6/6] secilc/test: Add notself and other tests
-Date:   Wed, 12 Apr 2023 17:04:06 -0400
-Message-Id: <20230412210406.522892-7-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230412210406.522892-1-jwcart2@gmail.com>
-References: <20230412210406.522892-1-jwcart2@gmail.com>
+        bh=YDp7AtnleiC6yCgNIL7FvJVoRt9tHP8JgBYdAukk04s=;
+        b=jh8ySq8LnNzV0f1ka8P5cHURAdH2xFD+HbtsBs1E1zmraVfyfxGt7sBM6fuQv4CweF
+         UO1sOKbe9ZULJeah76cc2jUaOkhw9NLzw+GIhC9miUogfttm4yh0XjHU8u1OlfP0YHbA
+         zlRoG5QBs6KbUt6DKs0JqS9jWzY8Ai6nB7Jtom+GRrQCiDTRvcAYfQ+gjA5fYKf1vMZ2
+         cmSeFJzBvGFsn9niEPBLjkB06dwZH6TD3Rj73VnjJVkTyAZvktMaWoVLPuresO+Uxw7Y
+         Cj5BxJXWq7NyJsPabsHJyE7tWQ1WjJ+b90r+dZBPHby6jTcxnrQvS9yyCD1ug/bpOa+H
+         h7fw==
+X-Gm-Message-State: AAQBX9dAfWLFeBJ41ROV5Ipv9+D7CrdHJwRzAOolryibXh1vrJz96Jjm
+        fQ6RIQxt1/nX9T9TnO14E64O67XincC4uEdHfK+GapFiyPadpyFT84dJ9fFlanKIMSccY44hplu
+        WVf2Jwywmb+XeNxJ0oq2+Bf3SCC/8xrMU4lx4rV5zT1g+BE0=
+X-Received: by 2002:a63:1665:0:b0:51b:fa5:7bce with SMTP id 37-20020a631665000000b0051b0fa57bcemr1028900pgw.1.1681336850232;
+        Wed, 12 Apr 2023 15:00:50 -0700 (PDT)
+X-Google-Smtp-Source: AKy350ZFhze2DiLcLF5c+Cnnl205MiyIqbBaKTwzBvszVNvJSbIV8RvEd2E8rNp7wRI8FViiibTKSORHSAyo7iywiwQ=
+X-Received: by 2002:a63:1665:0:b0:51b:fa5:7bce with SMTP id
+ 37-20020a631665000000b0051b0fa57bcemr1028894pgw.1.1681336849946; Wed, 12 Apr
+ 2023 15:00:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230412205429.389382-1-paul@paul-moore.com>
+In-Reply-To: <20230412205429.389382-1-paul@paul-moore.com>
+From:   Ondrej Mosnacek <omosnace@redhat.com>
+Date:   Thu, 13 Apr 2023 00:00:38 +0200
+Message-ID: <CAFqZXNtjnHtDXp-dS6tpHp8bDdSYHhZLu-KRVYx1wrXe4ZbKvw@mail.gmail.com>
+Subject: Re: [PATCH] selinux: ensure av_permissions.h is built when needed
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,83 +73,56 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- secilc/test/notself_and_other.cil | 65 +++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
- create mode 100644 secilc/test/notself_and_other.cil
+On Wed, Apr 12, 2023 at 10:56=E2=80=AFPM Paul Moore <paul@paul-moore.com> w=
+rote:
+> The Makefile rule responsible for building flask.h and
+> av_permissions.h only lists flask.h as a target which means that
+> av_permissions.h is only generated when flash.h needs to be
 
-diff --git a/secilc/test/notself_and_other.cil b/secilc/test/notself_and_other.cil
-new file mode 100644
-index 00000000..9b33bfcb
---- /dev/null
-+++ b/secilc/test/notself_and_other.cil
-@@ -0,0 +1,65 @@
-+(class CLASS (PERM))
-+(class C1 (p1a p1b p1c p1d p1e))
-+(classorder (CLASS C1))
-+(sid SID)
-+(sidorder (SID))
-+(user USER)
-+(role ROLE)
-+(type TYPE)
-+(category CAT)
-+(categoryorder (CAT))
-+(sensitivity SENS)
-+(sensitivityorder (SENS))
-+(sensitivitycategory SENS (CAT))
-+(allow TYPE self (CLASS (PERM)))
-+(roletype ROLE TYPE)
-+(userrole USER ROLE)
-+(userlevel USER (SENS))
-+(userrange USER ((SENS)(SENS (CAT))))
-+(sidcontext SID (USER ROLE TYPE ((SENS)(SENS))))
-+
-+(type ta)
-+(type tb)
-+(type tc)
-+(type td)
-+
-+(typeattribute aab)
-+(typeattributeset aab (ta tb))
-+
-+(typeattribute aac)
-+(typeattributeset aac (ta tc))
-+
-+(typeattribute abc)
-+(typeattributeset abc (tb tc))
-+
-+(typeattribute aabc)
-+(typeattributeset aabc (ta tb tc))
-+
-+(typeattribute a_all_not_ta)
-+(typeattributeset a_all_not_ta (and (all) (not ta)))
-+
-+(typeattribute a_all_not_aab)
-+(typeattributeset a_all_not_aab (and (all) (not aab)))
-+
-+; Test 01
-+(allow ta notself (C1 (p1a)))
-+; (neverallow ta a_all_not_ta (C1 (p1a))) ; This check should fail
-+
-+; Test 02
-+(allow aab notself (C1 (p1b)))
-+; (neverallow aab a_all_not_aab (C1 (p1b))) ; This check should fail
-+
-+; Test 03
-+(allow aab other (C1 (p1c)))
-+; (neverallow ta tb (C1 (p1c))) ; This check should fail
-+; (neverallow tb ta (C1 (p1c))) ; This check should fail
-+
-+; Test 04
-+(allow aabc other (C1 (p1d)))
-+; (neverallow ta abc (C1 (p1d))) ; This check should fail
-+; (neverallow tb aac (C1 (p1d))) ; This check should fail
-+; (neverallow tc aab (C1 (p1d))) ; This check should fail
-+
-+; Test 05
-+(allow ta other (C1 (p1e))) ; other used with a single type results in no rule
-+(neverallow ta a_all_not_ta (C1 (p1e)))
--- 
-2.39.2
+Typo: flash.h -> flask.h
+
+> generated.  This patch fixes this by adding av_permissions.h as a
+> target to the rule.
+>
+> Fixes: 8753f6bec352 ("selinux: generate flask headers during kernel build=
+")
+> Signed-off-by: Paul Moore <paul@paul-moore.com>
+> ---
+>  security/selinux/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/security/selinux/Makefile b/security/selinux/Makefile
+> index 103c2776478a..df35d4ec46f0 100644
+> --- a/security/selinux/Makefile
+> +++ b/security/selinux/Makefile
+> @@ -26,5 +26,5 @@ quiet_cmd_flask =3D GEN     $(obj)/flask.h $(obj)/av_pe=
+rmissions.h
+>        cmd_flask =3D $< $(obj)/flask.h $(obj)/av_permissions.h
+>
+>  targets +=3D flask.h av_permissions.h
+> -$(obj)/flask.h: scripts/selinux/genheaders/genheaders FORCE
+> +$(obj)/flask.h $(obj)/av_permissions.h: scripts/selinux/genheaders/genhe=
+aders FORCE
+
+I had something like this in my patch originally, but then I couldn't
+come up with a scenario where it would matter, so I dropped it... Are
+you sure it's really needed? (See also the "$(addprefix
+$(obj)/,$(selinux-y)): $(obj)/flask.h" rule above.)
+
+If it is, then I think you want to use "grouped targets" instead:
+
+    $(obj)/flask.h $(obj)/av_permissions.h &: [...]
+
+See:
+https://www.gnu.org/software/make/manual/html_node/Multiple-Targets.html
+
+>         $(call if_changed,flask)
+> --
+> 2.40.0
+>
+
+--=20
+Ondrej Mosnacek
+Senior Software Engineer, Linux Security - SELinux kernel
+Red Hat, Inc.
 

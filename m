@@ -2,59 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 99A226E153E
+	by mail.lfdr.de (Postfix) with ESMTP id E33126E153F
 	for <lists+selinux@lfdr.de>; Thu, 13 Apr 2023 21:34:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229895AbjDMTe4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 13 Apr 2023 15:34:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37344 "EHLO
+        id S229836AbjDMTe5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 13 Apr 2023 15:34:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230011AbjDMTez (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 13 Apr 2023 15:34:55 -0400
-Received: from mail-yw1-x1134.google.com (mail-yw1-x1134.google.com [IPv6:2607:f8b0:4864:20::1134])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEDB46A62
-        for <selinux@vger.kernel.org>; Thu, 13 Apr 2023 12:34:54 -0700 (PDT)
-Received: by mail-yw1-x1134.google.com with SMTP id 00721157ae682-54f6fc7943eso184703017b3.3
-        for <selinux@vger.kernel.org>; Thu, 13 Apr 2023 12:34:54 -0700 (PDT)
+        with ESMTP id S230028AbjDMTe4 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 13 Apr 2023 15:34:56 -0400
+Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EE8C6592
+        for <selinux@vger.kernel.org>; Thu, 13 Apr 2023 12:34:55 -0700 (PDT)
+Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-54c0c86a436so422113547b3.6
+        for <selinux@vger.kernel.org>; Thu, 13 Apr 2023 12:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1681414493; x=1684006493;
+        d=gmail.com; s=20221208; t=1681414494; x=1684006494;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Du8qZb3Y09UKSedGq8cZEDMngsx3l3raY/byiezZIqI=;
-        b=pYHEk3UlbDmUS53jCy+jZqigBO9oC5Id/WWibNp3ZbgXLq/p7UdA5cikAIiwZXUl97
-         DpkZNpDXOunbIh0AfugN9EWFVRFrFRKsh4Haz6BT8WSIvkC2hSEz85Y7glrsg76x49NF
-         P3LirsHwpBDjqFoSYLhm07JI+woT74bv4mcwVaY0oTj6kBy+oXPjkhnvUl0PMzhBXr+r
-         EmnKA6Mg5UbOgybJlXFF3J/G7RPQBIDJYK7gK4TQPmfDoTK3AsYFnMKZqkD04fQ5RFoJ
-         t6V5i0LBoacKYvNQN3gRV/H24zo8ff7wtyGJlYf4hiMc90Glmf9umSWHGOtkftJJlGXj
-         HmZg==
+        bh=WlwOJT4ewE+i3ATuKiigpdoBEhvTE/OzvRm1XYEV538=;
+        b=Wk+GRrpGyfb5hPyr1mRc/BE2iQ9rbk+yluTQ55ybFA0P+mV5ys+90yecvWqw8hz8FC
+         81blrzJVc0dCD+0PZSFwIyqIqroSw2KT4yYovwCTbwVQ2bV56gpJ5KcfCil9Bbby+CJw
+         UxxcxEr2ZEG8yWjJaDOOPbNbGJt6DAUkYXExrQe/TZUtaEM8ycmqdnmlZVnXojEsEtsp
+         b/Cv1z43517AbrhEV3e5s4/hYq2OFcmTIPuB0j19KzX4MSTgCgqihDV99ACRX1mQ2vfx
+         DScXYhThNkyYxPGZtniYOJA9iSsCbC9A4s7hkrjLO/wiVFjRu3O8RZIbiCXPAvXx+WDK
+         k/5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681414493; x=1684006493;
+        d=1e100.net; s=20221208; t=1681414494; x=1684006494;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Du8qZb3Y09UKSedGq8cZEDMngsx3l3raY/byiezZIqI=;
-        b=A6ta33P8AEtMqroU07qBwBTKvS/acfoCVHZcW96wXp82SUDu8N9em1y9bDZrv4TFJ1
-         sFEJ1ExibuChK6I/CK6ZY4QQz4zlIlvx6IiEQz8aor91fHb0aPsIq6Tl6t2RvAPTPi6R
-         HBZGyAcNTZreo5+3SPeVeueatJCgpV9+2xwzdJ8uRYdlpBoUzc4e6x1TXzvZ9F5KtrN1
-         gFYtMhnjZsesxc4k2l01PjsCYG/Sp1op6IMYL/jkdcfbHedHNg8pU9+yLvBoToX4VRDF
-         PSY0c+wvlyCBmNmIPBBIq4ywplY7YSwb8nyIXzxJDmh5WEdaBcQA+q5EQTaBWpbLV1fR
-         FtIQ==
-X-Gm-Message-State: AAQBX9c9CV06gssOqW0y7NvVnOLfhvFjkGoE/i+KAX1fwaGOiYaZ26x7
-        BQ7rE/NPv5K+dzN5Fg4nwJV0Qwy6EEo=
-X-Google-Smtp-Source: AKy350ZixsMYbMeFZ1Tj7YPeoe7dizl4iAZaAkzbz96CwLNG5tn69xj/hEt2loGgBu17RYsjS44xCQ==
-X-Received: by 2002:a81:6d54:0:b0:54f:e2ae:21d8 with SMTP id i81-20020a816d54000000b0054fe2ae21d8mr99185ywc.28.1681414493573;
-        Thu, 13 Apr 2023 12:34:53 -0700 (PDT)
+        bh=WlwOJT4ewE+i3ATuKiigpdoBEhvTE/OzvRm1XYEV538=;
+        b=H7VQq4E4gmXHSM7/Bi5MJ6vZ7W6pfz/zfI9gWKgM6hop/q8MtNPRNbVLGjCocCC9kC
+         PoOr9SkanZ5zYX0w+wibyiXNo1aTZ+7FMRggYibjw04IADpe++bYK6MQGaDRSYDys3p/
+         5cUJy/JZoBHbJB72vir01pD/qzJsXoVQOGU9RuqV+fpSUQmJ/R9Zchy1GJ19FA+9KSvd
+         b5miWQCF2zIIH3ASdlcp+HAX85xyrDGQJyjWBuKKKy0n744aZy7sLc6wfCFY7pU1a2Pe
+         OMniyjQ0rYhAYBfiBNqwihP1vwRrFGrandHa5cZs0EA0uI27+n7xWVkUWQD+YUehxk1g
+         I7fg==
+X-Gm-Message-State: AAQBX9d3erJqjL0qG3dPBI9Gp8iAn4He9TgmKxqGxYyqSMiYXgHdm9YY
+        boZ+wG0g9B0S8nGK2lyAOxRlvpOkcYE=
+X-Google-Smtp-Source: AKy350Zs74c4Zh6rqhsUuLcQNkVuCqfbXrm46NTf+wvWSs732KkciEfvPR+1Cpuz9M791ITfBw4mmg==
+X-Received: by 2002:a81:83cd:0:b0:54f:9e41:df5a with SMTP id t196-20020a8183cd000000b0054f9e41df5amr2933049ywf.15.1681414494509;
+        Thu, 13 Apr 2023 12:34:54 -0700 (PDT)
 Received: from electric.. (c-73-172-54-2.hsd1.md.comcast.net. [73.172.54.2])
-        by smtp.gmail.com with ESMTPSA id 21-20020a811615000000b0054c0f46b24bsm691350yww.5.2023.04.13.12.34.52
+        by smtp.gmail.com with ESMTPSA id 21-20020a811615000000b0054c0f46b24bsm691350yww.5.2023.04.13.12.34.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Apr 2023 12:34:53 -0700 (PDT)
+        Thu, 13 Apr 2023 12:34:54 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     dburgener@linux.microsoft.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 6/9 v3] libsepol: Export the cil_write_post_ast function
-Date:   Thu, 13 Apr 2023 15:34:42 -0400
-Message-Id: <20230413193445.588395-7-jwcart2@gmail.com>
+Subject: [PATCH 7/9 v3] secilc/secil2tree: Add option to write CIL AST after post processing
+Date:   Thu, 13 Apr 2023 15:34:43 -0400
+Message-Id: <20230413193445.588395-8-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230413193445.588395-1-jwcart2@gmail.com>
 References: <20230413193445.588395-1-jwcart2@gmail.com>
@@ -62,32 +62,62 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
+This will show the resulting CIL AST after deny rules have been
+processed.
+
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/src/libsepol.map.in | 5 +++++
- 1 file changed, 5 insertions(+)
+ secilc/secil2tree.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/libsepol/src/libsepol.map.in b/libsepol/src/libsepol.map.in
-index 844924fc..6ad68f0b 100644
---- a/libsepol/src/libsepol.map.in
-+++ b/libsepol/src/libsepol.map.in
-@@ -289,3 +289,8 @@ LIBSEPOL_3.4 {
- 	sepol_string_to_security_class;
- 	sepol_validate_transition_reason_buffer;
- } LIBSEPOL_3.0;
-+
-+LIBSEPOL_3.5 {
-+  global:
-+	cil_write_post_ast;
-+} LIBSEPOL_3.4;
+diff --git a/secilc/secil2tree.c b/secilc/secil2tree.c
+index e5cdf6bd..ff0fc92b 100644
+--- a/secilc/secil2tree.c
++++ b/secilc/secil2tree.c
+@@ -45,6 +45,7 @@ enum write_ast_phase {
+ 	WRITE_AST_PHASE_PARSE = 0,
+ 	WRITE_AST_PHASE_BUILD,
+ 	WRITE_AST_PHASE_RESOLVE,
++	WRITE_AST_PHASE_POST,
+ };
+ 
+ static __attribute__((__noreturn__)) void usage(const char *prog)
+@@ -58,7 +59,7 @@ static __attribute__((__noreturn__)) void usage(const char *prog)
+ 	printf("                           Blocks, blockinherits, blockabstracts, and\n");
+ 	printf("                           in-statements will not be allowed.\n");
+ 	printf("  -A, --ast-phase=<phase>  write AST of phase <phase>. Phase must be parse, \n");
+-	printf("                           build, or resolve. (default: resolve)\n");
++	printf("                           build, resolve, or post. (default: resolve)\n");
+ 	printf("  -v, --verbose            increment verbosity level\n");
+ 	printf("  -h, --help               display usage information\n");
+ 	exit(1);
+@@ -115,6 +116,8 @@ int main(int argc, char *argv[])
+ 					write_ast = WRITE_AST_PHASE_BUILD;
+ 				} else if (!strcasecmp(optarg, "resolve")) {
+ 					write_ast = WRITE_AST_PHASE_RESOLVE;
++				} else if (!strcasecmp(optarg, "post")) {
++					write_ast = WRITE_AST_PHASE_POST;
+ 				} else {
+ 					fprintf(stderr, "Invalid AST phase: %s\n", optarg);
+ 					usage(argv[0]);
+@@ -197,6 +200,9 @@ int main(int argc, char *argv[])
+ 	case WRITE_AST_PHASE_RESOLVE:
+ 		rc = cil_write_resolve_ast(file, db);
+ 		break;
++	case WRITE_AST_PHASE_POST:
++		rc = cil_write_post_ast(file, db);
++		break;
+ 	}
+ 
+ 	if (rc != SEPOL_OK) {
 -- 
 2.39.2
 

@@ -2,49 +2,49 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB736E9866
-	for <lists+selinux@lfdr.de>; Thu, 20 Apr 2023 17:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 918646E9869
+	for <lists+selinux@lfdr.de>; Thu, 20 Apr 2023 17:36:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231954AbjDTPgI (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 20 Apr 2023 11:36:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36788 "EHLO
+        id S232071AbjDTPgJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 20 Apr 2023 11:36:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36792 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232029AbjDTPgH (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 20 Apr 2023 11:36:07 -0400
-Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E5114215
+        with ESMTP id S232060AbjDTPgI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 20 Apr 2023 11:36:08 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74FC44C21
         for <selinux@vger.kernel.org>; Thu, 20 Apr 2023 08:36:06 -0700 (PDT)
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-506b2a08877so1084944a12.2
+Received: by mail-ej1-x62c.google.com with SMTP id c9so7437824ejz.1
         for <selinux@vger.kernel.org>; Thu, 20 Apr 2023 08:36:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1682004964; x=1684596964;
+        d=googlemail.com; s=20221208; t=1682004965; x=1684596965;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=OVbQbb6YjTClV1kKmKgH6XmStC2ewwGeLiT4GUd5xns=;
-        b=V9bUiRNdaeo+7KKZmo1hI/IA9PrUaL5tov1r8lWEsIUPlkV05nEtB89RM70xJt5Fhz
-         DNCw5+TOgpmqWfZM6aubXwHHc+gkpKId2ZZbjjiBGBOUcwN0OZJCYuugvzTyO8J5l8jV
-         0X5wG1MHyLegdfZKYlwbfxKob+kLyKNbF1OhADcUFeQ/4Nzw2DlOPnw8+YZwJedU2uPg
-         jtkBj/PJADuh3Kq/jhAyJVq1GV13UkIZZ59w1+cdR35Z007XmbmPf0U/oJbM1AEpfxme
-         iMQnhpdquAq5kZs3D/AOaGLInHVHyLGXisZGcvJUCKR5W2ctuZJ5d2eUDP5F3Pql1e++
-         z/QA==
+        bh=hqmvBgNhmwPBoRhwUR3lqRV/49ryZPJXVYGqdgsKsj4=;
+        b=saEXApb2kI4lHKbelWHypCAq6jPxD9y6BECCCZ5qoXtvXmvkyASOrJfNkXt0woh0RE
+         uSGU8tVQV+DIh52C39/lOr7gwqDNQasXRV4hNDHSE+4wgWkwvljA7ORlYYJcJDZ9ZrS6
+         KpFwmGFPp1jGhgIyf80bcYoUbx8SwVde+ycXr3P5m5GM/6mRDMSP0oK+b4Hjs5sFQtl6
+         pW/gVzVv412l3f54pf+CF4WbNJKG4UAf5ot3ZblRO77zu5imtTwxlXLqgIbcesVq4d+e
+         td4xC+6ndUn+sClifUhipm8TRkf7fOFRujGUqzUtzyItjJOpAfAvTHsRxgEo7v1gJ6Fq
+         5coA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682004964; x=1684596964;
+        d=1e100.net; s=20221208; t=1682004965; x=1684596965;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OVbQbb6YjTClV1kKmKgH6XmStC2ewwGeLiT4GUd5xns=;
-        b=U8//49RdVWFD35ZoFSd53OFRtMZjq3bXEtGECDQix6f4X7uAZI1JXqjXgjtydmdoV1
-         uavOr6KeQK9ASyBnFmzfwSdOwaDkReUP4bHBwYKTLIKjrlgOgyRkmn9fWi2D1mgAw2N/
-         leDYwf/moyOrMMqQn9sXloVCF+9GILcynKl41sbAbXh7dq4jwxaWf8ZT6b9iv2+kZb1R
-         WwHebmo1mje926kUNpSkQ3PIX4dcEysGy4NOmfQm3GEySv3gt9+f4kFxZjfW3adu9xn/
-         XET8XimjrcUHOc3mGOVxkXY9OJ5WK8qjloYtY0yDSvMgpNUlJg9ISoySkZE3sFUh5buK
-         DS7g==
-X-Gm-Message-State: AAQBX9eHHm/iztbmU4eSJFxZvP7MMXf+WT+W5ohR+sMD+NZu2mhFzhdM
-        928rIBN4NUohCB75AobdtezmCNbNVI0=
-X-Google-Smtp-Source: AKy350ZAqmd2mOpBZKfWZRpCi8yKLX5CO+Vz1y8LosIfyht30q0wq71Bb9Gzmci+UuDR5naPivnsIg==
-X-Received: by 2002:aa7:c952:0:b0:4fb:d620:bd27 with SMTP id h18-20020aa7c952000000b004fbd620bd27mr2193635edt.23.1682004964500;
-        Thu, 20 Apr 2023 08:36:04 -0700 (PDT)
+        bh=hqmvBgNhmwPBoRhwUR3lqRV/49ryZPJXVYGqdgsKsj4=;
+        b=SebwoB2go9qrJQsA/MgQ1UpK8eQJyUWIggYPgWSR21qPwJXppQSpPazssIFRiDlg+y
+         LLBgsMI1JRLxiRI6vEhMQOTGzvi10DUTU2yiEdZfBMXbF4j9pMYRlmEdalQlwaebBKf0
+         +Y2QwS4rNyqI82bOWmaEqn8D8QItQfj9urGW5LZ8FiLLygymnAv2Vm0FmRnF1NdM2eUo
+         VqIrGYGy5D+XXIPk3ifTIXrErH4BbU/XJBrKBGHfFNX6suNfIIpqFhbOeFk1ljs2USqD
+         kjKTvHR5GaHvzUzfmJa2muH10+CI5kLSYKIPbEmQ2pZwrc4yvOwUNjMoiy4iyEB9it8b
+         Z8oA==
+X-Gm-Message-State: AAQBX9dF9U7d75h08x8LRGIkC9XVJ1Wm6HB84L+L2w0N4p0uhTvs0+Fx
+        ax+c70MAk9qNY/6l53vot7rN+WPgZd8=
+X-Google-Smtp-Source: AKy350aJTyCExYYpd6z4yy6+lbuL1/MI9fOAKiRGiZS6PyNXnUF1vUbvcvlxTSac+bQjhHLTpOzLWQ==
+X-Received: by 2002:a17:906:8245:b0:94f:6d10:ad9f with SMTP id f5-20020a170906824500b0094f6d10ad9fmr1829979ejx.42.1682004965024;
+        Thu, 20 Apr 2023 08:36:05 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-119-201-251.95.119.pool.telefonica.de. [95.119.201.251])
         by smtp.gmail.com with ESMTPSA id r22-20020aa7cb96000000b0050696c2d2f6sm853013edt.88.2023.04.20.08.36.04
         for <selinux@vger.kernel.org>
@@ -52,9 +52,9 @@ Received: from debianHome.localdomain (dynamic-095-119-201-251.95.119.pool.telef
         Thu, 20 Apr 2023 08:36:04 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v2 4/6] checkpolicy: rename bool identifiers
-Date:   Thu, 20 Apr 2023 17:35:54 +0200
-Message-Id: <20230420153556.32115-4-cgzones@googlemail.com>
+Subject: [PATCH v2 5/6] libsepol: rename bool identifiers
+Date:   Thu, 20 Apr 2023 17:35:55 +0200
+Message-Id: <20230420153556.32115-5-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230420153556.32115-1-cgzones@googlemail.com>
 References: <20230420153556.32115-1-cgzones@googlemail.com>
@@ -76,78 +76,109 @@ standards.  C23 is about to make `bool` a predefined macro (see N2654).
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/checkpolicy.c | 8 ++++----
- checkpolicy/test/dismod.c | 8 ++++----
- checkpolicy/test/dispol.c | 8 ++++----
- 3 files changed, 12 insertions(+), 12 deletions(-)
+ libsepol/cil/src/cil_binary.c |  8 ++++----
+ libsepol/cil/src/cil_policy.c | 12 ++++++------
+ libsepol/src/expand.c         | 12 ++++++------
+ 3 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/checkpolicy/checkpolicy.c b/checkpolicy/checkpolicy.c
-index b0c36807..2485142d 100644
---- a/checkpolicy/checkpolicy.c
-+++ b/checkpolicy/checkpolicy.c
-@@ -354,14 +354,14 @@ static int display_cond_expressions(void)
- 
- static int change_bool(const char *name, int state)
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index ef7f4d70..c4ee2380 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -4170,13 +4170,13 @@ static int __cil_user_val_array_insert(hashtab_key_t key, hashtab_datum_t datum,
+ static int __cil_bool_val_array_insert(hashtab_key_t key, hashtab_datum_t datum, void *data)
  {
--	cond_bool_datum_t *bool;
-+	cond_bool_datum_t *boolean;
+ 	policydb_t *pdb = data;
+-	cond_bool_datum_t *bool = (cond_bool_datum_t *)datum;
++	cond_bool_datum_t *boolean = (cond_bool_datum_t *)datum;
  
--	bool = hashtab_search(policydbp->p_bools.table, name);
--	if (bool == NULL) {
-+	boolean = hashtab_search(policydbp->p_bools.table, name);
-+	if (boolean == NULL) {
- 		printf("Could not find bool %s\n", name);
- 		return -1;
+-	if (bool->s.value < 1 || bool->s.value > pdb->p_bools.nprim) {
++	if (boolean->s.value < 1 || boolean->s.value > pdb->p_bools.nprim) {
+ 		return -EINVAL;
  	}
--	bool->state = state;
-+	boolean->state = state;
- 	evaluate_conds(policydbp);
+-	pdb->p_bool_val_to_name[bool->s.value - 1] = (char *)key;
+-	pdb->bool_val_to_struct[bool->s.value - 1] = bool;
++	pdb->p_bool_val_to_name[boolean->s.value - 1] = (char *)key;
++	pdb->bool_val_to_struct[boolean->s.value - 1] = boolean;
+ 
  	return 0;
  }
-diff --git a/checkpolicy/test/dismod.c b/checkpolicy/test/dismod.c
-index bda8d4e9..929ee308 100644
---- a/checkpolicy/test/dismod.c
-+++ b/checkpolicy/test/dismod.c
-@@ -602,14 +602,14 @@ int display_cond_expressions(policydb_t * p, FILE * fp)
- 
- int change_bool(char *name, int state, policydb_t * p, FILE * fp)
+diff --git a/libsepol/cil/src/cil_policy.c b/libsepol/cil/src/cil_policy.c
+index 7c543c47..feb97868 100644
+--- a/libsepol/cil/src/cil_policy.c
++++ b/libsepol/cil/src/cil_policy.c
+@@ -1008,13 +1008,13 @@ static void cil_validatetrans_to_policy(FILE *out, struct cil_db *db, struct cil
+ static void cil_bools_to_policy(FILE *out, struct cil_list *bools)
  {
--	cond_bool_datum_t *bool;
-+	cond_bool_datum_t *boolean;
+ 	struct cil_list_item *i1;
+-	struct cil_bool *bool;
++	struct cil_bool *boolean;
+ 	const char *value;
  
--	bool = hashtab_search(p->p_bools.table, name);
--	if (bool == NULL) {
-+	boolean = hashtab_search(p->p_bools.table, name);
-+	if (boolean == NULL) {
- 		fprintf(fp, "Could not find bool %s\n", name);
- 		return -1;
+ 	cil_list_for_each(i1, bools) {
+-		bool = i1->data;
+-		value = bool->value ? "true" : "false";
+-		fprintf(out, "bool %s %s;\n", bool->datum.fqn, value);
++		boolean = i1->data;
++		value = boolean->value ? "true" : "false";
++		fprintf(out, "bool %s %s;\n", boolean->datum.fqn, value);
  	}
--	bool->state = state;
-+	boolean->state = state;
- 	evaluate_conds(p);
- 	return 0;
  }
-diff --git a/checkpolicy/test/dispol.c b/checkpolicy/test/dispol.c
-index 6561366d..9ab6533f 100644
---- a/checkpolicy/test/dispol.c
-+++ b/checkpolicy/test/dispol.c
-@@ -262,14 +262,14 @@ static int display_handle_unknown(policydb_t * p, FILE * out_fp)
  
- static int change_bool(char *name, int state, policydb_t * p, FILE * fp)
+@@ -1437,12 +1437,12 @@ static int __cil_te_rules_to_policy_helper(struct cil_tree_node *node, uint32_t
+ 		*finished = CIL_TREE_SKIP_HEAD;
+ 		break;
+ 	case CIL_BOOLEANIF: {
+-		struct cil_booleanif *bool = node->data;
++		struct cil_booleanif *boolean = node->data;
+ 		struct cil_tree_node *n;
+ 		struct cil_condblock *cb;
+ 
+ 		fprintf(args->out, "if ");
+-		cil_cond_expr_to_policy(args->out, bool->datum_expr, CIL_TRUE);
++		cil_cond_expr_to_policy(args->out, boolean->datum_expr, CIL_TRUE);
+ 		fprintf(args->out," {\n");
+ 		n = node->cl_head;
+ 		cb = n != NULL ? n->data : NULL;
+diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
+index 1337c32f..c08d3a35 100644
+--- a/libsepol/src/expand.c
++++ b/libsepol/src/expand.c
+@@ -1106,11 +1106,11 @@ static int bool_copy_callback(hashtab_key_t key, hashtab_datum_t datum,
  {
--	cond_bool_datum_t *bool;
-+	cond_bool_datum_t *boolean;
+ 	int ret;
+ 	expand_state_t *state;
+-	cond_bool_datum_t *bool, *new_bool;
++	cond_bool_datum_t *boolean, *new_bool;
+ 	char *id, *new_id;
  
--	bool = hashtab_search(p->p_bools.table, name);
--	if (bool == NULL) {
-+	boolean = hashtab_search(p->p_bools.table, name);
-+	if (boolean == NULL) {
- 		fprintf(fp, "Could not find bool %s\n", name);
+ 	id = key;
+-	bool = (cond_bool_datum_t *) datum;
++	boolean = (cond_bool_datum_t *) datum;
+ 	state = (expand_state_t *) data;
+ 
+ 	if (!is_id_enabled(id, state->base, SYM_BOOLS)) {
+@@ -1118,7 +1118,7 @@ static int bool_copy_callback(hashtab_key_t key, hashtab_datum_t datum,
+ 		return 0;
+ 	}
+ 
+-	if (bool->flags & COND_BOOL_FLAGS_TUNABLE) {
++	if (boolean->flags & COND_BOOL_FLAGS_TUNABLE) {
+ 		/* Skip tunables */
+ 		return 0;
+ 	}
+@@ -1152,10 +1152,10 @@ static int bool_copy_callback(hashtab_key_t key, hashtab_datum_t datum,
  		return -1;
  	}
--	bool->state = state;
-+	boolean->state = state;
- 	evaluate_conds(p);
+ 
+-	state->boolmap[bool->s.value - 1] = new_bool->s.value;
++	state->boolmap[boolean->s.value - 1] = new_bool->s.value;
+ 
+-	new_bool->state = bool->state;
+-	new_bool->flags = bool->flags;
++	new_bool->state = boolean->state;
++	new_bool->flags = boolean->flags;
+ 
  	return 0;
  }
 -- 

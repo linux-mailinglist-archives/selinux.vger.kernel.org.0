@@ -2,152 +2,207 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 015EE6F6D7E
-	for <lists+selinux@lfdr.de>; Thu,  4 May 2023 16:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 902B86F6D92
+	for <lists+selinux@lfdr.de>; Thu,  4 May 2023 16:16:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230403AbjEDOGh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 4 May 2023 10:06:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50738 "EHLO
+        id S230264AbjEDOQm (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 4 May 2023 10:16:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230326AbjEDOGg (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 4 May 2023 10:06:36 -0400
-Received: from mail-lf1-x129.google.com (mail-lf1-x129.google.com [IPv6:2a00:1450:4864:20::129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4138D46BB
-        for <selinux@vger.kernel.org>; Thu,  4 May 2023 07:06:35 -0700 (PDT)
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4efeea05936so619177e87.2
-        for <selinux@vger.kernel.org>; Thu, 04 May 2023 07:06:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683209193; x=1685801193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OtzhorbA6J45KMyuD5gYbGUR3ZUi1Fa3o38ByCBi5aE=;
-        b=bQy3+IsE9nrY5X4QtmNybu4rhHywc0I9L2/Df+OCSamtzwx23JchwqRCKZ7L0x3UTN
-         FzgfIkbpCzjj24LbuGb0cSHSaFgFBr+61hXw++V3I0r3TPNSPSm4NrVmYh8z435r++Dd
-         89VjIZt69TB0puUIKRHHIMKKTI11UCKL1XL5OAe9EL0viMEhYDAAlx4f3dzl0VWh/j1V
-         Y+HfXWcMshMrALKIAsifGHGtjxmcYer3Qd9f1P3l5+fBBdIu9y0OyvjgLDOiHBS+gFG3
-         rLVVvaY6e+RCSYrk6CtgpXcVBlJYYbsWzMKG7gXizeA7BMwjgLGrFE6QfkvenneXkjBs
-         QyQw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683209193; x=1685801193;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OtzhorbA6J45KMyuD5gYbGUR3ZUi1Fa3o38ByCBi5aE=;
-        b=Nbv7QICtdOG2NFxWmmFkPyK2oK5ofsIQ5JGcRKXgEIIN1GSRygu0trU8rnmpGPaArI
-         tI6+01MyTyXPRO2mE4E7UXVRsAaNuau83gRAppqvCjWqL+2ikquuyZHgiXgVExcjHygE
-         brEjbWloTa3tnHm+57+QQQAq/HQTu46DxAeuI58loBsA9NkOaUNuRatyHRimwDlnije8
-         0vKFAZm6ybewiUne9cG7LIe6NlyadbG1e9dEmiOX75oqM99IwgWeRY1xsoik79J4Rxqe
-         rZU+T7OMin1V5fxQidsJlW4faqQ/wgVZRor48SzfK/zMoWKrwpy01iX8kU/WYFpOfrbK
-         7UCQ==
-X-Gm-Message-State: AC+VfDyapDNjXAvD0F07CCbaSAomPuQkACR6u+BEWhAEH68i1G4d+aXo
-        aHloRbxl8Yk58UJM6/0qhW0Pykek/hP5b6F7xAw=
-X-Google-Smtp-Source: ACHHUZ6DtStECm+ttkgSVmWT0iU5pBUg5Av5Ed5ujJ/olgjZ03z7NCc7Zq6dHkfkwar94EIFgIPyPquy7pwSH8b67fU=
-X-Received: by 2002:ac2:508d:0:b0:4eb:18d:91df with SMTP id
- f13-20020ac2508d000000b004eb018d91dfmr1624692lfm.27.1683209193333; Thu, 04
- May 2023 07:06:33 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAP+JOzQBSknYVqAqhu6WGwnTDBCXc-P1B73+MnfbcEyGi621CA@mail.gmail.com>
- <20230504120450.771407-1-vmojzis@redhat.com> <20230504120450.771407-2-vmojzis@redhat.com>
-In-Reply-To: <20230504120450.771407-2-vmojzis@redhat.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Thu, 4 May 2023 10:06:22 -0400
-Message-ID: <CAP+JOzQR=8PSe8AXDvBWoA4LXHCbO_eHJJGuSduH4g-uPHqnRA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] python/chcat: Improve man pages
-To:     CAP+JOzQBSknYVqAqhu6WGwnTDBCXc-P1B73+MnfbcEyGi621CA@mail.gmail.com
+        with ESMTP id S231176AbjEDOQl (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 4 May 2023 10:16:41 -0400
+X-Greylist: delayed 125 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 04 May 2023 07:16:37 PDT
+Received: from sender11-of-o53.zoho.eu (sender11-of-o53.zoho.eu [31.186.226.239])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 405388687
+        for <selinux@vger.kernel.org>; Thu,  4 May 2023 07:16:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1683209639; cv=none; 
+        d=zohomail.eu; s=zohoarc; 
+        b=Kvwx/nTWAFX8V5F15QZ+wzvdHqgmDOncBpoaYrusM6SePTvLG48TXv23YVkXBewvelA+i8EoO8Pmfyy+qwSqdt48+uwhY7zKCLCyYk1N+3vfp9kGTpJMZh7D5mQIsUHJ6w1qkFRSLxaVGyaemdT3C0GTVi9iiq9zauyC8sh/+tk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+        t=1683209639; h=Content-Transfer-Encoding:Cc:Date:From:MIME-Version:Message-ID:Subject:To; 
+        bh=A7VjTUqeY7lcEX4S7nZtCjU2soxgNwJB4MzowP5hKC8=; 
+        b=Yq93YFTnzZXE3D2PDZgMzBejxHQYzU2b+c7QrO6qTEMLSBcNVapRcZA7dT2a0cCNN5U55DbaLBBaGNA4J6Kur2L2FvCKx60AuYViWcJdjaM1vVfEkYgzLoUDJ3zlm6Es12z9kxQYa1HARHLtY+txggd8V0JRwdobAlpN+PXnnQw=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+        dkim=pass  header.i=jurajmarcin.com;
+        spf=pass  smtp.mailfrom=juraj@jurajmarcin.com;
+        dmarc=pass header.from=<juraj@jurajmarcin.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1683209639;
+        s=zoho; d=jurajmarcin.com; i=juraj@jurajmarcin.com;
+        h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Transfer-Encoding:Reply-To;
+        bh=A7VjTUqeY7lcEX4S7nZtCjU2soxgNwJB4MzowP5hKC8=;
+        b=eI4Ght/x6XViBIFKIWJJA8YDG6u9Bud7YBW+JbU9NVJWtyrCiUp9UloVll+PGR7W
+        7wZRl+m2ng1nfbd/X7u9EqzZLuillmu9fZpVzckSVbPLfQuFLKkfAdnTl16ZgyoNG89
+        pLHe7XRVn0WHhFoitgUA51qI241WelFdbMp9sUJ0=
+Received: from morty01.jurajmarcin.com (129.159.244.31 [129.159.244.31]) by mx.zoho.eu
+        with SMTPS id 1683209637545998.9070998817757; Thu, 4 May 2023 16:13:57 +0200 (CEST)
+Received: from jmarcin-t14s-01.. (unknown [213.175.37.10])
+        by morty01.jurajmarcin.com (Postfix) with ESMTPSA id 730612079AC0;
+        Thu,  4 May 2023 14:13:56 +0000 (UTC)
+From:   Juraj Marcin <juraj@jurajmarcin.com>
+To:     Paul Moore <paul@paul-moore.com>
 Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: [PATCH] selinux: make cleanup on error consistent
+Date:   Thu,  4 May 2023 16:13:30 +0200
+Message-Id: <20230504141330.1557243-1-juraj@jurajmarcin.com>
+MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, May 4, 2023 at 8:06=E2=80=AFAM Vit Mojzis <vmojzis@redhat.com> wrot=
-e:
->
-> - Explain applying range/list of categories
-> - "-d" removes all categories of given file/user
-> - Add examples
->
-> Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
+The file security.c contains two functions (security_read_policy() and
+security_read_state_kernel()) that are almost identical, but their
+cleanup conventions differ.
 
-For all four of these patches:
-Acked-by: James Carter <jwcart2@gmail.com>
+This patch unifies the behavior by adding cleanup to
+security_read_policy() in case some call inside it fails instead of
+relying on the caller to properly free the memory. On top of that, this
+patch future-proofs both functions by adding local variables and
+modifying the pointers only in case of a success.
 
-> ---
->  python/chcat/chcat.8 | 23 ++++++++++++++++-------
->  1 file changed, 16 insertions(+), 7 deletions(-)
->
-> diff --git a/python/chcat/chcat.8 b/python/chcat/chcat.8
-> index d095a255..3e1f7ca2 100644
-> --- a/python/chcat/chcat.8
-> +++ b/python/chcat/chcat.8
-> @@ -1,6 +1,6 @@
->  .TH CHCAT "8" "September 2005" "chcat" "User Commands"
->  .SH NAME
-> -chcat \- change file SELinux security category
-> +chcat \- change SELinux security categories of files/users
->  .SH SYNOPSIS
->  .B chcat
->  \fIcategory file\fR...
-> @@ -25,23 +25,33 @@ chcat \- change file SELinux security category
->  .br
->  .SH DESCRIPTION
->  .PP
-> -Change/Remove the security \fIcategory\fR for each \fIfile\fR or \fIuser=
-\fR.
-> -.PP
-> -Use +/- to add/remove categories from a \fIfile\fR or \fIuser\fR.
-> +Use +/- to add/remove categories from a \fIfile\fR or \fIuser\fR (only a=
- single category can be specified at a time). Or specify the desired list/r=
-ange of categories to be applied (replacing the existing categories).
->  .PP
->  .B
->  Note:
-> -When removing a category you must specify '\-\-' on the command line bef=
-ore using the \-Category syntax.  This tells the command that you have fini=
-shed entering options and are now specifying a category name instead.
-> +When removing a category you must specify '\-\-' on the command line bef=
-ore using the \-Category syntax. This tells the command that you have finis=
-hed entering options and are now specifying a category name instead.
->
->  .TP
->  \fB\-d\fR
-> -delete the category from each FILE/USER.
-> +delete all categories from given FILE/USER.
->  .TP
->  \fB\-L\fR
->  list available categories.
->  .TP
->  \fB\-l\fR
->  Tells chcat to operate on users instead of files.
-> +
-> +.SH EXAMPLE
-> +.nf
-> +Replace categories of user "test" with c0.c6
-> +# chcat -l c0.c6 test
-> +Add category c1023 to user "test"
-> +# chcat -l +c1023 test
-> +Remove category c5 from file "file"
-> +# chcat -- -c5 file
-> +Remove all categories from file "file"
-> +# chcat -d file
-> +
->  .SH "SEE ALSO"
->  .TP
->  chcon(1), selinux(8), semanage(8)
-> @@ -52,4 +62,3 @@ When operating on files this script wraps the chcon com=
-mand.
->  /etc/selinux/{SELINUXTYPE}/setrans.conf
->  .br
->  /etc/selinux/{SELINUXTYPE}/seusers
-> -
-> --
-> 2.40.0
->
+Signed-off-by: Juraj Marcin <juraj@jurajmarcin.com>
+---
+ security/selinux/include/security.h |  4 +--
+ security/selinux/selinuxfs.c        |  2 --
+ security/selinux/ss/services.c      | 50 +++++++++++++++++++----------
+ 3 files changed, 35 insertions(+), 21 deletions(-)
+
+diff --git a/security/selinux/include/security.h b/security/selinux/inclu=
+de/security.h
+index 8746fafeb7789..2990b3d08236d 100644
+--- a/security/selinux/include/security.h
++++ b/security/selinux/include/security.h
+@@ -213,8 +213,8 @@ int security_load_policy(void *data, size_t len,
+ 			 struct selinux_load_state *load_state);
+ void selinux_policy_commit(struct selinux_load_state *load_state);
+ void selinux_policy_cancel(struct selinux_load_state *load_state);
+-int security_read_policy(void **data, size_t *len);
+-int security_read_state_kernel(void **data, size_t *len);
++int security_read_policy(void **pdata, size_t *plen);
++int security_read_state_kernel(void **pdata, size_t *plen);
+ int security_policycap_supported(unsigned int req_cap);
+=20
+ #define SEL_VEC_MAX 32
+diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+index 69a583b91fc57..6d4cd66360739 100644
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -406,8 +406,6 @@ static int sel_open_policy(struct inode *inode, struc=
+t file *filp)
+ err:
+ 	mutex_unlock(&selinux_state.policy_mutex);
+=20
+-	if (plm)
+-		vfree(plm->data);
+ 	kfree(plm);
+ 	return rc;
+ }
+diff --git a/security/selinux/ss/services.c b/security/selinux/ss/service=
+s.c
+index f14d1ffe54c5d..f2fd2b6510560 100644
+--- a/security/selinux/ss/services.c
++++ b/security/selinux/ss/services.c
+@@ -3941,12 +3941,16 @@ static int __security_read_policy(struct selinux_=
+policy *policy,
+=20
+ /**
+  * security_read_policy - read the policy.
+- * @data: binary policy data
+- * @len: length of data in bytes
++ * @pdata: binary policy data
++ * @plen: length of data in bytes
+  *
++ * In case of a failure, the pointers are not modified.
+  */
+-int security_read_policy(void **data, size_t *len)
++int security_read_policy(void **pdata, size_t *plen)
+ {
++	int err;
++	void *data;
++	size_t len;
+ 	struct selinux_state *state =3D &selinux_state;
+ 	struct selinux_policy *policy;
+=20
+@@ -3955,28 +3959,39 @@ int security_read_policy(void **data, size_t *len=
+)
+ 	if (!policy)
+ 		return -EINVAL;
+=20
+-	*len =3D policy->policydb.len;
+-	*data =3D vmalloc_user(*len);
+-	if (!*data)
++	len =3D policy->policydb.len;
++	data =3D vmalloc_user(len);
++	if (!data)
+ 		return -ENOMEM;
+=20
+-	return __security_read_policy(policy, *data, len);
++	err =3D __security_read_policy(policy, data, &len);
++	if (err) {
++		vfree(data);
++		return err;
++	}
++	*pdata =3D data;
++	*plen =3D len;
++	return err;
+ }
+=20
+ /**
+  * security_read_state_kernel - read the policy.
+- * @data: binary policy data
+- * @len: length of data in bytes
++ * @pdata: binary policy data
++ * @plen: length of data in bytes
+  *
+  * Allocates kernel memory for reading SELinux policy.
+  * This function is for internal use only and should not
+  * be used for returning data to user space.
+  *
++ * In case of a failure, the pointers are not modified.
++ *
+  * This function must be called with policy_mutex held.
+  */
+-int security_read_state_kernel(void **data, size_t *len)
++int security_read_state_kernel(void **pdata, size_t *plen)
+ {
+ 	int err;
++	void *data;
++	size_t len;
+ 	struct selinux_state *state =3D &selinux_state;
+ 	struct selinux_policy *policy;
+=20
+@@ -3985,16 +4000,17 @@ int security_read_state_kernel(void **data, size_=
+t *len)
+ 	if (!policy)
+ 		return -EINVAL;
+=20
+-	*len =3D policy->policydb.len;
+-	*data =3D vmalloc(*len);
+-	if (!*data)
++	len =3D policy->policydb.len;
++	data =3D vmalloc(len);
++	if (!data)
+ 		return -ENOMEM;
+=20
+-	err =3D __security_read_policy(policy, *data, len);
++	err =3D __security_read_policy(policy, data, &len);
+ 	if (err) {
+-		vfree(*data);
+-		*data =3D NULL;
+-		*len =3D 0;
++		vfree(data);
++		return err;
+ 	}
++	*pdata =3D data;
++	*plen =3D len;
+ 	return err;
+ }
+--=20
+2.39.2
+

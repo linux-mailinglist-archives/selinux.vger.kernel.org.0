@@ -2,48 +2,49 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A92D06F6AD2
-	for <lists+selinux@lfdr.de>; Thu,  4 May 2023 14:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFBF36F6AD4
+	for <lists+selinux@lfdr.de>; Thu,  4 May 2023 14:05:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230312AbjEDMFu (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 4 May 2023 08:05:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
+        id S230334AbjEDMFw (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 4 May 2023 08:05:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229938AbjEDMFs (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 4 May 2023 08:05:48 -0400
+        with ESMTP id S229973AbjEDMFw (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 4 May 2023 08:05:52 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9099E26B5
-        for <selinux@vger.kernel.org>; Thu,  4 May 2023 05:04:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B685C6196
+        for <selinux@vger.kernel.org>; Thu,  4 May 2023 05:05:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1683201898;
+        s=mimecast20190719; t=1683201902;
         h=from:from:reply-to:reply-to:subject:subject:date:date:
          message-id:message-id:to:to:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=hr/negEWDnLWAeecXvjgii5nd1srZuWLdMQxisS0JSE=;
-        b=Yu/gLM2vX52fBbFXKLy8hzoJWocwO17FMEDL/d1veM8Uaja+/Nnmy8g7NDI2Z20mGLr8/V
-        Bj/6Lo03ZIY9hmLDDkRB8HFJ93BOIXDoaP6/s038WASkxK3YbCWBQXoIJbCQXrYbEB0Y/n
-        Qv2jadDRedGH5CaZ4iQ57SGEHILdXE8=
+        bh=o+RdpMqN2GMCnxDoC1EQneNL2lqVVTme/zM6PcM5d8A=;
+        b=CmaglPeRzQDrJtUJD9CTPd7aJdx/4gDdE+L4MTBw6RmWUYhYn0tDKL+bvnpQMAP/SCioD7
+        gwMlDl2oVi7k4Tj6VJjuAiuiVs6OCAMjLwzZRoo7I59qwUtLK+uOdslaFDqBkgRog+6xjd
+        tXothTTkto+iwxqC/hXjbE0l1XqLemE=
 Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
  [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-602-6gTQoDBrOQe7FbDo0RAQPw-1; Thu, 04 May 2023 08:04:57 -0400
-X-MC-Unique: 6gTQoDBrOQe7FbDo0RAQPw-1
+ us-mta-626-F5MIrYdvO4qeyILlSAtJug-1; Thu, 04 May 2023 08:05:00 -0400
+X-MC-Unique: F5MIrYdvO4qeyILlSAtJug-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2310238221C8
-        for <selinux@vger.kernel.org>; Thu,  4 May 2023 12:04:57 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 72AF21C06ED4
+        for <selinux@vger.kernel.org>; Thu,  4 May 2023 12:05:00 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.45.225.59])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B64C1492C3E
-        for <selinux@vger.kernel.org>; Thu,  4 May 2023 12:04:56 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 13BC8492B01
+        for <selinux@vger.kernel.org>; Thu,  4 May 2023 12:04:59 +0000 (UTC)
 From:   Vit Mojzis <vmojzis@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v2 0/4] python: Improve man pages
-Date:   Thu,  4 May 2023 14:04:46 +0200
-Message-Id: <20230504120450.771407-1-vmojzis@redhat.com>
-In-Reply-To: <CAP+JOzQBSknYVqAqhu6WGwnTDBCXc-P1B73+MnfbcEyGi621CA@mail.gmail.com>
+Subject: [PATCH v2 1/4] python/chcat: Improve man pages
+Date:   Thu,  4 May 2023 14:04:47 +0200
+Message-Id: <20230504120450.771407-2-vmojzis@redhat.com>
+In-Reply-To: <20230504120450.771407-1-vmojzis@redhat.com>
 References: <CAP+JOzQBSknYVqAqhu6WGwnTDBCXc-P1B73+MnfbcEyGi621CA@mail.gmail.com>
+ <20230504120450.771407-1-vmojzis@redhat.com>
 Reply-To: <CAP+JOzQBSknYVqAqhu6WGwnTDBCXc-P1B73+MnfbcEyGi621CA@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -58,11 +59,71 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Thank you for the review Jim.
-I fixed all the issues, added missing signoffs and removed the "debug"
-option alltogether, since it was unused (good catch).
+- Explain applying range/list of categories
+- "-d" removes all categories of given file/user
+- Add examples
 
-Thanks,
-Vit
+Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
+---
+ python/chcat/chcat.8 | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
+diff --git a/python/chcat/chcat.8 b/python/chcat/chcat.8
+index d095a255..3e1f7ca2 100644
+--- a/python/chcat/chcat.8
++++ b/python/chcat/chcat.8
+@@ -1,6 +1,6 @@
+ .TH CHCAT "8" "September 2005" "chcat" "User Commands"
+ .SH NAME
+-chcat \- change file SELinux security category
++chcat \- change SELinux security categories of files/users
+ .SH SYNOPSIS
+ .B chcat
+ \fIcategory file\fR...
+@@ -25,23 +25,33 @@ chcat \- change file SELinux security category
+ .br
+ .SH DESCRIPTION
+ .PP
+-Change/Remove the security \fIcategory\fR for each \fIfile\fR or \fIuser\fR.
+-.PP
+-Use +/- to add/remove categories from a \fIfile\fR or \fIuser\fR.
++Use +/- to add/remove categories from a \fIfile\fR or \fIuser\fR (only a single category can be specified at a time). Or specify the desired list/range of categories to be applied (replacing the existing categories).
+ .PP
+ .B
+ Note:
+-When removing a category you must specify '\-\-' on the command line before using the \-Category syntax.  This tells the command that you have finished entering options and are now specifying a category name instead.
++When removing a category you must specify '\-\-' on the command line before using the \-Category syntax. This tells the command that you have finished entering options and are now specifying a category name instead.
+ 
+ .TP
+ \fB\-d\fR
+-delete the category from each FILE/USER.
++delete all categories from given FILE/USER.
+ .TP
+ \fB\-L\fR
+ list available categories.
+ .TP
+ \fB\-l\fR
+ Tells chcat to operate on users instead of files.
++
++.SH EXAMPLE
++.nf
++Replace categories of user "test" with c0.c6
++# chcat -l c0.c6 test
++Add category c1023 to user "test"
++# chcat -l +c1023 test
++Remove category c5 from file "file"
++# chcat -- -c5 file
++Remove all categories from file "file"
++# chcat -d file
++
+ .SH "SEE ALSO"
+ .TP
+ chcon(1), selinux(8), semanage(8)
+@@ -52,4 +62,3 @@ When operating on files this script wraps the chcon command.
+ /etc/selinux/{SELINUXTYPE}/setrans.conf 
+ .br
+ /etc/selinux/{SELINUXTYPE}/seusers
+-
+-- 
+2.40.0
 

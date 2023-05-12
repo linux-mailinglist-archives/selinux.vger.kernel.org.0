@@ -2,59 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A1B8270052F
-	for <lists+selinux@lfdr.de>; Fri, 12 May 2023 12:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1958700531
+	for <lists+selinux@lfdr.de>; Fri, 12 May 2023 12:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240710AbjELKXv (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 12 May 2023 06:23:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50856 "EHLO
+        id S240696AbjELKXw (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 12 May 2023 06:23:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240691AbjELKXk (ORCPT
+        with ESMTP id S240693AbjELKXk (ORCPT
         <rfc822;selinux@vger.kernel.org>); Fri, 12 May 2023 06:23:40 -0400
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35A51100F4
+Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0B2FCE
         for <selinux@vger.kernel.org>; Fri, 12 May 2023 03:23:33 -0700 (PDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-966400ee79aso1321726766b.0
+Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-96aadfb19d7so79797766b.2
         for <selinux@vger.kernel.org>; Fri, 12 May 2023 03:23:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1683887011; x=1686479011;
+        d=googlemail.com; s=20221208; t=1683887012; x=1686479012;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ZdqR4pUMqP8H82QVZlZ9nX0C6mDk9sWHOx0UPmV5XNg=;
-        b=jVOOhBonyxOtbJNAi6RRKsjAC6fmbkxL+SSfi6DgsY2HXgyQW1EV4jicub2xUixiiA
-         5IuI/9QhPAK21Asezha4KbELGxv6g4TCtrLT5yovlVM+w8JJdvFAzyD2rF5XNP8jtU1/
-         hoHPMRRHwvfFJMWjtoOsX/Ll+2MQKolfYxVWnFVUvEnBhIiCPp4B9pEcbNq3W+QpG8mQ
-         XsyDiajFP5cGbKJRRo/f3w3oaYyD0tD1opJ50+4f7+1VRS6emeV+eX1E0ofgJTzUeo9y
-         DMtmoGLKn2qGc3APm9H+LqnoPTmwIa34A5Q/eDV99hXWaNcDqZzEzLNbafGEdGBgCJ6W
-         4lZA==
+        bh=eivSVdUQICgh4MaBbhp/ck88yPGPptoEbUC2TVWUHh4=;
+        b=SSJLgH0ILNIk4GHn7Oy62scp4KB2uBZobrsxkxh4jKm+WRSVQ0skaNLKV+QOfQcPN4
+         nGhijxR2GLt/KSl1VUEzHrOzJ5QoYDMs1lxRR6X/XtlU1rzKbFxZ/UOTWw9F+oL8/9Oc
+         vHeSJ0O7u21PHFksbQP23ch2ZgWx7TKoQZt9mHC/ajkTo7B/cZNAXjzQWJBE+jDxAbfC
+         7Q8xMFXdK5TGdF7FmNEida9Z8Cir7Amq3UbE0TdGYf/S0YsZppo9bArtX+CLsW8zLgA+
+         fH3KTKGsoxy3xXZigHpYMi+MbmOH5jt6AxvNbi+xg5mErvcTIUudiFyU7VOWgSfT+eDd
+         Q7+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683887011; x=1686479011;
+        d=1e100.net; s=20221208; t=1683887012; x=1686479012;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZdqR4pUMqP8H82QVZlZ9nX0C6mDk9sWHOx0UPmV5XNg=;
-        b=Bx0pR2pmJAq7+is/nPdJhyMwoNJx/36kDNymMl8Gk0O9mHKAPLskeVByZ8QTCbMRL4
-         BkYbfnijU7oGsuCGbWVnUYuhnHHPX0wuReFBEp57tuBHYx/ip0tB/8mvB/amZ2qZRttC
-         YBcp5AEAjKlIpbcvAhZI6SzWIxuXPPkxfa55pro1yzrxil4VAKu6O8DB7ZxFV5NPQHbd
-         Isu/tpkNd5iwFdZ89bUQlsSi2NdOc7EVyge8ZMj44hs7bDjkZvGzcDCJEau9yWEWst8V
-         NgoVQBJ43qxt11EbrjDP8tq/APA1tYOpE+DAz2GKdJYHugyUwQkC/1TmTZGWN4OUbFND
-         RlWg==
-X-Gm-Message-State: AC+VfDwVKzc2hVvlVh/7z2bSLP5UDo/h5jR/E/JVWJuaCV+AZTmrbiG2
-        Gl1Wg73TICQHhqSv+0WbuERQuLtupraTiA==
-X-Google-Smtp-Source: ACHHUZ7ABzJLmZ9TEni9+4qDR/fm8bIAekDJA/J6FW2VT6wGJAdC/JBhz55KmYMI0pPJ9sN7lnex0A==
-X-Received: by 2002:a17:907:982:b0:965:7fba:6bcf with SMTP id bf2-20020a170907098200b009657fba6bcfmr20448043ejc.67.1683887011372;
-        Fri, 12 May 2023 03:23:31 -0700 (PDT)
+        bh=eivSVdUQICgh4MaBbhp/ck88yPGPptoEbUC2TVWUHh4=;
+        b=PZc9vkLrKlPMDAee2n91cJrIiScgnnV3MoAuf9vHERN0D2uK81YdnfjC1iQwQY4Tcp
+         jjka7J3TfWUVi7ePlzdJ8XVqTpSqzAra0fVvjTu387vJHtTrmyBtJ3HqciLKNReSkmR1
+         BmQmP7g9e1uJYJbgzeL9orDR75OvosdLROS4pRSFM/TqL29rDswYlyN6EeK88cXrKGnU
+         DnN5wvkRv54hpfEDA9AvOv9/uFi16dL+ayLumlSCHbV1Xc+kAgaQ+R8GgmJVOZwGtlKv
+         rY2V6yl/rORTV62hCIVcw1JR/JUh9uxqTOirJ1sCQjdEGRfrmiMnSYtr+aT5ArLTUxPz
+         lgLQ==
+X-Gm-Message-State: AC+VfDzvryHjM/gKvljXaE586Xn5i1GX8kP7i1spUS9tKu//DFqHl8eo
+        X/7nweyZQo99SdVUWyilyowtxhUHpEYVqQ==
+X-Google-Smtp-Source: ACHHUZ7zHK3EGPEyqS9TG0xppsy3vQ/6nVw0CeER+uMorO5NbY2mvi4olwN/9aSYQOaE/3oS1kNuBA==
+X-Received: by 2002:a17:907:31cb:b0:95e:ce3b:a471 with SMTP id xf11-20020a17090731cb00b0095ece3ba471mr22423762ejb.55.1683887012004;
+        Fri, 12 May 2023 03:23:32 -0700 (PDT)
 Received: from debianHome.localdomain (dynamic-095-116-181-041.95.116.pool.telefonica.de. [95.116.181.41])
-        by smtp.gmail.com with ESMTPSA id gz4-20020a170907a04400b009571293d6acsm5202920ejc.59.2023.05.12.03.23.30
+        by smtp.gmail.com with ESMTPSA id gz4-20020a170907a04400b009571293d6acsm5202920ejc.59.2023.05.12.03.23.31
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 12 May 2023 03:23:31 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH 7/9] secon: check selinux_raw_to_trans_context(3) for failure
-Date:   Fri, 12 May 2023 12:23:20 +0200
-Message-Id: <20230512102322.72235-7-cgzones@googlemail.com>
+Subject: [RFC PATCH 8/9] restorecond: check selinux_restorecon(3) for failure
+Date:   Fri, 12 May 2023 12:23:21 +0200
+Message-Id: <20230512102322.72235-8-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230512102322.72235-1-cgzones@googlemail.com>
 References: <20230512102322.72235-1-cgzones@googlemail.com>
@@ -71,41 +71,58 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-    secon.c: In function ‘disp_con’:
-    secon.c:634:9: error: ignoring return value of ‘selinux_raw_to_trans_context’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
-      634 |         selinux_raw_to_trans_context(scon_raw, &scon_trans);
-          |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    watch.c: In function ‘watch_list_add’:
+    watch.c:74:25: error: ignoring return value of ‘selinux_restorecon’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
+       74 |                         selinux_restorecon(globbuf.gl_pathv[i],
+          |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+       75 |                                            r_opts.restorecon_flags);
+          |                                            ~~~~~~~~~~~~~~~~~~~~~~~~
+    watch.c: In function ‘watch_list_find’:
+    watch.c:141:33: error: ignoring return value of ‘selinux_restorecon’ declared with attribute ‘warn_unused_result’ [-Werror=unused-result]
+      141 |                                 selinux_restorecon(path,
+          |                                 ^~~~~~~~~~~~~~~~~~~~~~~~
+      142 |                                                    r_opts.restorecon_flags);
+          |                                                    ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- policycoreutils/secon/secon.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ restorecond/watch.c | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/policycoreutils/secon/secon.c b/policycoreutils/secon/secon.c
-index d624fa13..82266894 100644
---- a/policycoreutils/secon/secon.c
-+++ b/policycoreutils/secon/secon.c
-@@ -2,7 +2,7 @@
- #include <stdlib.h>
- #include <stdio.h>
- #include <assert.h>
--
-+#include <errno.h>
- #include <string.h>
- 
- #define xstreq(x, y) !strcmp(x, y)
-@@ -631,7 +631,10 @@ static void disp_con(const char *scon_raw)
- 	char *color_str = NULL;
- 	struct context_color_t color = { .valid = 0 };
- 
--	selinux_raw_to_trans_context(scon_raw, &scon_trans);
-+	if (selinux_raw_to_trans_context(scon_raw, &scon_trans) < 0)
-+		errx(EXIT_FAILURE, "Couldn't convert context %s:  %s",
-+		     scon_raw, strerror(errno));
+diff --git a/restorecond/watch.c b/restorecond/watch.c
+index 98ff797b..64bc29c6 100644
+--- a/restorecond/watch.c
++++ b/restorecond/watch.c
+@@ -71,8 +71,12 @@ void watch_list_add(int fd, const char *path)
+ 			if (len > 0 &&
+ 			    strcmp(&globbuf.gl_pathv[i][len], "/..") == 0)
+ 				continue;
+-			selinux_restorecon(globbuf.gl_pathv[i],
+-					   r_opts.restorecon_flags);
 +
- 	if (opts->disp_raw)
- 		scon = scon_raw;
- 	else
++			if (selinux_restorecon(globbuf.gl_pathv[i], r_opts.restorecon_flags) < 0) {
++				if (errno != ENOENT)
++					syslog(LOG_ERR, "Unable to relabel %s:  %s\n",
++					       globbuf.gl_pathv[i], strerror(errno));
++			}
+ 		}
+ 		globfree(&globbuf);
+ 	}
+@@ -138,8 +142,12 @@ int watch_list_find(int wd, const char *file)
+ 				    0)
+ 					exitApp("Error allocating memory.");
+ 
+-				selinux_restorecon(path,
+-						   r_opts.restorecon_flags);
++				if (selinux_restorecon(path, r_opts.restorecon_flags) < 0) {
++					if (errno != ENOENT)
++						syslog(LOG_ERR, "Unable to relabel %s:  %s\n",
++						       path, strerror(errno));
++				}
++
+ 				free(path);
+ 				return 0;
+ 			}
 -- 
 2.40.1
 

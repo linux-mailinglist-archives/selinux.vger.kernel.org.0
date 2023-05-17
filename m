@@ -2,61 +2,53 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AC3F705A92
-	for <lists+selinux@lfdr.de>; Wed, 17 May 2023 00:30:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C83A706A30
+	for <lists+selinux@lfdr.de>; Wed, 17 May 2023 15:50:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229558AbjEPWaR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 16 May 2023 18:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54666 "EHLO
+        id S231851AbjEQNu4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 17 May 2023 09:50:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229452AbjEPWaQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 16 May 2023 18:30:16 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3AF75FC2
-        for <selinux@vger.kernel.org>; Tue, 16 May 2023 15:30:14 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-75773252cbfso16873485a.2
-        for <selinux@vger.kernel.org>; Tue, 16 May 2023 15:30:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1684276214; x=1686868214;
-        h=in-reply-to:references:subject:to:from:message-id:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=phsWgqGi3UqZufaKCLWYfFYpzBCn0GS6y/Ad6f+207c=;
-        b=cCzjMmvq887qQgowLdaqX9th2pz8vL+0I/6UBZhQsow15fUlJsmVf4HB8DSvFgv7ur
-         BocByuMb6GPgyqURTb/BW+9nXGWe6OBbPVq6z53C80ASog239Ge3xogUwd9Z0/5KL2GV
-         4fUZOTS5PmKmAjqBBQd/pfxXPMN55/+Dp2jNkeN0x7XduzbYYgclvbaQy1mDza1QGoKt
-         9/D1rjUR4zcwVFTCXKP5sbpmsZwQLujUEOZES7LwSldY58W1f4B1HpqoRp0z69p7bcUw
-         5vFwQ2fF5c9uxG9DhU5xDtqVkZsMZHRIpDDPnxN9soHoge8g0ljQrZCRLILPjdiLGrvX
-         cjpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684276214; x=1686868214;
-        h=in-reply-to:references:subject:to:from:message-id:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=phsWgqGi3UqZufaKCLWYfFYpzBCn0GS6y/Ad6f+207c=;
-        b=A76hMFwhlmzUwq3ooRPm7r/H+KmHldT8OsD4cYaFhDI4PnoCuUboDgH+lHkCYY3Qq4
-         jh8ZXMsVQ4fPBnmkZZ/7DZwU1dRJpmOElBkxDTDgWAoi+1uBQqLPIG3GBf8arfNBeGZW
-         pkxQXRVVpEz85OCZx8WB3HJ9fo6n9VrjplNc1ElmF0h60qUy8fVkkBbtnr/ECCVoY4+8
-         pfQF7FEdLL+FzXg3wBY33fUgkmaaVhwu6pNixb8y0x9/37yJ2q5LbDcIQmYu8H1UUgVU
-         1jiucAFFSX8ZrHif/1VUwdLFoWqDcfbP7tsYFFO9qGDnVHd+TQ1roZueegnS2QSKmAMk
-         MW4g==
-X-Gm-Message-State: AC+VfDzkGhtIYbtYS2sGDGA3mGo0Dk9ql1eKldwolynNV4ci7KuMoDM9
-        tRw3VmnzOWeokWNlGbJK4cbYWncXzuzWmAoo9w==
-X-Google-Smtp-Source: ACHHUZ7uu2XPPCmOy+Nm+WfIrbWujUNwoQZvmiUaG+bDQFgvIXnOEVaxmLUsj8idVK0ANwG1VZfeFQ==
-X-Received: by 2002:a05:622a:1aaa:b0:3f2:e4f:49cc with SMTP id s42-20020a05622a1aaa00b003f20e4f49ccmr60904894qtc.40.1684276213886;
-        Tue, 16 May 2023 15:30:13 -0700 (PDT)
-Received: from localhost (pool-108-26-161-203.bstnma.fios.verizon.net. [108.26.161.203])
-        by smtp.gmail.com with ESMTPSA id u10-20020a05620a120a00b0074d4cf8f9fcsm170055qkj.107.2023.05.16.15.30.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 May 2023 15:30:13 -0700 (PDT)
-Date:   Tue, 16 May 2023 18:30:12 -0400
-Message-ID: <2379b42f2bdaad95adfc90b38bcbe2b4.paul@paul-moore.com>
-From:   Paul Moore <paul@paul-moore.com>
-To:     Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org
-Subject: Re: [PATCH RFC] selinux: TESTING ONLY, PLEASE IGNORE
-References: <20230516221253.506628-1-paul@paul-moore.com>
-In-Reply-To: <20230516221253.506628-1-paul@paul-moore.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        with ESMTP id S231179AbjEQNux (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 17 May 2023 09:50:53 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A035376A9
+        for <selinux@vger.kernel.org>; Wed, 17 May 2023 06:49:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1684331391;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=putyfRSgL8mWr4gNvWWTJlyJOfoYmtK8Ayj9op0QKeM=;
+        b=GL7AiBOpwqFEMwgd4ELtn5f1KZ+5NyJFToVUu5vp//LdWG4LVurSvb5A0WSDnxaaqyq8BD
+        b4SPKMrLdk0c/7ZnOZE2Wwwk8Mm+/aLr/ReQ1mvS4fOcfT+yvfiMqGBfc6Bshr2s3Dhc3Z
+        bPcVCqft44t1pXCJQsN/3QWwJP+T53g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-653-V5zGoqSuMdOIJ6XeGZ1vrg-1; Wed, 17 May 2023 09:49:50 -0400
+X-MC-Unique: V5zGoqSuMdOIJ6XeGZ1vrg-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0FD7B87082E
+        for <selinux@vger.kernel.org>; Wed, 17 May 2023 13:49:50 +0000 (UTC)
+Received: from P1.redhat.com (unknown [10.45.224.131])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 60D561121315;
+        Wed, 17 May 2023 13:49:49 +0000 (UTC)
+From:   Petr Lautrbach <lautrbach@redhat.com>
+To:     selinux@vger.kernel.org
+Cc:     Petr Lautrbach <lautrbach@redhat.com>
+Subject: [PATCH 1/4] python: improve format strings for proper localization
+Date:   Wed, 17 May 2023 15:49:31 +0200
+Message-Id: <20230517134934.709059-1-lautrbach@redhat.com>
+MIME-Version: 1.0
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.3
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -64,18 +56,318 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On May 16, 2023 Paul Moore <paul@paul-moore.com> wrote:
-> 
-> This patch can be safely ignored, I'm testing some new automated
-> tooling and needed to do an on-list test.  My apologies for the
-> noise.
-> 
-> Signed-off-by: Paul Moore <paul@paul-moore.com>
-> ---
->  security/selinux/netlabel.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+If a string contains more than one unnamed argument it's hard for
+translators to proper localize as they don't know which value is
+represented by a unnamed argument. It also blocks them to use a
+different order of arguments which would make better sense in other
+languages.
 
-This is also a test, you can ignore this one too.
+Fixes:
 
---
-paul-moore.com
+    $ xgettext --default-domain=python -L Python --keyword=_ --keyword=N_ ../audit2allow/audit2allow ../chcat/chcat ../semanage/semanage ../semanage/seobject.py ../sepolgen/src/sepolgen/interfaces.py ../sepolicy/sepolicy/generate.py ../sepolicy/sepolicy/gui.py ../sepolicy/sepolicy/__init__.py ../sepolicy/sepolicy/interface.py ../sepolicy/sepolicy.py
+    ../chcat/chcat:220: warning: 'msgid' format string with unnamed arguments cannot be properly localized:
+                                 The translator cannot reorder the arguments.
+                                 Please consider using a format string with named arguments,
+                                 and a mapping instead of a tuple for the arguments.
+    ../semanage/seobject.py:1178: warning: 'msgid' format string with unnamed arguments cannot be properly localized:
+                                           The translator cannot reorder the arguments.
+                                           Please consider using a format string with named arguments,
+                                           and a mapping instead of a tuple for the arguments.
+    ...
+
+Signed-off-by: Petr Lautrbach <lautrbach@redhat.com>
+---
+ python/chcat/chcat          |  2 +-
+ python/semanage/seobject.py | 92 ++++++++++++++++++-------------------
+ 2 files changed, 47 insertions(+), 47 deletions(-)
+
+diff --git a/python/chcat/chcat b/python/chcat/chcat
+index 68718ec5f102..ec34c05ffdfa 100755
+--- a/python/chcat/chcat
++++ b/python/chcat/chcat
+@@ -217,7 +217,7 @@ def chcat_remove(orig, newcat, objects, login_ind):
+             else:
+                 cat = ""
+         else:
+-            print(_("%s is not in %s") % (f, orig))
++            print(_("{target} is not in {category}").format(target=f, category=orig))
+             continue
+ 
+         if len(cat) == 0:
+diff --git a/python/semanage/seobject.py b/python/semanage/seobject.py
+index d82da4942987..8a891ca23bca 100644
+--- a/python/semanage/seobject.py
++++ b/python/semanage/seobject.py
+@@ -1175,13 +1175,13 @@ class portRecords(semanageRecords):
+ 
+         (rc, exists) = semanage_port_exists(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if port %s/%s is defined") % (proto, port))
++            raise ValueError(_("Could not check if port {proto}/{port} is defined").format(proto=proto, port=port))
+         if not exists:
+-            raise ValueError(_("Port %s/%s is not defined") % (proto, port))
++            raise ValueError(_("Port {proto}/{port} is not defined").format(proto=proto, port=port))
+ 
+         (rc, p) = semanage_port_query(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not query port %s/%s") % (proto, port))
++            raise ValueError(_("Could not query port {proto}/{port}").format(proto=proto, port=port))
+ 
+         con = semanage_port_get_con(p)
+ 
+@@ -1195,7 +1195,7 @@ class portRecords(semanageRecords):
+ 
+         rc = semanage_port_modify_local(self.sh, k, p)
+         if rc < 0:
+-            raise ValueError(_("Could not modify port %s/%s") % (proto, port))
++            raise ValueError(_("Could not modify port {proto}/{port}").format(proto=proto, port=port))
+ 
+         semanage_port_key_free(k)
+         semanage_port_free(p)
+@@ -1241,19 +1241,19 @@ class portRecords(semanageRecords):
+         (k, proto_d, low, high) = self.__genkey(port, proto)
+         (rc, exists) = semanage_port_exists(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if port %s/%s is defined") % (proto, port))
++            raise ValueError(_("Could not check if port {proto}/{port} is defined").format(proto=proto, port=port))
+         if not exists:
+-            raise ValueError(_("Port %s/%s is not defined") % (proto, port))
++            raise ValueError(_("Port {proto}/{port} is not defined").format(proto=proto, port=port))
+ 
+         (rc, exists) = semanage_port_exists_local(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if port %s/%s is defined") % (proto, port))
++            raise ValueError(_("Could not check if port {proto}/{port} is defined").format(proto=proto, port=port))
+         if not exists:
+-            raise ValueError(_("Port %s/%s is defined in policy, cannot be deleted") % (proto, port))
++            raise ValueError(_("Port {proto}/{port} is defined in policy, cannot be deleted").format(proto=proto, port=port))
+ 
+         rc = semanage_port_del_local(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not delete port %s/%s") % (proto, port))
++            raise ValueError(_("Could not delete port {proto}/{port}").format(proto=proto, port=port))
+ 
+         semanage_port_key_free(k)
+ 
+@@ -1362,7 +1362,7 @@ class ibpkeyRecords(semanageRecords):
+ 
+         (rc, k) = semanage_ibpkey_key_create(self.sh, subnet_prefix, low, high)
+         if rc < 0:
+-            raise ValueError(_("Could not create a key for %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not create a key for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+         return (k, subnet_prefix, low, high)
+ 
+     def __add(self, pkey, subnet_prefix, serange, type):
+@@ -1384,44 +1384,44 @@ class ibpkeyRecords(semanageRecords):
+ 
+         (rc, exists) = semanage_ibpkey_exists(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if ibpkey %s/%s is defined") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not check if ibpkey {subnet_prefix}/{pkey} is defined").formnat(subnet_prefix=subnet_prefix, pkey=pkey))
+         if exists:
+-            raise ValueError(_("ibpkey %s/%s already defined") % (subnet_prefix, pkey))
++            raise ValueError(_("ibpkey {subnet_prefix}/{pkey} already defined").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         (rc, p) = semanage_ibpkey_create(self.sh)
+         if rc < 0:
+-            raise ValueError(_("Could not create ibpkey for %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not create ibpkey for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         semanage_ibpkey_set_subnet_prefix(self.sh, p, subnet_prefix)
+         semanage_ibpkey_set_range(p, low, high)
+         (rc, con) = semanage_context_create(self.sh)
+         if rc < 0:
+-            raise ValueError(_("Could not create context for %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not create context for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         rc = semanage_context_set_user(self.sh, con, "system_u")
+         if rc < 0:
+-            raise ValueError(_("Could not set user in ibpkey context for %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not set user in ibpkey context for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         rc = semanage_context_set_role(self.sh, con, "object_r")
+         if rc < 0:
+-            raise ValueError(_("Could not set role in ibpkey context for %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not set role in ibpkey context for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         rc = semanage_context_set_type(self.sh, con, type)
+         if rc < 0:
+-            raise ValueError(_("Could not set type in ibpkey context for %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not set type in ibpkey context for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         if (is_mls_enabled == 1) and (serange != ""):
+             rc = semanage_context_set_mls(self.sh, con, serange)
+             if rc < 0:
+-                raise ValueError(_("Could not set mls fields in ibpkey context for %s/%s") % (subnet_prefix, pkey))
++                raise ValueError(_("Could not set mls fields in ibpkey context for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         rc = semanage_ibpkey_set_con(self.sh, p, con)
+         if rc < 0:
+-            raise ValueError(_("Could not set ibpkey context for %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not set ibpkey context for {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         rc = semanage_ibpkey_modify_local(self.sh, k, p)
+         if rc < 0:
+-            raise ValueError(_("Could not add ibpkey %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not add ibpkey {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         semanage_context_free(con)
+         semanage_ibpkey_key_free(k)
+@@ -1448,13 +1448,13 @@ class ibpkeyRecords(semanageRecords):
+ 
+         (rc, exists) = semanage_ibpkey_exists(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if ibpkey %s/%s is defined") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not check if ibpkey {subnet_prefix}/{pkey} is defined").format(subnet_prefix=subnet_prefix, pkey=pkey))
+         if not exists:
+-            raise ValueError(_("ibpkey %s/%s is not defined") % (subnet_prefix, pkey))
++            raise ValueError(_("ibpkey {subnet_prefix}/{pkey} is not defined").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         (rc, p) = semanage_ibpkey_query(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not query ibpkey %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not query ibpkey {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         con = semanage_ibpkey_get_con(p)
+ 
+@@ -1508,13 +1508,13 @@ class ibpkeyRecords(semanageRecords):
+ 
+         (rc, exists) = semanage_ibpkey_exists_local(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if ibpkey %s/%s is defined") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not check if ibpkey {subnet_prefix}/{pkey} is defined").format(subnet_prefix=subnet_prefix, pkey=pkey))
+         if not exists:
+-            raise ValueError(_("ibpkey %s/%s is defined in policy, cannot be deleted") % (subnet_prefix, pkey))
++            raise ValueError(_("ibpkey {subnet_prefix}/{pkey} is defined in policy, cannot be deleted").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         rc = semanage_ibpkey_del_local(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not delete ibpkey %s/%s") % (subnet_prefix, pkey))
++            raise ValueError(_("Could not delete ibpkey {subnet_prefix}/{pkey}").format(subnet_prefix=subnet_prefix, pkey=pkey))
+ 
+         semanage_ibpkey_key_free(k)
+ 
+@@ -1617,7 +1617,7 @@ class ibendportRecords(semanageRecords):
+ 
+         (rc, k) = semanage_ibendport_key_create(self.sh, ibdev_name, port)
+         if rc < 0:
+-            raise ValueError(_("Could not create a key for ibendport %s/%s") % (ibdev_name, ibendport))
++            raise ValueError(_("Could not create a key for ibendport {ibdev_name}/{ibendport}").format(ibdev_name=ibdev_name, ibendport=ibendport))
+         return (k, ibdev_name, port)
+ 
+     def __add(self, ibendport, ibdev_name, serange, type):
+@@ -1638,9 +1638,9 @@ class ibendportRecords(semanageRecords):
+ 
+         (rc, exists) = semanage_ibendport_exists(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if ibendport %s/%s is defined") % (ibdev_name, port))
++            raise ValueError(_("Could not check if ibendport {ibdev_name}/{port} is defined").format(ibdev_name=ibdev_name, port=port))
+         if exists:
+-            raise ValueError(_("ibendport %s/%s already defined") % (ibdev_name, port))
++            raise ValueError(_("ibendport {ibdev_name}/{port} already defined").format(ibdev_name=ibdev_name, port=port))
+ 
+         (rc, p) = semanage_ibendport_create(self.sh)
+         if rc < 0:
+@@ -1650,32 +1650,32 @@ class ibendportRecords(semanageRecords):
+         semanage_ibendport_set_port(p, port)
+         (rc, con) = semanage_context_create(self.sh)
+         if rc < 0:
+-            raise ValueError(_("Could not create context for %s/%s") % (ibdev_name, port))
++            raise ValueError(_("Could not create context for {ibendport}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+         rc = semanage_context_set_user(self.sh, con, "system_u")
+         if rc < 0:
+-            raise ValueError(_("Could not set user in ibendport context for %s/%s") % (ibdev_name, port))
++            raise ValueError(_("Could not set user in ibendport context for {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+         rc = semanage_context_set_role(self.sh, con, "object_r")
+         if rc < 0:
+-            raise ValueError(_("Could not set role in ibendport context for %s/%s") % (ibdev_name, port))
++            raise ValueError(_("Could not set role in ibendport context for {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+         rc = semanage_context_set_type(self.sh, con, type)
+         if rc < 0:
+-            raise ValueError(_("Could not set type in ibendport context for %s/%s") % (ibdev_name, port))
++            raise ValueError(_("Could not set type in ibendport context for {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+         if (is_mls_enabled == 1) and (serange != ""):
+             rc = semanage_context_set_mls(self.sh, con, serange)
+             if rc < 0:
+-                raise ValueError(_("Could not set mls fields in ibendport context for %s/%s") % (ibdev_name, port))
++                raise ValueError(_("Could not set mls fields in ibendport context for {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+         rc = semanage_ibendport_set_con(self.sh, p, con)
+         if rc < 0:
+-            raise ValueError(_("Could not set ibendport context for %s/%s") % (ibdev_name, port))
++            raise ValueError(_("Could not set ibendport context for {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+         rc = semanage_ibendport_modify_local(self.sh, k, p)
+         if rc < 0:
+-            raise ValueError(_("Could not add ibendport %s/%s") % (ibdev_name, port))
++            raise ValueError(_("Could not add ibendport {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+         semanage_context_free(con)
+         semanage_ibendport_key_free(k)
+@@ -1702,9 +1702,9 @@ class ibendportRecords(semanageRecords):
+ 
+         (rc, exists) = semanage_ibendport_exists(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if ibendport %s/%s is defined") % (ibdev_name, ibendport))
++            raise ValueError(_("Could not check if ibendport {ibdev_name}/{ibendport} is defined").format(ibdev_name=ibdev_name, ibendport=ibendport))
+         if not exists:
+-            raise ValueError(_("ibendport %s/%s is not defined") % (ibdev_name, ibendport))
++            raise ValueError(_("ibendport {ibdev_name}/{ibendport} is not defined").format(ibdev_name=ibdev_name, ibendport=ibendport))
+ 
+         (rc, p) = semanage_ibendport_query(self.sh, k)
+         if rc < 0:
+@@ -1719,7 +1719,7 @@ class ibendportRecords(semanageRecords):
+ 
+         rc = semanage_ibendport_modify_local(self.sh, k, p)
+         if rc < 0:
+-            raise ValueError(_("Could not modify ibendport %s/%s") % (ibdev_name, ibendport))
++            raise ValueError(_("Could not modify ibendport {ibdev_name}/{ibendport}").format(ibdev_name=ibdev_name, ibendport=ibendport))
+ 
+         semanage_ibendport_key_free(k)
+         semanage_ibendport_free(p)
+@@ -1741,11 +1741,11 @@ class ibendportRecords(semanageRecords):
+             port = semanage_ibendport_get_port(ibendport)
+             (k, ibdev_name, port) = self.__genkey(str(port), ibdev_name)
+             if rc < 0:
+-                raise ValueError(_("Could not create a key for %s/%d") % (ibdevname, port))
++                raise ValueError(_("Could not create a key for {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+ 
+             rc = semanage_ibendport_del_local(self.sh, k)
+             if rc < 0:
+-                raise ValueError(_("Could not delete the ibendport %s/%d") % (ibdev_name, port))
++                raise ValueError(_("Could not delete the ibendport {ibdev_name}/{port}").format(ibdev_name=ibdev_name, port=port))
+             semanage_ibendport_key_free(k)
+ 
+         self.commit()
+@@ -1754,19 +1754,19 @@ class ibendportRecords(semanageRecords):
+         (k, ibdev_name, port) = self.__genkey(ibendport, ibdev_name)
+         (rc, exists) = semanage_ibendport_exists(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if ibendport %s/%s is defined") % (ibdev_name, ibendport))
++            raise ValueError(_("Could not check if ibendport {ibdev_name}/{ibendport} is defined").format(ibdev_name=ibdev_name, ibendport=ibendport))
+         if not exists:
+-            raise ValueError(_("ibendport %s/%s is not defined") % (ibdev_name, ibendport))
++            raise ValueError(_("ibendport {ibdev_name}/{ibendport} is not defined").format(ibdev_name=ibdev_name, ibendport=ibendport))
+ 
+         (rc, exists) = semanage_ibendport_exists_local(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not check if ibendport %s/%s is defined") % (ibdev_name, ibendport))
++            raise ValueError(_("Could not check if ibendport {ibdev_name}/{ibendport} is defined").format(ibdev_name=ibdev_name, ibendport=ibendport))
+         if not exists:
+-            raise ValueError(_("ibendport %s/%s is defined in policy, cannot be deleted") % (ibdev_name, ibendport))
++            raise ValueError(_("ibendport {ibdev_name}/{ibendport} is defined in policy, cannot be deleted").format(ibdev_name=ibdev_name, ibendport=ibendport))
+ 
+         rc = semanage_ibendport_del_local(self.sh, k)
+         if rc < 0:
+-            raise ValueError(_("Could not delete ibendport %s/%s") % (ibdev_name, ibendport))
++            raise ValueError(_("Could not delete ibendport {ibdev_name}/{ibendport}").format(ibdev_name=ibdev_name, ibendport=ibendport))
+ 
+         semanage_ibendport_key_free(k)
+ 
+-- 
+2.40.1
+

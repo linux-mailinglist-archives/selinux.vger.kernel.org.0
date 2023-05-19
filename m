@@ -2,169 +2,95 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46CD670894E
-	for <lists+selinux@lfdr.de>; Thu, 18 May 2023 22:18:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DAAD7096D2
+	for <lists+selinux@lfdr.de>; Fri, 19 May 2023 13:54:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229922AbjERUSX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 18 May 2023 16:18:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46434 "EHLO
+        id S231698AbjESLyJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 19 May 2023 07:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229569AbjERUSW (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 18 May 2023 16:18:22 -0400
-Received: from mail-yw1-x112b.google.com (mail-yw1-x112b.google.com [IPv6:2607:f8b0:4864:20::112b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCA1A10D0
-        for <selinux@vger.kernel.org>; Thu, 18 May 2023 13:18:20 -0700 (PDT)
-Received: by mail-yw1-x112b.google.com with SMTP id 00721157ae682-562191bcfb9so1774917b3.3
-        for <selinux@vger.kernel.org>; Thu, 18 May 2023 13:18:20 -0700 (PDT)
+        with ESMTP id S231710AbjESLyC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 19 May 2023 07:54:02 -0400
+Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43801B0
+        for <selinux@vger.kernel.org>; Fri, 19 May 2023 04:53:59 -0700 (PDT)
+Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-64d2b42a8f9so940647b3a.3
+        for <selinux@vger.kernel.org>; Fri, 19 May 2023 04:53:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1684441100; x=1687033100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vT9t62V6Ng7zAzJOoOv8Omp/rmWX41+dyHJ3EkYyjTs=;
-        b=UvYfhpIVnvt2TG2FBhPNupz8v8wmMjb+Y8gwjNSxEwf9KsJDSKtsVecFMrvgZO9g19
-         VR+kBs2SfEQriq5GBs+0kWDwKH9vyzNhGpjUXdYReuT5CZGlC5VUM0owPTmWoW2Nl1qF
-         ioggPgigCgmPDSEvzhoXfCYLd0/ODUNGMbznkbCyuu96JD+3Lb7iBgXbF8jHPFJgtgoT
-         iK/XvR9VCexp534pXTTUtTZSKmZzQWEOY+kfs3J4YdrrZGYRYYa+lCnTIeWGuSiY/HKi
-         gFd0GX27TAApjMknMfrCppRx106BhErdG/4EDlDNru1XKOhcSpuRXpXXXv2GwpEi88yg
-         T/YA==
+        d=gmail.com; s=20221208; t=1684497239; x=1687089239;
+        h=to:subject:message-id:date:from:references:in-reply-to:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=YJNTYHB1yZmgnFkp+xXn9XSLABSa1kCZVD8URvEiNZE=;
+        b=DwfHUALYc14mtlp5cQqlsIxQ+FMYlvMEi2Fo7wIwDswbB/vaEgxHej2APK4c3eve9L
+         ggweuWQ7h3U0Ki6VTIvDdkgoYU0hGM/HnbAmTR0chjfe8lSxr1SS6c6YPLjg5WDxexmE
+         OyP85ma0raJ5isRqIU5CAITZb25hvug4sSwSrsKgrkc1RenAxcgRjwIfcsdIrlWYJLu6
+         FiZ3TiIo3+vskNENPVNMkQCWn2iYnsTaxDpzys1ATs8TfJXhDqK/89D143ZnXic50NId
+         QKUkKm7Kqu+1mDhln6dQbQpcC6Ve1JiP3i16CnAQO5AQZGgRrybv4u57xfGD/ZR0p3Rj
+         b/VA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684441100; x=1687033100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vT9t62V6Ng7zAzJOoOv8Omp/rmWX41+dyHJ3EkYyjTs=;
-        b=M4L5i+dWKJaKIQhUBARaxKj2lirS3MWOQ88FGPZXJw+tkNJQFY1ioIYn3rtMU0lu6T
-         4UwQ9/xqKl3JXpzaJKFWZyL+DDN3HCBpGO02Ipy5gK4a+mAxOCGOx7RNr54hrcfyqRdq
-         HhBUORJuwjvVIR2vNVYZbJWq4S4WozzVZmhioprCqAq103vsUMcB6LHeXYpWoGcaduX5
-         RAhOGm1oEFdzjDpqTUhGUQ1W+pFc0FDG5mh+oXowbuCnCgfhRE2RDaQV+OPs/ahV7mL/
-         C1dUDdz9+gIV2icTEwHmf+gRVFULbYHD+3gSatbR1z/A8ulGSFvCovZdsH09SNz0d5Xp
-         sZxA==
-X-Gm-Message-State: AC+VfDyDV+c/gkLaA9Vnu+PfhrTpGS2Gvy8Rf8Xj8HtPaatrUGLF9y/o
-        +wE564VG7NyV3ZM+qnMaUaBHuW881Qdy08FyyEwM
-X-Google-Smtp-Source: ACHHUZ5kqEcrFMzgs1IizDsrp297c/mz4qZ+Tcc3WrLuNQoy0GHcwcv9vxWknXnTtkZJar+k9ytS2C9NEkslq9O5lg4=
-X-Received: by 2002:a0d:d40f:0:b0:561:cb5c:17ac with SMTP id
- w15-20020a0dd40f000000b00561cb5c17acmr2511962ywd.27.1684441099971; Thu, 18
- May 2023 13:18:19 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684497239; x=1687089239;
+        h=to:subject:message-id:date:from:references:in-reply-to:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YJNTYHB1yZmgnFkp+xXn9XSLABSa1kCZVD8URvEiNZE=;
+        b=O3zK+TkKJLM2jDmr44Jz4w58mO7cnvbengjvGRWykxNv3Fi7zoN+4iwn2QBR9KPF6R
+         TWSsSSuZyqEJtfGjyJY19x2yp7/pKf/XWZiqd9pz8qmO/SMuWuhDgOahBrEJ9UTCZF7w
+         kwNOk1Ek76Di3inXeATo/tM5On9aa9YT1gQMMe3ahVibGlUS7y5QXg1pw7/v6121TwwU
+         LgLAPXGVeqpwj8QD4lHBXOfuKYJgk8BBQp7ljcM0LQw5EShIaoSZQU44PZNwuOtH6XXd
+         E+xvFC7pcZjfcINLOic1r0KmgILhXnndtI7Sxd9U9yS1gJhtDd5CUcgsJZpuxJKzFGEv
+         sjiQ==
+X-Gm-Message-State: AC+VfDz85JggC8V12E+ZtKdecUUHyg7U8DP0oF/sEfpgi8CPp4uw2W4t
+        O4Im8O6VDvSNBi9OCAwsmfVWM20nnp8VdMxskXg=
+X-Google-Smtp-Source: ACHHUZ7xuAnuC9/R/hauRxZe3pEn/eWjqAP6FIzpmUXZ+CSXBW5wV1Z+8vaU9cODy+Fo6AqH0Xx3p4inNRbJQcdRhto=
+X-Received: by 2002:a17:903:1206:b0:1ab:74c:bdf2 with SMTP id
+ l6-20020a170903120600b001ab074cbdf2mr2877368plh.28.1684497238360; Fri, 19 May
+ 2023 04:53:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230511123213.722912-1-cgzones@googlemail.com> <6301fdfd0927df2b2fd7a4f2b384e477.paul@paul-moore.com>
-In-Reply-To: <6301fdfd0927df2b2fd7a4f2b384e477.paul@paul-moore.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Thu, 18 May 2023 16:18:09 -0400
-Message-ID: <CAHC9VhSSA04wzPFgx_Z4jf1gOdEO40hU-augjMqX1uGd-eHLQA@mail.gmail.com>
-Subject: Re: [PATCH] selinux: deprecated fs ocon
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        selinux@vger.kernel.org
-Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Xiu Jianfeng <xiujianfeng@huawei.com>,
-        linux-kernel@vger.kernel.org
+Received: by 2002:a05:6a10:6d1c:b0:4b5:a864:58da with HTTP; Fri, 19 May 2023
+ 04:53:57 -0700 (PDT)
+Reply-To: royalmaylux1@gmx.com
+In-Reply-To: <CAAsVTHorJvYWoGHsg2_VTAvt6ZpKO9kscCaNo0dRVvPX_YoVuw@mail.gmail.com>
+References: <CAAsVTHqdUjMV_dQD270TaAmCNQ09g9T2XFGbM9-e6ManaXbsRQ@mail.gmail.com>
+ <CAAsVTHrGsxA+j4WirKjigbS=boD8bDW_26t92Nc02nhZqb4Gxw@mail.gmail.com>
+ <CAAsVTHrLrH0prao8=kMqiwx1WFrRSd2b8xZw6Fi__k40Y1MOnQ@mail.gmail.com>
+ <CAAsVTHrN15gSZPM3Aw=XU-su8AgKTiikQ-NprN5VDGaaQ2mfOQ@mail.gmail.com>
+ <CAAsVTHpfRRGJ=nP5wWDr=G_JH61PP8B9wLB4DNU=x76Osuazqw@mail.gmail.com>
+ <CAAsVTHrf+GWUhU7yVy0d8hEOiKg-7FqUzxwXoa9HqHicYvD54w@mail.gmail.com>
+ <CAAsVTHo3Sz-P30HROJD29NT9wFFDCa+-QAeUTVO_iyS-UVhfNQ@mail.gmail.com>
+ <CAAsVTHqdKSbV9yRG0nvVUeX7KA8hdLhF-EUW33kZy-y4mOB7PA@mail.gmail.com>
+ <CAAsVTHoOS3ta3t53hCqFmkf=uEU263MXJis9vcqChbhVCW87=Q@mail.gmail.com>
+ <CAAsVTHoNhVNx5fm3gCLL2y+14gO5nyzGYdCUTgaCsRFUrtu9bw@mail.gmail.com>
+ <CAAsVTHoqmhwez_z=tLQarxJnSEfHV8jWtPR4JbERgJKU0K8mBw@mail.gmail.com>
+ <CAAsVTHp8eF=CBNTMP8PdTQmKUiF0ippF0VvCe_LRC7MYcbo1+g@mail.gmail.com>
+ <CAAsVTHpSBcCoSmCos40V2e8ssBp24GtrvJ_A-d_WNbd-8j8wnA@mail.gmail.com>
+ <CAAsVTHppV+V0S0FvQO-42=SEWn1M3UoghXqVb7HZLBr5==zQyg@mail.gmail.com>
+ <CAAsVTHqE6i0v14Vw7ev36adRR+Yprk8pxtmsZhre7DF-Osn-Pg@mail.gmail.com>
+ <CAAsVTHpTVcHUjMVJDzWQ9zFRuNnb-_2f6YsF9z1eqj_i4RLUZA@mail.gmail.com>
+ <CAAsVTHp6SmL49o3BqRHk=GHNMhwCHu3w5D=N+grTZe1UZSOmTA@mail.gmail.com>
+ <CAAsVTHpzZ1gn+pQvBXzGB+i+Wxatz+_KwxMve47TwJOjhFNLyQ@mail.gmail.com>
+ <CAAsVTHrPCWJBeyLOCGyTpmFL3Jq5h_dUnroCBq7Dq9NL0dLsYQ@mail.gmail.com>
+ <CAAsVTHo0Y==_w7AcFNoCj0oBGN4af=Vb2Lf4_f60O6LXtifM8A@mail.gmail.com>
+ <CAAsVTHoTSdmzfvkb0WyN6oGRHfubH60Fs5-9gE7St91_NVrs6g@mail.gmail.com>
+ <CAAsVTHrn-nUP3PUb1h_247Ok638jUopTfO9N9HzVsEF2h7kH8g@mail.gmail.com>
+ <CAAsVTHo8NBfj6mN4z5vtU3vP+6v2YWHiGQZ0KgmB854g=8pRPA@mail.gmail.com>
+ <CAAsVTHrafOjSH0Tdk6FdK=7JS1SNKzTGdxmx0W5BRoErGh+A+g@mail.gmail.com>
+ <CAAsVTHpThhrC73m93tTkxjn2+SVazN1ko7OQFz=xf0zNTkHHOw@mail.gmail.com> <CAAsVTHorJvYWoGHsg2_VTAvt6ZpKO9kscCaNo0dRVvPX_YoVuw@mail.gmail.com>
+From:   Royal Maylux <royalmaylux1@gmail.com>
+Date:   Fri, 19 May 2023 13:53:57 +0200
+Message-ID: <CAAsVTHo9ZMG0eeA4sEw-M--qQUjtuuDp38QY77SfqMfxay2esQ@mail.gmail.com>
+Subject: Do you receive the email
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, May 18, 2023 at 1:56=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
-> On May 11, 2023 =3D?UTF-8?q?Christian=3D20G=3DC3=3DB6ttsche?=3D <cgzones@=
-googlemail.com> wrote:
-> >
-> > The object context type `fs`, not to be confused with the well used
-> > object context type `fscon`, was introduced in the initial git commit
-> > 1da177e4c3f4 ("Linux-2.6.12-rc2") but never actually used since.
-> >
-> > The paper "A Security Policy Configuration for the Security-Enhanced
-> > Linux" [1] mentions it under `7.2 File System Contexts` but also states=
-:
-> >
-> >     Currently, this configuration is unused.
-> >
-> > The policy statement defining such object contexts is `fscon`, e.g.:
-> >
-> >     fscon 2 3 gen_context(system_u:object_r:conA_t,s0) gen_context(syst=
-em_u:object_r:conB_t,s0)
-> >
-> > It is not documented at selinuxproject.org or in the SELinux notebook
-> > and not supported by the Reference Policy buildsystem - the statement i=
-s
-> > not properly sorted - and thus not used in the Reference or Fedora
-> > Policy.
-> >
-> > Print a warning message at policy load for each such object context:
-> >
-> >     SELinux:  void and deprecated fs ocon 02:03
-> >
-> > This topic was initially highlighted by Nicolas Iooss [2].
-> >
-> > [1]: https://media.defense.gov/2021/Jul/29/2002815735/-1/-1/0/SELINUX-S=
-ECURITY-POLICY-CONFIGURATION-REPORT.PDF
-> > [2]: https://lore.kernel.org/selinux/CAJfZ7=3DmP2eJaq2BfO3y0VnwUJaY2cS2=
-p=3DHZMN71z1pKjzaT0Eg@mail.gmail.com/
-> >
-> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> > ---
-> >  security/selinux/ss/policydb.c | 4 ++++
-> >  security/selinux/ss/policydb.h | 2 +-
-> >  2 files changed, 5 insertions(+), 1 deletion(-)
->
-> Thanks, this is a nice catch, although some minor suggestions below ...
->
-> > diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/polic=
-ydb.c
-> > index 97c0074f9312..31b08b34c722 100644
-> > --- a/security/selinux/ss/policydb.c
-> > +++ b/security/selinux/ss/policydb.c
-> > @@ -2257,6 +2257,10 @@ static int ocontext_read(struct policydb *p, con=
-st struct policydb_compat_info *
-> >                               if (rc)
-> >                                       goto out;
-> >
-> > +                             if (i =3D=3D OCON_FS)
-> > +                                     pr_warn("SELinux:  void and depre=
-cated fs ocon %s\n",
-> > +                                             c->u.name);
->
-> Instead of having to check if 'i =3D=3D OCON_FS', why not simply put the
-> pr_warn() call up in the OCON_FS case block on line ~2249 and let it
-> continue to fallthrough to the OCON_NETIF block?
-
-Bah, nevermind, you need to leave it here because of the 'c->u.name'
-in the pr_warn().  If you're okay with me adjusting the deprecation
-comment (below) during the merge I'll can merge this now ... ?
-
-> >                               rc =3D context_read_and_validate(&c->cont=
-ext[0], p, fp);
-> >                               if (rc)
-> >                                       goto out;
-> > diff --git a/security/selinux/ss/policydb.h b/security/selinux/ss/polic=
-ydb.h
-> > index ffc4e7bad205..39cd6222e1a8 100644
-> > --- a/security/selinux/ss/policydb.h
-> > +++ b/security/selinux/ss/policydb.h
-> > @@ -225,7 +225,7 @@ struct genfs {
-> >
-> >  /* object context array indices */
-> >  #define OCON_ISID    0 /* initial SIDs */
-> > -#define OCON_FS              1 /* unlabeled file systems */
-> > +#define OCON_FS              1 /* unlabeled file systems (deprecated i=
-n 6.5) */
->
-> Since you are likely re-spinning this (see above), I would just leave
-> it as "(deprecated)"; those that want to know where it was deprecated
-> can always check the git log/tags.
->
-> >  #define OCON_PORT    2 /* TCP and UDP port numbers */
-> >  #define OCON_NETIF   3 /* network interfaces */
-> >  #define OCON_NODE    4 /* nodes */
-> > --
-> > 2.40.1
-
---=20
-paul-moore.com
+Do you receive the email I sent you  few days ago, I'm waiting for your reply?

@@ -2,83 +2,56 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DAAD7096D2
-	for <lists+selinux@lfdr.de>; Fri, 19 May 2023 13:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B52709762
+	for <lists+selinux@lfdr.de>; Fri, 19 May 2023 14:41:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231698AbjESLyJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 19 May 2023 07:54:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S229586AbjESMli (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 19 May 2023 08:41:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231710AbjESLyC (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 19 May 2023 07:54:02 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C43801B0
-        for <selinux@vger.kernel.org>; Fri, 19 May 2023 04:53:59 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-64d2b42a8f9so940647b3a.3
-        for <selinux@vger.kernel.org>; Fri, 19 May 2023 04:53:59 -0700 (PDT)
+        with ESMTP id S229571AbjESMlh (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 19 May 2023 08:41:37 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63E971A6
+        for <selinux@vger.kernel.org>; Fri, 19 May 2023 05:41:13 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id 3f1490d57ef6-ba82956d3e0so1224003276.0
+        for <selinux@vger.kernel.org>; Fri, 19 May 2023 05:41:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1684497239; x=1687089239;
-        h=to:subject:message-id:date:from:references:in-reply-to:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=YJNTYHB1yZmgnFkp+xXn9XSLABSa1kCZVD8URvEiNZE=;
-        b=DwfHUALYc14mtlp5cQqlsIxQ+FMYlvMEi2Fo7wIwDswbB/vaEgxHej2APK4c3eve9L
-         ggweuWQ7h3U0Ki6VTIvDdkgoYU0hGM/HnbAmTR0chjfe8lSxr1SS6c6YPLjg5WDxexmE
-         OyP85ma0raJ5isRqIU5CAITZb25hvug4sSwSrsKgrkc1RenAxcgRjwIfcsdIrlWYJLu6
-         FiZ3TiIo3+vskNENPVNMkQCWn2iYnsTaxDpzys1ATs8TfJXhDqK/89D143ZnXic50NId
-         QKUkKm7Kqu+1mDhln6dQbQpcC6Ve1JiP3i16CnAQO5AQZGgRrybv4u57xfGD/ZR0p3Rj
-         b/VA==
+        d=gmail.com; s=20221208; t=1684500070; x=1687092070;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WIDs2kxktlKTTEJ6a5vNk/gXg/KBrPoTQlY4dW6WTl0=;
+        b=Jw8lAJUzGcfyT+jYkxO128qDKJWoxuLDi90YrrOvomWzY4N7es2yt8p24aGDhs+TJf
+         ZJ2zCJWYaKxnQ4TwnKx7IOkjNivCHKw9oo10+AsC/qetU08eK+qtWnADAp95HCCHMepr
+         iRBaSrynywwa8NjJKVJhOWMmIoCmScp9H0ud+vfQ55db9+RY1YF/K24+qzNfFQDGhCH6
+         pXDZe/tsiYCnRcmZYnC86sPVZgoYyl6iJZk3Kn/7ng9v0CpBnnNBJsnSYcUvRWIgcOxO
+         65sKr+3U2qoH9ajRcUH7RQU1Enz1xoHLRe37pawRfE1kvzzpcRU6X4l08evK58R1/y5q
+         Nnuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684497239; x=1687089239;
-        h=to:subject:message-id:date:from:references:in-reply-to:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YJNTYHB1yZmgnFkp+xXn9XSLABSa1kCZVD8URvEiNZE=;
-        b=O3zK+TkKJLM2jDmr44Jz4w58mO7cnvbengjvGRWykxNv3Fi7zoN+4iwn2QBR9KPF6R
-         TWSsSSuZyqEJtfGjyJY19x2yp7/pKf/XWZiqd9pz8qmO/SMuWuhDgOahBrEJ9UTCZF7w
-         kwNOk1Ek76Di3inXeATo/tM5On9aa9YT1gQMMe3ahVibGlUS7y5QXg1pw7/v6121TwwU
-         LgLAPXGVeqpwj8QD4lHBXOfuKYJgk8BBQp7ljcM0LQw5EShIaoSZQU44PZNwuOtH6XXd
-         E+xvFC7pcZjfcINLOic1r0KmgILhXnndtI7Sxd9U9yS1gJhtDd5CUcgsJZpuxJKzFGEv
-         sjiQ==
-X-Gm-Message-State: AC+VfDz85JggC8V12E+ZtKdecUUHyg7U8DP0oF/sEfpgi8CPp4uw2W4t
-        O4Im8O6VDvSNBi9OCAwsmfVWM20nnp8VdMxskXg=
-X-Google-Smtp-Source: ACHHUZ7xuAnuC9/R/hauRxZe3pEn/eWjqAP6FIzpmUXZ+CSXBW5wV1Z+8vaU9cODy+Fo6AqH0Xx3p4inNRbJQcdRhto=
-X-Received: by 2002:a17:903:1206:b0:1ab:74c:bdf2 with SMTP id
- l6-20020a170903120600b001ab074cbdf2mr2877368plh.28.1684497238360; Fri, 19 May
- 2023 04:53:58 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1684500070; x=1687092070;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WIDs2kxktlKTTEJ6a5vNk/gXg/KBrPoTQlY4dW6WTl0=;
+        b=Mavd2ct3h7l8m1lFeL9AnEwJrQkjR+kZKMnQXQsBL5YCPCpOeEDcu9JYz+tSXH3V7d
+         kYMouekux42uf88ySEFf7CXNRc/mVGBp5K5sFZkgzHQU82CO4j/8/X7eNmrOGnZOk5gl
+         SSf26jRkB99E5liHhNQ3bERwaJ4TA53AqQZlgmg8bVthKlbvhAIt2RlmR05Swk3oOOqg
+         9Jfa7g2cZndv7G5D9NnfiuLFoBZ5Ck32Ke9L1Ux8NJ+nDK9MSznaZG3GScLbTQnp2EF8
+         WgD9nbJDbN1d3rNSUa2qrg/qrtkvT1GkzUQR3iD/52oosZYYhQJNBECMab9pCVzs/0X2
+         s9jA==
+X-Gm-Message-State: AC+VfDyW+Iw36Djpfsr+SzhxdpoxN522JJpWqxYlGhsOMZTU7iNUMEOR
+        lcSQLD1upcKth6LAt1RKAEpyCvmPBDdGJlpzSw==
+X-Google-Smtp-Source: ACHHUZ5r3f+HQPQfnXeAh3Df7l8HpOkyN+VwnLKGjMFdULypgS/8YPCme9J1xZgVhQD11+90MYEGMFmx/e8hC5Cl5g8=
+X-Received: by 2002:a81:52cd:0:b0:55d:626e:3dcf with SMTP id
+ g196-20020a8152cd000000b0055d626e3dcfmr1537557ywb.12.1684500069755; Fri, 19
+ May 2023 05:41:09 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:6d1c:b0:4b5:a864:58da with HTTP; Fri, 19 May 2023
- 04:53:57 -0700 (PDT)
-Reply-To: royalmaylux1@gmx.com
-In-Reply-To: <CAAsVTHorJvYWoGHsg2_VTAvt6ZpKO9kscCaNo0dRVvPX_YoVuw@mail.gmail.com>
-References: <CAAsVTHqdUjMV_dQD270TaAmCNQ09g9T2XFGbM9-e6ManaXbsRQ@mail.gmail.com>
- <CAAsVTHrGsxA+j4WirKjigbS=boD8bDW_26t92Nc02nhZqb4Gxw@mail.gmail.com>
- <CAAsVTHrLrH0prao8=kMqiwx1WFrRSd2b8xZw6Fi__k40Y1MOnQ@mail.gmail.com>
- <CAAsVTHrN15gSZPM3Aw=XU-su8AgKTiikQ-NprN5VDGaaQ2mfOQ@mail.gmail.com>
- <CAAsVTHpfRRGJ=nP5wWDr=G_JH61PP8B9wLB4DNU=x76Osuazqw@mail.gmail.com>
- <CAAsVTHrf+GWUhU7yVy0d8hEOiKg-7FqUzxwXoa9HqHicYvD54w@mail.gmail.com>
- <CAAsVTHo3Sz-P30HROJD29NT9wFFDCa+-QAeUTVO_iyS-UVhfNQ@mail.gmail.com>
- <CAAsVTHqdKSbV9yRG0nvVUeX7KA8hdLhF-EUW33kZy-y4mOB7PA@mail.gmail.com>
- <CAAsVTHoOS3ta3t53hCqFmkf=uEU263MXJis9vcqChbhVCW87=Q@mail.gmail.com>
- <CAAsVTHoNhVNx5fm3gCLL2y+14gO5nyzGYdCUTgaCsRFUrtu9bw@mail.gmail.com>
- <CAAsVTHoqmhwez_z=tLQarxJnSEfHV8jWtPR4JbERgJKU0K8mBw@mail.gmail.com>
- <CAAsVTHp8eF=CBNTMP8PdTQmKUiF0ippF0VvCe_LRC7MYcbo1+g@mail.gmail.com>
- <CAAsVTHpSBcCoSmCos40V2e8ssBp24GtrvJ_A-d_WNbd-8j8wnA@mail.gmail.com>
- <CAAsVTHppV+V0S0FvQO-42=SEWn1M3UoghXqVb7HZLBr5==zQyg@mail.gmail.com>
- <CAAsVTHqE6i0v14Vw7ev36adRR+Yprk8pxtmsZhre7DF-Osn-Pg@mail.gmail.com>
- <CAAsVTHpTVcHUjMVJDzWQ9zFRuNnb-_2f6YsF9z1eqj_i4RLUZA@mail.gmail.com>
- <CAAsVTHp6SmL49o3BqRHk=GHNMhwCHu3w5D=N+grTZe1UZSOmTA@mail.gmail.com>
- <CAAsVTHpzZ1gn+pQvBXzGB+i+Wxatz+_KwxMve47TwJOjhFNLyQ@mail.gmail.com>
- <CAAsVTHrPCWJBeyLOCGyTpmFL3Jq5h_dUnroCBq7Dq9NL0dLsYQ@mail.gmail.com>
- <CAAsVTHo0Y==_w7AcFNoCj0oBGN4af=Vb2Lf4_f60O6LXtifM8A@mail.gmail.com>
- <CAAsVTHoTSdmzfvkb0WyN6oGRHfubH60Fs5-9gE7St91_NVrs6g@mail.gmail.com>
- <CAAsVTHrn-nUP3PUb1h_247Ok638jUopTfO9N9HzVsEF2h7kH8g@mail.gmail.com>
- <CAAsVTHo8NBfj6mN4z5vtU3vP+6v2YWHiGQZ0KgmB854g=8pRPA@mail.gmail.com>
- <CAAsVTHrafOjSH0Tdk6FdK=7JS1SNKzTGdxmx0W5BRoErGh+A+g@mail.gmail.com>
- <CAAsVTHpThhrC73m93tTkxjn2+SVazN1ko7OQFz=xf0zNTkHHOw@mail.gmail.com> <CAAsVTHorJvYWoGHsg2_VTAvt6ZpKO9kscCaNo0dRVvPX_YoVuw@mail.gmail.com>
-From:   Royal Maylux <royalmaylux1@gmail.com>
-Date:   Fri, 19 May 2023 13:53:57 +0200
-Message-ID: <CAAsVTHo9ZMG0eeA4sEw-M--qQUjtuuDp38QY77SfqMfxay2esQ@mail.gmail.com>
-Subject: Do you receive the email
+Received: by 2002:a05:7010:8418:b0:357:f46f:ec7c with HTTP; Fri, 19 May 2023
+ 05:41:09 -0700 (PDT)
+Reply-To: ninacoulibaly03@hotmail.com
+From:   nina coulibaly <ninacoulibaly.info2020@gmail.com>
+Date:   Fri, 19 May 2023 05:41:09 -0700
+Message-ID: <CAC4KtETb-3GMkVeLZwswY4uvz0Hv5VJP0D-Ogkc69nyJ-eNG3g@mail.gmail.com>
+Subject: from nina coulibaly
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
@@ -93,4 +66,13 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Do you receive the email I sent you  few days ago, I'm waiting for your reply?
+Dear ,
+
+I am interested to invest with you in your country with total trust
+and i hope you will give me total support, sincerity and commitment.
+Please get back to me as soon as possible so that i can give you my
+proposed details of funding and others.
+
+Best Regards.
+
+Mrs. Nina Coulibaly

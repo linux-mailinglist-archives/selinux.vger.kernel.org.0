@@ -2,50 +2,49 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7942C70F4E4
-	for <lists+selinux@lfdr.de>; Wed, 24 May 2023 13:16:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD5BE70F4E6
+	for <lists+selinux@lfdr.de>; Wed, 24 May 2023 13:16:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229482AbjEXLQm (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 24 May 2023 07:16:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44008 "EHLO
+        id S229457AbjEXLQs (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 24 May 2023 07:16:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjEXLQl (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 24 May 2023 07:16:41 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043B783
-        for <selinux@vger.kernel.org>; Wed, 24 May 2023 04:15:57 -0700 (PDT)
+        with ESMTP id S229723AbjEXLQo (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 24 May 2023 07:16:44 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E94F8C5
+        for <selinux@vger.kernel.org>; Wed, 24 May 2023 04:15:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1684926957;
+        s=mimecast20190719; t=1684926954;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
+         to:to:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=XZK6BHP4xVwIIppXQ4xd3VFSKwCeAUV1MBdw0ankKOk=;
-        b=eWbWUoJ6Pf+uT5IluIay4irjUTYTrfTLcdJlDZn0pcsWj7/xl6PJ755lcJS3JbGeUHLgrR
-        QYRLY472U31c/RFEYscw39P/lhuMvNbceNKo4eEuudnd1fBVSnKmy0XEChNP1BH2py0eYj
-        bwfxABAvrftBpSZXCUDrjnUr5aof1eY=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=scr5o3e2Q+QzVUd7TiFOcq1Kf7ELGeWL22rpBIIy9VA=;
+        b=h9wSkpuhbMo1biGfBwyj6ylY/UnMqqsiw6IOhjdmQ0DNi4tpg3rTze+ayNqbu3KCX8vG6u
+        vzTyO9P/yOaFT+E2sz5OgL7Fnva0FeHmEW+/1bg1AdsZng9VUW542CTtBmW7dTvZqls7LM
+        1YJi42mt+IKpnON8qK5Jfm/yQh8Hw2E=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-590-DAO_8M4TP12_FDot7zqIJQ-1; Wed, 24 May 2023 07:15:51 -0400
-X-MC-Unique: DAO_8M4TP12_FDot7zqIJQ-1
+ us-mta-101-KwPqNytiM62YIXFwbMkC7A-1; Wed, 24 May 2023 07:15:53 -0400
+X-MC-Unique: KwPqNytiM62YIXFwbMkC7A-1
 Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 494B43802135
-        for <selinux@vger.kernel.org>; Wed, 24 May 2023 11:15:50 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id B3813101A53B
+        for <selinux@vger.kernel.org>; Wed, 24 May 2023 11:15:52 +0000 (UTC)
 Received: from fedora.. (unknown [10.43.12.115])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E86CB400F17
-        for <selinux@vger.kernel.org>; Wed, 24 May 2023 11:15:49 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5E128492B00
+        for <selinux@vger.kernel.org>; Wed, 24 May 2023 11:15:52 +0000 (UTC)
 From:   Vit Mojzis <vmojzis@redhat.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 3/5] sandbox: Add examples to man pages
-Date:   Wed, 24 May 2023 13:15:33 +0200
-Message-Id: <20230524111535.1743163-3-vmojzis@redhat.com>
+Subject: [PATCH 4/5] checkpolicy: Add examples to man pages
+Date:   Wed, 24 May 2023 13:15:34 +0200
+Message-Id: <20230524111535.1743163-4-vmojzis@redhat.com>
 In-Reply-To: <20230524111535.1743163-1-vmojzis@redhat.com>
 References: <20230524111535.1743163-1-vmojzis@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -58,125 +57,44 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-While at it, remove trailing whitespaces.
-
 Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
 ---
- sandbox/sandbox.8   | 28 ++++++++++++++++++----------
- sandbox/seunshare.8 | 21 ++++++++++++++-------
- 2 files changed, 32 insertions(+), 17 deletions(-)
+ checkpolicy/checkpolicy.8 | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/sandbox/sandbox.8 b/sandbox/sandbox.8
-index 1ee0ecea..095b9e27 100644
---- a/sandbox/sandbox.8
-+++ b/sandbox/sandbox.8
-@@ -11,12 +11,12 @@ sandbox \- Run cmd under an SELinux sandbox
- .br
- .SH DESCRIPTION
+diff --git a/checkpolicy/checkpolicy.8 b/checkpolicy/checkpolicy.8
+index 2984c238..aefa148c 100644
+--- a/checkpolicy/checkpolicy.8
++++ b/checkpolicy/checkpolicy.8
+@@ -12,8 +12,8 @@ command.
  .PP
--Run the 
--.I cmd 
-+Run the
-+.I cmd
- application within a tightly confined SELinux domain.  The default sandbox domain only allows applications the ability to read and write stdin, stdout and any other file descriptors handed to it. It is not allowed to open any other files.  The \-M option will mount an alternate homedir and tmpdir to be used by the sandbox.
- 
--If you have the 
--.I policycoreutils-sandbox 
-+If you have the
-+.I policycoreutils-sandbox
- package installed, you can use the \-X option and the \-M option.
- .B sandbox \-X
- allows you to run X applications within a sandbox.  These applications will start up their own X Server and create a temporary home directory and /tmp.  The default SELinux policy does not allow any capabilities or network access.  It also prevents all access to the users other processes and files.  Files specified on the command that are in the home directory or /tmp will be copied into the sandbox directories.
-@@ -78,27 +78,35 @@ Run a full desktop session, Requires level, and home and tmpdir.
- Specifies the windowsize when creating an X based Sandbox. The default windowsize is 1000x700.
- .TP
- \fB\-W\fR \fB\-\-windowmanager\fR
--Select alternative window manager to run within 
-+Select alternative window manager to run within
- .B sandbox \-X.
- Default to /usr/bin/openbox.
- .TP
--\fB\-X\fR 
-+\fB\-X\fR
- Create an X based Sandbox for gui apps, temporary files for
- $HOME and /tmp, secondary Xserver, defaults to sandbox_x_t
- .TP
- \fB\-d\fR \fB\-\-dpi\fR
- Set the DPI value for the sandbox X Server. Defaults to the current X Sever DPI.
- .TP
--\fB\-C\fR \fB\-\-capabilities\fR Use capabilities within the
--sandbox. By default applications executed within the sandbox will not
--be allowed to use capabilities (setuid apps), with the \-C flag, you
--can use programs requiring capabilities.
-+\fB\-C\fR \fB\-\-capabilities\fR
-+Use capabilities within the sandbox. By default applications executed within the sandbox will not be allowed to use capabilities (setuid apps), with the \-C flag, you can use programs requiring capabilities.
- .PP
- .SH "SEE ALSO"
- .TP
- runcon(1), seunshare(8), selinux(8)
- .PP
+ .B checkpolicy
+ is a program that checks and compiles a SELinux security policy configuration
+-into a binary representation that can be loaded into the kernel.  If no 
+-input file name is specified,
++into a binary representation that can be loaded into the kernel.
++If no input file name is specified,
+ .B checkpolicy
+ will attempt to read from policy.conf or policy, depending on whether the \-b
+ flag is specified.
+@@ -64,6 +64,17 @@ Show version information.
+ .B \-h,\-\-help
+ Show usage information.
  
 +.SH EXAMPLE
 +.nf
-+Run a graphical application inside the sandbox
-+# sandbox -X evince
-+Run a graphical application that requires the use of network
-+# sandbox ‑X ‑t sandbox_web_t firefox
-+Preserve data from one session to the next
-+# mkdir -p ~/sandbox/home ~/sandbox/tmp
-+# sandbox -H ~/sandbox/home -T ~/sandbox/tmp -X libreoffice --writer
-+
- .SH AUTHOR
- This manual page was written by
- .I Dan Walsh <dwalsh@redhat.com>
-diff --git a/sandbox/seunshare.8 b/sandbox/seunshare.8
-index 09cf7fea..5339a3b1 100644
---- a/sandbox/seunshare.8
-+++ b/sandbox/seunshare.8
-@@ -9,29 +9,36 @@ seunshare \- Run cmd with alternate homedir, tmpdir and/or SELinux context
- .PP
- Run the
- .I executable
--within the specified context, using the alternate home directory and /tmp directory.  The seunshare command unshares from the default namespace, then mounts the specified homedir and tmpdir over the default homedir and /tmp. Finally it tells the kernel to execute the application under the specified SELinux context.
-+within the specified context, using custom home directory and /tmp directory. The seunshare command unshares from the default namespace, then mounts the specified homedir and tmpdir over the default homedir and /tmp. Finally it tells the kernel to execute the application under the specified SELinux context.
- 
- .TP
- \fB\-h homedir\fR
--Alternate homedir to be used by the application.  Homedir must be owned by the user.
-+Alternate homedir to be used by the application. Homedir must be owned by the user
- .TP
- \fB\-t\ tmpdir
--Use alternate temporary directory to mount on /tmp.  tmpdir must be owned by the user.
-+Use alternate temporary directory to mount on /tmp. tmpdir must be owned by the user
- .TP
- \fB\-r\ runuserdir
--Use alternate temporary directory to mount on XDG_RUNTIME_DIR (/run/user/$UID). runuserdir must be owned by the user.
-+Use alternate temporary directory to mount on XDG_RUNTIME_DIR (/run/user/$UID). runuserdir must be owned by the user
- .TP
- \fB\-C --capabilities\fR
--Allow apps executed within the namespace to use capabilities.  Default is no capabilities.
-+Allow apps executed within the namespace to use capabilities. Default is no capabilities
- .TP
- \fB\-k --kill\fR
--Kill all processes with matching MCS level.
-+Kill all processes with matching MCS level
- .TP
- \fB\-Z\ context
--Use alternate SELinux context while running the executable.
-+Use alternate SELinux context while running the executable
- .TP
- \fB\-v\fR
- Verbose output
-+
-+.SH EXAMPLE
-+.nf
-+Run bash with temporary /home and /tmp directory
-+# USERHOMEDIR=`mktemp -d /tmp/home.XXXXXX`; USERTEMPDIR=`mktemp -d /tmp/temp.XXXXXX`
-+# seunshare -v -h ${USERHOMEDIR} -t ${USERTEMPDIR} -- /bin/bash
++Generate policy.conf based on the system policy
++# checkpolicy -b -M -F /etc/selinux/targeted/policy/policy.* -o policy.conf
++Recompile system policy so that unknown permissions are denied (uses policy.conf from ^^).
++Note that binary policy extension represents its version, which is subject to change
++# checkpolicy -M -U deny -o /etc/selinux/targeted/policy/policy.33 policy.conf
++# load_policy
++Generate CIL representation of current system policy
++# checkpolicy -b -M -C /etc/selinux/targeted/policy/policy.* -o policy.out
 +
  .SH "SEE ALSO"
- .TP
- runcon(1), sandbox(8), selinux(8)
+ SELinux Reference Policy documentation at https://github.com/SELinuxProject/refpolicy/wiki
+ 
 -- 
 2.40.0
 

@@ -2,54 +2,69 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB311718567
-	for <lists+selinux@lfdr.de>; Wed, 31 May 2023 16:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4931371866A
+	for <lists+selinux@lfdr.de>; Wed, 31 May 2023 17:32:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232329AbjEaO5q (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 31 May 2023 10:57:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58806 "EHLO
+        id S230470AbjEaPca (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 31 May 2023 11:32:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232918AbjEaO5p (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 31 May 2023 10:57:45 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF074123
-        for <selinux@vger.kernel.org>; Wed, 31 May 2023 07:56:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1685545017;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=iUmJD5uwlK73inggAZNbeHWrVeBtFs/iD7UwUUQnuB0=;
-        b=LihN9dt9Rz8Yf1DiMHSB5+pqdo/AbrddOLj8xFjeSdul2kRcOCcJ9E/wY3M7s9WG8cY1Oo
-        0zL/rRk32j5mW7gyaUD3/nCB/RtHoMH8E3b8mu9DT0k+Seo7sLt+Qa2b6YK84UyNq5QWie
-        rvOdMi851DbQROHKaWEKwGp0nmf3DxM=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-650-4QJAKRq9MRi0mRodb8_OJQ-1; Wed, 31 May 2023 10:56:56 -0400
-X-MC-Unique: 4QJAKRq9MRi0mRodb8_OJQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2F7D18032F5
-        for <selinux@vger.kernel.org>; Wed, 31 May 2023 14:56:56 +0000 (UTC)
-Received: from localhost (unknown [10.45.226.160])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E3F82202696C;
-        Wed, 31 May 2023 14:56:55 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
-To:     Vit Mojzis <vmojzis@redhat.com>, selinux@vger.kernel.org
-Subject: Re: [PATCH 5/5] libselinux: Add examples to man pages
-In-Reply-To: <20230524111535.1743163-5-vmojzis@redhat.com>
-References: <20230524111535.1743163-1-vmojzis@redhat.com>
- <20230524111535.1743163-5-vmojzis@redhat.com>
-Date:   Wed, 31 May 2023 16:56:54 +0200
-Message-ID: <87ttvsk0qx.fsf@redhat.com>
+        with ESMTP id S234430AbjEaPc3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 31 May 2023 11:32:29 -0400
+X-Greylist: delayed 612 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 May 2023 08:32:28 PDT
+Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [IPv6:2001:1600:4:17::8faa])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47AAD107;
+        Wed, 31 May 2023 08:32:28 -0700 (PDT)
+Received: from smtp-2-0000.mail.infomaniak.ch (unknown [10.5.36.107])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4QWY0Q2wK1zMqBkH;
+        Wed, 31 May 2023 17:22:14 +0200 (CEST)
+Received: from unknown by smtp-2-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4QWY0G4Z6QzMqFfF;
+        Wed, 31 May 2023 17:22:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+        s=20191114; t=1685546534;
+        bh=8echtExvY903wL+VZOZ6yhBJAcvuAYpaWxyyr0rVy8w=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=UCoFqVu9Y/RRO0Tl+8GYdhg+QL2jsnrLmJVc95PGsjviUz1MFlPNr9Ls9etbgky2f
+         +NJTVdzCzpayOxC7AXXulIEL5iaLoblXaS+YwfxQZuO5HILy95zRI7Soj1IzfZ1+CL
+         pp3TTVVWN5YMTh+pZ03O1kvnD/qtJwnRtDiHcV8s=
+Message-ID: <4b3fff12-f696-3d02-5873-645fef2117e1@digikod.net>
+Date:   Wed, 31 May 2023 17:22:05 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+User-Agent: 
+Subject: Re: [PATCH -next 0/2] lsm: Change inode_setattr() to take struct
+Content-Language: en-US
+To:     Christoph Hellwig <hch@lst.de>,
+        Christian Brauner <brauner@kernel.org>
+Cc:     Xiu Jianfeng <xiujianfeng@huawei.com>, gregkh@linuxfoundation.org,
+        rafael@kernel.org, viro@zeniv.linux.org.uk, dhowells@redhat.com,
+        code@tyhicks.com, hirofumi@mail.parknet.co.jp,
+        linkinjeon@kernel.org, sfrench@samba.org, senozhatsky@chromium.org,
+        tom@talpey.com, chuck.lever@oracle.com, jlayton@kernel.org,
+        miklos@szeredi.hu, paul@paul-moore.com, jmorris@namei.org,
+        serge@hallyn.com, stephen.smalley.work@gmail.com,
+        eparis@parisplace.org, casey@schaufler-ca.com, dchinner@redhat.com,
+        john.johansen@canonical.com, mcgrof@kernel.org,
+        mortonm@chromium.org, fred@cloudflare.com, mpe@ellerman.id.au,
+        nathanl@linux.ibm.com, gnoack3000@gmail.com,
+        roberto.sassu@huawei.com, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-cachefs@redhat.com,
+        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        wangweiyang2@huawei.com
+References: <20230505081200.254449-1-xiujianfeng@huawei.com>
+ <20230515-nutzen-umgekehrt-eee629a0101e@brauner>
+ <75b4746d-d41e-7c9f-4bb0-42a46bda7f17@digikod.net>
+ <20230530-mietfrei-zynisch-8b63a8566f66@brauner>
+ <20230530142826.GA9376@lst.de>
+From:   =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>
+In-Reply-To: <20230530142826.GA9376@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Infomaniak-Routing: alpha
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,120 +72,44 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Vit Mojzis <vmojzis@redhat.com> writes:
 
-> Also fix some typos and remove trailing whitespaces.
->
-> Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
->
+On 30/05/2023 16:28, Christoph Hellwig wrote:
+> On Tue, May 30, 2023 at 03:58:35PM +0200, Christian Brauner wrote:
+>> The main concern which was expressed on other patchsets before is that
+>> modifying inode operations to take struct path is not the way to go.
+>> Passing struct path into individual filesystems is a clear layering
+>> violation for most inode operations, sometimes downright not feasible,
+>> and in general exposing struct vfsmount to filesystems is a hard no. At
+>> least as far as I'm concerned.
+> 
+> Agreed.  Passing struct path into random places is not how the VFS works.
 
-Acked-by: Petr Lautrbach <lautrbach@redhat.com>
+I understand, it makes sense for the FS layer to not get access to 
+things not required. IIUC, the main issue is the layering, with LSM 
+calls being sometime at the last layer.
 
-> ---
->  libselinux/man/man8/getsebool.8    | 18 +++++++++++-------
->  libselinux/man/man8/matchpathcon.8 | 19 +++++++++++++------
->  2 files changed, 24 insertions(+), 13 deletions(-)
->
-> diff --git a/libselinux/man/man8/getsebool.8 b/libselinux/man/man8/getsebool.8
-> index d70bf1e4..9e36f04f 100644
-> --- a/libselinux/man/man8/getsebool.8
-> +++ b/libselinux/man/man8/getsebool.8
-> @@ -1,6 +1,6 @@
->  .TH "getsebool" "8" "11 Aug 2004" "dwalsh@redhat.com" "SELinux Command Line documentation"
->  .SH "NAME"
-> -getsebool \- get SELinux boolean value(s) 
-> +getsebool \- get SELinux boolean value(s)
->  .
->  .SH "SYNOPSIS"
->  .B getsebool
-> @@ -8,17 +8,16 @@ getsebool \- get SELinux boolean value(s)
->  .RI [ boolean ]
->  .
->  .SH "DESCRIPTION"
-> -.B getsebool 
-> -reports where a particular SELinux boolean or
-> -all SELinux booleans are on or off
-> -In certain situations a boolean can be in one state with a pending 
-> -change to the other state.  getsebool will report this as a pending change.
-> +.B getsebool
-> +reports whether a particular SELinux boolean, or all SELinux booleans, are on or off.
-> +In certain situations a boolean can be in one state with a pending
-> +change to the other state. getsebool will report this as a pending change.
->  The pending value indicates
->  the value that will be applied upon the next boolean commit.
->  
->  The setting of boolean values occurs in two stages; first the pending
->  value is changed, then the booleans are committed, causing their
-> -active values to become their pending values.  This allows a group of
-> +active values to become their pending values. This allows a group of
->  booleans to be changed in a single transaction, by setting all of
->  their pending values as desired and then committing once.
->  .
-> @@ -27,6 +26,11 @@ their pending values as desired and then committing once.
->  .B \-a
->  Show all SELinux booleans.
->  .
-> +.SH EXAMPLE
-> +.nf
-> +Show current state of httpd_can_connect_ftp
-> +# getsebool httpd_can_connect_ftp
-> +.
->  .SH AUTHOR
->  This manual page was written by Dan Walsh <dwalsh@redhat.com>.
->  The program was written by Tresys Technology.
-> diff --git a/libselinux/man/man8/matchpathcon.8 b/libselinux/man/man8/matchpathcon.8
-> index 50c0d392..6d848f43 100644
-> --- a/libselinux/man/man8/matchpathcon.8
-> +++ b/libselinux/man/man8/matchpathcon.8
-> @@ -25,8 +25,8 @@ queries the system policy and outputs the default security context associated wi
->  Identical paths can have different security contexts, depending on the file
->  type (regular file, directory, link file, char file ...).
->  
-> -.B matchpathcon 
-> -will also take the file type into consideration in determining the default security context if the file exists.  If the file does not exist, no file type matching will occur.
-> +.B matchpathcon
-> +will also take the file type into consideration in determining the default security context if the file exists. If the file does not exist, no file type matching will occur.
->  .
->  .SH OPTIONS
->  .TP
-> @@ -34,19 +34,19 @@ will also take the file type into consideration in determining the default secur
->  Force file type for the lookup.
->  Valid types are
->  .BR file ", " dir ", "pipe ", " chr_file ", " blk_file ", "
-> -.BR lnk_file ", " sock_file .
-> +.BR lnk_file ", " sock_file
->  .TP
->  .B \-n
-> -Do not display path.
-> +Do not display path
->  .TP
->  .B \-N
-> -Do not use translations.
-> +Do not use translations
->  .TP
->  .BI \-f " file_context_file"
->  Use alternate file_context file
->  .TP
->  .BI \-p " prefix"
-> -Use prefix to speed translations
-> +Use prefix to speed up translations
->  .TP
->  .BI \-P " policy_root_path"
->  Use alternate policy root path
-> @@ -54,6 +54,13 @@ Use alternate policy root path
->  .B \-V
->  Verify file context on disk matches defaults
->  .
-> +.SH EXAMPLE
-> +.nf
-> +Show the default label of sock_file cups.sock
-> +# matchpathcon -m sock_file /var/run/cups/cups.sock
-> +Verify that /var/www/html directory is labeled correctly (the content of the folder is not checked)
-> +# matchpathcon -V /var/www/html
-> +.
->  .SH AUTHOR
->  This manual page was written by Dan Walsh <dwalsh@redhat.com>.
->  .
-> -- 
-> 2.40.0
 
+> 
+>> So the best way to achieve the landlock goal might be to add new hooks
+> 
+> What is "the landlock goal", and why does it matter?
+
+Landlock's goal is to enable (unprivileged) users to set their own 
+access rights for their (ephemeral) processes (on top of the existing 
+access-controls of course) i.e., to sandbox applications. Landlock rules 
+are defined by users, and then according to the FS topology they see. 
+This means that Landlock relies on inodes and mount points to define and 
+enforce a policy.
+
+
+> 
+>> or not. And we keep adding new LSMs without deprecating older ones (A
+>> problem we also face in the fs layer.) and then they sit around but
+>> still need to be taken into account when doing changes.
+> 
+> Yes, I'm really worried about th amount of LSMs we have, and the weird
+> things they do.
+
+About Landlock, it's a new LSM that fit an actual need. I'd be glad to 
+hear about not recommended things and how to improve the situation. I 
+don't know all the history between VFS and LSM.

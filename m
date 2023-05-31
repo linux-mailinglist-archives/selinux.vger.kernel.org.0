@@ -2,227 +2,189 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF0B2718971
-	for <lists+selinux@lfdr.de>; Wed, 31 May 2023 20:34:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36894718A2F
+	for <lists+selinux@lfdr.de>; Wed, 31 May 2023 21:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229643AbjEaSe1 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 31 May 2023 14:34:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34456 "EHLO
+        id S229996AbjEaTbi (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 31 May 2023 15:31:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229553AbjEaSe0 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 31 May 2023 14:34:26 -0400
-Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDB7710F;
-        Wed, 31 May 2023 11:34:23 -0700 (PDT)
-Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-439554d9a69so42338137.1;
-        Wed, 31 May 2023 11:34:23 -0700 (PDT)
+        with ESMTP id S229588AbjEaTbg (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 31 May 2023 15:31:36 -0400
+Received: from mail-pj1-x102d.google.com (mail-pj1-x102d.google.com [IPv6:2607:f8b0:4864:20::102d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44A2129;
+        Wed, 31 May 2023 12:31:35 -0700 (PDT)
+Received: by mail-pj1-x102d.google.com with SMTP id 98e67ed59e1d1-256531ad335so3994995a91.0;
+        Wed, 31 May 2023 12:31:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1685558063; x=1688150063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=33aBmP8iR+QR8+u9TV+rf6CnvGlRTn2mBObMMEn9tYI=;
-        b=LJV/baSrmGNc6tPk8ylKWCuIGECOqrJVAVpDb70Ahb/I/1D8qf9DOJx5k77MTQoFfa
-         p0hdUBhDBzbJBxcYuLo6cQm1LMrXF7Vo2SxMR5zTWN/Is8PE1ctmCI6pV2IhGQWnulM1
-         qkkehs/umBSgRNRuenpGCPFSSnqTh4mM0SIbamrJ5Tr9MBm2LhMfMcL/VgqQ83JEzS1V
-         xDFyFnGaN3e7afBSbvYJ5IlzbJn50hWvHYBylRWqvcdAF+Ezm0+QzhYqAYD5tVRVvJXs
-         fDbP8y7KTddD3vehSfc8T8j7EJTVogaPc79b+Gz2I+f4zxMfPaFVXpbrtUnW4a8Pft5h
-         8qug==
+        d=gmail.com; s=20221208; t=1685561495; x=1688153495;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hkxhWE5ln5W4Ru3EpAV1+CbYcZ+ng9C+mZBukdpBf70=;
+        b=DmH8jT8r2sbVdYY85iyMgz/6YVF4pjcmFqb1stRWVOdO3Ek+gFuBIiyf9jo4zjzoK8
+         fWWKprto7SvFrm0n0LcPWJimjog/ZE72XzBvwpk2ungUqFyobEapCbLE07AvWfPqbc3I
+         HHtq/tWX5cCM/P2VGqvyrc9jX7tVma6wHMxWGfndNO/aQhKS/LOWE03NEXLfSlLkdPKG
+         QNFq8ZyfS304JWoCOcrTMSPDSEZyzz1PMBIvaJBZrnqazG0QYdqmGATHxmf79T3WxAE6
+         vV6UnbncL962qEdb8R5XLVedFJtaGaiyjQ/LT3DAm9/S2HiX+8IaM4AbrVINatjqRnpY
+         nk7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685558063; x=1688150063;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=33aBmP8iR+QR8+u9TV+rf6CnvGlRTn2mBObMMEn9tYI=;
-        b=L0flot2YaF0ZoWtSxMbFgZLm7miQ+vQ3VsA9UjtyZu0KI9FBH0DjKU7Sp5NmLlmvlM
-         Vfchwl2DCcPXyn/xWfhpoBWXYeQydZsCWrMxdKtsD5vmBDPVt117lqRy+1bRCmgF6Xur
-         hfttdgJW/7s7RRNRAviGYcFoS2cuFnEPtfUxzQv5mbYyqcbT9uN/l0hl+eXJAbPQRAF5
-         lA3QluGmxRU/jX3NvOInVDS1vp19lqIR4wnZtfUY9txMdhokLKlg9giUc8JThedvQ6xO
-         DEWUSGpqK6j2UeGmMN+XpggZqXUraWzBz6vi3I7tu6Poh+DrG6ATASXVUySqeTpTkLQV
-         LUNQ==
-X-Gm-Message-State: AC+VfDxrBga5u5TF4CA0+PXK1Y3SQsxACH8jYwhu0Kdpn79yd+UOifkV
-        U6HWll3n2se+aRJ6ezfBqFka4oK1ky1DiMTH5Ldhc108/S0aODsPtoQ=
-X-Google-Smtp-Source: ACHHUZ6x+ftYwcavcU6cEhCbwmLmHjhiqOMdfkvnF8KWuF3QQHKffvs9igoEYqyQoZ3HESUrPljfu9omFesj5xaVEh0=
-X-Received: by 2002:a05:6102:374:b0:439:4fb6:83fa with SMTP id
- f20-20020a056102037400b004394fb683famr5202635vsa.9.1685558062408; Wed, 31 May
- 2023 11:34:22 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685561495; x=1688153495;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hkxhWE5ln5W4Ru3EpAV1+CbYcZ+ng9C+mZBukdpBf70=;
+        b=dZWztesnBLbriTvo9E+HVbgJfwwyUV+1e2FbdzgeJEHvLjp/N+tpajTPzFFxVi8AA2
+         Mj2/13gm1cRHHmnY8GA4yr9BxewoBj9O0ekhL4lyoLOrgScB33FbHfSW79xGtNbjaHaI
+         s8eYbS+Xi7K+5xE7an+LpiRJs1Jp1ohWiuvAtUO1qlsQ9UsDGrcmNYZKV6jsu7ZQcY2Y
+         r2EYhoK0tS1WKTPYIVj+BI3aGzBaIi+yTnVi1eAjnUozNiZC4IDMtNKJgVsCKs+y4TWi
+         kxLIgP8ROJTM/k6uSHL1Qp0x7XZNikz9QQizFKsOOttjDtP87TPK3M09g8sqsUo5wraN
+         yskA==
+X-Gm-Message-State: AC+VfDxS22YZf4zy1RXGnFTpfr4l2loD8T213E87UwJOPamc0icTGOia
+        iAESegPFPMoYPGSjCu2peCk=
+X-Google-Smtp-Source: ACHHUZ6jVcItk0IyYkAw2stDb0JLeHq82CItdIVJ98e8SlK5bQfxCD/QIJhdJUNTzgVVF8W87q5ULg==
+X-Received: by 2002:a17:90a:2808:b0:252:dd86:9c46 with SMTP id e8-20020a17090a280800b00252dd869c46mr6470479pjd.31.1685561494987;
+        Wed, 31 May 2023 12:31:34 -0700 (PDT)
+Received: from [192.168.1.180] ([50.46.170.246])
+        by smtp.gmail.com with ESMTPSA id g8-20020a17090ace8800b0025686131b36sm1641165pju.11.2023.05.31.12.31.33
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 31 May 2023 12:31:34 -0700 (PDT)
+Message-ID: <97b35d43-337f-9cac-0a0b-86b216fce594@gmail.com>
+Date:   Wed, 31 May 2023 12:31:32 -0700
 MIME-Version: 1.0
-References: <20230511142535.732324-1-cgzones@googlemail.com>
- <20230531140734.GA515872@mail.hallyn.com> <20230531140847.GB515872@mail.hallyn.com>
-In-Reply-To: <20230531140847.GB515872@mail.hallyn.com>
-From:   =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date:   Wed, 31 May 2023 20:34:11 +0200
-Message-ID: <CAJ2a_DesiD+LU-aWOEWRkyc0rcmZ0Za5i6-rZX-kHP2GzQyuFg@mail.gmail.com>
-Subject: Re: [PATCH v4 1/9] capability: introduce new capable flag NODENYAUDIT
-To:     "Serge E. Hallyn" <serge@hallyn.com>
-Cc:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
-        John Johansen <john.johansen@canonical.com>,
-        James Morris <jmorris@namei.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Dave Chinner <dchinner@redhat.com>,
-        Nathan Lynch <nathanl@linux.ibm.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Micah Morton <mortonm@chromium.org>,
-        Frederick Lawler <fred@cloudflare.com>,
-        =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack3000@gmail.com>,
-        linux-kernel@vger.kernel.org, apparmor@lists.ubuntu.com,
-        linux-security-module@vger.kernel.org, bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.11.2
+Subject: Re: [PATCH -next 0/2] lsm: Change inode_setattr() to take struct
+To:     Christian Brauner <brauner@kernel.org>,
+        Casey Schaufler <casey@schaufler-ca.com>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        =?UTF-8?Q?Micka=c3=abl_Sala=c3=bcn?= <mic@digikod.net>,
+        Xiu Jianfeng <xiujianfeng@huawei.com>,
+        gregkh@linuxfoundation.org, rafael@kernel.org,
+        viro@zeniv.linux.org.uk, dhowells@redhat.com, code@tyhicks.com,
+        hirofumi@mail.parknet.co.jp, linkinjeon@kernel.org,
+        sfrench@samba.org, senozhatsky@chromium.org, tom@talpey.com,
+        chuck.lever@oracle.com, jlayton@kernel.org, miklos@szeredi.hu,
+        paul@paul-moore.com, jmorris@namei.org, serge@hallyn.com,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org,
+        dchinner@redhat.com, john.johansen@canonical.com,
+        mcgrof@kernel.org, mortonm@chromium.org, fred@cloudflare.com,
+        mpe@ellerman.id.au, nathanl@linux.ibm.com, gnoack3000@gmail.com,
+        roberto.sassu@huawei.com, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-cachefs@redhat.com,
+        ecryptfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-unionfs@vger.kernel.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        wangweiyang2@huawei.com
+References: <20230505081200.254449-1-xiujianfeng@huawei.com>
+ <20230515-nutzen-umgekehrt-eee629a0101e@brauner>
+ <75b4746d-d41e-7c9f-4bb0-42a46bda7f17@digikod.net>
+ <20230530-mietfrei-zynisch-8b63a8566f66@brauner>
+ <20230530142826.GA9376@lst.de>
+ <301a58de-e03f-02fd-57c5-1267876eb2df@schaufler-ca.com>
+ <20230530-tumult-adrenalin-8d48cb35d506@brauner>
+Content-Language: en-US
+From:   Jay Freyensee <why2jjj.linux@gmail.com>
+In-Reply-To: <20230530-tumult-adrenalin-8d48cb35d506@brauner>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, 31 May 2023 at 16:08, Serge E. Hallyn <serge@hallyn.com> wrote:
->
-> On Wed, May 31, 2023 at 09:07:34AM -0500, Serge E. Hallyn wrote:
-> > On Thu, May 11, 2023 at 04:25:24PM +0200, Christian G=C3=B6ttsche wrote=
-:
-> > > Introduce a new capable flag, CAP_OPT_NODENYAUDIT, to not generate
-> > > an audit event if the requested capability is not granted.  This will=
- be
-> > > used in a new capable_any() functionality to reduce the number of
-> > > necessary capable calls.
-> > >
-> > > Handle the flag accordingly in AppArmor and SELinux.
-> > >
-> > > Suggested-by: Paul Moore <paul@paul-moore.com>
-> > > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> >
-> > Reviewed-by: Serge Hallyn <serge@hallyn.com>
->
-> Sorry, obviously I should have removed this, until the comment below was
-> answered :)
->
-> > > ---
-> > >  include/linux/security.h       |  2 ++
-> > >  security/apparmor/capability.c |  8 +++++---
-> > >  security/selinux/hooks.c       | 14 ++++++++------
-> > >  3 files changed, 15 insertions(+), 9 deletions(-)
-> > >
-> > > diff --git a/include/linux/security.h b/include/linux/security.h
-> > > index e2734e9e44d5..629c775ec297 100644
-> > > --- a/include/linux/security.h
-> > > +++ b/include/linux/security.h
-> > > @@ -67,6 +67,8 @@ struct watch_notification;
-> > >  #define CAP_OPT_NOAUDIT BIT(1)
-> > >  /* If capable is being called by a setid function */
-> > >  #define CAP_OPT_INSETID BIT(2)
-> > > +/* If capable should audit the security request for authorized reque=
-sts only */
-> > > +#define CAP_OPT_NODENYAUDIT BIT(3)
-> > >
-> > >  /* LSM Agnostic defines for security_sb_set_mnt_opts() flags */
-> > >  #define SECURITY_LSM_NATIVE_LABELS 1
-> > > diff --git a/security/apparmor/capability.c b/security/apparmor/capab=
-ility.c
-> > > index 326a51838ef2..98120dd62ca7 100644
-> > > --- a/security/apparmor/capability.c
-> > > +++ b/security/apparmor/capability.c
-> > > @@ -108,7 +108,8 @@ static int audit_caps(struct common_audit_data *s=
-a, struct aa_profile *profile,
-> > >   * profile_capable - test if profile allows use of capability @cap
-> > >   * @profile: profile being enforced    (NOT NULL, NOT unconfined)
-> > >   * @cap: capability to test if allowed
-> > > - * @opts: CAP_OPT_NOAUDIT bit determines whether audit record is gen=
-erated
-> > > + * @opts: CAP_OPT_NOAUDIT/CAP_OPT_NODENYAUDIT bit determines whether=
- audit
-> > > + * record is generated
-> > >   * @sa: audit data (MAY BE NULL indicating no auditing)
-> > >   *
-> > >   * Returns: 0 if allowed else -EPERM
-> > > @@ -126,7 +127,7 @@ static int profile_capable(struct aa_profile *pro=
-file, int cap,
-> > >     else
-> > >             error =3D -EPERM;
-> > >
-> > > -   if (opts & CAP_OPT_NOAUDIT) {
-> > > +   if ((opts & CAP_OPT_NOAUDIT) || ((opts & CAP_OPT_NODENYAUDIT) && =
-error)) {
-> > >             if (!COMPLAIN_MODE(profile))
-> > >                     return error;
-> > >             /* audit the cap request in complain mode but note that i=
-t
-> > > @@ -142,7 +143,8 @@ static int profile_capable(struct aa_profile *pro=
-file, int cap,
-> > >   * aa_capable - test permission to use capability
-> > >   * @label: label being tested for capability (NOT NULL)
-> > >   * @cap: capability to be tested
-> > > - * @opts: CAP_OPT_NOAUDIT bit determines whether audit record is gen=
-erated
-> > > + * @opts: CAP_OPT_NOAUDIT/CAP_OPT_NODENYAUDIT bit determines whether=
- audit
-> > > + * record is generated
-> > >   *
-> > >   * Look up capability in profile capability set.
-> > >   *
-> > > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> > > index 79b4890e9936..0730edf2f5f1 100644
-> > > --- a/security/selinux/hooks.c
-> > > +++ b/security/selinux/hooks.c
-> > > @@ -1571,7 +1571,7 @@ static int cred_has_capability(const struct cre=
-d *cred,
-> > >     u16 sclass;
-> > >     u32 sid =3D cred_sid(cred);
-> > >     u32 av =3D CAP_TO_MASK(cap);
-> > > -   int rc;
-> > > +   int rc, rc2;
-> > >
-> > >     ad.type =3D LSM_AUDIT_DATA_CAP;
-> > >     ad.u.cap =3D cap;
-> > > @@ -1590,11 +1590,13 @@ static int cred_has_capability(const struct c=
-red *cred,
-> > >     }
-> > >
-> > >     rc =3D avc_has_perm_noaudit(sid, sid, sclass, av, 0, &avd);
-> > > -   if (!(opts & CAP_OPT_NOAUDIT)) {
-> > > -           int rc2 =3D avc_audit(sid, sid, sclass, av, &avd, rc, &ad=
-);
-> > > -           if (rc2)
-> > > -                   return rc2;
-> > > -   }
-> > > +   if ((opts & CAP_OPT_NOAUDIT) || ((opts & CAP_OPT_NODENYAUDIT) && =
-rc))
-> > > +           return rc;
-> >
-> > Hm, if the caller passes only CAP_OPT_NODENYAUDIT, and rc =3D=3D 0, the=
-n
-> > you will audit the allow.  Is that what you want, or did you want, or
-> > did you want CAP_OPT_NODENYAUDIT to imply CAP_OPT_NOAUDIT?
-> >
 
-The new option should cause to issue an audit event if (and only if)
-the requested capability is in effect for the current task. If the
-task does not have the capability no audit event should be issued.
+On 5/30/23 9:01 AM, Christian Brauner wrote:
+> On Tue, May 30, 2023 at 07:55:17AM -0700, Casey Schaufler wrote:
+>> On 5/30/2023 7:28 AM, Christoph Hellwig wrote:
+>>> On Tue, May 30, 2023 at 03:58:35PM +0200, Christian Brauner wrote:
+>>>> The main concern which was expressed on other patchsets before is that
+>>>> modifying inode operations to take struct path is not the way to go.
+>>>> Passing struct path into individual filesystems is a clear layering
+>>>> violation for most inode operations, sometimes downright not feasible,
+>>>> and in general exposing struct vfsmount to filesystems is a hard no. At
+>>>> least as far as I'm concerned.
+>>> Agreed.  Passing struct path into random places is not how the VFS works.
+>>>
+>>>> So the best way to achieve the landlock goal might be to add new hooks
+>>> What is "the landlock goal", and why does it matter?
+>>>
+>>>> or not. And we keep adding new LSMs without deprecating older ones (A
+>>>> problem we also face in the fs layer.) and then they sit around but
+>>>> still need to be taken into account when doing changes.
+>>> Yes, I'm really worried about th amount of LSMs we have, and the weird
+>>> things they do.
+>> Which LSM(s) do you think ought to be deprecated? I only see one that I
+> I don't have a good insight into what LSMs are actively used or are
+> effectively unused but I would be curious to hear what LSMs are
+> considered actively used/maintained from the LSM maintainer's
+> perspective.
 
-The new option should not imply CAP_OPT_NOAUDIT since we want an audit
-event in the case the capability is in effect.
+It's part of my job to look at functionality enabled by LSMs and how 
+they can be applied to product security features and products at the 
+distro level.
 
-I admit the naming is a bit confusing as CAP_OPT_NODENYAUDIT as well
-as the commit description contains a double negation (while the inline
-comment for the macro definition does not).
+First of all the flexibility of stacking LSM's has greatly helped enable 
+new and more features to be run at the same time on a Linux platform.
 
-Do you prefer naming the constant CAP_OPT_ALLOWAUDIT or CAP_OPT_AUDIT_ON_AL=
-LOW?
+So there are feature buzz words out there, the main ones I'm familiar 
+with,  like process control, anti-tampering/self-protect, quarantine, 
+process injection.  The LSM's I've tried to follow w/respect to these 
+features have included SELinux, AppArmor, yama, bpf/krsi, landlock, and 
+safesetid.
 
-> > > +
-> > > +   rc2 =3D avc_audit(sid, sid, sclass, av, &avd, rc, &ad);
-> > > +   if (rc2)
-> > > +           return rc2;
-> > > +
-> > >     return rc;
-> > >  }
-> > >
-> > > --
-> > > 2.40.1
+Usually for process control ppl are most interested in killing a process 
+quickly if its detected a threat.  In that end bpf/krsi LSM is a 
+wonderful LSM for this and puts Linux on par with Windows and macOS with 
+this feature (though the actual kill operation seems slower).
+
+anti-tampering/self-protect is a mechanism to prevent say, an anti-virus 
+program from getting killed by a threat process even if that process has 
+root.  I believe this could be done via SELinux, Apparmor, maybe bpf, 
+and maybe landlock.  In comparison, macOS does have this functionality 
+via its Endpoint Security subsystem.
+
+process injection would be a way to monitor a process which, yama would 
+have to be turned off which then a customer would have to make a call if 
+they want the protection of yama's disablement of tracing over whatever 
+process injection feature the security company may be offering.
+
+Quarantine is a way to sandbox a process that has not been determined to 
+be a threat or not (unknown) and can be stored "for later (later 
+termination or save-keeping for study".  That would be a neat future 
+LSM, one I thought could be tacked onto landlock (but from what I 
+understand would require the use of cgroups).
+
+And speaking of future LSMs, I read one proposal I saw that I thought 
+was a good idea called the NAX driver that was something like the the 
+yama driver, only its sole purpose was to shut off the anonymous 
+executable pages for fileless malware protection. But it didn't look 
+like it got anywhere.
+
+Some interesting usages/beliefs of LSM's I've seen:
+
+*Using SELinux over AppArmor will help a security solution company win a 
+govt contract due to the NSA relationship with SELinux.
+
+*The belief lockdown will shut off or cause issues with ebpf, thus its 
+not activated and used much.
+
+*RHEL 8.7 having yama driver set to 0 upon install, which I thought the 
+kernel Kconfig default was 1? So it makes me wonder what other distro 
+installs set yama to 0 by default? Maybe yama causes an issue with 3rd 
+party SW if its enabled to 1->3.
+
+
+If you want to look at a security product making use of LSM's, check out 
+KubeArmor.
+
+Hope this helps...someone :-)
+
+
+
+

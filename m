@@ -2,173 +2,145 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1870772721E
-	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 00:54:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1118D727337
+	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 01:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233092AbjFGWyl (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 7 Jun 2023 18:54:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
+        id S233421AbjFGXk3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 7 Jun 2023 19:40:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233042AbjFGWyj (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 18:54:39 -0400
-Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8638C2137
-        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 15:54:36 -0700 (PDT)
-Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51475e981f0so2393879a12.1
-        for <selinux@vger.kernel.org>; Wed, 07 Jun 2023 15:54:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686178475; x=1688770475;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=WeqXDhOYObEU4Q4S3JxL3bEVQtplVvNKCfakhFkSuiLBGZe/ef388CiKUayAOmbEOV
-         ZR0I5GAxPbS54gQ7Fi+hG72GeTokI+noW1OPwtavsLtjymUzaeyKWDDpDiOtNBnLq40U
-         hKN8QzuE3yuzJvRNnur8tzVGd/WDVGu93YT1PuP86BcJTXG/Q3+EyiY1Ov5Itgxf9sfV
-         puzj8gFJzfO5zpoPQ0K3fO44i5t5qr504eako4ZleNRX8Z/LIaI8UL0On16+KpM6t7Hk
-         P05xDxotWEktWnY1d5dyENuc5li2l9dXU7CCPzvtyNY2IFMeysO2qVasevOMBOewfS/V
-         nc1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686178475; x=1688770475;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
-        b=kILEQYSX3NoQvmoZTttBMyLu8nsALt817m368ZfTQGvEuHbfGqI2xcU5TQD/7DFRFG
-         ICmHZMEfwamLB8UDk0Cvhr0qOqgAXAIPxLT7bp0cUjdvhLCJBnQPP3voCxQ2p/AmaDeN
-         rwOeOIU9nepBJW57ZqrM8w8sq2HkirL8Iklh+kJLuU0/CPTB8HEKRPcglVpXgJ1CawUE
-         hOYsSPDDZkglzh+W0hIz9D5yAq0WgwlJ4R4bGN58umq1V17DL5ETfAsSp/zCGxhVKXcf
-         kKC+32cASbvd+U39OiuaiA0Id5FMdRQCyZYklfTrXLWNF4K+NoNWN/9w2pkyHZ5AJAnc
-         eYEA==
-X-Gm-Message-State: AC+VfDwkdp+KDRTtY1/49D+RKvsX0NW6y94Rx7fPRT0PkrFMWq+RRILi
-        A830DOrksxXrjs5/xKULc29u8PpJxrqqEPCGVAk=
-X-Google-Smtp-Source: ACHHUZ7J0yv2Uy0Ff3URHHllMh6dn7geAOftATdUjaOMCSCEm6sdR3gpAsqx+SgrMGXj3gnAhFPKaDZy027dlMN9Xtw=
-X-Received: by 2002:a17:907:783:b0:94a:6de2:ba9 with SMTP id
- xd3-20020a170907078300b0094a6de20ba9mr6600647ejb.68.1686178474547; Wed, 07
- Jun 2023 15:54:34 -0700 (PDT)
+        with ESMTP id S233513AbjFGXkU (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 19:40:20 -0400
+Received: from sonic311-31.consmr.mail.ne1.yahoo.com (sonic311-31.consmr.mail.ne1.yahoo.com [66.163.188.212])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10B342724
+        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 16:39:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686181198; bh=MLg3eEIQ6oxa5ubin2En3vP+BFYlpn63vPZqcYHn8/c=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=L/8MkD72LF/Lc0nlDvMsqldR6tGxbQz3xtUxMnnexoh4/yczWF813WrtkaYNqlNBwO834Bu8cJpigYShXpbYLcHyoOyyn69fGBwM9WnG1SEGj419LTUK5QsAtlFaUGTVxfo7bFKY3MoHw1BmflWrLg7ZiXIwB3FFigweISoJhMac99mHDl/aaRklQJ397FvsEuVptW0EhNRZOURnWXEUfPHep4ZX/jU1CB55Ae1AZ1mkqUbtY7YmaL0GUGzjeaARxHgq9WteMManQ1IW/+JAf7M/R+oK07TXWm4ce1QaM+Y8+C+lCeG2Xwk3uiEqimjFFMl4cw8E0T/wMFmiL4/pQQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1686181198; bh=T8klwkrVKqfnlECaKgGkKbooPwQxUIVUUHSupnXE/Fy=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=EYSNA8nZ62hxDRua+4mKwljUmw7Pvie0EdDDL3p4swLATTSJVJJCeKdcbDDA4sutujm4oLRTWVELJkbBxglHqB8vsww5njtMUS+zL8JvPdrSxuMQV3Thgsu8TCSWHK3XKKRpMOlG9ZVGqQBO4V11hwghzbqZ2uQhRQF5yEw0Hl9iX3sNadMJfotyydIkN7eQi69GWN1hZUsOwIRQkFSfHO4yttTJG0PrMR/qy6/5JRv71D71qTKD2CS89ah04544v/rqYQkPSzoDGEb2rIXvRDQ6CJJYMJKMl8t4FXUDTv+M72dEfgUyoNPSpAe6/+yOTRziURHScPcoYC6mghzp3Q==
+X-YMail-OSG: 9DZ00UIVM1nf7gHNoSEJ_nQWRcW9g8Xfe_zpCClhZWdUoGLj_c_czAmMX82snG.
+ EtXqu9.iP68RkKlYIDDaphvlBZCmGws9fbP4QhqaDyVLSzVGNWxXLVb2MOQVcAry.HF3I52WhI4D
+ PKG_tAo_sviZephuG5VTSLYTBMsMPY7xJvJk25w60qIqC62H6UXeYqeg0HdIVd.Us.aysoxmkPxf
+ ogF_ILbmys0RhgLlVtr.EhhS7BGJSVOkaTxA02G9S5n1lgQbBXqsedAJ64mkzCG3jQCOJjlmx.Dv
+ 6y_H7TQGYRRVQql5NQrONSRPZ2YpzkfmqxzDHMv_objgDooc_lrUUzf8UHdpuaPVqY6rpNeU8TOZ
+ e5mLjKbYPwp49p37sJpsBPcMNyGHBq7U6hkGLPix84zf1ipMbjOLYfpF7B5a3LHXjAAfHWrvqCcN
+ lMffFRTxLeBBjN.vsgm0nBrL5IJUQKGsaie0Q6oezroJWGJ.OR3NL2frCfA4cal9wDEGRkRWGcfW
+ iO24EvJ5RL8HkIaPN1DG3y2Io0kWag1b9epoONUrA6zggtd5U479RiczA0vul9evpicsvAMpHbbl
+ ITDGSLv5cEu69DRFUYMOGZf6DNhgBhH_Tor9.7gt.FCYxWjpL0rPtCO_CQv1dTSYnJqAY_ypMUad
+ hdqW2asKRPaC9dw0zJ22uYfuvf5GgkSfcFJFWzvsoG3eBywJF1rpSfcwKE45ppUV5rGRnJjvpXDQ
+ 9YFOhypYjgDgZyxH3Ewm.JKJF77YpUouBT9fDtWFqBqV7U5gsoQlW4Vg5Q3npVsnXm9C34lybazL
+ P_XpmC2d9NjTPUR3fpDLSYvH26OBYeetWh2ewrfV7kPWSNSOIy5SlP7iHv7_WaAxbsrtR2msS6AC
+ Qtb8yxIFH0TP2wE2hd5QJxaKIQGNJm34bej_u.2QpkjRUr1pgAnniF22_EWBrhrhDGqjB55eJZLt
+ jgIDr.eiHxoKMfKaBv9vwRs65eygNRDNqIVaAixkt7ho3DiqRTw5CJeJPIIjy8auG2t9iqEo.UcV
+ KOHF1yx.J.SL2aATCAltOtvp2uS.kPXV.DB..aaBSogrOBD2WdgGcjKcDrhZNrdy.2zvEObvi_DW
+ FvFj1lkvebih76k2HCiuOv_FfcriX48tFjqgAuAOW43.yFnk_PyvjKXBveAEHGIEnURD7jDFcDBY
+ yJyY.ndXsula46PI7Pc9Tra7cSC3AY6Ti5wi0fc0d.aJM9YVKQ1FPfjw8CL.q..lJULUpn1Uksk5
+ gn.wxf2KdRODJ0Tk7vSUBzHRpsHtuGGvZLnA8DPJypNEAOqbOgONzd5iwyhi8WRlR0OactKXuB3T
+ t5wVUbhSU9WLwyDUAxoDhScJLYK_eyiG_HiTh8I96ftIMPwYStsnRLQQt.3erIT31LU105kO0gwf
+ 1nDpz5vW6jtPcesr6lvz4xm95vysDUZr7_1z_fRF4DqY2vPsYuPsnBzhAXSBEleiGrdBZtt0lWtZ
+ P4qbTLNvvnrISQM6OmOUHXactFUmSLnqmgW80oUX9QFPqsb3DQWw5pxe0j7_4dECibAiaJPrUK5K
+ 8yowLBcUFs5iF5EhnPGh4.03qSKGEbah82axnlMqA.Xl.iPvq0vsDEfO8dWTfcWRkq1LaIkOo4lj
+ kuKI9JoK0P9MAdgThuSvlb6hp8s50ykZc_dc606j_HFoUXT_T2YaXWE1Y_gC1fpK53FfW8xrbgul
+ dvsVCquT88yypSo6va9qg42R3I3U7ks7yspn2CQodLJ8gu4NOe_Fwnt105YHjmWY9gZnvUmzwLJr
+ f5SLOU4QgvMsJ9lCMhRSJcS4cZ841PgNTes5Yx.mi1E3Kl0Lr7Ic40allvm.2TfbQqVovCjkvyq6
+ 7l.Ot0Im08EswnGuamVZUu6DiINcXAgx54rBdLdtqPOTnGZCbFe4KAclmZETJWuumgxWHyLva.Tb
+ 1Da6hr0DzkMSiw5IJr_xNJLJtuAkXgIxghOKuoZRP1uow0vJI2q2YEPdNdPw2MlGupEMOJA9hWqC
+ y9rohL3BVno3vrHQeyTklM8uzKagPnjJ2mvC7LFbGqqqFjRcmEmUyfHyhb7D33Pllt.a4iPvD5Yu
+ eiHRSt75FCH4EzEmyzwCMneLEDQKlfHoIYNDr7sc5po5FVzUIiQP2pVI1E_fMSj4y1h2wdLD3ovs
+ TVLef8m_Ug0gSLcpzFYt52HToxDS4pOwtBACGwxqOhczApOKFskW01vy1UVEyXdtV.PcYTwRqfWb
+ V_gZQdnheV3reVNzsB.CWOm16ZZPXQVi.VzGIpWDiSHsko9r2PMZ.ORE_bF6AG0OdJwdYwOa.auz
+ QPoT0s_qdpN4ooTJffd0v
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: aa61df0c-dead-4c2e-8f62-dac88edc3df4
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Wed, 7 Jun 2023 23:39:58 +0000
+Received: by hermes--production-ne1-574d4b7954-xz2cn (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 722d8a43fe0be971fa9347acc11d3ac0;
+          Wed, 07 Jun 2023 23:39:57 +0000 (UTC)
+Message-ID: <3319126a-c5b5-c9db-dddb-7ed169ac7e83@schaufler-ca.com>
+Date:   Wed, 7 Jun 2023 16:39:55 -0700
 MIME-Version: 1.0
-Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
- 15:54:33 -0700 (PDT)
-Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
-From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
-        <successikolo@gmail.com>
-Date:   Wed, 7 Jun 2023 15:54:33 -0700
-Message-ID: <CADFNGJ9M60ti_yHcUzQD8BP2Qji_qiW+6MK-iYxt_qf8B830+w@mail.gmail.com>
-Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
-        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
-        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:52a listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [successikolo[at]gmail.com]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 FILL_THIS_FORM Fill in a form with personal information
-        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
-        *  0.0 MONEY_FORM Lots of money if you fill out a form
-        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
-        *      money
-        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
-        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
-X-Spam-Level: ******
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: [PATCH v10 10/11] SELinux: Add selfattr hooks
+Content-Language: en-US
+To:     Paul Moore <paul@paul-moore.com>,
+        linux-security-module@vger.kernel.org
+Cc:     jmorris@namei.org, keescook@chromium.org,
+        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
+        stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org,
+        linux-api@vger.kernel.org, mic@digikod.net,
+        selinux@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>
+References: <20230428203417.159874-11-casey@schaufler-ca.com>
+ <b09b591926e0f297fe0a3e9d8fcf3a6a.paul@paul-moore.com>
+From:   Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <b09b591926e0f297fe0a3e9d8fcf3a6a.paul@paul-moore.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Mailer: WebService/1.1.21516 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-UNITED NATION DEPUTY SECRETARY-GENERAL.
+On 6/7/2023 3:32 PM, Paul Moore wrote:
+> On Apr 28, 2023 Casey Schaufler <casey@schaufler-ca.com> wrote:
+>> Add hooks for setselfattr and getselfattr. These hooks are not very
+>> different from their setprocattr and getprocattr equivalents, and
+>> much of the code is shared.
+>>
+>> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+>> Cc: selinux@vger.kernel.org
+>> Cc: Paul Moore <paul@paul-moore.com>
+>> ---
+>>  security/selinux/hooks.c | 154 +++++++++++++++++++++++++++++++--------
+>>  1 file changed, 124 insertions(+), 30 deletions(-)
+>>
+>> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+>> index 2ee92d3fb79d..e78b955e04f8 100644
+>> --- a/security/selinux/hooks.c
+>> +++ b/security/selinux/hooks.c
+>> @@ -6542,6 +6559,81 @@ static int selinux_setprocattr(const char *name, void *value, size_t size)
+>>  	return error;
+>>  }
+>>  
+>> +static int selinux_getselfattr(unsigned int attr, struct lsm_ctx __user *ctx,
+>> +			       size_t *size, u32 flags)
+>> +{
+>> +	char *value;
+>> +	size_t total_len;
+>> +	int len;
+>> +	int rc;
+>> +
+>> +	len = selinux_lsm_getattr(attr, current, &value);
+>> +	if (len < 0)
+>> +		return len;
+>> +
+>> +	total_len = ALIGN(struct_size(ctx, ctx, len), 8);
+>> +
+>> +	if (total_len > *size)
+>> +		rc = -E2BIG;
+> Hmm.  Since we need to calculate the aligned @total_len value in the
+> LSM specific code, perhaps it doesn't make sense to also do the
+> alignment in lsm_fill_user_ctx().  My apologies, I know I was the one
+> who suggested doing the alignment in a common place previously.
 
-This is to official inform you that we have been having meetings for
-the past three (3) weeks which ended two days ago with MR. JIM YONG
-KIM the world bank president and other seven continent presidents on
-the congress we treated on solution to scam victim problems.
+Some future user of lsm_fill_user_ctx() may not need to do the
+calculation, so I would be inclined to leave it here. I'm thinking
+SO_PEERCONTEXT, or the like. But I'll go with whatever gets the
+patchset moving forward.
 
- Note: we have decided to contact you following the reports we
-received from anti-fraud international monitoring group your
-name/email has been submitted to us therefore the united nations have
-agreed to compensate you with the sum of (USD$ 1.5 Million) this
-compensation is also including international business that failed you
-in the past due to government problems etc.
-
- We have arranged your payment through our ATM Master Card and
-deposited it in DHL Office to deliver it to you which is the latest
-instruction from the World Bank president MR. JIM YONG KIM, For your
-information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
-he
-only money you will send to DHL office south Korea is
-($500). for security keeping fee, U.N coordinator already paid for
-others charges fees for delivery except the security keeping fee, the
-director of DHL refused to collect the security keeping fee from U.N
-coordinator, the Director of DHL office said that they don=E2=80=99t know
-exactly time you will contact them to reconfirm your details to avoid
-counting demur-rage that is why they refused collecting the ($500) .
-for security keeping fee.
-
- Therefore be advice to contact DHL Office agent south Korea. Rev:John
-Lee Tae-seok
-who is in position to deliver your ATM
-Master Card to your location address, contact DHL Office immediately
-with the bellow email & phone number as listed below.
-
- Contact name: John Lee Tae-seok
-
- Email:( dhlgeneralheadquartersrepublic@gmail.com )
-
- Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
-
- read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
-
- Make sure you reconfirmed DHL Office your details ASAP as stated
-below to avoid wrong delivery.
-
- Your full name..........
-
- Home address:.........
-
- Your country...........
-
- Your city..............
-
- Telephone......
-
- Occupation:.......
-
- Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
-
- Let us know as soon as possible you receive your ATM MasterCard
-for proper verification.
-
- Regards,
-
- Mrs Vivian kakadu.
-
- DEPUTY SECRETARY-GENERAL (U.N)
+>
+>> +	else if (ctx)
+>> +		rc = lsm_fill_user_ctx(ctx, value, len, LSM_ID_SELINUX, 0);
+>> +	else
+>> +		rc = 1;
+>> +
+>> +	*size = total_len;
+>> +	if (rc < 0)
+>> +		return rc;
+>> +	return 1;
+>> +}
+> --
+> paul-moore.com

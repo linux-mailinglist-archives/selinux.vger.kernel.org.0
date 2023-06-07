@@ -2,126 +2,173 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C49C7271C5
-	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 00:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1870772721E
+	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 00:54:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229556AbjFGWdF (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 7 Jun 2023 18:33:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45436 "EHLO
+        id S233092AbjFGWyl (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 7 Jun 2023 18:54:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbjFGWdD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 18:33:03 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62013198B
-        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 15:33:01 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id d75a77b69052e-3f9b8f1c2fdso12441111cf.2
-        for <selinux@vger.kernel.org>; Wed, 07 Jun 2023 15:33:01 -0700 (PDT)
+        with ESMTP id S233042AbjFGWyj (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 18:54:39 -0400
+Received: from mail-ed1-x52a.google.com (mail-ed1-x52a.google.com [IPv6:2a00:1450:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8638C2137
+        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 15:54:36 -0700 (PDT)
+Received: by mail-ed1-x52a.google.com with SMTP id 4fb4d7f45d1cf-51475e981f0so2393879a12.1
+        for <selinux@vger.kernel.org>; Wed, 07 Jun 2023 15:54:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1686177180; x=1688769180;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8llCPG+vVtkPUwjQtiWJ3WQx6JiHNRGSvHVuzeIpYl8=;
-        b=Teys5iOPggBuB4MwMYC4fYT40I07CnWHKp2KVP33MNp7LzhrMhIh6ZjObVDrpqopU6
-         S65i4AlM1ZRe6MI3inCaIuujJqtHY3mpfIHpgYcW3A2moxi69m94sezvmvs3B/NcLx+7
-         iU+VVrAlgQt2E7JKi5S6PiaNiVlghFzKR/ARm11fVjxDlhrC+EKlyw5njk6unuVZY8MW
-         EqRLzYpdwLrMOAVx5/6LqgWGEftbBGDSRQ73BGXA1yS4lh7PHIgetQguKtqN2iwwYQrl
-         rwvddBBAltGZgnSQjwVhbs9jpRJ5MjhJTCZCQ/GMvIcTgN17Ae8n/+YiEOm36PPooY7e
-         LhRw==
+        d=gmail.com; s=20221208; t=1686178475; x=1688770475;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=WeqXDhOYObEU4Q4S3JxL3bEVQtplVvNKCfakhFkSuiLBGZe/ef388CiKUayAOmbEOV
+         ZR0I5GAxPbS54gQ7Fi+hG72GeTokI+noW1OPwtavsLtjymUzaeyKWDDpDiOtNBnLq40U
+         hKN8QzuE3yuzJvRNnur8tzVGd/WDVGu93YT1PuP86BcJTXG/Q3+EyiY1Ov5Itgxf9sfV
+         puzj8gFJzfO5zpoPQ0K3fO44i5t5qr504eako4ZleNRX8Z/LIaI8UL0On16+KpM6t7Hk
+         P05xDxotWEktWnY1d5dyENuc5li2l9dXU7CCPzvtyNY2IFMeysO2qVasevOMBOewfS/V
+         nc1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686177180; x=1688769180;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8llCPG+vVtkPUwjQtiWJ3WQx6JiHNRGSvHVuzeIpYl8=;
-        b=k//G+t36wZ/IqB8xYrUaDxUNrMwwyDEVJUHg44OLFjhUyJsKFcJZLhTHNXL6m7pQjT
-         rqHW8UfUep4AcjGBVR6J2vXb03ijT7jNSLYJ2BwN72w/fKiRJu9AtmbJjyCGBKH4DZr/
-         ysfZkyIscQcles5ssLk7bhLwguRAmHDTyOtvv9Gq4w1dy9CEdGlqAbxPRCR0Hx8s0z+0
-         tZqR15ddBM8IhGB1e0HDMEU7o5hd3IDvO3eoE0SXqfBfxfaKIPxM6qw75AYxA82eU6JY
-         CZtFCrTSDiVK7TzQrogBQkcI3r9UIKKE4uiCWUaetz8B0JdQQuJ3uoE9ddeM/kj+0U4b
-         eWFg==
-X-Gm-Message-State: AC+VfDy4aAaDpRTA7vp0imtutOqbgBC+DKP17tdwYi8ASI0pSY+MSWmf
-        jHAr0gmA1Y3+VkWnDHSWqpIN
-X-Google-Smtp-Source: ACHHUZ6HuJH98YyEK9wHunJsZWtU8xAgmefz01BAYcD2rGExrmEEa1OcsJqKl5/Lpuv7iYuO62ZykQ==
-X-Received: by 2002:ac8:7f81:0:b0:3f8:6cc0:d663 with SMTP id z1-20020ac87f81000000b003f86cc0d663mr5296197qtj.17.1686177180421;
-        Wed, 07 Jun 2023 15:33:00 -0700 (PDT)
-Received: from localhost (static-96-237-115-254.bstnma.fios.verizon.net. [96.237.115.254])
-        by smtp.gmail.com with ESMTPSA id g4-20020ac80704000000b003ef33e02eb9sm230021qth.83.2023.06.07.15.32.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Jun 2023 15:33:00 -0700 (PDT)
-Date:   Wed, 07 Jun 2023 18:32:59 -0400
-Message-ID: <b09b591926e0f297fe0a3e9d8fcf3a6a.paul@paul-moore.com>
-From:   Paul Moore <paul@paul-moore.com>
-To:     Casey Schaufler <casey@schaufler-ca.com>,
-        linux-security-module@vger.kernel.org
-Cc:     jmorris@namei.org, keescook@chromium.org,
-        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
-        stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org,
-        linux-api@vger.kernel.org, mic@digikod.net, selinux@vger.kernel.org
-Subject: Re: [PATCH v10 10/11] SELinux: Add selfattr hooks
-References: <20230428203417.159874-11-casey@schaufler-ca.com>
-In-Reply-To: <20230428203417.159874-11-casey@schaufler-ca.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        d=1e100.net; s=20221208; t=1686178475; x=1688770475;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=kILEQYSX3NoQvmoZTttBMyLu8nsALt817m368ZfTQGvEuHbfGqI2xcU5TQD/7DFRFG
+         ICmHZMEfwamLB8UDk0Cvhr0qOqgAXAIPxLT7bp0cUjdvhLCJBnQPP3voCxQ2p/AmaDeN
+         rwOeOIU9nepBJW57ZqrM8w8sq2HkirL8Iklh+kJLuU0/CPTB8HEKRPcglVpXgJ1CawUE
+         hOYsSPDDZkglzh+W0hIz9D5yAq0WgwlJ4R4bGN58umq1V17DL5ETfAsSp/zCGxhVKXcf
+         kKC+32cASbvd+U39OiuaiA0Id5FMdRQCyZYklfTrXLWNF4K+NoNWN/9w2pkyHZ5AJAnc
+         eYEA==
+X-Gm-Message-State: AC+VfDwkdp+KDRTtY1/49D+RKvsX0NW6y94Rx7fPRT0PkrFMWq+RRILi
+        A830DOrksxXrjs5/xKULc29u8PpJxrqqEPCGVAk=
+X-Google-Smtp-Source: ACHHUZ7J0yv2Uy0Ff3URHHllMh6dn7geAOftATdUjaOMCSCEm6sdR3gpAsqx+SgrMGXj3gnAhFPKaDZy027dlMN9Xtw=
+X-Received: by 2002:a17:907:783:b0:94a:6de2:ba9 with SMTP id
+ xd3-20020a170907078300b0094a6de20ba9mr6600647ejb.68.1686178474547; Wed, 07
+ Jun 2023 15:54:34 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
+ 15:54:33 -0700 (PDT)
+Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
+From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
+        <successikolo@gmail.com>
+Date:   Wed, 7 Jun 2023 15:54:33 -0700
+Message-ID: <CADFNGJ9M60ti_yHcUzQD8BP2Qji_qiW+6MK-iYxt_qf8B830+w@mail.gmail.com>
+Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:52a listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [successikolo[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+        *  0.0 MONEY_FORM Lots of money if you fill out a form
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
+        *      money
+        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
+        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Apr 28, 2023 Casey Schaufler <casey@schaufler-ca.com> wrote:
-> 
-> Add hooks for setselfattr and getselfattr. These hooks are not very
-> different from their setprocattr and getprocattr equivalents, and
-> much of the code is shared.
-> 
-> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
-> Cc: selinux@vger.kernel.org
-> Cc: Paul Moore <paul@paul-moore.com>
-> ---
->  security/selinux/hooks.c | 154 +++++++++++++++++++++++++++++++--------
->  1 file changed, 124 insertions(+), 30 deletions(-)
-> 
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 2ee92d3fb79d..e78b955e04f8 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -6542,6 +6559,81 @@ static int selinux_setprocattr(const char *name, void *value, size_t size)
->  	return error;
->  }
->  
-> +static int selinux_getselfattr(unsigned int attr, struct lsm_ctx __user *ctx,
-> +			       size_t *size, u32 flags)
-> +{
-> +	char *value;
-> +	size_t total_len;
-> +	int len;
-> +	int rc;
-> +
-> +	len = selinux_lsm_getattr(attr, current, &value);
-> +	if (len < 0)
-> +		return len;
-> +
-> +	total_len = ALIGN(struct_size(ctx, ctx, len), 8);
-> +
-> +	if (total_len > *size)
-> +		rc = -E2BIG;
+UNITED NATION DEPUTY SECRETARY-GENERAL.
 
-Hmm.  Since we need to calculate the aligned @total_len value in the
-LSM specific code, perhaps it doesn't make sense to also do the
-alignment in lsm_fill_user_ctx().  My apologies, I know I was the one
-who suggested doing the alignment in a common place previously.
+This is to official inform you that we have been having meetings for
+the past three (3) weeks which ended two days ago with MR. JIM YONG
+KIM the world bank president and other seven continent presidents on
+the congress we treated on solution to scam victim problems.
 
-> +	else if (ctx)
-> +		rc = lsm_fill_user_ctx(ctx, value, len, LSM_ID_SELINUX, 0);
-> +	else
-> +		rc = 1;
-> +
-> +	*size = total_len;
-> +	if (rc < 0)
-> +		return rc;
-> +	return 1;
-> +}
+ Note: we have decided to contact you following the reports we
+received from anti-fraud international monitoring group your
+name/email has been submitted to us therefore the united nations have
+agreed to compensate you with the sum of (USD$ 1.5 Million) this
+compensation is also including international business that failed you
+in the past due to government problems etc.
 
---
-paul-moore.com
+ We have arranged your payment through our ATM Master Card and
+deposited it in DHL Office to deliver it to you which is the latest
+instruction from the World Bank president MR. JIM YONG KIM, For your
+information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
+he
+only money you will send to DHL office south Korea is
+($500). for security keeping fee, U.N coordinator already paid for
+others charges fees for delivery except the security keeping fee, the
+director of DHL refused to collect the security keeping fee from U.N
+coordinator, the Director of DHL office said that they don=E2=80=99t know
+exactly time you will contact them to reconfirm your details to avoid
+counting demur-rage that is why they refused collecting the ($500) .
+for security keeping fee.
+
+ Therefore be advice to contact DHL Office agent south Korea. Rev:John
+Lee Tae-seok
+who is in position to deliver your ATM
+Master Card to your location address, contact DHL Office immediately
+with the bellow email & phone number as listed below.
+
+ Contact name: John Lee Tae-seok
+
+ Email:( dhlgeneralheadquartersrepublic@gmail.com )
+
+ Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
+
+ read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
+
+ Make sure you reconfirmed DHL Office your details ASAP as stated
+below to avoid wrong delivery.
+
+ Your full name..........
+
+ Home address:.........
+
+ Your country...........
+
+ Your city..............
+
+ Telephone......
+
+ Occupation:.......
+
+ Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
+
+ Let us know as soon as possible you receive your ATM MasterCard
+for proper verification.
+
+ Regards,
+
+ Mrs Vivian kakadu.
+
+ DEPUTY SECRETARY-GENERAL (U.N)

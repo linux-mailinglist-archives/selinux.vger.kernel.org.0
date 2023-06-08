@@ -2,46 +2,49 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 276ED72749E
-	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 03:53:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E545572749D
+	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 03:53:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229454AbjFHBxl (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 7 Jun 2023 21:53:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
+        id S232060AbjFHBxk (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 7 Jun 2023 21:53:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229917AbjFHBxk (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 21:53:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D1C2682
-        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 18:52:53 -0700 (PDT)
+        with ESMTP id S229454AbjFHBxj (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 21:53:39 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 417ED2680
+        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 18:52:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686189172;
+        s=mimecast20190719; t=1686189176;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=OFq59jc9NksBjDyJXXa0XJFnrvuOdE81wt7jWfFrVKo=;
-        b=jB7CqYbj8r1qK/Age/cBwsprtVa0doX+GvtfRfAfysGZdb1kwGyz5Nzb2Lh2pshUx/W4zc
-        5EjVvcC4m1A5asBw2JBxqB1QcSNXivB9Svb/7LLRcBu3QrwpTBYmzmdLlG80H4TFOMBEnV
-        4XyzlNO3XSXvI4H/Sq6ejU09k5vqsUE=
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=X/XJvCQ422I/WYtUCWDKieLvXugOS8ab+Zzy4zkAj+0=;
+        b=DpCLd7JIKukSMKwxzI9XcVAR4+tREFcXdObaGcMbZVIBiaQAi32Zr0FQogu41p4POZoNnM
+        QRAUv5HZknJiplx8BA6tshusi5QZ6RfeIe7op8Wt9qHEvKTn+82eJBEGSICfhlkCt6uPZ6
+        T64JktqyE1VdkZIuaGoRtRT9Z28bukk=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-499-J1P6oxFZPk-Qsdape85bdQ-1; Wed, 07 Jun 2023 21:52:50 -0400
-X-MC-Unique: J1P6oxFZPk-Qsdape85bdQ-1
+ us-mta-626-mhsWc_UjPeWmkoYtYZk3XQ-1; Wed, 07 Jun 2023 21:52:54 -0400
+X-MC-Unique: mhsWc_UjPeWmkoYtYZk3XQ-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9CA998002BF
-        for <selinux@vger.kernel.org>; Thu,  8 Jun 2023 01:52:50 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8FCD2811E7C
+        for <selinux@vger.kernel.org>; Thu,  8 Jun 2023 01:52:54 +0000 (UTC)
 Received: from dev64.localdomain.com (unknown [10.64.240.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E4900403362;
-        Thu,  8 Jun 2023 01:52:49 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id DC5A9477F61;
+        Thu,  8 Jun 2023 01:52:53 +0000 (UTC)
 From:   Masatake YAMATO <yamato@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     yamato@redhat.com
-Subject: [PATCH 1/4] dispol: add --help option
-Date:   Thu,  8 Jun 2023 10:52:38 +0900
-Message-Id: <20230608015241.2454912-1-yamato@redhat.com>
+Subject: [PATCH 2/4] dispol: delete an unnecessary empty line
+Date:   Thu,  8 Jun 2023 10:52:39 +0900
+Message-Id: <20230608015241.2454912-2-yamato@redhat.com>
+In-Reply-To: <20230608015241.2454912-1-yamato@redhat.com>
+References: <20230608015241.2454912-1-yamato@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
@@ -57,35 +60,18 @@ X-Mailing-List: selinux@vger.kernel.org
 
 Signed-off-by: Masatake YAMATO <yamato@redhat.com>
 ---
- checkpolicy/test/dispol.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ checkpolicy/test/dispol.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/checkpolicy/test/dispol.c b/checkpolicy/test/dispol.c
-index b61f1b4b..50027e40 100644
+index 50027e40..e0748e90 100644
 --- a/checkpolicy/test/dispol.c
 +++ b/checkpolicy/test/dispol.c
-@@ -38,7 +38,11 @@ static policydb_t policydb;
- 
- static __attribute__((__noreturn__)) void usage(const char *progname)
- {
--	printf("usage:  %s binary_pol_file\n\n", progname);
-+	puts("Usage:");
-+	printf(" %s [OPTIONS] binary_pol_file\n\n", progname);
-+	puts("Options:");
-+	puts(" -h, --help   print this help message");
-+	puts("\n");
- 	exit(1);
- }
- 
-@@ -481,7 +485,7 @@ int main(int argc, char **argv)
- 	int state;
- 	struct policy_file pf;
- 
--	if (argc != 2)
-+	if (argc < 2 || strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "--help") == 0)
- 		usage(argv[0]);
- 
- 	fd = open(argv[1], O_RDONLY);
+@@ -1,4 +1,3 @@
+-
+ /* Authors: Frank Mayer <mayerf@tresys.com> and Karl MacMillan <kmacmillan@tresys.com>
+  *
+  * Copyright (C) 2003 Tresys Technology, LLC
 -- 
 2.40.1
 

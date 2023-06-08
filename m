@@ -2,47 +2,47 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E545572749D
-	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 03:53:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5018D72749F
+	for <lists+selinux@lfdr.de>; Thu,  8 Jun 2023 03:53:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232060AbjFHBxk (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 7 Jun 2023 21:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59186 "EHLO
+        id S229917AbjFHBxm (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 7 Jun 2023 21:53:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229454AbjFHBxj (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 21:53:39 -0400
+        with ESMTP id S231302AbjFHBxk (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 7 Jun 2023 21:53:40 -0400
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 417ED2680
-        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 18:52:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDA6C269F
+        for <selinux@vger.kernel.org>; Wed,  7 Jun 2023 18:52:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686189176;
+        s=mimecast20190719; t=1686189178;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=X/XJvCQ422I/WYtUCWDKieLvXugOS8ab+Zzy4zkAj+0=;
-        b=DpCLd7JIKukSMKwxzI9XcVAR4+tREFcXdObaGcMbZVIBiaQAi32Zr0FQogu41p4POZoNnM
-        QRAUv5HZknJiplx8BA6tshusi5QZ6RfeIe7op8Wt9qHEvKTn+82eJBEGSICfhlkCt6uPZ6
-        T64JktqyE1VdkZIuaGoRtRT9Z28bukk=
+        bh=vBJL1bwxU7sXc9bwKfuQaD318hfOQPdvqm5NwzIo8N0=;
+        b=RcCpU7knvHhTCV6qwMZGU1N+cSrW2gh0W/OcbNOmQWZwBqJeOOcc+s6ZgwTi15Rc1DKOf/
+        r5/Fb/d8wKy6XcE4jFZ55ZfDiCTxdowc5iZEpy+Vj+UmgxrpyyU3BZojnlkYWD/wOHqvz1
+        7RcgMLS5CMF6RVlrmPteJvO454K03AE=
 Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
  [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-626-mhsWc_UjPeWmkoYtYZk3XQ-1; Wed, 07 Jun 2023 21:52:54 -0400
-X-MC-Unique: mhsWc_UjPeWmkoYtYZk3XQ-1
+ us-mta-122-J4SG11zQM2aJa4pNDkvhfw-1; Wed, 07 Jun 2023 21:52:56 -0400
+X-MC-Unique: J4SG11zQM2aJa4pNDkvhfw-1
 Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8FCD2811E7C
-        for <selinux@vger.kernel.org>; Thu,  8 Jun 2023 01:52:54 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5B8228007D9
+        for <selinux@vger.kernel.org>; Thu,  8 Jun 2023 01:52:56 +0000 (UTC)
 Received: from dev64.localdomain.com (unknown [10.64.240.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id DC5A9477F61;
-        Thu,  8 Jun 2023 01:52:53 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id A7194403367;
+        Thu,  8 Jun 2023 01:52:55 +0000 (UTC)
 From:   Masatake YAMATO <yamato@redhat.com>
 To:     selinux@vger.kernel.org
 Cc:     yamato@redhat.com
-Subject: [PATCH 2/4] dispol: delete an unnecessary empty line
-Date:   Thu,  8 Jun 2023 10:52:39 +0900
-Message-Id: <20230608015241.2454912-2-yamato@redhat.com>
+Subject: [PATCH 3/4] dispol: handle EOF in user interaction
+Date:   Thu,  8 Jun 2023 10:52:40 +0900
+Message-Id: <20230608015241.2454912-3-yamato@redhat.com>
 In-Reply-To: <20230608015241.2454912-1-yamato@redhat.com>
 References: <20230608015241.2454912-1-yamato@redhat.com>
 MIME-Version: 1.0
@@ -60,18 +60,22 @@ X-Mailing-List: selinux@vger.kernel.org
 
 Signed-off-by: Masatake YAMATO <yamato@redhat.com>
 ---
- checkpolicy/test/dispol.c | 1 -
- 1 file changed, 1 deletion(-)
+ checkpolicy/test/dispol.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/checkpolicy/test/dispol.c b/checkpolicy/test/dispol.c
-index 50027e40..e0748e90 100644
+index e0748e90..e1f6d7fc 100644
 --- a/checkpolicy/test/dispol.c
 +++ b/checkpolicy/test/dispol.c
-@@ -1,4 +1,3 @@
--
- /* Authors: Frank Mayer <mayerf@tresys.com> and Karl MacMillan <kmacmillan@tresys.com>
-  *
-  * Copyright (C) 2003 Tresys Technology, LLC
+@@ -531,6 +531,8 @@ int main(int argc, char **argv)
+ 	for (;;) {
+ 		printf("\nCommand (\'m\' for menu):  ");
+ 		if (fgets(ans, sizeof(ans), stdin) == NULL) {
++			if (feof(stdin))
++				break;
+ 			fprintf(stderr, "fgets failed at line %d: %s\n", __LINE__,
+ 					strerror(errno));
+ 			continue;
 -- 
 2.40.1
 

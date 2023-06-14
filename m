@@ -2,189 +2,99 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 337FA7307F1
-	for <lists+selinux@lfdr.de>; Wed, 14 Jun 2023 21:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C97A273084A
+	for <lists+selinux@lfdr.de>; Wed, 14 Jun 2023 21:33:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232340AbjFNTR6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 14 Jun 2023 15:17:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45556 "EHLO
+        id S231539AbjFNTdq (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 14 Jun 2023 15:33:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229703AbjFNTR5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 14 Jun 2023 15:17:57 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDE5E2135
-        for <selinux@vger.kernel.org>; Wed, 14 Jun 2023 12:17:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1686770233;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=l8FoVNRMNoFDOCOGiSQ2u+JfDEqIuYt2CvWQpnsLwnc=;
-        b=D/65zJgZNNaLZdm8arXYWQd1jp3c4qCE2KxRPwnxXIY/SorBzA8Y7KvezJ6YwQ8/PzbndW
-        5TyFLPor5IYhHoQW2UQj/39OjMNC9LX3/OX/XINyx2+c74/pRDNBMcWxhIW4CEexAneJ6x
-        jPNh08CGO0iOXHRKyyklezcfba+G0Ag=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-312-i9DIBidVPS2zFgM_2hdfrA-1; Wed, 14 Jun 2023 15:17:10 -0400
-X-MC-Unique: i9DIBidVPS2zFgM_2hdfrA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A079E80067D
-        for <selinux@vger.kernel.org>; Wed, 14 Jun 2023 19:17:10 +0000 (UTC)
-Received: from dev64.localdomain.com (unknown [10.64.240.9])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EC51E40C20F4;
-        Wed, 14 Jun 2023 19:17:09 +0000 (UTC)
-From:   Masatake YAMATO <yamato@redhat.com>
-To:     selinux@vger.kernel.org
-Cc:     yamato@redhat.com
-Subject: [PATCH v2 2/2] dismod, dispol: reduce the messages in batch mode
-Date:   Thu, 15 Jun 2023 04:16:58 +0900
-Message-Id: <20230614191658.3356192-2-yamato@redhat.com>
-In-Reply-To: <20230614191658.3356192-1-yamato@redhat.com>
-References: <20230614191658.3356192-1-yamato@redhat.com>
+        with ESMTP id S229955AbjFNTdp (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 14 Jun 2023 15:33:45 -0400
+Received: from mail-yw1-x112d.google.com (mail-yw1-x112d.google.com [IPv6:2607:f8b0:4864:20::112d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE90E11C
+        for <selinux@vger.kernel.org>; Wed, 14 Jun 2023 12:33:44 -0700 (PDT)
+Received: by mail-yw1-x112d.google.com with SMTP id 00721157ae682-57023c9be80so4619017b3.3
+        for <selinux@vger.kernel.org>; Wed, 14 Jun 2023 12:33:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1686771224; x=1689363224;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KvOAIrF6LzcXtyY6sHIJfZBt/wvZ4I6SC5BVY/k9gVs=;
+        b=bj4tN+1+Grm5fx7dt7/L1UNYUZhSe/q9hqPOOW/9hIBh6HFSzlhsz9hKteNgHT1kBw
+         91e9AoqvmlCnf5yuYQ8voSh+ELiKRUniEgVVSROIz4EvXZjKO68wVeANqll+WV05HJ5r
+         4UvqOT0Rpuk3ENVG0gA/5IeWfD6RyMZjyxdrA5UcNWMIM7GnQW9RTAFgslR4WkPJgoxR
+         48ZZg+66hFg3sjp9xDneIaRtCEG5tOHl5NGN64BmVEVXSjZqOKgCs5OuiET2/N+smCFt
+         COT1Y7DCbMGRvPTK46bhnBBmZ5BrhegfPl4j+HxVQ78ABDekWLVFbQrUSPzPLJlDax6b
+         jHqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686771224; x=1689363224;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KvOAIrF6LzcXtyY6sHIJfZBt/wvZ4I6SC5BVY/k9gVs=;
+        b=i5cKDtIi593VLRRC9YwW0EN2iXARBzc75TqELlCIl0Y12+OK2LkBw/v/Lt8VbmomoC
+         1V6wucjIV7WJfpWdntUEMnmbpCzdQCV2c7AZvqVI8WoN6XOlHvBdu6J3lSg9Z6AijTjZ
+         cdq+ocVFSWgZEmsVdiNNQOJdCoOEQv0A/nfZGIrk0Wq0oVnrdejYtsvOiiqB+f/c1euf
+         bAAzDDc6f/P0It8TG0sLX5uyZEKS+zZLpapRoxcf+VsHM92+wg3YhnTenbsggWnEF1RN
+         s/GwLGRUk4Aqc8Il6ApgXPDXxcJ3Ua8wYoiPqn5EpEyR7cSzhEvAsgcAwmKrOr//9EnB
+         eC2g==
+X-Gm-Message-State: AC+VfDyTYS5VqYzpKHyZWSJsVFvSioG057qsq7Nn9axoQHijgb05PAzD
+        7sVmRuy5kfxpgkOEeH307oYQ48kcYtkERMKTzRAiwvsj5xaPSUyvMw==
+X-Google-Smtp-Source: ACHHUZ7sRzY6vSVbCdZIWvhcInjqRQXmfAkfPD9WeWU5clAJcqHZBTs++nTnVFYH/0LpzdQ4UcdGUaY7nOIlfxVFCgw=
+X-Received: by 2002:a0d:cbc7:0:b0:56d:a55:4b25 with SMTP id
+ n190-20020a0dcbc7000000b0056d0a554b25mr2413487ywd.40.1686771223885; Wed, 14
+ Jun 2023 12:33:43 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Wed, 14 Jun 2023 15:33:33 -0400
+Message-ID: <CAHC9VhRAXQyzG7OsgXQfWT09qEFQRmeN2foGLGnU8cHdRKePUA@mail.gmail.com>
+Subject: SELinux and systemd integration
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        selinux@vger.kernel.org, selinux-refpolicy@vger.kernel.org
+Cc:     Lennart Poettering <lennart@poettering.net>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-A change in v2:
-* pass `verbose' to sepol_module_package_read().
+Hello all,
 
-Signed-off-by: Masatake YAMATO <yamato@redhat.com>
----
- checkpolicy/test/dismod.c | 22 ++++++++++++----------
- checkpolicy/test/dispol.c |  8 +++++---
- 2 files changed, 17 insertions(+), 13 deletions(-)
+Amongst Christian's various other SELinux contributions, over the past
+several years Christian has been working on improving the SELinux
+integration in systemd.  One of the things that Christian has been
+working on is revamping the SELinux permissions that systemd uses for
+unitfile operations, both to resolve problems and generally improve
+the mapping of permissions to systemd operations.  As this work has
+been languishing for several years, I would like to see if we can get
+things "unstuck" by proposing two things:
 
-diff --git a/checkpolicy/test/dismod.c b/checkpolicy/test/dismod.c
-index fa729ef2..3f095da7 100644
---- a/checkpolicy/test/dismod.c
-+++ b/checkpolicy/test/dismod.c
-@@ -773,7 +773,7 @@ static int display_handle_unknown(policydb_t * p, FILE * out_fp)
- 	return 0;
- }
- 
--static int read_policy(char *filename, policydb_t * policy)
-+static int read_policy(char *filename, policydb_t * policy, int verbose)
- {
- 	FILE *in_fp;
- 	struct policy_file f;
-@@ -808,7 +808,7 @@ static int read_policy(char *filename, policydb_t * policy)
- 		package->file_contexts = NULL;
- 		retval =
- 		    sepol_module_package_read(package,
--					      (sepol_policy_file_t *) & f, 1);
-+					      (sepol_policy_file_t *) & f, verbose);
- 		package->policy = NULL;
- 		sepol_module_package_free(package);
- 	} else {
-@@ -816,13 +816,13 @@ static int read_policy(char *filename, policydb_t * policy)
- 			fprintf(stderr, "%s:  Out of memory!\n", __FUNCTION__);
- 			exit(1);
- 		}
--		retval = policydb_read(policy, &f, 1);
-+		retval = policydb_read(policy, &f, verbose);
- 	}
- 	fclose(in_fp);
- 	return retval;
- }
- 
--static void link_module(policydb_t * base, FILE * out_fp)
-+static void link_module(policydb_t * base, FILE * out_fp, int verbose)
- {
- 	char module_name[80] = { 0 };
- 	int ret;
-@@ -845,8 +845,9 @@ static void link_module(policydb_t * base, FILE * out_fp)
- 	}
- 
- 	/* read the binary policy */
--	fprintf(out_fp, "Reading module...\n");
--	if (read_policy(module_name, mods)) {
-+	if (verbose)
-+		fprintf(out_fp, "Reading module...\n");
-+	if (read_policy(module_name, mods, verbose)) {
- 		fprintf(stderr,
- 			"%s:  error(s) encountered while loading policy\n",
- 			module_name);
-@@ -937,12 +938,13 @@ int main(int argc, char **argv)
- 	}
- 
- 	/* read the binary policy */
--	fprintf(out_fp, "Reading policy...\n");
-+	if (!ops)
-+		fprintf(out_fp, "Reading policy...\n");
- 	if (policydb_init(&policydb)) {
- 		fprintf(stderr, "%s:  Out of memory!\n", __FUNCTION__);
- 		exit(1);
- 	}
--	if (read_policy(mod, &policydb)) {
-+	if (read_policy(mod, &policydb, ops? 0: 1)) {
- 		fprintf(stderr,
- 			"%s:  error(s) encountered while loading policy\n",
- 			argv[0]);
-@@ -961,7 +963,7 @@ int main(int argc, char **argv)
- 		exit(1);
- 	}
- 
--	if (policydb_index_others(NULL, &policydb, 1)) {
-+	if (policydb_index_others(NULL, &policydb, ops? 0: 1)) {
- 		fprintf(stderr, "Error indexing others\n");
- 		exit(1);
- 	}
-@@ -1074,7 +1076,7 @@ int main(int argc, char **argv)
- 					&policydb, out_fp);
- 			break;
- 		case 'l':
--			link_module(&policydb, out_fp);
-+			link_module(&policydb, out_fp, ops? 0: 1);
- 			break;
- 		case 'v':
- 			print_version_info(&policydb, out_fp);
-diff --git a/checkpolicy/test/dispol.c b/checkpolicy/test/dispol.c
-index bee1a660..b567ce77 100644
---- a/checkpolicy/test/dispol.c
-+++ b/checkpolicy/test/dispol.c
-@@ -551,7 +551,8 @@ int main(int argc, char **argv)
- 	}
- 
- 	/* read the binary policy */
--	fprintf(out_fp, "Reading policy...\n");
-+	if (!ops)
-+		fprintf(out_fp, "Reading policy...\n");
- 	policy_file_init(&pf);
- 	pf.type = PF_USE_MEMORY;
- 	pf.data = map;
-@@ -560,7 +561,7 @@ int main(int argc, char **argv)
- 		fprintf(stderr, "%s:  Out of memory!\n", argv[0]);
- 		exit(1);
- 	}
--	ret = policydb_read(&policydb, &pf, 1);
-+	ret = policydb_read(&policydb, &pf, ops? 0: 1);
- 	if (ret) {
- 		fprintf(stderr,
- 			"%s:  error(s) encountered while parsing configuration\n",
-@@ -568,7 +569,8 @@ int main(int argc, char **argv)
- 		exit(1);
- 	}
- 
--	fprintf(stdout, "binary policy file loaded\n\n");
-+	if (!ops)
-+		fprintf(stdout, "binary policy file loaded\n\n");
- 	close(fd);
- 
- 	if (!ops)
--- 
-2.40.1
+1. I've provided links to the systemd GH PRs below, but I think it
+might be helpful if Christian could provide a quick summary of the new
+permissions, how they map to systemd operations, and how they map to
+the existing SELinux/systemd permissions with a focus on helping
+policy developers migrate existing SELinux policies.
 
+2. Given the significance of systemd to modern Linux distributions, I
+think it might be a good idea if we selected a SELinux "liaison" for
+the systemd project.  This person, or group of people, would work with
+the systemd folks to keep the SELinux integration in good working
+order, review systemd code as necessary, and help represent the
+SELinux project within systemd.
+
+How does that sound to everyone?  If we are in agreement on #2, and
+assuming he would be willing to help out, I would like to nominate
+Christian as our SELinux liaison to systemd; any objections?  Anyone
+else interested in helping out?
+
+For reference, Christian's systemd PRs on GH:
+* https://github.com/systemd/systemd/pull/10023
+* https://github.com/systemd/systemd/pull/20387
+
+--
+paul-moore.com

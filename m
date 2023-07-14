@@ -2,67 +2,56 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83C17752A30
-	for <lists+selinux@lfdr.de>; Thu, 13 Jul 2023 20:08:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52A6175334C
+	for <lists+selinux@lfdr.de>; Fri, 14 Jul 2023 09:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231561AbjGMSIc (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 13 Jul 2023 14:08:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37508 "EHLO
+        id S234875AbjGNHkc (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 14 Jul 2023 03:40:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230337AbjGMSIa (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 13 Jul 2023 14:08:30 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DCC826AF
-        for <selinux@vger.kernel.org>; Thu, 13 Jul 2023 11:08:29 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-9928abc11deso142924366b.1
-        for <selinux@vger.kernel.org>; Thu, 13 Jul 2023 11:08:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1689271708; x=1691863708;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8hxyjIN5Hv7j9NYO3maV/9uRAjdEBeMg6Fe34AL4IiU=;
-        b=Rsr4pDZbL4EHf/TT5JS4mRvY48FZPNs57Gg7lODNlGlKZjvXTFvuK9tKRa7y41zmP8
-         xjmlxYfDjJQABA5PNpgcpLSE0NmKhayQti1yfk1Tgj8Oyhl9t2gpN4X7WTTgVYZUkBIT
-         QOm/CYY1dUu+do23dd4w1xIKmIF20PQjfaxzs8XAgVV99dRhHDj/euNkEFw/e4h2GMFJ
-         mHPdVVBVNQH72wYGP1xx7m8i89QbQ5akHBqs+ZrhXwse9mz7+ZlT6BIx2xRjgeGoHjY6
-         XOI+nHZiX/EsMMqiQO9aa01Xh4KXUMPAwneP8EPR+RqFF2XeFfWASELYMWPeHa9rKtPQ
-         vCtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689271708; x=1691863708;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8hxyjIN5Hv7j9NYO3maV/9uRAjdEBeMg6Fe34AL4IiU=;
-        b=hSdPYv7U3WggncLkDpfD81/sUj0GCpSirREiZp9oSJRTdfoQp5QRfhn4s9HACETZtT
-         sPFrtw7BGWqjzJrB3R7TeH3Scb4vr8/47NhnT/gcMitCxHthvqKASBE+IaNRt0YK7A3B
-         mPK4FRm2azl2vlczNoH0nhjuXK+6yF7ljRyafGs2bdtoPr5gTa21gnvIQUeaGh9hQopr
-         Fxg+jppZ7LwlolaWc63yj4pLglb9ukbteYFCYrQPmk2jjvXs+B0UqG2l2tQVykuDwVgu
-         xl0RmzfQA8rtr3+4Ye2dK9Oo8rW54QWvemS5Urf5wajgVMsleRuBifsW4Og7rbdrqulk
-         LJxQ==
-X-Gm-Message-State: ABy/qLbYNV1UQUsdWhQnB5Np1aAWuuvIyrjc6mmT1DkZv3tsUv0LwKf0
-        Di+9VBpwJ3QI4AYnvecZhhPsoSC7yvVxtCXY
-X-Google-Smtp-Source: APBJJlFufJUwgpgkAgnhWrOiGNiGHU0YVI40xehMete+AipaQwS7Lq3ovlme+l9Oql+w/aiNygla6Q==
-X-Received: by 2002:a17:907:3fa9:b0:96f:d780:5734 with SMTP id hr41-20020a1709073fa900b0096fd7805734mr2480937ejc.65.1689271707986;
-        Thu, 13 Jul 2023 11:08:27 -0700 (PDT)
-Received: from debian_development.DebianHome (dynamic-077-010-190-210.77.10.pool.telefonica.de. [77.10.190.210])
-        by smtp.gmail.com with ESMTPSA id q11-20020a170906940b00b00992d70f8078sm4270014ejx.106.2023.07.13.11.08.27
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jul 2023 11:08:27 -0700 (PDT)
-From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To:     selinux@vger.kernel.org
-Subject: [PATCH 5/5] libsepol: avtab: check read counts for saturation
-Date:   Thu, 13 Jul 2023 20:08:16 +0200
-Message-Id: <20230713180816.101924-5-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230713180816.101924-1-cgzones@googlemail.com>
-References: <20230713180816.101924-1-cgzones@googlemail.com>
+        with ESMTP id S234860AbjGNHkX (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 14 Jul 2023 03:40:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2239E2D78;
+        Fri, 14 Jul 2023 00:40:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B388761C47;
+        Fri, 14 Jul 2023 07:40:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 229E4C433CB;
+        Fri, 14 Jul 2023 07:40:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1689320422;
+        bh=ylFCBrzD3jhCckon40BQfdST+/VYjoup/bmjR+NOtjo=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=OcPd44b5UHUoRcX6lox9u8wbX7c2+1PRbCANuO4cL2wy3CmMovv9H8+chjCpTsuyZ
+         CGvNByzPA/EgetqTOfjZUQnUzHRiriwmumz88OXXBL5G5PXkYT0WLH2pNng9ZXKV4/
+         4DJLVHQpeQPyhhM4sB9izS0I2bKtnEhZbnEf0KqBdWrTj98lVToTIXJHtyU2ZIH6b0
+         pQa397koPfXxKWZ1O0Jwh1l6+E0Xz9wp5fg0i7fmf6G7dz7sbQYNJwMyjeRbdJWZil
+         xyu99dKEE/Ul56XTLcjTvqzfSOh3Fcoyy2GbRA10OLKNI2SzusmxdNbgAjCVby/WZ3
+         gegVdq8+AfusA==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 0CE3BE1B4D6;
+        Fri, 14 Jul 2023 07:40:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Subject: Re: [PATCH net-next 0/4] net: Mark the sk parameter of routing functions
+ as 'const'.
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <168932042204.7517.17249985303620181503.git-patchwork-notify@kernel.org>
+Date:   Fri, 14 Jul 2023 07:40:22 +0000
+References: <cover.1689077819.git.gnault@redhat.com>
+In-Reply-To: <cover.1689077819.git.gnault@redhat.com>
+To:     Guillaume Nault <gnault@redhat.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        edumazet@google.com, netdev@vger.kernel.org, paul@paul-moore.com,
+        eparis@parisplace.org, linux-security-module@vger.kernel.org,
+        selinux@vger.kernel.org, dsahern@kernel.org, xeb@mail.ru
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,56 +60,34 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Ensure counts are not set to the maximum value of their type.
-Also limit their size during fuzzing to prevent OOM reports.
+Hello:
 
-Reported-by: oss-fuzz (issue 60572)
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libsepol/src/avtab.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+This series was applied to netdev/net-next.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-diff --git a/libsepol/src/avtab.c b/libsepol/src/avtab.c
-index 9c7daf8e..cb2ca06a 100644
---- a/libsepol/src/avtab.c
-+++ b/libsepol/src/avtab.c
-@@ -461,6 +461,8 @@ static int avtab_read_name_trans(policy_file_t *fp, symtab_t *target)
- 	if (rc < 0)
- 		return rc;
- 	nel = le32_to_cpu(buf32[0]);
-+	if (is_saturated(nel))
-+		return -1;
- 
- 	rc = symtab_init(target, nel);
- 	if (rc < 0)
-@@ -736,7 +738,7 @@ int avtab_read(avtab_t * a, struct policy_file *fp, uint32_t vers)
- 		goto bad;
- 	}
- 	nel = le32_to_cpu(buf[0]);
--	if (!nel) {
-+	if (zero_or_saturated(nel)) {
- 		ERR(fp->handle, "table is empty");
- 		goto bad;
- 	}
-@@ -909,6 +911,9 @@ static int filename_trans_comp_read_one(avtab_t *a, void *fp)
- 	key.target_class = le32_to_cpu(buf[1]);
- 
- 	ndatum = le32_to_cpu(buf[2]);
-+	if (is_saturated(ndatum))
-+		goto err;
-+
- 	for (i = 0; i < ndatum; i++) {
- 		rc = ebitmap_read(&stypes, fp);
- 		if (rc < 0)
-@@ -951,6 +956,8 @@ int avtab_filename_trans_read(void *fp, uint32_t vers, avtab_t *a)
- 	if (rc < 0)
- 		return rc;
- 	nel = le32_to_cpu(*buf);
-+	if (is_saturated(nel))
-+		return -1;
- 
- 	if (vers < POLICYDB_VERSION_COMP_FTRANS) {
- 		for (i = 0; i < nel; i++) {
+On Tue, 11 Jul 2023 15:06:00 +0200 you wrote:
+> The sk_getsecid security hook prevents the use of a const sk pointer in
+> several routing functions. Since this hook should only read sk data,
+> make its sk argument const (patch 1), then constify the sk parameter of
+> various routing functions (patches 2-4).
+> 
+> Build-tested with make allmodconfig.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,1/4] security: Constify sk in the sk_getsecid hook.
+    https://git.kernel.org/netdev/net-next/c/5b52ad34f948
+  - [net-next,2/4] ipv4: Constify the sk parameter of ip_route_output_*().
+    https://git.kernel.org/netdev/net-next/c/8d6eba33a272
+  - [net-next,3/4] ipv6: Constify the sk parameter of several helper functions.
+    https://git.kernel.org/netdev/net-next/c/5bc67a854cb4
+  - [net-next,4/4] pptp: Constify the po parameter of pptp_route_output().
+    https://git.kernel.org/netdev/net-next/c/dc4c399d215d
+
+You are awesome, thank you!
 -- 
-2.40.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 

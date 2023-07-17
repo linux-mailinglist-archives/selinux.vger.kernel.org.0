@@ -2,114 +2,273 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 047307568C3
-	for <lists+selinux@lfdr.de>; Mon, 17 Jul 2023 18:13:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E9AD756C29
+	for <lists+selinux@lfdr.de>; Mon, 17 Jul 2023 20:34:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230518AbjGQQNc (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 17 Jul 2023 12:13:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58912 "EHLO
+        id S230030AbjGQSeE (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 17 Jul 2023 14:34:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232076AbjGQQNN (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 17 Jul 2023 12:13:13 -0400
-Received: from mail-yw1-x112e.google.com (mail-yw1-x112e.google.com [IPv6:2607:f8b0:4864:20::112e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC7FCFC
-        for <selinux@vger.kernel.org>; Mon, 17 Jul 2023 09:13:09 -0700 (PDT)
-Received: by mail-yw1-x112e.google.com with SMTP id 00721157ae682-579d5d89b41so47072917b3.2
-        for <selinux@vger.kernel.org>; Mon, 17 Jul 2023 09:13:09 -0700 (PDT)
+        with ESMTP id S229667AbjGQSeD (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 17 Jul 2023 14:34:03 -0400
+Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37E5999
+        for <selinux@vger.kernel.org>; Mon, 17 Jul 2023 11:34:02 -0700 (PDT)
+Received: by mail-il1-x135.google.com with SMTP id e9e14a558f8ab-34611de0ee4so20419605ab.0
+        for <selinux@vger.kernel.org>; Mon, 17 Jul 2023 11:34:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1689610389; x=1692202389;
+        d=gmail.com; s=20221208; t=1689618841; x=1692210841;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8CqPKH8zLjxPG0T2aNpKAIqJzacVH6EbJBb3LjExpjw=;
-        b=cQpEj7wQVECv/U9cTpn+RN55ujAIWvks3MU4IX4Wr/hwnFIe0F/qx5YUKjSMpnx703
-         CHzs0WWQ7uBihIAx5z5eiCKmCaltnArXhlaNRgavYeytVm5vSw/gQiRT1py2AerifbO6
-         AiJnYOTJCz0R2HkNoD7T9Yf9t3z2uTFa83xyLrtRemXVRe2lrXcVvM5qyrJMMViUNE7U
-         6aLZBv3MPfrrvSHz+w10LReOyQijeOLBQAf/Jl5WjQxapxktKezBDH2erUpWfo+TfrZS
-         RnuZ/YnESkQ6HSr7gO5+BgLJh/oDlySt0yQzLcBh/BGfPb0h9TdwTyAHNWQPywULEg7z
-         BUVQ==
+        bh=rKovqJAB5k7Hg0OxL6Y3T18NzaAXqWWvdSKdHRXJV58=;
+        b=sZ5WZn2U4BJ2XGt5eRtPcTDtrcs8yj4xodzv9tYHOFQm8c/GjjyRWwCmb5LELd3dsE
+         KZ8tjB8wn/oGuto4CIf7evRf2xwb4ySxTjir00P62n4msuuAAaPLgQwhmWFFIenHA3nN
+         1CSG9mmtzMOJzdxnWBPv/jbo+dvS1zcqOiOspa1I8dVHWL69dyTYoUkdVCiyaMv6OjEH
+         alBiB1f8FZ+2IAlD+II85NCvkTLGtBzXbZZn0HwQbK7yIUVJtYH836Hen97QTlKg4nMr
+         EMWa+zmt2aFOuhSbRJtqarCC1G5Sq0PHBhzd5t3IV7kndOt1rWldoiofYf6XuTZQgyrP
+         6axQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689610389; x=1692202389;
+        d=1e100.net; s=20221208; t=1689618841; x=1692210841;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8CqPKH8zLjxPG0T2aNpKAIqJzacVH6EbJBb3LjExpjw=;
-        b=IqJ/c95pqn8U36Qg12PXQmOx/0spl63Gi7fnOJ3kLRkPlpLQ5VD9u/LZ7CfAPuTHP6
-         V6eSCSqFxbhLYtXrsxBLgfwS9Ae/WSg/JZV5j4j1Cw5Rlrl8LJ7j6+gz2xsUEV4cm65L
-         3fIweEQtD+fbs44rBlY3XAfsbozLQIiEFVdA5nXq8r1Qi5OvQAe7CojifMThCOVMXe+J
-         9rhBfvbe4POZPI/OtPApk8F0preSgk4X2sAoVsALKOBYgAqAJmX7XHXbv6s03gtspvlQ
-         DzZd0waEL/gI31MgWUA7DgTHgIJwx+AF8mwyhOK30Gsum7QCjWH5mDIVSpqspMbaj42z
-         lmwg==
-X-Gm-Message-State: ABy/qLYt7YVMQEboUxyfEuItXIjpEKA0zpRIG7O0opoDerd87RNsEHBp
-        oZgjQli+cwDKPUUjwvZTsriyirH9+2DzNgpBYm9e
-X-Google-Smtp-Source: APBJJlGog4dyfGlwFIS3iBtcrvJFLeH/ogm5YcXS+semC1utnZAcGzlBZgUKou2DvMgGuYXX4nNPAERtXRDz/TQJF88=
-X-Received: by 2002:a81:67c1:0:b0:577:2fda:f181 with SMTP id
- b184-20020a8167c1000000b005772fdaf181mr12551811ywc.44.1689610388723; Mon, 17
- Jul 2023 09:13:08 -0700 (PDT)
+        bh=rKovqJAB5k7Hg0OxL6Y3T18NzaAXqWWvdSKdHRXJV58=;
+        b=deDQFM1Pdr24IOX+i4NGjCdT0iBgpt/uCDaYWss1dm03uC4AOHN2zdZXKLH8Cibi7o
+         m7DIunTVdqUyp6LNssvVWFngIZWI2AuRdUxV2gUE9XSCeeqmB0wa+hYgZwaJdd7Z9rrv
+         vFCPVAuMsmDZERAvYysCDewHES/NhKVm6pFacPR8xKneag6PtJNg0RZqJnjcs7B+H9Hq
+         EgA2peZfenK3hYZ/RjBgMjGgAsCQE926/8pLCpID/qTxrQ286zD27eYF1F+LISF43xW4
+         kw6l6sHo+f9UKxzMtKWk/gjPzf5Wr5XWxD22m0ZyS20W0f/S9bl4/+PwMgPdZ4mn4q71
+         Bp/g==
+X-Gm-Message-State: ABy/qLY+dAXDNRnV86yMgqhf1HpyQuZyHac31l3+cBrqQhIBIUI+7xOO
+        PW8bhOZvKkcLbpyfExtRKDuyYU5En8dfyoubEa77uvPO6bI=
+X-Google-Smtp-Source: APBJJlG5As/d6OwofygwLfg0cgnEoPVzuCRlaLNNs+8zCNlKqhG4Z+fVQS/Q6atECvk6tAc5N8IYP5ITOefXYfGJpzo=
+X-Received: by 2002:a05:6e02:20e2:b0:348:8c85:c998 with SMTP id
+ q2-20020a056e0220e200b003488c85c998mr598103ilv.23.1689618841431; Mon, 17 Jul
+ 2023 11:34:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230712143831.120701-1-wangkefeng.wang@huawei.com> <20230712143831.120701-5-wangkefeng.wang@huawei.com>
-In-Reply-To: <20230712143831.120701-5-wangkefeng.wang@huawei.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 17 Jul 2023 12:12:58 -0400
-Message-ID: <CAHC9VhSU=T5FEP=sZyNukykE-xRzWsqyddS2-+sEsy2bmfGHKQ@mail.gmail.com>
-Subject: Re: [PATCH 4/5] selinux: use vma_is_stack() and vma_is_heap()
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
-        selinux@vger.kernel.org
+References: <20230531112927.1957093-1-juraj@jurajmarcin.com> <20230531112927.1957093-6-juraj@jurajmarcin.com>
+In-Reply-To: <20230531112927.1957093-6-juraj@jurajmarcin.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Mon, 17 Jul 2023 14:33:50 -0400
+Message-ID: <CAEjxPJ5U0uJxhKU6A+igHUvJuOPF=ofaQQ-KTsDec=Exq1wxeg@mail.gmail.com>
+Subject: Re: [PATCH 5/5] selinux: add prefix/suffix matching support to
+ filename type transitions
+To:     Juraj Marcin <juraj@jurajmarcin.com>
+Cc:     Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org,
+        Ondrej Mosnacek <omosnace@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, Jul 12, 2023 at 10:25=E2=80=AFAM Kefeng Wang <wangkefeng.wang@huawe=
-i.com> wrote:
+On Wed, May 31, 2023 at 7:32=E2=80=AFAM Juraj Marcin <juraj@jurajmarcin.com=
+> wrote:
 >
-> Use the helpers to simplify code.
+> Currently, filename type transitions support only exact name matching.
+> However, in practice, the names contain variable parts. This leads to
+> many duplicated rules in the policy that differ only in the part of the
+> name, or it is even impossible to cover all possible combinations.
 >
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> This patch extends the filename type transitions structures to include
+> new types of filename transitions - prefix and suffix filename
+> transitions. It also implements the reading and writing of those rules
+> in the kernel binary policy format together with increasing its version.
+> Last, it updates the function responsible for determining the new
+> context to also include the prefix and suffix filename transitions in
+> the process. It does that by first checking for the exact match, then
+> the longest matching prefix and then the longest matching suffix, in
+> that order. That way the exact match rules have precedence before new
+> rules, to ensure compatibility with older policies.
+>
+> Reviewed-by: Ondrej Mosnacek <omosnace@redhat.com>
+> Signed-off-by: Juraj Marcin <juraj@jurajmarcin.com>
 > ---
->  security/selinux/hooks.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+>  security/selinux/include/security.h |  3 +-
+>  security/selinux/ss/avtab.c         | 53 +++++++++++++++++++--
+>  security/selinux/ss/avtab.h         |  2 +
+>  security/selinux/ss/avtab_test.c    | 16 +++++++
+>  security/selinux/ss/policydb.c      |  5 ++
+>  security/selinux/ss/services.c      | 71 ++++++++++++++++++++++++-----
+>  6 files changed, 133 insertions(+), 17 deletions(-)
 >
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 4e46cf3d67b6..289ef2d6a427 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -3775,13 +3775,10 @@ static int selinux_file_mprotect(struct vm_area_s=
-truct *vma,
->         if (default_noexec &&
->             (prot & PROT_EXEC) && !(vma->vm_flags & VM_EXEC)) {
->                 int rc =3D 0;
-> -               if (vma->vm_start >=3D vma->vm_mm->start_brk &&
-> -                   vma->vm_end <=3D vma->vm_mm->brk) {
-> +               if (vma_is_heap(vma)) {
->                         rc =3D avc_has_perm(sid, sid, SECCLASS_PROCESS,
->                                           PROCESS__EXECHEAP, NULL);
-> -               } else if (!vma->vm_file &&
-> -                          ((vma->vm_start <=3D vma->vm_mm->start_stack &=
-&
-> -                            vma->vm_end >=3D vma->vm_mm->start_stack) ||
-> +               } else if (!vma->vm_file && vma_is_stack(vma) ||
->                             vma_is_stack_for_current(vma))) {
 
-With the parens fix that Andrew already provided.
+> diff --git a/security/selinux/ss/services.c b/security/selinux/ss/service=
+s.c
+> index 131647e7ec68..2faf92bf12da 100644
+> --- a/security/selinux/ss/services.c
+> +++ b/security/selinux/ss/services.c
+> @@ -1661,6 +1661,60 @@ static int compute_sid_handle_invalid_context(
+>         return -EACCES;
+>  }
+>
+> +static int security_compute_type_trans_otype(struct avtab_trans *trans,
+> +                                            const char *name, u32 *res_t=
+ype)
+> +{
+> +       u32 *otype;
+> +       size_t len;
+> +       char *namedup =3D NULL;
+> +       size_t i;
+> +
+> +       /*
+> +        * use default otype if not empty and then try to find more speci=
+fic
+> +        * rule using name
+> +        */
+> +       if (trans->otype)
+> +               *res_type =3D trans->otype;
+> +       if (!name)
+> +               return 0;
+> +
+> +       /* try to find full name */
+> +       otype =3D symtab_search(&trans->name_trans, name);
+> +       if (otype) {
+> +               *res_type =3D *otype;
+> +               return 0;
+> +       }
+> +
+> +       /* copy name for shortening */
+> +       len =3D strlen(name);
+> +       namedup =3D kmemdup(name, len + 1, GFP_KERNEL);
 
-Acked-by: Paul Moore <paul@paul-moore.com>
+This is called in various contexts that cannot sleep; hence, the
+allocation must be GFP_ATOMIC here. With the proper config options
+(CONFIG_DEBUG_ATOMIC_SLEEP=3Dy) you would have seen repeated warnings
+about this in the kernel messages, ala:
 
->                         rc =3D avc_has_perm(sid, sid, SECCLASS_PROCESS,
->                                           PROCESS__EXECSTACK, NULL);
+[  219.944942] BUG: sleeping function called from invalid context at
+include/linux/sched/mm.h:306
+[  219.944951] in_atomic(): 0, irqs_disabled(): 0, non_block: 0, pid:
+1, name: systemd
+[  219.944956] preempt_count: 0, expected: 0
+[  219.944959] RCU nest depth: 1, expected: 0
+[  219.944963] INFO: lockdep is turned off.
+[  219.944967] CPU: 0 PID: 1 Comm: systemd Tainted: G    B   W
+ 6.5.0-rc1+ #32
+[  219.944979] Call Trace:
+[  219.944982]  <TASK>
+[  219.944986]  dump_stack_lvl+0x75/0x90
+[  219.944997]  __might_resched+0x1e1/0x310
+[  219.945008]  ? security_compute_sid.part.0+0x9d8/0xe50
+[  219.945017]  __kmem_cache_alloc_node+0x343/0x380
+[  219.945026]  ? security_compute_sid.part.0+0x9d8/0xe50
+[  219.945033]  ? rcu_is_watching+0x23/0x50
+[  219.945046]  ? security_compute_sid.part.0+0x9d8/0xe50
+[  219.945054]  __kmalloc_node_track_caller+0x52/0x160
+[  219.945068]  kmemdup+0x22/0x50
+[  219.945078]  security_compute_sid.part.0+0x9d8/0xe50
+[  219.945093]  ? __pfx_security_compute_sid.part.0+0x10/0x10
+[  219.945101]  ? rcu_is_watching+0x23/0x50
+[  219.945110]  ? lock_release+0xa0/0x380
+[  219.945116]  ? avc_has_perm_noaudit+0xb4/0x250
+[  219.945127]  ? __pfx_lock_release+0x10/0x10
+[  219.945134]  ? rcu_is_watching+0x23/0x50
+[  219.945143]  ? lock_acquire+0xb5/0x390
+[  219.945148]  ? __filename_parentat+0x282/0x350
+[  219.945160]  ? avc_has_perm_noaudit+0xcc/0x250
+[  219.945178]  security_transition_sid+0x63/0xa0
+[  219.945191]  may_create+0x16a/0x1c0
+[  219.945201]  ? __pfx_may_create+0x10/0x10
+[  219.945207]  ? selinux_inode_permission+0x1c6/0x290
+[  219.945216]  ? __pfx_selinux_inode_permission+0x10/0x10
+[  219.945226]  ? kernfs_iop_permission+0x84/0xa0
+[  219.945238]  security_inode_mkdir+0x61/0x80
+[  219.945251]  vfs_mkdir+0x226/0x380
+[  219.945262]  do_mkdirat+0x1a8/0x1d0
+[  219.945272]  ? __pfx_do_mkdirat+0x10/0x10
+[  219.945280]  ? getname_flags.part.0+0xc6/0x250
+[  219.945290]  __x64_sys_mkdir+0x78/0xa0
+[  219.945300]  do_syscall_64+0x3c/0x90
+[  219.945308]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+[  219.945317] RIP: 0033:0x7ff080322d6b
+[  219.945337] Code: 8b 05 a1 30 0d 00 bb ff ff ff ff 64 c7 00 16 00
+00 00 e9 62 ff ff ff e8 e3 1b 02 00 0f 1f 00 f3 0f 1e fa b8 53 00 00
+00 0f 05 <48> 3d 00 f0 ff ff 77 05 c3 0f 1f 40 00 48 8b 15 69 30 0d 00
+f7 d8
+[  219.945343] RSP: 002b:00007ffe3fbd6cd8 EFLAGS: 00000246 ORIG_RAX:
+0000000000000053
+[  219.945350] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007ff0803=
+22d6b
+[  219.945355] RDX: 0000000000000000 RSI: 00000000000001ed RDI: 000055a4731=
+c2a10
+[  219.945360] RBP: 00007ffe3fbd6d10 R08: 00000000ffffff9c R09: 00007ffe3fb=
+d6b60
+[  219.945364] R10: 0000000000000000 R11: 0000000000000246 R12: 00007ff0806=
+af143
+[  219.945368] R13: 000055a47311ce20 R14: 0000000000000001 R15: 00000000000=
+003a0
+[  219.945382]  </TASK>
+
+> +       if (!namedup)
+> +               return -ENOMEM;
+> +
+> +       /* try to find possible prefixes of name starting from the longes=
+t */
+> +       for (i =3D len; i > 0; i--) {
+> +               namedup[i] =3D '\0';
+> +               otype =3D symtab_search(&trans->prefix_trans, namedup);
+> +               if (otype) {
+> +                       kfree(namedup);
+> +                       *res_type =3D *otype;
+> +                       return 0;
+> +               }
+> +       }
+> +       kfree(namedup);
+> +
+> +       /*try to find possible suffixes of name starting from the longest=
+ */
+> +       for (i =3D 0; i < len; i++) {
+> +               otype =3D symtab_search(&trans->suffix_trans, &name[i]);
+> +               if (otype) {
+> +                       *res_type =3D *otype;
+> +                       return 0;
+> +               }
+> +       }
+> +
+> +       return 0;
+> +}
+> +
+>  static int security_compute_sid(u32 ssid,
+>                                 u32 tsid,
+>                                 u16 orig_tclass,
+> @@ -1802,18 +1856,11 @@ static int security_compute_sid(u32 ssid,
+>         if (avdatum) {
+>                 /* Use the type from the type transition/member/change ru=
+le. */
+>                 if (avkey.specified & AVTAB_TRANSITION) {
+> -                       /*
+> -                        * use default otype if not empty and then to try=
+ to
+> -                        * find more specific rule using objname
+> -                        */
+> -                       if (avdatum->u.trans->otype)
+> -                               newcontext.type =3D avdatum->u.trans->oty=
+pe;
+> -                       if (objname) {
+> -                               otype =3D symtab_search(&avdatum->u.trans=
+->name_trans,
+> -                                                     objname);
+> -                               if (otype)
+> -                                       newcontext.type =3D *otype;
+> -                       }
+> +                       rc =3D security_compute_type_trans_otype(avdatum-=
+>u.trans,
+> +                                                              objname,
+> +                                                              &newcontex=
+t.type);
+> +                       if (rc)
+> +                               goto out_unlock;
+>                 } else {
+>                         newcontext.type =3D avdatum->u.data;
+>                 }
 > --
-> 2.41.0
-
---=20
-paul-moore.com
+> 2.40.0
+>

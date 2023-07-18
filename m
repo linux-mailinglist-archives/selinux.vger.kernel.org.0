@@ -2,142 +2,115 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D1E2A7587F7
-	for <lists+selinux@lfdr.de>; Wed, 19 Jul 2023 00:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A27D7587FA
+	for <lists+selinux@lfdr.de>; Wed, 19 Jul 2023 00:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231352AbjGRWBk (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 18 Jul 2023 18:01:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59608 "EHLO
+        id S231168AbjGRWBo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 18 Jul 2023 18:01:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231208AbjGRWBW (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 18 Jul 2023 18:01:22 -0400
-Received: from mail-qt1-x82f.google.com (mail-qt1-x82f.google.com [IPv6:2607:f8b0:4864:20::82f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 043D1198D
-        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:19 -0700 (PDT)
-Received: by mail-qt1-x82f.google.com with SMTP id d75a77b69052e-403c6a0f3aaso47841151cf.2
-        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:19 -0700 (PDT)
+        with ESMTP id S231246AbjGRWB1 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 18 Jul 2023 18:01:27 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26C5E1BC8
+        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:22 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-7680e3910dfso444971085a.0
+        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1689717679; x=1692309679;
+        d=paul-moore.com; s=google; t=1689717681; x=1692309681;
         h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=5n8Bh8d66inhHJw21BuddS5DHM8rIYty9eo51n5me8c=;
-        b=SmEJ/PYXRCfDwB/QBMY8+BmuMyIgZB9ZFGqhWWC73Lqmv5OyUaW6te3ef8eW8eaGUA
-         CIR1qjgqNlI2izKOCp5q+1Qiu/pyza6W102BK7eyK+O2QxdIz+7tFJwluq+w7iCtHrzn
-         M4q0Hpt0WPpB/ovjuaxrWG298LJ7e5Oe+8uk7RmRMyQylwlaoFvf2yvpbqu1nF5ATNBa
-         XtLOtAEwLkAOMr9TkiZ+wk3+o/SvLufTMVMjgTiscKxw1+CsbpeOsVOMJUots4yXD6Nj
-         Ddon3CY8R6K6kxFAn5pw4L5i2+w7rO/9G3UHE2F0TMOQC3Puvcw2jvgthID0S181uBgl
-         DFiA==
+        bh=9Jy5bic5jodoqmbRGQBCPtseqk5B/IX+1PNMGDEVdgk=;
+        b=bxDKoEjAsfDYs8OyejWBAycPM62wdEsI9sM9VRwnh8gkeW1tA+srstqLqDRcDmM8M2
+         oV/XjwxgXKxZUaxqrxI7PiPebl1L7tr3iiDIiCCKUJwv5uP6g5cGDeMZRQUifnBuAKSy
+         Ek9clW+FoK+7sWQFDFi37i/gFh9yjGC1shzsFIHKu7v17HeOWGN0Hwze065oP/bDIZpy
+         MFGwN3fVZCXH1eGAtjUTp9L9vmpPGHiWNFHRHqWrbQnmNWPdL25a4tYY7HtA8AiZDU/L
+         ZfeEe1gqoqzVascCgZCnWVseKShIYqNk8nsqDytHpfO7qBgyLLhjdeQw0NAzOhDF2zBf
+         jAdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689717679; x=1692309679;
+        d=1e100.net; s=20221208; t=1689717681; x=1692309681;
         h=in-reply-to:references:subject:cc:to:from:message-id:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5n8Bh8d66inhHJw21BuddS5DHM8rIYty9eo51n5me8c=;
-        b=MVqXB9KU0OT3/CZJ7ddJwXS2WBB2/cGf0EJe6T/qEUYCZOf6knJGYX6QliK/N8iGYh
-         QG2PN3iBJ8vktb6OlNgxMQEWuTJZgganiUrTe1gAYwnsNkMfff4J27J7i12LeKXBquaW
-         7whstgXuBN8WK7Y+XDqQe/DB0306KrDT3EapowvaZGhjJtvFaLk1dQIVVSX0yOsecstd
-         X9QELRtvl/cgBEhbLsPbiEXlpQF+QScB2/Qmg/798bdg0SPm4E3SjV1cBeWoHwf0zkUJ
-         tgP5oLDY9YHKmAURcsuKcNyHVqowl+tmkDsOrjJALJL3wPbchtYOQ3A6beYxMndU8qAn
-         BKpA==
-X-Gm-Message-State: ABy/qLame/vizXcQ/Dsl1AhvqjP3MAooG12tioWDELLakT4hB7Gcb/0B
-        1MWn7CZ88HqvQAtvCflW8geK
-X-Google-Smtp-Source: APBJJlF5JOrCTg3q4UiAHi9JMoDlk1oRvaAdE925uSkHMaJC3+uT0s8qsIU/Yvq18MaXgjY2sZjhSw==
-X-Received: by 2002:a05:622a:144e:b0:403:c687:bfb6 with SMTP id v14-20020a05622a144e00b00403c687bfb6mr23713673qtx.1.1689717678774;
-        Tue, 18 Jul 2023 15:01:18 -0700 (PDT)
+        bh=9Jy5bic5jodoqmbRGQBCPtseqk5B/IX+1PNMGDEVdgk=;
+        b=GEgTu9HwmVmepJIspfdnVvBQxv+KxLRlOtn0flb4C20cUg2DtR4iEuxioRDryp//Tq
+         kTfF4cqYgCwEltdzk5Br3zL1PTHnbNxC9+mmW82SxYFNzwh5DWRnyZgMiTOF1QGbgAf5
+         05eJvi31IbDStjZYj+jdpCqu43dOvIxog15urewTIFGbw3+mLA4DZEEJf/V7xUOxRlEG
+         Oj9/jTEwT+F9agnTiQO7/41eWwl2kWXTmLT+G6n1lPTfwZB1IlWgnrpxARnC3jpR1IOP
+         RhIuMoZkcntXWaFUDDvsLEfTbAH5tH1fcc69vQDJTy76i69kWg5kcSKcdffBQUW7AS9l
+         pBXg==
+X-Gm-Message-State: ABy/qLYDEHWHMGTfKkkuHkwtUWj0kPgtHedvyvmpQGc+tOBcMg4yhw+v
+        N8d8SoCDmJlsmQ2iOfjiRO77
+X-Google-Smtp-Source: APBJJlFbzPeSSZ71QpN34288UMOaN3bCXHdNNY8QkXt2uAQgO6QzRUA1GX58y9jQ7idvrH2s4/Fdrw==
+X-Received: by 2002:a05:620a:c0f:b0:75b:23a1:3606 with SMTP id l15-20020a05620a0c0f00b0075b23a13606mr17925433qki.23.1689717680837;
+        Tue, 18 Jul 2023 15:01:20 -0700 (PDT)
 Received: from localhost ([70.22.175.108])
-        by smtp.gmail.com with ESMTPSA id bs19-20020ac86f13000000b00403fc303060sm549663qtb.97.2023.07.18.15.01.18
+        by smtp.gmail.com with ESMTPSA id p9-20020a05620a15e900b00767721aebc0sm889239qkm.32.2023.07.18.15.01.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 15:01:18 -0700 (PDT)
-Date:   Tue, 18 Jul 2023 18:01:18 -0400
-Message-ID: <703e95374a9a0d25186e7ac472f143d7.paul@paul-moore.com>
+        Tue, 18 Jul 2023 15:01:20 -0700 (PDT)
+Date:   Tue, 18 Jul 2023 18:01:20 -0400
+Message-ID: <95bf84fd76c7eac5e9e53ad658d26f2c.paul@paul-moore.com>
 From:   Paul Moore <paul@paul-moore.com>
-To:     Gong Ruiqi <gongruiqi1@huawei.com>,
-        =?UTF-8?Q?Christian_G=c3=b6ttsche?= <cgzones@googlemail.com>
+To:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        selinux@vger.kernel.org
 Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
         Ondrej Mosnacek <omosnace@redhat.com>,
-        <linux-kernel@vger.kernel.org>, <selinux@vger.kernel.org>
-Subject: Re: [PATCH RFC 7/20] selinux: services: update type for umber of class  permissions
-References: <20230706132337.15924-7-cgzones@googlemail.com>
-In-Reply-To: <20230706132337.15924-7-cgzones@googlemail.com>
+        Xiu Jianfeng <xiujianfeng@huaweicloud.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 9/20] selinux: status: consistently use u32 as sequence  number type
+References: <20230706132337.15924-9-cgzones@googlemail.com>
+In-Reply-To: <20230706132337.15924-9-cgzones@googlemail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Jul  6, 2023 Gong Ruiqi <gongruiqi1@huawei.com> wrote:
+On Jul  6, 2023 =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com> wrote:
 > 
-> Security classes have only up to 32 permissions, hence using an u16 is
-> sufficient (while improving padding).
-
-Can you explain the improved padding comment?  It looks like you are
-only changing the iterator's type so the struct should remain
-unchanged, and FWIW, it looks like security_class_wrapping allocates
-space for 33 permission strings.
-
-> Also use a fixed sized cast in a bit shift to work correctly on
-> architectures where sizeof(unsigned int) != sizeof(u32).
+> Align the type with the one used in selinux_notify_policy_change() and
+> the sequence member of struct selinux_kernel_status.
 > 
 > Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 > ---
->  security/selinux/ss/services.c | 6 +++---
->  security/selinux/ss/services.h | 2 +-
->  2 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-> index 78946b71c1c1..3275cfe2c8f7 100644
-> --- a/security/selinux/ss/services.c
-> +++ b/security/selinux/ss/services.c
-> @@ -97,7 +97,6 @@ static int selinux_set_mapping(struct policydb *pol,
->  			       struct selinux_map *out_map)
+>  security/selinux/include/security.h | 2 +-
+>  security/selinux/status.c           | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+
+I was going to suggest you also update avc_latest_notif_update(), but
+it looks like you tackle that later in the patchset.
+
+Merged into selinux/next, thanks.
+
+> diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
+> index 0f93fd019bb4..a16c52d553e1 100644
+> --- a/security/selinux/include/security.h
+> +++ b/security/selinux/include/security.h
+> @@ -376,7 +376,7 @@ struct selinux_kernel_status {
+>  } __packed;
+>  
+>  extern void selinux_status_update_setenforce(int enforcing);
+> -extern void selinux_status_update_policyload(int seqno);
+> +extern void selinux_status_update_policyload(u32 seqno);
+>  extern void selinux_complete_init(void);
+>  extern struct path selinux_null;
+>  extern void selnl_notify_setenforce(int val);
+> diff --git a/security/selinux/status.c b/security/selinux/status.c
+> index 19ef929a075c..e436e4975adc 100644
+> --- a/security/selinux/status.c
+> +++ b/security/selinux/status.c
+> @@ -101,7 +101,7 @@ void selinux_status_update_setenforce(int enforcing)
+>   * It updates status of the times of policy reloaded, and current
+>   * setting of deny_unknown.
+>   */
+> -void selinux_status_update_policyload(int seqno)
+> +void selinux_status_update_policyload(u32 seqno)
 >  {
->  	u16 i, j;
-> -	unsigned k;
->  	bool print_unknown_handle = false;
->  
->  	/* Find number of classes in the input mapping */
-> @@ -117,6 +116,7 @@ static int selinux_set_mapping(struct policydb *pol,
->  	while (map[j].name) {
->  		const struct security_class_mapping *p_in = map + (j++);
->  		struct selinux_mapping *p_out = out_map->mapping + j;
-> +		u16 k;
->  
->  		/* An empty class string skips ahead */
->  		if (!strcmp(p_in->name, "")) {
-> @@ -202,7 +202,7 @@ static void map_decision(struct selinux_map *map,
->  {
->  	if (tclass < map->size) {
->  		struct selinux_mapping *mapping = &map->mapping[tclass];
-> -		unsigned int i, n = mapping->num_perms;
-> +		u16 i, n = mapping->num_perms;
->  		u32 result;
->  
->  		for (i = 0, result = 0; i < n; i++) {
-> @@ -230,7 +230,7 @@ static void map_decision(struct selinux_map *map,
->  		 * should audit that denial
->  		 */
->  		for (; i < (sizeof(u32)*8); i++)
-> -			result |= 1<<i;
-> +			result |= 1<<((u32)i);
->  		avd->auditdeny = result;
->  	}
->  }
-> diff --git a/security/selinux/ss/services.h b/security/selinux/ss/services.h
-> index 8a9b85f44b66..b6f99353301e 100644
-> --- a/security/selinux/ss/services.h
-> +++ b/security/selinux/ss/services.h
-> @@ -12,7 +12,7 @@
->  /* Mapping for a single class */
->  struct selinux_mapping {
->  	u16 value; /* policy value for class */
-> -	unsigned int num_perms; /* number of permissions in class */
-> +	u16 num_perms; /* number of permissions in class */
->  	u32 perms[sizeof(u32) * 8]; /* policy values for permissions */
->  };
+>  	struct selinux_kernel_status   *status;
 >  
 > -- 
 > 2.40.1

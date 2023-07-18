@@ -2,63 +2,62 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 357897587EB
-	for <lists+selinux@lfdr.de>; Wed, 19 Jul 2023 00:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DF167587EF
+	for <lists+selinux@lfdr.de>; Wed, 19 Jul 2023 00:01:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbjGRWBT (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 18 Jul 2023 18:01:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59440 "EHLO
+        id S231196AbjGRWBV (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 18 Jul 2023 18:01:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230093AbjGRWBQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 18 Jul 2023 18:01:16 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF98A19B2
-        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:13 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-766fd5f9536so421787985a.3
-        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:13 -0700 (PDT)
+        with ESMTP id S231169AbjGRWBR (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 18 Jul 2023 18:01:17 -0400
+Received: from mail-qk1-x735.google.com (mail-qk1-x735.google.com [IPv6:2607:f8b0:4864:20::735])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872E2198E
+        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:15 -0700 (PDT)
+Received: by mail-qk1-x735.google.com with SMTP id af79cd13be357-765942d497fso565566085a.1
+        for <selinux@vger.kernel.org>; Tue, 18 Jul 2023 15:01:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1689717673; x=1692309673;
+        d=paul-moore.com; s=google; t=1689717674; x=1692309674;
         h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Z0/uf5AvHD3Ad9NS83FZnzRuH3oiKZoLYaLQ80T3/84=;
-        b=Be6zVOCErHmcczCO6fqOr11lh9Xyzw7rJ7oPkz/UXLYHG4MTP+IhvLNL26Q0V4eMH6
-         OLG2EBrwnWD5iYXvs0uuxaUJFT3E1Fc3O78lusGJF2KBKgaYeeSkKDyzmCrAfyiJGP0S
-         dv76BfQ2bFT+DjoV1+4LJL9WFyolS4/2Pxz9NC4RHsLIWCb7dl9on8XIYOF6yS4IVF+9
-         BKeokHt3R78is4+UjwIerhOpSQKhlLO7cOhwmWHD8ijMP+GuDCr+uFdw14BAYnHbHPDi
-         /oLO1EfP6nHwbX3dfFWcAHCsXO2XTQGkg5zWgXCZLAOqURbBPJWFe861glRe1Xp1/GIB
-         TpVg==
+        bh=q0cxD0bDSBI3iXwBbGCEOOB62CAlIgStj1niGo6wUfs=;
+        b=BEjayJIVSjPLP6rBRHfpaDVYX4HBSO9IEJ7V8XaZQecA/tokegyGgh/hWaMya6lmgM
+         f4MAHmrEhKWn1W12y01ExDcysvIfQZd9vwHJ6d6lsgjFcH/wBrOvLlogCe65uopXU7Bi
+         wGLw7XlWSdo+Td4SmXwckU1U2KdjdXzJhNI8YgGm/rJMjZczcUT26s7K1h/TEsYcNLBC
+         EySKNW/Se5SBqTp/CLDPrBLhi8PBkCuSn/B5sQJ5TF+Z1qMxzIAB2eG9Z9/D7rMDxJkb
+         j+tgLC6JnqiKJ3M/VRR1gUhBz884H+a2G4bJGOzMOYq6vRQ2c0mzcte5AzudV5efuVG9
+         5UmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689717673; x=1692309673;
+        d=1e100.net; s=20221208; t=1689717674; x=1692309674;
         h=in-reply-to:references:subject:cc:to:from:message-id:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Z0/uf5AvHD3Ad9NS83FZnzRuH3oiKZoLYaLQ80T3/84=;
-        b=dvzTDFprPnDfVaFEVtq5YO5HwJs62myrDK86yjebc6Z3jy9z1ARTi97faZHajTBYIq
-         c2BiOsrJjrCagUMYFDcxFbCKBE3RjF5Kym0rcrcLigB1jP57GYtjp4qV8A0aDAi/TQOc
-         9wniLXlQpmpb2v9qh8IimdjELZ/zZXdaKdZEcA6mcipM9e6i8902XS9kuyh+0HMp3J/R
-         dWY6y9CKVbd7pK0TAIYipaTuQ6CNhe4aKH0NgKR5VjcIBRF/nyBexoI8+BxNmRwX33yC
-         KNNY+xFPNjxPCv7wFN3cgadoxMvdH1ES75EQpmzAXbARiiH3gIG2FpLZDxcFyE2X63mJ
-         Fnbw==
-X-Gm-Message-State: ABy/qLYQ1ONk2Ud5TCmXOoDXB11wl3i3Mc5gbm84v5lM559SxoTKqMmp
-        Qm8Yq2ym/uXbBW4Y2AADCJ60
-X-Google-Smtp-Source: APBJJlHFnLy5PH2r2LCdf+C6Xe1C4n2YBqesF57TOIq56DDmQRQbh04seW3hlYl3u+MrP4i9FEQdeQ==
-X-Received: by 2002:a05:620a:1a84:b0:767:e57f:6fe with SMTP id bl4-20020a05620a1a8400b00767e57f06femr1115499qkb.61.1689717673041;
-        Tue, 18 Jul 2023 15:01:13 -0700 (PDT)
+        bh=q0cxD0bDSBI3iXwBbGCEOOB62CAlIgStj1niGo6wUfs=;
+        b=T7ShiRbagGPkMT7tLgFgd5Ym55DTez1N6k3gpCtKTM280iEhPc3fDvCQQI3d2cC6xs
+         3NxQfAMNC5nSHWK/aXq5U7R58COID+/ekq5yFr6K7T3jUAog/FTrNbM7EvE2/+wUnb7z
+         kjU4iFFKGlEnU1eGr+mj7E69QgXE+hV+OJqqkV84z92OaYvFi61p2/i4LIhsAzy0D+FD
+         QmbDUK1jaqDp2DQqVHuodgT5pOWTstP6AMohqrUUOPbSvj8K1w98TXJjik3G4ByPFSuM
+         2BVpQldZOIdShpjLMRBld+2g/BkIaAbtxmV0Vabqye2q1NZNoJ1/YidzqAmZ4vAq6Jzp
+         u5xw==
+X-Gm-Message-State: ABy/qLZuzNrgRMlDw5YYGBN4FK45pqN9NpLFTmh9HAgYXg9B5QwoOT9m
+        lo1E7R2UxEiB+pv3PKhGlP9G
+X-Google-Smtp-Source: APBJJlEtgaOZvqlrgGbcYhiLUehU1+h01BWuQ7CUTaLh/SAIqW1VqePSRHvS4qtWm2e2Xyn8g8sqBA==
+X-Received: by 2002:a05:620a:2d87:b0:768:14ee:234c with SMTP id tr7-20020a05620a2d8700b0076814ee234cmr9010116qkn.50.1689717674012;
+        Tue, 18 Jul 2023 15:01:14 -0700 (PDT)
 Received: from localhost ([70.22.175.108])
-        by smtp.gmail.com with ESMTPSA id i2-20020a05620a074200b00767fbfea21dsm877906qki.69.2023.07.18.15.01.12
+        by smtp.gmail.com with ESMTPSA id d23-20020a05620a159700b00767c8308329sm893121qkk.25.2023.07.18.15.01.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jul 2023 15:01:12 -0700 (PDT)
-Date:   Tue, 18 Jul 2023 18:01:12 -0400
-Message-ID: <6fcffe16a17c4e1b28daa23f3c6ca49f.paul@paul-moore.com>
+        Tue, 18 Jul 2023 15:01:13 -0700 (PDT)
+Date:   Tue, 18 Jul 2023 18:01:13 -0400
+Message-ID: <50ff9fb2fb463d74065580e41c4cc194.paul@paul-moore.com>
 From:   Paul Moore <paul@paul-moore.com>
-To:     Gong Ruiqi <gongruiqi1@huawei.com>,
-        =?UTF-8?Q?Christian_G=c3=b6ttsche?= <cgzones@googlemail.com>
+To:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        selinux@vger.kernel.org
 Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        <linux-kernel@vger.kernel.org>, <selinux@vger.kernel.org>
-Subject: Re: [PATCH RFC 1/20] selinux: check for multiplication overflow in  put_entry()
-References: <20230706132337.15924-1-cgzones@googlemail.com>
-In-Reply-To: <20230706132337.15924-1-cgzones@googlemail.com>
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 2/20] selinux: avtab: avoid implicit conversions
+References: <20230706132337.15924-2-cgzones@googlemail.com>
+In-Reply-To: <20230706132337.15924-2-cgzones@googlemail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -69,22 +68,25 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Jul  6, 2023 Gong Ruiqi <gongruiqi1@huawei.com> wrote:
+On Jul  6, 2023 =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com> wrote:
 > 
-> The function is always inlined and most of the time both relevant
-> arguments are compile time constants, allowing compilers to elide the
-> check.  Also the function is part of outputting the policy, which is not
-> performance critical.
+> Return u32 from avtab_hash() instead of int, since the hashing is done
+> on u32 and the result is used as an index on the hash array.
 > 
-> Also convert the type of the third parameter into a size_t, since it
-> should always be a non-negative number of elements.
+> Use the type of the limit in for loops.
+> 
+> Avoid signed to unsigned conversion of multiplication result in
+> avtab_hash_eval().
+> 
+> Use unsigned loop iterator for index operations, to avoid sign
+> extension.
 > 
 > Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 > ---
->  security/selinux/ss/policydb.h | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+>  security/selinux/ss/avtab.c | 38 ++++++++++++++++++-------------------
+>  1 file changed, 18 insertions(+), 20 deletions(-)
 
-Merged into selinux/next, thanks.
+See my previous comment about loop iterators.
 
 --
 paul-moore.com

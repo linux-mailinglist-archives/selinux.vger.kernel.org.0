@@ -2,71 +2,68 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5FA8767133
-	for <lists+selinux@lfdr.de>; Fri, 28 Jul 2023 17:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 411ED76714A
+	for <lists+selinux@lfdr.de>; Fri, 28 Jul 2023 17:59:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236619AbjG1Pzj (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 28 Jul 2023 11:55:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43068 "EHLO
+        id S234277AbjG1P7o (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 28 Jul 2023 11:59:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236571AbjG1Pzb (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 28 Jul 2023 11:55:31 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07D6E4234;
-        Fri, 28 Jul 2023 08:55:23 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-99b9161b94aso323167466b.1;
-        Fri, 28 Jul 2023 08:55:22 -0700 (PDT)
+        with ESMTP id S233183AbjG1P7n (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 28 Jul 2023 11:59:43 -0400
+Received: from mail-lj1-x234.google.com (mail-lj1-x234.google.com [IPv6:2a00:1450:4864:20::234])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5236D30C5;
+        Fri, 28 Jul 2023 08:59:42 -0700 (PDT)
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2b9cdbf682eso15545331fa.2;
+        Fri, 28 Jul 2023 08:59:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1690559721; x=1691164521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oM73crZF1OwWubA/9TVH96k0bOHmyZqLxxUUVrKWtrg=;
-        b=Kxm0yG8GrQIAOwdCghPWFu9NE7HCyOp2/7S3KYraAgWsVamTJTs8yrb6UmSC4Y+3eL
-         QciifPH+BKENmagZUkl8AJSqhlGp9C+Ub2xjyP+0BywPWPFD8c3rJFvzsdQK82DeIvVf
-         lyZjgZqTEYlrhtdXdEIV7HiXZBFnH6cId6EBCmgxqPupNt7SJ4ADRX13UAKyrwijDtc6
-         8p8ecUECJOlnbnLTog1hXCH2gAN4wGNx554OsvbmOyaFRZAi6pR+mtUeT4TqK7nYctFS
-         dBQDaWQ6IqpLMExlWDZqsaQ1VeSHhZSB3o2VmnIyA/DFPaaDQUPQBjSiGUWnHN4LV1l5
-         M3YA==
+        d=googlemail.com; s=20221208; t=1690559980; x=1691164780;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZCo106lcr9OqOXKGEBc+DWq16XxEQ27Fez5FxReeABs=;
+        b=KYAbHJ5LH+6aRGAn/7WkpYeyXXARCEkOEG+I8VHav2Bv9WJffcJ5uztxifyhpuTPjs
+         nzZoDWg4Zj0pxIG10JMgsZLYFU7wmRpLHgd94u8c/fS9wVf5SKy1NYbyqx0ML9OHmNxs
+         0tFWzO8QaS/s8kkjyx9TcvvZ4zkF9sE8Gmqk3pdGZ+ft1IhK46tFu3tl8bwk9yHs+B3C
+         3oTTxD8Yrl3xKRqnNxuZiASXdockAuWDljHS3gjeqGAQ4GqhlSlnO74CCq+NvbuLE9Ug
+         a/CAIPmyOKTqhDUyyMI7CnCVx5m40153Zw0dtvq497zHZNvi0hQiol0DTWLGqeiIM56R
+         5U7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690559721; x=1691164521;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oM73crZF1OwWubA/9TVH96k0bOHmyZqLxxUUVrKWtrg=;
-        b=PDnAaynW8c/PStL4trfXb3DFizvEgGSKkLyUHuojAtTePuQ1ysfph4qe2mRYPgzFlI
-         ase6Cd4BZ2X7KU80fYGk3S2aTNTGC2u7dHqwWpfO7iqrzf/iTIYrj90ML8+4CN8hIXOE
-         /TlOHBk97gQZEBHgeXBDWOCj3RB4ibtlfJ95b7W3CqU9x9R3sSIKF0hhYPoV/gy2jp1E
-         As40Oql53RO+I3LPj0dM0+0q7AfNsifojbsCdUeFJnw17Cyc1+cnMd+ll77+2Btw7nYr
-         YwhkMqWKLGayKX1DmbV41xDoJv0l/vr/Q73/WKkhaOISf9P/Xn8/hLLTZAwPLb6dDFh7
-         q07Q==
-X-Gm-Message-State: ABy/qLY28UdnqOdA8HPOblkS4bPOO94ER+G0IMbF32n3Zza/ibPsmG/u
-        0EGJUnkwAHmWxh/+UHKMvitgcq0xKHsBh+Cg
-X-Google-Smtp-Source: APBJJlESa5evvEJRFFeV2ks7O4w0ExpJTYfJxKKyTDsNwdPrFIOUeCQ4bhmSB8WPLtir7HHwcWmecA==
-X-Received: by 2002:a17:906:30c2:b0:982:ab8d:1e08 with SMTP id b2-20020a17090630c200b00982ab8d1e08mr2809259ejb.59.1690559721187;
-        Fri, 28 Jul 2023 08:55:21 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690559980; x=1691164780;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZCo106lcr9OqOXKGEBc+DWq16XxEQ27Fez5FxReeABs=;
+        b=Mi7Yewi8DCq+O0YG5MEVsgM+mLvBXA9UFk+gSgzZVL46QggdkCRJUFmthRrnnUG10w
+         49g/AxBgFoQBqr9tISZN1Wt/Zak1dNzEABjy/sgDmtMbvD7/Sp+y1sDxl+UnGe1sTcIB
+         iB0hV6/hbNyOsPcElU7t40O3ZTA8n5NeXqRtuUJifmFxBwvaXABwDjUYEscQrH2QCTbK
+         GoWyqxcqlr5OlXGYbF8jx0J5VdY9MjcEM0iScrHuAbNbPDogfRi2t3Ep2WTg0uSyDk8Y
+         bdJgFiGemyCtgdFG8A7/5lae/eiLL2S0azUDuqjyKIiuh+V1Pytdqt0e4p6TtX2m3+yk
+         K7qg==
+X-Gm-Message-State: ABy/qLY+mjfZhZiq082lERLaGFJ8dnEC2pCCFc+xsz0B17tyfGinfAUc
+        27nHBUncAlDiNPd0rgQaBhB3ehldEe5VRLDh
+X-Google-Smtp-Source: APBJJlFngmMeT1B/NQJD0a55UKx2ii0K3srqbk3P4CC5ivKeUAKqKFzB0MR6HKuhwkNamexMh8lEcw==
+X-Received: by 2002:a05:651c:156:b0:2b9:c644:415d with SMTP id c22-20020a05651c015600b002b9c644415dmr1981105ljd.46.1690559980215;
+        Fri, 28 Jul 2023 08:59:40 -0700 (PDT)
 Received: from debian_development.DebianHome (dynamic-077-000-157-016.77.0.pool.telefonica.de. [77.0.157.16])
-        by smtp.gmail.com with ESMTPSA id f5-20020a1709064dc500b0098669cc16b2sm2198345ejw.83.2023.07.28.08.55.20
+        by smtp.gmail.com with ESMTPSA id lu44-20020a170906faec00b00992f309cfe8sm2215810ejb.178.2023.07.28.08.59.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jul 2023 08:55:20 -0700 (PDT)
+        Fri, 28 Jul 2023 08:59:39 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
 Cc:     Paul Moore <paul@paul-moore.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/9] selinux: avoid implicit conversions in avtab code
-Date:   Fri, 28 Jul 2023 17:55:00 +0200
-Message-Id: <20230728155501.39632-9-cgzones@googlemail.com>
+Subject: [RFC PATCH] selinux: optimize ebitmap_and()
+Date:   Fri, 28 Jul 2023 17:59:36 +0200
+Message-Id: <20230728155937.41580-1-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230728155501.39632-1-cgzones@googlemail.com>
-References: <20230728155501.39632-1-cgzones@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
         URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,118 +71,81 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Return u32 from avtab_hash() instead of int, since the hashing is done
-on u32 and the result is used as an index on the hash array.
+Iterate on nodes instead of single bits to save node resolution for each
+single bit.
 
-Use the type of the limit in for loops.
-
-Avoid signed to unsigned conversion of multiplication result in
-avtab_hash_eval().
-
-Use unsigned loop iterator for index operations, to avoid sign
-extension.
+Similar to userspace patch efcd00814879 ("libsepol: optimize
+ebitmap_and").
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
-v2: avoid declarations in init-clauses of for loops
----
- security/selinux/ss/avtab.c | 23 ++++++++++++-----------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ security/selinux/ss/ebitmap.c | 48 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 41 insertions(+), 7 deletions(-)
 
-diff --git a/security/selinux/ss/avtab.c b/security/selinux/ss/avtab.c
-index 32f92da00b0e..8a508018e696 100644
---- a/security/selinux/ss/avtab.c
-+++ b/security/selinux/ss/avtab.c
-@@ -29,7 +29,7 @@ static struct kmem_cache *avtab_xperms_cachep __ro_after_init;
- /* Based on MurmurHash3, written by Austin Appleby and placed in the
-  * public domain.
-  */
--static inline int avtab_hash(const struct avtab_key *keyp, u32 mask)
-+static inline u32 avtab_hash(const struct avtab_key *keyp, u32 mask)
+diff --git a/security/selinux/ss/ebitmap.c b/security/selinux/ss/ebitmap.c
+index 77875ad355f7..5ac8acacf873 100644
+--- a/security/selinux/ss/ebitmap.c
++++ b/security/selinux/ss/ebitmap.c
+@@ -81,18 +81,52 @@ int ebitmap_cpy(struct ebitmap *dst, const struct ebitmap *src)
+ 
+ int ebitmap_and(struct ebitmap *dst, const struct ebitmap *e1, const struct ebitmap *e2)
  {
- 	static const u32 c1 = 0xcc9e2d51;
- 	static const u32 c2 = 0x1b873593;
-@@ -66,7 +66,7 @@ static inline int avtab_hash(const struct avtab_key *keyp, u32 mask)
+-	struct ebitmap_node *n;
+-	int bit, rc;
++	const struct ebitmap_node *n1, *n2;
++	struct ebitmap_node *new = NULL, **prev;
+ 
+ 	ebitmap_init(dst);
+ 
+-	ebitmap_for_each_positive_bit(e1, n, bit) {
+-		if (ebitmap_get_bit(e2, bit)) {
+-			rc = ebitmap_set_bit(dst, bit, 1);
+-			if (rc < 0)
+-				return rc;
++	prev = &dst->node;
++	n1 = e1->node;
++	n2 = e2->node;
++	while (n1 && n2) {
++		if (n1->startbit == n2->startbit) {
++			unsigned long testmap[EBITMAP_UNIT_NUMS];
++			unsigned int i;
++			bool match = false;
++
++			for (i = 0; i < sizeof(testmap); i++) {
++				testmap[i] = n1->maps[i] & n2->maps[i];
++				if (testmap[i] != 0)
++					match = true;
++			}
++
++			if (match) {
++				new = kmem_cache_zalloc(ebitmap_node_cachep, GFP_ATOMIC);
++				if (!new) {
++					ebitmap_destroy(dst);
++					return -ENOMEM;
++				}
++				new->startbit = n1->startbit;
++				memcpy(new->maps, testmap, EBITMAP_SIZE / 8);
++				new->next = NULL;
++
++				*prev = new;
++				prev = &(new->next);
++			}
++
++			n1 = n1->next;
++			n2 = n2->next;
++		} else if (n1->startbit > n2->startbit) {
++			n2 = n2->next;
++		} else {
++			n1 = n1->next;
+ 		}
+ 	}
++
++	if (new)
++		dst->highbit = new->startbit + EBITMAP_SIZE;
++
+ 	return 0;
  }
  
- static struct avtab_node*
--avtab_insert_node(struct avtab *h, int hvalue,
-+avtab_insert_node(struct avtab *h, u32 hvalue,
- 		  struct avtab_node *prev,
- 		  const struct avtab_key *key, const struct avtab_datum *datum)
- {
-@@ -106,7 +106,7 @@ avtab_insert_node(struct avtab *h, int hvalue,
- static int avtab_insert(struct avtab *h, const struct avtab_key *key,
- 			const struct avtab_datum *datum)
- {
--	int hvalue;
-+	u32 hvalue;
- 	struct avtab_node *prev, *cur, *newnode;
- 	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
- 
-@@ -152,7 +152,7 @@ struct avtab_node *avtab_insert_nonunique(struct avtab *h,
- 					  const struct avtab_key *key,
- 					  const struct avtab_datum *datum)
- {
--	int hvalue;
-+	u32 hvalue;
- 	struct avtab_node *prev, *cur;
- 	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
- 
-@@ -186,7 +186,7 @@ struct avtab_node *avtab_insert_nonunique(struct avtab *h,
- struct avtab_node *avtab_search_node(struct avtab *h,
- 				     const struct avtab_key *key)
- {
--	int hvalue;
-+	u32 hvalue;
- 	struct avtab_node *cur;
- 	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
- 
-@@ -246,7 +246,7 @@ avtab_search_node_next(struct avtab_node *node, u16 specified)
- 
- void avtab_destroy(struct avtab *h)
- {
--	int i;
-+	u32 i;
- 	struct avtab_node *cur, *temp;
- 
- 	if (!h)
-@@ -324,7 +324,8 @@ int avtab_alloc_dup(struct avtab *new, const struct avtab *orig)
- 
- void avtab_hash_eval(struct avtab *h, const char *tag)
- {
--	int i, chain_len, slots_used, max_chain_len;
-+	u32 i;
-+	unsigned int chain_len, slots_used, max_chain_len;
- 	unsigned long long chain2_len_sum;
- 	struct avtab_node *cur;
- 
-@@ -372,13 +373,13 @@ int avtab_read_item(struct avtab *a, void *fp, struct policydb *pol,
- {
- 	__le16 buf16[4];
- 	u16 enabled;
--	u32 items, items2, val, vers = pol->policyvers;
-+	u32 items, items2, val, i;
- 	struct avtab_key key;
- 	struct avtab_datum datum;
- 	struct avtab_extended_perms xperms;
- 	__le32 buf32[ARRAY_SIZE(xperms.perms.p)];
--	int i, rc;
--	unsigned set;
-+	int rc;
-+	unsigned int set, vers = pol->policyvers;
- 
- 	memset(&key, 0, sizeof(struct avtab_key));
- 	memset(&datum, 0, sizeof(struct avtab_datum));
-@@ -614,7 +615,7 @@ int avtab_write_item(struct policydb *p, const struct avtab_node *cur, void *fp)
- 
- int avtab_write(struct policydb *p, struct avtab *a, void *fp)
- {
--	unsigned int i;
-+	u32 i;
- 	int rc = 0;
- 	struct avtab_node *cur;
- 	__le32 buf[1];
 -- 
 2.40.1
 

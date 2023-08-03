@@ -2,48 +2,48 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 226E976EF52
-	for <lists+selinux@lfdr.de>; Thu,  3 Aug 2023 18:23:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AF7E76EF53
+	for <lists+selinux@lfdr.de>; Thu,  3 Aug 2023 18:23:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233901AbjHCQXf (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 3 Aug 2023 12:23:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58752 "EHLO
+        id S236414AbjHCQXh (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 3 Aug 2023 12:23:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235307AbjHCQXe (ORCPT
+        with ESMTP id S236464AbjHCQXe (ORCPT
         <rfc822;selinux@vger.kernel.org>); Thu, 3 Aug 2023 12:23:34 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEB3330DD
-        for <selinux@vger.kernel.org>; Thu,  3 Aug 2023 09:23:32 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id 4fb4d7f45d1cf-5230d2b8128so1392407a12.0
-        for <selinux@vger.kernel.org>; Thu, 03 Aug 2023 09:23:32 -0700 (PDT)
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE8430D3
+        for <selinux@vger.kernel.org>; Thu,  3 Aug 2023 09:23:33 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-51e28cac164so4876319a12.1
+        for <selinux@vger.kernel.org>; Thu, 03 Aug 2023 09:23:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1691079811; x=1691684611;
+        d=googlemail.com; s=20221208; t=1691079812; x=1691684612;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ctTkIdOjUgd2oh0NelDXrU+PaUXy4eDCWNhDrSSQWFo=;
-        b=Fy904Jog177MqOrUVW8ij0JBLV4ctR2mMHDnS801zpqw7SUjQpAfJMkoeTtDWpwYir
-         EMlg7/eVqu5/RggfymyDFsm7IYl6nODm+2Ai81/lZA8hmwfD8MaTih2bMEAqhv+6Yfvv
-         w2V0t9e6SDhtWSjpovhRpP/8uFpzC/42QJhxTbUmLyWz2D5Eo3CoyPJ7Cy3wGdo4iUKa
-         prM/Se7bdQ0b7ydwk2w6QzxCMy573dfu0MKuTJbv6HUza8oyEYR94a6/aKxT9PVJukcL
-         UewV5yue/VPhrU8RUUNZXcyUX+PfBD9he/QTRPRHtyINCwbVVFH9pwi4lKODWD0fMsGi
-         0LVw==
+        bh=lRlSHmOv3URj2X0zO+/PjgKRlSp4lVJgKRtEMaqdh2M=;
+        b=WNYYUu40VkuIVHtZvSTvWL+AAiZh1wrRoHtV4pew5XmUPNETGSNGXUwoaFPwPsNi6O
+         t9LuWoBfdpTRjCiOQyFigJI5OLs5uQdcBb9YrX6l8IF0Ow5I7DOVKeeBoRk7+Lzl5NTT
+         QkLYgBYZQFTaVeCKWLicxt4Qn8ZTc+uS2TGAIeQLqwcEfgAWsZYwgYb+lFjcQ4yPgIZE
+         IBiDXZp1L0fr6pcOLlB8tosMGHlUbNX9SFkQ8tc5tDPkisd8eHZll+N3TzrfaIvJTdHp
+         czc9RX4OdIEp1xiRp+UMYuT4eMilX9sCkVO5bdVijgUWdFBj2/Ezrciqg/6xSb6EBRAl
+         xSzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691079811; x=1691684611;
+        d=1e100.net; s=20221208; t=1691079812; x=1691684612;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ctTkIdOjUgd2oh0NelDXrU+PaUXy4eDCWNhDrSSQWFo=;
-        b=Qf7vH9IS0diLSvPYuXAJd0fvyj8N2nW8/WwNHBCkmGOFP2Ym4655riEgkNAgShXw1q
-         bc9zIyUI7s+fYkqGNahdagutUSiJo5ERmhCwjHAToePCAIH2FVdPyiYGIFtj+IMF37Wg
-         Rwah94ugtymmDX6WkTehfwtjESBQMCYU6avXior4qyLD7EY6FpsNpQaWexoN4dvMoQ/O
-         uYl2gsTF6lIFR8gWWDaLvj9c8b0On9YpFvmCNxyfaeVFcG9Liq/KpqRXvQ8kDNdseWk3
-         rlClOZQWzMdS1RQYlHyXBYyRxCpzbphFG/9dpiC8CYAMwjZUY0zdeDqQpVfpWCKVoOo2
-         EI1A==
-X-Gm-Message-State: ABy/qLYZgXMUpnw+cU/B8mRfmGse0t8gxh62J6NNJzSHT/rrVTsYHhOr
-        j6VmFobjeQxufThtQOSDY7H/8vWaUlQbsbXM9wY=
-X-Google-Smtp-Source: APBJJlHy7EvdHwJElzlbbAOkRINVD2HecMkFgznLmmMJ6BITUuHgfulZEWNoyh/neRfyJQ6ZO7jfdQ==
-X-Received: by 2002:aa7:cfcf:0:b0:522:abc0:2f1c with SMTP id r15-20020aa7cfcf000000b00522abc02f1cmr7173176edy.42.1691079811466;
+        bh=lRlSHmOv3URj2X0zO+/PjgKRlSp4lVJgKRtEMaqdh2M=;
+        b=P4DjfHX66G9hgAAgXKWCQahOKSLdKCgwZ9CG3MgaMfAVOyoFTxLXMlb2Jwtu/tU+79
+         v2j7h8wF3DHsr+v9wzqwMSs3NMU6vM3LwbRgBE4YqxKuOeNSqmHOTK0j9THfbTXCcNe7
+         wvQ1u+O1m1GWVXaNtL41vkMgz0TX5cNxrASYI69LeCbtIjzceDPQwr52dp8y8dSuP4zr
+         HyW696jkULwXoEv0STZpx6fTuWOl4KklBX7VZ82tUGRIq6E0tZksCbVNt90Pa8cuajJW
+         7D29aHMooEajTstdg/i0T4hugcNox0YMWZeAOiKXsFuClJ/7zZKAeLXpUokFoZ8xdVPc
+         Lsrg==
+X-Gm-Message-State: ABy/qLbscW8Hc9STun7TFjVIn396ANijqQxDaSCTsjCDYqfdzleZWUGX
+        fPHMVnxCbsQ+IZtSw5K+lhu/bRNk2OA9OumyrD4=
+X-Google-Smtp-Source: APBJJlG53KinwEdoOAOMwMMjK1OaIwU7X/sWKxrUFkJrzzhnEQgXHJlBc5BtVGT/PPngTtAOuBIFUw==
+X-Received: by 2002:a05:6402:3507:b0:51e:5aac:6bad with SMTP id b7-20020a056402350700b0051e5aac6badmr11405668edd.11.1691079811916;
         Thu, 03 Aug 2023 09:23:31 -0700 (PDT)
 Received: from debian_development.DebianHome (dynamic-077-000-150-191.77.0.pool.telefonica.de. [77.0.150.191])
         by smtp.gmail.com with ESMTPSA id u4-20020a05640207c400b0051d9ee1c9d3sm348edy.84.2023.08.03.09.23.31
@@ -52,13 +52,14 @@ Received: from debian_development.DebianHome (dynamic-077-000-150-191.77.0.pool.
         Thu, 03 Aug 2023 09:23:31 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 3/4] libselinux: drop obsolete optimization flag
-Date:   Thu,  3 Aug 2023 18:23:25 +0200
-Message-Id: <20230803162326.302824-3-cgzones@googlemail.com>
+Subject: [PATCH 4/4] libselinux: drop unnecessary warning overrides
+Date:   Thu,  3 Aug 2023 18:23:26 +0200
+Message-Id: <20230803162326.302824-4-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230803162326.302824-1-cgzones@googlemail.com>
 References: <20230803162326.302824-1-cgzones@googlemail.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
@@ -70,27 +71,31 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The flag -fipa-pure-const is enabled by default in GCC at -O0 and above.
+Drop overrides of warning flags which are not triggered by any code.
 
-The flag is not supported by Clang, which might result in issues if a
-compilation database was created via GCC.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ libselinux/src/Makefile | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/libselinux/src/Makefile b/libselinux/src/Makefile
-index f9a1e5f5..b1620113 100644
+index b1620113..20d79312 100644
 --- a/libselinux/src/Makefile
 +++ b/libselinux/src/Makefile
-@@ -61,7 +61,7 @@ SRCS= $(filter-out $(GENERATED) audit2why.c, $(sort $(wildcard *.c)))
- MAX_STACK_SIZE=32768
+@@ -83,11 +83,10 @@ CFLAGS ?= -O -Wall -W -Wundef -Wformat-y2k -Wformat-security -Winit-self -Wmissi
+           -Wdeprecated-declarations -Wdiv-by-zero -Wdouble-promotion -Wendif-labels -Wextra \
+           -Wformat-extra-args -Wformat-zero-length -Wformat=2 -Wmultichar \
+           -Woverflow -Wpointer-to-int-cast -Wpragmas \
+-          -Wno-missing-field-initializers -Wno-sign-compare \
+-          -Wno-format-nonliteral -Wframe-larger-than=$(MAX_STACK_SIZE) \
++          -Wframe-larger-than=$(MAX_STACK_SIZE) \
+           -fstack-protector-all --param=ssp-buffer-size=4 -fexceptions \
+           -fasynchronous-unwind-tables -fdiagnostics-show-option \
+-          -Werror -Wno-aggregate-return -Wno-redundant-decls \
++          -Werror -Wno-aggregate-return \
+           $(EXTRA_CFLAGS)
  
- ifeq ($(COMPILER), gcc)
--EXTRA_CFLAGS = -fipa-pure-const -Wlogical-op -Wpacked-bitfield-compat -Wsync-nand \
-+EXTRA_CFLAGS = -Wlogical-op -Wpacked-bitfield-compat -Wsync-nand \
- 	-Wcoverage-mismatch -Wcpp -Wformat-contains-nul -Wnormalized=nfc -Wsuggest-attribute=const \
- 	-Wsuggest-attribute=noreturn -Wsuggest-attribute=pure -Wtrampolines -Wjump-misses-init \
- 	-Wno-suggest-attribute=pure -Wno-suggest-attribute=const -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2 \
+ LD_SONAME_FLAGS=-soname,$(LIBSO),--version-script=libselinux.map,-z,defs,-z,relro
 -- 
 2.40.1
 

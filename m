@@ -2,66 +2,66 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7C84076F7B7
-	for <lists+selinux@lfdr.de>; Fri,  4 Aug 2023 04:20:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6C5576F7B8
+	for <lists+selinux@lfdr.de>; Fri,  4 Aug 2023 04:20:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232441AbjHDCUX (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        id S232792AbjHDCUX (ORCPT <rfc822;lists+selinux@lfdr.de>);
         Thu, 3 Aug 2023 22:20:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44888 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232792AbjHDCUV (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 3 Aug 2023 22:20:21 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C2953A90
-        for <selinux@vger.kernel.org>; Thu,  3 Aug 2023 19:20:20 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-63cef62a944so10252416d6.1
-        for <selinux@vger.kernel.org>; Thu, 03 Aug 2023 19:20:20 -0700 (PDT)
+        with ESMTP id S232286AbjHDCUW (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 3 Aug 2023 22:20:22 -0400
+Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A87944A1
+        for <selinux@vger.kernel.org>; Thu,  3 Aug 2023 19:20:21 -0700 (PDT)
+Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-76ad8892d49so133261285a.1
+        for <selinux@vger.kernel.org>; Thu, 03 Aug 2023 19:20:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1691115619; x=1691720419;
+        d=paul-moore.com; s=google; t=1691115620; x=1691720420;
         h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=anHjwPjiZzagsTV/ojI6gGr9I5a6pEf5vqZtND3Ybkg=;
-        b=SAH2INs0H0RsUQ+WanHmSwBavc1TOKpNv1gxkeirK9w+1X/gVPjigC55V5uE88Bxq/
-         i6WPzxjyOWv1MHDW6INGUghZV1A12eCrH7JYeiCSrpJeQNUjM3JS2Ztfq6DRVmMmH7+y
-         7RrHGEZYeL/5bSVfKSFKzEPSz9nr4KvYZ7y3h7VUWiiJ8IHQCzifaNTa8/uSso01IxMs
-         8m6K1StUuPtmjnkFcqn9h4OeSDtE7beVBN1elhxl4WJNExKZP1dtHb2TUfbO1IPGDvYF
-         8L/oJAfvMCVsmNn4slaCfB6caij1pXZCLkdGlyhfj2h5Mk++PF6Tqodl7t0jCO9AKVBu
-         sKcg==
+        bh=LNKOwxHOWE7F5nlJr77NyuO/IQs7geHTBuf/n+r57NU=;
+        b=O5r7Ja0UXIglCSK253x/L4+KBTQ6RjCR/Idfm6Lbd5MhCNdjDz4TxzN2ECQ8nA62xG
+         vdT0J91bUbaf967iC5zuzvcsUAJT9CqK7fRWhe/CtRVWgrYWvPP0lYjuddDa2Axtlxs0
+         /gRStbuknqnrB08xejghT5pSlTtvuEw7Uf1jL0zobKE3mFPtlD9UV49Beq7VzTb23JTh
+         MhaWKX918uE8BMoOpP9/jpz/VtTMweKjmqUJIfd9ZIKOTPRR7uhwaPpG9cRYiFlS2mHb
+         inhyIZrJio4MHW2PS87qLucEQP3LRx562/3vLY4loOCY/pRg1owY5lxtRZUBnVg1L0/W
+         kOwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691115619; x=1691720419;
+        d=1e100.net; s=20221208; t=1691115620; x=1691720420;
         h=in-reply-to:references:subject:cc:to:from:message-id:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=anHjwPjiZzagsTV/ojI6gGr9I5a6pEf5vqZtND3Ybkg=;
-        b=FDbb+fmS3sANgfiVI3gKHbjAf5YVamI+SGEi7+Xg9Plu5hDjOKsIMSBWzIytdD7dgl
-         M8wKomz/mayRsRnXogkdel4gA83ZgukgrKROEvY6LVvs5Zxsn6/X2+1Lk3e5PSBEKT29
-         njpypYHwWsfAFsr/rcpBp+UDJdVq16mD2SH9etWKvwA/+TK2g7atTIiqyxz8wC2eqL+o
-         WkUtBoZiVteaZepR2V2D56xfaOej2uNrvepMpvGeUo/4gpG4cyhoT0Zbn2gTdbS8q1j1
-         ftdCKUkyA1nqZfD12zQOp5Kq6iPngbcernnrSdFIJfJ+Z/kvt00V6MrLdVCaRm3Mdc7/
-         fabQ==
-X-Gm-Message-State: AOJu0Yz2c6YBq/lb/Zm2l6QX+TxVDWz7dU8I2F46h22RUsaSaeyhuyN3
-        nCjxOfX8tqGuA+rlejvRuD9v
-X-Google-Smtp-Source: AGHT+IFcxBAz22BTHcIswjcjcvcn8/xLuxpnDnVEoB4q/PVHkxBr+BVYhJF5ZURUA0DKVpu851CkIQ==
-X-Received: by 2002:a05:620a:444f:b0:76c:9cb8:a243 with SMTP id w15-20020a05620a444f00b0076c9cb8a243mr595224qkp.42.1691115619212;
-        Thu, 03 Aug 2023 19:20:19 -0700 (PDT)
+        bh=LNKOwxHOWE7F5nlJr77NyuO/IQs7geHTBuf/n+r57NU=;
+        b=TabfIt8FuLNFgw8RGKEj7joH9TUO4OGvb14/Si9BrZUI0dVH9R1H1O5FyOCKt/NgI1
+         BG3ZLCMATGvRJUe+VF3a/rnPvJJ/suDze8NQp1k6agiE6YT8iIFNgFaAcvnP+gXB3SSL
+         bZMKz79hMb9TgtqodmbIrQMFEk14hunCXL81B2u19/l9fgi9NDmz/FJ2eoyQTxOE6trm
+         cvenPt52B/IRavCpDcBvaLiEbpu1duZDgTY2UrPkHFiKu22BPaDgf9qVDW55WGI4FC5a
+         4/lKYJZFAg5OnyhMpgShsX22Y5EeDCLTCQJiI5rWU/6DmH2wgCEjpT8puIOlJfr1pond
+         FEAg==
+X-Gm-Message-State: AOJu0Yy/f2Z3kKffdrVPDZb6FVmtiU6mBCR0IIk8A5IgCkrie4ivkaa5
+        6kgy7jzGhrnbZuSIsNI1DkxB
+X-Google-Smtp-Source: AGHT+IFVkjumHTvwJDTFPEiji4el72MdE25hpNy/Vg94yts8Q9m/rrET88tTdhk2YiDBTVBYbDNXCQ==
+X-Received: by 2002:a05:620a:1711:b0:765:d53e:3352 with SMTP id az17-20020a05620a171100b00765d53e3352mr693534qkb.30.1691115620163;
+        Thu, 03 Aug 2023 19:20:20 -0700 (PDT)
 Received: from localhost ([70.22.175.108])
-        by smtp.gmail.com with ESMTPSA id o15-20020ae9f50f000000b00767e1c593acsm334331qkg.79.2023.08.03.19.20.18
+        by smtp.gmail.com with ESMTPSA id h16-20020a05620a10b000b00767da9b6ae9sm340279qkk.11.2023.08.03.19.20.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Aug 2023 19:20:18 -0700 (PDT)
-Date:   Thu, 03 Aug 2023 22:20:18 -0400
-Message-ID: <5f0390a4bd0649d7a621fbb3c614d5ad.paul@paul-moore.com>
+        Thu, 03 Aug 2023 19:20:19 -0700 (PDT)
+Date:   Thu, 03 Aug 2023 22:20:19 -0400
+Message-ID: <05f7a2e580dc616b292c848e75f8a03d.paul@paul-moore.com>
 From:   Paul Moore <paul@paul-moore.com>
 To:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
         selinux@vger.kernel.org
 Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/9] selinux: use identical iterator type in  hashtab_duplicate()
-References: <20230728155501.39632-2-cgzones@googlemail.com>
-In-Reply-To: <20230728155501.39632-2-cgzones@googlemail.com>
+Subject: Re: [PATCH v2 4/9] selinux: avoid implicit conversions in mls code
+References: <20230728155501.39632-3-cgzones@googlemail.com>
+In-Reply-To: <20230728155501.39632-3-cgzones@googlemail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -70,14 +70,16 @@ X-Mailing-List: selinux@vger.kernel.org
 
 On Jul 28, 2023 =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com> wrote:
 > 
-> Use the identical type u32 for the loop iterator.
+> Use u32 for ebitmap bits.
+> 
+> Use char for the default range of a class.
 > 
 > Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 > ---
 > v2: avoid declarations in init-clauses of for loops
 > ---
->  security/selinux/ss/hashtab.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  security/selinux/ss/mls.c | 10 ++++++----
+>  1 file changed, 6 insertions(+), 4 deletions(-)
 
 Merged into selinux/next, thanks.
 

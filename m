@@ -2,58 +2,66 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EDC4B773545
-	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 01:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2364A7740FD
+	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 19:13:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230478AbjHGX6J (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 7 Aug 2023 19:58:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39382 "EHLO
+        id S234165AbjHHRNO (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Aug 2023 13:13:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230439AbjHGX6I (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 7 Aug 2023 19:58:08 -0400
-Received: from smtp-relay-canonical-1.canonical.com (smtp-relay-canonical-1.canonical.com [185.125.188.121])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FCA99;
-        Mon,  7 Aug 2023 16:58:06 -0700 (PDT)
-Received: from [192.168.192.83] (unknown [50.47.134.245])
+        with ESMTP id S232608AbjHHRMh (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Aug 2023 13:12:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 574F41BAFA;
+        Tue,  8 Aug 2023 09:05:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by smtp-relay-canonical-1.canonical.com (Postfix) with ESMTPSA id B3F773F2F7;
-        Mon,  7 Aug 2023 23:58:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1691452685;
-        bh=ap01lbIjogyXwuc8ov5idm6Zxort8lSG9iIobzYlHJA=;
-        h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-         In-Reply-To:Content-Type;
-        b=Tsd9+HrVyz6johHTkV1KJIJ9uWTfZoJLtE87GrpnQ40N/ppZ0u9uoOB1LR7ZBuleB
-         H8bL+U0J+OyrFEqSsZ9Bzperq/bhCjGwlrzDmXjrw45NQy9LmSE0vh5IYPTUC9UiEY
-         7D6PCmAYfCnApFEgT9LCexVYhAbPcsFTbjMklwyFFDy2mALlFTrpIqoWs5iiIFV/hh
-         3Z3GcJ/TPjFZWbaDrojdozM5WuQOouO6cm/QAhaFfHrjKwicZZuaqu+sdRmWeYvisJ
-         I1Y6IlqNkcYVDnAg8yFX9Sqc2byAAzJfKUxoXFJhvrSwW3k9dQPL0y2zIV28bHnrdK
-         ti1L/b+OhzyEA==
-Message-ID: <e195ae10-725d-d06c-a452-72744aa8ba89@canonical.com>
-Date:   Mon, 7 Aug 2023 16:58:00 -0700
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CC1962431;
+        Tue,  8 Aug 2023 08:54:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F236AC433C8;
+        Tue,  8 Aug 2023 08:53:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1691484843;
+        bh=y+Bd+pxAoRudwhN/rOHkt3g9IIHlJ6bFdeqPc3lHqxY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ojbq4tbWJvvZTMd2qW1OvVzVcAiuQiFtA88L1xJVJDCKYuAFbCEp1JAdFIoAKm5tj
+         akbmaeCdBd92hM+2NxwBxSGvOL/7m5vg747b/yfNxxxYMxvi05g2QjC4a1Ub9cwHl9
+         iOdF1/PQSb8eX/SGMBpEKfSQRoziKi2Nq1qU1tvT1J+ffJV3gPVBtsM0a7W02S8msj
+         64hJCTDVGFEBL32ie5/qLdPFGKtEjD68sjzDLdcuE/qZoFopPJlfpMRKjXSFFd7Ugi
+         0vK6X5LTezIXI48rLR/7y/JltKBqACu5oEIFv+WG8tNbJnhTq4Wiu0jIZu3s5B5nFd
+         KZZLtjCFH4ORg==
+Date:   Tue, 8 Aug 2023 10:53:57 +0200
+From:   Christian Brauner <brauner@kernel.org>
+To:     Jeff Layton <jlayton@kernel.org>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Anna Schumaker <anna@kernel.org>,
+        Paul Moore <paul@paul-moore.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        David Howells <dhowells@redhat.com>,
+        Scott Mayhew <smayhew@redhat.com>,
+        Stephen Smalley <sds@tycho.nsa.gov>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
+        selinux@vger.kernel.org
+Subject: Re: [PATCH v8] vfs, security: Fix automount superblock LSM init
+ problem, preventing NFS sb sharing
+Message-ID: <20230808-zuckt-nachahmen-f51625f111f3@brauner>
+References: <20230807-master-v8-1-54e249595f10@kernel.org>
+ <20230807-ohrfeigen-misswirtschaft-29303ebbc83b@brauner>
+ <5e32555a701602603681d0e08df86e398f7f025d.camel@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] lsm: constify the 'target' parameter in
- security_capget()
-Content-Language: en-US
-To:     Khadija Kamran <kamrankhadijadj@gmail.com>,
-        Alison Schofield <alison.schofield@intel.com>,
-        paul@paul-moore.com, stephen.smalley.work@gmail.com,
-        eparis@parisplace.org, selinux@vger.kernel.org,
-        linux-kernel@vger.kernel.org, jmorris@namei.org, serge@hallyn.com,
-        linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com,
-        ztarkhani@microsoft.com
-References: <ZNCWUQXKrZnCeB/5@gmail.com>
-From:   John Johansen <john.johansen@canonical.com>
-Organization: Canonical
-In-Reply-To: <ZNCWUQXKrZnCeB/5@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <5e32555a701602603681d0e08df86e398f7f025d.camel@kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -62,145 +70,394 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On 8/6/23 23:59, Khadija Kamran wrote:
-> Three LSMs register the implementations for the "capget" hook: AppArmor,
-> SELinux, and the normal capability code. Looking at the function
-> implementations we may observe that the first parameter "target" is not
-> changing.
+On Mon, Aug 07, 2023 at 10:09:21AM -0400, Jeff Layton wrote:
+> On Mon, 2023-08-07 at 15:38 +0200, Christian Brauner wrote:
+> > On Mon, Aug 07, 2023 at 09:18:01AM -0400, Jeff Layton wrote:
+> > > From: David Howells <dhowells@redhat.com>
+> > > 
+> > > When NFS superblocks are created by automounting, their LSM parameters
+> > > aren't set in the fs_context struct prior to sget_fc() being called,
+> > > leading to failure to match existing superblocks.
+> > > 
+> > > This bug leads to messages like the following appearing in dmesg when
+> > > fscache is enabled:
+> > > 
+> > >     NFS: Cache volume key already in use (nfs,4.2,2,108,106a8c0,1,,,,100000,100000,2ee,3a98,1d4c,3a98,1)
+> > > 
+> > > Fix this by adding a new LSM hook to load fc->security for submount
+> > > creation.
+> > > 
+> > > Signed-off-by: David Howells <dhowells@redhat.com>
+> > > Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> > > Fixes: 9bc61ab18b1d ("vfs: Introduce fs_context, switch vfs_kern_mount() to it.")
+> > > Fixes: 779df6a5480f ("NFS: Ensure security label is set for root inode)
+> > > Tested-by: Jeff Layton <jlayton@kernel.org>
+> > > Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> > > Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+> > > Acked-by: "Christian Brauner (Microsoft)" <brauner@kernel.org>
+> > > Link: https://lore.kernel.org/r/165962680944.3334508.6610023900349142034.stgit@warthog.procyon.org.uk/ # v1
+> > > Link: https://lore.kernel.org/r/165962729225.3357250.14350728846471527137.stgit@warthog.procyon.org.uk/ # v2
+> > > Link: https://lore.kernel.org/r/165970659095.2812394.6868894171102318796.stgit@warthog.procyon.org.uk/ # v3
+> > > Link: https://lore.kernel.org/r/166133579016.3678898.6283195019480567275.stgit@warthog.procyon.org.uk/ # v4
+> > > Link: https://lore.kernel.org/r/217595.1662033775@warthog.procyon.org.uk/ # v5
+> > > ---
+> > > ver #2)
+> > > - Added Smack support
+> > > - Made LSM parameter extraction dependent on reference != NULL.
+> > > 
+> > > ver #3)
+> > > - Made LSM parameter extraction dependent on fc->purpose ==
+> > >    FS_CONTEXT_FOR_SUBMOUNT.  Shouldn't happen on FOR_RECONFIGURE.
+> > > 
+> > > ver #4)
+> > > - When doing a FOR_SUBMOUNT mount, don't set the root label in SELinux or Smack.
+> > > 
+> > > ver #5)
+> > > - Removed unused variable.
+> > > - Only allocate smack_mnt_opts if we're dealing with a submount.
+> > > 
+> > > ver #6)
+> > > - Rebase onto v6.5.0-rc4
+> > > - Link to v6: https://lore.kernel.org/r/20230802-master-v6-1-45d48299168b@kernel.org
+> > > 
+> > > ver #7)
+> > > - Drop lsm_set boolean
+> > > - Link to v7: https://lore.kernel.org/r/20230804-master-v7-1-5d4e48407298@kernel.org
+> > > 
+> > > ver #8)
+> > > - Remove spurious semicolon in smack_fs_context_init
+> > > - Make fs_context_init take a superblock as reference instead of dentry
+> > > - WARN_ON_ONCE's when fc->purpose != FS_CONTEXT_FOR_SUBMOUNT
+> > > - Call the security hook from fs_context_for_submount instead of alloc_fs_context
+> > > ---
+> > >  fs/fs_context.c               | 23 +++++++++++++++++-
+> > >  include/linux/lsm_hook_defs.h |  1 +
+> > >  include/linux/security.h      |  6 +++++
+> > >  security/security.c           | 14 +++++++++++
+> > >  security/selinux/hooks.c      | 25 ++++++++++++++++++++
+> > >  security/smack/smack_lsm.c    | 54 +++++++++++++++++++++++++++++++++++++++++++
+> > >  6 files changed, 122 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/fs/fs_context.c b/fs/fs_context.c
+> > > index 851214d1d013..a76d7c82e091 100644
+> > > --- a/fs/fs_context.c
+> > > +++ b/fs/fs_context.c
+> > > @@ -315,10 +315,31 @@ struct fs_context *fs_context_for_reconfigure(struct dentry *dentry,
+> > >  }
+> > >  EXPORT_SYMBOL(fs_context_for_reconfigure);
+> > >  
+> > > +/**
+> > > + * fs_context_for_submount: allocate a new fs_context for a submount
+> > > + * @type: file_system_type of the new context
+> > > + * @reference: reference dentry from which to copy relevant info
+> > > + *
+> > > + * Allocate a new fs_context suitable for a submount. This also ensures that
+> > > + * the fc->security object is inherited from @reference (if needed).
+> > > + */
+> > >  struct fs_context *fs_context_for_submount(struct file_system_type *type,
+> > >  					   struct dentry *reference)
+> > >  {
+> > > -	return alloc_fs_context(type, reference, 0, 0, FS_CONTEXT_FOR_SUBMOUNT);
+> > > +	struct fs_context *fc;
+> > > +	int ret;
+> > > +
+> > > +	fc = alloc_fs_context(type, reference, 0, 0, FS_CONTEXT_FOR_SUBMOUNT);
+> > > +	if (IS_ERR(fc))
+> > > +		return fc;
+> > > +
+> > > +	ret = security_fs_context_init(fc, reference->d_sb);
+> > > +	if (ret) {
+> > > +		put_fs_context(fc);
+> > > +		return ERR_PTR(ret);
+> > > +	}
+> > > +
+> > > +	return fc;
+> > >  }
+> > >  EXPORT_SYMBOL(fs_context_for_submount);
+> > >  
+> > > diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+> > > index 7308a1a7599b..2876dd6114c0 100644
+> > > --- a/include/linux/lsm_hook_defs.h
+> > > +++ b/include/linux/lsm_hook_defs.h
+> > > @@ -54,6 +54,7 @@ LSM_HOOK(int, 0, bprm_creds_from_file, struct linux_binprm *bprm, struct file *f
+> > >  LSM_HOOK(int, 0, bprm_check_security, struct linux_binprm *bprm)
+> > >  LSM_HOOK(void, LSM_RET_VOID, bprm_committing_creds, struct linux_binprm *bprm)
+> > >  LSM_HOOK(void, LSM_RET_VOID, bprm_committed_creds, struct linux_binprm *bprm)
+> > > +LSM_HOOK(int, 0, fs_context_init, struct fs_context *fc, struct super_block *reference)
+> > >  LSM_HOOK(int, 0, fs_context_dup, struct fs_context *fc,
+> > >  	 struct fs_context *src_sc)
+> > >  LSM_HOOK(int, -ENOPARAM, fs_context_parse_param, struct fs_context *fc,
+> > > diff --git a/include/linux/security.h b/include/linux/security.h
+> > > index 32828502f09e..fe9bf5e805ee 100644
+> > > --- a/include/linux/security.h
+> > > +++ b/include/linux/security.h
+> > > @@ -293,6 +293,7 @@ int security_bprm_creds_from_file(struct linux_binprm *bprm, struct file *file);
+> > >  int security_bprm_check(struct linux_binprm *bprm);
+> > >  void security_bprm_committing_creds(struct linux_binprm *bprm);
+> > >  void security_bprm_committed_creds(struct linux_binprm *bprm);
+> > > +int security_fs_context_init(struct fs_context *fc, struct super_block *reference);
+> > >  int security_fs_context_dup(struct fs_context *fc, struct fs_context *src_fc);
+> > >  int security_fs_context_parse_param(struct fs_context *fc, struct fs_parameter *param);
+> > >  int security_sb_alloc(struct super_block *sb);
+> > > @@ -629,6 +630,11 @@ static inline void security_bprm_committed_creds(struct linux_binprm *bprm)
+> > >  {
+> > >  }
+> > >  
+> > > +static inline int security_fs_context_init(struct fs_context *fc,
+> > > +					   struct super_block *reference)
+> > > +{
+> > > +	return 0;
+> > > +}
+> > 
+> > Sorry, my point is we shouldn't be adding a generic
+> > security_fs_context_init() hook at all. Pre superblock creation we have
+> > a hook during parameter parsing for LSMs and another one during actual
+> > superblock creation in vfs_get_tree() and yet another one for fs_context
+> > duplicaton. We don't need another generic one during fs_context
+> > allocation.
+> > 
+> > Yes, we may need a hook for submount allocation but then we'll add one
+> > exactly for that. And then for fs_context_for_submount @sb can't be
+> > empty so there's also no point in checking whether it is empty because
+> > you've already crashed in fs_context_for_submount(). All the checks
+> > below for !reference and fc->purpose != FS_CONTEXT_FOR_SUBMOUNT can go
+> > away then as well.
+> > 
+> > So we end up with something easier and stricter.
+> > 
 > 
-> Mark the first argument "target" of LSM hook security_capget() as
-> "const" since it will not be changing in the LSM hook.
-> 
-> cap_capget() LSM hook declaration exceeds the 80 characters per line
-> limit. Split the function declaration to multple lines to decrease the
-> line length.
-> 
-> Signed-off-by: Khadija Kamran <kamrankhadijadj@gmail.com>
+> I'm not sure I understand what you're asking for here. fc->security
+> field initialization is dependent on the LSM in use. Where will we do
+> this initialization if we don't add this new hook? Are you suggesting
+> that we fold this into an existing LSM hook? If so, which one?
 
-Acked-by: John Johansen <john.johansen@canonical.com>
+I'm sorry, I didn't mean to confuse. I just mean the following:
+* renaming security_fs_context_init() to security_fs_context_submount()
+  to reflect that it is only called during submount allocation now
+* Now that security_fs_context_submount() is called in
+  fs_context_for_submount() you can remove all the checks for @reference
+  and fc->purpose == FS_CONTEXT_FOR_SUBMOUNT checks because they can't
+  be unset otherwise you would've a bug in fs_context_for_submount().
 
-> ---
-> Changes in v2:
->   - Squash the patches 1/2 and 2/2 into a single patch
->   - Simplify the commit message
-> 
->   include/linux/lsm_hook_defs.h | 2 +-
->   include/linux/security.h      | 7 ++++---
->   kernel/capability.c           | 2 +-
->   security/apparmor/lsm.c       | 2 +-
->   security/commoncap.c          | 2 +-
->   security/security.c           | 2 +-
->   security/selinux/hooks.c      | 2 +-
->   7 files changed, 10 insertions(+), 9 deletions(-)
-> 
-> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-> index 6bb55e61e8e8..fd3844e11077 100644
-> --- a/include/linux/lsm_hook_defs.h
-> +++ b/include/linux/lsm_hook_defs.h
-> @@ -36,7 +36,7 @@ LSM_HOOK(int, 0, binder_transfer_file, const struct cred *from,
->   LSM_HOOK(int, 0, ptrace_access_check, struct task_struct *child,
->   	 unsigned int mode)
->   LSM_HOOK(int, 0, ptrace_traceme, struct task_struct *parent)
-> -LSM_HOOK(int, 0, capget, struct task_struct *target, kernel_cap_t *effective,
-> +LSM_HOOK(int, 0, capget, const struct task_struct *target, kernel_cap_t *effective,
->   	 kernel_cap_t *inheritable, kernel_cap_t *permitted)
->   LSM_HOOK(int, 0, capset, struct cred *new, const struct cred *old,
->   	 const kernel_cap_t *effective, const kernel_cap_t *inheritable,
-> diff --git a/include/linux/security.h b/include/linux/security.h
-> index e2734e9e44d5..fef65d0e522d 100644
-> --- a/include/linux/security.h
-> +++ b/include/linux/security.h
-> @@ -145,7 +145,8 @@ extern int cap_capable(const struct cred *cred, struct user_namespace *ns,
->   extern int cap_settime(const struct timespec64 *ts, const struct timezone *tz);
->   extern int cap_ptrace_access_check(struct task_struct *child, unsigned int mode);
->   extern int cap_ptrace_traceme(struct task_struct *parent);
-> -extern int cap_capget(struct task_struct *target, kernel_cap_t *effective, kernel_cap_t *inheritable, kernel_cap_t *permitted);
-> +extern int cap_capget(const struct task_struct *target, kernel_cap_t *effective,
-> +					  kernel_cap_t *inheritable, kernel_cap_t *permitted);
->   extern int cap_capset(struct cred *new, const struct cred *old,
->   		      const kernel_cap_t *effective,
->   		      const kernel_cap_t *inheritable,
-> @@ -271,7 +272,7 @@ int security_binder_transfer_file(const struct cred *from,
->   				  const struct cred *to, struct file *file);
->   int security_ptrace_access_check(struct task_struct *child, unsigned int mode);
->   int security_ptrace_traceme(struct task_struct *parent);
-> -int security_capget(struct task_struct *target,
-> +int security_capget(const struct task_struct *target,
->   		    kernel_cap_t *effective,
->   		    kernel_cap_t *inheritable,
->   		    kernel_cap_t *permitted);
-> @@ -553,7 +554,7 @@ static inline int security_ptrace_traceme(struct task_struct *parent)
->   	return cap_ptrace_traceme(parent);
->   }
->   
-> -static inline int security_capget(struct task_struct *target,
-> +static inline int security_capget(const struct task_struct *target,
->   				   kernel_cap_t *effective,
->   				   kernel_cap_t *inheritable,
->   				   kernel_cap_t *permitted)
-> diff --git a/kernel/capability.c b/kernel/capability.c
-> index 3e058f41df32..67bdee3414dd 100644
-> --- a/kernel/capability.c
-> +++ b/kernel/capability.c
-> @@ -112,7 +112,7 @@ static inline int cap_get_target_pid(pid_t pid, kernel_cap_t *pEp,
->   	int ret;
->   
->   	if (pid && (pid != task_pid_vnr(current))) {
-> -		struct task_struct *target;
-> +		const struct task_struct *target;
->   
->   		rcu_read_lock();
->   
-> diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-> index f431251ffb91..12dd96c3b2f0 100644
-> --- a/security/apparmor/lsm.c
-> +++ b/security/apparmor/lsm.c
-> @@ -144,7 +144,7 @@ static int apparmor_ptrace_traceme(struct task_struct *parent)
->   }
->   
->   /* Derived from security/commoncap.c:cap_capget */
-> -static int apparmor_capget(struct task_struct *target, kernel_cap_t *effective,
-> +static int apparmor_capget(const struct task_struct *target, kernel_cap_t *effective,
->   			   kernel_cap_t *inheritable, kernel_cap_t *permitted)
->   {
->   	struct aa_label *label;
-> diff --git a/security/commoncap.c b/security/commoncap.c
-> index 0b3fc2f3afe7..5fd64d3e5bfd 100644
-> --- a/security/commoncap.c
-> +++ b/security/commoncap.c
-> @@ -197,7 +197,7 @@ int cap_ptrace_traceme(struct task_struct *parent)
->    * This function retrieves the capabilities of the nominated task and returns
->    * them to the caller.
->    */
-> -int cap_capget(struct task_struct *target, kernel_cap_t *effective,
-> +int cap_capget(const struct task_struct *target, kernel_cap_t *effective,
->   	       kernel_cap_t *inheritable, kernel_cap_t *permitted)
->   {
->   	const struct cred *cred;
-> diff --git a/security/security.c b/security/security.c
-> index d5ff7ff45b77..fb2d93b481f1 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -893,7 +893,7 @@ int security_ptrace_traceme(struct task_struct *parent)
->    *
->    * Return: Returns 0 if the capability sets were successfully obtained.
->    */
-> -int security_capget(struct task_struct *target,
-> +int security_capget(const struct task_struct *target,
->   		    kernel_cap_t *effective,
->   		    kernel_cap_t *inheritable,
->   		    kernel_cap_t *permitted)
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 79b4890e9936..ff42d49f1b41 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2056,7 +2056,7 @@ static int selinux_ptrace_traceme(struct task_struct *parent)
->   			    SECCLASS_PROCESS, PROCESS__PTRACE, NULL);
->   }
->   
-> -static int selinux_capget(struct task_struct *target, kernel_cap_t *effective,
-> +static int selinux_capget(const struct task_struct *target, kernel_cap_t *effective,
->   			  kernel_cap_t *inheritable, kernel_cap_t *permitted)
->   {
->   	return avc_has_perm(current_sid(), task_sid_obj(target),
+These two things were missing after you did move the LSM call into
+fs_context_for_submount(). That's basically it. So folded into what you
+sent out this amounts to:
+
+ fs/fs_context.c               | 23 +++++++++++++++-
+ include/linux/lsm_hook_defs.h |  1 +
+ include/linux/security.h      |  6 +++++
+ security/security.c           | 14 ++++++++++
+ security/selinux/hooks.c      | 22 +++++++++++++++
+ security/smack/smack_lsm.c    | 51 +++++++++++++++++++++++++++++++++++
+ 6 files changed, 116 insertions(+), 1 deletion(-)
+
+diff --git a/fs/fs_context.c b/fs/fs_context.c
+index 851214d1d013..375023e40161 100644
+--- a/fs/fs_context.c
++++ b/fs/fs_context.c
+@@ -315,10 +315,31 @@ struct fs_context *fs_context_for_reconfigure(struct dentry *dentry,
+ }
+ EXPORT_SYMBOL(fs_context_for_reconfigure);
+ 
++/**
++ * fs_context_for_submount: allocate a new fs_context for a submount
++ * @type: file_system_type of the new context
++ * @reference: reference dentry from which to copy relevant info
++ *
++ * Allocate a new fs_context suitable for a submount. This also ensures that
++ * the fc->security object is inherited from @reference (if needed).
++ */
+ struct fs_context *fs_context_for_submount(struct file_system_type *type,
+ 					   struct dentry *reference)
+ {
+-	return alloc_fs_context(type, reference, 0, 0, FS_CONTEXT_FOR_SUBMOUNT);
++	struct fs_context *fc;
++	int ret;
++
++	fc = alloc_fs_context(type, reference, 0, 0, FS_CONTEXT_FOR_SUBMOUNT);
++	if (IS_ERR(fc))
++		return fc;
++
++	ret = security_fs_context_submount(fc, reference->d_sb);
++	if (ret) {
++		put_fs_context(fc);
++		return ERR_PTR(ret);
++	}
++
++	return fc;
+ }
+ EXPORT_SYMBOL(fs_context_for_submount);
+ 
+diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+index 7308a1a7599b..2876dd6114c0 100644
+--- a/include/linux/lsm_hook_defs.h
++++ b/include/linux/lsm_hook_defs.h
+@@ -54,6 +54,7 @@ LSM_HOOK(int, 0, bprm_creds_from_file, struct linux_binprm *bprm, struct file *f
+ LSM_HOOK(int, 0, bprm_check_security, struct linux_binprm *bprm)
+ LSM_HOOK(void, LSM_RET_VOID, bprm_committing_creds, struct linux_binprm *bprm)
+ LSM_HOOK(void, LSM_RET_VOID, bprm_committed_creds, struct linux_binprm *bprm)
++LSM_HOOK(int, 0, fs_context_init, struct fs_context *fc, struct super_block *reference)
+ LSM_HOOK(int, 0, fs_context_dup, struct fs_context *fc,
+ 	 struct fs_context *src_sc)
+ LSM_HOOK(int, -ENOPARAM, fs_context_parse_param, struct fs_context *fc,
+diff --git a/include/linux/security.h b/include/linux/security.h
+index 32828502f09e..02b41f4d05d1 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -293,6 +293,7 @@ int security_bprm_creds_from_file(struct linux_binprm *bprm, struct file *file);
+ int security_bprm_check(struct linux_binprm *bprm);
+ void security_bprm_committing_creds(struct linux_binprm *bprm);
+ void security_bprm_committed_creds(struct linux_binprm *bprm);
++int security_fs_context_submount(struct fs_context *fc, struct super_block *reference);
+ int security_fs_context_dup(struct fs_context *fc, struct fs_context *src_fc);
+ int security_fs_context_parse_param(struct fs_context *fc, struct fs_parameter *param);
+ int security_sb_alloc(struct super_block *sb);
+@@ -629,6 +630,11 @@ static inline void security_bprm_committed_creds(struct linux_binprm *bprm)
+ {
+ }
+ 
++static inline int security_fs_context_submount(struct fs_context *fc,
++					       struct super_block *reference)
++{
++	return 0;
++}
+ static inline int security_fs_context_dup(struct fs_context *fc,
+ 					  struct fs_context *src_fc)
+ {
+diff --git a/security/security.c b/security/security.c
+index b720424ca37d..3611ebdf31d9 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -1138,6 +1138,20 @@ void security_bprm_committed_creds(struct linux_binprm *bprm)
+ 	call_void_hook(bprm_committed_creds, bprm);
+ }
+ 
++/**
++ * security_fs_context_submount() - Initialise fc->security
++ * @fc: new filesystem context
++ * @reference: dentry reference for submount/remount
++ *
++ * Fill out the ->security field for a new fs_context.
++ *
++ * Return: Returns 0 on success or negative error code on failure.
++ */
++int security_fs_context_submount(struct fs_context *fc, struct super_block *reference)
++{
++	return call_int_hook(fs_context_init, 0, fc, reference);
++}
++
+ /**
+  * security_fs_context_dup() - Duplicate a fs_context LSM blob
+  * @fc: destination filesystem context
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index d06e350fedee..8b950274138b 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -2745,6 +2745,27 @@ static int selinux_umount(struct vfsmount *mnt, int flags)
+ 				   FILESYSTEM__UNMOUNT, NULL);
+ }
+ 
++static int selinux_fs_context_submount(struct fs_context *fc,
++				       struct super_block *reference)
++{
++	const struct superblock_security_struct *sbsec;
++	struct selinux_mnt_opts *opts;
++
++	opts = kzalloc(sizeof(*opts), GFP_KERNEL);
++	if (!opts)
++		return -ENOMEM;
++
++	sbsec = selinux_superblock(reference);
++	if (sbsec->flags & FSCONTEXT_MNT)
++		opts->fscontext_sid = sbsec->sid;
++	if (sbsec->flags & CONTEXT_MNT)
++		opts->context_sid = sbsec->mntpoint_sid;
++	if (sbsec->flags & DEFCONTEXT_MNT)
++		opts->defcontext_sid = sbsec->def_sid;
++	fc->security = opts;
++	return 0;
++}
++
+ static int selinux_fs_context_dup(struct fs_context *fc,
+ 				  struct fs_context *src_fc)
+ {
+@@ -7182,6 +7203,7 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+ 	/*
+ 	 * PUT "CLONING" (ACCESSING + ALLOCATING) HOOKS HERE
+ 	 */
++	LSM_HOOK_INIT(fs_context_submount, selinux_fs_context_submount),
+ 	LSM_HOOK_INIT(fs_context_dup, selinux_fs_context_dup),
+ 	LSM_HOOK_INIT(fs_context_parse_param, selinux_fs_context_parse_param),
+ 	LSM_HOOK_INIT(sb_eat_lsm_opts, selinux_sb_eat_lsm_opts),
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 6e270cf3fd30..87f7e0506f4d 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -614,6 +614,56 @@ static int smack_add_opt(int token, const char *s, void **mnt_opts)
+ 	return -EINVAL;
+ }
+ 
++/**
++ * smack_fs_context_submount - Initialise security data for a filesystem context
++ * @fc: The filesystem context.
++ * @reference: Reference superblock (automount/reconfigure) or NULL
++ *
++ * Returns 0 on success or -ENOMEM on error.
++ */
++static int smack_fs_context_submount(struct fs_context *fc,
++				     struct dentry *reference)
++{
++	struct superblock_smack *sbsp;
++	struct smack_mnt_opts *ctx;
++	struct inode_smack *isp;
++
++	ctx = kzalloc(sizeof(*ctx), GFP_KERNEL);
++	if (!ctx)
++		return -ENOMEM;
++	fc->security = ctx;
++
++	sbsp = smack_superblock(reference);
++	isp = smack_inode(reference->s_root->d_inode);
++
++	if (sbsp->smk_default) {
++		ctx->fsdefault = kstrdup(sbsp->smk_default->smk_known, GFP_KERNEL);
++		if (!ctx->fsdefault)
++			return -ENOMEM;
++	}
++
++	if (sbsp->smk_floor) {
++		ctx->fsfloor = kstrdup(sbsp->smk_floor->smk_known, GFP_KERNEL);
++		if (!ctx->fsfloor)
++			return -ENOMEM;
++	}
++
++	if (sbsp->smk_hat) {
++		ctx->fshat = kstrdup(sbsp->smk_hat->smk_known, GFP_KERNEL);
++		if (!ctx->fshat)
++			return -ENOMEM;
++	}
++
++	if (isp->smk_flags & SMK_INODE_TRANSMUTE) {
++		if (sbsp->smk_root) {
++			ctx->fstransmute = kstrdup(sbsp->smk_root->smk_known, GFP_KERNEL);
++			if (!ctx->fstransmute)
++				return -ENOMEM;
++		}
++	}
++	return 0;
++}
++
+ /**
+  * smack_fs_context_dup - Duplicate the security data on fs_context duplication
+  * @fc: The new filesystem context.
+@@ -4876,6 +4926,7 @@ static struct security_hook_list smack_hooks[] __ro_after_init = {
+ 	LSM_HOOK_INIT(ptrace_traceme, smack_ptrace_traceme),
+ 	LSM_HOOK_INIT(syslog, smack_syslog),
+ 
++	LSM_HOOK_INIT(fs_context_submount, smack_fs_context_submount),
+ 	LSM_HOOK_INIT(fs_context_dup, smack_fs_context_dup),
+ 	LSM_HOOK_INIT(fs_context_parse_param, smack_fs_context_parse_param),
+ 
+-- 
+2.34.1
 

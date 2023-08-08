@@ -2,319 +2,245 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 770C87749CC
-	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 22:03:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A930774BC1
+	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 22:54:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233489AbjHHUDs (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Aug 2023 16:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44482 "EHLO
+        id S235593AbjHHUyt (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Aug 2023 16:54:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45458 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233994AbjHHUDc (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Aug 2023 16:03:32 -0400
-Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 655C68C09E
-        for <selinux@vger.kernel.org>; Tue,  8 Aug 2023 11:21:10 -0700 (PDT)
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b9db1de50cso92057611fa.3
-        for <selinux@vger.kernel.org>; Tue, 08 Aug 2023 11:21:10 -0700 (PDT)
+        with ESMTP id S232785AbjHHUyi (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Aug 2023 16:54:38 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B64814B93E;
+        Tue,  8 Aug 2023 10:03:33 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-99c10ba30afso9192966b.1;
+        Tue, 08 Aug 2023 10:03:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691518868; x=1692123668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bP2FjwaN4IGcW4joBs+CLjau9Y+cdOLxKP3zGYTN5qY=;
-        b=nwEma481bjR2dVkvmw3gYcM4OaJZHx6IRoMIB50ZvK8CLaD1WjC6AqxQyLU0mqavvt
-         1ssXv6G89CZdtDO6QpA5oK9SSZ55ZiN/KnTLMGAHpbwAUdi8KqFbM4TNX5qVrHIlMSXK
-         Oc1v2Na/0hLiK2IyvdcYGASsGDC7f6Tr1qHfkyF6SUhTzTYzo3NjJyakw1j3C2KzhlnI
-         JNKvy1xw/+RDSNOWGYJpOl9ghhaWyZ9TmOvA3A99ZazeQ7I047iUYk9Ec+keF1GmNxsZ
-         EI5SJvTq/IFde5IsdlrhiUavpZjnw8qbtaIwxuYe4I+rcHYd8MPg+NaODONqKJcKaJKh
-         HAow==
+        d=gmail.com; s=20221208; t=1691514211; x=1692119011;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0MpGXuBiuN9koLckS5szeKEmUEXvO5QPu+ncywhWoiA=;
+        b=MbZg1LIzREBaDWbU1mkzHxft9FqCY1XRSJBdpu66MvBlTlLLz14ZYoVB76Vrwoq0Dj
+         b1u8+EbYRY/cxI/ywahbYJ74OuipJg+lWku4hFJ10YFkgxgagbUTvLQSG2j6AF+MZ5un
+         boRBiJ0zu89/Ws3n1IhFQMrP1WpaCbL0aRGWipkRZw7CXzOTtLdwZQf50APWtdcyTD23
+         o8aIDj8VlOjNVAqa39EHzYIvkjBpa5UPauIbAPpklyGc1ZPyE6P/OohhKUKOhKZjnwqC
+         lQkL336MXHsh8aQ+EIhtOlJHqE9qyOU/NK/8+j5wJ1rAy2sh/R/j2FqIpGM/Qjt4NnZi
+         jsdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691518868; x=1692123668;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bP2FjwaN4IGcW4joBs+CLjau9Y+cdOLxKP3zGYTN5qY=;
-        b=Wm3ySURzbbqZr0HGuKzHQKESvIPZtaFrnfW61EHnZfTp8tRoUVo0ozzKo/cAUV3YOt
-         cdwkuSUGWc+vdYtlwrwA8qAbStOwh3YiSqXaHb1uB60jnu1SR6B+M+fEoAeZ0lzct4Lw
-         LyhQdxJ2Lwi1Xq3v70iFMjvDcZmHg8OL4cMOOQnFkxzdiezMnyBgVa8QPNUMexpxjXyp
-         oshgOwISKSLAN2UCRqnn3py8FBORGb5MeyOxc3Hpbx8DTflUvzd9eFPdTjNXmrKTWE2D
-         HRZ+6EiYXtEz/vjlUES4flTI+XtxXNcfL9OEpOyHu4y3ARZoCM3MAgP85otThgPmhTjX
-         gO5w==
-X-Gm-Message-State: AOJu0YyOyoqSHJPXKLPRpsIBtRzt5ZR28BbTT6c1brqF1nxSuWD8Suxv
-        LN1qaaX5lxq3DX0LTaK1VgHDGAAxlgFE29zxNz52P3B29k8=
-X-Google-Smtp-Source: AGHT+IHzd72MXRBUxxu0kGsv897AldAmF82BtYlpnQ8tHDWZm9juAjsfUZUdG08vO7RwYdA5t7BPvhrRtRP5xD4HUx0=
-X-Received: by 2002:a2e:83cd:0:b0:2b4:75f0:b9e9 with SMTP id
- s13-20020a2e83cd000000b002b475f0b9e9mr211628ljh.10.1691518868206; Tue, 08 Aug
- 2023 11:21:08 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691514211; x=1692119011;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0MpGXuBiuN9koLckS5szeKEmUEXvO5QPu+ncywhWoiA=;
+        b=FM7TLgCxRQsIKGv4jRf0bR26gZ41VvlJAGQmxIUtoMTE/WR+F5JV2kk/UjvbqpLZK0
+         pZJeqQ2nVeQ6VBFhnYkWGNzTgdLFvweOiiVjIEB1K2vgQbwAoGDv2u6LZ8YjqdaliOt1
+         bkcWKUbdZbrjZTVxTrrCh4VMCedoqHIizGS/8c63lDALvEb0ES7Q+uwy1LQOlLq9jpNG
+         jBJziDWRcOtU26IWwYqjjLh8unT0IgUKoIWRU/C13ps1yboSwQH6TcbYqG881hfmOiiT
+         M+WGxytJvsTo3QI3Z0qWbHB5Hvc6TI4GxBMC3Rjxxi7Kk2Fm7zsQ8PtvSMPklVSv2efc
+         +eoQ==
+X-Gm-Message-State: AOJu0YxxGtNqHZM9yh3DiillvWZ/QLSJnZgbtCKxPCVYayXP8P5CNdOs
+        A3jubCqmrp+oaptFF85ibeo3DrXjvZIPl40Z
+X-Google-Smtp-Source: AGHT+IH3o9fSz3J+trqyHYXdiDpwfrwl61+YP2/JN6E3g3m41PBKKYJRMnJQG8WwN5bwpD/yKjjAfg==
+X-Received: by 2002:a5d:5083:0:b0:317:dcdd:3fa1 with SMTP id a3-20020a5d5083000000b00317dcdd3fa1mr5827685wrt.34.1691472828609;
+        Mon, 07 Aug 2023 22:33:48 -0700 (PDT)
+Received: from khadija-virtual-machine ([124.29.208.67])
+        by smtp.gmail.com with ESMTPSA id 23-20020a05600c229700b003fbdd5d0758sm12633902wmf.22.2023.08.07.22.33.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 07 Aug 2023 22:33:47 -0700 (PDT)
+Date:   Tue, 8 Aug 2023 10:33:44 +0500
+From:   Khadija Kamran <kamrankhadijadj@gmail.com>
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Alison Schofield <alison.schofield@intel.com>,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org,
+        selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        jmorris@namei.org, serge@hallyn.com,
+        linux-security-module@vger.kernel.org, apparmor@lists.ubuntu.com,
+        john.johansen@canonical.com, ztarkhani@microsoft.com
+Subject: Re: [PATCH v2] lsm: constify the 'target' parameter in
+ security_capget()
+Message-ID: <ZNHTuHFDVdCNPXj+@gmail.com>
+References: <ZNCWUQXKrZnCeB/5@gmail.com>
+ <CAHC9VhT+DPRrSnmh_2PCAf05jPCE-EPaMU_TLB=jJ+mJ+NALsw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20230803162245.302488-1-cgzones@googlemail.com>
-In-Reply-To: <20230803162245.302488-1-cgzones@googlemail.com>
-From:   James Carter <jwcart2@gmail.com>
-Date:   Tue, 8 Aug 2023 14:20:56 -0400
-Message-ID: <CAP+JOzSxiGJ2vWC2CHZgKcRXUC0x=LP3OrEHt9O4tLptd1im+A@mail.gmail.com>
-Subject: Re: [PATCH] libsepol: ebitmap: avoid branches for iteration
-To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHC9VhT+DPRrSnmh_2PCAf05jPCE-EPaMU_TLB=jJ+mJ+NALsw@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, Aug 3, 2023 at 12:36=E2=80=AFPM Christian G=C3=B6ttsche
-<cgzones@googlemail.com> wrote:
+On Mon, Aug 07, 2023 at 07:09:33PM -0400, Paul Moore wrote:
+> On Mon, Aug 7, 2023 at 2:59 AM Khadija Kamran <kamrankhadijadj@gmail.com> wrote:
+> >
+> >
+> >
+> > cap_capget() LSM hook declaration exceeds the 80 characters per line
+> > limit. Split the function declaration to multple lines to decrease the
+> 
+> "multiple" :)
+> 
+> Don't worry, I'll fix that in the merge.
 >
-> Otherwise Linus might think we don't understand pointers.
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 
-Acked-by: James Carter <jwcart2@gmail.com>
+Hey Paul,
+Thank you. :)
 
-> ---
->  libsepol/src/ebitmap.c | 83 +++++++++++++++++++-----------------------
->  1 file changed, 37 insertions(+), 46 deletions(-)
->
-> diff --git a/libsepol/src/ebitmap.c b/libsepol/src/ebitmap.c
-> index 3ec1042f..f166b7d6 100644
-> --- a/libsepol/src/ebitmap.c
-> +++ b/libsepol/src/ebitmap.c
-> @@ -18,13 +18,13 @@
->  int ebitmap_or(ebitmap_t * dst, const ebitmap_t * e1, const ebitmap_t * =
-e2)
->  {
->         const ebitmap_node_t *n1, *n2;
-> -       ebitmap_node_t *new, *prev;
-> +       ebitmap_node_t *new =3D NULL, **prev;
->
->         ebitmap_init(dst);
->
-> +       prev =3D &dst->node;
->         n1 =3D e1->node;
->         n2 =3D e2->node;
-> -       prev =3D 0;
->         while (n1 || n2) {
->                 new =3D (ebitmap_node_t *) malloc(sizeof(ebitmap_node_t))=
-;
->                 if (!new) {
-> @@ -46,12 +46,10 @@ int ebitmap_or(ebitmap_t * dst, const ebitmap_t * e1,=
- const ebitmap_t * e2)
->                         n2 =3D n2->next;
->                 }
->
-> -               new->next =3D 0;
-> -               if (prev)
-> -                       prev->next =3D new;
-> -               else
-> -                       dst->node =3D new;
-> -               prev =3D new;
-> +               new->next =3D NULL;
-> +
-> +               *prev =3D new;
-> +               prev =3D &new->next;
->         }
->
->         dst->highbit =3D (e1->highbit > e2->highbit) ? e1->highbit : e2->=
-highbit;
-> @@ -74,10 +72,11 @@ int ebitmap_union(ebitmap_t * dst, const ebitmap_t * =
-e1)
->  int ebitmap_and(ebitmap_t *dst, const ebitmap_t *e1, const ebitmap_t *e2=
-)
->  {
->         const ebitmap_node_t *n1, *n2;
-> -       ebitmap_node_t *new, *prev =3D NULL;
-> +       ebitmap_node_t *new =3D NULL, **prev;
->
->         ebitmap_init(dst);
->
-> +       prev =3D &dst->node;
->         n1 =3D e1->node;
->         n2 =3D e2->node;
->         while (n1 && n2) {
-> @@ -92,11 +91,8 @@ int ebitmap_and(ebitmap_t *dst, const ebitmap_t *e1, c=
-onst ebitmap_t *e2)
->                                 new->map =3D n1->map & n2->map;
->                                 new->next =3D NULL;
->
-> -                               if (prev)
-> -                                       prev->next =3D new;
-> -                               else
-> -                                       dst->node =3D new;
-> -                               prev =3D new;
-> +                               *prev =3D new;
-> +                               prev =3D &new->next;
->                         }
->
->                         n1 =3D n1->next;
-> @@ -108,8 +104,8 @@ int ebitmap_and(ebitmap_t *dst, const ebitmap_t *e1, =
-const ebitmap_t *e2)
->                 }
->         }
->
-> -       if (prev)
-> -               dst->highbit =3D prev->startbit + MAPSIZE;
-> +       if (new)
-> +               dst->highbit =3D new->startbit + MAPSIZE;
->
->         return 0;
->  }
-> @@ -117,12 +113,13 @@ int ebitmap_and(ebitmap_t *dst, const ebitmap_t *e1=
-, const ebitmap_t *e2)
->  int ebitmap_xor(ebitmap_t *dst, const ebitmap_t *e1, const ebitmap_t *e2=
-)
->  {
->         const ebitmap_node_t *n1, *n2;
-> -       ebitmap_node_t *new, *prev =3D NULL;
-> +       ebitmap_node_t *new =3D NULL, **prev;
->         uint32_t startbit;
->         MAPTYPE map;
->
->         ebitmap_init(dst);
->
-> +       prev =3D &dst->node;
->         n1 =3D e1->node;
->         n2 =3D e2->node;
->         while (n1 || n2) {
-> @@ -150,16 +147,14 @@ int ebitmap_xor(ebitmap_t *dst, const ebitmap_t *e1=
-, const ebitmap_t *e2)
->                         new->startbit =3D startbit;
->                         new->map =3D map;
->                         new->next =3D NULL;
-> -                       if (prev)
-> -                               prev->next =3D new;
-> -                       else
-> -                               dst->node =3D new;
-> -                       prev =3D new;
-> +
-> +                       *prev =3D new;
-> +                       prev =3D &new->next;
->                 }
->         }
->
-> -       if (prev)
-> -               dst->highbit =3D prev->startbit + MAPSIZE;
-> +       if (new)
-> +               dst->highbit =3D new->startbit + MAPSIZE;
->
->         return 0;
->  }
-> @@ -167,12 +162,13 @@ int ebitmap_xor(ebitmap_t *dst, const ebitmap_t *e1=
-, const ebitmap_t *e2)
->  int ebitmap_not(ebitmap_t *dst, const ebitmap_t *e1, unsigned int maxbit=
-)
->  {
->         const ebitmap_node_t *n;
-> -       ebitmap_node_t *new, *prev =3D NULL;
-> +       ebitmap_node_t *new =3D NULL, **prev;
->         uint32_t startbit, cur_startbit;
->         MAPTYPE map;
->
->         ebitmap_init(dst);
->
-> +       prev =3D &dst->node;
->         n =3D e1->node;
->         for (cur_startbit =3D 0; cur_startbit < maxbit; cur_startbit +=3D=
- MAPSIZE) {
->                 if (n && n->startbit =3D=3D cur_startbit) {
-> @@ -199,16 +195,13 @@ int ebitmap_not(ebitmap_t *dst, const ebitmap_t *e1=
-, unsigned int maxbit)
->                         new->map =3D map;
->                         new->next =3D NULL;
->
-> -                       if (prev)
-> -                               prev->next =3D new;
-> -                       else
-> -                               dst->node =3D new;
-> -                       prev =3D new;
-> +                       *prev =3D new;
-> +                       prev =3D &new->next;
->                 }
->         }
->
-> -       if (prev)
-> -               dst->highbit =3D prev->startbit + MAPSIZE;
-> +       if (new)
-> +               dst->highbit =3D new->startbit + MAPSIZE;
->
->         return 0;
->  }
-> @@ -278,11 +271,11 @@ int ebitmap_cmp(const ebitmap_t * e1, const ebitmap=
-_t * e2)
->  int ebitmap_cpy(ebitmap_t * dst, const ebitmap_t * src)
->  {
->         const ebitmap_node_t *n;
-> -       ebitmap_node_t *new, *prev;
-> +       ebitmap_node_t *new =3D NULL, **prev;
->
->         ebitmap_init(dst);
->         n =3D src->node;
-> -       prev =3D 0;
-> +       prev =3D &dst->node;
->         while (n) {
->                 new =3D (ebitmap_node_t *) malloc(sizeof(ebitmap_node_t))=
-;
->                 if (!new) {
-> @@ -291,12 +284,11 @@ int ebitmap_cpy(ebitmap_t * dst, const ebitmap_t * =
-src)
->                 }
->                 new->startbit =3D n->startbit;
->                 new->map =3D n->map;
-> -               new->next =3D 0;
-> -               if (prev)
-> -                       prev->next =3D new;
-> -               else
-> -                       dst->node =3D new;
-> -               prev =3D new;
-> +               new->next =3D NULL;
-> +
-> +               *prev =3D new;
-> +               prev =3D &new->next;
-> +
->                 n =3D n->next;
->         }
->
-> @@ -450,7 +442,7 @@ int ebitmap_set_bit(ebitmap_t * e, unsigned int bit, =
-int value)
->
->  int ebitmap_init_range(ebitmap_t * e, unsigned int minbit, unsigned int =
-maxbit)
->  {
-> -       ebitmap_node_t *new, *prev =3D NULL;
-> +       ebitmap_node_t *new =3D NULL, **prev;
->         uint32_t minstartbit =3D minbit & ~(MAPSIZE - 1);
->         uint32_t maxstartbit =3D maxbit & ~(MAPSIZE - 1);
->         uint32_t minhighbit =3D minstartbit + MAPSIZE;
-> @@ -466,6 +458,8 @@ int ebitmap_init_range(ebitmap_t * e, unsigned int mi=
-nbit, unsigned int maxbit)
->         if (minhighbit =3D=3D 0 || maxhighbit =3D=3D 0)
->                 return -EOVERFLOW;
->
-> +       prev =3D &e->node;
-> +
->         for (startbit =3D minstartbit; startbit <=3D maxstartbit; startbi=
-t +=3D MAPSIZE) {
->                 new =3D malloc(sizeof(ebitmap_node_t));
->                 if (!new)
-> @@ -485,11 +479,8 @@ int ebitmap_init_range(ebitmap_t * e, unsigned int m=
-inbit, unsigned int maxbit)
->                         new->map =3D (mask << (minbit - startbit));
->                 }
->
-> -               if (prev)
-> -                       prev->next =3D new;
-> -               else
-> -                       e->node =3D new;
-> -               prev =3D new;
-> +               *prev =3D new;
-> +               prev =3D &new->next;
->         }
->
->         e->highbit =3D maxhighbit;
-> --
-> 2.40.1
->
+> There is one more nitpick below, but I think this looks good.  I'll
+> give this a few days to see if John can ACK the AppArmor bits, but if
+> we don't hear from him by mid-week I'll plan to merge this.
+> 
+> Thanks!
+> 
+> > line length.
+> >
+> > Signed-off-by: Khadija Kamran <kamrankhadijadj@gmail.com>
+> > ---
+> > Changes in v2:
+> >  - Squash the patches 1/2 and 2/2 into a single patch
+> >  - Simplify the commit message
+> >
+> >  include/linux/lsm_hook_defs.h | 2 +-
+> >  include/linux/security.h      | 7 ++++---
+> >  kernel/capability.c           | 2 +-
+> >  security/apparmor/lsm.c       | 2 +-
+> >  security/commoncap.c          | 2 +-
+> >  security/security.c           | 2 +-
+> >  security/selinux/hooks.c      | 2 +-
+> >  7 files changed, 10 insertions(+), 9 deletions(-)
+> >
+> > diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+> > index 6bb55e61e8e8..fd3844e11077 100644
+> > --- a/include/linux/lsm_hook_defs.h
+> > +++ b/include/linux/lsm_hook_defs.h
+> > @@ -36,7 +36,7 @@ LSM_HOOK(int, 0, binder_transfer_file, const struct cred *from,
+> >  LSM_HOOK(int, 0, ptrace_access_check, struct task_struct *child,
+> >          unsigned int mode)
+> >  LSM_HOOK(int, 0, ptrace_traceme, struct task_struct *parent)
+> > -LSM_HOOK(int, 0, capget, struct task_struct *target, kernel_cap_t *effective,
+> > +LSM_HOOK(int, 0, capget, const struct task_struct *target, kernel_cap_t *effective,
+> >          kernel_cap_t *inheritable, kernel_cap_t *permitted)
+> >  LSM_HOOK(int, 0, capset, struct cred *new, const struct cred *old,
+> >          const kernel_cap_t *effective, const kernel_cap_t *inheritable,
+> > diff --git a/include/linux/security.h b/include/linux/security.h
+> > index e2734e9e44d5..fef65d0e522d 100644
+> > --- a/include/linux/security.h
+> > +++ b/include/linux/security.h
+> > @@ -145,7 +145,8 @@ extern int cap_capable(const struct cred *cred, struct user_namespace *ns,
+> >  extern int cap_settime(const struct timespec64 *ts, const struct timezone *tz);
+> >  extern int cap_ptrace_access_check(struct task_struct *child, unsigned int mode);
+> >  extern int cap_ptrace_traceme(struct task_struct *parent);
+> > -extern int cap_capget(struct task_struct *target, kernel_cap_t *effective, kernel_cap_t *inheritable, kernel_cap_t *permitted);
+> > +extern int cap_capget(const struct task_struct *target, kernel_cap_t *effective,
+> > +                                         kernel_cap_t *inheritable, kernel_cap_t *permitted);
+> 
+> Don't resubmit the patch just for this, I'll fix it during the merge,
+> but generally nice to make sure the wrapped lines are aligned with the
+> previous line; look at the security_cap_get() declaration (below) in
+> this patch to see an example.
+
+Okay noted. 
+
+Regards,
+Khadija
+
+> 
+> >  extern int cap_capset(struct cred *new, const struct cred *old,
+> >                       const kernel_cap_t *effective,
+> >                       const kernel_cap_t *inheritable,
+> > @@ -271,7 +272,7 @@ int security_binder_transfer_file(const struct cred *from,
+> >                                   const struct cred *to, struct file *file);
+> >  int security_ptrace_access_check(struct task_struct *child, unsigned int mode);
+> >  int security_ptrace_traceme(struct task_struct *parent);
+> > -int security_capget(struct task_struct *target,
+> > +int security_capget(const struct task_struct *target,
+> >                     kernel_cap_t *effective,
+> >                     kernel_cap_t *inheritable,
+> >                     kernel_cap_t *permitted);
+> > @@ -553,7 +554,7 @@ static inline int security_ptrace_traceme(struct task_struct *parent)
+> >         return cap_ptrace_traceme(parent);
+> >  }
+> >
+> > -static inline int security_capget(struct task_struct *target,
+> > +static inline int security_capget(const struct task_struct *target,
+> >                                    kernel_cap_t *effective,
+> >                                    kernel_cap_t *inheritable,
+> >                                    kernel_cap_t *permitted)
+> > diff --git a/kernel/capability.c b/kernel/capability.c
+> > index 3e058f41df32..67bdee3414dd 100644
+> > --- a/kernel/capability.c
+> > +++ b/kernel/capability.c
+> > @@ -112,7 +112,7 @@ static inline int cap_get_target_pid(pid_t pid, kernel_cap_t *pEp,
+> >         int ret;
+> >
+> >         if (pid && (pid != task_pid_vnr(current))) {
+> > -               struct task_struct *target;
+> > +               const struct task_struct *target;
+> >
+> >                 rcu_read_lock();
+> >
+> > diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
+> > index f431251ffb91..12dd96c3b2f0 100644
+> > --- a/security/apparmor/lsm.c
+> > +++ b/security/apparmor/lsm.c
+> > @@ -144,7 +144,7 @@ static int apparmor_ptrace_traceme(struct task_struct *parent)
+> >  }
+> >
+> >  /* Derived from security/commoncap.c:cap_capget */
+> > -static int apparmor_capget(struct task_struct *target, kernel_cap_t *effective,
+> > +static int apparmor_capget(const struct task_struct *target, kernel_cap_t *effective,
+> >                            kernel_cap_t *inheritable, kernel_cap_t *permitted)
+> >  {
+> >         struct aa_label *label;
+> > diff --git a/security/commoncap.c b/security/commoncap.c
+> > index 0b3fc2f3afe7..5fd64d3e5bfd 100644
+> > --- a/security/commoncap.c
+> > +++ b/security/commoncap.c
+> > @@ -197,7 +197,7 @@ int cap_ptrace_traceme(struct task_struct *parent)
+> >   * This function retrieves the capabilities of the nominated task and returns
+> >   * them to the caller.
+> >   */
+> > -int cap_capget(struct task_struct *target, kernel_cap_t *effective,
+> > +int cap_capget(const struct task_struct *target, kernel_cap_t *effective,
+> >                kernel_cap_t *inheritable, kernel_cap_t *permitted)
+> >  {
+> >         const struct cred *cred;
+> > diff --git a/security/security.c b/security/security.c
+> > index d5ff7ff45b77..fb2d93b481f1 100644
+> > --- a/security/security.c
+> > +++ b/security/security.c
+> > @@ -893,7 +893,7 @@ int security_ptrace_traceme(struct task_struct *parent)
+> >   *
+> >   * Return: Returns 0 if the capability sets were successfully obtained.
+> >   */
+> > -int security_capget(struct task_struct *target,
+> > +int security_capget(const struct task_struct *target,
+> >                     kernel_cap_t *effective,
+> >                     kernel_cap_t *inheritable,
+> >                     kernel_cap_t *permitted)
+> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> > index 79b4890e9936..ff42d49f1b41 100644
+> > --- a/security/selinux/hooks.c
+> > +++ b/security/selinux/hooks.c
+> > @@ -2056,7 +2056,7 @@ static int selinux_ptrace_traceme(struct task_struct *parent)
+> >                             SECCLASS_PROCESS, PROCESS__PTRACE, NULL);
+> >  }
+> >
+> > -static int selinux_capget(struct task_struct *target, kernel_cap_t *effective,
+> > +static int selinux_capget(const struct task_struct *target, kernel_cap_t *effective,
+> >                           kernel_cap_t *inheritable, kernel_cap_t *permitted)
+> >  {
+> >         return avc_has_perm(current_sid(), task_sid_obj(target),
+> > --
+> > 2.34.1
+> 
+> -- 
+> paul-moore.com

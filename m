@@ -2,145 +2,103 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D25BD774B5A
-	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 22:45:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55F12774CEF
+	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 23:21:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234079AbjHHUpp (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Aug 2023 16:45:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49814 "EHLO
+        id S236579AbjHHVVk (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Aug 2023 17:21:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234049AbjHHUpd (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Aug 2023 16:45:33 -0400
-Received: from mail-pg1-x52c.google.com (mail-pg1-x52c.google.com [IPv6:2607:f8b0:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8685533920
-        for <selinux@vger.kernel.org>; Tue,  8 Aug 2023 09:34:16 -0700 (PDT)
-Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so4327032a12.1
-        for <selinux@vger.kernel.org>; Tue, 08 Aug 2023 09:34:16 -0700 (PDT)
+        with ESMTP id S236689AbjHHVV0 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Aug 2023 17:21:26 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C18ADA25D
+        for <selinux@vger.kernel.org>; Tue,  8 Aug 2023 11:33:06 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ba0f27a4c2so89582841fa.2
+        for <selinux@vger.kernel.org>; Tue, 08 Aug 2023 11:33:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691512428; x=1692117228;
+        d=gmail.com; s=20221208; t=1691519585; x=1692124385;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XE/9U5XQqMyn/QRibeavGPD3cYH+oLlR2G3qAXNtjMo=;
-        b=MVYpPwlxsqcPGYocN+lBW1OwjBI6vsc+8rYKA2bRiOYZP7O0gg+APqiVP+bcloiLFP
-         xIjYgBJkm8ZQjWX0XghDZK5pCGzvVF+4n6UeESXqGjkuDD8pzkvQFlzfcEXMFIpF7Nhp
-         xipHB+W1+5sp0LPyevYN9wb+8Xn5IGqFXoh/F1OwQK9VdoFZQRzGJNBH9iwYcsdai7xu
-         PXNCZJBjEBdNb/I70zFAAC677mHLFZ6i03LYlOTDB6izO3/oWvmm5ORYIigkKDEeefFe
-         DjM+MxMM3DNsehy91YCWSebal4Cr+4uLKn5IzhAtU8oPF/ly0wKS6kpgRvoHtq5a++md
-         nT9A==
+        bh=Z+FQ9Pvhakam5/58U+uBvMgwCqAm3HQiFp+DCs1/Xsw=;
+        b=ZQBei8Aj74ygjr5pzuPF4+xVT/qjE8+UD6y3mfp3IqDx9SGNp35TtG6Zuof24bkF6x
+         kqvmH5578wkEQFgLSFQD6X6XMEwcUb7ncHL8GxV8zdikmvoHVPjQgrN7e5siPvAbdSd/
+         zoiADmfh9YUchSCGpE1hHfMUVVizzVAruJTJx0f4fZEMabg9O2YSP8UPmY8JwK3v3g0d
+         Mbfr1Eq3P9wLc3iTYc42prRdAP1bK2eKWT17w2wdzfTCzBThB98AGIzTD9cf9/x5MdMY
+         Go3TNY3Sk7CZYN+cGUX8otoVkGeoCFI5VOtlNU3m4TjZxw4ICeXZBMDw+ngcq+TIplbK
+         c6mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691512428; x=1692117228;
+        d=1e100.net; s=20221208; t=1691519585; x=1692124385;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XE/9U5XQqMyn/QRibeavGPD3cYH+oLlR2G3qAXNtjMo=;
-        b=iwK//h8BYe9NoqU2Mio4Gdof1sJ0kVNXwbNeRpo5btExdz/44Y3f/kjQLs6S0bHqWh
-         Lg1nnsmg/1M15ChJE/ial8NRgNb++A/WDjV5TjrGwMOKJUyHa0OujmolZuZFdr9Rfw7M
-         xDOqY+roAqdy+4w56aY5jxWI0tZKTPxBWfr1J6qSkAYQtum9wIn3JNkIqsIsYpJ73pc/
-         /36hqA8SdlNW+zYz+8Koj6sY6o2h7Hymt+7bxrsuc0INEqM941rOnLkG2OynqDRYNR44
-         oLg9iP5pSaZPABpNF+WMvH5f5br6bXMwOPvrybMPYFBUaeUPm2BS50MfFnuIkoxUSAIG
-         dl/Q==
-X-Gm-Message-State: AOJu0YyT3Ilmm5tiIv06CvIxpK4cSg7fqwlYR8WmRGnUULyoGL6qMTA5
-        8ELSHZPCjKj/iLpchFqRUQKpwszt2CqUNCpdOm/ix719
-X-Google-Smtp-Source: AGHT+IH9TriqlZIGNmQz5LGtfmnOX1+2R6ph0Qp3MeC63fFgD+tz3ls3JknCm9bSHLVuQ3NYX9mQvuLuKr/d5NJJ0xA=
-X-Received: by 2002:a17:90a:9f95:b0:268:565f:44a with SMTP id
- o21-20020a17090a9f9500b00268565f044amr102191pjp.9.1691512428205; Tue, 08 Aug
- 2023 09:33:48 -0700 (PDT)
+        bh=Z+FQ9Pvhakam5/58U+uBvMgwCqAm3HQiFp+DCs1/Xsw=;
+        b=Wv3KQ3Ce4blc7JQENv4ylncWMF4AyzLLxZG/hC9QxW1XqYM/mJRP48bcDKxeJmn4Va
+         0lC5IuC2EQGR+iflbFYqzJCnMPnectfb/XBjkpbS6PwZo5ZPATyIfusmAsMjnUU8Jwoz
+         hSR1TWvyaUul5TtACBQX63VP7xTSbnzEMJ6jpOwxPFXTd6vNIEabNMA1jUTMAwXwJRKu
+         jbwiERM1kIuf+CNL3+rRhBysQeZLeR1/zmx2ZDmP+jTITFM2oCQGi0QPh/VALgP5lrFK
+         8UU5PbGYAF07XNHHE5i1Mq+IGEeEsOEdgMFRscy+RsBKF1Wagq099PyE399m1asPd+MO
+         BEPw==
+X-Gm-Message-State: AOJu0YzjBbBHi+gd1qNHSr4FNHovdM7+h3h8POitqPb+Z/U/m4GzlW42
+        gVCTUiXWX0tMzj5EQ3JQDYv/Axb5sv0Zf/yOT0k=
+X-Google-Smtp-Source: AGHT+IGz1OmiK2ue0MeBGqgJ/jV+pi+NIoRRV3+l4yqNtDgJqh57KJxXNgxqOzUqTX/E46nLCGoHUgIqUQkqStDAbQo=
+X-Received: by 2002:a2e:9792:0:b0:2b9:c005:c1e5 with SMTP id
+ y18-20020a2e9792000000b002b9c005c1e5mr262459lji.34.1691519584711; Tue, 08 Aug
+ 2023 11:33:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230807180518.223481-1-cgzones@googlemail.com>
-In-Reply-To: <20230807180518.223481-1-cgzones@googlemail.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Tue, 8 Aug 2023 12:33:37 -0400
-Message-ID: <CAEjxPJ7=zm2_Bky=M9VwFPA70c6HO5bOuc3a01E_UbTmwHwpuQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] selinux: use GFP_KERNEL while reading binary policy
+References: <20230807185510.237623-1-cgzones@googlemail.com>
+In-Reply-To: <20230807185510.237623-1-cgzones@googlemail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Tue, 8 Aug 2023 14:32:53 -0400
+Message-ID: <CAP+JOzTO0S4xj+thGk7TLy6-uNuJHaEjRdtuCZiDUnXnyRfmBw@mail.gmail.com>
+Subject: Re: [RFC PATCH] semanage: use instance check
 To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
 Cc:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Aug 7, 2023 at 2:42=E2=80=AFPM Christian G=C3=B6ttsche
+On Mon, Aug 7, 2023 at 3:40=E2=80=AFPM Christian G=C3=B6ttsche
 <cgzones@googlemail.com> wrote:
 >
-> Use GFP_KERNEL instead of GFP_ATOMIC while reading a binary policy in
-> sens_read() and cat_read(), similar to surrounding code.
+> Please flake8:
 >
+>     ./python/semanage/seobject.py:250:16: E721 do not compare types, for =
+exact checks use `is` / `is not`, for instance checks use `isinstance()`
 > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 
-Congrats, you found something that appears to have been present since
-before SELinux went into mainline Linux 2.6.0-test3. Going back to my
-old CVS history, it looks like we switched the other allocations from
-GFP_ATOMIC to GFP_KERNEL at a time when all of the MLS-related
-functions were still in mls.c rather than policydb.c, but those didn't
-get updated and were subsequently moved over.
-
-Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Another patch just like this has been merged.
+Thanks,
+Jim
 
 > ---
->  security/selinux/ss/policydb.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> This currently breaks the GitHub CI.
+> ---
+>  python/semanage/seobject.py | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policyd=
-b.c
-> index a424997c79eb..bb850b608dc6 100644
-> --- a/security/selinux/ss/policydb.c
-> +++ b/security/selinux/ss/policydb.c
-> @@ -1597,7 +1597,7 @@ static int sens_read(struct policydb *p, struct sym=
-tab *s, void *fp)
->         __le32 buf[2];
->         u32 len;
->
-> -       levdatum =3D kzalloc(sizeof(*levdatum), GFP_ATOMIC);
-> +       levdatum =3D kzalloc(sizeof(*levdatum), GFP_KERNEL);
->         if (!levdatum)
->                 return -ENOMEM;
->
-> @@ -1608,12 +1608,12 @@ static int sens_read(struct policydb *p, struct s=
-ymtab *s, void *fp)
->         len =3D le32_to_cpu(buf[0]);
->         levdatum->isalias =3D le32_to_cpu(buf[1]);
->
-> -       rc =3D str_read(&key, GFP_ATOMIC, fp, len);
-> +       rc =3D str_read(&key, GFP_KERNEL, fp, len);
->         if (rc)
->                 goto bad;
->
->         rc =3D -ENOMEM;
-> -       levdatum->level =3D kmalloc(sizeof(*levdatum->level), GFP_ATOMIC)=
-;
-> +       levdatum->level =3D kmalloc(sizeof(*levdatum->level), GFP_KERNEL)=
-;
->         if (!levdatum->level)
->                 goto bad;
->
-> @@ -1638,7 +1638,7 @@ static int cat_read(struct policydb *p, struct symt=
-ab *s, void *fp)
->         __le32 buf[3];
->         u32 len;
->
-> -       catdatum =3D kzalloc(sizeof(*catdatum), GFP_ATOMIC);
-> +       catdatum =3D kzalloc(sizeof(*catdatum), GFP_KERNEL);
->         if (!catdatum)
->                 return -ENOMEM;
->
-> @@ -1650,7 +1650,7 @@ static int cat_read(struct policydb *p, struct symt=
-ab *s, void *fp)
->         catdatum->value =3D le32_to_cpu(buf[1]);
->         catdatum->isalias =3D le32_to_cpu(buf[2]);
->
-> -       rc =3D str_read(&key, GFP_ATOMIC, fp, len);
-> +       rc =3D str_read(&key, GFP_KERNEL, fp, len);
->         if (rc)
->                 goto bad;
->
+> diff --git a/python/semanage/seobject.py b/python/semanage/seobject.py
+> index 361205d1..cc944ae2 100644
+> --- a/python/semanage/seobject.py
+> +++ b/python/semanage/seobject.py
+> @@ -247,7 +247,7 @@ class semanageRecords:
+>          global handle
+>          if args:
+>              # legacy code - args was store originally
+> -            if type(args) =3D=3D str:
+> +            if isinstance(args, str):
+>                  self.store =3D args
+>              else:
+>                  self.args =3D args
 > --
 > 2.40.1
 >

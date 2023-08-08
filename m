@@ -2,57 +2,63 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5EE2C77486B
-	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 21:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF79A77447A
+	for <lists+selinux@lfdr.de>; Tue,  8 Aug 2023 20:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236168AbjHHTcq (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 8 Aug 2023 15:32:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46626 "EHLO
+        id S235646AbjHHSU1 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 8 Aug 2023 14:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236188AbjHHTc1 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 8 Aug 2023 15:32:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7135C22727
-        for <selinux@vger.kernel.org>; Tue,  8 Aug 2023 10:36:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1691516175;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=p6cRon06Hl8GTz6/8IwrjqSOlGttGxf7yOEZh/0gRGk=;
-        b=fLvBT1MFBGDPOmRB1wOC0pAqw+O3rbpyXEdzN9ctd8B8WQcMcgMi27zj+3lYzKKTUp+Tc8
-        KTxvT+tqai5PMmURhbOlbFHbwuSx9i3R8RXPvX8zky82XdByW9TPHgo5OJifIdcB56/udB
-        6n5u8owmvd0/uL2DellIFevfqOA3JM8=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-553-lvNK2diTOu21P_b06IlnJQ-1; Tue, 08 Aug 2023 06:30:25 -0400
-X-MC-Unique: lvNK2diTOu21P_b06IlnJQ-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5943685CBE8;
-        Tue,  8 Aug 2023 10:30:25 +0000 (UTC)
-Received: from localhost (unknown [10.45.224.248])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 1B8412026D68;
-        Tue,  8 Aug 2023 10:30:24 +0000 (UTC)
-From:   Petr Lautrbach <plautrba@redhat.com>
-To:     Christian =?utf-8?Q?G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        selinux@vger.kernel.org
-Subject: Re: [RFC PATCH] semanage: use instance check
-In-Reply-To: <20230807185510.237623-1-cgzones@googlemail.com>
-References: <20230807185510.237623-1-cgzones@googlemail.com>
-Date:   Tue, 08 Aug 2023 12:30:24 +0200
-Message-ID: <87zg31su67.fsf@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        with ESMTP id S233318AbjHHSUB (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 8 Aug 2023 14:20:01 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0677A20D35
+        for <selinux@vger.kernel.org>; Tue,  8 Aug 2023 10:28:43 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6bca38a6618so5071605a34.3
+        for <selinux@vger.kernel.org>; Tue, 08 Aug 2023 10:28:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1691515722; x=1692120522;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zLAH5u1UKFtPG+pw7/wQvaqQnBo57wIc9zaPM3qytYA=;
+        b=Wif2ASPOkXISAQFN7RDejwtdGvqwbE1yXodpzOqZpMknQ+9yN4bZj2oezpE3TnFEKW
+         1hWVrk2XZsPgM+Jc8GOm9uSXzBrQgabCyWK4tZReUX44kdQibGEQHa1qx2CDigE+DjmJ
+         1qGm9Gf6AsG682XF4XEh2H+KgAK5GB1rRgvZ/SpneIBrca3d2LFhLxCnHE4zaVZ8jfHv
+         D0/gsWWnF+QrJQLXkopEwiaaPDD6uFqR+AvbuL0ukgI8NKlG54JIRh9bLSz+Yrj8zSVj
+         JD0xLxcV/BlV91Sca1AiKpQrZ5SuixhJHFs6q1wT3Xtggg8klCRswQBzqq+ZpRtj/aGg
+         mFEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691515722; x=1692120522;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zLAH5u1UKFtPG+pw7/wQvaqQnBo57wIc9zaPM3qytYA=;
+        b=WG1E02ZA5uoEgiw/M/Cvsw3dv2BurTecp1lNkcy3+GyT/fWiyKhIULokbCM1opA4cs
+         JoSBFCSMse9imcgjP59Ov+Uxdvhh/RUjSAc5Eor64WwYWx0S+JEXHxVhaALjJL9Js2GG
+         zCmlbN5yv6qbXElx+UVlyU27DGKvdb5dtY8simxUzDvHdxPz9+fEOVZ1ziovvug5nipB
+         uREGAwg70sMQ3uGdf7S811o5aUaCilMuinD8tPWUiL1VlwCTn/nk39Xc01sZjSmNe7zx
+         tbmRa3uKUesA+RD9fs24wJ8BDKJHGhWxNGpBE0DLLE+QVXgSuWQwP+AhUV/scwgOPjvA
+         kmVg==
+X-Gm-Message-State: AOJu0YyB2jpODMW9xiFhyjGH92/NcxSwAF9pb6ln+XT9nIU83Gsrj+4k
+        NpbMFix1sUepR/EnCEYpdrkf
+X-Google-Smtp-Source: AGHT+IHho+obFD1QpSYx31flRhv4Hrx7Tpub2h06vX4z16f8/dqCLZRQI/jzOnrRZ1rgomiTplHMIw==
+X-Received: by 2002:a05:6358:9041:b0:123:5664:e493 with SMTP id f1-20020a056358904100b001235664e493mr43825rwf.27.1691515722205;
+        Tue, 08 Aug 2023 10:28:42 -0700 (PDT)
+Received: from localhost ([70.22.175.108])
+        by smtp.gmail.com with ESMTPSA id j2-20020ac84c82000000b003f3937c16c4sm3510658qtv.5.2023.08.08.10.28.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Aug 2023 10:28:41 -0700 (PDT)
+Date:   Tue, 08 Aug 2023 13:28:41 -0400
+Message-ID: <41668501b8413023d5ed79d60233a6fa.paul@paul-moore.com>
+From:   Paul Moore <paul@paul-moore.com>
+To:     Xiu Jianfeng <xiujianfeng@huaweicloud.com>,
+        stephen.smalley.work@gmail.com, eparis@parisplace.org
+Cc:     selinux@vger.kernel.org, xiujianfeng@huawei.com
+Subject: Re: [PATCH] selinux: update comment on selinux_hooks[]
+References: <20230804034652.281266-1-xiujianfeng@huaweicloud.com>
+In-Reply-To: <20230804034652.281266-1-xiujianfeng@huaweicloud.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,40 +66,18 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Christian G=C3=B6ttsche <cgzones@googlemail.com> writes:
-
-> Please flake8:
->
->     ./python/semanage/seobject.py:250:16: E721 do not compare types, for =
-exact checks use `is` / `is not`, for instance checks use `isinstance()`
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-
-
-Thanks, but it's already proposed
-
-https://lore.kernel.org/selinux/20230803134024.20849-1-jwcart2@gmail.com/T/=
-#u
-
-
+On Aug  3, 2023 Xiu Jianfeng <xiujianfeng@huaweicloud.com> wrote:
+> 
+> After commit f22f9aaf6c3d ("selinux: remove the runtime disable
+> functionality"), the comment on selinux_hooks[] is out-of-date,
+> remove the last paragraph about runtime disable functionality.
+> 
+> Signed-off-by: Xiu Jianfeng <xiujianfeng@huawei.com>
 > ---
-> This currently breaks the GitHub CI.
-> ---
->  python/semanage/seobject.py | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/python/semanage/seobject.py b/python/semanage/seobject.py
-> index 361205d1..cc944ae2 100644
-> --- a/python/semanage/seobject.py
-> +++ b/python/semanage/seobject.py
-> @@ -247,7 +247,7 @@ class semanageRecords:
->          global handle
->          if args:
->              # legacy code - args was store originally
-> -            if type(args) =3D=3D str:
-> +            if isinstance(args, str):
->                  self.store =3D args
->              else:
->                  self.args =3D args
-> --=20
-> 2.40.1
+>  security/selinux/hooks.c | 4 ----
+>  1 file changed, 4 deletions(-)
 
+Merged into selinux/next, thanks!
+
+--
+paul-moore.com

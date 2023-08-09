@@ -2,250 +2,112 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4384A776995
-	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 22:11:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 048D5776A69
+	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 22:40:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233482AbjHIULM (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 9 Aug 2023 16:11:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37458 "EHLO
+        id S229943AbjHIUky (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 9 Aug 2023 16:40:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233461AbjHIULL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 16:11:11 -0400
-Received: from mail-qv1-xf31.google.com (mail-qv1-xf31.google.com [IPv6:2607:f8b0:4864:20::f31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 103CB10CF
-        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 13:11:10 -0700 (PDT)
-Received: by mail-qv1-xf31.google.com with SMTP id 6a1803df08f44-635f293884cso1317266d6.3
-        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 13:11:10 -0700 (PDT)
+        with ESMTP id S231251AbjHIUkx (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 16:40:53 -0400
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56912A6
+        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 13:40:50 -0700 (PDT)
+Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-40fd2de0ddcso932781cf.2
+        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 13:40:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691611869; x=1692216669;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ONzAPoR2lf4LkTsVf50DNEPMYppLmWyIwIzltfe9Cps=;
-        b=VutWqg5RDHIQ9z8J0zkChO7DtiFoZ3E0k3mCJKYnmV9dqt3rxIZe+ARUT55wPeTL5t
-         t8Pv1w2ymWwLXlSHfEUeavYuFi+JEdoKsAFOiANTy1yORFLpKBFqYrNGa4cjo71xXxya
-         nP2vta7FHTOov25Ngq2KMMH/Vg25hTLOn8r44PmrBqXXQLrRxfYLj3+R5ZlwCoIH8Zcz
-         wBbRRgSG/TjtBdnIj+V5KkTVXbz/9rovfJzTEiceJFSw7fz/0MA4VGOCDj4RGmEQo/YB
-         j0gDyzOE2VcYxrghz+nQ3q9C9BHoKXNyrtJuy+lREj9pKxdCH0UJDUaJuveWeIokMjnw
-         uiIg==
+        d=gmail.com; s=20221208; t=1691613649; x=1692218449;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qZ0/YG3gLWpY0C8Yy2IFIsdeBP7URnrVgcg/UM80qGI=;
+        b=HKW9dE/WTnEmDpcOqW4dWujnkrNw8rjPk0Z56AXM/a8AgRJ3Qa+0zyhLrmg7rhiyil
+         2zbWI0mHANW0EMwvi0v68PP1OVeJs1q7ERQDGfCJr29+6hGWYTZl4yamFHGK001OAKZP
+         H76kNiP3NKvkAKqo/NZuWwOHVcxerl/bfagXsUA8LjedE0wF1x9e9JpekrRz4XvsOvHD
+         rNr5lLBSTxIRhxryYv9Z299ogbowcDRWeXuP2WQV1kHeh5SUqdRci8sGhGKGAUJm2U5U
+         W4PaermGg1X/c2hmwhk1fUDDFwdzB7NfOQNZRU2bvxkj30IaJ9PIc8Mxxo2rCTy1lDcK
+         0n1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691611869; x=1692216669;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ONzAPoR2lf4LkTsVf50DNEPMYppLmWyIwIzltfe9Cps=;
-        b=DvaortpuRnGbNtv/VCF71I10tgu9yLw8k0n/kLcgVPcJq0wzBLlZOcIycPv1G30jeo
-         ACkvofBm4D110yrTK3FTApVfed0zi3QButO2gKg3x3J02RHpGmIoXLZeMwUM8UG/rF0i
-         J533M8CoHMYEbO5oVtGtmYd603NcSDrDuSu0SdzAMtZFk3IYUhraqhTxndi6FisGmz7/
-         aOG/U/JGXBGSGkhWGZe//m/xInCZBXGuKyYv42VfScJVUL5mK07mj1/oQgzoWVA3HOhB
-         RQAC0ebtGHzBV9e66+SUZG+NgZz3SDlaYNdVu2pnrOcae5OB937ZiJKotTENhZpnyDRI
-         5XWw==
-X-Gm-Message-State: AOJu0YzKQOg02TDVULMu6XthKtyV+D4okPdsE2HitANIRBk7sG0RJtl6
-        cnm/0XBtXgcBZj9nyVgFP52ymiu/rms=
-X-Google-Smtp-Source: AGHT+IHMlMNEV5uSIaEcYr1nsgOhJaKvtanIRU0VijmG3RHHEq15oZ2iEuPdvvb2oEKYswy9m7onvg==
-X-Received: by 2002:a0c:f353:0:b0:63d:c37:bf86 with SMTP id e19-20020a0cf353000000b0063d0c37bf86mr295346qvm.41.1691611868662;
-        Wed, 09 Aug 2023 13:11:08 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691613649; x=1692218449;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qZ0/YG3gLWpY0C8Yy2IFIsdeBP7URnrVgcg/UM80qGI=;
+        b=F9jvVWaWF2AFR6zhogk+l1ddBLj7PUaH5/k2aXwKxAj/Ufg5WjhSQGqsjBY/34W3Va
+         lw/XprOA0veaORN5LJPHd3UwGvKPV8W4HQCr6aDKcWVXPDZnWZx3Kb+ETrZgNXon65DF
+         lBojHJb91kT9xarCgJBk8H4r2PW5ToPCNaz18yH0Z0pIBgVQmkpU5Bz5340KMK0wq3ww
+         EZgxeVqMNuJ4nkeNTBPWdnMTkHHRPedRRPr1gk0AStkP0Fb9efef2KvNK61JFsc4a5GP
+         nNcw8nUZJLOW87EtLO0wz8dWblDipgGR2lnmDCjmcvlMmSA/6S+rSH/06XqqfF6LErEN
+         HnVw==
+X-Gm-Message-State: AOJu0YzGx8PyXg7r+JAtqU5h0EYf9WzY+RH5yC9wDobHBQhcrrRp9IBG
+        9/weWfe5gf+CrkhycUFZpx8NbcqdJlo=
+X-Google-Smtp-Source: AGHT+IFHNlMNZE3A+ZSuNwEgcYci2oLT+1Ykaq8hrKrMKuPzZNY9IcSylv2yGL4/LWWVCDkLx3PibA==
+X-Received: by 2002:a05:622a:1009:b0:403:b5a1:7ee0 with SMTP id d9-20020a05622a100900b00403b5a17ee0mr614949qte.32.1691613649006;
+        Wed, 09 Aug 2023 13:40:49 -0700 (PDT)
 Received: from electric.. (c-73-172-54-2.hsd1.md.comcast.net. [73.172.54.2])
-        by smtp.gmail.com with ESMTPSA id w11-20020ae9e50b000000b00767d572d651sm4220210qkf.87.2023.08.09.13.11.07
+        by smtp.gmail.com with ESMTPSA id u18-20020a05622a14d200b0041020e8e261sm711295qtx.1.2023.08.09.13.40.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 13:11:07 -0700 (PDT)
+        Wed, 09 Aug 2023 13:40:48 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
-Cc:     plautrba@redhat.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 13/13 v2] semodule-utils: Remove the Russian translations
-Date:   Wed,  9 Aug 2023 16:10:49 -0400
-Message-ID: <20230809201051.108944-14-jwcart2@gmail.com>
+Cc:     dburgener@linux.microsoft.com, cgzones@googlemail.com,
+        James Carter <jwcart2@gmail.com>
+Subject: [PATCH 0/7 v2] Add support for notself and other to CIL
+Date:   Wed,  9 Aug 2023 16:40:39 -0400
+Message-ID: <20230809204046.110783-1-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809201051.108944-1-jwcart2@gmail.com>
-References: <20230809201051.108944-1-jwcart2@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The Russian translations have not been maintained and are out of
-date, so remove them.
+This patch set adds support for using notself and other in AV rules.
+See patch 3 for more details.
 
-Suggested-by: Petr Lautrbach <plautrba@redhat.com>
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- .../semodule_expand/ru/semodule_expand.8      | 31 ------------
- .../semodule_link/ru/semodule_link.8          | 32 -------------
- .../semodule_package/ru/semodule_package.8    | 48 -------------------
- .../semodule_package/ru/semodule_unpackage.8  | 24 ----------
- 4 files changed, 135 deletions(-)
- delete mode 100644 semodule-utils/semodule_expand/ru/semodule_expand.8
- delete mode 100644 semodule-utils/semodule_link/ru/semodule_link.8
- delete mode 100644 semodule-utils/semodule_package/ru/semodule_package.8
- delete mode 100644 semodule-utils/semodule_package/ru/semodule_unpackage.8
+Patches 1-4, 6-7 are the same as the patches from April 12th, see:
+https://lore.kernel.org/selinux/20230412210406.522892-1-jwcart2@gmail.com/
 
-diff --git a/semodule-utils/semodule_expand/ru/semodule_expand.8 b/semodule-utils/semodule_expand/ru/semodule_expand.8
-deleted file mode 100644
-index 28b381af..00000000
---- a/semodule-utils/semodule_expand/ru/semodule_expand.8
-+++ /dev/null
-@@ -1,31 +0,0 @@
--.TH SEMODULE_EXPAND "8" "ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ 
--semodule_expand \- расширить пакет модуля политики SELinux
--
--.SH ОБЗОР
--.B semodule_expand [-V ] [ -a ] [ -c [version]] basemodpkg outputfile
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_expand - утилита разработки для ручного расширения пакета базового модуля политики в двоичный файл политики ядра.
--Это средство не является необходимым для нормальной работы SELinux. Обычно такое расширение выполняется libsemanage внутренним образом в ответ на команды semodule. Пакеты базовых модулей политики можно создавать непосредственно с помощью semodule_package или semodule_link (при связывании набора пакетов в один пакет).
--
--.SH "ПАРАМЕТРЫ"
--.TP
--.B \-V
--Показать версию
--.TP
--.B \-c [version]
--Версия политики, которую следует создать
--.TP
--.B \-a
--Не проверять утверждения. При использовании этого параметра политика не будет проверять запрещающие правила (neverallow).
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B checkmodule(8), semodule_package(8), semodule(8), semodule_link(8)
--(8),
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Karl MacMillan <kmacmillan@tresys.com>, Joshua Brindle <jbrindle@tresys.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
-diff --git a/semodule-utils/semodule_link/ru/semodule_link.8 b/semodule-utils/semodule_link/ru/semodule_link.8
-deleted file mode 100644
-index 4a8f414e..00000000
---- a/semodule-utils/semodule_link/ru/semodule_link.8
-+++ /dev/null
-@@ -1,32 +0,0 @@
--.TH SEMODULE_LINK "8" "Ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ 
--semodule_link \- связать вместе пакеты модулей политики SELinux
--
--.SH ОБЗОР
--.B semodule_link [-Vv] [-o outfile] basemodpkg modpkg1 [modpkg2]...
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_link - утилита разработки для ручного связывания набора пакетов модулей политики SELinux в один пакет модулей политики. 
--Это средство не является необходимым для нормальной работы SELinux. Обычно такое связывание выполняется libsemanage внутренним образом в ответ на команды semodule. Пакеты модулей создаются с помощью semodule_package.
--
--.SH "ПАРАМЕТРЫ"
--.TP
--.B \-V
--Показать версию
--.TP
--.B \-v
--Подробный режим
--.TP
--.B \-o <output file> 
--Связанный пакет модулей политики, созданный с помощью этого средства
--
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B checkmodule(8), semodule_package(8), semodule(8), semodule_expand(8)
--(8),
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Karl MacMillan <kmacmillan@tresys.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
-diff --git a/semodule-utils/semodule_package/ru/semodule_package.8 b/semodule-utils/semodule_package/ru/semodule_package.8
-deleted file mode 100644
-index 3f4b16a9..00000000
---- a/semodule-utils/semodule_package/ru/semodule_package.8
-+++ /dev/null
-@@ -1,48 +0,0 @@
--.TH SEMODULE_PACKAGE "8" "Ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ 
--semodule_package \- создать пакет модуля политики SELinux
--
--.SH ОБЗОР
--.B semodule_package \-o <output file> \-m <module> [\-f <file contexts>]
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_package - утилита, которая используется для создания пакета модуля политики SELinux из двоичного модуля политики и (необязательно) других данных, таких как контексты файлов. Команда semodule_package упаковывает двоичные модули политики, созданные с помощью checkmodule. Пакет политики, созданный с помощью semodule_package, затем можно установить через semodule. 
--
--.SH ПРИМЕР
--.nf
--# Собрать пакет политики для базового модуля.
--$ semodule_package \-o base.pp \-m base.mod \-f file_contexts
--# Собрать пакет политики для модуля httpd.
--$ semodule_package \-o httpd.pp \-m httpd.mod \-f httpd.fc
--# Собрать пакет политики для локальных правил принудительного присвоения типов, не включая контексты файлов.
--$ semodule_package \-o local.pp \-m local.mod
--.fi
--
--.SH "ПАРАМЕТРЫ"
--.TP
--.B \-o \-\-outfile <output file> 
--Файл пакета модуля политики, созданный этим средством.
--.TP
--.B  \-s \-\-seuser <seuser file>
--Файл seuser, который следует включить в пакет.
--.TP
--.B  \-u \-\-user_extra <user extra file>
--Файл user_extra, который следует включить в пакет.
--.TP
--.B  \-m \-\-module <Module file>
--Файл модуля политики, который следует включить в пакет.
--.TP
--.B  \-f \-\-fc <File context file>
--Файл контекстов файлов для модуля (необязательно).
--.TP
--.B  \-n \-\-nc <netfilter context file>
--Файл контекста netfilter, который следует включить в пакет.
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B checkmodule(8), semodule(8), semodule_unpackage(8)
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Karl MacMillan <kmacmillan@tresys.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
-diff --git a/semodule-utils/semodule_package/ru/semodule_unpackage.8 b/semodule-utils/semodule_package/ru/semodule_unpackage.8
-deleted file mode 100644
-index 057ae3d7..00000000
---- a/semodule-utils/semodule_package/ru/semodule_unpackage.8
-+++ /dev/null
-@@ -1,24 +0,0 @@
--.TH SEMODULE_PACKAGE "8" "Ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ
--semodule_unpackage \- извлечь модуль политики и файл контекстов файлов из пакета модуля политики SELinux
--
--.SH ОБЗОР
--.B semodule_unpackage ppfile modfile [fcfile]
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_unpackage - утилита, которая используется для извлечения файла модуля политики SELinux и файла контекстов файлов из пакета политики SELinux.
--
--.SH ПРИМЕР
--.nf
--# Извлечь файл модуля httpd из пакета политики httpd.
--$ semodule_unpackage httpd.pp httpd.mod httpd.fc
--.fi
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B semodule_package(8)
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Stephen Smalley <stephen.smalley.work@gmail.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
+Patch 5 updates Christian's patch to use ERR() instead of log_err(), see:
+https://lore.kernel.org/selinux/20230602130608.24586-4-cgzones@googlemail.com/
+
+Nothing else has changed.
+
+Christian Göttsche (1):
+  libsepol: update CIL generation for trivial not-self rules
+
+James Carter (6):
+  libsepol: Changes to ebitmap.h to fix compiler warnings
+  libsepol/cil: Do not call ebitmap_init twice for an ebitmap
+  libsepol/cil: Add notself and other support to CIL
+  libsepol: Use ERR() instead of log_err()
+  secilc/docs: Add notself and other keywords to CIL documentation
+  secilc/test: Add notself and other tests
+
+ libsepol/cil/src/cil.c                    |  12 ++
+ libsepol/cil/src/cil_binary.c             |  91 +++++++-
+ libsepol/cil/src/cil_build_ast.c          |  10 +-
+ libsepol/cil/src/cil_find.c               | 246 ++++++++++++++++++----
+ libsepol/cil/src/cil_internal.h           |   4 +
+ libsepol/cil/src/cil_resolve_ast.c        |   4 +
+ libsepol/cil/src/cil_verify.c             |   3 +-
+ libsepol/include/sepol/policydb/ebitmap.h |   4 +-
+ libsepol/src/module_to_cil.c              |  30 ++-
+ secilc/docs/README.md                     |   1 -
+ secilc/docs/cil_access_vector_rules.md    | 244 +++------------------
+ secilc/docs/cil_reference_guide.md        |   9 -
+ secilc/docs/secil.xml                     |   2 +
+ secilc/test/notself_and_other.cil         |  65 ++++++
+ 14 files changed, 444 insertions(+), 281 deletions(-)
+ create mode 100644 secilc/test/notself_and_other.cil
+
 -- 
 2.41.0
 

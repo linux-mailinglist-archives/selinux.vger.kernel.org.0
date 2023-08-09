@@ -2,69 +2,70 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33A2D77698C
-	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 22:11:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B5277698F
+	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 22:11:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233241AbjHIULE (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 9 Aug 2023 16:11:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35406 "EHLO
+        id S232716AbjHIULF (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 9 Aug 2023 16:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233050AbjHIULD (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 16:11:03 -0400
-Received: from mail-vk1-xa2b.google.com (mail-vk1-xa2b.google.com [IPv6:2607:f8b0:4864:20::a2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAF6510E0
-        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 13:11:02 -0700 (PDT)
-Received: by mail-vk1-xa2b.google.com with SMTP id 71dfb90a1353d-487442d5e49so103218e0c.2
-        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 13:11:02 -0700 (PDT)
+        with ESMTP id S233362AbjHIULF (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 16:11:05 -0400
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CC410CF
+        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 13:11:04 -0700 (PDT)
+Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-63d0d38ff97so987846d6.1
+        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 13:11:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691611861; x=1692216661;
+        d=gmail.com; s=20221208; t=1691611862; x=1692216662;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JVVuh7zbFzPPUspoXdHm5yBTNzdchQ+dv8eBtqJp4qg=;
-        b=gkqMbo+1uytNvhGVUoSNq7lx9hxD5bryHODe4s2n9kivZgZnuaY6Tg8R9RBR1U2TKo
-         sWWcIrU686rPIFdLZ7RPMz/qWd+Vf+ReRqbo4ivDiIRnj0MCOjJqKfQQ/UFqpQoRnf9b
-         uc9/RF6ThAMi0VkJYPBX63XzDW0x4I9Z4vaBTMpZgAebk3Hav+xGPNqyDoU5S0X3GXtx
-         b4HHm3WwFLm2H7cWCgnhQ32DDNKRKvqukDX4tkWThLpI9FMUsx64pRr8gfhuKE/iBD2X
-         Y07knPmSJL7xSjvcgxiW0HyKv5grsjM02LePFB1G+K+knUp5hBpY0WndIC4DN8VYtS3b
-         2/+Q==
+        bh=chHhdLscKETf/Gevo28yCeGUdA/NXCmqf9Ulries4zE=;
+        b=QZCgk4uhCyiTH1LjPzoLic4TKNJpRESMDcIEA4eceVdnjdp47JbX9ZcERfUnCwFA1F
+         M0gz+Ukph9ugLr9C/8Q9xb6CmPjqvNY3FGuq4UG3BB6hHqX4Me1uTcZeQKCA+BdlkqU/
+         zCUNWVgGavgjZqnd8UaM54WnWPXW11wUITP4D4J2ayDwn2VOkwf+g6HPNHVKTp7bp/QD
+         gQxQsN87+g+t9GG5LBo8pvWWRVXL1VnbIgncRlWw+pS41umj2MT4REk04MeNimLfBpUZ
+         WDXIjRi747Klhjyc6yfhAvn0T0vyX5jBxKp54Qc1gwmzJEd0cvcuWf1zBDPw937w39Ji
+         Hcnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691611861; x=1692216661;
+        d=1e100.net; s=20221208; t=1691611862; x=1692216662;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JVVuh7zbFzPPUspoXdHm5yBTNzdchQ+dv8eBtqJp4qg=;
-        b=CHlwJlAK3kC5Z92SNLEl0h3cztuPAN2Cf5WvPf0khdC1+xDbfgZ3QlWpDVuejvXrJg
-         N48JqhWdUqpp/ALaJM0zygW/nD2xCGjHJP5KNlQo/o4efto8nC82MKsTKSWHx9VPruZH
-         raLyVl7MGhYYV+gwx4EWuhLbIWoVg3vzb6H/pXUnL4cZ8WHADdvstYlZCu5npgnD7EWk
-         vE5r+/9vtstToywLbArsNA3o+Xd26bJ1anvh8TmJCumOJnWynakmtQY9oJy+sIK8m7Pc
-         EJCxLS3Imi7qUS9nPrfaBBorkQTnmm3Z7MD8G6ONTmPcmkDThQqwH1SW8rVNqrd6cHHZ
-         q0EQ==
-X-Gm-Message-State: AOJu0YxGJYkqQhwZwqndP0VNkOhhoTgyWPSodk1CZypg6tkqEAbfUhhK
-        cPqqGCnGEHjigMSiO7zobqbcm7dr9cA=
-X-Google-Smtp-Source: AGHT+IG8pbOcvTNUa2MqagBG9vJIAVuXVr28yPpzXt3z+fPE2qtjbQEx32NCOuYOYdabFcfpcldIpQ==
-X-Received: by 2002:a67:be16:0:b0:443:7516:450b with SMTP id x22-20020a67be16000000b004437516450bmr105352vsq.35.1691611861517;
-        Wed, 09 Aug 2023 13:11:01 -0700 (PDT)
+        bh=chHhdLscKETf/Gevo28yCeGUdA/NXCmqf9Ulries4zE=;
+        b=W85jwswx+aY7r8aPM1a4vRrwGTgdggZ/Sf6neHUtgUS2Br6zZ0mUg0yrVjPegxXas0
+         j4KuccKONAV9XJqr0r8RvEp95plHKVBGpq9xRVprC8JDku63mY+j+Ywib3CCAyVcNpdb
+         aE/ehIih9/bE//iZ8ZCLOGCURDolEgJyhz8VpbuBbnFAtg9dsFNgJ2arsZBNDZUcpcHr
+         RBJXDmWkAAhRUkgiaJguNJ8ejKMcAU241OybKhwa12oz1i4Zu6DwLgIisQDyLCr5/DDL
+         0NxjJbJ7xjLoFF+q6A4PoFRW4iFaSncCYEryG+7cPdb3coD1Yb1qsbMf+4mFVolCAlV7
+         XnDw==
+X-Gm-Message-State: AOJu0YyCVjvbArLFGgqanpTEYSYXVeCNz3CfAAmfNaY3TxMc4o2pAQVD
+        hAp4GHm5Up1oNw2xGZOqk1SXt1JqThY=
+X-Google-Smtp-Source: AGHT+IHDf0AhMTIJJfNAcO+YwvAUTfxV1G6/B9nmH0XXUMtVYH+YtI8gXpCmV9+7+mps4A6DOekaYw==
+X-Received: by 2002:a0c:b241:0:b0:63d:86cf:c659 with SMTP id k1-20020a0cb241000000b0063d86cfc659mr715529qve.17.1691611862526;
+        Wed, 09 Aug 2023 13:11:02 -0700 (PDT)
 Received: from electric.. (c-73-172-54-2.hsd1.md.comcast.net. [73.172.54.2])
-        by smtp.gmail.com with ESMTPSA id w11-20020ae9e50b000000b00767d572d651sm4220210qkf.87.2023.08.09.13.11.00
+        by smtp.gmail.com with ESMTPSA id w11-20020ae9e50b000000b00767d572d651sm4220210qkf.87.2023.08.09.13.11.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 13:11:00 -0700 (PDT)
+        Wed, 09 Aug 2023 13:11:01 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     plautrba@redhat.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 06/13 v2] libsepol: Remove the Russian translations
-Date:   Wed,  9 Aug 2023 16:10:42 -0400
-Message-ID: <20230809201051.108944-7-jwcart2@gmail.com>
+Subject: [PATCH 07/13 v2] mcstrans: Remove the Russian translations
+Date:   Wed,  9 Aug 2023 16:10:43 -0400
+Message-ID: <20230809201051.108944-8-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230809201051.108944-1-jwcart2@gmail.com>
 References: <20230809201051.108944-1-jwcart2@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        FREEMAIL_FROM,FREEMAIL_REPLY,MIXED_ES,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -77,55 +78,494 @@ date, so remove them.
 Suggested-by: Petr Lautrbach <plautrba@redhat.com>
 Signed-off-by: James Carter <jwcart2@gmail.com>
 ---
- libsepol/man/ru/man8/chkcon.8 | 39 -----------------------------------
- 1 file changed, 39 deletions(-)
- delete mode 100644 libsepol/man/ru/man8/chkcon.8
+ mcstrans/man/ru/man5/setrans.conf.5 | 106 ----------------------------
+ mcstrans/man/ru/man8/mcs.8          |  24 -------
+ mcstrans/man/ru/man8/mcstransd.8    |  32 ---------
+ 3 files changed, 162 deletions(-)
+ delete mode 100644 mcstrans/man/ru/man5/setrans.conf.5
+ delete mode 100644 mcstrans/man/ru/man8/mcs.8
+ delete mode 100644 mcstrans/man/ru/man8/mcstransd.8
 
-diff --git a/libsepol/man/ru/man8/chkcon.8 b/libsepol/man/ru/man8/chkcon.8
+diff --git a/mcstrans/man/ru/man5/setrans.conf.5 b/mcstrans/man/ru/man5/set=
+rans.conf.5
 deleted file mode 100644
-index 2661afb0..00000000
---- a/libsepol/man/ru/man8/chkcon.8
+index 724b206b..00000000
+--- a/mcstrans/man/ru/man5/setrans.conf.5
 +++ /dev/null
-@@ -1,39 +0,0 @@
--.\" Hey, Emacs! This is an -*- nroff -*- source file.
--.\" Copyright (c) 1997 Manoj Srivastava <srivasta@debian.org>
--.\"
--.\" This is free documentation; you can redistribute it and/or
--.\" modify it under the terms of the GNU General Public License as
--.\" published by the Free Software Foundation; either version 2 of
--.\" the License, or (at your option) any later version.
--.\"
--.\" The GNU General Public License's references to "object code"
--.\" and "executables" are to be interpreted as the output of any
--.\" document formatting or typesetting system, including
--.\" intermediate and printed output.
--.\"
--.\" This manual is distributed in the hope that it will be useful,
--.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
--.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
--.\" GNU General Public License for more details.
--.\"
--.\" You should have received a copy of the GNU General Public
--.\" License along with this manual; if not, write to the Free
--.\" Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,
--.\" USA.
--.\"
--.TH CHKCON 8 "12 марта 2005" "SELinux" "Документация по командной строке SELinux"
--.SH ИМЯ
--chkcon \-  определить, является ли контекст безопасности действительным для конкретной двоичной политики
--.SH ОБЗОР
--chkcon policy_file context
--.SH ОПИСАНИЕ
--Эта утилита проверяет контекст безопасности (его строковое представление), заданный аргументом
--.I context,
--относительно данных конфигурации, прочтённых из файла двоичного представления базы данных политик, заданного аргументом
--.I policy_file.
--.SH ФАЙЛЫ
--policy file
--.SH АВТОРЫ
--Эта страница руководства (и только она) была написана Manoj
--Srivastava <srivasta@debian.org>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
--- 
+@@ -1,106 +0,0 @@
+-.TH "setrans.conf" "5" "13 =D0=B8=D1=8E=D0=BB=D1=8F 2010" "txtoth@gmail.co=
+m" "=D0=94=D0=BE=D0=BA=D1=83=D0=BC=D0=B5=D0=BD=D1=82=D0=B0=D1=86=D0=B8=D1=
+=8F =D0=BF=D0=BE setrans.conf"
+-.SH "=D0=98=D0=9C=D0=AF"
+-setrans.conf \- =D1=84=D0=B0=D0=B9=D0=BB =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=
+=B3=D1=83=D1=80=D0=B0=D1=86=D0=B8=D0=B8 =D0=BF=D1=80=D0=B5=D0=BE=D0=B1=D1=
+=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D1=8F =D0=B4=D0=BB=D1=8F =D1=
+=81=D0=B8=D1=81=D1=82=D0=B5=D0=BC MCS/MLS SELinux
+-
+-.SH "=D0=9E=D0=9F=D0=98=D0=A1=D0=90=D0=9D=D0=98=D0=95"
+-=D0=A4=D0=B0=D0=B9=D0=BB =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B3=D1=83=D1=80=
+=D0=B0=D1=86=D0=B8=D0=B8
+-.I /etc/selinux/{SELINUXTYPE}/setrans.conf
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D1=81=D0=BF=
+=D0=BE=D1=81=D0=BE=D0=B1, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=8B=D0=BC =D0=BC=
+=D0=B5=D1=82=D0=BA=D0=B8 SELinux MCS/MLS =D0=BF=D1=80=D0=B5=D0=BE=D0=B1=D1=
+=80=D0=B0=D0=B7=D0=BE=D0=B2=D1=8B=D0=B2=D0=B0=D1=8E=D1=82=D1=81=D1=8F =D0=
+=B2 =D1=83=D0=B4=D0=BE=D0=B1=D0=BD=D1=83=D1=8E =D0=B4=D0=BB=D1=8F =D0=BF=D1=
+=80=D0=BE=D1=87=D1=82=D0=B5=D0=BD=D0=B8=D1=8F =D1=87=D0=B5=D0=BB=D0=BE=D0=
+=B2=D0=B5=D0=BA=D0=BE=D0=BC =D1=84=D0=BE=D1=80=D0=BC=D1=83 =D1=81 =D0=BF=D0=
+=BE=D0=BC=D0=BE=D1=89=D1=8C=D1=8E =D0=B2=D0=BD=D1=83=D1=82=D1=80=D0=B5=D0=
+=BD=D0=BD=D0=B5=D0=B9 =D1=81=D0=BB=D1=83=D0=B6=D0=B1=D1=8B mcstransd. =D0=
+=9F=D0=BE=D0=BB=D0=B8=D1=82=D0=B8=D0=BA=D0=B8 =D0=BF=D0=BE =D1=83=D0=BC=D0=
+=BE=D0=BB=D1=87=D0=B0=D0=BD=D0=B8=D1=8E =D0=BF=D0=BE=D0=B4=D0=B4=D0=B5=D1=
+=80=D0=B6=D0=B8=D0=B2=D0=B0=D1=8E=D1=82 16 =D1=83=D1=80=D0=BE=D0=B2=D0=BD=
+=D0=B5=D0=B9 =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=
+=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8 (=D0=BE=D1=82 s0 =D0=B4=D0=
+=BE s15) =D0=B8 1024 =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B8=
+ (=D0=BE=D1=82 c0 =D0=B4=D0=BE c1023). =D0=95=D1=81=D0=BB=D0=B8 =D0=BA=D0=
+=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9 =D0=BD=D0=B5=D1=81=D0=BA=D0=
+=BE=D0=BB=D1=8C=D0=BA=D0=BE, =D0=B8=D1=85 =D0=BC=D0=BE=D0=B6=D0=BD=D0=BE =
+=D1=80=D0=B0=D0=B7=D0=B4=D0=B5=D0=BB=D0=B8=D1=82=D1=8C =D0=B7=D0=B0=D0=BF=
+=D1=8F=D1=82=D1=8B=D0=BC=D0=B8 (c0,c1,c3,c5), =D0=B0 =D0=B4=D0=B8=D0=B0=D0=
+=BF=D0=B0=D0=B7=D0=BE=D0=BD =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=
+=B8=D0=B9 - =D1=81=D0=BE=D0=BA=D1=80=D0=B0=D1=82=D0=B8=D1=82=D1=8C =D1=81 =
+=D0=BF=D0=BE=D0=BC=D0=BE=D1=89=D1=8C=D1=8E =D1=83=D0=BA=D0=B0=D0=B7=D0=B0=
+=D0=BD=D0=B8=D1=8F =D1=87=D0=B5=D1=80=D0=B5=D0=B7 =D1=82=D0=BE=D1=87=D0=BA=
+=D1=83 (c0.c3,c5).
+-
+-.SS "=D0=9A=D0=BB=D1=8E=D1=87=D0=B5=D0=B2=D1=8B=D0=B5 =D1=81=D0=BB=D0=BE=
+=D0=B2=D0=B0"
+-
+-.TP
+-Base\fR
+-=D0=BA=D0=BE=D0=B3=D0=B4=D0=B0 =D0=BE=D0=B1=D1=8A=D1=8F=D0=B2=D0=BB=D1=8F=
+=D0=B5=D1=82=D1=81=D1=8F =D0=B1=D0=B0=D0=B7=D0=B0, =D0=BA=D0=BE =D0=B2=D1=
+=81=D0=B5=D0=BC =D0=BF=D0=BE=D1=81=D0=BB=D0=B5=D0=B4=D1=83=D1=8E=D1=89=D0=
+=B8=D0=BC =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D0=B5=D0=BD=D0=B8=D1=
+=8F=D0=BC =D0=BC=D0=B5=D1=82=D0=BE=D0=BA =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=
+=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8=
+ =D0=B1=D1=83=D0=B4=D1=83=D1=82 =D0=BF=D1=80=D0=B8 =D0=BF=D1=80=D0=B5=D0=BE=
+=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B8 =D0=BF=D1=80=
+=D0=B8=D0=BC=D0=B5=D0=BD=D1=8F=D1=82=D1=8C=D1=81=D1=8F =D0=BC=D0=BE=D0=B4=
+=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=82=D0=BE=D1=80=D1=8B.
+-=D0=9C=D0=B5=D1=82=D0=BA=D0=B8 =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=
+=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8, =D0=BA=
+=D0=BE=D1=82=D0=BE=D1=80=D1=8B=D0=B5 =D0=B1=D1=8B=D0=BB=D0=B8 =D0=BE=D0=BF=
+=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D0=B5=D0=BD=D1=8B =D0=B4=D0=BE =D0=BE=D0=B1=
+=D1=8A=D1=8F=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F =D0=B1=D0=B0=D0=B7=D1=8B, =
+=D0=BD=D0=B5=D0=B7=D0=B0=D0=BC=D0=B5=D0=B4=D0=BB=D0=B8=D1=82=D0=B5=D0=BB=D1=
+=8C=D0=BD=D0=BE =D0=BA=D1=8D=D1=88=D0=B8=D1=80=D1=83=D1=8E=D1=82=D1=81=D1=
+=8F, =D0=B8 =D0=BA =D0=BD=D0=B8=D0=BC =D0=BD=D0=B5 =D0=BF=D1=80=D0=B8=D0=BC=
+=D0=B5=D0=BD=D1=8F=D1=8E=D1=82=D1=81=D1=8F =D0=BC=D0=BE=D0=B4=D0=B8=D1=84=
+=D0=B8=D0=BA=D0=B0=D1=82=D0=BE=D1=80=D1=8B; =D0=BE=D0=BD=D0=B8 =D0=B8=D1=81=
+=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D1=83=D1=8E=D1=82=D1=81=D1=8F =D0=B2 =D0=BA=
+=D0=B0=D1=87=D0=B5=D1=81=D1=82=D0=B2=D0=B5 =D0=BF=D1=80=D1=8F=D0=BC=D0=BE=
+=D0=B3=D0=BE =D0=BF=D1=80=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=
+=D0=B0=D0=BD=D0=B8=D1=8F.=20
+-
+-.TP
+-Default\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=B1=D0=B8=
+=D1=82=D0=BE=D0=B2=D1=8B=D0=B9 =D0=B4=D0=B8=D0=B0=D0=BF=D0=B0=D0=B7=D0=BE=
+=D0=BD =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9, =D0=BA=D0=BE=
+=D1=82=D0=BE=D1=80=D1=8B=D0=B9 =D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=B8=D1=81=
+=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D1=8C=D1=81=D1=8F =
+=D0=B4=D0=BB=D1=8F =D0=BE=D0=B1=D1=80=D0=B0=D1=82=D0=BD=D1=8B=D1=85 =D0=B1=
+=D0=B8=D1=82=D0=BE=D0=B2.
+-
+-.TP
+-Domain\fR
+-=D1=81=D0=BE=D0=B7=D0=B4=D0=B0=D1=91=D1=82 =D0=BD=D0=BE=D0=B2=D1=8B=D0=B9 =
+=D0=B4=D0=BE=D0=BC=D0=B5=D0=BD =D1=81 =D1=83=D0=BA=D0=B0=D0=B7=D0=B0=D0=BD=
+=D0=BD=D1=8B=D0=BC =D0=B8=D0=BC=D0=B5=D0=BD=D0=B5=D0=BC.
+-
+-.TP
+-Include\fR
+-=D0=BF=D1=80=D0=BE=D1=87=D0=B8=D1=82=D0=B0=D1=82=D1=8C =D0=B8 =D0=BE=D0=B1=
+=D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D1=82=D1=8C =D1=81=D0=BE=D0=B4=D0=B5=
+=D1=80=D0=B6=D0=B8=D0=BC=D0=BE=D0=B5 =D1=83=D0=BA=D0=B0=D0=B7=D0=B0=D0=BD=
+=D0=BD=D0=BE=D0=B3=D0=BE =D1=84=D0=B0=D0=B9=D0=BB=D0=B0 =D0=BA=D0=BE=D0=BD=
+=D1=84=D0=B8=D0=B3=D1=83=D1=80=D0=B0=D1=86=D0=B8=D0=B8.
+-
+-.TP
+-Join\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D1=81=D0=B8=
+=D0=BC=D0=B2=D0=BE=D0=BB, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=8B=D0=B9 =D0=B8=
+=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D1=83=D0=B5=D1=82=D1=81=D1=8F =D0=B4=
+=D0=BB=D1=8F =D1=80=D0=B0=D0=B7=D0=B4=D0=B5=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F =
+=D1=83=D1=87=D0=B0=D1=81=D1=82=D0=BD=D0=B8=D0=BA=D0=BE=D0=B2 =D0=B3=D1=80=
+=D1=83=D0=BF=D0=BF=D1=8B =D0=BC=D0=BE=D0=B4=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=
+=D1=82=D0=BE=D1=80=D0=BE=D0=B2, =D0=BA=D0=BE=D0=B3=D0=B4=D0=B0 =D1=83=D0=BA=
+=D0=B0=D0=B7=D0=B0=D0=BD=D0=BE =D0=B1=D0=BE=D0=BB=D0=B5=D0=B5 =D0=BE=D0=B4=
+=D0=BD=D0=BE=D0=B3=D0=BE (=D0=BD=D0=B0=D0=BF=D1=80=D0=B8=D0=BC=D0=B5=D1=80,=
+ USA/AUS).
+-
+-.TP
+-ModifierGroup\fR
+-=D1=81=D1=80=D0=B5=D0=B4=D1=81=D1=82=D0=B2=D0=BE =D0=B3=D1=80=D1=83=D0=BF=
+=D0=BF=D0=B8=D1=80=D0=BE=D0=B2=D0=BA=D0=B8 =D0=B1=D0=B8=D1=82=D0=BE=D0=B2=
+=D1=8B=D1=85 =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D0=B5=D0=BD=D0=B8=
+=D0=B9 =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9 =D0=BF=D0=BE =
+=D1=82=D0=BE=D0=BC=D1=83, =D0=BA=D0=B0=D0=BA =D0=BE=D0=BD=D0=B8 =D0=B8=D0=
+=B7=D0=BC=D0=B5=D0=BD=D1=8F=D1=8E=D1=82 =D0=BC=D0=B5=D1=82=D0=BA=D1=83 =D0=
+=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=
+=D0=BD=D0=BE=D1=81=D1=82=D0=B8.
+-
+-.TP
+-Prefix\fR
+-=D1=81=D0=BB=D0=BE=D0=B2=D0=B0 (=D1=81=D0=BB=D0=BE=D0=B2=D0=B0), =D0=BA=D0=
+=BE=D1=82=D0=BE=D1=80=D0=BE=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=D1=82 =D0=BF=D1=
+=80=D0=B5=D0=B4=D1=88=D0=B5=D1=81=D1=82=D0=B2=D0=BE=D0=B2=D0=B0=D1=82=D1=8C=
+ =D1=83=D1=87=D0=B0=D1=81=D1=82=D0=BD=D0=B8=D0=BA=D1=83 (=D1=83=D1=87=D0=B0=
+=D1=81=D1=82=D0=BD=D0=B8=D0=BA=D0=B0=D0=BC) =D0=B3=D1=80=D1=83=D0=BF=D0=BF=
+=D1=8B =D0=BC=D0=BE=D0=B4=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=82=D0=BE=D1=80=
+=D0=BE=D0=B2 (=D0=BD=D0=B0=D0=BF=D1=80=D0=B8=D0=BC=D0=B5=D1=80, REL USA).
+-
+-.TP
+-Suffix\fR
+-=D1=81=D0=BB=D0=BE=D0=B2=D0=BE (=D1=81=D0=BB=D0=BE=D0=B2=D0=B0), =D0=BA=D0=
+=BE=D1=82=D0=BE=D1=80=D0=BE=D0=B5 =D0=BC=D0=BE=D0=B6=D0=B5=D1=82 =D1=81=D0=
+=BB=D0=B5=D0=B4=D0=BE=D0=B2=D0=B0=D1=82=D1=8C =D0=B7=D0=B0 =D1=83=D1=87=D0=
+=B0=D1=81=D1=82=D0=BD=D0=B8=D0=BA=D0=BE=D0=BC (=D1=83=D1=87=D0=B0=D1=81=D1=
+=82=D0=BD=D0=B8=D0=BA=D0=B0=D0=BC=D0=B8) =D0=B3=D1=80=D1=83=D0=BF=D0=BF=D1=
+=8B =D0=BC=D0=BE=D0=B4=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=82=D0=BE=D1=80=D0=
+=BE=D0=B2 (=D0=BD=D0=B0=D0=BF=D1=80=D0=B8=D0=BC=D0=B5=D1=80, USA EYES ONLY).
+-
+-.TP
+-Whitespace\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BD=D0=B0=
+=D0=B1=D0=BE=D1=80 =D0=B4=D0=BE=D0=BF=D1=83=D1=81=D1=82=D0=B8=D0=BC=D1=8B=
+=D1=85 =D0=BF=D1=80=D0=BE=D0=B1=D0=B5=D0=BB=D1=8C=D0=BD=D1=8B=D1=85 =D1=81=
+=D0=B8=D0=BC=D0=B2=D0=BE=D0=BB=D0=BE=D0=B2, =D0=BA=D0=BE=D1=82=D0=BE=D1=80=
+=D1=8B=D0=B5 =D0=BC=D0=BE=D0=B3=D1=83=D1=82 =D0=B8=D1=81=D0=BF=D0=BE=D0=BB=
+=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D1=8C=D1=81=D1=8F =D0=B2 =D0=BF=D1=80=
+=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D1=8B=D0=B2=D0=B0=D0=B5=D0=
+=BC=D0=BE=D0=B9 =D0=BC=D0=B5=D1=82=D0=BA=D0=B5.
+-
+-.SS "=D0=9F=D1=80=D0=B8=D0=BC=D0=B5=D1=80=D1=8B =D0=BE=D0=BF=D1=80=D0=B5=
+=D0=B4=D0=B5=D0=BB=D0=B5=D0=BD=D0=B8=D1=8F =D1=83=D1=80=D0=BE=D0=B2=D0=BD=
+=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=
+=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8"
+-
+-.TP=20
+-s0=3DSystemLow\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D1=80=
+=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B5 s0=
+ (=D0=BC=D0=B8=D0=BD=D0=B8=D0=BC=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D0=B3=D0=BE =
+=D1=83=D1=80=D0=BE=D0=B2=D0=BD=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=
+=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8) =
+=D0=B1=D0=B5=D0=B7 =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9 =
+=D0=B2 SystemLow.
+-
+-.TP=20
+-s15:c0.c1023=3DSystemHigh\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D1=80=
+=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B5 s1=
+5:c0.c1023 =D0=B2 SystemHigh. c0.c1023 - =D1=81=D0=BE=D0=BA=D1=80=D0=B0=D1=
+=89=D1=91=D0=BD=D0=BD=D0=BE=D0=B5 =D0=BE=D0=B1=D0=BE=D0=B7=D0=BD=D0=B0=D1=
+=87=D0=B5=D0=BD=D0=B8=D0=B5 =D0=B2=D1=81=D0=B5=D1=85 =D0=BA=D0=B0=D1=82=D0=
+=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9. =D0=A3=D1=80=D0=BE=D0=B2=D0=B5=D0=BD=D1=
+=8C =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=
+=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8 =D0=B8 =D0=BA=D0=B0=D1=82=D0=B5=D0=
+=B3=D0=BE=D1=80=D0=B8=D0=B8 =D1=80=D0=B0=D0=B7=D0=B4=D0=B5=D0=BB=D0=B5=D0=
+=BD=D1=8B =D0=B4=D0=B2=D0=BE=D0=B5=D1=82=D0=BE=D1=87=D0=B8=D0=B5=D0=BC.
+-
+-.TP=20
+-s0\-s15:c0.c1023=3DSystemLow\-SystemHigh\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D1=80=
+=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B5 =
+=D0=B4=D0=B8=D0=B0=D0=BF=D0=B0=D0=B7=D0=BE=D0=BD=D0=B0 s0\-s15:c0.c1023 =D0=
+=B2 SystemLow\-SystemHigh. =D0=94=D0=B2=D0=B0 =D0=BA=D0=BE=D0=BC=D0=BF=D0=
+=BE=D0=BD=D0=B5=D0=BD=D1=82=D0=B0 =D0=B4=D0=B8=D0=B0=D0=BF=D0=B0=D0=B7=D0=
+=BE=D0=BD=D0=B0 =D1=80=D0=B0=D0=B7=D0=B4=D0=B5=D0=BB=D0=B5=D0=BD=D1=8B =D0=
+=B4=D0=B5=D1=84=D0=B8=D1=81=D0=BE=D0=BC.
+-
+-.TP=20
+-s0:c0=3DPatientRecord\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D1=80=
+=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B5 =
+=D1=83=D1=80=D0=BE=D0=B2=D0=BD=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=
+=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8 s0=
+ =D1=81 =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B5=D0=B9 c0 =D0=
+=B2 PatientRecord.
+-
+-.TP=20
+-s0:c1=3DAccounting\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D1=80=
+=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B5 =
+=D1=83=D1=80=D0=BE=D0=B2=D0=BD=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=
+=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8 s0=
+ =D1=81 =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B5=D0=B9 c1 =D0=
+=B2 Accounting.
+-
+-.TP=20
+-s2:c1,c2,c3=3DConfidential3Categories
+-.TP=20
+-s2:c1.c3=3DConfidential3Categories\fR
+-=D0=B8 =D1=82=D0=BE, =D0=B8 =D0=B4=D1=80=D1=83=D0=B3=D0=BE=D0=B5 =D0=BE=D0=
+=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D1=80=D0=B5=D0=
+=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B5 =D1=83=D1=
+=80=D0=BE=D0=B2=D0=BD=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=
+=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8 s2 =D1=81 =
+=D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D1=8F=D0=BC=D0=B8 c1, c2 =
+=D0=B8 c3 =D0=B2 Confidential3Categories.
+-
+-.TP=20
+-s5=3DTopSecret\fR
+-=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D1=80=
+=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D0=B0=D0=BD=D0=B8=D0=B5 =
+=D1=83=D1=80=D0=BE=D0=B2=D0=BD=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=
+=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=BE=D1=81=D1=82=D0=B8 s5=
+ =D0=B1=D0=B5=D0=B7 =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9 =
+=D0=B2 TopSecret.
+-
+-.SS "=D0=9F=D1=80=D0=B8=D0=BC=D0=B5=D1=80=D1=8B =D0=BE=D0=B3=D1=80=D0=B0=
+=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D1=8F"
+-
+-.TP
+-c0!c1
+-=D0=B5=D1=81=D0=BB=D0=B8 =D0=BE=D0=B4=D0=BD=D0=BE=D0=B2=D1=80=D0=B5=D0=BC=
+=D0=B5=D0=BD=D0=BD=D0=BE =D0=B7=D0=B0=D0=B4=D0=B0=D0=BD=D1=8B =D0=B1=D0=B8=
+=D1=82=D1=8B =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9 0 =D0=
+=B8 1, =D0=BE=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =
+=D0=BD=D0=B5 =D1=81=D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=82 =D0=B8 =
+=D0=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=B2=D0=BE=D0=B7=D0=B2=D1=80=D0=B0=D1=89=
+=D1=91=D0=BD =D0=B8=D1=81=D1=85=D0=BE=D0=B4=D0=BD=D1=8B=D0=B9 =D0=BA=D0=BE=
+=D0=BD=D1=82=D0=B5=D0=BA=D1=81=D1=82.
+-
+-.TP
+-c5.c9>c1
+-=D0=B5=D1=81=D0=BB=D0=B8 =D0=B7=D0=B0=D0=B4=D0=B0=D0=BD=D1=8B =D0=B1=D0=B8=
+=D1=82=D1=8B =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9 =D1=81 =
+5 =D0=BF=D0=BE 9, =D0=B1=D0=B8=D1=82 1 =D1=82=D0=B0=D0=BA=D0=B6=D0=B5 =D0=
+=BD=D0=B5=D0=BE=D0=B1=D1=85=D0=BE=D0=B4=D0=B8=D0=BC=D0=BE =D1=83=D1=81=D1=
+=82=D0=B0=D0=BD=D0=BE=D0=B2=D0=B8=D1=82=D1=8C - =D0=B8=D0=BD=D0=B0=D1=87=D0=
+=B5 =D0=BE=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D0=
+=BD=D0=B5 =D1=81=D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=82 =D0=B8 =D0=
+=B1=D1=83=D0=B4=D0=B5=D1=82 =D0=B2=D0=BE=D0=B7=D0=B2=D1=80=D0=B0=D1=89=D1=
+=91=D0=BD =D0=B8=D1=81=D1=85=D0=BE=D0=B4=D0=BD=D1=8B=D0=B9 =D0=BA=D0=BE=D0=
+=BD=D1=82=D0=B5=D0=BA=D1=81=D1=82.
+-
+-.TP
+-s1!c5,c9
+-=D0=B5=D1=81=D0=BB=D0=B8 =D0=B7=D0=B0=D0=B4=D0=B0=D0=BD=D1=8B =D0=B1=D0=B8=
+=D1=82=D1=8B =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9 =D1=81 =
+5 =D0=BF=D0=BE 9 =D0=B8 =D1=83=D1=80=D0=BE=D0=B2=D0=B5=D0=BD=D1=8C =D0=BA=
+=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=
+=BD=D0=BE=D1=81=D1=82=D0=B8 =D1=80=D0=B0=D0=B2=D0=B5=D0=BD s1, =D0=BE=D0=B3=
+=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=B8=D0=B5 =D0=BD=D0=B5 =D1=81=
+=D1=80=D0=B0=D0=B1=D0=BE=D1=82=D0=B0=D0=B5=D1=82 =D0=B8 =D0=B1=D1=83=D0=B4=
+=D0=B5=D1=82 =D0=B2=D0=BE=D0=B7=D0=B2=D1=80=D0=B0=D1=89=D1=91=D0=BD =D0=B8=
+=D1=81=D1=85=D0=BE=D0=B4=D0=BD=D1=8B=D0=B9 =D0=BA=D0=BE=D0=BD=D1=82=D0=B5=
+=D0=BA=D1=81=D1=82.
+-
+-.SH "=D0=A4=D0=90=D0=99=D0=9B=D0=AB"
+-/etc/selinux/{SELINUXTYPE}/setrans.conf
+-.br
+-/usr/share/mcstrans/examples
+-
+-.SH "=D0=A1=D0=9C=D0=9E=D0=A2=D0=A0=D0=98=D0=A2=D0=95 =D0=A2=D0=90=D0=9A=
+=D0=96=D0=95"
+-selinux(8), mcs(8), mls(8), chcon(1)
+-
+-.SH "=D0=90=D0=92=D0=A2=D0=9E=D0=A0=D0=AB"
+-    =D0=9D=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=BD=D0=BE Joe Nall <joe@nall.co=
+m>.
+-    =D0=9E=D0=B1=D0=BD=D0=BE=D0=B2=D0=BB=D0=B5=D0=BD=D0=BE Ted X. Toth <tx=
+toth@gmail.com>.
+-    =D0=9F=D0=B5=D1=80=D0=B5=D0=B2=D0=BE=D0=B4 =D0=BD=D0=B0 =D1=80=D1=83=
+=D1=81=D1=81=D0=BA=D0=B8=D0=B9 =D1=8F=D0=B7=D1=8B=D0=BA =D0=B2=D1=8B=D0=BF=
+=D0=BE=D0=BB=D0=BD=D0=B8=D0=BB=D0=B0 =D0=93=D0=B5=D1=80=D0=B0=D1=81=D0=B8=
+=D0=BC=D0=B5=D0=BD=D0=BA=D0=BE =D0=9E=D0=BB=D0=B5=D1=81=D1=8F <gammaray@bas=
+ealt.ru>.
+diff --git a/mcstrans/man/ru/man8/mcs.8 b/mcstrans/man/ru/man8/mcs.8
+deleted file mode 100644
+index c869ed2c..00000000
+--- a/mcstrans/man/ru/man8/mcs.8
++++ /dev/null
+@@ -1,24 +0,0 @@
+-.TH  "mcs"  "8"  "8 =D1=81=D0=B5=D0=BD=D1=82=D1=8F=D0=B1=D1=80=D1=8F 2005"=
+ "dwalsh@redhat.com" "=D0=94=D0=BE=D0=BA=D1=83=D0=BC=D0=B5=D0=BD=D1=82=D0=
+=B0=D1=86=D0=B8=D1=8F =D0=BF=D0=BE MCS"
+-
+-.SH "=D0=98=D0=9C=D0=AF"
+-mcs \- =D0=BC=D1=83=D0=BB=D1=8C=D1=82=D0=B8=D0=BA=D0=B0=D1=82=D0=B5=D0=B3=
+=D0=BE=D1=80=D0=B8=D0=B9=D0=BD=D0=B0=D1=8F =D1=81=D0=B8=D1=81=D1=82=D0=B5=
+=D0=BC=D0=B0
+-
+-.SH "=D0=9E=D0=9F=D0=98=D0=A1=D0=90=D0=9D=D0=98=D0=95"
+-MCS (=D0=BC=D1=83=D0=BB=D1=8C=D1=82=D0=B8=D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=
+=BE=D1=80=D0=B8=D0=B9=D0=BD=D0=B0=D1=8F =D1=81=D0=B8=D1=81=D1=82=D0=B5=D0=
+=BC=D0=B0) =D0=BF=D0=BE=D0=B7=D0=B2=D0=BE=D0=BB=D1=8F=D0=B5=D1=82 =D0=BF=D0=
+=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D0=B5=D0=BB=D1=8F=D0=BC =D0=
+=BF=D1=80=D0=BE=D1=81=D1=82=D0=B0=D0=B2=D0=BB=D1=8F=D1=82=D1=8C =D0=B2 =D1=
+=81=D0=B2=D0=BE=D0=B5=D0=B9 =D1=81=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=B5 =D0=
+=BC=D0=B5=D1=82=D0=BA=D0=B8 =D0=B4=D0=BB=D1=8F =D1=84=D0=B0=D0=B9=D0=BB=D0=
+=BE=D0=B2 =D0=B2=D0=BD=D1=83=D1=82=D1=80=D0=B8 =D0=BE=D0=BF=D1=80=D0=B5=D0=
+=B4=D0=B5=D0=BB=D1=91=D0=BD=D0=BD=D1=8B=D1=85 =D0=B0=D0=B4=D0=BC=D0=B8=D0=
+=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80=D0=BE=D0=BC =D0=BA=D0=
+=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9. =D0=97=D0=B0=D1=82=D0=B5=D0=
+=BC =D1=8D=D1=82=D0=B0 =D1=81=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=B0 =D0=B8=D1=
+=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D1=83=D0=B5=D1=82 =D0=BF=D1=80=D0=B8=D0=
+=BD=D1=83=D0=B4=D0=B8=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE=D0=B5 =D1=83=D0=
+=BF=D1=80=D0=B0=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 =D0=B4=D0=BE=D1=81=D1=
+=82=D1=83=D0=BF=D0=BE=D0=BC SELinux, =D1=87=D1=82=D0=BE=D0=B1=D1=8B =D0=B7=
+=D0=B0=D1=89=D0=B8=D1=82=D0=B8=D1=82=D1=8C =D1=8D=D1=82=D0=B8 =D1=84=D0=B0=
+=D0=B9=D0=BB=D1=8B. MCS - =D0=B4=D0=B8=D1=81=D0=BA=D1=80=D0=B5=D1=86=D0=B8=
+=D0=BE=D0=BD=D0=BD=D0=B0=D1=8F =D0=BC=D0=BE=D0=B4=D0=B5=D0=BB=D1=8C, =D0=BA=
+=D0=BE=D1=82=D0=BE=D1=80=D0=B0=D1=8F =D0=BF=D0=BE=D0=B7=D0=B2=D0=BE=D0=BB=
+=D1=8F=D0=B5=D1=82 =D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=
+=D0=B5=D0=BB=D1=8F=D0=BC =D0=BE=D1=82=D0=BC=D0=B5=D1=87=D0=B0=D1=82=D1=8C =
+=D1=81=D0=B2=D0=BE=D0=B8 =D0=B4=D0=B0=D0=BD=D0=BD=D1=8B=D0=B5 =D0=B4=D0=BE=
+=D0=BF=D0=BE=D0=BB=D0=BD=D0=B8=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D1=8B=D0=BC=D0=
+=B8 =D1=82=D0=B5=D0=B3=D0=B0=D0=BC=D0=B8, =D0=BD=D0=B0=D0=BA=D0=BB=D0=B0=D0=
+=B4=D1=8B=D0=B2=D0=B0=D1=8F =D0=B4=D0=B0=D0=BB=D1=8C=D0=BD=D0=B5=D0=B9=D1=
+=88=D0=B8=D0=B5 =D0=BE=D0=B3=D1=80=D0=B0=D0=BD=D0=B8=D1=87=D0=B5=D0=BD=D0=
+=B8=D1=8F =D0=B4=D0=BE=D1=81=D1=82=D1=83=D0=BF=D0=B0. =D0=9E=D0=B1=D1=8F=D0=
+=B7=D0=B0=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D1=8B=D0=BC =D1=8F=D0=B2=D0=BB=D1=
+=8F=D0=B5=D1=82=D1=81=D1=8F =D1=82=D0=BE=D0=BB=D1=8C=D0=BA=D0=BE =D0=BE=D0=
+=B4=D0=B8=D0=BD =D0=B0=D1=81=D0=BF=D0=B5=D0=BA=D1=82 - =D0=B0=D0=B2=D1=82=
+=D0=BE=D1=80=D0=B8=D0=B7=D0=BE=D0=B2=D1=8B=D0=B2=D0=B0=D1=82=D1=8C =D0=BF=
+=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=B0=D1=82=D0=B5=D0=BB=D0=B5=D0=B9 =
+=D0=B4=D0=BB=D1=8F =D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9, =
+=D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=D0=BB=D1=8F=D1=8F =D0=B8=D1=85 =D1=83=
+=D1=80=D0=BE=D0=B2=D0=B5=D0=BD=D1=8C =D0=B4=D0=BE=D0=BF=D1=83=D1=81=D0=BA=
+=D0=B0 =D0=B2 =D0=BF=D0=BE=D0=BB=D0=B8=D1=82=D0=B8=D0=BA=D0=B5. MCS =D0=BF=
+=D0=BE=D1=85=D0=BE=D0=B6=D0=B0 =D0=BD=D0=B0 MLS, =D0=B2=D1=8B=D0=BF=D0=BE=
+=D0=BB=D0=BD=D1=8F=D0=B5=D1=82 =D1=82=D0=B5 =D0=B6=D0=B5 =D1=81=D0=B0=D0=BC=
+=D1=8B=D0=B5 =D0=BF=D1=83=D1=82=D0=B8 =D0=BA=D0=BE=D0=B4=D0=B0 =D0=B8 =D0=
+=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D1=83=D0=B5=D1=82 =D1=82=D1=83 =D0=
+=B6=D0=B5 =D1=81=D0=B0=D0=BC=D1=83=D1=8E =D0=B8=D0=BD=D1=84=D1=80=D0=B0=D1=
+=81=D1=82=D1=80=D1=83=D0=BA=D1=82=D1=83=D1=80=D1=83 =D0=BF=D0=BE=D0=B4=D0=
+=B4=D0=B5=D1=80=D0=B6=D0=BA=D0=B8. =D0=9E=D0=BD=D0=B8 =D0=BE=D1=82=D0=BB=D0=
+=B8=D1=87=D0=B0=D1=8E=D1=82=D1=81=D1=8F =D0=BC=D0=B5=D0=B6=D0=B4=D1=83 =D1=
+=81=D0=BE=D0=B1=D0=BE=D0=B9 =D1=82=D0=BE=D0=BB=D1=8C=D0=BA=D0=BE =D1=81=D0=
+=BF=D0=B5=D1=86=D0=B8=D1=84=D0=B8=D0=BA=D0=BE=D0=B9 =D0=BD=D0=B0=D1=81=D1=
+=82=D1=80=D0=BE=D0=B9=D0=BA=D0=B8.
+-
+-
+-=D0=A4=D0=B0=D0=B9=D0=BB =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B3=D1=83=D1=80=
+=D0=B0=D1=86=D0=B8=D0=B8
+-.I /etc/selinux/{SELINUXTYPE}/setrans.conf
+-=D0=BF=D1=80=D0=B5=D0=BE=D0=B1=D1=80=D0=B0=D0=B7=D0=BE=D0=B2=D1=8B=D0=B2=
+=D0=B0=D0=B5=D1=82 =D0=BC=D0=B5=D1=82=D0=BA=D0=B8 =D0=BD=D0=B0 =D0=B4=D0=B8=
+=D1=81=D0=BA=D0=B5 =D0=B2 =D1=83=D0=B4=D0=BE=D0=B1=D0=BD=D1=83=D1=8E =D0=B4=
+=D0=BB=D1=8F =D0=BF=D1=80=D0=BE=D1=87=D1=82=D0=B5=D0=BD=D0=B8=D1=8F =D1=87=
+=D0=B5=D0=BB=D0=BE=D0=B2=D0=B5=D0=BA=D0=BE=D0=BC =D1=84=D0=BE=D1=80=D0=BC=
+=D1=83. =D0=92 =D1=8D=D1=82=D0=BE=D0=BC =D1=84=D0=B0=D0=B9=D0=BB=D0=B5 =D0=
+=B0=D0=B4=D0=BC=D0=B8=D0=BD=D0=B8=D1=81=D1=82=D1=80=D0=B0=D1=82=D0=BE=D1=80=
+=D1=8B =D0=BC=D0=BE=D0=B3=D1=83=D1=82 =D0=BE=D0=BF=D1=80=D0=B5=D0=B4=D0=B5=
+=D0=BB=D0=B8=D1=82=D1=8C =D0=BB=D1=8E=D0=B1=D1=8B=D0=B5 =D0=BD=D0=B5=D0=BE=
+=D0=B1=D1=85=D0=BE=D0=B4=D0=B8=D0=BC=D1=8B=D0=B5 =D0=BC=D0=B5=D1=82=D0=BA=
+=D0=B8.
+-=D0=9D=D0=B5=D0=BA=D0=BE=D1=82=D0=BE=D1=80=D1=8B=D0=B5 =D0=BF=D1=80=D0=B8=
+=D0=BB=D0=BE=D0=B6=D0=B5=D0=BD=D0=B8=D1=8F, =D1=82=D0=B0=D0=BA=D0=B8=D0=B5 =
+=D0=BA=D0=B0=D0=BA =D0=B2=D1=8B=D0=B2=D0=BE=D0=B4 =D0=BD=D0=B0 =D1=8D=D0=BA=
+=D1=80=D0=B0=D0=BD =D0=B8 =D0=B0=D1=83=D0=B4=D0=B8=D1=82, =D0=B1=D1=83=D0=
+=B4=D1=83=D1=82 =D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=D0=B7=D0=BE=D0=B2=D0=
+=B0=D1=82=D1=8C =D1=8D=D1=82=D0=B8 =D0=BC=D0=B5=D1=82=D0=BA=D0=B8 =D0=B4=D0=
+=BB=D1=8F =D0=B8=D0=B4=D0=B5=D0=BD=D1=82=D0=B8=D1=84=D0=B8=D0=BA=D0=B0=D1=
+=86=D0=B8=D0=B8 =D1=84=D0=B0=D0=B9=D0=BB=D0=BE=D0=B2. =D0=95=D1=81=D0=BB=D0=
+=B8 =D0=B4=D0=BB=D1=8F =D1=84=D0=B0=D0=B9=D0=BB=D0=B0 =D0=B1=D1=83=D0=B4=D0=
+=B5=D1=82 =D0=B7=D0=B0=D0=B4=D0=B0=D0=BD=D0=B0 =D0=BA=D0=B0=D1=82=D0=B5=D0=
+=B3=D0=BE=D1=80=D0=B8=D1=8F, =D0=B4=D1=80=D1=83=D0=B3=D0=B8=D0=B5 =D0=BF=D1=
+=80=D0=B8=D0=BB=D0=BE=D0=B6=D0=B5=D0=BD=D0=B8=D1=8F/=D1=81=D0=BB=D1=83=D0=
+=B6=D0=B1=D1=8B =D0=BD=D0=B5 =D0=BF=D0=BE=D0=BB=D1=83=D1=87=D0=B0=D1=82 =D0=
+=BA =D0=BD=D0=B5=D0=BC=D1=83 =D0=B4=D0=BE=D1=81=D1=82=D1=83=D0=BF.
+-.P
+-=D0=9F=D1=80=D0=B8=D0=BC=D0=B5=D1=80=D1=8B =D0=BC=D0=B5=D1=82=D0=BE=D0=BA =
+=D1=84=D0=B0=D0=B9=D0=BB=D0=BE=D0=B2: PatientRecord, CompanyConfidential =
+=D0=B8 =D1=82=D0=B0=D0=BA =D0=B4=D0=B0=D0=BB=D0=B5=D0=B5.
+-
+-.SH "=D0=A1=D0=9C=D0=9E=D0=A2=D0=A0=D0=98=D0=A2=D0=95 =D0=A2=D0=90=D0=9A=
+=D0=96=D0=95"
+-selinux(8), chcon(1)
+-
+-.SH =D0=A4=D0=90=D0=99=D0=9B=D0=AB
+-/etc/selinux/{SELINUXTYPE}/setrans.conf=20
+-
+-.SH =D0=90=D0=92=D0=A2=D0=9E=D0=A0=D0=AB
+-=D0=9F=D0=B5=D1=80=D0=B5=D0=B2=D0=BE=D0=B4 =D0=BD=D0=B0 =D1=80=D1=83=D1=81=
+=D1=81=D0=BA=D0=B8=D0=B9 =D1=8F=D0=B7=D1=8B=D0=BA =D0=B2=D1=8B=D0=BF=D0=BE=
+=D0=BB=D0=BD=D0=B8=D0=BB=D0=B0 =D0=93=D0=B5=D1=80=D0=B0=D1=81=D0=B8=D0=BC=
+=D0=B5=D0=BD=D0=BA=D0=BE =D0=9E=D0=BB=D0=B5=D1=81=D1=8F <gammaray@basealt.r=
+u>
+diff --git a/mcstrans/man/ru/man8/mcstransd.8 b/mcstrans/man/ru/man8/mcstra=
+nsd.8
+deleted file mode 100644
+index 4cd68c17..00000000
+--- a/mcstrans/man/ru/man8/mcstransd.8
++++ /dev/null
+@@ -1,32 +0,0 @@
+-.TH "mcstransd" "8" "16 =D0=BE=D0=BA=D1=82=D1=8F=D0=B1=D1=80=D1=8F 2009" "=
+dwalsh@redhat.com" "=D0=94=D0=BE=D0=BA=D1=83=D0=BC=D0=B5=D0=BD=D1=82=D0=B0=
+=D1=86=D0=B8=D1=8F =D0=BF=D0=BE MCS"
+-.SH "=D0=98=D0=9C=D0=AF"
+-mcstransd \- =D0=B2=D0=BD=D1=83=D1=82=D1=80=D0=B5=D0=BD=D0=BD=D1=8F=D1=8F =
+=D1=81=D0=BB=D1=83=D0=B6=D0=B1=D0=B0 MCS (=D0=BC=D1=83=D0=BB=D1=8C=D1=82=D0=
+=B8=D0=BA=D0=B0=D1=82=D0=B5=D0=B3=D0=BE=D1=80=D0=B8=D0=B9=D0=BD=D0=B0=D1=8F=
+ =D1=81=D0=B8=D1=81=D1=82=D0=B5=D0=BC=D0=B0). =D0=9F=D0=B5=D1=80=D0=B5=D0=
+=B2=D0=BE=D0=B4=D0=B8=D1=82 =D0=BC=D0=B5=D1=82=D0=BA=D0=B8 MCS/MLS SELinux =
+=D0=B2 =D1=83=D0=B4=D0=BE=D0=B1=D0=BD=D1=83=D1=8E =D0=B4=D0=BB=D1=8F =D0=BF=
+=D1=80=D0=BE=D1=87=D1=82=D0=B5=D0=BD=D0=B8=D1=8F =D1=87=D0=B5=D0=BB=D0=BE=
+=D0=B2=D0=B5=D0=BA=D0=BE=D0=BC =D1=84=D0=BE=D1=80=D0=BC=D1=83.
+-
+-.SH "=D0=9E=D0=91=D0=97=D0=9E=D0=A0"
+-.B mcstransd [-f] [-h]
+-.P
+-
+-.SH "=D0=9E=D0=9F=D0=98=D0=A1=D0=90=D0=9D=D0=98=D0=95"
+-=D0=AD=D1=82=D0=B0 =D1=81=D1=82=D1=80=D0=B0=D0=BD=D0=B8=D1=86=D0=B0 =D1=80=
+=D1=83=D0=BA=D0=BE=D0=B2=D0=BE=D0=B4=D1=81=D1=82=D0=B2=D0=B0 =D1=81=D0=BE=
+=D0=B4=D0=B5=D1=80=D0=B6=D0=B8=D1=82 =D0=BE=D0=BF=D0=B8=D1=81=D0=B0=D0=BD=
+=D0=B8=D0=B5 =D0=BF=D1=80=D0=BE=D0=B3=D1=80=D0=B0=D0=BC=D0=BC=D1=8B
+-.BR mcstransd.
+-.P
+-=D0=AD=D1=82=D0=B0 =D0=B2=D0=BD=D1=83=D1=82=D1=80=D0=B5=D0=BD=D0=BD=D1=8F=
+=D1=8F =D1=81=D0=BB=D1=83=D0=B6=D0=B1=D0=B0 =D0=B2=D1=8B=D0=BF=D0=BE=D0=BB=
+=D0=BD=D1=8F=D0=B5=D1=82 =D1=87=D1=82=D0=B5=D0=BD=D0=B8=D0=B5 =D1=84=D0=B0=
+=D0=B9=D0=BB=D0=B0 =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B3=D1=83=D1=80=D0=B0=
+=D1=86=D0=B8=D0=B8 /etc/selinux/{SELINUXTYPE}/setrans.conf =D0=B8 =D1=81=D0=
+=B2=D1=8F=D0=B7=D1=8B=D0=B2=D0=B0=D0=B5=D1=82=D1=81=D1=8F =D1=81 libselinux=
+ =D1=87=D0=B5=D1=80=D0=B5=D0=B7 =D1=81=D0=BE=D0=BA=D0=B5=D1=82 =D0=B2 /var/=
+run/setrans.
+-.SH "=D0=9F=D0=90=D0=A0=D0=90=D0=9C=D0=95=D0=A2=D0=A0=D0=AB"
+-.TP
+-\-f
+-=D0=97=D0=B0=D0=BF=D1=83=D1=81=D1=82=D0=B8=D1=82=D1=8C mcstransd =D0=BD=D0=
+=B0 =D0=BF=D0=B5=D1=80=D0=B5=D0=B4=D0=BD=D0=B5=D0=BC =D0=BF=D0=BB=D0=B0=D0=
+=BD=D0=B5. =D0=9D=D0=B5 =D0=B7=D0=B0=D0=BF=D1=83=D1=81=D0=BA=D0=B0=D1=82=D1=
+=8C =D0=BA=D0=B0=D0=BA =D0=B2=D0=BD=D1=83=D1=82=D1=80=D0=B5=D0=BD=D0=BD=D1=
+=8E=D1=8E =D1=81=D0=BB=D1=83=D0=B6=D0=B1=D1=83.
+-.TP
+-\-h
+-=D0=92=D1=8B=D0=B2=D0=B5=D1=81=D1=82=D0=B8 =D0=BA=D1=80=D0=B0=D1=82=D0=BA=
+=D0=BE=D0=B5 =D0=BE=D0=BF=D0=B8=D1=81=D0=B0=D0=BD=D0=B8=D0=B5 =D0=B4=D0=BE=
+=D1=81=D1=82=D1=83=D0=BF=D0=BD=D1=8B=D1=85 =D0=BF=D0=B0=D1=80=D0=B0=D0=BC=
+=D0=B5=D1=82=D1=80=D0=BE=D0=B2 =D0=BA=D0=BE=D0=BC=D0=B0=D0=BD=D0=B4=D0=BD=
+=D0=BE=D0=B9 =D1=81=D1=82=D1=80=D0=BE=D0=BA=D0=B8\&.
+-
+-.SH "=D0=A4=D0=90=D0=99=D0=9B=D0=AB"
+-/etc/selinux/{SELINUXTYPE}/setrans.conf=20
+-
+-.SH "=D0=A1=D0=9C=D0=9E=D0=A2=D0=A0=D0=98=D0=A2=D0=95 =D0=A2=D0=90=D0=9A=
+=D0=96=D0=95"
+-.BR setrans.conf (5), mcs (8)
+-
+-.SH "=D0=90=D0=92=D0=A2=D0=9E=D0=A0=D0=AB"
+-=D0=AD=D1=82=D0=B0 man-=D1=81=D1=82=D1=80=D0=B0=D0=BD=D0=B8=D1=86=D0=B0 =
+=D0=BD=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=BD=D0=B0 Dan Walsh <dwalsh@redhat.c=
+om>.
+-=D0=98=D1=81=D1=85=D0=BE=D0=B4=D0=BD=D0=B0=D1=8F =D0=B2=D0=B5=D1=80=D1=81=
+=D0=B8=D1=8F =D0=BF=D1=80=D0=BE=D0=B3=D1=80=D0=B0=D0=BC=D0=BC=D1=8B =D0=BD=
+=D0=B0=D0=BF=D0=B8=D1=81=D0=B0=D0=BD=D0=B0 Dan Walsh <dwalsh@redhat.com>.
+-=D0=9F=D1=80=D0=BE=D0=B3=D1=80=D0=B0=D0=BC=D0=BC=D0=B0 =D1=83=D0=BB=D1=83=
+=D1=87=D1=88=D0=B5=D0=BD=D0=B0/=D0=BF=D0=B5=D1=80=D0=B5=D0=BF=D0=B8=D1=81=
+=D0=B0=D0=BD=D0=B0 Joe Nall <joe@nall.com>.
+-=D0=9F=D0=B5=D1=80=D0=B5=D0=B2=D0=BE=D0=B4 =D0=BD=D0=B0 =D1=80=D1=83=D1=81=
+=D1=81=D0=BA=D0=B8=D0=B9 =D1=8F=D0=B7=D1=8B=D0=BA =D0=B2=D1=8B=D0=BF=D0=BE=
+=D0=BB=D0=BD=D0=B8=D0=BB=D0=B0 =D0=93=D0=B5=D1=80=D0=B0=D1=81=D0=B8=D0=BC=
+=D0=B5=D0=BD=D0=BA=D0=BE =D0=9E=D0=BB=D0=B5=D1=81=D1=8F <gammaray@basealt.r=
+u>.
+--=20
 2.41.0
 

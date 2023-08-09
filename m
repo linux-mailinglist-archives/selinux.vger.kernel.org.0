@@ -2,68 +2,64 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 765D9776A6D
-	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 22:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B951F776A9A
+	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 23:02:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229769AbjHIUk6 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 9 Aug 2023 16:40:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36312 "EHLO
+        id S230177AbjHIVCD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 9 Aug 2023 17:02:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234189AbjHIUk5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 16:40:57 -0400
-Received: from mail-qk1-x72b.google.com (mail-qk1-x72b.google.com [IPv6:2607:f8b0:4864:20::72b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFA22B4
-        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 13:40:56 -0700 (PDT)
-Received: by mail-qk1-x72b.google.com with SMTP id af79cd13be357-76c845dc5beso18600285a.1
-        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 13:40:56 -0700 (PDT)
+        with ESMTP id S229468AbjHIVCC (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 17:02:02 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429961724
+        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 14:02:02 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-76d072daea2so19141985a.1
+        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 14:02:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691613655; x=1692218455;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GdAXdjPlcJJZnuSjjAZTF+V3dXht2gjja8vY+HRLBug=;
-        b=VYmNge/TV1nDvZyGzMoSGhd9oLqBEG8YY/3zl1yelyjswrhRq3GmgzR0Ey7+WdxX2E
-         +PilMd8GWZkM8YA0PCPwx+FpeTaAgO0z2f9kDl391Hc2QG6tKeFvgdTbEeQr38/LDRcH
-         qT0IeDHmRB/UpE8ljL5HLXFhN2q8ut6Rv3txVgH6nytYOoIl1aXJg9K2RMhNaUDPmRfD
-         RUc2CF2uf17ShCBDsKk6YcnlXgavOB9tzYY8yKOV3FjDdrir3aC94Ah5uETF/B9cCv+0
-         zDV+3KAf7XZlKec2xt98LBP1nw+k9NrtMaoXo14y5aDmWkdXKR9Wlutv4tvicHjrQec/
-         /VpA==
+        d=gmail.com; s=20221208; t=1691614921; x=1692219721;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zw80kIIqHRocmqrLdMxZvb+tL5fEl1948rPKHXd9K7s=;
+        b=Q1XRj6hXzAoU9hMv3uU79Wlnc6deUJlFblc6wsyV5bFmIXsEfFrxJ/W6r79nTpLtWQ
+         QxX1OHwvxj8GuaKL3NZyhNmlgk96XKpMvO6KGPBPgvKRcJu8r584Tg8BnHpHpIOBJfPr
+         rXRwMNnrWLm46hY3Hj7/8qe2DceVIZQ80UyvvoyhkED+X/FSwBmkrpvWRLqzKjoDx8Od
+         6vSfjUUA0xkXijcAaxzTMYfhhWGqn7CX2WTZgG5gw7f4rOXkL+QhQb61TzjPAQKr0oW/
+         1az0uTSP1T82lGlprLhfDnL4+AMtJugrJYbm/fpvkPacyUfSEdHlCGzNdmFWmzMnu3wW
+         tJBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691613655; x=1692218455;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GdAXdjPlcJJZnuSjjAZTF+V3dXht2gjja8vY+HRLBug=;
-        b=fzFGA4LheAgouBzwZAMBdoro/O5XKN2AyUu6GyCeOmJw08Ryd7gv8+FExg1lzb3lrC
-         FTJMOOOz6MbgCtOT1VC50cr5PosKNoWkheF4kDSW3JKCldl9SbWGOpCpXwHUepxHpFgt
-         NhGAv9SJPuqZnZX/jvSE0EohuVdxXgHcjxKFwqE1Y/8NEIhqgY2/+sSY+XbRUnL+xM4G
-         +W9tNVo+qrbHyqSogdX28GjyflfilojrcBzsI5TvCxKINK41UUnk4ynhU9lVXoEyunlv
-         T3dorin80a+WvGJ4cxcy+yiepKzZAfYzRxMlDSKEKmg8Xo54qEdjLUPuFVJN+X23iflL
-         VP4g==
-X-Gm-Message-State: AOJu0YyWsmW0Hj8MDnbtqumfzBkT4wpLFYkQ05DPwU4kApPLoYau1nKO
-        WqJnAbKWjMo4zPulHUY7SS30BvVsQyw=
-X-Google-Smtp-Source: AGHT+IEAIZ2xMRqJB9d0474EfMo9UlrekK+BJs7EFMBjpU/JIadD9BMVv1AF76Dp1q0pm9wH16zzdg==
-X-Received: by 2002:a05:622a:52:b0:40d:4c6:bcdf with SMTP id y18-20020a05622a005200b0040d04c6bcdfmr600797qtw.35.1691613655660;
-        Wed, 09 Aug 2023 13:40:55 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1691614921; x=1692219721;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zw80kIIqHRocmqrLdMxZvb+tL5fEl1948rPKHXd9K7s=;
+        b=PSNxzucAjLwNZyrOPAQQ7wMkQZLZGYubd7EQGgToABbxty+U3DaVaCt+h7itiIA6hK
+         dLzJDNQlgYS4bgM8nZ+9tglDa2CTaiDhcUPIlioHW73TZ6f+U5RtDEVhSJ9ZaRw8/YQc
+         b5/6BQRWS3dtKy3u1ARJVr6zYLoz4CyxopFOYYrqb1L6vKaPD560xxl375K0kfXnBLPD
+         o1GDmRMnC2fWyNniYMjd7W8PsLZDd7fFccKtJAOCkU7sv5uYlMuzvnAKWsioLG4zw9Jt
+         swEo1O/XYtOl6EnlkrouscwlQgdwa+5JKwcdnULGbVCx2dtJM7fLMoLmrtgZm/y2OKi9
+         8HFg==
+X-Gm-Message-State: AOJu0YyuSP3K8qDA21OcDfLUNzfu4L17P94nDTfd2u8ge41Xgq1Kpn25
+        JOj6CkbAEFqj2QMOJ0KDuxEoOxlzybE=
+X-Google-Smtp-Source: AGHT+IFXvtdpNJ7+CdolB91wtbAwzWo5Hf+oLsx3P3t6gvzQEXq6aoZOr4+DlnjUPcZoCsDdPX3Ytg==
+X-Received: by 2002:a05:620a:4108:b0:767:f1de:293c with SMTP id j8-20020a05620a410800b00767f1de293cmr216642qko.59.1691614920916;
+        Wed, 09 Aug 2023 14:02:00 -0700 (PDT)
 Received: from electric.. (c-73-172-54-2.hsd1.md.comcast.net. [73.172.54.2])
-        by smtp.gmail.com with ESMTPSA id u18-20020a05622a14d200b0041020e8e261sm711295qtx.1.2023.08.09.13.40.55
+        by smtp.gmail.com with ESMTPSA id h20-20020a05620a10b400b00766fbeb3e7csm4208287qkk.132.2023.08.09.14.02.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 13:40:55 -0700 (PDT)
+        Wed, 09 Aug 2023 14:02:00 -0700 (PDT)
 From:   James Carter <jwcart2@gmail.com>
 To:     selinux@vger.kernel.org
-Cc:     dburgener@linux.microsoft.com, cgzones@googlemail.com,
-        James Carter <jwcart2@gmail.com>
-Subject: [PATCH 7/7 v2] secilc/test: Add notself and other tests
-Date:   Wed,  9 Aug 2023 16:40:46 -0400
-Message-ID: <20230809204046.110783-8-jwcart2@gmail.com>
+Cc:     dburgener@linux.microsoft.com, James Carter <jwcart2@gmail.com>
+Subject: [PATCH 0/9 v4] Add CIL Deny Rule
+Date:   Wed,  9 Aug 2023 17:01:48 -0400
+Message-ID: <20230809210157.112275-1-jwcart2@gmail.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809204046.110783-1-jwcart2@gmail.com>
-References: <20230809204046.110783-1-jwcart2@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,83 +67,63 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- secilc/test/notself_and_other.cil | 65 +++++++++++++++++++++++++++++++
- 1 file changed, 65 insertions(+)
- create mode 100644 secilc/test/notself_and_other.cil
+This patch series depends on the "Add support for notself and other to
+CIL" patch series from August 9th
 
-diff --git a/secilc/test/notself_and_other.cil b/secilc/test/notself_and_other.cil
-new file mode 100644
-index 00000000..9b33bfcb
---- /dev/null
-+++ b/secilc/test/notself_and_other.cil
-@@ -0,0 +1,65 @@
-+(class CLASS (PERM))
-+(class C1 (p1a p1b p1c p1d p1e))
-+(classorder (CLASS C1))
-+(sid SID)
-+(sidorder (SID))
-+(user USER)
-+(role ROLE)
-+(type TYPE)
-+(category CAT)
-+(categoryorder (CAT))
-+(sensitivity SENS)
-+(sensitivityorder (SENS))
-+(sensitivitycategory SENS (CAT))
-+(allow TYPE self (CLASS (PERM)))
-+(roletype ROLE TYPE)
-+(userrole USER ROLE)
-+(userlevel USER (SENS))
-+(userrange USER ((SENS)(SENS (CAT))))
-+(sidcontext SID (USER ROLE TYPE ((SENS)(SENS))))
-+
-+(type ta)
-+(type tb)
-+(type tc)
-+(type td)
-+
-+(typeattribute aab)
-+(typeattributeset aab (ta tb))
-+
-+(typeattribute aac)
-+(typeattributeset aac (ta tc))
-+
-+(typeattribute abc)
-+(typeattributeset abc (tb tc))
-+
-+(typeattribute aabc)
-+(typeattributeset aabc (ta tb tc))
-+
-+(typeattribute a_all_not_ta)
-+(typeattributeset a_all_not_ta (and (all) (not ta)))
-+
-+(typeattribute a_all_not_aab)
-+(typeattributeset a_all_not_aab (and (all) (not aab)))
-+
-+; Test 01
-+(allow ta notself (C1 (p1a)))
-+; (neverallow ta a_all_not_ta (C1 (p1a))) ; This check should fail
-+
-+; Test 02
-+(allow aab notself (C1 (p1b)))
-+; (neverallow aab a_all_not_aab (C1 (p1b))) ; This check should fail
-+
-+; Test 03
-+(allow aab other (C1 (p1c)))
-+; (neverallow ta tb (C1 (p1c))) ; This check should fail
-+; (neverallow tb ta (C1 (p1c))) ; This check should fail
-+
-+; Test 04
-+(allow aabc other (C1 (p1d)))
-+; (neverallow ta abc (C1 (p1d))) ; This check should fail
-+; (neverallow tb aac (C1 (p1d))) ; This check should fail
-+; (neverallow tc aab (C1 (p1d))) ; This check should fail
-+
-+; Test 05
-+(allow ta other (C1 (p1e))) ; other used with a single type results in no rule
-+(neverallow ta a_all_not_ta (C1 (p1e)))
+These patches add a deny rule to CIL. Deny rules will be processed after
+everything except for neverallow rules. Unlike neverallow rules, they
+remove the permissions in the deny rule rather than reporting an error.
+
+See the individual patches for an explanation of what they do.
+
+Patches 1-8 are unchanged from v3, see:
+https://lore.kernel.org/selinux/20230413193445.588395-1-jwcart2@gmail.com/
+
+Previously, patch 9, as Daniel Burgener noted, did not do what it said it
+was going to do. Now it does.
+
+James Carter (9):
+  libsepol/cil: Parse and add deny rule to AST, but do not process
+  libsepol/cil: Add cil_list_is_empty macro
+  libsepol/cil: Add cil_tree_node_remove function
+  libsepol/cil: Process deny rules
+  libsepol/cil: Add cil_write_post_ast function
+  libsepol: Export the cil_write_post_ast function
+  secilc/secil2tree: Add option to write CIL AST after post processing
+  secilc/test: Add deny rule tests
+  secilc/docs: Add deny rule to CIL documentation
+
+ libsepol/cil/include/cil/cil.h         |    1 +
+ libsepol/cil/src/cil.c                 |   68 ++
+ libsepol/cil/src/cil_build_ast.c       |   56 +
+ libsepol/cil/src/cil_build_ast.h       |    2 +
+ libsepol/cil/src/cil_copy_ast.c        |   19 +
+ libsepol/cil/src/cil_copy_ast.h        |    1 +
+ libsepol/cil/src/cil_deny.c            | 1413 ++++++++++++++++++++++++
+ libsepol/cil/src/cil_deny.h            |   36 +
+ libsepol/cil/src/cil_flavor.h          |    1 +
+ libsepol/cil/src/cil_internal.h        |   10 +
+ libsepol/cil/src/cil_list.h            |    3 +
+ libsepol/cil/src/cil_post.c            |    7 +
+ libsepol/cil/src/cil_reset_ast.c       |    8 +
+ libsepol/cil/src/cil_resolve_ast.c     |   48 +
+ libsepol/cil/src/cil_resolve_ast.h     |    1 +
+ libsepol/cil/src/cil_tree.c            |   35 +
+ libsepol/cil/src/cil_tree.h            |    1 +
+ libsepol/cil/src/cil_verify.c          |    9 +
+ libsepol/cil/src/cil_write_ast.c       |   10 +
+ libsepol/cil/src/cil_write_ast.h       |    1 +
+ libsepol/src/libsepol.map.in           |    5 +
+ secilc/docs/cil_access_vector_rules.md |   41 +-
+ secilc/secil2tree.c                    |    8 +-
+ secilc/test/deny_rule_test1.cil        |  580 ++++++++++
+ secilc/test/deny_rule_test2.cil        |  418 +++++++
+ 25 files changed, 2780 insertions(+), 2 deletions(-)
+ create mode 100644 libsepol/cil/src/cil_deny.c
+ create mode 100644 libsepol/cil/src/cil_deny.h
+ create mode 100644 secilc/test/deny_rule_test1.cil
+ create mode 100644 secilc/test/deny_rule_test2.cil
+
 -- 
 2.41.0
 

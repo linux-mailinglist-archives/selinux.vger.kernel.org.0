@@ -2,250 +2,273 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74ADE776526
-	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 18:31:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BAD4E776672
+	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 19:28:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230472AbjHIQbR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 9 Aug 2023 12:31:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40912 "EHLO
+        id S231743AbjHIR2c (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 9 Aug 2023 13:28:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49042 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230466AbjHIQbQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 12:31:16 -0400
-Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 111D310FE
-        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 09:31:15 -0700 (PDT)
-Received: by mail-oi1-x230.google.com with SMTP id 5614622812f47-3a7afae474aso1253051b6e.3
-        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 09:31:15 -0700 (PDT)
+        with ESMTP id S231536AbjHIR2b (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 13:28:31 -0400
+Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEECA90
+        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 10:28:29 -0700 (PDT)
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-4fe7e67cc77so2554974e87.2
+        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 10:28:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691598674; x=1692203474;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ONzAPoR2lf4LkTsVf50DNEPMYppLmWyIwIzltfe9Cps=;
-        b=Iaf7tNI7G6zoIXs562j6g7U9ZNgaH97jTgpHKyDHUT3TxC5K9pnxK2L5b+yQjHSX4u
-         ti139MC7Ff9xDi7WMWaNT9aln33IA8iblFLVyvs7sWyDh3FS6vxT+PKMRT8YmXTQPCvQ
-         XMZYIzY5JA8Sz3R5EhkJzUoabgudJrklpI7qCbe1b17UgeWHAlrahsBllOPyPXvhnaN8
-         VSuYypQ7HHMlg8y6JhAVR54GY2GPjFu3pGvIKRSSGYuA4vpdMgQfWnjaoiRsecwubb0x
-         ZiCdewaVt8Cq6690vKkdP9Kfqe73M1uhfPTX444ELWGbUIAyhSWyoXwrwgQgkyA7/IWd
-         oJgw==
+        d=semihalf.com; s=google; t=1691602108; x=1692206908;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=yw22Rug4OEXyPMn54DIvL6wFU6vMQ8oGwoG/iSU6CIc=;
+        b=KIbY2LyyTl/AnYXTkkb6pgPDIwlxFzi/gU1TOXHFBIULY9+bxRCqT0/5PbrBQZr65u
+         8ThZm7mo/+9F5dlunFcUes8zmBpOi4GsUlCOLcfKT8uAkLUulHD92tPA2i1ve2IBJIUZ
+         D/NL9+3lSH9g3jwpXQ9hc2hG37wgUM9SNAYuMLmU0pp4prRKrCiKVdtYeHuVIdo7p8zk
+         WTL1Capi6iCC69SDt+EVndrPPpbesmWQcHbMOSX/evqo9RJAWI0TlSiSjqmCkpWYvNrY
+         IdkFfg2hyXY2jFG1qswWzSBv/aaeQaDhiVhK8ptuomf4MZWDnBdlCZCxWHh8NqcU7jEq
+         5mJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691598674; x=1692203474;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ONzAPoR2lf4LkTsVf50DNEPMYppLmWyIwIzltfe9Cps=;
-        b=M4C5KRToziirKQGzRLKkrUQBpU678IGWwTcAzedin7lokAQjw/ssYC1yKdAaYJH3Zb
-         I/ZyNh8ubujYlOgZYC+fhMhR7LFdr/yPvn0diMnplN00qHtVbYQLfbcxYWM8nBWUI6aF
-         Grax8A49OIcRIby3xc2UdEA1k1kpHR7fHBuauBurMAk6jYggr3mh+BgAP4+6uiWxWEdx
-         M/N3OV1FiXLMeCbZkdE0Oh778aPLPeq+ljusEusPDpfvY1/nd+9WzK6NvsXrAxYdPC+Y
-         EvQw3GFdxZnLSztSdpkJ9vpGd/NusReDf/GG0Cf/XMhKq74vsi3Ygv1dHaLxPLUONmOo
-         kbLQ==
-X-Gm-Message-State: AOJu0YyAaoo5+LLuUp0GDtb7qLOVORAKq2TvTxVtRioTKdHG6+ImgpH+
-        ZVb7JDKQet5vwTxEhG3tyK82/hijGfQ=
-X-Google-Smtp-Source: AGHT+IFmjF5+WJjuMeWcha7oRvByel4V167qtfFff0y44P5z8wUNMneqdTaMvgpakNhsqrSwp3O1Ug==
-X-Received: by 2002:a05:6808:1489:b0:3a7:62ff:24c1 with SMTP id e9-20020a056808148900b003a762ff24c1mr3714573oiw.46.1691598673901;
-        Wed, 09 Aug 2023 09:31:13 -0700 (PDT)
-Received: from electric.. (c-73-172-54-2.hsd1.md.comcast.net. [73.172.54.2])
-        by smtp.gmail.com with ESMTPSA id l7-20020a0ce507000000b0063d2ea55018sm4609570qvm.125.2023.08.09.09.31.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 09:31:13 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     plautrba@redhat.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 12/12] semodule-utils: Remove the Russian translations
-Date:   Wed,  9 Aug 2023 12:30:57 -0400
-Message-ID: <20230809163059.97671-12-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809163059.97671-1-jwcart2@gmail.com>
-References: <20230809163059.97671-1-jwcart2@gmail.com>
+        d=1e100.net; s=20221208; t=1691602108; x=1692206908;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yw22Rug4OEXyPMn54DIvL6wFU6vMQ8oGwoG/iSU6CIc=;
+        b=SbeeXva4qjlZFiGnRqv7wwMta7cftGIwwIFcV5BvfxegWPBd7Qu9Sgda7IUS7rSQ87
+         I/Gq1QrpkQBY5dIm9yExalNNzLx+uVo0LtSGHe12uUHeKQGAvAMFddGwDNa01KDDTduI
+         zkWtH6DljrorPe7p8LCVNAP/t/SF2MU1Yv9+UFHMl0zuRQYnA1jFaTU4JiKnKUoi/o7N
+         EUBwwE2tsEnEU22HVNAPTZRK+wOnDvq+DcRNorhKsw+ympCqK6zriwpa00BMdXjA/0i8
+         HA0n9bkIfeUt22JVa2NWHTzaq3k44d9rfwDtzOOWXW2Z45EPHzgBdjtL8Jq7P4loz5Qe
+         BRtQ==
+X-Gm-Message-State: AOJu0YwyvXVdsAG8fyJTgodOyRMj25GRGkuL0fJnFKObExLCy9ebiMdS
+        JlsCXCwG7cG5kY1aUoRCCeOamQ==
+X-Google-Smtp-Source: AGHT+IFGU6DlsIDGan/Ed64LTo5h4x9cjw5aWImDy8ojY1Rnld19e+Tgnw2G60Ovk+FaCUg8I76/yg==
+X-Received: by 2002:a19:8c54:0:b0:4fe:676:8c0b with SMTP id i20-20020a198c54000000b004fe06768c0bmr2411269lfj.11.1691602107522;
+        Wed, 09 Aug 2023 10:28:27 -0700 (PDT)
+Received: from [10.43.1.246] ([83.142.187.84])
+        by smtp.gmail.com with ESMTPSA id p3-20020a19f003000000b004fcddf3671dsm2388034lfc.177.2023.08.09.10.28.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 09 Aug 2023 10:28:26 -0700 (PDT)
+Message-ID: <dc055b47-b868-7f5d-98bf-51e27df6b2d8@semihalf.com>
+Date:   Wed, 9 Aug 2023 19:28:25 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v1 0/2] Add LSM access controls for io_uring_setup
+Content-Language: en-US
+To:     Paul Moore <paul@paul-moore.com>
+Cc:     Jeffrey Vander Stoep <jeffv@google.com>,
+        Gil Cukierman <cukie@google.com>, Jens Axboe <axboe@kernel.dk>,
+        Pavel Begunkov <asml.silence@gmail.com>,
+        James Morris <jmorris@namei.org>,
+        "Serge E. Hallyn" <serge@hallyn.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>, kernel-team@android.com,
+        linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
+        linux-security-module@vger.kernel.org, selinux@vger.kernel.org,
+        Joel Granados <j.granados@samsung.com>,
+        Jeff Xu <jeffxu@google.com>,
+        Takaya Saeki <takayas@chromium.org>,
+        Tomasz Nowicki <tn@semihalf.com>,
+        Matteo Rizzo <matteorizzo@google.com>,
+        Andres Freund <andres@anarazel.de>
+References: <20221107205754.2635439-1-cukie@google.com>
+ <CAHC9VhTLBWkw2XzqdFx1LFVKDtaAL2pEfsmm+LEmS0OWM1mZgA@mail.gmail.com>
+ <CABXk95ChjusTneWJgj5a58CZceZv0Ay-P-FwBcH2o4rO0g2Ggw@mail.gmail.com>
+ <CAHC9VhRTWGuiMpJJiFrUpgsm7nQaNA-n1CYRMPS-24OLvzdA2A@mail.gmail.com>
+ <54c8fd9c-0edd-7fea-fd7a-5618859b0827@semihalf.com>
+ <CAHC9VhS9BXTUjcFy-URYhG=XSxBC+HsePbu01_xBGzM8sebCYQ@mail.gmail.com>
+ <d2eaa3f8-cca6-2f51-ce98-30242c528b6f@semihalf.com>
+ <CAHC9VhQDAM8X-MV9ONckc2NBWDZrsMteanDo9_NS4SirdQAx=w@mail.gmail.com>
+From:   Dmytro Maluka <dmy@semihalf.com>
+In-Reply-To: <CAHC9VhQDAM8X-MV9ONckc2NBWDZrsMteanDo9_NS4SirdQAx=w@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The Russian translations have not been maintained and are out of
-date, so remove them.
+On 8/9/23 16:49, Paul Moore wrote:
+> On Wed, Aug 9, 2023 at 7:22 AM Dmytro Maluka <dmy@semihalf.com> wrote:
+>> On 8/9/23 02:31, Paul Moore wrote:
+>>> On Tue, Aug 8, 2023 at 4:40 PM Dmytro Maluka <dmy@semihalf.com> wrote:
+>>>> On 11/10/22 22:04, Paul Moore wrote:
+>>>>> On Thu, Nov 10, 2022 at 12:54 PM Jeffrey Vander Stoep <jeffv@google.com> wrote:
+>>>>>> On Mon, Nov 7, 2022 at 10:17 PM Paul Moore <paul@paul-moore.com> wrote:
+>>>>>>>
+>>>>>>> On Mon, Nov 7, 2022 at 3:58 PM Gil Cukierman <cukie@google.com> wrote:
+>>>>>>>>
+>>>>>>>> This patchset provides the changes required for controlling access to
+>>>>>>>> the io_uring_setup system call by LSMs. It does this by adding a new
+>>>>>>>> hook to io_uring. It also provides the SELinux implementation for a new
+>>>>>>>> permission, io_uring { setup }, using the new hook.
+>>>>>>>>
+>>>>>>>> This is important because existing io_uring hooks only support limiting
+>>>>>>>> the sharing of credentials and access to the sensitive uring_cmd file
+>>>>>>>> op. Users of LSMs may also want the ability to tightly control which
+>>>>>>>> callers can retrieve an io_uring capable fd from the kernel, which is
+>>>>>>>> needed for all subsequent io_uring operations.
+>>>>>>>
+>>>>>>> It isn't immediately obvious to me why simply obtaining a io_uring fd
+>>>>>>> from io_uring_setup() would present a problem, as the security
+>>>>>>> relevant operations that are possible with that io_uring fd *should*
+>>>>>>> still be controlled by other LSM hooks.  Can you help me understand
+>>>>>>> what security issue you are trying to resolve with this control?
+>>>>>>
+>>>>>> I think there are a few reasons why we want this particular hook.
+>>>>>>
+>>>>>> 1.  It aligns well with how other resources are managed by selinux
+>>>>>> where access to the resource is the first control point (e.g. "create"
+>>>>>> for files, sockets, or bpf_maps, "prog_load" for bpf programs, and
+>>>>>> "open" for perf_event) and then additional functionality or
+>>>>>> capabilities require additional permissions.
+>>>>>
+>>>>> [NOTE: there were two reply sections in your email, and while similar,
+>>>>> they were not identical; I've trimmed the other for the sake of
+>>>>> clarity]
+>>>>>
+>>>>> The resources you mention are all objects which contain some type of
+>>>>> information (either user data, configuration, or program
+>>>>> instructions), with the resulting fd being a handle to those objects.
+>>>>> In the case of io_uring the fd is a handle to the io_uring
+>>>>> interface/rings, which by itself does not contain any information
+>>>>> which is not already controlled by other permissions.
+>>>>>
+>>>>> I/O operations which transfer data between the io_uring buffers and
+>>>>> other system objects, e.g. IORING_OP_READV, are still subject to the
+>>>>> same file access controls as those done by the application using
+>>>>> syscalls.  Even the IORING_OP_OPENAT command goes through the standard
+>>>>> VFS code path which means it will trigger the same access control
+>>>>> checks as an open*() done by the application normally.
+>>>>>
+>>>>> The 'interesting' scenarios are those where the io_uring operation
+>>>>> servicing credentials, aka personalities, differ from the task
+>>>>> controlling the io_uring.  However in those cases we have the new
+>>>>> io_uring controls to gate these delegated operations.  Passing an
+>>>>> io_uring fd is subject to the fd/use permission like any other fd.
+>>>>>
+>>>>> Although perhaps the most relevant to your request is the fact that
+>>>>> the io_uring inode is created using the new(ish) secure anon inode
+>>>>> interface which ensures that the creating task has permission to
+>>>>> create an io_uring.  This io_uring inode label also comes into play
+>>>>> when a task attempts to mmap() the io_uring rings, a critical part of
+>>>>> the io_uring API.
+>>>>>
+>>>>> If I'm missing something you believe to be important, please share the details.
+>>>>>
+>>>>>> 2. It aligns well with how resources are managed on Android. We often
+>>>>>> do not grant direct access to resources (like memory buffers).
+>>>>>
+>>>>> Accessing the io_uring buffers requires a task to mmap() the io_uring
+>>>>> fd which is controlled by the normal SELinux mmap() access controls.
+>>>>>
+>>>>>> 3. Attack surface management. One of the primary uses of selinux on
+>>>>>> Android is to assess and limit attack surface (e.g.
+>>>>>> https://twitter.com/jeffvanderstoep/status/1422771606309335043) . As
+>>>>>> io_uring vulnerabilities have made their way through our vulnerability
+>>>>>> management system, it's become apparent that it's complicated to
+>>>>>> assess the impact. Is a use-after-free reachable? Creating
+>>>>>> proof-of-concept exploits takes a lot of time, and often functionality
+>>>>>> can be reached by multiple paths. How many of the known io_uring
+>>>>>> vulnerabilities would be gated by the existing checks? How many future
+>>>>>> ones will be gated by the existing checks? I don't know the answer to
+>>>>>> either of these questions and it's not obvious. This hook makes that
+>>>>>> initial assessment simple and effective.
+>>>>>
+>>>>> It should be possible to deny access to io_uring via the anonymous
+>>>>> inode labels, the mmap() controls, and the fd/use permission.  If you
+>>>>> find a way to do meaningful work with an io_uring fd that can't be
+>>>>> controlled via an existing permission check please let me know.
+>>>>
+>>>> Thank you a lot for this explanation. However, IMHO we should not
+>>>> confuse 2 somewhat different problems here:
+>>>>
+>>>> - protecting io_uring related resources (file descriptors, memory
+>>>>   buffers) against unauthorized access
+>>>>
+>>>> - protecting the entire system against potential vulnerabilities in
+>>>>   io_uring
+>>>>
+>>>> And while I agree that the existing permission checks should be already
+>>>> sufficient for the former, I'm not quite sure they are sufficient for
+>>>> the latter.
+>>>
+>>> ...
+>>>
+>>>> I already have a PoC patch [3] adding such LSM hook. But before I try to
+>>>> submit it for upstream, I'd like to know your opinion on the whole idea.
+>>>
+>>> First please explain how the existing LSM/SELinux control points are
+>>> not sufficient for restricting io_uring operations.  I'm looking for a
+>>> real program flow that is able to "do meaningful work with an io_uring
+>>> fd that can't be controlled via an existing permission check".
+>>
+>> As I said at the beginning of my reply, I agree with you that the
+>> existing LSM controls are sufficient for restricting io_uring I/O
+>> operations. That is not my concern here. The concern is: how to (and
+>> do we need to) restrict triggering execution of *any* io_uring code in
+>> kernel, *in addition to* restricting the actual io_uring operations.
+> 
+> If your concern is preventing *any* io_uring code from being executed,
+> I would suggest simply not enabling io_uring at build time.  If you
+> need to selectively enable io_uring for some subset of processes, you
+> will need to make use of one of the options you discussed previously,
+> e.g. a LSM, seccomp, etc.
+> 
+> From a LSM perspective, I don't believe we want to be in the business
+> of blocking entire kernel subsystems from execution, rather we want to
+> provide control points so that admins and users can have better, or
+> more granular control over the security relevant operations that take
+> place within the different kernel subsystems.
+> 
+>> In other words, "a real program doing a meaningful work with io_uring"
+>> in this case would mean "an exploit for a real vulnerability in io_uring
+>> code (in the current or any older kernel) which does not require an
+>> access to io_uring operations to be exploited". I don't claim that such
+>> vulnerabilities exist or are likely to be introduced in future kernels.
+>> But I'm neither an io_uring expert nor, more importantly, a security
+>> expert, so I cannot tell with confidence that they are not and we have
+>> nothing to worry about here. So I'm interested in your and others'
+>> opinion on that.
+> 
+> Once again, if you have serious concerns about the security or safety
+> of an individual kernel subsystem, your best option is to simply build
+> a kernel without that subsystem enabled.
 
-Suggested-by: Petr Lautrbach <plautrba@redhat.com>
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- .../semodule_expand/ru/semodule_expand.8      | 31 ------------
- .../semodule_link/ru/semodule_link.8          | 32 -------------
- .../semodule_package/ru/semodule_package.8    | 48 -------------------
- .../semodule_package/ru/semodule_unpackage.8  | 24 ----------
- 4 files changed, 135 deletions(-)
- delete mode 100644 semodule-utils/semodule_expand/ru/semodule_expand.8
- delete mode 100644 semodule-utils/semodule_link/ru/semodule_link.8
- delete mode 100644 semodule-utils/semodule_package/ru/semodule_package.8
- delete mode 100644 semodule-utils/semodule_package/ru/semodule_unpackage.8
+Thanks for the answer. Yeah, disabling a problematic kernel subsystem at
+build time is surely the safest option (and that is what we are already
+doing in ChromeOS for io_uring, for that matter), and if we still want
+to enable it for a limited subset of processes, it seems the cleanest
+option is to use seccomp, rather than to add new ad-hoc LSM hooks for
+blocking a specific subsystem.
 
-diff --git a/semodule-utils/semodule_expand/ru/semodule_expand.8 b/semodule-utils/semodule_expand/ru/semodule_expand.8
-deleted file mode 100644
-index 28b381af..00000000
---- a/semodule-utils/semodule_expand/ru/semodule_expand.8
-+++ /dev/null
-@@ -1,31 +0,0 @@
--.TH SEMODULE_EXPAND "8" "ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ 
--semodule_expand \- расширить пакет модуля политики SELinux
--
--.SH ОБЗОР
--.B semodule_expand [-V ] [ -a ] [ -c [version]] basemodpkg outputfile
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_expand - утилита разработки для ручного расширения пакета базового модуля политики в двоичный файл политики ядра.
--Это средство не является необходимым для нормальной работы SELinux. Обычно такое расширение выполняется libsemanage внутренним образом в ответ на команды semodule. Пакеты базовых модулей политики можно создавать непосредственно с помощью semodule_package или semodule_link (при связывании набора пакетов в один пакет).
--
--.SH "ПАРАМЕТРЫ"
--.TP
--.B \-V
--Показать версию
--.TP
--.B \-c [version]
--Версия политики, которую следует создать
--.TP
--.B \-a
--Не проверять утверждения. При использовании этого параметра политика не будет проверять запрещающие правила (neverallow).
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B checkmodule(8), semodule_package(8), semodule(8), semodule_link(8)
--(8),
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Karl MacMillan <kmacmillan@tresys.com>, Joshua Brindle <jbrindle@tresys.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
-diff --git a/semodule-utils/semodule_link/ru/semodule_link.8 b/semodule-utils/semodule_link/ru/semodule_link.8
-deleted file mode 100644
-index 4a8f414e..00000000
---- a/semodule-utils/semodule_link/ru/semodule_link.8
-+++ /dev/null
-@@ -1,32 +0,0 @@
--.TH SEMODULE_LINK "8" "Ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ 
--semodule_link \- связать вместе пакеты модулей политики SELinux
--
--.SH ОБЗОР
--.B semodule_link [-Vv] [-o outfile] basemodpkg modpkg1 [modpkg2]...
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_link - утилита разработки для ручного связывания набора пакетов модулей политики SELinux в один пакет модулей политики. 
--Это средство не является необходимым для нормальной работы SELinux. Обычно такое связывание выполняется libsemanage внутренним образом в ответ на команды semodule. Пакеты модулей создаются с помощью semodule_package.
--
--.SH "ПАРАМЕТРЫ"
--.TP
--.B \-V
--Показать версию
--.TP
--.B \-v
--Подробный режим
--.TP
--.B \-o <output file> 
--Связанный пакет модулей политики, созданный с помощью этого средства
--
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B checkmodule(8), semodule_package(8), semodule(8), semodule_expand(8)
--(8),
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Karl MacMillan <kmacmillan@tresys.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
-diff --git a/semodule-utils/semodule_package/ru/semodule_package.8 b/semodule-utils/semodule_package/ru/semodule_package.8
-deleted file mode 100644
-index 3f4b16a9..00000000
---- a/semodule-utils/semodule_package/ru/semodule_package.8
-+++ /dev/null
-@@ -1,48 +0,0 @@
--.TH SEMODULE_PACKAGE "8" "Ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ 
--semodule_package \- создать пакет модуля политики SELinux
--
--.SH ОБЗОР
--.B semodule_package \-o <output file> \-m <module> [\-f <file contexts>]
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_package - утилита, которая используется для создания пакета модуля политики SELinux из двоичного модуля политики и (необязательно) других данных, таких как контексты файлов. Команда semodule_package упаковывает двоичные модули политики, созданные с помощью checkmodule. Пакет политики, созданный с помощью semodule_package, затем можно установить через semodule. 
--
--.SH ПРИМЕР
--.nf
--# Собрать пакет политики для базового модуля.
--$ semodule_package \-o base.pp \-m base.mod \-f file_contexts
--# Собрать пакет политики для модуля httpd.
--$ semodule_package \-o httpd.pp \-m httpd.mod \-f httpd.fc
--# Собрать пакет политики для локальных правил принудительного присвоения типов, не включая контексты файлов.
--$ semodule_package \-o local.pp \-m local.mod
--.fi
--
--.SH "ПАРАМЕТРЫ"
--.TP
--.B \-o \-\-outfile <output file> 
--Файл пакета модуля политики, созданный этим средством.
--.TP
--.B  \-s \-\-seuser <seuser file>
--Файл seuser, который следует включить в пакет.
--.TP
--.B  \-u \-\-user_extra <user extra file>
--Файл user_extra, который следует включить в пакет.
--.TP
--.B  \-m \-\-module <Module file>
--Файл модуля политики, который следует включить в пакет.
--.TP
--.B  \-f \-\-fc <File context file>
--Файл контекстов файлов для модуля (необязательно).
--.TP
--.B  \-n \-\-nc <netfilter context file>
--Файл контекста netfilter, который следует включить в пакет.
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B checkmodule(8), semodule(8), semodule_unpackage(8)
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Karl MacMillan <kmacmillan@tresys.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
-diff --git a/semodule-utils/semodule_package/ru/semodule_unpackage.8 b/semodule-utils/semodule_package/ru/semodule_unpackage.8
-deleted file mode 100644
-index 057ae3d7..00000000
---- a/semodule-utils/semodule_package/ru/semodule_unpackage.8
-+++ /dev/null
-@@ -1,24 +0,0 @@
--.TH SEMODULE_PACKAGE "8" "Ноябрь 2005" "Security Enhanced Linux"
--.SH ИМЯ
--semodule_unpackage \- извлечь модуль политики и файл контекстов файлов из пакета модуля политики SELinux
--
--.SH ОБЗОР
--.B semodule_unpackage ppfile modfile [fcfile]
--.br
--.SH ОПИСАНИЕ
--.PP
--semodule_unpackage - утилита, которая используется для извлечения файла модуля политики SELinux и файла контекстов файлов из пакета политики SELinux.
--
--.SH ПРИМЕР
--.nf
--# Извлечь файл модуля httpd из пакета политики httpd.
--$ semodule_unpackage httpd.pp httpd.mod httpd.fc
--.fi
--
--.SH СМОТРИТЕ ТАКЖЕ
--.B semodule_package(8)
--.SH АВТОРЫ
--.nf
--Эта страница руководства была написана Dan Walsh <dwalsh@redhat.com>.
--Программа была написана Stephen Smalley <stephen.smalley.work@gmail.com>.
--Перевод на русский язык выполнила Герасименко Олеся <gammaray@basealt.ru>.
--- 
-2.41.0
+One of the angles I'm coming from is actually the following:
 
+- Android currently enables io_uring but limits its use to a few
+  processes. But the way Android does that is by relying on the existing
+  SELinux access controls for io_uring resources [1][2], rather than by
+  preventing execution of any io_uring code via seccomp or other means.
+
+  I guess the reason why Android doesn't use seccomp for that is the
+  downsides of seccomp which I mentioned previously: in short, seccomp
+  is well-suited for selectively denying syscalls for specific
+  processes, but not so well-suited for selectively allowing them.
+
+  So one of the questions I'm wondering about is: if Android implemented
+  preventing execution of any io_uring code by non-trusted processes
+  (via seccomp or any other way), how much would it help to reduce the
+  risk of attacks, compared to its current SELinux based solution?
+
+- ChromeOS currently completely disables io_uring in kernel, but we do
+  want to allow it for a limited set of processes similarly to Android,
+  and we are exploring ways to do it securely. Thus the above
+  considerations for Android apply to ChromeOS as well.
+
+[1] https://android-review.git.corp.google.com/c/platform/system/sepolicy/+/2302679
+[2] https://android-review.git.corp.google.com/c/platform/system/sepolicy/+/2302679/6/public/te_macros

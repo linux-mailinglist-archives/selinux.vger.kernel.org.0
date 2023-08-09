@@ -2,142 +2,96 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F3CB776AA2
-	for <lists+selinux@lfdr.de>; Wed,  9 Aug 2023 23:02:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47311776C96
+	for <lists+selinux@lfdr.de>; Thu, 10 Aug 2023 01:07:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231991AbjHIVCM (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 9 Aug 2023 17:02:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55702 "EHLO
+        id S231867AbjHIXHo (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 9 Aug 2023 19:07:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231659AbjHIVCL (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 17:02:11 -0400
-Received: from mail-qk1-x72a.google.com (mail-qk1-x72a.google.com [IPv6:2607:f8b0:4864:20::72a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9E491BFA
-        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 14:02:10 -0700 (PDT)
-Received: by mail-qk1-x72a.google.com with SMTP id af79cd13be357-76d1dc1ebfdso67169285a.0
-        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 14:02:10 -0700 (PDT)
+        with ESMTP id S231459AbjHIXHn (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 9 Aug 2023 19:07:43 -0400
+Received: from mail-qt1-x82e.google.com (mail-qt1-x82e.google.com [IPv6:2607:f8b0:4864:20::82e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4DF4E75
+        for <selinux@vger.kernel.org>; Wed,  9 Aug 2023 16:07:42 -0700 (PDT)
+Received: by mail-qt1-x82e.google.com with SMTP id d75a77b69052e-40fd6da0325so1564471cf.3
+        for <selinux@vger.kernel.org>; Wed, 09 Aug 2023 16:07:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1691614929; x=1692219729;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C4fvQ0wDzinPwZVRxwER+KXwY/zK6KJbBSwnhZnsOME=;
-        b=XjTYgHbHBe9u6i5d50nUNt13gZ0XtBJGlzx9AM+EVSZU6n4aax+bUbDPpQtlZ4f2ms
-         MkTesbBitnZ5/KYyKMD25vB/ck/MUJxVGutc7FucQVE9/yGDs2Wnk1Mog1hhGWrtIQnZ
-         GGrdKByTNR1odOmZ1p3QM69yejpOn18SGBZuwAAaTQbB01VOsxlYi6XSIMv96XOD/saK
-         +qKgcW8mJEzbxtCBhBAy9/ayaIhhalEjCAqya/xKyd0ZWGJwLgYqcX4ogZ8RwK3E/FQg
-         Fmr8H6L/yRLfAiQ5pvX51nt8uYfG+m66H07+9pT1zsp1DSJVnJLTMStTuQ86D7Y8Uc1O
-         9HnQ==
+        d=paul-moore.com; s=google; t=1691622461; x=1692227261;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ftckZL31GeKECcX0U6jMawLvlmm2ONkMUEDYz+ycfxA=;
+        b=Cwnb7SxfXEHNI8OHrEMZHuifuhEFHRSr+NFN9uS6HJda3ZvcH6QSP4Ri3ytH91wych
+         X0sU/uVjx46iWmdlqX9zOkrLQc02UpLw15UZdKMnMq06V/ASDu8eFCoYLe8dndKHsLWm
+         AnxI6svOOnfeDaK3fCYjFygbBf+caGhTzepbg905VPZJuBYLb/MCbaHOfbgIOd8QJK7p
+         qsqPYHNnwYMM67gOYxg+Vp6uCP00BqSdnEnRhURJv45n0/qHHZ/oadzcko4nlT0AErZ8
+         eUzwsfyWxOk2eQ+Ipyvm+A7WNBwhuWt7aiWvW4Ze6InoG7GKXKdiHql74mtH96fdQn+R
+         4rLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691614929; x=1692219729;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C4fvQ0wDzinPwZVRxwER+KXwY/zK6KJbBSwnhZnsOME=;
-        b=JH504w79TYS4wcYjBE2SZaG6ep2rQ+KKSDr+/lbYLHYbBCgz5gswUZte0+JMYt7tyg
-         8AIEWD35O659qHm1CE/LUmHdfokHDlZHqS76r+DtpdoNGfx79FJCdhLi92DYxbJCid8Z
-         xtGxOchNQDFfEIQa9gcHuJz3yRRjzBr4X1dukMjUjG66ZCSXQe6Azo939Mg/waY5AWRT
-         sUsh+GmjSBm8pJKi+13rxgRYf6qh5VPGFjbfeDgEtSC61vNFqgKxZHl1Dcpc/mFj6F7Z
-         6qjbb6GrdqX9QVV6jFfJtT5rMDZnJ8GhaALOTLIby6+ZwBRzoiLAMqst7BH6Jws3ohZy
-         N40A==
-X-Gm-Message-State: AOJu0YwHUKkwZ+wuAelTAZhFI8eaEhQ7uZSaCaZr0+yd8xLKJosJa9bn
-        PLcG/EAxPdSHPpRbNpeQ6KhOAbvZS7o=
-X-Google-Smtp-Source: AGHT+IEI20kxT4guZUtTZEKCG4z4m409Cw2NFcOMFDFbq+wPiM8xniotXPAFHFGctjTVstWi+X8QAg==
-X-Received: by 2002:a05:620a:1926:b0:75b:23a1:d8d8 with SMTP id bj38-20020a05620a192600b0075b23a1d8d8mr58254qkb.28.1691614929551;
-        Wed, 09 Aug 2023 14:02:09 -0700 (PDT)
-Received: from electric.. (c-73-172-54-2.hsd1.md.comcast.net. [73.172.54.2])
-        by smtp.gmail.com with ESMTPSA id h20-20020a05620a10b400b00766fbeb3e7csm4208287qkk.132.2023.08.09.14.02.08
+        d=1e100.net; s=20221208; t=1691622461; x=1692227261;
+        h=in-reply-to:references:subject:cc:to:from:message-id:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ftckZL31GeKECcX0U6jMawLvlmm2ONkMUEDYz+ycfxA=;
+        b=UIRIUExGPfr77DWGzX3yaaZySxQVN3Hv+fpKkKR133VKU/roSR/+cor1e9IxYamkBS
+         c3zaCe0N990147VD+S3Bv+JFzXNlqtoV6kwKmMr4UCqLJj8D3M4GqlB9zC2cNaFcUWT8
+         1olcMIhwp7O7lMqx5wVndoW5xavzM9XD9cf1frsjTmiifM2Ka52Ky0VQq7YBFBUg09bs
+         4V1B3J0azw1KrVp5uiLmlBhDAl5dAMVRO+W7IJzEnumcB2clXdkDrhCGTR8MptyPYw7i
+         6qjPqm8Prh3LxB97SOWTVvZ/JhsHq4UzH1R8m8tAh/dSEZ1E9LRs95wH7zo6U8SWj6A+
+         fH6A==
+X-Gm-Message-State: AOJu0Yz34SubKY/PuRsvjXtFwxAb82ZwfKO2sN2mS7HAd7MNlbCcpPmT
+        Nxq45uEBpQ4DNDMLc4fPlRHJ
+X-Google-Smtp-Source: AGHT+IFQGQI0zvmK54Wk9FNpHspX8SYcUm9mLvtc9S9BqAL0j2OhVljJ1pF0HGZckJweLqa9r5d4Fw==
+X-Received: by 2002:ac8:5b0d:0:b0:3f9:a6ad:e734 with SMTP id m13-20020ac85b0d000000b003f9a6ade734mr1127980qtw.3.1691622461689;
+        Wed, 09 Aug 2023 16:07:41 -0700 (PDT)
+Received: from localhost ([70.22.175.108])
+        by smtp.gmail.com with ESMTPSA id jj6-20020a05622a740600b0040c72cae9f9sm64964qtb.93.2023.08.09.16.07.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Aug 2023 14:02:09 -0700 (PDT)
-From:   James Carter <jwcart2@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     dburgener@linux.microsoft.com, James Carter <jwcart2@gmail.com>
-Subject: [PATCH 9/9 v4] secilc/docs: Add deny rule to CIL documentation
-Date:   Wed,  9 Aug 2023 17:01:57 -0400
-Message-ID: <20230809210157.112275-10-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230809210157.112275-1-jwcart2@gmail.com>
-References: <20230809210157.112275-1-jwcart2@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+        Wed, 09 Aug 2023 16:07:41 -0700 (PDT)
+Date:   Wed, 09 Aug 2023 19:07:40 -0400
+Message-ID: <685c8157bd45fa7dbdadd8583d882489.paul@paul-moore.com>
+From:   Paul Moore <paul@paul-moore.com>
+To:     =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+        selinux@vger.kernel.org
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/7] selinux: avoid implicit conversions in avtab code
+References: <20230807171143.208481-7-cgzones@googlemail.com>
+In-Reply-To: <20230807171143.208481-7-cgzones@googlemail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PP_MIME_FAKE_ASCII_TEXT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
-v4: Remove the "*Where" section, since the notself patch series moves all
-    of that to beginning of the access vector section before talking about
-    specific rules.
+On Aug  7, 2023 =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com> wrote:
+> 
+> Return u32 from avtab_hash() instead of int, since the hashing is done
+> on u32 and the result is used as an index on the hash array.
+> 
+> Use the type of the limit in for loops.
+> 
+> Avoid signed to unsigned conversion of multiplication result in
+> avtab_hash_eval() and perform multiplication in destination type.
+> 
+> Use unsigned loop iterator for index operations, to avoid sign
+> extension.
+> 
+> Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+> ---
+> v3:
+>   - use fixed sized counters in avtab_hash_eval()
+>   - perform multiplication in avtab_hash_eval() in destination type
+> v2: avoid declarations in init-clauses of for loops
+> ---
+>  security/selinux/ss/avtab.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
 
- secilc/docs/cil_access_vector_rules.md | 41 +++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+Merged into selinux/next, thanks.
 
-diff --git a/secilc/docs/cil_access_vector_rules.md b/secilc/docs/cil_access_vector_rules.md
-index 034185da..47da60fc 100644
---- a/secilc/docs/cil_access_vector_rules.md
-+++ b/secilc/docs/cil_access_vector_rules.md
-@@ -19,7 +19,7 @@ Rules involving a source type, a target type, and class permissions or extended
- <tbody>
- <tr class="odd">
- <td align="left"><p><code>av_flavor</code></p></td>
--<td align="left"><p>The flavor of access vector rule. Possible flavors are <code>allow</code>, <code>auditallow</code>, <code>dontaudit</code>, <code>neverallow</code>, <code>allowx</code>, <code>auditallowx</code>, <code>dontauditx</code>, <code>neverallowx</code>.</p></td>
-+<td align="left"><p>The flavor of access vector rule. Possible flavors are <code>allow</code>, <code>auditallow</code>, <code>dontaudit</code>, <code>neverallow</code>, <code>deny</code>, <code>allowx</code>, <code>auditallowx</code>, <code>dontauditx</code>, and <code>neverallowx</code>.</p></td>
- <tr class="even">
- <td align="left"><p><code>source_id</code></p></td>
- <td align="left"><p>A single previously defined source <code>type</code>, <code>typealias</code> or <code>typeattribute</code> identifier.</p></td>
-@@ -175,6 +175,45 @@ This example will not compile as `type_3` is not allowed to be a source type for
-         (allow type_3 self (property_service (set)))
-     )
- ```
-+deny
-+----------
-+
-+Remove the access rights defined from any matching allow rules. These rules are processed before [`neverallow`](cil_access_vector_rules.md#neverallow) checking.
-+
-+**Rule definition:**
-+
-+```secil
-+    (deny source_id target_id|self classpermissionset_id ...)
-+```
-+
-+**Example:**
-+
-+```secil
-+    (class class1 (perm1 perm2))
-+
-+    (type type1)
-+    (type type2)
-+    (allow type1 type2 (class1 (perm1))) ; Allow-1
-+    (deny type1 type2 (class1 (perm1)))  ; Deny-1
-+    ; Allow-1 will be complete removed by Deny-1.
-+
-+    (type type3)
-+    (type type4)
-+    (allow type3 type4 (class1 (perm1 perm2))) ; Allow-2
-+    (deny type3 type4 (class1 (perm1)))        ; Deny-2
-+    ; Allow-2 will be removed and replaced with the following when Deny-2 is evaluated
-+    ; (allow type3 type4 (class1 (perm2)))
-+
-+    (type type5)
-+    (type type6)
-+    (typeattribute attr1)
-+    (typeattributeset attr1 (type5 type6))
-+    (allow attr1 attr1 (class1 (perm1))) ; Allow-3
-+    (deny type5 type6 (class1 (perm1)))  ; Deny-3
-+    ; Allow-3 will be removed and replaced with the following when Deny-3 is evaluated
-+    ; (allow type6 attr1 (class1 (perm1)))
-+    ; (allow type5 type5 (class1 (perm1)))
-+```
- 
- allowx
- ------
--- 
-2.41.0
-
+--
+paul-moore.com

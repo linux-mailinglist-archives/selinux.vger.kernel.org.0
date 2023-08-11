@@ -2,59 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6A2C779474
+	by mail.lfdr.de (Postfix) with ESMTP id 07353779472
 	for <lists+selinux@lfdr.de>; Fri, 11 Aug 2023 18:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233767AbjHKQ15 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 11 Aug 2023 12:27:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57534 "EHLO
+        id S232467AbjHKQ14 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 11 Aug 2023 12:27:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232970AbjHKQ1z (ORCPT
+        with ESMTP id S233077AbjHKQ1z (ORCPT
         <rfc822;selinux@vger.kernel.org>); Fri, 11 Aug 2023 12:27:55 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 455DF2D69
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C831E2D6D
         for <selinux@vger.kernel.org>; Fri, 11 Aug 2023 09:27:54 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-99bcfe28909so294209566b.3
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-99c1c66876aso292266566b.2
         for <selinux@vger.kernel.org>; Fri, 11 Aug 2023 09:27:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20221208; t=1691771273; x=1692376073;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zldRw8Qz99PhYJpeHb62+a0eKAIAXQBkbyHdUHPmJps=;
-        b=G6UgNH4/d0jYp/YGUav2/pFvZNeG7xrjnjE7MrFvQUsRzFt008R17ml5RHKe0usWlz
-         473tGCbIPg0FbLm3DJ0g0RaBJK4o9aTAKfRyPZFZzYr6NL7SACYX/d+DSTlYSAAUlB49
-         wn/VJTJWxSryTxbTqn99Qct+Lzw5WkoMwOfCes5pZZuiulNKXHzHyNyPzePv1wJ8Xxzv
-         /2QnnuLJ/9C1gBrq2/HBtO01GNwrQ+9zyW6iVW5XfJNtF/+3VO1+zLW79T1+li09GhiY
-         1UBQ/E9LJLV6UCr04ziEC9rU2YYq5cdm9+kPgFK8YYwth5L+gKXRL8C7mjZuMCeSiemG
-         Cipg==
+        bh=Gz2DG6hVVCAcG3/CCzRTc/rhYhJL45RjMUpsbqCWED0=;
+        b=QJHuQ6Q8Lxltnu2/+bjW76oHAImEhITVBD05ot7zVI7DT+O98T4ibOG2leIfxkE4hr
+         PsIzi8c7O+8MLKtqF5gp4rh8iCjFqVzG9CA6YPxK2ObeFmm+K3dMvEc60CAtsLG6DXyi
+         VdYx+J9OhzjhupTC7otbnpoJjOrdqHwF+U2OuFeLvbRGenkn9q4tNPsQlnr2Z3V1XG5s
+         tM/EggYE0l9AjJhVa86XJz7Yxm9EZ0Mumg0t7QkD1T08mlJNITryDLiUzFtY5s8PqkiP
+         +BDW7+f55bM5ogl3cXBrGdTO6E7m9XrVhvcZLPgDzUpC6yI2OM8TYAg6V0JrrTopKzuj
+         aQFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20221208; t=1691771273; x=1692376073;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zldRw8Qz99PhYJpeHb62+a0eKAIAXQBkbyHdUHPmJps=;
-        b=IxXwxIgcrNquVmnNQ5YTfYnM+P4E7VturYwjX3EYcRUXrbG7JTjDWOasUqX3z61Avw
-         n7zJ1RdywDFRiAfFKunYrh2bT22nu1pJ0XrHvY1/42rZjJHqQKN8lTpnDT0nRwA3RYV4
-         1VeZZuuJPlrnQO72lMVvyfIXQseDoMWfSx+JlWz1o0IZ7cHyl/ruJ03FtBp45YvTx5Dm
-         Bhugh8h8z7sEcbKjBbjr/UW/Btfz8nx9WNOgiD03l92iKYNPnfqKytVrNjq7wEQ8psyO
-         6Hj47IQpLTYQUCC/T2XQcBCX6iUOuLLfHNmiRGxzjfUDcdrBHNbm9OApXc5RoZXwSJtL
-         CvbA==
-X-Gm-Message-State: AOJu0YxswGAzm0nvPG0xd9bm74VvZGEfolAZUdZTve10mSc1R0gtO8+T
-        s4tvkMt8iSz+O9mPV+/MglfZzGQSp6VdPg==
-X-Google-Smtp-Source: AGHT+IGZJJZsBB7Eu964glbwp9HGn1TOA3gUD7okgVmGVVSaLh1168llUyi9ZSqK5TwD8Jx2JdgJ+w==
-X-Received: by 2002:a17:906:3097:b0:991:c566:979 with SMTP id 23-20020a170906309700b00991c5660979mr1931837ejv.36.1691771272434;
-        Fri, 11 Aug 2023 09:27:52 -0700 (PDT)
+        bh=Gz2DG6hVVCAcG3/CCzRTc/rhYhJL45RjMUpsbqCWED0=;
+        b=WiD5XUunoKZmUdQET7Yf2DukQFy003oQljMQnZjhVmpgqGNxSs2+2NkwOLJVwJ/W5O
+         qX+62AptvyVb3Cfhh6XuSSp6wvCgmQdv/cMVW9dRWFYpwpuzP1A5pHStHRhAtbqkVflv
+         F4zLSf2Gq2XkAVWmhUyaL3cppcRmQQm5q6AlR9m/4zGV8byAHSLH55OLnRkE0nXAYTDZ
+         J5N7oBEgoVlzwASXrFjnh6ZWrKap6keSYTZ1tm9dxy/n1k71qiLdRdWMETasAVoRqaTq
+         /uTcuppkM0svzTYHw/a2lNM5ja1B4s38CFuk5/t1kVRjr9i2VV4sng8aFDDZUraAv5bm
+         bolQ==
+X-Gm-Message-State: AOJu0Yy/Vk8L6RQWaqyauaRybT58qL4OUjerD9fcwbzNVeVP+TvgZut2
+        mCCebo6TIRX3prnQOKcugYuPBTu76MN/aA==
+X-Google-Smtp-Source: AGHT+IG3P2CE+Xmfe1hfPmERdx8SY7VhXqtJHsBEC4EL/8lkmeqh0gSFFpRvRbEXB6bKv/hdsqEhlg==
+X-Received: by 2002:a17:906:1db:b0:993:f90b:e549 with SMTP id 27-20020a17090601db00b00993f90be549mr2119392ejj.37.1691771273201;
+        Fri, 11 Aug 2023 09:27:53 -0700 (PDT)
 Received: from debian_development.DebianHome (dynamic-077-000-174-226.77.0.pool.telefonica.de. [77.0.174.226])
-        by smtp.gmail.com with ESMTPSA id p9-20020a170906b20900b00992afee724bsm2408807ejz.76.2023.08.11.09.27.51
+        by smtp.gmail.com with ESMTPSA id p9-20020a170906b20900b00992afee724bsm2408807ejz.76.2023.08.11.09.27.52
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Fri, 11 Aug 2023 09:27:52 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH 08/24] libselinux: introduce reallocarray(3)
-Date:   Fri, 11 Aug 2023 18:27:15 +0200
-Message-Id: <20230811162731.50697-9-cgzones@googlemail.com>
+Subject: [RFC PATCH 09/24] libselinux: simplify zeroing allocation
+Date:   Fri, 11 Aug 2023 18:27:16 +0200
+Message-Id: <20230811162731.50697-10-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230811162731.50697-1-cgzones@googlemail.com>
 References: <20230811162731.50697-1-cgzones@googlemail.com>
@@ -63,134 +63,49 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Introduce reallocarray(3), a realloc(3) wrapper incorporating a
-multiplication overflow check.
-
-Add private implementation in case the function is not provided by the
-standard C library.
-
-Use in appropriate locations.
+Merge malloc(3) plus memset(3) call into calloc(3).
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/Makefile             |  6 ++++++
- libselinux/src/get_context_list.c   |  2 +-
- libselinux/src/matchpathcon.c       |  4 ++--
- libselinux/src/selinux_internal.c   | 16 ++++++++++++++++
- libselinux/src/selinux_internal.h   |  4 ++++
- libselinux/src/selinux_restorecon.c |  3 +--
- 6 files changed, 30 insertions(+), 5 deletions(-)
+ libselinux/src/label_file.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/libselinux/src/Makefile b/libselinux/src/Makefile
-index 20d79312..ac656257 100644
---- a/libselinux/src/Makefile
-+++ b/libselinux/src/Makefile
-@@ -108,6 +108,12 @@ ifeq (yes,$(shell printf '${H}include <string.h>\nint main(void){char*d,*s;strlc
- override CFLAGS += -DHAVE_STRLCPY
- endif
- 
-+# check for reallocarray(3) availability
-+H := \#
-+ifeq (yes,$(shell printf '${H}include <stdlib.h>\nint main(void){reallocarray(NULL, 0, 0);return 0;}' | $(CC) -x c -o /dev/null - >/dev/null 2>&1 && echo yes))
-+override CFLAGS += -DHAVE_REALLOCARRAY
-+endif
-+
- SWIG_CFLAGS += -Wno-error -Wno-unused-variable -Wno-unused-but-set-variable -Wno-unused-parameter \
- 		-Wno-shadow -Wno-uninitialized -Wno-missing-prototypes -Wno-missing-declarations \
- 		-Wno-deprecated-declarations
-diff --git a/libselinux/src/get_context_list.c b/libselinux/src/get_context_list.c
-index 0342823c..9dafa519 100644
---- a/libselinux/src/get_context_list.c
-+++ b/libselinux/src/get_context_list.c
-@@ -272,7 +272,7 @@ static int get_context_user(FILE * fp,
+diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
+index 5ac23e1f..b9be1c9d 100644
+--- a/libselinux/src/label_file.c
++++ b/libselinux/src/label_file.c
+@@ -716,10 +716,9 @@ static int selabel_subs_init(const char *path, struct selabel_digest *digest,
+ 		if (! *dst)
  			continue;
- 		}
- 		if (security_check_context(usercon_str2) == 0) {
--			new_reachable = realloc(*reachable, (*nreachable + 2) * sizeof(char *));
-+			new_reachable = reallocarray(*reachable, *nreachable + 2, sizeof(char *));
- 			if (!new_reachable) {
- 				context_free(usercon);
- 				rc = -1;
-diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
-index 9a9bafb0..a1c5b0cc 100644
---- a/libselinux/src/matchpathcon.c
-+++ b/libselinux/src/matchpathcon.c
-@@ -95,8 +95,8 @@ static int add_array_elt(char *con)
- 	if (con_array_size) {
- 		while (con_array_used >= con_array_size) {
- 			con_array_size *= 2;
--			tmp = (char **)realloc(con_array, sizeof(char*) *
--						     con_array_size);
-+			tmp = (char **)reallocarray(con_array, con_array_size,
-+						    sizeof(char*));
- 			if (!tmp) {
- 				free_array_elts();
- 				return -1;
-diff --git a/libselinux/src/selinux_internal.c b/libselinux/src/selinux_internal.c
-index c2be7c0a..9f1aff40 100644
---- a/libselinux/src/selinux_internal.c
-+++ b/libselinux/src/selinux_internal.c
-@@ -1,5 +1,7 @@
- #include "selinux_internal.h"
  
-+#include <errno.h>
-+#include <stdlib.h>
- #include <string.h>
+-		sub = malloc(sizeof(*sub));
++		sub = calloc(1, sizeof(*sub));
+ 		if (! sub)
+ 			goto err;
+-		memset(sub, 0, sizeof(*sub));
  
+ 		sub->src = strdup(src);
+ 		if (! sub->src)
+@@ -1357,10 +1356,9 @@ int selabel_file_init(struct selabel_handle *rec,
+ {
+ 	struct saved_data *data;
  
-@@ -16,3 +18,17 @@ size_t strlcpy(char *dest, const char *src, size_t size)
- 	return ret;
- }
- #endif /* HAVE_STRLCPY */
-+
-+#ifndef HAVE_REALLOCARRAY
-+void *reallocarray(void *ptr, size_t nmemb, size_t size)
-+{
-+	
-+	if (size && nmemb > -1 / size) {
-+			errno = ENOMEM;
-+			return 0;
-+	}
-+
-+	return realloc(ptr, nmemb * size);
-+
-+}
-+#endif /* HAVE_REALLOCARRAY */
-diff --git a/libselinux/src/selinux_internal.h b/libselinux/src/selinux_internal.h
-index 06f2c038..af69ff04 100644
---- a/libselinux/src/selinux_internal.h
-+++ b/libselinux/src/selinux_internal.h
-@@ -98,4 +98,8 @@ extern int has_selinux_config ;
- size_t strlcpy(char *dest, const char *src, size_t size);
- #endif
- 
-+#ifndef HAVE_REALLOCARRAY
-+void *reallocarray(void *ptr, size_t nmemb, size_t size);
-+#endif
-+
- #endif /* SELINUX_INTERNAL_H_ */
-diff --git a/libselinux/src/selinux_restorecon.c b/libselinux/src/selinux_restorecon.c
-index 7ef2d45d..38f10f1c 100644
---- a/libselinux/src/selinux_restorecon.c
-+++ b/libselinux/src/selinux_restorecon.c
-@@ -175,8 +175,7 @@ static int add_exclude(const char *directory, bool who)
+-	data = (struct saved_data *)malloc(sizeof(*data));
++	data = (struct saved_data *)calloc(1, sizeof(*data));
+ 	if (!data)
  		return -1;
- 	}
+-	memset(data, 0, sizeof(*data));
  
--	tmp_list = realloc(exclude_lst,
--			   sizeof(struct edir) * (exclude_count + 1));
-+	tmp_list = reallocarray(exclude_lst, exclude_count + 1, sizeof(struct edir));
- 	if (!tmp_list)
- 		goto oom;
- 
+ 	rec->data = data;
+ 	rec->func_close = &closef;
 -- 
 2.40.1
 

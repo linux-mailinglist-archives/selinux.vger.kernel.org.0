@@ -2,59 +2,59 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB96577B9C2
-	for <lists+selinux@lfdr.de>; Mon, 14 Aug 2023 15:21:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3691477B9C3
+	for <lists+selinux@lfdr.de>; Mon, 14 Aug 2023 15:21:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbjHNNVX (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 14 Aug 2023 09:21:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50250 "EHLO
+        id S231187AbjHNNVZ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 14 Aug 2023 09:21:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50262 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbjHNNVF (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 14 Aug 2023 09:21:05 -0400
-Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AB791984
+        with ESMTP id S231255AbjHNNVG (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 14 Aug 2023 09:21:06 -0400
+Received: from mail-ed1-x536.google.com (mail-ed1-x536.google.com [IPv6:2a00:1450:4864:20::536])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69304198A
         for <selinux@vger.kernel.org>; Mon, 14 Aug 2023 06:20:54 -0700 (PDT)
-Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-99cdb0fd093so593597066b.1
-        for <selinux@vger.kernel.org>; Mon, 14 Aug 2023 06:20:53 -0700 (PDT)
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-522ab557632so5808027a12.0
+        for <selinux@vger.kernel.org>; Mon, 14 Aug 2023 06:20:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1692019252; x=1692624052;
+        d=googlemail.com; s=20221208; t=1692019253; x=1692624053;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=/mqA1dkTKcJtEnCLqpqWsbIPplUanIX8ARuR1xEPmv0=;
-        b=qLDZpTstKv+o2jZUATf/OhpCb/lDxktg1sUg2dTLP7weFkbPjmR0Fj6tQ49XlkjLYh
-         Mz7/k1D2quY2AQ57BaH8Pv02Nfu3aIYqsLQKmTSewxP5IAtYjK8HrC0D8T8+40uQkAZo
-         h8PPN9vxRKv7NC2vHAl/Jz1UVUA8H9QqOaawUYKoE8UzTqDDEZrtHP2XUQuxqyUGNSZ3
-         b2AABaxkHkeiN7ljo+uIdfp1NpRbt+weQOSR3xx/9lyKtRNTc7jd+ZCgLXQtvHl1WKBm
-         FqIwP8OvKTiSCbFlkrzYDZEuYem49SuLE3mAuisTRNW5/8AC7gh0FpD5f6bVKWH/5NF+
-         5gEw==
+        bh=tdQNlCF8kllSxhHWrl5dxhxYUastPbI3lxdFSaVbvcs=;
+        b=JEg0Jv7RkjXPsXshNn7pNOWHmyKIREGUx06Gzl1WVaiJY5ab9MmX6mde8YX8TUHNqW
+         llOVFosgBU0JEmqYz+fCo6MffDfF5QCgwIRIeUmSeXCwqPZae0YSt0kWwlYf6qnCsrk4
+         Qtk1GEsVBF5IEZxAxb/YXpixuxDya+5rEbqldCgOu8Lz0N4Bn2hkPxeq/04mfJg5EbCh
+         NNvlJ9nBcGBa8WYBLk30IGg8igfInpokmV63SH0y+yhxznJuGtJG95KfCO/rX0/IMEdL
+         ccgn2bD29oOzZJr1IiQ3FvRRQ3ovKz/cz1NEIJZm6xLvhkIfMso21PITz/yt/NAUAGXH
+         IiRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692019252; x=1692624052;
+        d=1e100.net; s=20221208; t=1692019253; x=1692624053;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/mqA1dkTKcJtEnCLqpqWsbIPplUanIX8ARuR1xEPmv0=;
-        b=NkGT/r8f0zbwMGHKsLUDKBPm+WS9MIiB6tWaYpbG2tm8CpIIX8ZLXlzBDsCoRYSSuL
-         a0w0XYVpCp0vebdk22zpakgVhZWCob5Qbp9RIUWakldjfX/QcJWuZCt+1xL2Ks/zc1Wa
-         9IC0RY31t1RbqUXiOY39uKDqDtuJfULmaHYWdITZP0Fqdv2drxK83/ZMrpfmglEX+ATi
-         YAwXw1FNseKjy/gE0be0H8w2NgHc5Sc2x50zgbx1N05DFbe4NhjV6BeS2tYf+E0c1qMl
-         9SAaICUrRAIRStPJX2xahlZXH8mhJhc+aDBqPUhnYA4dcT047GENVdm47/Lgf1MgZ1Yq
-         qvoA==
-X-Gm-Message-State: AOJu0Yw3hzPXo0WKsjWsCAbUSIYN5mwYvmgksC737nBnlWNlcLFMYdVD
-        9ssBkqUxgzEkilbw2rydTCob9ojGsOM6rYxl8r8=
-X-Google-Smtp-Source: AGHT+IGHNfAydA5NFTx+nTIIXZKBYmA62hL/PHX7DvKLUBV/X/q7otULy30xZ+feEBQyGHfhk1f/Jg==
-X-Received: by 2002:a17:907:1de9:b0:992:5135:4112 with SMTP id og41-20020a1709071de900b0099251354112mr7375171ejc.32.1692019252365;
+        bh=tdQNlCF8kllSxhHWrl5dxhxYUastPbI3lxdFSaVbvcs=;
+        b=T0QmOXV7iiGL9HkPTF32fmfHO6Xaa64AGJI85iiB5ZQTJA7OUwXQUxoGoEEYu8TIVz
+         J3NtPIAsrIzp3FxnxwkrszgCdGGxlsk72EPlblzqP9m4hsPMxHufc3iR1n4LAPEa3M12
+         5rAk1FswOl2HdPVvd+5G5En8nJfVgoY/wR6H8v+KTpULREzHfhqVwv0zAPW5/3Zk95IF
+         NcMB9nfyXxFfovYU07DpTv6MJQOquaUjhRMw9vQYZVu521c8CDHa4hXS46Pqss7aYoso
+         bosnldcLrJpGSGuUGb4u5EymF9w30bbHtLFHGTLeIKnvnDdDzHzO4QVpZPDlwGps996r
+         Pd0g==
+X-Gm-Message-State: AOJu0YzVB3ULE42BOOpmlQj2AHlPZDXPHnILamXELfUiKAt+9mdBfs+h
+        Y1lY8WgC4pGZoyxAmaJDMpmY4fqiDpxyAI9IZ08=
+X-Google-Smtp-Source: AGHT+IGU0OY+6NxRgnkYpkrKToGxpM6k/e5uDWmW0qxHj9ukJd9sa4Bv1exUAC+CNYHXKLsDqL5xTA==
+X-Received: by 2002:a17:907:1dc4:b0:99b:4174:77f6 with SMTP id og4-20020a1709071dc400b0099b417477f6mr7194275ejc.33.1692019252838;
         Mon, 14 Aug 2023 06:20:52 -0700 (PDT)
 Received: from debian_development.DebianHome (dynamic-095-112-167-009.95.112.pool.telefonica.de. [95.112.167.9])
-        by smtp.gmail.com with ESMTPSA id ck9-20020a170906c44900b00993664a9987sm5683541ejb.103.2023.08.14.06.20.51
+        by smtp.gmail.com with ESMTPSA id ck9-20020a170906c44900b00993664a9987sm5683541ejb.103.2023.08.14.06.20.52
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 14 Aug 2023 06:20:52 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [RFC PATCH v2 21/27] libselinux: simplify internal selabel_validate prototype
-Date:   Mon, 14 Aug 2023 15:20:19 +0200
-Message-Id: <20230814132025.45364-22-cgzones@googlemail.com>
+Subject: [RFC PATCH v2 22/27] libselinux/utils: drop include of internal header file
+Date:   Mon, 14 Aug 2023 15:20:20 +0200
+Message-Id: <20230814132025.45364-23-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230814132025.45364-1-cgzones@googlemail.com>
 References: <20230814132025.45364-1-cgzones@googlemail.com>
@@ -71,102 +71,28 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Move the check whether to validate or not to the caller, to avoid all
-having to carry the complete selabel_handle around.
+selabel_get_digest_all_partial_matches is dynamically linked against
+libselinux, so it should not depend on any internals and thus do not
+make use of an internal header file
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/label.c                  | 5 ++---
- libselinux/src/label_backends_android.c | 2 +-
- libselinux/src/label_file.c             | 2 +-
- libselinux/src/label_internal.h         | 3 +--
- libselinux/src/matchpathcon.c           | 7 ++++---
- 5 files changed, 9 insertions(+), 10 deletions(-)
+ libselinux/utils/selabel_get_digests_all_partial_matches.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/libselinux/src/label.c b/libselinux/src/label.c
-index 9a972f79..1ea9bdcd 100644
---- a/libselinux/src/label.c
-+++ b/libselinux/src/label.c
-@@ -119,12 +119,11 @@ static inline int selabel_is_validate_set(const struct selinux_opt *opts,
- 	return 0;
- }
+diff --git a/libselinux/utils/selabel_get_digests_all_partial_matches.c b/libselinux/utils/selabel_get_digests_all_partial_matches.c
+index c4e0f836..e2733b41 100644
+--- a/libselinux/utils/selabel_get_digests_all_partial_matches.c
++++ b/libselinux/utils/selabel_get_digests_all_partial_matches.c
+@@ -8,8 +8,6 @@
+ #include <selinux/selinux.h>
+ #include <selinux/label.h>
  
--int selabel_validate(const struct selabel_handle *rec,
--		     struct selabel_lookup_rec *contexts)
-+int selabel_validate(struct selabel_lookup_rec *contexts)
+-#include "../src/label_file.h"
+-
+ static __attribute__ ((__noreturn__)) void usage(const char *progname)
  {
- 	int rc = 0;
- 
--	if (!rec->validating || contexts->validated)
-+	if (contexts->validated)
- 		goto out;
- 
- 	rc = selinux_validate(&contexts->ctx_raw);
-diff --git a/libselinux/src/label_backends_android.c b/libselinux/src/label_backends_android.c
-index 6494f3cd..cd3875fc 100644
---- a/libselinux/src/label_backends_android.c
-+++ b/libselinux/src/label_backends_android.c
-@@ -126,7 +126,7 @@ static int process_line(struct selabel_handle *rec,
- 		spec_arr[nspec].lr.ctx_raw = context;
- 
- 		if (rec->validating) {
--			if (selabel_validate(rec, &spec_arr[nspec].lr) < 0) {
-+			if (selabel_validate(&spec_arr[nspec].lr) < 0) {
- 				selinux_log(SELINUX_ERROR,
- 					    "%s:  line %u has invalid context %s\n",
- 					    path, lineno, spec_arr[nspec].lr.ctx_raw);
-diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
-index a5677411..64b58d42 100644
---- a/libselinux/src/label_file.c
-+++ b/libselinux/src/label_file.c
-@@ -404,7 +404,7 @@ end_arch_check:
- 		spec->lr.ctx_raw = str_buf;
- 
- 		if (strcmp(spec->lr.ctx_raw, "<<none>>") && rec->validating) {
--			if (selabel_validate(rec, &spec->lr) < 0) {
-+			if (selabel_validate(&spec->lr) < 0) {
- 				selinux_log(SELINUX_ERROR,
- 					    "%s: context %s is invalid\n",
- 					    path, spec->lr.ctx_raw);
-diff --git a/libselinux/src/label_internal.h b/libselinux/src/label_internal.h
-index bc5a6928..ea60cd9a 100644
---- a/libselinux/src/label_internal.h
-+++ b/libselinux/src/label_internal.h
-@@ -118,8 +118,7 @@ struct selabel_handle {
-  * Validation function
-  */
- extern int
--selabel_validate(const struct selabel_handle *rec,
--		 struct selabel_lookup_rec *contexts) ;
-+selabel_validate(struct selabel_lookup_rec *contexts);
- 
- /*
-  * Compatibility support
-diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
-index 971ace62..4ed25ce9 100644
---- a/libselinux/src/matchpathcon.c
-+++ b/libselinux/src/matchpathcon.c
-@@ -46,8 +46,8 @@ int compat_validate(const struct selabel_handle *rec,
- 		rc = myinvalidcon(path, lineno, *ctx);
- 	else if (mycanoncon)
- 		rc = mycanoncon(path, lineno, ctx);
--	else {
--		rc = selabel_validate(rec, contexts);
-+	else if (rec->validating) {
-+		rc = selabel_validate(contexts);
- 		if (rc < 0) {
- 			if (lineno) {
- 				COMPAT_LOG(SELINUX_WARNING,
-@@ -58,7 +58,8 @@ int compat_validate(const struct selabel_handle *rec,
- 					    "%s: has invalid context %s\n", path, *ctx);
- 			}
- 		}
--	}
-+	} else
-+		rc = 0;
- 
- 	return rc ? -1 : 0;
- }
+ 	fprintf(stderr,
 -- 
 2.40.1
 

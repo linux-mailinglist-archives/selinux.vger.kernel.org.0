@@ -2,204 +2,131 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2A6780D23
-	for <lists+selinux@lfdr.de>; Fri, 18 Aug 2023 15:56:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A757780EC5
+	for <lists+selinux@lfdr.de>; Fri, 18 Aug 2023 17:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377488AbjHRN4H (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 18 Aug 2023 09:56:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45478 "EHLO
+        id S1377993AbjHRPND (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 18 Aug 2023 11:13:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1377552AbjHRNz5 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 18 Aug 2023 09:55:57 -0400
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A18730F1;
-        Fri, 18 Aug 2023 06:55:40 -0700 (PDT)
-Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-44ac6638896so337283137.2;
-        Fri, 18 Aug 2023 06:55:40 -0700 (PDT)
+        with ESMTP id S1378071AbjHRPMo (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 18 Aug 2023 11:12:44 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24055420C;
+        Fri, 18 Aug 2023 08:12:27 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-99bf8e5ab39so133932566b.2;
+        Fri, 18 Aug 2023 08:12:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1692366939; x=1692971739;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q8dyaMP5WDxRHd9ZM8bWsUhmoJPqOQ2ga6SD6mQ7ndI=;
-        b=K+8xOnhtm11gTD90HVTObvdtxwFsFNs+zH7LeXEBsdHtFemiTpV1/lSITaaeqWO0hr
-         YmRkSMiQI+DSH2wQTThE53YYjCYcp03e6SrsQx+UKE4LGTg3YzRAx96OcHuoojYaodG6
-         OQUBDR0zJXbDeoC3VHsR4HjY9Mw8ARGPhF7q1BuBhF4mofj3xjPRyT4eXJd8gZWL+Sti
-         ADFS6vl62cPa5xL/0iRHpkxNs+o2vmuuTrvz6/SoPWzd4d1Py4dJ23O3mQM6g+nT3Aab
-         +yCCJaUahPKhwsszKAPfLGkcvYMWqJzmvk9p4aNjoY5MaxGn26NEkVOnrIhYDByEStFm
-         CeXw==
+        d=googlemail.com; s=20221208; t=1692371545; x=1692976345;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=rmwLesiFYumNQ6O67fwcKZ7FMnVzuOPHn3ALA9q8Gkg=;
+        b=bWv9yL6kAXBMtiAE5R3Vf0Ub8ZGiElyEL7Odw7Z3/0+CCMfc6Ym2nt0TFzS4q91NGe
+         T/vzJY8OOdNIzWtoVmFSog2rI/VfXGhHW5ziEC4FkrvI1uxZ67Pew0SkAeTRxZ59CGR3
+         h0LJeU3dxCbNKIFIKicCLI3SM2SvGwbPXQBL4DDtkHuUTXj07MvqJ6x9y791lW9K/U1Q
+         9b7rQSOw86thqXaEhTTgHE5gCIwWFDNO87zSn9jBqXOzDDYTC8rWPUiGmPHbXI3c/j+F
+         ZQz517p0R9VCw+6nuf4/yIbRQIiMrSROOoNZM9CXNFmCKDrfvY01w1iA5iaO6Fsc6If7
+         PVgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692366939; x=1692971739;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q8dyaMP5WDxRHd9ZM8bWsUhmoJPqOQ2ga6SD6mQ7ndI=;
-        b=K+b0QGsqI7HlV5t3iK2bvBCFmxpIWHke5YKdOVMHkyidnxoHnWRYpfVwMcWGtQxUV2
-         r9vW+HkMUIonE+FqZFSmagRowBxRbdbpgv033nMyIWJQ9w80MFsvLOzygbfiRLFoZy5B
-         jiOHe6VvXxRaz6Ez4CevQubHGFb/IYUZQEjYy2JY64M7M7wqXzy0XOdzPuc7yxLrwfhD
-         om7OEFR4UN5Quod8tAC4iGxj1maQVXRjUXb8UtOpspFbJlAcLwhhu+FcSuMx2AQUL+pr
-         WcH/odMJtsfc45X6ZxVIJJciQorMbQHLyahHlkeurIS/ANLUz5rpeQYN2j7ZnaUNZt9l
-         d5Hg==
-X-Gm-Message-State: AOJu0YxiFlAK8WaEkF2Tb3h/x971RgQaBEc0jEZXMmYf9mSkGCkokYKn
-        +qDmh3m6YeGjJEhMrGXPCkbsyCGezvThYJyHQho=
-X-Google-Smtp-Source: AGHT+IFrCRLTNRgPTTNHjMzwnqIM7dVHZYEcWvL2Hz8300cgggq3pRRqCLwdqe5F/BFP4dXJnZj/s0MpntDVuIOyhqk=
-X-Received: by 2002:a67:bb14:0:b0:443:60d7:3925 with SMTP id
- m20-20020a67bb14000000b0044360d73925mr3465636vsn.20.1692366939262; Fri, 18
- Aug 2023 06:55:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230807171143.208481-1-cgzones@googlemail.com>
- <67cee6245e2895e81a0177c4c1ed01ba.paul@paul-moore.com> <CAJ2a_DdLR40CB6Ua5cNjYhtexNmGkzQRsVrJn+dhVaZO-aVKsA@mail.gmail.com>
-In-Reply-To: <CAJ2a_DdLR40CB6Ua5cNjYhtexNmGkzQRsVrJn+dhVaZO-aVKsA@mail.gmail.com>
-From:   =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date:   Fri, 18 Aug 2023 15:55:28 +0200
-Message-ID: <CAJ2a_Dfz6anX5FaTL0OsmwC6Yji=3Po=uNBWhTuvE2NUReXL6w@mail.gmail.com>
-Subject: Re: [PATCH v3 2/7] selinux: use u32 as bit type in ebitmap code
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     selinux@vger.kernel.org,
+        d=1e100.net; s=20221208; t=1692371545; x=1692976345;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=rmwLesiFYumNQ6O67fwcKZ7FMnVzuOPHn3ALA9q8Gkg=;
+        b=VbEwUDFkOl+bH6g1sX0PseY0wPEVbznpU+fwSL9YGmCM1ht7rh03jSMx8eVQY1bpdo
+         v0wNhjkO3YggPKG9/2sYtmVsM2B3LCNdVAk/SJXsAGqTm+stLnV69qL8fIs3D/wNUQ+g
+         51ZjQkhCIVQOqaBIUpFNvrsONGXmqiekE1LjgNdKfPJnSqIV+WorDvTJP0yZbmzKPQRe
+         QzaVF4r0G1vWkOCesBH4xVqGQJ1afoPCCRV4KBw45HdXpWbgXZwCag2VDhk0ZmHEFyvX
+         Eth1k8bIls2ZF/1/fZYH8EpTNeTAeayP0+WiJ/nI01tyJY5yVvl21w1QE3qySpo5YpBe
+         lFHQ==
+X-Gm-Message-State: AOJu0Yz3KJ4dG92XDTnMTMVx4zjUS3f9R0p30tcf7O/S4Onhtg08QKRB
+        tHz6VL6w2773QE5cYbyITy+/a/7fTEh8aQ==
+X-Google-Smtp-Source: AGHT+IFJ1Hdu25ZB09hgePICL8nmS6b458AH2wdxKHHueAU4N5ZIFOtwjnnZ06Wph1T+T/fjT9+rpA==
+X-Received: by 2002:a17:906:3099:b0:974:1ef7:1e88 with SMTP id 25-20020a170906309900b009741ef71e88mr2205288ejv.13.1692371545323;
+        Fri, 18 Aug 2023 08:12:25 -0700 (PDT)
+Received: from debian_development.DebianHome (dynamic-095-116-071-217.95.116.pool.telefonica.de. [95.116.71.217])
+        by smtp.gmail.com with ESMTPSA id sa19-20020a170906edb300b0099ca4f61a8bsm1285913ejb.92.2023.08.18.08.12.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Aug 2023 08:12:25 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
+Cc:     Paul Moore <paul@paul-moore.com>,
         Stephen Smalley <stephen.smalley.work@gmail.com>,
         Eric Paris <eparis@parisplace.org>,
+        Ondrej Mosnacek <omosnace@redhat.com>,
         linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH 2/6] selinux: dump statistics for more hash tables
+Date:   Fri, 18 Aug 2023 17:12:13 +0200
+Message-Id: <20230818151220.166215-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Wed, 16 Aug 2023 at 17:00, Christian G=C3=B6ttsche <cgzones@googlemail.c=
-om> wrote:
->
-> On Thu, 10 Aug 2023 at 01:07, Paul Moore <paul@paul-moore.com> wrote:
-> >
-> > On Aug  7, 2023 =3D?UTF-8?q?Christian=3D20G=3DC3=3DB6ttsche?=3D <cgzone=
-s@googlemail.com> wrote:
-> > >
-> > > The extensible bitmap supports bit positions up to U32_MAX due to the
-> > > type of the member highbit being u32.  Use u32 consistently as the ty=
-pe
-> > > for bit positions to announce to callers what range of values is
-> > > supported.
-> > >
-> > > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> > > ---
-> > > v3:
-> > >   - revert type change of unrelated iter variable
-> > >   - use U32_MAX instead of (u32)-1
-> > > v2: avoid declarations in init-clauses of for loops
-> > > ---
-> > >  security/selinux/ss/ebitmap.c | 29 +++++++++++++++--------------
-> > >  security/selinux/ss/ebitmap.h | 32 ++++++++++++++++----------------
-> > >  2 files changed, 31 insertions(+), 30 deletions(-)
-> >
-> > ...
-> >
-> > > diff --git a/security/selinux/ss/ebitmap.c b/security/selinux/ss/ebit=
-map.c
-> > > index 77875ad355f7..a313e633aa8e 100644
-> > > --- a/security/selinux/ss/ebitmap.c
-> > > +++ b/security/selinux/ss/ebitmap.c
-> > > @@ -471,18 +472,18 @@ int ebitmap_read(struct ebitmap *e, void *fp)
-> > >  int ebitmap_write(const struct ebitmap *e, void *fp)
-> > >  {
-> > >       struct ebitmap_node *n;
-> > > -     u32 count;
-> > > +     u32 bit, count, last_bit, last_startbit;
-> > >       __le32 buf[3];
-> > >       u64 map;
-> > > -     int bit, last_bit, last_startbit, rc;
-> > > +     int rc;
-> > >
-> > >       buf[0] =3D cpu_to_le32(BITS_PER_U64);
-> > >
-> > >       count =3D 0;
-> > >       last_bit =3D 0;
-> > > -     last_startbit =3D -1;
-> > > +     last_startbit =3D U32_MAX;
-> > >       ebitmap_for_each_positive_bit(e, n, bit) {
-> > > -             if (rounddown(bit, (int)BITS_PER_U64) > last_startbit) =
-{
-> > > +             if (last_startbit =3D=3D U32_MAX || rounddown(bit, BITS=
-_PER_U64) > last_startbit) {
-> >
-> > I'm getting worried about what might happen if the ebitmap starts to
-> > contain bits near the end of the range, e.g. U32_MAX.  When lastbit
-> > was signed this was a non-issue as we could set it to a negative
-> > value (-1) and not worry about it, although the maximum value
-> > difference between the signed and unsigned types would eventually be
-> > a problem.
->
-> For the maximum bit of U32_MAX `rounddown(bit, BITS_PER_U64)` will
-> return U32_MAX-63, so it does not collide with the special
-> last_startbit value of U32_MAX.
+Dump in the SELinux debug configuration the statistics for the
+conditional rules avtab, the role transition, and class and common
+permission hash tables.
 
-Also the current implementation is not safe for bits in the range
-[rounddown(U32_MAX, EBITMAP_SIZE), U32_MAX], since the highbit and
-`startbit + EBITMAP_SIZE` calculations are not checked for overflows
-(since EBITMAP_UNIT_SIZE is not a power of 2 (it's 6 on x64).
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ security/selinux/ss/conditional.c | 3 +++
+ security/selinux/ss/policydb.c    | 6 ++++++
+ 2 files changed, 9 insertions(+)
 
->
-> > While looking closer at this loop, I'm now wondering if we shouldn't
-> > just rewrite the logic a bit to simplify things, and possibly speed
-> > it up a small amount.  How about something like this:
-> >
-> >   count =3D 1;
-> >   n =3D e->node;
-> >   while (n->next) {
-> >     count++;
-> >     n =3D n->next;
-> >   }
-> >   last_startbit =3D n->startbit;
-> >   last_bit =3D n->startbit + find_last_bit(n->maps, EBITMAP_SIZE);
-> >
-> > You should probably verify that there isn't something stupid like an
-> > off-by-one bug in the code above, but I think it is a lot cleaner
-> > than what we currently have and should resolve a lot of the type/math
-> > issues.
->
-> I think this loop does not work, since in the binary format the map
-> size is 64 bits (and thus we need to calculate the number of 64bit
-> nodes), but the kernel supports (depending on the architecture) 32bit
-> maps for the in-memory representation.
-> So the number of in-memory nodes might not be the same as the number
-> of nodes in binary format.
->
-> p.s.:
->
-> Looking at the patch again, `rounddown(bit, BITS_PER_U64)` is computed
-> twice and last_bit can probably be dropped in favor of e->highbit.
+diff --git a/security/selinux/ss/conditional.c b/security/selinux/ss/conditional.c
+index 81ff676f209a..0dd17fe76286 100644
+--- a/security/selinux/ss/conditional.c
++++ b/security/selinux/ss/conditional.c
+@@ -171,6 +171,9 @@ int cond_init_bool_indexes(struct policydb *p)
+ 					      GFP_KERNEL);
+ 	if (!p->bool_val_to_struct)
+ 		return -ENOMEM;
++
++	avtab_hash_eval(&p->te_cond_avtab, "conditional_rules");
++
+ 	return 0;
+ }
+ 
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 84f02d4f8093..932e383bcad6 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -1158,6 +1158,8 @@ static int common_read(struct policydb *p, struct symtab *s, void *fp)
+ 			goto bad;
+ 	}
+ 
++	hash_eval(&comdatum->permissions.table, "common_permissions");
++
+ 	rc = symtab_insert(s, key, comdatum);
+ 	if (rc)
+ 		goto bad;
+@@ -1339,6 +1341,8 @@ static int class_read(struct policydb *p, struct symtab *s, void *fp)
+ 			goto bad;
+ 	}
+ 
++	hash_eval(&cladatum->permissions.table, "class_permissions");
++
+ 	rc = read_cons_helper(p, &cladatum->constraints, ncons, 0, fp);
+ 	if (rc)
+ 		goto bad;
+@@ -2616,6 +2620,8 @@ int policydb_read(struct policydb *p, void *fp)
+ 		rtd = NULL;
+ 	}
+ 
++	hash_eval(&p->role_tr, "roletr");
++
+ 	rc = next_entry(buf, fp, sizeof(u32));
+ 	if (rc)
+ 		goto bad;
+-- 
+2.40.1
 
-The last_bit comment can be ignored, since last_bit is the highbit for
-the mapsize of the binary format, so it's no equal to e->highbit
-(which is relative to the in-memory mapsize).
-
->
-> >
-> > >                       count++;
-> > >                       last_startbit =3D rounddown(bit, BITS_PER_U64);
-> > >               }
-> > > @@ -496,9 +497,9 @@ int ebitmap_write(const struct ebitmap *e, void *=
-fp)
-> > >               return rc;
-> > >
-> > >       map =3D 0;
-> > > -     last_startbit =3D INT_MIN;
-> > > +     last_startbit =3D U32_MAX;
-> > >       ebitmap_for_each_positive_bit(e, n, bit) {
-> > > -             if (rounddown(bit, (int)BITS_PER_U64) > last_startbit) =
-{
-> > > +             if (last_startbit =3D=3D U32_MAX || rounddown(bit, BITS=
-_PER_U64) > last_startbit) {
-> > >                       __le64 buf64[1];
-> >
-> > Similar to the above, I think we can probably rewrite this to simply
-> > walk the ebitmap nodes and write them out.  Using
-> > ebitmap_for_each_positive_bit() seems overly complicated to me,
-> > although I may be missing something important and obvious ...
-> >
-> > --
-> > paul-moore.com

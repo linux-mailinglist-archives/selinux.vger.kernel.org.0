@@ -2,61 +2,159 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A147881B0
-	for <lists+selinux@lfdr.de>; Fri, 25 Aug 2023 10:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 870F9788C21
+	for <lists+selinux@lfdr.de>; Fri, 25 Aug 2023 17:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234112AbjHYIMA (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 25 Aug 2023 04:12:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51284 "EHLO
+        id S229744AbjHYPHj (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 25 Aug 2023 11:07:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238194AbjHYILa (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 25 Aug 2023 04:11:30 -0400
-Received: from mail.commercesolutions.pl (unknown [162.19.155.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F1E1FF6
-        for <selinux@vger.kernel.org>; Fri, 25 Aug 2023 01:11:25 -0700 (PDT)
-Received: by mail.commercesolutions.pl (Postfix, from userid 1002)
-        id A3AC9250DB; Fri, 25 Aug 2023 08:11:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=commercesolutions.pl;
-        s=mail; t=1692951082;
-        bh=PcMncQpBfIZCnTOfZJY5G1G+gaLn4c9QPfFvoXrE4rA=;
-        h=Date:From:To:Subject:From;
-        b=35tKFCPU7/G7rnliJx2sWJzDkUGKY3dMwv/gaMpGCFA+8gtn0i9xsDl6FxAOyaK3Z
-         DcwZHI88tuLtTsYorqeMmrQXUVYj63M09VtqVIJLY6mY3c1U0t6Y5G+0Y+ap9m4DDY
-         T8qoWhhCzTxENUVZ92Y9oWpUMsMsED3iOV1R0OpylfHovE4jOyqvpHm06NoZg0zrRy
-         2B+0JXQdOcbsKsNJcYiD8C4s9jW2AofvefwJXlKCVL+4dEzaPs+ARAcMUAiqNAtOSM
-         g6T8y8fb6kfCmYbkD1FJhqB2Im6/PgUxfSE9f+nZnuxAetG/aGtgt2oO0FLGUCgLAw
-         RVywciLSfjq+Q==
-Received: by mail.commercesolutions.pl for <selinux@vger.kernel.org>; Fri, 25 Aug 2023 08:11:05 GMT
-Message-ID: <20230825064500-0.1.88.1ibbt.0.68v9qfdvc7@commercesolutions.pl>
-Date:   Fri, 25 Aug 2023 08:11:05 GMT
-From:   "Kamil Tralewski" <kamil.tralewski@commercesolutions.pl>
-To:     <selinux@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.commercesolutions.pl
+        with ESMTP id S242700AbjHYPHd (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 25 Aug 2023 11:07:33 -0400
+X-Greylist: delayed 417 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 25 Aug 2023 08:07:28 PDT
+Received: from smtp-bc08.mail.infomaniak.ch (smtp-bc08.mail.infomaniak.ch [IPv6:2001:1600:4:17::bc08])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F3F2139
+        for <selinux@vger.kernel.org>; Fri, 25 Aug 2023 08:07:28 -0700 (PDT)
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [10.4.36.108])
+        by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4RXNRd51XGzMrDCp;
+        Fri, 25 Aug 2023 15:00:29 +0000 (UTC)
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4RXNRb5dkbzMpp9w;
+        Fri, 25 Aug 2023 17:00:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=digikod.net;
+        s=20191114; t=1692975629;
+        bh=MWLOkIhU3cieHE64ijsQJbZNvf/Q/VzrZFdssdSQjKc=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=y+ZeYvz28WWNongStm5hgbg6AHbg7VkeNBZtvNctX7lxyL5OBaAEvtzx/j81YghU8
+         9CXjUZLgbiz0HBzcd7Z65EArbgm5/gY8Ykou6xLcwrZod/JpUGMyoka/iU4+/2zmeF
+         AUj1i/cyJPzocJ2pI+kNXBuwQl4OG8NChoP4+wPk=
+Date:   Fri, 25 Aug 2023 17:00:24 +0200
+From:   =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To:     Casey Schaufler <casey@schaufler-ca.com>
+Cc:     paul@paul-moore.com, linux-security-module@vger.kernel.org,
+        jmorris@namei.org, serge@hallyn.com, keescook@chromium.org,
+        john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
+        stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org,
+        linux-api@vger.kernel.org, selinux@vger.kernel.org
+Subject: Re: [PATCH v13 10/11] SELinux: Add selfattr hooks
+Message-ID: <20230825.iQuae1shaifo@digikod.net>
+References: <20230802174435.11928-1-casey@schaufler-ca.com>
+ <20230802174435.11928-11-casey@schaufler-ca.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_INVALID,
-        DKIM_SIGNED,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230802174435.11928-11-casey@schaufler-ca.com>
+X-Infomaniak-Routing: alpha
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, Aug 02, 2023 at 10:44:33AM -0700, Casey Schaufler wrote:
+> Add hooks for setselfattr and getselfattr. These hooks are not very
+> different from their setprocattr and getprocattr equivalents, and
+> much of the code is shared.
+> 
+> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+> Cc: selinux@vger.kernel.org
+> Cc: Paul Moore <paul@paul-moore.com>
+> ---
+>  security/selinux/hooks.c | 136 +++++++++++++++++++++++++++++++--------
+>  1 file changed, 109 insertions(+), 27 deletions(-)
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+> +static int selinux_getselfattr(unsigned int attr, struct lsm_ctx __user *ctx,
+> +			       size_t *size, u32 flags)
+> +{
+> +	char *value;
+> +	size_t total_len;
+> +	int len;
+> +	int rc;
+> +
+> +	len = selinux_lsm_getattr(attr, current, &value);
+> +	if (len < 0)
+> +		return len;
+> +
+> +	total_len = ALIGN(struct_size(ctx, ctx, len), 8);
+> +
+> +	if (total_len > *size)
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+It looks a bit weird that size must be greater than all the LSM
+attributes even when ctx is NULL. Same for other getselfattr hook
+implementations.
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+> +		rc = -E2BIG;
+> +	else if (ctx)
+> +		rc = lsm_fill_user_ctx(ctx, value, len, LSM_ID_SELINUX, 0);
+> +	else
+> +		rc = 1;
 
-Pozdrawiam
-Kamil Tralewski
+Agreed with Paul, we should initialize rc to zero.
+
+> +
+> +	kfree(value);
+> +	*size = total_len;
+> +	if (rc < 0)
+> +		return rc;
+> +	return 1;
+> +}
+> +
+> +static int selinux_setselfattr(unsigned int __user attr, struct lsm_ctx *ctx,
+> +			       size_t __user size, u32 __user flags)
+
+This __user attribute is dedicated to user pointers, not values.
+
+> +{
+> +	int rc;
+> +
+
+Good to see this refactoring!
+
+> +	rc = selinux_lsm_setattr(attr, ctx->ctx, ctx->ctx_len);
+> +	if (rc > 0)
+> +		return 0;
+> +	return rc;
+> +}
+> +
+> +static int selinux_getprocattr(struct task_struct *p,
+> +			       const char *name, char **value)
+> +{
+> +	unsigned int attr = lsm_name_to_attr(name);
+> +	int rc;
+> +
+> +	if (attr) {
+> +		rc = selinux_lsm_getattr(attr, p, value);
+> +		if (rc != -EOPNOTSUPP)
+> +			return rc;
+> +	}
+> +
+> +	return -EINVAL;
+> +}
+> +
+> +static int selinux_setprocattr(const char *name, void *value, size_t size)
+> +{
+> +	int attr = lsm_name_to_attr(name);
+> +
+> +	if (attr)
+> +		return selinux_lsm_setattr(attr, value, size);
+> +	return -EINVAL;
+> +}
+> +
+>  static int selinux_ismaclabel(const char *name)
+>  {
+>  	return (strcmp(name, XATTR_SELINUX_SUFFIX) == 0);
+> @@ -7080,6 +7160,8 @@ static struct security_hook_list selinux_hooks[] __ro_after_init = {
+>  
+>  	LSM_HOOK_INIT(d_instantiate, selinux_d_instantiate),
+>  
+> +	LSM_HOOK_INIT(getselfattr, selinux_getselfattr),
+> +	LSM_HOOK_INIT(setselfattr, selinux_setselfattr),
+>  	LSM_HOOK_INIT(getprocattr, selinux_getprocattr),
+>  	LSM_HOOK_INIT(setprocattr, selinux_setprocattr),
+>  
+> -- 
+> 2.41.0
+> 

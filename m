@@ -2,66 +2,61 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BAA77940A8
-	for <lists+selinux@lfdr.de>; Wed,  6 Sep 2023 17:47:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4826F7941E8
+	for <lists+selinux@lfdr.de>; Wed,  6 Sep 2023 19:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230271AbjIFPrH (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 6 Sep 2023 11:47:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57900 "EHLO
+        id S232865AbjIFRQa (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 6 Sep 2023 13:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbjIFPrG (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 6 Sep 2023 11:47:06 -0400
-Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A430ABC
-        for <selinux@vger.kernel.org>; Wed,  6 Sep 2023 08:47:02 -0700 (PDT)
-Received: by mail-oo1-xc36.google.com with SMTP id 006d021491bc7-573921661a6so2405575eaf.1
-        for <selinux@vger.kernel.org>; Wed, 06 Sep 2023 08:47:02 -0700 (PDT)
+        with ESMTP id S230087AbjIFRQ3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 6 Sep 2023 13:16:29 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B99D199F
+        for <selinux@vger.kernel.org>; Wed,  6 Sep 2023 10:16:25 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6bee392fe9dso82062a34.1
+        for <selinux@vger.kernel.org>; Wed, 06 Sep 2023 10:16:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694015221; x=1694620021; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20221208; t=1694020585; x=1694625385; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vKGo3CjJzhyDWFU4WTNz1H54iLYzmT4iQJPpEwhKzj8=;
-        b=YlcnTh+Z3Ku4tLlj9nnKkrWOTFCyzJ5ZnHhqXV9MZch5UKPIK0IJBX7GokN/BjQqZ6
-         yYSlBC/6O8uStTB8rz64WHqRXF4YBFasb0GUuqWqPbDkHaMZnWw3hw02oBAy4r6maoW6
-         my0ezL+hH0maIwuRHig6PZ63L6C+ON2WuamrSfe24pEFyGM+cDODJ+IcTiRivcczCzNh
-         Q/Ph1uDllG2hTD5bA3HHmhz+dBuZGlmUgM97OqeYSaW9iR4KNdSOHlV+1BLCIBuedhWM
-         bBjc/lNZ+T7Jny+v+3phUAxt+c+KLEZGB1g8UjX1GcZXJaeXJQyJuUSj0ll0NQE7ZOqG
-         nycw==
+        bh=eSYxraWxfxU0nDwx4DDk7lr5kPFS/3z2DvlSRLoS6pI=;
+        b=TvCweb94YLCc44rHLm2gXSfgfOky81+2YbikTPjO85fydTWYAGjCQ/gJBmtnxS2mst
+         JwAZ/ouGqbPGDn1XOZQNGR9gnM4LCSxncLfAwXISrt0LjC3dbuoRlU8dDBUQpTH7VQ88
+         RhcBOoH9It5kP5XlvP9GgN6no/jIJgZVaLK5Gn/xszMC+UITIjSciwkvM1rWNNNPE9Ny
+         s7lcVmlkO84GTyjMSE0Xnn6AiXn/S0aKKfQqGNewGEYXso9+NS6Gyv9yXNhq+TLTGc8i
+         OKr5B4uM0o7N+fU5t+TQwT1fn3nNxItDkSr+GPOICkK/beM25R08lFvfS4k/2OKv8QwQ
+         SWDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694015221; x=1694620021;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1694020585; x=1694625385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vKGo3CjJzhyDWFU4WTNz1H54iLYzmT4iQJPpEwhKzj8=;
-        b=GIF5cFaE7pq81IZv3QwYBx9DgWHj+0tLHWu/nqe9AOfNVEEW9kcQr4orIllyjPawex
-         VE3dbHhObIF2IVSo1JQSTczsNAPE5U+yPStUDyaXrtusMWh4cayVTmYz2J81UNgyKzpe
-         t6oGg0KRef2hikrBevTXg6nHhPukEAwKQNlmaX40MEuAycnjnAMH2KOr16h2skDAq0oX
-         nkaql4AcUYboBrp9GxN1ilDBWaG6brwKHvXRmPwcDXwsbBfMLBvl0QOB5yTTQUDmwnNj
-         wN8lSmAy98EQS1hE5JjlqgaPaMJ9ommbqYzH91vL+rmbPMy7D36KZyBeKqj9xMWLNRA4
-         +LRQ==
-X-Gm-Message-State: AOJu0Yxh1zZrx0fHax8ptDPYLacZjRlZOzjRt4JJ6IDy/TP+v1e25XUb
-        6/WJmXy9zQYLfxDq9GlaJXPLRIXfrqg=
-X-Google-Smtp-Source: AGHT+IHHLEnnpVedssSXJi/vOfjJKKKQhEdLYL/flSDcYkY6QkqHs2SvTxUawUWzPBCGjh/oCMLzDA==
-X-Received: by 2002:a05:6358:560a:b0:13a:319f:a56b with SMTP id b10-20020a056358560a00b0013a319fa56bmr3237353rwf.20.1694015221224;
-        Wed, 06 Sep 2023 08:47:01 -0700 (PDT)
-Received: from 5bc235456ce7.evoforge.org (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id g25-20020a0caad9000000b0064f778c8165sm5518835qvb.64.2023.09.06.08.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 08:47:00 -0700 (PDT)
-From:   Jacob Satterfield <jsatterfield.linux@gmail.com>
-To:     selinux@vger.kernel.org
-Cc:     Jacob Satterfield <jsatterfield.linux@gmail.com>,
-        stephen.smalley.work@gmail.com, paul@paul-moore.com,
-        omosnace@redhat.com
-Subject: [PATCH 3/3] selinux: hweight optimization in avtab_read_item
-Date:   Wed,  6 Sep 2023 15:46:06 +0000
-Message-ID: <20230906154611.31762-4-jsatterfield.linux@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230906154611.31762-1-jsatterfield.linux@gmail.com>
-References: <20230906154611.31762-1-jsatterfield.linux@gmail.com>
+        bh=eSYxraWxfxU0nDwx4DDk7lr5kPFS/3z2DvlSRLoS6pI=;
+        b=SVFnD32cCefNruohAvZrpe5oHlEVbrpKNmjnK7fsRefzJUPuN3LULriElWQIrH1ihe
+         ++zuM6vMczeOC2MEbD8EaGROToBPEtRPviXNgLaCNH6xbI1eYM5P3Yeh01EwXQy34cWR
+         xISZJmDJV5mi/KIVL+DR5rWt4w+HQtOot/95U8vSLm+KoKnErAOKN7lzsG0dooshJAJr
+         M1FnGKrZkEjQuxf6Q4FsKp035tmXaLxjqAGfbA0yOBx9sS7A36U9So0kdl3UiO/4Wej1
+         OkhmID7WmtZktbvoFQVpMLd0rCdGPYHmUdDy4RIvZl5GnDCpSrF36vXChfyTiRRnpAaJ
+         KR7w==
+X-Gm-Message-State: AOJu0Yz80Y20btFfG08VqVCLwV/QZF0OWoux4mHxjjTlhcSlavJOnX5K
+        3bWrNXS0JAu9GloMXBEQpGwVzgNh9bediQPaLQQ=
+X-Google-Smtp-Source: AGHT+IHtaDbM1T6nLr1+JDA+bLod+OemUSgBgwdvMfX/EpZAZicQ+laJbpnr2tpm13Y3cvDjYDYsQcYKSPFRXoo/i3w=
+X-Received: by 2002:a05:6830:18d5:b0:6bd:bd0f:4d52 with SMTP id
+ v21-20020a05683018d500b006bdbd0f4d52mr18255982ote.4.1694020584825; Wed, 06
+ Sep 2023 10:16:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230906154611.31762-1-jsatterfield.linux@gmail.com> <20230906154611.31762-2-jsatterfield.linux@gmail.com>
+In-Reply-To: <20230906154611.31762-2-jsatterfield.linux@gmail.com>
+From:   Stephen Smalley <stephen.smalley.work@gmail.com>
+Date:   Wed, 6 Sep 2023 13:16:13 -0400
+Message-ID: <CAEjxPJ48nkALPa+hdKVaC8uV0yYK05_TBq94hzP6mcqmETn5ZQ@mail.gmail.com>
+Subject: Re: [PATCH 1/3] selinux: use arrays for avtab hashtable nodes
+To:     Jacob Satterfield <jsatterfield.linux@gmail.com>
+Cc:     selinux@vger.kernel.org, paul@paul-moore.com, omosnace@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -72,51 +67,58 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-avtab_read_item() is a hot function called when reading each rule in a
-binary policydb. With the current Fedora policy and refpolicy, this
-function is called nearly 100,000 times per policy load.
+On Wed, Sep 6, 2023 at 11:46=E2=80=AFAM Jacob Satterfield
+<jsatterfield.linux@gmail.com> wrote:
+>
+> The current avtab hashtable employs a separate chaining collision
+> resolution strategy where each bucket/chain holds an ordered linked list
+> of pointers to kmem_cache allocated avtab_node elements.
+>
+> On Fedora 38 (x86_64) using the default policy, avtab_node_cachep
+> uses 573 slabs each containing 170 objects totaling 2,337,840 bytes.
+> A call to kmem_cache_zalloc() is required for every single rule, which
+> in the default policy is currently 96,730 and continually rising.
+>
+> When both sets of avtab_node (regular and cond.) are turned into arrays
+> with the hash table slot indexing into it rather than a pointer, then
+> this results in only 2 additional kvcalloc() calls and the complete
+> removal of the kmem_cache itself.
+>
+> The caching characteristics of iterating a single array are better due
+> to locality of reference. Running "perf stat -r 100 -d load_policy"
+> has shown a runtime reduction of at least 10% on a Fedora 38 x86_64 VM
+> with this single patch. Future patches focused on improving the hash
+> table's collision resolution strategy and array layout (struct-of-arrays
+> vs. array-of-structs) may elicit even more caching and therefore runtime
+> performance improvements.
+>
+> On 64-bit machines, the memory usage of the hash table slots is cut in
+> half due to the use of u32 indices instead of memory pointers. Since
+> ~65k hash slots are used between the regular and cond. tables with the
+> default Fedora 38 policy, this equates to around 256KB of memory saved.
+>
+> Notes:
+>
+> A couple helper functions avtab_get_chain() and avtab_get_node() are
+> introduced to provide more standardized interfaces for use in functions
+> that need to search through the hash table.
+>
+> NULL_NODE_IDX defines a sentinel value which helps determinine if a spot
+> in the hash table or the "next" member of an avtab_node are valid.
+>
+> This patch causes the cond. rules table to waste memory as the size
+> requested for the kvcalloc() is the size of the regular rules table.
+> These tables rarely, if ever, have the same number of rules in practice.
+> The next patch addresses this shortcoming.
+>
+> Signed-off-by: Jacob Satterfield <jsatterfield.linux@gmail.com>
 
-A single avtab node is only permitted to have a single specifier to
-describe the data it holds. As such, a check is performed to make sure
-only one specifier is set. Previously this was done via a for-loop.
-However, there is already an optimal function for finding the number of
-bits set (hamming weight) and on some architectures, dedicated
-instructions (popcount) which can be executed much more efficiently.
+Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-Even when using -mcpu=generic on a x86-64 Fedora 38 VM, this commit
-results in a modest 2-4% speedup for policy loading due to a substantial
-reduction in the number of instructions executed.
-
-Signed-off-by: Jacob Satterfield <jsatterfield.linux@gmail.com>
----
- security/selinux/ss/avtab.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
-
-diff --git a/security/selinux/ss/avtab.c b/security/selinux/ss/avtab.c
-index b7a11f417f0a..b0e455fb395c 100644
---- a/security/selinux/ss/avtab.c
-+++ b/security/selinux/ss/avtab.c
-@@ -17,6 +17,7 @@
-  *	Tuned number of hash slots for avtab to reduce memory usage
-  */
- 
-+#include <linux/bitops.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
- #include <linux/errno.h>
-@@ -516,11 +517,7 @@ int avtab_read_item(struct avtab *a, void *fp, struct policydb *pol,
- 		return -EINVAL;
- 	}
- 
--	set = 0;
--	for (i = 0; i < ARRAY_SIZE(spec_order); i++) {
--		if (key.specified & spec_order[i])
--			set++;
--	}
-+	set = hweight16(key.specified & (AVTAB_XPERMS | AVTAB_TYPE | AVTAB_AV));
- 	if (!set || set > 1) {
- 		pr_err("SELinux:  avtab:  more than one specifier\n");
- 		return -EINVAL;
--- 
-2.41.0
-
+> ---
+>  security/selinux/ss/avtab.c       | 75 +++++++++++++++----------------
+>  security/selinux/ss/avtab.h       | 28 ++++++++++--
+>  security/selinux/ss/conditional.c | 13 +++---
+>  security/selinux/ss/services.c    | 20 +++++----
+>  4 files changed, 81 insertions(+), 55 deletions(-)
+>

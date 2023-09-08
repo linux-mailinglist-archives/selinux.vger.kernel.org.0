@@ -2,57 +2,57 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC1B798E61
-	for <lists+selinux@lfdr.de>; Fri,  8 Sep 2023 20:46:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBBEA798E81
+	for <lists+selinux@lfdr.de>; Fri,  8 Sep 2023 20:56:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237031AbjIHSqa (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 8 Sep 2023 14:46:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36482 "EHLO
+        id S236843AbjIHS47 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Fri, 8 Sep 2023 14:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239057AbjIHSqa (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 8 Sep 2023 14:46:30 -0400
-Received: from mail-ot1-x32b.google.com (mail-ot1-x32b.google.com [IPv6:2607:f8b0:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6698B1BD3;
-        Fri,  8 Sep 2023 11:45:53 -0700 (PDT)
-Received: by mail-ot1-x32b.google.com with SMTP id 46e09a7af769-6bf01bcb1aeso1771980a34.3;
-        Fri, 08 Sep 2023 11:45:53 -0700 (PDT)
+        with ESMTP id S238172AbjIHS45 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Fri, 8 Sep 2023 14:56:57 -0400
+Received: from mail-yw1-x112a.google.com (mail-yw1-x112a.google.com [IPv6:2607:f8b0:4864:20::112a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27CB91BF5;
+        Fri,  8 Sep 2023 11:56:21 -0700 (PDT)
+Received: by mail-yw1-x112a.google.com with SMTP id 00721157ae682-58cd9d9dbf5so32837587b3.0;
+        Fri, 08 Sep 2023 11:56:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694198687; x=1694803487; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694199322; x=1694804122; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UK+qTZg63UeRXq6H+6hjsRVwDxx7PLtIZ61jN3+rKNo=;
-        b=dFAn8hHPQTHgpaGUJw9tV0tMUu5cD0nn6qV0178n30RenD1/stNNZBjMKX9caicr5l
-         cUAo2gIxqCb0/o9u9RVG58XkBkyxgkA8br2C2Urth42+ae7DXSoVAVA1gnntlJWECo8z
-         MnkghCKA2FBMukAlbtGEkp1yLJJ9/DZLEVGifLpZh3gexKPhdDbLwn23hsEJa2Yu7xSZ
-         aWR+y5fL6IZefA44zdBMZzh6bw4dNyKPb02xx3aEBBdGgmnma8ylnAJ5HU/ZRlIsQdYh
-         3yKvpiG9MNgB/odQe5KeuWmrO8ANLzOFQjlVGcSlbgDga4dd4/4+sZXvYqMWPljtnCoT
-         EYMw==
+        bh=ExdORgkHFjC/6koOVRzQbhxqfEwiczzROf102Hctdl8=;
+        b=XV6VW2Zq3CoaaY5DV7klr1OE4V7HHqVhY+s1Exv0KyFjGUW/A+zhrUsxbWU1x5C6E6
+         95bGbunn04I9Tpc28ZC1LqqoAdiYm0xiXK78WURDs6tGDuHGeUCpjtfC2Su6xR+wdmZB
+         EjFTAv7YSZUDxMDh2QqVnSXRikW1mHhEfTrMpZxtX9mNYn/k9TJ+szrZS8u8eMeD1onp
+         fipyzxf6d8MnAVA0QOEuUSf1C1yrM+6q/HP0q6Zyk1DgAcTNYi8clpPG/IM/WxmHn6Af
+         oYe+qF9Ry0SPhQpZVTeUy9AS9+Z+q/3QhFYzaygWUUH71DMwEq1bhAX9DgIIlpZaVg7i
+         f3yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694198687; x=1694803487;
+        d=1e100.net; s=20230601; t=1694199322; x=1694804122;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UK+qTZg63UeRXq6H+6hjsRVwDxx7PLtIZ61jN3+rKNo=;
-        b=ZT0Mdp/H/I71iP5wBCjW3Jyn2kBi4Fd2sMaUSE4eEAwTin7tD7jddvbPTlYf8AgnRG
-         F1vdDoVn/uaVUdHov9dZUN+XlVlCgHg0yFtRR45YRorMPlGaFNwGPUNBc1RCd/Dsq4Kl
-         AT0bZoh1FF8UIw6BwBZuDs0f6w9KDKxc046/kp9GamgznlV0iElhZ9oCMjAtLbGbSW5G
-         cKeKJryT6hRO0NRGMrV/jByB3v+WL3ndAF5maqpK2k5t2krfbfmVWc6s2uHoRYiJcO0j
-         f6i3VaNzmTdvivSeqBWUgorpa6WQ/3NBs7EeeuVBnBEjMR0+akFon31haRXzRhksRUdj
-         7gbw==
-X-Gm-Message-State: AOJu0YzAtHDFi2/wkR8cUQaOZKaNaR9kS/2KTl6kPTrb1Yx9hM+OJRqD
-        fnHrjFNdzmaLzhUcm8t81aEBqHfGWxh682cpLh+H66ms
-X-Google-Smtp-Source: AGHT+IE7Hf6pI9i2oR/fInpOPqa1zyFn18b1m/6jy6kYRYF8gmlCNbUbSxm2BUrf+7OcT2RdgNeQVa3NyCOiv2gcjJc=
-X-Received: by 2002:a05:6830:1117:b0:6bd:bba9:2d63 with SMTP id
- w23-20020a056830111700b006bdbba92d63mr3131811otq.9.1694198686805; Fri, 08 Sep
- 2023 11:44:46 -0700 (PDT)
+        bh=ExdORgkHFjC/6koOVRzQbhxqfEwiczzROf102Hctdl8=;
+        b=XtPk8NSrX3HHPGPyDl//bk9WWsAaBsiAMkNR5ErQ7LToVhqXB71jo3k8Bh5SkZp8Tf
+         D/vp/mpVauZovAU9GFsecdj+/GuRUYiVplW2DmVYKa4SGsEMe6vDwG7OCUP45rz3TQvO
+         +2J1p3x5b6gO/pb7/Xyezdvmz53QnidrpyhIOoNlr1MlYH7ooIZQz7AkQgGWjEBoHJFe
+         eKcMLsY5RfbEAbSVB9j8QfZucUMzBFm72DWQkfal36QdArReVcWHGyfIF1+3re/uvLX0
+         l2y/0v5twd4dZ5oSBH9a3C/tFcvm40cr2UfR95rNH80dt37leAtrGUL5AaXMpftJGAKt
+         LqLQ==
+X-Gm-Message-State: AOJu0YxQvKSJlYPPPgjAWVATBDqh7xFt8maA1OL0N7+hEmd2i6mr0+S9
+        c5vrgLdANI41sgxjpKVdgoMDviBJFM9vTaxnf+RTLhvG8rU=
+X-Google-Smtp-Source: AGHT+IHD9RLOX3oAW9xNhsxji32lMjNhSLgQPIi2C6Hwi+DpWteNVoYLvCQY62Ndm8NBtuI93YZu2RPF1hZd4tkyCts=
+X-Received: by 2002:a9d:7a8a:0:b0:6ba:864e:c5de with SMTP id
+ l10-20020a9d7a8a000000b006ba864ec5demr1432864otn.8.1694198799372; Fri, 08 Sep
+ 2023 11:46:39 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230818151220.166215-1-cgzones@googlemail.com> <20230818151220.166215-3-cgzones@googlemail.com>
-In-Reply-To: <20230818151220.166215-3-cgzones@googlemail.com>
+References: <20230818151220.166215-1-cgzones@googlemail.com> <20230818151220.166215-4-cgzones@googlemail.com>
+In-Reply-To: <20230818151220.166215-4-cgzones@googlemail.com>
 From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Fri, 8 Sep 2023 14:44:35 -0400
-Message-ID: <CAEjxPJ7YwHVjkOerYcDuSWLEFrxv01V4C9osvDt-1AXR+as+3g@mail.gmail.com>
-Subject: Re: [PATCH 4/6] selinux: simplify avtab slot calculation
+Date:   Fri, 8 Sep 2023 14:46:28 -0400
+Message-ID: <CAEjxPJ7Js6TJg3=uadoFc_P73-SVG2=0cQ1d5UpC9qOHdreR-g@mail.gmail.com>
+Subject: Re: [PATCH 5/6] selinux: improve role transition hashing
 To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
 Cc:     selinux@vger.kernel.org, Paul Moore <paul@paul-moore.com>,
         Eric Paris <eparis@parisplace.org>,
@@ -62,7 +62,7 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,12 +73,21 @@ X-Mailing-List: selinux@vger.kernel.org
 On Fri, Aug 18, 2023 at 11:12=E2=80=AFAM Christian G=C3=B6ttsche
 <cgzones@googlemail.com> wrote:
 >
-> Instead of dividing by 8 and then performing log2 by hand, use a more
-> readable calculation.
+> The number of buckets is calculated by performing a binary AND against
+> the mask of the hash table, which is one less than its size (which is a
+> power of two).  This leads to all top bits being discarded, e.g. with
+> the Reference Policy on Debian there exists 376 entries, leading to a
+> size of 512, discarding the top 23 bits.
 >
-> The behavior of rounddown_pow_of_two() for an input of 0 is undefined,
-> so handle that case and small values manually to achieve the same
-> results.
+> Use jhash to improve the hash table utilization:
+>
+>     # current
+>     roletr:  376 entries and 124/512 buckets used, longest chain length 8=
+, sum of chain length^2 1496
+>
+>     # patch
+>     roletr:  376 entries and 266/512 buckets used, longest chain length 4=
+, sum of chain length^2 646
 >
 > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 

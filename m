@@ -2,174 +2,116 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C217F799282
-	for <lists+selinux@lfdr.de>; Sat,  9 Sep 2023 00:54:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD6C579B9FD
+	for <lists+selinux@lfdr.de>; Tue, 12 Sep 2023 02:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238807AbjIHWym (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 8 Sep 2023 18:54:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45584 "EHLO
+        id S239629AbjIKWLF (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 11 Sep 2023 18:11:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237827AbjIHWyl (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 8 Sep 2023 18:54:41 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B711FEB;
-        Fri,  8 Sep 2023 15:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694213677; x=1725749677;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eUm4yl2BAMHBo03g5Rb/N9p2aZICoAAK9LpFQ7u8z4s=;
-  b=nvQumfgrSPipWhhM71C8qAHiBqZ8fptuv/w2RFau6bt807L8Pkp9PNrC
-   sn8xK/V1KdLU3M9jox/EhCEsirNNESOIlBP3FtiV1Xz74qCmR/TQn0vco
-   D2M6dtf9aCyBqruUXy1GN1N+ZvAkBjm0HBNtdEyGdzhreiJUxZ/i08iML
-   4erdnxYM80SDPU5qsO7RgyxopWvjx0YDtX68kOLba+amj8Gy4SQAYcUSW
-   28LrxPOH5Sl+AekVf3OfkQrVyZNrmcQb6JUbaCtv69Y9n4AsQpXvqGW2u
-   TT0wulhcDCuh5bo9kNADBDTcUKb5wwW1tJEjFPih3zJb3F240+Eu7DbsP
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="358066923"
-X-IronPort-AV: E=Sophos;i="6.02,238,1688454000"; 
-   d="scan'208";a="358066923"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2023 15:54:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="742667451"
-X-IronPort-AV: E=Sophos;i="6.02,238,1688454000"; 
-   d="scan'208";a="742667451"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 08 Sep 2023 15:54:34 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qekMy-0002hP-0h;
-        Fri, 08 Sep 2023 22:54:32 +0000
-Date:   Sat, 9 Sep 2023 06:54:07 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Alfred Piccioni <alpic@google.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>
-Cc:     oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org,
-        selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alfred Piccioni <alpic@google.com>
-Subject: Re: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
-Message-ID: <202309090600.NSyo7d2q-lkp@intel.com>
-References: <20230906115928.3749928-1-alpic@google.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906115928.3749928-1-alpic@google.com>
+        with ESMTP id S236526AbjIKKu3 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 11 Sep 2023 06:50:29 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11675E9;
+        Mon, 11 Sep 2023 03:50:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD08AC433C9;
+        Mon, 11 Sep 2023 10:50:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694429424;
+        bh=5eCOHpwInPjQA6NxPDr5kZtgwrG8Hy+L9RSiIjoYzXQ=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=I63fO3Oped5CcoSGIlghzn65dDLDS3AgXMOjiToNZvSUdrhpid8dA2fwnZ3L0uvuQ
+         vRO43uNZPPKAjLBYaxKuEpPRCi/DBPQ5JahZ+/xplfXgFn+m6+K1DVaoMVszFQn7e3
+         c/7ShNyPjBTDlCTah8S2O9CnI6mNmrRR5K25WKyBtu4HXfsGlCg1Nmd2cAEeAGJtqk
+         +Xaszsx6GIBzt4dpxcFYC1VW/aJEKgOxHSFW2mvoY/oVjBtFiZDYuvh56WBy8I8ZL6
+         aLRIobdGSMWYlt8ZweMRDuHBYUhcsbpwXJ23mEyEwkNhh06xFKUyD5SbyXxtBFA6QG
+         oJalfh9jeUlHA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 11 Sep 2023 13:50:18 +0300
+Message-Id: <CVG13KLCIT1X.1MQT6HYAYFRAU@suppilovahvero>
+Cc:     <linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-nfs@vger.kernel.org>, <linux-integrity@vger.kernel.org>,
+        <linux-security-module@vger.kernel.org>,
+        <keyrings@vger.kernel.org>, <selinux@vger.kernel.org>,
+        "Roberto Sassu" <roberto.sassu@huawei.com>,
+        "Stefan Berger" <stefanb@linux.ibm.com>
+Subject: Re: [PATCH v2 11/25] security: Align inode_setattr hook definition
+ with EVM
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Casey Schaufler" <casey@schaufler-ca.com>,
+        "Roberto Sassu" <roberto.sassu@huaweicloud.com>,
+        <viro@zeniv.linux.org.uk>, <brauner@kernel.org>,
+        <chuck.lever@oracle.com>, <jlayton@kernel.org>, <neilb@suse.de>,
+        <kolga@netapp.com>, <Dai.Ngo@oracle.com>, <tom@talpey.com>,
+        <zohar@linux.ibm.com>, <dmitry.kasatkin@gmail.com>,
+        <paul@paul-moore.com>, <jmorris@namei.org>, <serge@hallyn.com>,
+        <dhowells@redhat.com>, <stephen.smalley.work@gmail.com>,
+        <eparis@parisplace.org>
+X-Mailer: aerc 0.14.0
+References: <20230831104136.903180-1-roberto.sassu@huaweicloud.com>
+ <20230831104136.903180-12-roberto.sassu@huaweicloud.com>
+ <CVAFV92MONCH.257Y9YQ3OEU4B@suppilovahvero>
+ <19943e35-2e7c-d27a-1a5d-189eea439dfd@schaufler-ca.com>
+In-Reply-To: <19943e35-2e7c-d27a-1a5d-189eea439dfd@schaufler-ca.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Hi Alfred,
+On Tue Sep 5, 2023 at 6:56 PM EEST, Casey Schaufler wrote:
+> On 9/4/2023 2:08 PM, Jarkko Sakkinen wrote:
+> > On Thu Aug 31, 2023 at 1:41 PM EEST, Roberto Sassu wrote:
+> >> From: Roberto Sassu <roberto.sassu@huawei.com>
+> >>
+> >> Add the idmap parameter to the definition, so that evm_inode_setattr()=
+ can
+> >> be registered as this hook implementation.
+> >>
+> >> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> >> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
+> >> Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+> >> ---
+> >>  include/linux/lsm_hook_defs.h | 3 ++-
+> >>  security/security.c           | 2 +-
+> >>  security/selinux/hooks.c      | 3 ++-
+> >>  security/smack/smack_lsm.c    | 4 +++-
+> >>  4 files changed, 8 insertions(+), 4 deletions(-)
+> >>
+> >> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_de=
+fs.h
+> >> index 4bdddb52a8fe..fdf075a6b1bb 100644
+> >> --- a/include/linux/lsm_hook_defs.h
+> >> +++ b/include/linux/lsm_hook_defs.h
+> >> @@ -134,7 +134,8 @@ LSM_HOOK(int, 0, inode_readlink, struct dentry *de=
+ntry)
+> >>  LSM_HOOK(int, 0, inode_follow_link, struct dentry *dentry, struct ino=
+de *inode,
+> >>  	 bool rcu)
+> >>  LSM_HOOK(int, 0, inode_permission, struct inode *inode, int mask)
+> >> -LSM_HOOK(int, 0, inode_setattr, struct dentry *dentry, struct iattr *=
+attr)
+> >> +LSM_HOOK(int, 0, inode_setattr, struct mnt_idmap *idmap, struct dentr=
+y *dentry,
+> >> +	 struct iattr *attr)
+> > LSM_HOOK(int, 0, inode_setattr, struct mnt_idmap *idmap, struct dentry =
+*dentry, struct iattr *attr)
+> >
+> > Only 99 characters, i.e. breaking into two lines is not necessary.
+>
+> We're keeping the LSM code in the ancient 80 character format.
+> Until we get some fresh, young maintainers involved who can convince
+> us that line wrapped 80 character terminals are kewl we're sticking
+> with what we know.
+>
+> 	https://lwn.net/Articles/822168/
 
-kernel test robot noticed the following build errors:
+Pretty artificial counter-example tbh :-) Even with Rust people tend to
+stick one character variable names for trivial integer indices.
 
-[auto build test ERROR on 50a510a78287c15cee644f345ef8bac8977986a7]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Alfred-Piccioni/SELinux-Check-correct-permissions-for-FS_IOC32_/20230906-200131
-base:   50a510a78287c15cee644f345ef8bac8977986a7
-patch link:    https://lore.kernel.org/r/20230906115928.3749928-1-alpic%40google.com
-patch subject: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
-config: i386-debian-10.3 (https://download.01.org/0day-ci/archive/20230909/202309090600.NSyo7d2q-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230909/202309090600.NSyo7d2q-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309090600.NSyo7d2q-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   security/selinux/hooks.c: In function 'selinux_file_ioctl':
->> security/selinux/hooks.c:3647:9: error: duplicate case value
-    3647 |         case FS_IOC32_GETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3645:9: note: previously used here
-    3645 |         case FS_IOC_GETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3648:9: error: duplicate case value
-    3648 |         case FS_IOC32_GETVERSION:
-         |         ^~~~
-   security/selinux/hooks.c:3646:9: note: previously used here
-    3646 |         case FS_IOC_GETVERSION:
-         |         ^~~~
-   security/selinux/hooks.c:3654:9: error: duplicate case value
-    3654 |         case FS_IOC32_SETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3652:9: note: previously used here
-    3652 |         case FS_IOC_SETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3655:9: error: duplicate case value
-    3655 |         case FS_IOC32_SETVERSION:
-         |         ^~~~
-   security/selinux/hooks.c:3653:9: note: previously used here
-    3653 |         case FS_IOC_SETVERSION:
-         |         ^~~~
-
-
-vim +3647 security/selinux/hooks.c
-
-  3634	
-  3635	static int selinux_file_ioctl(struct file *file, unsigned int cmd,
-  3636				      unsigned long arg)
-  3637	{
-  3638		const struct cred *cred = current_cred();
-  3639		int error = 0;
-  3640	
-  3641		switch (cmd) {
-  3642		case FIONREAD:
-  3643		case FIBMAP:
-  3644		case FIGETBSZ:
-  3645		case FS_IOC_GETFLAGS:
-  3646		case FS_IOC_GETVERSION:
-> 3647		case FS_IOC32_GETFLAGS:
-  3648		case FS_IOC32_GETVERSION:
-  3649			error = file_has_perm(cred, file, FILE__GETATTR);
-  3650			break;
-  3651	
-  3652		case FS_IOC_SETFLAGS:
-  3653		case FS_IOC_SETVERSION:
-  3654		case FS_IOC32_SETFLAGS:
-  3655		case FS_IOC32_SETVERSION:
-  3656			error = file_has_perm(cred, file, FILE__SETATTR);
-  3657			break;
-  3658	
-  3659		/* sys_ioctl() checks */
-  3660		case FIONBIO:
-  3661		case FIOASYNC:
-  3662			error = file_has_perm(cred, file, 0);
-  3663			break;
-  3664	
-  3665		case KDSKBENT:
-  3666		case KDSKBSENT:
-  3667			error = cred_has_capability(cred, CAP_SYS_TTY_CONFIG,
-  3668						    CAP_OPT_NONE, true);
-  3669			break;
-  3670	
-  3671		case FIOCLEX:
-  3672		case FIONCLEX:
-  3673			if (!selinux_policycap_ioctl_skip_cloexec())
-  3674				error = ioctl_has_perm(cred, file, FILE__IOCTL, (u16) cmd);
-  3675			break;
-  3676	
-  3677		/* default case assumes that the command will go
-  3678		 * to the file's ioctl() function.
-  3679		 */
-  3680		default:
-  3681			error = ioctl_has_perm(cred, file, FILE__IOCTL, (u16) cmd);
-  3682		}
-  3683		return error;
-  3684	}
-  3685	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+BR, Jarkko

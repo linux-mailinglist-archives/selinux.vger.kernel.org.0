@@ -2,106 +2,118 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E377279B9A3
-	for <lists+selinux@lfdr.de>; Tue, 12 Sep 2023 02:10:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF4C579C460
+	for <lists+selinux@lfdr.de>; Tue, 12 Sep 2023 05:51:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358460AbjIKWLF (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 11 Sep 2023 18:11:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39072 "EHLO
+        id S232793AbjILDvI (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 11 Sep 2023 23:51:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35670 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244197AbjIKTd4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 11 Sep 2023 15:33:56 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C31112A;
-        Mon, 11 Sep 2023 12:33:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D25FC433D9;
-        Mon, 11 Sep 2023 19:33:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694460830;
-        bh=A13nCizsPVmYBTbUjrBG25LzeCrAW+6QKClcpIWHnJ8=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=fvR3s8wYTcQ+luyKyniLwLNvvrko39sEie18l9chvLpa+05FrM4efx2JBo4bP71Jv
-         jWScYlwktNu2uPnfy0pz6yQJvKGSchA/dlz0stUsmU8hBHWgcS35jaOD5KClT3Z82l
-         6JuAG6QLIRjSo/94KixZd6Kf6Ukxsi61syTTsExIOWR3AO+r5ETNhtmln2CmkezwGW
-         oIWJ4Q/aTnwY0KZdJRCHDdBR/DKbMjWnMc7vSSJWSXO82c0EWO1U9SJ5PaycM96tqM
-         C3baWtGM2yRGdK3VyxabTmZvIMIeecXuxxnloUWodt7YFiUSv8pXt0Wvu1AcBlkt1J
-         AB1OTlC8wgt3Q==
-Message-ID: <11597d56bbb44a83fcbce8d1161068dd96a41ec4.camel@kernel.org>
-Subject: Re: [PATCH] selinux: fix handling of empty opts in
- selinux_fs_context_submount()
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Ondrej Mosnacek <omosnace@redhat.com>,
-        Paul Moore <paul@paul-moore.com>
-Cc:     David Howells <dhowells@redhat.com>,
-        Christian Brauner <brauner@kernel.org>,
-        selinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Adam Williamson <awilliam@redhat.com>
-Date:   Mon, 11 Sep 2023 15:33:48 -0400
-In-Reply-To: <20230911142358.883728-1-omosnace@redhat.com>
-References: <20230911142358.883728-1-omosnace@redhat.com>
-Content-Type: text/plain; charset="ISO-8859-15"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S230139AbjILDvI (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 11 Sep 2023 23:51:08 -0400
+Received: from markus.defensec.nl (markus.defensec.nl [IPv6:2a10:3781:2099::123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 543A1A4
+        for <selinux@vger.kernel.org>; Mon, 11 Sep 2023 20:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=defensec.nl;
+        s=default; t=1694490660;
+        bh=xyPPTxc5yeADXwM1e6rfR6537pwPtimYPVXA7OQkg5c=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=OMI4vcEJnZqTlq03E7ozaifLRlkPWxWLAeHOxk4aePLkM77nhce49FkWE/hSEI6cV
+         9ZPnvozoY4JzNkc4BMEauwgO6+jTqwpddP+b1Ni8BD+qU9v9gjVnoFulW7SPowxW4J
+         E0MIk1d/ik9s7QRyY4HbkyZRfX8uoExK/3xqRlU4=
+Received: from paulus (unknown [IPv6:2a10:3781:2099:0:67b:cbff:fe2b:1860])
+        by markus.defensec.nl (Postfix) with ESMTPSA id 95D2E1959;
+        Tue, 12 Sep 2023 05:51:00 +0200 (CEST)
+From:   Dominick Grift <dominick.grift@defensec.nl>
+To:     Vit Mojzis <vmojzis@redhat.com>
+Cc:     selinux@vger.kernel.org
+Subject: Re: generating new type name using CIL macro
+In-Reply-To: <324bb6b0-3d6c-707d-c0d1-1fdc1f43e845@redhat.com> (Vit Mojzis's
+        message of "Mon, 11 Sep 2023 17:42:03 +0200")
+References: <324bb6b0-3d6c-707d-c0d1-1fdc1f43e845@redhat.com>
+Date:   Tue, 12 Sep 2023 05:50:59 +0200
+Message-ID: <87pm2ouk0s.fsf@defensec.nl>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
-        lindbergh.monkeyblade.net
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, 2023-09-11 at 16:23 +0200, Ondrej Mosnacek wrote:
-> selinux_set_mnt_opts() relies on the fact that the mount options pointer
-> is always NULL when all options are unset (specifically in its
-> !selinux_initialized() branch. However, the new
-> selinux_fs_context_submount() hook breaks this rule by allocating a new
-> structure even if no options are set. That causes any submount created
-> before a SELinux policy is loaded to be rejected in
-> selinux_set_mnt_opts().
->=20
-> Fix this by making selinux_fs_context_submount() leave fc->security
-> set to NULL when there are no options to be copied from the reference
-> superblock.
->=20
-> Reported-by: Adam Williamson <awilliam@redhat.com>
-> Link: https://bugzilla.redhat.com/show_bug.cgi?id=3D2236345
-> Fixes: d80a8f1b58c2 ("vfs, security: Fix automount superblock LSM init pr=
-oblem, preventing NFS sb sharing")
-> Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-> ---
->  security/selinux/hooks.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
->=20
-> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> index 10350534de6d6..2aa0e219d7217 100644
-> --- a/security/selinux/hooks.c
-> +++ b/security/selinux/hooks.c
-> @@ -2775,14 +2775,20 @@ static int selinux_umount(struct vfsmount *mnt, i=
-nt flags)
->  static int selinux_fs_context_submount(struct fs_context *fc,
->  				   struct super_block *reference)
->  {
-> -	const struct superblock_security_struct *sbsec;
-> +	const struct superblock_security_struct *sbsec =3D selinux_superblock(r=
-eference);
->  	struct selinux_mnt_opts *opts;
-> =20
-> +	/*
-> +	 * Ensure that fc->security remains NULL when no options are set
-> +	 * as expected by selinux_set_mnt_opts().
-> +	 */
-> +	if (!(sbsec->flags & (FSCONTEXT_MNT|CONTEXT_MNT|DEFCONTEXT_MNT)))
-> +		return 0;
-> +
->  	opts =3D kzalloc(sizeof(*opts), GFP_KERNEL);
->  	if (!opts)
->  		return -ENOMEM;
-> =20
-> -	sbsec =3D selinux_superblock(reference);
->  	if (sbsec->flags & FSCONTEXT_MNT)
->  		opts->fscontext_sid =3D sbsec->sid;
->  	if (sbsec->flags & CONTEXT_MNT)
+Vit Mojzis <vmojzis@redhat.com> writes:
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> Hello all,
+> while trying to recreate some selinux-policy templates using CIL
+> macros I got stuck on creating new type/role/attribute names.
+> For example consider ssh_role_template [1], which uses its first
+> parameter to create a new type $1_ssh_agent_t.
+>
+> Is there a way to recreate such functionality in a CIL macro (or
+> another CIL feature)?
+
+CIL uses blocks for it implementation of templating. If you want to leverage
+native CIL then look into blocks.
+
+Example:
+
+cat > mytest.cil <<EOF
+(typeattribute foo)
+
+(block t
+(blockabstract t)
+(type t)
+(typeattributeset .foo t))
+
+(block bar
+(blockinherit t))
+
+(block baz
+(blockinherit t))
+
+(allow .foo .foo (process (signal)))
+EOF
+
+sudo semodule -i mytest.cil
+
+seinfo -xafoo
+
+Type Attributes: 1
+   attribute foo;
+        bar.t
+        baz.t
+
+sesearch -A -s foo -ds
+allow foo foo:process signal;
+
+>
+> Something along the lines of:
+> (macro new_type_macro ((string type_prefix))
+> =C2=A0 (type (type_prefix)_t)
+> )
+> which when called (call new_type_macro ("yolo")) would produce
+> (type yolo_t)
+>
+> I searched through CIL reference guide [2] and SELinuxProject CIL wiki
+> on github, but didn't find anything close (maybe there is a better
+> resource I don't know about).
+> I'd appreciate any hints or links to other resources related to CIL macro=
+s.
+>
+> Thank you,
+> Vit
+>
+> [1] -
+> https://github.com/TresysTechnology/refpolicy/blob/master/policy/modules/=
+services/ssh.if#L301
+> [2] -
+> https://raw.githubusercontent.com/SELinuxProject/selinux-notebook/main/sr=
+c/notebook-examples/selinux-policy/cil/CIL_Reference_Guide.pdf
+> [3] - https://github.com/SELinuxProject/cil/wiki#macros
+>
+
+--=20
+gpg --locate-keys dominick.grift@defensec.nl (wkd)
+Key fingerprint =3D FCD2 3660 5D6B 9D27 7FC6  E0FF DA7E 521F 10F6 4098
+Dominick Grift
+Mastodon: @kcinimod@defensec.nl

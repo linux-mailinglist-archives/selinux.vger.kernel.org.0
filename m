@@ -2,110 +2,202 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54A577AD890
-	for <lists+selinux@lfdr.de>; Mon, 25 Sep 2023 15:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B82B7AE08A
+	for <lists+selinux@lfdr.de>; Mon, 25 Sep 2023 23:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbjIYNGc (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 25 Sep 2023 09:06:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60208 "EHLO
+        id S230250AbjIYVD3 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 25 Sep 2023 17:03:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231435AbjIYNGb (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 25 Sep 2023 09:06:31 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B3210E
-        for <selinux@vger.kernel.org>; Mon, 25 Sep 2023 06:06:23 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-692c70bc440so2021656b3a.3
-        for <selinux@vger.kernel.org>; Mon, 25 Sep 2023 06:06:23 -0700 (PDT)
+        with ESMTP id S229513AbjIYVD2 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 25 Sep 2023 17:03:28 -0400
+Received: from mail-lf1-x135.google.com (mail-lf1-x135.google.com [IPv6:2a00:1450:4864:20::135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C91CD103
+        for <selinux@vger.kernel.org>; Mon, 25 Sep 2023 14:03:21 -0700 (PDT)
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-503f39d3236so11928889e87.0
+        for <selinux@vger.kernel.org>; Mon, 25 Sep 2023 14:03:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695647183; x=1696251983; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:sender:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mXglc8opTBOxqxBVnbKKZEfOjkArzaJ5mbcscFyV/Wo=;
-        b=E9p/DdAhQv/UcBbrSHqMLXHKKFmTmAEugjpfcAaJIi0oAhHW91Fn3L148iHyI9tq6y
-         1AXxdfTrMhS72Zy9gDH3x6BZX047nWgHv5SIYLenoGYIxmyhv/3Z0OHCspeSEWUjv/Dr
-         5v3ZlzF9MCgA6c4GY0EVCOxSXAvWL66AAIUVTzUcrOiHt1xQuSXO/meOJiZwKRblOuuE
-         cKIGL6pARcFlHbPhB2iJsp7kw3Bog0Y/ZW5yTM9A3tyq5lZSSMxCvErvB3dVJ9fa+G8q
-         yvN079Vrw4bkbbYAlPNEYfEE1Ty6s7Y2UpwRLImeV4hkPd1Mji5zfoNrzlvslblzeye5
-         9Qew==
+        d=gmail.com; s=20230601; t=1695675800; x=1696280600; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h5LmKh0zH5XQgOefex67gJjj413XN3ZcWIB6g8SbNtQ=;
+        b=cnGZMww3EAYiz4JFDYJdlQxrr6KrjQXkzz68wSEQY8foFqlDhsBxBTBvF1sR9bs0bI
+         K1ST2qK/hQ2gZBa+tPKGv9UQE3veuzKGM2QeGe5b+jto9dLSrn7tnhaC60DUfg0Q5RyZ
+         WYzztgpoJ9CjOVPV5lkOLxspQlZFUV6oG5z2u0+pZW+rr63FA8oTZVCgAXb5kxc5P0XB
+         y82SGgsXsNsh9SBDoZkHdIxro91/3qfKzDlRgIbqFeOs7Ks/8QN6eFvYlSxZuaFx5QQF
+         1c8TYZSsncXyWAhbZ3IBGgl3sohJbXVsvwBhtl1ZULyhq1XFGyQMgJyLaibqMsnyVbyn
+         S3ig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695647183; x=1696251983;
-        h=to:subject:message-id:date:from:sender:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mXglc8opTBOxqxBVnbKKZEfOjkArzaJ5mbcscFyV/Wo=;
-        b=wYJx6gkIWPF3F54FHVP2Fage3Z5G3hYXcLOtFfhUSUBsSZEyqDhXW+K3Xreu8PNO16
-         S3emgRNkbWtjEGPZ9ZPZCKVbWhIu1lWOxg3HBaC875FWDAjcZXWD3y5lrxnnm7lAHfyP
-         vwXusMQ5bQoZ8KYn5Qg4GYn5d69Z8/r3Fe0CHTHAaPRE9K/ve2rgpx221GmXtXIpNF28
-         tYoxUzSx6qjaV91Y2rW7CEo89Knzt4a+YmxlfFelTXO1rJ2mCKDJ8A3QUSe+hmy3uHC8
-         6oORKdNy7nc5nZHo6HF3pwq0f65Cg2CZL5qNqWWnRdjdmEXvUXw0usJi1Q+DN+rlI2FZ
-         BPEA==
-X-Gm-Message-State: AOJu0YzUNeiHJAO1pn7OhnjgmyoY7GzbU3eAgj806DaeTt1AxyTMTzJ4
-        Jn2U3IiWHd6cvbWXFGq5Ki8Ibl9dPLlKUcby9js=
-X-Google-Smtp-Source: AGHT+IFXiu+hIuGpbMGnryBZPI9zrQcfgcwULkxd1ATRGTszst7B+kzsc3FXYgt1Oi/EhIFKc10wDAE9O22h3BLnnC4=
-X-Received: by 2002:a17:90b:33cc:b0:268:553f:1938 with SMTP id
- lk12-20020a17090b33cc00b00268553f1938mr4364657pjb.4.1695647182818; Mon, 25
- Sep 2023 06:06:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1695675800; x=1696280600;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h5LmKh0zH5XQgOefex67gJjj413XN3ZcWIB6g8SbNtQ=;
+        b=G7FyuZLtxVUx0dSNHAtb1b3WCBC41dRDE+nZh+83LqV+NU/zCoes000qBM25yd83LE
+         1QAYr0IEQNpRT/awCiE8lSvA8mJ/vDjK6Cfg52dwvn93APVg8+9HsUSUwPvtvNoCnrNJ
+         rPDaW/IOCXyu8rPAGViS2WJGz/oRK5Hjr7u/5krIqGZNXSse2EWvusEvj1rgx+6haxQ4
+         vORTVeM7J+86/uaTo5AYXtiL2FSASGKhZJVrWKk/4M9u9H/eMZM4NZGO3HrWedYfI3pi
+         9RNoa0zWzA/MjginSiugTTeenwITI9zxXDmfwdd5Z7wKffN7ZgJ+x+JkncYF65+3Un2e
+         QMxg==
+X-Gm-Message-State: AOJu0YwK3s9p8/XM5lOR8AlljzWiS6fNipgNF6APv45M0sQ9QGaRMcrK
+        8gyZsEfuIKhvIhMelI7gyZQTwupyemlTio27XOU=
+X-Google-Smtp-Source: AGHT+IF7JkNJOljy/LOrO04YOg27NOnXc9ZI87mMSIPKd7GIG5PWoirwVop1ku6vm2uyA0lCouRHwt/tfVoJyMqryaM=
+X-Received: by 2002:ac2:5e3a:0:b0:503:446:c7b0 with SMTP id
+ o26-20020ac25e3a000000b005030446c7b0mr5557950lfg.32.1695675799645; Mon, 25
+ Sep 2023 14:03:19 -0700 (PDT)
 MIME-Version: 1.0
-Sender: mr.isaiahnwabudike01@gmail.com
-Received: by 2002:a05:6a10:4410:b0:4e6:519f:124c with HTTP; Mon, 25 Sep 2023
- 06:06:22 -0700 (PDT)
-From:   "Mrs. Rita Hassan" <ritahassan02@gmail.com>
-Date:   Mon, 25 Sep 2023 06:06:22 -0700
-X-Google-Sender-Auth: yeq3_xtuipO1P77d2qeKwPgsd4c
-Message-ID: <CAN0kuD_Mb6r_ybPEbbHkv8BKeKwvyedgB_EOczj0YvEYjcG2ZQ@mail.gmail.com>
-Subject: Please I need your help,
-To:     undisclosed-recipients:;
+References: <324bb6b0-3d6c-707d-c0d1-1fdc1f43e845@redhat.com>
+ <87pm2ouk0s.fsf@defensec.nl> <CAP+JOzR7d7RfKWPaTt_BwEbEyWxGQhdnfAQ3fx5itL+xqshTLA@mail.gmail.com>
+ <e26ceee7-3c67-7cf9-1333-2650d1d2734d@redhat.com>
+In-Reply-To: <e26ceee7-3c67-7cf9-1333-2650d1d2734d@redhat.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Mon, 25 Sep 2023 17:03:08 -0400
+Message-ID: <CAP+JOzQDFiX+gzVpe4t1dxry5rYGqsN5TPsEYw5mi61gJT8Xhg@mail.gmail.com>
+Subject: Re: generating new type name using CIL macro
+To:     Vit Mojzis <vmojzis@redhat.com>
+Cc:     Dominick Grift <dominick.grift@defensec.nl>,
+        selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_5,MONEY_NOHTML,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        T_MONEY_PERCENT,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Please I need your help,
+On Tue, Sep 12, 2023 at 2:29=E2=80=AFPM Vit Mojzis <vmojzis@redhat.com> wro=
+te:
+>
+>
+>
+> On 9/12/23 15:13, James Carter wrote:
+> > On Tue, Sep 12, 2023 at 1:19=E2=80=AFAM Dominick Grift
+> > <dominick.grift@defensec.nl> wrote:
+> >> Vit Mojzis <vmojzis@redhat.com> writes:
+> >>
+> >>> Hello all,
+> >>> while trying to recreate some selinux-policy templates using CIL
+> >>> macros I got stuck on creating new type/role/attribute names.
+> >>> For example consider ssh_role_template [1], which uses its first
+> >>> parameter to create a new type $1_ssh_agent_t.
+> >>>
+> >>> Is there a way to recreate such functionality in a CIL macro (or
+> >>> another CIL feature)?
+> > In CIL we wanted to get away from the m4 string mangling. The thought
+> > was that a higher-level language could do this if desired.
+> > CIL is very restrictive in that all the arguments in a call have to be
+> > already defined. You cannot even pass a string that will be used to
+> > declare a type--the type must already be defined.
+>
+> Right, this complicates replicating interfaces even further.
+>
+> BTW there is no error or warning when passing a string in an attempt to
+> define a new entity inside the macro.
+> (macro define_type ((string t))
+>      (type t)
+>      (allow t t (process (setcap)))
+> )
+> (call define_type (yolo))
+>
 
+So what is going on here is that type t is being declared and that is
+completely different from the string t that is a macro parameter.
+The allow rule resolves because t is a valid type. As the macro is
+written, the "yolo" being passed in is not used. But if you would make
+a named type transition rule that takes t as the filename, it would
+end up with "yolo".
 
-Please forgive me for stressing you with my predicaments as I know
-that this letter may come to you as big surprise. Actually, I came
-across your E-mail from my personal search afterward I decided to
-email you directly believing that you will be honest to fulfill my
-final wish before i die.
+An error would be produced if you had used (type t) instead of (string
+t) in the macro.
+There probably should be a warning in the case above.
+Jim
 
-Meanwhile, I Am Mrs. Rita, 62 years old,I am suffering from a long
-time cancer and from all indication my condition is really
-deteriorating as my doctors have confirmed and courageously advised me
-that I may not live beyond two months from now for the reason that my
-tumor has reached a critical stage which has defiled all forms of
-medical treatment.
-
-As a matter of fact, registered nurse by profession while my husband
-was dealing on Gold Dust and Gold Dory Bars till his sudden death the
-year 2019 then I took over his business till date. In fact, at this
-moment I have a deposit sum of $5.5million dollars with one of the
-leading bank  but unfortunately I cannot visit the bank since I am
-critically sick and powerless to do anything myself but my bank
-account officer advised me to assign any of my trustworthy relative,
-friends or partner with authorization letter to stand as the recipient
-of my money but sorrowfully I don t have any reliable relative and no
-child.
-
-Therefore, I want you to receive the money and take 30% to take care
-of yourself and family while 70% should be use basically on
-humanitarian purposes mostly to orphanages home, Motherless babies
-home, less privileged and disable citizens and widows around the
-world. and as soon as I receive your respond I shall send you my
-pictures, banking records and with full contacts of my banking
-institution If you are interested in carrying out this task please
-contact me for more details on this email. ( ritahassan02@gmail.com )
-
-Hope to hear from you soon.
-
-Yours Faithfully
-
-Mrs. Rita Hassan
+> This installs without any complaints, but the type does not get defined
+> and the rule gets silently ignored as well.
+>
+> >
+> > As Dominick says below, we thought that blocks and inheritance would
+> > replace the string mangling, but, as you note, this does change how
+> > the type looks.
+>
+> Yes, and since that is something I cannot ignore, I'll have to create
+> some kind of simple abstraction as Dominick suggested.
+>
+> Thank you both for the suggestions and explanations, you helped me a
+> great deal.
+> Vit
+>
+> >
+> > Jim
+> >
+> >> CIL uses blocks for it implementation of templating. If you want to le=
+verage
+> >> native CIL then look into blocks.
+> >>
+> >> Example:
+> >>
+> >> cat > mytest.cil <<EOF
+> >> (typeattribute foo)
+> >>
+> >> (block t
+> >> (blockabstract t)
+> >> (type t)
+> >> (typeattributeset .foo t))
+> >>
+> >> (block bar
+> >> (blockinherit t))
+> >>
+> >> (block baz
+> >> (blockinherit t))
+> >>
+> >> (allow .foo .foo (process (signal)))
+> >> EOF
+> >>
+> >> sudo semodule -i mytest.cil
+> >>
+> >> seinfo -xafoo
+> >>
+> >> Type Attributes: 1
+> >>     attribute foo;
+> >>          bar.t
+> >>          baz.t
+> >>
+> >> sesearch -A -s foo -ds
+> >> allow foo foo:process signal;
+> >>
+> >>> Something along the lines of:
+> >>> (macro new_type_macro ((string type_prefix))
+> >>>    (type (type_prefix)_t)
+> >>> )
+> >>> which when called (call new_type_macro ("yolo")) would produce
+> >>> (type yolo_t)
+> >>>
+> >>> I searched through CIL reference guide [2] and SELinuxProject CIL wik=
+i
+> >>> on github, but didn't find anything close (maybe there is a better
+> >>> resource I don't know about).
+> >>> I'd appreciate any hints or links to other resources related to CIL m=
+acros.
+> >>>
+> >>> Thank you,
+> >>> Vit
+> >>>
+> >>> [1] -
+> >>> https://github.com/TresysTechnology/refpolicy/blob/master/policy/modu=
+les/services/ssh.if#L301
+> >>> [2] -
+> >>> https://raw.githubusercontent.com/SELinuxProject/selinux-notebook/mai=
+n/src/notebook-examples/selinux-policy/cil/CIL_Reference_Guide.pdf
+> >>> [3] - https://github.com/SELinuxProject/cil/wiki#macros
+> >>>
+> >> --
+> >> gpg --locate-keys dominick.grift@defensec.nl (wkd)
+> >> Key fingerprint =3D FCD2 3660 5D6B 9D27 7FC6  E0FF DA7E 521F 10F6 4098
+> >> Dominick Grift
+> >> Mastodon: @kcinimod@defensec.nl
+>

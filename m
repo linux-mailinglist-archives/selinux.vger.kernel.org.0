@@ -2,234 +2,265 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63FDE7B8C7E
-	for <lists+selinux@lfdr.de>; Wed,  4 Oct 2023 21:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FF327B8E6D
+	for <lists+selinux@lfdr.de>; Wed,  4 Oct 2023 23:02:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245430AbjJDTEv (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 4 Oct 2023 15:04:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37926 "EHLO
+        id S233942AbjJDVCD (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 4 Oct 2023 17:02:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245664AbjJDTCA (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 4 Oct 2023 15:02:00 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFD8030CD;
-        Wed,  4 Oct 2023 11:56:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675C9C433D9;
-        Wed,  4 Oct 2023 18:56:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696445777;
-        bh=iC7KwsOJJL3kT0M8KubHc+xTYSGXLa7gjxgf1YgvBK8=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NqVtdmXPTE3K9q9deuJTm/G7a71zUKszCFqZsp5GIQNtA7H7/+QIS49PlOMCUfFNJ
-         1ydyxG0x0Zhc5NXKKvQZoNb0pMC2bwR6porAQ3qOkvHn+oCaXipMdg5DIlUK6kK3dJ
-         /qGaNm9SdmE2IDbECVrjFagXBbmQuihBc1Xhxlya1LZKKRDWQwFqYqNeRTG4/PcP8U
-         fjxjbvBWhJKav9Mn2S5Lw52vmEkf02EL+EOCc8xxck+JdDNrgRWXBSojP+3KV6r6+j
-         osY5RvD+bQgIMRf1FSVwxbtgizfCN1brIMaKXTHpZ/pGKsilyXHn7K+ZkEvj2U6B0B
-         tzn7voxPB+lnw==
-From:   Jeff Layton <jlayton@kernel.org>
-To:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        David Sterba <dsterba@suse.cz>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Theodore Ts'o <tytso@mit.edu>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>, Jeremy Kerr <jk@ozlabs.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        =?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
-        Todd Kjos <tkjos@android.com>,
-        Martijn Coenen <maco@android.com>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Carlos Llamas <cmllamas@google.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        Mattia Dongili <malattia@linux.it>,
-        Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>,
-        Brad Warrum <bwarrum@linux.ibm.com>,
-        Ritu Agarwal <rituagar@linux.ibm.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Mark Gross <markgross@kernel.org>,
-        Jiri Slaby <jirislaby@kernel.org>,
-        Eric Van Hensbergen <ericvh@kernel.org>,
-        Latchesar Ionkov <lucho@ionkov.net>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Christian Schoenebeck <linux_oss@crudebyte.com>,
-        David Sterba <dsterba@suse.com>,
-        David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Ian Kent <raven@themaw.net>,
-        Luis de Bethencourt <luisbg@kernel.org>,
-        Salah Triki <salah.triki@gmail.com>,
-        "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-        Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
-        Xiubo Li <xiubli@redhat.com>,
-        Ilya Dryomov <idryomov@gmail.com>,
-        Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
-        Joel Becker <jlbec@evilplan.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Nicolas Pitre <nico@fluxnic.net>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>, Gao Xiang <xiang@kernel.org>,
-        Chao Yu <chao@kernel.org>, Yue Hu <huyue2@coolpad.com>,
-        Jeffle Xu <jefflexu@linux.alibaba.com>,
-        Namjae Jeon <linkinjeon@kernel.org>,
-        Sungjong Seo <sj1557.seo@samsung.com>,
-        Jan Kara <jack@suse.com>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-        Christoph Hellwig <hch@infradead.org>,
-        Miklos Szeredi <miklos@szeredi.hu>,
-        Bob Peterson <rpeterso@redhat.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>, Jan Kara <jack@suse.cz>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Dave Kleikamp <shaggy@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Anna Schumaker <anna@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Neil Brown <neilb@suse.de>,
-        Olga Kornievskaia <kolga@netapp.com>,
-        Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Anton Altaparmakov <anton@tuxera.com>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mark Fasheh <mark@fasheh.com>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Bob Copeland <me@bobcopeland.com>,
-        Mike Marshall <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Iurii Zaikin <yzaikin@google.com>,
-        Tony Luck <tony.luck@intel.com>,
-        "Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-        Anders Larsen <al@alarsen.net>,
-        Steve French <sfrench@samba.org>,
-        Paulo Alcantara <pc@manguebit.com>,
-        Ronnie Sahlberg <lsahlber@redhat.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Phillip Lougher <phillip@squashfs.org.uk>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Evgeniy Dushistov <dushistov@mail.ru>,
-        Chandan Babu R <chandan.babu@oracle.com>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Song Liu <song@kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>,
-        Stanislav Fomichev <sdf@google.com>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        Hugh Dickins <hughd@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        John Johansen <john.johansen@canonical.com>,
-        Paul Moore <paul@paul-moore.com>,
-        James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>,
-        Kent Overstreet <kent.overstreet@linux.dev>,
-        Brian Foster <bfoster@redhat.com>
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-usb@vger.kernel.org, v9fs@lists.linux.dev,
-        linux-afs@lists.infradead.org, autofs@vger.kernel.org,
-        linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-        codalist@coda.cs.cmu.edu, linux-efi@vger.kernel.org,
-        linux-erofs@lists.ozlabs.org, linux-ext4@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, gfs2@lists.linux.dev,
-        linux-um@lists.infradead.org, linux-mtd@lists.infradead.org,
-        jfs-discussion@lists.sourceforge.net, linux-nfs@vger.kernel.org,
-        linux-nilfs@vger.kernel.org, linux-ntfs-dev@lists.sourceforge.net,
-        ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-        linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
-        linux-unionfs@vger.kernel.org, linux-hardening@vger.kernel.org,
-        reiserfs-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org,
-        linux-trace-kernel@vger.kernel.org, linux-xfs@vger.kernel.org,
-        bpf@vger.kernel.org, netdev@vger.kernel.org,
-        apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-        selinux@vger.kernel.org, linux-bcachefs@vger.kernel.org
-Subject: [PATCH v2 89/89] fs: move i_generation into new hole created after timestamp conversion
-Date:   Wed,  4 Oct 2023 14:55:30 -0400
-Message-ID: <20231004185530.82088-3-jlayton@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20231004185530.82088-1-jlayton@kernel.org>
-References: <20231004185530.82088-1-jlayton@kernel.org>
+        with ESMTP id S233577AbjJDVCD (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 4 Oct 2023 17:02:03 -0400
+Received: from mail-lf1-x133.google.com (mail-lf1-x133.google.com [IPv6:2a00:1450:4864:20::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 726BE90
+        for <selinux@vger.kernel.org>; Wed,  4 Oct 2023 14:01:59 -0700 (PDT)
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-504a7f9204eso329663e87.3
+        for <selinux@vger.kernel.org>; Wed, 04 Oct 2023 14:01:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696453317; x=1697058117; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y6zbUhDdQIvX/Ja84ToO8RUO4o7j2td4VtIMmL8U640=;
+        b=ZR04e3QnzvQJRn869YqeJw8SngazzrwMuFMRhQHsL3kruelICFfYkIBEXsK2yWhGUa
+         x+DmKESoj52dcf9eNWONZncyZM7BS/eJ2byTWhOa/Sa0HWZhiTrwTChAmwq89J5CLYsN
+         vMj6M4lQXz0I25eWnId9o77//LsawtkhUycxI2wGtceoa3SINEg9barpk5PwJY7lLKuN
+         jyxUrM4ZdKwB6rK3c2h6ABurD9bKhoAY808y9KyAHVzMJkqfp0GoSCwbqDJgvAfcp+Sc
+         eQXf0Qq7jblu3ELUKQIC+gx2pURBQdsPaipzj/CwczIQ5+/Q5kFpaKwNfr7AcruaSFel
+         gGiw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696453317; x=1697058117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y6zbUhDdQIvX/Ja84ToO8RUO4o7j2td4VtIMmL8U640=;
+        b=nmCS9qoWcSqQCQ6tLyWusCx+hPUtl8jRmu7QtB2hfoqPy5jdSJq7ZfiC4uJk/IyxN7
+         Up4noB8ASMgBNEqwV4EdkcjWTfrpCdTgf6LGCh01KLVvTA4urfLxmTdWPEx5k1cDSb5B
+         UfFaaTpXt7jX1U3qT+CaataFPztLMKaocnE7z77TP8gs2ncV51fd6FfKfh6M/knayv2V
+         7UlOZtbP1+itDwnBs6qEEYsSW5EX6lTCWBA7hPGru3HIta1ScSuplB985qq6bIsFIu9n
+         bxADj3ytIzaIttP2nBtoFmFxvneq1YsRPRPGp3JHzoZfbTTqKqrsro6cYcoSHkZ80vCh
+         eVwA==
+X-Gm-Message-State: AOJu0Yw4/2Sz77WdUrQwgBxmGEsxCo+4JxI+88pLJWKyYUVd1VjwG5d1
+        nXjk1gKQNkmqaO/C1RyA8fQ2h6zDOKdqrIIwTaCLJihT
+X-Google-Smtp-Source: AGHT+IEg7BCL/GmeeTOHvEtVkiyCL+61Pj1yN4GtDm1c3UCfuWFiTeaNzbb5JIZQksEbrHN5Tz2XhCQgE+tsafmqkNQ=
+X-Received: by 2002:ac2:558a:0:b0:4fd:cbd6:d2ff with SMTP id
+ v10-20020ac2558a000000b004fdcbd6d2ffmr2401921lfg.33.1696453317355; Wed, 04
+ Oct 2023 14:01:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230814132025.45364-1-cgzones@googlemail.com> <20230814132025.45364-11-cgzones@googlemail.com>
+In-Reply-To: <20230814132025.45364-11-cgzones@googlemail.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Wed, 4 Oct 2023 17:01:45 -0400
+Message-ID: <CAP+JOzSaG5B9odXriQ=fTQZ27mU7HBFL+Mo4+yDVSPP+H8XB-w@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 10/27] libselinux: introduce selabel_nuke
+To:     =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Cc:     selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-The recent change to use discrete integers instead of struct timespec64
-shaved 8 bytes off of struct inode, but it also moves the i_lock
-into the previous cacheline, away from the fields that it protects.
+On Mon, Aug 14, 2023 at 9:41=E2=80=AFAM Christian G=C3=B6ttsche
+<cgzones@googlemail.com> wrote:
+>
+> Introduce a helper to remove SELinux file contexts.
+>
+> Mainly for testing label operations and only for SELinux disabled
+> systems, since removing file contexts is not supported by SELinux.
+>
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> ---
+>  libselinux/utils/.gitignore     |   1 +
+>  libselinux/utils/selabel_nuke.c | 134 ++++++++++++++++++++++++++++++++
+>  2 files changed, 135 insertions(+)
+>  create mode 100644 libselinux/utils/selabel_nuke.c
+>
+> diff --git a/libselinux/utils/.gitignore b/libselinux/utils/.gitignore
+> index b3311360..a92e1e94 100644
+> --- a/libselinux/utils/.gitignore
+> +++ b/libselinux/utils/.gitignore
+> @@ -20,6 +20,7 @@ selabel_digest
+>  selabel_get_digests_all_partial_matches
+>  selabel_lookup
+>  selabel_lookup_best_match
+> +selabel_nuke
 
-Move i_generation above the i_lock, which moves the new 4 byte hole to
-just after the i_fsnotify_mask in my setup.
+This is not a good name and I am not sure that it should have a
+"selabel" prefix. It doesn't use any selabel stuff.
 
-Suggested-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
----
- include/linux/fs.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+It seems like this should be in policycoreutils maybe with the name
+"remove_filecons".
 
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index 485b5e21c8e5..686c9f33e725 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -677,6 +677,7 @@ struct inode {
- 	u32			i_atime_nsec;
- 	u32			i_mtime_nsec;
- 	u32			i_ctime_nsec;
-+	u32			i_generation;
- 	spinlock_t		i_lock;	/* i_blocks, i_bytes, maybe i_size */
- 	unsigned short          i_bytes;
- 	u8			i_blkbits;
-@@ -733,7 +734,6 @@ struct inode {
- 		unsigned		i_dir_seq;
- 	};
- 
--	__u32			i_generation;
- 
- #ifdef CONFIG_FSNOTIFY
- 	__u32			i_fsnotify_mask; /* all events this inode cares about */
--- 
-2.41.0
+Jim
 
+
+>  selabel_partial_match
+>  selinux_check_securetty_context
+>  selinuxenabled
+> diff --git a/libselinux/utils/selabel_nuke.c b/libselinux/utils/selabel_n=
+uke.c
+> new file mode 100644
+> index 00000000..b6a2df66
+> --- /dev/null
+> +++ b/libselinux/utils/selabel_nuke.c
+> @@ -0,0 +1,134 @@
+> +#include <dirent.h>
+> +#include <errno.h>
+> +#include <fcntl.h>
+> +#include <getopt.h>
+> +#include <linux/magic.h>
+> +#include <stdbool.h>
+> +#include <stdio.h>
+> +#include <stdlib.h>
+> +#include <string.h>
+> +#include <sys/types.h>
+> +#include <sys/xattr.h>
+> +#include <unistd.h>
+> +
+> +#include <selinux/selinux.h>
+> +
+> +
+> +#define XATTR_NAME_SELINUX "security.selinux"
+> +
+> +
+> +static void usage(const char *progname)
+> +{
+> +       fprintf(stderr, "usage: %s [-nrv] <path>\n", progname);
+> +}
+> +
+> +static void nuke(int atfd, const char *path, const char *fullpath, bool =
+dry_run, bool recursive, bool verbose)
+> +{
+> +       ssize_t ret;
+> +       int fd, rc;
+> +       DIR *dir;
+> +
+> +       ret =3D lgetxattr(fullpath, XATTR_NAME_SELINUX, NULL, 0);
+> +       if (ret <=3D 0) {
+> +               if (errno !=3D ENODATA && errno !=3D ENOTSUP)
+> +                       fprintf(stderr, "Failed to get SELinux label of %=
+s:  %m\n", fullpath);
+> +               else if (verbose)
+> +                       printf("Failed to get SELinux label of %s:  %m\n"=
+, fullpath);
+> +       } else {
+> +               if (dry_run) {
+> +                       printf("Would remove SELinux label of %s\n", full=
+path);
+> +               } else {
+> +                       if (verbose)
+> +                               printf("Removing label of %s\n", fullpath=
+);
+> +
+> +                       rc =3D lremovexattr(fullpath, XATTR_NAME_SELINUX)=
+;
+> +                       if (rc < 0)
+> +                               fprintf(stderr, "Failed to remove SELinux=
+ label of %s:  %m\n", fullpath);
+> +               }
+> +       }
+> +
+> +       if (!recursive)
+> +               return;
+> +
+> +       fd =3D openat(atfd, path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O=
+_CLOEXEC);
+> +       if (fd < 0) {
+> +               if (errno !=3D ENOTDIR)
+> +                       fprintf(stderr, "Failed to open %s:  %m\n", fullp=
+ath);
+> +               return;
+> +       }
+> +
+> +       dir =3D fdopendir(fd);
+> +       if (!dir) {
+> +               fprintf(stderr, "Failed to open directory %s:  %m\n", ful=
+lpath);
+> +               close(fd);
+> +               return;
+> +       }
+> +
+> +       while (true) {
+> +               const struct dirent *entry;
+> +               char *nextfullpath;
+> +
+> +               errno =3D 0;
+> +               entry =3D readdir(dir);
+> +               if (!entry) {
+> +                       if (errno)
+> +                               fprintf(stderr, "Failed to iterate direct=
+ory %s:  %m\n", fullpath);
+> +                       break;
+> +               }
+> +
+> +               if (entry->d_name[0] =3D=3D '.' && (entry->d_name[1] =3D=
+=3D '\0' || (entry->d_name[1] =3D=3D '.' && entry->d_name[2] =3D=3D '\0')))
+> +                       continue;
+> +
+> +               rc =3D asprintf(&nextfullpath, "%s/%s", strcmp(fullpath, =
+"/") =3D=3D 0 ? "" : fullpath, entry->d_name);
+> +               if (rc < 0) {
+> +                       fprintf(stderr, "Out of memory!\n");
+> +                       closedir(dir);
+> +                       return;
+> +               }
+> +
+> +               nuke(dirfd(dir), entry->d_name, nextfullpath, dry_run, re=
+cursive, verbose);
+> +
+> +               free(nextfullpath);
+> +       }
+> +
+> +       closedir(dir);
+> +}
+> +
+> +
+> +int main(int argc, char *argv[])
+> +{
+> +       bool dry_run =3D false, recursive =3D false, verbose =3D false;
+> +       int c;
+> +
+> +       while ((c =3D getopt(argc, argv, "nrv")) !=3D -1) {
+> +               switch (c) {
+> +               case 'n':
+> +                       dry_run =3D true;
+> +                       break;
+> +               case 'r':
+> +                       recursive =3D true;
+> +                       break;
+> +               case 'v':
+> +                       verbose =3D true;
+> +                       break;
+> +               default:
+> +                       usage(argv[0]);
+> +                       return EXIT_FAILURE;
+> +               }
+> +       }
+> +
+> +       if (optind >=3D argc) {
+> +               usage(argv[0]);
+> +               return EXIT_FAILURE;
+> +       }
+> +
+> +       if (is_selinux_enabled()) {
+> +               fprintf(stderr, "Removing SELinux attributes on a SELinux=
+ enabled system is not supported!\n");
+> +               return EXIT_FAILURE;
+> +       }
+> +
+> +       for (int index =3D optind; index < argc; index++)
+> +               nuke(AT_FDCWD, argv[index], argv[index], dry_run, recursi=
+ve, verbose);
+> +
+> +       return EXIT_SUCCESS;
+> +}
+> --
+> 2.40.1
+>

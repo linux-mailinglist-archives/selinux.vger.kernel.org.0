@@ -2,127 +2,110 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE8CC7C4719
-	for <lists+selinux@lfdr.de>; Wed, 11 Oct 2023 03:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FA847C4B93
+	for <lists+selinux@lfdr.de>; Wed, 11 Oct 2023 09:18:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344585AbjJKBRn (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 10 Oct 2023 21:17:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39080 "EHLO
+        id S1344443AbjJKHSe (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 11 Oct 2023 03:18:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58282 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344470AbjJKBRm (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 10 Oct 2023 21:17:42 -0400
-Received: from mail-qt1-x834.google.com (mail-qt1-x834.google.com [IPv6:2607:f8b0:4864:20::834])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B9E4AF
-        for <selinux@vger.kernel.org>; Tue, 10 Oct 2023 18:17:41 -0700 (PDT)
-Received: by mail-qt1-x834.google.com with SMTP id d75a77b69052e-4195fddd6d7so4216131cf.0
-        for <selinux@vger.kernel.org>; Tue, 10 Oct 2023 18:17:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1696987060; x=1697591860; darn=vger.kernel.org;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=8hWLrD7SZl7TcacLOoTzuq06tk7AIygH3knhMFZNLVY=;
-        b=LP1jYPrySdmcYIqz24G/z7HiNmPRF8cmS0U/6KreUKDy9RJVarN4ypctVgY090bW6q
-         fhpfuGNfDgfeovb7gAFFBZdlh8R9AbNYShl5we7SshmvTGlEgLg1acHUe1MiV2kjaLlV
-         0VZwP9PIFauZn4nFaKWYccQAL1cuIX924g7VIP3ps/lqDRp0r13Mbknv0dP1i7ACZud1
-         0B9Omw8ZnH2dpr31MuIlXcIcPJ+1AeKxBcTTeUTD9mZ8s6TRKBNKjubGFW0/Q/eA9uUv
-         AMVbQYgBfVa0uZ2q16BpfkPStm/ziDEw1/V/AuYxJ/aWZOsPYkeL/o5gDWpzhehCYTjx
-         0dCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696987060; x=1697591860;
-        h=in-reply-to:references:subject:cc:to:from:message-id:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8hWLrD7SZl7TcacLOoTzuq06tk7AIygH3knhMFZNLVY=;
-        b=eGbAMVEKdpVHB8mddCv5E/1dILV9E9deEDHhf8pzK/WFUhVRBh1WcxOYW5Hm+WV3br
-         uwRFqaF+3EXPyB61Nc4CvvlxNE+onqwl1WV55ILowJ9++9w15Xvx35C8AUwXeO65DNtT
-         71ZfPso/ocUb7T9OxPNyvbYIgzj+HfiRdH+PekQEJ/fwFb6JLTzYh1uZx9dLK5TWVcM8
-         rhRn/sh+UTWhQoMXUugehuaaGkNQJnRcp/Fq72xQe2PHf0WAckutHPpAaR9YYhUH7Pw1
-         fCziaGWJoCAneFVPI9DfgpDf/mKL4Nct6gGEwVFOxacHuR94Je2eGU0bzdBAMdqJ+Y8t
-         Zmgw==
-X-Gm-Message-State: AOJu0YxRxADV+WZql8VYDneSKQzC2yef2TlRNSTWLWoGIOD0Lw1UlFZd
-        4yB/za+G/QWb1a5q4MJU70XO
-X-Google-Smtp-Source: AGHT+IFMjRoxd6M6UkenLBrMtcmhXpeM+27NBW05bCx4rgaZT2JbFycWyJjjBn8NtpEiwf7yP+QXbA==
-X-Received: by 2002:ac8:5bc8:0:b0:418:11c9:ddb5 with SMTP id b8-20020ac85bc8000000b0041811c9ddb5mr23034732qtb.25.1696987060155;
-        Tue, 10 Oct 2023 18:17:40 -0700 (PDT)
-Received: from localhost ([70.22.175.108])
-        by smtp.gmail.com with ESMTPSA id v2-20020ac873c2000000b00419576c7b75sm4898801qtp.23.2023.10.10.18.17.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 18:17:39 -0700 (PDT)
-Date:   Tue, 10 Oct 2023 21:17:39 -0400
-Message-ID: <9fe88aef7deabbe87d3fc38c4aea3c69.paul@paul-moore.com>
-From:   Paul Moore <paul@paul-moore.com>
-To:     Andrii Nakryiko <andrii@kernel.org>, <bpf@vger.kernel.org>,
-        <netdev@vger.kernel.org>
-Cc:     <linux-fsdevel@vger.kernel.org>,
-        <linux-security-module@vger.kernel.org>, <keescook@chromium.org>,
-        <brauner@kernel.org>, <lennart@poettering.net>,
-        <kernel-team@meta.com>, <sargun@sargun.me>, selinux@vger.kernel.org
-Subject: Re: [PATCH v6 6/13] bpf: add BPF token support to BPF_PROG_LOAD  command
-References: <20230927225809.2049655-7-andrii@kernel.org>
-In-Reply-To: <20230927225809.2049655-7-andrii@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1344434AbjJKHSe (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 11 Oct 2023 03:18:34 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAD8290
+        for <selinux@vger.kernel.org>; Wed, 11 Oct 2023 00:17:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1697008671;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:mime-version:mime-version:content-type:content-type;
+        bh=y3AfBEeUt+6V/YnWoXTb3c2maEKp45V/c8gYL4BJNM0=;
+        b=TVM2l/sSXp2M3sJWpnkvqBu2tlPfnKju39eyeClB+3tUdcvHRO40aL5EGdXVN39rzMBqtO
+        IvAC3eOui/+KFnSMG2ajw6S5RZ3LAgRFRDnZjgK//N4KMPZGrCFf6y6fjtQf1b16MlWn3M
+        7tKGUwMB/7dhQu5+Ehyq5FI50iKLCBc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-1-vnRx5vEBOu6YSDzBxo8dSw-1; Wed, 11 Oct 2023 03:17:48 -0400
+X-MC-Unique: vnRx5vEBOu6YSDzBxo8dSw-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 442A1887E47
+        for <selinux@vger.kernel.org>; Wed, 11 Oct 2023 07:17:48 +0000 (UTC)
+Received: from dhcp-0-146.brq.redhat.com (unknown [10.43.17.163])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 09855C5796D
+        for <selinux@vger.kernel.org>; Wed, 11 Oct 2023 07:17:47 +0000 (UTC)
+Received: from dhcp-0-146.brq.redhat.com (localhost.localdomain [127.0.0.1])
+        by dhcp-0-146.brq.redhat.com (8.17.1/8.16.1) with ESMTPS id 39B7HkjX006208
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT)
+        for <selinux@vger.kernel.org>; Wed, 11 Oct 2023 09:17:46 +0200
+Received: (from petr@localhost)
+        by dhcp-0-146.brq.redhat.com (8.17.1/8.17.1/Submit) id 39B7HkOP006207
+        for selinux@vger.kernel.org; Wed, 11 Oct 2023 09:17:46 +0200
+X-Authentication-Warning: dhcp-0-146.brq.redhat.com: petr set sender to ppisar@redhat.com using -f
+Date:   Wed, 11 Oct 2023 09:17:46 +0200
+From:   Petr Pisar <ppisar@redhat.com>
+To:     selinux@vger.kernel.org
+Subject: An X.509 certificate for selinuxproject.org web server has expired
+Message-ID: <ZSZMGtFFycCLmjNb@dhcp-0-146.brq.redhat.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="bK8Jbhxl2HdokPx2"
+Content-Disposition: inline
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,PDS_BTC_ID,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Sep 27, 2023 Andrii Nakryiko <andrii@kernel.org> wrote:
-> 
-> Add basic support of BPF token to BPF_PROG_LOAD. Wire through a set of
-> allowed BPF program types and attach types, derived from BPF FS at BPF
-> token creation time. Then make sure we perform bpf_token_capable()
-> checks everywhere where it's relevant.
-> 
-> Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-> ---
->  include/linux/bpf.h                           |  6 ++
->  include/uapi/linux/bpf.h                      |  2 +
->  kernel/bpf/core.c                             |  1 +
->  kernel/bpf/inode.c                            |  6 +-
->  kernel/bpf/syscall.c                          | 87 ++++++++++++++-----
->  kernel/bpf/token.c                            | 25 ++++++
->  tools/include/uapi/linux/bpf.h                |  2 +
->  .../selftests/bpf/prog_tests/libbpf_probes.c  |  2 +
->  .../selftests/bpf/prog_tests/libbpf_str.c     |  3 +
->  9 files changed, 108 insertions(+), 26 deletions(-)
 
-...
+--bK8Jbhxl2HdokPx2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-> index 5c5c2b6648b2..d0b219f09bcc 100644
-> --- a/kernel/bpf/syscall.c
-> +++ b/kernel/bpf/syscall.c
-> @@ -2685,6 +2718,10 @@ static int bpf_prog_load(union bpf_attr *attr, bpfptr_t uattr, u32 uattr_size)
->  	prog->aux->sleepable = attr->prog_flags & BPF_F_SLEEPABLE;
->  	prog->aux->xdp_has_frags = attr->prog_flags & BPF_F_XDP_HAS_FRAGS;
->  
-> +	/* move token into prog->aux, reuse taken refcnt */
-> +	prog->aux->token = token;
-> +	token = NULL;
-> +
->  	err = security_bpf_prog_alloc(prog->aux);
->  	if (err)
->  		goto free_prog;
+A TLS certificate for <https://selinuxproject.org/> has expired:
 
-As we discussed in the earlier thread, let's tweak/rename/move the
-security_bpf_prog_alloc() call down to just before the bpf_check() call
-so it looks something like this:
+$ gnutls-cli --port https selinuxproject.org=20
+Processed 367 CA certificate(s).
+Resolving 'selinuxproject.org:https'...
+Connecting to '207.210.245.134:443'...
+- Certificate type: X.509
+- Got a certificate list of 3 certificates.
+- Certificate[0] info:
+ - subject `CN=3Dselinuxproject.org', issuer `CN=3DR3,O=3DLet's Encrypt,C=
+=3DUS', serial 0x04ef96d84dee2bf82c3fd430379377422cc5, RSA key 2048 bits, s=
+igned using RSA-SHA256, activated `2023-07-12 19:10:38 UTC', expires `2023-=
+10-10 19:10:37 UTC', pin-sha256=3D"MrgWqS/CGL+3idYpvJbFP3KfXfWmDboEKJTsCXFm=
+c28=3D"
 
-  err = security_bpf_prog_load(prog, &attr, token);
-  if (err)
-    goto proper_jump_label;
-  
-  err = bpf_check(...);
+-- Petr
 
-With the idea being that LSMs which implement the token hooks would
-skip any BPF_PROG_LOAD access controls in security_bpf() and instead
-implement them in security_bpf_prog_load().
+--bK8Jbhxl2HdokPx2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-We should also do something similar for map_create() and
-security_bpf_map_alloc() in patch 4/13.
+-----BEGIN PGP SIGNATURE-----
 
---
-paul-moore.com
+iQIzBAABCAAdFiEE4/QvzhVoMKgDWObpT9GuwzZa978FAmUmTBoACgkQT9GuwzZa
+979OhA/+L6KaH3+mHwhzIq+7dA6kwbzkukK6m2pgaujdIoKDhCB7/SL+VLWwE1sm
+WuxLG5boYybZ09RczzHHM5U8jA366wP5oGIo+MS1y2F+BS7G1A2VrK7BklO2syuD
+x7sI/3nkC1O/GAVCu4kaWD22ECXz/XcSpadplSIj6qTxP5YOOcx1tnsIdLE0d9Bv
+2VGHbNTgIIFgUchKLgdQlflpGF1o0bJgAKpEIp5UESOGMmE42wXYsu9Sq39WuafZ
+8Rre5V5sGxvr7oHDkI/1o1HATRfxwx1Is9oX7t9HQ4fp9p2YEFyW6ML2uqvejLwO
+5NfQfP8wP7YWENSSXCcFKWz1y8yFSIjmwKjNowiGBahAoktorbm0A22V4VW9Zvtn
+I3Xagki067R8hhk0giFoL3NqeXx5enqNumambMNy3Ocm5gn5RDN92w97lOABZXSK
+omKtE2zDQTkQvqs55IVjJ/2UOEHyvNhfkEnqLLAhdxTjNJlyE5E9Hi7JnwaBcaKb
+zTwK927fERew5c/d/S0cqc6sPAJoGPV4VJoLc9gtWGhH4gd+koXiGp7VXgLXE7MP
+2319SOr4eRkKRTN2rPnneV3cmlnv/OyaW7wymsIUl2zJDTISBcFbg3IysaosfJIq
+mhn84YyjJSdMu8Vg2eqU7mz4s3DlvGPVatoNP5TsjMVu8jFS2os=
+=kzJN
+-----END PGP SIGNATURE-----
+
+--bK8Jbhxl2HdokPx2--
+

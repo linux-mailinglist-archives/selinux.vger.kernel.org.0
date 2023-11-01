@@ -2,62 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AB46F7DE4AE
-	for <lists+selinux@lfdr.de>; Wed,  1 Nov 2023 17:37:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 548E57DE4AF
+	for <lists+selinux@lfdr.de>; Wed,  1 Nov 2023 17:38:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232181AbjKAQhw (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 1 Nov 2023 12:37:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54112 "EHLO
+        id S231760AbjKAQiJ (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 1 Nov 2023 12:38:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231760AbjKAQhv (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 1 Nov 2023 12:37:51 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B656110
-        for <selinux@vger.kernel.org>; Wed,  1 Nov 2023 09:37:44 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-53e3b8f906fso11586311a12.2
-        for <selinux@vger.kernel.org>; Wed, 01 Nov 2023 09:37:44 -0700 (PDT)
+        with ESMTP id S231345AbjKAQiJ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 1 Nov 2023 12:38:09 -0400
+Received: from mail-ej1-x632.google.com (mail-ej1-x632.google.com [IPv6:2a00:1450:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D89E10C
+        for <selinux@vger.kernel.org>; Wed,  1 Nov 2023 09:38:01 -0700 (PDT)
+Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-9cf83c044b7so978574866b.1
+        for <selinux@vger.kernel.org>; Wed, 01 Nov 2023 09:38:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1698856663; x=1699461463; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RViy1LVoXrp0digXqSDZ+AesyrDtNXvdPxpQ1tEhXEM=;
-        b=AwUyNdROjIIP92U1fAlnPzqqhpoMpKGvQtRZ1kPWOrjqVnJ/jQystRIzY4V8tqFhOC
-         vhNRqPrGW6pRFTbVQK57lYrmyWPialzwP6HHbtnxwQkaxhiy+JBLukbKJSDxnIoF+WBs
-         gLb5TYYlZQ+tlA3hOVPRaUtDHBQgwf4hF8TSt/CXCprpekIgQ08aSJA9gP3psixJ3jsS
-         F5bE2IzEI/+smUu7CI18wWCda0AN+CxgenHEKXiAjSDMeuw9Hu+hNuXcWN2NLym6/qQR
-         b0/SHhV91oMOQl//tGzyb2esn0md6urI/pE51cqqHrWUXe10gQ2t78ZlAjKvZo5xgs3O
-         9EsA==
+        d=googlemail.com; s=20230601; t=1698856680; x=1699461480; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0NrVX1rT/+N1kltIEl1Aly/v2iMzXV2g51rU9ugrCuE=;
+        b=Q0imGyr4vNbwGPp9sUqjIE12z45x+wcOHxbTcczuntbIv/QtqGjRvt9ceSRYQZQerk
+         pTaRYWNQLO2okUQ/f2AhhguPcWZemrRx5HXwhN2OSfHoV1yNh0GQL4r3T9km/49imnun
+         kgIJrKpSoDT4sheoCTiPWp+ClyifNVY6ljSS48Mb2wM+mSrFO9rxYz6I65vaMeMq6lNF
+         i65rKT+C8vnzCErV+rspA/Jt6mGxAV0DeCCi/iZHJoWSq/o63VrNlIbe6tcB9G+Yvd4u
+         7P3lH/gfqiiWqAtJieObGH5VyM26AdCM+w1lHouO6Mo2lV78veL5gqAeb5P7v/4wxVPH
+         +gyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698856663; x=1699461463;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RViy1LVoXrp0digXqSDZ+AesyrDtNXvdPxpQ1tEhXEM=;
-        b=E4bXzdbnY1K4Hb4rT0id+CdRtvRyTsOTWJ/r4eSgwlxzpNMtB+sbpCZ15jIsHgzkM8
-         XelqCMt4P9/mpyctfF1vjPySD4OPerAQAtylKl/0bZlHbwGy4FNrd2Y5f/0awJAZXG8x
-         Lz7PCTRgHi6AR/DFAl/EDwAb66XiZ+W7ERG5zUm9CrwXe+/ey1AeC5xut0d0VObkdYLm
-         7CJZI07OHIWPLwvlNNswBhrVXUp1zaAXpJ0oKGVJxZAHVb2nh7eawzWkpovgPEKYC0U+
-         pXz82DPC/WFL01mLTfNW8rLPb1H1AHpCQprDkGbtb2BH0r20DUHupDT+QhUmxLK1iBXs
-         Ek3g==
-X-Gm-Message-State: AOJu0Yx7zdp898Bn/8pQ1jvudNlPof5p5dJehVDjlgKKPT2931j36fWV
-        ad7KWJ22C9WUHPFiGyl3/4998K/EVCk=
-X-Google-Smtp-Source: AGHT+IEW2xk7rYWFlRXkNRLynO6gA6yyilTv7a6nN89xiQ3UFpjsMn8hb3yyu9Mwy2Z5ak7TTx5MPw==
-X-Received: by 2002:a05:6402:2912:b0:53e:81f6:8060 with SMTP id ee18-20020a056402291200b0053e81f68060mr12623954edb.14.1698856662816;
-        Wed, 01 Nov 2023 09:37:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698856680; x=1699461480;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0NrVX1rT/+N1kltIEl1Aly/v2iMzXV2g51rU9ugrCuE=;
+        b=CuGRRTsu0gxsVYYF77TH2mqy7xWuLuy4l2luDQuNdwz2l/Sl2s7zDdqiQnu7DjaOPv
+         ntUQkk2m7sFWK7v0ccOT1vE0IqfEqV3kkpCdkXcKErh13Y1MYPcw+GeMj2Sfcz2F37+P
+         yYDJtfxeKYhTExv5D8tPIEuldTg1HL0/UI+x/SN7SumoemZozJ3EMGDKrH3d4duHg1ZE
+         /CtNTkb7aYaabNQN4ydmMlQlono9vRM/eNspvoM2YKpKJa5EA7q7lc3p2G33ZvOTdSWN
+         9s7rv/XcdJtc+OaIu+FBu7yIakwc7Zm17eezx2H6JsUm3eAigrAZ/RpCKYtHycVd9u96
+         QhTQ==
+X-Gm-Message-State: AOJu0Yw+WtXJNKMe1ETUuR7j7hHAWxR3Ga7McQeq7DtNWEcpVot9YQYz
+        XQGLbuE2om/BC9zaBUb6/GB9IPi+nyA=
+X-Google-Smtp-Source: AGHT+IHoTaeQIBu8zjS+T87M/f1r8thjeNdzdEo7ZLRjd12KA20SPLe77yGkXbRWtUWSmKNx1JDrmw==
+X-Received: by 2002:a17:907:3181:b0:9d2:b968:9ddf with SMTP id xe1-20020a170907318100b009d2b9689ddfmr2524209ejb.25.1698856679927;
+        Wed, 01 Nov 2023 09:37:59 -0700 (PDT)
 Received: from debian_development.DebianHome (dynamic-095-116-163-023.95.116.pool.telefonica.de. [95.116.163.23])
-        by smtp.gmail.com with ESMTPSA id 30-20020a50875e000000b0053e07fe8d98sm1275154edv.79.2023.11.01.09.37.42
+        by smtp.gmail.com with ESMTPSA id a8-20020a170906684800b00993a37aebc5sm121531ejs.50.2023.11.01.09.37.59
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Nov 2023 09:37:42 -0700 (PDT)
+        Wed, 01 Nov 2023 09:37:59 -0700 (PDT)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH v2 2/2] libsepol: avtab: check read counts for saturation
-Date:   Wed,  1 Nov 2023 17:37:25 +0100
-Message-ID: <20231101163725.177237-2-cgzones@googlemail.com>
+Subject: [PATCH] libselinux/utils: update getdefaultcon
+Date:   Wed,  1 Nov 2023 17:37:54 +0100
+Message-ID: <20231101163754.177452-1-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231101163725.177237-1-cgzones@googlemail.com>
-References: <20231101163725.177237-1-cgzones@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -71,32 +67,86 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Ensure counts are not set to the maximum value of their type.
-Also limit their size during fuzzing to prevent OOM reports.
+* mention -r <role> and -v command line options in usage string
+* use distinct error messages on getseuser(3) and
+  get_default_context_with_[role]level(3) failure
+* always print program name on error
+* drop unnecessary double parenthesis
 
-Reported-by: oss-fuzz (issue 60572), caused at the time by the filetrans
-             prefix proposal
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
-v2:
-   rebase after revert of filename prefix proposal
----
- libsepol/src/avtab.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ libselinux/utils/getdefaultcon.c | 40 ++++++++++++++++++--------------
+ 1 file changed, 23 insertions(+), 17 deletions(-)
 
-diff --git a/libsepol/src/avtab.c b/libsepol/src/avtab.c
-index 1ef5ee00..7c2328b7 100644
---- a/libsepol/src/avtab.c
-+++ b/libsepol/src/avtab.c
-@@ -600,7 +600,7 @@ int avtab_read(avtab_t * a, struct policy_file *fp, uint32_t vers)
- 		goto bad;
+diff --git a/libselinux/utils/getdefaultcon.c b/libselinux/utils/getdefaultcon.c
+index 93102e5e..50f1ea91 100644
+--- a/libselinux/utils/getdefaultcon.c
++++ b/libselinux/utils/getdefaultcon.c
+@@ -11,7 +11,7 @@
+ 
+ static __attribute__ ((__noreturn__)) void usage(const char *name, const char *detail, int rc)
+ {
+-	fprintf(stderr, "usage:  %s [-l level] [-s service] user [fromcon]\n", name);
++	fprintf(stderr, "usage:  %s [-r role] [-l level] [-s service] [-v] user [fromcon]\n", name);
+ 	if (detail)
+ 		fprintf(stderr, "%s:  %s\n", name, detail);
+ 	exit(rc);
+@@ -60,9 +60,9 @@ int main(int argc, char **argv)
+ 	user = argv[optind];
+ 
+ 	/* If a context wasn't passed, use the current context. */
+-	if (((argc - optind) < 2)) {
++	if ((argc - optind) < 2) {
+ 		if (getcon(&cur_context) < 0) {
+-			fprintf(stderr, "Couldn't get current context:  %s\n", strerror(errno));
++			fprintf(stderr, "%s:  couldn't get current context:  %s\n", argv[0], strerror(errno));
+ 			return 2;
+ 		}
+ 	} else
+@@ -73,23 +73,29 @@ int main(int argc, char **argv)
+ 		return 3;
  	}
- 	nel = le32_to_cpu(buf[0]);
--	if (!nel) {
-+	if (zero_or_saturated(nel)) {
- 		ERR(fp->handle, "table is empty");
- 		goto bad;
+ 
+-	if ((ret = getseuser(user, service, &seuser, &dlevel)) == 0) {
+-		if (! level) level=dlevel;
+-		if (role != NULL && role[0]) 
+-			ret=get_default_context_with_rolelevel(seuser, role, level,cur_context,&usercon);
+-		else
+-			ret=get_default_context_with_level(seuser, level, cur_context,&usercon);
++	ret = getseuser(user, service, &seuser, &dlevel);
++	if (ret) {
++		fprintf(stderr, "%s:  failed to get seuser:  %s\n", argv[0], strerror(errno));
++		goto out;
  	}
+-	if (ret < 0)
+-		perror(argv[0]);
+-	else {
+-		if (verbose) {
+-			printf("%s: %s from %s %s %s %s -> %s\n", argv[0], user, cur_context, seuser, role, level, usercon);
+-		} else {
+-			printf("%s\n", usercon);
+-		}
++
++	if (! level) level=dlevel;
++	if (role != NULL && role[0])
++		ret = get_default_context_with_rolelevel(seuser, role, level, cur_context, &usercon);
++	else
++		ret = get_default_context_with_level(seuser, level, cur_context, &usercon);
++	if (ret) {
++		fprintf(stderr, "%s:  failed to get default context:  %s\n", argv[0], strerror(errno));
++		goto out;
++	}
++
++	if (verbose) {
++		printf("%s: %s from %s %s %s %s -> %s\n", argv[0], user, cur_context, seuser, role, level, usercon);
++	} else {
++		printf("%s\n", usercon);
+ 	}
+ 
++out:
+ 	free(role);
+ 	free(seuser);
+ 	if (level != dlevel) free(level);
 -- 
 2.42.0
 

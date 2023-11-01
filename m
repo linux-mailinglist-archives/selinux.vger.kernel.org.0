@@ -2,62 +2,61 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22D6B7DE4D3
-	for <lists+selinux@lfdr.de>; Wed,  1 Nov 2023 17:47:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B60E47DE4E9
+	for <lists+selinux@lfdr.de>; Wed,  1 Nov 2023 17:56:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232145AbjKAQre (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Wed, 1 Nov 2023 12:47:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
+        id S232538AbjKAQ4u (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 1 Nov 2023 12:56:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231233AbjKAQre (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Wed, 1 Nov 2023 12:47:34 -0400
-Received: from mail-vs1-xe2e.google.com (mail-vs1-xe2e.google.com [IPv6:2607:f8b0:4864:20::e2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A8B2FD
-        for <selinux@vger.kernel.org>; Wed,  1 Nov 2023 09:47:28 -0700 (PDT)
-Received: by mail-vs1-xe2e.google.com with SMTP id ada2fe7eead31-457c82cd837so2971952137.2
-        for <selinux@vger.kernel.org>; Wed, 01 Nov 2023 09:47:28 -0700 (PDT)
+        with ESMTP id S231233AbjKAQ4t (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 1 Nov 2023 12:56:49 -0400
+Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A4A8FD
+        for <selinux@vger.kernel.org>; Wed,  1 Nov 2023 09:56:43 -0700 (PDT)
+Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-9cf83c044b7so1685966b.1
+        for <selinux@vger.kernel.org>; Wed, 01 Nov 2023 09:56:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1698857247; x=1699462047; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KfnZjqPN2j1ptrFILft7mNVqeReFBkyAbhM+XM9/geQ=;
-        b=VYPbjSDJsTjUtTRVuTm+yr0X5dqiHkp7AREvGWH0FKXywIZHQdnol/b/Ns+WmOzwIJ
-         AfHLPYAmGq/lWcu8mxEHW+uSeZ82uiXywn4+xFNzctCsAEJR64014WWq5cgrvmazqDA/
-         HfEBzNOSeBNq4anlCrcxcbUOGDCw6bpNLDfYPKzTyeM/6X2sdlR7h6Na/v/2Qxd305Bx
-         +wLrJQj5Ks7JcTVg6Fnu0XCLdeyHqEjrC/9yFZvpb3cobskIGUFuITCEGf/1mVL+atcw
-         t3RhZpEY1YN+zlTD95JOxStE7R2IOiixrds9LfctibrCVclhocjMLPAZueit0iaFg4NV
-         pyoQ==
+        d=googlemail.com; s=20230601; t=1698857802; x=1699462602; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yF1195uVZM+3s9IqKtAhO/7nNiga5unBtmxsjeec70s=;
+        b=DZ10tLTSLVlqOvxYI1U2wG9IaVrMcCwcdWc/peHQDTNT3oRor/s6EJXR5aGAPS7AyJ
+         Faqj9PYjEfINpi57/ovQbMuULBB4lE50zaiS+Ugel8eHTEVCtaU36oAVhatemqapwhPL
+         dmfNqRr5mJX1kBhd1aXLP8kUt57rNVFBLFWraJAi7upZCy2ormXf5NJl11IDa3jhkaYn
+         2eOqUDAm18OKlPkBsNCYReYb7c/OI9MtfSF9yI8vTnzQbo0n07OgVrIuYOhHIH7PH9Oj
+         M17lARXnLtUbu+U499UqUHgKrU1jh/tSW/juNtbwaGnrSR9aH49co32TGlOGFUqLaIhY
+         hdvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698857247; x=1699462047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KfnZjqPN2j1ptrFILft7mNVqeReFBkyAbhM+XM9/geQ=;
-        b=DC7k1+u1eDuYHF8q6kAO7C4eP89MwlKGll/bka1GGqocnbEzxfPAbClpfSMdcN5PCU
-         SNczptFMl1+2lfnAct48Xu+ENy/GiXZolHSvVV/SuHN/6kMWbtDeXVaQWbtilQdjYTc7
-         oYeYnpr+oK6HrFdgC4D8kpmRTmfVV/XAD62rVExGPux6i0BAhtaWd7J6e106N+fvsBRd
-         SzPtfSDmw5nt+NXNMMOM2LJNKCM3QM/j7f63b8LZER0X2gQGbRF8zqTRauveh0RTl0Dn
-         26PT3Sk6EoVeRshWUohpUSuz7dHu+xG4ec/u71bQT44sn6ljj577vj4nsYZ1SdI6Yum9
-         wrGQ==
-X-Gm-Message-State: AOJu0YxVZgtebRLABdVLd0xqgcL8IhubXVUs9Qtr1snynLK1H0AMtP2A
-        O2rANFNlG+yWia6wsyNGgFmGfMD24/c/tWTjEtQ=
-X-Google-Smtp-Source: AGHT+IE2uH5WFEau8zxkYF76AYyUGOBfll+40DxggEiEzGODnyQVd5kpcA9GrLZrN/6RIokZTZC1BRDLSu9qb9MUKKY=
-X-Received: by 2002:a67:e0c6:0:b0:452:c3a4:1f99 with SMTP id
- m6-20020a67e0c6000000b00452c3a41f99mr15030203vsl.4.1698857247309; Wed, 01 Nov
- 2023 09:47:27 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1698857802; x=1699462602;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yF1195uVZM+3s9IqKtAhO/7nNiga5unBtmxsjeec70s=;
+        b=BH1m2ja5jkH0dZg5YtCcEq8Q4VPcqNexVItjZjz12qTXF9VpAhJ0iGne+fZIWnjGJV
+         dyDu4VZ+buS4pi+X6mbBhkgJvzR7kR9AtpM8WNwVkSKL5IstM2vxtTywUkCt/iujbmbc
+         HTuXBDxHWXUVpQFd5lZMCUTkqXNR7EirW4XYFphh4lEgmFYWludwZOhJtlk7+s9Ruxm9
+         26izFUu8xie2OGYowd8YAt5dKSdZZOo1AIlSY0e1Une0sEE4/QSbspqKx4U7H+dGgS+H
+         E0oie/yyYPgMTfTDtGig5+mGIui17YhIHc+GhPh0ICFJ2Cekp6o4E1T68pbeQDOyUPRu
+         UMwA==
+X-Gm-Message-State: AOJu0Yxa+mjV75IteO37Sfnob8eUOYkII+gmT2X70YE2JdiP+IFXTrUx
+        wdeR5bq9kOpRsZpImwyw0knUMYRUjKg=
+X-Google-Smtp-Source: AGHT+IHGYkJMHIC5suWmoTwbQUrRLo9kH/NIRSTbKb96Cvdc31F7zpUJ1wJPVPN8tS2pa43tJ9EWUw==
+X-Received: by 2002:a17:907:9603:b0:9d3:f436:6807 with SMTP id gb3-20020a170907960300b009d3f4366807mr2426990ejc.42.1698857801830;
+        Wed, 01 Nov 2023 09:56:41 -0700 (PDT)
+Received: from debian_development.DebianHome (dynamic-095-116-163-023.95.116.pool.telefonica.de. [95.116.163.23])
+        by smtp.gmail.com with ESMTPSA id q22-20020a170906145600b009ad875d12d7sm133277ejc.210.2023.11.01.09.56.41
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Nov 2023 09:56:41 -0700 (PDT)
+From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To:     selinux@vger.kernel.org
+Subject: [PATCH v3 1/2] libselinux: cast to unsigned char for character handling function
+Date:   Wed,  1 Nov 2023 17:56:35 +0100
+Message-ID: <20231101165636.184983-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <20230814132025.45364-1-cgzones@googlemail.com>
- <20230814132025.45364-14-cgzones@googlemail.com> <CAP+JOzQXWc=pScMrxsSpn4=tR=CZYXzQRLL6MvZ+c8VmGFumew@mail.gmail.com>
-In-Reply-To: <CAP+JOzQXWc=pScMrxsSpn4=tR=CZYXzQRLL6MvZ+c8VmGFumew@mail.gmail.com>
-From:   =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date:   Wed, 1 Nov 2023 17:47:16 +0100
-Message-ID: <CAJ2a_DcXJYeAyHwpx6A=cVM=Z55wy+PmhSpBekumn+VTndJELg@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 13/27] libselinux/utils: introduce selabel_compare
-To:     James Carter <jwcart2@gmail.com>
-Cc:     selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
@@ -68,191 +67,386 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Thu, 5 Oct 2023 at 17:29, James Carter <jwcart2@gmail.com> wrote:
->
-> On Mon, Aug 14, 2023 at 9:42=E2=80=AFAM Christian G=C3=B6ttsche
-> <cgzones@googlemail.com> wrote:
-> >
-> > Add a utility around selabel_cmp(3).
-> >
-> > Can be used by users to compare a pre-compiled fcontext file to an
-> > original text-based file context definition file.
-> >
-> > Can be used for development to verify compilation and parsing of the
-> > pre-compiled fcontext format works correctly.
-> >
-> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> > ---
-> >  libselinux/utils/.gitignore        |   1 +
-> >  libselinux/utils/selabel_compare.c | 119 +++++++++++++++++++++++++++++
-> >  2 files changed, 120 insertions(+)
-> >  create mode 100644 libselinux/utils/selabel_compare.c
-> >
-> > diff --git a/libselinux/utils/.gitignore b/libselinux/utils/.gitignore
-> > index a92e1e94..4e2dfba8 100644
-> > --- a/libselinux/utils/.gitignore
-> > +++ b/libselinux/utils/.gitignore
-> > @@ -16,6 +16,7 @@ getseuser
-> >  matchpathcon
-> >  policyvers
-> >  sefcontext_compile
-> > +selabel_compare
-> >  selabel_digest
-> >  selabel_get_digests_all_partial_matches
-> >  selabel_lookup
-> > diff --git a/libselinux/utils/selabel_compare.c b/libselinux/utils/sela=
-bel_compare.c
-> > new file mode 100644
-> > index 00000000..f4325f7e
-> > --- /dev/null
-> > +++ b/libselinux/utils/selabel_compare.c
-> > @@ -0,0 +1,119 @@
-> > +#include <getopt.h>
-> > +#include <stdio.h>
-> > +#include <stdlib.h>
-> > +#include <string.h>
-> > +
-> > +#include <selinux/label.h>
-> > +
-> > +
-> > +static void usage(const char *progname)
-> > +{
-> > +       fprintf(stderr,
-> > +               "usage: %s [-b backend] [-v] file1 file2\n\n"
-> > +               "Where:\n\t"
-> > +               "-b           The backend - \"file\", \"media\", \"x\",=
- \"db\" or \"prop\" (defaults to \"file\")\n\t"
-> > +               "-v           Validate entries against loaded policy.\n=
-\t"
-> > +               "file1/file2  Files containing the specs.\n",
-> > +               progname);
-> > +}
-> > +
-> > +int main(int argc, char *argv[])
-> > +{
-> > +       unsigned int backend =3D SELABEL_CTX_FILE;
-> > +       int opt;
-> > +       const char *validate =3D NULL, *file1 =3D NULL, *file2 =3D NULL=
-;
-> > +
-> > +       if (argc < 3) {
-> > +               usage(argv[0]);
-> > +               return EXIT_FAILURE;
-> > +       }
-> > +
-> > +       while ((opt =3D getopt(argc, argv, "b:v")) > 0) {
-> > +               switch (opt) {
-> > +               case 'b':
-> > +                       if (!strcasecmp(optarg, "file")) {
-> > +                               backend =3D SELABEL_CTX_FILE;
-> > +                       } else if (!strcmp(optarg, "media")) {
-> > +                               backend =3D SELABEL_CTX_MEDIA;
-> > +                       } else if (!strcmp(optarg, "x")) {
-> > +                               backend =3D SELABEL_CTX_X;
-> > +                       } else if (!strcmp(optarg, "db")) {
-> > +                               backend =3D SELABEL_CTX_DB;
-> > +                       } else if (!strcmp(optarg, "prop")) {
-> > +                               backend =3D SELABEL_CTX_ANDROID_PROP;
-> > +                       } else if (!strcmp(optarg, "service")) {
-> > +                               backend =3D SELABEL_CTX_ANDROID_SERVICE=
-;
-> > +                       } else {
-> > +                               fprintf(stderr, "Unknown backend: %s\n"=
-, optarg);
-> > +                               usage(argv[0]);
-> > +                               return EXIT_FAILURE;
-> > +                       }
-> > +                       break;
-> > +               case 'v':
-> > +                       validate =3D (char *)1;
-> > +                       break;
-> > +               default:
-> > +                       usage(argv[0]);
-> > +                       return EXIT_FAILURE;
-> > +               }
-> > +       }
-> > +
-> > +       if (argc !=3D optind + 2) {
-> > +               usage(argv[0]);
-> > +               return EXIT_FAILURE;
-> > +       }
-> > +
-> > +       file1 =3D argv[optind++];
-> > +       file2 =3D argv[optind];
-> > +
-> > +       {
->
-> To me, having a block like this means that the stuff below should be
-> in a helper function.
->
-> Everything else looks good.
-> Jim
->
+Character handling functions, like isspace(3), expect a value
+representable as unsigned char or equal to EOF.  Otherwise the behavior
+is undefined.
 
-I didn't want to split the function to complicate the reasoning by
-splitting the control flow, introducing 4 function parameters, and
-adding return value handling.
-Do you still prefer to split?
-(I'll send a v2 regardless for a typo below)
+See https://wiki.sei.cmu.edu/confluence/display/c/STR37-C.+Arguments+to+character-handling+functions+must+be+representable+as+an+unsigned+char
 
->
-> > +               struct selabel_handle *hnd1, *hnd2;
-> > +               const struct selinux_opt selabel_option1[] =3D {
-> > +                       { SELABEL_OPT_PATH, file1 },
-> > +                       { SELABEL_OPT_VALIDATE, validate }
-> > +               };
-> > +               const struct selinux_opt selabel_option2[] =3D {
-> > +                       { SELABEL_OPT_PATH, file2 },
-> > +                       { SELABEL_OPT_VALIDATE, validate }
-> > +               };
-> > +               enum selabel_cmp_result result;
-> > +
-> > +               hnd1 =3D selabel_open(backend, selabel_option1, 2);
-> > +               if (!hnd1) {
-> > +                       fprintf(stderr, "ERROR: selabel_open - Could no=
-t obtain handle for %s:  %m\n", file1);
-> > +                       return EXIT_FAILURE;
-> > +               }
-> > +
-> > +               hnd2 =3D selabel_open(backend, selabel_option2, 2);
-> > +               if (!hnd2) {
-> > +                       fprintf(stderr, "ERROR: selabel_open - Could no=
-t obtain handle for %s:  %m\n", file2);
-> > +                       selabel_close(hnd1);
-> > +                       return EXIT_FAILURE;
-> > +               }
-> > +
-> > +               result =3D selabel_cmp(hnd1, hnd2);
-> > +
-> > +               selabel_close(hnd2);
-> > +               selabel_close(hnd1);
-> > +
-> > +               switch (result) {
-> > +               case SELABEL_SUBSET:
-> > +                       printf("spec %s is a subset of spec %s\n", file=
-1, file2);
-> > +                       break;
-> > +               case SELABEL_EQUAL:
-> > +                       printf("spec %s is equal to spec %s\n", file1, =
-file2);
-> > +                       break;
-> > +               case SELABEL_SUPERSET:
-> > +                       printf("spec %s is a superset of spec %s\n", fi=
-le1, file2);
-> > +                       break;
-> > +               case SELABEL_INCOMPARABLE:
-> > +                       printf("spec %s is uncompareable to spec %s\n",=
- file1, file2);
-> > +                       break;
-> > +               default:
-> > +                       fprintf(stderr, "ERROR: selabel_cmp - Unexpecte=
-d result %d\n", result);
-> > +                       return EXIT_FAILURE;
-> > +               }
-> > +
-> > +               return EXIT_SUCCESS;
-> > +       }
-> > +}
-> > --
-> > 2.40.1
-> >
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+v3:
+  - compute_create.c: avoid cast by changing type of variable
+  - drop RFC and split from original patch set
+---
+ libselinux/src/booleans.c                        |  8 ++++----
+ libselinux/src/compute_create.c                  |  2 +-
+ libselinux/src/get_context_list.c                | 12 ++++++------
+ libselinux/src/get_default_type.c                |  2 +-
+ libselinux/src/label_file.c                      |  8 ++++----
+ libselinux/src/label_media.c                     |  2 +-
+ libselinux/src/label_support.c                   |  8 ++++----
+ libselinux/src/label_x.c                         |  2 +-
+ libselinux/src/load_policy.c                     |  2 +-
+ libselinux/src/matchmediacon.c                   |  6 +++---
+ libselinux/src/selinux_check_securetty_context.c |  4 ++--
+ libselinux/src/selinux_config.c                  | 12 ++++++------
+ libselinux/src/seusers.c                         |  6 +++---
+ 13 files changed, 37 insertions(+), 37 deletions(-)
+
+diff --git a/libselinux/src/booleans.c b/libselinux/src/booleans.c
+index e34b39ff..c557df65 100644
+--- a/libselinux/src/booleans.c
++++ b/libselinux/src/booleans.c
+@@ -107,7 +107,7 @@ char *selinux_boolean_sub(const char *name)
+ 		char *ptr;
+ 		char *src = line_buf;
+ 		char *dst;
+-		while (*src && isspace(*src))
++		while (*src && isspace((unsigned char)*src))
+ 			src++;
+ 		if (!*src)
+ 			continue;
+@@ -115,19 +115,19 @@ char *selinux_boolean_sub(const char *name)
+ 			continue;
+ 
+ 		ptr = src;
+-		while (*ptr && !isspace(*ptr))
++		while (*ptr && !isspace((unsigned char)*ptr))
+ 			ptr++;
+ 		*ptr++ = '\0';
+ 		if (strcmp(src, name) != 0)
+ 			continue;
+ 
+ 		dst = ptr;
+-		while (*dst && isspace(*dst))
++		while (*dst && isspace((unsigned char)*dst))
+ 			dst++;
+ 		if (!*dst)
+ 			continue;
+ 		ptr = dst;
+-		while (*ptr && !isspace(*ptr))
++		while (*ptr && !isspace((unsigned char)*ptr))
+ 			ptr++;
+ 		*ptr = '\0';
+ 
+diff --git a/libselinux/src/compute_create.c b/libselinux/src/compute_create.c
+index e9f3c96a..d19baa0b 100644
+--- a/libselinux/src/compute_create.c
++++ b/libselinux/src/compute_create.c
+@@ -13,7 +13,7 @@
+ 
+ static int object_name_encode(const char *objname, char *buffer, size_t buflen)
+ {
+-	int	code;
++	unsigned char code;
+ 	size_t	offset = 0;
+ 
+ 	if (buflen - offset < 1)
+diff --git a/libselinux/src/get_context_list.c b/libselinux/src/get_context_list.c
+index d774b9cf..0342823c 100644
+--- a/libselinux/src/get_context_list.c
++++ b/libselinux/src/get_context_list.c
+@@ -170,27 +170,27 @@ static int get_context_user(FILE * fp,
+ 
+ 		/* Skip leading whitespace. */
+ 		start = line;
+-		while (*start && isspace(*start))
++		while (*start && isspace((unsigned char)*start))
+ 			start++;
+ 		if (!(*start))
+ 			continue;
+ 
+ 		/* Find the end of the (partial) fromcon in the line. */
+ 		end = start;
+-		while (*end && !isspace(*end))
++		while (*end && !isspace((unsigned char)*end))
+ 			end++;
+ 		if (!(*end))
+ 			continue;
+ 
+ 		/* Check for a match. */
+ 		linerole = start;
+-		while (*start && !isspace(*start) && *start != ':')
++		while (*start && !isspace((unsigned char)*start) && *start != ':')
+ 			start++;
+ 		if (*start != ':')
+ 			continue;
+ 		*start = 0;
+ 		linetype = ++start;
+-		while (*start && !isspace(*start) && *start != ':')
++		while (*start && !isspace((unsigned char)*start) && *start != ':')
+ 			start++;
+ 		if (!(*start))
+ 			continue;
+@@ -210,14 +210,14 @@ static int get_context_user(FILE * fp,
+ 	start = ++end;
+ 	while (*start) {
+ 		/* Skip leading whitespace */
+-		while (*start && isspace(*start))
++		while (*start && isspace((unsigned char)*start))
+ 			start++;
+ 		if (!(*start))
+ 			break;
+ 
+ 		/* Find the end of this partial context. */
+ 		end = start;
+-		while (*end && !isspace(*end))
++		while (*end && !isspace((unsigned char)*end))
+ 			end++;
+ 		if (*end)
+ 			*end++ = 0;
+diff --git a/libselinux/src/get_default_type.c b/libselinux/src/get_default_type.c
+index 766ea4b7..87e9c72c 100644
+--- a/libselinux/src/get_default_type.c
++++ b/libselinux/src/get_default_type.c
+@@ -42,7 +42,7 @@ static int find_default_type(FILE * fp, const char *role, char **type)
+ 			buf[strlen(buf) - 1] = 0;
+ 
+ 		ptr = buf;
+-		while (*ptr && isspace(*ptr))
++		while (*ptr && isspace((unsigned char)*ptr))
+ 			ptr++;
+ 		if (!(*ptr))
+ 			continue;
+diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
+index a665c9b4..4778f8f8 100644
+--- a/libselinux/src/label_file.c
++++ b/libselinux/src/label_file.c
+@@ -708,20 +708,20 @@ static int selabel_subs_init(const char *path, struct selabel_digest *digest,
+ 		char *src = buf;
+ 		char *dst = NULL;
+ 
+-		while (*src && isspace(*src))
++		while (*src && isspace((unsigned char)*src))
+ 			src++;
+ 		if (src[0] == '#') continue;
+ 		ptr = src;
+-		while (*ptr && ! isspace(*ptr))
++		while (*ptr && ! isspace((unsigned char)*ptr))
+ 			ptr++;
+ 		*ptr++ = '\0';
+ 		if (! *src) continue;
+ 
+ 		dst = ptr;
+-		while (*dst && isspace(*dst))
++		while (*dst && isspace((unsigned char)*dst))
+ 			dst++;
+ 		ptr = dst;
+-		while (*ptr && ! isspace(*ptr))
++		while (*ptr && ! isspace((unsigned char)*ptr))
+ 			ptr++;
+ 		*ptr = '\0';
+ 		if (! *dst)
+diff --git a/libselinux/src/label_media.c b/libselinux/src/label_media.c
+index d33b614a..b3443b47 100644
+--- a/libselinux/src/label_media.c
++++ b/libselinux/src/label_media.c
+@@ -39,7 +39,7 @@ static int process_line(const char *path, char *line_buf, int pass,
+ 	char *key, *context;
+ 
+ 	buf_p = line_buf;
+-	while (isspace(*buf_p))
++	while (isspace((unsigned char)*buf_p))
+ 		buf_p++;
+ 	/* Skip comment lines and empty lines. */
+ 	if (*buf_p == '#' || *buf_p == 0)
+diff --git a/libselinux/src/label_support.c b/libselinux/src/label_support.c
+index 49f72b1c..f7ab9292 100644
+--- a/libselinux/src/label_support.c
++++ b/libselinux/src/label_support.c
+@@ -26,14 +26,14 @@ static inline int read_spec_entry(char **entry, char **ptr, int *len, const char
+ 	*entry = NULL;
+ 	char *tmp_buf = NULL;
+ 
+-	while (isspace(**ptr) && **ptr != '\0')
++	while (isspace((unsigned char)**ptr) && **ptr != '\0')
+ 		(*ptr)++;
+ 
+ 	tmp_buf = *ptr;
+ 	*len = 0;
+ 
+-	while (!isspace(**ptr) && **ptr != '\0') {
+-		if (!isascii(**ptr)) {
++	while (!isspace((unsigned char)**ptr) && **ptr != '\0') {
++		if (!isascii((unsigned char)**ptr)) {
+ 			errno = EINVAL;
+ 			*errbuf = "Non-ASCII characters found";
+ 			return -1;
+@@ -80,7 +80,7 @@ int  read_spec_entries(char *line_buf, const char **errbuf, int num_args, ...)
+ 		len++;
+ 
+ 	buf_p = line_buf;
+-	while (isspace(*buf_p))
++	while (isspace((unsigned char)*buf_p))
+ 		buf_p++;
+ 
+ 	/* Skip comment lines and empty lines. */
+diff --git a/libselinux/src/label_x.c b/libselinux/src/label_x.c
+index 4b8f524f..e15190ca 100644
+--- a/libselinux/src/label_x.c
++++ b/libselinux/src/label_x.c
+@@ -41,7 +41,7 @@ static int process_line(const char *path, char *line_buf, int pass,
+ 	char *type, *key, *context;
+ 
+ 	buf_p = line_buf;
+-	while (isspace(*buf_p))
++	while (isspace((unsigned char)*buf_p))
+ 		buf_p++;
+ 	/* Skip comment lines and empty lines. */
+ 	if (*buf_p == '#' || *buf_p == 0)
+diff --git a/libselinux/src/load_policy.c b/libselinux/src/load_policy.c
+index 17918e8b..57d7aaef 100644
+--- a/libselinux/src/load_policy.c
++++ b/libselinux/src/load_policy.c
+@@ -252,7 +252,7 @@ int selinux_init_load_policy(int *enforce)
+ 		}
+ 		if (fgets(buf, selinux_page_size, cfg) &&
+ 		    (tmp = strstr(buf, "enforcing="))) {
+-			if (tmp == buf || isspace(*(tmp - 1))) {
++			if (tmp == buf || isspace((unsigned char)*(tmp - 1))) {
+ 				secmdline =
+ 				    atoi(tmp + sizeof("enforcing=") - 1);
+ 			}
+diff --git a/libselinux/src/matchmediacon.c b/libselinux/src/matchmediacon.c
+index d3d95043..6ba87b99 100644
+--- a/libselinux/src/matchmediacon.c
++++ b/libselinux/src/matchmediacon.c
+@@ -29,7 +29,7 @@ int matchmediacon(const char *media, char ** con)
+ 			current_line[strlen(current_line) - 1] = 0;
+ 		/* Skip leading whitespace before the partial context. */
+ 		ptr = current_line;
+-		while (*ptr && isspace(*ptr))
++		while (*ptr && isspace((unsigned char)*ptr))
+ 			ptr++;
+ 
+ 		if (!(*ptr))
+@@ -37,7 +37,7 @@ int matchmediacon(const char *media, char ** con)
+ 
+ 		/* Find the end of the media context. */
+ 		ptr2 = ptr;
+-		while (*ptr2 && !isspace(*ptr2))
++		while (*ptr2 && !isspace((unsigned char)*ptr2))
+ 			ptr2++;
+ 		if (!(*ptr2))
+ 			continue;
+@@ -53,7 +53,7 @@ int matchmediacon(const char *media, char ** con)
+ 		return -1;
+ 
+ 	/* Skip whitespace. */
+-	while (*ptr2 && isspace(*ptr2))
++	while (*ptr2 && isspace((unsigned char)*ptr2))
+ 		ptr2++;
+ 	if (!(*ptr2)) {
+ 		return -1;
+diff --git a/libselinux/src/selinux_check_securetty_context.c b/libselinux/src/selinux_check_securetty_context.c
+index c5c557fd..7609752e 100644
+--- a/libselinux/src/selinux_check_securetty_context.c
++++ b/libselinux/src/selinux_check_securetty_context.c
+@@ -26,13 +26,13 @@ int selinux_check_securetty_context(const char * tty_context)
+ 
+ 				/* Skip leading whitespace. */
+ 				start = line;
+-				while (*start && isspace(*start))
++				while (*start && isspace((unsigned char)*start))
+ 					start++;
+ 				if (!(*start))
+ 					continue;
+ 
+ 				end = start;
+-				while (*end && !isspace(*end))
++				while (*end && !isspace((unsigned char)*end))
+ 					end++;
+ 				if (*end)
+ 					*end++ = 0;
+diff --git a/libselinux/src/selinux_config.c b/libselinux/src/selinux_config.c
+index d2e49ee1..1d8cfb71 100644
+--- a/libselinux/src/selinux_config.c
++++ b/libselinux/src/selinux_config.c
+@@ -103,7 +103,7 @@ int selinux_getenforcemode(int *enforce)
+ 			if (strncmp(buf, SELINUXTAG, len))
+ 				continue;
+ 			tag = buf+len;
+-			while (isspace(*tag))
++			while (isspace((unsigned char)*tag))
+ 				tag++;
+ 			if (!strncasecmp
+ 			    (tag, "enforcing", sizeof("enforcing") - 1)) {
+@@ -173,7 +173,7 @@ static void init_selinux_config(void)
+ 			if (line_buf[len - 1] == '\n')
+ 				line_buf[len - 1] = 0;
+ 			buf_p = line_buf;
+-			while (isspace(*buf_p))
++			while (isspace((unsigned char)*buf_p))
+ 				buf_p++;
+ 			if (*buf_p == '#' || *buf_p == 0)
+ 				continue;
+@@ -181,7 +181,7 @@ static void init_selinux_config(void)
+ 			if (!strncasecmp(buf_p, SELINUXTYPETAG,
+ 					 sizeof(SELINUXTYPETAG) - 1)) {
+ 				buf_p += sizeof(SELINUXTYPETAG) - 1;
+-				while (isspace(*buf_p))
++				while (isspace((unsigned char)*buf_p))
+ 					buf_p++;
+ 				type = strdup(buf_p);
+ 				if (!type) {
+@@ -191,7 +191,7 @@ static void init_selinux_config(void)
+ 				}
+ 				end = type + strlen(type) - 1;
+ 				while ((end > type) &&
+-				       (isspace(*end) || iscntrl(*end))) {
++				       (isspace((unsigned char)*end) || iscntrl((unsigned char)*end))) {
+ 					*end = 0;
+ 					end--;
+ 				}
+@@ -206,14 +206,14 @@ static void init_selinux_config(void)
+ 			} else if (!strncmp(buf_p, REQUIRESEUSERS,
+ 					    sizeof(REQUIRESEUSERS) - 1)) {
+ 				value = buf_p + sizeof(REQUIRESEUSERS) - 1;
+-				while (isspace(*value))
++				while (isspace((unsigned char)*value))
+ 					value++;
+ 				intptr = &require_seusers;
+ 			} else {
+ 				continue;
+ 			}
+ 
+-			if (isdigit(*value))
++			if (isdigit((unsigned char)*value))
+ 				*intptr = atoi(value);
+ 			else if (strncasecmp(value, "true", sizeof("true") - 1))
+ 				*intptr = 1;
+diff --git a/libselinux/src/seusers.c b/libselinux/src/seusers.c
+index fff80c1a..6da8c318 100644
+--- a/libselinux/src/seusers.c
++++ b/libselinux/src/seusers.c
+@@ -25,7 +25,7 @@ static int process_seusers(const char *buffer,
+ 		goto err;
+ 
+ 	start = newbuf;
+-	while (isspace(*start))
++	while (isspace((unsigned char)*start))
+ 		start++;
+ 	if (*start == '#' || *start == 0) {
+ 		free(newbuf);
+@@ -46,7 +46,7 @@ static int process_seusers(const char *buffer,
+ 		mls_found = 0;
+ 
+ 		end = start;
+-		while (*end && !isspace(*end))
++		while (*end && !isspace((unsigned char)*end))
+ 			end++;
+ 	}
+ 	*end = 0;
+@@ -63,7 +63,7 @@ static int process_seusers(const char *buffer,
+ 		goto out;
+ 
+ 	start = ++end;
+-	while (*end && !isspace(*end))
++	while (*end && !isspace((unsigned char)*end))
+ 		end++;
+ 	*end = 0;
+ 
+-- 
+2.42.0
+

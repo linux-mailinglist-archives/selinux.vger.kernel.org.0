@@ -2,61 +2,61 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE827DF6DF
-	for <lists+selinux@lfdr.de>; Thu,  2 Nov 2023 16:47:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BBE37DF6DC
+	for <lists+selinux@lfdr.de>; Thu,  2 Nov 2023 16:47:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376817AbjKBPp4 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 2 Nov 2023 11:45:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48488 "EHLO
+        id S1376930AbjKBPqS (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 2 Nov 2023 11:46:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376904AbjKBPpw (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 2 Nov 2023 11:45:52 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B991F194
-        for <selinux@vger.kernel.org>; Thu,  2 Nov 2023 08:45:49 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-7788f513872so61033885a.1
-        for <selinux@vger.kernel.org>; Thu, 02 Nov 2023 08:45:49 -0700 (PDT)
+        with ESMTP id S1376924AbjKBPp5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 2 Nov 2023 11:45:57 -0400
+Received: from mail-qk1-x731.google.com (mail-qk1-x731.google.com [IPv6:2607:f8b0:4864:20::731])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61703196
+        for <selinux@vger.kernel.org>; Thu,  2 Nov 2023 08:45:51 -0700 (PDT)
+Received: by mail-qk1-x731.google.com with SMTP id af79cd13be357-7788f727dd7so63230185a.1
+        for <selinux@vger.kernel.org>; Thu, 02 Nov 2023 08:45:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698939948; x=1699544748; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1698939949; x=1699544749; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U+Tf7YOVEaioUlZTtEbyy/ibpAZAp8IZ6GoymbM+hIk=;
-        b=H0UlDpp1+yCP9kJgpb/SNq9mKqYds9P2709Umi/JJP6+0wnCcbTB2oLrVnmCRD9XdY
-         dO14Zc5FgXOMI8Fb3HuS5D68J2WxMF9tmuLAlhnWz8yPROfoDdDoOT3FqmYiIOAGy6rJ
-         QivEJOSPoWm611P44JTe3EL+tT5BPZyIyN8I+q+hle2XSy2cPYKiZMgg03pw7HwJafku
-         PkfOy3W57aVMILEwVG+QLzcZNgFYBmgl++ZHeG84pmc/XUo+Nrje9irI9XyY/t+lzNKg
-         a5yFXc/zENfa7ZLhVA2b/ReUlQz5W6HydDU/3e2jMHOIIqyyNIDQXvJlfTnOfcGIRj8H
-         AqAg==
+        bh=37TsIMvU9JcPC5N95mNkvxxE12nyBJOHfDfe3banLDc=;
+        b=NiGI3Jv0h/HVq9/JZoFSBz5L9M+oEXEVY7nc6kLhKtmJPi5rwHh18Bk3iemeiEesXI
+         vPjWvO0IDC3IJDXtpmrfzkFT6KfUejO/NDSqcj/fJ8litFbB6KWEYYdVi7/ZGfJccwfd
+         LzaBAxTHvHeJ3xdzx06ucBDZ5nA7NqJq9KO8Qz5QdR9zKSpiRkJ8TAWWKd9PNA0BudnT
+         iDm2Y7c6bVuABgux2VrSOXHGrlntHgGtEe62k8y/4AG87wOU4Y43/15YOi8K3TE4J3qM
+         EYBB9jvgVNI2/LDqsywGiq8dldVAjWmhOTvNP4nzdz0g/In1loGj4KiJY91zpaYbQKAV
+         eQbA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698939948; x=1699544748;
+        d=1e100.net; s=20230601; t=1698939949; x=1699544749;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U+Tf7YOVEaioUlZTtEbyy/ibpAZAp8IZ6GoymbM+hIk=;
-        b=PIfASuzA4sj3ou07F4v38XRV1f4VdQKGPjoWgnLHy9DQcJv6S3APz/4YDPIpKB1KX6
-         n4ATGC6d4sszWsdYKlW9KE6OZhF+Ltr69OVGoVPeq7NtEyKK75Yb705FtFsCohXSnxEV
-         V0xNiGFJ19U7kg9RROa3fZb89aFDpfIp+RSKJvpS7kWboa0HzKI6+hYpoJX/KxpFfWnv
-         AYePLVTlQ/F3VEoZR7eNO2j4EwOQ7oujYsHq0CXTgMm6HOosxa+VUV72wmutuhJkIhDR
-         jRpn4nUW45kEVRA4ydERknbstRYVsQMI1r8xE0EfsA7ASFBek4K0yUcL++qH4Gt7qA9f
-         X1kg==
-X-Gm-Message-State: AOJu0YyFBknoQegUhhkYTW9RXKqovZ8KIH6fDSogiVFm4MCQTaJc19r/
-        ++3H7RHWSysvXePUSJC1HSSmaY0ICCA=
-X-Google-Smtp-Source: AGHT+IGcgWQD1ZQjZLnJ7WpktGLYXb75msW66mWDD/uf4ZUxe49IUjNa9A67SOT12UEA8CKjlZogsg==
-X-Received: by 2002:a05:620a:44c1:b0:778:920a:7a70 with SMTP id y1-20020a05620a44c100b00778920a7a70mr20193548qkp.66.1698939948014;
-        Thu, 02 Nov 2023 08:45:48 -0700 (PDT)
+        bh=37TsIMvU9JcPC5N95mNkvxxE12nyBJOHfDfe3banLDc=;
+        b=WjD2T9Z+vQygLr9PVBVZAfqMyJ+eTbl8JKggO69Fox5keSX9ZqYMBx9E+1LH/n9BeR
+         o8szlmLXq6wcfbsDpgRvNtDrWgagZUFyXh8DRAnar8vx34U0caGDeVqDJ6VC6f4b90ZE
+         1q4bWMH4MKVKXboe3+jaUxUCSOrxu0qLXkE8ND/hQyRe0QerUagWu9pDbwWqm30LxZ2g
+         xK8QOKn9jemRyriK0i8qSzPioegJ1b4BUHD/W6AGjUTr5if5SfBN+LSG4pOqpXg51M8m
+         qrnm5uq1/E8ngE9w39VH4ogdXvpjWvVSLW1P2nTzXDqkMK5dhVAhlXAVGNMZW15BBP+U
+         9fSg==
+X-Gm-Message-State: AOJu0YyepmbqQMAHulQwFT4aLTmiZUFEZrxLC4gNghmkiS5FrrrxhI1z
+        orvIKoRi91Q7g1Do6uSXhwcST1ZPixY=
+X-Google-Smtp-Source: AGHT+IGNwp4TgrlE3QgwKIeA1GvMEhlHehEEaj/oenEJdylsmU5OslhmwYwavHNndZWo2x9aYJQDEw==
+X-Received: by 2002:a05:620a:400a:b0:774:9dc7:ce3d with SMTP id h10-20020a05620a400a00b007749dc7ce3dmr21096404qko.12.1698939949429;
+        Thu, 02 Nov 2023 08:45:49 -0700 (PDT)
 Received: from ip-10-113-85-151.evoforge.org (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id l1-20020a05620a210100b0076e1e2d6496sm37691qkl.104.2023.11.02.08.45.47
+        by smtp.gmail.com with ESMTPSA id l1-20020a05620a210100b0076e1e2d6496sm37691qkl.104.2023.11.02.08.45.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Nov 2023 08:45:47 -0700 (PDT)
+        Thu, 02 Nov 2023 08:45:48 -0700 (PDT)
 From:   Jacob Satterfield <jsatterfield.linux@gmail.com>
 To:     selinux@vger.kernel.org
 Cc:     Jacob Satterfield <jsatterfield.linux@gmail.com>,
         stephen.smalley.work@gmail.com, paul@paul-moore.com,
         omosnace@redhat.com
-Subject: [PATCH v4 1/3] selinux: refactor avtab_node comparisons
-Date:   Thu,  2 Nov 2023 15:45:22 +0000
-Message-Id: <20231102154524.12006-2-jsatterfield.linux@gmail.com>
+Subject: [PATCH v4 2/3] selinux: fix conditional avtab slot hint
+Date:   Thu,  2 Nov 2023 15:45:23 +0000
+Message-Id: <20231102154524.12006-3-jsatterfield.linux@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231102154524.12006-1-jsatterfield.linux@gmail.com>
 References: <20231102154524.12006-1-jsatterfield.linux@gmail.com>
@@ -64,195 +64,198 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-In four separate functions within avtab, the same comparison logic is
-used. The only difference is how the result is handled or whether there
-is a unique specifier value to be checked for or used.
+Due to how conditional rules are written in the binary policy, the
+code responsible for loading does not know how many conditional rules
+there are before creating the avtab structure. Instead, it uses the
+number of elements in the non-conditional avtab as a hint and allocates
+the hash table based on it. In the refpolicy and default Fedora policy,
+the actual sizes of these tables are not similar (~85k vs ~10k) thereby
+creating more slots than needed and resulting in wasted memory.
 
-Extracting this functionality into the avtab_node_cmp() function unifies
-the comparison logic between searching and insertion and gets rid of
-duplicative code so that the implementation is easier to maintain.
+This patch introduces a two-pass algorithm to calculate the conditional
+rule count before allocating the avtab nodes array. Albeit with a slight
+performance penalty in reading a portion of the binary policy twice,
+this causes the number of hash slots for the conditional array to become
+4096 instead of 32768. At 8-bytes per slot on 64-bit architectures, this
+results in a net savings of 224 KB of heap memory.
 
 Signed-off-by: Jacob Satterfield <jsatterfield.linux@gmail.com>
-Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 ---
- security/selinux/ss/avtab.c | 101 +++++++++++++++---------------------
- 1 file changed, 41 insertions(+), 60 deletions(-)
+ security/selinux/ss/avtab.c       | 15 ++++++++++--
+ security/selinux/ss/avtab.h       |  2 +-
+ security/selinux/ss/conditional.c | 38 ++++++++++++++++++++-----------
+ security/selinux/ss/conditional.h |  2 +-
+ 4 files changed, 40 insertions(+), 17 deletions(-)
 
 diff --git a/security/selinux/ss/avtab.c b/security/selinux/ss/avtab.c
-index 8751a602ead2..697eb4352439 100644
+index 672a524e6dee..f437bd588b04 100644
 --- a/security/selinux/ss/avtab.c
 +++ b/security/selinux/ss/avtab.c
-@@ -96,12 +96,34 @@ avtab_insert_node(struct avtab *h, struct avtab_node **dst,
- 	return newnode;
+@@ -338,7 +338,7 @@ static const uint16_t spec_order[] = {
+ int avtab_read_item(struct avtab *a, void *fp, struct policydb *pol,
+ 		    int (*insertf)(struct avtab *a, const struct avtab_key *k,
+ 				   const struct avtab_datum *d, void *p),
+-		    void *p)
++		    void *p, u32 *nrules)
+ {
+ 	__le16 buf16[4];
+ 	u16 enabled;
+@@ -412,6 +412,11 @@ int avtab_read_item(struct avtab *a, void *fp, struct policydb *pol,
+ 			if (val & spec_order[i]) {
+ 				key.specified = spec_order[i] | enabled;
+ 				datum.u.data = le32_to_cpu(buf32[items++]);
++				/* first pass of conditional table read */
++				if (nrules) {
++					(*nrules)++;
++					continue;
++				}
+ 				rc = insertf(a, &key, &datum, p);
+ 				if (rc)
+ 					return rc;
+@@ -490,6 +495,12 @@ int avtab_read_item(struct avtab *a, void *fp, struct policydb *pol,
+ 		pr_err("SELinux: avtab: invalid type\n");
+ 		return -EINVAL;
+ 	}
++
++	/* first pass of conditional table read */
++	if (nrules) {
++		(*nrules)++;
++		return 0;
++	}
+ 	return insertf(a, &key, &datum, p);
  }
  
-+static int avtab_node_cmp(const struct avtab_key *key1,
-+			  const struct avtab_key *key2)
-+{
-+	u16 specified = key1->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
+@@ -523,7 +534,7 @@ int avtab_read(struct avtab *a, void *fp, struct policydb *pol)
+ 		goto bad;
+ 
+ 	for (i = 0; i < nel; i++) {
+-		rc = avtab_read_item(a, fp, pol, avtab_insertf, NULL);
++		rc = avtab_read_item(a, fp, pol, avtab_insertf, NULL, NULL);
+ 		if (rc) {
+ 			if (rc == -ENOMEM)
+ 				pr_err("SELinux: avtab: out of memory\n");
+diff --git a/security/selinux/ss/avtab.h b/security/selinux/ss/avtab.h
+index 3c3904bf02b0..86fb6f793eec 100644
+--- a/security/selinux/ss/avtab.h
++++ b/security/selinux/ss/avtab.h
+@@ -104,7 +104,7 @@ struct policydb;
+ int avtab_read_item(struct avtab *a, void *fp, struct policydb *pol,
+ 		    int (*insert)(struct avtab *a, const struct avtab_key *k,
+ 				  const struct avtab_datum *d, void *p),
+-		    void *p);
++		    void *p, u32 *nrules);
+ 
+ int avtab_read(struct avtab *a, void *fp, struct policydb *pol);
+ int avtab_write_item(struct policydb *p, const struct avtab_node *cur, void *fp);
+diff --git a/security/selinux/ss/conditional.c b/security/selinux/ss/conditional.c
+index 81ff676f209a..810319bf0e60 100644
+--- a/security/selinux/ss/conditional.c
++++ b/security/selinux/ss/conditional.c
+@@ -321,9 +321,9 @@ static int cond_insertf(struct avtab *a, const struct avtab_key *k,
+ 	return 0;
+ }
+ 
+-static int cond_read_av_list(struct policydb *p, void *fp,
++static int cond_read_av_list(struct policydb *p, struct policy_file *fp,
+ 			     struct cond_av_list *list,
+-			     struct cond_av_list *other)
++			     struct cond_av_list *other, u32 *nrules)
+ {
+ 	int rc;
+ 	__le32 buf[1];
+@@ -347,7 +347,7 @@ static int cond_read_av_list(struct policydb *p, void *fp,
+ 	for (i = 0; i < len; i++) {
+ 		data.dst = &list->nodes[i];
+ 		rc = avtab_read_item(&p->te_cond_avtab, fp, p, cond_insertf,
+-				     &data);
++				     &data, nrules);
+ 		if (rc) {
+ 			kfree(list->nodes);
+ 			list->nodes = NULL;
+@@ -373,7 +373,8 @@ static int expr_node_isvalid(struct policydb *p, struct cond_expr_node *expr)
+ 	return 1;
+ }
+ 
+-static int cond_read_node(struct policydb *p, struct cond_node *node, void *fp)
++static int cond_read_node(struct policydb *p, struct cond_node *node,
++			  struct policy_file *fp, u32 *nrules)
+ {
+ 	__le32 buf[2];
+ 	u32 i, len;
+@@ -407,16 +408,17 @@ static int cond_read_node(struct policydb *p, struct cond_node *node, void *fp)
+ 			return -EINVAL;
+ 	}
+ 
+-	rc = cond_read_av_list(p, fp, &node->true_list, NULL);
++	rc = cond_read_av_list(p, fp, &node->true_list, NULL, nrules);
+ 	if (rc)
+ 		return rc;
+-	return cond_read_av_list(p, fp, &node->false_list, &node->true_list);
++	return cond_read_av_list(p, fp, &node->false_list, &node->true_list, nrules);
+ }
+ 
+-int cond_read_list(struct policydb *p, void *fp)
++int cond_read_list(struct policydb *p, struct policy_file *fp)
+ {
+ 	__le32 buf[1];
+-	u32 i, len;
++	struct policy_file tmp_fp;
++	u32 i, len, nrules;
+ 	int rc;
+ 
+ 	rc = next_entry(buf, fp, sizeof(buf));
+@@ -428,15 +430,25 @@ int cond_read_list(struct policydb *p, void *fp)
+ 	p->cond_list = kcalloc(len, sizeof(*p->cond_list), GFP_KERNEL);
+ 	if (!p->cond_list)
+ 		return -ENOMEM;
++	p->cond_list_len = len;
 +
-+	if (key1->source_type == key2->source_type &&
-+	    key1->target_type == key2->target_type &&
-+	    key1->target_class == key2->target_class &&
-+	    (specified & key2->specified))
-+		return 0;
-+	if (key1->source_type < key2->source_type)
-+		return -1;
-+	if (key1->source_type == key2->source_type &&
-+	    key1->target_type < key2->target_type)
-+		return -1;
-+	if (key1->source_type == key2->source_type &&
-+	    key1->target_type == key2->target_type &&
-+	    key1->target_class < key2->target_class)
-+		return -1;
-+	return 1;
-+}
-+
- static int avtab_insert(struct avtab *h, const struct avtab_key *key,
- 			const struct avtab_datum *datum)
- {
- 	u32 hvalue;
- 	struct avtab_node *prev, *cur, *newnode;
--	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
-+	int cmp;
++	/* first pass to only calculate the avrule count */
++	tmp_fp = *fp;
++	nrules = 0;
++	for (i = 0; i < p->cond_list_len; i++) {
++		rc = cond_read_node(p, &p->cond_list[i], &tmp_fp, &nrules);
++		if (rc)
++			goto err;
++		cond_node_destroy(&p->cond_list[i]);
++	}
  
- 	if (!h || !h->nslot || h->nel == U32_MAX)
- 		return -EINVAL;
-@@ -110,23 +132,11 @@ static int avtab_insert(struct avtab *h, const struct avtab_key *key,
- 	for (prev = NULL, cur = h->htable[hvalue];
- 	     cur;
- 	     prev = cur, cur = cur->next) {
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type == cur->key.target_type &&
--		    key->target_class == cur->key.target_class &&
--		    (specified & cur->key.specified)) {
--			/* extended perms may not be unique */
--			if (specified & AVTAB_XPERMS)
--				break;
-+		cmp = avtab_node_cmp(key, &cur->key);
-+		/* extended perms may not be unique */
-+		if (cmp == 0 && !(key->specified & AVTAB_XPERMS))
- 			return -EEXIST;
--		}
--		if (key->source_type < cur->key.source_type)
--			break;
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type < cur->key.target_type)
--			break;
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type == cur->key.target_type &&
--		    key->target_class < cur->key.target_class)
-+		if (cmp <= 0)
- 			break;
- 	}
+-	rc = avtab_alloc(&(p->te_cond_avtab), p->te_avtab.nel);
++	rc = avtab_alloc(&(p->te_cond_avtab), nrules);
+ 	if (rc)
+ 		goto err;
  
-@@ -148,7 +158,7 @@ struct avtab_node *avtab_insert_nonunique(struct avtab *h,
- {
- 	u32 hvalue;
- 	struct avtab_node *prev, *cur;
--	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
-+	int cmp;
- 
- 	if (!h || !h->nslot || h->nel == U32_MAX)
- 		return NULL;
-@@ -156,19 +166,8 @@ struct avtab_node *avtab_insert_nonunique(struct avtab *h,
- 	for (prev = NULL, cur = h->htable[hvalue];
- 	     cur;
- 	     prev = cur, cur = cur->next) {
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type == cur->key.target_type &&
--		    key->target_class == cur->key.target_class &&
--		    (specified & cur->key.specified))
--			break;
--		if (key->source_type < cur->key.source_type)
--			break;
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type < cur->key.target_type)
--			break;
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type == cur->key.target_type &&
--		    key->target_class < cur->key.target_class)
-+		cmp = avtab_node_cmp(key, &cur->key);
-+		if (cmp <= 0)
- 			break;
- 	}
- 	return avtab_insert_node(h, prev ? &prev->next : &h->htable[hvalue],
-@@ -183,7 +182,7 @@ struct avtab_node *avtab_search_node(struct avtab *h,
- {
- 	u32 hvalue;
- 	struct avtab_node *cur;
--	u16 specified = key->specified & ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
-+	int cmp;
- 
- 	if (!h || !h->nslot)
- 		return NULL;
-@@ -191,20 +190,10 @@ struct avtab_node *avtab_search_node(struct avtab *h,
- 	hvalue = avtab_hash(key, h->mask);
- 	for (cur = h->htable[hvalue]; cur;
- 	     cur = cur->next) {
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type == cur->key.target_type &&
--		    key->target_class == cur->key.target_class &&
--		    (specified & cur->key.specified))
-+		cmp = avtab_node_cmp(key, &cur->key);
-+		if (cmp == 0)
- 			return cur;
+-	p->cond_list_len = len;
 -
--		if (key->source_type < cur->key.source_type)
--			break;
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type < cur->key.target_type)
--			break;
--		if (key->source_type == cur->key.source_type &&
--		    key->target_type == cur->key.target_type &&
--		    key->target_class < cur->key.target_class)
-+		if (cmp < 0)
- 			break;
+-	for (i = 0; i < len; i++) {
+-		rc = cond_read_node(p, &p->cond_list[i], fp);
++	/* second pass to read in the conditional nodes */
++	for (i = 0; i < p->cond_list_len; i++) {
++		rc = cond_read_node(p, &p->cond_list[i], fp, NULL);
+ 		if (rc)
+ 			goto err;
  	}
- 	return NULL;
-@@ -213,27 +202,19 @@ struct avtab_node *avtab_search_node(struct avtab *h,
- struct avtab_node*
- avtab_search_node_next(struct avtab_node *node, u16 specified)
- {
-+	struct avtab_key tmp_key;
- 	struct avtab_node *cur;
-+	int cmp;
+diff --git a/security/selinux/ss/conditional.h b/security/selinux/ss/conditional.h
+index 5a7b51278dc6..62a12d00cac9 100644
+--- a/security/selinux/ss/conditional.h
++++ b/security/selinux/ss/conditional.h
+@@ -70,7 +70,7 @@ int cond_destroy_bool(void *key, void *datum, void *p);
+ int cond_index_bool(void *key, void *datum, void *datap);
  
- 	if (!node)
- 		return NULL;
--
--	specified &= ~(AVTAB_ENABLED|AVTAB_ENABLED_OLD);
-+	tmp_key = node->key;
-+	tmp_key.specified = specified;
- 	for (cur = node->next; cur; cur = cur->next) {
--		if (node->key.source_type == cur->key.source_type &&
--		    node->key.target_type == cur->key.target_type &&
--		    node->key.target_class == cur->key.target_class &&
--		    (specified & cur->key.specified))
-+		cmp = avtab_node_cmp(&tmp_key, &cur->key);
-+		if (cmp == 0)
- 			return cur;
--
--		if (node->key.source_type < cur->key.source_type)
--			break;
--		if (node->key.source_type == cur->key.source_type &&
--		    node->key.target_type < cur->key.target_type)
--			break;
--		if (node->key.source_type == cur->key.source_type &&
--		    node->key.target_type == cur->key.target_type &&
--		    node->key.target_class < cur->key.target_class)
-+		if (cmp < 0)
- 			break;
- 	}
- 	return NULL;
+ int cond_read_bool(struct policydb *p, struct symtab *s, void *fp);
+-int cond_read_list(struct policydb *p, void *fp);
++int cond_read_list(struct policydb *p, struct policy_file *fp);
+ int cond_write_bool(void *key, void *datum, void *ptr);
+ int cond_write_list(struct policydb *p, void *fp);
+ 
 -- 
 2.34.1
 

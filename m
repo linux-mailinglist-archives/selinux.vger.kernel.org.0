@@ -2,62 +2,58 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AFAA7E6B95
-	for <lists+selinux@lfdr.de>; Thu,  9 Nov 2023 14:52:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 547517E6BA6
+	for <lists+selinux@lfdr.de>; Thu,  9 Nov 2023 14:53:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233505AbjKINwB (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Thu, 9 Nov 2023 08:52:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60638 "EHLO
+        id S232307AbjKINxY (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Thu, 9 Nov 2023 08:53:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232193AbjKINwA (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Thu, 9 Nov 2023 08:52:00 -0500
-Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B62A3272C
-        for <selinux@vger.kernel.org>; Thu,  9 Nov 2023 05:51:57 -0800 (PST)
-Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9d2e6c8b542so147101566b.0
-        for <selinux@vger.kernel.org>; Thu, 09 Nov 2023 05:51:57 -0800 (PST)
+        with ESMTP id S231214AbjKINxX (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Thu, 9 Nov 2023 08:53:23 -0500
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC99272C
+        for <selinux@vger.kernel.org>; Thu,  9 Nov 2023 05:53:21 -0800 (PST)
+Received: by mail-ej1-x636.google.com with SMTP id a640c23a62f3a-9de7a43bd1aso141778666b.3
+        for <selinux@vger.kernel.org>; Thu, 09 Nov 2023 05:53:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1699537916; x=1700142716; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=XWzqq6/bpIFYiqr3ZqZdeCyg7SgG9SRuKL1/3MfHjww=;
-        b=nJbb/Xrn77I6skWaV1yQ6vUXjXcGxWRJB26DR7RIf0XMtkc4Wpl5H34QUwtrudib4k
-         qC+l3MMMTAr90Mz9CHFRfiqeRhJUD6H7Xy2zPZ4MsYicsPg9Fq2EIRhet9HLFmV5ONj1
-         wW1tKg/RfgM8XpT7UAYG9csY5W+SfMy8xVJc6LNy/9M+/Oo0MNyl0QWow4xQZQWyrY/M
-         m1IkjV9nu/Bhr6pB6TbrpYYPUpOouqByLpWMwaBNyowwujypXvqGc6ikHBUrb6lA4q54
-         IY5YeB/Qbe2l36LKCh9m93mZOFbgGeyfe/85yyFblLuEy6VOQANJhf3+pTt03r4ni3bv
-         l+pg==
+        d=googlemail.com; s=20230601; t=1699538000; x=1700142800; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=S3uhkNhG9mnw3UfxlqxhiWF6b2P/LIFOZkukQVAxPEE=;
+        b=YhJq5FAHCi1PDLHhBXysphWBfCBL5Z0/oROr1Ini1Ca3BtaEnbuy9JS72lFXf3b/Q5
+         AGESmIf1gxDzkVdK24qa60DBMdb9brDGMV+4ZRk9qh8f7sxpoUUT7au2Xv8aq4rWz0pT
+         DrYSyQdhKGIPhKdxRD1cvkoYUIkbxQdSfPpBq1uzJbh9sWCUINukPbxz+Tc+lBalTyzD
+         pL4cO8elyBfj4Eus1qBRlar8aFvQX/v7SIEeP3nshlG1q9D5mKEy9sUWTjxC51r5qGDm
+         oREc8BAbl4PjRGK99dbKhdkAwZ89dahuq8v38tMC6VXhftrFOnTtvyQlP1cpqpiGi861
+         89rQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1699537916; x=1700142716;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XWzqq6/bpIFYiqr3ZqZdeCyg7SgG9SRuKL1/3MfHjww=;
-        b=wnM8b4MqVE1ZMEjCDHikLbdOhX8I02IazInUk+QTaWW6tfy3J/2X3Xr4XIoCWE5a6Y
-         D5a/URjs+MIAEyEhvOWU8sn4O+3V+ayAkT/qOqRvnqRogyw+speN4xzNCwS/VY6H9zxa
-         HSGKyyFBdGVYpg7kasG1aV71zDWFliaw9cqeT5Sc4IUhw0sQYM29vVl4MK7o0PgUFn/6
-         fX4ixLaTbOytY1nGf0PYUIfDgMWIk6pywd6CtVy3CuAGKL6agoSkLbgG/Ydb3uLXmDr4
-         HjFPx5i48sC8Fvg5cLbeeG6edZ0tOC8VoM2NgX3C/5WPKji/BS8brR1fATW+fjBY4MnR
-         9uIg==
-X-Gm-Message-State: AOJu0Yx7ShcSjoNO3PApBOtpPS3Zvbs/86/lPAm+j6d1LJi5wCUNt/Pz
-        lOP7QkbdJ4RK2Sd/ktwwLw2SfvBqPBY=
-X-Google-Smtp-Source: AGHT+IFgpwm+Jggt2sMdrS80jhx+kmR3Qm1tpuyO9CprS+x+N91//clncR7MDmF+Z7efY0fnaLGRjA==
-X-Received: by 2002:a17:906:787:b0:9e5:31c4:f5f8 with SMTP id l7-20020a170906078700b009e531c4f5f8mr131372ejc.53.1699537916059;
-        Thu, 09 Nov 2023 05:51:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1699538000; x=1700142800;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=S3uhkNhG9mnw3UfxlqxhiWF6b2P/LIFOZkukQVAxPEE=;
+        b=MVNTGk/JTiYKl97eWAb7WvsfyVRgw33LtMGn2WATfcabisI7mvH+5wdkDW4DO/cndN
+         TNrm+uVhbHHDOPnr3PFAi8W8JrOClNxdI5Ufo5ahT3trqif1NuQWv+AX0xzTZqDHIQIx
+         LsKyoIoc536vYI6Pjit+HgRInBzfJSrKEXT9hFsoxJdSjSpX9lxUDB5m3xdMc8mM5FYb
+         rq9rN0SXvAH8eUU/TcV978pu5wooa83xFiLkP6vkwJBb+04B9bUATGATdEhTFBKQstCV
+         BGDnMljOy1+N3KV+wihaML60UU/ppYaBvTh7KARxJdTWE6ejsK6SykrzHgVK2SRoQQ3/
+         3ktA==
+X-Gm-Message-State: AOJu0Yz/qHlEqdyG3Qdc4N1sDWffXKSla2FORWfLCLHbvBTFYcv3ucYo
+        hi/p3hK2HWQJKDvNrRdur+ep8v4z/AM=
+X-Google-Smtp-Source: AGHT+IE2cZLi4jUC01dsJjeJhH94TZZx/EIg56kJEUstzhAxg1pkoZ6sbOUjMhq++mCBRDRv1FdAtA==
+X-Received: by 2002:a17:906:4789:b0:9c6:287d:c59d with SMTP id cw9-20020a170906478900b009c6287dc59dmr4606533ejc.28.1699537999843;
+        Thu, 09 Nov 2023 05:53:19 -0800 (PST)
 Received: from debian_development.DebianHome (dynamic-077-000-043-071.77.0.pool.telefonica.de. [77.0.43.71])
-        by smtp.gmail.com with ESMTPSA id bv15-20020a170906b1cf00b009829d2e892csm2623563ejb.15.2023.11.09.05.51.55
+        by smtp.gmail.com with ESMTPSA id q8-20020a1709060e4800b009de61c89f6fsm2549900eji.1.2023.11.09.05.53.19
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Nov 2023 05:51:55 -0800 (PST)
+        Thu, 09 Nov 2023 05:53:19 -0800 (PST)
 From:   =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To:     selinux@vger.kernel.org
-Subject: [PATCH 7/7] scripts: update run-scan-build
-Date:   Thu,  9 Nov 2023 14:51:48 +0100
-Message-ID: <20231109135148.42688-7-cgzones@googlemail.com>
+Subject: [PATCH 1/5] semodule_link: avoid NULL dereference on OOM
+Date:   Thu,  9 Nov 2023 14:53:11 +0100
+Message-ID: <20231109135315.44095-1-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231109135148.42688-1-cgzones@googlemail.com>
-References: <20231109135148.42688-1-cgzones@googlemail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -65,64 +61,41 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-* Do not build test target
+In case the initial calloc(3) call fails the variable mods is still NULL
+while its size hint num_mods is set.
 
-  Building the test target breaks the whole build since the tests for
-  libsepol require checkpolicy to be build already:
+Reported by Clang Analyzer:
 
-      make[2]: *** No rule to make target '../../checkpolicy/y.tab.o', needed by 'libsepol-tests'.  Stop.
-      make[2]: *** Waiting for unfinished jobs....
+    semodule_link.c:182:29: warning: Array access (from variable 'mods') results in a null pointer dereference [core.NullDereference]
+      182 |                 sepol_module_package_free(mods[i]);
+          |                                           ^~~~~~~
 
-  Since issues in the test suites are not critical do not build them.
-
-* Update build status reporting
-
-  Since the script sets the option -e scan-build will immediately exit
-  on failure and the informative message "++ Build failed" is not
-  printed.
-
-* Bump to fortify level 3
-
-* Fix typo
+Fixes: 63e798a2034a ("semodule_link: update")
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- scripts/run-scan-build | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ semodule-utils/semodule_link/semodule_link.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/run-scan-build b/scripts/run-scan-build
-index 7b731f3e..e4f13a2f 100755
---- a/scripts/run-scan-build
-+++ b/scripts/run-scan-build
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # Run clang's static analyzer (scan-build) and record its output in output-scan-build/
+diff --git a/semodule-utils/semodule_link/semodule_link.c b/semodule-utils/semodule_link/semodule_link.c
+index 0f157bd9..58fca34d 100644
+--- a/semodule-utils/semodule_link/semodule_link.c
++++ b/semodule-utils/semodule_link/semodule_link.c
+@@ -178,9 +178,11 @@ failure:
+ 	ret = EXIT_FAILURE;
  
--# Allow overriding binariy names, like clang-12
-+# Allow overriding binary names, like clang-12
- export CC=${CC:-clang}
- SCAN_BUILD=${SCAN_BUILD:-scan-build}
+ cleanup:
+-	for (i = 0; i < num_mods; i++)
+-		sepol_module_package_free(mods[i]);
+-	free(mods);
++	if (mods) {
++		for (i = 0; i < num_mods; i++)
++			sepol_module_package_free(mods[i]);
++		free(mods);
++	}
+ 	sepol_module_package_free(base);
  
-@@ -32,15 +32,12 @@ fi
- make -C .. clean distclean -j"$(nproc)"
- $SCAN_BUILD -analyze-headers -o "$OUTPUTDIR" make -C .. \
-     DESTDIR="$DESTDIR" \
--    CFLAGS="-O2 -Wall -Wextra -D_FORTIFY_SOURCE=2 -D__CHECKER__ -I$DESTDIR/usr/include" \
-+    CFLAGS="-O2 -Wall -Wextra -D_FORTIFY_SOURCE=3 -D__CHECKER__ -I$DESTDIR/usr/include" \
-     -j"$(nproc)" \
--    install install-pywrap install-rubywrap all test
-+    install install-pywrap install-rubywrap all \
-+    || { echo "++ Build failed!"; exit 1; }
- 
--if [ $? -eq 0 ]; then
--    echo "++ Build succeeded"
--else
--    echo "++ Build failed"
--fi
-+echo "++ Build succeeded"
- 
- # Reduce the verbosity in order to keep the message from scan-build saying
- # "scan-build: Run 'scan-view /.../output-scan-build/2018-...' to examine bug reports.
+ 	return ret;
 -- 
 2.42.0
 

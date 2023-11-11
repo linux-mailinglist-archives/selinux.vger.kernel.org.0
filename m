@@ -2,69 +2,105 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C84F57E88F3
-	for <lists+selinux@lfdr.de>; Sat, 11 Nov 2023 04:32:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A05C7E8B81
+	for <lists+selinux@lfdr.de>; Sat, 11 Nov 2023 17:10:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230124AbjKKDcR (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Fri, 10 Nov 2023 22:32:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34354 "EHLO
+        id S231295AbjKKQKM (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Sat, 11 Nov 2023 11:10:12 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230149AbjKKDcQ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Fri, 10 Nov 2023 22:32:16 -0500
-X-Greylist: delayed 5944 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 10 Nov 2023 19:32:13 PST
-Received: from mail.maprial.com (mail.maprial.com [190.181.35.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CABD62593
-        for <selinux@vger.kernel.org>; Fri, 10 Nov 2023 19:32:13 -0800 (PST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.maprial.com (Postfix) with ESMTP id 04433900FED3;
-        Fri, 10 Nov 2023 18:56:20 -0400 (-04)
-Received: from mail.maprial.com ([127.0.0.1])
-        by localhost (mail.maprial.com [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id YORyJh41Tbby; Fri, 10 Nov 2023 18:56:20 -0400 (-04)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.maprial.com (Postfix) with ESMTP id A710C86BFD1B;
-        Fri, 10 Nov 2023 17:47:22 -0400 (-04)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.maprial.com A710C86BFD1B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maprial.com;
-        s=8A254412-65B9-11ED-A564-8B9C10001A2B; t=1699652844;
-        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=QlDVdg8SqFlH0ArrxhhRo43TpAZcDgOce6g7+cOmx7+H8/IV7F/Oed2gdacFeVyxr
-         Cn4w3VEuvnMOWvWJnjJpbrY3QEX8c40QdMf+8yuocuZ+Bl8V5eSzb9zFqotxJmAxLl
-         PuGkBEFo3edLfAm8PdQpGHiVnki7si2lCICalZXg=
-X-Virus-Scanned: amavisd-new at mail.maprial.com
-Received: from mail.maprial.com ([127.0.0.1])
-        by localhost (mail.maprial.com [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id ssz-vfSPvdSj; Fri, 10 Nov 2023 17:47:22 -0400 (-04)
-Received: from [192.168.1.152] (unknown [51.179.104.230])
-        by mail.maprial.com (Postfix) with ESMTPSA id 6D2AE81737F0;
-        Fri, 10 Nov 2023 17:04:40 -0400 (-04)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229797AbjKKQKL (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Sat, 11 Nov 2023 11:10:11 -0500
+Received: from mail-qk1-x734.google.com (mail-qk1-x734.google.com [IPv6:2607:f8b0:4864:20::734])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A603A81
+        for <selinux@vger.kernel.org>; Sat, 11 Nov 2023 08:10:06 -0800 (PST)
+Received: by mail-qk1-x734.google.com with SMTP id af79cd13be357-778940531dbso191808585a.0
+        for <selinux@vger.kernel.org>; Sat, 11 Nov 2023 08:10:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1699719005; x=1700323805; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=J/6VP9tk/PKdfDj5a5022D+V62+KOF1HeDcVhmRrtao=;
+        b=NZDcljVzyXJBNU30nAlbPbpNIzgTQ3AfEY47E2M3N3wcXm+DetD/mvx4gl+VDNS1J7
+         nJWybnHSdCDVXuXM6OkaMEqqgyYIdzqsm5bMa1CrOZnL9YMPece+H66UCBjcmHBMLqs6
+         Y6YWU7hynuF0+fATxMHcer56Ddp0KgoxWA8hN1Xbt8+ut+hovfK5X9sZsxQrBi69vkgC
+         pYXGswD4znJA2xNkZYY9rhuKQfMUAJ9KKb1x6cjYRUtd5bT1VFVlEa1xl01N9thXW4+2
+         WKu0/ulttrgIGu9nVWTP4px9uSmFhsr1MJceU0qHR+ptXUfKuQGYtwV/Iy7PZ5fjd6zv
+         g15g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699719005; x=1700323805;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=J/6VP9tk/PKdfDj5a5022D+V62+KOF1HeDcVhmRrtao=;
+        b=l6pyO7zp3rLYJ9c7cU8Yh8gYH8r/v/T2lAebOQtIuhMNKbzcNXW2EvJ9U0gbHRRYbV
+         R3u8wiUakNIWCK+Dhg0ezT9ZqsJDhlVlXYPrX470HLknpWO6YLVJKwSUzPYL1Q3LDIgf
+         m3kN6BdxeNFBckn1pcJ36d0FmhnW5+cHJohZHxEY3fc/1Z6e9/rz0t+n/7lS21mgpFFt
+         kjk+IL3JgX2RpyRZcFLojHG5lo5PBcx5FD5BN0W7lLWJM0tceSvRmC4G7FJGOZFbYfW+
+         b64phwDPEJ3OcoTDk+8BJgV0n5WenSatys38S3O3buIU/tQTiooOM+25vjhnAg0KHXRQ
+         p7bQ==
+X-Gm-Message-State: AOJu0Ywvma0CGCJkPdb/WDU8gMdHyDtu8IYtBOkoUJ0EKssAtjMf0+Ic
+        mjOOBrt29QYw1UDkGnyDtNK68SuQmeH0TDpGaA==
+X-Google-Smtp-Source: AGHT+IFV4wn5oFx7mbRdjAfFwwC1QjVPc0/WVMVzzRb/hbOxbCbsLSPUhMtfmiS2Pp6fMVdGgzXBoQ==
+X-Received: by 2002:a0c:f68f:0:b0:66d:6869:5e62 with SMTP id p15-20020a0cf68f000000b0066d68695e62mr2588295qvn.46.1699719005523;
+        Sat, 11 Nov 2023 08:10:05 -0800 (PST)
+Received: from localhost ([70.22.175.108])
+        by smtp.gmail.com with ESMTPSA id pv19-20020ad45493000000b0066cf4fa7b47sm667529qvb.4.2023.11.11.08.10.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Nov 2023 08:10:05 -0800 (PST)
+From:   Paul Moore <paul@paul-moore.com>
+To:     selinux@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH] selinux: update filenametr_hash() to use full_name_hash()
+Date:   Sat, 11 Nov 2023 11:09:55 -0500
+Message-ID: <20231111160954.45911-2-paul@paul-moore.com>
+X-Mailer: git-send-email 2.42.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
-To:     Recipients <gvalencia@maprial.com>
-From:   gvalencia@maprial.com
-Date:   Fri, 10 Nov 2023 22:04:31 +0100
-Reply-To: joliushk@gmail.com
-Message-Id: <20231110210441.6D2AE81737F0@mail.maprial.com>
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: ***
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1107; i=paul@paul-moore.com; h=from:subject; bh=ZUBSWasGa17Hg4tPck9a19XRXUPsUtuc90AqTJ7IpjU=; b=owEBbQKS/ZANAwAIAeog8tqXN4lzAcsmYgBlT6dSzeoO4SbS9CwM6HwtMY8fGwIE6OJzFcH+g Nx5MXZuyraJAjMEAAEIAB0WIQRLQqjPB/KZ1VSXfu/qIPLalzeJcwUCZU+nUgAKCRDqIPLalzeJ c5faEAC+o8cqBH6Bsvb2d4ph7wX0FsLkd11PpyCuf22aczf2uG4KBUeucwQrEW/7eF1g0C9IELe zmfK/EQfC0ZlOqFCKGEK/vTjd8s60XhvXfK47dlqnAAB2KVjx3oFulen7MGbpUKTrBNDCPxs4rn /FH00Ne2YRReldRnhK1ISFBLIkeoE5IQtnqr5JW2sbXpQnxuEQQn1uy++NTdSvuR2smZN/l1I9V AuQOmFDZAAHuD4fYcLRoJLpSsZdfLygjNNucDECZxl0iUWmp4SqBcFb4PYkOB1l0Llxl+gzuOjD y6FyQq0x+2RuEdw/Qfgnji9dvIB712WMErgBZtLQ7ePFc9OgdqmfyCxxyaDGgj1zoicBI52Hqhk AugyM8391X4LtwXYTSPV+nfN3ilJ30lnHMbQWrPNfFZFjoa2cpf2pwRnaNvhzSYZCHXpHnrW0p7 rms0DSvQuHTnFBHPHClWppXzyM3WshflCxdGOQ7Y58eoloP29uwCatFbAJgKfZm5CHJxmtk5NaB rS5LT8GEPHwgDzarKpLtfQ6CqEsg8mWZ0J1mXcfXWzYqUoddymyktN5bmgvQWt+TMwxYKrG5jiE chKvXQHDc8sRCpm4HHz3IRViS2vRq5g3X/4sgj275BrI9jt1m6MOYT8333WumdllNyBQrT1jNBW Sxs8bA/q9YpjauA==
+X-Developer-Key: i=paul@paul-moore.com; a=openpgp; fpr=7100AADFAE6E6E940D2E0AD655E45A5AE8CA7C8A
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-Goededag,
-Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
-Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
+Using full_name_hash() instead of partial_name_hash() should result
+in cleaner and better performing code.
 
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+---
+ security/selinux/ss/policydb.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-Ik wacht op jullie reacties
-Met vriendelijke groeten
-mevrouw Joanna Liu
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 2d528f699a22..0ab3b5429fcf 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -409,16 +409,9 @@ static int roles_init(struct policydb *p)
+ static u32 filenametr_hash(const void *k)
+ {
+ 	const struct filename_trans_key *ft = k;
+-	unsigned long hash;
+-	unsigned int byte_num;
+-	unsigned char focus;
++	unsigned long salt = ft->ttype ^ ft->tclass;
+ 
+-	hash = ft->ttype ^ ft->tclass;
+-
+-	byte_num = 0;
+-	while ((focus = ft->name[byte_num++]))
+-		hash = partial_name_hash(focus, hash);
+-	return hash;
++	return full_name_hash((void *)salt, ft->name, strlen(ft->name));
+ }
+ 
+ static int filenametr_cmp(const void *k1, const void *k2)
+-- 
+2.42.1
+

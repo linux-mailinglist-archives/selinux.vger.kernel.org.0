@@ -2,44 +2,110 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65AC37EB9A6
-	for <lists+selinux@lfdr.de>; Tue, 14 Nov 2023 23:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D6BF7EB7F6
+	for <lists+selinux@lfdr.de>; Tue, 14 Nov 2023 21:38:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231518AbjKNWx5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Tue, 14 Nov 2023 17:53:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42252 "EHLO
+        id S234007AbjKNUip (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Tue, 14 Nov 2023 15:38:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232443AbjKNWx4 (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 14 Nov 2023 17:53:56 -0500
-X-Greylist: delayed 1262 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 14 Nov 2023 14:53:53 PST
-Received: from mail.jan.ne.jp (mail.jan.ne.jp [211.10.90.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id DA2EBD0
-        for <selinux@vger.kernel.org>; Tue, 14 Nov 2023 14:53:53 -0800 (PST)
-Received: from www10.jan.ne.jp (www10.jan.ne.jp [211.10.90.141])
-        by mail.jan.ne.jp (Postfix) with SMTP id ED9C719F47E
-        for <selinux@vger.kernel.org>; Wed, 15 Nov 2023 07:27:33 +0900 (JST)
-Received: (qmail 16765 invoked from network); 15 Nov 2023 05:34:49 +0900
-Received: from unknown (HELO ?51.195.53.194?) (eiji.i@isono-body.co.jp@51.195.53.194)
-  by www10.jan.ne.jp with SMTP; 15 Nov 2023 05:34:49 +0900
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S234012AbjKNUip (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Tue, 14 Nov 2023 15:38:45 -0500
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5CC5F1
+        for <selinux@vger.kernel.org>; Tue, 14 Nov 2023 12:38:41 -0800 (PST)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2c59a4dd14cso73601551fa.2
+        for <selinux@vger.kernel.org>; Tue, 14 Nov 2023 12:38:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1699994320; x=1700599120; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GJvqrAdrbDt0PH0QuXr1nf4XjaQ9aKZPxBq/UMziv+g=;
+        b=cSGSwEc1DpxNEfeFsdMtvIfck6nocP7YekzLHB71QZY8CjzTfheGRr89HDX8l/7Lmt
+         R+n9jbcIiiAVdplidlBvPa3T8DpCiG4vURo2eC9w+KlyzCkXuSgDBB6kJ57BdSkugus/
+         mozMQyEYIe9Xo0AcQd1D7YKnFklkqRP3m7I4Ol5W5WG89NdRtunHuu+pOQRFq7pCxgkV
+         LJOVNnB/aS4w9FbF7t4YBZKLwIKcJzRetcZJDkhcR0wO5jD9EVWqCqhfn8yDmIvYUaPo
+         KYIClg2+/ANkQHfwMTPTN1Acdb8kwu3sApNEhRY8CSV2pE+jVma8vp792AravTP1aHdT
+         HuoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1699994320; x=1700599120;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GJvqrAdrbDt0PH0QuXr1nf4XjaQ9aKZPxBq/UMziv+g=;
+        b=vHRZs3L8koG5uKjFUtmMb8fGsHgYq/NUAS/v0EYR0aaGNnaoj9BPTHIMSfBrSF/6dq
+         VxRzk8heKe7CwJ1kyUUVWrzz9CmMe5lB/EbCwruhUVSbMab2Qxm7EaibL3A2RwVw955L
+         pM1IdKpVGYbRg2+WodjMYeYacGavPyTxcYAdSJKAJJvDriNLfr8KtwR9H6c65CvGuSNM
+         kEGxR9bdQLEoTc9xMPPCKNRYm7ZxzB4pM4bzqj8kpUvvtEdg6pl/X3QCfkIC3ox6+pPP
+         src9kEZ2/OQwf6vYatA5nPYZxJHkTYS5oeDLflVDWz7LhehILZH1GJ4kqTFTL7xLo1ki
+         Xzcw==
+X-Gm-Message-State: AOJu0Yw+7DOinVUsp+nccqa/JQ6D3ltvzxTYD0vDUpjWPQREGL7mZFXM
+        gh9Jt13sdQId9aaJi9F9TF6xPXisPaeI5tSRL8c=
+X-Google-Smtp-Source: AGHT+IEa1H0rIBLOi4L0cCd1euKVl7MmXevVt5j6BykXR/gwwrqpBNKWkIS21SXwWJWsIXoUpFBgRphkW64UWb6way4=
+X-Received: by 2002:a05:6512:51c:b0:503:35bb:1e74 with SMTP id
+ o28-20020a056512051c00b0050335bb1e74mr6851454lfb.61.1699994319732; Tue, 14
+ Nov 2023 12:38:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: my subject
-To:     Recipients <eiji.i@isono-body.co.jp>
-From:   "Ms Toni" <eiji.i@isono-body.co.jp>
-Date:   Tue, 14 Nov 2023 12:34:37 -0800
-Reply-To: tran24358@gmail.com
-Message-ID: <20231114203449.15940.qmail@www10.jan.ne.jp>
-X-Spam-Status: No, score=4.5 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_BL_SPAMCOP_NET,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+References: <20231113232750.48706-1-luhuaxin1@huawei.com>
+In-Reply-To: <20231113232750.48706-1-luhuaxin1@huawei.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Tue, 14 Nov 2023 15:39:28 -0500
+Message-ID: <CAP+JOzRTW1mJH2VT143OOYCaM7xbNytPukXMoY3gfwCJX1FGhg@mail.gmail.com>
+Subject: Re: [PATCH v1] libsepol: add check for category value before printing
+To:     luhuaxin1@huawei.com
+Cc:     selinux@vger.kernel.org, fangxiuning@huawei.com,
+        zhujianwei7@huawei.com, shenyining@huawei.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-I'm Toni Harris and I'm looking for a partner to work with in your country. I need assistance investing funds in your country. Email me to discuss this opportunity with you. Contact email: tran24358@gmail.com
+On Mon, Nov 13, 2023 at 8:59=E2=80=AFPM <luhuaxin1@huawei.com> wrote:
+>
+> From: Huaxin Lu <luhuaxin1@huawei.com>
+>
+> In mls_semantic_level_expand(), there is a explicitly determine
+> whether category is 0, which may cause an potential integer
+> overflow in error branch.
+>
+> Signed-off-by: Huaxin Lu <luhuaxin1@huawei.com>
+> ---
+>  libsepol/src/expand.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
+> index ee5f9185..9ed22bfd 100644
+> --- a/libsepol/src/expand.c
+> +++ b/libsepol/src/expand.c
+> @@ -945,8 +945,8 @@ int mls_semantic_level_expand(mls_semantic_level_t * =
+sl, mls_level_t * l,
+>         for (cat =3D sl->cat; cat; cat =3D cat->next) {
+>                 if (!cat->low || cat->low > cat->high) {
+>                         ERR(h, "Category range is not valid %s.%s",
+> -                           p->p_cat_val_to_name[cat->low - 1],
+> -                           p->p_cat_val_to_name[cat->high - 1]);
+> +                           cat->low > 0 ? p->p_cat_val_to_name[cat->low =
+- 1] : "n/a",
+> +                           cat->high > 0 ? p->p_cat_val_to_name[cat->hig=
+h - 1] : "n/a");
+
+I would prefer "Invalid", "Bad Category", "NULL", or something along
+those lines instead of "n/a".
+Thanks,
+Jim
+
+
+>                         return -1;
+>                 }
+>                 for (i =3D cat->low - 1; i < cat->high; i++) {
+> --
+> 2.33.0
+>

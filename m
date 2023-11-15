@@ -2,113 +2,62 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 800E17EB947
-	for <lists+selinux@lfdr.de>; Tue, 14 Nov 2023 23:24:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E3A57EBF31
+	for <lists+selinux@lfdr.de>; Wed, 15 Nov 2023 10:11:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233916AbjKNWYh (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Tue, 14 Nov 2023 17:24:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50116 "EHLO
+        id S234675AbjKOJL5 (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Wed, 15 Nov 2023 04:11:57 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47632 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232511AbjKNWYg (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Tue, 14 Nov 2023 17:24:36 -0500
-Received: from mail-yw1-x1135.google.com (mail-yw1-x1135.google.com [IPv6:2607:f8b0:4864:20::1135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E429DD
-        for <selinux@vger.kernel.org>; Tue, 14 Nov 2023 14:24:33 -0800 (PST)
-Received: by mail-yw1-x1135.google.com with SMTP id 00721157ae682-5a7af20c488so73174957b3.1
-        for <selinux@vger.kernel.org>; Tue, 14 Nov 2023 14:24:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1700000672; x=1700605472; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P/lLeWt7vOF/PJgPrkSuq9lzzhGIQmGMwr1dnmP0LZ8=;
-        b=bJHHFj/uhodv7UHgmR0Gsrb1IfjKIxuzAjbCM+LAoqAndwF8CMwkxhrDzfeCqpmEFa
-         EhlJmnan0yp2Y8yevgFkjLzJDjFlxxj2AIeQc9f/aWAsygZl+7oop0Y4QXt/JvxD+k1T
-         Cj00CXzGtYpOjBFx8kzEnUrb83Hphxy7xS6kJ0nk7PT610E1FT64Wt/MCJkWz/nws4y7
-         0HAQPKKhX59+rrvmuUu3TALXtJfNxyyKwZ6WUUHXd6P+IBTwzBQCQalFUS3+74kD8aGY
-         EMOWT9AOTyYxgf54ShLsWqLGvcRI1MKLGLp2RzpVbeTK0BvCLQ4aRjR/hZE52WYnRukQ
-         Er9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700000672; x=1700605472;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P/lLeWt7vOF/PJgPrkSuq9lzzhGIQmGMwr1dnmP0LZ8=;
-        b=a4DNrne6ZLvMZyYHjL4k7PPH3Ykd33WoGzLDOXZj4qBx358xks1srOl2rpp/xdCQ6x
-         G8oQYaqSkImKCFflIxZpgiThHy3n5O0kbvyXdogJkfTmzsUrkRK0ogJ6NEaSNEhQZAEv
-         HBfTocauWNh9+Tb5tGok7h9kapdlLqJKcPOQ3/k/75HvqY4NIv9nn4jd8mXLsB70tr8q
-         3tXcstx26PxBXMIg3hli0Ww+zYpaWBilVkzpHB4M+0rt/GW0TgH5M11AYFl2alAb/YHa
-         QXjrut7mQ/CI1fp+0GjTN3kHYLmIOIjlk3mxxNNyrEcYxpVuwd9gzAubePhBxqEmI1sZ
-         SdVg==
-X-Gm-Message-State: AOJu0YwHbh4EE5ONdqdtFAHRjCxxCd9RSBExIoQpK1pbggnLuJRnMaGm
-        hnNacbVzJygwU5a37QTWIb8seSn7R8CDXVsUH/Z+
-X-Google-Smtp-Source: AGHT+IE4NbSQI/ApmHYg+WezQFmQeL5oHdj3CUGVySbuEVawuQXhWijLxzNAWax1cpVpQp2eRaQj+Y2JS+0I4PAh9KQ=
-X-Received: by 2002:a25:df83:0:b0:d9b:e8bf:4703 with SMTP id
- w125-20020a25df83000000b00d9be8bf4703mr11018483ybg.10.1700000672338; Tue, 14
- Nov 2023 14:24:32 -0800 (PST)
+        with ESMTP id S234651AbjKOJL5 (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Wed, 15 Nov 2023 04:11:57 -0500
+Received: from mail.svorkabrattegg.com (mail.svorkabrattegg.com [51.38.115.213])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C30AAF5
+        for <selinux@vger.kernel.org>; Wed, 15 Nov 2023 01:11:51 -0800 (PST)
+Received: by mail.svorkabrattegg.com (Postfix, from userid 1002)
+        id ACF8DA4A48; Wed, 15 Nov 2023 09:11:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=svorkabrattegg.com;
+        s=mail; t=1700039509;
+        bh=/k89xfPLk1d0qR/RHuj9ICbI68AhaQrvzSmPJgcc5mA=;
+        h=Date:From:To:Subject:From;
+        b=gGmsduLrTV1XdxM4ED1P0HVhXFQfnRO2hY3V8DVLGfgN/CdIdvZg7KFY0TpD4b9jJ
+         PG6lf56c7tDgSiH2h0POiYJ5gd9mAySCgGXODUfKip4kcJNiIUryl0cXkUEk+Wes4Z
+         S/9vjkZNbkglZVSFs0sUvxc2QExLnMgopd1iZtRcKYQUj63KvmS4ZQDtElYqOQXhm3
+         LXpn77/iNabhhmxnPRx7RNr9hhQ0SJh71DFy/18MTskyfEBt3H6fzFnXzO7XPZAuup
+         VAROES/rAnqwcSjJjX26fLLWnbf5MEe45LbubKdS9ITos0U8lO+aBKRhPfb8C66Aac
+         3iHNMtHh6TJvw==
+Received: by mail.svorkabrattegg.com for <selinux@vger.kernel.org>; Wed, 15 Nov 2023 09:11:11 GMT
+Message-ID: <20231115074500-0.1.e8.uzcg.0.w449ysfs3l@svorkabrattegg.com>
+Date:   Wed, 15 Nov 2023 09:11:11 GMT
+From:   "Hubert Kowalczyk" <hubert.kowalczyk@svorkabrattegg.com>
+To:     <selinux@vger.kernel.org>
+Subject: =?UTF-8?Q?Prosz=C4=99_o_kontakt?=
+X-Mailer: mail.svorkabrattegg.com
 MIME-Version: 1.0
-References: <20231016220835.GH800259@ZenIV> <CAHC9VhTzEiKixwpKuit0CBq3S5F-CX3bT1raWdK8UPuN3xS-Bw@mail.gmail.com>
- <CAEjxPJ4FD4m7wEO+FcH+=LyH2inTZqxi1OT5FkUH485s+cqM2Q@mail.gmail.com>
-In-Reply-To: <CAEjxPJ4FD4m7wEO+FcH+=LyH2inTZqxi1OT5FkUH485s+cqM2Q@mail.gmail.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Tue, 14 Nov 2023 17:24:21 -0500
-Message-ID: <CAHC9VhQQ-xbV-dVvTm26LaQ8F+0iW+Z0SMXdZ9MeDBJ7z2x4xg@mail.gmail.com>
-Subject: Re: [PATCH][RFC] selinuxfs: saner handling of policy reloads
-To:     Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>,
-        selinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_BL_SPAMCOP_NET,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Tue, Nov 14, 2023 at 3:57=E2=80=AFPM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
-> On Mon, Nov 13, 2023 at 11:19=E2=80=AFAM Paul Moore <paul@paul-moore.com>=
- wrote:
-> > On Mon, Oct 16, 2023 at 6:08=E2=80=AFPM Al Viro <viro@zeniv.linux.org.u=
-k> wrote:
-> > >
-> > > [
-> > > That thing sits in viro/vfs.git#work.selinuxfs; I have
-> > > lock_rename()-related followups in another branch, so a pull would be=
- more
-> > > convenient for me than cherry-pick.  NOTE: testing and comments would
-> > > be very welcome - as it is, the patch is pretty much untested beyond
-> > > "it builds".
-> > > ]
-> >
-> > Hi Al,
-> >
-> > I will admit to glossing over the comment above when I merged this
-> > into the selinux/dev branch last night.  As it's been a few weeks, I'm
-> > not sure if the comment above still applies, but if it does let me
-> > know and I can yank/revert the patch in favor of a larger pull.  Let
-> > me know what you'd like to do.
->
-> Seeing this during testsuite runs:
->
-> [ 3550.206423] SELinux:  Converting 1152 SID table entries...
-> [ 3550.666195] ------------[ cut here ]------------
-> [ 3550.666201] WARNING: CPU: 3 PID: 12300 at fs/inode.c:330 drop_nlink+0x=
-57/0x70
+Dzie=C5=84 dobry,
 
-How are you running the test suite Stephen?  I haven't hit this in my
-automated testing and I did another test run manually to make sure I
-wasn't missing it and everything ran clean.
+Czy jest mo=C5=BCliwo=C5=9B=C4=87 nawi=C4=85zania wsp=C3=B3=C5=82pracy z =
+Pa=C5=84stwem?
 
-I'm running the latest selinux-testsuite on a current Rawhide system
-with kernel 6.7.0-0.rc1.20231114git9bacdd89.17.1.secnext.fc40 (current
-Rawhide kernel + the LSM, SELinux, and audit dev trees).
+Z ch=C4=99ci=C4=85 porozmawiam z osob=C4=85 zajmuj=C4=85c=C4=85 si=C4=99 =
+dzia=C5=82aniami zwi=C4=85zanymi ze sprzeda=C5=BC=C4=85.
 
---=20
-paul-moore.com
+Pomagamy skutecznie pozyskiwa=C4=87 nowych klient=C3=B3w.
+
+Zapraszam do kontaktu.
+
+
+Z pozdrowieniami
+Hubert Kowalczyk

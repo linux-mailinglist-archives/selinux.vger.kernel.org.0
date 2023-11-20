@@ -2,76 +2,66 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CC967F1E7D
-	for <lists+selinux@lfdr.de>; Mon, 20 Nov 2023 22:06:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C6587F2126
+	for <lists+selinux@lfdr.de>; Tue, 21 Nov 2023 00:03:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229689AbjKTVG0 (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 20 Nov 2023 16:06:26 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56536 "EHLO
+        id S229490AbjKTXDY (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 20 Nov 2023 18:03:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230310AbjKTVGZ (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 20 Nov 2023 16:06:25 -0500
-Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29E5DCF
-        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 13:06:21 -0800 (PST)
-Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-daf2eda7efaso4787588276.0
-        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 13:06:21 -0800 (PST)
+        with ESMTP id S229448AbjKTXDY (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 20 Nov 2023 18:03:24 -0500
+Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF23A9F
+        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 15:03:19 -0800 (PST)
+Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d9beb865a40so4636310276.1
+        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 15:03:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1700514380; x=1701119180; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1700521399; x=1701126199; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NG2FEhp12pFkNfvVzutmm+LjhzXXRny+ltBXXG6QNR4=;
-        b=YLhyT6RmzMxgdwWF3OzA1dbTAz8GYwlqdzU9jExIzFo7f7lyo2lc/g5s8M1FPVxNVx
-         9xH5Qe/wVsv58MHQpjcvW3LKQcQ5vIb9Aa73yrI/rkqK7MVSaCFxHqne8L13lT5gfTNd
-         jrz2ZdVN1Qe3itctMb74xkKwKI6nJ4cxYD4hmugMHvP5aWDW4emrejI+By1/ZbG0f7JT
-         cFXvDnsb5rYwIE/fidXu7jWV6ZgD3xHcJYQin5mUIyp4H3oCK5n4tdFaaQXQEZFpoH+G
-         SJuLfuXl8Rod2tCYybo07Z13jXhOFKBICD9TAWYrNxzyLdOcfmQ9oJDeTWht/WBRaKY0
-         ufgA==
+        bh=lcx1O4WZkW9lPEGbS1WuKh9uKwQmfhNTK/5zQiqlRjM=;
+        b=XjiUeyqLN45Ith9i1sl9lpw3NhEIaYMXdFn+Qd4VwL5PoivCVxWuYveMsOG+Io09SI
+         lEQ3eTXh3fPrEjLL+xngRjjAPSd/FcHv1MRGWtXTJh8VHquVqMP2QKtk2NDqVoLhYq/Q
+         UZjRRn1ofQ93T1gLxAVoSPdv7ohLEgv8h7y2FRq9/cRvvdUeK2t07HtG+dNuMlLttE4w
+         ShlzyxTkxlN+R7jtLboV3HpSL7A4G0Ccjl0we+2d7du84TkYKJhhSFkdS/CaG62nqRGI
+         IY4eYLOJq2nGT0PqOdg7qfcqKPcq4Dq4zbzixTgs7+6GnQ7QBmvLHcMAYOkuiBRv8nDl
+         NZnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700514380; x=1701119180;
+        d=1e100.net; s=20230601; t=1700521399; x=1701126199;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NG2FEhp12pFkNfvVzutmm+LjhzXXRny+ltBXXG6QNR4=;
-        b=CREW1SxLlz/ZnZhA3rOVSWZQgKEi76AJFCaiyKXu9oRzcTSJZcdCInYfAVWnHnw7Bj
-         3IRHNHO8aOHqL7aGNg4GxdQkF9cbCvbGWl1IHW2+E08+ojBUEO4pjr58rUH8d9AX6jZx
-         Sa5CUcurtcenk6nOCVE6TuMt2oJu8hRt7v5rUatUxpvVnYbb+uBtNYaZNCMRAiKxfV+N
-         O0y2InKjCNLhhE0IhTYD7B+yr+jE4mCUr+2TyJf6l9sCcyGsnsI/9x3zRVu6LarhYtkB
-         09jybkSJkSnZJ3toCN9pYOZTfnIY9QCDSo3Z8ea/XnJuff6MQGwUZ6VDXiCaXcajoJ7r
-         4rdw==
-X-Gm-Message-State: AOJu0Yz6xPPH4zo/BA5w4MhiFrrnRngUh/e40gs5V/dJaYpIaLiQaAGo
-        DRI9uG2OCaZnxrV6NgHQtHZQ0SCoGp3atqjeAfI0
-X-Google-Smtp-Source: AGHT+IH9dEFOAePFkBv2PMwl9MhCUaQv6Ntac6yIXsmvUTEQCyAzM8wMPOVAFCDufYnlm3OoAXU+qg91wHL5Jm2H0Ok=
-X-Received: by 2002:a81:ac17:0:b0:5ca:7629:7a9a with SMTP id
- k23-20020a81ac17000000b005ca76297a9amr4086414ywh.37.1700514380344; Mon, 20
- Nov 2023 13:06:20 -0800 (PST)
+        bh=lcx1O4WZkW9lPEGbS1WuKh9uKwQmfhNTK/5zQiqlRjM=;
+        b=odENdct0krFokRmIRiRpNULmkdcm2wC9txNVRi8bMvrqyCZqGWMO3GTaw+PQdoOgs1
+         5ZjU6yEVQvKJmRvueYFjXR5GkDr7A+JwRRisyVNmGlJScclDbxr7KBOU86x4TJwSKKAt
+         S96eL3o69Iu2OtQeZn7Fh0lpucj7/7Y5kwOossKqIbu337MMRI8MRNjTZ6dd4a8vi5Cb
+         mDGd5GLaEzJmJnu49JmWgXbXzdjEmHX1j1A/8P1jBjRkKsULNRGdZtaFf3sDQz3FwgKO
+         HLv6Nnv23LESyHLj+cgZ4IXRz9GaxarViwd/A3Ve+Nf6PfjPibw1a97IP/+cbYjVuM4A
+         +FVA==
+X-Gm-Message-State: AOJu0YzhB66vdrOOXIP732aWsPZ1U9DXveAqy0YC2GziTLpiDka62rKq
+        ggXE4VP5swjCL2SNntHJ2evIJ/W9bCK8lvvY+xXO
+X-Google-Smtp-Source: AGHT+IEj/EkYlF2Cfty/fg0eKdElXPWPH5PHzzR4nbrd5O5pXcFkWDSd0Gz1dQZM82iONs/wFeJ0H0cTf0AW1mJ1DjQ=
+X-Received: by 2002:a25:ab30:0:b0:da0:66ed:ea1e with SMTP id
+ u45-20020a25ab30000000b00da066edea1emr8782208ybi.11.1700521399032; Mon, 20
+ Nov 2023 15:03:19 -0800 (PST)
 MIME-Version: 1.0
-References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
- <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com> <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
-In-Reply-To: <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
+References: <20231018100815.26278-1-ddiss@suse.de> <CAEjxPJ6o8T=K+FHEHdWxn1PQN=Ew+KjooXL=coS0gx4YLuEFhw@mail.gmail.com>
+ <CAHC9VhTLjcQXNoc8L3Uw=TRRghLuA_TnQbRkGtwnCu4kxVXE0g@mail.gmail.com> <20231020223327.09a6a12b@echidna.fritz.box>
+In-Reply-To: <20231020223327.09a6a12b@echidna.fritz.box>
 From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 20 Nov 2023 16:06:09 -0500
-Message-ID: <CAHC9VhTTKac1o=RnQadu2xqdeKH8C_F+Wh4sY=HkGbCArwc8JQ@mail.gmail.com>
-Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed
- blob for integrity_iint_cache
-To:     Roberto Sassu <roberto.sassu@huaweicloud.com>
-Cc:     viro@zeniv.linux.org.uk, brauner@kernel.org,
-        chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de,
-        kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
-        jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com,
-        dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        casey@schaufler-ca.com, mic@digikod.net,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
+Date:   Mon, 20 Nov 2023 18:03:08 -0500
+Message-ID: <CAHC9VhTh-2TfE+0Kb551E=Ld0TwER=-N+mkr2R=122TbNvcHRw@mail.gmail.com>
+Subject: Re: [PATCH] RFC: selinux: don't filter copy-up xattrs while uninitialized
+To:     David Disseldorp <ddiss@suse.de>
+Cc:     Stephen Smalley <stephen.smalley.work@gmail.com>,
+        selinux@vger.kernel.org, linux-unionfs@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,115 +69,62 @@ Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Nov 20, 2023 at 3:16=E2=80=AFAM Roberto Sassu
-<roberto.sassu@huaweicloud.com> wrote:
-> On Fri, 2023-11-17 at 15:57 -0500, Paul Moore wrote:
-> > On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
-> > >
-> > > Before the security field of kernel objects could be shared among LSM=
-s with
-> > > the LSM stacking feature, IMA and EVM had to rely on an alternative s=
-torage
-> > > of inode metadata. The association between inode metadata and inode i=
-s
-> > > maintained through an rbtree.
-> > >
-> > > Because of this alternative storage mechanism, there was no need to u=
-se
-> > > disjoint inode metadata, so IMA and EVM today still share them.
-> > >
-> > > With the reservation mechanism offered by the LSM infrastructure, the
-> > > rbtree is no longer necessary, as each LSM could reserve a space in t=
-he
-> > > security blob for each inode. However, since IMA and EVM share the
-> > > inode metadata, they cannot directly reserve the space for them.
-> > >
-> > > Instead, request from the 'integrity' LSM a space in the security blo=
-b for
-> > > the pointer of inode metadata (integrity_iint_cache structure). The o=
-ther
-> > > reason for keeping the 'integrity' LSM is to preserve the original or=
-dering
-> > > of IMA and EVM functions as when they were hardcoded.
-> > >
-> > > Prefer reserving space for a pointer to allocating the integrity_iint=
-_cache
-> > > structure directly, as IMA would require it only for a subset of inod=
-es.
-> > > Always allocating it would cause a waste of memory.
-> > >
-> > > Introduce two primitives for getting and setting the pointer of
-> > > integrity_iint_cache in the security blob, respectively
-> > > integrity_inode_get_iint() and integrity_inode_set_iint(). This would=
- make
-> > > the code more understandable, as they directly replace rbtree operati=
-ons.
-> > >
-> > > Locking is not needed, as access to inode metadata is not shared, it =
-is per
-> > > inode.
-> > >
-> > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > > Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-> > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > > ---
-> > >  security/integrity/iint.c      | 71 +++++---------------------------=
---
-> > >  security/integrity/integrity.h | 20 +++++++++-
-> > >  2 files changed, 29 insertions(+), 62 deletions(-)
-> > >
-> > > diff --git a/security/integrity/iint.c b/security/integrity/iint.c
-> > > index 882fde2a2607..a5edd3c70784 100644
-> > > --- a/security/integrity/iint.c
-> > > +++ b/security/integrity/iint.c
-> > > @@ -231,6 +175,10 @@ static int __init integrity_lsm_init(void)
-> > >     return 0;
-> > >  }
-> > >
-> > > +struct lsm_blob_sizes integrity_blob_sizes __ro_after_init =3D {
-> > > +   .lbs_inode =3D sizeof(struct integrity_iint_cache *),
-> > > +};
-> >
-> > I'll admit that I'm likely missing an important detail, but is there
-> > a reason why you couldn't stash the integrity_iint_cache struct
-> > directly in the inode's security blob instead of the pointer?  For
-> > example:
-> >
-> >   struct lsm_blob_sizes ... =3D {
-> >     .lbs_inode =3D sizeof(struct integrity_iint_cache),
-> >   };
-> >
-> >   struct integrity_iint_cache *integrity_inode_get(inode)
-> >   {
-> >     if (unlikely(!inode->isecurity))
-> >       return NULL;
-> >     return inode->i_security + integrity_blob_sizes.lbs_inode;
-> >   }
+On Fri, Oct 20, 2023 at 4:33=E2=80=AFPM David Disseldorp <ddiss@suse.de> wr=
+ote:
 >
-> It would increase memory occupation. Sometimes the IMA policy
-> encompasses a small subset of the inodes. Allocating the full
-> integrity_iint_cache would be a waste of memory, I guess?
+> Hi Paul and Stephen,
+>
+> On Fri, 20 Oct 2023 11:55:31 -0400, Paul Moore wrote:
+>
+> > On Fri, Oct 20, 2023 at 8:21=E2=80=AFAM Stephen Smalley
+> > <stephen.smalley.work@gmail.com> wrote:
+> > > On Wed, Oct 18, 2023 at 6:08=E2=80=AFAM David Disseldorp <ddiss@suse.=
+de> wrote:
+> > > >
+> > > > Extended attribute copy-up functionality added via 19472b69d639d
+> > > > ("selinux: Implementation for inode_copy_up_xattr() hook") sees
+> > > > "security.selinux" contexts dropped, instead relying on contexts
+> > > > applied via the inode_copy_up() hook.
+> > > >
+> > > > When copy-up takes place during early boot, prior to selinux
+> > > > initialization / policy load, the context stripping can be unwanted
+> > > > and unexpected. Make filtering dependent on selinux_initialized().
+> > > >
+> > > > RFC: This changes user behaviour so is likely unacceptable. Still,
+> > > > I'd be interested in hearing other suggestions for how this could b=
+e
+> > > > addressed.
+> > >
+> > > IMHO, this is fixing a bug, only affects early userspace (pre policy
+> > > load), and is likely acceptable.
+> > > But Paul will make the final call. We can't introduce and use a new
+> > > policy capability here because this is before policy has been loaded.
+> >
+> > I agree with Stephen, this is a bug fix so I wouldn't worry too much
+> > about user visible behavior.  For better or worse, the
+> > SELinux-enabled-but-no-policy-loaded case has always been a bit
+> > awkward and has required multiple patches over the years to correct
+> > unwanted behaviors.
+>
+> Understood.
+>
+> > I'm open to comments on this, but I don't believe this is something we
+> > want to see backported to the stable kernels, and considering we are
+> > currently at v6.6-rc6, this isn't really a candidate for the upcoming
+> > merge window.  This means we have a few more weeks to comment, test,
+> > etc. and one of the things I would like to see is a better description
+> > of before-and-after labeling in the commit description.  This helps
+> > people who trip over this change, identify what changed, and helps
+> > them resolve the problem on their systems.
+> >
+> > Does that sound good?
+>
+> That sounds good to me. I'll rework the commit description (and comment
+> above this change), do some further testing and then submit a v2.
 
-Perhaps, but if it allows us to remove another layer of dynamic memory
-I would argue that it may be worth the cost.  It's also worth
-considering the size of integrity_iint_cache, while it isn't small, it
-isn't exactly huge either.
+Hi David,
 
-> On the other hand... (did not think fully about that) if we embed the
-> full structure in the security blob, we already have a mutex available
-> to use, and we don't need to take the inode lock (?).
+No rush, I just wanted to check in on this and see how things were going?
 
-That would be excellent, getting rid of a layer of locking would be signifi=
-cant.
-
-> I'm fully convinced that we can improve the implementation
-> significantly. I just was really hoping to go step by step and not
-> accumulating improvements as dependency for moving IMA and EVM to the
-> LSM infrastructure.
-
-I understand, and I agree that an iterative approach is a good idea, I
-just want to make sure we keep things tidy from a user perspective,
-i.e. not exposing the "integrity" LSM when it isn't required.
-
---
+--=20
 paul-moore.com

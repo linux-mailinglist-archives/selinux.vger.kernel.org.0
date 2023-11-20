@@ -2,158 +2,66 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6053D7F0D52
-	for <lists+selinux@lfdr.de>; Mon, 20 Nov 2023 09:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D39CA7F14F9
+	for <lists+selinux@lfdr.de>; Mon, 20 Nov 2023 14:54:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232171AbjKTIRC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+selinux@lfdr.de>); Mon, 20 Nov 2023 03:17:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32954 "EHLO
+        id S233524AbjKTNyd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+selinux@lfdr.de>); Mon, 20 Nov 2023 08:54:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45506 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232183AbjKTIRA (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 20 Nov 2023 03:17:00 -0500
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45E9EE3;
-        Mon, 20 Nov 2023 00:16:56 -0800 (PST)
-Received: from mail02.huawei.com (unknown [172.18.147.227])
-        by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4SYg0Z1Pc1z9v7GV;
-        Mon, 20 Nov 2023 16:00:14 +0800 (CST)
-Received: from [127.0.0.1] (unknown [10.204.63.22])
-        by APP2 (Coremail) with SMTP id GxC2BwDHxV_LFVtlN1ABAQ--.398S2;
-        Mon, 20 Nov 2023 09:16:26 +0100 (CET)
-Message-ID: <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
-Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed
- blob  for integrity_iint_cache
-From:   Roberto Sassu <roberto.sassu@huaweicloud.com>
-To:     Paul Moore <paul@paul-moore.com>, viro@zeniv.linux.org.uk,
-        brauner@kernel.org, chuck.lever@oracle.com, jlayton@kernel.org,
-        neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com,
-        tom@talpey.com, jmorris@namei.org, serge@hallyn.com,
-        zohar@linux.ibm.com, dmitry.kasatkin@gmail.com,
-        dhowells@redhat.com, jarkko@kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        casey@schaufler-ca.com, mic@digikod.net
-Cc:     linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-nfs@vger.kernel.org, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>
-Date:   Mon, 20 Nov 2023 09:16:09 +0100
-In-Reply-To: <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com>
-References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
-         <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.44.4-0ubuntu2 
+        with ESMTP id S233528AbjKTNyQ (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 20 Nov 2023 08:54:16 -0500
+X-Greylist: delayed 1251 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 20 Nov 2023 05:53:43 PST
+Received: from GHMG01.great-harvest.local (marine.unionapex.com [202.82.82.2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0D97D7A
+        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 05:53:43 -0800 (PST)
+X-AuditID: c0a80a26-927612400000462b-54-655b5abed555
+Received: from [194.26.192.108] (194.26.192.108.powered.by.rdp.sh [194.26.192.108])
+        (using TLS with cipher DHE-RSA-AES256-SHA (256/256 bits))
+        (Client did not present a certificate)
+        by GHMG01.great-harvest.local (Symantec Messaging Gateway) with SMTP id EA.11.17963.EBA5B556; Mon, 20 Nov 2023 21:10:23 +0800 (HKT)
+Content-Type: text/plain; charset="iso-8859-1"
+Message-ID: <EA.11.17963.EBA5B556@GHMG01.great-harvest.local>
 MIME-Version: 1.0
-X-CM-TRANSID: GxC2BwDHxV_LFVtlN1ABAQ--.398S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAF17Kw1kuFWrWr45ur1kGrg_yoWrJr43pF
-        W3Ka47Jr1kXFyI9rn2vF45uFWSgFWSgFWUGwn0kr1kAF98ur1Ygr15CryUuFyUGr98tw10
-        qr1a9ryUZ3Wqy3DanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUkjb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-        6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-        vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7Cj
-        xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxV
-        AFwI0_Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-        x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-        0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1l42xK82IYc2Ij
-        64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-        8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE
-        2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-        xK8VAvwI8IcIk0rVWrZr1j6s0DMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIE
-        c7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAkuxUUUUU=
-X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAQAHBF1jj5ahSwACsN
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Investment Expression of Interest (IEOI)
+To:     selinux@vger.kernel.org
+From:   "Ramadan Ahmad" <Ahmadramcfa03@pobox.com>
+Date:   Mon, 20 Nov 2023 14:10:21 +0100
+Reply-To: finance@almnadrinvestment.com
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrFJMWRmVeSWpSXmKPExsVySOpAju7+qOhUg/3rVSzOHz/G7sDo8XmT
+        XABjFJdNSmpOZllqkb5dAlfGhEmT2Qv2MVf07L7A1sD4hqmLkZNDQsBE4tnrZ+xdjFwcQgL7
+        mCQ65+9nBEkwC+hJ3Jg6hQ3E5hWwlXjZeYAVwhaUODnzCQtEjbbEsoWvmbsYOYBsNYmvXSUg
+        YWEBQ4mnR66CjRERkJZ4emgVWAmbgL7E3E15IGEWAVWJa5cgpgsJqEucn3qFaQIjzywki2ch
+        WTYLybJZCMsWMLKsYpRy9/B1NzDUSy9KTSzRzUgsKkstLtHLyU9OzNnECAyeAyu41HYwfpz0
+        Ue8QIxMH4yFGCQ5mJRHeb0IRqUK8KYmVValF+fFFpTmpxYcYpTlYlMR5AwKk4oUE0hNLUrNT
+        UwtSi2CyTBycUg1MPFPtQivm/bwbF8V29JvvO6P0Z7UTnsS+PMBuw/u36PwvDdEZfIwTmhdn
+        tnfVbp1k0PB454VYzYt+jwoaEkU/lig6sz8t4+zSLDz+5psJN1NAUXbGu4msrzwqfv2z8Hx9
+        9svKux0/mjductIwZDfe5GFeozKn8IHFHRGPfNOuf4bqVStl6sINuhWMGI9FNb4NDzowr/57
+        IsP0tEqpy9wP5zww+82/WsVkR2h7F+P7Rqm9s7ytLguvCAg8G3XoWtj35ukV1w922Exv5j9b
+        f+HlxfKuTbK/JOftCZudtaeuK/yb5R/rU/oSP28fDJuU8PrB3nfV0TGNVTNDDp6Min8yd8Ox
+        P6pSsnOdTvaLdasqsRRnJBpqMRcVJwIAJPcBMY0CAAA=
+X-Spam-Status: No, score=3.5 required=5.0 tests=BAYES_50,DEAR_SOMETHING,
+        KHOP_HELO_FCRDNS,SPF_HELO_NONE,SPF_NEUTRAL,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Fri, 2023-11-17 at 15:57 -0500, Paul Moore wrote:
-> On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.com> wrote:
-> > 
-> > Before the security field of kernel objects could be shared among LSMs with
-> > the LSM stacking feature, IMA and EVM had to rely on an alternative storage
-> > of inode metadata. The association between inode metadata and inode is
-> > maintained through an rbtree.
-> > 
-> > Because of this alternative storage mechanism, there was no need to use
-> > disjoint inode metadata, so IMA and EVM today still share them.
-> > 
-> > With the reservation mechanism offered by the LSM infrastructure, the
-> > rbtree is no longer necessary, as each LSM could reserve a space in the
-> > security blob for each inode. However, since IMA and EVM share the
-> > inode metadata, they cannot directly reserve the space for them.
-> > 
-> > Instead, request from the 'integrity' LSM a space in the security blob for
-> > the pointer of inode metadata (integrity_iint_cache structure). The other
-> > reason for keeping the 'integrity' LSM is to preserve the original ordering
-> > of IMA and EVM functions as when they were hardcoded.
-> > 
-> > Prefer reserving space for a pointer to allocating the integrity_iint_cache
-> > structure directly, as IMA would require it only for a subset of inodes.
-> > Always allocating it would cause a waste of memory.
-> > 
-> > Introduce two primitives for getting and setting the pointer of
-> > integrity_iint_cache in the security blob, respectively
-> > integrity_inode_get_iint() and integrity_inode_set_iint(). This would make
-> > the code more understandable, as they directly replace rbtree operations.
-> > 
-> > Locking is not needed, as access to inode metadata is not shared, it is per
-> > inode.
-> > 
-> > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> > Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
-> > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> > ---
-> >  security/integrity/iint.c      | 71 +++++-----------------------------
-> >  security/integrity/integrity.h | 20 +++++++++-
-> >  2 files changed, 29 insertions(+), 62 deletions(-)
-> > 
-> > diff --git a/security/integrity/iint.c b/security/integrity/iint.c
-> > index 882fde2a2607..a5edd3c70784 100644
-> > --- a/security/integrity/iint.c
-> > +++ b/security/integrity/iint.c
-> > @@ -231,6 +175,10 @@ static int __init integrity_lsm_init(void)
-> >  	return 0;
-> >  }
-> >  
-> > +struct lsm_blob_sizes integrity_blob_sizes __ro_after_init = {
-> > +	.lbs_inode = sizeof(struct integrity_iint_cache *),
-> > +};
-> 
-> I'll admit that I'm likely missing an important detail, but is there
-> a reason why you couldn't stash the integrity_iint_cache struct
-> directly in the inode's security blob instead of the pointer?  For
-> example:
-> 
->   struct lsm_blob_sizes ... = {
->     .lbs_inode = sizeof(struct integrity_iint_cache),
->   };
-> 
->   struct integrity_iint_cache *integrity_inode_get(inode)
->   {
->     if (unlikely(!inode->isecurity))
->       return NULL;
->     return inode->i_security + integrity_blob_sizes.lbs_inode;
->   }
+Attn: selinux@vger.kernel.org
+Date: 20-11-2023
+Subject: Investment Expression of Interest (IEOI)
 
-It would increase memory occupation. Sometimes the IMA policy
-encompasses a small subset of the inodes. Allocating the full
-integrity_iint_cache would be a waste of memory, I guess?
+Dear Sir,
 
-On the other hand... (did not think fully about that) if we embed the
-full structure in the security blob, we already have a mutex available
-to use, and we don't need to take the inode lock (?).
+Having been referred to your investment by my team, we would be honored to review your available investment projects for onward referral to my principal investors who can allocate capital for the financing of it.
 
-I'm fully convinced that we can improve the implementation
-significantly. I just was really hoping to go step by step and not
-accumulating improvements as dependency for moving IMA and EVM to the
-LSM infrastructure.
+kindly advise at your convenience
 
-Thanks
-
-Roberto
-
+Best Regards,
+Ramadan Ahmad CFA
+Chartered Finance Investment Analyst

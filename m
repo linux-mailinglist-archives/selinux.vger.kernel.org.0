@@ -2,141 +2,154 @@ Return-Path: <selinux-owner@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C94A7F1E4A
-	for <lists+selinux@lfdr.de>; Mon, 20 Nov 2023 21:56:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DA44A7F1E98
+	for <lists+selinux@lfdr.de>; Mon, 20 Nov 2023 22:16:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231745AbjKTU4N (ORCPT <rfc822;lists+selinux@lfdr.de>);
-        Mon, 20 Nov 2023 15:56:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52152 "EHLO
+        id S230429AbjKTVQj (ORCPT <rfc822;lists+selinux@lfdr.de>);
+        Mon, 20 Nov 2023 16:16:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230429AbjKTU4L (ORCPT
-        <rfc822;selinux@vger.kernel.org>); Mon, 20 Nov 2023 15:56:11 -0500
-Received: from mail-yb1-xb2b.google.com (mail-yb1-xb2b.google.com [IPv6:2607:f8b0:4864:20::b2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2F1CDC
-        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 12:56:06 -0800 (PST)
-Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-daef74513e1so4388037276.2
-        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 12:56:06 -0800 (PST)
+        with ESMTP id S233251AbjKTU7Y (ORCPT
+        <rfc822;selinux@vger.kernel.org>); Mon, 20 Nov 2023 15:59:24 -0500
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEEF1E8
+        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 12:59:20 -0800 (PST)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-507962561adso7074891e87.0
+        for <selinux@vger.kernel.org>; Mon, 20 Nov 2023 12:59:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1700513766; x=1701118566; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1700513959; x=1701118759; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9TZd4/9tDYUVpH+va2bN+Lz+wNAalFU9/JWBiin7Umg=;
-        b=dIN+TWjB7DwY0CKa0z9f4TAEhPpuVnITgs51MdVSO/sn+arv6vDkaAE+8j/HKDuUM1
-         GwebVP0DAs0QMj1gPJiZPUm9Td7HGYrjiLx979fyGVdPoNdblR/yi5f8aaIMQR7BiX4g
-         CSnBeLFLW8wZLEYz0D4KFbH0EDNxXtEhULuNiYReIE1QCLzNuEXvG7IADxCQnNKppQu2
-         EmvHtz6I5+wZaFTRUhzV46MrXo3SjchHI2haXaEljwz4B+e29cl/dUwOrRS085VbsWzN
-         ISCuNZ/osu1X+QN1ydECzaNHMEtop//t/WxbUQZoJ3wx9xTBFqXKIupURA2uwrOhk/sh
-         hGbQ==
+        bh=Ab5gTclA1QqxzKtENjw/bPZGNkmJpOaQvUqYvEJCJqA=;
+        b=KpGb/1VlbOIBPGJNBmkU0psyk0InHeXgfd0GxTijZtAUmoWkg56Aoflt4ZU6q+WxJ+
+         bIlgnqUTd2x48HnjUB7Q5GITZhUENpye1XAdId0Z7hBF17xzHFQSlcWUWCKiKmvPKoup
+         45lpZMRbZYtjLNAWaaoo3WiBNn4MnVGacfyKfST16mRhwdRry7ApRGpVVZglwLi4GVq7
+         Smq86qzhGY0j/SsWag6TSIvZDRDbre4eYaHJeGLUvbV+lArthktFNqvvhxd9txL9pCzo
+         7wta6resnnMeCz2EpEaDVZj4vkFTiyYlL47oXIFkaAPKK8yQeE85ZepkscMuNTIkTwI5
+         krWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1700513766; x=1701118566;
+        d=1e100.net; s=20230601; t=1700513959; x=1701118759;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9TZd4/9tDYUVpH+va2bN+Lz+wNAalFU9/JWBiin7Umg=;
-        b=mKHBinc7xq5G2ccShjIVOP+U1SRAheFh4/R/TRcVzrRWEL5uscrOX3DKNfR56O9q6x
-         kqHKn1RnywIlDT+2C3CakgTp73WGuv+jCljOKj2ASt7js7vrPEtKmazH1IzDkKjIOUPo
-         VUc85tEizEnM0qZ5oV6dUV0cSZoFKoownN3JmxKPVAz/a1XdUmcrTWW0NmQq6nolW35y
-         4ffdNnfakQdQo76nKCmHwkMHA4R3mVcJDrhQM+0ogxb7zW45s7MGzUAGReC1OsZ+QssW
-         02iEeGkPB4g4f1xWDK9MG7U890L68k6RCz79XmFCZKy4bq4hCtZRc65WVv/YGn2/yHFC
-         zAtA==
-X-Gm-Message-State: AOJu0YxNp5+fTC3CTtdw5rbxqBWVujhjAEmG6tCAv87dgRjetXvkv2hq
-        KX8/xxC5yqHAQTo9srijf0xkUFJf+Sxwr8q8Nhd3
-X-Google-Smtp-Source: AGHT+IEaRVh061VYZ3MAeHPyfSYqU87TX2/fj8L258pJWZLZTg4+MCecpLfeUh+AQrPfjanR5lZ9zeXYiylSMWWt87o=
-X-Received: by 2002:a25:8907:0:b0:da0:400e:750c with SMTP id
- e7-20020a258907000000b00da0400e750cmr7368373ybl.27.1700513765828; Mon, 20 Nov
- 2023 12:56:05 -0800 (PST)
+        bh=Ab5gTclA1QqxzKtENjw/bPZGNkmJpOaQvUqYvEJCJqA=;
+        b=UYfXxPjZzQesVa3EvYLovIam4a/l/GaRr7KDRywIZ55KTHpsZBihdDLONmQA5X9UyZ
+         a0QVxR74mPfDY6Ju+vemiJcQcX5e9AX2AZ1iEMvkibkl+7nMPLQSjp0rLE+25/ctHqwh
+         M+d5jStFSrBWdZ0hKc75RnyFyxp2x8AVPDdP4augKEnIniP8p9/o/2Vlmghj34Jfoq7l
+         ySP0nifUaXfXdl3IcqeaG2c6GMA+9Anlz2XBDyaW92l9pHrSIxcEm8dGB0dLHtC1gBro
+         clL7iH5I1IjEmESwnJ6+V0sQlVkkFrDI9GUYIi5OvcZrozIW/MC+M2wptj9IBMrS94Q4
+         PlyQ==
+X-Gm-Message-State: AOJu0YxWFYN3zV1A5UZMBtQig68KjTsAXw5X9wxgmhJMmFHJvPgkDWtV
+        okijPExDbIePmvvfXPdn9w+9tA0fVq9nXWuUKar9Oov321w=
+X-Google-Smtp-Source: AGHT+IEPGEmIZSAL3rSFc7IAZdloYRlrv9zXHq897Rf33X+BGeSenlfzhXuYxRNuQU/xeMLJpPVoJpx7xry+lxtOVHU=
+X-Received: by 2002:a19:f60d:0:b0:509:8e20:e7c6 with SMTP id
+ x13-20020a19f60d000000b005098e20e7c6mr5593171lfe.32.1700513958719; Mon, 20
+ Nov 2023 12:59:18 -0800 (PST)
 MIME-Version: 1.0
-References: <20231107134012.682009-1-roberto.sassu@huaweicloud.com>
- <20231107134012.682009-12-roberto.sassu@huaweicloud.com> <85c5dda2-5a2f-4c73-82ae-8a333b69b4a7@schaufler-ca.com>
- <1999ed6f77100d9d2adc613c9748f15ab8fcf432.camel@huaweicloud.com> <13f7542f-4039-47a8-abde-45a702b85718@schaufler-ca.com>
-In-Reply-To: <13f7542f-4039-47a8-abde-45a702b85718@schaufler-ca.com>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 20 Nov 2023 15:55:54 -0500
-Message-ID: <CAHC9VhTPC6_dR0ymPtktVfi9rcFrnqXZL8Cq+c58OiijTRgOxg@mail.gmail.com>
-Subject: Re: [PATCH v5 11/23] security: Introduce inode_post_removexattr hook
-To:     Casey Schaufler <casey@schaufler-ca.com>
-Cc:     Roberto Sassu <roberto.sassu@huaweicloud.com>,
-        viro@zeniv.linux.org.uk, brauner@kernel.org,
-        chuck.lever@oracle.com, jlayton@kernel.org, neilb@suse.de,
-        kolga@netapp.com, Dai.Ngo@oracle.com, tom@talpey.com,
-        jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com,
-        dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org,
-        stephen.smalley.work@gmail.com, eparis@parisplace.org,
-        mic@digikod.net, linux-fsdevel@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-nfs@vger.kernel.org,
-        linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, keyrings@vger.kernel.org,
-        selinux@vger.kernel.org, Roberto Sassu <roberto.sassu@huawei.com>,
-        Stefan Berger <stefanb@linux.ibm.com>
+References: <20231120160548.2341315-1-lautrbach@redhat.com>
+In-Reply-To: <20231120160548.2341315-1-lautrbach@redhat.com>
+From:   James Carter <jwcart2@gmail.com>
+Date:   Mon, 20 Nov 2023 15:59:07 -0500
+Message-ID: <CAP+JOzRrOaNPU_F2AoU40Gw+SAaqErbu2_sykZs6W+pPhhmM3g@mail.gmail.com>
+Subject: Re: [PATCH] sepolicy: port to dnf4 python API
+To:     Petr Lautrbach <lautrbach@redhat.com>
+Cc:     selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <selinux.vger.kernel.org>
 X-Mailing-List: selinux@vger.kernel.org
 
-On Mon, Nov 20, 2023 at 1:04=E2=80=AFPM Casey Schaufler <casey@schaufler-ca=
-.com> wrote:
-> On 11/20/2023 9:31 AM, Roberto Sassu wrote:
-> > On Tue, 2023-11-07 at 09:33 -0800, Casey Schaufler wrote:
-> >> On 11/7/2023 5:40 AM, Roberto Sassu wrote:
-> >>> From: Roberto Sassu <roberto.sassu@huawei.com>
-> >>>
-> >>> In preparation for moving IMA and EVM to the LSM infrastructure, intr=
-oduce
-> >>> the inode_post_removexattr hook.
-> >>>
-> >>> At inode_removexattr hook, EVM verifies the file's existing HMAC valu=
-e. At
-> >>> inode_post_removexattr, EVM re-calculates the file's HMAC with the pa=
-ssed
-> >>> xattr removed and other file metadata.
-> >>>
-> >>> Other LSMs could similarly take some action after successful xattr re=
-moval.
-> >>>
-> >>> The new hook cannot return an error and cannot cause the operation to=
- be
-> >>> reverted.
-> >>>
-> >>> Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
-> >>> Reviewed-by: Stefan Berger <stefanb@linux.ibm.com>
-> >>> Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
-> >>> ---
-> >>>  fs/xattr.c                    |  9 +++++----
-> >>>  include/linux/lsm_hook_defs.h |  2 ++
-> >>>  include/linux/security.h      |  5 +++++
-> >>>  security/security.c           | 14 ++++++++++++++
-> >>>  4 files changed, 26 insertions(+), 4 deletions(-)
-> >>>
-> >>> diff --git a/fs/xattr.c b/fs/xattr.c
-> >>> index 09d927603433..84a4aa566c02 100644
-> >>> --- a/fs/xattr.c
-> >>> +++ b/fs/xattr.c
-> >>> @@ -552,11 +552,12 @@ __vfs_removexattr_locked(struct mnt_idmap *idma=
-p,
-> >>>             goto out;
-> >>>
-> >>>     error =3D __vfs_removexattr(idmap, dentry, name);
-> >>> +   if (error)
-> >>> +           goto out;
-> >> Shouldn't this be simply "return error" rather than a goto to nothing
-> >> but "return error"?
-> > I got a review from Andrew Morton. His argument seems convincing, that
-> > having less return places makes the code easier to handle.
+On Mon, Nov 20, 2023 at 11:06=E2=80=AFAM Petr Lautrbach <lautrbach@redhat.c=
+om> wrote:
 >
-> That was in a case where you did more than just "return". Nonetheless,
-> I think it's a matter of style that's not worth debating. Do as you will.
+> yum module is not available since RHEL 7.
+>
+> Drop -systemd related code as it's obsoleted these days - only 2
+> packages ship their .service in -systemd subpackage
+>
+> Signed-off-by: Petr Lautrbach <lautrbach@redhat.com>
 
-I'm not too bothered by this in the VFS code, that's up to the VFS
-maintainers, but for future reference, in the LSM layer I really
-dislike jumping to a label simply to return.
+Acked-by: James Carter <jwcart2@gmail.com>
 
---=20
-paul-moore.com
+> ---
+>  python/sepolicy/sepolicy/generate.py | 38 ++++++++++++----------------
+>  1 file changed, 16 insertions(+), 22 deletions(-)
+>
+> diff --git a/python/sepolicy/sepolicy/generate.py b/python/sepolicy/sepol=
+icy/generate.py
+> index b6df3e91160b..5aa71357f6a9 100644
+> --- a/python/sepolicy/sepolicy/generate.py
+> +++ b/python/sepolicy/sepolicy/generate.py
+> @@ -1262,13 +1262,20 @@ allow %s_t %s_t:%s_socket name_%s;
+>          return fcfile
+>
+>      def __extract_rpms(self):
+> -        import yum
+> -        yb =3D yum.YumBase()
+> -        yb.setCacheDir()
+> +        import dnf
+>
+> -        for pkg in yb.rpmdb.searchProvides(self.program):
+> +        base =3D dnf.Base()
+> +        base.read_all_repos()
+> +        base.fill_sack(load_system_repo=3DTrue)
+> +
+> +        query =3D base.sack.query()
+> +
+> +        pq =3D query.available()
+> +        pq =3D pq.filter(file=3Dself.program)
+> +
+> +        for pkg in pq:
+>              self.rpms.append(pkg.name)
+> -            for fname in pkg.dirlist + pkg.filelist + pkg.ghostlist:
+> +            for fname in pkg.files:
+>                  for b in self.DEFAULT_DIRS:
+>                      if b =3D=3D "/etc":
+>                          continue
+> @@ -1277,9 +1284,10 @@ allow %s_t %s_t:%s_socket name_%s;
+>                              self.add_file(fname)
+>                          else:
+>                              self.add_dir(fname)
+> -
+> -            for bpkg in yb.rpmdb.searchNames([pkg.base_package_name]):
+> -                for fname in bpkg.dirlist + bpkg.filelist + bpkg.ghostli=
+st:
+> +            sq =3D query.available()
+> +            sq =3D sq.filter(provides=3Dpkg.source_name)
+> +            for bpkg in sq:
+> +                for fname in bpkg.files:
+>                      for b in self.DEFAULT_DIRS:
+>                          if b =3D=3D "/etc":
+>                              continue
+> @@ -1289,20 +1297,6 @@ allow %s_t %s_t:%s_socket name_%s;
+>                              else:
+>                                  self.add_dir(fname)
+>
+> -        # some packages have own systemd subpackage
+> -        # tor-systemd for example
+> -        binary_name =3D self.program.split("/")[-1]
+> -        for bpkg in yb.rpmdb.searchNames(["%s-systemd" % binary_name]):
+> -            for fname in bpkg.filelist + bpkg.ghostlist + bpkg.dirlist:
+> -                for b in self.DEFAULT_DIRS:
+> -                    if b =3D=3D "/etc":
+> -                        continue
+> -                    if fname.startswith(b):
+> -                        if os.path.isfile(fname):
+> -                            self.add_file(fname)
+> -                        else:
+> -                            self.add_dir(fname)
+> -
+>      def gen_writeable(self):
+>          try:
+>              self.__extract_rpms()
+> --
+> 2.41.0
+>

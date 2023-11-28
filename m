@@ -1,63 +1,67 @@
-Return-Path: <selinux+bounces-8-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-10-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2C07FC302
-	for <lists+selinux@lfdr.de>; Tue, 28 Nov 2023 19:23:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032E17FC306
+	for <lists+selinux@lfdr.de>; Tue, 28 Nov 2023 19:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8401AB20EFE
-	for <lists+selinux@lfdr.de>; Tue, 28 Nov 2023 18:23:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79ABCB2138F
+	for <lists+selinux@lfdr.de>; Tue, 28 Nov 2023 18:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237D83D0A4;
-	Tue, 28 Nov 2023 18:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DCB3D0AC;
+	Tue, 28 Nov 2023 18:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="T/KcrVdR"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="f4/a3D5c"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE7D8F4
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB62137
 	for <selinux@vger.kernel.org>; Tue, 28 Nov 2023 10:23:41 -0800 (PST)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-507a29c7eefso7625701e87.1
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-a06e59384b6so747675766b.1
         for <selinux@vger.kernel.org>; Tue, 28 Nov 2023 10:23:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20230601; t=1701195820; x=1701800620; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KFyQ53dDVlwujwxUmvBXTBWl0nCizpACNjGojvAvwQg=;
-        b=T/KcrVdRwUh79e38mCr4wKRJT6vxiIZcnuBURvFLsnnFwSnajrrmKQUdKgF4E3YE5u
-         QrWdjy8RRtXSP7z2hTucKUZBCA7e+Pakh9mJrL5xdfuaRo69LhvrJ4+S4v3HVLLgAS+9
-         YNy1e0UbU93kdVuRN3e/LCNAXmhwjVbXw+JqbsSXWkS0T6aXzxCoExyvm7AaFNQkOneG
-         0wqf3l6vkckqrwRFQ5HVNIv8cKMZc7L4hnFd4YwPion2gz/tEdC3plhAPxWlR8g8i1by
-         Tz7kVAp8f9QcVRm1Knmy24+cycA7NcTtDR0RatB+IgJc2ajlg1WWf1ulxhMOsqy8ADnm
-         H7ig==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TFDLLt/375wCQgHOdKHJ5Anh2TUSppV9LZ8vI/kMKUw=;
+        b=f4/a3D5cfGSKGJqax2ONZHwGCj7gqpY8Y3E+LNjDjPRE17s7NGbLsb6Q6Z4/AaN0CD
+         YBwNb8iy8+4h2CipMVsp4OFfQPM4LIYWbUrYZeqdKtr7H8jLmF7f62yKy+Jtef7EjQU/
+         L0cNeuIzX5SaXRZ8ruXNaYkfivT28wks/EOlQgktImHpfqhWunQEJrZ8q4B3yxWjP0ST
+         iflSVyIgdyhiBqCZYKY4hTtMrcjvPp5/8lrqJJG02CB15ifs2ipL2REYirb6Szl5tmYU
+         Y5KD2LTbhN6lepnmhc1Wqb6CsugQUP56v4lWgxoFoimR4y3/2jXdT9Y23gNDQukg6P5T
+         3bmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1701195820; x=1701800620;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KFyQ53dDVlwujwxUmvBXTBWl0nCizpACNjGojvAvwQg=;
-        b=Oq4sSupOXWsZCkBN+AKs6sCd+eYmyQCKVzWRLLIt4scME7yJ9IVs9scBsvqYmC6AHs
-         0un4OetCDjd3LnUBCpF0wK7OqeyTTDYYr5Sxotf9P/TENHVYdZs3dV7x+BXXL+lC9RXL
-         yn/yxpxppvJxLo2sDHs5TJMPt03L83yLLVf1+1ufH93wVyNtsFt0e7+bdiSekqKh1YOI
-         ITquNNwcz7EaLnHJJXjaL50F1MgArGAiJbeg2eBNn7e3HqwJ5yf+Y1nBrV2YJ53ffNGC
-         C65gMcggdrVZGIXvp3kxEFg87uw60GAdTwg219F+04SCB1XiVu1eB+KWyiSL4cJuHOGl
-         G4LQ==
-X-Gm-Message-State: AOJu0YyOctJ3Ebct98VYO5Fey8jEugk6oJqQ96cCgq0XhW9GOrb9T8oW
-	8qOQTR+4NvG/SaOJEvUPV8ACRCqpCRI=
-X-Google-Smtp-Source: AGHT+IGrxBVQvv6xPeCvW2T6OyKiPzf+gZ7RJK2WlmRyPPkFyYAQdgKwIV8YWBZQlBfByOGdBAB6rw==
-X-Received: by 2002:a19:ac47:0:b0:509:2b82:385c with SMTP id r7-20020a19ac47000000b005092b82385cmr6853950lfc.61.1701195819856;
-        Tue, 28 Nov 2023 10:23:39 -0800 (PST)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TFDLLt/375wCQgHOdKHJ5Anh2TUSppV9LZ8vI/kMKUw=;
+        b=BWaDTA3LKx1m/RSK/qFqTGM3xEPwcTpz7P/XvcdZ94yAL41Zv8R/UO1wDdagiCK2kA
+         wCuOjlhey+0XZA3ga5vfwRCCflZxerzAHnpFuf5XiQOjuC5wuwQrBPeWU68x/cOYRMaU
+         WxsQsUHefLjDU3QNz246v+0rIG976H+1wHG5Fof7IBgfpOVFXs5/3B7/l9mju7wKSXTm
+         JwDIw1zKklZRkAKRZqiQC4tLHa6h8RAIc6lX32EMpBcxHHZ0v60XHc23GHgfWw21ycIC
+         CcxefI8LAqYVxR9CU1ADGNfYd9lEDbhvgAacbvfn5vrHAi7rsc9K+Mo/m6ef1rZh+1N/
+         0Dyw==
+X-Gm-Message-State: AOJu0Yz41DMpoxbY/2XJv+kOaFONZ1Q+Oy3JbMNwwRUs/5EBEZbtJLWG
+	DDABI96JWbF4Ip1C3CybVlxb9pEaptA=
+X-Google-Smtp-Source: AGHT+IFi10z/6a+jL6/YJtfbSZwNCEudJlBPpd1aPvXyD75U3SKaBJ723x+K8PMYZxMHGgNcs6TKkA==
+X-Received: by 2002:a17:906:39c9:b0:a01:d364:ddaf with SMTP id i9-20020a17090639c900b00a01d364ddafmr11190168eje.51.1701195820320;
+        Tue, 28 Nov 2023 10:23:40 -0800 (PST)
 Received: from debian_development.DebianHome (dynamic-077-003-184-154.77.3.pool.telefonica.de. [77.3.184.154])
         by smtp.gmail.com with ESMTPSA id v11-20020a1709067d8b00b009dddec5a96fsm7122024ejo.170.2023.11.28.10.23.39
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Nov 2023 10:23:39 -0800 (PST)
+        Tue, 28 Nov 2023 10:23:40 -0800 (PST)
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH 1/7] libsepol: validate conditional type rules have a simple default type
-Date: Tue, 28 Nov 2023 19:23:28 +0100
-Message-ID: <20231128182334.57740-1-cgzones@googlemail.com>
+Subject: [PATCH 2/7] libsepol: use correct type to avoid truncations
+Date: Tue, 28 Nov 2023 19:23:29 +0100
+Message-ID: <20231128182334.57740-2-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231128182334.57740-1-cgzones@googlemail.com>
+References: <20231128182334.57740-1-cgzones@googlemail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -67,46 +71,42 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Similar to unconditional avtab keys check the default type of type av
-rules are a simple type, not an attribute.
-Since extended permission rules are not allowed in conditional policies
-this check does not need to be performed.
+Avoid truncations of the read 32 bit unsigned integer:
+
+    conditional.c:764:8: runtime error: implicit conversion from type 'uint32_t' (aka 'unsigned int') of value 3758096384 (32-bit, unsigned) to type 'int' changed the value to -536870912 (32-bit, signed)
+    conditional.c:831:8: runtime error: implicit conversion from type 'uint32_t' (aka 'unsigned int') of value 4280295456 (32-bit, unsigned) to type 'int' changed the value to -14671840 (32-bit, signed)
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/policydb_validate.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ libsepol/src/conditional.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
-index 8b87675f..c2f19fa0 100644
---- a/libsepol/src/policydb_validate.c
-+++ b/libsepol/src/policydb_validate.c
-@@ -885,14 +885,21 @@ static int validate_cond_av_list(sepol_handle_t *handle, const cond_av_list_t *c
+diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
+index 24380ea0..420c7b6c 100644
+--- a/libsepol/src/conditional.c
++++ b/libsepol/src/conditional.c
+@@ -746,8 +746,8 @@ static int expr_isvalid(policydb_t * p, cond_expr_t * expr)
  
- 	for (; cond_av; cond_av = cond_av->next) {
- 		for (avtab_ptr = cond_av->node; avtab_ptr; avtab_ptr = avtab_ptr->next) {
--			if (validate_avtab_key(&avtab_ptr->key, 1, p, flavors)) {
--				ERR(handle, "Invalid cond av list");
--				return -1;
--			}
-+			const avtab_key_t *key = &avtab_ptr->key;
-+			const avtab_datum_t *datum = &avtab_ptr->datum;
-+
-+			if (validate_avtab_key(key, 1, p, flavors))
-+				goto bad;
-+			if ((key->specified & AVTAB_TYPE) && validate_simpletype(datum->data, p, flavors))
-+				goto bad;
- 		}
- 	}
+ static int cond_read_node(policydb_t * p, cond_node_t * node, void *fp)
+ {
+-	uint32_t buf[2];
+-	int len, i, rc;
++	uint32_t buf[2], i, len;
++	int rc;
+ 	cond_expr_t *expr = NULL, *last = NULL;
  
- 	return 0;
-+
-+bad:
-+	ERR(handle, "Invalid cond av list");
-+	return -1;
- }
+ 	rc = next_entry(buf, fp, sizeof(uint32_t));
+@@ -821,8 +821,8 @@ static int cond_read_node(policydb_t * p, cond_node_t * node, void *fp)
+ int cond_read_list(policydb_t * p, cond_list_t ** list, void *fp)
+ {
+ 	cond_node_t *node, *last = NULL;
+-	uint32_t buf[1];
+-	int i, len, rc;
++	uint32_t buf[1], i, len;
++	int rc;
  
- static int validate_avrules(sepol_handle_t *handle, const avrule_t *avrule, int conditional, const policydb_t *p, validate_t flavors[])
+ 	rc = next_entry(buf, fp, sizeof(uint32_t));
+ 	if (rc < 0)
 -- 
 2.43.0
 

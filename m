@@ -1,331 +1,360 @@
-Return-Path: <selinux+bounces-61-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-63-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D735803AA9
-	for <lists+selinux@lfdr.de>; Mon,  4 Dec 2023 17:46:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7B1803ACF
+	for <lists+selinux@lfdr.de>; Mon,  4 Dec 2023 17:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB5861C2099E
-	for <lists+selinux@lfdr.de>; Mon,  4 Dec 2023 16:46:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60CC7B20AA5
+	for <lists+selinux@lfdr.de>; Mon,  4 Dec 2023 16:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6A025101;
-	Mon,  4 Dec 2023 16:46:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFC828DB9;
+	Mon,  4 Dec 2023 16:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IIT/Eijr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b4JVwAcj"
 X-Original-To: selinux@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA899B
-	for <selinux@vger.kernel.org>; Mon,  4 Dec 2023 08:46:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1701708369;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mSidmWl5apK7Z0yabmIRRKk1nJghnMq9SrstTLHpQBM=;
-	b=IIT/EijrE2PIs0CQZZ8B5+Lbas6cGrqw3oLnTsxfNoqnxnUEZcW71Bpdosc8KPVL4LIUlG
-	c2WiyD71vhH7qhRnjXQuj+K+pq7llVNsBKc0kqaBgee4jQXytFJcvdtlYLMd+XVmtQpArd
-	JfK9lcj+RLGYWyRh9VJ6Unks4IhwOew=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-675-uRtvIwOPPXirfUgGN6HpRQ-1; Mon, 04 Dec 2023 11:46:07 -0500
-X-MC-Unique: uRtvIwOPPXirfUgGN6HpRQ-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BADE6812C2C
-	for <selinux@vger.kernel.org>; Mon,  4 Dec 2023 16:46:06 +0000 (UTC)
-Received: from P1.redhat.com (unknown [10.45.224.166])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 23A88492BE0;
-	Mon,  4 Dec 2023 16:46:06 +0000 (UTC)
-From: Petr Lautrbach <lautrbach@redhat.com>
-To: selinux@vger.kernel.org
-Cc: Petr Lautrbach <lautrbach@redhat.com>
-Subject: [PATCH 2/2] Revert "libsepol: rename struct member"
-Date: Mon,  4 Dec 2023 17:45:58 +0100
-Message-ID: <20231204164558.43667-2-lautrbach@redhat.com>
-In-Reply-To: <20231204164558.43667-1-lautrbach@redhat.com>
-References: <877cluszxo.fsf@redhat.com>
- <20231204164558.43667-1-lautrbach@redhat.com>
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98566B0
+	for <selinux@vger.kernel.org>; Mon,  4 Dec 2023 08:50:17 -0800 (PST)
+Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-423e77aa09cso37771141cf.1
+        for <selinux@vger.kernel.org>; Mon, 04 Dec 2023 08:50:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701708617; x=1702313417; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cz+UoYhaLS++OsH42BKY3voi9A9T41pSlNIlgtxfEtA=;
+        b=b4JVwAcjAOKVicJU2PB8V9ZXTpiluuMSiMwFkizWR9KERZmn8XG8BFOcF2dEtbvxnh
+         O9T6R27Lq05gsYbqk8bcrVwkGhI4zBFM8Sah0MR7IS8HpT8jy0tHyFd78YZAtpKKUgrs
+         MiQON9GgaRu2Y3y2jQ6HBsicVIkQzQP63tlF4I1f9w6dZARZxQiIYfcjxckNjgQWu7PN
+         vVPySaGaOGbBcFG8Q/VNPHcLU2ESmX1UGVeAJ3UCkJeofLTIVoL5RREP6Xbjn8fKscXb
+         4Xhaiuad7XCi0yK8EE0x2wWC0MNfXMA5HfDl6yfC7ilcqU0n9lsYhOTkGzKbwcuZVKM8
+         yYpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701708617; x=1702313417;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cz+UoYhaLS++OsH42BKY3voi9A9T41pSlNIlgtxfEtA=;
+        b=UWDXGX7MCFys34DUImusuD6MqmPtA/3V3VmKFjjB2/4eXRIyflFD1l+PB9rmbZyYZE
+         PPmGBPjbYwSZofbngNKvEGkAPj7Zp3QBxH8+HhtMkiFbbQ7geQeJljZfxNFMqI3RRcj8
+         7NVfy+c51hdPgrygwVihuKNBcrRV9kRWUHjztBmK0YuyhU0vgfwkRqS9PRl49n9rD2yN
+         /wt84jaiYwZiRfyOPPh6wOMAuvjD6FOZMv20OUcsYPZOoxzXazYvNeQkFeGPW1KiProi
+         4Kh1SK0lnyWI+gmkWQ3wBdx/auusrPxWP8nm9W3gvzewLmwPfl3d00QttSZuqE7nDWbZ
+         j7rw==
+X-Gm-Message-State: AOJu0YxdImkL6Q5ALn8v4icwrQptbHgpISMT6muCjFBBlrX+RnPKrTgq
+	kFX6/o42vvi/xiLB+9sFzvU=
+X-Google-Smtp-Source: AGHT+IEpddpmFFaT6IlVPlKKM1Rq6Unh3K1UX8FX2L96lpv2EtTfa0s5bs8J0uDXrwComQgI7q+j0A==
+X-Received: by 2002:a05:622a:56:b0:421:bcc0:d6c6 with SMTP id y22-20020a05622a005600b00421bcc0d6c6mr8351365qtw.28.1701708616590;
+        Mon, 04 Dec 2023 08:50:16 -0800 (PST)
+Received: from fed39-vm.. (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
+        by smtp.gmail.com with ESMTPSA id hj2-20020a05622a620200b0042545901450sm2337900qtb.72.2023.12.04.08.50.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Dec 2023 08:50:16 -0800 (PST)
+From: Cameron Williams <ckwilliams.work@gmail.com>
+To: jwcart2@gmail.com
+Cc: chungsheng@google.com,
+	selinux@vger.kernel.org,
+	Cameron Williams <ckwilliams.work@gmail.com>
+Subject: [PATCH] [userspace] Add CPPFLAGS to Makefiles
+Date: Mon,  4 Dec 2023 11:49:54 -0500
+Message-ID: <20231204164954.3735-1-ckwilliams.work@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <CAP+JOzQvaZK8yYx==xjYwtpJwr6pUYnWLO+X=z2Ti_YgpQdPiQ@mail.gmail.com>
+References: <CAP+JOzQvaZK8yYx==xjYwtpJwr6pUYnWLO+X=z2Ti_YgpQdPiQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-This reverts commit 61f213850047c23b0af7c7cafa9245da48120279.
+This patch adds CPPFLAGS to all of the Makefiles as suggested.
 
-This change broke build of SETools and currently it's not clear how to
-change SETools cython code so that it can be built with 3.6 and older
-SELinux releases.
-
-https://github.com/SELinuxProject/setools/issues/110
-
-Signed-off-by: Petr Lautrbach <lautrbach@redhat.com>
+Signed-off-by: Cameron Williams <ckwilliams.work@gmail.com>
 ---
- libsepol/cil/src/cil_binary.c                 |  6 +++---
- libsepol/include/sepol/policydb/conditional.h |  4 +---
- libsepol/src/conditional.c                    | 14 +++++++-------
- libsepol/src/expand.c                         |  6 +++---
- libsepol/src/kernel_to_cil.c                  |  2 +-
- libsepol/src/kernel_to_conf.c                 |  2 +-
- libsepol/src/link.c                           |  6 +++---
- libsepol/src/module_to_cil.c                  |  2 +-
- libsepol/src/policydb_validate.c              |  2 +-
- libsepol/src/write.c                          |  2 +-
- libsepol/tests/debug.c                        |  2 +-
- libsepol/tests/test-linker-cond-map.c         |  2 +-
- 12 files changed, 24 insertions(+), 26 deletions(-)
+ checkpolicy/Makefile            | 10 +++++-----
+ checkpolicy/test/Makefile       |  4 ++--
+ libselinux/src/Makefile         | 14 +++++++-------
+ libsemanage/src/Makefile        | 22 +++++++++++-----------
+ libsepol/src/Makefile           | 10 +++++-----
+ mcstrans/src/Makefile           |  2 +-
+ mcstrans/utils/Makefile         |  2 +-
+ policycoreutils/hll/pp/Makefile |  2 +-
+ secilc/Makefile                 |  6 +++---
+ 9 files changed, 36 insertions(+), 36 deletions(-)
 
-diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
-index a8e3616a32d0..5fb1109848ea 100644
---- a/libsepol/cil/src/cil_binary.c
-+++ b/libsepol/cil/src/cil_binary.c
-@@ -2204,7 +2204,7 @@ static int __cil_cond_item_to_sepol_expr(policydb_t *pdb, struct cil_list_item *
- 		*head = cil_malloc(sizeof(cond_expr_t));
- 		(*head)->next = NULL;
- 		(*head)->expr_type = COND_BOOL;
--		(*head)->boolean = sepol_bool->s.value;
-+		(*head)->bool = sepol_bool->s.value;
- 		*tail = *head;
- 	} else if (item->flavor == CIL_LIST) {
- 		struct cil_list *l = item->data;
-@@ -2240,7 +2240,7 @@ static int __cil_cond_expr_to_sepol_expr_helper(policydb_t *pdb, struct cil_list
- 		enum cil_flavor cil_op = (enum cil_flavor)(uintptr_t)item->data;
+diff --git a/checkpolicy/Makefile b/checkpolicy/Makefile
+index 281d15be..036ab905 100644
+--- a/checkpolicy/Makefile
++++ b/checkpolicy/Makefile
+@@ -30,19 +30,19 @@ all:  $(TARGETS)
+ 	$(MAKE) -C test
  
- 		op = cil_malloc(sizeof(*op));
--		op->boolean = 0;
-+		op->bool = 0;
- 		op->next = NULL;
+ checkpolicy: $(CHECKPOLOBJS) $(LIBSEPOLA)
+-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS_LIBSEPOLA)
++	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS_LIBSEPOLA)
  
- 		switch (cil_op) {
-@@ -2307,7 +2307,7 @@ static int __cil_cond_expr_to_sepol_expr_helper(policydb_t *pdb, struct cil_list
- 				goto exit;
- 			}
- 			op = cil_malloc(sizeof(*op));
--			op->boolean = 0;
-+			op->bool = 0;
- 			op->next = NULL;
- 			op->expr_type = COND_OR;
- 			t1->next = h2;
-diff --git a/libsepol/include/sepol/policydb/conditional.h b/libsepol/include/sepol/policydb/conditional.h
-index 5318ea194a62..49c0d76631c4 100644
---- a/libsepol/include/sepol/policydb/conditional.h
-+++ b/libsepol/include/sepol/policydb/conditional.h
-@@ -54,9 +54,7 @@ typedef struct cond_expr {
- #define COND_NEQ	7	/* bool != bool */
- #define COND_LAST	COND_NEQ
- 	uint32_t expr_type;
--	/* The member `boolean` was renamed from `bool` in version 3.6 */
--#define COND_EXPR_T_RENAME_BOOL_BOOLEAN
--	uint32_t boolean;
-+	uint32_t bool;
- 	struct cond_expr *next;
- } cond_expr_t;
+ checkmodule: $(CHECKMODOBJS) $(LIBSEPOLA)
+-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS_LIBSEPOLA)
++	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(LDLIBS_LIBSEPOLA)
  
-diff --git a/libsepol/src/conditional.c b/libsepol/src/conditional.c
-index 24380ea03d76..a620451d8bc5 100644
---- a/libsepol/src/conditional.c
-+++ b/libsepol/src/conditional.c
-@@ -125,7 +125,7 @@ int cond_expr_equal(cond_node_t * a, cond_node_t * b)
- 		if (cur_a->expr_type != cur_b->expr_type)
- 			return 0;
- 		if (cur_a->expr_type == COND_BOOL) {
--			if (cur_a->boolean != cur_b->boolean)
-+			if (cur_a->bool != cur_b->bool)
- 				return 0;
- 		}
- 		cur_a = cur_a->next;
-@@ -223,7 +223,7 @@ int cond_evaluate_expr(policydb_t * p, cond_expr_t * expr)
- 			if (sp == (COND_EXPR_MAXDEPTH - 1))
- 				return -1;
- 			sp++;
--			s[sp] = p->bool_val_to_struct[cur->boolean - 1]->state;
-+			s[sp] = p->bool_val_to_struct[cur->bool - 1]->state;
- 			break;
- 		case COND_NOT:
- 			if (sp < 0)
-@@ -279,7 +279,7 @@ cond_expr_t *cond_copy_expr(cond_expr_t * expr)
- 		memset(new_expr, 0, sizeof(cond_expr_t));
+ %.o: %.c 
+-	$(CC) $(CFLAGS) -o $@ -c $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) -o $@ -c $<
  
- 		new_expr->expr_type = cur->expr_type;
--		new_expr->boolean = cur->boolean;
-+		new_expr->bool = cur->bool;
+ y.tab.o: y.tab.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -o $@ -c $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -o $@ -c $<
  
- 		if (!head)
- 			head = new_expr;
-@@ -388,10 +388,10 @@ int cond_normalize_expr(policydb_t * p, cond_node_t * cn)
- 		switch (e->expr_type) {
- 		case COND_BOOL:
- 			/* see if we've already seen this bool */
--			if (!bool_present(e->boolean, cn->bool_ids, cn->nbools)) {
-+			if (!bool_present(e->bool, cn->bool_ids, cn->nbools)) {
- 				/* count em all but only record up to COND_MAX_BOOLS */
- 				if (cn->nbools < COND_MAX_BOOLS)
--					cn->bool_ids[cn->nbools++] = e->boolean;
-+					cn->bool_ids[cn->nbools++] = e->bool;
- 				else
- 					cn->nbools++;
- 			}
-@@ -737,7 +737,7 @@ static int expr_isvalid(policydb_t * p, cond_expr_t * expr)
- 		return 0;
- 	}
+ lex.yy.o: lex.yy.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -o $@ -c $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -o $@ -c $<
  
--	if (expr->boolean > p->p_bools.nprim) {
-+	if (expr->bool > p->p_bools.nprim) {
- 		WARN(NULL, "security: conditional expressions uses unknown bool.");
- 		return 0;
- 	}
-@@ -775,7 +775,7 @@ static int cond_read_node(policydb_t * p, cond_node_t * node, void *fp)
- 		memset(expr, 0, sizeof(cond_expr_t));
+ y.tab.c: policy_parse.y
+ 	$(YACC) -d policy_parse.y
+diff --git a/checkpolicy/test/Makefile b/checkpolicy/test/Makefile
+index 8e5d16b3..7f2f431c 100644
+--- a/checkpolicy/test/Makefile
++++ b/checkpolicy/test/Makefile
+@@ -13,10 +13,10 @@ endif
+ all: dispol dismod
  
- 		expr->expr_type = le32_to_cpu(buf[0]);
--		expr->boolean = le32_to_cpu(buf[1]);
-+		expr->bool = le32_to_cpu(buf[1]);
+ dispol: dispol.o $(LIBSEPOLA)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS_LIBSEPOLA)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS_LIBSEPOLA)
  
- 		if (!expr_isvalid(p, expr)) {
- 			free(expr);
-diff --git a/libsepol/src/expand.c b/libsepol/src/expand.c
-index e63414b1497b..ea6492b75da9 100644
---- a/libsepol/src/expand.c
-+++ b/libsepol/src/expand.c
-@@ -2025,8 +2025,8 @@ static int cond_node_map_bools(expand_state_t * state, cond_node_t * cn)
+ dismod: dismod.o $(LIBSEPOLA)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS_LIBSEPOLA)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS_LIBSEPOLA)
  
- 	cur = cn->expr;
- 	while (cur) {
--		if (cur->boolean)
--			cur->boolean = state->boolmap[cur->boolean - 1];
-+		if (cur->bool)
-+			cur->bool = state->boolmap[cur->bool - 1];
- 		cur = cur->next;
- 	}
+ clean:
+ 	-rm -f dispol dismod *.o 
+diff --git a/libselinux/src/Makefile b/libselinux/src/Makefile
+index 7aadb822..d3b981fc 100644
+--- a/libselinux/src/Makefile
++++ b/libselinux/src/Makefile
+@@ -148,22 +148,22 @@ SWIGRUBY = swig -Wall -ruby -o $(SWIGRUBYCOUT) -outdir ./ $(DISABLE_FLAGS)
+ all: $(LIBA) $(LIBSO) $(LIBPC)
  
-@@ -2899,7 +2899,7 @@ static void discard_tunables(sepol_handle_t *sh, policydb_t *pol)
- 			     cur_expr = cur_expr->next) {
- 				if (cur_expr->expr_type != COND_BOOL)
- 					continue;
--				booldatum = pol->bool_val_to_struct[cur_expr->boolean - 1];
-+				booldatum = pol->bool_val_to_struct[cur_expr->bool - 1];
- 				if (booldatum->flags & COND_BOOL_FLAGS_TUNABLE)
- 					tmp[tunables++] = booldatum;
- 				else
-diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-index 8ec7974995cc..74cd0e4dd234 100644
---- a/libsepol/src/kernel_to_cil.c
-+++ b/libsepol/src/kernel_to_cil.c
-@@ -44,7 +44,7 @@ static char *cond_expr_to_str(struct policydb *pdb, struct cond_expr *expr)
+ pywrap: all selinuxswig_python_exception.i
+-	CFLAGS="$(CFLAGS) $(SWIG_CFLAGS)" $(PYTHON) setup.py build_ext
++	CFLAGS="$(CPPFLAGS) $(CFLAGS) $(SWIG_CFLAGS)" $(PYTHON) setup.py build_ext
  
- 	for (curr = expr; curr != NULL; curr = curr->next) {
- 		if (curr->expr_type == COND_BOOL) {
--			char *val1 = pdb->p_bool_val_to_name[curr->boolean - 1];
-+			char *val1 = pdb->p_bool_val_to_name[curr->bool - 1];
- 			new_val = create_str("%s", 1, val1);
- 		} else {
- 			const char *op;
-diff --git a/libsepol/src/kernel_to_conf.c b/libsepol/src/kernel_to_conf.c
-index b5b530d6e6a1..853c0561040b 100644
---- a/libsepol/src/kernel_to_conf.c
-+++ b/libsepol/src/kernel_to_conf.c
-@@ -43,7 +43,7 @@ static char *cond_expr_to_str(struct policydb *pdb, struct cond_expr *expr)
+ rubywrap: all $(SWIGRUBYSO)
  
- 	for (curr = expr; curr != NULL; curr = curr->next) {
- 		if (curr->expr_type == COND_BOOL) {
--			char *val1 = pdb->p_bool_val_to_name[curr->boolean - 1];
-+			char *val1 = pdb->p_bool_val_to_name[curr->bool - 1];
- 			new_val = create_str("%s", 1, val1);
- 		} else {
- 			const char *op;
-diff --git a/libsepol/src/link.c b/libsepol/src/link.c
-index 3b7742bccac5..cbe4cea40123 100644
---- a/libsepol/src/link.c
-+++ b/libsepol/src/link.c
-@@ -1524,9 +1524,9 @@ static int copy_cond_list(cond_node_t * list, cond_node_t ** dst,
- 			/* expression nodes don't have a bool value of 0 - don't map them */
- 			if (cur_expr->expr_type != COND_BOOL)
- 				continue;
--			assert(module->map[SYM_BOOLS][cur_expr->boolean - 1] != 0);
--			cur_expr->boolean =
--			    module->map[SYM_BOOLS][cur_expr->boolean - 1];
-+			assert(module->map[SYM_BOOLS][cur_expr->bool - 1] != 0);
-+			cur_expr->bool =
-+			    module->map[SYM_BOOLS][cur_expr->bool - 1];
- 		}
- 		new_node->nbools = cur->nbools;
- 		/* FIXME should COND_MAX_BOOLS be used here? */
-diff --git a/libsepol/src/module_to_cil.c b/libsepol/src/module_to_cil.c
-index ee22dbbdb3b7..f43aa7decac8 100644
---- a/libsepol/src/module_to_cil.c
-+++ b/libsepol/src/module_to_cil.c
-@@ -1283,7 +1283,7 @@ static int cond_expr_to_cil(int indent, struct policydb *pdb, struct cond_expr *
+ $(SWIGRUBYLOBJ): $(SWIGRUBYCOUT)
+-	$(CC) $(CFLAGS) $(SWIG_CFLAGS) $(RUBYINC) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(SWIG_CFLAGS) $(RUBYINC) -fPIC -DSHARED -c -o $@ $<
  
- 	for (curr = cond_expr; curr != NULL; curr = curr->next) {
- 		if (curr->expr_type == COND_BOOL) {
--			val1 = pdb->p_bool_val_to_name[curr->boolean - 1];
-+			val1 = pdb->p_bool_val_to_name[curr->bool - 1];
- 			// length of boolean + 2 parens + null terminator
- 			len = strlen(val1) + 2 + 1;
- 			new_val = malloc(len);
-diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
-index 8b87675ff7b0..7d9a153fb830 100644
---- a/libsepol/src/policydb_validate.c
-+++ b/libsepol/src/policydb_validate.c
-@@ -1002,7 +1002,7 @@ static int validate_cond_expr(sepol_handle_t *handle, const struct cond_expr *ex
- 	for (; expr; expr = expr->next) {
- 		switch(expr->expr_type) {
- 		case COND_BOOL:
--			if (validate_value(expr->boolean, boolean))
-+			if (validate_value(expr->bool, boolean))
- 				goto bad;
- 			if (depth >= (COND_EXPR_MAXDEPTH - 1))
- 				goto bad;
-diff --git a/libsepol/src/write.c b/libsepol/src/write.c
-index 283d11c8a6bb..a7584a78d3c7 100644
---- a/libsepol/src/write.c
-+++ b/libsepol/src/write.c
-@@ -834,7 +834,7 @@ static int cond_write_node(policydb_t * p,
- 	for (cur_expr = node->expr; cur_expr != NULL; cur_expr = cur_expr->next) {
- 		items = 0;
- 		buf[items++] = cpu_to_le32(cur_expr->expr_type);
--		buf[items++] = cpu_to_le32(cur_expr->boolean);
-+		buf[items++] = cpu_to_le32(cur_expr->bool);
- 		items2 = put_entry(buf, sizeof(uint32_t), items, fp);
- 		if (items2 != items)
- 			return POLICYDB_ERROR;
-diff --git a/libsepol/tests/debug.c b/libsepol/tests/debug.c
-index 8494dd258e5c..90aa6e0a953a 100644
---- a/libsepol/tests/debug.c
-+++ b/libsepol/tests/debug.c
-@@ -41,7 +41,7 @@ void display_expr(policydb_t * p, cond_expr_t * exp, FILE * fp)
- 	for (cur = exp; cur != NULL; cur = cur->next) {
- 		switch (cur->expr_type) {
- 		case COND_BOOL:
--			fprintf(fp, "%s ", p->p_bool_val_to_name[cur->boolean - 1]);
-+			fprintf(fp, "%s ", p->p_bool_val_to_name[cur->bool - 1]);
- 			break;
- 		case COND_NOT:
- 			fprintf(fp, "! ");
-diff --git a/libsepol/tests/test-linker-cond-map.c b/libsepol/tests/test-linker-cond-map.c
-index 6ea0e4c2ac6b..694a73469c46 100644
---- a/libsepol/tests/test-linker-cond-map.c
-+++ b/libsepol/tests/test-linker-cond-map.c
-@@ -70,7 +70,7 @@ static void test_cond_expr_mapping(policydb_t * p, avrule_decl_t * d, test_cond_
+ $(SWIGRUBYSO): $(SWIGRUBYLOBJ)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -L. -shared -o $@ $^ -lselinux $(RUBYLIBS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -L. -shared -o $@ $^ -lselinux $(RUBYLIBS)
  
- 		CU_ASSERT(expr->expr_type == bools[i].expr_type);
- 		if (bools[i].bool) {
--			CU_ASSERT(strcmp(p->sym_val_to_name[SYM_BOOLS][expr->boolean - 1], bools[i].bool) == 0);
-+			CU_ASSERT(strcmp(p->sym_val_to_name[SYM_BOOLS][expr->bool - 1], bools[i].bool) == 0);
- 		}
- 		expr = expr->next;
- 	}
+ $(LIBA): $(OBJS)
+ 	$(AR) rcs $@ $^
+ 	$(RANLIB) $@
+ 
+ $(LIBSO): $(LOBJS)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^ $(PCRE_LDLIBS) $(FTS_LDLIBS) -ldl -Wl,$(LD_SONAME_FLAGS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^ $(PCRE_LDLIBS) $(FTS_LDLIBS) -ldl -Wl,$(LD_SONAME_FLAGS)
+ 	ln -sf $@ $(TARGET)
+ 
+ $(LIBPC): $(LIBPC).in ../VERSION
+@@ -173,10 +173,10 @@ selinuxswig_python_exception.i: exception.sh ../include/selinux/selinux.h
+ 	bash -e exception.sh > $@ || (rm -f $@ ; false)
+ 
+ %.o:  %.c policy.h
+-	$(CC) $(CFLAGS) $(TLSFLAGS) -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(TLSFLAGS) -c -o $@ $<
+ 
+ %.lo:  %.c policy.h
+-	$(CC) $(CFLAGS) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) -fPIC -DSHARED -c -o $@ $<
+ 
+ $(SWIGRUBYCOUT): $(SWIGRUBYIF)
+ 	$(SWIGRUBY) $<
+@@ -191,7 +191,7 @@ install: all
+ 	ln -sf --relative $(DESTDIR)$(SHLIBDIR)/$(LIBSO) $(DESTDIR)$(LIBDIR)/$(TARGET)
+ 
+ install-pywrap: pywrap
+-	CFLAGS="$(CFLAGS) $(SWIG_CFLAGS)" $(PYTHON) -m pip install --prefix=$(PREFIX) `test -n "$(DESTDIR)" && echo --root $(DESTDIR) --ignore-installed --no-deps` $(PYTHON_SETUP_ARGS) .
++	CFLAGS="$(CPPFLAGS) $(CFLAGS) $(SWIG_CFLAGS)" $(PYTHON) -m pip install --prefix=$(PREFIX) `test -n "$(DESTDIR)" && echo --root $(DESTDIR) --ignore-installed --no-deps` $(PYTHON_SETUP_ARGS) .
+ 	install -m 644 $(SWIGPYOUT) $(DESTDIR)$(PYTHONLIBDIR)/selinux/__init__.py
+ 	ln -sf --relative $(DESTDIR)$(PYTHONLIBDIR)/selinux/_selinux$(PYCEXT) $(DESTDIR)$(PYTHONLIBDIR)/_selinux$(PYCEXT)
+ 
+diff --git a/libsemanage/src/Makefile b/libsemanage/src/Makefile
+index 589e4a70..d5259967 100644
+--- a/libsemanage/src/Makefile
++++ b/libsemanage/src/Makefile
+@@ -74,23 +74,23 @@ pywrap: all $(SWIGSO)
+ rubywrap: all $(SWIGRUBYSO)
+ 
+ $(SWIGLOBJ): $(SWIGCOUT)
+-	$(CC) $(CFLAGS) $(SWIG_CFLAGS) $(PYINC) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(SWIG_CFLAGS) $(PYINC) -fPIC -DSHARED -c -o $@ $<
+ 
+ $(SWIGRUBYLOBJ): $(SWIGRUBYCOUT)
+-	$(CC) $(CFLAGS) $(SWIG_CFLAGS) $(RUBYINC) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(SWIG_CFLAGS) $(RUBYINC) -fPIC -DSHARED -c -o $@ $<
+ 
+ $(SWIGSO): $(SWIGLOBJ)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -L. -shared -o $@ $< -lsemanage $(PYLIBS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -L. -shared -o $@ $< -lsemanage $(PYLIBS)
+ 
+ $(SWIGRUBYSO): $(SWIGRUBYLOBJ)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -L. -shared -o $@ $^ -lsemanage $(RUBYLIBS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -L. -shared -o $@ $^ -lsemanage $(RUBYLIBS)
+ 
+ $(LIBA): $(OBJS)
+ 	$(AR) rcs $@ $^
+ 	$(RANLIB) $@
+ 
+ $(LIBSO): $(LOBJS)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^ -lsepol -laudit -lselinux -lbz2 -Wl,-soname,$(LIBSO),--version-script=libsemanage.map,-z,defs
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -shared -o $@ $^ -lsepol -laudit -lselinux -lbz2 -Wl,-soname,$(LIBSO),--version-script=libsemanage.map,-z,defs
+ 	ln -sf $@ $(TARGET)
+ 
+ $(LIBPC): $(LIBPC).in ../VERSION
+@@ -108,22 +108,22 @@ conf-parse.c: conf-parse.y
+ conf-parse.h: conf-parse.c
+ 
+ %.o:  %.c 
+-	$(CC) $(CFLAGS) -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $<
+ 
+ %.lo:  %.c
+-	$(CC) $(CFLAGS) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) -fPIC -DSHARED -c -o $@ $<
+ 
+ conf-parse.o:  conf-parse.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -c -o $@ $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -c -o $@ $<
+ 
+ conf-parse.lo:  conf-parse.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -fPIC -DSHARED -c -o $@ $<
+ 
+ conf-scan.o:  conf-scan.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -c -o $@ $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -c -o $@ $<
+ 
+ conf-scan.lo:  conf-scan.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -fPIC -DSHARED -c -o $@ $<
+ 
+ $(SWIGCOUT): $(SWIGIF)
+ 	$(SWIG) $<
+diff --git a/libsepol/src/Makefile b/libsepol/src/Makefile
+index 13410c67..d80a941f 100644
+--- a/libsepol/src/Makefile
++++ b/libsepol/src/Makefile
+@@ -53,7 +53,7 @@ $(LIBA):  $(OBJS)
+ 	$(RANLIB) $@
+ 
+ $(LIBSO): $(LOBJS) $(LIBMAP)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -shared -o $@ $(LOBJS) -Wl,$(LD_SONAME_FLAGS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -shared -o $@ $(LOBJS) -Wl,$(LD_SONAME_FLAGS)
+ 	ln -sf $@ $(TARGET) 
+ 
+ $(LIBPC): $(LIBPC).in ../VERSION
+@@ -68,10 +68,10 @@ endif
+ 
+ ifneq ($(DISABLE_CIL),y)
+ $(CILDIR)/src/cil_lexer.o: $(CILDIR)/src/cil_lexer.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -fPIC -c -o $@ $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -fPIC -c -o $@ $<
+ 
+ $(CILDIR)/src/cil_lexer.lo: $(CILDIR)/src/cil_lexer.c
+-	$(CC) $(filter-out -Werror, $(CFLAGS)) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(filter-out -Werror, $(CPPFLAGS) $(CFLAGS)) -fPIC -DSHARED -c -o $@ $<
+ 
+ $(CILDIR)/src/cil_lexer.c: $(CILDIR)/src/cil_lexer.l
+ 	$(LEX) -o $@ $<
+@@ -79,10 +79,10 @@ $(CILDIR)/src/cil_lexer.c: $(CILDIR)/src/cil_lexer.l
+ endif
+ 
+ %.o:  %.c 
+-	$(CC) $(CFLAGS) -fPIC -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) -fPIC -c -o $@ $<
+ 
+ %.lo:  %.c
+-	$(CC) $(CFLAGS) -fPIC -DSHARED -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) -fPIC -DSHARED -c -o $@ $<
+ 
+ install: all
+ 	test -d $(DESTDIR)$(LIBDIR) || install -m 755 -d $(DESTDIR)$(LIBDIR)
+diff --git a/mcstrans/src/Makefile b/mcstrans/src/Makefile
+index ef518625..89dbac16 100644
+--- a/mcstrans/src/Makefile
++++ b/mcstrans/src/Makefile
+@@ -23,7 +23,7 @@ $(PROG): $(PROG_OBJS) $(LIBSEPOLA)
+ 	$(CC) $(LDFLAGS) -pie -o $@ $^ -lselinux -lcap $(PCRE_LDLIBS) $(LDLIBS_LIBSEPOLA)
+ 
+ %.o:  %.c 
+-	$(CC) $(CFLAGS) $(PCRE_CFLAGS) -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -fPIE -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(PCRE_CFLAGS) -D_GNU_SOURCE -D_FILE_OFFSET_BITS=64 -fPIE -c -o $@ $<
+ 
+ install: all
+ 	test -d $(DESTDIR)$(SBINDIR) || install -m 755 -d $(DESTDIR)$(SBINDIR)
+diff --git a/mcstrans/utils/Makefile b/mcstrans/utils/Makefile
+index a48f4e72..eec714f1 100644
+--- a/mcstrans/utils/Makefile
++++ b/mcstrans/utils/Makefile
+@@ -20,7 +20,7 @@ untranscon: untranscon.o ../src/mcstrans.o ../src/mls_level.o $(LIBSEPOLA)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(PCRE_LDLIBS) -lselinux $(LDLIBS_LIBSEPOLA)
+ 
+ %.o:  %.c 
+-	$(CC) $(CFLAGS) $(PCRE_CFLAGS) -D_GNU_SOURCE -I../src -fPIE -c -o $@ $<
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(PCRE_CFLAGS) -D_GNU_SOURCE -I../src -fPIE -c -o $@ $<
+ 
+ install: all
+ 	-mkdir -p $(DESTDIR)$(SBINDIR)
+diff --git a/policycoreutils/hll/pp/Makefile b/policycoreutils/hll/pp/Makefile
+index fc8d3c4a..3c9b0efc 100644
+--- a/policycoreutils/hll/pp/Makefile
++++ b/policycoreutils/hll/pp/Makefile
+@@ -15,7 +15,7 @@ pp: $(PP_OBJS)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+ 
+ %.o: %.c
+-	$(CC) $(CFLAGS) -c -o $@ $^
++	$(CC) $(CPPFLAGS) $(CFLAGS) -c -o $@ $^
+ 
+ install: all
+ 	-mkdir -p $(DESTDIR)$(HLLDIR)
+diff --git a/secilc/Makefile b/secilc/Makefile
+index 94be0481..ef7bc8cd 100644
+--- a/secilc/Makefile
++++ b/secilc/Makefile
+@@ -31,7 +31,7 @@ override LDLIBS += -lsepol
+ all: $(SECILC) $(SECIL2CONF) $(SECIL2TREE) man
+ 
+ $(SECILC): $(SECILC_OBJS)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+ 
+ test: $(SECILC)
+ 	./$(SECILC) test/policy.cil
+@@ -40,10 +40,10 @@ test: $(SECILC)
+ 	$(DIFF) test/opt-expected.cil opt-actual.cil
+ 
+ $(SECIL2CONF): $(SECIL2CONF_OBJS)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+ 
+ $(SECIL2TREE): $(SECIL2TREE_OBJS)
+-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
++	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+ 
+ man: $(SECILC_MANPAGE) $(SECIL2CONF_MANPAGE) $(SECIL2TREE_MANPAGE)
+ 
+
+base-commit: 0f5a8dd3ac8226264dc01df6bd0eca8ae7443db6
 -- 
-2.41.0
+2.43.0
 
 

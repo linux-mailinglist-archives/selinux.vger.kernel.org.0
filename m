@@ -1,217 +1,400 @@
-Return-Path: <selinux+bounces-79-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-86-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821AB80670C
-	for <lists+selinux@lfdr.de>; Wed,  6 Dec 2023 07:08:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A609980709A
+	for <lists+selinux@lfdr.de>; Wed,  6 Dec 2023 14:11:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38563282553
-	for <lists+selinux@lfdr.de>; Wed,  6 Dec 2023 06:08:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B312B20E53
+	for <lists+selinux@lfdr.de>; Wed,  6 Dec 2023 13:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF0B3182CA;
-	Wed,  6 Dec 2023 06:06:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="vueYdWwm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417AA3717F;
+	Wed,  6 Dec 2023 13:10:54 +0000 (UTC)
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D124F1BF
-	for <selinux@vger.kernel.org>; Tue,  5 Dec 2023 22:06:37 -0800 (PST)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1cfb30ce241so46211925ad.0
-        for <selinux@vger.kernel.org>; Tue, 05 Dec 2023 22:06:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1701842797; x=1702447597; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k4fn8znMBnHx32svyrnbDfUnHhzlVQ7G5pzlVkycieA=;
-        b=vueYdWwmYeDx3LEn4Nye1xXvMy+5G/E9jQShJCw83qUlCniD1y2t9oPEohyUqOoltY
-         BjztqHStsw58EMoS2Fzudh7ZaOmxKl+XuDLNgEERc24vCJmuRpwn4ATB7dw2ZJa2gU7V
-         GbtC74J7H1chY2cXaAU40V1cAXazNakqkxvvq3ZuFN2OpBuW+MBVe46LKfN7qnsZQKZr
-         h5YOvGSFHgiVt6fK7J+ktLmvqMMG8QFe32Ok1HGAFWKmqrGJN+5gcFJkJVGNqHR68nP1
-         fK/GzXz9L8qquvU9zCn4hnzaF09K7Ci+9Qh5nsk3oJMkO1gWs8LmURpMWBFBCX9xMGI/
-         /fkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1701842797; x=1702447597;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k4fn8znMBnHx32svyrnbDfUnHhzlVQ7G5pzlVkycieA=;
-        b=NhttQgZ/vvQOM9rKY39ywkgDd4GNVO9NEK7smZUrF30b0/THvFHnwB3u8Cdh5PwxV3
-         dAwB4wYQtcPONT4fJbNwYAK/TetubqqMQFAP9HMd9GdPmblC8qJzYFiWOMaaae0jewgF
-         wytSM/1G/5HkwTbQeg3f9d1Y7WeHuNYw3EFt9hxqRqqphMXLZrRdMLTfCCWO9ykwrLfF
-         FGJ9Ei/RksaOH2xNX9DtgZoTMOAW0C7RozBNGpqoexV3v9gkO5Q8i0KjiuVR4FvFPUQU
-         ahneIj/XlRefmO+IOEvjb9Tbyndy68+9NRYaCPJgEb1O83isHvJezVzOZeH5UPtz/4sM
-         9pHA==
-X-Gm-Message-State: AOJu0Yy4a/VpW+VQ9WgRCG96Lg4cbvIj9/m1EamzCDn6vcvrND8UVlK2
-	51sy1/CW8eqXRq3KxI09BiPvpJrnSwPzRSWzR7I=
-X-Google-Smtp-Source: AGHT+IHh3TFL/DzofTOA4bttY6oq6gSidAZO08x8CTr+BDDGslel3+9RSP1rqlq7aRu9sSclIqBRzA==
-X-Received: by 2002:a17:902:7795:b0:1d0:5806:f45d with SMTP id o21-20020a170902779500b001d05806f45dmr351927pll.42.1701842796981;
-        Tue, 05 Dec 2023 22:06:36 -0800 (PST)
-Received: from dread.disaster.area (pa49-180-125-5.pa.nsw.optusnet.com.au. [49.180.125.5])
-        by smtp.gmail.com with ESMTPSA id k10-20020a170902c40a00b001d087f68ef8sm2308763plk.37.2023.12.05.22.06.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Dec 2023 22:06:34 -0800 (PST)
-Received: from [192.168.253.23] (helo=devoid.disaster.area)
-	by dread.disaster.area with esmtp (Exim 4.96)
-	(envelope-from <dave@fromorbit.com>)
-	id 1rAl3I-004VPF-1Q;
-	Wed, 06 Dec 2023 17:06:32 +1100
-Received: from dave by devoid.disaster.area with local (Exim 4.97-RC0)
-	(envelope-from <dave@devoid.disaster.area>)
-	id 1rAl3H-0000000BrVp-49wq;
-	Wed, 06 Dec 2023 17:06:32 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: linux-fsdevel@vger.kernel.org
-Cc: linux-block@vger.kernel.org,
-	linux-cachefs@redhat.com,
-	dhowells@redhat.com,
-	gfs2@lists.linux.dev,
-	dm-devel@lists.linux.dev,
-	linux-security-module@vger.kernel.org,
-	selinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 11/11] hlist-bl: introduced nested locking for dm-snap
-Date: Wed,  6 Dec 2023 17:05:40 +1100
-Message-ID: <20231206060629.2827226-12-david@fromorbit.com>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20231206060629.2827226-1-david@fromorbit.com>
-References: <20231206060629.2827226-1-david@fromorbit.com>
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F0E2122;
+	Wed,  6 Dec 2023 05:10:46 -0800 (PST)
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4Slclh2pLGz9yfLt;
+	Wed,  6 Dec 2023 20:53:36 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.47])
+	by mail.maildlp.com (Postfix) with ESMTP id 3837D14064D;
+	Wed,  6 Dec 2023 21:10:42 +0800 (CST)
+Received: from [127.0.0.1] (unknown [10.204.63.22])
+	by APP1 (Coremail) with SMTP id LxC2BwD35HTDcnBl9n0HAg--.2463S2;
+	Wed, 06 Dec 2023 14:10:41 +0100 (CET)
+Message-ID: <d608edb80efe03b62698ab33cbee1eea856a0422.camel@huaweicloud.com>
+Subject: Re: [PATCH v5 23/23] integrity: Switch from rbtree to LSM-managed
+ blob for integrity_iint_cache
+From: Roberto Sassu <roberto.sassu@huaweicloud.com>
+To: Paul Moore <paul@paul-moore.com>
+Cc: viro@zeniv.linux.org.uk, brauner@kernel.org, chuck.lever@oracle.com, 
+ jlayton@kernel.org, neilb@suse.de, kolga@netapp.com, Dai.Ngo@oracle.com, 
+ tom@talpey.com, jmorris@namei.org, serge@hallyn.com, zohar@linux.ibm.com, 
+ dmitry.kasatkin@gmail.com, dhowells@redhat.com, jarkko@kernel.org, 
+ stephen.smalley.work@gmail.com, eparis@parisplace.org,
+ casey@schaufler-ca.com,  mic@digikod.net, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-nfs@vger.kernel.org,
+ linux-security-module@vger.kernel.org,  linux-integrity@vger.kernel.org,
+ keyrings@vger.kernel.org,  selinux@vger.kernel.org, Roberto Sassu
+ <roberto.sassu@huawei.com>
+Date: Wed, 06 Dec 2023 14:10:24 +0100
+In-Reply-To: <5f441267b6468b98e51a08d247a7ae066a60ff0c.camel@huaweicloud.com>
+References: <20231107134012.682009-24-roberto.sassu@huaweicloud.com>
+	 <17befa132379d37977fc854a8af25f6d.paul@paul-moore.com>
+	 <2084adba3c27a606cbc5ed7b3214f61427a829dd.camel@huaweicloud.com>
+	 <CAHC9VhTTKac1o=RnQadu2xqdeKH8C_F+Wh4sY=HkGbCArwc8JQ@mail.gmail.com>
+	 <b6c51351be3913be197492469a13980ab379e412.camel@huaweicloud.com>
+	 <CAHC9VhSAryQSeFy0ZMexOiwBG-YdVGRzvh58=heH916DftcmWA@mail.gmail.com>
+	 <90eb8e9d-c63e-42d6-b951-f856f31590db@huaweicloud.com>
+	 <CAHC9VhROnfBoaOy2MurdSpcE_poo_6Qy9d2U3g6m2NRRHaqz4Q@mail.gmail.com>
+	 <5f441267b6468b98e51a08d247a7ae066a60ff0c.camel@huaweicloud.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:LxC2BwD35HTDcnBl9n0HAg--.2463S2
+X-Coremail-Antispam: 1UD129KBjvAXoWfJF1rAw4rWF17uFW7Zr1kKrg_yoW8JF4fGo
+	WfAwsrJw48Kr15Aa1jka4xXFyrCw1rWry3Jryjqw4UGFn0q3WUC348G3WrJFW3Jr48Kw4D
+	J34UXay5AFZrtF97n29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73VFW2AGmfu7bjvjm3
+	AaLaJ3UjIYCTnIWjp_UUUYU7kC6x804xWl14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK
+	8VAvwI8IcIk0rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4
+	AK67xGY2AK021l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF
+	7I0E14v26r4j6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxAIw28IcxkI
+	7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxV
+	Cjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY
+	6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6x
+	AIw20EY4v20xvaj40_WFyUJVCq3wCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv
+	6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUFYFCUUUUU
+X-CM-SenderInfo: purev21wro2thvvxqx5xdzvxpfor3voofrz/1tbiAgADBF1jj5NPigAAsi
 
-From: Dave Chinner <dchinner@redhat.com>
+On Mon, 2023-12-04 at 14:26 +0100, Roberto Sassu wrote:
+> On Thu, 2023-11-30 at 11:34 -0500, Paul Moore wrote:
+> > On Wed, Nov 29, 2023 at 1:47=E2=80=AFPM Roberto Sassu
+> > <roberto.sassu@huaweicloud.com> wrote:
+> > > On 11/29/2023 6:22 PM, Paul Moore wrote:
+> > > > On Wed, Nov 29, 2023 at 7:28=E2=80=AFAM Roberto Sassu
+> > > > <roberto.sassu@huaweicloud.com> wrote:
+> > > > >=20
+> > > > > On Mon, 2023-11-20 at 16:06 -0500, Paul Moore wrote:
+> > > > > > On Mon, Nov 20, 2023 at 3:16=E2=80=AFAM Roberto Sassu
+> > > > > > <roberto.sassu@huaweicloud.com> wrote:
+> > > > > > > On Fri, 2023-11-17 at 15:57 -0500, Paul Moore wrote:
+> > > > > > > > On Nov  7, 2023 Roberto Sassu <roberto.sassu@huaweicloud.co=
+m> wrote:
+> > > > > > > > >=20
+> > > > > > > > > Before the security field of kernel objects could be shar=
+ed among LSMs with
+> > > > > > > > > the LSM stacking feature, IMA and EVM had to rely on an a=
+lternative storage
+> > > > > > > > > of inode metadata. The association between inode metadata=
+ and inode is
+> > > > > > > > > maintained through an rbtree.
+> > > > > > > > >=20
+> > > > > > > > > Because of this alternative storage mechanism, there was =
+no need to use
+> > > > > > > > > disjoint inode metadata, so IMA and EVM today still share=
+ them.
+> > > > > > > > >=20
+> > > > > > > > > With the reservation mechanism offered by the LSM infrast=
+ructure, the
+> > > > > > > > > rbtree is no longer necessary, as each LSM could reserve =
+a space in the
+> > > > > > > > > security blob for each inode. However, since IMA and EVM =
+share the
+> > > > > > > > > inode metadata, they cannot directly reserve the space fo=
+r them.
+> > > > > > > > >=20
+> > > > > > > > > Instead, request from the 'integrity' LSM a space in the =
+security blob for
+> > > > > > > > > the pointer of inode metadata (integrity_iint_cache struc=
+ture). The other
+> > > > > > > > > reason for keeping the 'integrity' LSM is to preserve the=
+ original ordering
+> > > > > > > > > of IMA and EVM functions as when they were hardcoded.
+> > > > > > > > >=20
+> > > > > > > > > Prefer reserving space for a pointer to allocating the in=
+tegrity_iint_cache
+> > > > > > > > > structure directly, as IMA would require it only for a su=
+bset of inodes.
+> > > > > > > > > Always allocating it would cause a waste of memory.
+> > > > > > > > >=20
+> > > > > > > > > Introduce two primitives for getting and setting the poin=
+ter of
+> > > > > > > > > integrity_iint_cache in the security blob, respectively
+> > > > > > > > > integrity_inode_get_iint() and integrity_inode_set_iint()=
+. This would make
+> > > > > > > > > the code more understandable, as they directly replace rb=
+tree operations.
+> > > > > > > > >=20
+> > > > > > > > > Locking is not needed, as access to inode metadata is not=
+ shared, it is per
+> > > > > > > > > inode.
+> > > > > > > > >=20
+> > > > > > > > > Signed-off-by: Roberto Sassu <roberto.sassu@huawei.com>
+> > > > > > > > > Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+> > > > > > > > > Reviewed-by: Mimi Zohar <zohar@linux.ibm.com>
+> > > > > > > > > ---
+> > > > > > > > >   security/integrity/iint.c      | 71 +++++--------------=
+---------------
+> > > > > > > > >   security/integrity/integrity.h | 20 +++++++++-
+> > > > > > > > >   2 files changed, 29 insertions(+), 62 deletions(-)
+> > > > > > > > >=20
+> > > > > > > > > diff --git a/security/integrity/iint.c b/security/integri=
+ty/iint.c
+> > > > > > > > > index 882fde2a2607..a5edd3c70784 100644
+> > > > > > > > > --- a/security/integrity/iint.c
+> > > > > > > > > +++ b/security/integrity/iint.c
+> > > > > > > > > @@ -231,6 +175,10 @@ static int __init integrity_lsm_init=
+(void)
+> > > > > > > > >      return 0;
+> > > > > > > > >   }
+> > > > > > > > >=20
+> > > > > > > > > +struct lsm_blob_sizes integrity_blob_sizes __ro_after_in=
+it =3D {
+> > > > > > > > > +   .lbs_inode =3D sizeof(struct integrity_iint_cache *),
+> > > > > > > > > +};
+> > > > > > > >=20
+> > > > > > > > I'll admit that I'm likely missing an important detail, but=
+ is there
+> > > > > > > > a reason why you couldn't stash the integrity_iint_cache st=
+ruct
+> > > > > > > > directly in the inode's security blob instead of the pointe=
+r?  For
+> > > > > > > > example:
+> > > > > > > >=20
+> > > > > > > >    struct lsm_blob_sizes ... =3D {
+> > > > > > > >      .lbs_inode =3D sizeof(struct integrity_iint_cache),
+> > > > > > > >    };
+> > > > > > > >=20
+> > > > > > > >    struct integrity_iint_cache *integrity_inode_get(inode)
+> > > > > > > >    {
+> > > > > > > >      if (unlikely(!inode->isecurity))
+> > > > > > > >        return NULL;
+> > > > > > > >      return inode->i_security + integrity_blob_sizes.lbs_in=
+ode;
+> > > > > > > >    }
+> > > > > > >=20
+> > > > > > > It would increase memory occupation. Sometimes the IMA policy
+> > > > > > > encompasses a small subset of the inodes. Allocating the full
+> > > > > > > integrity_iint_cache would be a waste of memory, I guess?
+> > > > > >=20
+> > > > > > Perhaps, but if it allows us to remove another layer of dynamic=
+ memory
+> > > > > > I would argue that it may be worth the cost.  It's also worth
+> > > > > > considering the size of integrity_iint_cache, while it isn't sm=
+all, it
+> > > > > > isn't exactly huge either.
+> > > > > >=20
+> > > > > > > On the other hand... (did not think fully about that) if we e=
+mbed the
+> > > > > > > full structure in the security blob, we already have a mutex =
+available
+> > > > > > > to use, and we don't need to take the inode lock (?).
+> > > > > >=20
+> > > > > > That would be excellent, getting rid of a layer of locking woul=
+d be significant.
+> > > > > >=20
+> > > > > > > I'm fully convinced that we can improve the implementation
+> > > > > > > significantly. I just was really hoping to go step by step an=
+d not
+> > > > > > > accumulating improvements as dependency for moving IMA and EV=
+M to the
+> > > > > > > LSM infrastructure.
+> > > > > >=20
+> > > > > > I understand, and I agree that an iterative approach is a good =
+idea, I
+> > > > > > just want to make sure we keep things tidy from a user perspect=
+ive,
+> > > > > > i.e. not exposing the "integrity" LSM when it isn't required.
+> > > > >=20
+> > > > > Ok, I went back to it again.
+> > > > >=20
+> > > > > I think trying to separate integrity metadata is premature now, t=
+oo
+> > > > > many things at the same time.
+> > > >=20
+> > > > I'm not bothered by the size of the patchset, it is more important
+> > > > that we do The Right Thing.  I would like to hear in more detail wh=
+y
+> > > > you don't think this will work, I'm not interested in hearing about
+> > > > difficult it may be, I'm interested in hearing about what challenge=
+s
+> > > > we need to solve to do this properly.
+> > >=20
+> > > The right thing in my opinion is to achieve the goal with the minimal
+> > > set of changes, in the most intuitive way.
+> >=20
+> > Once again, I want to stress that I don't care about the size of the
+> > change, the number of patches in a patchset, etc.  While it's always
+> > nice to be able to minimize the number of changes in a patch/patchset,
+> > that is secondary to making sure we are doing the right thing over the
+> > long term.  This is especially important when we are talking about
+> > things that are user visible.
+> >=20
+> > > Until now, there was no solution that could achieve the primary goal =
+of
+> > > this patch set (moving IMA and EVM to the LSM infrastructure) and, at
+> > > the same time, achieve the additional goal you set of removing the
+> > > 'integrity' LSM.
+> >=20
+> > We need to stop thinking about the "integrity" code as a LSM, it isn't
+> > a LSM.  It's a vestigial implementation detail that was necessary back
+> > when there could only be one LSM active at a time and there was a
+> > desire to have IMA/EVM active in conjunction with one of the LSMs,
+> > i.e. Smack, SELinux, etc.
+> >=20
+> > IMA and EVM are (or will be) LSMs, "integrity" is not.  I recognize
+> > that eliminating the need for the "integrity" code is a relatively new
+> > addition to this effort, but that is only because I didn't properly
+> > understand the relationship between IMA, EVM, and the "integrity" code
+> > until recently.  The elimination of the shared "integrity" code is
+> > consistent with promoting IMA and EVM as full LSMs, if there is core
+> > functionality that cannot be split up into the IMA and/or EVM LSMs
+> > then we need to look at how to support that without exposing that
+> > implementation detail/hack to userspace.  Maybe that means direct
+> > calls between IMA and EVM, maybe that means preserving some of the
+> > common integrity code hidden from userspace, maybe that means adding
+> > functionality to the LSM layer, maybe that means something else?
+> > Let's think on this to come up with something that we can all accept
+> > as a long term solution instead of just doing the quick and easy
+> > option.
+>=20
+> If the result of this patch set should be that IMA and EVM become
+> proper LSMs without the shared integrity layer, instead of collapsing
+> all changes in this patch set, I think we should first verify if IMA
+> and EVM can be really independent. Once we guarantee that, we can
+> proceed making the proper LSMs.
+>=20
+> These are the changes I have in mind:
+>=20
+> 1) Fix evm_verifyxattr(), and make it work without integrity_iint_cache
+> 2) Remove the integrity_iint_cache parameter from evm_verifyxattr(),
+>    since the other callers are not going to use it
 
-Testing with lockdep enabled threw this warning from generic/081 in
-fstests:
+Ehm, I checked better.
 
-[ 2369.724151] ============================================
-[ 2369.725805] WARNING: possible recursive locking detected
-[ 2369.727125] 6.7.0-rc2-dgc+ #1952 Not tainted
-[ 2369.728647] --------------------------------------------
-[ 2369.730197] systemd-udevd/389493 is trying to acquire lock:
-[ 2369.732378] ffff888116a1a320 (&(et->table + i)->lock){+.+.}-{2:2}, at: snapshot_map+0x13e/0x7f0
-[ 2369.736197]
-               but task is already holding lock:
-[ 2369.738657] ffff8881098a4fd0 (&(et->table + i)->lock){+.+.}-{2:2}, at: snapshot_map+0x136/0x7f0
-[ 2369.742118]
-               other info that might help us debug this:
-[ 2369.744403]  Possible unsafe locking scenario:
+integrity_inode_get() is public too (although it is not exported). So,
+a caller (not IMA) could do:
 
-[ 2369.746814]        CPU0
-[ 2369.747675]        ----
-[ 2369.748496]   lock(&(et->table + i)->lock);
-[ 2369.749877]   lock(&(et->table + i)->lock);
-[ 2369.751241]
-                *** DEADLOCK ***
+iint =3D integrity_inode_get(inode);
+status =3D evm_verifyxattr(..., iint);
 
-[ 2369.753173]  May be due to missing lock nesting notation
+However, it should not call integrity_inode_free(), which is also in
+include/linux/integrity.h, since this is going to be called by
+security_inode_free() (currently).
 
-[ 2369.754963] 4 locks held by systemd-udevd/389493:
-[ 2369.756124]  #0: ffff88811b3a1f48 (mapping.invalidate_lock#2){++++}-{3:3}, at: page_cache_ra_unbounded+0x69/0x190
-[ 2369.758516]  #1: ffff888121ceff10 (&md->io_barrier){.+.+}-{0:0}, at: dm_get_live_table+0x52/0xd0
-[ 2369.760888]  #2: ffff888110240078 (&s->lock#2){++++}-{3:3}, at: snapshot_map+0x12e/0x7f0
-[ 2369.763254]  #3: ffff8881098a4fd0 (&(et->table + i)->lock){+.+.}-{2:2}, at: snapshot_map+0x136/0x7f0
-[ 2369.765896]
-               stack backtrace:
-[ 2369.767429] CPU: 3 PID: 389493 Comm: systemd-udevd Not tainted 6.7.0-rc2-dgc+ #1952
-[ 2369.770203] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-[ 2369.773771] Call Trace:
-[ 2369.774657]  <TASK>
-[ 2369.775494]  dump_stack_lvl+0x5c/0xc0
-[ 2369.776765]  dump_stack+0x10/0x20
-[ 2369.778031]  print_deadlock_bug+0x220/0x2f0
-[ 2369.779568]  __lock_acquire+0x1255/0x2180
-[ 2369.781013]  lock_acquire+0xb9/0x2c0
-[ 2369.782456]  ? snapshot_map+0x13e/0x7f0
-[ 2369.783927]  ? snapshot_map+0x136/0x7f0
-[ 2369.785240]  _raw_spin_lock+0x34/0x70
-[ 2369.786413]  ? snapshot_map+0x13e/0x7f0
-[ 2369.787482]  snapshot_map+0x13e/0x7f0
-[ 2369.788462]  ? lockdep_init_map_type+0x75/0x250
-[ 2369.789650]  __map_bio+0x1d7/0x200
-[ 2369.790364]  dm_submit_bio+0x17d/0x570
-[ 2369.791387]  __submit_bio+0x4a/0x80
-[ 2369.792215]  submit_bio_noacct_nocheck+0x108/0x350
-[ 2369.793357]  submit_bio_noacct+0x115/0x450
-[ 2369.794334]  submit_bio+0x43/0x60
-[ 2369.795112]  mpage_readahead+0xf1/0x130
-[ 2369.796037]  ? blkdev_write_begin+0x30/0x30
-[ 2369.797007]  blkdev_readahead+0x15/0x20
-[ 2369.797893]  read_pages+0x5c/0x230
-[ 2369.798703]  page_cache_ra_unbounded+0x143/0x190
-[ 2369.799810]  force_page_cache_ra+0x9a/0xc0
-[ 2369.800754]  page_cache_sync_ra+0x2e/0x50
-[ 2369.801704]  filemap_get_pages+0x112/0x630
-[ 2369.802696]  ? __lock_acquire+0x413/0x2180
-[ 2369.803663]  filemap_read+0xfc/0x3a0
-[ 2369.804527]  ? __might_sleep+0x42/0x70
-[ 2369.805443]  blkdev_read_iter+0x6d/0x150
-[ 2369.806370]  vfs_read+0x1a6/0x2d0
-[ 2369.807148]  ksys_read+0x71/0xf0
-[ 2369.807936]  __x64_sys_read+0x19/0x20
-[ 2369.808810]  do_syscall_64+0x3c/0xe0
-[ 2369.809746]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
-[ 2369.810914] RIP: 0033:0x7f9f14dbb03d
+> 3) Create an internal function with the original parameters to be used
+>    by IMA
+> 4) Introduce evm_post_path_mknod(), which similarly to
+>    ima_post_path_mknod(), sets IMA_NEW_FILE for new files
 
-Turns out that dm-snap holds two hash-bl locks at the same time,
-so we need nesting semantics to ensure lockdep understands what is
-going on.
+I just realized that also this is changing the current behavior.
 
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
----
- drivers/md/dm-snap.c    |  2 +-
- include/linux/list_bl.h | 10 ++++++++++
- 2 files changed, 11 insertions(+), 1 deletion(-)
+IMA would clear IMA_NEW_FILE in ima_check_last_writer(), while EVM
+wouldn't (unless we implement the file_release hook in EVM too).
 
-diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
-index bf7a574499a3..cd97d5cb295d 100644
---- a/drivers/md/dm-snap.c
-+++ b/drivers/md/dm-snap.c
-@@ -645,7 +645,7 @@ static void dm_exception_table_lock_init(struct dm_snapshot *s, chunk_t chunk,
- static void dm_exception_table_lock(struct dm_exception_table_lock *lock)
- {
- 	hlist_bl_lock(lock->complete_slot);
--	hlist_bl_lock(lock->pending_slot);
-+	hlist_bl_lock_nested(lock->pending_slot, SINGLE_DEPTH_NESTING);
- }
- 
- static void dm_exception_table_unlock(struct dm_exception_table_lock *lock)
-diff --git a/include/linux/list_bl.h b/include/linux/list_bl.h
-index 990ad8e24e0b..0e3e60c10563 100644
---- a/include/linux/list_bl.h
-+++ b/include/linux/list_bl.h
-@@ -83,6 +83,11 @@ static inline void hlist_bl_lock(struct hlist_bl_head *b)
- 	spin_lock(&b->lock);
- }
- 
-+static inline void hlist_bl_lock_nested(struct hlist_bl_head *b, int subclass)
-+{
-+	spin_lock_nested(&b->lock, subclass);
-+}
-+
- static inline void hlist_bl_unlock(struct hlist_bl_head *b)
- {
- 	spin_unlock(&b->lock);
-@@ -125,6 +130,11 @@ static inline void hlist_bl_lock(struct hlist_bl_head *b)
- 	bit_spin_lock(0, (unsigned long *)b);
- }
- 
-+static inline void hlist_bl_lock_nested(struct hlist_bl_head *b, int subclass)
-+{
-+	hlist_bl_lock(b);
-+}
-+
- static inline void hlist_bl_unlock(struct hlist_bl_head *b)
- {
- 	__bit_spin_unlock(0, (unsigned long *)b);
--- 
-2.42.0
+> 5) Add hardcoded call to evm_post_path_mknod() after
+>    ima_post_path_mknod() in security.c
+>=20
+> If we think that this is good enough, we proceed with the move of IMA
+> and EVM functions to the LSM infrastructure (patches v7 19-21).
+>=20
+> The next patches are going to be similar to patches v6 22-23, but
+> unlike those, their goal would be simply to split metadata, not to make
+> IMA and EVM independent, which at this point has been addressed
+> separately in the prerequisite patches.
+>=20
+> The final patch is to remove the 'integrity' LSM and the integrity
+> metadata management code, which now is not used anymore.
+>=20
+> Would that work?
+
+We are not making much progress, I'm going to follow any recommendation
+that would move this forward.
+
+Thanks
+
+Roberto
+
+> Thanks
+>=20
+> Roberto
+>=20
+> > > If you see the diff, the changes compared to v5 that was already
+> > > accepted by Mimi are very straightforward. If the assumption I made t=
+hat
+> > > in the end the 'ima' LSM could take over the role of the 'integrity'
+> > > LSM, that for me is the preferable option.
+> >=20
+> > I looked at it quickly, but my workflow isn't well suited for patches
+> > as attachments; inline patches (the kernel standard) is preferable.
+> >=20
+> > > Given that the patch set is not doing any design change, but merely
+> > > moving calls and storing pointers elsewhere, that leaves us with the
+> > > option of thinking better what to do next, including like you suggest=
+ed
+> > > to make IMA and EVM use disjoint metadata.
+> > >=20
+> > > > > I started to think, does EVM really need integrity metadata or it=
+ can
+> > > > > work without?
+> > > > >=20
+> > > > > The fact is that CONFIG_IMA=3Dn and CONFIG_EVM=3Dy is allowed, so=
+ we have
+> > > > > the same problem now. What if we make IMA the one that manages
+> > > > > integrity metadata, so that we can remove the 'integrity' LSM?
+> > > >=20
+> > > > I guess we should probably revisit the basic idea of if it even mak=
+es
+> > > > sense to enable EVM without IMA?  Should we update the Kconfig to
+> > > > require IMA when EVM is enabled?
+> > >=20
+> > > That would be up to Mimi. Also this does not seem the main focus of t=
+he
+> > > patch set.
+> >=20
+> > Yes, it is not part of the original main focus, but it is definitely
+> > relevant to the discussion we are having now.  Once again, the most
+> > important thing to me is that we do The Right Thing for the long term
+> > maintenance of the code base; if that means scope creep, I've got no
+> > problem with that.
+> >=20
+> > > > > Regarding the LSM order, I would take Casey's suggestion of intro=
+ducing
+> > > > > LSM_ORDER_REALLY_LAST, for EVM.
+> > > >=20
+> > > > Please understand that I really dislike that we have imposed orderi=
+ng
+> > > > constraints at the LSM layer, but I do understand the necessity (th=
+e
+> > > > BPF LSM ordering upsets me the most).  I really don't want to see u=
+s
+> > > > make things worse by adding yet another ordering bucket, I would
+> > > > rather that we document it well and leave it alone ... basically tr=
+eat
+> > > > it like the BPF LSM (grrrrrr).
+> > >=20
+> > > Uhm, that would not be possible right away (the BPF LSM is mutable),
+> > > remember that we defined LSM_ORDER_LAST so that an LSM can be always
+> > > enable and placed as last (requested by Mimi)?
+> >=20
+> > To be clear, I can both dislike the bpf-always-last and LSM_ORDER_LAST
+> > concepts while accepting them as necessary evils.  I'm willing to
+> > tolerate LSM_ORDER_LAST, but I'm not currently willing to tolerate
+> > LSM_ORDER_REALLY_LAST; that is one step too far right now.  I brought
+> > up the BPF LSM simply as an example of ordering that is not enforced
+> > by code, but rather by documentation and convention.
+> >=20
 
 

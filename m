@@ -1,53 +1,53 @@
-Return-Path: <selinux+bounces-150-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-152-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EEA80CECB
-	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 16:00:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B31380CECD
+	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 16:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F7D8280982
-	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 15:00:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC3941F21863
+	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 15:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A41B49F7F;
-	Mon, 11 Dec 2023 15:00:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6ABA4A982;
+	Mon, 11 Dec 2023 15:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="FIkhXd0C"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="CRxEn5W1"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54F33AB
+Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98B7BCF
 	for <selinux@vger.kernel.org>; Mon, 11 Dec 2023 07:00:39 -0800 (PST)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9fa45e75ed9so518005066b.1
+Received: by mail-ed1-x534.google.com with SMTP id 4fb4d7f45d1cf-54f4fa5002cso3934135a12.1
         for <selinux@vger.kernel.org>; Mon, 11 Dec 2023 07:00:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20230601; t=1702306838; x=1702911638; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2UjZTySHNB2P+vNE/4xggV9jecsPUDSn2PqnFhrTosc=;
-        b=FIkhXd0CSrSgRVGWrI/enaACttL5XR4WdzreeqstetBQhsJKfFbuQ3YzGtKoY4xsRb
-         Nx+soyItwGOzbo+Q2cH5bI3Z3vPFhENUjWxI9WHAyiC59XXncjK49imt014bNEUP5qy2
-         qS2IY+u2CDRg8bUs4+cu0EnweMRHaAuVHpugw1QcnyKAHz7qe/JSJ7kpFrmoGpdUaiSH
-         mLkKhsDUM07lBJWdr9ku62qsCBOPTbNGWX9c5ps5KnuqwCQJHKcvBjOfgrgWB9x0aJFw
-         4LMyksbc58rYcfPG5S48X1HLDNdr1mQZkGJvw0VhOfAGjDcINAYThB4q9r0WmCiyxqt0
-         mwag==
+        bh=y+i3fJpta+YZL7Kqt3KB1G/o84dul4fXPO2DxheMfn0=;
+        b=CRxEn5W10NOLVM7Rtwt5T/9zI2/lKyp3J4EZ9TxErh6sTWJX/yps+poJHibT9GJaWc
+         +7KphUM+Ned71ElJMdE3K1Z11ic2W5Q201ZymS5zenDmh5d5eQh7EoIuSd/mVzSAR6zF
+         pxTy++uGSr9Vp+Qfc4Dkovrux44CU0Xjo4rUnf8WEqhc6XJkmUvQ98u6crtkqu352VeD
+         Nnnfkoh9/4uHcuSyKVHu29Ztn5eTZN697j/qhFDvVOKlmp4f7uN4wJHJPLGnxXHLx1JF
+         UJXdYDhKRMbH8HfWA+wICWUibaHsERr4+1mqZT93GOTyDO7cEBtQnrA2FdrPakk18TJ4
+         yBrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1702306838; x=1702911638;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2UjZTySHNB2P+vNE/4xggV9jecsPUDSn2PqnFhrTosc=;
-        b=eT6KYpDwdiiSIm1DpCz+u6JmcJzvER948iA/xnwCsvK1rj3ZpNhQLc8jnpa0vOyGxv
-         0LWP+dRnWUswxIVUkWx/Ko94zLswiTUhh+HD/I6oPqbbe7ZCLZzW+kzN524ujCdIUCDR
-         vt4pC6psK7cvushlOkTbDSXG/3w2+sYE7kEct45slZ6HZTsFWkeWkmPEqTdJEIqMBWiB
-         /1RO31xFM9qDnaWwHZMlmvuX77D/WmZEVLST8oZNn+vbuXutxp3Z6xHZCgCReetSsIQL
-         OVWjm1VbJMcxGGdzxcsipwHqCdxwSlXSp1TVvX81MbW9aT5COrWpuCah5QKEXVAOaI9k
-         /yWw==
-X-Gm-Message-State: AOJu0Yyrk9+gj6IYhUEAwcfVSstmvOEGrdFV/IZIs0H2yvOAnC595jWd
-	3sa3/MAIertobk4oJLdLf6soAvosYik=
-X-Google-Smtp-Source: AGHT+IEKS70E8YqJLTTz4ILYDq7LqZiwF/KbyrJR6aYFjDHYYRsLSJdAWbven17CPBgilathRiYW6w==
-X-Received: by 2002:a17:906:7489:b0:a19:a19a:eab3 with SMTP id e9-20020a170906748900b00a19a19aeab3mr2096975ejl.108.1702306837510;
+        bh=y+i3fJpta+YZL7Kqt3KB1G/o84dul4fXPO2DxheMfn0=;
+        b=Rvw9E0BpXVZ9sVQ6fsOsPxkeFRejaRmopIyMcwADFpkflKZmF15SMEbKBP0KyAC0jG
+         rQSkS4m/rXvQVPOtcQ895cQQ76eWpDBMff+HMpelzdBHP1H0jR+fOgFRGj32PidKIDsQ
+         do0NDnUxD/NL4vqlxdXUat3is/ZnENccD3qJwPlPu8FjcRgaIeouuyCm0fEM5fkXEIoV
+         c/NAwlcsi3i/Q3E/ZeCaLXyfDBWgFyAmu854wx4Cjh0SQA5uHcMiDUEp4lcIrLxWieyU
+         i9J0PiD93qMBl2g5teVex+/LN9kHb4RCn1emudgOCPX+FKcEMlsLphIhWM86AJfDWqoM
+         xSag==
+X-Gm-Message-State: AOJu0YxMceI521wJvZKmSiY98Pj2QD2shPAePXohAH0VW8yP2xNyVrAs
+	sqjZIKjn6g/nIbO+FFncQWDqg5xj4Ek=
+X-Google-Smtp-Source: AGHT+IEj373zTzE8MNOslq1N1xKAThDERkMsaclPDj1sROpVTktvNmMetTdJrzd2Z7yWwX1frPnOAQ==
+X-Received: by 2002:a17:906:ac7:b0:a18:7b92:d8b9 with SMTP id z7-20020a1709060ac700b00a187b92d8b9mr2126889ejf.38.1702306837991;
         Mon, 11 Dec 2023 07:00:37 -0800 (PST)
 Received: from debian_development.DebianHome (dynamic-077-001-173-175.77.1.pool.telefonica.de. [77.1.173.175])
         by smtp.gmail.com with ESMTPSA id vq6-20020a170907a4c600b00a19b7362dcfsm4983559ejc.139.2023.12.11.07.00.37
@@ -56,9 +56,9 @@ Received: from debian_development.DebianHome (dynamic-077-001-173-175.77.1.pool.
         Mon, 11 Dec 2023 07:00:37 -0800 (PST)
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH 2/3] libselinux: always set errno on context translation failure
-Date: Mon, 11 Dec 2023 16:00:30 +0100
-Message-ID: <20231211150031.127850-2-cgzones@googlemail.com>
+Subject: [PATCH 3/3] libselinux: state setexecfilecon(3) sets errno on failure
+Date: Mon, 11 Dec 2023 16:00:31 +0100
+Message-ID: <20231211150031.127850-3-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231211150031.127850-1-cgzones@googlemail.com>
 References: <20231211150031.127850-1-cgzones@googlemail.com>
@@ -71,83 +71,29 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Allow callers to expect errno is set on failure, e.g. other exported
-libselinux functions like setexecfilecon(3).
+The other functions (getexeccon(3) and setexeccon(3)) from the man page
+also set errno on failure similar to the getcon(3) function family.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/setrans_client.c | 22 +++++++++++++++++++---
- 1 file changed, 19 insertions(+), 3 deletions(-)
+ libselinux/man/man3/getexeccon.3 | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/libselinux/src/setrans_client.c b/libselinux/src/setrans_client.c
-index 920f9032..d7dbc0ca 100644
---- a/libselinux/src/setrans_client.c
-+++ b/libselinux/src/setrans_client.c
-@@ -92,8 +92,10 @@ send_request(int fd, uint32_t function, const char *data1, const char *data2)
- 	ssize_t count, expected;
- 	unsigned int i;
+diff --git a/libselinux/man/man3/getexeccon.3 b/libselinux/man/man3/getexeccon.3
+index 9cc24e8c..edaa6669 100644
+--- a/libselinux/man/man3/getexeccon.3
++++ b/libselinux/man/man3/getexeccon.3
+@@ -89,7 +89,9 @@ then executes the specified filename with the provided argument and
+ environment arrays.
+ .
+ .SH "RETURN VALUE"
+-On error \-1 is returned.
++On failure, \-1 is returned and
++.I errno
++is  set appropriately.
  
--	if (fd < 0)
-+	if (fd < 0) {
-+		errno = EINVAL;
- 		return -1;
-+	}
- 
- 	if (!data1)
- 		data1 = "";
-@@ -123,8 +125,12 @@ send_request(int fd, uint32_t function, const char *data1, const char *data2)
- 
- 	while (((count = sendmsg(fd, &msgh, MSG_NOSIGNAL)) < 0)
- 	       && (errno == EINTR)) ;
--	if (count < 0 || count != expected)
-+	if (count < 0)
-+		return -1;
-+	if (count != expected) {
-+		errno = EBADMSG;
- 		return -1;
-+	}
- 
- 	return 0;
- }
-@@ -140,8 +146,10 @@ receive_response(int fd, uint32_t function, char **outdata, int32_t * ret_val)
- 	struct iovec resp_data;
- 	ssize_t count;
- 
--	if (fd < 0)
-+	if (fd < 0) {
-+		errno = EINVAL;
- 		return -1;
-+	}
- 
- 	resp_hdr[0].iov_base = &func;
- 	resp_hdr[0].iov_len = sizeof(func);
-@@ -151,11 +159,17 @@ receive_response(int fd, uint32_t function, char **outdata, int32_t * ret_val)
- 	resp_hdr[2].iov_len = sizeof(*ret_val);
- 
- 	while (((count = readv(fd, resp_hdr, 3)) < 0) && (errno == EINTR)) ;
-+	if (count < 0) {
-+		return -1;
-+	}
-+
- 	if (count != (sizeof(func) + sizeof(data_size) + sizeof(*ret_val))) {
-+		errno = EBADMSG;
- 		return -1;
- 	}
- 
- 	if (func != function || !data_size || data_size > MAX_DATA_BUF) {
-+		errno = EBADMSG;
- 		return -1;
- 	}
- 
-@@ -172,6 +186,8 @@ receive_response(int fd, uint32_t function, char **outdata, int32_t * ret_val)
- 	if (count < 0 || (uint32_t) count != data_size ||
- 	    data[data_size - 1] != '\0') {
- 		free(data);
-+		if (count >= 0)
-+			errno = EBADMSG;
- 		return -1;
- 	}
- 	*outdata = data;
+ On success
+ .BR getexeccon (),
 -- 
 2.43.0
 

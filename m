@@ -1,63 +1,67 @@
-Return-Path: <selinux+bounces-145-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-147-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8438180CEA5
-	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 15:48:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B793080CEA7
+	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 15:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C79D280ED1
-	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 14:48:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44BCC281CF4
+	for <lists+selinux@lfdr.de>; Mon, 11 Dec 2023 14:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D781C495D3;
-	Mon, 11 Dec 2023 14:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 102D1495E3;
+	Mon, 11 Dec 2023 14:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="nagKGUS0"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="gxATWo6v"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 68CC1C5
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+	by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5568C6
 	for <selinux@vger.kernel.org>; Mon, 11 Dec 2023 06:48:38 -0800 (PST)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50bef9b7a67so5116925e87.1
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-54cfb03f1a8so6144248a12.2
         for <selinux@vger.kernel.org>; Mon, 11 Dec 2023 06:48:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1702306116; x=1702910916; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=pPPqqtehm+rjYHqFPkgT3lkvCjySc5xpbwpYfeiKO7M=;
-        b=nagKGUS0Wh0ORwPks77CgpU5oshNCnTl87RPi/mFTT4ynRgIViuvo/dT/gt2BWIjOC
-         I2gjZacwEeyxrlI6/dI0MxZSB3YbHrbdLf1kSLc10NRjEq7PCmf71kcUVBFXve+KKpzW
-         MXfYaB2Hojf9K7wl1lufM9i0YtUvjGzD2XSOTtMc+vg9qq1jdAV5JVOm0LJH160XklXm
-         ydlXZ9KClbg5McQDLnXkq//tXZbEZJSocPF6O6iS1jdgVx5BPkKEm198MhkCwBhxsm/N
-         uCSI0EmxHa0MBWdJsg3li5tbwluIy0JRPBkhT3j4oYi95ExbwJGeIsGD1n9nKgNmBsjn
-         pPog==
+        d=googlemail.com; s=20230601; t=1702306117; x=1702910917; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0BXM2vrg08PYeB2toWV7mXKugo0/JT0s7637pl8pQJk=;
+        b=gxATWo6vZTjVDZRnkOt2+ZtP3y7n0h3dYZeiZ7XDMkUTmeySpqdwNLCrOKdC0FzZ7E
+         2bkMGETYJk8TQh4OkQIS2CTlwmldDIJgwHkrDInaQe2O15Neg8PbDAJrMMXasnCtsEvJ
+         NXpUG32tH35/dY6twUJC5gvjfb4F3+2CIWvUtx54gRCBcAYBOT8U1b/S6F5VCC/bueWa
+         oQ1oPbPOlyD5qjRAFNCpVLbiVY02qSM6srUYVAmO7rUzFI2HQ1xuzSm9thZPRpFzf8+8
+         rXCpIrphXa+of86HEiA5pcQZ00JI0AhPrbNocjKqnuUAD0dbHDI8w3AEzUdvkRRfyFfd
+         b5wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1702306116; x=1702910916;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pPPqqtehm+rjYHqFPkgT3lkvCjySc5xpbwpYfeiKO7M=;
-        b=DzWjN9ikKVIWEXxRx60GTPUhXgaKVxpnAnNnZcLdev0xGGqqaR9Y3FX6ZfqyRt+6kM
-         BSqsT9F/v1dtuQ1lsu9m/en2Er3CKq5Eehb2ofzeFXZ3gHTWbrCEEoIU9H0xPyPTtG1e
-         TMF5bO0u0paePtJZNa72gYOtVCucVsceja5lHbnCDJJnwMGFFqNVT2XWRVHLBc9B1kPC
-         vYcJOUv0xtw7Ji2NFUcKJ0r3flBcCxvg69Q7p/fykuVJELPraFQWeS3pwQh1efPzhFxQ
-         YvWJn8eRZWhTeeceYJV7KG6gRNauiC/mbq9HZLhw9CxLVUuM9pyNaXzma+lQaU/HixQd
-         f+Dg==
-X-Gm-Message-State: AOJu0Yz/E/YNqWM1ecLGYxvVVMiLsoPZXzVBYPyL40J994gUMC+It6eW
-	TojY3ayET0edCIq1RIO+eHVIEEfqzDo=
-X-Google-Smtp-Source: AGHT+IEOodU1iVjVCfDKA8ltBLyNPAnGM13xuLhWhOt4lg8b/AAlBcsEBo4ZU8DFIVSwiJEnsSAa5Q==
-X-Received: by 2002:a05:6512:46b:b0:50b:ff86:c46f with SMTP id x11-20020a056512046b00b0050bff86c46fmr1795761lfd.63.1702306116448;
+        d=1e100.net; s=20230601; t=1702306117; x=1702910917;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0BXM2vrg08PYeB2toWV7mXKugo0/JT0s7637pl8pQJk=;
+        b=iXzWd22fByDA2VHSQHLO80Eok1MoDDHx0BlG79LSoEIFOLM+kqNkyCZVhm4Cjsbjg/
+         9qn1KnuvD1SKFyvgEEWme4YcPZj7PEbhKze+07eojbM9CiHXl6H4eGsfp3oLC9VGWvE8
+         y7p9lmvCC3dmIZc4tpC+vR7PNXe8ci2+Y1W1i7CT5O5VKRkNXn+5RqThAQ6Hf/Ln1HBy
+         XcGLGchvhlmNqDymXUpVlkLPPhWR5tjaqxuT9sYHmkAN2iuIJvr2NdrsARcTpn7mpB//
+         xaIXDX/9+mTZ/LTZ6HUPMyUk7WlMwfKzJafqgcL+4vdRyEB68bOPwLjEN3aoUM1wS8gc
+         K+pw==
+X-Gm-Message-State: AOJu0Yz9ZawWBcnqm1/VU2+AsYPFQ7tbUciGbmHvnBwwnjmRLMTxalUW
+	dWa+sx8meH2ayzghNXhaf3ApFaTtkSA=
+X-Google-Smtp-Source: AGHT+IHV1bI7tmTQxrIKEP+8hpSQSW/KQyOUAsVzAcZG2iwtbTc6gv7Z5qZj1VZvi6Ky6pb9rmeL9Q==
+X-Received: by 2002:a05:6402:230e:b0:54c:4837:7590 with SMTP id l14-20020a056402230e00b0054c48377590mr2408270eda.60.1702306116943;
         Mon, 11 Dec 2023 06:48:36 -0800 (PST)
 Received: from debian_development.DebianHome (dynamic-077-001-173-175.77.1.pool.telefonica.de. [77.1.173.175])
-        by smtp.gmail.com with ESMTPSA id bq18-20020a056402215200b0054db440489fsm3669228edb.60.2023.12.11.06.48.35
+        by smtp.gmail.com with ESMTPSA id bq18-20020a056402215200b0054db440489fsm3669228edb.60.2023.12.11.06.48.36
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Mon, 11 Dec 2023 06:48:36 -0800 (PST)
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH 1/3] libsepol: constify tokenized input
-Date: Mon, 11 Dec 2023 15:48:24 +0100
-Message-ID: <20231211144827.121636-1-cgzones@googlemail.com>
+Subject: [PATCH 2/3] libsepol: avoid integer overflow in add_i_to_a()
+Date: Mon, 11 Dec 2023 15:48:25 +0100
+Message-ID: <20231211144827.121636-2-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20231211144827.121636-1-cgzones@googlemail.com>
+References: <20231211144827.121636-1-cgzones@googlemail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -67,56 +71,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The input string to be tokenized is not modified.
-
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/include/sepol/policydb/util.h | 2 +-
- libsepol/src/util.c                    | 9 +++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ libsepol/src/util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libsepol/include/sepol/policydb/util.h b/libsepol/include/sepol/policydb/util.h
-index db8da213..4ea5a346 100644
---- a/libsepol/include/sepol/policydb/util.h
-+++ b/libsepol/include/sepol/policydb/util.h
-@@ -40,7 +40,7 @@ char *sepol_extended_perms_to_string(avtab_extended_perms_t *xperms);
-  * The tokenize function may be used to
-  * replace sscanf
-  */
--extern int tokenize(char *line_buf, char delim, int num_args, ...);
-+extern int tokenize(const char *line_buf, char delim, int num_args, ...);
- 
- #ifdef __cplusplus
- }
 diff --git a/libsepol/src/util.c b/libsepol/src/util.c
-index 2f877920..571f6c93 100644
+index 571f6c93..4a6f7d11 100644
 --- a/libsepol/src/util.c
 +++ b/libsepol/src/util.c
-@@ -221,9 +221,9 @@ err:
-  */
- 
- /* Read a token from a buffer */
--static inline int tokenize_str(char delim, char **str, char **ptr, size_t *len)
-+static inline int tokenize_str(char delim, char **str, const char **ptr, size_t *len)
+@@ -44,7 +44,7 @@ int add_i_to_a(uint32_t i, uint32_t * cnt, uint32_t ** a)
  {
--	char *tmp_buf = *ptr;
-+	const char *tmp_buf = *ptr;
- 	*str = NULL;
+ 	uint32_t *new;
  
- 	while (**ptr != '\0') {
-@@ -273,9 +273,10 @@ static inline int tokenize_str(char delim, char **str, char **ptr, size_t *len)
-  * contain the remaining content of line_buf. If the delimiter is any whitespace
-  * character, then all whitespace will be squashed.
-  */
--int tokenize(char *line_buf, char delim, int num_args, ...)
-+int tokenize(const char *line_buf, char delim, int num_args, ...)
- {
--	char **arg, *buf_p;
-+	char **arg;
-+	const char *buf_p;
- 	int rc, items;
- 	size_t arg_len = 0;
- 	va_list ap;
+-	if (cnt == NULL || a == NULL)
++	if (cnt == NULL || *cnt == UINT32_MAX || a == NULL)
+ 		return -1;
+ 
+ 	/* FIX ME: This is not very elegant! We use an array that we
 -- 
 2.43.0
 

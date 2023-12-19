@@ -1,68 +1,68 @@
-Return-Path: <selinux+bounces-239-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-242-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 068D0818BDE
-	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 17:10:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C938818BE0
+	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 17:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41889287A60
-	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 16:10:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39C37287A18
+	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 16:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545001D154;
-	Tue, 19 Dec 2023 16:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D35D1D53E;
+	Tue, 19 Dec 2023 16:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="T0CYrzPY"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="dWEX0A4h"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69261D13D
-	for <selinux@vger.kernel.org>; Tue, 19 Dec 2023 16:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CAF1D521
+	for <selinux@vger.kernel.org>; Tue, 19 Dec 2023 16:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a233a60f8feso357666566b.0
-        for <selinux@vger.kernel.org>; Tue, 19 Dec 2023 08:10:15 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a2339262835so350744066b.3
+        for <selinux@vger.kernel.org>; Tue, 19 Dec 2023 08:10:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1703002214; x=1703607014; darn=vger.kernel.org;
+        d=googlemail.com; s=20230601; t=1703002215; x=1703607015; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=akgUxFrDS2OEoiOfORLhSX66qaJZlbiwFJ71FzN57x0=;
-        b=T0CYrzPY2jVn66K6kvsW3mrbB6KWmAzH9IBka7+yjTkSCeAIGAdbKyQHgymMdNO1wO
-         3zFMrAa+OLxnj/UzJrHFeAcoppyYGIYjicXPgcnjU0hFLS2+HuZ3y7Y7OtQBRfDI655w
-         cuSUOZMj+9DUajYBKuNZBmI/yRoUAwec7mlX7KbBVaSbnsz49eYkldg1Snfx6C4KZucs
-         7EMJJKtCVSeOKIaFhj8z9GB5KrPAKnFn1pUQZ5ww1Dtf+xz+C/2TUQ6pjKWWUIPLGGDN
-         7c4jPVUti157ho7+ypeIDHO1KGYyV2O17gijvkdAfaWC4Ld9dUargyjq1msxIfHzMU2q
-         3Gog==
+        bh=BttxqXRGBCPrXk99eIkz9Fiyo5nhN/CXJX4ptKVVayQ=;
+        b=dWEX0A4hGGObaDSHs+Vygx8Wba97XbLomXXPOuZKarCDQzj8RrtVKZg39BWrNq2UDZ
+         fq00v0sT3vKY/lgm0DBe8HWz8PD0LXQnym0u7vkOUtAj2pyOsHw+FX/6SbLdgcq+Kno6
+         gp9tn1N3SFs6YYkI+Oz+i97rWyi+Y1f7MqI6qpwwrMTZuNnP72mGMzQjp5a5x93WBlJZ
+         mM3LPbKU304iVlmlPDWZzyA5jRrBZoEU++22aENZF3fHNIImxPCMT6MUFTSPpncKkQBZ
+         QjwE68mLveO1qF3WX1ajxruJ2rbBVwuiL6AM2I1E3XaH7FR5slpZRyK8B7rywVFwidM4
+         wTDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703002214; x=1703607014;
+        d=1e100.net; s=20230601; t=1703002215; x=1703607015;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=akgUxFrDS2OEoiOfORLhSX66qaJZlbiwFJ71FzN57x0=;
-        b=DERW5gACO2eUL1q4vGbZQUSuUjjqaGMG43r0OOS2FIBcM0hUsniiOYD+u0VZCeNhRw
-         8+HD1rfhzy7qt+dIsi078ISIjwRggnnG9o20loIpY2DTnY8qx71fUhxEu0FDKHH4DJ6f
-         YzROJJKabNDWAhdvFarGDn3nser7tLGNfI3O5Qx69+jhN2jz/Pap1pFncCmQPOUyFIw7
-         05stcrA/pokJsV/CXNROrK4RujbbTohNBnUimSq+fIv1QYXQnFtpHGSUDprd3LsIuacI
-         NQtk88ExTkcunZFsdWSsMmKNZV4n96FVZPE9R6urrKsaw+Bfv7qTg4FHayBGqTSg6RZH
-         foPw==
-X-Gm-Message-State: AOJu0Yy7kHdcBvvV0kgPvZ/CcZKmNVl/mX8L7fXc7msWqO24E5F9Did+
-	XpG3LwfCls/Kt5WeDkrQMTdoHLdv/R8=
-X-Google-Smtp-Source: AGHT+IGdxgMdv54MszGq0vn1OZikBRXL9Smkrw/FLGX2vhvrT0gPYZ3Cw4lKUIrChbkK3GRyzai3Rw==
-X-Received: by 2002:a17:907:3e13:b0:a26:8683:bd3b with SMTP id hp19-20020a1709073e1300b00a268683bd3bmr377124ejc.125.1703002214021;
+        bh=BttxqXRGBCPrXk99eIkz9Fiyo5nhN/CXJX4ptKVVayQ=;
+        b=FMMWBK0WjNZmn7FUvdy2DI8YXlNDPZmHgNRH+Xjl9wZBpK928PZBfHhozzDTXhhrUk
+         qVdVP9YDnwa3aSej0nN87xpOIdArNdMeqov9+YvgaTwe/yhdnVStfQmGBn9EUAGc2izE
+         EMVcj4Hj9Iqi5iZKJ9ntbIdmwvw6MALEBlfFNdMY1UGSgwnmPFAc+QiYEC/AHqrjTOHP
+         j/MGbOzVNLH7XIfnFbriD+wYpovnIA7KwwYXXD15kdPsutqJeT6swEfGMtltRbD79cez
+         UW+g1YNTCuLh5NI9vF7VdpdkNBpucXGu8AEOHYSQEZ5YU820KhMgJzd6ivK6tj1h4Kcc
+         i2wA==
+X-Gm-Message-State: AOJu0YzuMT0SHVtd/j9UQSSjDxrG0TAqELVfhLGNm+p0puxCwUbOtB3m
+	mSH4QOzX6me3Mc/yCjy3og1Wn8Coh0g=
+X-Google-Smtp-Source: AGHT+IHWjOXxMvTWPMUV8RcDVTe/dEldDKA+H3tFtLeyCDttlEFEuEHqPjYOe3SR/arRHCU7uq4W7g==
+X-Received: by 2002:a17:906:2803:b0:9fc:3a70:4430 with SMTP id r3-20020a170906280300b009fc3a704430mr8256192ejc.70.1703002214670;
         Tue, 19 Dec 2023 08:10:14 -0800 (PST)
 Received: from debian_development.DebianHome (dynamic-077-010-185-155.77.10.pool.telefonica.de. [77.10.185.155])
-        by smtp.gmail.com with ESMTPSA id v19-20020a170906489300b00a236378a43fsm1936621ejq.62.2023.12.19.08.10.13
+        by smtp.gmail.com with ESMTPSA id v19-20020a170906489300b00a236378a43fsm1936621ejq.62.2023.12.19.08.10.14
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Dec 2023 08:10:13 -0800 (PST)
+        Tue, 19 Dec 2023 08:10:14 -0800 (PST)
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH 04/11] libselinux/utils: improve compute_av output
-Date: Tue, 19 Dec 2023 17:09:26 +0100
-Message-ID: <20231219160943.334370-4-cgzones@googlemail.com>
+Subject: [PATCH 05/11] libselinux: align SELABEL_OPT_DIGEST usage with man page
+Date: Tue, 19 Dec 2023 17:09:27 +0100
+Message-ID: <20231219160943.334370-5-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219160943.334370-1-cgzones@googlemail.com>
 References: <20231219160943.334370-1-cgzones@googlemail.com>
@@ -75,59 +75,28 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Show the more interesting inverse of the auditdeny vector as dontaudit.
-
-Show the inverse of the decided vector, although since Linux v2.6.30
-f1c6381a6e33 ("SELinux: remove unused av.decided field") all permissions
-are always decided.
-
-    $ compute_av staff_u:staff_r:staff_t:s0 sysadm_u:sysadm_r:sysadm_t:s0 process
-    allowed= null
-    auditdeny= { fork transition sigchld sigkill sigstop signull ptrace getsched setsched getsession getpgid setpgid getcap setcap share getattr setexec setfscreate noatsecure siginh setrlimit rlimitinh dyntransition setcurrent execmem execstack execheap setkeycreate setsockcreate getrlimit 0x80000000 }
-    dontaudit= { signal }
+According to selabel_opn(3) a non-null value for this option enables the
+generation of an SHA1 digest of the spec files loaded as described in
+selabel_digest(3).
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/utils/compute_av.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ libselinux/src/label.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/libselinux/utils/compute_av.c b/libselinux/utils/compute_av.c
-index cca407d6..09f574a0 100644
---- a/libselinux/utils/compute_av.c
-+++ b/libselinux/utils/compute_av.c
-@@ -44,10 +44,14 @@ int main(int argc, char **argv)
- 	print_access_vector(tclass, avd.allowed);
- 	printf("\n");
+diff --git a/libselinux/src/label.c b/libselinux/src/label.c
+index 1ea9bdcd..4a7c6e6d 100644
+--- a/libselinux/src/label.c
++++ b/libselinux/src/label.c
+@@ -62,7 +62,7 @@ static inline struct selabel_digest *selabel_is_digest_set
  
--	if (avd.decided != ~0U) {
-+	if (~avd.decided) {
- 		printf("decided=");
- 		print_access_vector(tclass, avd.decided);
- 		printf("\n");
-+
-+		printf("undecided=");
-+		print_access_vector(tclass, ~avd.decided);
-+		printf("\n");
- 	}
- 
- 	if (avd.auditallow) {
-@@ -56,10 +60,14 @@ int main(int argc, char **argv)
- 		printf("\n");
- 	}
- 
--	if (avd.auditdeny != ~0U) {
--		printf("auditdeny");
-+	if (~avd.auditdeny) {
-+		printf("auditdeny=");
- 		print_access_vector(tclass, avd.auditdeny);
- 		printf("\n");
-+
-+		printf("dontaudit=");
-+		print_access_vector(tclass, ~avd.auditdeny);
-+		printf("\n");
- 	}
- 
- 	exit(EXIT_SUCCESS);
+ 	while (n--) {
+ 		if (opts[n].type == SELABEL_OPT_DIGEST &&
+-					    opts[n].value == (char *)1) {
++					    !!opts[n].value) {
+ 			digest = calloc(1, sizeof(*digest));
+ 			if (!digest)
+ 				goto err;
 -- 
 2.43.0
 

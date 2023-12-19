@@ -1,68 +1,68 @@
-Return-Path: <selinux+bounces-241-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-243-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53F50818BDF
-	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 17:10:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4F9818BE2
+	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 17:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69BB91C2462E
-	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 16:10:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29C8C1F25390
+	for <lists+selinux@lfdr.de>; Tue, 19 Dec 2023 16:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96F21D539;
-	Tue, 19 Dec 2023 16:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C67041D541;
+	Tue, 19 Dec 2023 16:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="ll2J8TZi"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="KBWhAT+5"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463EB1D133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CA71D140
 	for <selinux@vger.kernel.org>; Tue, 19 Dec 2023 16:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a235e394758so274121866b.1
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a234139b725so365829466b.3
         for <selinux@vger.kernel.org>; Tue, 19 Dec 2023 08:10:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1703002215; x=1703607015; darn=vger.kernel.org;
+        d=googlemail.com; s=20230601; t=1703002216; x=1703607016; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=SlPBJRCJAiUl6SzcrSl5tuliJRJLnt898mkFfNL7oSQ=;
-        b=ll2J8TZiAV58USCix789cQZ4S+IANGn0OQiLUHHOMjaffdGAw02e5pIScos8Eci/Su
-         rxET3OexxOksGLsZquudw3K+4jBzRBQP8lsiQo8wUJOSIvWhdFym6eeER9D1E1GJtGBx
-         qfqCo4N062QcowcY+Is32PSxBhoJD/hiEJ6Tm42x5Z6IKFJSIfk7dji/wzjuChAZeoX0
-         ZhUB09qapIgjWP3MAnOq/3f8Ly52Lp/4UEXSOuhSTo4ZQqowrUAWoVWKMz3vclB7zYXh
-         Jh55L9EWQXBeWvMT9dS6OPFOypyh1akDJp6S/4hpmVL0NVqOZ1Vy9O2Otdjb4QHv/TpA
-         yR/w==
+        bh=Q3mQhCro7rIA//WgoTKoBpkiGulU0bbdLMCuyCwVh/8=;
+        b=KBWhAT+5d9yGvqNftUCP7N2R4N1W655wDCIuDttq92QS+S+pWSwkDkNUuD1w1pC9eP
+         Rv0FtyYxNG8FhpcdoHB95yR8z65v3Z0PLXe+rorOlexXaikKhqN1mNUsSx+1GsURXDNk
+         wFvT0FEbqYeCdyFEZJ6DBGZRHuOh7A/k9SQE7rwqhYXjLfVuAhavza+cW4wqPJa4YwXz
+         5c26CTeTJI8fyu6rGsNluU/TEOb7zULyStCQIfujKq/eMSiEcx274OPLF6XFzxX+Zl7S
+         J8fCCE784mUNzzPDknumhahQ4g0Q4oOM71DkOvmtnh9m4lLpy7As5DSBtoaAazKsq/Jb
+         uroQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1703002215; x=1703607015;
+        d=1e100.net; s=20230601; t=1703002216; x=1703607016;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SlPBJRCJAiUl6SzcrSl5tuliJRJLnt898mkFfNL7oSQ=;
-        b=VhUYCbOO47uK0nODYnUMqJKzyI7XD2lfAg/nXeXlX3nsJgygez2xM6zcjb+sXocelt
-         UGKCyFYqGz1vxtZ2U03L7jwafDdgioxG9/Ye5k7XfCsoqyXcqb2mU5tpOAg/r4wzfPlN
-         h4BFzwnrZW+rnL7PPaZrlS4b7VN4WsSagFdzmBNttlPWHZDwMP7u0qFz9nVcXrZTtxhm
-         MdfnHcs2BoHtbd2ALPOwU9c2UL9WxLMIwINvPMs1jkmxVM2FpxmDJxmCtTlsRk9x4/0v
-         f90mxw3ksjyG28HA+uVdlbzF4qhmdmQZOp5F3AfSo1juuuCe5qb6O1XYCD9yZ1s4aqOg
-         ezZA==
-X-Gm-Message-State: AOJu0YzCx8Znps3oNL7B3PH/M9TTw1CGV0+kOPxUxV4+uacuWnrOf6fE
-	+PE+z14doOz0w4tS6/wK3Gk3/0Fq2eQ=
-X-Google-Smtp-Source: AGHT+IHlkqFu6v8JmLi5mzK881Xnu7Dq4XjUME+ykQtecw+0+0xIImBNLS8DUdcKsGKQitef76tWfw==
-X-Received: by 2002:a17:906:a85a:b0:a23:5974:3cb2 with SMTP id dx26-20020a170906a85a00b00a2359743cb2mr1961427ejb.116.1703002215555;
-        Tue, 19 Dec 2023 08:10:15 -0800 (PST)
+        bh=Q3mQhCro7rIA//WgoTKoBpkiGulU0bbdLMCuyCwVh/8=;
+        b=QlxAOWU7gP54EAqFpCQwl43Bj/DGROz+EU4uyIjLQEMQvxF92K1fspBVsGsRC1lgKk
+         /jByO9qsx+R2qwekauyBN2oUpqHNaD3qwBt7CI90NE0+094AAcpnNTPuSUzd7kPX4fjr
+         fD9YWEdAGAwMTLBCqLrYSgfxov3tbQdudI3j5abG9lQ75DQQKiZ5PMqlWUu4p2k1Pe3j
+         lksC7tkMPui1GhDo7WVaV9IvAF/oUrPVeffMvgzvkQ5rxcKvuo3qzniy82GfomZSE5U+
+         BhXfijD4awKQWqNV8lzwOvQgM4g4tR1Hr0PzrxZk8nO7jwujDIcAfr/esKjBN+QAXD5g
+         U0Lg==
+X-Gm-Message-State: AOJu0YyTvlsLGprdTithDMXnVM9UdTqabQpAEUrrbEdLcoN+2/cbs/xA
+	xnEx4Qe1ISCixQpSSJqvs4X/W0TfLpk=
+X-Google-Smtp-Source: AGHT+IEHwSS8ZDrDxwxZ5Z5YCg1pgNsfKVkfZi4mHvlhtf+SoVSYAIzPnNFup+4nILrlqN1cPp8phw==
+X-Received: by 2002:a17:906:fa17:b0:a23:456b:bd79 with SMTP id lo23-20020a170906fa1700b00a23456bbd79mr1135937ejb.199.1703002216307;
+        Tue, 19 Dec 2023 08:10:16 -0800 (PST)
 Received: from debian_development.DebianHome (dynamic-077-010-185-155.77.10.pool.telefonica.de. [77.10.185.155])
-        by smtp.gmail.com with ESMTPSA id v19-20020a170906489300b00a236378a43fsm1936621ejq.62.2023.12.19.08.10.14
+        by smtp.gmail.com with ESMTPSA id v19-20020a170906489300b00a236378a43fsm1936621ejq.62.2023.12.19.08.10.15
         for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 19 Dec 2023 08:10:15 -0800 (PST)
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH 06/11] libselinux: fail selabel_open(3) on invalid option
-Date: Tue, 19 Dec 2023 17:09:28 +0100
-Message-ID: <20231219160943.334370-6-cgzones@googlemail.com>
+Subject: [PATCH 07/11] libselinux: use logging wrapper in getseuser(3) and get_default_context(3) family
+Date: Tue, 19 Dec 2023 17:09:29 +0100
+Message-ID: <20231219160943.334370-7-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20231219160943.334370-1-cgzones@googlemail.com>
 References: <20231219160943.334370-1-cgzones@googlemail.com>
@@ -75,109 +75,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Return an error on invalid selabel_open(3) options, e.g. an option for
-a different backend was used.
+Instead of writing error messages directly to stderr use the wrapper
+selinux_log(), which by default writes to stderr.  This allows
+applications to redirect or silence messages via
+selinux_set_callback(3).
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/label_backends_android.c | 7 +++++++
- libselinux/src/label_db.c               | 8 ++++++++
- libselinux/src/label_file.c             | 7 +++++++
- libselinux/src/label_media.c            | 7 +++++++
- libselinux/src/label_x.c                | 7 +++++++
- 5 files changed, 36 insertions(+)
+ libselinux/src/get_context_list.c | 10 ++++++----
+ libselinux/src/seusers.c          |  6 ++++--
+ 2 files changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/libselinux/src/label_backends_android.c b/libselinux/src/label_backends_android.c
-index cd3875fc..7ddacdbe 100644
---- a/libselinux/src/label_backends_android.c
-+++ b/libselinux/src/label_backends_android.c
-@@ -157,6 +157,13 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
- 		case SELABEL_OPT_PATH:
- 			path = opts[n].value;
- 			break;
-+		case SELABEL_OPT_UNUSED:
-+		case SELABEL_OPT_VALIDATE:
-+		case SELABEL_OPT_DIGEST:
-+			break;
-+		default:
-+			errno = EINVAL;
-+			return -1;
+diff --git a/libselinux/src/get_context_list.c b/libselinux/src/get_context_list.c
+index 9dafa519..7e23be05 100644
+--- a/libselinux/src/get_context_list.c
++++ b/libselinux/src/get_context_list.c
+@@ -7,7 +7,9 @@
+ #include <string.h>
+ #include <ctype.h>
+ #include <pwd.h>
++
+ #include "selinux_internal.h"
++#include "callbacks.h"
+ #include "context_internal.h"
+ #include "get_context_list_internal.h"
+ 
+@@ -224,7 +226,7 @@ static int get_context_user(FILE * fp,
+ 
+ 		/* Check whether a new context is valid */
+ 		if (SIZE_MAX - user_len < strlen(start) + 2) {
+-			fprintf(stderr, "%s: one of partial contexts is too big\n", __FUNCTION__);
++			selinux_log(SELINUX_ERROR, "%s: one of partial contexts is too big\n", __FUNCTION__);
+ 			errno = EINVAL;
+ 			rc = -1;
+ 			goto out;
+@@ -245,7 +247,7 @@ static int get_context_user(FILE * fp,
+ 				rc = -1;
+ 				goto out;
+ 			}
+-			fprintf(stderr,
++			selinux_log(SELINUX_ERROR,
+ 				"%s: can't create a context from %s, skipping\n",
+ 				__FUNCTION__, usercon_str);
+ 			free(usercon_str);
+@@ -439,7 +441,7 @@ int get_ordered_context_list(const char *user,
+ 
+ 		fclose(fp);
+ 		if (rc < 0 && errno != ENOENT) {
+-			fprintf(stderr,
++			selinux_log(SELINUX_ERROR,
+ 				"%s:  error in processing configuration file %s\n",
+ 				__FUNCTION__, fname);
+ 			/* Fall through, try global config */
+@@ -452,7 +454,7 @@ int get_ordered_context_list(const char *user,
+ 		rc = get_context_user(fp, fromcon, user, &reachable, &nreachable);
+ 		fclose(fp);
+ 		if (rc < 0 && errno != ENOENT) {
+-			fprintf(stderr,
++			selinux_log(SELINUX_ERROR,
+ 				"%s:  error in processing configuration file %s\n",
+ 				__FUNCTION__, selinux_default_context_path());
+ 			/* Fall through */
+diff --git a/libselinux/src/seusers.c b/libselinux/src/seusers.c
+index 6da8c318..e5cfd510 100644
+--- a/libselinux/src/seusers.c
++++ b/libselinux/src/seusers.c
+@@ -8,7 +8,9 @@
+ #include <errno.h>
+ #include <selinux/selinux.h>
+ #include <selinux/context.h>
++
+ #include "selinux_internal.h"
++#include "callbacks.h"
+ 
+ /* Process line from seusers.conf and split into its fields.
+    Returns 0 on success, -1 on comments, and -2 on error. */
+@@ -197,8 +199,8 @@ int getseuserbyname(const char *name, char **r_seuser, char **r_level)
+ 		if (rc == -1)
+ 			continue;	/* comment, skip */
+ 		if (rc == -2) {
+-			fprintf(stderr, "%s:  error on line %lu, skipping...\n",
+-				selinux_usersconf_path(), lineno);
++			selinux_log(SELINUX_ERROR, "%s:  error on line %lu, skipping...\n",
++						   selinux_usersconf_path(), lineno);
+ 			continue;
  		}
  
- 	if (!path)
-diff --git a/libselinux/src/label_db.c b/libselinux/src/label_db.c
-index 3f803037..2daf1770 100644
---- a/libselinux/src/label_db.c
-+++ b/libselinux/src/label_db.c
-@@ -268,6 +268,14 @@ db_init(const struct selinux_opt *opts, unsigned nopts,
- 		case SELABEL_OPT_PATH:
- 			path = opts[nopts].value;
- 			break;
-+		case SELABEL_OPT_UNUSED:
-+		case SELABEL_OPT_VALIDATE:
-+		case SELABEL_OPT_DIGEST:
-+			break;
-+		default:
-+			free(catalog);
-+			errno = EINVAL;
-+			return NULL;
- 		}
- 	}
- 
-diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
-index 4778f8f8..315298b3 100644
---- a/libselinux/src/label_file.c
-+++ b/libselinux/src/label_file.c
-@@ -812,6 +812,13 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
- 		case SELABEL_OPT_BASEONLY:
- 			baseonly = !!opts[n].value;
- 			break;
-+		case SELABEL_OPT_UNUSED:
-+		case SELABEL_OPT_VALIDATE:
-+		case SELABEL_OPT_DIGEST:
-+			break;
-+		default:
-+			errno = EINVAL;
-+			return -1;
- 		}
- 
- #if !defined(BUILD_HOST) && !defined(ANDROID)
-diff --git a/libselinux/src/label_media.c b/libselinux/src/label_media.c
-index b3443b47..4c987988 100644
---- a/libselinux/src/label_media.c
-+++ b/libselinux/src/label_media.c
-@@ -85,6 +85,13 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
- 		case SELABEL_OPT_PATH:
- 			path = opts[n].value;
- 			break;
-+		case SELABEL_OPT_UNUSED:
-+		case SELABEL_OPT_VALIDATE:
-+		case SELABEL_OPT_DIGEST:
-+			break;
-+		default:
-+			errno = EINVAL;
-+			return -1;
- 		}
- 
- 	/* Open the specification file. */
-diff --git a/libselinux/src/label_x.c b/libselinux/src/label_x.c
-index e15190ca..f332dcb6 100644
---- a/libselinux/src/label_x.c
-+++ b/libselinux/src/label_x.c
-@@ -112,6 +112,13 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
- 		case SELABEL_OPT_PATH:
- 			path = opts[n].value;
- 			break;
-+		case SELABEL_OPT_UNUSED:
-+		case SELABEL_OPT_VALIDATE:
-+		case SELABEL_OPT_DIGEST:
-+			break;
-+		default:
-+			errno = EINVAL;
-+			return -1;
- 		}
- 
- 	/* Open the specification file. */
 -- 
 2.43.0
 

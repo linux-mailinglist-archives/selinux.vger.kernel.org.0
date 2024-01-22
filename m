@@ -1,67 +1,67 @@
-Return-Path: <selinux+bounces-386-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-388-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5349B8364D2
-	for <lists+selinux@lfdr.de>; Mon, 22 Jan 2024 14:55:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B679C8364D1
+	for <lists+selinux@lfdr.de>; Mon, 22 Jan 2024 14:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D07F7B24E74
-	for <lists+selinux@lfdr.de>; Mon, 22 Jan 2024 13:55:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F68B28A797
+	for <lists+selinux@lfdr.de>; Mon, 22 Jan 2024 13:55:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3523D0C0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A603D0CE;
 	Mon, 22 Jan 2024 13:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="CTKW3XRk"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Ve6FYOWQ"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA6EC3D3A1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB753D3A2
 	for <selinux@vger.kernel.org>; Mon, 22 Jan 2024 13:55:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705931719; cv=none; b=tRq57h7UTSEHUgPZI2qgtnrFfgwiML1O4HrS3Yt+xdUofOysDilFmb46Wn22DngLhseKx8IEyFhUXjJRFcvsskjVo5ee65XAxWvrBIWGEd1FuO8LCLwIDlxnSwGyCEkCasDO3moNeMinqnEX0iggqNdlML/u0O1HmPuTJLXzyns=
+	t=1705931719; cv=none; b=pMBHhf49v9NMTBevw9tCqg0WKNcqGJCCOtoFtUULSi42zbU0JRu6s25l7B8hJ1lI0Tc1nyunYssxZt4vzB24WQQwciDo2yldG7ocakleytLKGwnT8VpqZxbt8euKUXhCIR4l6MT3F9rWFw1JtDGt2qCaksgVvVmv5B9R+y3ltPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1705931719; c=relaxed/simple;
-	bh=oCJvL2U+bu9zhgNpzHuPXAe/N3txLcmFdWSTtiCHGns=;
+	bh=63YbdgP1Oo0xkhjEBl3krZuGz9L+GOtn0nbUgJE0N4U=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sKJZFmFi78E2S0bSxneAyaEtzVSbtdPtaOSFsbhECIjw5mDi2rnn1zzGAp7rsuQWEprnk9MjX1L0N5eVJJp4K4jjb1H9s0TUnUK0HV2cK8yfUdd8Uaheieok8oE3isgptYDvV0JVLscKNzWq8oXzgcI1X2bNTULNU7dQrhvddr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=CTKW3XRk; arc=none smtp.client-ip=209.85.218.41
+	 MIME-Version:Content-Type; b=CsnxoEbNH/RtqbyPalTQ65ntgdCmXZMz3Rn/g/rrmHx53WWOunI90AXIwZyc80PP7UKwccl4UinaC0vZcJREM5Q12fKilu7tkdTdB8gubVQqolxw8ZiC14S5PsBfzslhY860aF1hAlDUfKNoXOSsTOzNf6CrfuG0xzGVKkexHng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Ve6FYOWQ; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a2f0cb62068so323346866b.2
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a2d7e2e7fe0so540401366b.1
         for <selinux@vger.kernel.org>; Mon, 22 Jan 2024 05:55:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=googlemail.com; s=20230601; t=1705931716; x=1706536516; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=uQw979VThehWy7Og1Ex+Kqpg1t5kLXcbs8ICBU71R+s=;
-        b=CTKW3XRkheQgzS00P69E3QNHxiaZmqb8cCtSLVp0k1d+zvnLyE/OqmgUmRXqjAzNh5
-         RJoS1MQNUVrDb54iQHxduK77pS1eTSF5M5cRrqFlbl75cjPKm06cJ61GEd6kuzq2UQ9u
-         kka1f2OLAJrmTJZhMmBUisp39XZ0Aci8AYpuUSvhi2pjf0QwjVIR2Wx55QLuAW4e37l7
-         FucZQ9Uw+QYxinKEqchtT3O3qHar1DJ+yEtIzxNG3LaiIMHp5hcx4S7zz2toYIbyY5lI
-         HOMZDqe3v7g/21qk0Gn50ZOlDDQPsTVlqAMCkc7NyKapZtS+PCgLFaF/ikoKhjX2MzLp
-         ySTw==
+        bh=GaPv4Mo8+LQF4D1JnZ7XJPcuvY6YRaSAd4GjvCvWRF4=;
+        b=Ve6FYOWQsHbn/sE0xx/oOQNTWG2At4de6FOtF//BcB2XikAauaObCcv/LvnGySac34
+         uZWiH0kPGSITdxu0cdUp4Vyw1Qi/pU9NdRE2fr1UvkNsNM8ZnLuU5y/7z7iuYI9k+4Ro
+         EjFpY6BoUncciVRJBu51tX3xhQuk1bCfvO2ITSDvkWXkTnvq8AH+dOT8HjXPoHpFzi+G
+         KBe2LLe96b8ldIq8/wBMOmK2rHgyZL3V0vA//NH/WdLHPreeCjdkJgxJU72UiTLjMiaf
+         hJeSuvtlSrH+JCq7NdT3StJqoZn0uiL4Nyak35C+d4AL+V5NUYaL6MjvbD/a56LZd8Ni
+         HjwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1705931716; x=1706536516;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uQw979VThehWy7Og1Ex+Kqpg1t5kLXcbs8ICBU71R+s=;
-        b=lYyc6Y+RFdQ9rObaUSfjLm8SU7X9cL97v2i7ZqBUkibVYWoakSOIoV0KcpIvuNL4LH
-         5wO2Bf5ydLPjl0x/YZboEq/ntFPEdS3HHzmqqNbcZ7lvLoMbf1MKnZYfG5HPr5xr6Dd1
-         358BE96/0wor0NSYM5PuMpP0FqeclMSBeqshGv4TYosL9Cb2YYu8SkHUZKe67c8++cP0
-         6Npn6H4kG0wWLmx/KgrxAFSspaOqteJ1ziDYlf5LKTDiw0v5edE/yZQpsW7s8/eBxcZQ
-         ISOBTHAZx8qOXPSkK0oY7bokkjkIAgPH4q+whqp2OZU6giXxYBb/1PHDwQHLCBK8O2Xl
-         /2zg==
-X-Gm-Message-State: AOJu0YwC6sT3PVefY+NKUodjRqUd+3NAH676FQVANxue9Aghv5FQQ2tY
-	QBBpFtIFVMdV1jRCx03Y2bHA+x0B4FF8/bkRSTxQeRx7LWiK6rNCa/CTm1t9
-X-Google-Smtp-Source: AGHT+IEzDqR0nFitZby0zjhiby2iuS2sdgHCOBMknOhmsAKOag2ETISe1O0s9/Qv9PDNaUq3c0j2TA==
-X-Received: by 2002:a17:906:af79:b0:a2d:9c0e:ead5 with SMTP id os25-20020a170906af7900b00a2d9c0eead5mr1087274ejb.117.1705931715766;
-        Mon, 22 Jan 2024 05:55:15 -0800 (PST)
+        bh=GaPv4Mo8+LQF4D1JnZ7XJPcuvY6YRaSAd4GjvCvWRF4=;
+        b=g3vjDviuJSE+OSqWnbyudcZdSecpf+UUy3y8Wy6Bp0UyWSJp44IBz5oRu/FC6fyOoz
+         QziVoWKc/jFr6scYt0g/rgngaAUQXtEVlvUBZkgjV5rUyT90pyhqdximetpaOceSdDlO
+         b1UWTVrTE2qU2N0Ijnyj5ihUioCe74wKd7udXHzqJZL199U0H0VL/xhuE80d7DsFN84e
+         SwgO0XkriyfPhmoiV+USdqGIM7Ip6MVqDA4yMleGSGhWOa0XSuUpvM4KjYhsb+3JlaRv
+         /ZRpNh3LHI7qyV9lDa7DamUBUMimBt69y/1Owatfw0lNosV47J5bZ4KtEwWFVTjdaU4j
+         TwcA==
+X-Gm-Message-State: AOJu0YzqjJusCL4RSoWhB1La4LFOKTjMAcPGMzvEuy9hWQaEzIaJdB0Q
+	ltm0gCYttgY/9x/xackYTTGBdSkagvz+CTvEuWdQxeYQS7mMomdaaxrsFmlg
+X-Google-Smtp-Source: AGHT+IGlS0Tj24eXlAJy2IBWRrjIrF1kslQMIZ1ADiDmWakn7rtxFe/nUz1mJ2IodzIUWJ8IsBTgQw==
+X-Received: by 2002:a17:906:2850:b0:a2e:acd2:1fe2 with SMTP id s16-20020a170906285000b00a2eacd21fe2mr3937765ejc.76.1705931716254;
+        Mon, 22 Jan 2024 05:55:16 -0800 (PST)
 Received: from ddev.DebianHome (dynamic-077-003-088-202.77.3.pool.telefonica.de. [77.3.88.202])
         by smtp.gmail.com with ESMTPSA id i16-20020a1709061cd000b00a28825e0a2bsm13340284ejh.22.2024.01.22.05.55.15
         for <selinux@vger.kernel.org>
@@ -69,9 +69,9 @@ Received: from ddev.DebianHome (dynamic-077-003-088-202.77.3.pool.telefonica.de.
         Mon, 22 Jan 2024 05:55:15 -0800 (PST)
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH 04/15] checkpolicy: free ebitmap on error
-Date: Mon, 22 Jan 2024 14:54:56 +0100
-Message-ID: <20240122135507.63506-4-cgzones@googlemail.com>
+Subject: [PATCH 05/15] checkpolicy: check allocation and free memory on error at type definition
+Date: Mon, 22 Jan 2024 14:54:57 +0100
+Message-ID: <20240122135507.63506-5-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122135507.63506-1-cgzones@googlemail.com>
 References: <20240122135507.63506-1-cgzones@googlemail.com>
@@ -86,49 +86,54 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/policy_define.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ checkpolicy/policy_define.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
 diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
-index db7e9d0e..053156df 100644
+index 053156df..ec19da9d 100644
 --- a/checkpolicy/policy_define.c
 +++ b/checkpolicy/policy_define.c
-@@ -2544,6 +2544,8 @@ static int define_te_avtab_helper(int which, avrule_t ** rule)
- 	int add = 1, ret = 0;
- 	int suppress = 0;
- 
-+	ebitmap_init(&tclasses);
-+
- 	avrule = (avrule_t *) malloc(sizeof(avrule_t));
- 	if (!avrule) {
- 		yyerror("memory error");
-@@ -2607,7 +2609,6 @@ static int define_te_avtab_helper(int which, avrule_t ** rule)
- 		}
- 	}
- 
--	ebitmap_init(&tclasses);
- 	ret = read_classes(&tclasses);
- 	if (ret)
- 		goto out;
-@@ -2693,8 +2694,6 @@ static int define_te_avtab_helper(int which, avrule_t ** rule)
- 		free(id);
- 	}
- 
--	ebitmap_destroy(&tclasses);
--
- 	avrule->perms = perms;
- 	*rule = avrule;
- 
-@@ -2703,6 +2702,9 @@ static int define_te_avtab_helper(int which, avrule_t ** rule)
- 		avrule_destroy(avrule);
- 		free(avrule);
- 	}
-+
-+	ebitmap_destroy(&tclasses);
-+
- 	return ret;
- 
+@@ -1399,7 +1399,7 @@ int define_typeattribute(void)
+ 	return 0;
  }
+ 
+-static int define_typebounds_helper(char *bounds_id, char *type_id)
++static int define_typebounds_helper(const char *bounds_id, const char *type_id)
+ {
+ 	type_datum_t *bounds, *type;
+ 
+@@ -1482,15 +1482,26 @@ int define_type(int alias)
+ 		 * old name based hierarchy.
+ 		 */
+ 		if ((id = queue_remove(id_queue))) {
+-			char *bounds, *delim;
++			const char *delim;
++
++			if ((delim = strrchr(id, '.'))) {
++				int ret;
++				char *bounds = strdup(id);
++				if (!bounds) {
++					yyerror("out of memory");
++					free(id);
++					return -1;
++				}
+ 
+-			if ((delim = strrchr(id, '.'))
+-			    && (bounds = strdup(id))) {
+ 				bounds[(size_t)(delim - id)] = '\0';
+ 
+-				if (define_typebounds_helper(bounds, id))
+-					return -1;
++				ret = define_typebounds_helper(bounds, id);
+ 				free(bounds);
++				if (ret) {
++					free(id);
++					return -1;
++				}
++
+ 			}
+ 			free(id);
+ 		}
 -- 
 2.43.0
 

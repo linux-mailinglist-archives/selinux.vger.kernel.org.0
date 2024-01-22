@@ -1,191 +1,746 @@
-Return-Path: <selinux+bounces-383-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-385-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E8A832E8F
-	for <lists+selinux@lfdr.de>; Fri, 19 Jan 2024 19:00:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1829E8364CE
+	for <lists+selinux@lfdr.de>; Mon, 22 Jan 2024 14:55:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EF791C21159
-	for <lists+selinux@lfdr.de>; Fri, 19 Jan 2024 18:00:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD23C28A60F
+	for <lists+selinux@lfdr.de>; Mon, 22 Jan 2024 13:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB6F55C05;
-	Fri, 19 Jan 2024 18:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDAB3D0BA;
+	Mon, 22 Jan 2024 13:55:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="12OgKZ5h"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="nATpW03L"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A858955E52
-	for <selinux@vger.kernel.org>; Fri, 19 Jan 2024 18:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E3F3D39B
+	for <selinux@vger.kernel.org>; Mon, 22 Jan 2024 13:55:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705687250; cv=none; b=oBrG6urY4Xx2Ig2puxYl3EFUmedD1iS8k57m0NCo4dRP5bZVMUZh2ubqPXERVfPdocvFMFf66teKkQYdqPb9XLIxlJDjPAzGMkSZpYMjM0ia7Rk0aSnuB7gfkvIpugbUI3az6wbIZaDj5bTeedsmZKzEJbtKOuixt4S7SdCygGs=
+	t=1705931718; cv=none; b=AnGGVuySQECYQrxDDVcOnrRSs/LQTuZCH0sf2WmuAAe1TrfIxhWC4aN883kg56Gs1TRvGjo3URbld04i1cSEwhA4uSG1qVk3IVAy3jOKqm11ZLbG4bVSNO4SZSKBfZM/YMBoHW3nQ+1Nl0xkNVev7JEyWvQL5nsfhCOC0xqvbag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705687250; c=relaxed/simple;
-	bh=m2hGWUK85EqTZx4B2cZSP9GdkXwmX1B8KkCFPDXfym0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HSEDkRjVXaHluXx95D30XdGwQBBp/9XY6kiuC7kCQlxWsexfjyZeeiBLwRBa0DMxkAwKD/crQtyUYnM28FMfc4xBv+dzF0ePZG6/L3zTiZoxz8iV710UrKVRM7KDzsysHssd/hO+MUxZ90cUqSgsTlSNdZFcll0QF+y9W04+GfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=12OgKZ5h; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-7beeeb1ba87so15243839f.0
-        for <selinux@vger.kernel.org>; Fri, 19 Jan 2024 10:00:48 -0800 (PST)
+	s=arc-20240116; t=1705931718; c=relaxed/simple;
+	bh=M7ix3WmxTxOc3W1Ux120lMmV0oh/86Xw5pUOq37BvLw=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iyztlo0d+D96fR5gNOhVSZf9OA4KwJS1PfynNjn8J9s3ESLal1yuFAjJ7JLR/jVJkHtpppRHBmvpEqrY5LReu4p2EzgAPUT64ifPWRr8Z4Y0OZOdr8GtSDp89epYlGkSwz2Bq6Htd6OwV9b42NK9NOlmzj6T6EXzW4N5bx7DSbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=nATpW03L; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-337d58942c9so3454365f8f.0
+        for <selinux@vger.kernel.org>; Mon, 22 Jan 2024 05:55:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1705687248; x=1706292048; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Gja6vm8AI1lwtvHUS5OLNBI4vAMtOEijM3nQ95ddsvw=;
-        b=12OgKZ5h5pdEiI+W97lDearDHRmczducDooHxBOjZXLpzopG7oUC+kTXFh6dHpsSbv
-         +OG7dialuxdcnUWgGyBg8NH2da1MVOSTlIaYM3zZqErB103XxsooRi8DiYth6F3AlvwV
-         P6gH3AkeYLcjAl4K+UE8YAjvuW0QI9LwYeuSHS+ksAE0YlNgQf05HdSaQaxxzHJjeZSR
-         Kj/SXTrrWUdP7ErP25fqU09wHZH/GS5HNXJU1So4yRYfFrT1QKGhRZ1Zf5ZwSNY2UtFe
-         SIkdlYZf4i1ldzRXFodjHQk16TybSN+CPWlhxtDZqY4HGPuwcUOnWiSDpFTTZznspP2Z
-         KLMg==
+        d=googlemail.com; s=20230601; t=1705931714; x=1706536514; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JgdSVQ8NxxLv1dMhj0tQS8LXissrqixknWBetHXW4M4=;
+        b=nATpW03LCaH8u8v3giHLlMpv1b5wouksknR1oDlCKQjyKe4oKd5Shjv5eexY3JN0H2
+         5+eDhBmOfyopC8vcNjeCpSF8y3sf1Fx1LdLXGangJQoMusU1JlstRgLUnSNXJFJCi4MI
+         9toRe6WFTobsF/1bNa8sAtduE9u9Jm6vcTeyvI1hH6pQySnBb0UDsNksk2aQNKiidgVl
+         2SiyFDBUSb7q04HPtUidf8fzVGOlO3ms590sXdYFwfZU+VZDL1URXyEVWVPRm8oCbaWR
+         ouQensJrPq/lq47YTNvC1c3XW8hOb7pNuDm4RL4HbNYJlfcz0L9BmkP5TcO/qBI/vZe/
+         vVPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705687248; x=1706292048;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gja6vm8AI1lwtvHUS5OLNBI4vAMtOEijM3nQ95ddsvw=;
-        b=xO3MvMMDFGaRSJobScmOl1L4nGhg1KvDAoGTDU/vyY3lftCFsrwicxyStByoIkMXj8
-         GQ3I0G3XcC+BXZI4e9TrOggo3i1RpeFJwL3jORh2BXjdYpM/udunXFUfSgyv3BEGXL6X
-         WFW2ZdfZf3jViNUhuUpLBr/yqfvjs5cNfsuFDnni3jaJFStGW+wSpVCF6R6CAcjM/GKg
-         Ma2XgFl+ch7iTB63z5zdEK699zGao30QbNejZ2BTQwQLMHSrHwcvQeEb878n+94AIdsF
-         Fm++ds+giZgNBGwKNIIXjJrfET+MzJeUkMir7SmhMQ5dyYQGvbgbY6QKeOI4lCS8u23k
-         lvQg==
-X-Gm-Message-State: AOJu0YzExHuAaOErKKZDKf+dZ2An7CGSC4Z45CdAx2Xo/y7nqicwuJF5
-	40KURvBRBMAk+7hrSdQHZnaZF7rUsCGeE+/e1J9pvMZ5HPKkstZWF7G8wlMMdzc=
-X-Google-Smtp-Source: AGHT+IHobiRenokZkDLDbBdoaWKvKBP1nUEcNp8Xs74UrNwujg29ABGmLrOl5LpWjL6jCycxL6uN+g==
-X-Received: by 2002:a5d:8e0b:0:b0:7bf:4758:2a12 with SMTP id e11-20020a5d8e0b000000b007bf47582a12mr186301iod.0.1705687247676;
-        Fri, 19 Jan 2024 10:00:47 -0800 (PST)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id h6-20020a056602130600b007bf84450287sm190440iov.21.2024.01.19.10.00.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jan 2024 10:00:47 -0800 (PST)
-Message-ID: <71740ac0-5c4a-4d09-9ce1-9ef6182db1b1@kernel.dk>
-Date: Fri, 19 Jan 2024 11:00:46 -0700
+        d=1e100.net; s=20230601; t=1705931714; x=1706536514;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JgdSVQ8NxxLv1dMhj0tQS8LXissrqixknWBetHXW4M4=;
+        b=R5YGgjxsDPlAgTnrF0vyz2TWC1bLcYCuYSOwnPs+xV4nPhRSUpwCPxIJPYjPVwz+LO
+         larrJAc72GCromp5/i67RDv9n1XXmjZCvZ/yHZbTl4EYdu7Zs4j2hp3RYIJXsJurSJPn
+         Of3KMhYCa3ChcD752PmFmxb0TI4li9ezC6KqRmSnnUeyRON9EhXVfzrVRqxHcyvvZj+k
+         wPJkuNxI7veRQ0MqiHI64KEt9scnWi+0AC7qD02sLxNT/xaDL1UaYamJcZ0+eh5g+dre
+         IOQc7S38EtPitEYrVtEHamjvV3wT1QnHvmLWPe7g8QHztuTCwKAN1766jIOpyOt3M77h
+         Rj6Q==
+X-Gm-Message-State: AOJu0YwCJwcsdUFP2xCRhFBE2WXUGN6fIScomgetdaRh0KNwugSrQeXz
+	YqOELOuqVbq4xbW9C7CvteBd0sEYEJicuZMdmWUsYAu29fr3XaiuAVScFAtQ
+X-Google-Smtp-Source: AGHT+IHWLISIIcOudxeoelQ5e/HVBNTmUCyzOSaCbqaxHxuDcQvLcVDQFSlH3qg/UrYJNPIZT8eVcw==
+X-Received: by 2002:a1c:6a02:0:b0:40e:6a93:1c57 with SMTP id f2-20020a1c6a02000000b0040e6a931c57mr2330288wmc.103.1705931714033;
+        Mon, 22 Jan 2024 05:55:14 -0800 (PST)
+Received: from ddev.DebianHome (dynamic-077-003-088-202.77.3.pool.telefonica.de. [77.3.88.202])
+        by smtp.gmail.com with ESMTPSA id i16-20020a1709061cd000b00a28825e0a2bsm13340284ejh.22.2024.01.22.05.55.13
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jan 2024 05:55:13 -0800 (PST)
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To: selinux@vger.kernel.org
+Subject: [PATCH 01/15] checkpolicy: add libfuzz based fuzzer
+Date: Mon, 22 Jan 2024 14:54:53 +0100
+Message-ID: <20240122135507.63506-1-cgzones@googlemail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: IORING_OP_FIXED_FD_INSTALL and audit/LSM interactions
-Content-Language: en-US
-To: Paul Moore <paul@paul-moore.com>
-Cc: Christian Brauner <brauner@kernel.org>, io-uring@vger.kernel.org,
- linux-security-module@vger.kernel.org, audit@vger.kernel.org,
- selinux@vger.kernel.org
-References: <CAHC9VhRBkW4bH0K_-PeQ5HA=5yMHSimFboiQgG9iDcwYVZcSFQ@mail.gmail.com>
- <80b76dac-6406-48c5-aa31-87a2595a023f@kernel.dk>
- <CAHC9VhQuM1+oYm-Y9ehfb6d7Yz2++pughEkUFNfFpsvinTGTpg@mail.gmail.com>
- <610f91a7-9b5a-4a07-9912-e336896fff0c@kernel.dk>
- <CAHC9VhSJn6Kd=M8N-pLgJMvo9bhtdB6bX_xK=8aPYj5qQ8aTvQ@mail.gmail.com>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAHC9VhSJn6Kd=M8N-pLgJMvo9bhtdB6bX_xK=8aPYj5qQ8aTvQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/19/24 10:54 AM, Paul Moore wrote:
-> On Fri, Jan 19, 2024 at 12:41?PM Jens Axboe <axboe@kernel.dk> wrote:
->> On 1/19/24 10:20 AM, Paul Moore wrote:
->>> On Fri, Jan 19, 2024 at 12:02?PM Jens Axboe <axboe@kernel.dk> wrote:
->>>> On 1/19/24 9:33 AM, Paul Moore wrote:
->>>>> Hello all,
->>>>>
->>>>> I just noticed the recent addition of IORING_OP_FIXED_FD_INSTALL and I
->>>>> see that it is currently written to skip the io_uring auditing.
->>>>> Assuming I'm understanding the patch correctly, and I'll admit that
->>>>> I've only looked at it for a short time today, my gut feeling is that
->>>>> we want to audit the FIXED_FD_INSTALL opcode as it could make a
->>>>> previously io_uring-only fd generally accessible to userspace.
->>>>
->>>> We can certainly remove the audit skip, it was mostly done as we're
->>>> calling into the security parts anyway later on. But it's not like doing
->>>> the extra audit here would cause any concerns on the io_uring front.
->>>
->>> Great.  Do you want to put a patch together for that, or should I?
->>
->> Either way - I'd say if you have time to do it, please do!
-> 
-> Okay, will do.  Just a heads up that due to personal commitments this
-> weekend a proper, tested fix may not come until early next week.  With
-> this only appearing in Linus' tree during this merge window we've got
-> plenty of time to fix this before v6.8 is tagged.
+Introduce a libfuzz[1] based fuzzer testing the parsing and policy
+generation code used within checkpolicy(8) and checkmodule(8), similar
+to the fuzzer for secilc(8).
+The fuzzer will work on generated source policy input and try to parse,
+link, expand, optimize, sort and output it.
+This fuzzer will also ensure policy validation is not too strict by
+checking compilable source policies are valid.
 
-No worries on that, there's no rush as we are early in the cycle.
+Build the fuzzer in the oss-fuzz script.
 
->> FWIW, I'd add that in
->> io_uring/openclose.c:io_install_fixed_fd_prep() - just check for
->> REQ_F_CREDS in there and return -EPERM (I think that would be
->> appropriate?) and that should disallow any IORING_OP_FIXED_FD_INSTALL if
->> creds have been reassigned.
-> 
-> Yeah, easy enough.  I was originally thinking of masking out
-> REQ_F_CREDS there, but if you are okay with simply rejecting the
-> operation in this case it makes everything much easier (and more
-> predictable from a userspace perspective).
+[1]: https://llvm.org/docs/LibFuzzer.html
 
-It'd be too late to mask it out, as it may already have been assigned.
-And on top of that, it would introduce a weird scenario where the
-application thinks that creds have been assigned and it completes
-successfully, but in reality it didn't use the specified creds. For
-those cases we absolutely must fail the request, as it didn't do exactly
-what it was asked to.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ checkpolicy/Makefile                     |   3 +
+ checkpolicy/fuzz/checkpolicy-fuzzer.c    | 274 +++++++++++++++++++++++
+ checkpolicy/fuzz/checkpolicy-fuzzer.dict | 101 +++++++++
+ checkpolicy/fuzz/min_pol.conf            |  60 +++++
+ checkpolicy/fuzz/min_pol.mls.conf        |  65 ++++++
+ checkpolicy/module_compiler.c            |  11 +
+ checkpolicy/module_compiler.h            |   4 +
+ checkpolicy/policy_scan.l                |   8 +
+ scripts/oss-fuzz.sh                      |  14 ++
+ 9 files changed, 540 insertions(+)
+ create mode 100644 checkpolicy/fuzz/checkpolicy-fuzzer.c
+ create mode 100644 checkpolicy/fuzz/checkpolicy-fuzzer.dict
+ create mode 100644 checkpolicy/fuzz/min_pol.conf
+ create mode 100644 checkpolicy/fuzz/min_pol.mls.conf
 
->>>>> I'm also trying to determine how worried we should be about
->>>>> io_install_fixed_fd() potentially happening with the current task's
->>>>> credentials overridden by the io_uring's personality.  Given that this
->>>>> io_uring operation inserts a fd into the current process, I believe
->>>>> that we should be checking to see if the current task's credentials,
->>>>> and not the io_uring's credentials/personality, are allowed to receive
->>>>> the fd in receive_fd()/security_file_receive().  I don't see an
->>>>> obvious way to filter/block credential overrides on a per-opcode
->>>>> basis, but if we don't want to add a mask for io_kiocb::flags in
->>>>> io_issue_defs (or something similar), perhaps we can forcibly mask out
->>>>> REQ_F_CREDS in io_install_fixed_fd_prep()?  I'm very interested to
->>>>> hear what others think about this.
->>>>>
->>>>> Of course if I'm reading the commit or misunderstanding the
->>>>> IORING_OP_FIXED_FD_INSTALL operation, corrections are welcome :)
->>>>
->>>> I think if there are concerns for that, the easiest solution would be to
->>>> just fail IORING_OP_FIXED_INSTALL if REQ_F_CREDS is set. I don't really
->>>> see a good way to have the security side know about the old creds, as
->>>> the task itself is running with the assigned creds.
->>>
->>> The more I've been thinking about it, yes, I believe there are
->>> concerns around FIXED_FD_INSTALL and io_uring personalities for LSMs.
->>> Assuming an io_uring with stored credentials for task A, yet
->>> accessible via task B, task B could submit an IORING_OP_OPENAT command
->>> to open a file using task A's creds and then FIXED_FD_INSTALL that fd
->>> into its own (task B's) file descriptor table without a problem as the
->>> installer's creds (the io_uring creds, or task A) match the file's
->>> creds (also task A since the io_uring opened the file).  Following
->>> code paths in task B that end up going through
->>> security_file_permission() and similar hooks may very well end up
->>> catching the mismatch between the file's creds and task B (depending
->>> on the LSM), but arguably it is something that should have been caught
->>> at receive_fd() time.
->>
->> If there are any concerns, then I say let's just explicitly disable it
->> rather than rely on maybe something in the security checking catching
->> it. Especially because I don't think there's a valid use case for doing
->> this, other than perhaps trying to bypass checks you'd normally hit.
->> Better to err on the side of caution then.
-> 
-> Agreed.  I'll go ahead and make the change.  Thanks for the quick
-> responses and understanding of a very security-biased perspective :)
-
-It's always better to catch weirdness or ambiguities like this early, so
-much appreciated!
-
+diff --git a/checkpolicy/Makefile b/checkpolicy/Makefile
+index 036ab905..6e8008e3 100644
+--- a/checkpolicy/Makefile
++++ b/checkpolicy/Makefile
+@@ -54,6 +54,9 @@ lex.yy.c: policy_scan.l y.tab.c
+ test: checkpolicy
+ 	./tests/test_roundtrip.sh
+ 
++# helper target for fuzzing
++checkobjects: $(CHECKOBJS)
++
+ install: all
+ 	-mkdir -p $(DESTDIR)$(BINDIR)
+ 	-mkdir -p $(DESTDIR)$(MANDIR)/man8
+diff --git a/checkpolicy/fuzz/checkpolicy-fuzzer.c b/checkpolicy/fuzz/checkpolicy-fuzzer.c
+new file mode 100644
+index 00000000..0d749a02
+--- /dev/null
++++ b/checkpolicy/fuzz/checkpolicy-fuzzer.c
+@@ -0,0 +1,274 @@
++#include <assert.h>
++#include <unistd.h>
++#include <sys/mman.h>
++
++#include <sepol/debug.h>
++#include <sepol/kernel_to_cil.h>
++#include <sepol/kernel_to_conf.h>
++#include <sepol/module_to_cil.h>
++#include <sepol/policydb/policydb.h>
++#include <sepol/policydb/hierarchy.h>
++#include <sepol/policydb/expand.h>
++#include <sepol/policydb/link.h>
++
++#include "module_compiler.h"
++#include "queue.h"
++
++extern int policydb_validate(sepol_handle_t *handle, const policydb_t *p);
++extern int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
++
++extern int mlspol;
++extern policydb_t *policydbp;
++extern queue_t id_queue;
++extern unsigned int policydb_errors;
++
++extern int yynerrs;
++extern FILE *yyin;
++extern void init_parser(int);
++extern int yyparse(void);
++extern void yyrestart(FILE *);
++extern int yylex_destroy(void);
++extern void set_source_file(const char *name);
++
++
++// Set to 1 for verbose libsepol logging
++#define VERBOSE 0
++
++static ssize_t full_write(int fd, const void *buf, size_t count)
++{
++	ssize_t written = 0;
++
++	while (count > 0) {
++		ssize_t ret = write(fd, buf, count);
++		if (ret < 0) {
++			if (errno == EINTR)
++				continue;
++
++			return ret;
++		}
++
++		if (ret == 0)
++			break;
++
++		written += ret;
++		buf = (const unsigned char *)buf + (size_t)ret;
++		count -= (size_t)ret;
++	}
++
++	return written;
++}
++
++static int read_source_policy(policydb_t *p, const uint8_t *data, size_t size)
++{
++	int fd, rc;
++	ssize_t wr;
++
++	fd = memfd_create("fuzz-input", MFD_CLOEXEC);
++	if (fd < 0)
++		return -1;
++
++	wr = full_write(fd, data, size);
++	if (wr < 0 || (size_t)wr != size) {
++		close(fd);
++		return -1;
++	}
++
++	fsync(fd);
++
++	yynerrs = 0;
++
++	yyin = fdopen(fd, "r");
++	if (!yyin) {
++		close(fd);
++		return -1;
++	}
++
++	rewind(yyin);
++
++	set_source_file("fuzz-input");
++
++	id_queue = queue_create();
++	if (id_queue == NULL) {
++		fclose(yyin);
++		yylex_destroy();
++		return -1;
++	}
++
++	policydbp = p;
++	mlspol = p->mls;
++
++	init_parser(1);
++
++	rc = yyparse();
++	// TODO: drop global variable policydb_errors if proven to be redundant
++	assert(rc || !policydb_errors);
++	if (rc || policydb_errors) {
++		queue_destroy(id_queue);
++		fclose(yyin);
++		yylex_destroy();
++		return -1;
++	}
++
++	rewind(yyin);
++	init_parser(2);
++	set_source_file("fuzz-input");
++	yyrestart(yyin);
++
++	rc = yyparse();
++	assert(rc || !policydb_errors);
++	if (rc || policydb_errors) {
++		queue_destroy(id_queue);
++		fclose(yyin);
++		yylex_destroy();
++		return -1;
++	}
++
++	queue_destroy(id_queue);
++	fclose(yyin);
++	yylex_destroy();
++
++	return 0;
++}
++
++static int check_level(hashtab_key_t key, hashtab_datum_t datum, void *arg __attribute__ ((unused)))
++{
++	const level_datum_t *levdatum = (level_datum_t *) datum;
++
++	// TODO: drop member defined if proven to be always set
++	if (!levdatum->isalias && !levdatum->defined) {
++		fprintf(stderr,
++			"Error:  sensitivity %s was not used in a level definition!\n",
++			key);
++		abort();
++	}
++
++	return 0;
++}
++
++static int write_binary_policy(FILE *outfp, policydb_t *p)
++{
++	struct policy_file pf;
++
++	policy_file_init(&pf);
++	pf.type = PF_USE_STDIO;
++	pf.fp = outfp;
++	return policydb_write(p, &pf);
++}
++
++int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
++{
++	policydb_t parsepolicydb = {};
++	policydb_t kernpolicydb = {};
++	policydb_t *finalpolicydb;
++	sidtab_t sidtab = {};
++	FILE *devnull = NULL;
++	int mls, policyvers;
++
++	sepol_debug(VERBOSE);
++
++	/* Take the first byte whether to parse as MLS policy
++	* and the second byte as policy version. */
++	if (size < 2)
++		return 0;
++	switch (data[0]) {
++	case '0':
++		mls = 0;
++		break;
++	case '1':
++		mls = 1;
++		break;
++	default:
++		return 0;
++	}
++	static_assert(0x7F - 'A' >= POLICYDB_VERSION_MAX, "Max policy version should be representable");
++	policyvers = data[1] - 'A';
++	if (policyvers < POLICYDB_VERSION_MIN || policyvers > POLICYDB_VERSION_MAX)
++		return 0;
++	data += 2;
++	size -= 2;
++
++	if (policydb_init(&parsepolicydb))
++		goto exit;
++
++	parsepolicydb.policy_type = POLICY_BASE;
++	parsepolicydb.mls = mls;
++	parsepolicydb.handle_unknown = DENY_UNKNOWN;
++	policydb_set_target_platform(&parsepolicydb, SEPOL_TARGET_SELINUX);
++
++	if (read_source_policy(&parsepolicydb, data, size))
++		goto exit;
++
++	(void) hashtab_map(parsepolicydb.p_levels.table, check_level, NULL);
++
++	if (parsepolicydb.policy_type == POLICY_BASE) {
++		if (link_modules(NULL, &parsepolicydb, NULL, 0, VERBOSE))
++			goto exit;
++
++		if (policydb_init(&kernpolicydb))
++			goto exit;
++
++		if (expand_module(NULL, &parsepolicydb, &kernpolicydb, VERBOSE, /*check_assertions=*/0))
++			goto exit;
++
++		(void) check_assertions(NULL, &kernpolicydb, kernpolicydb.global->branch_list->avrules);
++		(void) hierarchy_check_constraints(NULL, &kernpolicydb);
++
++		kernpolicydb.policyvers = policyvers;
++
++		assert(kernpolicydb.policy_type    == POLICY_KERN);
++		assert(kernpolicydb.handle_unknown == SEPOL_DENY_UNKNOWN);
++		assert(kernpolicydb.mls            == mls);
++
++		finalpolicydb = &kernpolicydb;
++	} else {
++		assert(parsepolicydb.policy_type    == POLICY_MOD);
++		assert(parsepolicydb.handle_unknown == SEPOL_DENY_UNKNOWN);
++		assert(parsepolicydb.mls            == mls);
++
++		finalpolicydb = &parsepolicydb;
++	}
++
++	if (policydb_load_isids(finalpolicydb, &sidtab))
++		goto exit;
++
++	if (finalpolicydb->policy_type == POLICY_KERN && policydb_optimize(finalpolicydb))
++		goto exit;
++
++	if (policydb_sort_ocontexts(finalpolicydb))
++		goto exit;
++
++	if (policydb_validate(NULL, finalpolicydb))
++		/* never generate an invalid policy */
++		abort();
++
++	devnull = fopen("/dev/null", "we");
++	if (devnull == NULL)
++		goto exit;
++
++	if (write_binary_policy(devnull, finalpolicydb))
++		abort();
++
++	if (finalpolicydb->policy_type == POLICY_KERN && sepol_kernel_policydb_to_conf(devnull, finalpolicydb))
++		abort();
++
++	if (finalpolicydb->policy_type == POLICY_KERN && sepol_kernel_policydb_to_cil(devnull, finalpolicydb))
++		abort();
++
++	if (finalpolicydb->policy_type == POLICY_MOD && sepol_module_policydb_to_cil(devnull, finalpolicydb, /*linked=*/0))
++		abort();
++
++exit:
++	if (devnull != NULL)
++		fclose(devnull);
++
++	sepol_sidtab_destroy(&sidtab);
++	policydb_destroy(&kernpolicydb);
++	policydb_destroy(&parsepolicydb);
++
++	id_queue = NULL;
++	policydbp = NULL;
++	module_compiler_reset();
++
++	/* Non-zero return values are reserved for future use. */
++	return 0;
++}
+diff --git a/checkpolicy/fuzz/checkpolicy-fuzzer.dict b/checkpolicy/fuzz/checkpolicy-fuzzer.dict
+new file mode 100644
+index 00000000..fb7e66c0
+--- /dev/null
++++ b/checkpolicy/fuzz/checkpolicy-fuzzer.dict
+@@ -0,0 +1,101 @@
++# Keyword dictionary
++
++"clone"
++"common"
++"class"
++"constrain"
++"validatetrans"
++"inherits"
++"sid"
++"role"
++"roles"
++"roleattribute"
++"attribute_role"
++"types"
++"typealias"
++"typeattribute"
++"typebounds"
++"type"
++"bool"
++"tunable"
++"if"
++"else"
++"alias"
++"attribute"
++"expandattribute"
++"type_transition"
++"type_member"
++"type_change"
++"role_transition"
++"range_transition"
++"sensitivity"
++"dominance"
++"category"
++"level"
++"range"
++"mlsconstrain"
++"mlsvalidatetrans"
++"user"
++"neverallow"
++"allow"
++"auditallow"
++"auditdeny"
++"dontaudit"
++"allowxperm"
++"auditallowxperm"
++"dontauditxperm"
++"neverallowxperm"
++"source"
++"target"
++"sameuser"
++"module"
++"require"
++"optional"
++"or"
++"and"
++"not"
++"xor"
++"eq"
++"true"
++"false"
++"dom"
++"domby"
++"incomp"
++"fscon"
++"ibpkeycon"
++"ibendportcon"
++"portcon"
++"netifcon"
++"nodecon"
++"pirqcon"
++"iomemcon"
++"ioportcon"
++"pcidevicecon"
++"devicetreecon"
++"fs_use_xattr"
++"fs_use_task"
++"fs_use_trans"
++"genfscon"
++"r1"
++"r2"
++"r3"
++"u1"
++"u2"
++"u3"
++"t1"
++"t2"
++"t3"
++"l1"
++"l2"
++"h1"
++"h2"
++"policycap"
++"permissive"
++"default_user"
++"default_role"
++"default_type"
++"default_range"
++"low-high"
++"high"
++"low"
++"glblub"
+diff --git a/checkpolicy/fuzz/min_pol.conf b/checkpolicy/fuzz/min_pol.conf
+new file mode 100644
+index 00000000..ff6d50e5
+--- /dev/null
++++ b/checkpolicy/fuzz/min_pol.conf
+@@ -0,0 +1,60 @@
++class process
++class blk_file
++class chr_file
++class dir
++class fifo_file
++class file
++class lnk_file
++class sock_file
++sid kernel
++sid security
++sid unlabeled
++sid fs
++sid file
++sid file_labels
++sid init
++sid any_socket
++sid port
++sid netif
++sid netmsg
++sid node
++sid igmp_packet
++sid icmp_socket
++sid tcp_socket
++sid sysctl_modprobe
++sid sysctl
++sid sysctl_fs
++sid sysctl_kernel
++sid sysctl_net
++sid sysctl_net_unix
++sid sysctl_vm
++sid sysctl_dev
++sid kmod
++sid policy
++sid scmp_packet
++sid devnull
++class process { dyntransition transition }
++default_role { blk_file } source;
++default_role { chr_file } source;
++default_role { dir } source;
++default_role { fifo_file } source;
++default_role { file } source;
++default_role { lnk_file } source;
++default_role { sock_file } source;
++type sys_isid;
++typealias sys_isid alias { dpkg_script_t rpm_script_t };
++allow sys_isid self : process { dyntransition transition };
++role sys_role;
++role sys_role types { sys_isid };
++user sys_user roles sys_role;
++sid kernel sys_user:sys_role:sys_isid
++sid security sys_user:sys_role:sys_isid
++sid unlabeled sys_user:sys_role:sys_isid
++sid file sys_user:sys_role:sys_isid
++sid port sys_user:sys_role:sys_isid
++sid netif sys_user:sys_role:sys_isid
++sid netmsg sys_user:sys_role:sys_isid
++sid node sys_user:sys_role:sys_isid
++sid devnull sys_user:sys_role:sys_isid
++fs_use_trans devpts sys_user:sys_role:sys_isid;
++fs_use_trans devtmpfs sys_user:sys_role:sys_isid;
+diff --git a/checkpolicy/fuzz/min_pol.mls.conf b/checkpolicy/fuzz/min_pol.mls.conf
+new file mode 100644
+index 00000000..6d15846b
+--- /dev/null
++++ b/checkpolicy/fuzz/min_pol.mls.conf
+@@ -0,0 +1,65 @@
++class process
++class blk_file
++class chr_file
++class dir
++class fifo_file
++class file
++class lnk_file
++class sock_file
++sid kernel
++sid security
++sid unlabeled
++sid fs
++sid file
++sid file_labels
++sid init
++sid any_socket
++sid port
++sid netif
++sid netmsg
++sid node
++sid igmp_packet
++sid icmp_socket
++sid tcp_socket
++sid sysctl_modprobe
++sid sysctl
++sid sysctl_fs
++sid sysctl_kernel
++sid sysctl_net
++sid sysctl_net_unix
++sid sysctl_vm
++sid sysctl_dev
++sid kmod
++sid policy
++sid scmp_packet
++sid devnull
++class process { dyntransition transition }
++default_role { blk_file } source;
++default_role { chr_file } source;
++default_role { dir } source;
++default_role { fifo_file } source;
++default_role { file } source;
++default_role { lnk_file } source;
++default_role { sock_file } source;
++sensitivity s0;
++dominance { s0 }
++category c0;
++level s0:c0;
++mlsconstrain process transition t1 eq t2;
++type sys_isid;
++typealias sys_isid alias { dpkg_script_t rpm_script_t };
++allow sys_isid self : process { dyntransition transition };
++role sys_role;
++role sys_role types { sys_isid };
++user sys_user roles sys_role level s0 range s0 - s0:c0;
++sid kernel sys_user:sys_role:sys_isid:s0
++sid security sys_user:sys_role:sys_isid:s0
++sid unlabeled sys_user:sys_role:sys_isid:s0
++sid file sys_user:sys_role:sys_isid:s0
++sid port sys_user:sys_role:sys_isid:s0
++sid netif sys_user:sys_role:sys_isid:s0
++sid netmsg sys_user:sys_role:sys_isid:s0
++sid node sys_user:sys_role:sys_isid:s0
++sid devnull sys_user:sys_role:sys_isid:s0
++fs_use_trans devpts sys_user:sys_role:sys_isid:s0;
++fs_use_trans devtmpfs sys_user:sys_role:sys_isid:s0;
+diff --git a/checkpolicy/module_compiler.c b/checkpolicy/module_compiler.c
+index 3188af89..74a9f93c 100644
+--- a/checkpolicy/module_compiler.c
++++ b/checkpolicy/module_compiler.c
+@@ -1492,3 +1492,14 @@ static void pop_stack(void)
+ 	free(stack_top);
+ 	stack_top = parent;
+ }
++
++#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
++void module_compiler_reset(void)
++{
++	while (stack_top)
++		pop_stack();
++
++	last_block = NULL;
++	next_decl_id = 1;
++}
++#endif
+diff --git a/checkpolicy/module_compiler.h b/checkpolicy/module_compiler.h
+index 29b824b4..e43bc6c0 100644
+--- a/checkpolicy/module_compiler.h
++++ b/checkpolicy/module_compiler.h
+@@ -106,4 +106,8 @@ int begin_optional_else(int pass);
+  * return -1. */
+ int end_avrule_block(int pass);
+ 
++#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
++void module_compiler_reset(void);
++#endif
++
+ #endif
+diff --git a/checkpolicy/policy_scan.l b/checkpolicy/policy_scan.l
+index c998ff8b..19c05a58 100644
+--- a/checkpolicy/policy_scan.l
++++ b/checkpolicy/policy_scan.l
+@@ -312,6 +312,7 @@ GLBLUB				{ return(GLBLUB); }
+ %%
+ int yyerror(const char *msg)
+ {
++#ifndef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+ 	if (source_file[0])
+ 		fprintf(stderr, "%s:%lu:",
+ 			source_file, source_lineno);
+@@ -322,6 +323,10 @@ int yyerror(const char *msg)
+ 			yytext,
+ 			policydb_lineno,
+ 			linebuf[0], linebuf[1]);
++#else
++	(void)msg;
++#endif
++
+ 	policydb_errors++;
+ 	return -1;
+ }
+@@ -331,6 +336,7 @@ int yywarn(const char *msg)
+ 	if (werror)
+ 		return yyerror(msg);
+ 
++#ifndef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
+ 	if (source_file[0])
+ 		fprintf(stderr, "%s:%lu:",
+ 			source_file, source_lineno);
+@@ -341,6 +347,8 @@ int yywarn(const char *msg)
+ 			yytext,
+ 			policydb_lineno,
+ 			linebuf[0], linebuf[1]);
++#endif
++
+ 	return 0;
+ }
+ 
+diff --git a/scripts/oss-fuzz.sh b/scripts/oss-fuzz.sh
+index 72d275e8..069f130a 100755
+--- a/scripts/oss-fuzz.sh
++++ b/scripts/oss-fuzz.sh
+@@ -70,3 +70,17 @@ $CC $CFLAGS -c -o binpolicy-fuzzer.o libsepol/fuzz/binpolicy-fuzzer.c
+ $CXX $CXXFLAGS $LIB_FUZZING_ENGINE binpolicy-fuzzer.o "$DESTDIR/usr/lib/libsepol.a" -o "$OUT/binpolicy-fuzzer"
+ 
+ zip -j "$OUT/binpolicy-fuzzer_seed_corpus.zip" libsepol/fuzz/policy.bin
++
++## checkpolicy fuzzer ##
++
++make -C checkpolicy clean
++make -C checkpolicy V=1 -j"$(nproc)" checkobjects
++# CFLAGS, CXXFLAGS and LIB_FUZZING_ENGINE have to be split to be accepted by
++# the compiler/linker so they shouldn't be quoted
++# shellcheck disable=SC2086
++$CC $CFLAGS -Icheckpolicy/ -c -o checkpolicy-fuzzer.o checkpolicy/fuzz/checkpolicy-fuzzer.c
++# shellcheck disable=SC2086
++$CXX $CXXFLAGS $LIB_FUZZING_ENGINE checkpolicy-fuzzer.o checkpolicy/*.o "$DESTDIR/usr/lib/libsepol.a" -o "$OUT/checkpolicy-fuzzer"
++
++zip -j "$OUT/checkpolicy-fuzzer_seed_corpus.zip" checkpolicy/fuzz/min_pol.mls.conf
++cp checkpolicy/fuzz/checkpolicy-fuzzer.dict "$OUT/"
 -- 
-Jens Axboe
+2.43.0
 
 

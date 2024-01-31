@@ -1,77 +1,77 @@
-Return-Path: <selinux+bounces-488-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-490-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22909844017
-	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 14:09:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75BA5844019
+	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 14:09:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC2D629772D
-	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 13:08:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF8A91F24171
+	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 13:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D097A7B3D2;
-	Wed, 31 Jan 2024 13:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993E97AE78;
+	Wed, 31 Jan 2024 13:08:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="K6outh5F"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="gNNGvc/g"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64087AE78
-	for <selinux@vger.kernel.org>; Wed, 31 Jan 2024 13:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1067079DD0
+	for <selinux@vger.kernel.org>; Wed, 31 Jan 2024 13:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706706535; cv=none; b=RBzxo3/L/u+UyXWZ4CHODdQOzrBu4EimMGMtTKs9ZFC+TW/5IO9IGMzB4EiQ6u9Asmuy8HzTxNymrmw2XyBUsuD3K4DVYB45sKo6Df0K1CRjk0H5zkCwnvxqSoYYkv4c0u4+EC2vasyDqPJXB+EakZ5RNbImJSGyzKSEWP09820=
+	t=1706706537; cv=none; b=J5/Ad/u2Ew1q3Wf2/hkQp9QyVh0u7NG+Vh+PbRm5skuna6YbQVa19LUNbu/xzykSuhVs802D9r07kjtI/pvhZojLYIrLM8Hu5kS1Bjfn9r3TmFUnPGflkwvxbDWyGK09KlyoSdpNhJWtsmUeEnKKyuDqkv8d0u90aaL8t0zvdIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706706535; c=relaxed/simple;
-	bh=ahZTNCA0/kXXm5mRv2Z2/5/u4GrFDSDJ+Wz2s9nQ45w=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jONNJ6PIWSz+ynbaQUmBBgEDy3O4kkyZC+RiwgO7+7DVuZXjUwB02dcNMZSpvpuPN8d6Hx7I7QOdcnMOadch7uNprteB+KFELsgNHPrRFraL+z9vi9tDF6SlM76U83vZPmmyOYA7H9ImnapzwlKGfwBnJcJvE/wVN7ve9bPxVXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=K6outh5F; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1706706537; c=relaxed/simple;
+	bh=ojCiUHnJjo6k8c+gnRS4S8QcNswP/4VThdnxWLwO+Ks=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tKpxe4+PUAgZKhqMDYGOPB3mN/I4PSXhjHuuKGMmOIAulnfUmjMa0yw3O3wLxpnosWMPkYKe70Tfl2AplLEuq9e7uUkstCrBSAp17wzd/XrVJslA9OSE1kuVwj4VSJo1++GgxLpUp9Hq4LsheOnJdF6VZLGOD25PbzOm7ky3G8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=gNNGvc/g; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a363961b96aso218310066b.3
-        for <selinux@vger.kernel.org>; Wed, 31 Jan 2024 05:08:53 -0800 (PST)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a350bfcc621so583433266b.0
+        for <selinux@vger.kernel.org>; Wed, 31 Jan 2024 05:08:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1706706532; x=1707311332; darn=vger.kernel.org;
+        d=googlemail.com; s=20230601; t=1706706533; x=1707311333; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+pINrv28ihfORB4WmnwIOdTFZsWgoeUFUfH1cO12yv4=;
-        b=K6outh5FeuRM94qvffSlUejJb3TZu1aaaqJ6UbGxXpk3ONWTQRdFNnv07xTrxl9BF5
-         lx1zdGTMzWcgXHkgFZS4QL1Vy3oVOK3Qxfx67VUs1pFPMeZgLOKYVIT/n2bx/tijOzzy
-         d6PNMHJOEPQJ8Fc3bnOqMpQD62x1+wQsmJMLJ01AWC5MK4j1RUKgZuNc6pbabeH3/wsG
-         HF29rGqo93nqdosYdY5RZEWzbOE+pnchK1i1srcpJsyFpX5rItMO91tXK5n0/s6noHgL
-         aOQHsRK8GXbMvs3HkkOE5MGVa6hn2S1k7JaPF9fcc3bb6STcLPXg3gE1tT5JNlcZ72uM
-         3lFg==
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sfPILFwU2cdvrqHk8RIcSnzt96pdOe7T/xj7BLUURwc=;
+        b=gNNGvc/gSa0XjaT/qDNk/N8vUXfdQhbqYavf1BbqMsD9ykBJj+JgF44GUYLDQEmNjw
+         IxCap0oNltzEcFE3Sw9fWHU67gjpPQTJ34Lqk+Qx8JNmOQXFA5h5SIx0Dtu/8Xe3tK90
+         kjdz1O1/cmCrbbKM8ZPACsUfiDhK/Sf116oHARSKZ4tC/03WXzkVeWOhmpiP/D2mjymQ
+         65cUEklE+lu0Bmk0MSB3g2dGY5v3IrctO6PFCTjffry5yszcH5tNnQHb+RMtGw1pmO3h
+         izCUNE4cexRSFIN21jF08yGN5ZJOqmOTWAlIjdc0OEWBgmvdTTF0YUNhHbWXnLCmM8Qr
+         fp4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706706532; x=1707311332;
+        d=1e100.net; s=20230601; t=1706706533; x=1707311333;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+pINrv28ihfORB4WmnwIOdTFZsWgoeUFUfH1cO12yv4=;
-        b=QZmia0XCqxC/a83wDnJtUBsdfG6xZIQyQlrJonBWaNmPO77eGnQGntFTtMaorxlLmT
-         +EgsJ/zm/xy+toRvdsX6mqPt2n9B1csmu/LsN8PEWd5RISFzqVJ03j6gG2xRg0E+5gjY
-         20B4ezHQeZl5uby0gL4Mid2+nzfTXvPsKLlj5tePSHmn5JLlIvfAAUviSNy8E9EZJbTm
-         AGIa14JHAtGCne/U3BrzqFIDgHHzVa204gZMHxJpM5MEAcCZ2XH9BcmS3+w0oDPTVgIh
-         KC0cB6eNMcJSGRkHOXT0PFNr34+qnZvEBdqiBigimmprulTWxT5NzH3xbSzLJdvf3nYy
-         KMfA==
-X-Gm-Message-State: AOJu0YxaRDgaPV90iS5PNGHlyytphIugmleqzGXOfen2mvoxlBeej4Zy
-	tzet9mD6+mKdG8b5vdXhIXDZbxfmQ5QBi+XN3qhOQCIiq5y91pJ5z5cLc5Ch
-X-Google-Smtp-Source: AGHT+IFd25SyBGU5Mj/+hWZ50aR+AeGkBGzKS5IkHnFsTdG7/TX7a4zBuQajOw//T9qBxkAKXJWPeQ==
-X-Received: by 2002:a17:906:c78b:b0:a33:1d7d:912f with SMTP id cw11-20020a170906c78b00b00a331d7d912fmr1280342ejb.8.1706706531861;
-        Wed, 31 Jan 2024 05:08:51 -0800 (PST)
+        bh=sfPILFwU2cdvrqHk8RIcSnzt96pdOe7T/xj7BLUURwc=;
+        b=mKkNOK+5t0w2sH7y/tBcvxdQt6di0VAB1rFF6Cgv6zhaVnliLsWOaTR0+dAymJj+lu
+         AD/pZ4nBP1I9whyhITRxFRks+SF2ggjrFQTpG534zhXegj+gR/GDj6PH2OBsG4CaQmxT
+         asmN4UlaXf00Hj6vZPIkTfrWmg2eDGrb3Siwd/+fQ0yUtIaI6zVxg7AP8jBkvJordpUi
+         2ql1yC5mzQKmHqczmPnySGaAxh4GImcOnHjhqorkeKiojbOChQt5WgKE2UiszUzdPw7n
+         GT0GuJre+6N9/7VbutQNeSA59SLKembrfcu0xbHCbHmuTt/wLSX56krr0wffhcMSq2Md
+         m73g==
+X-Gm-Message-State: AOJu0YwH8BRyC0jt6vdyM6XRj3YNyQ1eabJwNBoqv03w97jjkFdSmf9c
+	rM2gFuOMSxuugVZc+5rmixvg/y7W0GbTyP9SPWqTcM2Cp0wmlVuV3pxfVnh3
+X-Google-Smtp-Source: AGHT+IFp/lQaPxKj1F7CP7F+8xnIoXVWBTN0LUvRWr2rXtItj8vww2qsoVz8Ogen9vynsGIz8+CKeQ==
+X-Received: by 2002:a17:906:4f0e:b0:a35:b827:e5f7 with SMTP id t14-20020a1709064f0e00b00a35b827e5f7mr1229309eju.50.1706706532702;
+        Wed, 31 Jan 2024 05:08:52 -0800 (PST)
 Received: from ddev.DebianHome (dynamic-078-050-045-093.78.50.pool.telefonica.de. [78.50.45.93])
         by smtp.gmail.com with ESMTPSA id p14-20020a170906784e00b00a365c673251sm890351ejm.216.2024.01.31.05.08.51
-        for <selinux@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jan 2024 05:08:51 -0800 (PST)
+        Wed, 31 Jan 2024 05:08:52 -0800 (PST)
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 To: selinux@vger.kernel.org
-Subject: [RFC PATCH v2 7/9] libselinux: remove unused hashtab code
-Date: Wed, 31 Jan 2024 14:08:33 +0100
-Message-ID: <20240131130840.48155-8-cgzones@googlemail.com>
+Cc: Evgeny Vereshchagin <evverx@gmail.com>
+Subject: [RFC PATCH v2 8/9] libselinux: add selabel_file(5) fuzzer
+Date: Wed, 31 Jan 2024 14:08:34 +0100
+Message-ID: <20240131130840.48155-9-cgzones@googlemail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240131130840.48155-1-cgzones@googlemail.com>
 References: <20240131130840.48155-1-cgzones@googlemail.com>
@@ -84,379 +84,705 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Due to the selabel_file(5) rework this code is no longer used.
+Add two fuzzers reading and performing lookup on selabel_file(5)
+databases.  One fuzzer takes input in form of a textual fcontext
+definition, the other one takes compiled fcontexts definitions.  The
+lookup key and whether to lookup any or a specific file type is also
+part of the generated input.
 
+CC: Evgeny Vereshchagin <evverx@gmail.com>
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/hashtab.c | 234 ---------------------------------------
- libselinux/src/hashtab.h | 117 --------------------
- 2 files changed, 351 deletions(-)
- delete mode 100644 libselinux/src/hashtab.c
- delete mode 100644 libselinux/src/hashtab.h
+v2: add patch
+---
+ libselinux/fuzz/input                         |   0
+ .../fuzz/selabel_file_compiled-fuzzer.c       | 281 ++++++++++++++++++
+ libselinux/fuzz/selabel_file_text-fuzzer.c    | 225 ++++++++++++++
+ libselinux/src/label_file.c                   |  38 ++-
+ libselinux/src/label_file.h                   |  17 ++
+ scripts/oss-fuzz.sh                           |  25 ++
+ 6 files changed, 566 insertions(+), 20 deletions(-)
+ create mode 100644 libselinux/fuzz/input
+ create mode 100644 libselinux/fuzz/selabel_file_compiled-fuzzer.c
+ create mode 100644 libselinux/fuzz/selabel_file_text-fuzzer.c
 
-diff --git a/libselinux/src/hashtab.c b/libselinux/src/hashtab.c
-deleted file mode 100644
-index 7452613b..00000000
---- a/libselinux/src/hashtab.c
-+++ /dev/null
-@@ -1,234 +0,0 @@
--
--/* Author : Stephen Smalley, <stephen.smalley.work@gmail.com> */
--
--/* FLASK */
--
--/*
-- * Implementation of the hash table type.
-- */
--
--#include <stdlib.h>
--#include <string.h>
--#include "hashtab.h"
--
--hashtab_t hashtab_create(unsigned int (*hash_value) (hashtab_t h,
--						     const_hashtab_key_t key),
--			 int (*keycmp) (hashtab_t h,
--					const_hashtab_key_t key1,
--					const_hashtab_key_t key2),
--			 unsigned int size)
--{
--
--	hashtab_t p;
--	unsigned int i;
--
--	p = (hashtab_t) malloc(sizeof(hashtab_val_t));
--	if (p == NULL)
--		return p;
--
--	memset(p, 0, sizeof(hashtab_val_t));
--	p->size = size;
--	p->nel = 0;
--	p->hash_value = hash_value;
--	p->keycmp = keycmp;
--	p->htable = (hashtab_ptr_t *) malloc(sizeof(hashtab_ptr_t) * size);
--	if (p->htable == NULL) {
--		free(p);
--		return NULL;
--	}
--	for (i = 0; i < size; i++)
--		p->htable[i] = (hashtab_ptr_t) NULL;
--
--	return p;
--}
--
--int hashtab_insert(hashtab_t h, hashtab_key_t key, hashtab_datum_t datum)
--{
--	unsigned int hvalue;
--	hashtab_ptr_t prev, cur, newnode;
--
--	if (!h)
--		return HASHTAB_OVERFLOW;
--
--	hvalue = h->hash_value(h, key);
--	prev = NULL;
--	cur = h->htable[hvalue];
--	while (cur && h->keycmp(h, key, cur->key) > 0) {
--		prev = cur;
--		cur = cur->next;
--	}
--
--	if (cur && (h->keycmp(h, key, cur->key) == 0))
--		return HASHTAB_PRESENT;
--
--	newnode = (hashtab_ptr_t) malloc(sizeof(hashtab_node_t));
--	if (newnode == NULL)
--		return HASHTAB_OVERFLOW;
--	memset(newnode, 0, sizeof(struct hashtab_node));
--	newnode->key = key;
--	newnode->datum = datum;
--	if (prev) {
--		newnode->next = prev->next;
--		prev->next = newnode;
--	} else {
--		newnode->next = h->htable[hvalue];
--		h->htable[hvalue] = newnode;
--	}
--
--	h->nel++;
--	return HASHTAB_SUCCESS;
--}
--
--int hashtab_remove(hashtab_t h, hashtab_key_t key,
--		   void (*destroy) (hashtab_key_t k,
--				    hashtab_datum_t d, void *args), void *args)
--{
--	unsigned int hvalue;
--	hashtab_ptr_t cur, last;
--
--	if (!h)
--		return HASHTAB_MISSING;
--
--	hvalue = h->hash_value(h, key);
--	last = NULL;
--	cur = h->htable[hvalue];
--	while (cur != NULL && h->keycmp(h, key, cur->key) > 0) {
--		last = cur;
--		cur = cur->next;
--	}
--
--	if (cur == NULL || (h->keycmp(h, key, cur->key) != 0))
--		return HASHTAB_MISSING;
--
--	if (last == NULL)
--		h->htable[hvalue] = cur->next;
--	else
--		last->next = cur->next;
--
--	if (destroy)
--		destroy(cur->key, cur->datum, args);
--	free(cur);
--	h->nel--;
--	return HASHTAB_SUCCESS;
--}
--
--hashtab_datum_t hashtab_search(hashtab_t h, const_hashtab_key_t key)
--{
--
--	unsigned int hvalue;
--	hashtab_ptr_t cur;
--
--	if (!h)
--		return NULL;
--
--	hvalue = h->hash_value(h, key);
--	cur = h->htable[hvalue];
--	while (cur != NULL && h->keycmp(h, key, cur->key) > 0)
--		cur = cur->next;
--
--	if (cur == NULL || (h->keycmp(h, key, cur->key) != 0))
--		return NULL;
--
--	return cur->datum;
--}
--
--void hashtab_destroy(hashtab_t h)
--{
--	unsigned int i;
--	hashtab_ptr_t cur, temp;
--
--	if (!h)
--		return;
--
--	for (i = 0; i < h->size; i++) {
--		cur = h->htable[i];
--		while (cur != NULL) {
--			temp = cur;
--			cur = cur->next;
--			free(temp);
--		}
--		h->htable[i] = NULL;
--	}
--
--	free(h->htable);
--	h->htable = NULL;
--
--	free(h);
--}
--
--void hashtab_destroy_key(hashtab_t h,
--		int (*destroy_key) (hashtab_key_t k))
--{
--	unsigned int i;
--	hashtab_ptr_t cur, temp;
--
--	if (!h)
--		return;
--
--	for (i = 0; i < h->size; i++) {
--		cur = h->htable[i];
--		while (cur != NULL) {
--			temp = cur;
--			cur = cur->next;
--			destroy_key(temp->key);
--			free(temp);
--		}
--		h->htable[i] = NULL;
--	}
--
--	free(h->htable);
--	h->htable = NULL;
--
--	free(h);
--}
--
--int hashtab_map(hashtab_t h,
--		int (*apply) (hashtab_key_t k,
--			      hashtab_datum_t d, void *args), void *args)
--{
--	unsigned int i;
--	hashtab_ptr_t cur;
--	int ret;
--
--	if (!h)
--		return HASHTAB_SUCCESS;
--
--	for (i = 0; i < h->size; i++) {
--		cur = h->htable[i];
--		while (cur != NULL) {
--			ret = apply(cur->key, cur->datum, args);
--			if (ret)
--				return ret;
--			cur = cur->next;
--		}
--	}
--	return HASHTAB_SUCCESS;
--}
--
--void hashtab_hash_eval(hashtab_t h, char *tag)
--{
--	unsigned int i;
--	int chain_len, slots_used, max_chain_len;
--	hashtab_ptr_t cur;
--
--	slots_used = 0;
--	max_chain_len = 0;
--	for (i = 0; i < h->size; i++) {
--		cur = h->htable[i];
--		if (cur) {
--			slots_used++;
--			chain_len = 0;
--			while (cur) {
--				chain_len++;
--				cur = cur->next;
--			}
--
--			if (chain_len > max_chain_len)
--				max_chain_len = chain_len;
--		}
--	}
--
--	printf
--	    ("%s:  %d entries and %d/%d buckets used, longest chain length %d\n",
--	     tag, h->nel, slots_used, h->size, max_chain_len);
--}
-diff --git a/libselinux/src/hashtab.h b/libselinux/src/hashtab.h
-deleted file mode 100644
-index f10fc0af..00000000
---- a/libselinux/src/hashtab.h
-+++ /dev/null
-@@ -1,117 +0,0 @@
--
--/* Author : Stephen Smalley, <stephen.smalley.work@gmail.com> */
--
--/* FLASK */
--
--/*
-- * A hash table (hashtab) maintains associations between
-- * key values and datum values.  The type of the key values
-- * and the type of the datum values is arbitrary.  The
-- * functions for hash computation and key comparison are
-- * provided by the creator of the table.
-- */
--
--#ifndef _SELINUX_HASHTAB_H_
--#define _SELINUX_HASHTAB_H_
--
--#include <stdint.h>
--#include <errno.h>
--#include <stdio.h>
--
--typedef char *hashtab_key_t;	/* generic key type */
--typedef const char *const_hashtab_key_t;	/* constant generic key type */
--typedef void *hashtab_datum_t;	/* generic datum type */
--
--typedef struct hashtab_node *hashtab_ptr_t;
--
--typedef struct hashtab_node {
--	hashtab_key_t key;
--	hashtab_datum_t datum;
--	hashtab_ptr_t next;
--} hashtab_node_t;
--
--typedef struct hashtab_val {
--	hashtab_ptr_t *htable;	/* hash table */
--	unsigned int size;	/* number of slots in hash table */
--	uint32_t nel;		/* number of elements in hash table */
--	unsigned int (*hash_value) (struct hashtab_val * h, const_hashtab_key_t key);	/* hash function */
--	int (*keycmp) (struct hashtab_val * h, const_hashtab_key_t key1, const_hashtab_key_t key2);	/* key comparison function */
--} hashtab_val_t;
--
--typedef hashtab_val_t *hashtab_t;
--
--/* Define status codes for hash table functions */
--#define HASHTAB_SUCCESS     0
--#define HASHTAB_OVERFLOW    -ENOMEM
--#define HASHTAB_PRESENT     -EEXIST
--#define HASHTAB_MISSING     -ENOENT
--
--/*
--   Creates a new hash table with the specified characteristics.
--
--   Returns NULL if insufficient space is available or
--   the new hash table otherwise.
-- */
--extern hashtab_t hashtab_create(unsigned int (*hash_value) (hashtab_t h,
--							    const_hashtab_key_t
--							    key),
--				int (*keycmp) (hashtab_t h,
--					       const_hashtab_key_t key1,
--					       const_hashtab_key_t key2),
--				unsigned int size);
--/*
--   Inserts the specified (key, datum) pair into the specified hash table.
--
--   Returns HASHTAB_OVERFLOW if insufficient space is available or
--   HASHTAB_PRESENT  if there is already an entry with the same key or
--   HASHTAB_SUCCESS otherwise.
-- */
--extern int hashtab_insert(hashtab_t h, hashtab_key_t k, hashtab_datum_t d);
--
--/*
--   Removes the entry with the specified key from the hash table.
--   Applies the specified destroy function to (key,datum,args) for
--   the entry.
--
--   Returns HASHTAB_MISSING if no entry has the specified key or
--   HASHTAB_SUCCESS otherwise.
-- */
--extern int hashtab_remove(hashtab_t h, hashtab_key_t k,
--			  void (*destroy) (hashtab_key_t k,
--					   hashtab_datum_t d,
--					   void *args), void *args);
--
--/*
--   Searches for the entry with the specified key in the hash table.
--
--   Returns NULL if no entry has the specified key or
--   the datum of the entry otherwise.
-- */
--extern hashtab_datum_t hashtab_search(hashtab_t h, const_hashtab_key_t k);
--
--/*
--   Destroys the specified hash table.
-- */
--extern void hashtab_destroy(hashtab_t h);
--extern void hashtab_destroy_key(hashtab_t h,
--			int (*destroy_key) (hashtab_key_t k));
--
--/*
--   Applies the specified apply function to (key,datum,args)
--   for each entry in the specified hash table.
--
--   The order in which the function is applied to the entries
--   is dependent upon the internal structure of the hash table.
--
--   If apply returns a non-zero status, then hashtab_map will cease
--   iterating through the hash table and will propagate the error
--   return to its caller.
-- */
--extern int hashtab_map(hashtab_t h,
--		       int (*apply) (hashtab_key_t k,
--				     hashtab_datum_t d,
--				     void *args), void *args);
--
--extern void hashtab_hash_eval(hashtab_t h, char *tag);
--
--#endif
+diff --git a/libselinux/fuzz/input b/libselinux/fuzz/input
+new file mode 100644
+index 00000000..e69de29b
+diff --git a/libselinux/fuzz/selabel_file_compiled-fuzzer.c b/libselinux/fuzz/selabel_file_compiled-fuzzer.c
+new file mode 100644
+index 00000000..cf0710ad
+--- /dev/null
++++ b/libselinux/fuzz/selabel_file_compiled-fuzzer.c
+@@ -0,0 +1,281 @@
++#include <errno.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <sys/mman.h>
++#include <unistd.h>
++
++#include <selinux/label.h>
++
++#include "../src/label_file.h"
++
++extern int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
++
++#define MEMFD_FILE_NAME "file_contexts"
++#define CTRL_PARTIAL  (1U << 0)
++#define CTRL_FIND_ALL (1U << 1)
++#define CTRL_MODE     (1U << 2)
++
++
++__attribute__ ((format(printf, 2, 3)))
++static int null_log(int type __attribute__((unused)), const char *fmt __attribute__((unused)), ...)
++{
++	return 0;
++}
++
++static int validate_context(char **ctxp)
++{
++	assert(strcmp(*ctxp, "<<none>>") != 0);
++
++	if (*ctxp[0] == '\0') {
++		errno = EINVAL;
++		return -1;
++	}
++
++	return 0;
++}
++
++static int write_full(int fd, const void *data, size_t size)
++{
++	ssize_t rc;
++	const unsigned char *p = data;
++
++	while (size > 0) {
++		rc = write(fd, p, size);
++		if (rc == -1) {
++			if (errno == EINTR)
++				continue;
++
++			return -1;
++		}
++
++		p += rc;
++		size -= rc;
++	}
++
++	return 0;
++}
++
++static FILE* convert_data(const uint8_t *data, size_t size)
++{
++	FILE* stream;
++	int fd, rc;
++
++	fd = memfd_create(MEMFD_FILE_NAME, MFD_CLOEXEC);
++	if (fd == -1)
++		return NULL;
++
++	rc = write_full(fd, data, size);
++	if (rc == -1) {
++		close(fd);
++		return NULL;
++	}
++
++	stream = fdopen(fd, "r");
++	if (!stream) {
++		close(fd);
++		return NULL;
++	}
++
++	rc = fseek(stream, 0L, SEEK_SET);
++	if (rc == -1) {
++		fclose(stream);
++		return NULL;
++	}
++
++	return stream;
++}
++
++int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
++{
++	struct selabel_handle rec;
++	struct saved_data sdata = {};
++	struct spec_node *root = NULL;
++	FILE* fp = NULL;
++	struct lookup_result *result = NULL;
++	uint8_t control;
++	uint8_t *fcontext_data1 = NULL, *fcontext_data2 = NULL, *fcontext_data3 = NULL;
++	char *key = NULL;
++	size_t fcontext_data1_len, fcontext_data2_len, fcontext_data3_len, key_len;
++	bool partial, find_all;
++	mode_t mode;
++	int rc;
++
++	/*
++	 * Treat first byte as control byte, whether to use partial mode, find all matches or mode to lookup
++	 */
++	if (size == 0)
++		return 0;
++
++	control = data[0];
++	data++;
++	size--;
++
++	if (control & ~(CTRL_PARTIAL | CTRL_FIND_ALL | CTRL_MODE))
++		return 0;
++
++	partial  = control & CTRL_PARTIAL;
++	find_all = control & CTRL_FIND_ALL;
++	/* S_IFSOCK has the highest integer value */
++	mode     = (control & CTRL_MODE) ? S_IFSOCK : 0;
++
++
++	/*
++	 * Split the fuzzer input into up to four pieces: one to three compiled fcontext
++	 * definitions (to mimic file_contexts, file_contexts.homedirs and file_contexts.local,
++	 * and the lookup key
++	 */
++	const unsigned char separator[4] = { 0xde, 0xad, 0xbe, 0xef };
++	const uint8_t *sep = memmem(data, size, separator, 4);
++	if (!sep || sep == data)
++		return 0;
++
++	fcontext_data1_len = sep - data;
++	fcontext_data1 = malloc(fcontext_data1_len);
++	if (!fcontext_data1)
++		goto cleanup;
++
++	memcpy(fcontext_data1, data, fcontext_data1_len);
++	data += fcontext_data1_len + 4;
++	size -= fcontext_data1_len + 4;
++
++	sep = memmem(data, size, separator, 4);
++	if (sep) {
++		fcontext_data2_len = sep - data;
++		fcontext_data2 = malloc(fcontext_data2_len);
++		if (!fcontext_data2)
++			goto cleanup;
++
++		memcpy(fcontext_data2, data, fcontext_data2_len);
++		data += fcontext_data2_len + 4;
++		size -= fcontext_data2_len + 4;
++	}
++
++	sep = memmem(data, size, separator, 4);
++	if (sep) {
++		fcontext_data3_len = sep - data;
++		fcontext_data3 = malloc(fcontext_data3_len);
++		if (!fcontext_data3)
++			goto cleanup;
++
++		memcpy(fcontext_data3, data, fcontext_data3_len);
++		data += fcontext_data3_len + 4;
++		size -= fcontext_data3_len + 4;
++	}
++
++	key_len = size;
++	key = malloc(key_len + 1);
++	if (!key)
++		goto cleanup;
++
++	memcpy(key, data, key_len);
++	key[key_len] = '\0';
++
++
++	/*
++	 * Mock selabel handle
++	 */
++	rec = (struct selabel_handle) {
++		.backend = SELABEL_CTX_FILE,
++		.validating = 1,
++		.data = &sdata,
++	};
++
++	selinux_set_callback(SELINUX_CB_LOG, (union selinux_callback) { .func_log = &null_log });
++	/* validate to pre-compile regular expressions */
++	selinux_set_callback(SELINUX_CB_VALIDATE, (union selinux_callback) { .func_validate = &validate_context });
++
++	root = calloc(1, sizeof(*root));
++	if (!root)
++		goto cleanup;
++
++	sdata.root = root;
++
++	fp = convert_data(fcontext_data1, fcontext_data1_len);
++	if (!fp)
++		goto cleanup;
++
++	errno = 0;
++	rc = load_mmap(fp, fcontext_data1_len, &rec, MEMFD_FILE_NAME);
++	if (rc) {
++		assert(errno != 0);
++		goto cleanup;
++	}
++
++	fclose(fp);
++
++	fp = convert_data(fcontext_data2, fcontext_data2_len);
++	if (!fp)
++		goto cleanup;
++
++	errno = 0;
++	rc = load_mmap(fp, fcontext_data2_len, &rec, MEMFD_FILE_NAME);
++	if (rc) {
++		assert(errno != 0);
++		goto cleanup;
++	}
++
++	fclose(fp);
++
++	fp = convert_data(fcontext_data3, fcontext_data3_len);
++	if (!fp)
++		goto cleanup;
++
++	errno = 0;
++	rc = load_mmap(fp, fcontext_data3_len, &rec, MEMFD_FILE_NAME);
++	if (rc) {
++		assert(errno != 0);
++		goto cleanup;
++	}
++
++	sort_specs(&sdata);
++
++	assert(cmp(&rec, &rec) == SELABEL_EQUAL);
++
++	errno = 0;
++	result = lookup_all(&rec, key, mode, partial, find_all);
++
++	if (!result)
++		assert(errno != 0);
++
++	for (const struct lookup_result *res = result; res; res = res->next) {
++		assert(res->regex_str);
++		assert(res->regex_str[0] != '\0');
++		assert(res->lr->ctx_raw);
++		assert(res->lr->ctx_raw[0] != '\0');
++		assert(strcmp(res->lr->ctx_raw, "<<none>>") != 0);
++		assert(!res->lr->ctx_trans);
++		assert(res->lr->validated);
++		assert(res->prefix_len <= strlen(res->regex_str));
++	}
++
++
++cleanup:
++	free_lookup_result(result);
++	if (fp)
++		fclose(fp);
++	if (sdata.root) {
++		free_spec_node(sdata.root);
++		free(sdata.root);
++	}
++
++	{
++		struct mmap_area *area, *last_area;
++
++		area = sdata.mmap_areas;
++		while (area) {
++			rc = munmap(area->addr, area->len);
++			assert(rc == 0);
++			last_area = area;
++			area = area->next;
++			free(last_area);
++		}
++	}
++
++	free(key);
++	free(fcontext_data3);
++	free(fcontext_data2);
++	free(fcontext_data1);
++
++	/* Non-zero return values are reserved for future use. */
++	return 0;
++}
+diff --git a/libselinux/fuzz/selabel_file_text-fuzzer.c b/libselinux/fuzz/selabel_file_text-fuzzer.c
+new file mode 100644
+index 00000000..5d851de1
+--- /dev/null
++++ b/libselinux/fuzz/selabel_file_text-fuzzer.c
+@@ -0,0 +1,225 @@
++#include <errno.h>
++#include <stdint.h>
++#include <stdio.h>
++#include <sys/mman.h>
++#include <unistd.h>
++
++#include <selinux/label.h>
++
++#include "../src/label_file.h"
++
++extern int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size);
++
++#define MEMFD_FILE_NAME "file_contexts"
++#define CTRL_PARTIAL  (1U << 0)
++#define CTRL_FIND_ALL (1U << 1)
++#define CTRL_MODE     (1U << 2)
++
++
++__attribute__ ((format(printf, 2, 3)))
++static int null_log(int type __attribute__((unused)), const char *fmt __attribute__((unused)), ...)
++{
++	return 0;
++}
++
++static int validate_context(char **ctxp)
++{
++	assert(strcmp(*ctxp, "<<none>>") != 0);
++
++	if (*ctxp[0] == '\0') {
++		errno = EINVAL;
++		return -1;
++	}
++
++	return 0;
++}
++
++static int write_full(int fd, const void *data, size_t size)
++{
++	ssize_t rc;
++	const unsigned char *p = data;
++
++	while (size > 0) {
++		rc = write(fd, p, size);
++		if (rc == -1) {
++			if (errno == EINTR)
++				continue;
++
++			return -1;
++		}
++
++		p += rc;
++		size -= rc;
++	}
++
++	return 0;
++}
++
++static FILE* convert_data(const uint8_t *data, size_t size)
++{
++	FILE* stream;
++	int fd, rc;
++
++	fd = memfd_create(MEMFD_FILE_NAME, MFD_CLOEXEC);
++	if (fd == -1)
++		return NULL;
++
++	rc = write_full(fd, data, size);
++	if (rc == -1) {
++		close(fd);
++		return NULL;
++	}
++
++	stream = fdopen(fd, "r");
++	if (!stream) {
++		close(fd);
++		return NULL;
++	}
++
++	rc = fseek(stream, 0L, SEEK_SET);
++	if (rc == -1) {
++		fclose(stream);
++		return NULL;
++	}
++
++	return stream;
++}
++
++int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
++{
++	struct selabel_handle rec;
++	struct saved_data sdata = {};
++	struct spec_node *root = NULL;
++	FILE* fp = NULL;
++	struct lookup_result *result = NULL;
++	uint8_t control;
++	uint8_t *fcontext_data = NULL;
++	char *key = NULL;
++	size_t fcontext_data_len, key_len;
++	bool partial, find_all;
++	mode_t mode;
++	int rc;
++
++	/*
++	 * Treat first byte as control byte, whether to use partial mode, find all matches or mode to lookup
++	 */
++	if (size == 0)
++		return 0;
++
++	control = data[0];
++	data++;
++	size--;
++
++	if (control & ~(CTRL_PARTIAL | CTRL_FIND_ALL | CTRL_MODE))
++		return 0;
++
++	partial  = control & CTRL_PARTIAL;
++	find_all = control & CTRL_FIND_ALL;
++	/* S_IFSOCK has the highest integer value */
++	mode     = (control & CTRL_MODE) ? S_IFSOCK : 0;
++
++
++	/*
++	 * Split the fuzzer input into two pieces: the textual fcontext definition and the lookup key
++	 */
++	const unsigned char separator[4] = { 0xde, 0xad, 0xbe, 0xef };
++	const uint8_t *sep = memmem(data, size, separator, 4);
++	if (!sep || sep == data)
++		return 0;
++
++	fcontext_data_len = sep - data;
++	fcontext_data = malloc(fcontext_data_len);
++	if (!fcontext_data)
++		goto cleanup;
++
++	memcpy(fcontext_data, data, fcontext_data_len);
++
++	key_len = size - fcontext_data_len - 4;
++	key = malloc(key_len + 1);
++	if (!key)
++		goto cleanup;
++
++	memcpy(key, sep + 4, key_len);
++	key[key_len] = '\0';
++
++
++	/*
++	 * Mock selabel handle
++	 */
++	rec = (struct selabel_handle) {
++		.backend = SELABEL_CTX_FILE,
++		.validating = 1,
++		.data = &sdata,
++	};
++
++	selinux_set_callback(SELINUX_CB_LOG, (union selinux_callback) { .func_log = &null_log });
++	/* validate to pre-compile regular expressions */
++	selinux_set_callback(SELINUX_CB_VALIDATE, (union selinux_callback) { .func_validate = &validate_context });
++
++	root = calloc(1, sizeof(*root));
++	if (!root)
++		goto cleanup;
++
++	sdata.root = root;
++
++	fp = convert_data(fcontext_data, fcontext_data_len);
++	if (!fp)
++		goto cleanup;
++
++	errno = 0;
++	rc = process_text_file(fp, /*prefix=*/ NULL, &rec, MEMFD_FILE_NAME);
++	if (rc) {
++		assert(errno != 0);
++		goto cleanup;
++	}
++
++	sort_specs(&sdata);
++
++	assert(cmp(&rec, &rec) == SELABEL_EQUAL);
++
++	errno = 0;
++	result = lookup_all(&rec, key, mode, partial, find_all);
++
++	if (!result)
++		assert(errno != 0);
++
++	for (const struct lookup_result *res = result; res; res = res->next) {
++		assert(res->regex_str);
++		assert(res->regex_str[0] != '\0');
++		assert(res->lr->ctx_raw);
++		assert(res->lr->ctx_raw[0] != '\0');
++		assert(strcmp(res->lr->ctx_raw, "<<none>>") != 0);
++		assert(!res->lr->ctx_trans);
++		assert(res->lr->validated);
++		assert(res->prefix_len <= strlen(res->regex_str));
++	}
++
++
++cleanup:
++	free_lookup_result(result);
++	if (fp)
++		fclose(fp);
++	if (sdata.root) {
++		free_spec_node(sdata.root);
++		free(sdata.root);
++	}
++
++	{
++		struct mmap_area *area, *last_area;
++
++		area = sdata.mmap_areas;
++		while (area) {
++			rc = munmap(area->addr, area->len);
++			assert(rc == 0);
++			last_area = area;
++			area = area->next;
++			free(last_area);
++		}
++	}
++
++	free(key);
++	free(fcontext_data);
++
++	/* Non-zero return values are reserved for future use. */
++	return 0;
++}
+diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
+index 096e5dab..ac349bc5 100644
+--- a/libselinux/src/label_file.c
++++ b/libselinux/src/label_file.c
+@@ -27,6 +27,13 @@
+ #include "label_file.h"
+ 
+ 
++#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
++# define FUZZ_EXTERN
++#else
++# define FUZZ_EXTERN static
++#endif  /* FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION */
++
++
+ /*
+  * Warn about duplicate specifications.
+  */
+@@ -114,8 +121,8 @@ static int nodups_spec_node(const struct spec_node *node, const char *path)
+ 	return rc;
+ }
+ 
+-static int process_text_file(FILE *fp, const char *prefix,
+-			     struct selabel_handle *rec, const char *path)
++FUZZ_EXTERN int process_text_file(FILE *fp, const char *prefix,
++				  struct selabel_handle *rec, const char *path)
+ {
+ 	int rc;
+ 	size_t line_len;
+@@ -721,8 +728,8 @@ static int load_mmap_spec_node(struct mmap_area *mmap_area, const char *path, bo
+ 	return 0;
+ }
+ 
+-static int load_mmap(FILE *fp, const size_t len, struct selabel_handle *rec,
+-		     const char *path)
++FUZZ_EXTERN int load_mmap(FILE *fp, const size_t len, struct selabel_handle *rec,
++			  const char *path)
+ {
+ 	struct saved_data *data = rec->data;
+ 	struct spec_node *root = NULL;
+@@ -1443,16 +1450,7 @@ static uint32_t search_literal_spec(const struct literal_spec *array, uint32_t s
+ 	return (uint32_t)-1;
+ }
+ 
+-struct lookup_result {
+-	const char *regex_str;
+-	struct selabel_lookup_rec *lr;
+-	uint16_t prefix_len;
+-	uint8_t file_kind;
+-	bool has_meta_chars;
+-	struct lookup_result *next;
+-};
+-
+-static void free_lookup_result(struct lookup_result *result)
++FUZZ_EXTERN void free_lookup_result(struct lookup_result *result)
+ {
+ 	struct lookup_result *tmp;
+ 
+@@ -1684,11 +1682,11 @@ static uint8_t mode_to_file_kind(int type) {
+ // Finds all the matches of |key| in the given context. Returns the result in
+ // the allocated array and updates the match count. If match_count is NULL,
+ // stops early once the 1st match is found.
+-static struct lookup_result *lookup_all(struct selabel_handle *rec,
+-					const char *key,
+-					int type,
+-					bool partial,
+-					bool find_all)
++FUZZ_EXTERN struct lookup_result *lookup_all(struct selabel_handle *rec,
++				 const char *key,
++				 int type,
++				 bool partial,
++				 bool find_all)
+ {
+ 	struct saved_data *data = (struct saved_data *)rec->data;
+ 	struct lookup_result *result = NULL;
+@@ -2255,7 +2253,7 @@ static enum selabel_cmp_result spec_node_cmp(const struct spec_node *node1, cons
+ 	return result;
+ }
+ 
+-static enum selabel_cmp_result cmp(const struct selabel_handle *h1, const struct selabel_handle *h2)
++FUZZ_EXTERN enum selabel_cmp_result cmp(const struct selabel_handle *h1, const struct selabel_handle *h2)
+ {
+ 	const struct saved_data *data1, *data2;
+ 
+diff --git a/libselinux/src/label_file.h b/libselinux/src/label_file.h
+index 2dc772eb..529a1bd2 100644
+--- a/libselinux/src/label_file.h
++++ b/libselinux/src/label_file.h
+@@ -50,6 +50,23 @@
+ #define LABEL_FILE_KIND_LNK		6
+ #define LABEL_FILE_KIND_REG		7
+ 
++/* Only exported for fuzzing */
++struct lookup_result {
++	const char *regex_str;
++	struct selabel_lookup_rec *lr;
++	uint16_t prefix_len;
++	uint8_t file_kind;
++	bool has_meta_chars;
++	struct lookup_result *next;
++};
++#ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
++extern int load_mmap(FILE *fp, const size_t len, struct selabel_handle *rec, const char *path);
++extern int process_text_file(FILE *fp, const char *prefix, struct selabel_handle *rec, const char *path);
++extern void free_lookup_result(struct lookup_result *result);
++extern struct lookup_result *lookup_all(struct selabel_handle *rec, const char *key, int type, bool partial, bool find_all);
++extern enum selabel_cmp_result cmp(const struct selabel_handle *h1, const struct selabel_handle *h2);
++#endif  /* FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION */
++
+ struct selabel_sub {
+ 	char *src;
+ 	unsigned int slen;
+diff --git a/scripts/oss-fuzz.sh b/scripts/oss-fuzz.sh
+index 72d275e8..e51efe74 100755
+--- a/scripts/oss-fuzz.sh
++++ b/scripts/oss-fuzz.sh
+@@ -44,10 +44,13 @@ export LIB_FUZZING_ENGINE=${LIB_FUZZING_ENGINE:--fsanitize=fuzzer}
+ 
+ rm -rf "$DESTDIR"
+ make -C libsepol clean
++make -C libselinux clean
+ # LIBSO and LIBMAP shouldn't be expanded here because their values are unknown until Makefile
+ # has been read by make
+ # shellcheck disable=SC2016
+ make -C libsepol V=1 LD_SONAME_FLAGS='-soname,$(LIBSO),--version-script=$(LIBMAP)' -j"$(nproc)" install
++# shellcheck disable=SC2016
++make -C libselinux V=1 LD_SONAME_FLAGS='-soname,$(LIBSO),--version-script=libselinux.map' -j"$(nproc)" install
+ 
+ ## secilc fuzzer ##
+ 
+@@ -70,3 +73,25 @@ $CC $CFLAGS -c -o binpolicy-fuzzer.o libsepol/fuzz/binpolicy-fuzzer.c
+ $CXX $CXXFLAGS $LIB_FUZZING_ENGINE binpolicy-fuzzer.o "$DESTDIR/usr/lib/libsepol.a" -o "$OUT/binpolicy-fuzzer"
+ 
+ zip -j "$OUT/binpolicy-fuzzer_seed_corpus.zip" libsepol/fuzz/policy.bin
++
++## selabel-file text fcontext based fuzzer ##
++
++# CFLAGS, CXXFLAGS and LIB_FUZZING_ENGINE have to be split to be accepted by
++# the compiler/linker so they shouldn't be quoted
++# shellcheck disable=SC2086
++$CC $CFLAGS -DUSE_PCRE2 -DPCRE2_CODE_UNIT_WIDTH=8 -c -o selabel_file_text-fuzzer.o libselinux/fuzz/selabel_file_text-fuzzer.c
++# shellcheck disable=SC2086
++$CXX $CXXFLAGS $LIB_FUZZING_ENGINE selabel_file_text-fuzzer.o "$DESTDIR/usr/lib/libselinux.a" -lpcre2-8 -o "$OUT/selabel_file_text-fuzzer"
++
++zip -j "$OUT/selabel_file_text-fuzzer_seed_corpus.zip" libselinux/fuzz/input
++
++## selabel-file compiled fcontext based fuzzer ##
++
++# CFLAGS, CXXFLAGS and LIB_FUZZING_ENGINE have to be split to be accepted by
++# the compiler/linker so they shouldn't be quoted
++# shellcheck disable=SC2086
++$CC $CFLAGS -DUSE_PCRE2 -DPCRE2_CODE_UNIT_WIDTH=8 -c -o selabel_file_compiled-fuzzer.o libselinux/fuzz/selabel_file_compiled-fuzzer.c
++# shellcheck disable=SC2086
++$CXX $CXXFLAGS $LIB_FUZZING_ENGINE selabel_file_compiled-fuzzer.o "$DESTDIR/usr/lib/libselinux.a" -lpcre2-8 -o "$OUT/selabel_file_compiled-fuzzer"
++
++zip -j "$OUT/selabel_file_compiled-fuzzer_seed_corpus.zip" libselinux/fuzz/input
 -- 
 2.43.0
 

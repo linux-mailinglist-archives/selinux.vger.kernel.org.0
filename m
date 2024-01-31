@@ -1,307 +1,278 @@
-Return-Path: <selinux+bounces-489-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-492-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D029C844018
-	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 14:09:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ADDB844A43
+	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 22:42:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 016931C20329
-	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 13:09:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFFFB1C2534F
+	for <lists+selinux@lfdr.de>; Wed, 31 Jan 2024 21:42:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FCD7AE58;
-	Wed, 31 Jan 2024 13:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B87D39AED;
+	Wed, 31 Jan 2024 21:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="crLHFHS0"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="CG5KULzV";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="AWxy5ai4"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6790B7B3CB
-	for <selinux@vger.kernel.org>; Wed, 31 Jan 2024 13:08:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706706537; cv=none; b=e/+7yE/EorWvWq/IoS+3T2aXrsuGZ4gozx1PKFcK8deC+2n3r0yR2eyZ1t0AO4uWf+BpGyAL7lKW6LZyfCyJjDS8RHGoGBztSWOHudMhAR8LVBAKojSibX9F9C9TY/ovc6+kE+P3HnDtJ8UjmmSxqKikPgbIET5gLWL7fR/WUGI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706706537; c=relaxed/simple;
-	bh=EGvDKcmC2MmDDM/jgwV59iYj1DkTqivVx7To5L+qkas=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hYPrIxHseYS3WGTRHHLSo1cPQEt7pR5aT5AEQRXrG53UsuwPvAGwEqH+qau0z636kvjBKVO1OVHLshsLfFer2nTDZe0v33AnNk5OXc0OghDh0oOsLDHUPz7oqXuwjnD45X0oA7tP2GBSbP4aTRSGWy2eRyynGGYMNX5c1339Aoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=crLHFHS0; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-55f7b91ce4fso1344039a12.0
-        for <selinux@vger.kernel.org>; Wed, 31 Jan 2024 05:08:55 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398A839860;
+	Wed, 31 Jan 2024 21:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1706737291; cv=fail; b=f+tlDGWu+BtGS7LTfDL1WBQ9K44hnxXvLj04YsjWpR5qpvQu5LZ+Tg6u9+DBV9ZpGIqBC2zQnsV82kqVuJVnsU4sBoNi/F/4gigp1xtk8bzfJ6uWWzXNWecnEgNY+fqWRwhCsPYpgsP775M5qGgWVEfEbs7Q5vL/YGxTZO5bqQE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1706737291; c=relaxed/simple;
+	bh=nJ4RLnmdaZK1NaOgOQBoGaqK8OHvfxBLQotII9WmkX0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZarMzMaIBSqc3cU36Q7eXfdmvLh/rwmD41DUO9uVrWc0MMsboMQOmP0FauOrNMotixsobuJ6wSjuEmts/OENCobSQuDavZZm6bJwXaj+qT9ZTwFlJnSPvCFVNSbMn6CZ2guwvt27zIW8Oe1F8P75JDg2Q/3hkAjaf+pgFeDxB6A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=CG5KULzV; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=AWxy5ai4; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=Oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40VHBp40008446;
+	Wed, 31 Jan 2024 21:41:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
+ : subject : message-id : references : content-type :
+ content-transfer-encoding : in-reply-to : mime-version; s=corp-2023-11-20;
+ bh=M71YxiMIIUxybB5vqH5foKg9OnqNJO42dR24vo6aXqE=;
+ b=CG5KULzV92fsqEo1NfEVsYXjjuu1Dqx/st8ywl6sHLhMX1bX32nDUquUmSl3p7/MHvLl
+ P1kFjs5yLpMDgAsz5pJChUg6L9kDV11FEKpcZ9B2iYrafglBSxC69FvjI05aeU9feZnr
+ ikkNiLF5Gmz7jH1RlhTf+V35zAaqi6dNRcTf+kpf6DtqFD+OF+ZElf8Id2U+fc+G8UFp
+ HqnInzrK29F3R73TlF9Qn2WtoX/UGYBKz/YzGRcad8IgdRcvSZkSH6UqefvJL8vt4rBw
+ t+JT3qfZZ9YRQKxUdAEJpyiF5F4jbk5SrmP++6+x3tny0miiar3OpVzdCTzZnn9TdOk7 gA== 
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vvrm431xg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 31 Jan 2024 21:41:11 +0000
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40VK7ZVK036101;
+	Wed, 31 Jan 2024 21:41:10 GMT
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2101.outbound.protection.outlook.com [104.47.55.101])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3vvr9fxeqt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 31 Jan 2024 21:41:10 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UZZfIXyIJI5mSsX+ZBqzYcinJdHVVjPV1cvAuGVtexAEn/peDUtr0+xUxAI3kb1Ti25Rk5sDUowIsrYIj/N+3eOxjaCZ6JDSBLKTDW73rsDw2arHvfo75u1q96u3R02DNuNig2dj1HB0Px2TFKYUp853WpioLviVphgYpsgd5kM291khl03dgx6YIry8nPUTWcNotnM+D6bPJ5h52PTToinYFqqn/cJh4iixl1jvqtdlWXaSesYYCyzpUJXvQeR8BxyI27h+umYGUbodUiKJg1chkEfVWJ3zXUlv+v+snYr54tHChoAdlybTu51aDSxfHTKJcjNK6EayQdJ3fJwoNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M71YxiMIIUxybB5vqH5foKg9OnqNJO42dR24vo6aXqE=;
+ b=dv4J8mq3Pa3r1ebyJ2+0oTEMmAmBCsu9woOJnnDs0kARl9SqSSRDyORJErn72HHJgA7iaowMwwLVWeOqLx3ysdPNbAnFkjNir7R3UiE0n/o+TZbNu41W2W7ZxNIzJY8hB16hrHJW9/MR7r8TizEoSM7LjomG6SAgCsi7WEmp6K8pmk5A1kAJyhoOrsFXL14uW2vS3foSzWdw1aWWgJvjR+S/6TTEcqVIP80UlzPCIiUiQ8BZD2zP79wBkiNQZLUKDU7zht8EjgE4scprbT4yPu1rqjl6ajwH/kFOp2S60RYaFHx1wEm0vv0E4VR/MkwtOxIiS43ZdbP//lhJT71WbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1706706533; x=1707311333; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ReElE90TAsMtEWqH5iu/uIPRfjwU93Y4DMwRSOErR5o=;
-        b=crLHFHS095RQo6JuYTGIHozKL/YPLQbnkxLKUDFt2P/LJTa64qx9wEPI1qjxdE4Vxg
-         XwwWu3pfGHiWfuWxHh4EsKgpIjHWs5Z4vl2cLo1d+YFH8+SVLlavmMjLEN1FwVRXBPrn
-         R5lXSvgq8PCJ6IMImiK+4/pw/gWNyP7dPDqK0TayT8M8ik5tRXmYZ4WwoPgn+O8xFCyR
-         s0APjLghqUDqCTOF7agrUPvToEFKzX6KdZyMeZHXZpCmCtuwWazAiG10DnhtMb53WkNa
-         MiSHaSPiTdD/6cYEzQC7s6M4qVU4qaTTBXhNhjocyrG1Ha4mP3pJM2sqUFgz0B5CkPjB
-         qIUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1706706533; x=1707311333;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ReElE90TAsMtEWqH5iu/uIPRfjwU93Y4DMwRSOErR5o=;
-        b=IpOIlR69CFVvi7VKDs6AYJkftkJw6fGtlLyZFKcyoevfak1gLLQbgiKYTr6a2b8lo+
-         TcqXRJeRSA1Aro63CmN+MHNqfeDujyMhL5ScTXnMRVvfzg5oalnLxKLRD9Ach7+oK8Gd
-         poDrCwJoLOPqxj61QmWjiLW1PY7BQOO4ikCZCM1+DaHgCFhGACMLgVy8HJXSiJdBDZa7
-         TjKmdhwBUlQqrnh+zzlMZHpBjdCAvAhVlEyN+wbf1SOm6i9fIyKZMgBNYEud405LYA5y
-         8fHKsLh8vnquwVeb6GAV/Au+puYH4C60SkIh7kYW/QDiDiNCZl85JEJXdCtWV0zEsrHr
-         rylA==
-X-Gm-Message-State: AOJu0YyDG0FBCyS0Yz/Qezd1zxjCVAyom5iXUAjApA7+M4vWizDEvD/+
-	cYlaLhgzgm1Ia7a6q7e3U57COmhk73ngCvrn1AAa6EOhpt/Rn1MEXIE09b6I
-X-Google-Smtp-Source: AGHT+IE4elbQoEn8uSZrGmNxzWFfEKjOpikS8/27FZKensiMpgVqTInQR1pGwdqb+Ix2Jol9hc7WBA==
-X-Received: by 2002:a17:906:e28c:b0:a36:4d6c:f85c with SMTP id gg12-20020a170906e28c00b00a364d6cf85cmr1579569ejb.16.1706706533543;
-        Wed, 31 Jan 2024 05:08:53 -0800 (PST)
-Received: from ddev.DebianHome (dynamic-078-050-045-093.78.50.pool.telefonica.de. [78.50.45.93])
-        by smtp.gmail.com with ESMTPSA id p14-20020a170906784e00b00a365c673251sm890351ejm.216.2024.01.31.05.08.52
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jan 2024 05:08:53 -0800 (PST)
-From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-To: selinux@vger.kernel.org
-Subject: [RFC PATCH v2 9/9] libselinux: support parallel selabel_lookup(3)
-Date: Wed, 31 Jan 2024 14:08:35 +0100
-Message-ID: <20240131130840.48155-10-cgzones@googlemail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240131130840.48155-1-cgzones@googlemail.com>
-References: <20240131130840.48155-1-cgzones@googlemail.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M71YxiMIIUxybB5vqH5foKg9OnqNJO42dR24vo6aXqE=;
+ b=AWxy5ai4V8WyTnf1oTOZAtoASpb8vOrBQKjWYUTiGw1rh8sr4MWlSuVsO9bq866EfWgY3oZ2qQ1ruxnG9iUPY7TAcSDjEPD7Ch4sZntnQc6wZunrAJeaKAVSyG/j200NJZ7mb/0507pdGCssQilb56BAOlr5hPm7++CQ4j/Jt2I=
+Received: from DS0PR10MB7933.namprd10.prod.outlook.com (2603:10b6:8:1b8::15)
+ by DS7PR10MB5037.namprd10.prod.outlook.com (2603:10b6:5:3a9::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7249.25; Wed, 31 Jan
+ 2024 21:41:08 +0000
+Received: from DS0PR10MB7933.namprd10.prod.outlook.com
+ ([fe80::20c8:7efa:f9a8:7606]) by DS0PR10MB7933.namprd10.prod.outlook.com
+ ([fe80::20c8:7efa:f9a8:7606%4]) with mapi id 15.20.7249.017; Wed, 31 Jan 2024
+ 21:41:07 +0000
+Date: Wed, 31 Jan 2024 16:41:04 -0500
+From: "Liam R. Howlett" <Liam.Howlett@Oracle.com>
+To: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
+        kernel-team@android.com, aarcange@redhat.com, peterx@redhat.com,
+        david@redhat.com, axelrasmussen@google.com, bgeffon@google.com,
+        willy@infradead.org, jannh@google.com, kaleshsingh@google.com,
+        ngeoffray@google.com, timmurray@google.com, rppt@kernel.org
+Subject: Re: [PATCH v2 3/3] userfaultfd: use per-vma locks in userfaultfd
+ operations
+Message-ID: <20240131214104.rgw3x5vuap43xubi@revolver>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@Oracle.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Suren Baghdasaryan <surenb@google.com>, akpm@linux-foundation.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
+	kernel-team@android.com, aarcange@redhat.com, peterx@redhat.com,
+	david@redhat.com, axelrasmussen@google.com, bgeffon@google.com,
+	willy@infradead.org, jannh@google.com, kaleshsingh@google.com,
+	ngeoffray@google.com, timmurray@google.com, rppt@kernel.org
+References: <20240129193512.123145-1-lokeshgidra@google.com>
+ <20240129193512.123145-4-lokeshgidra@google.com>
+ <20240129203626.uq5tdic4z5qua5qy@revolver>
+ <CAJuCfpFS=h8h1Tgn55Hv+cr9bUFFoUvejiFQsHGN5yT7utpDMg@mail.gmail.com>
+ <CA+EESO5r+b7QPYM5po--rxQBa9EPi4x1EZ96rEzso288dbpuow@mail.gmail.com>
+ <20240130025803.2go3xekza5qubxgz@revolver>
+ <CA+EESO4+ExV-2oo0rFNpw0sL+_tWZ_MH_rUh-wvssN0y_hr+LA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <CA+EESO4+ExV-2oo0rFNpw0sL+_tWZ_MH_rUh-wvssN0y_hr+LA@mail.gmail.com>
+User-Agent: NeoMutt/20220429
+X-ClientProxiedBy: YT4P288CA0086.CANP288.PROD.OUTLOOK.COM
+ (2603:10b6:b01:d0::20) To DS0PR10MB7933.namprd10.prod.outlook.com
+ (2603:10b6:8:1b8::15)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR10MB7933:EE_|DS7PR10MB5037:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3f496014-7ea9-4d02-7de1-08dc22a554f3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	f01fVXjkeLqvZ/rH3/NYTlBKmPgrOuWdaxf8xJXS8HZd6D1tSOExZHMR/TVrVzBXeTTJgqOUYYpEYrZFHmZ3nQrtrEX+Dbygxk7AtPzk1EEm8Hnwsv9fH0zbpOO5SfUJ8o7fnfiYhTiRmdiTcXtUZa3ZBq0LAjRHWGZ4lvOvb/icPHg4CmSE9j/oBBkWHmms6Zq8loSIDZsc3M1bqUhqi0mgDxINX4dd5CNxwP52qAHrnMibYbDgwrTo8GUM1PDgfnXqvJ6HB4iENCerq7w80Lg0fxoRrb2hi1yNuZQfp9mcmlgE7w5/GRWiV8QqN94u4X2ETcmYXUDsaaTgW90T8R6v93pMPqzR8gT+5KR5E9bx9CmVB5ncCGMeOQtZ81YM/nNLT7hlJuZ0m/8CKqqSezQVmA9hYzS47pnv8XhqN3uciL2kEOSif2mSS2p+ik/VMTNIP5cRa0vWUBDzBICE77OaD78DCgFPrfpQf2TEIj21XPlGA34LOjmMAU9eqsOLhx13LiFXwMQhnTh3CH52giMuvT69UYipN0plnyuppDWaCnFNjkEn9EFnVgUXi4pp
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR10MB7933.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(7916004)(136003)(376002)(346002)(366004)(396003)(39860400002)(230922051799003)(64100799003)(451199024)(1800799012)(186009)(33716001)(26005)(1076003)(41300700001)(6916009)(316002)(66476007)(478600001)(53546011)(6506007)(6486002)(6512007)(83380400001)(9686003)(6666004)(66556008)(38100700002)(5660300002)(7416002)(2906002)(66946007)(86362001)(4326008)(8936002)(8676002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?cXNHVHMyNForVmF0SnRnTVBIcG84VTF1eWpWblkxajF2TFhTV29ZdStNYllQ?=
+ =?utf-8?B?ZHVXRjVzb2xESmlFdWFSTk1OU3ZQQm9BeGpOK25Pclc5QVNabkRhSUlpME9S?=
+ =?utf-8?B?NnREZDNwNFVxUU9ESlIrZjdmSEs1TC9tVTlCRGhQR1RBcyszbEJOK005dTNV?=
+ =?utf-8?B?Y2RvUytUa0hHNzVhYmhxcEhrdGhvQkdseHRLYjlxbUJNeVEzRzdLOEZpNTVI?=
+ =?utf-8?B?VEZ1YUgxL29lNjNWTFhNemlqQW1PYVZSRTZXN0NlWlVjdWQvb3lDMy9GQTVP?=
+ =?utf-8?B?Z3kwU2E2Q1dvT25qTEJIcVF6L1ZjLzRQQ3NwMWs4ajYzeUw2amlLQVYzVXBS?=
+ =?utf-8?B?WkM5djlvRnlmdmNjenlMM1ZuNk5sZ0pBZ2lmbmE1VlZaR1hXcEtlbTBBbERw?=
+ =?utf-8?B?a2Q2N0wzSTZMa2cva1hlK01La3lrcnQvdHlkOGRCT3FHSkw2WEpTMG5oMktY?=
+ =?utf-8?B?ZlJicmRwQ1NYa1RJdHFZZzhpYjFnWndIbVk3MWZYOVplMWlCcFA0N3hzL3Fz?=
+ =?utf-8?B?T0VFUG10bHVrRCtRNDZ3S1N4RE9GZXcwa25pbUluOE55YXE4YUM0MEV3d1RT?=
+ =?utf-8?B?RkRHY0lYUGErbGprc1BleHFudjZzQjFMcU50VlNBZERvM2E5M0s0NUJhOGp1?=
+ =?utf-8?B?ZmNiclVraC9jV3FjYVN5WDY2YVU0eVpVeXFLSlpYQ09tRVQ2RlUzZFBvS253?=
+ =?utf-8?B?SzB4QVlLWFNPellXNncxd3pXTWxNSVNNcTFFR0lEOWZJMmc1L1FlNVZ1QkdP?=
+ =?utf-8?B?Y1BheVlEdmNudVgwTkxXVTRCTTFPWWllWDFCRkVDaGRuSWhDVElMU0Nyc1Ix?=
+ =?utf-8?B?YWNTUE1TWEF6VGZBQXV5aUYxMk94QS9GaUVnRDlETU1zbkxKOWFCNXpLNElU?=
+ =?utf-8?B?NjI4b1BRRUxURHpIY0dsUXc4QlNRODljUnRDM0tMUXg3L2ZFRnBOendOWW14?=
+ =?utf-8?B?WmlFOVRUczJ2dzFlLzh5N21UZ2VIbGZOTmd4TTB1RWdDQVBYRGlrN0hnb1k3?=
+ =?utf-8?B?UDM4Zk1CMHhHQWlUTzk0YW50TElRekpwd0d1V3RKdTB3WjlObjdMZ2VsSlVh?=
+ =?utf-8?B?N2NyaCtoR3JtdmlHUFlHSzZ4TEgwdXVMKzV1RzltcU9YeDFmQ21wdjdBanov?=
+ =?utf-8?B?ZDdialJQRWxzWmgzejFTMlB4c3pSVWJoYWNmWnk1a0VIZzg3ZnduOTl6cUtC?=
+ =?utf-8?B?VjIxMW9ZMFBUREVkT2ZGd2tQRmJrOHZqUzZzVExUQW14bHpLR0VtM2FlVGRP?=
+ =?utf-8?B?dmpuUm5qSkxGaGxzQkRYblU1WTQ2b1FBYVRRaDlMamZpU3lvWnZBS2dtdmtx?=
+ =?utf-8?B?VjhEbEFWVEVDNUNKRTBLYm9sOFQ2WGkra0pWYUNUTzZxaEVDL2tHT0o5ZGps?=
+ =?utf-8?B?RnUyVjJNYVZwTkZjd3owNHppZVlydlJ4OVlEVmsrbTB2NFdmd0dRM05NaFZm?=
+ =?utf-8?B?QWFmK3dwYS9hRVJiT1hic1dMT2xDWExwcmVXaEhTY3JzK2kwRnJmZnhORDVt?=
+ =?utf-8?B?YWFWckYvM0ZzR0tlbUg1V2ZCSmVHQVlqU3Joc0FpWTBMZUhmMjVsVng0R2c2?=
+ =?utf-8?B?UkdWbzhtZXUvUXlWNXZpZnpYSnpHRThGWC8yNXJaV1hCMHFQam1vK2g5VHh6?=
+ =?utf-8?B?elMwazlhNmlPblZEK2FrcWpOc3lPMHk4UkZZSDR6aFFET0dGRW1DV0J5UFNC?=
+ =?utf-8?B?cDI4c01nUGdZVWdMdWp5bGFVa2JkUWVlOVIyNEYzeDVKUk9rSW5sMVg1UUJD?=
+ =?utf-8?B?eWZ5cTBMVE54eEMrQkJZYnMyMzlvWjk4YmkzSmY5RVFxc0laNjExZWg2aXY0?=
+ =?utf-8?B?NGhhSjdqaHFPVjQ2WUFQTDN1SEJpWm8yS1gvS2RkTUx3K1hveVBCc1JIT24z?=
+ =?utf-8?B?VFRiNk5MY0JpZUpsR0RwallBamd2Zk1Ua29IY21jWFYxeUpZWlZyM0pFQjNs?=
+ =?utf-8?B?Y1AyZll4bXlFNHRFeGRTei8rV21lM216UFE1dWgwOEtHMTNOeEFJWCtQbVFz?=
+ =?utf-8?B?bVp3bUZzandkc1p5RnQra3VYYnZsYVE5UjhwUENnaDVPWG1GNXRUdlJweUhy?=
+ =?utf-8?B?QnRKcGJJcGRhd2ZsQU5MR1IxWExISmo1YkVWNlFEUjkzcENDYXljdDM0QVRY?=
+ =?utf-8?Q?Mqn/c+H8w0pQwGT7wHwpRGw9i?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	fwKPFKpznJZT/oT4wVUi5YLmbyO26F3WmeQL9NcunTd20DKFVzqPh6Yd/iYpdvwEj9OqE6x13pKd9HTp1rv3+cHd2dKlvdCZxWukcw0jlmFn7RvT1LWrKcagAiaeAh4rbz35iLPcbM7hKAWKPK96P597BT0ybRvcNgASZlp7TPGtom2XOT0AHrvoC5D/4voIDmkHGE49Igx0PqFpioEPwOaaeatQwbVPcDXwXOq196uMqe022HnvpsWQK1PpoRVyEC2NQLSss8WWQusywz0axfb7ssGaNIc0ORwskYGCMS8oKP8idEgOavj1Xd5Ch31XZm8qAxrYaitW6gvjWlXOG+ceDsfpp3n+xnVC60o5dqvtmuFrXL8aWVI/41ZcPCGIasMpwmsugOnTMCmGGvUTau5it4jMFTRfyyILKxT5H4nXGaqga+1kOttG/sHJD0zMWGCZGIXQpUYny2o4aNgjCOiLVHOfHgZsn9NoZXVqWhn8px1S+dwgBMByxtlMR6LXKVtlzqXhXsqlQ7qdNRlrzXf4BAqSXZtJIq4Q0XkvOJDkzgeCHNuYrnOYa3we1qYXbxEXE8oMPeR5I45lpMFqa/iNVoAcuC7gB8azJ+J4kbs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3f496014-7ea9-4d02-7de1-08dc22a554f3
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR10MB7933.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Jan 2024 21:41:07.1108
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XcF+sCVABgnN2Wxskdm9g7kiYzW3U4BrjD7Hq2li+w0bVr5QA1hqqtcMUJhRvfbXwPa4Wp2Q+JFZ8b+MUKITPA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR10MB5037
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-31_10,2024-01-31_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 phishscore=0 malwarescore=0
+ spamscore=0 mlxlogscore=999 adultscore=0 bulkscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401310168
+X-Proofpoint-GUID: lq6JTlAY8AVtJ1IOT6AWbr2UvdoM6gzE
+X-Proofpoint-ORIG-GUID: lq6JTlAY8AVtJ1IOT6AWbr2UvdoM6gzE
 
-Support the parallel usage of the translated label lookup via
-selabel_lookup(3) in multi threaded applications by locking the step
-of computing the translated context and the validation state.
+* Lokesh Gidra <lokeshgidra@google.com> [240130 21:49]:
+> On Mon, Jan 29, 2024 at 6:58=E2=80=AFPM Liam R. Howlett <Liam.Howlett@ora=
+cle.com> wrote:
+> >
+> > * Lokesh Gidra <lokeshgidra@google.com> [240129 19:28]:
+> > > On Mon, Jan 29, 2024 at 12:53=E2=80=AFPM Suren Baghdasaryan <surenb@g=
+oogle.com> wrote:
+> > > >
+> >
 
-A potential use case might can usage from a Rust application via FFI.
+...
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
-v2: add patch
----
- libselinux/src/label.c          | 56 +++++++++++++++++++++++++++------
- libselinux/src/label_db.c       |  2 ++
- libselinux/src/label_file.c     |  4 ++-
- libselinux/src/label_file.h     |  4 +++
- libselinux/src/label_internal.h |  1 +
- libselinux/src/label_media.c    |  1 +
- libselinux/src/label_x.c        |  1 +
- 7 files changed, 59 insertions(+), 10 deletions(-)
+> >
+> > > Your suggestion is definitely simpler and easier to follow, but due t=
+o
+> > > the overflow situation that Suren pointed out, I would still need to
+> > > keep the locking/boolean dance, no? IIUC, even if I were to return
+> > > EAGAIN to the userspace, there is no guarantee that subsequent ioctls
+> > > on the same vma will succeed due to the same overflow, until someone
+> > > acquires and releases mmap_lock in write-mode.
+> > > Also, sometimes it seems insufficient whether we managed to lock vma
+> > > or not. For instance, lock_vma_under_rcu() checks if anon_vma (for
+> > > anonymous vma) exists. If not then it bails out.
+> > > So it seems to me that we have to provide some fall back in
+> > > userfaultfd operations which executes with mmap_lock in read-mode.
+> >
+> > Fair enough, what if we didn't use the sequence number and just locked
+> > the vma directly?
+>=20
+> Looks good to me, unless someone else has any objections.
+> >
+> > /* This will wait on the vma lock, so once we return it's locked */
+> > void vma_aquire_read_lock(struct vm_area_struct *vma)
+> > {
+> >         mmap_assert_locked(vma->vm_mm);
+> >         down_read(&vma->vm_lock->lock);
+> > }
+> >
+> > struct vm_area_struct *lock_vma(struct mm_struct *mm,
+> >         unsigned long addr))    /* or some better name.. */
+> > {
+> >         struct vm_area_struct *vma;
+> >
+> >         vma =3D lock_vma_under_rcu(mm, addr);
+> >         if (vma)
+> >                 return vma;
+> >
+> >         mmap_read_lock(mm);
+> >         /* mm sequence cannot change, no mm writers anyways.
+> >          * find_mergeable_anon_vma is only a concern in the page fault
+> >          * path
+> >          * start/end won't change under the mmap_lock
+> >          * vma won't become detached as we have the mmap_lock in read
+> >          * We are now sure no writes will change the VMA
+> >          * So let's make sure no other context is isolating the vma
+> >          */
+> >         vma =3D lookup_vma(mm, addr);
+> >         if (vma)
+> We can take care of anon_vma as well here right? I can take a bool
+> parameter ('prepare_anon' or something) and then:
+>=20
+>            if (vma) {
+>                     if (prepare_anon && vma_is_anonymous(vma)) &&
+> !anon_vma_prepare(vma)) {
+>                                       vma =3D ERR_PTR(-ENOMEM);
+>                                       goto out_unlock;
+>                    }
+> >                 vma_aquire_read_lock(vma);
+>            }
+> out_unlock:
+> >         mmap_read_unlock(mm);
+> >         return vma;
+> > }
 
-diff --git a/libselinux/src/label.c b/libselinux/src/label.c
-index d2e703ef..10e78a9b 100644
---- a/libselinux/src/label.c
-+++ b/libselinux/src/label.c
-@@ -124,18 +124,32 @@ static inline int selabel_is_validate_set(const struct selinux_opt *opts,
- 
- int selabel_validate(struct selabel_lookup_rec *contexts)
- {
--	int rc = 0;
-+	bool validated;
-+	int rc;
- 
--	if (contexts->validated)
--		goto out;
-+	validated = __atomic_load_n(&contexts->validated, __ATOMIC_ACQUIRE);
-+	if (validated)
-+		return 0;
-+
-+	__pthread_mutex_lock(&contexts->lock);
-+
-+	/* Check if another thread validated the context while we waited on the mutex */
-+	validated = __atomic_load_n(&contexts->validated, __ATOMIC_ACQUIRE);
-+	if (validated) {
-+		__pthread_mutex_unlock(&contexts->lock);
-+		return 0;
-+	}
- 
- 	rc = selinux_validate(&contexts->ctx_raw);
-+	if (rc == 0)
-+		__atomic_store_n(&contexts->validated, true, __ATOMIC_RELEASE);
-+
-+	__pthread_mutex_unlock(&contexts->lock);
-+
- 	if (rc < 0)
--		goto out;
-+		return -1;
- 
--	contexts->validated = true;
--out:
--	return rc;
-+	return 0;
- }
- 
- /* Public API helpers */
-@@ -143,11 +157,35 @@ static int selabel_fini(const struct selabel_handle *rec,
- 			    struct selabel_lookup_rec *lr,
- 			    bool translating)
- {
-+	char *ctx_trans;
-+	int rc;
-+
- 	if (compat_validate(rec, lr, rec->spec_file, lr->lineno))
- 		return -1;
- 
--	if (translating && !lr->ctx_trans &&
--	    selinux_raw_to_trans_context(lr->ctx_raw, &lr->ctx_trans))
-+	if (!translating)
-+		return 0;
-+
-+	ctx_trans = __atomic_load_n(&lr->ctx_trans, __ATOMIC_ACQUIRE);
-+	if (ctx_trans)
-+		return 0;
-+
-+	__pthread_mutex_lock(&lr->lock);
-+
-+	/* Check if another thread translated the context while we waited on the mutex */
-+	ctx_trans = __atomic_load_n(&lr->ctx_trans, __ATOMIC_ACQUIRE);
-+	if (ctx_trans) {
-+		__pthread_mutex_unlock(&lr->lock);
-+		return 0;
-+	}
-+
-+	rc = selinux_raw_to_trans_context(lr->ctx_raw, &ctx_trans);
-+	if (rc == 0)
-+		__atomic_store_n(&lr->ctx_trans, ctx_trans, __ATOMIC_RELEASE);
-+
-+	__pthread_mutex_unlock(&lr->lock);
-+
-+	if (rc)
- 		return -1;
- 
- 	return 0;
-diff --git a/libselinux/src/label_db.c b/libselinux/src/label_db.c
-index 2ff10b2f..ed178d34 100644
---- a/libselinux/src/label_db.c
-+++ b/libselinux/src/label_db.c
-@@ -183,6 +183,7 @@ db_close(struct selabel_handle *rec)
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
- 	}
- 	free(catalog);
- }
-@@ -355,6 +356,7 @@ out_error:
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
- 	}
- 	free(catalog);
- 	fclose(filp);
-diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
-index ac349bc5..3520fe2d 100644
---- a/libselinux/src/label_file.c
-+++ b/libselinux/src/label_file.c
-@@ -175,6 +175,7 @@ static int merge_mmap_spec_nodes(struct spec_node *restrict dest, struct spec_no
- 			for (uint32_t i = 0; i < source->literal_specs_num; i++) {
- 				source->literal_specs[i].lr.ctx_raw = NULL;
- 				source->literal_specs[i].lr.ctx_trans = NULL;
-+				__pthread_mutex_destroy(&source->literal_specs[i].lr.lock);
- 			}
- 
- 		} else {
-@@ -214,9 +215,10 @@ static int merge_mmap_spec_nodes(struct spec_node *restrict dest, struct spec_no
- 			for (uint32_t i = 0; i < source->regex_specs_num; i++) {
- 				source->regex_specs[i].lr.ctx_raw = NULL;
- 				source->regex_specs[i].lr.ctx_trans = NULL;
-+				__pthread_mutex_destroy(&source->regex_specs[i].lr.lock);
- 				source->regex_specs[i].regex = NULL;
- 				source->regex_specs[i].regex_compiled = false;
--				__pthread_mutex_init(&source->regex_specs[i].regex_lock, NULL);
-+				__pthread_mutex_destroy(&source->regex_specs[i].regex_lock);
- 			}
- 		} else {
- 			assert(dest->regex_specs == NULL);
-diff --git a/libselinux/src/label_file.h b/libselinux/src/label_file.h
-index 529a1bd2..de8190f9 100644
---- a/libselinux/src/label_file.h
-+++ b/libselinux/src/label_file.h
-@@ -661,6 +661,7 @@ static int insert_spec(const struct selabel_handle *rec, struct saved_data *data
- 			.lr.ctx_trans = NULL,
- 			.lr.lineno = lineno,
- 			.lr.validated = false,
-+			.lr.lock = PTHREAD_MUTEX_INITIALIZER,
- 		};
- 
- 		data->num_specs++;
-@@ -794,6 +795,7 @@ static int insert_spec(const struct selabel_handle *rec, struct saved_data *data
- 			.lr.ctx_trans = NULL,
- 			.lr.lineno = lineno,
- 			.lr.validated = false,
-+			.lr.lock = PTHREAD_MUTEX_INITIALIZER,
- 		};
- 
- 		data->num_specs++;
-@@ -818,6 +820,7 @@ static inline void free_spec_node(struct spec_node *node)
- 
- 		free(lspec->lr.ctx_raw);
- 		free(lspec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&lspec->lr.lock);
- 
- 		if (lspec->from_mmap)
- 			continue;
-@@ -832,6 +835,7 @@ static inline void free_spec_node(struct spec_node *node)
- 
- 		free(rspec->lr.ctx_raw);
- 		free(rspec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&rspec->lr.lock);
- 		regex_data_free(rspec->regex);
- 		__pthread_mutex_destroy(&rspec->regex_lock);
- 
-diff --git a/libselinux/src/label_internal.h b/libselinux/src/label_internal.h
-index 854f92fa..743dbf94 100644
---- a/libselinux/src/label_internal.h
-+++ b/libselinux/src/label_internal.h
-@@ -71,6 +71,7 @@ extern void digest_gen_hash(struct selabel_digest *digest);
- struct selabel_lookup_rec {
- 	char * ctx_raw;
- 	char * ctx_trans;
-+	pthread_mutex_t lock;	/* lock for validation and translation */
- 	unsigned int lineno;
- 	bool validated;
- };
-diff --git a/libselinux/src/label_media.c b/libselinux/src/label_media.c
-index fad5ea6d..7bd85804 100644
---- a/libselinux/src/label_media.c
-+++ b/libselinux/src/label_media.c
-@@ -172,6 +172,7 @@ static void close(struct selabel_handle *rec)
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
- 	}
- 
- 	if (spec_arr)
-diff --git a/libselinux/src/label_x.c b/libselinux/src/label_x.c
-index bf569ca5..49c33b3b 100644
---- a/libselinux/src/label_x.c
-+++ b/libselinux/src/label_x.c
-@@ -199,6 +199,7 @@ static void close(struct selabel_handle *rec)
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
- 	}
- 
- 	if (spec_arr)
--- 
-2.43.0
+Do you need this?  I didn't think this was happening in the code as
+written?  If you need it I would suggest making it happen always and
+ditch the flag until a user needs this variant, but document what's
+going on in here or even have a better name.
 
+Thanks,
+Liam
 

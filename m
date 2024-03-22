@@ -1,118 +1,159 @@
-Return-Path: <selinux+bounces-943-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-947-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E341E885987
-	for <lists+selinux@lfdr.de>; Thu, 21 Mar 2024 14:02:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5486D886F48
+	for <lists+selinux@lfdr.de>; Fri, 22 Mar 2024 15:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 828DE1F2124A
-	for <lists+selinux@lfdr.de>; Thu, 21 Mar 2024 13:02:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D86A4B23BF6
+	for <lists+selinux@lfdr.de>; Fri, 22 Mar 2024 14:59:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77B3383CD1;
-	Thu, 21 Mar 2024 13:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b="TVy3ynT+"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8892A56B76;
+	Fri, 22 Mar 2024 14:58:22 +0000 (UTC)
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E658E74E05
-	for <selinux@vger.kernel.org>; Thu, 21 Mar 2024 13:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36384D135
+	for <selinux@vger.kernel.org>; Fri, 22 Mar 2024 14:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711026173; cv=none; b=R4t+h7P7Pfzc34BEYQNaahGOCRMQus7I0Q/A1Q5a6EPzaV+CUjNeCcvol3zeDq1XbdUcNbIqVR9I2ER9rX3Lb7SmSJ9awj+opz5cdaGm1P2GwQgarT18q5IcVA15x6StNKWISW8DCvPq+0V7ahA12gR6jDxLyR0rQ2AwTBO/gd8=
+	t=1711119502; cv=none; b=nYWBKrdhS2X73yObCfgBDYttP6cElt4TBUQhM+ig2d1YvXblCbMC+8dKzfe/iM9dp2KH8mRxTSb1MmTslrPewTHFQPiPLVbBFdpHmi1k5om+WXBgNTqT+8Mj0cIOirIRNaAIUmG5qnbXPMkgkfSDbvj12p2yEAhBd4fhtcEUxR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711026173; c=relaxed/simple;
-	bh=DnJn+lZf7P8q0kPefKZZ4ppMCV2rqEnHPvss0gKHGmo=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type; b=o1OnvgSboS4dhCmpmD9Fj5/xjtBlM6HdXgQpit5qgLr+xGouxkXzevEFdddGOF2/dmzxFSn5Ewmo4zavAnJZACdgPaMl9GbSw1ZUeh1vDO8mweFJLqzV8PGN22Pzxc0XSplPQZJuy3uOwPag4pbJjKjvj6MOHHHnfjUYKM60BS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org; spf=pass smtp.mailfrom=ieee.org; dkim=pass (1024-bit key) header.d=ieee.org header.i=@ieee.org header.b=TVy3ynT+; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ieee.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ieee.org
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6918781a913so7717046d6.3
-        for <selinux@vger.kernel.org>; Thu, 21 Mar 2024 06:02:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ieee.org; s=google; t=1711026169; x=1711630969; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5P7/X0B9+ifdgVHvxv+Gr0tjjHyZfXEM1x1vuN/qQ4Q=;
-        b=TVy3ynT+O3ProEaEgp52UqAxORoTWJZKgDgnGfNTYInjfMfrXbQ4ujOP+Hj77Ak9/e
-         k5kP5oCLLUli7LVmKL2gGtp86VMi7clfG2QjRrtgHls27JaipF3/a2bs7wIm9mNjDY19
-         +CNcYjG36aTLovh3NrCXWuMCThEb5xYdS81Wo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711026169; x=1711630969;
-        h=content-transfer-encoding:content-language:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=5P7/X0B9+ifdgVHvxv+Gr0tjjHyZfXEM1x1vuN/qQ4Q=;
-        b=M7J7GxRSy/Kz7OSpOZ5q2BLlXqcLWnq96NvrfC1TXaY22wT5ngL3HUE2AWrx9sbQyG
-         3wG6UAb6moEPOFaq5cJlcaQcyoDhg6RFOc2BWkq9iqpfAp+OXCLdOryawMqU35mlivGT
-         5ftCBOwaPPb6NZwFHPpVdk9Qh4Vw0NMbZkmrgPaguTldog+K9VGrMQIJV5kQgx9EQM5B
-         Ei/ZurIEaTl7ShRVyw+Vztq9RCg7stZ6IMqMuCfpYqIVfYTFYVf5Qm6+JTNvafOTgpll
-         x+iTlbey99NgqMGBvP178hZffUY76a5ak8NuOdsUFbOQ3KJzYD1ge1vnkrzt2upFchgi
-         21BA==
-X-Gm-Message-State: AOJu0YxG0NMZ+F5WRY9Lm/NlifhUtJo82bw60H0lv7aYU/622fgzRw3p
-	Df1fO9G+oHypYjLWfqWdkONRbTnrNUShNyGnqaLi5PzvgWE4THPvaM6bwcPHobre0BHOjwco+Nv
-	4Y9QZsda0G7RiMiW3rnrB7FvCFcrjcD/K8NTv03zMEFPPB+ahzZjjTx2iMD9JNNuVSSiMNf5DUQ
-	ykR3OYK/wCzYsiXkgw+xkBLzELmYSpEB1V
-X-Google-Smtp-Source: AGHT+IF87C5B0kbjVTIfqGJMUha+ekNMhhTg6Oa7Amp+VOR2D5xLF7acNGffDEPdwg6m7Cd3lI4qCg==
-X-Received: by 2002:a05:6214:500d:b0:696:3cab:bc4b with SMTP id jo13-20020a056214500d00b006963cabbc4bmr2022639qvb.6.1711026169241;
-        Thu, 21 Mar 2024 06:02:49 -0700 (PDT)
-Received: from ?IPV6:2601:145:c200:2c70:10ea:59cb:9953:6679? ([2601:145:c200:2c70:10ea:59cb:9953:6679])
-        by smtp.gmail.com with ESMTPSA id kc28-20020a056214411c00b00690bfb6aac7sm8983328qvb.51.2024.03.21.06.02.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 21 Mar 2024 06:02:48 -0700 (PDT)
-Message-ID: <4408b03f-7c03-4fda-90bc-b2c810023cdd@ieee.org>
-Date: Thu, 21 Mar 2024 09:02:45 -0400
+	s=arc-20240116; t=1711119502; c=relaxed/simple;
+	bh=gxQcX5XS05rm/d39mf8nu23DfHDZePJzMyU7BxqIti8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PV7dXV9W68uqx+jmXpLo6siUMk+1nVv8DDKYfeWkitId7M7+HvIMSKo4ryHCG2zCy8SB/6SVOQJxUOlEOViQXnuKYPNVgShwZGGDvBLLU4F5GMIRe4Po4DY7jaUoneVzi1xnzthVdWOBxGuMXc5hKJVPPVcWZRSPQD5zXy1kLEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=googlemail.com; spf=fail smtp.mailfrom=googlemail.com; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=googlemail.com
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+To: selinux@vger.kernel.org
+Subject: [PATCH v2] libselinux: avoid logs in get_ordered_context_list() without policy
+Date: Fri, 22 Mar 2024 15:50:19 +0100
+Message-ID: <20240322145019.60220-1-cgzones@googlemail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Chris PeBenito <pebenito@ieee.org>
-Subject: ANN: SETools 4.5.0
-To: SElinux mailing list <selinux@vger.kernel.org>,
- SELinux Reference Policy mailing list <selinux-refpolicy@vger.kernel.org>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-A new release of SETools is available:
+If no policy has been loaded yet and thus the current context is still
+"kernel" avoid logging failures in get_ordered_context_list(), like:
 
-https://github.com/SELinuxProject/setools/releases/tag/4.5.0
+    get_ordered_context_list:  error in processing configuration file /etc/selinux/debian/contexts/users/root
+    get_ordered_context_list:  error in processing configuration file /etc/selinux/debian/contexts/default_contexts
 
-User Visible Changes
+Move the context parsing from get_context_user() to its caller
+get_ordered_context_list(), so an invalid context is not treated as an
+get_context_user() failure and not logged.
 
-* Add graphical results for information flow analysis and domain 
-transition analysis, available in apol, sedta, and seinfoflow.
-* Add tooltips, What's This?, and detail popups in apol to help 
-cross-referencing query and analysis results along with 
-context-sensitive help.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+v2:
+  - move the context parsing from get_context_user() to its caller
+  - add Signed-off-by
+---
+ libselinux/src/get_context_list.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-Under The Hood Changes
-* Rework apol to fully generate the UI programmatically.
-* Update apol to PyQt6
-* Replace deprecated uses of pkg_resources and distutils.
-* Begin adding unit tests for apol UI.
-
-Updated Dependencies
-
-SETools now higher minimum versions of the following dependencies:
-
-* Python 3.10
-* NetworkX 2.6
-* PyQt6
-* Cython 0.29.14
-
-New Dependencies
-
-* pygraphviz (for seinfoflow, sedta, apol)
-* pytest (if running unit tests)
-
+diff --git a/libselinux/src/get_context_list.c b/libselinux/src/get_context_list.c
+index 7e23be05..0ad24654 100644
+--- a/libselinux/src/get_context_list.c
++++ b/libselinux/src/get_context_list.c
+@@ -130,7 +130,7 @@ static int is_in_reachable(char **reachable, const char *usercon_str)
+ }
+ 
+ static int get_context_user(FILE * fp,
+-			     const char * fromcon,
++			     context_t fromcon,
+ 			     const char * user,
+ 			     char ***reachable,
+ 			     unsigned int *nreachable)
+@@ -146,7 +146,6 @@ static int get_context_user(FILE * fp,
+ 	char **new_reachable = NULL;
+ 	char *usercon_str;
+ 	const char *usercon_str2;
+-	context_t con;
+ 	context_t usercon;
+ 
+ 	int rc;
+@@ -155,14 +154,10 @@ static int get_context_user(FILE * fp,
+ 
+ 	/* Extract the role and type of the fromcon for matching.
+ 	   User identity and MLS range can be variable. */
+-	con = context_new(fromcon);
+-	if (!con)
+-		return -1;
+-	fromrole = context_role_get(con);
+-	fromtype = context_type_get(con);
+-	fromlevel = context_range_get(con);
++	fromrole = context_role_get(fromcon);
++	fromtype = context_type_get(fromcon);
++	fromlevel = context_range_get(fromcon);
+ 	if (!fromrole || !fromtype) {
+-		context_free(con);
+ 		return -1;
+ 	}
+ 
+@@ -296,7 +291,6 @@ static int get_context_user(FILE * fp,
+ 	rc = 0;
+ 
+       out:
+-	context_free(con);
+ 	free(line);
+ 	return rc;
+ }
+@@ -418,6 +412,7 @@ int get_ordered_context_list(const char *user,
+ 	char *fname = NULL;
+ 	size_t fname_len;
+ 	const char *user_contexts_path = selinux_user_contexts_path();
++	context_t con = NULL;
+ 
+ 	if (!fromcon) {
+ 		/* Get the current context and use it for the starting context */
+@@ -427,6 +422,10 @@ int get_ordered_context_list(const char *user,
+ 		fromcon = backup_fromcon;
+ 	}
+ 
++	con = context_new(fromcon);
++	if (!con)
++		goto failsafe;
++
+ 	/* Determine the ordering to apply from the optional per-user config
+ 	   and from the global config. */
+ 	fname_len = strlen(user_contexts_path) + strlen(user) + 2;
+@@ -437,7 +436,7 @@ int get_ordered_context_list(const char *user,
+ 	fp = fopen(fname, "re");
+ 	if (fp) {
+ 		__fsetlocking(fp, FSETLOCKING_BYCALLER);
+-		rc = get_context_user(fp, fromcon, user, &reachable, &nreachable);
++		rc = get_context_user(fp, con, user, &reachable, &nreachable);
+ 
+ 		fclose(fp);
+ 		if (rc < 0 && errno != ENOENT) {
+@@ -451,7 +450,7 @@ int get_ordered_context_list(const char *user,
+ 	fp = fopen(selinux_default_context_path(), "re");
+ 	if (fp) {
+ 		__fsetlocking(fp, FSETLOCKING_BYCALLER);
+-		rc = get_context_user(fp, fromcon, user, &reachable, &nreachable);
++		rc = get_context_user(fp, con, user, &reachable, &nreachable);
+ 		fclose(fp);
+ 		if (rc < 0 && errno != ENOENT) {
+ 			selinux_log(SELINUX_ERROR,
+@@ -472,6 +471,7 @@ int get_ordered_context_list(const char *user,
+ 	else
+ 		freeconary(reachable);
+ 
++	context_free(con);
+ 	freecon(backup_fromcon);
+ 
+ 	return rc;
 -- 
-Chris PeBenito
+2.43.0
+
 

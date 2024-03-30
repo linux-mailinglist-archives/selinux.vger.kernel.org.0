@@ -1,93 +1,91 @@
-Return-Path: <selinux+bounces-971-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-973-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF6E8926A8
-	for <lists+selinux@lfdr.de>; Fri, 29 Mar 2024 23:16:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A629892B6C
+	for <lists+selinux@lfdr.de>; Sat, 30 Mar 2024 14:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 932CB283879
-	for <lists+selinux@lfdr.de>; Fri, 29 Mar 2024 22:16:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C690B21625
+	for <lists+selinux@lfdr.de>; Sat, 30 Mar 2024 13:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4865D13CFAD;
-	Fri, 29 Mar 2024 22:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 533892D638;
+	Sat, 30 Mar 2024 13:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=spsk4.lublin.pl header.i=@spsk4.lublin.pl header.b="ezj8aGTx"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="VCD7PcFr"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail.spsk4.lublin.pl (mail.spsk4.lublin.pl [94.230.25.82])
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441C513C9AF
-	for <selinux@vger.kernel.org>; Fri, 29 Mar 2024 22:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.230.25.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBC62E3E4
+	for <selinux@vger.kernel.org>; Sat, 30 Mar 2024 13:35:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711750580; cv=none; b=O/xnu8me4AvtQMk7+k6FPtlxZqJCm+qjEUFbelPofrM5BTRaOIXA7GHm16qOA8neqXdLdj+KcaN/MLTqCMmtfu6zv2kuYU/xqgWXjm/gXnOxXuoWy5LinlYtC2m73HWQRMeMdr1nA24p14t83DwQ3aEnRCfIFKQj0xkmd2i1M0o=
+	t=1711805718; cv=none; b=LJnhZ7xdprP0Rw3nxs5GYzrZCFDYAuOwtNqgW1AdyIR3pH/kMOJ0/sy0LFuFtSlJRR42WLL7/SLL2nKC5aYD6awo/b0y9d4MvQxiheobBnvs0lLM0OUVczn7wWBflr1BG8g/jESrJRJobwlYA87rWzcK7tvvWvlv5c67Vp2jLJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711750580; c=relaxed/simple;
-	bh=q4rTwUPJuDETNQyVcOOIdY1HrVloy8b4sJypBic8xRo=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XHo/uNls+FPnFk+gkvbQQge3CvPHl6TLDW0c3ltQiwYmnEt/S1KkV/IQc6KRpP3jOdilwi0P1Fc6XVFU938RuZJw6tWCfQ9UKmOhL9foW3QDfEtEqcILVtJ0OsNiZkYMOm/5jX/z2+noW5k5giqCWTgdKYi58lvxwW2s31qKLlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=spsk4.lublin.pl; spf=pass smtp.mailfrom=spsk4.lublin.pl; dkim=pass (2048-bit key) header.d=spsk4.lublin.pl header.i=@spsk4.lublin.pl header.b=ezj8aGTx; arc=none smtp.client-ip=94.230.25.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=spsk4.lublin.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=spsk4.lublin.pl
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.spsk4.lublin.pl (Postfix) with ESMTP id AF0A122A4D
-	for <selinux@vger.kernel.org>; Fri, 29 Mar 2024 23:09:53 +0100 (CET)
-Received: from mail.spsk4.lublin.pl ([127.0.0.1])
-	by localhost (zimbra-mta.spsk4.lublin.pl [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id 9ppUJnt9tvSV for <selinux@vger.kernel.org>;
-	Fri, 29 Mar 2024 23:09:53 +0100 (CET)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.spsk4.lublin.pl (Postfix) with ESMTP id 88B3A22ACE
-	for <selinux@vger.kernel.org>; Fri, 29 Mar 2024 23:09:53 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.spsk4.lublin.pl 88B3A22ACE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=spsk4.lublin.pl;
-	s=0B6D5DC2-FF57-11EB-9505-2F96557CE46E; t=1711750193;
-	bh=q4rTwUPJuDETNQyVcOOIdY1HrVloy8b4sJypBic8xRo=;
-	h=From:To:Date:Message-ID:MIME-Version;
-	b=ezj8aGTxvaOTokILTtpInvSOif+4pszCRZWE+ETL48fW6HaKT10OZvGStBpBEz4Sm
-	 LH6j/p1YMpJpQe0sGsn+dV2qquH/YL/llhwxnHhwCZWlEsEgyvxeKEZgqhsKauzvk/
-	 4UbXFb7am9Kt/VhVf8KOYGBjNyiis/UXgE0grWR+3nJ/Np3nQ7YleTyqme7w9HD+/A
-	 QPDhVhIxISqP/itMxi0r0ELmg5WRKAWMKg6Si8693P3sl6irgwldrBG7lLhj93gQs/
-	 2BYscF4pORKZMWh9qQCC+j6caUAfe+pbd/E3JYgzlDAlh7kSUIqDV4Gck+0f4HsiAw
-	 hgql/wz3BHXOQ==
-X-Virus-Scanned: amavisd-new at 
-Received: from mail.spsk4.lublin.pl ([127.0.0.1])
-	by localhost (zimbra-mta.spsk4.lublin.pl [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id SqFwYqDvNRDX for <selinux@vger.kernel.org>;
-	Fri, 29 Mar 2024 23:09:53 +0100 (CET)
-Received: from spsk4.lublin.pl (unknown [176.10.248.205])
-	by mail.spsk4.lublin.pl (Postfix) with ESMTPSA id AB3F722A4D
-	for <selinux@vger.kernel.org>; Fri, 29 Mar 2024 23:09:52 +0100 (CET)
-Reply-To: recruitment@truvista.net
-From: "Beckie Varnadore"<oddzial.onkologii@spsk4.lublin.pl>
+	s=arc-20240116; t=1711805718; c=relaxed/simple;
+	bh=gZRR9CsiuvkA+Vy3LZNwCJnPTFZTbHOWIuKpeo9ia7c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W758fWP/PkuXN+M8RiGJ37HkWUagrbm+bsCaFhgHYO1uDgXnfpdkAJWpMecuvz9X+tk5qwcWZ1wyLiHzffctIUkD3dJLfW8/EJx2HWqr7GlgKYHfGSAq2fIhuEAM+wICwMuT9BvkXgB/hcqCkBiYccnD5J25BJb/yDR/USdCzY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=VCD7PcFr; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1711805706;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=1eDyWIbCSk02+IwtxU+Gmq9Umx4cr7MgmOK/4ZaB6Ac=;
+	b=VCD7PcFrSFu+oZFH5zDQ9mtaldVo9UjDziGTkeoG9UESknzFJwnDk3sWYlxwLiJkCARtKN
+	iLC0u1vRj0ZSVE5HuZPXvmZNhkjjFbRvrFFmC0eCWqe1TBgGk2Ioqo8hlTNM9Ha6dssszF
+	yjYOcvfJCl4+uLeyeEkcEyWt5wdejxd9/LO5MFkAp1QEoLGaNyDRmEIaE/Pt2ug1BF/Hmi
+	gdP0cS0akILUqf1tKqbwq0iNRcSMfQce7EgOp0KGtlavH4ytByJHEz8P0Kb9gs77Exrbct
+	0C5iuaX4Cbts9pEr4aIMDj2fumrKB9jSN4Xg/MuUPl3C9KnuMYDWfodtIOEV6w==
 To: selinux@vger.kernel.org
-Subject: Re: Job Offer
-Date: 30 Mar 2024 09:08:37 +1100
-Message-ID: <20240330090837.A393C356452A8F39@spsk4.lublin.pl>
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [PATCH 1/2] checkpolicy: free identifiers on invalid typebounds
+Date: Sat, 30 Mar 2024 14:35:01 +0100
+Message-ID: <20240330133502.72795-1-cgoettsche@seltendoof.de>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hello,
+From: Christian Göttsche <cgzones@googlemail.com>
 
-Truvista is currently hiring for a Data Entry/Excel position that=20
-can be done remotely. No prior experience is necessary. The job=20
-entails working only three days a week for a minimum of three to=20
-four hours a day at your convenience. You can earn $1500 bi-
-weekly.
+Free the two identifiers on an invalid typebounds in the error branch,
+similar to the success branch.
 
-If you're interested in this position, please respond to this=20
-email with your full name and cell number or send your CV.
+Reported-by: oss-fuzz (issue 67700)
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ checkpolicy/policy_define.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Best regards,
+diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+index 0cf938ea..92d1e5f2 100644
+--- a/checkpolicy/policy_define.c
++++ b/checkpolicy/policy_define.c
+@@ -1477,8 +1477,12 @@ int define_typebounds(void)
+ 	}
+ 
+ 	while ((id = queue_remove(id_queue))) {
+-		if (define_typebounds_helper(bounds, id))
++		if (define_typebounds_helper(bounds, id)) {
++			free(bounds);
++			free(id);
+ 			return -1;
++		}
++
+ 		free(id);
+ 	}
+ 	free(bounds);
+-- 
+2.43.0
 
-Beckie Varnadore
-Human Resources Specialist - TruVista
 

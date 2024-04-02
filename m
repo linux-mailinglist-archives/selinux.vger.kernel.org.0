@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-981-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-979-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A2289582C
-	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 17:29:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 600A989582B
+	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 17:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50F2F1C20CA2
-	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 15:29:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3AAB1F2179D
+	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 15:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF45A131183;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C0D13118A;
 	Tue,  2 Apr 2024 15:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="kC9zuf9q"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="COfO5+Ct"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EBE85262
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F1512D76A
 	for <selinux@vger.kernel.org>; Tue,  2 Apr 2024 15:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712071783; cv=none; b=jwOAPGtzuaVzDpaBng2HxNfF0txt7t9INiq9mGSUSFICMoFUcJVNYSwGICyENzHM+E8jdZTbEZpGLDUQc+Ae1l/5xomwC7UqlFSRdAnnqyLJqrjP/9yIjViAYj9QVo8ymcddMe77IUsAEE7xez9pGeQqT31xF2INIaPo6yBdf+M=
+	t=1712071782; cv=none; b=HDi7enwHL4ARG/hHARTmlsDySN19KtgvdrM+xbPLdP+ohb/UpOASKtBHhj/Fk2lLjdlj6WUFlJgQ/qFN8maKxdR+YATW2QJvVCOeBHWigru+k7jVeqHskMEx/jH0YDTmNSB9m5dRf5BSVn2fNoY+V17alvYRJhzGqIxQwsrPi8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712071783; c=relaxed/simple;
-	bh=GKOFTMra7aSBvPHMEWrmrxKu0Lb/BVTjWFfOYJvWYJA=;
+	s=arc-20240116; t=1712071782; c=relaxed/simple;
+	bh=SxBpJdtFCFEzvKOudO6pgFbLf4W/kxZkF21S0DbD530=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e0+aut1D96TWNp04K7AmICM6qsbEy4TJi5MLJA4hu8o8+3FkHJAA2tpIKJk7iFGqQcitSlXOgFuzZbj8YnJfW8kg+BdEKCwoVlkbJi7htHfKPa0Gplv/+yTwGq6v2qWuqXgjHWg1TbkICBjE7vZ3CZTkihFOjV2dxyu48MEzGm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=kC9zuf9q; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=qGw/Hu4+T/iS5YiifQFPQIUfWqCxrup0Ni+G+aV1bTMAmI5+JhsgRC6ebcUKc3HaP76J5NlMsi9DsY46oUl9HUnOtP6nx4me0izEojwrlir+B54/f6C1TaIZhw0cE0ipcgJkCc3/qft+jcQ2lq0bnqdhEwigu9RVzAtQf+qOuFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=COfO5+Ct; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -38,17 +38,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ugv3pfOJf6skuDXKNJGROSiznNnrwTfCi1Rimn1xVI0=;
-	b=kC9zuf9qfPxxVBuy9Ke7sGYsRlqz/x6PVeXi2x2W3xzPESfQsnF8eP3558/aplXWKu8QSy
-	QezeAWhjf7muRzNiMSVuPX2LUprr0L4LM1DmBNWcM9xHCKnMk4H9wfyjVg7vweKJC8gT/j
-	qVdD/vYr9ULqeoUBKG2FYVBWkwg4A1YXp1dcJRn5+4roiwT8C29rtVkb6gO78CYngXhCr4
-	RufdOd9MQM59lOuGeRsR604yiby7KrM8UIMn/UU+nluLErNG+JlFduYzESlTKUsrBrpxzs
-	1VAYITj59J0hxZcIhxmxswdSE4E9yGgGg109q74RySADGShZ2fpMloSGpWC1yg==
+	bh=1ykRh5F9oZW4xZQLz5wG+Dg/BTp1Xi2IK3m+VKvTx54=;
+	b=COfO5+Ctm3uN5kfVuYnvMccEhP7Ws4NxIaJvRhP215c48TX8uR+QqSJEZsCShHEVBX3Yh8
+	/py8b5PnPDwHpcAirP8xL8XQXXFx1nMCjmwQBAbiSthhxt+m/oLfXaOZACS2LJoP6eg9Ni
+	BFQDRFNnP1uSvc5RZYoTbOtLa0M62TodPGjDj6tYwGoANdFvnhs1lLjXt+2mq0B1MSzkWK
+	MdDK15ZMrUIfdznkTeYkWkhV4uJ+MFxBkESdp5BziV33v7c8FfjksIriG9+vWt9i1LUb3t
+	YxDF0zsBVNpzCz9qEQTIbqsva0G0yt8quVkv55AcIKMWf0GhfyQOCc7udmRZHw==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 3/6] libsepol: validate access vector permissions
-Date: Tue,  2 Apr 2024 17:29:22 +0200
-Message-ID: <20240402152925.99781-3-cgoettsche@seltendoof.de>
+Subject: [PATCH 4/6] checkpolicy: drop never read member
+Date: Tue,  2 Apr 2024 17:29:23 +0200
+Message-ID: <20240402152925.99781-4-cgoettsche@seltendoof.de>
 In-Reply-To: <20240402152925.99781-1-cgoettsche@seltendoof.de>
 References: <20240402152925.99781-1-cgoettsche@seltendoof.de>
 Precedence: bulk
@@ -62,107 +62,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Since commit c205b924e280 ("libsepol: Fix buffer overflow when using
-sepol_av_to_string()") writing an access vector with no valid permission
-results in an error instead of an empty string being written.
+The struct scope_stack member child is never read, drop it.
 
-Validate that at least one permission of an access vector is valid.
-There might be invalid bits set, e.g. by previous versions of
-checkpolicy setting all bits for the wildcard (*) permission.
-
-Reported-by: oss-fuzz (issue 67730)
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/policydb_validate.c | 62 ++++++++++++++++++++++++++++++++
- 1 file changed, 62 insertions(+)
+ checkpolicy/module_compiler.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
-index e987d8da..c4f8c300 100644
---- a/libsepol/src/policydb_validate.c
-+++ b/libsepol/src/policydb_validate.c
-@@ -876,6 +876,49 @@ static int validate_xperms(const avtab_extended_perms_t *xperms)
- bad:
- 	return -1;
+diff --git a/checkpolicy/module_compiler.c b/checkpolicy/module_compiler.c
+index 6ff91b8f..e25a77b4 100644
+--- a/checkpolicy/module_compiler.c
++++ b/checkpolicy/module_compiler.c
+@@ -34,7 +34,7 @@ typedef struct scope_stack {
+ 	avrule_t *last_avrule;
+ 	int in_else;		/* if in an avrule block, within ELSE branch */
+ 	int require_given;	/* 1 if this block had at least one require */
+-	struct scope_stack *parent, *child;
++	struct scope_stack *parent;
+ } scope_stack_t;
+ 
+ extern policydb_t *policydbp;
+@@ -1478,7 +1478,6 @@ static int push_stack(int stack_type, ...)
+ 	}
+ 	va_end(ap);
+ 	s->parent = stack_top;
+-	s->child = NULL;
+ 	stack_top = s;
+ 	return 0;
  }
-+
-+static int perm_match(__attribute__ ((unused)) hashtab_key_t key, hashtab_datum_t datum, void *data)
-+{
-+	const uint32_t *v = data;
-+	const perm_datum_t *perdatum = datum;
-+
-+	return *v == perdatum->s.value;
-+}
-+
-+static int validate_access_vector(sepol_handle_t *handle, const policydb_t *p, sepol_security_class_t tclass,
-+				  sepol_access_vector_t av)
-+{
-+	const class_datum_t *cladatum = p->class_val_to_struct[tclass - 1];
-+	uint32_t i;
-+
-+	/*
-+	 * Check that at least one permission bit is valid.
-+	 * Older compilers might set invalid bits for the wildcard permission.
-+	 */
-+	for (i = 0; i < cladatum->permissions.nprim; i++) {
-+		if (av & (UINT32_C(1) << i)) {
-+			uint32_t v = i + 1;
-+			int rc;
-+
-+			rc = hashtab_map(cladatum->permissions.table, perm_match, &v);
-+			if (rc == 1)
-+				goto good;
-+
-+			if (cladatum->comdatum) {
-+				rc = hashtab_map(cladatum->comdatum->permissions.table, perm_match, &v);
-+				if (rc == 1)
-+					goto good;
-+			}
-+		}
-+	}
-+
-+	ERR(handle, "Invalid access vector");
-+	return -1;
-+
-+good:
-+	return 0;
-+}
-+
- static int validate_avtab_key_and_datum(avtab_key_t *k, avtab_datum_t *d, void *args)
- {
- 	map_arg_t *margs = args;
-@@ -883,6 +926,16 @@ static int validate_avtab_key_and_datum(avtab_key_t *k, avtab_datum_t *d, void *
- 	if (validate_avtab_key(k, 0, margs->policy, margs->flavors))
- 		return -1;
- 
-+	if (k->specified & AVTAB_AV) {
-+		uint32_t data = d->data;
-+
-+		if ((0xFFF & k->specified) == AVTAB_AUDITDENY)
-+			data = ~data;
-+
-+		if (validate_access_vector(margs->handle, margs->policy, k->target_class, data))
-+			return -1;
-+	}
-+
- 	if ((k->specified & AVTAB_TYPE) && validate_simpletype(d->data, margs->policy, margs->flavors))
- 		return -1;
- 
-@@ -915,6 +968,15 @@ static int validate_cond_av_list(sepol_handle_t *handle, const cond_av_list_t *c
- 
- 			if (validate_avtab_key(key, 1, p, flavors))
- 				goto bad;
-+			if (key->specified & AVTAB_AV) {
-+				uint32_t data = datum->data;
-+
-+				if ((0xFFF & key->specified) == AVTAB_AUDITDENY)
-+					data = ~data;
-+
-+				if (validate_access_vector(handle, p, key->target_class, data))
-+					goto bad;
-+			}
- 			if ((key->specified & AVTAB_TYPE) && validate_simpletype(datum->data, p, flavors))
- 				goto bad;
- 		}
+@@ -1490,9 +1489,6 @@ static void pop_stack(void)
+ 	scope_stack_t *parent;
+ 	assert(stack_top != NULL);
+ 	parent = stack_top->parent;
+-	if (parent != NULL) {
+-		parent->child = NULL;
+-	}
+ 	free(stack_top);
+ 	stack_top = parent;
+ }
 -- 
 2.43.0
 

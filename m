@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-979-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-983-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 600A989582B
-	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 17:29:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD5889582E
+	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 17:29:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3AAB1F2179D
-	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 15:29:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089581C22375
+	for <lists+selinux@lfdr.de>; Tue,  2 Apr 2024 15:29:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C0D13118A;
-	Tue,  2 Apr 2024 15:29:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D32131742;
+	Tue,  2 Apr 2024 15:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="COfO5+Ct"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="UfZwOn3W"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F1512D76A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F9212F39B
 	for <selinux@vger.kernel.org>; Tue,  2 Apr 2024 15:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712071782; cv=none; b=HDi7enwHL4ARG/hHARTmlsDySN19KtgvdrM+xbPLdP+ohb/UpOASKtBHhj/Fk2lLjdlj6WUFlJgQ/qFN8maKxdR+YATW2QJvVCOeBHWigru+k7jVeqHskMEx/jH0YDTmNSB9m5dRf5BSVn2fNoY+V17alvYRJhzGqIxQwsrPi8U=
+	t=1712071784; cv=none; b=kYdeLzooT5sN9xGEqKsniJEfoNG0nN+BqhuLw6pyjF4olhr0sxEecDEWO2FHYtNa1WP0FU+dny2DJVYVRZUc3/Qg8jVKTPj3lgnlOPvjUg8FMWEjmZwxinzIu3/ZpoLax0dG/gtZ5CFXuDlMmX2GKYX30V1tN5feMywHgyYo/JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712071782; c=relaxed/simple;
-	bh=SxBpJdtFCFEzvKOudO6pgFbLf4W/kxZkF21S0DbD530=;
+	s=arc-20240116; t=1712071784; c=relaxed/simple;
+	bh=pZ5+temZd6PzjiYP8OD7OYa38fF/HLXZYtmQBOTAGSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qGw/Hu4+T/iS5YiifQFPQIUfWqCxrup0Ni+G+aV1bTMAmI5+JhsgRC6ebcUKc3HaP76J5NlMsi9DsY46oUl9HUnOtP6nx4me0izEojwrlir+B54/f6C1TaIZhw0cE0ipcgJkCc3/qft+jcQ2lq0bnqdhEwigu9RVzAtQf+qOuFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=COfO5+Ct; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=oDmbVtxoHgFafh7rHpQ5XzSzw17winMRAdYNiPTNJibMJxxPMlIePrzhsovVWVpsq7eJXTMudqGcGKGness3JrduiReoAKX67qd4S+HllSNyb25ZcxN8JGIVN6A/73Hn3Gbb316mZFR4URbLWEfI7dye+WzUVGbIqYmhNWaq6ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=UfZwOn3W; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -38,17 +38,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1ykRh5F9oZW4xZQLz5wG+Dg/BTp1Xi2IK3m+VKvTx54=;
-	b=COfO5+Ctm3uN5kfVuYnvMccEhP7Ws4NxIaJvRhP215c48TX8uR+QqSJEZsCShHEVBX3Yh8
-	/py8b5PnPDwHpcAirP8xL8XQXXFx1nMCjmwQBAbiSthhxt+m/oLfXaOZACS2LJoP6eg9Ni
-	BFQDRFNnP1uSvc5RZYoTbOtLa0M62TodPGjDj6tYwGoANdFvnhs1lLjXt+2mq0B1MSzkWK
-	MdDK15ZMrUIfdznkTeYkWkhV4uJ+MFxBkESdp5BziV33v7c8FfjksIriG9+vWt9i1LUb3t
-	YxDF0zsBVNpzCz9qEQTIbqsva0G0yt8quVkv55AcIKMWf0GhfyQOCc7udmRZHw==
+	bh=wHuxbGwi0qIp9uGC0VAWPMH/KydQ5wdYiML8RwPwrU8=;
+	b=UfZwOn3WKnjaBoMsH1RmIajmpPmFOnPlQ8rgZF1rKJJLQM1wgwAb9Fuk3eZ2OjnOMObseD
+	gCrS/WyBF3d/Ei/veyKNbQx3RXw3xae1wuv2tzeF/OVlritaCRt5NyF1DYCorUgTil4oxo
+	T4UlwjfkA/GOKqKWASLFgHiJF7kI3qhX+qUue44WlbT7dM1j0xK1gJ/x3fVHz/VQzp5Yuc
+	P2Cm1onhSaamAYP25BhX34RMds/OMGbbUA/7yRDehB+IwY2SSkJ8Ur+Xl+wCYB4hiYHq4P
+	dqu26cFGoyVLTK29/g4na7krJ2TB23Qrct23xzeT5uXbKeUDEA2cTS39wzF67Q==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 4/6] checkpolicy: drop never read member
-Date: Tue,  2 Apr 2024 17:29:23 +0200
-Message-ID: <20240402152925.99781-4-cgoettsche@seltendoof.de>
+Subject: [PATCH 5/6] checkpolicy: drop union stack_item_u
+Date: Tue,  2 Apr 2024 17:29:24 +0200
+Message-ID: <20240402152925.99781-5-cgoettsche@seltendoof.de>
 In-Reply-To: <20240402152925.99781-1-cgoettsche@seltendoof.de>
 References: <20240402152925.99781-1-cgoettsche@seltendoof.de>
 Precedence: bulk
@@ -62,44 +62,49 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-The struct scope_stack member child is never read, drop it.
+The union stack_item_u is only used as a member in struct scope_stack,
+but actually never used.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/module_compiler.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ checkpolicy/module_compiler.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
 diff --git a/checkpolicy/module_compiler.c b/checkpolicy/module_compiler.c
-index 6ff91b8f..e25a77b4 100644
+index e25a77b4..4efd77bf 100644
 --- a/checkpolicy/module_compiler.c
 +++ b/checkpolicy/module_compiler.c
-@@ -34,7 +34,7 @@ typedef struct scope_stack {
- 	avrule_t *last_avrule;
- 	int in_else;		/* if in an avrule block, within ELSE branch */
- 	int require_given;	/* 1 if this block had at least one require */
--	struct scope_stack *parent, *child;
-+	struct scope_stack *parent;
- } scope_stack_t;
+@@ -21,14 +21,8 @@
+ #include "queue.h"
+ #include "module_compiler.h"
  
- extern policydb_t *policydbp;
-@@ -1478,7 +1478,6 @@ static int push_stack(int stack_type, ...)
- 	}
- 	va_end(ap);
- 	s->parent = stack_top;
--	s->child = NULL;
- 	stack_top = s;
- 	return 0;
- }
-@@ -1490,9 +1489,6 @@ static void pop_stack(void)
- 	scope_stack_t *parent;
- 	assert(stack_top != NULL);
- 	parent = stack_top->parent;
--	if (parent != NULL) {
--		parent->child = NULL;
--	}
- 	free(stack_top);
- 	stack_top = parent;
- }
+-union stack_item_u {
+-	avrule_block_t *avrule;
+-	cond_list_t *cond_list;
+-};
+-
+ typedef struct scope_stack {
+-	union stack_item_u u;
+-	int type;		/* for above union: 1 = avrule block, 2 = conditional */
++	int type;		/* 1 = avrule block, 2 = conditional */
+ 	avrule_decl_t *decl;	/* if in an avrule block, which
+ 				 * declaration is current */
+ 	avrule_t *last_avrule;
+@@ -1464,12 +1458,12 @@ static int push_stack(int stack_type, ...)
+ 	va_start(ap, stack_type);
+ 	switch (s->type = stack_type) {
+ 	case 1:{
+-			s->u.avrule = va_arg(ap, avrule_block_t *);
++			va_arg(ap, avrule_block_t *);
+ 			s->decl = va_arg(ap, avrule_decl_t *);
+ 			break;
+ 		}
+ 	case 2:{
+-			s->u.cond_list = va_arg(ap, cond_list_t *);
++			va_arg(ap, cond_list_t *);
+ 			break;
+ 		}
+ 	default:
 -- 
 2.43.0
 

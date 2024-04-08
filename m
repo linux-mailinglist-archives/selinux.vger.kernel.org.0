@@ -1,55 +1,55 @@
-Return-Path: <selinux+bounces-1010-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-1009-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BE589C7D0
-	for <lists+selinux@lfdr.de>; Mon,  8 Apr 2024 17:08:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B4989C7D3
+	for <lists+selinux@lfdr.de>; Mon,  8 Apr 2024 17:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64B641C2243C
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39BEFB27BC0
 	for <lists+selinux@lfdr.de>; Mon,  8 Apr 2024 15:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7848213F43C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3088D13F443;
 	Mon,  8 Apr 2024 15:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="cxfsRNIn"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="coIeJs9Z"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CBD741C6C
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B19613F43C
 	for <selinux@vger.kernel.org>; Mon,  8 Apr 2024 15:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712588892; cv=none; b=BBDTXLcKrEcm8quWXv1+LeL3hQhkmSiJmIdkGqp3OQ1WE7hsKnvg0RllteUrWEf9OJTAOcps54LhuKDmpCm+cCbQfkbTXJsoGP5lWuKnj9M0oWiIdPRiTuuGgBCkEt9FYIKDGujk3LsC99aveuVOyPlug9G5Viv77aphXPJ33LM=
+	t=1712588892; cv=none; b=JnJrjS4kU4x3TLTpY9IwzujLS7mEQPZPZf36+wLTCJgmhDD+j31p30GifsgXkL+pvUONquT4DpqejEEUy/LOF67/1ZpZHH4G11wndXblgMA3Bu0DxO556kcvMobxpCwC6zhlnf4wJ72aEV3ncD4cn8XzSC+PesY8NcAo2vMdxQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712588892; c=relaxed/simple;
-	bh=I5evE4bW+qAyAf846OfiJcppIA5WRn0Mqt7mUMeOSA8=;
+	bh=noGWYRH5yHLmCesg7SRF4cEjrbCtBs5cPClwGC/uark=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MrB6CqWmElTdaiwo95cPCe+BpAenRRJhCNzCVIWUvC1/Xa8G6hpqjEfkhbfWk80gFwqBkQ/sYeVPib4wXjhSHOc6ePXrIuImWghPvWblA1YATsh2MCjPuVW/d4zzi1Jv7zUkC3BEzfrYMkGLMbAJhyyUxEaY/6nFIy6lTzkVx6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=cxfsRNIn; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=T46k44Ae6ZLTXyt0/DOyiiiSOFVs2NzJJi3EEWvmME9tGyzFIAKxEk0Tf0uc0kffP4yEBFNg+3U6PMWYXMZ3vgmsFmfdddynH5cD5pD7dWDtJn/9SRgeslkRIaX1bJn/4QGX6fvX2DIqQ4Kq14hWXHws2Yn8vytmANV9DiDIyF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=coIeJs9Z; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1712588887;
+	s=2023072701; t=1712588888;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=czm1vMHORwPbQZM/KP5ZfCDFTklC7RmW4Nf6/flp/BI=;
-	b=cxfsRNInl3H2B1l5dUL8XDKcDA8zfsLRH6x6Ri1/oUkq/ZViKyFxg9lGr9Bt2TSg6XjFmV
-	yUiTLtHQBMTg1ZIWuqOTQ8NPg0ysiUDHvtopEwX2RSC+m0DrI6XcphY9FkV0QcuN47Hm19
-	W7Txkp/TWWCKocOBK6BLK8knE0QhhYOKXlh6q+cXHmpYO0xOfR1TUfJ9cDRI3Aq7V/lu+S
-	JR0kkGcWaf+Sb51D0c0V8I8Ays4Iu9B6SfDAsaQ5oLdHUCjvGu70JVYDC46DfpxpBgKLEe
-	ObAKJZZaS3PNvGdDr17QTVB8cOSKEXMvwHGgU9OM9AL8vl3u2ucHiOoKHWA9/A==
+	bh=CRibdGMLlrMAUqYnRQbm/JB8dJS9+JcGQuUDjZQDGTs=;
+	b=coIeJs9ZOpxPLn4l83U3sxa+v5vcbfXZaVibGg6bPhHVfSqlOUluh+EAwqnaINL9YkSZBI
+	NmfrYektXDAcrY6fZJAiT0ab9GiqwPUe0vwbJitFcbe09I7svF0BxQZnvhrNzqrMgPLoVK
+	pEL6W3U5CQedvsC7znIPFSXSQQ3INCqag6WDMvQb7UyYl9Unq5HPf9NuM0ls2RovIpVHCW
+	dCs2ekaP8PdaV09SryYXgA55KCLp6xgNZYNbqb+Msm/nNH63WY7Yb7SzfL6pnIc53KafKs
+	m7p6/ifEsGSm36QJAKusmjCMK2luazFI6LkVTxPQImxdfJOD1YASk8j3ldn50A==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 2/4] checkpolicy/tests: add test for splitting xperm rule
-Date: Mon,  8 Apr 2024 17:08:00 +0200
-Message-ID: <20240408150802.63941-2-cgoettsche@seltendoof.de>
+Subject: [PATCH 3/4] checkpolicy: declare file local variable static
+Date: Mon,  8 Apr 2024 17:08:01 +0200
+Message-ID: <20240408150802.63941-3-cgoettsche@seltendoof.de>
 In-Reply-To: <20240408150802.63941-1-cgoettsche@seltendoof.de>
 References: <20240408150802.63941-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,59 +64,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-An extended permission rule statement might get split into multiple
-access vector rules, due to size limitations.
+The variable policy_type used by checkmodule is only used inside of
+checkmodule.c.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/tests/policy_allonce.conf              | 2 +-
- checkpolicy/tests/policy_allonce.expected.conf     | 4 +++-
- checkpolicy/tests/policy_allonce.expected_opt.conf | 4 +++-
- 3 files changed, 7 insertions(+), 3 deletions(-)
+ checkpolicy/checkmodule.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/checkpolicy/tests/policy_allonce.conf b/checkpolicy/tests/policy_allonce.conf
-index 34e6402d..54a4c811 100644
---- a/checkpolicy/tests/policy_allonce.conf
-+++ b/checkpolicy/tests/policy_allonce.conf
-@@ -36,7 +36,7 @@ allow TYPE1 self : CLASS1 { PERM1 };
- auditallow { TYPE1 TYPE2 } TYPE3 : CLASS1 { PERM1 };
- dontaudit TYPE1 { TYPE2 TYPE3 } : CLASS3 { PERM1 CPERM1 };
- neverallow TYPE1 TYPE2 : { CLASS2 CLASS3 } { CPERM1 };
--allowxperm TYPE1 TYPE2 : CLASS1 ioctl 0x1;
-+allowxperm TYPE1 TYPE2 : CLASS1 ioctl { 0x456-0x5678 };
- auditallowxperm TYPE1 TYPE2 : CLASS1 ioctl 0x2;
- dontauditxperm TYPE1 TYPE2 : CLASS1 ioctl 0x3;
- neverallowxperm TYPE1 TYPE2 : CLASS1 ioctl 0x4;
-diff --git a/checkpolicy/tests/policy_allonce.expected.conf b/checkpolicy/tests/policy_allonce.expected.conf
-index 63739e1f..aff6bfa3 100644
---- a/checkpolicy/tests/policy_allonce.expected.conf
-+++ b/checkpolicy/tests/policy_allonce.expected.conf
-@@ -34,7 +34,9 @@ auditallow TYPE1 TYPE3:CLASS1 { PERM1 };
- auditallow TYPE2 TYPE3:CLASS1 { PERM1 };
- dontaudit TYPE1 TYPE2:CLASS3 { CPERM1 PERM1 };
- dontaudit TYPE1 TYPE3:CLASS3 { CPERM1 PERM1 };
--allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x1 };
-+allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x456-0x4ff };
-+allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x500-0x55ff };
-+allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x5600-0x5678 };
- auditallowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x2 };
- dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x3 };
- type_transition TYPE1 TYPE2:CLASS1 TYPE3;
-diff --git a/checkpolicy/tests/policy_allonce.expected_opt.conf b/checkpolicy/tests/policy_allonce.expected_opt.conf
-index 1c969961..335486d1 100644
---- a/checkpolicy/tests/policy_allonce.expected_opt.conf
-+++ b/checkpolicy/tests/policy_allonce.expected_opt.conf
-@@ -34,7 +34,9 @@ auditallow TYPE1 TYPE3:CLASS1 { PERM1 };
- auditallow TYPE2 TYPE3:CLASS1 { PERM1 };
- dontaudit TYPE1 TYPE2:CLASS3 { CPERM1 PERM1 };
- dontaudit TYPE1 TYPE3:CLASS3 { CPERM1 PERM1 };
--allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x1 };
-+allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x456-0x4ff };
-+allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x500-0x55ff };
-+allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x5600-0x5678 };
- auditallowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x2 };
- dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x3 };
- type_transition TYPE1 TYPE2:CLASS1 TYPE3;
+diff --git a/checkpolicy/checkmodule.c b/checkpolicy/checkmodule.c
+index 14e6c891..e7869bf1 100644
+--- a/checkpolicy/checkmodule.c
++++ b/checkpolicy/checkmodule.c
+@@ -43,7 +43,7 @@ static int handle_unknown = SEPOL_DENY_UNKNOWN;
+ static const char *txtfile = "policy.conf";
+ static const char *binfile = "policy";
+ 
+-unsigned int policy_type = POLICY_BASE;
++static unsigned int policy_type = POLICY_BASE;
+ unsigned int policyvers = MOD_POLICYDB_VERSION_MAX;
+ 
+ static int read_binary_policy(policydb_t * p, const char *file, const char *progname)
 -- 
 2.43.0
 

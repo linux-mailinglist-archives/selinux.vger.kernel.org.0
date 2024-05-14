@@ -1,64 +1,68 @@
-Return-Path: <selinux+bounces-1114-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-1116-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590788C513E
-	for <lists+selinux@lfdr.de>; Tue, 14 May 2024 13:25:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B852E8C5144
+	for <lists+selinux@lfdr.de>; Tue, 14 May 2024 13:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EE934B20A84
-	for <lists+selinux@lfdr.de>; Tue, 14 May 2024 11:25:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E888C1C20E90
+	for <lists+selinux@lfdr.de>; Tue, 14 May 2024 11:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5C3C12FB2C;
-	Tue, 14 May 2024 10:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E410512FB33;
+	Tue, 14 May 2024 10:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WgZn8vey"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iKYaNFGb"
 X-Original-To: selinux@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB2812FB12
-	for <selinux@vger.kernel.org>; Tue, 14 May 2024 10:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1501B12FB36
+	for <selinux@vger.kernel.org>; Tue, 14 May 2024 10:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684227; cv=none; b=bAVgm7qIaAj/50faqJd2hRlfWPzcwlG5VItGpZQao/+tX2y0DaQP1Y98/i+ZP4V5xbMQl8ytnbOJvBOmejTVNuBeNuKY89WsXiin66qg6Gp467R/PeNOYI3WepaEoL183MNJvz3WynfPuMyfKcpc4/PVliM5BrduO5wMyGFJxIg=
+	t=1715684238; cv=none; b=RSC58XzMYq95CS7ukq4wDkf2Aulsbh4TZOS5Md9hxYw1ED1P9EMwgTeNLVzEpOtSRBFgeJvm+ZHb3/Nvt570aRw8Z+Ot2ZOQNF3u2RAfF/p2sW28inHxTNdVAX8/X0b9L8VrxeXCpz671gZqsr+60B8ApRrBxZEH7VVEstTvPd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684227; c=relaxed/simple;
-	bh=UmRQHMOBh1ao+uinKZLhCjz+tzj3jl8KP62Fv9Hysto=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-type; b=gaZm447WcU+4oGAQg9/5KeCZ4TWpOTQ7fX0V+dqpYena4Ya8ywmc6BVJAM8jwyWI2vvxc2nTvOrhGOoyETjtmipwfihf1sb7M8h5V3YnYU61KieWJ03Z1dFTRj6v/XYTkdVkAw5OczHPiurr8vFcVUl8dfN5L2A2riQjyU1htd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WgZn8vey; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1715684238; c=relaxed/simple;
+	bh=GES66brHB9LzP/L8k03xqKHZ6Uh70dcSMl0XK4azpHw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-type; b=Rv2HQpjf3RqXEhZcgPlQeHs5qVkex9DjOAI0pbpZwJgfOem9Xfw23daEqggXjg9sg0r2n1CtirV4u24NdwECpseiAoDitCYtC0ZNEA1fCnQulvLGC1Svbs+wnr3v0ETT4h7e9UYkeuuHfjEuazMXddKkZ2s4cOabv/KObsN1XdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iKYaNFGb; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715684224;
+	s=mimecast20190719; t=1715684235;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=wm/kLhpgUcErf1kQOIGmSSf/GJq4n3CfD9g1B7+4oNE=;
-	b=WgZn8veyTV5Lzb+M7utpSgnz2/OOUKG6X94A8TFdFeldrReDdHfhRBR9OHqt35wbaig+pS
-	15OrEGp0COSl6dt0593+7Sbfj4lndcE3eFaUgR055R8UYqizdE3GjI0q93Ji/9Vf1YzybW
-	gTKXvq2etfXzk7iQuFpyRD1Sr92N8SY=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-357-0CIxMo3gP0CXFQ9tgjBmgQ-1; Tue,
- 14 May 2024 06:57:03 -0400
-X-MC-Unique: 0CIxMo3gP0CXFQ9tgjBmgQ-1
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=p1E5OX98QIipxMgARRnovryNEY536IeF8a1yeU8kkt4=;
+	b=iKYaNFGbD7IamRXunW0TfZKjMGJ1+MKY9wbcKDV5yydRHAfvW1EDlGqgzM6AntWX6+WWNO
+	IQFT3k60JhJURyudLLgqqLdeoLbn4tGn4ljjSAo0xUi/fgpcNlVRPp4OuSm834RHo+/Ulr
+	RJ/d1gpCfoDf/yQ54nYnrMCISbTdBb4=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-593-LgQb8ewMN1WMQ2hwOjHK4Q-1; Tue, 14 May 2024 06:57:04 -0400
+X-MC-Unique: LgQb8ewMN1WMQ2hwOjHK4Q-1
 Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D70CA1C00049
-	for <selinux@vger.kernel.org>; Tue, 14 May 2024 10:57:02 +0000 (UTC)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D020A8030B5
+	for <selinux@vger.kernel.org>; Tue, 14 May 2024 10:57:03 +0000 (UTC)
 Received: from localhost.localdomain (unknown [10.45.224.74])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 8831C40C6EB7;
-	Tue, 14 May 2024 10:57:01 +0000 (UTC)
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 1C57740C6CB7;
+	Tue, 14 May 2024 10:57:02 +0000 (UTC)
 From: Petr Lautrbach <lautrbach@redhat.com>
 To: selinux@vger.kernel.org
 Cc: Petr Lautrbach <lautrbach@redhat.com>
-Subject: [PATCH 1/4] sandbox: do not fail without xmodmap
-Date: Tue, 14 May 2024 12:56:48 +0200
-Message-ID: <20240514105651.225925-1-lautrbach@redhat.com>
+Subject: [PATCH 2/4] sandbox: do not run window manager if it's not a session
+Date: Tue, 14 May 2024 12:56:49 +0200
+Message-ID: <20240514105651.225925-2-lautrbach@redhat.com>
+In-Reply-To: <20240514105651.225925-1-lautrbach@redhat.com>
+References: <20240514105651.225925-1-lautrbach@redhat.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -71,25 +75,30 @@ X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
 
 Signed-off-by: Petr Lautrbach <lautrbach@redhat.com>
 ---
- sandbox/sandbox | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sandbox/sandbox | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/sandbox/sandbox b/sandbox/sandbox
-index fe631a92cecd..c2ae4de69128 100644
+index c2ae4de69128..1e96f93e4a92 100644
 --- a/sandbox/sandbox
 +++ b/sandbox/sandbox
-@@ -479,7 +479,10 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
+@@ -285,15 +285,12 @@ class Sandbox:
+             fd.write("""#! /bin/sh
+ #TITLE: %s
+ # /usr/bin/test -r ~/.xmodmap && /usr/bin/xmodmap ~/.xmodmap
+-%s &
+-WM_PID=$!
+ if which dbus-run-session >/dev/null 2>&1; then
+     dbus-run-session -- %s
+ else
+     dbus-launch --exit-with-session %s
+ fi
+-kill -TERM $WM_PID  2> /dev/null
+-""" % (command, wm, command, command))
++""" % (command, command, command))
+         fd.close()
+         os.chmod(execfile, 0o700)
  
-                     xmodmapfile = self.__homedir + "/.xmodmap"
-                     xd = open(xmodmapfile, "w")
--                    subprocess.Popen(["/usr/bin/xmodmap", "-pke"], stdout=xd).wait()
-+                    try:
-+                        subprocess.Popen(["/usr/bin/xmodmap", "-pke"], stdout=xd).wait()
-+                    except:
-+                        pass
-                     xd.close()
- 
-                     self.__setup_sandboxrc(self.__options.wm)
 -- 
 2.45.0
 

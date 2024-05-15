@@ -1,208 +1,176 @@
-Return-Path: <selinux+bounces-1115-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-1118-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AEC08C5140
-	for <lists+selinux@lfdr.de>; Tue, 14 May 2024 13:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B208C6906
+	for <lists+selinux@lfdr.de>; Wed, 15 May 2024 16:52:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BEC71C20AF1
-	for <lists+selinux@lfdr.de>; Tue, 14 May 2024 11:26:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 584561C21404
+	for <lists+selinux@lfdr.de>; Wed, 15 May 2024 14:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227ED12FB34;
-	Tue, 14 May 2024 10:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F64155727;
+	Wed, 15 May 2024 14:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D2GoCVno"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hZZV665u"
 X-Original-To: selinux@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F17712FB29
-	for <selinux@vger.kernel.org>; Tue, 14 May 2024 10:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09CF57CA1;
+	Wed, 15 May 2024 14:52:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715684235; cv=none; b=fgB8dn+nAb6BcT2LBidJ+pdiTrcI1OEdP+ah5SPeSxtj5v+/ikPS7NKnwe8BrYXx8MdXP4UCuZaBJaP+L5Sk9rjgBVfjyybE1W3ysHk9zktL5tsXZxOvdb01LVKQautCh1db2bTtfpPbk/N/DBL7U+0zf2NiQ9W6dBQM5rQFL0M=
+	t=1715784735; cv=none; b=jLMt2wi+zdKyBgi4AxhygTN2js48GWdle0DpmqQFlaUlCGkhpUIPKwrpBF4XJK7YjuzJr+ifQB+0s6/NnxhJt9SoHqj8tXWD9K/UVJCLT0A9YQIGZ8wfWYlcrn+n/NuNxUcTUhFHuKtOygWS725hyyW+vqUqdAQKIP1YhAotZzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715684235; c=relaxed/simple;
-	bh=OVpiDMfeyMrlakZA6VVjk+/XgyTeWmpLJSoSCmHsDu0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-type; b=WdbHkQvcpIKVC96rH/PfOsvUbjPbEeJXfljYcn9sriWLrlaQJNAq8IYJLxM20pX+/VoDmh1/KrOQB/Y0dh7Z+lpWmIY7Yiy5waNcg+sJT/Sljwajo+4iV31jXz7IxWWj3BSsmk493kCbEvFELy/eCVAFUmZzaxNB8RJWIotRXQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D2GoCVno; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1715684232;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UC+DMerd/iiwRYb8sKbGuXSAAWFrYrK4qHrFiMnqFho=;
-	b=D2GoCVnoqmDYIPzZwyCLefOGjvhqndoJB6/yFjxmv0XDI44Ns9fMGr7HuXN8HlX+5dWGMR
-	jtQC7qlh44/iEWfGI8OIwtFKxaAO4+5rYGRHErZrGgo8ay1Y7ARJoWbhyL2xRYJ35WeMTp
-	vHOz1koQE3ur1lRMcgyY79bQuioqL3c=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-558--DwCm6FVPsqtVcJb2F1h9g-1; Tue, 14 May 2024 06:57:06 -0400
-X-MC-Unique: -DwCm6FVPsqtVcJb2F1h9g-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C1B0E8029EC
-	for <selinux@vger.kernel.org>; Tue, 14 May 2024 10:57:05 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.45.224.74])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 0E6BF40C6CB6;
-	Tue, 14 May 2024 10:57:04 +0000 (UTC)
-From: Petr Lautrbach <lautrbach@redhat.com>
-To: selinux@vger.kernel.org
-Cc: Petr Lautrbach <lautrbach@redhat.com>
-Subject: [PATCH 4/4] sandbox: Add support for Wayland
-Date: Tue, 14 May 2024 12:56:51 +0200
-Message-ID: <20240514105651.225925-4-lautrbach@redhat.com>
-In-Reply-To: <20240514105651.225925-1-lautrbach@redhat.com>
-References: <20240514105651.225925-1-lautrbach@redhat.com>
+	s=arc-20240116; t=1715784735; c=relaxed/simple;
+	bh=mfIWBKjyaGtpfqqPaQXhJaL2BgJixSHpCSI3TbRvwWI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M7YJ+iwphaq7YBo3IOdqUpXVEvbCGywiODP01VOu1zVSZTUCkGPkAKwk6+uIC4gx4n7NOjCjPhYQ1I3XhgetiTvk/ldNiO5APUagl0w6MAv7xTE0KT1iPZYA1hG1YwHzxhk5Q+FdCZ0o6dH5K/CGy2Yw0r9+RaQdRU3zxi8o/Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hZZV665u; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1ecd9a81966so55610655ad.0;
+        Wed, 15 May 2024 07:52:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1715784733; x=1716389533; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Dyd4g9Mj6udeAMgwbujT15lk0egPi/YMbqByHib0kUE=;
+        b=hZZV665uFO7NGWa8XzZ7KyohlwJnBkLZEn9AYcxgf2Dig8RqjKANpwtkT0nxS/vH15
+         ov+hSoVD3YX5EitLuOJYvhBvh9pwP9Ds4oefJmJwel9bQYStcSqOfBt00EU0qjOrof4L
+         v24MW+Q7zBLvKvYKHRcvaMntW03OzkWJ2pH63B6iqO5aNTmjyP0yBEn6C7SvXe/HC0RO
+         sv0cRIvbbKbqcfX4EAq7ofkfLHf9rXqnWMlAGuVOp4dVib/isJ85/jaex06TApnY20ho
+         WogOPNVbkmkw3r8ST7304lBrRI6y0XLynDpPyhCL3XJuQA3vD9YJbhOvYb6RkZPEw/oO
+         yuWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715784733; x=1716389533;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Dyd4g9Mj6udeAMgwbujT15lk0egPi/YMbqByHib0kUE=;
+        b=j4zd3lmuv9wvaU2vJXe8le/StFvKaTNQO9plHr+Inku+sxzLu+CTuXLYPHhvpUvBVt
+         3kGm3LQTd2kVPgTh0y0URHKH/J/gs9Pqv4bzLiu/aSCVrCly1f1yTEUWsftOTAiQHeBi
+         lpgSc0gBWZdPvWdA/3PQynz37jSSw+iu+Ilf2tFxRfz9gMC8bjc8L3OYf3lK2/KukEop
+         O9KmEEr2wIdRuyYou5BDFxuA7FMvUtHVi0FmvrT6hzIlqROxeevFNLa4XL+zF7zZtMv9
+         cOTsMWzMoF8eu45e9Bh+BnTf1RSk9qMrauWrNIrr9MVxIdej4miTCTxJynR9COqrOq3c
+         knnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWrJMij3OtFpBlfedza+IsFjmQrVoYvFWu9EV194uDEc6cHcoouaEAGbAm+2MUL+Bve8rPL3ngvS+OMSEMsb9HEqVieLniZS6RpuG+tW/ABy6dTHoeZ7hXxPXKNJNfxvItUtt9bWO1U37b6X9nscQOT
+X-Gm-Message-State: AOJu0YwMylmvCT/XdTsRqbffuugfm/rZ65pGvVmU8ZAE4NKLEujRlJX7
+	orespycBLzc9l+y//vgv0oo3TibTndcf32culf9ENTF67qxEmM4KtvpyAdmXBxUd8sIsactvwuj
+	Io+XWic6mn9bYX+IukVzpajdxJD4=
+X-Google-Smtp-Source: AGHT+IEBX22RX9w1vE00S9nBou9S9ivxyjpVGwDAKjzpwjQAP1/Pb2AKyIRA1BYuB73/SpuaEfwQls/e50YW11bQYuk=
+X-Received: by 2002:a17:902:d2d0:b0:1e4:59a2:d7c1 with SMTP id
+ d9443c01a7336-1eefa58c6ebmr289967395ad.33.1715784733009; Wed, 15 May 2024
+ 07:52:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.2
+References: <20240503130905.16823-1-stephen.smalley.work@gmail.com> <171497439414.9775.6998904788791406674@noble.neil.brown.name>
+In-Reply-To: <171497439414.9775.6998904788791406674@noble.neil.brown.name>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Wed, 15 May 2024 10:52:01 -0400
+Message-ID: <CAEjxPJ6DTNY3p9MmdV0K1A7No7joczGTeOe26Q4wr6yujk9zKA@mail.gmail.com>
+Subject: Re: [PATCH v3] nfsd: set security label during create operations
+To: NeilBrown <neilb@suse.de>
+Cc: selinux@vger.kernel.org, linux-nfs@vger.kernel.org, chuck.lever@oracle.com, 
+	jlayton@kernel.org, paul@paul-moore.com, omosnace@redhat.com, 
+	linux-security-module@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-- use XWayland for X application if it's run in Wayland session
-- run Wayland apps directly if it's run in Wayland session
-- add sandbox -Y option to run run Wayland application
+On Mon, May 6, 2024 at 1:46=E2=80=AFAM NeilBrown <neilb@suse.de> wrote:
+>
+> On Fri, 03 May 2024, Stephen Smalley wrote:
+> > When security labeling is enabled, the client can pass a file security
+> > label as part of a create operation for the new file, similar to mode
+> > and other attributes. At present, the security label is received by nfs=
+d
+> > and passed down to nfsd_create_setattr(), but nfsd_setattr() is never
+> > called and therefore the label is never set on the new file. This bug
+> > may have been introduced on or around commit d6a97d3f589a ("NFSD:
+> > add security label to struct nfsd_attrs"). Looking at nfsd_setattr()
+> > I am uncertain as to whether the same issue presents for
+> > file ACLs and therefore requires a similar fix for those.
+> >
+> > An alternative approach would be to introduce a new LSM hook to set the
+> > "create SID" of the current task prior to the actual file creation, whi=
+ch
+> > would atomically label the new inode at creation time. This would be be=
+tter
+> > for SELinux and a similar approach has been used previously
+> > (see security_dentry_create_files_as) but perhaps not usable by other L=
+SMs.
+> >
+> > Reproducer:
+> > 1. Install a Linux distro with SELinux - Fedora is easiest
+> > 2. git clone https://github.com/SELinuxProject/selinux-testsuite
+> > 3. Install the requisite dependencies per selinux-testsuite/README.md
+> > 4. Run something like the following script:
+> > MOUNT=3D$HOME/selinux-testsuite
+> > sudo systemctl start nfs-server
+> > sudo exportfs -o rw,no_root_squash,security_label localhost:$MOUNT
+> > sudo mkdir -p /mnt/selinux-testsuite
+> > sudo mount -t nfs -o vers=3D4.2 localhost:$MOUNT /mnt/selinux-testsuite
+> > pushd /mnt/selinux-testsuite/
+> > sudo make -C policy load
+> > pushd tests/filesystem
+> > sudo runcon -t test_filesystem_t ./create_file -f trans_test_file \
+> >       -e test_filesystem_filetranscon_t -v
+> > sudo rm -f trans_test_file
+> > popd
+> > sudo make -C policy unload
+> > popd
+> > sudo umount /mnt/selinux-testsuite
+> > sudo exportfs -u localhost:$MOUNT
+> > sudo rmdir /mnt/selinux-testsuite
+> > sudo systemctl stop nfs-server
+> >
+> > Expected output:
+> > <eliding noise from commands run prior to or after the test itself>
+> > Process context:
+> >       unconfined_u:unconfined_r:test_filesystem_t:s0-s0:c0.c1023
+> > Created file: trans_test_file
+> > File context: unconfined_u:object_r:test_filesystem_filetranscon_t:s0
+> > File context is correct
+> >
+> > Actual output:
+> > <eliding noise from commands run prior to or after the test itself>
+> > Process context:
+> >       unconfined_u:unconfined_r:test_filesystem_t:s0-s0:c0.c1023
+> > Created file: trans_test_file
+> > File context: system_u:object_r:test_file_t:s0
+> > File context error, expected:
+> >       test_filesystem_filetranscon_t
+> > got:
+> >       test_file_t
+> >
+> > Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+> > ---
+> > v3 removes the erroneous and unnecessary change to NFSv2 and updates th=
+e
+> > description to note the possible origin of the bug. I did not add a
+> > Fixes tag however as I have not yet tried confirming that.
+>
+> I think this bug has always been present - since label support was
+> added.
+> Commit d6a97d3f589a ("NFSD: add security label to struct nfsd_attrs")
+> should have fixed it, but was missing the extra test that you provide.
+>
+> So
+> Fixes: 0c71b7ed5de8 ("nfsd: introduce file_cache_mutex")
+> might be appropriate - it fixes the patch, though not a bug introduced
+> by the patch.
+>
+> Thanks for this patch!
+> Reviewed-by: NeilBrown <neilb@suse.de>
 
-Signed-off-by: Petr Lautrbach <lautrbach@redhat.com>
----
- sandbox/sandbox     | 26 ++++++++++++++++++++++++--
- sandbox/sandboxX.sh | 36 ++++++++++++++++++++++++------------
- 2 files changed, 48 insertions(+), 14 deletions(-)
-
-diff --git a/sandbox/sandbox b/sandbox/sandbox
-index 1e96f93e4a92..e3fd6119ed4d 100644
---- a/sandbox/sandbox
-+++ b/sandbox/sandbox
-@@ -344,6 +344,10 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
-                           action="callback", callback=self.__x_callback,
-                           default=False, help=_("run X application within a sandbox"))
- 
-+        parser.add_option("-Y", dest="Y_ind",
-+                          action="callback", callback=self.__x_callback,
-+                          default=False, help=_("run Wayland application within a sandbox"))
-+
-         parser.add_option("-H", "--homedir",
-                           action="callback", callback=self.__validdir,
-                           type="string",
-@@ -457,6 +461,16 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
-         selinux.chcon(self.__runuserdir, self.__filecon, recursive=True)
-         selinux.setfscreatecon(None)
- 
-+    def __is_wayland_app(self):
-+        binary = shutil.which(self.__paths[0])
-+        if binary is None:
-+            return True
-+        output = subprocess.run(['ldd', binary], capture_output=True)
-+        for line in str(output.stdout, "utf-8").split('\n'):
-+            if line.find("libwayland") != -1:
-+                return True
-+        return False
-+
-     def __execute(self):
-         try:
-             cmds = [SEUNSHARE, "-Z", self.__execcon]
-@@ -465,7 +479,7 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
-             if self.__mount:
-                 cmds += ["-t", self.__tmpdir, "-h", self.__homedir, "-r", self.__runuserdir]
- 
--                if self.__options.X_ind:
-+                if self.__options.X_ind or self.__options.Y_ind:
-                     if self.__options.dpi:
-                         dpi = self.__options.dpi
-                     else:
-@@ -474,6 +488,9 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
-                         from gi.repository import Gtk
-                         dpi = str(Gtk.Settings.get_default().props.gtk_xft_dpi / 1024)
- 
-+                    if os.environ.get('WAYLAND_DISPLAY') is not None:
-+                        cmds += ["-W", os.environ["WAYLAND_DISPLAY"]]
-+
-                     xmodmapfile = self.__homedir + "/.xmodmap"
-                     xd = open(xmodmapfile, "w")
-                     try:
-@@ -484,7 +501,12 @@ sandbox [-h] [-l level ] [-[X|M] [-H homedir] [-T tempdir]] [-I includefile ] [-
- 
-                     self.__setup_sandboxrc(self.__options.wm)
- 
--                    cmds += ["--", SANDBOXSH, self.__options.windowsize, dpi]
-+                    if self.__options.Y_ind or self.__is_wayland_app():
-+                        WN = "yes"
-+                    else:
-+                        WN = "no"
-+
-+                    cmds += ["--", SANDBOXSH, WN, self.__options.windowsize, dpi]
-                 else:
-                     cmds += ["--"] + self.__paths
-                 return subprocess.Popen(cmds).wait()
-diff --git a/sandbox/sandboxX.sh b/sandbox/sandboxX.sh
-index eaa500d08143..28169182ce42 100644
---- a/sandbox/sandboxX.sh
-+++ b/sandbox/sandboxX.sh
-@@ -2,8 +2,9 @@
- trap "" TERM
- context=`id -Z | secon -t -l -P`
- export TITLE="Sandbox $context -- `grep ^#TITLE: ~/.sandboxrc | /usr/bin/cut -b8-80`"
--[ -z $1 ] && export SCREENSIZE="1000x700" || export SCREENSIZE="$1"
--[ -z $2 ] && export DPI="96" || export DPI="$2"
-+[ -z $1 ] && export WAYLAND_NATIVE="no" || export WAYLAND_NATIVE="$1"
-+[ -z $2 ] && export SCREENSIZE="1000x700" || export SCREENSIZE="$2"
-+[ -z $3 ] && export DPI="96" || export DPI="$3"
- trap "exit 0" HUP
- 
- mkdir -p ~/.config/openbox
-@@ -20,16 +21,27 @@ cat > ~/.config/openbox/rc.xml << EOF
- </openbox_config>
- EOF
- 
--(/usr/bin/Xephyr -resizeable -title "$TITLE" -terminate -screen $SCREENSIZE -dpi $DPI -nolisten tcp -displayfd 5 5>&1 2>/dev/null) | while read D; do
--    export DISPLAY=:$D
--    cat > ~/seremote << __EOF
--#!/bin/sh
--DISPLAY=$DISPLAY "\$@"
-+if [ "$WAYLAND_NATIVE" == "no" ]; then
-+    if [ -z "$WAYLAND_DISPLAY" ]; then
-+        DISPLAY_COMMAND='/usr/bin/Xephyr -resizeable -title "$TITLE" -terminate -screen $SCREENSIZE -dpi $DPI -nolisten tcp -displayfd 5 5>&1 2>/dev/null'
-+    else
-+        DISPLAY_COMMAND='/usr/bin/Xwayland -terminate -dpi $DPI -retro -geometry $SCREENSIZE -decorate -displayfd 5 5>&1 2>/dev/null'
-+    fi
-+    eval $DISPLAY_COMMAND | while read D; do
-+        export DISPLAY=:$D
-+        cat > ~/seremote << __EOF
-+#!/bin/bash -x
-+export DISPLAY=$DISPLAY
-+export WAYLAND_DISPLAY=$WAYLAND_DISPLAY
-+"\$@"
- __EOF
--    chmod +x ~/seremote
-+        chmod +x ~/seremote
-+        /usr/share/sandbox/start $HOME/.sandboxrc
-+        export EXITCODE=$?
-+        kill -TERM 0
-+        break
-+    done
-+else
-     /usr/share/sandbox/start $HOME/.sandboxrc
--    export EXITCODE=$?
--    kill -TERM 0
--    break
--done
-+fi
- exit 0
--- 
-2.45.0
-
+FWIW, I finally got around to testing Linux v5.14 and it did pass
+these NFS tests so this was a regression. I haven't been able to
+bisect yet.
 

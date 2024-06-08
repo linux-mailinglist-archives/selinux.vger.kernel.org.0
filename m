@@ -1,52 +1,52 @@
-Return-Path: <selinux+bounces-1200-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-1192-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BFF901308
-	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 19:27:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0779012F0
+	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 19:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24DED1C209BD
-	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 17:27:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D93D1C20AC1
+	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 17:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404CC13FF6;
-	Sat,  8 Jun 2024 17:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E6FE63C8;
+	Sat,  8 Jun 2024 17:18:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="R4itgVbl"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="XYNQWadq"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F3E15EA2
-	for <selinux@vger.kernel.org>; Sat,  8 Jun 2024 17:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B4014A8E
+	for <selinux@vger.kernel.org>; Sat,  8 Jun 2024 17:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717867641; cv=none; b=qNJFlkYtVDBF7PC6LWhzFWyYA2j/Z9dn7R1dXfrAR0GtVomCht7Oj0EdRtbCU0xRwKFeZDk7BKMg2JAwa/ttlxPUCduVhc2uqmPKcDs1t0ed9on3F0eTcktlyAu85AXOYl62h21yEFxHdM5DyjZrk49m8pg2A2PFvNjYIP8M7TM=
+	t=1717867127; cv=none; b=BrVJOQy5NCfOCz6QIh9ZDQvsVkSPKgY0v3uwzwTHDRYFYBlZX36hleQ6raTCyCzb8G4UyF4/9zX6ltbxciQpru2Wc2XZP6TnLfBbYXo/5W/fSEDz/F/uPcqOczGOjpnoQnQ2MgYxgqIi5d3z47FIXsXOPNEAWTc0Sq3VJFHQmsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717867641; c=relaxed/simple;
-	bh=+nAtKmNWtc01Nz6HAoP04Zpt+jRD9jSlCHS+7h6dx0A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BonH1SjuY/8prAqznzv87oPzlEVDOAUOJA/3LX3iOgGNo7f9pdFeD1Ju52pWOJNhb46EpztRZ3mfZD3rvZU0upnekAQ9+ZRdR1jTh7Nc+h4wrBucGLL7H9D1D9ttm9O2on8olPpibKgT2Qdwr8QCsCKXqwYiEflj0b21TFqy8sY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=R4itgVbl; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1717867127; c=relaxed/simple;
+	bh=jVJlxr4cCG5OlYoTp1Huv9XgOcZuSzWZ+ixH6XOuYiw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TcOrBCUJra7R5ylZT5/Cvv1tShncWfk52D6dmGu5Kiu1gU+ypJOMg8+9HxyJ5x1Yix/mreGgKVsYZ08LZYJvSDz+TUtq3r+1ax1ZmsVr0dcqzLnVZhas5Pvv/0CIhbGpD4XyStV+4yBacFGPINyzkpcwuqX243Eg1ykpyU/zBhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=XYNQWadq; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1717867081;
+	s=2023072701; t=1717867121;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=WhYBVpDJZZ3zgi+kDDYqAFKCcir/u+FPGgbLKdp/cPw=;
-	b=R4itgVblYqAXLgJBvVQ6dO5Nt4rVKJCmMWqhJ0VsOf6alPBtP/sRd9VtkxUYXsZLfzETii
-	PM0cZbnbLlXS3LDg19uPSK77JyjilVuIXRVRKil0XyDNUSil0zXV7UaDjAWJq3vzX/IrP2
-	VXkSxgh5WGl+B4pS8Q6Lo/DJUQt4Y7V1QQp3A/qDAzJsiq/P/4+0PAVqSbI2Lx4cMPwjcS
-	xpMWLzUvO89gcicsva4SzD1S4rlSZ0jzjkAcXWFLtomVr06Spx2uqCd2yd1qVfw0kKWLJD
-	SCzy0FbHyMdccoNfS1nwSAquQyy97Ss86vP4rEY/vAHW/bG8xI3baJFT925f2A==
+	bh=PZdSkofHMHe53CuVfPH+3iV/NOZ2JWDGYULAXqAik5Y=;
+	b=XYNQWadqOOXZlcV+YpbcQmKMLMhbI6XE8mxIQ3tJLuPp0xd927rTblTX8fqXP8bbzdYuIh
+	Scc284pyR0pCUmMf//eknmvf2IpdA+ji5Ll3JFxncA1nrUF2GvO2JFr9ENiBHqQuf/JqzV
+	+YAtmYpMPyh6Fim20oc+79+KZ68fOs3dajEN1WKhNunLqCZLg/091vubsLZGEB92gwpAoo
+	UnitP8/dmMUPw4LXtqKdCKAV8etvaFaqHNrfQZ27o7GNv+tn5c3F0a+rmNZaMXlPly1q57
+	LKcwP1IiZwLd7uGkazzVWrproHWt0ZamxWSMXLrFIr2PhODZa11dHuWxlNSVNA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH] libsepol: contify function pointer arrays
-Date: Sat,  8 Jun 2024 19:17:39 +0200
-Message-ID: <20240608171739.135501-1-cgoettsche@seltendoof.de>
+Subject: [PATCH] libsepol: validate attribute-type maps
+Date: Sat,  8 Jun 2024 19:18:38 +0200
+Message-ID: <20240608171838.136163-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -59,83 +59,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-These function pointers are never modified.
+Ensure the attribute-to-type maps contain no invalid entries, required
+for generating typeattributeset statements when converting to CIL.
 
+Reported-by: oss-fuzz (issue 69283)
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/link.c          | 4 ++--
- libsepol/src/module_to_cil.c | 8 ++++----
- libsepol/src/write.c         | 2 +-
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ libsepol/src/policydb_validate.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/libsepol/src/link.c b/libsepol/src/link.c
-index b8272308..048d742e 100644
---- a/libsepol/src/link.c
-+++ b/libsepol/src/link.c
-@@ -749,7 +749,7 @@ static int cat_copy_callback(hashtab_key_t key, hashtab_datum_t datum,
- 	return 0;
- }
- 
--static int (*copy_callback_f[SYM_NUM]) (hashtab_key_t key,
-+static int (*const copy_callback_f[SYM_NUM]) (hashtab_key_t key,
- 					hashtab_datum_t datum, void *datap) = {
- NULL, class_copy_callback, role_copy_callback, type_copy_callback,
- 	    user_copy_callback, bool_copy_callback, sens_copy_callback,
-@@ -1215,7 +1215,7 @@ static int user_fix_callback(hashtab_key_t key, hashtab_datum_t datum,
+diff --git a/libsepol/src/policydb_validate.c b/libsepol/src/policydb_validate.c
+index 84c1071c..9746f562 100644
+--- a/libsepol/src/policydb_validate.c
++++ b/libsepol/src/policydb_validate.c
+@@ -1654,6 +1654,26 @@ bad:
  	return -1;
  }
  
--static int (*fix_callback_f[SYM_NUM]) (hashtab_key_t key, hashtab_datum_t datum,
-+static int (*const fix_callback_f[SYM_NUM]) (hashtab_key_t key, hashtab_datum_t datum,
- 				       void *datap) = {
- NULL, NULL, role_fix_callback, type_fix_callback, user_fix_callback,
- 	    NULL, NULL, NULL};
-diff --git a/libsepol/src/module_to_cil.c b/libsepol/src/module_to_cil.c
-index 3b3480bf..2dbf137e 100644
---- a/libsepol/src/module_to_cil.c
-+++ b/libsepol/src/module_to_cil.c
-@@ -2951,8 +2951,8 @@ static int ocontexts_to_cil(struct policydb *pdb)
- 	int rc = -1;
- 	int ocon;
++static int validate_attrtype_map(sepol_handle_t *handle, const policydb_t *p, validate_t flavors[])
++{
++	const ebitmap_t *maps = p->attr_type_map;
++	uint32_t i;
++
++	if (p->policy_type == POLICY_KERN) {
++		for (i = 0; i < p->p_types.nprim; i++) {
++			if (validate_ebitmap(&maps[i], &flavors[SYM_TYPES]))
++				goto bad;
++		}
++	} else if (maps)
++		goto bad;
++
++	return 0;
++
++bad:
++	ERR(handle, "Invalid attr type map");
++	return -1;
++}
++
+ static int validate_properties(sepol_handle_t *handle, const policydb_t *p)
+ {
+ 	switch (p->policy_type) {
+@@ -1790,6 +1810,9 @@ int policydb_validate(sepol_handle_t *handle, const policydb_t *p)
+ 	if (validate_typeattr_map(handle, p, flavors))
+ 		goto bad;
  
--	static int (**ocon_funcs)(struct policydb *pdb, struct ocontext *ocon);
--	static int (*ocon_selinux_funcs[OCON_NUM])(struct policydb *pdb, struct ocontext *ocon) = {
-+	static int (*const *ocon_funcs)(struct policydb *pdb, struct ocontext *ocon);
-+	static int (*const ocon_selinux_funcs[OCON_NUM])(struct policydb *pdb, struct ocontext *ocon) = {
- 		ocontext_selinux_isid_to_cil,
- 		ocontext_selinux_fs_to_cil,
- 		ocontext_selinux_port_to_cil,
-@@ -2963,7 +2963,7 @@ static int ocontexts_to_cil(struct policydb *pdb)
- 		ocontext_selinux_ibpkey_to_cil,
- 		ocontext_selinux_ibendport_to_cil,
- 	};
--	static int (*ocon_xen_funcs[OCON_NUM])(struct policydb *pdb, struct ocontext *ocon) = {
-+	static int (*const ocon_xen_funcs[OCON_NUM])(struct policydb *pdb, struct ocontext *ocon) = {
- 		ocontext_xen_isid_to_cil,
- 		ocontext_xen_pirq_to_cil,
- 		ocontext_xen_ioport_to_cil,
-@@ -3404,7 +3404,7 @@ exit:
- }
++	if (validate_attrtype_map(handle, p, flavors))
++		goto bad;
++
+ 	validate_array_destroy(flavors);
  
- 
--static int (*func_to_cil[SYM_NUM])(int indent, struct policydb *pdb, struct avrule_block *block, struct stack *decl_stack, char *key, void *datum, int scope) = {
-+static int (*const func_to_cil[SYM_NUM])(int indent, struct policydb *pdb, struct avrule_block *block, struct stack *decl_stack, char *key, void *datum, int scope) = {
- 	NULL,	// commons, only stored in the global symtab, handled elsewhere
- 	class_to_cil,
- 	role_to_cil,
-diff --git a/libsepol/src/write.c b/libsepol/src/write.c
-index f8cd9e1d..a52e2e82 100644
---- a/libsepol/src/write.c
-+++ b/libsepol/src/write.c
-@@ -1344,7 +1344,7 @@ static int user_write(hashtab_key_t key, hashtab_datum_t datum, void *ptr)
- 	return POLICYDB_SUCCESS;
- }
- 
--static int (*write_f[SYM_NUM]) (hashtab_key_t key, hashtab_datum_t datum,
-+static int (*const write_f[SYM_NUM]) (hashtab_key_t key, hashtab_datum_t datum,
- 				void *datap) = {
- common_write, class_write, role_write, type_write, user_write,
- 	    cond_write_bool, sens_write, cat_write,};
+ 	return 0;
 -- 
 2.45.1
 

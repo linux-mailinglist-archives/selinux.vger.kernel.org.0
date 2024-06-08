@@ -1,52 +1,57 @@
-Return-Path: <selinux+bounces-1195-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-1194-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43E29012F9
-	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 19:20:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1C39012F8
+	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 19:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 836C41F218F1
-	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 17:20:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE26B28217A
+	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 17:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF61A101F2;
-	Sat,  8 Jun 2024 17:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14BAE57E;
+	Sat,  8 Jun 2024 17:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="ZYCEWmrf"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="LJT2GCAu"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CB8C13D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C7C6AB8
 	for <selinux@vger.kernel.org>; Sat,  8 Jun 2024 17:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717867233; cv=none; b=IRertvZk5mvAsNU4LAE1hQGbSHUw+TVExjIrAFIg6EtbIjoggTeC/vc+R4yGtgF+xf8+PgWc0XNUPFIhfDgGrlWYsF25rUhyMm6EVW6i19hDB2NlGbPykRzsVRxWWJxbFPHSXV9McTZYG0soViyHa8PwncVIBjXTunqFrhxVAI8=
+	t=1717867232; cv=none; b=npHMhP966eUM6L2+z6q3n3114vD5fnugPJ1V5Uyo6EPpX/VrVOLb5suDRGd/KgKaA4tLMOaVvy28+9p4OQdduKrsNN7obCy1iwEuPAdYiqNxMKKn5GLChkxHfdQ2ZIxTvnSA00vUrQtyKejpme/wdcOnx/fdVDhcCDp2c+x+TSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717867233; c=relaxed/simple;
-	bh=Slql2Q0FSLoJlF63qd+sSRmYLzbmHqU3Q64Lx26rg2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W8QIkiPQ5w/UDfE/t0Sh5hc5bsZxjPWyG6Raq0ZYxVXqi9JpA1w8NRwyS3R6snmzWTXKtsaw9nHL7Te46B+DkXkk+pXSSO2ZeHo1wmVYdZ0d3zKomsCZtVnTftdiQ5Gld5HswloZIUo2gLqVfDnKTEHbi1k6IN4bG7LeZEpQSeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=ZYCEWmrf; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1717867232; c=relaxed/simple;
+	bh=jABlOF9ldHqd8z+v9mq4YlNCstiQg03cGxqzzlZtM9M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jJk4y9IhWPbVq4RCdiBLfe+hguH5cMcYaJUoLvzAi+FNMeZVv28y/aFrlrXHGbiHw8g9+gy9G3NoGbSUjTLh7QmcKqRDIIA2NrpHu9BsGeDfebV1U13pUFaZbhq8LhflNjPkQv7KA+xvqKI0ivkBLCnAtR3hcxZtUvCJuZOn6zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=LJT2GCAu; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1717867228;
+	s=2023072701; t=1717867229;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=SeOsM/IvsDi9l1MgI2UpIPI57d86HeMzi4sDacOGM5I=;
-	b=ZYCEWmrfgve4YYlVIurMZgnXYD08N9KkVpT0Jq01h3aCjLakF4RDFh6jmOHH7+uaEal830
-	9uztxLiQ9yXq7YhDeqbHxn5sqC1o+1P2pLRbWIPNZMv/EFJz5FMeKDz4VPoEImawgQwY41
-	e/ECqKzl+2JEEjcQIaH3ZlTt/B95NDlYQxr81cwVYEQa+868lwDAOs3U2rgs8iEW+Ye/Pw
-	wBg7GE2a2VsRd+vS/nNLoGEmrGZPz5Jv5WE49zK3RN+wrbVUiGv0ptWTtcqNVPg5Pgclnt
-	Yi68amlHziWS2xfMv+oyNtWVq7MkQ003CKfQUYSdTIIrR5XTIc0hRdPibIVRvA==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bah6xsPLl5c7HdloiGYu4AhGZC2oR7fs881nTLhE5kA=;
+	b=LJT2GCAu1jubmiD/y8q14L0ieJsfbkQo2Aqfvba+Wy+MkV7Q4+ZYvAN94lDqBEqVfncuFp
+	l1H6QWRoZvJ+DWvrCJgLbCRC6PRI2pZ2fD8+ERRlge8T+T9AVEHR1Qm8F0qCyMIvQFHhm2
+	hFG+imeLX/WYgAtQultEE62kviJv0LKukqiebDFFbQSlkWcXXggQDiS1LYzcGm193p5319
+	3ULnxM86c8cbkE/m7Gki1c6rPq035hirQISa+FpRDmEu5H24tGQ6tiozdE1pLaODmGace5
+	MFmVeZ17aUDIbI8jBsOUpfLrPjqShH8Q1kzuD5UiiXFIv6otXUkJhbPenNkwwA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 1/2] libselinux: deprecate security_disable(3)
-Date: Sat,  8 Jun 2024 19:20:24 +0200
-Message-ID: <20240608172025.137795-1-cgoettsche@seltendoof.de>
+Subject: [PATCH 2/2] libselinux: constify avc_open(3) parameter
+Date: Sat,  8 Jun 2024 19:20:25 +0200
+Message-ID: <20240608172025.137795-2-cgoettsche@seltendoof.de>
+In-Reply-To: <20240608172025.137795-1-cgoettsche@seltendoof.de>
+References: <20240608172025.137795-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -59,46 +64,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-The runtime disable functionality has been removed in Linux 6.4.  Thus
-security_disable(3) will no longer work on these kernels.
+The option array passed to avc_open(3) is only read from.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/include/selinux/selinux.h   | 6 +++++-
- libselinux/man/man3/security_disable.3 | 3 ++-
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ libselinux/include/selinux/avc.h | 2 +-
+ libselinux/man/man3/avc_open.3   | 2 +-
+ libselinux/src/avc.c             | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
-index 61c1422b..1318a66a 100644
---- a/libselinux/include/selinux/selinux.h
-+++ b/libselinux/include/selinux/selinux.h
-@@ -367,7 +367,11 @@ extern int security_deny_unknown(void);
- /* Get the checkreqprot value */
- extern int security_get_checkreqprot(void);
+diff --git a/libselinux/include/selinux/avc.h b/libselinux/include/selinux/avc.h
+index 4bbd2382..1f79ba16 100644
+--- a/libselinux/include/selinux/avc.h
++++ b/libselinux/include/selinux/avc.h
+@@ -215,7 +215,7 @@ extern int avc_init(const char *msgprefix,
+  * is set to "avc" and any callbacks desired should be specified via
+  * selinux_set_callback().  Available options are listed above.
+  */
+-extern int avc_open(struct selinux_opt *opts, unsigned nopts);
++extern int avc_open(const struct selinux_opt *opts, unsigned nopts);
  
--/* Disable SELinux at runtime (must be done prior to initial policy load). */
-+/* Disable SELinux at runtime (must be done prior to initial policy load).
-+   Unsupported since Linux 6.4. */
-+#ifdef __GNUC__
-+__attribute__ ((deprecated))
-+#endif
- extern int security_disable(void);
- 
- /* Get the policy version number. */
-diff --git a/libselinux/man/man3/security_disable.3 b/libselinux/man/man3/security_disable.3
-index 072923ce..5ad8b778 100644
---- a/libselinux/man/man3/security_disable.3
-+++ b/libselinux/man/man3/security_disable.3
-@@ -14,7 +14,8 @@ disables the SELinux kernel code, unregisters selinuxfs from
- and then unmounts
- .IR /sys/fs/selinux .
+ /**
+  * avc_cleanup - Remove unused SIDs and AVC entries.
+diff --git a/libselinux/man/man3/avc_open.3 b/libselinux/man/man3/avc_open.3
+index 55683bb6..74f85593 100644
+--- a/libselinux/man/man3/avc_open.3
++++ b/libselinux/man/man3/avc_open.3
+@@ -10,7 +10,7 @@ avc_open, avc_destroy, avc_reset, avc_cleanup \- userspace SELinux AVC setup and
+ .br
+ .B #include <selinux/avc.h>
  .sp
--This function can only be called at runtime and prior to the initial policy
-+This function is only supported on Linux 6.3 and earlier, and can only be
-+called at runtime and prior to the initial policy
- load. After the initial policy load, the SELinux kernel code cannot be disabled,
- but only placed in "permissive" mode by using
- .BR security_setenforce(3).
+-.BI "int avc_open(struct selinux_opt *" options ", unsigned " nopt ");"
++.BI "int avc_open(const struct selinux_opt *" options ", unsigned " nopt ");"
+ .sp
+ .BI "void avc_destroy(void);"
+ .sp
+diff --git a/libselinux/src/avc.c b/libselinux/src/avc.c
+index ce87ac16..7af5d192 100644
+--- a/libselinux/src/avc.c
++++ b/libselinux/src/avc.c
+@@ -225,7 +225,7 @@ static int avc_init_internal(const char *prefix,
+ 	return rc;
+ }
+ 
+-int avc_open(struct selinux_opt *opts, unsigned nopts)
++int avc_open(const struct selinux_opt *opts, unsigned nopts)
+ {
+ 	avc_setenforce = 0;
+ 
 -- 
 2.45.1
 

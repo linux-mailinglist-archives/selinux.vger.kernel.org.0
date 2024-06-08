@@ -1,52 +1,52 @@
-Return-Path: <selinux+bounces-1193-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-1195-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E2069012F7
-	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 19:19:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D43E29012F9
+	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 19:20:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B97FCB21D77
-	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 17:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 836C41F218F1
+	for <lists+selinux@lfdr.de>; Sat,  8 Jun 2024 17:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3952D14AAD;
-	Sat,  8 Jun 2024 17:19:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF61A101F2;
+	Sat,  8 Jun 2024 17:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="j1I60lHg"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="ZYCEWmrf"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2681C2BD
-	for <selinux@vger.kernel.org>; Sat,  8 Jun 2024 17:19:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6CB8C13D
+	for <selinux@vger.kernel.org>; Sat,  8 Jun 2024 17:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717867172; cv=none; b=I80Tf5pGaEM9bSGMHcK42DoBX2WnbwTrg/KeSJRVkDzL6GWnYZ9XBV1dqqUUL9zAtNf3AZPehfTNxDshf7IX6SsHMHTr6o0RifW8mus4N5udack2QuxRJTApe1+ZD323zuFKiwB9iQ1uT1rlrEsCRPPT82D7qB09e2pwMcXDyv4=
+	t=1717867233; cv=none; b=IRertvZk5mvAsNU4LAE1hQGbSHUw+TVExjIrAFIg6EtbIjoggTeC/vc+R4yGtgF+xf8+PgWc0XNUPFIhfDgGrlWYsF25rUhyMm6EVW6i19hDB2NlGbPykRzsVRxWWJxbFPHSXV9McTZYG0soViyHa8PwncVIBjXTunqFrhxVAI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717867172; c=relaxed/simple;
-	bh=UR85b+vq/zcHARWzq8q9PzfJmo8WG0D8hkpDaKcW3yM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HbGdE96o3P5Dd15zGqP1lm8RKsEBn5NrvMK5VnxOuhCvqqE3IC2TN6stFDJrotSyj6unCbUXxVvGrWYv9vuKqrF1BayOuwubWskv6N5vx/Xm4ZVQNu5rLvs9oyORiOIr/fBzW1dsR23gQFAp+PIpBxmoFnM4O4PcJu6udwSA47U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=j1I60lHg; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1717867233; c=relaxed/simple;
+	bh=Slql2Q0FSLoJlF63qd+sSRmYLzbmHqU3Q64Lx26rg2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=W8QIkiPQ5w/UDfE/t0Sh5hc5bsZxjPWyG6Raq0ZYxVXqi9JpA1w8NRwyS3R6snmzWTXKtsaw9nHL7Te46B+DkXkk+pXSSO2ZeHo1wmVYdZ0d3zKomsCZtVnTftdiQ5Gld5HswloZIUo2gLqVfDnKTEHbi1k6IN4bG7LeZEpQSeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=ZYCEWmrf; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1717867166;
+	s=2023072701; t=1717867228;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=FyXoRTDdKpdbSzII3WCjxkYWxTPm/Zh/DUMV5mhZdec=;
-	b=j1I60lHglqOPZFtuhM4EMc/HvbswGcgi0bxQihO7T/9nof7pcrjIGflUYkTAdeS6oixXky
-	7PIjdihUSpflm4U0hBi7xWr161dfssH679VBdzb45uwOhLjs3PknMELDk7G5tMyyenjs8w
-	9tZzyHmrqI6qVIr+JkRVMHTLnUgkhlkdk/2NBHIRDVSUZZtDrnnQRHoEUKvsPKCOguinV+
-	ajBC3hzO+YA/vAd599T8EJ/pT4iKaIcnM9MmSJmWwSARQyFa8kXtvqqbEi43nKSiMQrqLf
-	4uDxLpx81/k1Bc/Hm/Ra5kGdSWJXUkW2UX5qFuZDQLo7uzJRC+VMdUEPRl+Gqw==
+	bh=SeOsM/IvsDi9l1MgI2UpIPI57d86HeMzi4sDacOGM5I=;
+	b=ZYCEWmrfgve4YYlVIurMZgnXYD08N9KkVpT0Jq01h3aCjLakF4RDFh6jmOHH7+uaEal830
+	9uztxLiQ9yXq7YhDeqbHxn5sqC1o+1P2pLRbWIPNZMv/EFJz5FMeKDz4VPoEImawgQwY41
+	e/ECqKzl+2JEEjcQIaH3ZlTt/B95NDlYQxr81cwVYEQa+868lwDAOs3U2rgs8iEW+Ye/Pw
+	wBg7GE2a2VsRd+vS/nNLoGEmrGZPz5Jv5WE49zK3RN+wrbVUiGv0ptWTtcqNVPg5Pgclnt
+	Yi68amlHziWS2xfMv+oyNtWVq7MkQ003CKfQUYSdTIIrR5XTIc0hRdPibIVRvA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH] libsepol: hashtab: save one comparison on hit
-Date: Sat,  8 Jun 2024 19:19:23 +0200
-Message-ID: <20240608171923.136765-1-cgoettsche@seltendoof.de>
+Subject: [PATCH 1/2] libselinux: deprecate security_disable(3)
+Date: Sat,  8 Jun 2024 19:20:24 +0200
+Message-ID: <20240608172025.137795-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -59,95 +59,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-When the comparison function returns 0, avoid a repeated call to it.
+The runtime disable functionality has been removed in Linux 6.4.  Thus
+security_disable(3) will no longer work on these kernels.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/src/hashtab.c | 53 +++++++++++++++++++++++++-----------------
- 1 file changed, 32 insertions(+), 21 deletions(-)
+ libselinux/include/selinux/selinux.h   | 6 +++++-
+ libselinux/man/man3/security_disable.3 | 3 ++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/libsepol/src/hashtab.c b/libsepol/src/hashtab.c
-index 2af3a9bf..399582b1 100644
---- a/libsepol/src/hashtab.c
-+++ b/libsepol/src/hashtab.c
-@@ -112,15 +112,17 @@ int hashtab_insert(hashtab_t h, hashtab_key_t key, hashtab_datum_t datum)
- 	hashtab_check_resize(h);
+diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/selinux/selinux.h
+index 61c1422b..1318a66a 100644
+--- a/libselinux/include/selinux/selinux.h
++++ b/libselinux/include/selinux/selinux.h
+@@ -367,7 +367,11 @@ extern int security_deny_unknown(void);
+ /* Get the checkreqprot value */
+ extern int security_get_checkreqprot(void);
  
- 	hvalue = h->hash_value(h, key);
--	prev = NULL;
--	cur = h->htable[hvalue];
--	while (cur && h->keycmp(h, key, cur->key) > 0) {
--		prev = cur;
--		cur = cur->next;
--	}
+-/* Disable SELinux at runtime (must be done prior to initial policy load). */
++/* Disable SELinux at runtime (must be done prior to initial policy load).
++   Unsupported since Linux 6.4. */
++#ifdef __GNUC__
++__attribute__ ((deprecated))
++#endif
+ extern int security_disable(void);
  
--	if (cur && (h->keycmp(h, key, cur->key) == 0))
--		return SEPOL_EEXIST;
-+	for (prev = NULL, cur = h->htable[hvalue]; cur; prev = cur, cur = cur->next) {
-+		int cmp;
-+
-+		cmp = h->keycmp(h, key, cur->key);
-+		if (cmp > 0)
-+			continue;
-+		if (cmp == 0)
-+			return SEPOL_EEXIST;
-+		break;
-+	}
- 
- 	newnode = (hashtab_ptr_t) malloc(sizeof(hashtab_node_t));
- 	if (newnode == NULL)
-@@ -151,14 +153,19 @@ int hashtab_remove(hashtab_t h, hashtab_key_t key,
- 		return SEPOL_ENOENT;
- 
- 	hvalue = h->hash_value(h, key);
--	last = NULL;
--	cur = h->htable[hvalue];
--	while (cur != NULL && h->keycmp(h, key, cur->key) > 0) {
--		last = cur;
--		cur = cur->next;
-+
-+	for (last = NULL, cur = h->htable[hvalue]; cur; last = cur, cur = cur->next) {
-+		int cmp;
-+
-+		cmp = h->keycmp(h, key, cur->key);
-+		if (cmp > 0)
-+			continue;
-+		if (cmp == 0)
-+			break;
-+		return SEPOL_ENOENT;
- 	}
- 
--	if (cur == NULL || (h->keycmp(h, key, cur->key) != 0))
-+	if (cur == NULL)
- 		return SEPOL_ENOENT;
- 
- 	if (last == NULL)
-@@ -183,14 +190,18 @@ hashtab_datum_t hashtab_search(hashtab_t h, const_hashtab_key_t key)
- 		return NULL;
- 
- 	hvalue = h->hash_value(h, key);
--	cur = h->htable[hvalue];
--	while (cur != NULL && h->keycmp(h, key, cur->key) > 0)
--		cur = cur->next;
--
--	if (cur == NULL || (h->keycmp(h, key, cur->key) != 0))
--		return NULL;
-+	for (cur = h->htable[hvalue]; cur; cur = cur->next) {
-+		int cmp;
-+
-+		cmp = h->keycmp(h, key, cur->key);
-+		if (cmp > 0)
-+			continue;
-+		if (cmp == 0)
-+			return cur->datum;
-+		break;
-+	}
- 
--	return cur->datum;
-+	return NULL;
- }
- 
- void hashtab_destroy(hashtab_t h)
+ /* Get the policy version number. */
+diff --git a/libselinux/man/man3/security_disable.3 b/libselinux/man/man3/security_disable.3
+index 072923ce..5ad8b778 100644
+--- a/libselinux/man/man3/security_disable.3
++++ b/libselinux/man/man3/security_disable.3
+@@ -14,7 +14,8 @@ disables the SELinux kernel code, unregisters selinuxfs from
+ and then unmounts
+ .IR /sys/fs/selinux .
+ .sp
+-This function can only be called at runtime and prior to the initial policy
++This function is only supported on Linux 6.3 and earlier, and can only be
++called at runtime and prior to the initial policy
+ load. After the initial policy load, the SELinux kernel code cannot be disabled,
+ but only placed in "permissive" mode by using
+ .BR security_setenforce(3).
 -- 
 2.45.1
 

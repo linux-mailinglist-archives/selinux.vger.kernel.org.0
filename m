@@ -1,81 +1,124 @@
-Return-Path: <selinux+bounces-1853-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-1855-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 255D196655B
-	for <lists+selinux@lfdr.de>; Fri, 30 Aug 2024 17:26:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58625966A23
+	for <lists+selinux@lfdr.de>; Fri, 30 Aug 2024 21:59:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 491DA1C21893
-	for <lists+selinux@lfdr.de>; Fri, 30 Aug 2024 15:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CA181C216FE
+	for <lists+selinux@lfdr.de>; Fri, 30 Aug 2024 19:59:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA141B5818;
-	Fri, 30 Aug 2024 15:26:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857FA1BC07F;
+	Fri, 30 Aug 2024 19:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jCEgQ6TD"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b="VtetnBN5";
+	dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="RU3fdKDR";
+	dkim=pass (1024-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="P7Vd6NkS"
 X-Original-To: selinux@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from e3i12.smtp2go.com (e3i12.smtp2go.com [158.120.84.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08CEE1B532C;
-	Fri, 30 Aug 2024 15:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5814B1BE228
+	for <selinux@vger.kernel.org>; Fri, 30 Aug 2024 19:59:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.120.84.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725031581; cv=none; b=s+D0RMa9Jvv1kTSGibLn1grojvaSuHuJeNhBK5iWfbAderNyI9lTpmS5a354GmHeMJSiEcAq0xCsuTGtuv7LFOnCN5E9rdZuUw3ouTCthUQhlsTEd9rGpI3XbCbs3aUDFkN8EpS4FDvPpCLwRddiZtk/6D39hbrnUzK7oaE/9uQ=
+	t=1725047973; cv=none; b=Ba5Np3Q1KNP/HZmuimxxXz2puIlYONPsbJLV66mKiQnUTaNhBZr4S7frfbcXWWQLzDR1m1Q5YHO8QASgLs3f2Nz3MBOkMvfoCP/mF6/WUEM94G9d6O9uiBtGcHBZBdaITYkFyIrn3/AHH3Rse8m+NSIBzxvlXpt0Z5Fli2jETAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725031581; c=relaxed/simple;
-	bh=T037Od0spN/0ZYY99Fg4NH/t4Tg40xcEOa6cRb4CP7g=;
+	s=arc-20240116; t=1725047973; c=relaxed/simple;
+	bh=VrcLFN5tqkfWY7mTHOYKMf0e0KvomCFsMPrfJDAaMSY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FWaU+ATwP7KbiLE/WLbUr+Fpr7bZb9WW/DPjWy+kEqbapl8enna3D/pEhQrEGq/HFcqtCLS6y8m8LOL4AtcIyUAjZuO28Ey/OgzD7S5Q5N81vRRyvQaONzpAawnRVdnaMJsXgA5VvGfxgFfhtVItZlLFl6iNdWeh4viLkVspYBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jCEgQ6TD; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725031580; x=1756567580;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=T037Od0spN/0ZYY99Fg4NH/t4Tg40xcEOa6cRb4CP7g=;
-  b=jCEgQ6TD7JGYsNL7x/2i/BEh+dzsP5XWLVFge2JyFMQpjIXWrV6gIsm6
-   Su2AZO+jvmlIg9k+Wu2yZBi4HkGU12FSSl3DG910QfamzceGKQUpvsAyl
-   ppA2plp8VX1/wjpqkB+e+n3w2HFzbdKHX/PjMYgThvUan20/sLM08kgZI
-   BsQ2IdFa/p2tIKeZyzdPyCqcnJRPgNaDmapEQCc3u4O9YTHaflm5Xd3gO
-   onqOy7Gv8kA6e582xKb3Om3Rs7MbuFmJyE7yGJNOpnEzQJrtJRqOWgoYu
-   2hSvf9nQaoLmF+irGAncY+PGUCUxX0Bjqx1e8DFtSW7P8iDX2WscI/iLo
-   A==;
-X-CSE-ConnectionGUID: /sETmdrlSKyHMM6BOY9u/g==
-X-CSE-MsgGUID: 42Ba5SoQT0235y42e9Y4kQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="13299629"
-X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
-   d="scan'208";a="13299629"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 08:26:19 -0700
-X-CSE-ConnectionGUID: rZo0LTKGQ1aj+EW3VbhPOg==
-X-CSE-MsgGUID: VhDjiI7fS7aBxYr7ydxr6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,189,1719903600"; 
-   d="scan'208";a="63941615"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 30 Aug 2024 08:26:15 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sk3Vt-0001a8-1H;
-	Fri, 30 Aug 2024 15:26:13 +0000
-Date: Fri, 30 Aug 2024 23:26:11 +0800
-From: kernel test robot <lkp@intel.com>
-To: Casey Schaufler <casey@schaufler-ca.com>, paul@paul-moore.com,
-	linux-security-module@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, jmorris@namei.org, serge@hallyn.com,
-	keescook@chromium.org, john.johansen@canonical.com,
-	penguin-kernel@i-love.sakura.ne.jp, stephen.smalley.work@gmail.com,
-	linux-kernel@vger.kernel.org, selinux@vger.kernel.org,
-	mic@digikod.net, linux-integrity@vger.kernel.org,
-	audit@vger.kernel.org, Todd Kjos <tkjos@google.com>
-Subject: Re: [PATCH v2 10/13] LSM: Create new security_cred_getlsmblob LSM
- hook
-Message-ID: <202408302310.YKuNPXRT-lkp@intel.com>
-References: <20240830003411.16818-11-casey@schaufler-ca.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=hbrdPZA3iO4ZtIEnG2m4Ia3voLuxOglb7tXAh0XW7AVj9p5XMywHkEbyLy1hoKqWPuUlDhTKr1K6V2ss/eCLkzLQB1WX+4+8R+P/SZDgSr0I0OnBe7zq9zctTrVcbEeCzhNIoy2kkDAIMcUcglBNE+bnOJlQ72vHq1oVmAzazD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; spf=pass smtp.mailfrom=em1174286.fjasle.eu; dkim=pass (2048-bit key) header.d=smtpservice.net header.i=@smtpservice.net header.b=VtetnBN5; dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=RU3fdKDR; dkim=pass (1024-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=P7Vd6NkS; arc=none smtp.client-ip=158.120.84.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=em1174286.fjasle.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smtpservice.net;
+ i=@smtpservice.net; q=dns/txt; s=a1-4; t=1725047646; h=feedback-id :
+ x-smtpcorp-track : date : message-id : to : subject : from : reply-to
+ : sender : list-unsubscribe : list-unsubscribe-post;
+ bh=8ffM0oj/VoAWiRvIYhx2YzkqNpRjhG4e8iNPq0uer6M=;
+ b=VtetnBN5WeFAyAHVpENhJgAbE7S84mnxl2PR/vdAhiNy3eMi8TWOXJlwUG0P5jX8doEhs
+ gPZqhAHvODBCzK8YuDAHPW9enSFwVOI7RBXBt49/XWGXkiVHinYnzvPYQ4vArfYyvCRULSc
+ q0JcWWHZNQyr6p2KGs4KjVcrggoTDtkEEHPSw3okMCKrln2cTVSQ5GNiQnuh+NXbmyS0yZj
+ Ze/yRWuuiv+u5zMLoRyZhVAxIMkXm2j3YSIFYRVdfN9D5pbJUYj81cl42FzXQzRH5DBbj1E
+ WnLRuXj3IIPJFCDbH9Lw7iHuc/70qWIne+dJa0e3FD+XdRMfScmGKux0I+Hg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fjasle.eu;
+ i=@fjasle.eu; q=dns/txt; s=s1174286; t=1725047646; h=from : subject :
+ to : message-id : date;
+ bh=8ffM0oj/VoAWiRvIYhx2YzkqNpRjhG4e8iNPq0uer6M=;
+ b=RU3fdKDRsBLfqvsREoNYid7UekXM5Dd8pFgj2rstglITqDWZRH1HFnJF+b2wAhDgqqL/H
+ 0Ybow6a+tqML7x3YJlnjYdr0LbM7SSolgYnBlsljymKEIL7Zgjfd66p7FDIQKfzVoh6nBGT
+ ubausw4eu02VMLzryLdUu+vcZYQg+whxXj2LRYIdmPxT0vSU83vQVM891OgU0RJy83dov9A
+ xx3IP48jKU2a9crNVqpCCxV7KzIjbxeT/Yhokr6MOCxdhWzeO2O805dNhds1sPzm3qQfkaS
+ AymrzhclVV0PnMOk3f2mpeiNiWcdpWUTxu5iej9X5P07+b4fxvpRcnZLIX2Q==
+Received: from [10.85.249.164] (helo=leknes.fjasle.eu)
+	by smtpcorp.com with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.97.1-S2G)
+	(envelope-from <nicolas@fjasle.eu>)
+	id 1sk7gj-FnQW0hPpdBf-nWmg;
+	Fri, 30 Aug 2024 19:53:42 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+	t=1725047604; bh=VrcLFN5tqkfWY7mTHOYKMf0e0KvomCFsMPrfJDAaMSY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P7Vd6NkS50dZUF4ArGNPd4emC0HPqVDT3dc+nak6w/kyFZyIa7wpU0vTqmsiIkRep
+	 lFQ7rFhNaD2Mf9eA7RsNhjnIHPRkgubjb0TmusaqfHzYKQpJgQpvZs4tHW5Z4AT4vC
+	 fDqmIJfHaxoaJYo+8KfLKLIUurdYOyn4DfkqTbOE=
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+	id 423D3449B6; Fri, 30 Aug 2024 21:53:24 +0200 (CEST)
+Date: Fri, 30 Aug 2024 21:53:24 +0200
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Thomas =?iso-8859-1?Q?Hellstr=F6m?= <thomas.hellstrom@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	William Hubbs <w.d.hubbs@gmail.com>,
+	Chris Brannon <chris@the-brannons.com>,
+	Kirk Reiser <kirk@reisers.ca>,
+	Samuel Thibault <samuel.thibault@ens-lyon.org>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+	"intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"speakup@linux-speakup.org" <speakup@linux-speakup.org>,
+	"selinux@vger.kernel.org" <selinux@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-serial@vger.kernel.org" <linux-serial@vger.kernel.org>,
+	"llvm@lists.linux.dev" <llvm@lists.linux.dev>,
+	Finn Behrens <me@kloenk.dev>,
+	"Daniel Gomez (Samsung)" <d+samsung@kruces.com>,
+	"gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: Re: [PATCH 08/12] include: add elf.h support
+Message-ID: <ZtIjNBhqdxmMBxfM@fjasle.eu>
+References: <20240807-macos-build-support-v1-0-4cd1ded85694@samsung.com>
+ <20240807-macos-build-support-v1-8-4cd1ded85694@samsung.com>
+ <CGME20240807110435eucas1p2eca071b0a0122b8686d43c57bd94dc8c@eucas1p2.samsung.com>
+ <2024080717-cross-retiree-862e@gregkh>
+ <dxkmmrlhlhsrjulnyabfgcr37ojway2dxaypelf3uchkmhw4jn@z54e33jdpxmr>
+ <2024080720-skyline-recapture-d80d@gregkh>
+ <20240807-mottled-stoic-degu-d1e4cb@lindesnes>
+ <20240823225450.spuvjs5b5ruujim4@AALNPWDAGOMEZ1.aal.scsc.local>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -84,73 +127,48 @@ List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240830003411.16818-11-casey@schaufler-ca.com>
+In-Reply-To: <20240823225450.spuvjs5b5ruujim4@AALNPWDAGOMEZ1.aal.scsc.local>
+X-Report-Abuse: Please forward a copy of this message, including all headers, to <abuse-report@smtp2go.com>
+Feedback-ID: 1174286m:1174286a9YXZ7r:1174286sfGQOlJjcl
+X-smtpcorp-track: PeJSucEgRYJU.NXBXDCDE1HLS.YUg1Cw5e2uH
 
-Hi Casey,
+On Sat, Aug 24, 2024 at 12:54:50AM +0200 Daniel Gomez wrote:
+> On Wed, Aug 07, 2024 at 05:46:03PM +0200, Nicolas Schier wrote:
+> > On Wed, Aug 07, 2024 at 04:18:54PM +0200, Greg Kroah-Hartman wrote:
+> > > On Wed, Aug 07, 2024 at 02:13:57PM +0000, Daniel Gomez wrote:
+> > > > > Also, as this is not internal for the kernel, but rather for userspace
+> > > > > builds, shouldn't the include/ path be different?
+> > > > 
+> > > > Can you suggest an alternative path or provide documentation that could help
+> > > > identify the correct location? Perhaps usr/include?
+> > > 
+> > > That is better than the generic include path as you are attempting to
+> > > mix userspace and kernel headers in the same directory :(
+> > 
+> > Please keep in mind, that usr/include/ currently does not hold a single
+> > header file but is used for dynamically composing the UAPI header tree.
+> > 
+> > In general, I do not like the idea of keeping a elf.h file here that
+> > possibly is out-of-sync with the actual system's version (even though
+> > elf.h should not see that much changes).  Might it be more helpful to
+> > provide a "development kit" for Linux devs that need to build on MacOS
+> > that provides necessary missing system header files, instead of merging
+> > those into upstream?
+> 
+> I took this suggestion and tried pushing a Homebrew formula/package here [1].
+> I think I chose a wrong name and maybe something like "development kit" would
+> have been better. However, would it be possible instead to include the *.rb file
+> in the scripts/ directory? So users of this can generate the development kit in
+> their environments. I would maintain the script to keep it in sync with the
+> required glibc version for the latest kernel version.
+> 
+> [1] https://github.com/Homebrew/homebrew-core/pull/181885
 
-kernel test robot noticed the following build errors:
+I think it sounds sensible to hold that formula file in the upstream tree.  But
+I am not sure if scripts/ is the best location.
 
-[auto build test ERROR on pcmoore-audit/next]
-[also build test ERROR on pcmoore-selinux/next zohar-integrity/next-integrity linus/master v6.11-rc5 next-20240830]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Masahiro, what do you think?
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Casey-Schaufler/LSM-Add-the-lsmblob-data-structure/20240830-085050
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/audit.git next
-patch link:    https://lore.kernel.org/r/20240830003411.16818-11-casey%40schaufler-ca.com
-patch subject: [PATCH v2 10/13] LSM: Create new security_cred_getlsmblob LSM hook
-config: microblaze-allnoconfig (https://download.01.org/0day-ci/archive/20240830/202408302310.YKuNPXRT-lkp@intel.com/config)
-compiler: microblaze-linux-gcc (GCC) 14.1.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240830/202408302310.YKuNPXRT-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408302310.YKuNPXRT-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from include/net/scm.h:9,
-                    from include/linux/netlink.h:9,
-                    from lib/kobject_uevent.c:24:
-   include/linux/security.h: In function 'security_cred_getlsmblob':
->> include/linux/security.h:1199:10: error: 'secid' undeclared (first use in this function)
-    1199 |         *secid = 0;
-         |          ^~~~~
-   include/linux/security.h:1199:10: note: each undeclared identifier is reported only once for each function it appears in
---
-   In file included from include/net/scm.h:9,
-                    from include/linux/netlink.h:9,
-                    from include/uapi/linux/neighbour.h:6,
-                    from include/linux/netdevice.h:45,
-                    from include/net/sock.h:46,
-                    from include/linux/tcp.h:19,
-                    from include/linux/ipv6.h:101,
-                    from include/net/addrconf.h:61,
-                    from lib/vsprintf.c:41:
-   include/linux/security.h: In function 'security_cred_getlsmblob':
->> include/linux/security.h:1199:10: error: 'secid' undeclared (first use in this function)
-    1199 |         *secid = 0;
-         |          ^~~~~
-   include/linux/security.h:1199:10: note: each undeclared identifier is reported only once for each function it appears in
-   lib/vsprintf.c: In function 'va_format':
-   lib/vsprintf.c:1683:9: warning: function 'va_format' might be a candidate for 'gnu_printf' format attribute [-Wsuggest-attribute=format]
-    1683 |         buf += vsnprintf(buf, end > buf ? end - buf : 0, va_fmt->fmt, va);
-         |         ^~~
-
-
-vim +/secid +1199 include/linux/security.h
-
-  1195	
-  1196	static inline void security_cred_getlsmblob(const struct cred *c,
-  1197						    struct lsmblob *blob)
-  1198	{
-> 1199		*secid = 0;
-  1200	}
-  1201	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Kind regards,
+Nicolas
 

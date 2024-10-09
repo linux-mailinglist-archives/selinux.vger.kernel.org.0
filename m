@@ -1,362 +1,275 @@
-Return-Path: <selinux+bounces-2047-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2053-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D481997340
-	for <lists+selinux@lfdr.de>; Wed,  9 Oct 2024 19:37:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620A79973E1
+	for <lists+selinux@lfdr.de>; Wed,  9 Oct 2024 19:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C341C23AA1
-	for <lists+selinux@lfdr.de>; Wed,  9 Oct 2024 17:37:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2471D287CAB
+	for <lists+selinux@lfdr.de>; Wed,  9 Oct 2024 17:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B7761E0DD2;
-	Wed,  9 Oct 2024 17:37:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45291E1C06;
+	Wed,  9 Oct 2024 17:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="fP/MgI1W"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WzvuRIWy"
 X-Original-To: selinux@vger.kernel.org
-Received: from sonic306-26.consmr.mail.ne1.yahoo.com (sonic306-26.consmr.mail.ne1.yahoo.com [66.163.189.88])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB7E1E04AA
-	for <selinux@vger.kernel.org>; Wed,  9 Oct 2024 17:37:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.88
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00F91E1A10
+	for <selinux@vger.kernel.org>; Wed,  9 Oct 2024 17:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1728495451; cv=none; b=We4rTszyrgnbi147L2yyou7TV+fxJi4IyRVtIY46Xqnvuzvp/vbCUc9sMJJiGu5OaLom4wzIklshLJaP7lN2XJ4qrcqYPmXSzmGAZ5K8XDtKCfNLVKxWwiQELqu5rIL5yy7O3EcwbNuwa+fgxjlW56hxmqfwlJtjikfdsvuYYbk=
+	t=1728496684; cv=none; b=imzDYCe9e0NZgRsNPvEHD6Btu+U7oqI34uIGvHFCGWVeA5HxA3IxAsWO5YqMXFhEKT+cSqpGxnPeA7KMw+pSYRmgjwdbt2hQckkCbEZuzRT6QnWJs5Lqtf69w3oIeLjSlsbkywTKkJexuw4Ivbp+HZRcyqp1MqG3rTWS6H4pGt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1728495451; c=relaxed/simple;
-	bh=lMOK5KOAfNPQW7erRNtalTcnH2NWLJtaSuwOlE9FteU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvC0jmHWBJ+JdFWhXN5DKXFvzhlFI6Me9WtGjrzQxxoxKj6e8ZK1mzqI2sM3t2Ix/j51olIkT5U4bcjYXAV4h5b31QwqvnirRbpjhydAxKJEznoOKjt5nUEWeo7pj4J88TSWfML3MFQUHW0bxtWxGMSHdWVLg6vKQQIigEsJxwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=fP/MgI1W; arc=none smtp.client-ip=66.163.189.88
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1728495449; bh=/+bNDlC2zxAcxrtS4Ze9mN8zJjtzFTDuPxQWb8z8RAQ=; h=From:To:Cc:Subject:Date:In-Reply-To:References:From:Subject:Reply-To; b=fP/MgI1W12YKPt8UFStIaZvs4e9miNgqOhe/EIv6yhH/5vnH8ZerOHaC0DcxaHBeu8mE1oiw2NCREBQxb+xB8+KAKhYk4VkMmY4Zv4RGKI065JubYyG+ORlFRWRGM599kbPwb1NvUqXeWIl8aUVJw+NUPycR/yYVJyX6hxwGLHzNH2ZQKZCj+XcYX1KpqnZ29v5m6jvbDr8cOPnhsEYJvTcFNSf1dyIPrFO/oLNBKGmwTOYknC5mJdcLdN8FQGLDRNOF908GMumeWMyvxat/nq/8ui3VwXOk26IwiySv2nGzc6L2pijrP29ZxJhbzn6Iu56Y+QhQypeExMWdPYWJog==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1728495449; bh=Htht49EkIR+K4FdG1KIb+t90frJj+QK2sAYlxjlIWas=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=DqSfXNftVM6NevcXZyGE/v3Ta8I1ek5kIgQeVA/Ud4Im1R4LBlJvllaughNY+sPTGodcdAKFUnUSFYvwE3ySxE8We+iw8lxmomcY1b23tDLGh2PD6MOMsiIqtX9c6A5VLlcXVk6n2l4t+VXjkXl/lcl8IE1FwjymaVWMp1+EpHljJGNykud7TvGFKE6MGwigku91gqaqJTfsFIuSMokpAqciQPYT4AKplkNmsweXNR3rLg209Cbo4USFK8y5bVKT15pJ8pfgEM3IV6cgzjmNd77rRUa1pfOnVQs50BXXQWcIivcOGg2UkTcQr8aJ+e/lqmtCcdpyhOhNcO+l/eDMyQ==
-X-YMail-OSG: kKdKUrIVM1leXplsEw6EHmV3WwclcGjlit6cTNFx3O4LPMbf2fZ.ayR10QdLHvD
- pcQmTu7epI5Q6RpTaqHhmghmbwO0UyL8LeDZCz1oCEItTLgsANHG.0HeMUkGW0Ygcbqw.n5VsexE
- ORKWII0b.2pIM5J4_u6rN3PdzP54aFv8ctV92CCr75eC9qIQw1Fa2kD0a1aU_orhnBUtvG7RA0rg
- NA2_rG8r3aKtzB3a9JPqe_wPhYloqKYOYSTzQ0kpuwxxXB1KBUZtW3BYbW6UQN9TxSpwsrfFVEih
- V5nfvMmFwzrO7DlZm4nUDHtMNKPqgHJ1Bl2svEJOsoyFlVYKQ1PJia4Y3i9GYOWNqDr8mR4CYqQz
- z_mQ2RYIoaDrHM9m8DldF3sUwT1c69t8mI3P3wwYGBzlsKBH8elmgWVTLhRaWWBHOfzwt3ER66Wx
- mjGH3s91.x9OJpnWaRvDL94MTFeupr57uDK2ltmNAjQQbGEi6y.OWSKhquEk5zk_iPMK89XOzb8z
- 4i7Vr9Pxm4.FuXcLxGU81Uvw4JUurC.UKzBsLn_KfsuKT92VQlB_lVDqX9pTSCYLt6M6VBLXy2AG
- Hze8hWBDLcpz8IZMbx1X6Gx_N_ogfKX57BqLtw833l_z6puzIoT1KHw.OLRsKjuYzxIK7rz7D7_k
- KsYnxEnXsk5JjZmx9DAdMcMkVyJiWxc7SsXDymA80PTB2iya_a_A7PqHfXoUQ3IaWHUlO_Bb0pX0
- yxF47rnXlkH2p6qZ.JzbKoivHEY6WxY2qn7YKTr5.hk5AtrxGugY7PXPoJqYMB8hcHZdBnnaCyxa
- eqhh7OkES.kONrd9zhB7nYe8RuQOM4GXg0s3o6D8frMcfrbkBs8ITnCp929aUG1AkRXKRepmr9Ar
- blyuKMAzloOj_a5VGG_EFeaTQHXdj4Q_._fJ92m9YhSq20EXZnm2jbIkzNarO3ePUZW9Obzh7BI3
- lr0F1W9_j7mzRpXcb24GiSWJL0CyjIE23kZr4ZLJenQnF9ljjGEO1Xr9bNiB4dao0KA44UP8KAoL
- QCyIhKlstNcFkBX0WFaeLtD9o9TYLIouh0Ic1bZlNe8D1DX2rNN_luicIqYtvskI3rgb55HXxMig
- R6C970ye7qcB2cUVGUhnO6ibHl0iKLVyTN1.jnmvx67Ek19vPju7QaDsvZ.DC.UXMe5A6K9VvUb1
- E.C3fU23.YTYz4Xd_Zn99zNhJ865rfbqifY_n9YbNazA6HfCnfmWe5m.CvVzfZCHs4mq708I.zcK
- u.H6V5Oek0EK24U7yVgqdPiamGQFr983.lzj5h.oZJV7Qj8HIYerQi.GRoBXYyyxsCHSnoYMZ1hP
- tmzHerkFUHqnDJG8K07XOr9yJ8D_.iayDd0VTttph7vYhwmIktnQnXaUadihNQqo_7.RedO9nNbL
- crc88XBTNtrt7Zi7w_8JJl8j9OQYOtkZqYMeCTc9dl7QPmP1LCjMYkMQLj05pVYqyCuJZ91XQA8N
- Sy_7e.OSVN1TBh.v17svuwj2BO9d2uvCJsevXzo4_5StmZ6jMhfryaSbmvGW5nH9.p8GVwKXQ3is
- 1WmG32j7s7HumS5HIlFPj88srWUvcgxXjJpWOsoaHNfKkip99Knt9LC5.EW9S2i04lwdri.QLo.L
- y8Wwx5uzRU4z3SG4HqgW.Y0ieoRNng97MZCL1jfNaOYornlu4hU4fpng7tX8gkFs4SYZmk6Tlstn
- RKCG22Tta8En2xkD8oH.rGMNyGxupsysy05BYv5y72iFrzjLq.pSvvONcdCrYM3snheWKKJ3Ag.h
- osFM7zOMQYZ0LWHvqakBFSTS0rh5Y6wFBCxKOwOXibsuO1x9X41G6AXOfgy8qUbknEFmLJr3yYPP
- 1D2.L2HbDNRk_.swXhB08uVXR0pioQ4RwxPjXsRqLcVDOt_QQWiwguG63nL1HJWIaRtGmUJFelUV
- Yru4fU0hUM_mLiPGcimK8BcqdBP1iTSGPy29kLrzr7TyIG.LEQMkf6vTWEupMRLnn0z4qi.CLWK8
- DaGOTmw82Ig1WDXoms_1Fc54vkCwXNdkC7LnhOBhUc4CvfRqx2DCMwlNQZqxsXik9bhp62F.Y.6T
- gudGd7z41UvqkB2.IEq5d_A1HHxNI3Gu45IayXsPxWYC7wBH3bPoIp1tfjTZMjLaztZ9e0cuRGpC
- htHU6CYrPEuweHErkMP0ehAk2A8sztzz7xFWGhYzX0C37mu0UzEZkz0iX5k0ci7uwm7SfQ_ddzjb
- zjzVNTOw3CMRHRiQMSlxS6dozK28wC1l2hlsyysKVBqEVvgsxQkviRWj9QE9zZwMKNiieHOO49LO
- XEHd_C03doJA_kchAGWc..Tn9tislatp04l4yL13GlfMmyCp2
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: 507da6d7-95df-46cc-8d01-c2d2ff63acdf
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.ne1.yahoo.com with HTTP; Wed, 9 Oct 2024 17:37:29 +0000
-Received: by hermes--production-gq1-5d95dc458-xmcnd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 934db59ff91b58b27af467a3ec48d37e;
-          Wed, 09 Oct 2024 17:37:24 +0000 (UTC)
-From: Casey Schaufler <casey@schaufler-ca.com>
-To: casey@schaufler-ca.com,
-	paul@paul-moore.com,
-	linux-security-module@vger.kernel.org
-Cc: jmorris@namei.org,
-	serge@hallyn.com,
-	keescook@chromium.org,
-	john.johansen@canonical.com,
-	penguin-kernel@i-love.sakura.ne.jp,
-	stephen.smalley.work@gmail.com,
-	linux-kernel@vger.kernel.org,
-	selinux@vger.kernel.org,
-	mic@digikod.net
-Subject: [PATCH v4 13/13] LSM: Remove lsm_prop scaffolding
-Date: Wed,  9 Oct 2024 10:32:21 -0700
-Message-ID: <20241009173222.12219-14-casey@schaufler-ca.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20241009173222.12219-1-casey@schaufler-ca.com>
-References: <20241009173222.12219-1-casey@schaufler-ca.com>
+	s=arc-20240116; t=1728496684; c=relaxed/simple;
+	bh=xHElYfGWOOSerFCSChpc4LkFCTL2cO5xEeundKyvJps=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=d0jVYYNzWa6V73MHTjqoBpci4I/5x4+0GikYSOFWmbdB5WvrbygeOUzduLPwJAqsfbwa2b+FzGcBuhv7VKgz7mWvl1UCySXCYiQYPVylE/l/7QKGVAdzGwd/dLyamSlvhWlUtHbLDie4kRGdOx+ZQVJsTX77dlMknQkYhplSCw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WzvuRIWy; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7e9ff6fb4c6so41140a12.3
+        for <selinux@vger.kernel.org>; Wed, 09 Oct 2024 10:58:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728496682; x=1729101482; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xHElYfGWOOSerFCSChpc4LkFCTL2cO5xEeundKyvJps=;
+        b=WzvuRIWy2RRz2VFHtMSgXAc2HALBfsrEtVvmKZW1Xl0MF6dv+UT5NZe6P5qChc/Jtu
+         QFZg/BZAO0NP8r+H2LDOUmFqwnXIh65YKGfRNlA0Q2js+7Fq1bPkQwXtXFu9PvRYRkEB
+         opIs552HvIq660umUitLQ37Oltilf/CNHTFXVq4Es+S0CM1KI+XuACl+AGMavvWZxA8d
+         LvEedQ62Sa2wM90apv8YA6aCpyBOJ6xzWa8mmBJ+hG13/cu/dohgFcp1ykLMynk8OZ1S
+         96SFiU5diwa2obJeI0sVt0dKiRmUmKIUhHljCI1eErsNMMxB1ixuj1DOxXiMLwUmmjNk
+         lOmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728496682; x=1729101482;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xHElYfGWOOSerFCSChpc4LkFCTL2cO5xEeundKyvJps=;
+        b=Q1+rj26F36Eeijus0ukP8qKKR5s7+lEL/ZfH+bQjZaW+F1Ip+szqDasvq83T/mnn4x
+         kbaI9rk1udCszWhBan0nePlQKiuo5L2LF/CE/SRGS96ozg+Yc47V+XjK6S/HO5u8ILuY
+         4VnRNZK+aiDxZqRf/NqF3Nh62J3ZTwJH92OsifxB/2k0l4+vqLU/8BB/LQxyVDekdwnb
+         YPrv7PrDGjxZdc/Q75hML3+IQYfDtz32dlm1QdrZLMM3e2I56vYEmO+dKjBqge8xKGxm
+         S2Lhil67g8oTDIIl5d1CRL1/ihz5WPdQR0WrCsaF3GWtJwG1R7USlk9a9xG+m0qIKgCz
+         41Xg==
+X-Gm-Message-State: AOJu0YxVVNUu0PgVcYeV61wFG/ccXZ1zUPVIIfeS3SYDCBmFwB7Z/5pf
+	6eoKNwFuNTc+x6vaPKlvo+iSnKi2FFh47MAei/lWTP5EDG2OIfJjvQOuMfFXWcgDXcaMGhiIz7h
+	qvDYvSfwdq2xk2zr4g/O2wzonyjottg==
+X-Google-Smtp-Source: AGHT+IHg6MPfJMcmil6+AfXgUxx+f6Ql417TwnrJY38ixw+k+dzhVuxiGAnEbrt6WN61jTKwRhPOzokokNyBV1CKP+s=
+X-Received: by 2002:a17:90b:a04:b0:2d3:c8e5:e548 with SMTP id
+ 98e67ed59e1d1-2e2a2337a8fmr4499949a91.13.1728496681909; Wed, 09 Oct 2024
+ 10:58:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAEjxPJ46KJCUXqgq==pmEMW9yYJSRnWkGrSrxBAfMELPRYUdXQ@mail.gmail.com>
+ <CAEjxPJ7WUzN=0Yv4POgPVHPG1wEjNn=-Tb53NiuMpWf+bEuF-w@mail.gmail.com>
+ <CAEjxPJ758jx7X5Tauz=xQXsmWcZhx_V7AkU=PtsH6S3S9CUCbw@mail.gmail.com>
+ <CAEjxPJ50ADVSOys58eYUktv4sjYYnEDroxA9Wnt6HiY9ySk=gg@mail.gmail.com>
+ <CAEjxPJ6QsYR-Kj8k0C=54cix8rdpBsCphDV5_QnjGONDuOm+ew@mail.gmail.com>
+ <CAEjxPJ6p3oD99_aTEeSCx6FMob7BH8-2vxdoT69c8sw11oHuEA@mail.gmail.com>
+ <CAEjxPJ5jup5o9piVPuA97_radSzvshpnRB1CdBde8sV3ZXVc2Q@mail.gmail.com>
+ <CAEjxPJ7UtCjQw=v1--6ZWXo-bbkndGbwfXhcT8RkX_cddjCqkQ@mail.gmail.com>
+ <CAEjxPJ5a1KzSjB31gcqWqJW_zdy8OCmwKKGYwCivvFG4Jvncyg@mail.gmail.com>
+ <CAEjxPJ6WupdxzSkh54NLJkZoH=Umayj8+HrX5TmbAXvVYzgPfw@mail.gmail.com>
+ <CAEjxPJ7iL11xSVs4gxhMPSCtVmYEqfgQQmBpVNAVXV7UG=P3nw@mail.gmail.com>
+ <CAEjxPJ7C41QdEgAFYVdTyZE=TjGq+pyzCmy7BbHMss7=njvJmg@mail.gmail.com>
+ <CAHC9VhRDF0DBAWM-=ynks1=Zm5LcQYq0_4xfQy4pKvHfW6FoBg@mail.gmail.com>
+ <9aa53afd-efd8-4552-8239-14f99ff7a1b1@schaufler-ca.com> <CAEjxPJ6vyDjmwxEpwnb+JYKiWXYFo5g_suZiUZb6L+aepHxZiA@mail.gmail.com>
+ <CAEjxPJ4nbCuntgTvrGk4LHs+ZYjm95ZwwSwwAycWWzS9dt9Tyw@mail.gmail.com>
+ <CAEjxPJ76MdNwgXtGTgVYGKE87=7GmZywQ1GJn5Vz8jjCdVATWA@mail.gmail.com>
+ <CAEjxPJ7Qp9Q4RUYH8vb-xQOe0=YsN=nbyM-4FV6hvYzZwKX5Og@mail.gmail.com>
+ <CAEjxPJ4Opxv+HU6cbAfKNT=ZXnUZ=0Ac8ZM5fQj=wnO_JPy-zw@mail.gmail.com>
+ <CAEjxPJ7Zpw9i6OXZ-Kz=WXVuCaas5TOtxCAmK-rxGDhm1-zwDg@mail.gmail.com>
+ <CAEjxPJ4UsFbFvuigZ+WZD0zuPQ-mY9MRQ-3+SYp_bDwBE_1z0Q@mail.gmail.com>
+ <CAEjxPJ4RbypeHbdpWPXGRstDAWWiEv+-dCWXc1aAO+zpkxnkEg@mail.gmail.com>
+ <CAEjxPJ5Co0P1sVYmAiD0WnquNv8XOMAyi09GCW3jTPqsvZEsGQ@mail.gmail.com>
+ <CAEjxPJ66z5x9AB7wT_SaOCjw+UY6DseMnmjqiMi93063xZ3t-w@mail.gmail.com>
+ <CAEjxPJ5duopAZs2tf5yK+w9-p_UB8ijAHoQXtWDMYJ9keiyRbA@mail.gmail.com>
+ <CAEjxPJ4S9Z1WOpcDNJ5t4vCuHM4DqAr2jLscSiPJrARr6QPJfA@mail.gmail.com> <CAEjxPJ7vMQ6SBVXUjfG+3XvHdkCvSO=fBwftFdt9kTfLrPzr_Q@mail.gmail.com>
+In-Reply-To: <CAEjxPJ7vMQ6SBVXUjfG+3XvHdkCvSO=fBwftFdt9kTfLrPzr_Q@mail.gmail.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Wed, 9 Oct 2024 13:57:50 -0400
+Message-ID: <CAEjxPJ6Kg4P8DBhG_JZj_U61PwyJF0jVJXX3QsLMrduR7RzrPg@mail.gmail.com>
+Subject: Re: SELinux namespaces re-base
+To: Paul Moore <paul@paul-moore.com>, Ondrej Mosnacek <omosnace@redhat.com>
+Cc: SElinux list <selinux@vger.kernel.org>, Casey Schaufler <casey@schaufler-ca.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Remove the scaffold member from the lsm_prop. Remove the
-remaining places it is being set.
+On Wed, Oct 9, 2024 at 9:09=E2=80=AFAM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
+>
+> On Tue, Oct 8, 2024 at 9:32=E2=80=AFAM Stephen Smalley
+> <stephen.smalley.work@gmail.com> wrote:
+> > Re-based again on top of latest selinux/dev to resolve the conflicts
+> > with the just-merged patches and to update the new netlink xperm
+> > support for SELinux namespaces. Passes the selinux-testsuite including
+> > the (not yet merged) nlmsg tests in both the init SELinux namespace
+> > and a child SELinux namespace (modulo the labeled IPSEC tests and with
+> > the init SELinux namespace permissive for testing the child or
+> > modifying the init namespace policy to permit it to run all the tests
+> > in the child context). Functionally, this is nearly complete as far as
+> > SELinux-only changes go (not including the corresponding work needed
+> > to namespace audit and if desired/necessary, to allow namespacing of
+> > the labeled IPSEC hooks), modulo any bugs that get discovered in
+> > trying to create real containers with their own SELinux namespaces and
+> > different combinations of policies between the host OS and the
+> > containers.
+> >
+> > My remaining ToDo list is as follows, but this is a good point for
+> > others to provide feedback or experiment with the functionality or
+> > propose their favorite container runtime for the next stages of
+> > prototyping. If it would help spark feedback, I could post the current
+> > set of kernel patches to the list.
+> >
+> > - Test creation/use of SELinux namespaces from actual containers with
+> > different policies from the host OS. This may require patching a
+> > container runtime to add support for unsharing the SELinux namespace
+> > and unmounting the old selinuxfs prior to starting the container init.
+> > Combinations to test: No policy loaded on host, policy loaded in
+> > container e.g. Fedora on Ubuntu; host with newer base policy than
+> > container e.g. RHEL/Rocky 8/9 on Fedora; container with newer base
+> > policy than host e.g. Fedora on RHEL/Rocky 8/9; host and container
+> > with different upstream policy sources e.g. Ubuntu on Fedora; Android
+> > container on Linux host OS.
+>
+> To help get this started, I created a patch for libselinux to provide
+> a selinux_unshare() API that unshares the SELinux namespace (hiding
+> the current messy internal details of the existing kernel interface
+> and also dealing with various situations under which it might be
+> called by container runtimes with selinuxfs already mounted, bind
+> mounted read-only, or not mounted at all) along with a sample
+> unshareselinux utility that shows how to use it, and a patch for
+> systemd-nspawn to show how it might be called from a container runtime
+> to unshare the SELinux namespace during container creation. These can
+> be found the selinuxns branches of my selinux userspace and systemd
+> forks at:
+> https://github.com/stephensmalley/selinux/tree/selinuxns
+> and
+> https://github.com/stephensmalley/systemd/tree/selinuxns
+> respectively.
+>
+> While the patches appear to work correctly (i.e. you end up with a new
+> SELinux namespace, after which you can mount a new selinuxfs that is
+> private to your namespace, load a policy, set enforcing mode, etc),
+> unfortunately it appears that systemd doesn't just do the Right Thing
+> automatically when it is invoked as a container init after unsharing
+> the SELinux namespace, i.e. it does not proceed to call the SELinux
+> setup functionality so it never tries to mount selinuxfs and load a
+> policy within the container. Unsurprising but it does mean that
+> someone will need to modify it to do so in this case while ensuring
+> that this doesn't break existing setups without the SELinux namespace
+> functionality.
 
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
----
- include/linux/security.h       |  6 ------
- security/apparmor/audit.c      |  6 +-----
- security/apparmor/lsm.c        |  4 ----
- security/apparmor/secid.c      |  6 +-----
- security/selinux/hooks.c       | 18 +-----------------
- security/selinux/ss/services.c |  4 ----
- security/smack/smack_lsm.c     | 33 ++++-----------------------------
- 7 files changed, 7 insertions(+), 70 deletions(-)
+Pushed up a further commit to the branch on my fork of systemd to have
+it call the SELinux setup + init functions if invoked from
+systemd-nspawn with the SELinux namespace unshared. The existing
+systemd was skipping setup/init of all of the MAC modules if running
+in a container, which was understandable absent namespace support. My
+current patch (just to allow further progress) only relaxes that
+constraint for SELinux and only if launched via systemd-nspawn with
+the --selinux-namespace option; this would of course be generalized
+further if/when we get around to upstreaming it. With that change and
+installing the modified systemd into the container root filesystem, I
+can start a container via systemd-nspawn with the --selinux-namespace
+option and have it unshare the SELinux namespace, load policy from the
+container's root, and set its enforcing mode. At present, if the
+container is configured to be enforcing, the container will fail due
+to denials in the child SELinux namespace arising from the following:
+- systemd creates a regular tmpfs mount for the container /dev, so at
+least some of the /dev nodes are not correctly labeled at startup.
+This can likely be fixed through some combination of policy and
+perhaps performing a restorecon("/dev") after first loading policy.
+- Certain /proc/sys files in the container are labeled with
+"unlabeled_t" for some reason, likely due to being accessed n the
+namespace before it loads a policy and not getting initialized
+afterward. Similarly could be fixed via a restorecon("/proc") after
+policy load if we can't solve it kernel-side.
+- sendto permission denied from kernel_t and from init_t to
+unconfined_t:unix_dgram_socket; this is likely the container sending
+to a socket in the parent namespace.
 
-diff --git a/include/linux/security.h b/include/linux/security.h
-index acd2e5d1b0ff..fd690fa73162 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -156,11 +156,6 @@ enum lockdown_reason {
- 	LOCKDOWN_CONFIDENTIALITY_MAX,
- };
- 
--/* scaffolding */
--struct lsm_prop_scaffold {
--	u32 secid;
--};
--
- /*
-  * Data exported by the security modules
-  */
-@@ -169,7 +164,6 @@ struct lsm_prop {
- 	struct lsm_prop_smack smack;
- 	struct lsm_prop_apparmor apparmor;
- 	struct lsm_prop_bpf bpf;
--	struct lsm_prop_scaffold scaffold;
- };
- 
- extern const char *const lockdown_reasons[LOCKDOWN_CONFIDENTIALITY_MAX+1];
-diff --git a/security/apparmor/audit.c b/security/apparmor/audit.c
-index 87df6fa2a48d..73087d76f649 100644
---- a/security/apparmor/audit.c
-+++ b/security/apparmor/audit.c
-@@ -270,11 +270,7 @@ int aa_audit_rule_match(struct lsm_prop *prop, u32 field, u32 op, void *vrule)
- 	struct aa_label *label;
- 	int found = 0;
- 
--	/* scaffolding */
--	if (!prop->apparmor.label && prop->scaffold.secid)
--		label = aa_secid_to_label(prop->scaffold.secid);
--	else
--		label = prop->apparmor.label;
-+	label = prop->apparmor.label;
- 
- 	if (!label)
- 		return -ENOENT;
-diff --git a/security/apparmor/lsm.c b/security/apparmor/lsm.c
-index 6331bcb35ec0..1edc12862a7d 100644
---- a/security/apparmor/lsm.c
-+++ b/security/apparmor/lsm.c
-@@ -987,8 +987,6 @@ static void apparmor_current_getlsmprop_subj(struct lsm_prop *prop)
- 	struct aa_label *label = __begin_current_label_crit_section();
- 
- 	prop->apparmor.label = label;
--	/* scaffolding */
--	prop->scaffold.secid = label->secid;
- 	__end_current_label_crit_section(label);
- }
- 
-@@ -998,8 +996,6 @@ static void apparmor_task_getlsmprop_obj(struct task_struct *p,
- 	struct aa_label *label = aa_get_task_label(p);
- 
- 	prop->apparmor.label = label;
--	/* scaffolding */
--	prop->scaffold.secid = label->secid;
- 	aa_put_label(label);
- }
- 
-diff --git a/security/apparmor/secid.c b/security/apparmor/secid.c
-index 34610888559f..6350d107013a 100644
---- a/security/apparmor/secid.c
-+++ b/security/apparmor/secid.c
-@@ -102,11 +102,7 @@ int apparmor_lsmprop_to_secctx(struct lsm_prop *prop, char **secdata,
- {
- 	struct aa_label *label;
- 
--	/* scaffolding */
--	if (!prop->apparmor.label && prop->scaffold.secid)
--		label = aa_secid_to_label(prop->scaffold.secid);
--	else
--		label = prop->apparmor.label;
-+	label = prop->apparmor.label;
- 
- 	return apparmor_label_to_secctx(label, secdata, seclen);
- }
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 438dfa17faae..025b60c5b605 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -3508,8 +3508,6 @@ static void selinux_inode_getlsmprop(struct inode *inode, struct lsm_prop *prop)
- 	struct inode_security_struct *isec = inode_security_novalidate(inode);
- 
- 	prop->selinux.secid = isec->sid;
--	/* scaffolding */
--	prop->scaffold.secid = isec->sid;
- }
- 
- static int selinux_inode_copy_up(struct dentry *src, struct cred **new)
-@@ -4040,8 +4038,6 @@ static void selinux_cred_getsecid(const struct cred *c, u32 *secid)
- static void selinux_cred_getlsmprop(const struct cred *c, struct lsm_prop *prop)
- {
- 	prop->selinux.secid = cred_sid(c);
--	/* scaffolding */
--	prop->scaffold.secid = prop->selinux.secid;
- }
- 
- /*
-@@ -4182,16 +4178,12 @@ static int selinux_task_getsid(struct task_struct *p)
- static void selinux_current_getlsmprop_subj(struct lsm_prop *prop)
- {
- 	prop->selinux.secid = current_sid();
--	/* scaffolding */
--	prop->scaffold.secid = prop->selinux.secid;
- }
- 
- static void selinux_task_getlsmprop_obj(struct task_struct *p,
- 					struct lsm_prop *prop)
- {
- 	prop->selinux.secid = task_sid_obj(p);
--	/* scaffolding */
--	prop->scaffold.secid = prop->selinux.secid;
- }
- 
- static int selinux_task_setnice(struct task_struct *p, int nice)
-@@ -6339,8 +6331,6 @@ static void selinux_ipc_getlsmprop(struct kern_ipc_perm *ipcp,
- {
- 	struct ipc_security_struct *isec = selinux_ipc(ipcp);
- 	prop->selinux.secid = isec->sid;
--	/* scaffolding */
--	prop->scaffold.secid = isec->sid;
- }
- 
- static void selinux_d_instantiate(struct dentry *dentry, struct inode *inode)
-@@ -6625,13 +6615,7 @@ static int selinux_secid_to_secctx(u32 secid, char **secdata, u32 *seclen)
- static int selinux_lsmprop_to_secctx(struct lsm_prop *prop, char **secdata,
- 				     u32 *seclen)
- {
--	u32 secid = prop->selinux.secid;
--
--	/* scaffolding */
--	if (!secid)
--		secid = prop->scaffold.secid;
--
--	return selinux_secid_to_secctx(secid, secdata, seclen);
-+	return selinux_secid_to_secctx(prop->selinux.secid, secdata, seclen);
- }
- 
- static int selinux_secctx_to_secid(const char *secdata, u32 seclen, u32 *secid)
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index e0c14773a7b7..07ba5b3643dd 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -3661,10 +3661,6 @@ int selinux_audit_rule_match(struct lsm_prop *prop, u32 field, u32 op, void *vru
- 		goto out;
- 	}
- 
--	/* scaffolding */
--	if (!prop->selinux.secid && prop->scaffold.secid)
--		prop->selinux.secid = prop->scaffold.secid;
--
- 	ctxt = sidtab_search(policy->sidtab, prop->selinux.secid);
- 	if (unlikely(!ctxt)) {
- 		WARN_ONCE(1, "selinux_audit_rule_match: unrecognized SID %d\n",
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 52cc6a65d674..0c476282e279 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -1655,11 +1655,7 @@ static int smack_inode_listsecurity(struct inode *inode, char *buffer,
-  */
- static void smack_inode_getlsmprop(struct inode *inode, struct lsm_prop *prop)
- {
--	struct smack_known *skp = smk_of_inode(inode);
--
--	prop->smack.skp = skp;
--	/* scaffolding */
--	prop->scaffold.secid = skp->smk_secid;
-+	prop->smack.skp = smk_of_inode(inode);
- }
- 
- /*
-@@ -2162,8 +2158,6 @@ static void smack_cred_getlsmprop(const struct cred *cred,
- {
- 	rcu_read_lock();
- 	prop->smack.skp = smk_of_task(smack_cred(cred));
--	/* scaffolding */
--	prop->scaffold.secid = prop->smack.skp->smk_secid;
- 	rcu_read_unlock();
- }
- 
-@@ -2265,11 +2259,7 @@ static int smack_task_getsid(struct task_struct *p)
-  */
- static void smack_current_getlsmprop_subj(struct lsm_prop *prop)
- {
--	struct smack_known *skp = smk_of_current();
--
--	prop->smack.skp = skp;
--	/* scaffolding */
--	prop->scaffold.secid = skp->smk_secid;
-+	prop->smack.skp = smk_of_current();
- }
- 
- /**
-@@ -2282,11 +2272,7 @@ static void smack_current_getlsmprop_subj(struct lsm_prop *prop)
- static void smack_task_getlsmprop_obj(struct task_struct *p,
- 				      struct lsm_prop *prop)
- {
--	struct smack_known *skp = smk_of_task_struct_obj(p);
--
--	prop->smack.skp = skp;
--	/* scaffolding */
--	prop->scaffold.secid = skp->smk_secid;
-+	prop->smack.skp = smk_of_task_struct_obj(p);
- }
- 
- /**
-@@ -3466,11 +3452,8 @@ static int smack_ipc_permission(struct kern_ipc_perm *ipp, short flag)
- static void smack_ipc_getlsmprop(struct kern_ipc_perm *ipp, struct lsm_prop *prop)
- {
- 	struct smack_known **iskpp = smack_ipc(ipp);
--	struct smack_known *iskp = *iskpp;
- 
--	prop->smack.skp = iskp;
--	/* scaffolding */
--	prop->scaffold.secid = iskp->smk_secid;
-+	prop->smack.skp = *iskpp;
- }
- 
- /**
-@@ -4805,10 +4788,6 @@ static int smack_audit_rule_match(struct lsm_prop *prop, u32 field, u32 op,
- 	if (field != AUDIT_SUBJ_USER && field != AUDIT_OBJ_USER)
- 		return 0;
- 
--	/* scaffolding */
--	if (!skp && prop->scaffold.secid)
--		skp = smack_from_secid(prop->scaffold.secid);
--
- 	/*
- 	 * No need to do string comparisons. If a match occurs,
- 	 * both pointers will point to the same smack_known
-@@ -4869,10 +4848,6 @@ static int smack_lsmprop_to_secctx(struct lsm_prop *prop, char **secdata,
- {
- 	struct smack_known *skp = prop->smack.skp;
- 
--	/* scaffolding */
--	if (!skp && prop->scaffold.secid)
--		skp = smack_from_secid(prop->scaffold.secid);
--
- 	if (secdata)
- 		*secdata = skp->smk_known;
- 	*seclen = strlen(skp->smk_known);
--- 
-2.46.0
+There are no doubt more beyond these. However, in permissive (with the
+parent/init namespace still enforcing), the container did come up
+fully and sees SELinux as enabled.
 
+> > - Rework how policy capabilities are being checked/used to correctly
+> > support child namespaces with different policy capabilities from the
+> > parent. This has already been done for the open_perms capability by
+> > lifting the logic to walk the namespaces up into the hook function
+> > itself and checking the policy capability value in each namespace, but
+> > many (most?) of the policy capabilities don't lend themselves to this
+> > approach. For example, extended_socket_class enables finer-grained
+> > socket security classes, but this is checked and applied when the
+> > socket security blob is initialized, not at permission check time.
+> > Unless we want to move the mapping logic to every permission check, I
+> > am not sure what can be done there. One option would be to
+> > force-enable the same policy capabilities in the child namespace as in
+> > the parent to avoid conflicts but this would limit the ability to use
+> > differing policies. Similarly, a number of policy capabilities control
+> > labeling behaviors rather than permission checks, and since we are no
+> > longer trying to support per-namespace object SIDs/contexts, only one
+> > namespace's policy can be applied that label will then be used for all
+> > subsequent checks even in the other namespaces.
+> >
+> > - Decide if any further hardening of selinuxfs is required to safely
+> > permit usage by potentially untrusted / less trusted processes in
+> > child namespaces. There has already been a lot of work to harden e.g.
+> > the policy loading logic against ill-formed policies and such, so not
+> > sure if there is much to do here, but noting it as a possible area to
+> > audit for safety.
+> >
+> > - Ensure that we are correctly handling peer and packet labels when
+> > they cross SELinux namespaces, for some definition thereof, both wrt
+> > permission checking and wrt the peer/packet labels that are exposed to
+> > userspace via getsockopt(SO_PEERSEC), recvmsg() SCM_SECURITY, etc.
+> >
+> > - Optimize the implementation for the single SELinux namespace case,
+> > reducing and/or eliminating the overhead introduced by the SELinux
+> > namespace support for that common case. Lots of work to do here, help
+> > welcome. Also would appreciate guidance on current Linux kernel
+> > benchmarking best practices since it has been a while since I've had
+> > to do that.
+> >
+> > - Re-test with KASAN and with KCSAN enabled to confirm that the
+> > namespace patches haven't introduced any memory errors or race
+> > conditions; I have tested with each of these in the past successfully
+> > but don't keep them enabled generally because they make everything
+> > very slow. And you can't have them both enabled together at runtime
+> > AFAICT.
+> >
+> > - Revisit the userspace API for unsharing the SELinux namespace
+> > if/when the rest is ready. Currently just "echo 1 >
+> > /sys/fs/selinux/unshare" (followed by the other necessary steps for
+> > unsharing the mount namespace, unmounting the parent's selinuxfs,
+> > mounting a new selinuxfs for the child, loading a policy, and setting
+> > enforcing mode). Options would include adding a CLONE_SECURITY flag to
+> > unshare/clone that could be implemented by any/all LSMs via a call to
+> > a new (stacked) LSM hook function, or one or more new LSM system calls
+> > to do the same, or just keeping it the way it is via selinuxfs.
+> >
+> > - Upstream the kernel support.
+> >
+> > - Figure out how to combine the use of SELinux namespaces with Red
+> > Hat's current model of isolating and confining containers as a whole
+> > via SELinux on the host OS. This is complicated by the fact that we
+> > are only supporting a single inode SID/context per inode (gave up on
+> > per-namespace inode SID/contexts, see the earlier mailing list
+> > discussions), and Red Hat's current model uses context mounts to
+> > assign a single security context to all the inodes used by the
+> > container. Possibly introduce a new kind of context=3D mount that is
+> > namespace-aware, i.e. only apply the context mount when in the outer
+> > namespace but use the inode xattrs inside the child namespace.
+> >
+> > - Integrate and upstream userspace support into appropriate container
+> > runtimes, e.g. systemd-nspawn, crun/runc, podman, docker, k8s, etc.
 

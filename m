@@ -1,168 +1,121 @@
-Return-Path: <selinux+bounces-2099-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2101-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91BF29A9498
-	for <lists+selinux@lfdr.de>; Tue, 22 Oct 2024 02:16:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD3D79A9DD0
+	for <lists+selinux@lfdr.de>; Tue, 22 Oct 2024 11:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC9651C21BDF
-	for <lists+selinux@lfdr.de>; Tue, 22 Oct 2024 00:16:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47172B21B80
+	for <lists+selinux@lfdr.de>; Tue, 22 Oct 2024 09:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E472F4A35;
-	Tue, 22 Oct 2024 00:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322B9191F65;
+	Tue, 22 Oct 2024 09:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="V6OjES8Z"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZdA4zo6Z"
 X-Original-To: selinux@vger.kernel.org
-Received: from sonic306-9.consmr.mail.bf2.yahoo.com (sonic306-9.consmr.mail.bf2.yahoo.com [74.6.132.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C51A81E
-	for <selinux@vger.kernel.org>; Tue, 22 Oct 2024 00:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.132.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0C913A87E
+	for <selinux@vger.kernel.org>; Tue, 22 Oct 2024 09:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729556173; cv=none; b=A2jgkTMgcy8Xsh1/fUikyWC8fwlDqpE2tzlmkXMmAmd92s+QhumYkUAk1KOEan4wkarF9s2qlowl5J6tnP8C99g/KaiP3xPo0WkJOIM3lYGR+3QoheztODBDbu9WdJGjYp7bb00xXPhjMs5XhWFW3VQ34JNnFFdQqIuuiWypK18=
+	t=1729587839; cv=none; b=Unb0lJuoXr71AInQqjR3Mn0MfPTMKr/OuaS4MGD7BcQutxpApmtwVh6eccuyYloaDFf3+Kz20F3I5SnaWr7tlJ6qV6JjujNaYWdOC87p9eaKAJe6LwYAPZeGMyLCDub6ZPLbz2rMnXmwGcO6JYjqfO5eJBxk5fytf1B0/7o2NzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729556173; c=relaxed/simple;
-	bh=PBvO+JmDcUXPLakhUBN7WxelfxPE9dinaqB6xdOpU60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HVlgTioYIuwtidrmpf7cPYYUa5tZX3KDmhQGFQYn712DPBXqQrvxFIETs3Ct6YVvgLkqmtyCOdzk1X0Z5vcvVBHfo8OiBDfmv4boFUr3KlblfM99pSAY4vbNUPAmTjBPqtq9pN9ty5aLT6HgZ2tIuZevHI8Jru/9RyVKTKcEeV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=V6OjES8Z; arc=none smtp.client-ip=74.6.132.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1729556171; bh=uKAdnfZ8DHGLvEgYRuEDP9dXyb6uc8wXDnOoyjaz+OM=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=V6OjES8ZBNE/9ylrW8rUgOPDYllf464yiWTr0AQ73F/KOf0DmLAWIDFjYPlM06eQ5cyMrI7x9oG8sbPVVy00RWW6AXHq71M/pIppfB6zdNAmp7ARx3eHfcv2MqH3ooECFX0KyNA6KfZJJPCI2OFJb1tUQizOQUgLiR2zVQJKnEcW2c/9JKI6JIkSSJw3y7a8p9KcB6ZLYTbd8Qj3pRCjE8b5CHScfQvI5rjnpf2OWrNBEpjQ4w5gx+1B9LMjZcLnBpFCGTst3vBSOKbVKRnKbzk5oTpnipAAG8ztSkYBMzfZDByp0YBAjYEcUsKbMOyVF1LKFhIJUjBP4ARESIMiVw==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1729556171; bh=RWrMdywalzfmC9rZoxxd/iK0HtYcbJK4L5lxeQsYNfi=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=bUMV7b2yLQpupKkufgnxhbAjzOry2aZgA02f58YXWTopzl8akI3o2G7H6xNDQFUJkLHauhJokZ1bOLwcQlN9jfXx9ovhKB7vtrfEm/7O4yzAYErj+MbfHD9EtdxCetJVtdi5jLpETPUISj98cBf/HYUCVCu8s4UhJNiXKlo1Q143b/bpKSI50QHdBbworrhl1V9jEDOydHGYxCx6i3MrtNIS6JYdjq8zFWA5ikId0+ZQp8CP+c98X+yAH6zMqrsUNdDcDR63thzNVhKXoCjn82dQNOgC4XWci/T31tpOtBiRyUKoVZd8Ma/1vg1U5CQVpn3sbB4+XULs+M+oVfF89Q==
-X-YMail-OSG: 7JVnBMcVM1nUp6p6J5_sNh2r48TJEL5JprpnqW2z3f_7NhyC9s_DCLkp8QVEMG8
- byZGgFdSkJ1Ac.A4d6ICWVHLkhfAoZjXtfJzM0FGYg6Y17mOZqtQay_A6yAo_SDOiJ.DBakRTNKG
- bqqSPr_Fll8.HRjXEU7xLYGc8AWY1Y2LPrU7zE4.rXXugM4DjwaIONE4_92drKdU5gSktDXJxiPx
- tyORtYIXL0smebo70JS7OukXzPAtciJeXPw8GKcJKGDubW1bLu6K06qxmQnwmWXYftBa3f3E_4T8
- 1nuEK1pKeLNvfomrDWM4di_a8I1HaIfDx7Z.3U9YySi2dSgTLDO7VJ4eKeZdMGj4kBdNmFHxVzQN
- z7db03NhYqoysJOE7kYOz_IdMLuz.R1wX5cjj54cZX.8P7G_FYMr7EcsW8pghrhxL54XE4b7hVn9
- 8r7h3NaS8PyB3qJmUy.duBj13KHSjHnD3niS5HSrmtFL6UFFL5CMvgneWiQhSnUptJZCsK.NALm3
- jQIwPOg7jVh0J4G13em6XXKF3bzJzza8MHCQzzix7zwNNpgSFv_IyNC5aKJDUqDk9Jm4Sb.3KofN
- pU.UOGsTO6xJJeyEEFQ38Sy2E9Uv9ZoFEuKBRUbeQ0JjCbO_gMkmqJC44.zDjX_fQpfEMu0N0Tux
- zNLwtVQjxGnDfoRg0AIoggE2602EXAB86YkI9eFdKe_txrPUClBsz6O0QbO5GkcGy2CFR70ySkm7
- TNqVHros4pFNCD3zwKthD1Y62JRQBp9_kiOGP792KEu34_JJ6.7G1.FvLFdesCikuzvOyy2ZZ5X6
- jJEoAaIFtddua7pmzKREUJiLpoh1XPlx9v33obbdt3Ot_I4Kq4DzS_HsBOIc6mQP.XYvR8CSIpJ.
- 2VaJG4Go8pi_dJ9kHB2FhrpVPMLjY3Qa89p7v2hkXeTbnTrywKr5N1wkEtZlukQJHdFv..mEG7ji
- aYjdc0E._D4FUsTq5d9xamyx_lemy2e4W6MeK3zsjipEZRjPO3Ee7zsy9LXUry8FdT.MD.87NGKP
- ahgfoAsKDwJxDPv3H1GOdPnYUd8c9i9DwKcvRZyQnx8GDMKJfMKtcC41ZZrFIdORHgbGXAQ2K696
- TqwCqRZlvIjvDl4m_g.M0bHFMNGUqNMBeAFWutwmgMDSBnHf8paJCnYmHVP2PpDVkbPlyFlQyrSn
- pt4P_Ot6mol9QjdwwjnOYQKB.ARqx9o2_sGP0LeNQXfeoz1HNF4nKaGPtxFiRaR0iIsWO_.T2m5n
- JVgy3J2uwdjwxF6qFQSjacYwoY9n64QfzH6ka92ntWqmdhaMkDlQtSSr.RAc0bMo7TBL2ipXzV1X
- cO92SYzozaXQSQ0c0iKiUFZLG1tHpP.0bcXfpvTsBkGhGquydQpDkZFyuSZl04vbjCvJx6pvrj9Y
- wBGkD18IG9fhxj1bEaMxIoki0SGwaIjTnQimrXAvQ9PPi_96tSUmKpbjsfVH7PCux.M0HND4IwsK
- sJqxmEfnuWU0dkCihFRfUOyXgyrMh1b2_8D69Vd3Q3GVrc7VdZ.5fOZinoOl3J_puaM6dw1mfCxk
- ZRlTAjQUeoxIWF71ekPN3vOiXgURef1x3BGMKlqyyjpKLcHwl7r97t5ynab1H.7T89JCpKiw2mRn
- 4zfk18ksEv3lShx1G_pXVoR9m.So8_JfVc7l5BieIUjJVGAQU7IFPfLt_FSJrPvVTJuUsqeXc9Uw
- JjMv6LrVXsxglIQ1vAVOR4mRrA56nvGTOmAuM8W6I6fnISTs_8GVzBUlDLMxWVmLnlvStbToylIo
- RLaQzSZiDF9xXIW2J_uFpx8F3VK.307.fWFpwPpoCEoJqgT4W18nctCz20ZtRLjbyc10yCGkJ.7u
- aozQRNggyhCDx3e8BUets.0Pfkz98itJxzib_U.rHxRKp1Nt0oyebvXFWgpX7ucBsn74A9v6_rg4
- L2Cu4BUgzZ_C9QBqXbXX74ErRwIT3TsNoDi5OFJ3CxOvQhCGJCVvwqgNSZu2URb_UxFUg.A2DjXC
- pA_9SwAxq58PWlnop2o0Eo8aXie74y5wqDIeLaIM5eQRqJ6axMOhiXX5BuLYArHXh4I4b78PRkl7
- Mr12G5B8MEXO.WycncYxxthzIQ8Mo641z2VLaxNYv90wuOoRWe2iWuntQpSyVWT5KJv2QlZGFu5F
- UPKsG31wcFw9BhYsmUldvL8dtKA2._8XbxfkEBEAd0uKQgA3AXa7A2j1ovUm6BPS8H_O7pImObyl
- nCy3rWosLRqamUkTJwlgwLmYkJ32D4jQW1hXkMhL4E8Ethm28cQM_N_FKYoMPWtrecrWEac8nZHl
- KTiR4QG1XbsfhPM.VcKJ64Xu1AzSuuA--
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: fe59fcbb-91bc-4fad-b327-28214724d246
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic306.consmr.mail.bf2.yahoo.com with HTTP; Tue, 22 Oct 2024 00:16:11 +0000
-Received: by hermes--production-gq1-5dd4b47f46-5kxd4 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9ab5b1500e56173fe5efd6e5094bcf97;
-          Tue, 22 Oct 2024 00:06:01 +0000 (UTC)
-Message-ID: <617a2679-404c-4127-8dfd-4f3895e2372f@schaufler-ca.com>
-Date: Mon, 21 Oct 2024 17:05:59 -0700
+	s=arc-20240116; t=1729587839; c=relaxed/simple;
+	bh=3JPrxQFOe72SqSRNbLDqr+RlUkSdMTC1v6KwIFepv5Q=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=laUs8hGZCRny7yGRW6nNYwYinj8JZT9PvEgrRjqxW2CgcB+kRzz/XMYm259oULwMFr0BX936/8GCyisFQSFt3pa6swF+b5TBldeSYDW5aa+77JY/8mkx2uwxLUbh5GHCJT7hItR2yC0n3Ak0MsmfbMd2MT03/5Nq0VO47KEloYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZdA4zo6Z; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1729587836;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=A7+NB/d69f1eLcTUEBhoXdrqfgIgN6ikMwOW274utMs=;
+	b=ZdA4zo6ZNOreb5slfRXLNMz2veTnO4/Dy1XKjbCVH4LvtYIVEHPjQzpstI11bVFt9Vp5Or
+	XAWm6wjyjk9pi7jhj4UdPY8aq3fOu4LU+k9yPJBXJdeKbPN3kSIKd8eJIW5YmtpDL3iZ46
+	mWe112C+4LDheIr37btbXl+1xsDJjbQ=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-467-LdteiyxoOx-CbOBfouGoNg-1; Tue,
+ 22 Oct 2024 05:03:51 -0400
+X-MC-Unique: LdteiyxoOx-CbOBfouGoNg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 36F5E1956089
+	for <selinux@vger.kernel.org>; Tue, 22 Oct 2024 09:03:51 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.247])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8279319560AE
+	for <selinux@vger.kernel.org>; Tue, 22 Oct 2024 09:03:49 +0000 (UTC)
+From: Vit Mojzis <vmojzis@redhat.com>
+To: selinux@vger.kernel.org
+Subject: [PATCH 1/4] libsepol/cil: Initialize avtab_datum on declaration
+Date: Tue, 22 Oct 2024 11:03:11 +0200
+Message-ID: <20241022090314.173002-1-vmojzis@redhat.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] LSM: secctx provider check on release
-To: Paul Moore <paul@paul-moore.com>, linux-security-module@vger.kernel.org
-Cc: jmorris@namei.org, serge@hallyn.com, keescook@chromium.org,
- john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
- stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org,
- selinux@vger.kernel.org, mic@digikod.net,
- Casey Schaufler <casey@schaufler-ca.com>
-References: <20241014151450.73674-6-casey@schaufler-ca.com>
- <5b6addd938c9feae0b4df8f54d56f9f0@paul-moore.com>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <5b6addd938c9feae0b4df8f54d56f9f0@paul-moore.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.22806 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On 10/21/2024 4:39 PM, Paul Moore wrote:
-> On Oct 14, 2024 Casey Schaufler <casey@schaufler-ca.com> wrote:
->> Verify that the LSM releasing the secctx is the LSM that
->> allocated it. This was not necessary when only one LSM could
->> create a secctx, but once there can be more than one it is.
->>
->> Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
->> ---
->>  security/apparmor/secid.c | 10 ++--------
->>  security/selinux/hooks.c  | 10 ++--------
->>  2 files changed, 4 insertions(+), 16 deletions(-)
->>
->> diff --git a/security/apparmor/secid.c b/security/apparmor/secid.c
->> index 5d92fc3ab8b4..974f802cbe5a 100644
->> --- a/security/apparmor/secid.c
->> +++ b/security/apparmor/secid.c
->> @@ -122,14 +122,8 @@ int apparmor_secctx_to_secid(const char *secdata, u32 seclen, u32 *secid)
->>  
->>  void apparmor_release_secctx(struct lsm_context *cp)
->>  {
->> -	/*
->> -	 * stacking scaffolding:
->> -	 * When it is possible for more than one LSM to provide a
->> -	 * release hook, do this check:
->> -	 * if (cp->id == LSM_ID_APPARMOR || cp->id == LSM_ID_UNDEF)
->> -	 */
->> -
->> -	kfree(cp->context);
->> +	if (cp->id == LSM_ID_APPARMOR)
->> +		kfree(cp->context);
-> Should we set cp->context to NULL too?  One could argue that it's an
-> unecessary assignment, given the cp->id checks, and they wouldn't be
-> wrong, but considering the potential for a BPF LSM to do things with
-> a lsm_context, I wonder if resetting the pointer to NULL is the
-> smart thing to do.
+avtab_datum.xperms was not always initialized before being used.
 
-Wouldn't hurt. I'll go ahead and add that. If a BPF LSM does anything
-with a lsm_context we're likely to hear about the many issues quite
-quickly.
+Fixes:
+Error: UNINIT (CWE-457):
+libsepol-3.7/cil/src/cil_binary.c:977:2: var_decl: Declaring variable "avtab_datum" without initializer.
+libsepol-3.7/cil/src/cil_binary.c:1059:3: uninit_use_in_call: Using uninitialized value "avtab_datum". Field "avtab_datum.xperms" is uninitialized when calling "__cil_cond_insert_rule".
+ \# 1057|   			}
+ \# 1058|   		}
+ \# 1059|-> 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
+ \# 1060|   	}
 
->
-> This obviously applies to the SELinux code (below) too.
->
->>  }
->>  
->>  /**
->> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
->> index 79776a5e651d..b9286c2c5efe 100644
->> --- a/security/selinux/hooks.c
->> +++ b/security/selinux/hooks.c
->> @@ -6640,14 +6640,8 @@ static int selinux_secctx_to_secid(const char *secdata, u32 seclen, u32 *secid)
->>  
->>  static void selinux_release_secctx(struct lsm_context *cp)
->>  {
->> -	/*
->> -	 * stacking scaffolding:
->> -	 * When it is possible for more than one LSM to provide a
->> -	 * release hook, do this check:
->> -	 * if (cp->id == LSM_ID_SELINUX || cp->id == LSM_ID_UNDEF)
->> -	 */
->> -
->> -	kfree(cp->context);
->> +	if (cp->id == LSM_ID_SELINUX)
->> +		kfree(cp->context);
->>  }
->>  
->>  static void selinux_inode_invalidate_secctx(struct inode *inode)
-> --
-> paul-moore.com
->
+Error: UNINIT (CWE-457):
+libsepol-3.7/cil/src/cil_binary.c:1348:2: var_decl: Declaring variable "avtab_datum" without initializer.
+libsepol-3.7/cil/src/cil_binary.c:1384:3: uninit_use_in_call: Using uninitialized value "avtab_datum". Field "avtab_datum.xperms" is uninitialized when calling "__cil_cond_insert_rule".
+ \# 1382|   	} else {
+ \# 1383|   		avtab_datum.data = data;
+ \# 1384|-> 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
+ \# 1385|   	}
+ \# 1386|
+
+Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
+---
+ libsepol/cil/src/cil_binary.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index 3dec1883..eb6120d9 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -975,7 +975,7 @@ static int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src,
+ {
+ 	int rc = SEPOL_OK;
+ 	avtab_key_t avtab_key;
+-	avtab_datum_t avtab_datum;
++	avtab_datum_t avtab_datum = { .data = res, .xperms = NULL };
+ 	avtab_ptr_t existing;	
+ 
+ 	avtab_key.source_type = src;
+@@ -1346,7 +1346,7 @@ static int __cil_insert_avrule(policydb_t *pdb, uint32_t kind, uint32_t src, uin
+ {
+ 	int rc = SEPOL_OK;
+ 	avtab_key_t avtab_key;
+-	avtab_datum_t avtab_datum;
++	avtab_datum_t avtab_datum = { .xperms = NULL };
+ 	avtab_datum_t *avtab_dup = NULL;
+ 
+ 	avtab_key.source_type = src;
+-- 
+2.47.0
+
 

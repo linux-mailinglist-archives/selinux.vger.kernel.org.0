@@ -1,149 +1,150 @@
-Return-Path: <selinux+bounces-2116-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2120-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882459AC341
-	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 11:14:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F1699ACB85
+	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 15:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49AA6284EED
-	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 09:14:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF7A1C20863
+	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 13:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 216EF1953A9;
-	Wed, 23 Oct 2024 09:14:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B9319F49F;
+	Wed, 23 Oct 2024 13:46:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="K6txyLSt"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fuuSgNNs"
 X-Original-To: selinux@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C27817ADE9
-	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 09:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1C6E56A
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729674849; cv=none; b=WwTGxQSLJtTNsNVZmpNwLWQP7e8WKLso2PyL4wNlotUmvA6TTR5P6ySlJeJFNGdwSr3/M9I8aDl18M2PeVhmmj0CbxDVHk9Z38CuSc3lUnzbbJZbNTJ+tAZbHGhL2I+9zRfgtzU+2+eKtlYOWejdWyrMP7XlpdDaRr1l9YKhNsY=
+	t=1729691168; cv=none; b=nWgw6DFe3OLwXaKYIl+nkFtcLcicUZTvHdbd6JYUvVEfkkTKMbUM7jeQCLrU+G6xwC9wvrVYNiKsTHwX7w90Y7IxoSA9qaA2RqU+OHloDUYnJyhn1HiqpJ5aOsbH0Q4jicZbf2JEpyuf73x4fGrH1EDzz2JJbojuymHDyd6h3A0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729674849; c=relaxed/simple;
-	bh=VKqPG9ff0h3kVUJkwBz1nHTQF3Ux61BO416918CAlec=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZP7Ca33EyHJtoeLCuHgWUi/OXwzJeufo22Qb9dxgJkLurnQmPtaWIMqmvf4+Nqsww3LWFhK9P2AU4yHv+x5QL+FrpCE8nsGg6SsD+C8N7mDrINnA49mrTtxg1qTOOAlIbDzGT17+7cYvasSgQ6HTxOSHJSlnVNj9SA8QutMy4yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=K6txyLSt; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1729691168; c=relaxed/simple;
+	bh=EsxdwvQjuD7RovcvUH7WeD0PJV6yxN+jYWYrz9Z3xRI=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sXiCogf/gkWTKGQ5yeRRh+qLGkNJVGMrLIAfAuk1GCMQKNIDtdoHHjYV/0cjad6R8UbgSHMNfOppmbiT28gNTG8hL2oyTkXz/de0Ket8jSMskqNESOL2ZFD3PLNjeRgF+/otP3ndImimtxfzgV+bJTEkYhKZH4W78rlvwoyW8wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fuuSgNNs; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729674846;
+	s=mimecast20190719; t=1729691165;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8UKQVi9ZRHbgYRMmFed8trQlSU0A4QxgRadvpuo9XoI=;
-	b=K6txyLStH5ItfdrSmYmlqBmOijlYmnARl8r+q9+VMj3vxHWF1Vs/KBKfV9IBW0SpC5gLFk
-	vRv9umsasmMpsXfew3XF+zfo+cxtc4cN/r9vStjBxl8jFArsqu608XAmFjcMvGfihTbiHt
-	B3kOQ3j5wWX7yG1A1ZOkMFSYgUFKxn8=
-Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
- [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-556-MGW-VnLbOzmZ_V-jBagWOg-1; Wed, 23 Oct 2024 05:14:04 -0400
-X-MC-Unique: MGW-VnLbOzmZ_V-jBagWOg-1
-Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-7e6e98892e1so7389859a12.0
-        for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 02:14:04 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729674843; x=1730279643;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8UKQVi9ZRHbgYRMmFed8trQlSU0A4QxgRadvpuo9XoI=;
-        b=pdf0eFCDCAWTvzYtOt1o+vF6/ei2WO6OiSAnJt0NIAMPEA3VPJ6kCcyW32AWk+Bh8X
-         xjsc87hnxBM3xibYZs5WjIrLnoQzbQe4ITLGhVIHn1Xx5p64qL7pPYlLZY3tDR77wz6S
-         hqWgKLwFnupAFJSuq/TJFgRVXrUlZSGI8QxuGqaZgj8eEzQ2KTgPW5iG/2fIcFM8jb64
-         Dd8rw0vf0MJlvHE9UxQnN5vX5gn9jJm7vSugXPCF60oRvZileFRe3fUzcfNdlbZ6arxW
-         CWZrpJHSiupCyf61I9KyC9RLefSTwOz/TRXyHNH+dSrvclP0WwpbJvh0+rBXnvE4t+Dl
-         MaCw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4jWJ24LSF5DdO7Bu0fUesFXSJ9DReTCmsP5a65iXW4Z3oOxWGtim/l5Wg1V5Zo9IndtuAvT4z@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBBAO54vP8CtsbfIgpyYAYZ1gLwYkBNU10OnRKY2TqsOmXgXml
-	qdM79M1DvS/OFzFpRi2ai57XOFBfHKBZ7WybDjTB9hOiEPkx5woee+Mnys4yZTuWeU0sb1jZiwR
-	OZ/qPYGeOItHuYiyWKw6inGmDnowParIJNZwmci4pGsgRxJPBpIGqT8HAgnfpvGLDfBcIJa7B5N
-	2R+rsEOdy4AOJJjQ1wHY20p2pSZk7FB0FE2cXkMDkW
-X-Received: by 2002:a05:6a20:e188:b0:1d9:1cea:2e3d with SMTP id adf61e73a8af0-1d978b97e5dmr2130289637.40.1729674843588;
-        Wed, 23 Oct 2024 02:14:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGaNaagqg1QQDEla2lskHrj5ZEEIJmtNbu/FuIH/cc9dbSqRSWd5zHSSuksUd+gQNkoS2SMhokovo33UBxoN6c=
-X-Received: by 2002:a05:6a20:e188:b0:1d9:1cea:2e3d with SMTP id
- adf61e73a8af0-1d978b97e5dmr2130278637.40.1729674843275; Wed, 23 Oct 2024
- 02:14:03 -0700 (PDT)
+	bh=kgYRaCbTdjXaFcfkOT0nR3rrB6xCp69iXBnS2UZvUh0=;
+	b=fuuSgNNsYVmbPtJcoBhtj/0GAX1QJztmdAp2ICDRIkg9HvyhUTLTDxR2GvqQL83YUNpLSD
+	ZtP0O7Hihd/bvoAhp2gtx8uhqOpA8LJbAElpAkcGpfyEL3CSKUsjEDxgYttBcozZaZuEme
+	fO810NUkHXjyoRhtYxUMrBmAGsDwq4I=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-35-H155zI4BM3GUi7j7sDM-GA-1; Wed,
+ 23 Oct 2024 09:46:04 -0400
+X-MC-Unique: H155zI4BM3GUi7j7sDM-GA-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B83F1190556E
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:31 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.45.225.164])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 066AA19560A2
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:30 +0000 (UTC)
+From: Vit Mojzis <vmojzis@redhat.com>
+To: selinux@vger.kernel.org
+Subject: [PATCH v2 1/4] libsepol/cil: Initialize avtab_datum on declaration
+Date: Wed, 23 Oct 2024 15:43:15 +0200
+Message-ID: <20241023134318.733305-1-vmojzis@redhat.com>
+In-Reply-To: <CAP+JOzRURZwsyvGzs3U7M7mw4NWD3Brh-K4wnztCS81MLYRHYg@mail.gmail.com>
+References: <CAP+JOzRURZwsyvGzs3U7M7mw4NWD3Brh-K4wnztCS81MLYRHYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAEjxPJ7JTbEk-=r=Lnjm8MFC1VRn49wWjLUKsfSk=eAryt6S6A@mail.gmail.com>
- <CAHC9VhTUWcZFr8HZg3gHnqgZ2PAUazpRX71Jpue1b0QUCEJKsw@mail.gmail.com>
-In-Reply-To: <CAHC9VhTUWcZFr8HZg3gHnqgZ2PAUazpRX71Jpue1b0QUCEJKsw@mail.gmail.com>
-From: Ondrej Mosnacek <omosnace@redhat.com>
-Date: Wed, 23 Oct 2024 11:13:51 +0200
-Message-ID: <CAFqZXNtSvw3GgAPfyKb8f_mAvGjjCarTnsB_j0efDNq+XoA5fQ@mail.gmail.com>
-Subject: Re: testsuite astyle options no longer supported
-To: Paul Moore <paul@paul-moore.com>
-Cc: Stephen Smalley <stephen.smalley.work@gmail.com>, SElinux list <selinux@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Wed, Oct 23, 2024 at 2:14=E2=80=AFAM Paul Moore <paul@paul-moore.com> wr=
-ote:
->
-> On Tue, Oct 22, 2024 at 3:14=E2=80=AFPM Stephen Smalley
-> <stephen.smalley.work@gmail.com> wrote:
-> >
-> > tools/check-syntax in the testsuite is calling astyle with options
-> > that seemingly don't exist anymore on my shiny new F41. The end result
-> > is that it will generate a diff deleting any C file from the
-> > testsuite.
->
-> I ran into something similar last year with the audit-testsuite and
-> astyle v3.2.x (may have been an issue with earlier versions, not
-> sure).  I should have sent a heads-up to Ondrej and the list, but it
-> looks like I forgot or was distracted.
->
-> > Invalid Artistic Style options:
-> > indent-preprocessor
->
-> I dropped this in the audit-testsuite and it didn't seem to have a
-> significant impact.
->
-> > max-instatement-indent=3D80
->
-> I replaced this with '--max-continuation-indent=3D80' to get a reasonable=
- result.
->
-> The current astyle (v3.6.2) call in the audit-testsuite looks like this:
->
->   astyle --options=3Dnone --lineend=3Dlinux --mode=3Dc \
->     --style=3Dlinux \
->     --indent=3Dforce-tab=3D8 \
->     --indent-col1-comments \
->     --min-conditional-indent=3D0 \
->     --max-continuation-indent=3D80 \
->     --pad-oper \
->     --align-pointer=3Dname \
->     --align-reference=3Dname \
->     --max-code-length=3D80 \
->     --break-after-logical
+avtab_datum.xperms was not always initialized before being used.
 
-Thanks, that works, but the 3.5.2 version currently in F41 has a bug
-[1], which produces an ugly diff [2]. And when I try Rawhide with the
-latest 3.6.3 version that is supposed to have it fixed, the formatting
-of some continuation lines breaks terribly...
+Fixes:
+Error: UNINIT (CWE-457):
+libsepol-3.7/cil/src/cil_binary.c:977:2: var_decl: Declaring variable "avtab_datum" without initializer.
+libsepol-3.7/cil/src/cil_binary.c:1059:3: uninit_use_in_call: Using uninitialized value "avtab_datum". Field "avtab_datum.xperms" is uninitialized when calling "__cil_cond_insert_rule".
+ \# 1057|   			}
+ \# 1058|   		}
+ \# 1059|-> 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
+ \# 1060|   	}
 
-I'm giving up for now. If someone wants to chase it down with
-upstream, feel free to.
+Error: UNINIT (CWE-457):
+libsepol-3.7/cil/src/cil_binary.c:1348:2: var_decl: Declaring variable "avtab_datum" without initializer.
+libsepol-3.7/cil/src/cil_binary.c:1384:3: uninit_use_in_call: Using uninitialized value "avtab_datum". Field "avtab_datum.xperms" is uninitialized when calling "__cil_cond_insert_rule".
+ \# 1382|   	} else {
+ \# 1383|   		avtab_datum.data = data;
+ \# 1384|-> 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
+ \# 1385|   	}
+ \# 1386|
 
-[1] https://gitlab.com/saalen/astyle/-/issues/57
-[2] https://gist.github.com/WOnder93/6fc510582f3632014cadf8036a3dc36e
+Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
+---
+ libsepol/cil/src/cil_binary.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---=20
-Ondrej Mosnacek
-Senior Software Engineer, Linux Security - SELinux kernel
-Red Hat, Inc.
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index 3dec1883..3d920182 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -975,7 +975,7 @@ static int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src,
+ {
+ 	int rc = SEPOL_OK;
+ 	avtab_key_t avtab_key;
+-	avtab_datum_t avtab_datum;
++	avtab_datum_t avtab_datum = { .data = res, .xperms = NULL };
+ 	avtab_ptr_t existing;	
+ 
+ 	avtab_key.source_type = src;
+@@ -997,8 +997,6 @@ static int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src,
+ 		goto exit;
+ 	}
+ 
+-	avtab_datum.data = res;
+-	
+ 	existing = avtab_search_node(&pdb->te_avtab, &avtab_key);
+ 	if (existing) {
+ 		/* Don't add duplicate type rule and warn if they conflict.
+@@ -1346,7 +1344,7 @@ static int __cil_insert_avrule(policydb_t *pdb, uint32_t kind, uint32_t src, uin
+ {
+ 	int rc = SEPOL_OK;
+ 	avtab_key_t avtab_key;
+-	avtab_datum_t avtab_datum;
++	avtab_datum_t avtab_datum = { .data = data, .xperms = NULL };
+ 	avtab_datum_t *avtab_dup = NULL;
+ 
+ 	avtab_key.source_type = src;
+@@ -1372,7 +1370,6 @@ static int __cil_insert_avrule(policydb_t *pdb, uint32_t kind, uint32_t src, uin
+ 	if (!cond_node) {
+ 		avtab_dup = avtab_search(&pdb->te_avtab, &avtab_key);
+ 		if (!avtab_dup) {
+-			avtab_datum.data = data;
+ 			rc = avtab_insert(&pdb->te_avtab, &avtab_key, &avtab_datum);
+ 		} else {
+ 			if (kind == CIL_AVRULE_DONTAUDIT)
+@@ -1381,7 +1378,6 @@ static int __cil_insert_avrule(policydb_t *pdb, uint32_t kind, uint32_t src, uin
+ 				avtab_dup->data |= data;
+ 		}
+ 	} else {
+-		avtab_datum.data = data;
+ 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
+ 	}
+ 
+-- 
+2.47.0
 
 

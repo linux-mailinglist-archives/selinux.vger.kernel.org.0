@@ -1,68 +1,69 @@
-Return-Path: <selinux+bounces-2120-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2117-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F1699ACB85
-	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 15:46:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 698AA9ACB82
+	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 15:44:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF7A1C20863
-	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 13:46:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210A81F22D98
+	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 13:44:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B9319F49F;
-	Wed, 23 Oct 2024 13:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3417C19307D;
+	Wed, 23 Oct 2024 13:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fuuSgNNs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I0jrLq6y"
 X-Original-To: selinux@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1C6E56A
-	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8897A1AAE02
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729691168; cv=none; b=nWgw6DFe3OLwXaKYIl+nkFtcLcicUZTvHdbd6JYUvVEfkkTKMbUM7jeQCLrU+G6xwC9wvrVYNiKsTHwX7w90Y7IxoSA9qaA2RqU+OHloDUYnJyhn1HiqpJ5aOsbH0Q4jicZbf2JEpyuf73x4fGrH1EDzz2JJbojuymHDyd6h3A0=
+	t=1729691035; cv=none; b=gXgYD7uPn7yqR1iT3ZEL3EBC56DjC//QWXLVViHjW4WjisAGPSOYqUqvRgKwwbSOqmHUQCkeAaTTcMQmV8lWsXPZj2Ve0p+w3Y8GPOjiyVqa6ru9RXtqFojmHWJX6x41khtEJ6Kc6ketggwhOyyJaCxxA5YMEoDeq0taZ0UTTUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729691168; c=relaxed/simple;
-	bh=EsxdwvQjuD7RovcvUH7WeD0PJV6yxN+jYWYrz9Z3xRI=;
+	s=arc-20240116; t=1729691035; c=relaxed/simple;
+	bh=a58WhftuYwmQhPFE68btykTXHEJ0TAPMyWbaywwjrCc=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sXiCogf/gkWTKGQ5yeRRh+qLGkNJVGMrLIAfAuk1GCMQKNIDtdoHHjYV/0cjad6R8UbgSHMNfOppmbiT28gNTG8hL2oyTkXz/de0Ket8jSMskqNESOL2ZFD3PLNjeRgF+/otP3ndImimtxfzgV+bJTEkYhKZH4W78rlvwoyW8wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fuuSgNNs; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=BYbtRwTDpjs7iRj7HZZOL1E8TGzJX+Gw1TrOO73WrdY85IIfqdcU6A5B9VsRkjmpCXiyRhphsH6VmMyHRvzL+7BVs3OoavYDj/p47QJdFxYwl9PkR0FFdlQNl4Uv1ResboBLctqWZD1ZA0cCJoYRX5VM8n3Lcfo1HYKq/V+f7Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I0jrLq6y; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729691165;
+	s=mimecast20190719; t=1729691032;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kgYRaCbTdjXaFcfkOT0nR3rrB6xCp69iXBnS2UZvUh0=;
-	b=fuuSgNNsYVmbPtJcoBhtj/0GAX1QJztmdAp2ICDRIkg9HvyhUTLTDxR2GvqQL83YUNpLSD
-	ZtP0O7Hihd/bvoAhp2gtx8uhqOpA8LJbAElpAkcGpfyEL3CSKUsjEDxgYttBcozZaZuEme
-	fO810NUkHXjyoRhtYxUMrBmAGsDwq4I=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=uDC8es8Dnm4/AG+tkdPlI3NpIOUFXCnikfcCobDEcU0=;
+	b=I0jrLq6yGgtC55vUyll/MDBVATEUfGdwznFKKkJAkfJfHgMIk16y4VMjaZGwyoF7nVReZ5
+	FYdTD488Y6Kc+lvH2vpqgv+B+mBkpjMb4/CdGjCTN08zGY528VBFXBz8nczdlWknqIV4Nz
+	ruB1mh8WQStA085bd1vv4GjIRvRUwIo=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-35-H155zI4BM3GUi7j7sDM-GA-1; Wed,
- 23 Oct 2024 09:46:04 -0400
-X-MC-Unique: H155zI4BM3GUi7j7sDM-GA-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-bUcv4vo4PNWiydbrvfFHIg-1; Wed,
+ 23 Oct 2024 09:43:51 -0400
+X-MC-Unique: bUcv4vo4PNWiydbrvfFHIg-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B83F1190556E
-	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:31 +0000 (UTC)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D67C1936DAA
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:36 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.45.225.164])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 066AA19560A2
-	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:30 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4CC571956046
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:35 +0000 (UTC)
 From: Vit Mojzis <vmojzis@redhat.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH v2 1/4] libsepol/cil: Initialize avtab_datum on declaration
-Date: Wed, 23 Oct 2024 15:43:15 +0200
-Message-ID: <20241023134318.733305-1-vmojzis@redhat.com>
-In-Reply-To: <CAP+JOzRURZwsyvGzs3U7M7mw4NWD3Brh-K4wnztCS81MLYRHYg@mail.gmail.com>
+Subject: [PATCH v2 2/4] libsepol/mls: Do not destroy context on memory error
+Date: Wed, 23 Oct 2024 15:43:16 +0200
+Message-ID: <20241023134318.733305-2-vmojzis@redhat.com>
+In-Reply-To: <20241023134318.733305-1-vmojzis@redhat.com>
 References: <CAP+JOzRURZwsyvGzs3U7M7mw4NWD3Brh-K4wnztCS81MLYRHYg@mail.gmail.com>
+ <20241023134318.733305-1-vmojzis@redhat.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -72,77 +73,70 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-avtab_datum.xperms was not always initialized before being used.
+In case of malloc error, ctx1, or ctx2 may be pointing to uninitialized
+space and context_destroy should not be used on it.
 
 Fixes:
 Error: UNINIT (CWE-457):
-libsepol-3.7/cil/src/cil_binary.c:977:2: var_decl: Declaring variable "avtab_datum" without initializer.
-libsepol-3.7/cil/src/cil_binary.c:1059:3: uninit_use_in_call: Using uninitialized value "avtab_datum". Field "avtab_datum.xperms" is uninitialized when calling "__cil_cond_insert_rule".
- \# 1057|   			}
- \# 1058|   		}
- \# 1059|-> 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
- \# 1060|   	}
+libsepol-3.7/src/mls.c:673:2: alloc_fn: Calling "malloc" which returns uninitialized memory.
+libsepol-3.7/src/mls.c:673:2: assign: Assigning: "ctx1" = "malloc(64UL)", which points to uninitialized data.
+libsepol-3.7/src/mls.c:699:2: uninit_use_in_call: Using uninitialized value "ctx1->range.level[0].cat.node" when calling "context_destroy".
+ \#  697|   	ERR(handle, "could not check if mls context %s contains %s",
+ \#  698|   	    mls1, mls2);
+ \#  699|-> 	context_destroy(ctx1);
+ \#  700|   	context_destroy(ctx2);
+ \#  701|   	free(ctx1);
 
 Error: UNINIT (CWE-457):
-libsepol-3.7/cil/src/cil_binary.c:1348:2: var_decl: Declaring variable "avtab_datum" without initializer.
-libsepol-3.7/cil/src/cil_binary.c:1384:3: uninit_use_in_call: Using uninitialized value "avtab_datum". Field "avtab_datum.xperms" is uninitialized when calling "__cil_cond_insert_rule".
- \# 1382|   	} else {
- \# 1383|   		avtab_datum.data = data;
- \# 1384|-> 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
- \# 1385|   	}
- \# 1386|
+libsepol-3.7/src/mls.c:674:2: alloc_fn: Calling "malloc" which returns uninitialized memory.
+libsepol-3.7/src/mls.c:674:2: assign: Assigning: "ctx2" = "malloc(64UL)", which points to uninitialized data.
+libsepol-3.7/src/mls.c:700:2: uninit_use_in_call: Using uninitialized value "ctx2->range.level[0].cat.node" when calling "context_destroy".
+ \#  698|   	    mls1, mls2);
+ \#  699|   	context_destroy(ctx1);
+ \#  700|-> 	context_destroy(ctx2);
+ \#  701|   	free(ctx1);
+ \#  702|   	free(ctx2);
 
 Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
 ---
- libsepol/cil/src/cil_binary.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ libsepol/src/mls.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
-index 3dec1883..3d920182 100644
---- a/libsepol/cil/src/cil_binary.c
-+++ b/libsepol/cil/src/cil_binary.c
-@@ -975,7 +975,7 @@ static int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src,
- {
- 	int rc = SEPOL_OK;
- 	avtab_key_t avtab_key;
--	avtab_datum_t avtab_datum;
-+	avtab_datum_t avtab_datum = { .data = res, .xperms = NULL };
- 	avtab_ptr_t existing;	
+diff --git a/libsepol/src/mls.c b/libsepol/src/mls.c
+index 45db8920..a37405d1 100644
+--- a/libsepol/src/mls.c
++++ b/libsepol/src/mls.c
+@@ -672,8 +672,10 @@ int sepol_mls_contains(sepol_handle_t * handle,
+ 	context_struct_t *ctx1 = NULL, *ctx2 = NULL;
+ 	ctx1 = malloc(sizeof(context_struct_t));
+ 	ctx2 = malloc(sizeof(context_struct_t));
+-	if (ctx1 == NULL || ctx2 == NULL)
++	if (ctx1 == NULL || ctx2 == NULL){
++		ERR(handle, "out of memory");
+ 		goto omem;
++	}
+ 	context_init(ctx1);
+ 	context_init(ctx2);
  
- 	avtab_key.source_type = src;
-@@ -997,8 +997,6 @@ static int __cil_insert_type_rule(policydb_t *pdb, uint32_t kind, uint32_t src,
- 		goto exit;
- 	}
+@@ -690,16 +692,14 @@ int sepol_mls_contains(sepol_handle_t * handle,
+ 	free(ctx2);
+ 	return STATUS_SUCCESS;
  
--	avtab_datum.data = res;
--	
- 	existing = avtab_search_node(&pdb->te_avtab, &avtab_key);
- 	if (existing) {
- 		/* Don't add duplicate type rule and warn if they conflict.
-@@ -1346,7 +1344,7 @@ static int __cil_insert_avrule(policydb_t *pdb, uint32_t kind, uint32_t src, uin
- {
- 	int rc = SEPOL_OK;
- 	avtab_key_t avtab_key;
--	avtab_datum_t avtab_datum;
-+	avtab_datum_t avtab_datum = { .data = data, .xperms = NULL };
- 	avtab_datum_t *avtab_dup = NULL;
- 
- 	avtab_key.source_type = src;
-@@ -1372,7 +1370,6 @@ static int __cil_insert_avrule(policydb_t *pdb, uint32_t kind, uint32_t src, uin
- 	if (!cond_node) {
- 		avtab_dup = avtab_search(&pdb->te_avtab, &avtab_key);
- 		if (!avtab_dup) {
--			avtab_datum.data = data;
- 			rc = avtab_insert(&pdb->te_avtab, &avtab_key, &avtab_datum);
- 		} else {
- 			if (kind == CIL_AVRULE_DONTAUDIT)
-@@ -1381,7 +1378,6 @@ static int __cil_insert_avrule(policydb_t *pdb, uint32_t kind, uint32_t src, uin
- 				avtab_dup->data |= data;
- 		}
- 	} else {
--		avtab_datum.data = data;
- 		rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, &avtab_key, &avtab_datum, cond_node, cond_flavor);
- 	}
+-      omem:
+-	ERR(handle, "out of memory");
+-
+       err:
+-	ERR(handle, "could not check if mls context %s contains %s",
+-	    mls1, mls2);
+ 	context_destroy(ctx1);
+ 	context_destroy(ctx2);
++      omem:
+ 	free(ctx1);
+ 	free(ctx2);
++	ERR(handle, "could not check if mls context %s contains %s",
++	    mls1, mls2);
+ 	return STATUS_ERR;
+ }
  
 -- 
 2.47.0

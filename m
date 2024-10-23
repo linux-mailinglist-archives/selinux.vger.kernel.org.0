@@ -1,66 +1,66 @@
-Return-Path: <selinux+bounces-2117-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2119-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 698AA9ACB82
-	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 15:44:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B3EF9ACB84
+	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 15:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210A81F22D98
-	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 13:44:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C541283175
+	for <lists+selinux@lfdr.de>; Wed, 23 Oct 2024 13:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3417C19307D;
-	Wed, 23 Oct 2024 13:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E55A1AAE02;
+	Wed, 23 Oct 2024 13:44:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I0jrLq6y"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XZk1d1Vy"
 X-Original-To: selinux@vger.kernel.org
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8897A1AAE02
-	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18C3C159583
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729691035; cv=none; b=gXgYD7uPn7yqR1iT3ZEL3EBC56DjC//QWXLVViHjW4WjisAGPSOYqUqvRgKwwbSOqmHUQCkeAaTTcMQmV8lWsXPZj2Ve0p+w3Y8GPOjiyVqa6ru9RXtqFojmHWJX6x41khtEJ6Kc6ketggwhOyyJaCxxA5YMEoDeq0taZ0UTTUA=
+	t=1729691069; cv=none; b=bK+sBfhMs+fmcPCqn5naimLzEGVjJzqSrDwteCvYk9vqq7dh+UuhZF74fn6CWrp3oU6l5egR+EoSmiUz7GXTlzQMuKFzJNPeOnOO8SO1ThIh38HQtQB5jlg68ciM983TELXCUJcF+yf5ZLchRxP8aipKCr2KrZMK2TNZSpogAO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729691035; c=relaxed/simple;
-	bh=a58WhftuYwmQhPFE68btykTXHEJ0TAPMyWbaywwjrCc=;
+	s=arc-20240116; t=1729691069; c=relaxed/simple;
+	bh=DygcjO+6tokGt5xkff3FmRS0BxlLIi/2fNBumvFX40s=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYbtRwTDpjs7iRj7HZZOL1E8TGzJX+Gw1TrOO73WrdY85IIfqdcU6A5B9VsRkjmpCXiyRhphsH6VmMyHRvzL+7BVs3OoavYDj/p47QJdFxYwl9PkR0FFdlQNl4Uv1ResboBLctqWZD1ZA0cCJoYRX5VM8n3Lcfo1HYKq/V+f7Ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I0jrLq6y; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=gJm3D9VuS+jRKidv6nwkjtzOhfbr3i86kR2u6IuuWFjkxcGX+eENBrm+lyopEEk7wwUBxsOxdag1FwVDpF3NLrRKS2G9sfzjaWLg5dV55tb2qKKijJfI/uCxZiDs/SwhXI3jr+aIwTI2SMyeOe3buixNDNYUO2vfp75TxqCkGUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XZk1d1Vy; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1729691032;
+	s=mimecast20190719; t=1729691065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uDC8es8Dnm4/AG+tkdPlI3NpIOUFXCnikfcCobDEcU0=;
-	b=I0jrLq6yGgtC55vUyll/MDBVATEUfGdwznFKKkJAkfJfHgMIk16y4VMjaZGwyoF7nVReZ5
-	FYdTD488Y6Kc+lvH2vpqgv+B+mBkpjMb4/CdGjCTN08zGY528VBFXBz8nczdlWknqIV4Nz
-	ruB1mh8WQStA085bd1vv4GjIRvRUwIo=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	bh=S74S1i4iajAAwohgFYQDlrvOHjBRPPxvHDMvqGaCuc0=;
+	b=XZk1d1VyVblE8f0fdLnc/BfCx3WYvqJSr3QxIqKkiEu4+INi5ziB22gG3vdm84htjSGjMs
+	wUceM7/LxL45pKs+cp48odZ1rv7k2TEXTTBxXWdR8YNF1RXgJxee58PzIVLYDRzOtuK735
+	ugF12+vBUuS4PdbNDicwKZyBQY5PvAE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-77-bUcv4vo4PNWiydbrvfFHIg-1; Wed,
- 23 Oct 2024 09:43:51 -0400
-X-MC-Unique: bUcv4vo4PNWiydbrvfFHIg-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-97-naP28411M1K5AD6RpTKdjQ-1; Wed,
+ 23 Oct 2024 09:44:23 -0400
+X-MC-Unique: naP28411M1K5AD6RpTKdjQ-1
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0D67C1936DAA
-	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:36 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D70FC1936118
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:37 +0000 (UTC)
 Received: from fedora.redhat.com (unknown [10.45.225.164])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4CC571956046
-	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:35 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1C3F719560A2
+	for <selinux@vger.kernel.org>; Wed, 23 Oct 2024 13:43:36 +0000 (UTC)
 From: Vit Mojzis <vmojzis@redhat.com>
 To: selinux@vger.kernel.org
-Subject: [PATCH v2 2/4] libsepol/mls: Do not destroy context on memory error
-Date: Wed, 23 Oct 2024 15:43:16 +0200
-Message-ID: <20241023134318.733305-2-vmojzis@redhat.com>
+Subject: [PATCH v2 3/4] libsepol/cil/cil_post: Initialize tmp on declaration
+Date: Wed, 23 Oct 2024 15:43:17 +0200
+Message-ID: <20241023134318.733305-3-vmojzis@redhat.com>
 In-Reply-To: <20241023134318.733305-1-vmojzis@redhat.com>
 References: <CAP+JOzRURZwsyvGzs3U7M7mw4NWD3Brh-K4wnztCS81MLYRHYg@mail.gmail.com>
  <20241023134318.733305-1-vmojzis@redhat.com>
@@ -73,70 +73,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-In case of malloc error, ctx1, or ctx2 may be pointing to uninitialized
-space and context_destroy should not be used on it.
+tmp.node was not always initialized before being used by
+ebitmap_destroy.
 
 Fixes:
 Error: UNINIT (CWE-457):
-libsepol-3.7/src/mls.c:673:2: alloc_fn: Calling "malloc" which returns uninitialized memory.
-libsepol-3.7/src/mls.c:673:2: assign: Assigning: "ctx1" = "malloc(64UL)", which points to uninitialized data.
-libsepol-3.7/src/mls.c:699:2: uninit_use_in_call: Using uninitialized value "ctx1->range.level[0].cat.node" when calling "context_destroy".
- \#  697|   	ERR(handle, "could not check if mls context %s contains %s",
- \#  698|   	    mls1, mls2);
- \#  699|-> 	context_destroy(ctx1);
- \#  700|   	context_destroy(ctx2);
- \#  701|   	free(ctx1);
-
-Error: UNINIT (CWE-457):
-libsepol-3.7/src/mls.c:674:2: alloc_fn: Calling "malloc" which returns uninitialized memory.
-libsepol-3.7/src/mls.c:674:2: assign: Assigning: "ctx2" = "malloc(64UL)", which points to uninitialized data.
-libsepol-3.7/src/mls.c:700:2: uninit_use_in_call: Using uninitialized value "ctx2->range.level[0].cat.node" when calling "context_destroy".
- \#  698|   	    mls1, mls2);
- \#  699|   	context_destroy(ctx1);
- \#  700|-> 	context_destroy(ctx2);
- \#  701|   	free(ctx1);
- \#  702|   	free(ctx2);
+libsepol-3.7/cil/src/cil_post.c:1309:2: var_decl: Declaring variable "tmp" without initializer.
+libsepol-3.7/cil/src/cil_post.c:1382:6: uninit_use_in_call: Using uninitialized value "tmp.node" when calling "ebitmap_destroy".
+ \# 1380|   				if (rc != SEPOL_OK) {
+ \# 1381|   					cil_log(CIL_INFO, "Failed to apply operator to bitmaps\n");
+ \# 1382|-> 					ebitmap_destroy(&tmp);
+ \# 1383|   					goto exit;
+ \# 1384|   				}
 
 Signed-off-by: Vit Mojzis <vmojzis@redhat.com>
 ---
- libsepol/src/mls.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ libsepol/cil/src/cil_post.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/libsepol/src/mls.c b/libsepol/src/mls.c
-index 45db8920..a37405d1 100644
---- a/libsepol/src/mls.c
-+++ b/libsepol/src/mls.c
-@@ -672,8 +672,10 @@ int sepol_mls_contains(sepol_handle_t * handle,
- 	context_struct_t *ctx1 = NULL, *ctx2 = NULL;
- 	ctx1 = malloc(sizeof(context_struct_t));
- 	ctx2 = malloc(sizeof(context_struct_t));
--	if (ctx1 == NULL || ctx2 == NULL)
-+	if (ctx1 == NULL || ctx2 == NULL){
-+		ERR(handle, "out of memory");
- 		goto omem;
-+	}
- 	context_init(ctx1);
- 	context_init(ctx2);
+diff --git a/libsepol/cil/src/cil_post.c b/libsepol/cil/src/cil_post.c
+index ac99997f..d63a5496 100644
+--- a/libsepol/cil/src/cil_post.c
++++ b/libsepol/cil/src/cil_post.c
+@@ -1315,6 +1315,8 @@ static int __cil_expr_to_bitmap(struct cil_list *expr, ebitmap_t *out, int max,
+ 	curr = expr->head;
+ 	flavor = expr->flavor;
  
-@@ -690,16 +692,14 @@ int sepol_mls_contains(sepol_handle_t * handle,
- 	free(ctx2);
- 	return STATUS_SUCCESS;
- 
--      omem:
--	ERR(handle, "out of memory");
--
-       err:
--	ERR(handle, "could not check if mls context %s contains %s",
--	    mls1, mls2);
- 	context_destroy(ctx1);
- 	context_destroy(ctx2);
-+      omem:
- 	free(ctx1);
- 	free(ctx2);
-+	ERR(handle, "could not check if mls context %s contains %s",
-+	    mls1, mls2);
- 	return STATUS_ERR;
- }
++	ebitmap_init(&tmp);
++
+ 	if (curr->flavor == CIL_OP) {
+ 		enum cil_flavor op = (enum cil_flavor)(uintptr_t)curr->data;
  
 -- 
 2.47.0

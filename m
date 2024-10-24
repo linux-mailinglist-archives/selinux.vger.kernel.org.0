@@ -1,265 +1,113 @@
-Return-Path: <selinux+bounces-2144-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2146-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 891619AEEF1
-	for <lists+selinux@lfdr.de>; Thu, 24 Oct 2024 19:58:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D18D9AEFA8
+	for <lists+selinux@lfdr.de>; Thu, 24 Oct 2024 20:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04667B25256
-	for <lists+selinux@lfdr.de>; Thu, 24 Oct 2024 17:58:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC0BE1F22FBB
+	for <lists+selinux@lfdr.de>; Thu, 24 Oct 2024 18:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB792003D9;
-	Thu, 24 Oct 2024 17:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2382A2003D0;
+	Thu, 24 Oct 2024 18:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="EQuM0vxQ"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="ESFJvZTJ"
 X-Original-To: selinux@vger.kernel.org
-Received: from sonic307-8.consmr.mail.bf2.yahoo.com (sonic307-8.consmr.mail.bf2.yahoo.com [74.6.134.47])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA471FF7DA
-	for <selinux@vger.kernel.org>; Thu, 24 Oct 2024 17:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.6.134.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FEA1FAF10
+	for <selinux@vger.kernel.org>; Thu, 24 Oct 2024 18:24:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729792680; cv=none; b=G51bGavVMCvu79946GCLEmB6Z8o87pgQUQ5/pTtXNII0VWLCcdJC0V4y33m3Euhd89Iv5z9dkBMuz1CxPLik/DUaKmdJJlCb1AghIK5ZUKwVyrwF4clrtKbD9XGhxDuyNbFp07UckvVy1IeIeJJ3qZvYpu/2PgteaUEM0G/QC1o=
+	t=1729794271; cv=none; b=ks+h1K8UXpBu3hOq7qUNhRNt7c9CwwhfAc8PP9sOuNvwjZPRQcWTaoNolFmrmjEizTDzcgD/owgIRrmb7ETI/xueYUtJkRbAyIVkfS3O09EPj1B3nyDvyySHNeGiVN0oc8S8afbxstjg4JEcg0dDhW0h92Xh6xkmF47dNzh1Xmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729792680; c=relaxed/simple;
-	bh=ok50NMY0aXVs5DusdYWDZiWPFfU42CX3tvhS4lCDWo0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yhg+2jMP+OQdebAAgP92krzRaxBpBlyY+G4HKC06VVhsJ8fBuEKirxWaRhA2/fgyQAfkeK1+kIf5dPlQQeLXIjz+gVStKv6HH5EObiENctVkyUYJj+wQGC3I2vlHKfKoyfvx9oJCLy1EGU8Rt3MrGOo5WPjg0iGi6H3viprJc00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=EQuM0vxQ; arc=none smtp.client-ip=74.6.134.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1729792669; bh=pMfHkMgglQx3nh3YTV4JOae6naXEVyPNSmv9vS8Fpl4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=EQuM0vxQhefxfG7ChLdlpBCgVuirXIu+LEEDf1Cfn/R12Hzl0KnSV//jkmedWaH1bbdj2wQZak59iIjhVzr7ZgI0CD6PJKai1xzoqThem7hhkh908b7hUq6NHDDM8XToAdvmCJfFazcA6V7YleK5RohdoTiSxGy16W3aHY6UQ6XYKSGori2mJFsh2EYZ0VM2nw1MbgGWVTAfavY/bGtn27YduNUrIHZ/RDS0umLscjxcEUxdWCzE77//HUHIAMfuzh7l5fuMHnYNRDn8YYdW3rxCILpovOIYgho2FFxZR42eW7Y9fYJWf+E0lnYoNYr/RAlQ6TzWyXoGwdldJnus2A==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1729792669; bh=1QkIXn+owGpl+30HRIbYPtM2h9j7h+7THZ12QG14cRx=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=aiUNprW3r9PNVYSpoAjx+u8oIR8SmtXbUhgtUuNDeJ0czo015T6Lbui47RuLYZkNyZ1l/+F49vBI0EIimWMT83hMvmD1ieUn+gHQgwmgkbtC4xF/iBkTAzxcb1uIQfW77BAV4XAWDcRXRhEtdgZtgZU943X6n9pnhHJ5BU7hvul/j1shkaSAgot2ryc0dwqZLXcsyHyTSDIxnMO4s5mpRA4gcesWotBJzgVlcYc0oSvgaHHSd3TpPzk9fvWVxkAOgsc0I6Z62wTnJLxw648GbRf5E5Kqb1Cf+s3qIyO6bfU8iZVarjemfWPpOgYSpctLA6ad9Z8UaleG8aBU+BdbpA==
-X-YMail-OSG: .N9KrrgVM1mxM5NcPiRqgH4LIvlbRv.MRg1yZ_HM.ib195bx8L2Ag6h12ViR7fT
- CxI5BZVDRnlP9.w7Mr8zxl.pipQs5t9ys_ZOX.GWbCrE.LIZFRs5yQeCbBem16RLbA.VkaGsJymd
- W.Vj9u.s8ACImhafMrXPmn4CiZ1CSA3k1VMEOcSRBmLDTY4B11PF.f6z7jbVN8K2F6Keqj4mfipT
- LmqhmStPTTVaO6BxjjB6JfY1Z.yb5eyaStUC9h9ZrfbVv9vM9r0DPmcx1XDM1EZWytTpAG2aMKmM
- xKKhBKn0LnorkOf4TguFCUSz3hId0jhWq6Z5ssWSd10.06Mz_8iCUEQyHTV1.6w2lFCgPj.Z71ae
- 4nXLnNI0k5RDgntj4yWwZGjmb84GLWs_f6fPlTYkq7zdjw_Gf6q0djSYZvKmeevvB78PilR_Yvu5
- w0R6A9RnPqr637clqioz46o4I8Ou3M.cM_oGSUyh5D2HmhgNKQcEQaK1BbtBBlL_JrraZY7RXhD6
- Q5RryeT34p0h8tLXqW9c_JjEThW3VQSFxhfTMkyjGAuwRgIVi72EMQlwyRRVyGnNtSY1jpKd_.zY
- lP9o_Ll8kKb2VpNnTBwbBJgnaaTdzoXgnJbMfsvAzgSZL6CVq32Ni_IlsktR977FYZEf3.eygXw8
- Lz.zzc7HeM92c.XS76YMpzKhFQpXNzQQsN1XccYDztPSnIU4H5guIjo1.tjLwXDF3x2xdOAnfrwA
- y8jrGOuzHCCuLN.sK9yM3vsogxUtOrSSBOYloBZ4NnbkWzuLGyg_nwpYtbngbsU27Zp_z5pP1fgN
- jR.RT.gJOt4ZiobjulM4rrdiitEYI68r1SLYlCQsL2OA138k4GStVYnxvf2Z.lm7drcmMQEaZmoI
- cQb9ZsAqMr5P2XCu5i9LNCTlRobaLPGeEj2NhbIeFbKndrFtP9ikRhhputCo5jx5ijsBXWg76rYf
- h8t1oXhe5eLC_UWWb7jmebx0bfuvNgd76Mm8_cI2WdxuAokKjPxjUQHy3hLkW4i3keB5qj_lLMx4
- 9E.FNS.2q7C1bQqIrN46bLDRIAMgdbPT6.V6gy74JDGaZSb.Obl70zPUTkBiW_1.826jRJ5g2ZMP
- wWdCrgcft18ShNbCT.3QUsz0Z6K7N03fvk2DE7Yb7cCpesVrbVFE4gMJHRdJLz16K_jP6Edojkb2
- 0FRlRZ8s5_7vt0EOtpDymt9Wgpdp5WUaEaCYtM_Qsc6A_Hr3y.hwdVPE3QYT_r2l2UKOtlcgkq9H
- CHpAbbvBWHVwDDowAHLil8R1JSSAUtDRIUE1d4K7eWQX0x6MAgUbaHlr3dhTFum2GSZHGNSziUqY
- iKiVyPEV5HfA.TbbLHF7JvqcnycywyWOTQJpKbg4.ki9NIYqw8ZiWg0jklUb4EqtFJ9EuK8L1FMT
- 2EXC2.B3GanRW9XTUu2XrBVMaffC5fE19_HRLZlS_3xcZz2LipwrjCdYORuJIOSwRS94vF3mhNmE
- NyNqDWgKwQiludvs3dJuTijXCr6K.QvgnElzwx0u49_rHUQlFoN1sKtOYcj15.r9ck8Fng0mGRJu
- d3G1CFmXZWcjUoUufbw7Q2yfMigkCSC.xrLfGlLEUOhRPz8Lipb1iirY4sOWcSZsCsj4PujI9nOy
- t6LYmWlLt5k3pbjdBLf8bWz1qXWSe6KseN3IuYfM4uFGn6WTQRVflk7SwGr5E2DhdfGKg9luXTXt
- SA52fG94ICUMRTg31U9mJA7_a9UvA3sRN0_.fP0Ignfc7.jbLiWr2kXcoT_eSlj9E1VSylWHFC5L
- 3eP8yQSZ.REPkFEYyQqbPywUHljljkmdwiVj2K4n8yJiLVSOFb1B997pdMJRb0KB1XwqOqq.nNbR
- 7XXRPA7kBnuPZSag3SvxysZuvvHToPeXL0LHVgo5tFw9z6zhriSljx3gHFMlZLNmdlW8O1ApvrYM
- gIpASAcnOjbJ4cx.MxL2xWXxdThb9XiRFrbA9VFKWO739gtSsPW_p_fYq0q1c2NoT6rOSYf9ZA5r
- fUbLkXpaY0BDs.s6USJV5wYfWdBswmubxxOqVV0Q1FhRydMKcUrNNretaR7oDma.NOnrW6824fUn
- LiwaP.XqGehzvCrzvhcx7ajmBRYEsro.A0ptjyGvHfbwzyrDzvQjh8VsczvaYqFKrxp0t5uvluSJ
- QtlpE.XLtp8nrWduYD4rFQ7wBSAXDHo1y76OYNONIHfarf6Nkkmg9K9wPnP3ynwfth_Q9MRdeZy5
- HY_YlBX_NlHDE3uPmsBYeggddRHncWuKl15X3lOhyxlBLq.zJfekei1n.4fnpB3.pPNiKk6_s43v
- 0tgFOGU8WhYqYCF2L8Cw-
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: 5319af78-d978-419c-9abd-0afcd7a4684d
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.bf2.yahoo.com with HTTP; Thu, 24 Oct 2024 17:57:49 +0000
-Received: by hermes--production-gq1-5dd4b47f46-5kxd4 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 34a0acd965b86539600f15366b5397a9;
-          Thu, 24 Oct 2024 17:57:42 +0000 (UTC)
-Message-ID: <0b4f0cd3-181f-4be6-890c-1d225ac1f161@schaufler-ca.com>
-Date: Thu, 24 Oct 2024 10:57:41 -0700
+	s=arc-20240116; t=1729794271; c=relaxed/simple;
+	bh=M9QxGTV7VT6bHq601Eei0bwU4zdH1xECC7gaaWFRF8Y=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=RGB+jfvPiD5721ea3wGBZjWIZpI2pBug44IvW7Yz9z/5596zzAaEdVjfs1CcCVwOYgoyK2RW5rhBzOdIy4Pq06/CnekTt+3ho1haUn3mBQNmPyjf92cXdzX3OSuntT386rfFBeX89yWn21AH1NgnYOu41yEKXC9KJTra4wGecU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=ESFJvZTJ; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-7b153047b29so80740085a.3
+        for <selinux@vger.kernel.org>; Thu, 24 Oct 2024 11:24:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1729794266; x=1730399066; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qP9TPe1+2v/YXjw/8ZCJNYcN5tXynTk98mC/yDx5Ot0=;
+        b=ESFJvZTJQcGYN88YJJhyAhU4Mh5IZwBnUt/fSsiKOjPOeUfG0h/UgC0hVG0lVyFQsu
+         bwSRNxrG92HiPmHygYNKa/rSnyq/WQXgkfGkx7D9oeezDVHHQgb8/anfmADM/3ea6zA1
+         PRJ3zc2V1y3AjcTejbiWU2Oenc8FtrzomuarCoW4vBL1J1aZU0B55hQR4rrKtP1Ysds2
+         S6jjj+eiuBdn+LDrdfDB4lfQ0iSMuVail4hFrrpy4fQn1z1UFHYkFn5JTK2DCN9QUfpg
+         ksRkChXQQ9VRGG/S2P4cGf9F2wwaNB51rAMy4sbP0LcvoZPeqALm5J1V1J8elYfi3J3O
+         +vUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729794266; x=1730399066;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qP9TPe1+2v/YXjw/8ZCJNYcN5tXynTk98mC/yDx5Ot0=;
+        b=qTxT9COdhHVOAtQ46mnP62BuVtOuDxVgaepc/Od3IH+1t7HqnPOKh7gCMwKXutN0Ym
+         lcw+Le6mDqBGmCB5RmcF5Oys7od8XeWzut32E0zTt4cfs7+gX1IxxC8l5JB90/dtIM3z
+         L5JLyhNRGBRIO/CbD5nRP/a0OSApH6TCSvI7xScMUrpPVscqn8zE2bsNL5K+Kx4jLrCO
+         9+aVlc8gpj+uv9Y0RQu+8tsipf7qi/rtm0lGfahDEOkwHiaeQ/frme2TzcXb79o89/UV
+         sNDUHofDpZ8HoRerbmlHSmMZTayE48gxhHri5+48sNmINxDMNnHAAYOvQETGd+w5qngK
+         LqUQ==
+X-Gm-Message-State: AOJu0YyloCHZ/s2XqYuA/9kWtJYLqi+Eh6ElW5eXpWdHOpP4werid3Yo
+	J5ecLIT70nxiC7CxEe/dEkUO/8pTmeTTHI9oWgN09R/fTkBGne3GoFz2TA2hTWJnf1TbGTGVhmM
+	=
+X-Google-Smtp-Source: AGHT+IEgOcUbHLJLQfjZQC5E/9xZU09GoNrjmOwabRY9xWSkNeuhwQL0knI3rdmHlGpA7MjnRQSP6Q==
+X-Received: by 2002:a05:6214:390c:b0:6cb:2456:537 with SMTP id 6a1803df08f44-6d08f7827d2mr28910876d6.29.1729794265691;
+        Thu, 24 Oct 2024 11:24:25 -0700 (PDT)
+Received: from localhost ([70.22.175.108])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ce009ecb61sm52368186d6.127.2024.10.24.11.24.25
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Oct 2024 11:24:25 -0700 (PDT)
+From: Paul Moore <paul@paul-moore.com>
+To: selinux@vger.kernel.org
+Subject: [PATCH 1/3] check-syntax: update arguments for astyle v3.2 (possibly earlier)
+Date: Thu, 24 Oct 2024 14:24:22 -0400
+Message-ID: <20241024182424.138616-1-paul@paul-moore.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/5] LSM: Replace context+len with lsm_context
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: paul@paul-moore.com, linux-security-module@vger.kernel.org,
- jmorris@namei.org, serge@hallyn.com, keescook@chromium.org,
- john.johansen@canonical.com, penguin-kernel@i-love.sakura.ne.jp,
- stephen.smalley.work@gmail.com, linux-kernel@vger.kernel.org,
- selinux@vger.kernel.org, mic@digikod.net, netdev@vger.kernel.org,
- audit@vger.kernel.org, netfilter-devel@vger.kernel.org,
- Todd Kjos <tkjos@google.com>, Casey Schaufler <casey@schaufler-ca.com>
-References: <20241023212158.18718-1-casey@schaufler-ca.com>
- <20241023212158.18718-3-casey@schaufler-ca.com> <ZxpxZuErvXSLApsf@calendula>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <ZxpxZuErvXSLApsf@calendula>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.22806 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 8bit
 
-On 10/24/2024 9:10 AM, Pablo Neira Ayuso wrote:
-> Hi Casey,
->
-> This is a review of the netfilter chunk.
+Update the astyle arguments in tools/check-syntax to work with modern
+version of astyle.
 
-Thank you.
+It is worth mentioning that astyle v3.6.3 appears to have a problem
+with aligning/indenting continuation lines, preferring blind
+indentation over alignment.
 
-> On Wed, Oct 23, 2024 at 02:21:55PM -0700, Casey Schaufler wrote:
->> diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
->> index 86a57a3afdd6..dd74d4c67c69 100644
->> --- a/net/netfilter/nf_conntrack_netlink.c
->> +++ b/net/netfilter/nf_conntrack_netlink.c
->> @@ -360,8 +360,8 @@ static int ctnetlink_dump_secctx(struct sk_buff *skb, const struct nf_conn *ct)
->>  	struct lsm_context ctx;
->>  	int ret;
->>  
->> -	ret = security_secid_to_secctx(ct->secmark, &ctx.context, &ctx.len);
->> -	if (ret)
->> +	ret = security_secid_to_secctx(ct->secmark, &ctx);
->> +	if (ret < 0)
->>  		return 0;
->>  
->>  	ret = -1;
->> @@ -665,8 +665,8 @@ static inline int ctnetlink_secctx_size(const struct nf_conn *ct)
->>  #ifdef CONFIG_NF_CONNTRACK_SECMARK
->>  	int len, ret;
->>  
->> -	ret = security_secid_to_secctx(ct->secmark, NULL, &len);
->> -	if (ret)
->> +	ret = security_secid_to_secctx(ct->secmark, NULL);
-> This breaks here.
->
-> len is really used, this should be instead:
->
-> 	ret = security_secid_to_secctx(ct->secmark, &ctx);
->
-> [...]
->         return nla_total_size(0) /* CTA_SECCTX */
->                + nla_total_size(sizeof(char) * ctx.len); /* CTA_SECCTX_NAME */
-> #else
->         return 0;
-> #endif
-> }
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+---
+ tools/check-syntax | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-I'll fix that.
+diff --git a/tools/check-syntax b/tools/check-syntax
+index 2115a7960dd5..2775eb46c6c4 100755
+--- a/tools/check-syntax
++++ b/tools/check-syntax
+@@ -57,10 +57,9 @@ function tool_c_style() {
+ 	astyle --options=none --lineend=linux --mode=c \
+ 		--style=linux \
+ 		--indent=force-tab=8 \
+-		--indent-preprocessor \
+ 		--indent-col1-comments \
+ 		--min-conditional-indent=0 \
+-		--max-instatement-indent=80 \
++		--max-continuation-indent=80 \
+ 		--pad-oper \
+ 		--align-pointer=name \
+ 		--align-reference=name \
+-- 
+2.47.0
 
->> +	if (ret < 0)
->>  		return 0;
->>  
->>  	return nla_total_size(0) /* CTA_SECCTX */
->> diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
->> index 5f7fd23b7afe..502cf10aab41 100644
->> --- a/net/netfilter/nf_conntrack_standalone.c
->> +++ b/net/netfilter/nf_conntrack_standalone.c
->> @@ -175,8 +175,8 @@ static void ct_show_secctx(struct seq_file *s, const struct nf_conn *ct)
->>  	struct lsm_context ctx;
->>  	int ret;
->>  
->> -	ret = security_secid_to_secctx(ct->secmark, &ctx.context, &ctx.len);
->> -	if (ret)
->> +	ret = security_secid_to_secctx(ct->secmark, &ctx);
->> +	if (ret < 0)
->>  		return;
->>  
->>  	seq_printf(s, "secctx=%s ", ctx.context);
->> diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
->> index 37757cd77cf1..5110f29b2f40 100644
->> --- a/net/netfilter/nfnetlink_queue.c
->> +++ b/net/netfilter/nfnetlink_queue.c
->> @@ -470,18 +470,18 @@ static int nfqnl_put_sk_classid(struct sk_buff *skb, struct sock *sk)
->>  	return 0;
->>  }
->>  
->> -static u32 nfqnl_get_sk_secctx(struct sk_buff *skb, char **secdata)
->> +static u32 nfqnl_get_sk_secctx(struct sk_buff *skb, struct lsm_context *ctx)
->>  {
->>  	u32 seclen = 0;
->>  #if IS_ENABLED(CONFIG_NETWORK_SECMARK)
->> +
-> remove unneeded line.
-
-Will do.
-
->>  	if (!skb || !sk_fullsock(skb->sk))
->>  		return 0;
->>  
->>  	read_lock_bh(&skb->sk->sk_callback_lock);
->>  
->>  	if (skb->secmark)
->> -		security_secid_to_secctx(skb->secmark, secdata, &seclen);
->> -
->> +		seclen = security_secid_to_secctx(skb->secmark, ctx);
->>  	read_unlock_bh(&skb->sk->sk_callback_lock);
->>  #endif
->>  	return seclen;
->> @@ -567,8 +567,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
->>  	enum ip_conntrack_info ctinfo = 0;
->>  	const struct nfnl_ct_hook *nfnl_ct;
->>  	bool csum_verify;
->> -	struct lsm_context scaff; /* scaffolding */
->> -	char *secdata = NULL;
->> +	struct lsm_context ctx;
-> Help us make this get closer to revert xmas tree:
->
->   	enum ip_conntrack_info ctinfo = 0;
->   	const struct nfnl_ct_hook *nfnl_ct;
-> +	struct lsm_context ctx;
->   	bool csum_verify;
-> -	struct lsm_context scaff; /* scaffolding */
-> -	char *secdata = NULL;
-
-Will do.
-
->>  	bool csum_verify;
->> -	struct lsm_context scaff; /* scaffolding */
->> -	char *secdata = NULL;
->>  	u32 seclen = 0;
->>  	ktime_t tstamp;
->>  
->> @@ -643,8 +642,8 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
->>  	}
->>  
->>  	if ((queue->flags & NFQA_CFG_F_SECCTX) && entskb->sk) {
->> -		seclen = nfqnl_get_sk_secctx(entskb, &secdata);
->> -		if (seclen)
->> +		seclen = nfqnl_get_sk_secctx(entskb, &ctx);
->> +		if (seclen >= 0)
->>  			size += nla_total_size(seclen);
->>  	}
->>  
->> @@ -783,7 +782,7 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
->>  	if (nfqnl_put_sk_classid(skb, entskb->sk) < 0)
->>  		goto nla_put_failure;
->>  
->> -	if (seclen && nla_put(skb, NFQA_SECCTX, seclen, secdata))
->> +	if (seclen && nla_put(skb, NFQA_SECCTX, ctx.len, ctx.context))
->>  		goto nla_put_failure;
->>  
->>  	if (ct && nfnl_ct->build(skb, ct, ctinfo, NFQA_CT, NFQA_CT_INFO) < 0)
->> @@ -811,10 +810,8 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
->>  	}
->>  
->>  	nlh->nlmsg_len = skb->len;
->> -	if (seclen) {
->> -		lsmcontext_init(&scaff, secdata, seclen, 0);
->> -		security_release_secctx(&scaff);
->> -	}
->> +	if (seclen >= 0)
->> +		security_release_secctx(&ctx);
->>  	return skb;
->>  
->>  nla_put_failure:
->> @@ -822,10 +819,8 @@ nfqnl_build_packet_message(struct net *net, struct nfqnl_instance *queue,
->>  	kfree_skb(skb);
->>  	net_err_ratelimited("nf_queue: error creating packet message\n");
->>  nlmsg_failure:
->> -	if (seclen) {
->> -		lsmcontext_init(&scaff, secdata, seclen, 0);
->> -		security_release_secctx(&scaff);
->> -	}
->> +	if (seclen >= 0)
->> +		security_release_secctx(&ctx);
->>  	return NULL;
->>  }
->>  
 

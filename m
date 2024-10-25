@@ -1,162 +1,480 @@
-Return-Path: <selinux+bounces-2148-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2149-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0486D9B08D7
-	for <lists+selinux@lfdr.de>; Fri, 25 Oct 2024 17:48:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B129B08D8
+	for <lists+selinux@lfdr.de>; Fri, 25 Oct 2024 17:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80EC42839AB
-	for <lists+selinux@lfdr.de>; Fri, 25 Oct 2024 15:48:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FD971F28153
+	for <lists+selinux@lfdr.de>; Fri, 25 Oct 2024 15:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857BF15E5CA;
-	Fri, 25 Oct 2024 15:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9660166F33;
+	Fri, 25 Oct 2024 15:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a57G0Lq/"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="M1SsiFnh"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-oa1-f54.google.com (mail-oa1-f54.google.com [209.85.160.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707FD21A4A1
-	for <selinux@vger.kernel.org>; Fri, 25 Oct 2024 15:48:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24971632D0
+	for <selinux@vger.kernel.org>; Fri, 25 Oct 2024 15:48:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1729871316; cv=none; b=UEpcIt0/d2arxsIN6R0ZbY0vuTziiwtl/Rcw4TwCUBEORChgwPMzSHyjPUzWDZhWltYdbs7vEmbbnrJAUx0j2/Wl9ybY+1b7h71kQpdyR4qr8bVDO2rV/DPQxQh4aZaCg+WjQq/qshpy7BxR6JTGc1XOZjuvRihFdnoaw4MdnqI=
+	t=1729871323; cv=none; b=nEVfzK/iq5NqDg9u8f6xZlIAxOCqqoSx5Os9/wSq45K1DUJwpAF0DW0sWaWlXGGqBzFi95B8yKLqsKq7KqJ5pT7Q8QQD9CwZKt/wjHhUIA3H1Mwm4HY1OJPWC6JEL/RC5ynuBak14Q9rOnCZfhIUMW7AdppQmlzTooX8EcdFd9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1729871316; c=relaxed/simple;
-	bh=EvkjYP/3sSXbzLG7BRTO0iHCS3Wc0r41hNxdmkwsebs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KPHdFf9LweO0mwyobzDZNiGzn6gQENQjDC7mTGYXLzDjKviZzX+h3mlPTedCltsrpelOIdNTiwoDSDhhDNkPa53paKekvqIvFmOrxpbpDXauvISOquHicejbSRqbwmPezFk1X72FqzvaQqLm7O07JSrnvKGxsp1C7VjrP6t5EzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a57G0Lq/; arc=none smtp.client-ip=209.85.160.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-288d74b3a91so1371893fac.0
-        for <selinux@vger.kernel.org>; Fri, 25 Oct 2024 08:48:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1729871313; x=1730476113; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+hn0iGv6FjBT85MocjDfQQ+jwJ0vITk/KFYz1Jnfq+Y=;
-        b=a57G0Lq/uwLu3T2wOihnt3G0tdh/ygvioWmAOqBpfmOdp9Utog8B7QMGNHuRfLRrTU
-         z9Mlznn3q3uIqRZJ6HWGe8vvJoRlPXLIEN/ArfPgO4ghZ/3J+MiWB/sEkz3nOEcGXrE4
-         rl/1x3zKuBB+iWeZ1QQk4UCE79huW+K5zaFQrRVJjB7T8DTCACwVPM9n/n1jrQw33UFY
-         Y2YgASDAWjpp5A9axYbyNwfy+jpMu4Sb3xQumzm5cE0TcG/icOomo+dY5TQXlO0ePnc8
-         MOGgx3PH5+Anmw8SwqYjmxUHnkdrLgSsuOe/EgX8VlT2Y8/ExU/Z526BQuKOLmbGPe1R
-         CE3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729871313; x=1730476113;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+hn0iGv6FjBT85MocjDfQQ+jwJ0vITk/KFYz1Jnfq+Y=;
-        b=QybBxG3dpbK35H9pFSZZd63As/gHNdg26MvyRa6yZvk8y+xGnyYY58JQf3lzotwDaf
-         xr4mhY+xVYeafiGmgWXUMvwNR+FKUirEPmZLpLKALLDGCK9B2UZJsehfBjOZ+iEm975J
-         IMzU12NoxuAd8kmLZDB8eiRqyFtQOfTj5Tw7NyLMgU1O8J+vuHV9trsRzsJwakq5OxW1
-         e3OBmLcmhCzXtzBQBEr4O2Eqsx1meeFzQyAG+/e2tPPFUy640C8JLdWKQec+HDfadPv5
-         fKPuOtUhJWbCceKUKAwlCtnzrLMtJBvmkI6f2KWm1qsVJCkz+Tt4UV3JTutak+Dr3Tcc
-         gyWg==
-X-Gm-Message-State: AOJu0YxsZRDXnd46k1FuOmisRnb/UKAegC0cxJzE4A7EFuMqjDPwdLoc
-	JMNOxgDjpyyk11oKnK6h8zkCREk+otK7wz26yKiVcr8AvoeRfJwFY0yc9Ze8I5Xpx+HQokRiabn
-	BQGpYKuFHqMKR5ULDKOH2WWceO7rDmg==
-X-Google-Smtp-Source: AGHT+IExGM4rJYnCufxqNhw/b7whksYV8U/m6nu0Qom46horCGph0EOuvTWKYF4C+hQKFkH4y/EIqzyDEhNNyA3QvLU=
-X-Received: by 2002:a05:6870:a79b:b0:268:9f88:18ef with SMTP id
- 586e51a60fabf-28ced27ba4cmr5826500fac.13.1729871313457; Fri, 25 Oct 2024
- 08:48:33 -0700 (PDT)
+	s=arc-20240116; t=1729871323; c=relaxed/simple;
+	bh=2szgeLc+hQM2nnJUYtT3j1jQiSzO9R/DS7ofKgqZS+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DfkoFByMseUWR2KLkJMQxg37m72onrj7/jpfmaynOOcODB5hmoIpKgUaCLRkWN0RdftXMDNzwfCTx4YngnniOT9WDsbB5eH4rAK3X5bpbOyFrxguLgQWbaDpqaIoMc47wdc4abkGdWYQQDLqj1QYEIr98EmjJW46Y7GZt9AJo64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=M1SsiFnh; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1729871313;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qaeeQA7K/iuG60eRkcy8CHziIgSvIjZnAaaZJCP/ucw=;
+	b=M1SsiFnhIckTkQK0sGdxEfdOrs4Emuv39p+ZEEHWrm6xBLBHIDy9kFKnTrTr+O2BX5wOc8
+	l2dr0u3DeQxiC6Ip1O7gD1NCi8wLkTXhkpgKYSK4/7FODhwJJ4JDG+UOxXpPKt11KtUO1I
+	c/6Soc0RjSVJUwWiAAYloD9DIk/Y6ICNVJSaFmsEVb3VXWoc5X1iC4SwIftexTOi9KNksd
+	ZkJFmzvGMlhvm8j4QrFkVBV96qIJINJgmcCQlUd/nngRZz9qG3oYJWMvvXuf79c1X6czkd
+	d/YtY5n2prhOR2mbV1PeBBKADQA7p02qrOdrtuxPXYFHWsMbXQrCRfpvR4GU4g==
+To: selinux@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [PATCH v3 3/6] checkpolicy: add support for xperms in conditional policies
+Date: Fri, 25 Oct 2024 17:48:21 +0200
+Message-ID: <20241025154824.140073-3-cgoettsche@seltendoof.de>
+In-Reply-To: <20241025154824.140073-1-cgoettsche@seltendoof.de>
+References: <20241025154824.140073-1-cgoettsche@seltendoof.de>
+Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAEjxPJ46KJCUXqgq==pmEMW9yYJSRnWkGrSrxBAfMELPRYUdXQ@mail.gmail.com>
- <CAEjxPJ7WUzN=0Yv4POgPVHPG1wEjNn=-Tb53NiuMpWf+bEuF-w@mail.gmail.com>
- <CAEjxPJ758jx7X5Tauz=xQXsmWcZhx_V7AkU=PtsH6S3S9CUCbw@mail.gmail.com>
- <CAEjxPJ50ADVSOys58eYUktv4sjYYnEDroxA9Wnt6HiY9ySk=gg@mail.gmail.com>
- <CAEjxPJ6QsYR-Kj8k0C=54cix8rdpBsCphDV5_QnjGONDuOm+ew@mail.gmail.com>
- <CAEjxPJ6p3oD99_aTEeSCx6FMob7BH8-2vxdoT69c8sw11oHuEA@mail.gmail.com>
- <CAEjxPJ5jup5o9piVPuA97_radSzvshpnRB1CdBde8sV3ZXVc2Q@mail.gmail.com>
- <CAEjxPJ7UtCjQw=v1--6ZWXo-bbkndGbwfXhcT8RkX_cddjCqkQ@mail.gmail.com>
- <CAEjxPJ5a1KzSjB31gcqWqJW_zdy8OCmwKKGYwCivvFG4Jvncyg@mail.gmail.com>
- <CAEjxPJ6WupdxzSkh54NLJkZoH=Umayj8+HrX5TmbAXvVYzgPfw@mail.gmail.com>
- <CAEjxPJ7iL11xSVs4gxhMPSCtVmYEqfgQQmBpVNAVXV7UG=P3nw@mail.gmail.com>
- <CAEjxPJ7C41QdEgAFYVdTyZE=TjGq+pyzCmy7BbHMss7=njvJmg@mail.gmail.com>
- <CAHC9VhRDF0DBAWM-=ynks1=Zm5LcQYq0_4xfQy4pKvHfW6FoBg@mail.gmail.com>
- <9aa53afd-efd8-4552-8239-14f99ff7a1b1@schaufler-ca.com> <CAEjxPJ6vyDjmwxEpwnb+JYKiWXYFo5g_suZiUZb6L+aepHxZiA@mail.gmail.com>
- <CAEjxPJ4nbCuntgTvrGk4LHs+ZYjm95ZwwSwwAycWWzS9dt9Tyw@mail.gmail.com>
- <CAEjxPJ76MdNwgXtGTgVYGKE87=7GmZywQ1GJn5Vz8jjCdVATWA@mail.gmail.com>
- <CAEjxPJ7Qp9Q4RUYH8vb-xQOe0=YsN=nbyM-4FV6hvYzZwKX5Og@mail.gmail.com>
- <CAEjxPJ4Opxv+HU6cbAfKNT=ZXnUZ=0Ac8ZM5fQj=wnO_JPy-zw@mail.gmail.com>
- <CAEjxPJ7Zpw9i6OXZ-Kz=WXVuCaas5TOtxCAmK-rxGDhm1-zwDg@mail.gmail.com>
- <CAEjxPJ4UsFbFvuigZ+WZD0zuPQ-mY9MRQ-3+SYp_bDwBE_1z0Q@mail.gmail.com>
- <CAEjxPJ4RbypeHbdpWPXGRstDAWWiEv+-dCWXc1aAO+zpkxnkEg@mail.gmail.com>
- <CAEjxPJ5Co0P1sVYmAiD0WnquNv8XOMAyi09GCW3jTPqsvZEsGQ@mail.gmail.com>
- <CAEjxPJ66z5x9AB7wT_SaOCjw+UY6DseMnmjqiMi93063xZ3t-w@mail.gmail.com>
- <CAEjxPJ5duopAZs2tf5yK+w9-p_UB8ijAHoQXtWDMYJ9keiyRbA@mail.gmail.com>
- <CAEjxPJ4S9Z1WOpcDNJ5t4vCuHM4DqAr2jLscSiPJrARr6QPJfA@mail.gmail.com>
- <CAEjxPJ7vMQ6SBVXUjfG+3XvHdkCvSO=fBwftFdt9kTfLrPzr_Q@mail.gmail.com>
- <CAEjxPJ6Kg4P8DBhG_JZj_U61PwyJF0jVJXX3QsLMrduR7RzrPg@mail.gmail.com>
- <CAEjxPJ6PevN1XCyqsC2gT3mXt4h78ed_=AiZBT+Q_oanx2DRdA@mail.gmail.com>
- <CAEjxPJ59ypVNV=oeYAgqZhdB+CQacjtgribCorXuoODe0JXnxw@mail.gmail.com> <CAEjxPJ7Pv_OHiYspdpWHiaEkH0XBQpThn6+ZiuycR-0k-4e_yA@mail.gmail.com>
-In-Reply-To: <CAEjxPJ7Pv_OHiYspdpWHiaEkH0XBQpThn6+ZiuycR-0k-4e_yA@mail.gmail.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Fri, 25 Oct 2024 11:48:21 -0400
-Message-ID: <CAEjxPJ5e937eLXjBQ5aOTsfkc2rxii0PSwNJsFkZ-rC0b=f4fg@mail.gmail.com>
-Subject: Re: SELinux namespaces re-base
-To: Paul Moore <paul@paul-moore.com>, Ondrej Mosnacek <omosnace@redhat.com>
-Cc: SElinux list <selinux@vger.kernel.org>, Casey Schaufler <casey@schaufler-ca.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Oct 11, 2024 at 9:51=E2=80=AFAM Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
-> Ok, I confirmed that the remaining denials are due to multiple tmpfs
-> mounts and a socket created by systemd-nspawn during setup of the
-> container that are then used by the container at runtime, and I
-> confirmed that allowing those permissions in the container policy
-> enables a Fedora container to boot in enforcing mode with its own
-> SELinux namespace on a Fedora host in enforcing mode. Ultimately we
-> will want the container runtime (systemd-nspawn in this case) to
-> properly label those tmpfs mounts and the socket but that's just a
-> matter of further userspace changes to systemd-nspawn.
->
-> Still lots to do to allow more interesting combinations but I'll leave
-> it there for a bit and see if anyone is actually interested in this
-> besides me...
+From: Christian Göttsche <cgzones@googlemail.com>
 
-As per the discussion at the project meeting, I have added a Kconfig
-option CONFIG_SECURITY_SELINUX_NS (default n) that controls whether
-the SELinux namespace support is exposed to userspace at all but does
-not affect the underlying infrastructure support.
-Hence, anyone wishing to experiment with it will need to enable that
-option. At this point, the safeguards on SELinux namespaces are as
-follows:
-- You have to explicitly enable it in Kconfig for it to be exposed to
-userspace at all by the kernel,
-- If enabled in Kconfig, the /sys/fs/selinux/unshare node for
-unsharing the SELinux namespace can only be written by processes that
-have the root UID (or CAP_DAC_OVERRIDE if non-root) and the new
-unshare SELinux permission (obviously on Fedora the latter is
-default-allowed unless you define the permission, but even then you
-still have to be root or CAP_DAC_OVERRIDE).
-- If enabled in Kconfig, then two additional Kconfig options and
-/sys/fs/selinux nodes are provided for specifying the maximum number
-of SELinux namespaces (default 65535) and the maximum depth to which
-they can be nested (default 32). The
-/sys/fs/selinux/{maxns,maxnsdepth} nodes can only be written by a
-process with the root uid (or CAP_DAC_OVERRIDE) and the new
-setmaxns/setmaxnsdepth SELinux permissions. Further,  they can only be
-set from the initial SELinux namespace, not from child namespaces.
+Add support for extended permission rules in conditional policies.
 
-Hopefully those safeguards remove any qualms people might have about testin=
-g.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+v2:
+  - resbase onto "libsepol: Support nlmsg xperms in assertions" and adjust
+    resulting (correct) optimization difference
+  - print extended permission range in hexadecimal
+---
+ checkpolicy/policy_define.c                   | 108 +++++++++++++++---
+ checkpolicy/policy_define.h                   |   1 +
+ checkpolicy/policy_parse.y                    |  20 +++-
+ checkpolicy/tests/policy_allonce.conf         |   7 +-
+ .../tests/policy_allonce.expected.conf        |  10 ++
+ .../tests/policy_allonce.expected_opt.conf    |  10 ++
+ 6 files changed, 141 insertions(+), 15 deletions(-)
 
-Would welcome any code reviewers or testers, especially for corner
-cases that I am less likely to exercise myself - e.g. policies not
-based on refpolicy, containers and/or host OSes that are not Fedora
-derivatives, etc. You'll need the patched kernel, libselinux,
-systemd-nspawn, and systemd (or roll your own userspace patches for
-your preferred container runtime and/or init daemon) to exercise it,
-as previously described in the thread.
+diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+index f8a10154..3c5def9e 100644
+--- a/checkpolicy/policy_define.c
++++ b/checkpolicy/policy_define.c
+@@ -1859,6 +1859,8 @@ int define_bool_tunable(int is_tunable)
+ 
+ avrule_t *define_cond_pol_list(avrule_t * avlist, avrule_t * sl)
+ {
++	avrule_t *last;
++
+ 	if (pass == 1) {
+ 		/* return something so we get through pass 1 */
+ 		return (avrule_t *) 1;
+@@ -1869,8 +1871,12 @@ avrule_t *define_cond_pol_list(avrule_t * avlist, avrule_t * sl)
+ 		return avlist;
+ 	}
+ 
+-	/* prepend the new avlist to the pre-existing one */
+-	sl->next = avlist;
++	/* Prepend the new avlist to the pre-existing one.
++	 * An extended permission statement might consist of multiple av
++	 * rules. */
++	for (last = sl; last->next; last = last->next)
++		;
++	last->next = avlist;
+ 	return sl;
+ }
+ 
+@@ -1972,7 +1978,7 @@ static int avrule_read_xperm_ranges(struct av_xperm_range_list **rangehead)
+ 			id = queue_remove(id_queue);
+ 			r->range.high = (uint16_t) strtoul(id,NULL,0);
+ 			if (r->range.high < r->range.low) {
+-				yyerror2("Ioctl range %d-%d must be in ascending order.",
++				yyerror2("extended permission range %#x-%#x must be in ascending order.",
+ 					 r->range.low, r->range.high);
+ 				return -1;
+ 			}
+@@ -2454,9 +2460,9 @@ static int avrule_cpy(avrule_t *dest, const avrule_t *src)
+ 	return 0;
+ }
+ 
+-static int define_te_avtab_ioctl(const avrule_t *avrule_template)
++static int define_te_avtab_ioctl(const avrule_t *avrule_template, avrule_t **ret_avrules)
+ {
+-	avrule_t *avrule;
++	avrule_t *avrule, *ret = NULL, **last = &ret;
+ 	struct av_xperm_range_list *rangelist, *r;
+ 	av_extended_perms_t *complete_driver, *partial_driver, *xperms;
+ 	unsigned int i;
+@@ -2478,7 +2484,13 @@ static int define_te_avtab_ioctl(const avrule_t *avrule_template)
+ 		if (avrule_cpy(avrule, avrule_template))
+ 			return -1;
+ 		avrule->xperms = complete_driver;
+-		append_avrule(avrule);
++
++		if (ret_avrules) {
++			*last = avrule;
++			last = &(avrule->next);
++		} else {
++			append_avrule(avrule);
++		}
+ 	}
+ 
+ 	/* flag ioctl driver codes that are partially enabled */
+@@ -2507,7 +2519,13 @@ static int define_te_avtab_ioctl(const avrule_t *avrule_template)
+ 			if (avrule_cpy(avrule, avrule_template))
+ 				return -1;
+ 			avrule->xperms = xperms;
+-			append_avrule(avrule);
++
++			if (ret_avrules) {
++				*last = avrule;
++				last = &(avrule->next);
++			} else {
++				append_avrule(avrule);
++			}
+ 		}
+ 	}
+ 
+@@ -2521,12 +2539,15 @@ done:
+ 		free(r);
+ 	}
+ 
++	if (ret_avrules)
++		*ret_avrules = ret;
++
+ 	return 0;
+ }
+ 
+-static int define_te_avtab_netlink(const avrule_t *avrule_template)
++static int define_te_avtab_netlink(const avrule_t *avrule_template, avrule_t **ret_avrules)
+ {
+-	avrule_t *avrule;
++	avrule_t *avrule, *ret = NULL, **last = &ret;
+ 	struct av_xperm_range_list *rangelist, *r;
+ 	av_extended_perms_t *partial_driver, *xperms;
+ 	unsigned int i;
+@@ -2561,7 +2582,13 @@ static int define_te_avtab_netlink(const avrule_t *avrule_template)
+ 			if (avrule_cpy(avrule, avrule_template))
+ 				return -1;
+ 			avrule->xperms = xperms;
+-			append_avrule(avrule);
++
++			if (ret_avrules) {
++				*last = avrule;
++				last = &(avrule->next);
++			} else {
++				append_avrule(avrule);
++			}
+ 		}
+ 	}
+ 
+@@ -2575,9 +2602,64 @@ done:
+ 		free(r);
+ 	}
+ 
++	if (ret_avrules)
++		*ret_avrules = ret;
++
+ 	return 0;
+ }
+ 
++avrule_t *define_cond_te_avtab_extended_perms(int which)
++{
++	char *id;
++	unsigned int i;
++	avrule_t *avrule_template, *rules = NULL;
++	int rc = 0;
++
++	if (policydbp->policy_type == POLICY_KERN && policydbp->policyvers < POLICYDB_VERSION_COND_XPERMS) {
++		yyerror2("extended permissions in conditional policies are only supported since policy version %d, found policy version %d",
++			POLICYDB_VERSION_COND_XPERMS, policydbp->policyvers);
++		return COND_ERR;
++	}
++	if (policydbp->policy_type != POLICY_KERN && policydbp->policyvers < MOD_POLICYDB_VERSION_COND_XPERMS) {
++		yyerror2("extended permissions in conditional policies are only supported since module policy version %d, found module policy version %d",
++			MOD_POLICYDB_VERSION_COND_XPERMS, policydbp->policyvers);
++		return COND_ERR;
++	}
++
++	if (pass == 1) {
++		for (i = 0; i < 4; i++) {
++			while ((id = queue_remove(id_queue)))
++				free(id);
++		}
++		return (avrule_t *) 1; /* any non-NULL value */
++	}
++
++	/* populate avrule template with source/target/tclass */
++	if (define_te_avtab_xperms_helper(which, &avrule_template))
++		return COND_ERR;
++
++	id = queue_remove(id_queue);
++	if (strcmp(id, "ioctl") == 0) {
++		rc = define_te_avtab_ioctl(avrule_template, &rules);
++	} else if (strcmp(id, "nlmsg") == 0) {
++		rc = define_te_avtab_netlink(avrule_template, &rules);
++	} else {
++		yyerror2("only ioctl and nlmsg extended permissions are supported, found %s", id);
++		rc = -1;
++	}
++
++	free(id);
++	avrule_destroy(avrule_template);
++	free(avrule_template);
++
++	if (rc) {
++		avrule_destroy(rules);
++		return NULL;
++	}
++
++	return rules;
++}
++
+ int define_te_avtab_extended_perms(int which)
+ {
+ 	char *id;
+@@ -2599,11 +2681,11 @@ int define_te_avtab_extended_perms(int which)
+ 
+ 	id = queue_remove(id_queue);
+ 	if (strcmp(id,"ioctl") == 0) {
+-		rc = define_te_avtab_ioctl(avrule_template);
++		rc = define_te_avtab_ioctl(avrule_template, NULL);
+ 	} else if (strcmp(id,"nlmsg") == 0) {
+-		rc = define_te_avtab_netlink(avrule_template);
++		rc = define_te_avtab_netlink(avrule_template, NULL);
+ 	} else {
+-		yyerror2("only ioctl extended permissions are supported, found %s", id);
++		yyerror2("only ioctl and nlmsg extended permissions are supported, found %s", id);
+ 		rc = -1;
+ 	}
+ 
+diff --git a/checkpolicy/policy_define.h b/checkpolicy/policy_define.h
+index ef74f616..216da3ad 100644
+--- a/checkpolicy/policy_define.h
++++ b/checkpolicy/policy_define.h
+@@ -15,6 +15,7 @@
+ avrule_t *define_cond_compute_type(int which);
+ avrule_t *define_cond_pol_list(avrule_t *avlist, avrule_t *sl);
+ avrule_t *define_cond_te_avtab(int which);
++avrule_t *define_cond_te_avtab_extended_perms(int which);
+ avrule_t *define_cond_filename_trans(void);
+ cond_expr_t *define_cond_expr(uint32_t expr_type, void *arg1, void* arg2);
+ int define_attrib(void);
+diff --git a/checkpolicy/policy_parse.y b/checkpolicy/policy_parse.y
+index ed1786d8..7e117222 100644
+--- a/checkpolicy/policy_parse.y
++++ b/checkpolicy/policy_parse.y
+@@ -74,6 +74,7 @@ typedef int (* require_func_t)(int pass);
+ 
+ %type <ptr> cond_expr cond_expr_prim cond_pol_list cond_else
+ %type <ptr> cond_allow_def cond_auditallow_def cond_auditdeny_def cond_dontaudit_def
++%type <ptr> cond_xperm_allow_def cond_xperm_auditallow_def cond_xperm_dontaudit_def
+ %type <ptr> cond_transition_def cond_te_avtab_def cond_rule_def
+ %type <valptr> cexpr cexpr_prim op role_mls_op
+ %type <val> ipv4_addr_def number
+@@ -432,6 +433,12 @@ cond_te_avtab_def	: cond_allow_def
+ 			  { $$ = $1; }
+ 			| cond_dontaudit_def
+ 			  { $$ = $1; }
++			| cond_xperm_allow_def
++			  { $$ = $1; }
++			| cond_xperm_auditallow_def
++			  { $$ = $1; }
++			| cond_xperm_dontaudit_def
++			  { $$ = $1; }
+ 			;
+ cond_allow_def		: ALLOW names names ':' names names  ';'
+ 			{ $$ = define_cond_te_avtab(AVRULE_ALLOWED) ;
+@@ -449,7 +456,18 @@ cond_dontaudit_def	: DONTAUDIT names names ':' names names ';'
+ 			{ $$ = define_cond_te_avtab(AVRULE_DONTAUDIT);
+                           if ($$ == COND_ERR) YYABORT; }
+ 		        ;
+-			;
++cond_xperm_allow_def		: ALLOWXPERM names names ':' names identifier xperms ';'
++				{ $$ = define_cond_te_avtab_extended_perms(AVRULE_XPERMS_ALLOWED) ;
++				  if ($$ == COND_ERR) YYABORT; }
++				;
++cond_xperm_auditallow_def	: AUDITALLOWXPERM names names ':' names identifier xperms ';'
++				{ $$ = define_cond_te_avtab_extended_perms(AVRULE_XPERMS_AUDITALLOW) ;
++				  if ($$ == COND_ERR) YYABORT; }
++				;
++cond_xperm_dontaudit_def	: DONTAUDITXPERM names names ':' names identifier xperms ';'
++				{ $$ = define_cond_te_avtab_extended_perms(AVRULE_XPERMS_DONTAUDIT) ;
++				  if ($$ == COND_ERR) YYABORT; }
++				;
+ transition_def		: TYPE_TRANSITION  names names ':' names identifier filename ';'
+ 			{if (define_filename_trans()) YYABORT; }
+ 			| TYPE_TRANSITION names names ':' names identifier ';'
+diff --git a/checkpolicy/tests/policy_allonce.conf b/checkpolicy/tests/policy_allonce.conf
+index 2cfbb772..51a8c40a 100644
+--- a/checkpolicy/tests/policy_allonce.conf
++++ b/checkpolicy/tests/policy_allonce.conf
+@@ -2,6 +2,7 @@
+ class CLASS1
+ class CLASS2
+ class CLASS3
++class CLASS4
+ class dir
+ class file
+ class process
+@@ -10,6 +11,7 @@ common COMMON1 { CPERM1 }
+ class CLASS1 { PERM1 ioctl }
+ class CLASS2 inherits COMMON1
+ class CLASS3 inherits COMMON1 { PERM1 }
++class CLASS4 { nlmsg }
+ default_user { CLASS1 } source;
+ default_role { CLASS2 } target;
+ default_type { CLASS3 } source;
+@@ -26,6 +28,7 @@ typealias TYPE1 alias TYPEALIAS1;
+ typeattribute TYPE1 ATTR1;
+ typebounds TYPE4 TYPE3;
+ bool BOOL1 true;
++bool BOOL2 false;
+ tunable TUNABLE1 false;
+ tunable TUNABLE2 true;
+ type_transition TYPE1 TYPE2 : CLASS1 TYPE3;
+@@ -37,6 +40,7 @@ auditallow { TYPE1 TYPE2 } TYPE3 : CLASS1 { PERM1 };
+ dontaudit TYPE1 { TYPE2 TYPE3 } : CLASS3 { PERM1 CPERM1 };
+ neverallow TYPE1 TYPE2 : { CLASS2 CLASS3 } { CPERM1 };
+ allowxperm TYPE1 TYPE2 : CLASS1 ioctl { 0x456-0x5678 };
++allowxperm TYPE2 TYPE1 : CLASS4 nlmsg { 0x1 0x12 };
+ auditallowxperm TYPE1 TYPE2 : CLASS1 ioctl 0x2;
+ dontauditxperm TYPE1 TYPE2 : CLASS1 ioctl 0x3;
+ neverallowxperm TYPE1 TYPE2 : CLASS1 ioctl 0x4;
+@@ -50,7 +54,8 @@ role_transition ROLE1 TYPE1 : CLASS1 ROLE2;
+ allow ROLE1 ROLE2;
+ roleattribute ROLE3 ROLE_ATTR1;
+ role ROLE1 types { TYPE1 };
+-if ! BOOL1 { allow TYPE1 self: CLASS1 *; }
++if ! BOOL1 { allow TYPE1 self: CLASS1 *; dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x6789 - 0x9876 }; }
++if BOOL2 { allowxperm TYPE2 TYPE1:CLASS4 nlmsg { 0x1 0x2 }; }
+ if TUNABLE1 xor TUNABLE2 { allow TYPE1 self: CLASS2 *; } else { allow TYPE1 self: CLASS3 *; }
+ optional { require { class CLASS2 { CPERM1 }; } allow TYPE1 self: CLASS2 *; }
+ user USER1 roles ROLE1;
+diff --git a/checkpolicy/tests/policy_allonce.expected.conf b/checkpolicy/tests/policy_allonce.expected.conf
+index 26d56438..355d9991 100644
+--- a/checkpolicy/tests/policy_allonce.expected.conf
++++ b/checkpolicy/tests/policy_allonce.expected.conf
+@@ -2,6 +2,7 @@
+ class CLASS1
+ class CLASS2
+ class CLASS3
++class CLASS4
+ class dir
+ class file
+ class process
+@@ -10,6 +11,7 @@ common COMMON1 { CPERM1 }
+ class CLASS1 { PERM1 ioctl }
+ class CLASS2 inherits COMMON1
+ class CLASS3 inherits COMMON1 { PERM1 }
++class CLASS4 { nlmsg }
+ default_user { CLASS1 } source;
+ default_role { CLASS2 } target;
+ default_type { CLASS3 } source;
+@@ -17,6 +19,7 @@ policycap open_perms;
+ attribute ATTR1;
+ attribute ATTR2;
+ bool BOOL1 true;
++bool BOOL2 false;
+ type TYPE1;
+ type TYPE2;
+ type TYPE3;
+@@ -37,6 +40,7 @@ dontaudit TYPE1 TYPE3:CLASS3 { CPERM1 PERM1 };
+ allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x456-0x4ff };
+ allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x500-0x55ff };
+ allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x5600-0x5678 };
++allowxperm TYPE2 TYPE1:CLASS4 nlmsg { 0x1 0x12 };
+ auditallowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x2 };
+ dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x3 };
+ type_transition TYPE1 TYPE2:CLASS1 TYPE3;
+@@ -49,6 +53,12 @@ type_transition TYPE2 TYPE4:CLASS1 TYPE1 "FILENAME";
+ if (BOOL1) {
+ } else {
+     allow TYPE1 self:CLASS1 { PERM1 ioctl };
++    dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x6789-0x67ff };
++    dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x6800-0x97ff };
++    dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x9800-0x9876 };
++}
++if (BOOL2) {
++    allowxperm TYPE2 TYPE1:CLASS4 nlmsg { 0x1-0x2 };
+ }
+ role ROLE1;
+ role ROLE2;
+diff --git a/checkpolicy/tests/policy_allonce.expected_opt.conf b/checkpolicy/tests/policy_allonce.expected_opt.conf
+index 769be2b3..74eec4ba 100644
+--- a/checkpolicy/tests/policy_allonce.expected_opt.conf
++++ b/checkpolicy/tests/policy_allonce.expected_opt.conf
+@@ -2,6 +2,7 @@
+ class CLASS1
+ class CLASS2
+ class CLASS3
++class CLASS4
+ class dir
+ class file
+ class process
+@@ -10,6 +11,7 @@ common COMMON1 { CPERM1 }
+ class CLASS1 { PERM1 ioctl }
+ class CLASS2 inherits COMMON1
+ class CLASS3 inherits COMMON1 { PERM1 }
++class CLASS4 { nlmsg }
+ default_user { CLASS1 } source;
+ default_role { CLASS2 } target;
+ default_type { CLASS3 } source;
+@@ -17,6 +19,7 @@ policycap open_perms;
+ attribute ATTR1;
+ attribute ATTR2;
+ bool BOOL1 true;
++bool BOOL2 false;
+ type TYPE1;
+ type TYPE2;
+ type TYPE3;
+@@ -37,6 +40,7 @@ dontaudit TYPE1 TYPE3:CLASS3 { CPERM1 PERM1 };
+ allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x456-0x4ff };
+ allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x500-0x55ff };
+ allowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x5600-0x5678 };
++allowxperm TYPE2 TYPE1:CLASS4 nlmsg { 0x1 0x12 };
+ auditallowxperm TYPE1 TYPE2:CLASS1 ioctl { 0x2 };
+ dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x3 };
+ type_transition TYPE1 TYPE2:CLASS1 TYPE3;
+@@ -49,6 +53,12 @@ type_transition TYPE2 TYPE4:CLASS1 TYPE1 "FILENAME";
+ if (BOOL1) {
+ } else {
+     allow TYPE1 self:CLASS1 { ioctl };
++    dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x6789-0x67ff };
++    dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x6800-0x97ff };
++    dontauditxperm TYPE1 TYPE2:CLASS1 ioctl { 0x9800-0x9876 };
++}
++if (BOOL2) {
++    allowxperm TYPE2 TYPE1:CLASS4 nlmsg { 0x2 };
+ }
+ role ROLE1;
+ role ROLE2;
+-- 
+2.45.2
+
 

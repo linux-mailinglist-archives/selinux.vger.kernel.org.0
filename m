@@ -1,57 +1,52 @@
-Return-Path: <selinux+bounces-2196-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2204-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D8139BCE56
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 14:54:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7A39BD4A1
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31DB1F22DB3
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 13:54:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9521F234FB
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBC31D45EA;
-	Tue,  5 Nov 2024 13:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E948F1E7660;
+	Tue,  5 Nov 2024 18:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="AWH1J6Y9"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="RtXfk8fP"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC45FBE4E
-	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 13:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8221D9A62
+	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 18:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730814887; cv=none; b=gYyhu2qdI1yjGha3c3Glb6dNiR42OWKQk7XVT4OFPKducjHZLgzpf4Wp/lloYiFspyetk8FumCjpqT+YDan/stYCw7BSe+W2r1ds+hmbPTRA+i4yLB338yGdFmNyVd/ZOJPcT1/DYMQTiy2cQeZRH5kJOmWAwQJzlKniUc/cZcw=
+	t=1730831609; cv=none; b=S59Ivk+KAQItsq4UbGww9pEyM0qmE/gmRhpD9eQszQKFA6mcqpndzJ7ZQLTDIdNNoZCwYE5qy4V+FdHIdDz0VVZVxqtuCFph49Q3u22olI6DVxPWMNAsksBnMnRmKOD669zzyYHoha8g/15lb20SP2l+Tth7PPQDcnUG/rjtB7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730814887; c=relaxed/simple;
-	bh=mUb+6GkpmUryt5c+yLjwa81WnGujteJ+xV504mZxjTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nIrt/SDrRhYybn+yZS8JG6PQBN58o/Z3hf3MtiTOhnW4M1soR2JXo++n4wUJEo2tttD2J683NVljGuzTtM4qcwbCl3givETkK0hwi77m53u1y+9/Ftk0tdnrdnGY4n+CFoxlnrkYKDHCE5YwRgV4eiDh4VJ/YkGzwyqBj0v4Ew4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=AWH1J6Y9; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1730831609; c=relaxed/simple;
+	bh=QLLaLt4D80Qq9LfkN70XynF2z3lBaBnE7LzslLO47lA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jqoRW2e49RYDZyrdCbnXVMwtcRM+4FptiSy/l5/Zwb1zKoWAV7c7qUYpX+ZD6mvbuLxnl0rhYNd+mRAzM1X1jEvE6vaU1PS/cgoDvXP1KKt/8xombWMkUYU3/xlwSWI9rlzijMePVw+DBFsZ4743HhIdKgjOAQ2fQ0jClCQOT8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=RtXfk8fP; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1730814874;
+	s=2023072701; t=1730831604;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8nuz/y0cDyq+4YN7xtLUvUoW+hRtphEvPBmT70dgDqs=;
-	b=AWH1J6Y9kaXPE5VGr3l/Tg3lveWrxU4TE/OESorzJ/rlyCfESXx/s8MZlbqr3o2xn8hW0P
-	ObqKZn+eWK2b7bGkZ84PM9Lb3Qjatd0ZXz5q3DxftuYbW2IE6zpsZAMvxwsu8xTiCHjRZf
-	BH8jNBnGrrmAT+LsRWjo+bPj0WX/Z+lyfGepAtjiPXbCu5Vm5/I5f/Rq/n/3+R9ZhQrP/P
-	lCYaJ/yhfUtlqbh+4/tGWWBbyFRHrA4MkvB4ASwNb63apSk6XaLk+s4O87gN8VsMUFcBRA
-	DAWm2QxJI0MLdmIN2+B/AvQOGlftfv9G/f9PmQJeRcr0q0Ggap7dRjvPvqGgqw==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=BTPbrgQvGfElV1X7wI95tKF05u5FeGHrejTdKDXqrSo=;
+	b=RtXfk8fP6Ati9WhWKt0YptElo3ygh1EjoUw8HCyzJKHWSZMVwzyYdnO7zlZ5ij+JF5c5DZ
+	G5tuB69liZvtsn+KLCdE+XH8Rsifecl+SGH4jj2FYHs7TJDmL/o9mkUOmDrK6E7TKPlBax
+	JUUVwcqoKfaxSwep31iOzXWgCT/1n+jGPgsWQHc48jz0XuLkBZxsDgZz0ZThdq+407KnOC
+	m4XSHNJ9RsL7y2LN/1t7Xbpn4GUu6N8oq8NHaVDFFK3SnxXeCXm0yU/1wuU4DBEj53f7Ho
+	y8EtIWIPKyV+rYqyJDNvSw1vwCIJnc4Vx9VyYbHcDi2hgK+dKir+iXkhXjCKgw==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH v4 6/6] libsepol/tests: add cond xperm neverallow tests
-Date: Tue,  5 Nov 2024 14:54:28 +0100
-Message-ID: <20241105135428.124398-6-cgoettsche@seltendoof.de>
-In-Reply-To: <20241105135428.124398-1-cgoettsche@seltendoof.de>
-References: <20241105135428.124398-1-cgoettsche@seltendoof.de>
+Subject: [PATCH v3 0/9] libselinux: rework selabel_file(5) database
+Date: Tue,  5 Nov 2024 19:33:10 +0100
+Message-ID: <20241105183319.250410-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -64,363 +59,182 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Add some tests to verify assertion checking works for extended
-permissions in conditional policies.
+Currently the database for file backend of selabel stores the file
+context specifications in a single long array.  This array is sorted by
+special precedence rules, e.g. regular expressions without meta
+character first, ordered by length, and the remaining regular
+expressions ordered by stem (the prefix part of the regular expressions
+without meta characters) length.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
+This results in suboptimal lookup performance for two reasons;
+File context specifications without any meta characters (e.g.
+'/etc/passwd') are still matched via an expensive regular expression
+match operation.
+All such trivial regular expressions are matched against before any non-
+trivial regular expression, resulting in thousands of regex match
+operations for lookups for paths not matching any of the trivial ones.
+
+Rework the internal representation of the database in two ways:
+Convert regular expressions without any meta characters and containing
+only supported escaped characters (e.g. '/etc/rc\.d/init\.d') into
+literal strings, which get compared via strcmp(3) later on.
+Store the specifications in a tree structure to reduce the to number of
+specifications that need to be checked.
+
+Since the internal representation is completely rewritten introduce a
+new compiled file context file format mirroring the tree structure.
+The new format also stores all multi-byte data in network byte-order, so
+that such compiled files can be cross-compiled, e.g. for embedded
+devices with read-only filesystems (except for the regular expressions,
+which are still architecture-dependent, but ignored on architecture mis-
+match).
+
+The improved lookup performance will also benefit SELinux aware daemons,
+which create files with their default context, e.g. systemd.
+
+Fedora 41 (pre-compiled regular expressions are omitted on Fedora):
+    file_contexts.bin:           567248  ->   413191  (bytes)
+    file_contexts.homedirs.bin:   20677  ->    13107  (bytes)
+
+Debian Sid (pre-compiled regular expressions are included):
+    file_contexts.bin:          7790690  ->  3646256  (bytes)
+    file_contexts.homedirs.bin:  835950  ->   708793  (bytes)
+
+(selabel_lookup -b file -k /bin/bash)
+
+Fedora 41 in VM:
+    text:      time:       7.2 ms  ->   3.5 ms
+               peak heap:   2.33M  ->    1.81M
+               peak rss:    6.64M  ->    6.37M
+    compiled:  time:       5.9 ms  ->   1.6 ms
+               peak heap:   2.14M  ->    1.23M
+               peak rss:    6.76M  ->    5.91M
+
+Debian Sid on Raspberry Pi 3:
+    text:      time:      33.4 ms  ->  21.2 ms
+               peak heap:  10.59M  ->  607.32K
+               peak rss:    6.55M  ->    4.46M
+    compiled:  time:      38.3 ms  ->  23.5 ms
+               peak heap:  13.28M  ->    2.00M
+               peak rss:   12.21M  ->    7.60M
+
+(restorecon -vRn /)
+
+Fedora 41 in VM:
+       9.6 s  ->   1.3 s
+Debian Sid on Raspberry Pi 3:
+      94.6 s  ->  12.1 s
+
+(restorecon -vRn -T0 /)
+
+Fedora 39 in VM (8 cores):
+      10.9 s  ->   1.0 s
+Debian Sid on Raspberry Pi 3 (4 cores):
+      58.9 s  ->  12.6 s
+
+(note: I am unsure why the parallel runs on Fedora are slower)
+
+There might be subtle differences in lookup results which evaded my
+testing, because some precedence rules are oblique.  For example
+`/usr/(.*/)?lib(/.*)?` has to have a higher precedence than
+`/usr/(.*/)?bin(/.*)?` to match the current Fedora behavior.  Please
+report any behavior changes.
+
+The maximum node depth in the database is set to 3, which seems to give
+the best performance to memory usage ratio.  Might be tweaked for
+systems with different filesystem hierarchies (Android?).
+
+I am not that familiar with the selabel_partial_match(3),
+selabel_get_digests_all_partial_matches(3) and
+selabel_hash_all_partial_matches(3) related interfaces, so I only did
+some rudimentary tests for them.
+
+# Patches
+
+Patches 1 and 2 introduce two helpers useful for developers and users.
+
+Patches 3.5 tweak the sidtab code to be used in a later patch.
+
+Patch 6 is the main rework.  Due to its complete rewrite it is too large
+for the mailing list, so I added some developers in CC for this one and
+the patch is available on GitHub (see below).  I'd like to refrain
+splitting it since there are no trivial splitable parts and future reverts
+or bisections will be more complicated.
+
+Patch 7 is removing unused code after the rework in patch 6.
+
+Patch 8 introduces new fuzzers for selabel_file(5).
+
+Patch 9 improves thread-safety for concurrent selabel lookup.
+
+
+This patchset is also available at https://github.com/SELinuxProject/selinux/pull/406
+
 v3:
-  add patch
----
- libsepol/tests/helpers.c                      |   1 +
- .../policies/test-neverallow/policy_cond.conf | 251 ++++++++++++++++++
- libsepol/tests/test-neverallow.c              |  57 ++++
- 3 files changed, 309 insertions(+)
- create mode 100644 libsepol/tests/policies/test-neverallow/policy_cond.conf
+  - use sidtab_context_lookup() in sidtab_context_to_sid()
+  - set errno to EINVAL on old compiled fcontext format file input
+  - correctly compare regular expression specifications by considering
+    their prefix-length
+  - reorder calloc(3) arguments
 
-diff --git a/libsepol/tests/helpers.c b/libsepol/tests/helpers.c
-index 1192734b..97ddfe8e 100644
---- a/libsepol/tests/helpers.c
-+++ b/libsepol/tests/helpers.c
-@@ -53,6 +53,7 @@ int test_load_policy(policydb_t * p, int policy_type, int mls, const char *test_
- 
- 	p->policy_type = policy_type;
- 	p->mls = mls;
-+	p->policyvers = MOD_POLICYDB_VERSION_MAX;
- 
- 	if (read_source_policy(p, filename, test_name)) {
- 		fprintf(stderr, "failed to read policy %s\n", filename);
-diff --git a/libsepol/tests/policies/test-neverallow/policy_cond.conf b/libsepol/tests/policies/test-neverallow/policy_cond.conf
-new file mode 100644
-index 00000000..c81fc01d
---- /dev/null
-+++ b/libsepol/tests/policies/test-neverallow/policy_cond.conf
-@@ -0,0 +1,251 @@
-+class process
-+class blk_file
-+class chr_file
-+class dir
-+class fifo_file
-+class file
-+class lnk_file
-+class sock_file
-+
-+sid kernel
-+sid security
-+sid unlabeled
-+sid file
-+sid port
-+sid netif
-+sid netmsg
-+sid node
-+sid devnull
-+
-+class process { dyntransition transition }
-+class file { getattr ioctl open read write }
-+
-+bool boolean1 false;
-+bool boolean2 true;
-+
-+ifdef(`enable_mls',`
-+sensitivity s0;
-+dominance { s0 }
-+category c0; category c1; category c2; category c3;
-+category c4; category c5; category c6; category c7;
-+category c8; category c9; category c10; category c11;
-+category c12; category c13; category c14; category c15;
-+category c16; category c17; category c18; category c19;
-+category c20; category c21; category c22; category c23;
-+
-+level s0:c0.c23;
-+
-+mlsconstrain file { write } ( h1 dom h2 );
-+')
-+
-+
-+########################################
-+#
-+# Test start
-+#
-+########################################
-+
-+
-+## Test 1 (basic - fail)
-+
-+type test1_t;
-+if boolean1 {
-+	allow test1_t self : file read;
-+}
-+neverallow test1_t * : file *;
-+
-+
-+## Test 2 (basic - fail)
-+
-+attribute test2_a;
-+type test2_1_t, test2_a;
-+type test2_2_t;
-+if !boolean1 {
-+	allow test2_1_t test2_1_t : file write;
-+	allow test2_2_t test2_2_t : file write;
-+}
-+neverallow test2_a * : file *;
-+
-+
-+## Test 3 (xperm - no xperm in one branch - fail)
-+
-+type test3_t;
-+if boolean1 {
-+	allow test3_t self : file ioctl;
-+} else {
-+	allowxperm test3_t self : file ioctl 0x1;
-+}
-+neverallowxperm test3_t self : file ioctl 0x4;
-+
-+
-+## Test 4 (xperm - xperm in neither branch - fail)
-+
-+type test4_t;
-+allow test4_t self : file ioctl;
-+if boolean1 {
-+	allow test4_t self : file read;
-+} else {
-+	allow test4_t self : file write;
-+}
-+neverallowxperm test4_t self : file ioctl 0x4;
-+
-+
-+## Test 5 (xperm - xperm in both branches - no failure)
-+
-+type test5_t;
-+allow test5_t self : file ioctl;
-+if boolean1 {
-+	allowxperm test5_t self : file ioctl 0x1;
-+} else {
-+	allowxperm test5_t self : file ioctl 0x2;
-+}
-+neverallowxperm test5_t self : file ioctl 0x4;  # nofail
-+
-+
-+## Test 6 (xperm - failure in one branch - fail)
-+
-+type test6_t;
-+if boolean1 {
-+	allow test6_t self : file ioctl;
-+	allowxperm test6_t self : file ioctl 0x1;
-+} else {
-+	allow test6_t self : file write;
-+}
-+neverallowxperm test6_t self : file ioctl 0x1;
-+
-+
-+## Test 7 (xperm - failure in both branches - fail)
-+
-+type test7_t;
-+if boolean1 {
-+	allow test7_t self : file ioctl;
-+	allowxperm test7_t self : file ioctl 0x1;
-+} else {
-+	allow test7_t self : file ioctl;
-+	allowxperm test7_t self : file ioctl 0x2;
-+}
-+neverallowxperm test7_t self : file ioctl { 0x1-0x2 };
-+
-+
-+## Test 8 (xperm - different xperm in both branches - no failure)
-+
-+type test8_t;
-+allow test8_t self : file ioctl;
-+if boolean1 {
-+	allowxperm test8_t self : file ioctl 0x1;
-+} else {
-+	allowxperm test8_t self : file ioctl 0x2;
-+}
-+neverallowxperm test8_t self : file ioctl 0x3;  # nofail
-+
-+
-+## Test 9 (xperm - rules split into two booleans - no failure)
-+
-+type test9_t;
-+allow test9_t self : file ioctl;
-+if boolean1 {
-+	allowxperm test9_t self : file ioctl 0x1;
-+}
-+if !boolean2 {
-+	allowxperm test9_t self : file ioctl 0x1;
-+}
-+neverallowxperm test9_t self : file ioctl 0x4;
-+
-+
-+## Test 10 (xperm - valid usage in one branch - no failure)
-+
-+type test10_t;
-+if boolean1 {
-+	allow test10_t self : file ioctl;
-+	allowxperm test10_t self : file ioctl 0x1;
-+} else {
-+	allow test10_t self : file write;
-+}
-+neverallowxperm test10_t self : file ioctl 0x2;  # nofail
-+
-+
-+## Test 11 (xperm - valid usage in both branches - no failure)
-+
-+type test11_t;
-+if boolean1 {
-+	allow test11_t self : file ioctl;
-+	allowxperm test11_t self : file ioctl 0x1;
-+} else {
-+	allow test11_t self : file ioctl;
-+	allowxperm test11_t self : file ioctl 0x2;
-+}
-+neverallowxperm test11_t self : file ioctl 0x3;  # nofail
-+
-+
-+## Test 12 (xperm - base allow in one branch - fail)
-+
-+type test12_t;
-+if boolean1 {
-+	allow test12_t self : file ioctl;
-+} else {
-+	allow test12_t self : file write;
-+}
-+neverallowxperm test12_t self : file ioctl 0x1;
-+
-+
-+## Test 13 (xperm - invalid second branch - fail)
-+
-+type test13_t;
-+allow test13_t self : file ioctl;
-+if boolean1 {
-+	allow test13_t self : file ioctl;
-+	allowxperm test13_t self : file ioctl 0x1;
-+} else {
-+	allow test13_t self : file write;
-+}
-+neverallowxperm test13_t self : file ioctl 0x1;
-+
-+
-+## Test 14 (xperm - invalid second branch - fail)
-+
-+type test14_t;
-+allow test14_t self : file ioctl;
-+if boolean1 {
-+	allow test14_t self : file ioctl;
-+	allowxperm test14_t self : file ioctl 0x1;
-+} else {
-+	allow test14_t self : file write;
-+}
-+neverallowxperm test14_t self : file ioctl 0x2;
-+
-+
-+## Test 15 (xperm - base uncond in one branch - fail)
-+
-+type test15_t;
-+allow test15_t self : file ioctl;
-+allowxperm test15_t self : file ioctl 0x1;
-+if boolean1 {
-+	allow test15_t self : file ioctl;
-+} else {
-+	allow test15_t self : file write;
-+}
-+neverallowxperm test15_t self : file ioctl 0x2;
-+
-+
-+########################################
-+#
-+# Test End
-+#
-+########################################
-+
-+
-+type sys_isid;
-+role sys_role;
-+role sys_role types sys_isid;
-+gen_user(sys_user,, sys_role, s0, s0 - s0:c0.c23)
-+sid kernel gen_context(sys_user:sys_role:sys_isid, s0)
-+sid security gen_context(sys_user:sys_role:sys_isid, s0)
-+sid unlabeled gen_context(sys_user:sys_role:sys_isid, s0)
-+sid file gen_context(sys_user:sys_role:sys_isid, s0)
-+sid port gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netif gen_context(sys_user:sys_role:sys_isid, s0)
-+sid netmsg gen_context(sys_user:sys_role:sys_isid, s0)
-+sid node gen_context(sys_user:sys_role:sys_isid, s0)
-+sid devnull gen_context(sys_user:sys_role:sys_isid, s0)
-+fs_use_trans devpts gen_context(sys_user:sys_role:sys_isid, s0);
-+fs_use_trans devtmpfs gen_context(sys_user:sys_role:sys_isid, s0);
-diff --git a/libsepol/tests/test-neverallow.c b/libsepol/tests/test-neverallow.c
-index 80f91bf5..9c3001c4 100644
---- a/libsepol/tests/test-neverallow.c
-+++ b/libsepol/tests/test-neverallow.c
-@@ -293,6 +293,58 @@ static void test_neverallow_not_self(void)
- 	policydb_destroy(&base_expanded);
- }
- 
-+static void test_neverallow_cond(void)
-+{
-+	policydb_t basemod, base_expanded;
-+	sepol_handle_t *handle;
-+	static const char *const expected_messages[] = {
-+		"16 neverallow failures occurred",
-+		"neverallow on line 58 of policies/test-neverallow/policy_cond.conf.std (or line 58 of policies/test-neverallow/policy_cond.conf.std) violated by allow test1_t test1_t:file { read };",
-+		"neverallow on line 70 of policies/test-neverallow/policy_cond.conf.std (or line 70 of policies/test-neverallow/policy_cond.conf.std) violated by allow test2_1_t test2_1_t:file { write };",
-+		"neverallowxperm on line 81 of policies/test-neverallow/policy_cond.conf.std (or line 81 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allow test3_t test3_t:file { ioctl };",
-+		"neverallowxperm on line 93 of policies/test-neverallow/policy_cond.conf.std (or line 93 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allow test4_t test4_t:file { ioctl };",
-+		"neverallowxperm on line 117 of policies/test-neverallow/policy_cond.conf.std (or line 117 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allowxperm test6_t test6_t:file ioctl { 0x1 };",
-+		"neverallowxperm on line 130 of policies/test-neverallow/policy_cond.conf.std (or line 130 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allowxperm test7_t test7_t:file ioctl { 0x2 };",
-+		"neverallowxperm on line 130 of policies/test-neverallow/policy_cond.conf.std (or line 130 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allowxperm test7_t test7_t:file ioctl { 0x1 };",
-+		"neverallowxperm on line 130 of policies/test-neverallow/policy_cond.conf.std (or line 130 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allowxperm test7_t test7_t:file ioctl { 0x2 };",
-+		"neverallowxperm on line 130 of policies/test-neverallow/policy_cond.conf.std (or line 130 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allowxperm test7_t test7_t:file ioctl { 0x1 };",
-+		"neverallowxperm on line 155 of policies/test-neverallow/policy_cond.conf.std (or line 155 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allow test9_t test9_t:file { ioctl };",
-+		"neverallowxperm on line 191 of policies/test-neverallow/policy_cond.conf.std (or line 191 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allow test12_t test12_t:file { ioctl };",
-+		"neverallowxperm on line 204 of policies/test-neverallow/policy_cond.conf.std (or line 204 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allowxperm test13_t test13_t:file ioctl { 0x1 };",
-+		"neverallowxperm on line 204 of policies/test-neverallow/policy_cond.conf.std (or line 204 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allow test13_t test13_t:file { ioctl };",
-+		"neverallowxperm on line 204 of policies/test-neverallow/policy_cond.conf.std (or line 204 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allowxperm test13_t test13_t:file ioctl { 0x1 };",
-+		"neverallowxperm on line 217 of policies/test-neverallow/policy_cond.conf.std (or line 217 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allow test14_t test14_t:file { ioctl };",
-+		"neverallowxperm on line 230 of policies/test-neverallow/policy_cond.conf.std (or line 230 of policies/test-neverallow/policy_cond.conf.std) violated by\n  allow test15_t test15_t:file { ioctl };",
-+	};
-+
-+	if (policydb_init(&base_expanded))
-+		CU_FAIL_FATAL("Failed to initialize policy");
-+
-+	if (test_load_policy(&basemod, POLICY_BASE, mls, "test-neverallow", "policy_cond.conf"))
-+		CU_FAIL_FATAL("Failed to load policy");
-+
-+	if (link_modules(NULL, &basemod, NULL, 0, 0))
-+		CU_FAIL_FATAL("Failed to link base module");
-+
-+	if (expand_module(NULL, &basemod, &base_expanded, 0, 0))
-+		CU_FAIL_FATAL("Failed to expand policy");
-+
-+	if ((handle = sepol_handle_create()) == NULL)
-+		CU_FAIL_FATAL("Failed to initialize handle");
-+
-+	sepol_msg_set_callback(handle, msg_handler, NULL);
-+
-+	if (check_assertions(handle, &base_expanded, base_expanded.global->branch_list->avrules) != -1)
-+		CU_FAIL("Assertions did not trigger");
-+
-+	messages_check(ARRAY_SIZE(expected_messages), expected_messages);
-+
-+	sepol_handle_destroy(handle);
-+	messages_clean();
-+	policydb_destroy(&basemod);
-+	policydb_destroy(&base_expanded);
-+}
-+
- int neverallow_add_tests(CU_pSuite suite)
- {
- 	/*
-@@ -317,5 +369,10 @@ int neverallow_add_tests(CU_pSuite suite)
- 		return CU_get_error();
- 	}
- 
-+	if (NULL == CU_add_test(suite, "neverallow_cond", test_neverallow_cond)) {
-+		CU_cleanup_registry();
-+		return CU_get_error();
-+	}
-+
- 	return 0;
- }
+v2:
+  - add two fuzzers performing label lookup, one for textual and one for
+    compiled fcontext definitions
+  - various fixes, among others encountered via fuzzing
+  - rename helper to unsefiles
+  - add sidtab tweaks to store a context array in the binary fcontext format
+    to deduplicate context strings
+  - add thread-safety patch
+
+Christian Göttsche (9):
+  policycoreutils: introduce unsetfiles
+  libselinux/utils: introduce selabel_compare
+  libselinux: use more appropriate types in sidtab
+  libselinux: add unique id to sidtab entries
+  libselinux: sidtab updates
+  libselinux: rework selabel_file(5) database
+  libselinux: remove unused hashtab code
+  libselinux: add selabel_file(5) fuzzer
+  libselinux: support parallel selabel_lookup(3)
+
+ libselinux/fuzz/input                         |    0
+ .../fuzz/selabel_file_compiled-fuzzer.c       |  281 +++
+ libselinux/fuzz/selabel_file_text-fuzzer.c    |  225 ++
+ libselinux/include/selinux/avc.h              |    2 +-
+ libselinux/src/avc_sidtab.c                   |   81 +-
+ libselinux/src/avc_sidtab.h                   |    4 +-
+ libselinux/src/hashtab.c                      |  234 --
+ libselinux/src/hashtab.h                      |  117 -
+ libselinux/src/label.c                        |   56 +-
+ libselinux/src/label_backends_android.c       |    2 +-
+ libselinux/src/label_db.c                     |    2 +
+ libselinux/src/label_file.c                   | 2228 ++++++++++++-----
+ libselinux/src/label_file.h                   |  972 ++++---
+ libselinux/src/label_internal.h               |    7 +-
+ libselinux/src/label_media.c                  |    1 +
+ libselinux/src/label_support.c                |   26 +-
+ libselinux/src/label_x.c                      |    1 +
+ libselinux/src/regex.c                        |   55 +-
+ libselinux/utils/.gitignore                   |    1 +
+ libselinux/utils/sefcontext_compile.c         |  658 +++--
+ libselinux/utils/selabel_compare.c            |  122 +
+ policycoreutils/.gitignore                    |    1 +
+ policycoreutils/Makefile                      |    2 +-
+ policycoreutils/unsetfiles/Makefile           |   26 +
+ policycoreutils/unsetfiles/unsetfiles.1       |   46 +
+ policycoreutils/unsetfiles/unsetfiles.c       |  183 ++
+ scripts/oss-fuzz.sh                           |   25 +
+ 27 files changed, 3793 insertions(+), 1565 deletions(-)
+ create mode 100644 libselinux/fuzz/input
+ create mode 100644 libselinux/fuzz/selabel_file_compiled-fuzzer.c
+ create mode 100644 libselinux/fuzz/selabel_file_text-fuzzer.c
+ delete mode 100644 libselinux/src/hashtab.c
+ delete mode 100644 libselinux/src/hashtab.h
+ create mode 100644 libselinux/utils/selabel_compare.c
+ create mode 100644 policycoreutils/unsetfiles/Makefile
+ create mode 100644 policycoreutils/unsetfiles/unsetfiles.1
+ create mode 100644 policycoreutils/unsetfiles/unsetfiles.c
+
 -- 
 2.45.2
 

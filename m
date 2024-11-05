@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2206-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2203-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 853969BD4A4
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:33:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77279BD4A3
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42569283FF8
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:33:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F6B8B21DDE
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD5C1E7C1F;
-	Tue,  5 Nov 2024 18:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1D401E8822;
+	Tue,  5 Nov 2024 18:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="BCSxY2vg"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="HqQR2Moo"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878F41E3DF2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879411E6DCD
 	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 18:33:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730831610; cv=none; b=rgosynOn+IhbLz5nLb6cyIZq0rgKcVeya7BQ0OQZ44OLZ9vbSC8LPbJiledaLpbwOzkHlIMxEr3eXW0oCQs6+vOWpKWo36DmURuBro/cdNG+QNWG97QEU4oWNpeA77CFK7xVj4Ub+N7yZth9acz6z44P3tLJzpTy0702kQi32uE=
+	t=1730831609; cv=none; b=n8QKSAh3J6A7h4x1SCVfmzZ6qohsIdhIBbPpopI5aMLbOR1V5DzPXDxk3BK3KCeBvQmxRMw3Z4VNeo5wKX+eDJpfwyAOHGtJyZAubWDkT5ZSkAAeMvuJYyYrgp11TND28LnhZ06Nx8KadacQZhhaTRkjqZjaTta1blG3SvzTq2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730831610; c=relaxed/simple;
-	bh=uLVdzQW/0v4TGk8v4Jg7fZUiaQ+pxKAMDvHQvQMSqBk=;
+	s=arc-20240116; t=1730831609; c=relaxed/simple;
+	bh=7TjSWdal1fJ5jJd1CoGqc+MyKwRE/dr/L3dlofBlOFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jAg+G7YH0v1GwwZdWc+mwupkwWWGV81lCoos7oHgB6d2/vlX7xmF5RcOjX7REN9TIuACItPNrx5N3A7If+oQXOGi7WfZdnunrSdQdSIXet2S+Ln/+CN7cPyE4g0h3fyT5Wczg4UULqF9PXoCtiUSl8os6XGjMrRXemxNnuS/xew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=BCSxY2vg; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=mEIWaEr5zpc4wK5e2W9JJLrm1gMNj2Jl7eCA+7ZvM4F5MddqN+V8QxmOKQGfyQ3KcXLSwZ/EYf9SQm8UV3nCLK+3H6QdCXiloP5MDcLtz9uytq76IX2sLALx1L74X6xRxGdIj2+Rg80atyOUXZhQ/12R+LjuX9gkScAvSrCwAV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=HqQR2Moo; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=B+fs/fsH3HimYMEipqaiE/QE1sZeQrkIHbN/PDg+n9I=;
-	b=BCSxY2vgbmJEXgLmGhunIZePxaPkCgVq0fyfrSR2KuJR6oCMXUD+0Su/3xGfB+YZsz9SF3
-	cVPkmWYz1dSlf8lKizmg4uyFQim3ijWzzMUGCVh/G3cBnpVS1Ek+7/wk34HYZ2MKN3mh3r
-	Q5ZS3LK2+irYUDwZ26csd7fQ/Nm1/PtfwbUsiutiaBoKbP33M4DNlH+htDAVuKy0B8C2GG
-	WMQIOyL1Y9T/fjONl7m3YTyBku2RkD0ekOlS8XyVsN1sTieZcPumY9nxm/enk25TGDgeRQ
-	xEiOqXX9IAFClHG9CMCUbCqigBLFVhSXWpDmRIw7UTrrnFUYnZk8qse8W1AZYQ==
+	bh=CZzXl71UqrpurA0M2pvOQ6mxrFu255NQsUTq9gJQjGU=;
+	b=HqQR2MooMQWdp/PEY3aHDdjiPPeYTVUK7XErg/VD2sdZcQw4One+eXRn+dWvDeS43xW7HY
+	zz3nHUxyF4Nus03/shUbETCAh4fF3XHYojB0cQkMQighghZeDIBWtDU9Akz4se8FpXW3Ec
+	vum4Yq/QkXOO2LOuik8iUenms8FUJm9thiBO7RGFpPeoRec9EBADLWrrx/MXPLHPR32q3j
+	Auotuk7/h4nEiDcB4cwEnEHMKrvFpYsNHLp1ABtnSlMKaKqAcGcqMwWkeMJ2v+33OsZra7
+	/sWt6fXMYYfAXZKHZft066sZ95XGTclm8kJkLl3Xnu86hGj0LWWil1lp4zvXOQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH v3 1/9] policycoreutils: introduce unsetfiles
-Date: Tue,  5 Nov 2024 19:33:11 +0100
-Message-ID: <20241105183319.250410-2-cgoettsche@seltendoof.de>
+Subject: [PATCH v3 2/9] libselinux/utils: introduce selabel_compare
+Date: Tue,  5 Nov 2024 19:33:12 +0100
+Message-ID: <20241105183319.250410-3-cgoettsche@seltendoof.de>
 In-Reply-To: <20241105183319.250410-1-cgoettsche@seltendoof.de>
 References: <20241105183319.250410-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,282 +64,147 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Introduce a helper to remove SELinux file security contexts.
+Add a utility around selabel_cmp(3).
 
-Mainly for testing label operations, and only for SELinux disabled
-systems, since removing file contexts is not supported by SELinux.
+Can be used by users to compare a pre-compiled fcontext file to an
+original text-based file context definition file.
+
+Can be used for development to verify compilation and parsing of the
+pre-compiled fcontext format works correctly.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
 v2:
-   move from libselinux/utils to policycoreutils and rename
+   split nested block into own function
 ---
- policycoreutils/.gitignore              |   1 +
- policycoreutils/Makefile                |   2 +-
- policycoreutils/unsetfiles/Makefile     |  26 ++++
- policycoreutils/unsetfiles/unsetfiles.1 |  46 ++++++
- policycoreutils/unsetfiles/unsetfiles.c | 183 ++++++++++++++++++++++++
- 5 files changed, 257 insertions(+), 1 deletion(-)
- create mode 100644 policycoreutils/unsetfiles/Makefile
- create mode 100644 policycoreutils/unsetfiles/unsetfiles.1
- create mode 100644 policycoreutils/unsetfiles/unsetfiles.c
+ libselinux/utils/.gitignore        |   1 +
+ libselinux/utils/selabel_compare.c | 122 +++++++++++++++++++++++++++++
+ 2 files changed, 123 insertions(+)
+ create mode 100644 libselinux/utils/selabel_compare.c
 
-diff --git a/policycoreutils/.gitignore b/policycoreutils/.gitignore
-index 47c9cc52..33e7414c 100644
---- a/policycoreutils/.gitignore
-+++ b/policycoreutils/.gitignore
-@@ -9,4 +9,5 @@ setfiles/restorecon
- setfiles/restorecon_xattr
- setfiles/setfiles
- setsebool/setsebool
-+unsetfiles/unsetfiles
- hll/pp/pp
-diff --git a/policycoreutils/Makefile b/policycoreutils/Makefile
-index b930b297..32ad0201 100644
---- a/policycoreutils/Makefile
-+++ b/policycoreutils/Makefile
-@@ -1,4 +1,4 @@
--SUBDIRS = setfiles load_policy newrole run_init secon sestatus semodule setsebool scripts po man hll
-+SUBDIRS = setfiles load_policy newrole run_init secon sestatus semodule setsebool scripts po man hll unsetfiles
- 
- all install relabel clean indent:
- 	@for subdir in $(SUBDIRS); do \
-diff --git a/policycoreutils/unsetfiles/Makefile b/policycoreutils/unsetfiles/Makefile
+diff --git a/libselinux/utils/.gitignore b/libselinux/utils/.gitignore
+index b3311360..2e10b14f 100644
+--- a/libselinux/utils/.gitignore
++++ b/libselinux/utils/.gitignore
+@@ -16,6 +16,7 @@ getseuser
+ matchpathcon
+ policyvers
+ sefcontext_compile
++selabel_compare
+ selabel_digest
+ selabel_get_digests_all_partial_matches
+ selabel_lookup
+diff --git a/libselinux/utils/selabel_compare.c b/libselinux/utils/selabel_compare.c
 new file mode 100644
-index 00000000..9e5edc04
+index 00000000..9ca6eff1
 --- /dev/null
-+++ b/policycoreutils/unsetfiles/Makefile
-@@ -0,0 +1,26 @@
-+PREFIX ?= /usr
-+SBINDIR ?= $(PREFIX)/sbin
-+MANDIR ?= $(PREFIX)/share/man
-+
-+override CFLAGS += -D_GNU_SOURCE
-+override LDLIBS += -lselinux
-+
-+
-+all: unsetfiles
-+
-+unsetfiles: unsetfiles.o
-+
-+install: all
-+	test -d $(DESTDIR)$(SBINDIR)     || install -m 755 -d $(DESTDIR)$(SBINDIR)
-+	test -d $(DESTDIR)$(MANDIR)/man1 || install -m 755 -d $(DESTDIR)$(MANDIR)/man1
-+	install -m 755 unsetfiles $(DESTDIR)$(SBINDIR)
-+	install -m 644 unsetfiles.1 $(DESTDIR)$(MANDIR)/man1/
-+
-+clean:
-+	-rm -f unsetfiles *.o
-+
-+indent:
-+	../../scripts/Lindent $(wildcard *.[ch])
-+
-+relabel: install
-+	/sbin/restorecon $(DESTDIR)$(SBINDIR)/unsetfiles
-diff --git a/policycoreutils/unsetfiles/unsetfiles.1 b/policycoreutils/unsetfiles/unsetfiles.1
-new file mode 100644
-index 00000000..49d0c821
---- /dev/null
-+++ b/policycoreutils/unsetfiles/unsetfiles.1
-@@ -0,0 +1,46 @@
-+.TH UNSETFILES "1" "December 2023" "Security Enhanced Linux"
-+.SH NAME
-+unsetfiles \- Remove SELinux file security contexts.
-+.SH SYNOPSIS
-+.B unsetfiles
-+.RB [ \-hnrvx ]
-+.IR pathname \ ...
-+
-+.SH DESCRIPTION
-+.P
-+This program removes the SELinux file security contexts of files.  It can help
-+cleaning extended file attributes after disabling SELinux.
-+.P
-+.B unsetfiles
-+will only work on SELinux disabled systems, since removing file security
-+contexts is not supported by SELinux.
-+
-+.SH OPTIONS
-+.TP
-+.B \-h
-+Show usage information and exit.
-+.TP
-+.B \-n
-+Do not actually remove any SELinux file security contexts.
-+.TP
-+.B \-r
-+Remove SELinux file security contexts recursive.
-+.TP
-+.B \-v
-+Be verbose about performed actions.
-+.TP
-+.B \-x
-+Do not cross filesystem boundaries.
-+
-+.SH ARGUMENTS
-+.TP
-+.IR pathname \ ...
-+One or more path names to operate on.
-+
-+.SH SEE ALSO
-+.BR restorecon (8),
-+.BR setfiles (8)
-+
-+.SH AUTHORS
-+.nf
-+Christian Göttsche (cgzones@googlemail.com)
-diff --git a/policycoreutils/unsetfiles/unsetfiles.c b/policycoreutils/unsetfiles/unsetfiles.c
-new file mode 100644
-index 00000000..6293d00f
---- /dev/null
-+++ b/policycoreutils/unsetfiles/unsetfiles.c
-@@ -0,0 +1,183 @@
-+#include <dirent.h>
-+#include <errno.h>
-+#include <fcntl.h>
++++ b/libselinux/utils/selabel_compare.c
+@@ -0,0 +1,122 @@
 +#include <getopt.h>
-+#include <linux/magic.h>
-+#include <stdbool.h>
 +#include <stdio.h>
 +#include <stdlib.h>
 +#include <string.h>
-+#include <sys/stat.h>
-+#include <sys/types.h>
-+#include <sys/xattr.h>
-+#include <unistd.h>
 +
-+#include <selinux/selinux.h>
-+
-+
-+#define XATTR_NAME_SELINUX "security.selinux"
++#include <selinux/label.h>
 +
 +
 +static void usage(const char *progname)
 +{
-+	fprintf(stderr, "usage: %s [-nrvx] <path>\n\n"
-+	                "Options:\n"
-+	                "\t-n\tdon't remove any file labels\n"
-+	                "\t-r\tremove labels recursive\n"
-+	                "\t-v\tbe verbose\n"
-+	                "\t-x\tdo not cross filesystem boundaries\n",
-+	                progname);
++	fprintf(stderr,
++		"usage: %s [-b backend] [-v] file1 file2\n\n"
++		"Where:\n\t"
++		"-b           The backend - \"file\", \"media\", \"x\", \"db\" or \"prop\" (defaults to \"file\")\n\t"
++		"-v           Validate entries against loaded policy.\n\t"
++		"file1/file2  Files containing the specs.\n",
++		progname);
 +}
 +
-+static void unset(int atfd, const char *path, const char *fullpath,
-+                  bool dry_run, bool recursive, bool verbose,
-+                  dev_t root_dev)
++static int compare(const char *file1, const char *file2, const char *validate, unsigned int backend)
 +{
-+	ssize_t ret;
-+	int fd, rc;
-+	DIR *dir;
++	struct selabel_handle *hnd1, *hnd2;
++	const struct selinux_opt selabel_option1[] = {
++		{ SELABEL_OPT_PATH, file1 },
++		{ SELABEL_OPT_VALIDATE, validate }
++	};
++	const struct selinux_opt selabel_option2[] = {
++		{ SELABEL_OPT_PATH, file2 },
++		{ SELABEL_OPT_VALIDATE, validate }
++	};
++	enum selabel_cmp_result result;
 +
-+	ret = lgetxattr(fullpath, XATTR_NAME_SELINUX, NULL, 0);
-+	if (ret <= 0) {
-+		if (errno != ENODATA && errno != ENOTSUP)
-+			fprintf(stderr, "Failed to get SELinux label of %s:  %m\n", fullpath);
-+		else if (verbose)
-+			printf("Failed to get SELinux label of %s:  %m\n", fullpath);
-+	} else {
-+		if (dry_run) {
-+			printf("Would remove SELinux label of %s\n", fullpath);
-+		} else {
-+			if (verbose)
-+				printf("Removing label of %s\n", fullpath);
-+
-+			rc = lremovexattr(fullpath, XATTR_NAME_SELINUX);
-+			if (rc < 0)
-+				fprintf(stderr, "Failed to remove SELinux label of %s:  %m\n", fullpath);
-+		}
++	hnd1 = selabel_open(backend, selabel_option1, 2);
++	if (!hnd1) {
++		fprintf(stderr, "ERROR: selabel_open - Could not obtain handle for %s:  %m\n", file1);
++		return EXIT_FAILURE;
 +	}
 +
-+	if (!recursive)
-+		return;
-+
-+	fd = openat(atfd, path, O_RDONLY | O_DIRECTORY | O_NOFOLLOW | O_CLOEXEC);
-+	if (fd < 0) {
-+		if (errno != ENOTDIR)
-+			fprintf(stderr, "Failed to open %s:  %m\n", fullpath);
-+		return;
++	hnd2 = selabel_open(backend, selabel_option2, 2);
++	if (!hnd2) {
++		fprintf(stderr, "ERROR: selabel_open - Could not obtain handle for %s:  %m\n", file2);
++		selabel_close(hnd1);
++		return EXIT_FAILURE;
 +	}
 +
-+	if (root_dev != (dev_t)-1) {
-+		struct stat sb;
++	result = selabel_cmp(hnd1, hnd2);
 +
-+		rc = fstat(fd, &sb);
-+		if (rc == -1) {
-+			fprintf(stderr, "Failed to stat directory %s:  %m\n", fullpath);
-+			close(fd);
-+			return;
-+		}
++	selabel_close(hnd2);
++	selabel_close(hnd1);
 +
-+		if (sb.st_dev != root_dev) {
-+			if (verbose)
-+				printf("Skipping directory %s due to filesystem boundary\n", fullpath);
-+
-+			close(fd);
-+			return;
-+		}
++	switch (result) {
++	case SELABEL_SUBSET:
++		printf("spec %s is a subset of spec %s\n", file1, file2);
++		break;
++	case SELABEL_EQUAL:
++		printf("spec %s is equal to spec %s\n", file1, file2);
++		break;
++	case SELABEL_SUPERSET:
++		printf("spec %s is a superset of spec %s\n", file1, file2);
++		break;
++	case SELABEL_INCOMPARABLE:
++		printf("spec %s is uncomparable to spec %s\n", file1, file2);
++		break;
++	default:
++		fprintf(stderr, "ERROR: selabel_cmp - Unexpected result %d\n", result);
++		return EXIT_FAILURE;
 +	}
 +
-+	dir = fdopendir(fd);
-+	if (!dir) {
-+		fprintf(stderr, "Failed to open directory %s:  %m\n", fullpath);
-+		close(fd);
-+		return;
-+	}
-+
-+	while (true) {
-+		const struct dirent *entry;
-+		char *nextfullpath;
-+
-+		errno = 0;
-+		entry = readdir(dir);
-+		if (!entry) {
-+			if (errno)
-+				fprintf(stderr, "Failed to iterate directory %s:  %m\n", fullpath);
-+			break;
-+		}
-+
-+		if (entry->d_name[0] == '.' && (entry->d_name[1] == '\0' || (entry->d_name[1] == '.' && entry->d_name[2] == '\0')))
-+			continue;
-+
-+		rc = asprintf(&nextfullpath, "%s/%s", strcmp(fullpath, "/") == 0 ? "" : fullpath, entry->d_name);
-+		if (rc < 0) {
-+			fprintf(stderr, "Out of memory!\n");
-+			closedir(dir);
-+			return;
-+		}
-+
-+		unset(dirfd(dir), entry->d_name, nextfullpath, dry_run, recursive, verbose, root_dev);
-+
-+		free(nextfullpath);
-+	}
-+
-+	closedir(dir);
++	return EXIT_SUCCESS;
 +}
-+
 +
 +int main(int argc, char *argv[])
 +{
-+	bool dry_run = false, recursive = false, verbose = false, same_dev = false;
-+	int c;
++	unsigned int backend = SELABEL_CTX_FILE;
++	int opt;
++	const char *validate = NULL, *file1 = NULL, *file2 = NULL;
 +
-+	while ((c = getopt(argc, argv, "hnrvx")) != -1) {
-+		switch (c) {
-+		case 'h':
-+			usage(argv[0]);
-+			return EXIT_SUCCESS;
-+		case 'n':
-+			dry_run = true;
-+			break;
-+		case 'r':
-+			recursive = true;
++	if (argc < 3) {
++		usage(argv[0]);
++		return EXIT_FAILURE;
++	}
++
++	while ((opt = getopt(argc, argv, "b:v")) > 0) {
++		switch (opt) {
++		case 'b':
++			if (!strcasecmp(optarg, "file")) {
++				backend = SELABEL_CTX_FILE;
++			} else if (!strcmp(optarg, "media")) {
++				backend = SELABEL_CTX_MEDIA;
++			} else if (!strcmp(optarg, "x")) {
++				backend = SELABEL_CTX_X;
++			} else if (!strcmp(optarg, "db")) {
++				backend = SELABEL_CTX_DB;
++			} else if (!strcmp(optarg, "prop")) {
++				backend = SELABEL_CTX_ANDROID_PROP;
++			} else if (!strcmp(optarg, "service")) {
++				backend = SELABEL_CTX_ANDROID_SERVICE;
++			} else {
++				fprintf(stderr, "Unknown backend: %s\n", optarg);
++				usage(argv[0]);
++				return EXIT_FAILURE;
++			}
 +			break;
 +		case 'v':
-+			verbose = true;
-+			break;
-+		case 'x':
-+			same_dev = true;
++			validate = (char *)1;
 +			break;
 +		default:
 +			usage(argv[0]);
@@ -347,35 +212,15 @@ index 00000000..6293d00f
 +		}
 +	}
 +
-+	if (optind >= argc) {
++	if (argc != optind + 2) {
 +		usage(argv[0]);
 +		return EXIT_FAILURE;
 +	}
 +
-+	if (is_selinux_enabled()) {
-+		fprintf(stderr, "Removing SELinux attributes on a SELinux enabled system is not supported!\n");
-+		return EXIT_FAILURE;
-+	}
++	file1 = argv[optind++];
++	file2 = argv[optind];
 +
-+	for (int index = optind; index < argc; index++) {
-+		dev_t root_dev = (dev_t)-1;
-+
-+		if (same_dev) {
-+			struct stat sb;
-+			int rc;
-+
-+			rc = stat(argv[index], &sb);
-+			if (rc == -1) {
-+				fprintf(stderr, "Failed to stat %s:  %m\n", argv[index]);
-+				continue;
-+			}
-+
-+			root_dev = sb.st_dev;
-+		}
-+		unset(AT_FDCWD, argv[index], argv[index], dry_run, recursive, verbose, root_dev);
-+	}
-+
-+	return EXIT_SUCCESS;
++	return compare(file1, file2, validate, backend);
 +}
 -- 
 2.45.2

@@ -1,55 +1,55 @@
-Return-Path: <selinux+bounces-2199-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2201-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB58D9BCE86
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 15:00:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 831FC9BCE87
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 15:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEDBC1C2174D
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 14:00:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B461C20444
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 14:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 159DA1D79A9;
-	Tue,  5 Nov 2024 14:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 068161D45FD;
+	Tue,  5 Nov 2024 14:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="hsNKsWsa"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="dDh81c8W"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C30E1D2B3E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3641D432D
 	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 14:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730815220; cv=none; b=u1VfzEX5cZmdfgm8k46EW0txmebnX/RUyNpc89zKuQ29m0Q2lswCjOBtPmjRnnccxqgk+P8wxPNlKEaPHvSEUrNmEDoyG8RC1rjO8hH9aViEkySl4kzfF89os3MKPIfyj9L79jnlhT/3x7maB/Bc4wA0CKquwQvrFyj23y8mp1E=
+	t=1730815220; cv=none; b=FU7rExt3Oj3utJHkKyO2N39XBQayJnc8voos0uWyJitRrpB+QgK1vu83D7c99p5yTR/G0mqaHpbnzhc9hiA2KyEROheAbRbhTE3GIe3XuTTT3qx6RHIBCFgFlGO6csCKvWSUPFb08CoIGGd/EVMi7rDzj8M7VW3cSqTp9Q4CXJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1730815220; c=relaxed/simple;
-	bh=OdNVHxPHFwXg7A5PSjaAp9MoRebGEONJ/Wb4tNsJQVY=;
+	bh=euJp1CRk/MFL7+Ur2i8UGgnxW8EqU2ScQEuC4s/Zkws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rUs6NddVvzW78jtbgX7Sws9xXXUKAPyX3BZIQrxGxljdmllYm3d3uqCccOd4t+UveTWA2O3JaxxjOhpMStfXz15bVfLsLKY7v85JBvI6CfGwacSSgW053g172WzPpjWExx39omVAZb3lFLgyW/grp/5ErJ0uRFOFFNUXOlE6u+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=hsNKsWsa; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=MnXYZtIzUToU5fHVnFTgpDcPq9mjLtG5jE7a95dnDeR2Ptu2/zs9RlweP6+TMlBmoCLlP4Bs1KFG013duUVVbIxrOR8yz4Vm6NKc/AsQNa8vEDnCeh6PGxOytzSO96jtL+/JHKXsexsxZmlkP2ziy0DG/2j4qfasb8xdslTnanQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=dDh81c8W; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1730814873;
+	s=2023072701; t=1730814874;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=J8vNQRMaORuZ7Cc2b6AzghxLc83VWb4L3XtQarDluOw=;
-	b=hsNKsWsaWlCNdPrX2oluGUR+ri10nK6S4R4nkFwMVEqTH949xx07q59cc9EbQABOr/gzcb
-	+qsNb17gOAMcxzeGfV7UtylJmAxxj0gA4hT4aT7PhrjQ8U/4sA1pDm8BoIfE57ZrXE7XwR
-	YT6Xb8upEwObS0aVDaUNIjXM3PqUp9ytLxmX4zH2wwdNAeDvSEQfkSp6PqjaOxV3DBc0s7
-	sbPldwlW2paD3KlXfCrrBeafxO/m2AsqebBR4n/mwpc2vQTCtT6+xsjEnl2e7ZjVdoMv4T
-	pud5uZWSvSO5gwlJ+Y1I7fNJo7A9kEK6Abvxx709hBnto6PH8Z2MjIeneNzYOg==
+	bh=cnlNLHm91GK3tDNHBGhl4aXUf0FjbASLSDE2MPihDoQ=;
+	b=dDh81c8WQpGdG9WRHTBg6zumEe7c5y7M2v9tELLP1yZ6iSjqdgIhuwZnKRQma+kKXrEImL
+	YsL1SL6vX1EjewkcK9UBwGhfcnMKg3TFv1mdjHpYhesY/Urqwys9VZ93e3w+3+Dad95UyC
+	aURrvQEufXuuUU0NdPGx/nyARghMsaZFQc723kCqj6vgTygk5K5A+hauQvMbppLBwfRHZx
+	G6copPhnScf8trSnTfNUljqu+4SWpvzeW+4gmhrH07ZMu9HrEK6pqqcAR/FE6FUslyhYyv
+	A30LgOdpFi6BSapAxUvSRwMg7wVl19NkYa3FyFL9eLsuBO61R+XnNa9LYx81Xw==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH v4 4/6] libsepol/cil: add support for xperms in conditional policies
-Date: Tue,  5 Nov 2024 14:54:26 +0100
-Message-ID: <20241105135428.124398-4-cgoettsche@seltendoof.de>
+Subject: [PATCH v4 5/6] libsepol: indent printed allow rule on assertion failure
+Date: Tue,  5 Nov 2024 14:54:27 +0100
+Message-ID: <20241105135428.124398-5-cgoettsche@seltendoof.de>
 In-Reply-To: <20241105135428.124398-1-cgoettsche@seltendoof.de>
 References: <20241105135428.124398-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,455 +64,183 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Add support for extended permission rules in conditional policies.
+Indent the printed allow rule that triggered an assertion by two spaces
+to improve readability.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsepol/cil/src/cil_binary.c      | 153 +++++++++++++++++++++++++----
- libsepol/cil/src/cil_build_ast.c   |   6 +-
- libsepol/cil/src/cil_resolve_ast.c |   6 +-
- libsepol/cil/src/cil_verify.c      |   3 +-
- secilc/test/policy.cil             |  13 ++-
- 5 files changed, 153 insertions(+), 28 deletions(-)
+v3:
+  add patch
+---
+ libsepol/src/assertion.c         |   8 +--
+ libsepol/tests/test-neverallow.c | 100 +++++++++++++++----------------
+ 2 files changed, 54 insertions(+), 54 deletions(-)
 
-diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
-index 3d920182..070bf525 100644
---- a/libsepol/cil/src/cil_binary.c
-+++ b/libsepol/cil/src/cil_binary.c
-@@ -59,14 +59,18 @@
- #define AVRULEX_TABLE_SIZE (1 <<  10)
- #define PERMS_PER_CLASS 32
+diff --git a/libsepol/src/assertion.c b/libsepol/src/assertion.c
+index 4028a33d..ca4cae25 100644
+--- a/libsepol/src/assertion.c
++++ b/libsepol/src/assertion.c
+@@ -201,7 +201,7 @@ static int report_assertion_extended_permissions(sepol_handle_t *handle,
+ 					permstring = sepol_extended_perms_to_string(&error);
  
-+struct cil_args_xperm_tables {
-+	hashtab_t ioctl;
-+	hashtab_t nlmsg;
-+};
-+
- struct cil_args_binary {
- 	const struct cil_db *db;
- 	policydb_t *pdb;
- 	struct cil_list *neverallows;
- 	int pass;
- 	hashtab_t role_trans_table;
--	hashtab_t avrulex_ioctl_table;
--	hashtab_t avrulex_nlmsg_table;
-+	struct cil_args_xperm_tables avrulex_xperm_tables;
- 	void **type_value_to_cil;
- };
+ 					ERR(handle, "neverallowxperm on line %lu of %s (or line %lu of %s) violated by\n"
+-							"allowxperm %s %s:%s %s;",
++							"  allowxperm %s %s:%s %s;",
+ 							narule->source_line, narule->source_filename, narule->line, policy_name(p),
+ 							p->p_type_val_to_name[i],
+ 							p->p_type_val_to_name[j],
+@@ -247,7 +247,7 @@ static int report_assertion_extended_permissions(sepol_handle_t *handle,
+ 						permstring = sepol_extended_perms_to_string(&error);
  
-@@ -75,8 +79,14 @@ struct cil_args_booleanif {
- 	policydb_t *pdb;
- 	cond_node_t *cond_node;
- 	enum cil_flavor cond_flavor;
-+	struct cil_args_xperm_tables avrulex_xperm_tables;
- };
+ 						ERR(handle, "neverallowxperm on line %lu of %s (or line %lu of %s) violated by\n"
+-								"allowxperm %s %s:%s %s;",
++								"  allowxperm %s %s:%s %s;",
+ 								narule->source_line, narule->source_filename, narule->line, policy_name(p),
+ 								p->p_type_val_to_name[i],
+ 								p->p_type_val_to_name[j],
+@@ -289,7 +289,7 @@ static int report_assertion_extended_permissions(sepol_handle_t *handle,
+ 						permstring = sepol_extended_perms_to_string(&error);
  
-+static unsigned int avrulex_hash(__attribute__((unused)) hashtab_t h, const_hashtab_key_t key);
-+static int avrulex_compare(hashtab_t h
-+             __attribute__ ((unused)), const_hashtab_key_t key1,
-+			              const_hashtab_key_t key2);
-+
- static int __cil_get_sepol_user_datum(policydb_t *pdb, struct cil_symtab_datum *datum, user_datum_t **sepol_user)
- {
- 	*sepol_user = hashtab_search(pdb->p_users.table, datum->fqn);
-@@ -1758,7 +1768,10 @@ static int __cil_permx_bitmap_to_sepol_xperms_list(uint32_t kind, ebitmap_t *xpe
- static int __cil_avrulex_xperm_to_policydb(hashtab_key_t k, hashtab_datum_t datum, uint32_t xperm_kind, void *args)
- {
- 	int rc = SEPOL_OK;
--	struct policydb *pdb;
-+	struct cil_args_booleanif *booleanif_args = args;
-+	struct policydb *pdb = booleanif_args->pdb;
-+	cond_node_t *cond_node = booleanif_args->cond_node;
-+	enum cil_flavor cond_flavor = booleanif_args->cond_flavor;
- 	avtab_key_t *avtab_key;
- 	avtab_datum_t avtab_datum;
- 	struct cil_list *xperms_list = NULL;
-@@ -1768,7 +1781,6 @@ static int __cil_avrulex_xperm_to_policydb(hashtab_key_t k, hashtab_datum_t datu
- 	char *kind = NULL;
+ 						ERR(handle, "neverallowxperm on line %lu of %s (or line %lu of %s) violated by\n"
+-								"allowxperm %s %s:%s %s;",
++								"  allowxperm %s %s:%s %s;",
+ 								narule->source_line, narule->source_filename, narule->line, policy_name(p),
+ 								p->p_type_val_to_name[i],
+ 								p->p_type_val_to_name[j],
+@@ -314,7 +314,7 @@ static int report_assertion_extended_permissions(sepol_handle_t *handle,
+ 		char *permstr = sepol_av_to_string(p, curperm->tclass, perms);
  
- 	avtab_key = (avtab_key_t *)k;
--	pdb = args;
+ 		ERR(handle, "neverallowxperm on line %lu of %s (or line %lu of %s) violated by\n"
+-				"allow %s %s:%s {%s };",
++				"  allow %s %s:%s {%s };",
+ 				narule->source_line, narule->source_filename, narule->line, policy_name(p),
+ 				p->p_type_val_to_name[stype],
+ 				p->p_type_val_to_name[ttype],
+diff --git a/libsepol/tests/test-neverallow.c b/libsepol/tests/test-neverallow.c
+index 7d6ad00e..80f91bf5 100644
+--- a/libsepol/tests/test-neverallow.c
++++ b/libsepol/tests/test-neverallow.c
+@@ -112,18 +112,18 @@ static void test_neverallow_basic(void)
+ 		"neverallow on line 144 of policies/test-neverallow/policy.conf.std (or line 144 of policies/test-neverallow/policy.conf.std) violated by allow test12_3_t test12_1_t:file { open };",
+ 		"neverallow on line 144 of policies/test-neverallow/policy.conf.std (or line 144 of policies/test-neverallow/policy.conf.std) violated by allow test12_2_t test12_1_t:file { open };",
+ 		"neverallow on line 156 of policies/test-neverallow/policy.conf.std (or line 156 of policies/test-neverallow/policy.conf.std) violated by allow test13_1_t test13_1_t:file { read };",
+-		"neverallowxperm on line 174 of policies/test-neverallow/policy.conf.std (or line 174 of policies/test-neverallow/policy.conf.std) violated by\nallow test15_t test15_t:file { ioctl };",
+-		"neverallowxperm on line 182 of policies/test-neverallow/policy.conf.std (or line 182 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test16_t test16_t:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 198 of policies/test-neverallow/policy.conf.std (or line 198 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test18_t test18_t:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 206 of policies/test-neverallow/policy.conf.std (or line 206 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test19_t test19_t:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 216 of policies/test-neverallow/policy.conf.std (or line 216 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test20_a test20_a:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 227 of policies/test-neverallow/policy.conf.std (or line 227 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test21_1_a test21_2_a:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 237 of policies/test-neverallow/policy.conf.std (or line 237 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test22_t test22_t:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 247 of policies/test-neverallow/policy.conf.std (or line 247 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test23_t test23_t:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 257 of policies/test-neverallow/policy.conf.std (or line 257 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test24_t test24_a:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 267 of policies/test-neverallow/policy.conf.std (or line 267 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test25_t test25_t:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 277 of policies/test-neverallow/policy.conf.std (or line 277 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test26_a test26_a:file ioctl { 0x1111 };",
+-		"neverallowxperm on line 277 of policies/test-neverallow/policy.conf.std (or line 277 of policies/test-neverallow/policy.conf.std) violated by\nallowxperm test26_a test26_a:file ioctl { 0x1111 };",
++		"neverallowxperm on line 174 of policies/test-neverallow/policy.conf.std (or line 174 of policies/test-neverallow/policy.conf.std) violated by\n  allow test15_t test15_t:file { ioctl };",
++		"neverallowxperm on line 182 of policies/test-neverallow/policy.conf.std (or line 182 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test16_t test16_t:file ioctl { 0x1111 };",
++		"neverallowxperm on line 198 of policies/test-neverallow/policy.conf.std (or line 198 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test18_t test18_t:file ioctl { 0x1111 };",
++		"neverallowxperm on line 206 of policies/test-neverallow/policy.conf.std (or line 206 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test19_t test19_t:file ioctl { 0x1111 };",
++		"neverallowxperm on line 216 of policies/test-neverallow/policy.conf.std (or line 216 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test20_a test20_a:file ioctl { 0x1111 };",
++		"neverallowxperm on line 227 of policies/test-neverallow/policy.conf.std (or line 227 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test21_1_a test21_2_a:file ioctl { 0x1111 };",
++		"neverallowxperm on line 237 of policies/test-neverallow/policy.conf.std (or line 237 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test22_t test22_t:file ioctl { 0x1111 };",
++		"neverallowxperm on line 247 of policies/test-neverallow/policy.conf.std (or line 247 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test23_t test23_t:file ioctl { 0x1111 };",
++		"neverallowxperm on line 257 of policies/test-neverallow/policy.conf.std (or line 257 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test24_t test24_a:file ioctl { 0x1111 };",
++		"neverallowxperm on line 267 of policies/test-neverallow/policy.conf.std (or line 267 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test25_t test25_t:file ioctl { 0x1111 };",
++		"neverallowxperm on line 277 of policies/test-neverallow/policy.conf.std (or line 277 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test26_a test26_a:file ioctl { 0x1111 };",
++		"neverallowxperm on line 277 of policies/test-neverallow/policy.conf.std (or line 277 of policies/test-neverallow/policy.conf.std) violated by\n  allowxperm test26_a test26_a:file ioctl { 0x1111 };",
+ 	};
  
- 	sepol_obj = pdb->class_val_to_struct[avtab_key->target_class - 1];
+ 	if (policydb_init(&base_expanded))
+@@ -174,25 +174,25 @@ static void test_neverallow_minus_self(void)
+ 		"neverallow on line 175 of policies/test-neverallow/policy_minus_self.conf.std (or line 175 of policies/test-neverallow/policy_minus_self.conf.std) violated by allow test14_1_t test14_2_t:file { read };",
+ 		"neverallow on line 193 of policies/test-neverallow/policy_minus_self.conf.std (or line 193 of policies/test-neverallow/policy_minus_self.conf.std) violated by allow test16_2_t test16_1_t:file { read };",
+ 		"neverallow on line 193 of policies/test-neverallow/policy_minus_self.conf.std (or line 193 of policies/test-neverallow/policy_minus_self.conf.std) violated by allow test16_1_t test16_2_t:file { read };",
+-		"neverallowxperm on line 201 of policies/test-neverallow/policy_minus_self.conf.std (or line 201 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallow test17_1_t test17_2_t:class17 { ioctl };",
+-		"neverallowxperm on line 219 of policies/test-neverallow/policy_minus_self.conf.std (or line 219 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test19_2_t test19_1_t:file ioctl { 0x101-0x102 };",
+-		"neverallowxperm on line 231 of policies/test-neverallow/policy_minus_self.conf.std (or line 231 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test20_2_t test20_1_t:file ioctl { 0x103 };",
+-		"neverallowxperm on line 231 of policies/test-neverallow/policy_minus_self.conf.std (or line 231 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test20_1_t test20_2_t:file ioctl { 0x102 };",
+-		"neverallowxperm on line 261 of policies/test-neverallow/policy_minus_self.conf.std (or line 261 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test23_1_t test23_2_t:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 272 of policies/test-neverallow/policy_minus_self.conf.std (or line 272 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test24_1_t test24_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 283 of policies/test-neverallow/policy_minus_self.conf.std (or line 283 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test25_a test25_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 317 of policies/test-neverallow/policy_minus_self.conf.std (or line 317 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallow test28_2_t test28_1_t:file { ioctl };",
+-		"neverallowxperm on line 317 of policies/test-neverallow/policy_minus_self.conf.std (or line 317 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test28_1_t test28_2_t:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 327 of policies/test-neverallow/policy_minus_self.conf.std (or line 327 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallow test29_2_t test29_1_t:file { ioctl };",
+-		"neverallowxperm on line 327 of policies/test-neverallow/policy_minus_self.conf.std (or line 327 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test29_1_t test29_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 337 of policies/test-neverallow/policy_minus_self.conf.std (or line 337 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test30_a test30_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 337 of policies/test-neverallow/policy_minus_self.conf.std (or line 337 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test30_a test30_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 348 of policies/test-neverallow/policy_minus_self.conf.std (or line 348 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 348 of policies/test-neverallow/policy_minus_self.conf.std (or line 348 of policies/test-neverallow/policy_minus_self.conf.std) violated by\nallowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 201 of policies/test-neverallow/policy_minus_self.conf.std (or line 201 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allow test17_1_t test17_2_t:class17 { ioctl };",
++		"neverallowxperm on line 219 of policies/test-neverallow/policy_minus_self.conf.std (or line 219 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test19_2_t test19_1_t:file ioctl { 0x101-0x102 };",
++		"neverallowxperm on line 231 of policies/test-neverallow/policy_minus_self.conf.std (or line 231 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test20_2_t test20_1_t:file ioctl { 0x103 };",
++		"neverallowxperm on line 231 of policies/test-neverallow/policy_minus_self.conf.std (or line 231 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test20_1_t test20_2_t:file ioctl { 0x102 };",
++		"neverallowxperm on line 261 of policies/test-neverallow/policy_minus_self.conf.std (or line 261 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test23_1_t test23_2_t:file ioctl { 0x9511 };",
++		"neverallowxperm on line 272 of policies/test-neverallow/policy_minus_self.conf.std (or line 272 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test24_1_t test24_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 283 of policies/test-neverallow/policy_minus_self.conf.std (or line 283 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test25_a test25_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 295 of policies/test-neverallow/policy_minus_self.conf.std (or line 295 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 317 of policies/test-neverallow/policy_minus_self.conf.std (or line 317 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allow test28_2_t test28_1_t:file { ioctl };",
++		"neverallowxperm on line 317 of policies/test-neverallow/policy_minus_self.conf.std (or line 317 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test28_1_t test28_2_t:file ioctl { 0x9521 };",
++		"neverallowxperm on line 327 of policies/test-neverallow/policy_minus_self.conf.std (or line 327 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allow test29_2_t test29_1_t:file { ioctl };",
++		"neverallowxperm on line 327 of policies/test-neverallow/policy_minus_self.conf.std (or line 327 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test29_1_t test29_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 337 of policies/test-neverallow/policy_minus_self.conf.std (or line 337 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test30_a test30_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 337 of policies/test-neverallow/policy_minus_self.conf.std (or line 337 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test30_a test30_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 348 of policies/test-neverallow/policy_minus_self.conf.std (or line 348 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 348 of policies/test-neverallow/policy_minus_self.conf.std (or line 348 of policies/test-neverallow/policy_minus_self.conf.std) violated by\n  allowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
+ 	};
  
-@@ -1789,7 +1801,12 @@ static int __cil_avrulex_xperm_to_policydb(hashtab_key_t k, hashtab_datum_t datu
+ 	if (policydb_init(&base_expanded))
+@@ -244,25 +244,25 @@ static void test_neverallow_not_self(void)
+ 		"neverallow on line 185 of policies/test-neverallow/policy_not_self.conf.std (or line 185 of policies/test-neverallow/policy_not_self.conf.std) violated by allow test13_1_t test13_2_t:file { read };",
+ 		"neverallow on line 194 of policies/test-neverallow/policy_not_self.conf.std (or line 194 of policies/test-neverallow/policy_not_self.conf.std) violated by allow test16_2_t test16_1_t:file { read };",
+ 		"neverallow on line 194 of policies/test-neverallow/policy_not_self.conf.std (or line 194 of policies/test-neverallow/policy_not_self.conf.std) violated by allow test16_1_t test16_2_t:file { read };",
+-		"neverallowxperm on line 202 of policies/test-neverallow/policy_not_self.conf.std (or line 202 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallow test17_1_t test17_2_t:class17 { ioctl };",
+-		"neverallowxperm on line 220 of policies/test-neverallow/policy_not_self.conf.std (or line 220 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test19_2_t test19_1_t:file ioctl { 0x101-0x102 };",
+-		"neverallowxperm on line 232 of policies/test-neverallow/policy_not_self.conf.std (or line 232 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test20_2_t test20_1_t:file ioctl { 0x103 };",
+-		"neverallowxperm on line 232 of policies/test-neverallow/policy_not_self.conf.std (or line 232 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test20_1_t test20_2_t:file ioctl { 0x102 };",
+-		"neverallowxperm on line 262 of policies/test-neverallow/policy_not_self.conf.std (or line 262 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test23_1_t test23_2_t:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 273 of policies/test-neverallow/policy_not_self.conf.std (or line 273 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test24_1_t test24_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 284 of policies/test-neverallow/policy_not_self.conf.std (or line 284 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test25_a test25_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
+-		"neverallowxperm on line 318 of policies/test-neverallow/policy_not_self.conf.std (or line 318 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallow test28_2_t test28_1_t:file { ioctl };",
+-		"neverallowxperm on line 318 of policies/test-neverallow/policy_not_self.conf.std (or line 318 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test28_1_t test28_2_t:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 328 of policies/test-neverallow/policy_not_self.conf.std (or line 328 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallow test29_2_t test29_1_t:file { ioctl };",
+-		"neverallowxperm on line 328 of policies/test-neverallow/policy_not_self.conf.std (or line 328 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test29_1_t test29_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 338 of policies/test-neverallow/policy_not_self.conf.std (or line 338 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test30_a test30_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 338 of policies/test-neverallow/policy_not_self.conf.std (or line 338 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test30_a test30_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 349 of policies/test-neverallow/policy_not_self.conf.std (or line 349 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
+-		"neverallowxperm on line 349 of policies/test-neverallow/policy_not_self.conf.std (or line 349 of policies/test-neverallow/policy_not_self.conf.std) violated by\nallowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 202 of policies/test-neverallow/policy_not_self.conf.std (or line 202 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allow test17_1_t test17_2_t:class17 { ioctl };",
++		"neverallowxperm on line 220 of policies/test-neverallow/policy_not_self.conf.std (or line 220 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test19_2_t test19_1_t:file ioctl { 0x101-0x102 };",
++		"neverallowxperm on line 232 of policies/test-neverallow/policy_not_self.conf.std (or line 232 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test20_2_t test20_1_t:file ioctl { 0x103 };",
++		"neverallowxperm on line 232 of policies/test-neverallow/policy_not_self.conf.std (or line 232 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test20_1_t test20_2_t:file ioctl { 0x102 };",
++		"neverallowxperm on line 262 of policies/test-neverallow/policy_not_self.conf.std (or line 262 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test23_1_t test23_2_t:file ioctl { 0x9511 };",
++		"neverallowxperm on line 273 of policies/test-neverallow/policy_not_self.conf.std (or line 273 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test24_1_t test24_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 284 of policies/test-neverallow/policy_not_self.conf.std (or line 284 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test25_a test25_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 296 of policies/test-neverallow/policy_not_self.conf.std (or line 296 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test26_1_a test26_2_a:file ioctl { 0x9511 };",
++		"neverallowxperm on line 318 of policies/test-neverallow/policy_not_self.conf.std (or line 318 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allow test28_2_t test28_1_t:file { ioctl };",
++		"neverallowxperm on line 318 of policies/test-neverallow/policy_not_self.conf.std (or line 318 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test28_1_t test28_2_t:file ioctl { 0x9521 };",
++		"neverallowxperm on line 328 of policies/test-neverallow/policy_not_self.conf.std (or line 328 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allow test29_2_t test29_1_t:file { ioctl };",
++		"neverallowxperm on line 328 of policies/test-neverallow/policy_not_self.conf.std (or line 328 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test29_1_t test29_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 338 of policies/test-neverallow/policy_not_self.conf.std (or line 338 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test30_a test30_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 338 of policies/test-neverallow/policy_not_self.conf.std (or line 338 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test30_a test30_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 349 of policies/test-neverallow/policy_not_self.conf.std (or line 349 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
++		"neverallowxperm on line 349 of policies/test-neverallow/policy_not_self.conf.std (or line 349 of policies/test-neverallow/policy_not_self.conf.std) violated by\n  allowxperm test31_1_a test31_2_a:file ioctl { 0x9521 };",
+ 	};
  
- 	cil_list_for_each(item, xperms_list) {
- 		avtab_datum.xperms = item->data;
--		rc = avtab_insert(&pdb->te_avtab, avtab_key, &avtab_datum);
-+
-+		if (cond_node) {
-+			rc = __cil_cond_insert_rule(&pdb->te_cond_avtab, avtab_key, &avtab_datum, cond_node, cond_flavor);
-+		} else {
-+			rc = avtab_insert(&pdb->te_avtab, avtab_key, &avtab_datum);
-+		}
- 		if (rc != SEPOL_OK) {
- 			goto exit;
- 		}
-@@ -1872,7 +1889,7 @@ exit:
- 	return rc;
- }
- 
--static int __cil_avrulex_to_hashtable_helper(policydb_t *pdb, uint16_t kind, struct cil_symtab_datum *src, struct cil_symtab_datum *tgt, struct cil_permissionx *permx, struct cil_args_binary *args)
-+static int __cil_avrulex_to_hashtable_helper(policydb_t *pdb, uint16_t kind, struct cil_symtab_datum *src, struct cil_symtab_datum *tgt, struct cil_permissionx *permx, struct cil_args_xperm_tables *xt)
- {
- 	int rc = SEPOL_ERR;
- 	type_datum_t *sepol_src = NULL;
-@@ -1895,11 +1912,11 @@ static int __cil_avrulex_to_hashtable_helper(policydb_t *pdb, uint16_t kind, str
- 
- 		switch (permx->kind) {
- 		case  CIL_PERMX_KIND_IOCTL:
--			rc = __cil_avrulex_xperm_to_hashtable(args->avrulex_ioctl_table, kind, sepol_src->s.value, sepol_tgt->s.value, sepol_obj->s.value, permx->perms);
-+			rc = __cil_avrulex_xperm_to_hashtable(xt->ioctl, kind, sepol_src->s.value, sepol_tgt->s.value, sepol_obj->s.value, permx->perms);
- 			if (rc != SEPOL_OK) goto exit;
- 			break;
- 		case  CIL_PERMX_KIND_NLMSG:
--			rc = __cil_avrulex_xperm_to_hashtable(args->avrulex_nlmsg_table, kind, sepol_src->s.value, sepol_tgt->s.value, sepol_obj->s.value, permx->perms);
-+			rc = __cil_avrulex_xperm_to_hashtable(xt->nlmsg, kind, sepol_src->s.value, sepol_tgt->s.value, sepol_obj->s.value, permx->perms);
- 			if (rc != SEPOL_OK) goto exit;
- 			break;
- 		default:
-@@ -1916,7 +1933,7 @@ exit:
- 	return rc;
- }
- 
--static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, struct cil_avrule *cil_avrulex, struct cil_args_binary *args)
-+static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, struct cil_avrule *cil_avrulex, struct cil_args_xperm_tables *xt)
- {
- 	int rc = SEPOL_ERR;
- 	uint16_t kind;
-@@ -1942,7 +1959,7 @@ static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, st
- 
- 		ebitmap_for_each_positive_bit(&src_bitmap, snode, s) {
- 			src = DATUM(db->val_to_type[s]);
--			rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, src, cil_avrulex->perms.x.permx, args);
-+			rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, src, cil_avrulex->perms.x.permx, xt);
- 			if (rc != SEPOL_OK) {
- 				ebitmap_destroy(&src_bitmap);
- 				goto exit;
-@@ -1960,7 +1977,7 @@ static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, st
- 			for (t = 0; t < (unsigned int)db->num_types; t++) {
- 				if (s != t) {
- 					tgt = DATUM(db->val_to_type[t]);
--					rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, args);
-+					rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, xt);
- 					if (rc != SEPOL_OK) {
- 						ebitmap_destroy(&src_bitmap);
- 						goto exit;
-@@ -1980,7 +1997,7 @@ static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, st
- 			ebitmap_for_each_positive_bit(&src_bitmap, tnode, t) {
- 				if (s != t) {
- 					tgt = DATUM(db->val_to_type[t]);
--					rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, args);
-+					rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, xt);
- 					if (rc != SEPOL_OK) {
- 						ebitmap_destroy(&src_bitmap);
- 						goto exit;
-@@ -1994,7 +2011,7 @@ static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, st
- 		int expand_tgt = __cil_should_expand_attribute(db, tgt);
- 
- 		if (!expand_src && !expand_tgt) {
--			rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, args);
-+			rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, xt);
- 			if (rc != SEPOL_OK) {
- 				goto exit;
- 			}
-@@ -2015,7 +2032,7 @@ static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, st
- 				ebitmap_for_each_positive_bit(&tgt_bitmap, tnode, t) {
- 					tgt = DATUM(db->val_to_type[t]);
- 
--					rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, args);
-+					rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, xt);
- 					if (rc != SEPOL_OK) {
- 						ebitmap_destroy(&src_bitmap);
- 						ebitmap_destroy(&tgt_bitmap);
-@@ -2034,7 +2051,7 @@ static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, st
- 			ebitmap_for_each_positive_bit(&src_bitmap, snode, s) {
- 				src = DATUM(db->val_to_type[s]);
- 
--				rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, args);
-+				rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, xt);
- 				if (rc != SEPOL_OK) {
- 					ebitmap_destroy(&src_bitmap);
- 					goto exit;
-@@ -2050,7 +2067,7 @@ static int cil_avrulex_to_hashtable(policydb_t *pdb, const struct cil_db *db, st
- 			ebitmap_for_each_positive_bit(&tgt_bitmap, tnode, t) {
- 				tgt = DATUM(db->val_to_type[t]);
- 
--				rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, args);
-+				rc = __cil_avrulex_to_hashtable_helper(pdb, kind, src, tgt, cil_avrulex->perms.x.permx, xt);
- 				if (rc != SEPOL_OK) {
- 					ebitmap_destroy(&tgt_bitmap);
- 					goto exit;
-@@ -2119,6 +2136,21 @@ static int __cil_cond_to_policydb_helper(struct cil_tree_node *node, __attribute
- 			goto exit;
- 		}
- 		break;
-+	case CIL_AVRULEX:
-+		if (db->policy_version < POLICYDB_VERSION_COND_XPERMS) {
-+			cil_tree_log(node, CIL_ERR, "Extended permission rules are not supported in policy version %d\n",
-+				     db->policy_version);
-+			rc = SEPOL_ERR;
-+			goto exit;
-+		}
-+		cil_avrule = node->data;
-+		rc = cil_avrulex_to_hashtable(pdb, db, cil_avrule, &args->avrulex_xperm_tables);
-+		if (rc != SEPOL_OK) {
-+			cil_tree_log(node, CIL_ERR, "Failed to insert avrulex into avtab");
-+			goto exit;
-+		}
-+		break;
-+
- 	case CIL_CALL:
- 	case CIL_TUNABLEIF:
- 		break;
-@@ -2425,6 +2457,8 @@ int cil_booleanif_to_policydb(policydb_t *pdb, const struct cil_db *db, struct c
- 	int was_created;
- 	int swapped = CIL_FALSE;
- 	cond_av_list_t tmp_cl;
-+	hashtab_t avrulex_ioctl_table = NULL;
-+	hashtab_t avrulex_nlmsg_table = NULL;
- 
- 	tmp_cond = cond_node_create(pdb, NULL);
- 	if (tmp_cond == NULL) {
-@@ -2493,26 +2527,97 @@ int cil_booleanif_to_policydb(policydb_t *pdb, const struct cil_db *db, struct c
- 	bool_args.cond_node = cond_node;
- 
- 	if (true_node != NULL) {
-+		avrulex_ioctl_table = hashtab_create(avrulex_hash, avrulex_compare, AVRULEX_TABLE_SIZE);
-+		if (!avrulex_ioctl_table) {
-+			cil_log(CIL_INFO, "Failure to create hashtab for avrulex\n");
-+			goto exit;
-+		}
-+
-+		avrulex_nlmsg_table = hashtab_create(avrulex_hash, avrulex_compare, AVRULEX_TABLE_SIZE);
-+		if (!avrulex_nlmsg_table) {
-+			cil_log(CIL_INFO, "Failure to create hashtab for avrulex\n");
-+			goto exit;
-+		}
-+
- 		bool_args.cond_flavor = CIL_CONDTRUE;
-+		bool_args.avrulex_xperm_tables.ioctl = avrulex_ioctl_table;
-+		bool_args.avrulex_xperm_tables.nlmsg = avrulex_nlmsg_table;
- 		rc = cil_tree_walk(true_node, __cil_cond_to_policydb_helper, NULL, NULL, &bool_args);
- 		if (rc != SEPOL_OK) {
- 			cil_tree_log(true_node, CIL_ERR, "Failure while walking true conditional block");
- 			goto exit;
- 		}
-+
-+		rc = hashtab_map(avrulex_ioctl_table, __cil_avrulex_ioctl_to_policydb, &bool_args);
-+		if (rc != SEPOL_OK) {
-+			cil_log(CIL_INFO, "Failure creating avrulex rules\n");
-+			goto exit;
-+		}
-+
-+		rc = hashtab_map(avrulex_nlmsg_table, __cil_avrulex_nlmsg_to_policydb, &bool_args);
-+		if (rc != SEPOL_OK) {
-+			cil_log(CIL_INFO, "Failure creating avrulex rules\n");
-+			goto exit;
-+		}
-+
-+		hashtab_map(avrulex_nlmsg_table, __cil_avrulex_xperm_destroy, NULL);
-+		hashtab_destroy(avrulex_nlmsg_table);
-+		avrulex_nlmsg_table = NULL;
-+
-+		hashtab_map(avrulex_ioctl_table, __cil_avrulex_xperm_destroy, NULL);
-+		hashtab_destroy(avrulex_ioctl_table);
-+		avrulex_ioctl_table = NULL;
- 	}
- 
- 	if (false_node != NULL) {
-+		avrulex_ioctl_table = hashtab_create(avrulex_hash, avrulex_compare, AVRULEX_TABLE_SIZE);
-+		if (!avrulex_ioctl_table) {
-+			cil_log(CIL_INFO, "Failure to create hashtab for avrulex\n");
-+			goto exit;
-+		}
-+
-+		avrulex_nlmsg_table = hashtab_create(avrulex_hash, avrulex_compare, AVRULEX_TABLE_SIZE);
-+		if (!avrulex_nlmsg_table) {
-+			cil_log(CIL_INFO, "Failure to create hashtab for avrulex\n");
-+			goto exit;
-+		}
-+
- 		bool_args.cond_flavor = CIL_CONDFALSE;
-+		bool_args.avrulex_xperm_tables.ioctl = avrulex_ioctl_table;
-+		bool_args.avrulex_xperm_tables.nlmsg = avrulex_nlmsg_table;
- 		rc = cil_tree_walk(false_node, __cil_cond_to_policydb_helper, NULL, NULL, &bool_args);
- 		if (rc != SEPOL_OK) {
- 			cil_tree_log(false_node, CIL_ERR, "Failure while walking false conditional block");
- 			goto exit;
- 		}
-+
-+		rc = hashtab_map(avrulex_ioctl_table, __cil_avrulex_ioctl_to_policydb, &bool_args);
-+		if (rc != SEPOL_OK) {
-+			cil_log(CIL_INFO, "Failure creating avrulex rules\n");
-+			goto exit;
-+		}
-+
-+		rc = hashtab_map(avrulex_nlmsg_table, __cil_avrulex_nlmsg_to_policydb, &bool_args);
-+		if (rc != SEPOL_OK) {
-+			cil_log(CIL_INFO, "Failure creating avrulex rules\n");
-+			goto exit;
-+		}
-+
-+		hashtab_map(avrulex_nlmsg_table, __cil_avrulex_xperm_destroy, NULL);
-+		hashtab_destroy(avrulex_nlmsg_table);
-+		avrulex_nlmsg_table = NULL;
-+
-+
-+		hashtab_map(avrulex_ioctl_table, __cil_avrulex_xperm_destroy, NULL);
-+		hashtab_destroy(avrulex_ioctl_table);
-+		avrulex_ioctl_table = NULL;
- 	}
- 
- 	return SEPOL_OK;
- 
- exit:
-+	hashtab_map(avrulex_ioctl_table, __cil_avrulex_xperm_destroy, NULL);
-+	hashtab_destroy(avrulex_ioctl_table);
- 	if (tmp_cond) {
- 		if (tmp_cond->expr)
- 			cond_expr_destroy(tmp_cond->expr);
-@@ -4087,7 +4192,7 @@ static int __cil_node_to_policydb(struct cil_tree_node *node, void *extra_args)
- 		case CIL_AVRULEX: {
- 				struct cil_avrule *rule = node->data;
- 				if (rule->rule_kind != CIL_AVRULE_NEVERALLOW) {
--					rc = cil_avrulex_to_hashtable(pdb, db, node->data, args);
-+					rc = cil_avrulex_to_hashtable(pdb, db, node->data, &args->avrulex_xperm_tables);
- 				}
- 			}
- 			break;
-@@ -5158,6 +5263,7 @@ int cil_binary_create_allocated_pdb(const struct cil_db *db, sepol_policydb_t *p
- 	int rc = SEPOL_ERR;
- 	int i;
- 	struct cil_args_binary extra_args;
-+	struct cil_args_booleanif booleanif_args;
- 	policydb_t *pdb = &policydb->p;
- 	struct cil_list *neverallows = NULL;
- 	hashtab_t role_trans_table = NULL;
-@@ -5222,10 +5328,15 @@ int cil_binary_create_allocated_pdb(const struct cil_db *db, sepol_policydb_t *p
- 	extra_args.pdb = pdb;
- 	extra_args.neverallows = neverallows;
- 	extra_args.role_trans_table = role_trans_table;
--	extra_args.avrulex_ioctl_table = avrulex_ioctl_table;
--	extra_args.avrulex_nlmsg_table = avrulex_nlmsg_table;
-+	extra_args.avrulex_xperm_tables.ioctl = avrulex_ioctl_table;
-+	extra_args.avrulex_xperm_tables.nlmsg = avrulex_nlmsg_table;
- 	extra_args.type_value_to_cil = type_value_to_cil;
- 
-+	booleanif_args.db = db;
-+	booleanif_args.pdb = pdb;
-+	booleanif_args.cond_node = NULL;
-+	booleanif_args.cond_flavor = CIL_NONE;
-+
- 	for (i = 1; i <= 3; i++) {
- 		extra_args.pass = i;
- 
-@@ -5244,12 +5355,12 @@ int cil_binary_create_allocated_pdb(const struct cil_db *db, sepol_policydb_t *p
- 		}
- 
- 		if (i == 3) {
--			rc = hashtab_map(avrulex_ioctl_table, __cil_avrulex_ioctl_to_policydb, pdb);
-+			rc = hashtab_map(avrulex_ioctl_table, __cil_avrulex_ioctl_to_policydb, &booleanif_args);
- 			if (rc != SEPOL_OK) {
- 				cil_log(CIL_INFO, "Failure creating avrulex rules\n");
- 				goto exit;
- 			}
--			rc = hashtab_map(avrulex_nlmsg_table, __cil_avrulex_nlmsg_to_policydb, pdb);
-+			rc = hashtab_map(avrulex_nlmsg_table, __cil_avrulex_nlmsg_to_policydb, &booleanif_args);
- 			if (rc != SEPOL_OK) {
- 				cil_log(CIL_INFO, "Failure creating avrulex rules\n");
- 				goto exit;
-diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
-index 19fbb04e..8cc3f9b2 100644
---- a/libsepol/cil/src/cil_build_ast.c
-+++ b/libsepol/cil/src/cil_build_ast.c
-@@ -6158,7 +6158,11 @@ static int check_for_illegal_statement(struct cil_tree_node *parse_current, stru
- 			parse_current->data != CIL_KEY_AUDITALLOW &&
- 			parse_current->data != CIL_KEY_TYPETRANSITION &&
- 			parse_current->data != CIL_KEY_TYPECHANGE &&
--			parse_current->data != CIL_KEY_TYPEMEMBER) {
-+			parse_current->data != CIL_KEY_TYPEMEMBER &&
-+			((args->db->policy_version < POLICYDB_VERSION_COND_XPERMS) ||
-+			  (parse_current->data != CIL_KEY_ALLOWX &&
-+			   parse_current->data != CIL_KEY_DONTAUDITX &&
-+			   parse_current->data != CIL_KEY_AUDITALLOWX))) {
- 			if (((struct cil_booleanif*)args->boolif->data)->preserved_tunable) {
- 				cil_tree_log(parse_current, CIL_ERR, "%s is not allowed in tunableif being treated as a booleanif", (char *)parse_current->data);
- 			} else {
-diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
-index da8863c4..a8fa89df 100644
---- a/libsepol/cil/src/cil_resolve_ast.c
-+++ b/libsepol/cil/src/cil_resolve_ast.c
-@@ -3848,9 +3848,11 @@ static int __cil_resolve_ast_node_helper(struct cil_tree_node *node, uint32_t *f
- 			node->flavor != CIL_CONDBLOCK &&
- 			node->flavor != CIL_AVRULE &&
- 			node->flavor != CIL_TYPE_RULE &&
--			node->flavor != CIL_NAMETYPETRANSITION) {
-+			node->flavor != CIL_NAMETYPETRANSITION &&
-+			((args->db->policy_version < POLICYDB_VERSION_COND_XPERMS) ||
-+			 (node->flavor != CIL_AVRULEX))) {
- 			rc = SEPOL_ERR;
--		} else if (node->flavor == CIL_AVRULE) {
-+		} else if (node->flavor == CIL_AVRULE || node->flavor == CIL_AVRULEX) {
- 			struct cil_avrule *rule = node->data;
- 			if (rule->rule_kind == CIL_AVRULE_NEVERALLOW) {
- 				rc = SEPOL_ERR;
-diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
-index 9621a247..550b4542 100644
---- a/libsepol/cil/src/cil_verify.c
-+++ b/libsepol/cil/src/cil_verify.c
-@@ -1101,7 +1101,8 @@ static int __cil_verify_booleanif_helper(struct cil_tree_node *node, __attribute
- 	struct cil_booleanif *bif = node->parent->parent->data;
- 
- 	switch (rule_node->flavor) {
--	case CIL_AVRULE: {
-+	case CIL_AVRULE:
-+	case CIL_AVRULEX: {
- 		struct cil_avrule *avrule = NULL;
- 		avrule = rule_node->data;
- 		if (avrule->rule_kind == CIL_AVRULE_NEVERALLOW) {
-diff --git a/secilc/test/policy.cil b/secilc/test/policy.cil
-index e6b78618..d0d52d0d 100644
---- a/secilc/test/policy.cil
-+++ b/secilc/test/policy.cil
-@@ -47,8 +47,9 @@
- 
- (block policy
- 	(class file (execute_no_trans entrypoint execmod open audit_access a b c d e))
--	; order should be: file char b c a dir d e f
--	(classorder (file char))
-+	(class socket (nlmsg))
-+	; order should be: file socket char b c a dir d e f
-+	(classorder (file socket char))
- 	(classorder (unordered dir))
- 	(classorder (unordered c a b d e f))
- 	(classorder (char b c a))
-@@ -161,7 +162,10 @@
- 	;;(allow bad_t not_bad_type (file (execute)))
- 	;;(allow bad_t exec_t (file (execute)))
- 	(neverallow bad_t not_bad_type (file (execute)))
--			
-+
-+	(auditallowx getty_t console_device_t (ioctl file (range 0x1000 0x10FF)))
-+	(auditallowx getty_t kernel_t (nlmsg socket (range 0x1000 0x10FF)))
-+
- 	(booleanif secure_mode
- 		(true
- 			(auditallow device_t exec_t (file (read write)))
-@@ -172,9 +176,12 @@
- 		(true
- 			(typechange auditadm_t console_device_t file user_tty_device_t)
- 			(allow getty_t console_device_t (file (getattr open read write append)))
-+			(auditallowx getty_t console_device_t (ioctl file (range 0x2000 0x21FF)))
-+			(auditallowx getty_t kernel_t (nlmsg socket (0x1)))
- 		)
- 		(false
- 			(dontaudit getty_t console_device_t (file (getattr open read write append)))
-+			(dontauditx getty_t console_device_t (ioctl file (range 0x3000 0x31FF)))
- 		)
- 	)
- 
+ 	if (policydb_init(&base_expanded))
 -- 
 2.45.2
 

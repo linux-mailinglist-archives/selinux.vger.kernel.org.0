@@ -1,57 +1,52 @@
-Return-Path: <selinux+bounces-2209-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2213-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920459BD4A9
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:33:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433419BD527
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:46:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5F7EB22D7D
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:33:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 551B11C22B09
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B4A1E885A;
-	Tue,  5 Nov 2024 18:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1988B1F9ABA;
+	Tue,  5 Nov 2024 18:39:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="qPiNayk8"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="g1NUXRFN"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC821E8825
-	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 18:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB0011E909C
+	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 18:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730831613; cv=none; b=UA9E0T+1c9k++w2r9TJpiZpfiiPN1ISB18KR1pkP3N2D+4iJZbRVYK/ITVm9dW6L4KxEcyI+k7Bi0bbbjFhWVUGmuj7DlzUp9l7KTYbrbyaJLdcJLc8A5daEYTt3QVbQN56T0t5L10iI5VpzhAggVcau9dyziMa5CQApP/6/X5Q=
+	t=1730831993; cv=none; b=H9wMe3ghtaLHWWhHQXkykgDYr5L+rALWyIpYG07CBCGJINeH+7/b/CyKB1g1knx+fquZXlLeIoYXT7JHW9EnzUKRvFJLWOjXdiByjBLMZfu6CF9NaDIxJ3bfFkEOiRbU23pkPtHjl8NYTv4JybX0QkYBxK8RVVFafJjSGycgfV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730831613; c=relaxed/simple;
-	bh=JQvPI0dwlcbtXenHQpByDU/wElZ5A1cHQEIAp7TlkIE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EgfrfnBJHdIQ3aMgZxN5pUriwchHLDVV+j5PL0elz/bQlymJWxNL1wSm9WENvXF6o2tZFeG9fUkSCQX4f8UyL1vcKzhSexiplCWcnFG4NC0eAuI6PMr15l06olwJu3dT7QvivEtu2sigDUZOL9PbH0eiMXoFBPzy5Lyr2e3kFO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=qPiNayk8; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1730831993; c=relaxed/simple;
+	bh=RB+Ril/MNI5r6+4gLBAlAkobDSUsYYh2c41bOhFAO24=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uGCzAo2IjCz5m1TIlr9FZi6ihDIINF6l3Vb2IC5hG/zzNdDxsnwNzpC79OPXcu3XpqmusopUzFhPuuButxsPqb9/06elaeUxBh6QtLFzG3RcGpe4aIwfQvhlbKPWJO5OMTKGzBxfTZhlwzsrozTsvH/x4l9jZIHlS86X/0JRNww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=g1NUXRFN; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1730831608;
+	s=2023072701; t=1730831988;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=M0T40JtsodI6Qzfe5bxPCIH5sxHsZhJgh4gnTR7BYVA=;
-	b=qPiNayk8nFlscNzc7G9/FCahu7aJTZX+bOzUzZgmsQ2ZO3rDEA7/wDY40F4jVz1W2ikx0n
-	VYauP8VD/uYj8A8cSV/fXDouAB9ZaZW4YGrI+YVsbcxI5KadSUC7wJfTjnamycbfJWKuVe
-	Pww/0AfCPZCD++djRqfZjY3jFsWMm6n0z93qyoU381Mibneo32mTxTrd+TNwUu8yefnZ3V
-	lsznT6qgRyXP6jsUmYqNHAQ1R2X2cSSkK71Hh3OFR8juXCW4EjCtsSrjgd8ZjZiRe67wcm
-	G902IGQkrtlK3UwZWQc6otj7k/zpfYvUml3OV/7IF2iObSyVZLYGGfyRFbgkWg==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=xuOjyaj4sjYGzNrT4Z/cMfwZZ1InKpNQMGg6FKloJ2c=;
+	b=g1NUXRFNqPM4KR1/AQ7elFN0TjIcI9ijRP4gvyoa/kjctym4G475rggbac+zDKraCvC0of
+	2iWUh4I9KfuM29wibKf7LedaQNsxYiMXNRSUuX4d0tTswdOTAazqGCqOv6/CM+C/Zfhx5V
+	lUc+24UuK4IVlMquoDIbt2A9if675XG8qnIYIakpku49YLpJsYdGf4A0RAJJwIygjuhjZ5
+	vwtGrf60NJuIfu6XvRek57zNYkW+A+7VpIySObJC73AjCGSiceQ3sgBoR1sOrPVmxeco8J
+	p1K8OLQ5wKYB+Y0yzmIj4r6U3PYEGmAEzVIVYdQo5MYo6jEv4sGlsHT/F6Efkw==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH v3 9/9] libselinux: support parallel selabel_lookup(3)
-Date: Tue,  5 Nov 2024 19:33:19 +0100
-Message-ID: <20241105183319.250410-10-cgoettsche@seltendoof.de>
-In-Reply-To: <20241105183319.250410-1-cgoettsche@seltendoof.de>
-References: <20241105183319.250410-1-cgoettsche@seltendoof.de>
+Subject: [PATCH 1/2] libselinux: make use of calloc(3)
+Date: Tue,  5 Nov 2024 19:39:35 +0100
+Message-ID: <20241105183936.252530-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -64,196 +59,283 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Support the parallel usage of the translated label lookup via
-selabel_lookup(3) in multi threaded applications by locking the step
-of computing the translated context and the validation state.
-
-A potential use case might can usage from a Rust application via FFI.
+Use calloc(3) instead of calling malloc(3) plus a call to memset(3) or
+manual zero'ing.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/label.c          | 56 +++++++++++++++++++++++++++------
- libselinux/src/label_db.c       |  2 ++
- libselinux/src/label_file.h     |  4 +++
- libselinux/src/label_internal.h |  1 +
- libselinux/src/label_media.c    |  1 +
- libselinux/src/label_x.c        |  1 +
- 6 files changed, 56 insertions(+), 9 deletions(-)
+ libselinux/src/fgetfilecon.c         |  3 +--
+ libselinux/src/get_context_list.c    |  3 +--
+ libselinux/src/get_initial_context.c |  3 +--
+ libselinux/src/getfilecon.c          |  3 +--
+ libselinux/src/getpeercon.c          |  3 +--
+ libselinux/src/hashtab.c             | 23 +++++++++++------------
+ libselinux/src/label_media.c         |  6 ++----
+ libselinux/src/label_x.c             |  6 ++----
+ libselinux/src/lgetfilecon.c         |  3 +--
+ libselinux/src/matchpathcon.c        |  3 +--
+ libselinux/src/procattr.c            |  3 +--
+ libselinux/src/setrans_client.c      |  5 ++---
+ 12 files changed, 25 insertions(+), 39 deletions(-)
 
-diff --git a/libselinux/src/label.c b/libselinux/src/label.c
-index 06d743ec..2c510290 100644
---- a/libselinux/src/label.c
-+++ b/libselinux/src/label.c
-@@ -124,18 +124,32 @@ static inline int selabel_is_validate_set(const struct selinux_opt *opts,
+diff --git a/libselinux/src/fgetfilecon.c b/libselinux/src/fgetfilecon.c
+index d7051171..782861ed 100644
+--- a/libselinux/src/fgetfilecon.c
++++ b/libselinux/src/fgetfilecon.c
+@@ -39,10 +39,9 @@ int fgetfilecon_raw(int fd, char ** context)
+ 	ssize_t ret;
  
- int selabel_validate(struct selabel_lookup_rec *contexts)
- {
--	int rc = 0;
-+	bool validated;
-+	int rc;
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
+ 		return -1;
+-	memset(buf, 0, size);
  
--	if (contexts->validated)
--		goto out;
-+	validated = __atomic_load_n(&contexts->validated, __ATOMIC_ACQUIRE);
-+	if (validated)
-+		return 0;
-+
-+	__pthread_mutex_lock(&contexts->lock);
-+
-+	/* Check if another thread validated the context while we waited on the mutex */
-+	validated = __atomic_load_n(&contexts->validated, __ATOMIC_ACQUIRE);
-+	if (validated) {
-+		__pthread_mutex_unlock(&contexts->lock);
-+		return 0;
-+	}
- 
- 	rc = selinux_validate(&contexts->ctx_raw);
-+	if (rc == 0)
-+		__atomic_store_n(&contexts->validated, true, __ATOMIC_RELEASE);
-+
-+	__pthread_mutex_unlock(&contexts->lock);
-+
- 	if (rc < 0)
--		goto out;
-+		return -1;
- 
--	contexts->validated = true;
--out:
--	return rc;
-+	return 0;
- }
- 
- /* Public API helpers */
-@@ -143,11 +157,35 @@ static int selabel_fini(const struct selabel_handle *rec,
- 			    struct selabel_lookup_rec *lr,
- 			    bool translating)
- {
-+	char *ctx_trans;
-+	int rc;
-+
- 	if (compat_validate(rec, lr, rec->spec_file, lr->lineno))
+ 	ret = fgetxattr_wrapper(fd, XATTR_NAME_SELINUX, buf, size - 1);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/get_context_list.c b/libselinux/src/get_context_list.c
+index 222b54c1..8d5ee6fb 100644
+--- a/libselinux/src/get_context_list.c
++++ b/libselinux/src/get_context_list.c
+@@ -481,12 +481,11 @@ int get_ordered_context_list(const char *user,
+ 	   the "failsafe" context to at least permit root login
+ 	   for emergency recovery if possible. */
+ 	freeconary(reachable);
+-	reachable = malloc(2 * sizeof(char *));
++	reachable = calloc(2, sizeof(char *));
+ 	if (!reachable) {
+ 		rc = -1;
+ 		goto out;
+ 	}
+-	reachable[0] = reachable[1] = 0;
+ 	rc = get_failsafe_context(user, &reachable[0]);
+ 	if (rc < 0) {
+ 		freeconary(reachable);
+diff --git a/libselinux/src/get_initial_context.c b/libselinux/src/get_initial_context.c
+index 0f25ba3f..fb774c82 100644
+--- a/libselinux/src/get_initial_context.c
++++ b/libselinux/src/get_initial_context.c
+@@ -39,12 +39,11 @@ int security_get_initial_context_raw(const char * name, char ** con)
  		return -1;
  
--	if (translating && !lr->ctx_trans &&
--	    selinux_raw_to_trans_context(lr->ctx_raw, &lr->ctx_trans))
-+	if (!translating)
-+		return 0;
-+
-+	ctx_trans = __atomic_load_n(&lr->ctx_trans, __ATOMIC_ACQUIRE);
-+	if (ctx_trans)
-+		return 0;
-+
-+	__pthread_mutex_lock(&lr->lock);
-+
-+	/* Check if another thread translated the context while we waited on the mutex */
-+	ctx_trans = __atomic_load_n(&lr->ctx_trans, __ATOMIC_ACQUIRE);
-+	if (ctx_trans) {
-+		__pthread_mutex_unlock(&lr->lock);
-+		return 0;
-+	}
-+
-+	rc = selinux_raw_to_trans_context(lr->ctx_raw, &ctx_trans);
-+	if (rc == 0)
-+		__atomic_store_n(&lr->ctx_trans, ctx_trans, __ATOMIC_RELEASE);
-+
-+	__pthread_mutex_unlock(&lr->lock);
-+
-+	if (rc)
+ 	size = selinux_page_size;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf) {
+ 		ret = -1;
+ 		goto out;
+ 	}
+-	memset(buf, 0, size);
+ 	ret = read(fd, buf, size - 1);
+ 	if (ret < 0)
+ 		goto out2;
+diff --git a/libselinux/src/getfilecon.c b/libselinux/src/getfilecon.c
+index 4bee3137..31c9f0de 100644
+--- a/libselinux/src/getfilecon.c
++++ b/libselinux/src/getfilecon.c
+@@ -14,10 +14,9 @@ int getfilecon_raw(const char *path, char ** context)
+ 	ssize_t ret;
+ 
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
  		return -1;
+-	memset(buf, 0, size);
  
- 	return 0;
-diff --git a/libselinux/src/label_db.c b/libselinux/src/label_db.c
-index 40d5fc4a..eb060ede 100644
---- a/libselinux/src/label_db.c
-+++ b/libselinux/src/label_db.c
-@@ -186,6 +186,7 @@ db_close(struct selabel_handle *rec)
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
+ 	ret = getxattr(path, XATTR_NAME_SELINUX, buf, size - 1);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/getpeercon.c b/libselinux/src/getpeercon.c
+index a9dca73e..c7abd886 100644
+--- a/libselinux/src/getpeercon.c
++++ b/libselinux/src/getpeercon.c
+@@ -18,10 +18,9 @@ int getpeercon_raw(int fd, char ** context)
+ 	ssize_t ret;
+ 
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
+ 		return -1;
+-	memset(buf, 0, size);
+ 
+ 	ret = getsockopt(fd, SOL_SOCKET, SO_PEERSEC, buf, &size);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/hashtab.c b/libselinux/src/hashtab.c
+index 0c6641ed..409cf5a4 100644
+--- a/libselinux/src/hashtab.c
++++ b/libselinux/src/hashtab.c
+@@ -20,24 +20,22 @@ hashtab_t selinux_hashtab_create(unsigned int (*hash_value) (hashtab_t h,
+ {
+ 
+ 	hashtab_t p;
+-	unsigned int i;
+ 
+ 	p = (hashtab_t) malloc(sizeof(hashtab_val_t));
+ 	if (p == NULL)
+ 		return p;
+ 
+-	memset(p, 0, sizeof(hashtab_val_t));
+-	p->size = size;
+-	p->nel = 0;
+-	p->hash_value = hash_value;
+-	p->keycmp = keycmp;
+-	p->htable = (hashtab_ptr_t *) malloc(sizeof(hashtab_ptr_t) * size);
++	*p = (hashtab_val_t) {
++		.size = size,
++		.nel = 0,
++		.hash_value = hash_value,
++		.keycmp = keycmp,
++		.htable = calloc(size, sizeof(hashtab_ptr_t))
++	};
+ 	if (p->htable == NULL) {
+ 		free(p);
+ 		return NULL;
  	}
- 	free(catalog);
+-	for (i = 0; i < size; i++)
+-		p->htable[i] = (hashtab_ptr_t) NULL;
+ 
+ 	return p;
  }
-@@ -358,6 +359,7 @@ out_error:
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
- 	}
- 	free(catalog);
- 	fclose(filp);
-diff --git a/libselinux/src/label_file.h b/libselinux/src/label_file.h
-index 529a1bd2..de8190f9 100644
---- a/libselinux/src/label_file.h
-+++ b/libselinux/src/label_file.h
-@@ -661,6 +661,7 @@ static int insert_spec(const struct selabel_handle *rec, struct saved_data *data
- 			.lr.ctx_trans = NULL,
- 			.lr.lineno = lineno,
- 			.lr.validated = false,
-+			.lr.lock = PTHREAD_MUTEX_INITIALIZER,
- 		};
- 
- 		data->num_specs++;
-@@ -794,6 +795,7 @@ static int insert_spec(const struct selabel_handle *rec, struct saved_data *data
- 			.lr.ctx_trans = NULL,
- 			.lr.lineno = lineno,
- 			.lr.validated = false,
-+			.lr.lock = PTHREAD_MUTEX_INITIALIZER,
- 		};
- 
- 		data->num_specs++;
-@@ -818,6 +820,7 @@ static inline void free_spec_node(struct spec_node *node)
- 
- 		free(lspec->lr.ctx_raw);
- 		free(lspec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&lspec->lr.lock);
- 
- 		if (lspec->from_mmap)
- 			continue;
-@@ -832,6 +835,7 @@ static inline void free_spec_node(struct spec_node *node)
- 
- 		free(rspec->lr.ctx_raw);
- 		free(rspec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&rspec->lr.lock);
- 		regex_data_free(rspec->regex);
- 		__pthread_mutex_destroy(&rspec->regex_lock);
- 
-diff --git a/libselinux/src/label_internal.h b/libselinux/src/label_internal.h
-index 854f92fa..743dbf94 100644
---- a/libselinux/src/label_internal.h
-+++ b/libselinux/src/label_internal.h
-@@ -71,6 +71,7 @@ extern void digest_gen_hash(struct selabel_digest *digest);
- struct selabel_lookup_rec {
- 	char * ctx_raw;
- 	char * ctx_trans;
-+	pthread_mutex_t lock;	/* lock for validation and translation */
- 	unsigned int lineno;
- 	bool validated;
- };
+@@ -64,9 +62,10 @@ int selinux_hashtab_insert(hashtab_t h, hashtab_key_t key, hashtab_datum_t datum
+ 	newnode = (hashtab_ptr_t) malloc(sizeof(hashtab_node_t));
+ 	if (newnode == NULL)
+ 		return HASHTAB_OVERFLOW;
+-	memset(newnode, 0, sizeof(struct hashtab_node));
+-	newnode->key = key;
+-	newnode->datum = datum;
++	*newnode = (hashtab_node_t) {
++		.key = key,
++		.datum = datum
++	};
+ 	if (prev) {
+ 		newnode->next = prev->next;
+ 		prev->next = newnode;
 diff --git a/libselinux/src/label_media.c b/libselinux/src/label_media.c
-index d535ef86..0510b5b1 100644
+index d535ef86..b541faf4 100644
 --- a/libselinux/src/label_media.c
 +++ b/libselinux/src/label_media.c
-@@ -177,6 +177,7 @@ static void close(struct selabel_handle *rec)
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
- 	}
+@@ -134,10 +134,9 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
+ 				status = 0;
+ 				goto finish;
+ 			}
+-			data->spec_arr = malloc(sizeof(spec_t)*data->nspec);
++			data->spec_arr = calloc(data->nspec, sizeof(spec_t));
+ 			if (data->spec_arr == NULL)
+ 				goto finish;
+-			memset(data->spec_arr, 0, sizeof(spec_t)*data->nspec);
+ 			maxnspec = data->nspec;
  
- 	if (spec_arr)
+ 			status = fseek(fp, 0L, SEEK_SET);
+@@ -229,10 +228,9 @@ int selabel_media_init(struct selabel_handle *rec,
+ {
+ 	struct saved_data *data;
+ 
+-	data = (struct saved_data *)malloc(sizeof(*data));
++	data = (struct saved_data *)calloc(1, sizeof(*data));
+ 	if (!data)
+ 		return -1;
+-	memset(data, 0, sizeof(*data));
+ 
+ 	rec->data = data;
+ 	rec->func_close = &close;
 diff --git a/libselinux/src/label_x.c b/libselinux/src/label_x.c
-index c0d1d475..1a5b9268 100644
+index c0d1d475..6bdba9cd 100644
 --- a/libselinux/src/label_x.c
 +++ b/libselinux/src/label_x.c
-@@ -204,6 +204,7 @@ static void close(struct selabel_handle *rec)
- 		free(spec->key);
- 		free(spec->lr.ctx_raw);
- 		free(spec->lr.ctx_trans);
-+		__pthread_mutex_destroy(&spec->lr.lock);
+@@ -161,10 +161,9 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
+ 				status = 0;
+ 				goto finish;
+ 			}
+-			data->spec_arr = malloc(sizeof(spec_t)*data->nspec);
++			data->spec_arr = calloc(data->nspec, sizeof(spec_t));
+ 			if (data->spec_arr == NULL)
+ 				goto finish;
+-			memset(data->spec_arr, 0, sizeof(spec_t)*data->nspec);
+ 			maxnspec = data->nspec;
+ 
+ 			status = fseek(fp, 0L, SEEK_SET);
+@@ -254,10 +253,9 @@ int selabel_x_init(struct selabel_handle *rec, const struct selinux_opt *opts,
+ {
+ 	struct saved_data *data;
+ 
+-	data = (struct saved_data *)malloc(sizeof(*data));
++	data = (struct saved_data *)calloc(1, sizeof(*data));
+ 	if (!data)
+ 		return -1;
+-	memset(data, 0, sizeof(*data));
+ 
+ 	rec->data = data;
+ 	rec->func_close = &close;
+diff --git a/libselinux/src/lgetfilecon.c b/libselinux/src/lgetfilecon.c
+index d1fb821b..f0a3aa1a 100644
+--- a/libselinux/src/lgetfilecon.c
++++ b/libselinux/src/lgetfilecon.c
+@@ -14,10 +14,9 @@ int lgetfilecon_raw(const char *path, char ** context)
+ 	ssize_t ret;
+ 
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
+ 		return -1;
+-	memset(buf, 0, size);
+ 
+ 	ret = lgetxattr(path, XATTR_NAME_SELINUX, buf, size - 1);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
+index 967520e4..dbc11ee1 100644
+--- a/libselinux/src/matchpathcon.c
++++ b/libselinux/src/matchpathcon.c
+@@ -202,10 +202,9 @@ int matchpathcon_filespec_add(ino_t ino, int specind, const char *file)
+ 	struct stat sb;
+ 
+ 	if (!fl_head) {
+-		fl_head = malloc(sizeof(file_spec_t) * HASH_BUCKETS);
++		fl_head = calloc(HASH_BUCKETS, sizeof(file_spec_t));
+ 		if (!fl_head)
+ 			goto oom;
+-		memset(fl_head, 0, sizeof(file_spec_t) * HASH_BUCKETS);
  	}
  
- 	if (spec_arr)
+ 	h = (ino + (ino >> HASH_BITS)) & HASH_MASK;
+diff --git a/libselinux/src/procattr.c b/libselinux/src/procattr.c
+index b7a93a2b..ddcc7f8d 100644
+--- a/libselinux/src/procattr.c
++++ b/libselinux/src/procattr.c
+@@ -139,12 +139,11 @@ static int getprocattrcon_raw(char **context, pid_t pid, const char *attr,
+ 		return -1;
+ 
+ 	size = selinux_page_size;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf) {
+ 		ret = -1;
+ 		goto out;
+ 	}
+-	memset(buf, 0, size);
+ 
+ 	do {
+ 		ret = read(fd, buf, size - 1);
+diff --git a/libselinux/src/setrans_client.c b/libselinux/src/setrans_client.c
+index d7dbc0ca..45cbe5c1 100644
+--- a/libselinux/src/setrans_client.c
++++ b/libselinux/src/setrans_client.c
+@@ -173,11 +173,10 @@ receive_response(int fd, uint32_t function, char **outdata, int32_t * ret_val)
+ 		return -1;
+ 	}
+ 
+-	data = malloc(data_size);
++	/* coveriety doesn't realize that data will be initialized in readv */
++	data = calloc(1, data_size);
+ 	if (!data)
+ 		return -1;
+-	/* coveriety doesn't realize that data will be initialized in readv */
+-	memset(data, 0, data_size);
+ 
+ 	resp_data.iov_base = data;
+ 	resp_data.iov_len = data_size;
 -- 
 2.45.2
 

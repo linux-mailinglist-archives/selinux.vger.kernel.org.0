@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2202-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2205-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FD229BD4A0
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:33:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A3F9BD4A2
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:33:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 888A01C2040E
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61002283E0A
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:33:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1CEC1E8820;
-	Tue,  5 Nov 2024 18:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1BA1E883B;
+	Tue,  5 Nov 2024 18:33:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="Tq83Lrpe"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="k96EwGrt"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70D51E7660
-	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 18:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2869D1E7C28
+	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 18:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730831609; cv=none; b=s04GAYRj0ncA84TbaUZS2mKcG0v2Jl52oDB/xc6qi+iADFlFQSpULjTWagFJK7w6yT183PJeaIcG6HWTpn+Bp8Ntvgh88FVdp1sby1zKhc8+5pMm4hmWx8k/L7SNferjr1CGIUzKOaFmPGOWecVRcQh4NfxxqduhuuKHwxs2zLk=
+	t=1730831610; cv=none; b=P8Mqzu/HS9VrAA6UCp5ZAwnKIYSK3uC5ug0uxc1Xh4BwB4jJIWnJJf0hUZ4wu+2s76Ohg/gwINjjM3cFxLtqb8k0TxzNQP3/8xyrFvZbji83msflL/3WbKzhqp0V3pTYwgYDGZB3CoDp5+a19IJiGdZx87qos58jWL8lvgPgNLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730831609; c=relaxed/simple;
-	bh=M73H7tpknxBJ8UkFozegK25Rfnrqg+6zbb1S9L2OMpY=;
+	s=arc-20240116; t=1730831610; c=relaxed/simple;
+	bh=zq7qegPs+MIxHr2udYwPB6IuXyJjKDZIEzGVLHE6mDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kxK7YLLCKKoUNZDPpIg7rwiEaXAuZdg9SbtfApYfYPQXDxRbwVB+mA+nbFCGoVBjcCAvshr7JMvb328Iq7zE8cB28p25ZqNb7b/tcbWJKGzSCbB1TenS1tNjfq2Y9Kb3eYqJYEQwv0tMZ6Zs+OHcPgsueyq9euhatpxA1DSFwvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=Tq83Lrpe; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=t5/gkNJE4NWscobte2cZzTsRIPj8zqo0J1S8aGrYPu1rKTcCX6ZKfbkhXG6aQi5i7FIbMxEVNgfLLP1plsC18MiUcPJe1oaz1rOBTtyWQD7pgy91Icl5X095zZr18Rg5ODsrW1C6CTGBvAclQrZ1iadRp8mNyrbaYBmPAK2xM3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=k96EwGrt; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Z32Fk+r8IvUS/QE5Cbt9dPqQpvQROIdsuWYXJBv89xo=;
-	b=Tq83LrpePPHLI5kw9GyxExY8IPudqkMSO/ik6hUuiIkW0maBAdwz/Z25dbbY7CLU6G1OOT
-	m6ynOdeQMe6o/GZHB63DHbXY6OheVvzwCNCIhVEn8gDHu2Ffhry5kBXp6Uub8Nvwy5KB2E
-	Lkp71FlAftIdsUUwymlsXAOLOFSCV/Hq78rcmRdS+U3rBeKAxEqUhr+QPr2smXeyPm7ADQ
-	jlrxbKFq+i+5M8ZvfndJLkcDt7JLWk5GDNrzBwnmV4mmT8jTNEUypj3amid9Q+dkzEdZHU
-	lOjerLUmJfocbc0lb7/8TLDRpUq9tx6TPB9d5pkLEvVzxiGmp85QwEeJSv7nNg==
+	bh=j+zNG2cGuxfEII2EjpBflWb3xgf/1Ub8zkeGZTIGHXI=;
+	b=k96EwGrtAsaSz3DiO7W1UGwsSayZKtOsQudaybcXHqXOaPREtICHm67rfuIY09gYcpU9Rb
+	OSfI74TDrOvE62X5DF03P8Z8mejd5EzxwkK/UWlvaWRjqIfpAiBnFrUqyy6XaXIJdJijA9
+	zZ29P9ZkqP9QuuURbVoJ83KT0ZwvQHIll6QQEAjPYPN2N8SIznHkAiCob6eBYLKrJSSWSf
+	YvicWjzGm4MFLR/+VyeSN1xuSSRC4hoDWlFCoIrdAY46+8PLwxKzVSAP3iPFT+HkdS6b26
+	uqsB6/o+LTSz9UmOrqqYNfWSxYIGvY9CpRhLC8MhLlXm3vOX0xmn7dbA0hBcrw==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH v3 3/9] libselinux: use more appropriate types in sidtab
-Date: Tue,  5 Nov 2024 19:33:13 +0100
-Message-ID: <20241105183319.250410-4-cgoettsche@seltendoof.de>
+Subject: [PATCH v3 4/9] libselinux: add unique id to sidtab entries
+Date: Tue,  5 Nov 2024 19:33:14 +0100
+Message-ID: <20241105183319.250410-5-cgoettsche@seltendoof.de>
 In-Reply-To: <20241105183319.250410-1-cgoettsche@seltendoof.de>
 References: <20241105183319.250410-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,81 +64,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Use type unsigned for hash values, as returned by sidtab_hash().
-Use size_t for buffer length and counting variables.
-Constify stats parameter.
+Reinterpret the currently unused - and always initialized to 1 - member
+refcnt of the struct security_id to hold a unique number identifying
+the sidtab entry.  This identifier can be used instead of the full
+context string within other data structures to minimize memory usage.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
 v2:
   add patch
 ---
- libselinux/src/avc_sidtab.c | 16 +++++++++-------
- libselinux/src/avc_sidtab.h |  2 +-
- 2 files changed, 10 insertions(+), 8 deletions(-)
+ libselinux/include/selinux/avc.h | 2 +-
+ libselinux/src/avc_sidtab.c      | 9 +++++++--
+ 2 files changed, 8 insertions(+), 3 deletions(-)
 
+diff --git a/libselinux/include/selinux/avc.h b/libselinux/include/selinux/avc.h
+index 1f79ba16..c007b973 100644
+--- a/libselinux/include/selinux/avc.h
++++ b/libselinux/include/selinux/avc.h
+@@ -20,7 +20,7 @@ extern "C" {
+  */
+ struct security_id {
+ 	char * ctx;
+-	unsigned int refcnt;
++	unsigned int id;
+ };
+ typedef struct security_id *security_id_t;
+ 
 diff --git a/libselinux/src/avc_sidtab.c b/libselinux/src/avc_sidtab.c
-index 3303537b..fce5bddf 100644
+index fce5bddf..9475dcb0 100644
 --- a/libselinux/src/avc_sidtab.c
 +++ b/libselinux/src/avc_sidtab.c
-@@ -45,7 +45,8 @@ int sidtab_init(struct sidtab *s)
- 
- int sidtab_insert(struct sidtab *s, const char * ctx)
- {
--	int hvalue, rc = 0;
-+	unsigned hvalue;
-+	int rc = 0;
+@@ -4,6 +4,7 @@
+  * Author : Eamon Walsh, <ewalsh@epoch.ncsc.mil>
+  */
+ #include <errno.h>
++#include <limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <stdint.h>
+@@ -50,6 +51,11 @@ int sidtab_insert(struct sidtab *s, const char * ctx)
  	struct sidtab_node *newnode;
  	char * newctx;
  
-@@ -75,7 +76,8 @@ int
- sidtab_context_to_sid(struct sidtab *s,
- 		      const char * ctx, security_id_t * sid)
- {
--	int hvalue, rc = 0;
-+	unsigned hvalue;
-+	int rc = 0;
- 	struct sidtab_node *cur;
- 
- 	*sid = NULL;
-@@ -98,10 +100,10 @@ sidtab_context_to_sid(struct sidtab *s,
++	if (s->nel >= UINT_MAX - 1) {
++		rc = -1;
++		goto out;
++	}
++
+ 	newnode = (struct sidtab_node *)avc_malloc(sizeof(*newnode));
+ 	if (!newnode) {
+ 		rc = -1;
+@@ -65,9 +71,8 @@ int sidtab_insert(struct sidtab *s, const char * ctx)
+ 	hvalue = sidtab_hash(newctx);
+ 	newnode->next = s->htable[hvalue];
+ 	newnode->sid_s.ctx = newctx;
+-	newnode->sid_s.refcnt = 1;	/* unused */
++	newnode->sid_s.id = ++s->nel;
+ 	s->htable[hvalue] = newnode;
+-	s->nel++;
+       out:
  	return rc;
  }
- 
--void sidtab_sid_stats(struct sidtab *s, char *buf, int buflen)
-+void sidtab_sid_stats(const struct sidtab *s, char *buf, size_t buflen)
- {
--	int i, chain_len, slots_used, max_chain_len;
--	struct sidtab_node *cur;
-+	size_t i, chain_len, slots_used, max_chain_len;
-+	const struct sidtab_node *cur;
- 
- 	slots_used = 0;
- 	max_chain_len = 0;
-@@ -121,8 +123,8 @@ void sidtab_sid_stats(struct sidtab *s, char *buf, int buflen)
- 	}
- 
- 	snprintf(buf, buflen,
--		 "%s:  %u SID entries and %d/%d buckets used, longest "
--		 "chain length %d\n", avc_prefix, s->nel, slots_used,
-+		 "%s:  %u SID entries and %zu/%d buckets used, longest "
-+		 "chain length %zu\n", avc_prefix, s->nel, slots_used,
- 		 SIDTAB_SIZE, max_chain_len);
- }
- 
-diff --git a/libselinux/src/avc_sidtab.h b/libselinux/src/avc_sidtab.h
-index cc5abe35..e823e3f3 100644
---- a/libselinux/src/avc_sidtab.h
-+++ b/libselinux/src/avc_sidtab.h
-@@ -29,7 +29,7 @@ int sidtab_insert(struct sidtab *s, const char * ctx) ;
- int sidtab_context_to_sid(struct sidtab *s,
- 			  const char * ctx, security_id_t * sid) ;
- 
--void sidtab_sid_stats(struct sidtab *s, char *buf, int buflen) ;
-+void sidtab_sid_stats(const struct sidtab *s, char *buf, size_t buflen) ;
- void sidtab_destroy(struct sidtab *s) ;
- 
- #endif				/* _SELINUX_AVC_SIDTAB_H_ */
 -- 
 2.45.2
 

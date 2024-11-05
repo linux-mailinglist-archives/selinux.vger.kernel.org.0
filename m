@@ -1,57 +1,52 @@
-Return-Path: <selinux+bounces-2212-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2214-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A8E9BD526
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 19:46:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3054E9BD76B
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 22:06:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18B6E2819DF
-	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 18:46:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5472A1C218FF
+	for <lists+selinux@lfdr.de>; Tue,  5 Nov 2024 21:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B026B1F4298;
-	Tue,  5 Nov 2024 18:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A44212176;
+	Tue,  5 Nov 2024 21:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="K1uDO9+q"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="a83n0MbA"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145211F131D
-	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 18:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05381215C7D
+	for <selinux@vger.kernel.org>; Tue,  5 Nov 2024 21:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1730831992; cv=none; b=L9mP2tZoDZVR+SPJrgQxYqxT2hpvmsZaetMVjN+WLuTOrnOOoe4UOrD8CqaM9IuMdQ4xQbLRv4vLuVagT8MIEZQY0gWcSlvcaVXzJP+FUD9lYggVV5nJtIGiNj/uP4ifj7LMA68BVQZxMJipYBjb8dQqZyY3lU5rdlRPpXhU/Z8=
+	t=1730840789; cv=none; b=Xp70g8mdI5zM8Zv9iulRdsT7x444N+B444WG1VHaxdTYjObRS+qNqxA3yFBuvBT4Y1wuYOoSL1w7Li91jZ56ckPewWZU5ZUndx9H1bJv0xjO0J1au3ujbAgehdxCKTG0zs1D75b2DvxMm0fWwJ31cIxJgJBWFTtjqxk2IK8U1tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1730831992; c=relaxed/simple;
-	bh=+sLil/roT4dbn1eLPNDuQlPEWa62z7OeutY3YMBoJ8Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c6XEB8au0q1hHGbl371yoQyxDXz3BKf720ucxFeqFZPqN1tXTGJVi6lgSuuI/FdH9NvtjX04cOTiHHfQKvtU4z3/I1L8xy8cHI22YBTM3divaqCI2ndtv8bS6Kllv2JhlYgNKHDJAGVeSJ2Rha8TXp8/e6wi0CcINUcFSQqo3Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=K1uDO9+q; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1730840789; c=relaxed/simple;
+	bh=UqZOgpgDSwaWrimtTgU859k5NgX5VGMulVo3nwMa0A4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jNoU8jK2Vyrj00K+sxvbetN4oPC3kVDpFpfENEpG5BYwcVEITkaVmSOSCyE48AE7rKh9Ysapm9kMkYdSRijgBF6hiB6FlMcg3sI3vYpJ+zS2KdKEFZ5VbyxCkoI//rbM+l6Ckot0fTAXs5N3jUFj3CV1fXSYmDVLnKDLeFI1pmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=a83n0MbA; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1730831989;
+	s=2023072701; t=1730840781;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UcfIZ3n4aPR7tyrojIL3ZvPI47PmZsRVuZpIbF19XYc=;
-	b=K1uDO9+q1hLDi4LdvZ1WMgZ+0A0eH3Xi4aHkzIWBs7yVvuiwpTiqCfW32TPKfdyfD8NZvg
-	j2IxtrOeKBkRxucT9p//SxH55ShnntOA2scp2oHYDdxJ+6YLV1os/BibjL+HcJ7g7xpQuv
-	VvWvY4ghVGCEoRIRmbMdlvwq5np3ej8pcx3HFyVxZEnLDU8cCWpFt2+GZX1XgsaznIu9GL
-	95vIwBW04wlEWz6Xzc2v+W3a8QUPQSE25sXkR99thYvBm47BIP7nwPwHcHWmWzt5U3KIVu
-	5rPsINh2grxW2KBOHFlqtBZOAq/q//IOWCSfivsBjf45LKdbhta3hcxxLpFS4A==
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=mxCyGb4rGlyJ92DD2hRJlZgKGlWSNV58Ovr7ihpyefs=;
+	b=a83n0MbAPTqhx5lsYUJT/EEe2a/9JU3ukdWAFZ11J4XQAnac1rMfIz3Hl6jLgdaLW2Pk6W
+	3Nxh8KNASsMhKnuOapYtYwa2F1M1sWZhw93tmgbwceLXDG2ecBVsdtTaZ1Kyfl5ziXV4dP
+	pjdnz/46H7i08CeOZGOVDLtbmZUpeUtNZBm2tFgL6/FWlgznL0XPMOIeVuzjieKa4P7qbI
+	StBWVJIGlHrUUnKQP2SjCNDWhwWG3yUPGznY05cd3FL7cWLMRYtJ6s6oTfKsLhHOJ/KUCE
+	PXYNbBiSsGqK+ZuXjrEst2blPPH2/+KLoGQ9HudyCDA4K2MAFn4OetH32BnHfA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 2/2] libselinux: avoid dynamic allocation in openattr()
-Date: Tue,  5 Nov 2024 19:39:36 +0100
-Message-ID: <20241105183936.252530-2-cgoettsche@seltendoof.de>
-In-Reply-To: <20241105183936.252530-1-cgoettsche@seltendoof.de>
-References: <20241105183936.252530-1-cgoettsche@seltendoof.de>
+Subject: [PATCH] checkpolicy: avoid memory leaks on redeclarations
+Date: Tue,  5 Nov 2024 22:06:18 +0100
+Message-ID: <20241105210618.326533-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -64,64 +59,224 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-openattr() supplies the simplementation for the getcon(3) interface
-family.  Use a short local buffer instead of descend into memory
-allocation.
+If declare_symbol() returns 1 the id and the datum are already defined
+and not consumed by the function, so it they must be free'd by the
+caller.
 
+Example policy (generated by fuzzer):
+
+    class s sid e class s{i}optional{require{bool K;}bool K true;
+
+Reported-by: oss-fuzz (issue 377544445)
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/procattr.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ checkpolicy/module_compiler.c |  2 +-
+ checkpolicy/module_compiler.h |  2 +-
+ checkpolicy/policy_define.c   | 72 +++++++++++++++++++++++------------
+ 3 files changed, 49 insertions(+), 27 deletions(-)
 
-diff --git a/libselinux/src/procattr.c b/libselinux/src/procattr.c
-index ddcc7f8d..ee1f48af 100644
---- a/libselinux/src/procattr.c
-+++ b/libselinux/src/procattr.c
-@@ -86,32 +86,32 @@ static void init_procattr(void)
- static int openattr(pid_t pid, const char *attr, int flags)
+diff --git a/checkpolicy/module_compiler.c b/checkpolicy/module_compiler.c
+index 4efd77bf..3a7ad1bb 100644
+--- a/checkpolicy/module_compiler.c
++++ b/checkpolicy/module_compiler.c
+@@ -190,7 +190,7 @@ static int create_symbol(uint32_t symbol_type, hashtab_key_t key, hashtab_datum_
+  * not be restricted pointers. */
+ int declare_symbol(uint32_t symbol_type,
+ 		   hashtab_key_t key, hashtab_datum_t datum,
+-		   uint32_t * dest_value, uint32_t * datum_value)
++		   uint32_t * dest_value, const uint32_t * datum_value)
  {
- 	int fd, rc;
--	char *path;
-+	char path[56];  /* must hold "/proc/self/task/%d/attr/sockcreate" */
- 	pid_t tid;
+ 	avrule_decl_t *decl = stack_top->decl;
+ 	int ret = create_symbol(symbol_type, key, datum, dest_value, SCOPE_DECL);
+diff --git a/checkpolicy/module_compiler.h b/checkpolicy/module_compiler.h
+index e43bc6c0..2fe3455d 100644
+--- a/checkpolicy/module_compiler.h
++++ b/checkpolicy/module_compiler.h
+@@ -28,7 +28,7 @@ int define_policy(int pass, int module_header_given);
+  */
+ int declare_symbol(uint32_t symbol_type,
+ 		   hashtab_key_t key, hashtab_datum_t datum,
+-		   uint32_t * dest_value, uint32_t * datum_value);
++		   uint32_t * dest_value, const uint32_t * datum_value);
  
- 	if (pid > 0) {
--		rc = asprintf(&path, "/proc/%d/attr/%s", pid, attr);
-+		rc = snprintf(path, sizeof(path), "/proc/%d/attr/%s", pid, attr);
- 	} else if (pid == 0) {
--		rc = asprintf(&path, "/proc/thread-self/attr/%s", attr);
--		if (rc < 0)
-+		rc = snprintf(path, sizeof(path), "/proc/thread-self/attr/%s", attr);
-+		if (rc < 0 || (size_t)rc >= sizeof(path)) {
-+			errno = EOVERFLOW;
- 			return -1;
-+		}
- 		fd = open(path, flags | O_CLOEXEC);
- 		if (fd >= 0 || errno != ENOENT)
--			goto out;
--		free(path);
-+			return fd;
- 		tid = selinux_gettid();
--		rc = asprintf(&path, "/proc/self/task/%d/attr/%s", tid, attr);
-+		rc = snprintf(path, sizeof(path), "/proc/self/task/%d/attr/%s", tid, attr);
- 	} else {
- 		errno = EINVAL;
- 		return -1;
+ role_datum_t *declare_role(unsigned char isattr);
+ type_datum_t *declare_type(unsigned char primary, unsigned char isattr);
+diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+index f8a10154..9aae8378 100644
+--- a/checkpolicy/policy_define.c
++++ b/checkpolicy/policy_define.c
+@@ -156,9 +156,9 @@ static int id_has_dot(const char *id)
+ 
+ int define_class(void)
+ {
+-	char *id = 0;
+-	class_datum_t *datum = 0;
+-	int ret;
++	char *id = NULL;
++	class_datum_t *datum = NULL;
++	int ret = -1;
+ 	uint32_t value;
+ 
+ 	if (pass == 2) {
+@@ -175,27 +175,29 @@ int define_class(void)
+ 	datum = (class_datum_t *) malloc(sizeof(class_datum_t));
+ 	if (!datum) {
+ 		yyerror("out of memory");
+-		goto bad;
++		goto cleanup;
  	}
--	if (rc < 0)
-+	if (rc < 0 || (size_t)rc >= sizeof(path)) {
-+		errno = EOVERFLOW;
- 		return -1;
-+	}
+ 	memset(datum, 0, sizeof(class_datum_t));
+ 	ret = declare_symbol(SYM_CLASSES, id, datum, &value, &value);
+ 	switch (ret) {
+ 	case -3:{
+ 			yyerror("Out of memory!");
+-			goto bad;
++			goto cleanup;
+ 		}
+ 	case -2:{
+ 			yyerror2("duplicate declaration of class %s", id);
+-			goto bad;
++			goto cleanup;
+ 		}
+ 	case -1:{
+ 			yyerror("could not declare class here");
+-			goto bad;
++			goto cleanup;
+ 		}
+-	case 0:
+-	case 1:{
++	case 0: {
+ 			break;
+ 		}
++	case 1:{
++			goto cleanup;
++		}
+ 	default:{
+ 			assert(0);	/* should never get here */
+ 		}
+@@ -203,12 +205,10 @@ int define_class(void)
+ 	datum->s.value = value;
+ 	return 0;
  
--	fd = open(path, flags | O_CLOEXEC);
--out:
--	free(path);
--	return fd;
-+	return open(path, flags | O_CLOEXEC);
+-      bad:
+-	if (id)
+-		free(id);
+-	if (datum)
+-		free(datum);
+-	return -1;
++      cleanup:
++	free(id);
++	free(datum);
++	return ret == 1 ? 0 : -1;
  }
  
- static int getprocattrcon_raw(char **context, pid_t pid, const char *attr,
+ int define_permissive(void)
+@@ -785,8 +785,13 @@ int define_sens(void)
+ 			yyerror2("could not declare sensitivity level %s here", id);
+ 			goto bad;
+ 		}
+-	case 0:
++	case 0: {
++			break;
++		}
+ 	case 1:{
++			level_datum_destroy(datum);
++			free(datum);
++			free(id);
+ 			break;
+ 		}
+ 	default:{
+@@ -827,8 +832,13 @@ int define_sens(void)
+ 				    ("could not declare sensitivity alias %s here", id);
+ 				goto bad_alias;
+ 			}
+-		case 0:
++		case 0: {
++				break;
++			}
+ 		case 1:{
++				level_datum_destroy(aliasdatum);
++				free(aliasdatum);
++				free(id);
+ 				break;
+ 			}
+ 		default:{
+@@ -957,15 +967,20 @@ int define_category(void)
+ 			yyerror2("could not declare category %s here", id);
+ 			goto bad;
+ 		}
+-	case 0:
++	case 0:{
++			datum->s.value = value;
++			break;
++		}
+ 	case 1:{
++			cat_datum_destroy(datum);
++			free(datum);
++			free(id);
+ 			break;
+ 		}
+ 	default:{
+ 			assert(0);	/* should never get here */
+ 		}
+ 	}
+-	datum->s.value = value;
+ 
+ 	while ((id = queue_remove(id_queue))) {
+ 		if (id_has_dot(id)) {
+@@ -981,11 +996,11 @@ int define_category(void)
+ 		}
+ 		cat_datum_init(aliasdatum);
+ 		aliasdatum->isalias = TRUE;
+-		aliasdatum->s.value = datum->s.value;
++		aliasdatum->s.value = value;
+ 
+ 		ret =
+ 		    declare_symbol(SYM_CATS, id, aliasdatum, NULL,
+-				   &datum->s.value);
++				   &value);
+ 		switch (ret) {
+ 		case -3:{
+ 				yyerror("Out of memory!");
+@@ -1001,8 +1016,13 @@ int define_category(void)
+ 				    ("could not declare category alias %s here", id);
+ 				goto bad_alias;
+ 			}
+-		case 0:
++		case 0:{
++				break;
++			}
+ 		case 1:{
++				cat_datum_destroy(aliasdatum);
++				free(aliasdatum);
++				free(id);
+ 				break;
+ 			}
+ 		default:{
+@@ -1833,10 +1853,12 @@ int define_bool_tunable(int is_tunable)
+ 			yyerror2("could not declare boolean %s here", id);
+ 			goto cleanup;
+ 		}
+-	case 0:
+-	case 1:{
++	case 0:{
+ 			break;
+ 		}
++	case 1:{
++			goto cleanup;
++		}
+ 	default:{
+ 			assert(0);	/* should never get here */
+ 		}
+@@ -1854,7 +1876,7 @@ int define_bool_tunable(int is_tunable)
+ 	return 0;
+       cleanup:
+ 	cond_destroy_bool(id, datum, NULL);
+-	return -1;
++	return ret == 1 ? 0 : -1;
+ }
+ 
+ avrule_t *define_cond_pol_list(avrule_t * avlist, avrule_t * sl)
 -- 
 2.45.2
 

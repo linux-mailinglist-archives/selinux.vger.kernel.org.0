@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2250-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2255-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E2EF9C4093
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B6649C4096
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9863BB21AE0
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CFE61282DEF
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55821A01C3;
-	Mon, 11 Nov 2024 14:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615FD1A070E;
+	Mon, 11 Nov 2024 14:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="N2iFFyGv"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="CMwDzXvR"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F6619CC1C
-	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EACA1A00C9
+	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334641; cv=none; b=TxDRkSV3h2I6z43Qx2zwIU+ac3R1D4bn6OW0o7jCSUHS2rsmMb6AncVaUgYoG2vqrCiNZIUPVZJR4q2Ssu6/QMGfSdqeDopUd7IUGW19ILFhGjvMBF51yJ2sFcTFeEP9jMBPYTww9XOThpUQ7dcNnNdSJ0NZlpMm0dZQ4l2JKhw=
+	t=1731334643; cv=none; b=SXj/1YULEnuQ1+lxMAZSNQ6XzzqzCa85eLjOgC3kg6ehdc36rFJvLTqisPLkmgB7s9u3bzrFk4VEo0NkuCxmmh0Qttzylpi7VQEL8BiD9Q2lhq30W/ffHx1zlnCb+AhY06dLiUwkUSQr26MuWN05iFwf2+jtduUMOCvrR75imJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334641; c=relaxed/simple;
-	bh=AJHWi70tHqT9PHmo9lHuWvaYxmJyv5o1s61aTz5A5i8=;
+	s=arc-20240116; t=1731334643; c=relaxed/simple;
+	bh=ZPm+hckMglq//sydxnbCeoY/neuiOWN4JYDIdTB9Edo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XtH+ct+p53mFJCOO2Td0xYEWaic0g/zY1io/4Zf6CjjV+VU/DZfvGvjMQnnweE76XdjtIIVFLPZD4TYbibS2bpZLDnQCq/Ru82TyooHr8XwaiglSypkyTtZWeq7eEYyhuFyypd0PkHjK1EEmbmT2546GuKHR1EvJ3iZhZzCXDKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=N2iFFyGv; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=qlDTmkjbk9M5rg71fo/I2lQ0dMmhxwlLj0gBLlodlqWY+iT+xsBO+h8Jk/PyRrcgX2vZfL+GS9H7kJnsG7sDX5vdsLg8YLJC/gS21hToar3e6F844SLn8mfzOac9n65PWYZn5tJ5kZnJUTRdkraIeF/vL/RM9TlueEvegECIwbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=CMwDzXvR; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xVVQbQkE9pm+qY/yrXvK1e/Y1hDOMGnI8UKmO0u/dEk=;
-	b=N2iFFyGv5i3YVeUYIZWAUx9UG985lZvfL4owQlttJ+0ttGYvrNrZYV+boC+UJY6UR2jJMA
-	2bTE+Bf9zMgmsI+RF5hWDWjsiweUz5cw/Rz5EJgRqKGVIMUyfiT4G3JfAReLNjmxO9xOJk
-	pizjQPO5S/BsPSPDJjP7KSq2tGu0Dho6X3frb0QdWgPQ5Cwo6AbcaM/pN6BfLMDCIUPJrr
-	VgiCDQz1mzLMlVa0ddP5GQi9bV1X2Ls2xN7LXkoI3nar/yaGEMx6PZ2fn4gMj2AeRvosqz
-	uU9fj6VP1rbw8YG2cdoBfRI2HDcKnyhRFoBWhcMkxLtTAdSiSm/9B5SNaZQzGw==
+	bh=8O8TfkY6dZXkidKXcoGlUtfukV0LiKlEgt/5gw91Yak=;
+	b=CMwDzXvRICgchnT9h79MJK4t0IU3jb8cK0aQSwzZ+8Q7eboJz42hRyh3usmTp+VS+s885P
+	xo1sslDk5O2aeInF3SvuCn1ynnE7/QQhgc8EnEK3JhA9AxBrx5G/DKoArEFLy4I/HKQQjD
+	htC2hjGIE0UL/9TOzvpIA+kagHQ5x5Q3lblo5hu1L+UmTpMmA1OtEcBr/D7qK+vkee6K0S
+	cY1fDyyAs4Z6vrYEkeNhnCP3QrCD0C+IzBMwVRwpt16CDvyxWQPt+Bc3FHcHc9DsDwSvJ2
+	BZ0q93pPDndjFDp6XCxeS5Eju6hAQtglUnu8g/d40nA9mBhigcfXtSL6ECP60g==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 13/47] libsemanage: free resources on failed connect attempt
-Date: Mon, 11 Nov 2024 15:16:32 +0100
-Message-ID: <20241111141706.38039-13-cgoettsche@seltendoof.de>
+Subject: [PATCH 14/47] libsemanage: declare file local function tables static
+Date: Mon, 11 Nov 2024 15:16:33 +0100
+Message-ID: <20241111141706.38039-14-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,105 +64,290 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-In case connecting to the semanage database fails, free all already
-allocated resources.
-
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/database_activedb.c | 3 +++
- libsemanage/src/database_file.c     | 3 +++
- libsemanage/src/database_join.c     | 3 +++
- libsemanage/src/database_policydb.c | 2 +-
- libsemanage/src/direct_api.c        | 1 +
- libsemanage/src/handle.c            | 5 ++---
- 6 files changed, 13 insertions(+), 4 deletions(-)
+ libsemanage/src/booleans_activedb.c   | 2 +-
+ libsemanage/src/booleans_file.c       | 2 +-
+ libsemanage/src/booleans_policydb.c   | 2 +-
+ libsemanage/src/fcontexts_file.c      | 2 +-
+ libsemanage/src/genhomedircon.c       | 2 +-
+ libsemanage/src/ibendports_file.c     | 2 +-
+ libsemanage/src/ibendports_policydb.c | 2 +-
+ libsemanage/src/ibpkeys_file.c        | 2 +-
+ libsemanage/src/ibpkeys_policydb.c    | 2 +-
+ libsemanage/src/interfaces_file.c     | 2 +-
+ libsemanage/src/interfaces_policydb.c | 2 +-
+ libsemanage/src/nodes_file.c          | 2 +-
+ libsemanage/src/nodes_policydb.c      | 2 +-
+ libsemanage/src/ports_file.c          | 2 +-
+ libsemanage/src/ports_policydb.c      | 2 +-
+ libsemanage/src/seusers_file.c        | 2 +-
+ libsemanage/src/users_base_file.c     | 2 +-
+ libsemanage/src/users_base_policydb.c | 2 +-
+ libsemanage/src/users_extra_file.c    | 2 +-
+ libsemanage/src/users_join.c          | 2 +-
+ 20 files changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/libsemanage/src/database_activedb.c b/libsemanage/src/database_activedb.c
-index fa6b6105..e0369963 100644
---- a/libsemanage/src/database_activedb.c
-+++ b/libsemanage/src/database_activedb.c
-@@ -139,6 +139,9 @@ int dbase_activedb_init(semanage_handle_t * handle,
- void dbase_activedb_release(dbase_activedb_t * dbase)
- {
- 
-+	if (!dbase)
-+		return;
-+
- 	dbase_llist_drop_cache(&dbase->llist);
- 	free(dbase);
- }
-diff --git a/libsemanage/src/database_file.c b/libsemanage/src/database_file.c
-index 6fe2ddf3..716f54e7 100644
---- a/libsemanage/src/database_file.c
-+++ b/libsemanage/src/database_file.c
-@@ -191,6 +191,9 @@ int dbase_file_init(semanage_handle_t * handle,
- void dbase_file_release(dbase_file_t * dbase)
- {
- 
-+	if (!dbase)
-+		return;
-+
- 	dbase_llist_drop_cache(&dbase->llist);
- 	free(dbase);
- }
-diff --git a/libsemanage/src/database_join.c b/libsemanage/src/database_join.c
-index 2a2008e8..bf260952 100644
---- a/libsemanage/src/database_join.c
-+++ b/libsemanage/src/database_join.c
-@@ -271,6 +271,9 @@ int dbase_join_init(semanage_handle_t * handle,
- void dbase_join_release(dbase_join_t * dbase)
- {
- 
-+	if (!dbase)
-+		return;
-+
- 	dbase_llist_drop_cache(&dbase->llist);
- 	free(dbase);
- }
-diff --git a/libsemanage/src/database_policydb.c b/libsemanage/src/database_policydb.c
-index 19d90de5..6e922b5e 100644
---- a/libsemanage/src/database_policydb.c
-+++ b/libsemanage/src/database_policydb.c
-@@ -44,7 +44,7 @@ struct dbase_policydb {
- static void dbase_policydb_drop_cache(dbase_policydb_t * dbase)
- {
- 
--	if (dbase->cache_serial >= 0) {
-+	if (dbase && dbase->cache_serial >= 0) {
- 		sepol_policydb_free(dbase->policydb);
- 		dbase->cache_serial = -1;
- 		dbase->modified = 0;
-diff --git a/libsemanage/src/direct_api.c b/libsemanage/src/direct_api.c
-index 3fa24331..83addbee 100644
---- a/libsemanage/src/direct_api.c
-+++ b/libsemanage/src/direct_api.c
-@@ -321,6 +321,7 @@ int semanage_direct_connect(semanage_handle_t * sh)
- 
-       err:
- 	ERR(sh, "could not establish direct connection");
-+	(void) semanage_direct_disconnect(sh);
- 	return STATUS_ERR;
+diff --git a/libsemanage/src/booleans_activedb.c b/libsemanage/src/booleans_activedb.c
+index 6ebb520b..1d4e33b4 100644
+--- a/libsemanage/src/booleans_activedb.c
++++ b/libsemanage/src/booleans_activedb.c
+@@ -141,7 +141,7 @@ static int bool_commit_list(semanage_handle_t * handle,
  }
  
-diff --git a/libsemanage/src/handle.c b/libsemanage/src/handle.c
-index f048f6d7..9bb84546 100644
---- a/libsemanage/src/handle.c
-+++ b/libsemanage/src/handle.c
-@@ -361,12 +361,11 @@ int semanage_access_check(semanage_handle_t * sh)
+ /* BOOL RECORD: ACTIVEDB extension: method table */
+-record_activedb_table_t SEMANAGE_BOOL_ACTIVEDB_RTABLE = {
++static record_activedb_table_t SEMANAGE_BOOL_ACTIVEDB_RTABLE = {
+ 	.read_list = bool_read_list,
+ 	.commit_list = bool_commit_list,
+ };
+diff --git a/libsemanage/src/booleans_file.c b/libsemanage/src/booleans_file.c
+index 6d600bbc..dae42ffb 100644
+--- a/libsemanage/src/booleans_file.c
++++ b/libsemanage/src/booleans_file.c
+@@ -101,7 +101,7 @@ static int bool_parse(semanage_handle_t * handle,
+ }
  
- int semanage_disconnect(semanage_handle_t * sh)
- {
--	assert(sh != NULL && sh->funcs != NULL
--	       && sh->funcs->disconnect != NULL);
-+	assert(sh != NULL);
- 	if (!sh->is_connected) {
- 		return 0;
- 	}
--	if (sh->funcs->disconnect(sh) < 0) {
-+	if (sh->funcs && sh->funcs->disconnect(sh) < 0) {
- 		return -1;
- 	}
- 	sh->is_in_transaction = 0;
+ /* BOOL RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_BOOL_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_BOOL_FILE_RTABLE = {
+ 	.parse = bool_parse,
+ 	.print = bool_print,
+ };
+diff --git a/libsemanage/src/booleans_policydb.c b/libsemanage/src/booleans_policydb.c
+index 26fcac0a..e838c3eb 100644
+--- a/libsemanage/src/booleans_policydb.c
++++ b/libsemanage/src/booleans_policydb.c
+@@ -36,7 +36,7 @@ typedef struct dbase_policydb dbase_t;
+ #include "semanage_store.h"
+ 
+ /* BOOLEAN RECRORD (SEPOL): POLICYDB extension: method table */
+-record_policydb_table_t SEMANAGE_BOOL_POLICYDB_RTABLE = {
++static record_policydb_table_t SEMANAGE_BOOL_POLICYDB_RTABLE = {
+ 	.add = NULL,
+ 	.modify = NULL,
+ /* FIXME: these casts depend on structs in libsepol matching structs
+diff --git a/libsemanage/src/fcontexts_file.c b/libsemanage/src/fcontexts_file.c
+index f3579410..16380fe3 100644
+--- a/libsemanage/src/fcontexts_file.c
++++ b/libsemanage/src/fcontexts_file.c
+@@ -158,7 +158,7 @@ static int fcontext_parse(semanage_handle_t * handle,
+ }
+ 
+ /* FCONTEXT RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_FCONTEXT_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_FCONTEXT_FILE_RTABLE = {
+ 	.parse = fcontext_parse,
+ 	.print = fcontext_print,
+ };
+diff --git a/libsemanage/src/genhomedircon.c b/libsemanage/src/genhomedircon.c
+index 9e2fe453..61c95f34 100644
+--- a/libsemanage/src/genhomedircon.c
++++ b/libsemanage/src/genhomedircon.c
+@@ -130,7 +130,7 @@ typedef struct IgnoreDir {
+ 	char *dir;
+ } ignoredir_t;
+ 
+-ignoredir_t *ignore_head = NULL;
++static ignoredir_t *ignore_head = NULL;
+ 
+ static void ignore_free(void) {
+ 	ignoredir_t *next;
+diff --git a/libsemanage/src/ibendports_file.c b/libsemanage/src/ibendports_file.c
+index 2fa2a67c..8ae02a9c 100644
+--- a/libsemanage/src/ibendports_file.c
++++ b/libsemanage/src/ibendports_file.c
+@@ -129,7 +129,7 @@ err:
+ }
+ 
+ /* IBENDPORT RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_IBENDPORT_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_IBENDPORT_FILE_RTABLE = {
+ 	.parse = ibendport_parse,
+ 	.print = ibendport_print,
+ };
+diff --git a/libsemanage/src/ibendports_policydb.c b/libsemanage/src/ibendports_policydb.c
+index 1029810e..67c4e905 100644
+--- a/libsemanage/src/ibendports_policydb.c
++++ b/libsemanage/src/ibendports_policydb.c
+@@ -30,7 +30,7 @@ typedef struct dbase_policydb dbase_t;
+ #include "semanage_store.h"
+ 
+ /* IBENDPORT RECORD (SEPOL): POLICYDB extension : method table */
+-record_policydb_table_t SEMANAGE_IBENDPORT_POLICYDB_RTABLE = {
++static record_policydb_table_t SEMANAGE_IBENDPORT_POLICYDB_RTABLE = {
+ 	.add = NULL,
+ 	.modify = (record_policydb_table_modify_t)sepol_ibendport_modify,
+ 	.set = NULL,
+diff --git a/libsemanage/src/ibpkeys_file.c b/libsemanage/src/ibpkeys_file.c
+index edde69f0..a45c6d3f 100644
+--- a/libsemanage/src/ibpkeys_file.c
++++ b/libsemanage/src/ibpkeys_file.c
+@@ -153,7 +153,7 @@ err:
+ }
+ 
+ /* IBPKEY RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_IBPKEY_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_IBPKEY_FILE_RTABLE = {
+ 	.parse = ibpkey_parse,
+ 	.print = ibpkey_print,
+ };
+diff --git a/libsemanage/src/ibpkeys_policydb.c b/libsemanage/src/ibpkeys_policydb.c
+index 8d73cf6f..ac16bcb6 100644
+--- a/libsemanage/src/ibpkeys_policydb.c
++++ b/libsemanage/src/ibpkeys_policydb.c
+@@ -30,7 +30,7 @@ typedef struct dbase_policydb dbase_t;
+ #include "semanage_store.h"
+ 
+ /* PKEY RECORD (SEPOL): POLICYDB extension : method table */
+-record_policydb_table_t SEMANAGE_IBPKEY_POLICYDB_RTABLE = {
++static record_policydb_table_t SEMANAGE_IBPKEY_POLICYDB_RTABLE = {
+ 	.add = NULL,
+ 	.modify = (record_policydb_table_modify_t)sepol_ibpkey_modify,
+ 	.set = NULL,
+diff --git a/libsemanage/src/interfaces_file.c b/libsemanage/src/interfaces_file.c
+index 244f0ae5..29badb54 100644
+--- a/libsemanage/src/interfaces_file.c
++++ b/libsemanage/src/interfaces_file.c
+@@ -145,7 +145,7 @@ static int iface_parse(semanage_handle_t * handle,
+ }
+ 
+ /* IFACE RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_IFACE_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_IFACE_FILE_RTABLE = {
+ 	.parse = iface_parse,
+ 	.print = iface_print,
+ };
+diff --git a/libsemanage/src/interfaces_policydb.c b/libsemanage/src/interfaces_policydb.c
+index 552ce7d5..8a02751a 100644
+--- a/libsemanage/src/interfaces_policydb.c
++++ b/libsemanage/src/interfaces_policydb.c
+@@ -36,7 +36,7 @@ typedef struct dbase_policydb dbase_t;
+ #include "semanage_store.h"
+ 
+ /* INTERFACE RECRORD (SEPOL): POLICYDB extension: method table */
+-record_policydb_table_t SEMANAGE_IFACE_POLICYDB_RTABLE = {
++static record_policydb_table_t SEMANAGE_IFACE_POLICYDB_RTABLE = {
+ 	.add = NULL,
+ 	.modify = (record_policydb_table_modify_t) sepol_iface_modify,
+ 	.set = NULL,
+diff --git a/libsemanage/src/nodes_file.c b/libsemanage/src/nodes_file.c
+index 2d2b7fe0..e6e108cb 100644
+--- a/libsemanage/src/nodes_file.c
++++ b/libsemanage/src/nodes_file.c
+@@ -154,7 +154,7 @@ static int node_parse(semanage_handle_t * handle,
+ }
+ 
+ /* NODE RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_NODE_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_NODE_FILE_RTABLE = {
+ 	.parse = node_parse,
+ 	.print = node_print,
+ };
+diff --git a/libsemanage/src/nodes_policydb.c b/libsemanage/src/nodes_policydb.c
+index 7224f008..23464cf6 100644
+--- a/libsemanage/src/nodes_policydb.c
++++ b/libsemanage/src/nodes_policydb.c
+@@ -35,7 +35,7 @@ typedef struct dbase_policydb dbase_t;
+ #include "semanage_store.h"
+ 
+ /* NODE RECORD (SEPOL): POLICYDB extension : method table */
+-record_policydb_table_t SEMANAGE_NODE_POLICYDB_RTABLE = {
++static record_policydb_table_t SEMANAGE_NODE_POLICYDB_RTABLE = {
+ 	.add = NULL,
+ 	.modify = (record_policydb_table_modify_t) sepol_node_modify,
+ 	.set = NULL,
+diff --git a/libsemanage/src/ports_file.c b/libsemanage/src/ports_file.c
+index 90909eb4..6158cb63 100644
+--- a/libsemanage/src/ports_file.c
++++ b/libsemanage/src/ports_file.c
+@@ -161,7 +161,7 @@ static int port_parse(semanage_handle_t * handle,
+ }
+ 
+ /* PORT RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_PORT_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_PORT_FILE_RTABLE = {
+ 	.parse = port_parse,
+ 	.print = port_print,
+ };
+diff --git a/libsemanage/src/ports_policydb.c b/libsemanage/src/ports_policydb.c
+index 37d7deb2..e7f4fc0d 100644
+--- a/libsemanage/src/ports_policydb.c
++++ b/libsemanage/src/ports_policydb.c
+@@ -35,7 +35,7 @@ typedef struct dbase_policydb dbase_t;
+ #include "semanage_store.h"
+ 
+ /* PORT RECORD (SEPOL): POLICYDB extension : method table */
+-record_policydb_table_t SEMANAGE_PORT_POLICYDB_RTABLE = {
++static record_policydb_table_t SEMANAGE_PORT_POLICYDB_RTABLE = {
+ 	.add = NULL,
+ 	.modify = (record_policydb_table_modify_t) sepol_port_modify,
+ 	.set = NULL,
+diff --git a/libsemanage/src/seusers_file.c b/libsemanage/src/seusers_file.c
+index 21b970ac..7eb3f427 100644
+--- a/libsemanage/src/seusers_file.c
++++ b/libsemanage/src/seusers_file.c
+@@ -109,7 +109,7 @@ static int seuser_parse(semanage_handle_t * handle,
+ }
+ 
+ /* SEUSER RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_SEUSER_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_SEUSER_FILE_RTABLE = {
+ 	.parse = seuser_parse,
+ 	.print = seuser_print,
+ };
+diff --git a/libsemanage/src/users_base_file.c b/libsemanage/src/users_base_file.c
+index 4e4d8d9b..8fb00698 100644
+--- a/libsemanage/src/users_base_file.c
++++ b/libsemanage/src/users_base_file.c
+@@ -195,7 +195,7 @@ static int user_base_parse(semanage_handle_t * handle,
+ }
+ 
+ /* USER BASE record: FILE extension: method table */
+-record_file_table_t SEMANAGE_USER_BASE_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_USER_BASE_FILE_RTABLE = {
+ 	.parse = user_base_parse,
+ 	.print = user_base_print,
+ };
+diff --git a/libsemanage/src/users_base_policydb.c b/libsemanage/src/users_base_policydb.c
+index b42279c8..2e2ea522 100644
+--- a/libsemanage/src/users_base_policydb.c
++++ b/libsemanage/src/users_base_policydb.c
+@@ -35,7 +35,7 @@ typedef struct dbase_policydb dbase_t;
+ #include "semanage_store.h"
+ 
+ /* USER BASE record: POLICYDB extension: method table */
+-record_policydb_table_t SEMANAGE_USER_BASE_POLICYDB_RTABLE = {
++static record_policydb_table_t SEMANAGE_USER_BASE_POLICYDB_RTABLE = {
+ 	.add = NULL,
+ 	.modify = (record_policydb_table_modify_t) sepol_user_modify,
+ 	.set = NULL,
+diff --git a/libsemanage/src/users_extra_file.c b/libsemanage/src/users_extra_file.c
+index 7aa9df3c..b3a15da2 100644
+--- a/libsemanage/src/users_extra_file.c
++++ b/libsemanage/src/users_extra_file.c
+@@ -100,7 +100,7 @@ static int user_extra_parse(semanage_handle_t * handle,
+ }
+ 
+ /* USER EXTRA RECORD: FILE extension: method table */
+-record_file_table_t SEMANAGE_USER_EXTRA_FILE_RTABLE = {
++static record_file_table_t SEMANAGE_USER_EXTRA_FILE_RTABLE = {
+ 	.parse = user_extra_parse,
+ 	.print = user_extra_print,
+ };
+diff --git a/libsemanage/src/users_join.c b/libsemanage/src/users_join.c
+index b598209f..dba96f3d 100644
+--- a/libsemanage/src/users_join.c
++++ b/libsemanage/src/users_join.c
+@@ -22,7 +22,7 @@ typedef struct dbase_join dbase_t;
+ #include "debug.h"
+ 
+ /* USER record: JOIN extension: method table */
+-record_join_table_t SEMANAGE_USER_JOIN_RTABLE = {
++static record_join_table_t SEMANAGE_USER_JOIN_RTABLE = {
+ 	.join = semanage_user_join,
+ 	.split = semanage_user_split,
+ };
 -- 
 2.45.2
 

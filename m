@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2270-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2277-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574F69C40A5
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFA99C40AC
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1BF1F226F7
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CF551C20B75
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E681A0AEA;
-	Mon, 11 Nov 2024 14:17:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46DC1A0721;
+	Mon, 11 Nov 2024 14:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="drJXXdmm"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="kR58ODVG"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C5619CC29
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CA319F422
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334646; cv=none; b=q2A/oQZI1nNlagSBNuwDIO37QvYD4Bc3IrnJ3SlAUxKAohShqW81uJnCWfP4RkAIKq+eKAP5xPidH5CMky/H0mnbMtvOFp8RkiwWpNKmjgKhQFqF8cskqvdudq1bkI8okfrkjGFOxYycdDFHGdKaiwrJHUd5fO6c8t8faBaKFjw=
+	t=1731334647; cv=none; b=YweVThH1GVv/tmwbDc0+u+XETy/rfj7Vh2zMP1aoJGNQ7izJsU+xk3ouPqpEJnMfhR2ZKSz3aKb2uj5m4Dh0juctuSDsg+vu/nu6W7cHzLuG+xrBBQ0SzpxQR17PbDqf3FpQ3Aqp0tyH46U180UBynstK/asBybHGJ+D5Dgoytk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334646; c=relaxed/simple;
-	bh=fqZiJyAWqPM3AMSaj2cwuHsg5vUofSU8XyBerpvhpAM=;
+	s=arc-20240116; t=1731334647; c=relaxed/simple;
+	bh=Z9+x1NVzAAufmUTepc/LAwzRqkgrYbvHx5y25AjKa2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pSQb62mLWXwBdV70FreNUxzKHt9QjvhQIeGFfNSbAJDlpi6nzXabaUZdqSSp/p0sQK/gZh89sYcvBORBR6GMXKgfnYOsa23POdWlhes5bUdbFXmzEQJ/vNlayNn3F3TYznT4D8/ey0NR2RlXHKGORxohgCDhLPPo3iSmVlh6kME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=drJXXdmm; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=M2bIDfEA+ENEfIA5dLpsJ/tcLRTmQ5SYAPglUUo0z4RtMfoJTjqwGCoLQQ9PxeFvZi6YKfnrM47i1EU5rdUvPTC+r+LO+1ElYiXRB0pEX2HLCOg/acfxp0ZtOPzejU0LFoyRnnmCIBcRbdGm5DKZm9pBPSoxeXi3lq/bJCWg+Ko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=kR58ODVG; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5VdB24ENeIT5CWWSeTC2Eg/BlcS/cKwWvX3S4SRQcjs=;
-	b=drJXXdmmuBw7rb1sk8g6168QggGzulXHHnW3d+DGMA6GGRzP5Y6TOsZ1oOn0xHX3dJS139
-	B7vYQvsDK1xmt+2+sciCOgQ4vTZhFGOMHhVBhAhw1dIH894psbEEyg4fke5xEP88N32EQt
-	jOBDkJPcguFFmkRhdcFrQy7ZpwXawadA/4ofufELR5SKfykxh+AbZDpvKbdwsFRNwIOEUu
-	NwUVE9uK2f0PC/8UGaLiPhwsq1ncimk5W4dSJAIikl3BSzZoEh2Hd8kp708c6jonb4et5j
-	F2zzOJjXWRzatv3R8NBtbRQ/MM2/MDgfvJjTmvdjOp4os9xjZm+BjlMUpVWOaQ==
+	bh=7Lo9k/ZhTAZ/EYIZJA2yr6cK46hVqanm3ERq67Q6DTs=;
+	b=kR58ODVGhqCrguePSUOYimV8T1UFqgXqQmqFU9ruK0qdaPMj59cBg5FTZRs6tKH4awniRl
+	nkz8joIMJWiAt4CiypYOf5ht/xfPiuqLVoTKCWTToXLo2SFHZSjPDpp3p5F7H2SUo0ZeGL
+	ofX4fdUz2GOcUapZ1SgTVWnt3IQUv5yPA+AB5KO51mh1xpC8Fdu1kKly7uNmRfxdpRrxv0
+	P4dNaYc1F9sA9+vWyZIm2rJj/y67lECHNAwH9IX4yAeF2RIi4bRHF16qFpFOJWBGUkVnXq
+	CV9zcZzQpsg3+SCnc/JUzH23oIPDAyqRIKm22XiCVUGOOITM87f9zjpcp6vzRQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 33/47] libsemanage: use size_t for hash input sizes
-Date: Mon, 11 Nov 2024 15:16:52 +0100
-Message-ID: <20241111141706.38039-33-cgoettsche@seltendoof.de>
+Subject: [PATCH 34/47] libsemanage: drop macros used once
+Date: Mon, 11 Nov 2024 15:16:53 +0100
+Message-ID: <20241111141706.38039-34-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,82 +64,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-It's unlikely any input will every be bigger than 4G, but avoid any
-potential truncation regardless.
-
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/modules.c | 5 +----
- libsemanage/src/sha256.c  | 4 ++--
- libsemanage/src/sha256.h  | 4 ++--
- 3 files changed, 5 insertions(+), 8 deletions(-)
+ libsemanage/src/utilities.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/libsemanage/src/modules.c b/libsemanage/src/modules.c
-index e6a47362..e569b98d 100644
---- a/libsemanage/src/modules.c
-+++ b/libsemanage/src/modules.c
-@@ -996,7 +996,6 @@ int semanage_module_compute_checksum(semanage_handle_t *sh,
- 				     size_t *checksum_len)
+diff --git a/libsemanage/src/utilities.c b/libsemanage/src/utilities.c
+index 38ac72e4..9df7b9c1 100644
+--- a/libsemanage/src/utilities.c
++++ b/libsemanage/src/utilities.c
+@@ -28,9 +28,6 @@
+ #include <unistd.h>
+ #include <assert.h>
+ 
+-#define TRUE 1
+-#define FALSE 0
+-
+ char *semanage_findval(const char *file, const char *var, const char *delim)
  {
- 	semanage_module_info_t *extract_info = NULL;
--	Sha256Context context;
- 	SHA256_HASH sha256_hash;
- 	char *checksum_str;
- 	void *data;
-@@ -1018,9 +1017,7 @@ int semanage_module_compute_checksum(semanage_handle_t *sh,
- 	semanage_module_info_destroy(sh, extract_info);
- 	free(extract_info);
- 
--	Sha256Initialise(&context);
--	Sha256Update(&context, data, data_len);
--	Sha256Finalise(&context, &sha256_hash);
-+	Sha256Calculate(data, data_len, &sha256_hash);
- 
- 	munmap(data, data_len);
- 
-diff --git a/libsemanage/src/sha256.c b/libsemanage/src/sha256.c
-index 79664138..9daac285 100644
---- a/libsemanage/src/sha256.c
-+++ b/libsemanage/src/sha256.c
-@@ -180,7 +180,7 @@ void
-     (
-         Sha256Context*      Context,        // [in out]
-         void const*         Buffer,         // [in]
--        uint32_t            BufferSize      // [in]
-+        size_t              BufferSize      // [in]
-     )
+ 	FILE *fd;
+@@ -61,10 +58,10 @@ char *semanage_findval(const char *file, const char *var, const char *delim)
+ int semanage_is_prefix(const char *str, const char *prefix)
  {
-     uint32_t n;
-@@ -282,7 +282,7 @@ void
-     Sha256Calculate
-     (
-         void  const*        Buffer,         // [in]
--        uint32_t            BufferSize,     // [in]
-+        size_t              BufferSize,     // [in]
-         SHA256_HASH*        Digest          // [in]
-     )
- {
-diff --git a/libsemanage/src/sha256.h b/libsemanage/src/sha256.h
-index 406ed869..fbabd1f8 100644
---- a/libsemanage/src/sha256.h
-+++ b/libsemanage/src/sha256.h
-@@ -58,7 +58,7 @@ void
-     (
-         Sha256Context*      Context,        // [in out]
-         void const*         Buffer,         // [in]
--        uint32_t            BufferSize      // [in]
-+        size_t              BufferSize      // [in]
-     );
+ 	if (!str) {
+-		return FALSE;
++		return 0;
+ 	}
+ 	if (!prefix) {
+-		return TRUE;
++		return 1;
+ 	}
  
- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@@ -84,6 +84,6 @@ void
-     Sha256Calculate
-     (
-         void  const*        Buffer,         // [in]
--        uint32_t            BufferSize,     // [in]
-+        size_t              BufferSize,     // [in]
-         SHA256_HASH*        Digest          // [in]
-     );
+ 	return strncmp(str, prefix, strlen(prefix)) == 0;
 -- 
 2.45.2
 

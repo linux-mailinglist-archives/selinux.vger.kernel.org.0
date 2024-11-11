@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2277-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2273-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AFA99C40AC
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517D09C40A8
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CF551C20B75
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15E5F282D62
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A46DC1A0721;
-	Mon, 11 Nov 2024 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B801A0BF8;
+	Mon, 11 Nov 2024 14:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="kR58ODVG"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="VmGCUwFf"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CA319F422
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D0D1A00D6
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334647; cv=none; b=YweVThH1GVv/tmwbDc0+u+XETy/rfj7Vh2zMP1aoJGNQ7izJsU+xk3ouPqpEJnMfhR2ZKSz3aKb2uj5m4Dh0juctuSDsg+vu/nu6W7cHzLuG+xrBBQ0SzpxQR17PbDqf3FpQ3Aqp0tyH46U180UBynstK/asBybHGJ+D5Dgoytk=
+	t=1731334646; cv=none; b=ruWcOuqTj0ADvXeMW390bRLDzeVCxbaQOi9u3W9FBncE4s4Ze1lwE2vglJsn1nUJ/MkvL8ukO56lE1FRBLCEUuf8BL9ghQhpmF+dbw3g5Idpoi1+0oAFPS1EC3gUj2Dfjs+Xgdtats2Rg6c1g3iL+UweWgp63CdMUEMw2pHQNcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334647; c=relaxed/simple;
-	bh=Z9+x1NVzAAufmUTepc/LAwzRqkgrYbvHx5y25AjKa2c=;
+	s=arc-20240116; t=1731334646; c=relaxed/simple;
+	bh=L8IGVhYD8htZLNR23bfoQsBM7vC26Vt2xwSuTv6++Hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=M2bIDfEA+ENEfIA5dLpsJ/tcLRTmQ5SYAPglUUo0z4RtMfoJTjqwGCoLQQ9PxeFvZi6YKfnrM47i1EU5rdUvPTC+r+LO+1ElYiXRB0pEX2HLCOg/acfxp0ZtOPzejU0LFoyRnnmCIBcRbdGm5DKZm9pBPSoxeXi3lq/bJCWg+Ko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=kR58ODVG; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=g/4ljqpuh5cl/2GllbYW712TNbpDlrL2uuu3g2cbmaDkk6ETmXGw6K8ksfsWWqd5kTKFWp1gv9xtyyBOwkKRWdpltX/4e5ouE1/CUaeydlOsku+gNDssWiXRbpWqQhcenO6POigaI8+ZEKh59CsfEu8EovP7BYakNh/m5dGTM5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=VmGCUwFf; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7Lo9k/ZhTAZ/EYIZJA2yr6cK46hVqanm3ERq67Q6DTs=;
-	b=kR58ODVGhqCrguePSUOYimV8T1UFqgXqQmqFU9ruK0qdaPMj59cBg5FTZRs6tKH4awniRl
-	nkz8joIMJWiAt4CiypYOf5ht/xfPiuqLVoTKCWTToXLo2SFHZSjPDpp3p5F7H2SUo0ZeGL
-	ofX4fdUz2GOcUapZ1SgTVWnt3IQUv5yPA+AB5KO51mh1xpC8Fdu1kKly7uNmRfxdpRrxv0
-	P4dNaYc1F9sA9+vWyZIm2rJj/y67lECHNAwH9IX4yAeF2RIi4bRHF16qFpFOJWBGUkVnXq
-	CV9zcZzQpsg3+SCnc/JUzH23oIPDAyqRIKm22XiCVUGOOITM87f9zjpcp6vzRQ==
+	bh=Ptn2dur4Spw/kDJiK3uMrF0jJ9/x1YjXh1diV/fmzwg=;
+	b=VmGCUwFf3rPR8hzZlWZ9W0ybe0Jsx6obEKE2lSno0WAbl6UZuUQOEofNVmlmyBn0MVUDk/
+	bY7w2vgK1jeecv4bDfrbftai6ZXzWBOaOhODoenPDZ0ExAntUT+RpG+Fjpe2YKR0oRdmgN
+	t1I3zHVn4hRC5qzEHY3LQx7aYTVCuJLEagC5OzjpkkscFCbu2E+ydC/vq3/1VFOyoC479o
+	XoEDD+Wgu6GTMjNKyPjbP6H1dUlKHvhdLkxF1qC8vx96jxyEZzKus22WTj8hmBF/C/AyRO
+	hhDpK3eSlSVTbmTf1HIp0yU3v4Oa1DXEdzbbhgMmZKkGqnMyW8meCrbAp3Z3JQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 34/47] libsemanage: drop macros used once
-Date: Mon, 11 Nov 2024 15:16:53 +0100
-Message-ID: <20241111141706.38039-34-cgoettsche@seltendoof.de>
+Subject: [PATCH 35/47] libsemanage: handle shell allocation failure
+Date: Mon, 11 Nov 2024 15:16:54 +0100
+Message-ID: <20241111141706.38039-35-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,38 +64,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
+Return failure instead of silently using a fallback.
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/utilities.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ libsemanage/src/genhomedircon.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/libsemanage/src/utilities.c b/libsemanage/src/utilities.c
-index 38ac72e4..9df7b9c1 100644
---- a/libsemanage/src/utilities.c
-+++ b/libsemanage/src/utilities.c
-@@ -28,9 +28,6 @@
- #include <unistd.h>
- #include <assert.h>
- 
--#define TRUE 1
--#define FALSE 0
--
- char *semanage_findval(const char *file, const char *var, const char *delim)
- {
- 	FILE *fd;
-@@ -61,10 +58,10 @@ char *semanage_findval(const char *file, const char *var, const char *delim)
- int semanage_is_prefix(const char *str, const char *prefix)
- {
- 	if (!str) {
--		return FALSE;
-+		return 0;
+diff --git a/libsemanage/src/genhomedircon.c b/libsemanage/src/genhomedircon.c
+index 53673645..c38d284b 100644
+--- a/libsemanage/src/genhomedircon.c
++++ b/libsemanage/src/genhomedircon.c
+@@ -228,7 +228,7 @@ static semanage_list_t *get_shell_list(void)
+ 				free(temp);
+ 				semanage_list_destroy(&list);
+ 				fclose(shells);
+-				return default_shell_list();
++				return NULL;
+ 			}
+ 		}
  	}
- 	if (!prefix) {
--		return TRUE;
-+		return 1;
- 	}
+@@ -333,7 +333,10 @@ static semanage_list_t *get_home_dirs(genhomedircon_settings_t * s)
+ 		return homedir_list;
  
- 	return strncmp(str, prefix, strlen(prefix)) == 0;
+ 	shells = get_shell_list();
+-	assert(shells);
++	if (!shells) {
++		ERR(s->h_semanage, "Allocation failure!");
++		goto fail;
++	}
+ 
+ 	path = semanage_findval(PATH_ETC_LOGIN_DEFS, "UID_MIN", NULL);
+ 	if (path && *path) {
 -- 
 2.45.2
 

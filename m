@@ -1,55 +1,55 @@
-Return-Path: <selinux+bounces-2257-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2251-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B419C409B
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 536589C4091
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1531AB21BB6
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1849D2821E1
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8651A08C2;
-	Mon, 11 Nov 2024 14:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E7C1A072C;
+	Mon, 11 Nov 2024 14:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="aNFhNskm"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="W9dRqXsH"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF7A1A0714
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6D119F113
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334643; cv=none; b=FSZdNo1dzRF8LN4roC8DzqFhskupAB3Y97Gxgs8a6zD+YwG0+DLGMWN/PgnJghkkkcSEt4Jb61Wud4lWcEbVelcqe+izAWjozKxI2CC9+T143n3Zj7/ySsKXV3fkGqGJaHyTXTV/pDa/s7Q3diwhqKRosjb4ho1i7cXCv3/kdGg=
+	t=1731334642; cv=none; b=ScuYuINu8Wso9nrjVzeOzbmY0aNOw22j50hD3smY+gm2ot3+GBhTse3H8cgSh0l5jIE9m4ed2IJ8290DsR9APtBC//Fiv2Jnch8VH12lTy8R/5FSlcrlR8+mQbO/17WVkFjFUdlJ4q/v7GSiW62XNdS16g6gXBbdzA4QVckecAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334643; c=relaxed/simple;
-	bh=BCYkPibHr8mJqNX/uudDQxmIkMlMJddVZxuATiHeUAs=;
+	s=arc-20240116; t=1731334642; c=relaxed/simple;
+	bh=8yQf4NvJsNA1/tp0933mk3NUBWO+E+lbBgxlNsXCkfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BbnOmUrcgZIZrbLnIQRFGAh+C9j8qqpBJ7T+50nKpbJBJbLOwy6pG5ewsqdZuJfbv9CAlSctK2vs0rAqaYKw+cBU2wpgcO6B2T9bD8p8PAEyNr5jdgjndtcI0Jbxqx/97Nf8+LzaQE8npGPdD62JRLg1owoXH7aFx6GzGHPThwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=aNFhNskm; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=nbIi62v3Mco9O9JH3jlLRMSzWuP3QaNtH8QdhQg8zse5+DzVqoghZT+T8TF7MxdBGqmzpnMDOxMRbhSEab9SXNHZZ5AS6hIV74EnmT21Zlqnb1KkSfzJ1spU1HPPewZwRRFMt7HIp7GIMfGn9BaPcQkI8WKJRKJvFfAp0dgCcIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=W9dRqXsH; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1731334635;
+	s=2023072701; t=1731334636;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AxRnLsEc9JYnGbm/RmRWa4v0FQFYfs3WMKJCaqfR1yQ=;
-	b=aNFhNskmv8MprZOxR51mzaFPfBiEPMQOdQRPsUTlU1EJttw7sRHQHwKXENfQVzUqH0ouJd
-	m2WCd+coQjqO3tpYNlxNG3LQsIWaYmvQhnTh0l4uoo2KhA25NSSun0qZke4+VayOSdG6Ch
-	LLFhBju0EZYn0pev5DISlqFBIxOA1h8IQa7WArU1jQWk1HqgBaq48wuT1d9tmCdztWV0Qm
-	n+IhDjXRh8E8bzgKaLNms13xfk8QpnVpXSFgkpb8VqU0DQng7cseP0mlozSDjljQ5X7D9g
-	Ki+3sLQGYiWYojZtxNNt+xY/ZEIdRSp2pwFjRbjyuqtOMJaAFJqb8DV7Ktj4DQ==
+	bh=nDmtPL9C7TYTDpODA7ICoFwr1NgCb6ae14GVdS3YSvM=;
+	b=W9dRqXsH+9xaPfexb+BIas7Guk5HYU44B7G7WwoZF02dRz+7f4jJzI/quETVvt7yv29MP3
+	Os0lw9p8g4f3B7t+o7wdmNCbYYkGrVfBzH7mX13hmXoMri7e/jyLR5m9lQQRHeAZwWnOuf
+	nI0QQwteQf2Qm2DfbN+q42jWPlk/Uh2hyCMUWtlNZYy7UvOyDWrNkDiZmGkGnM2o4iEcl6
+	M42bjFaxYaHPJ4sDckeSlem7v+ViXaLmhYrMkF6LIw2wV0GdvJ4tSEu2O3CVoWf/G0ca5T
+	FyP3PMIOV7US7+yFDjrk5UfANBnA+0Iiq3kGfGjdau5f2pHQ6M9r2lf2Q1qTnQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 16/47] libsemanage: cast to unsigned char for character checking functions
-Date: Mon, 11 Nov 2024 15:16:35 +0100
-Message-ID: <20241111141706.38039-16-cgoettsche@seltendoof.de>
+Subject: [PATCH 17/47] libsemanage: drop casts to same type
+Date: Mon, 11 Nov 2024 15:16:36 +0100
+Message-ID: <20241111141706.38039-17-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,239 +64,80 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Character checking functions, like isspace(3), take an unsigned char as
-input, and passing any other value is undefined behavior.
-
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/conf-scan.l       |  4 ++--
- libsemanage/src/genhomedircon.c   |  4 ++--
- libsemanage/src/modules.c         |  8 ++++----
- libsemanage/src/parse_utils.c     | 10 +++++-----
- libsemanage/src/semanage_store.c  | 16 ++++++++--------
- libsemanage/src/users_base_file.c |  4 ++--
- 6 files changed, 23 insertions(+), 23 deletions(-)
+ libsemanage/src/genhomedircon.c  | 10 +++++-----
+ libsemanage/src/semanage_store.c |  8 ++++----
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/libsemanage/src/conf-scan.l b/libsemanage/src/conf-scan.l
-index b06a896c..bc0630b9 100644
---- a/libsemanage/src/conf-scan.l
-+++ b/libsemanage/src/conf-scan.l
-@@ -78,11 +78,11 @@ args              return PROG_ARGS;
-  * Returns NULL on error. */
- static char *my_strdup(char *s) {
- 	char *t;
--	while (isspace(*s)) {
-+	while (isspace((unsigned char)*s)) {
- 		s++;
- 	}
- 	t = s + strlen(s) - 1;
--	while (t >= s && isspace(*t)) {
-+	while (t >= s && isspace((unsigned char)*t)) {
- 		*t = '\0';
- 		t--;
- 	}
 diff --git a/libsemanage/src/genhomedircon.c b/libsemanage/src/genhomedircon.c
-index 34b5ff93..31c9a5bf 100644
+index 31c9a5bf..29ff4259 100644
 --- a/libsemanage/src/genhomedircon.c
 +++ b/libsemanage/src/genhomedircon.c
-@@ -543,14 +543,14 @@ static const char *extract_context(const char *line)
- 	while (off > 0) {
- 		p--;
- 		off--;
--		if (!isspace(*p))
-+		if (!isspace((unsigned char)*p))
- 			break;
- 	}
- 	if (off == 0)
- 		return NULL;
+@@ -472,10 +472,10 @@ static int HOME_DIR_PRED(const char *string)
+ /* new names */
+ static int USERNAME_CONTEXT_PRED(const char *string)
+ {
+-	return (int)(
+-		(strstr(string, TEMPLATE_USERNAME) != NULL) ||
+-		(strstr(string, TEMPLATE_USERID) != NULL)
+-	);
++	return
++		strstr(string, TEMPLATE_USERNAME) != NULL ||
++		strstr(string, TEMPLATE_USERID) != NULL
++	;
+ }
  
- 	/* find the last field in line */
--	while (off > 0 && !isspace(*(p - 1))) {
-+	while (off > 0 && !isspace((unsigned char)*(p - 1))) {
- 		p--;
- 		off--;
- 	}
-diff --git a/libsemanage/src/modules.c b/libsemanage/src/modules.c
-index eeb85be6..e6a47362 100644
---- a/libsemanage/src/modules.c
-+++ b/libsemanage/src/modules.c
-@@ -819,12 +819,12 @@ int semanage_module_validate_name(const char * name)
- 		goto exit;
- 	}
+ /* This will never match USER if USERNAME or USERID are found. */
+@@ -484,7 +484,7 @@ static int USER_CONTEXT_PRED(const char *string)
+ 	if (USERNAME_CONTEXT_PRED(string))
+ 		return 0;
  
--	if (!isalpha(*name)) {
-+	if (!isalpha((unsigned char)*name)) {
- 		status = -1;
- 		goto exit;
- 	}
+-	return (int)(strstr(string, TEMPLATE_USER) != NULL);
++	return strstr(string, TEMPLATE_USER) != NULL;
+ }
  
--#define ISVALIDCHAR(c) (isalnum(c) || c == '_' || c == '-')
-+#define ISVALIDCHAR(c) (isalnum((unsigned char)c) || c == '_' || c == '-')
- 
- 	for (name++; *name; name++) {
- 		if (ISVALIDCHAR(*name)) {
-@@ -876,12 +876,12 @@ int semanage_module_validate_lang_ext(const char *ext)
- 		goto exit;
- 	}
- 
--	if (!isalnum(*ext)) {
-+	if (!isalnum((unsigned char)*ext)) {
- 		status = -1;
- 		goto exit;
- 	}
- 
--#define ISVALIDCHAR(c) (isalnum(c) || c == '_' || c == '-')
-+#define ISVALIDCHAR(c) (isalnum((unsigned char)c) || c == '_' || c == '-')
- 
- 	for (ext++; *ext; ext++) {
- 		if (ISVALIDCHAR(*ext)) {
-diff --git a/libsemanage/src/parse_utils.c b/libsemanage/src/parse_utils.c
-index 13837c87..d9b12763 100644
---- a/libsemanage/src/parse_utils.c
-+++ b/libsemanage/src/parse_utils.c
-@@ -90,7 +90,7 @@ int parse_skip_space(semanage_handle_t * handle, parse_info_t * info)
- 	char *ptr;
- 
- 	if (info->ptr) {
--		while (*(info->ptr) && isspace(*(info->ptr)))
-+		while (*(info->ptr) && isspace((unsigned char)*(info->ptr)))
- 			info->ptr++;
- 
- 		if (*(info->ptr))
-@@ -109,7 +109,7 @@ int parse_skip_space(semanage_handle_t * handle, parse_info_t * info)
- 			buffer[len - 1] = '\0';
- 
- 		ptr = buffer;
--		while (*ptr && isspace(*ptr))
-+		while (*ptr && isspace((unsigned char)*ptr))
- 			ptr++;
- 
- 		/* Skip comments and blank lines */
-@@ -156,7 +156,7 @@ int parse_assert_space(semanage_handle_t * handle, parse_info_t * info)
- 	if (parse_assert_noeof(handle, info) < 0)
- 		return STATUS_ERR;
- 
--	if (*(info->ptr) && !isspace(*(info->ptr))) {
-+	if (*(info->ptr) && !isspace((unsigned char)*(info->ptr))) {
- 		ERR(handle, "missing whitespace (%s: %u):\n%s",
- 		    info->filename, info->lineno, info->orig_line);
- 		return STATUS_ERR;
-@@ -242,7 +242,7 @@ int parse_fetch_int(semanage_handle_t * handle,
- 	if (parse_fetch_string(handle, info, &str, delim, 0) < 0)
- 		goto err;
- 
--	if (!isdigit((int)*str)) {
-+	if (!isdigit((unsigned char)*str)) {
- 		ERR(handle, "expected a numeric value: (%s: %u)\n%s",
- 		    info->filename, info->lineno, info->orig_line);
- 		goto err;
-@@ -277,7 +277,7 @@ int parse_fetch_string(semanage_handle_t * handle,
- 	if (parse_assert_noeof(handle, info) < 0)
- 		goto err;
- 
--	while (*(info->ptr) && (allow_spaces || !isspace(*(info->ptr))) &&
-+	while (*(info->ptr) && (allow_spaces || !isspace((unsigned char)*(info->ptr))) &&
- 	       (*(info->ptr) != delim)) {
- 		info->ptr++;
- 		len++;
+ static int STR_COMPARATOR(const void *a, const void *b)
 diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
-index 0684b2e8..f5c19e00 100644
+index f5c19e00..fb3f3cc9 100644
 --- a/libsemanage/src/semanage_store.c
 +++ b/libsemanage/src/semanage_store.c
-@@ -1409,7 +1409,7 @@ static char **split_args(const char *arg0, char *arg_string,
- 				break;
- 			}
- 		default:{
--				if (isspace(*s) && !in_quote && !in_dquote) {
-+				if (isspace((unsigned char)*s) && !in_quote && !in_dquote) {
- 					if (arg != NULL) {
- 						rc = append_arg(&argv, &num_args, arg);
- 						if (rc)
-@@ -2598,7 +2598,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 
- 		/* Skip the whitespace at the front of the line. */
- 		for (i = 0; i < line_len; i++) {
--			if (!isspace(line_buf[i]))
-+			if (!isspace((unsigned char)line_buf[i]))
- 				break;
+@@ -2656,7 +2656,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
+ 			continue;
  		}
  
-@@ -2630,7 +2630,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 		escape_chars = 0;
- 		just_saw_escape = 0;
- 		start = i;
--		while (i < line_len && (!isspace(line_buf[i]))) {
-+		while (i < line_len && (!isspace((unsigned char)line_buf[i]))) {
- 			if (line_buf[i] == '\\') {
- 				if (!just_saw_escape) {
- 					escape_chars++;
-@@ -2666,7 +2666,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
+-		temp->path = (char *)strndup(&line_buf[start], regex_len);
++		temp->path = strndup(&line_buf[start], regex_len);
+ 		if (!temp->path) {
+ 			ERR(sh, "Failure allocating memory.");
+ 			semanage_fc_node_destroy(temp);
+@@ -2691,7 +2691,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
  
- 		/* Skip the whitespace after the regular expression. */
- 		for (; i < line_len; i++) {
--			if (!isspace(line_buf[i]))
-+			if (!isspace((unsigned char)line_buf[i]))
- 				break;
- 		}
- 		if (i == line_len) {
-@@ -2703,7 +2703,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 
- 			/* Skip the whitespace after the type. */
- 			for (; i < line_len; i++) {
--				if (!isspace(line_buf[i]))
-+				if (!isspace((unsigned char)line_buf[i]))
- 					break;
- 			}
- 			if (i == line_len) {
-@@ -2719,7 +2719,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 
- 		/* Extract the context from the line. */
- 		start = i;
--		while (i < line_len && (!isspace(line_buf[i])))
-+		while (i < line_len && (!isspace((unsigned char)line_buf[i])))
- 			i++;
+ 			/* Record the inode type. */
+ 			temp->file_type =
+-			    (char *)strndup(&line_buf[i], type_len);
++			    strndup(&line_buf[i], type_len);
+ 			if (!temp->file_type) {
+ 				ERR(sh, "Failure allocating memory.");
+ 				semanage_fc_node_destroy(temp);
+@@ -2724,7 +2724,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
  		finish = i;
  		context_len = finish - start;
-@@ -2914,7 +2914,7 @@ int semanage_nc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
  
- 		/* Skip the whitespace at the front of the line. */
- 		for (i = 0; i < line_len; i++) {
--			if (!isspace(line_buf[i]))
-+			if (!isspace((unsigned char)line_buf[i]))
- 				break;
+-		temp->context = (char *)strndup(&line_buf[start], context_len);
++		temp->context = strndup(&line_buf[start], context_len);
+ 		if (!temp->context) {
+ 			ERR(sh, "Failure allocating memory.");
+ 			semanage_fc_node_destroy(temp);
+@@ -2963,7 +2963,7 @@ int semanage_nc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
  		}
  
-@@ -2950,7 +2950,7 @@ int semanage_nc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 		}
+ 		node->rule =
+-		    (char *)strndup(line_buf + offset, line_len - offset);
++		    strndup(line_buf + offset, line_len - offset);
+ 		node->rule_len = line_len - offset;
+ 		node->next = NULL;
  
- 		/* skip over whitespace */
--		for (; offset < line_len && isspace(line_buf[offset]);
-+		for (; offset < line_len && isspace((unsigned char)line_buf[offset]);
- 		     offset++) ;
- 
- 		/* load rule into node */
-diff --git a/libsemanage/src/users_base_file.c b/libsemanage/src/users_base_file.c
-index 8fb00698..f4d15451 100644
---- a/libsemanage/src/users_base_file.c
-+++ b/libsemanage/src/users_base_file.c
-@@ -113,7 +113,7 @@ static int user_base_parse(semanage_handle_t * handle,
- 		start = info->ptr;
- 		while (*(info->ptr) &&
- 		       *(info->ptr) != ';' &&
--		       *(info->ptr) != '}' && !isspace(*(info->ptr)))
-+		       *(info->ptr) != '}' && !isspace((unsigned char)*(info->ptr)))
- 			info->ptr++;
- 
- 		delim = *(info->ptr);
-@@ -122,7 +122,7 @@ static int user_base_parse(semanage_handle_t * handle,
- 		if (semanage_user_base_add_role(handle, user, start) < 0)
- 			goto err;
- 
--		if (delim && !isspace(delim)) {
-+		if (delim && !isspace((unsigned char)delim)) {
- 			if (islist && delim == '}')
- 				break;
- 			else if (!islist && delim == ';')
 -- 
 2.45.2
 

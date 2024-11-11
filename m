@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2251-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2253-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536589C4091
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C98169C4092
 	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1849D2821E1
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88F42282D1B
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E7C1A072C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED56519F110;
 	Mon, 11 Nov 2024 14:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="W9dRqXsH"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="pq1aBRaA"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6D119F113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE841A070E
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334642; cv=none; b=ScuYuINu8Wso9nrjVzeOzbmY0aNOw22j50hD3smY+gm2ot3+GBhTse3H8cgSh0l5jIE9m4ed2IJ8290DsR9APtBC//Fiv2Jnch8VH12lTy8R/5FSlcrlR8+mQbO/17WVkFjFUdlJ4q/v7GSiW62XNdS16g6gXBbdzA4QVckecAg=
+	t=1731334642; cv=none; b=gao/DLUVUR4LXBoMQiqm6XI7du1SfPKGuVaSI9qU5f79K6tp69C5S/w1r19eUZF/aj0+3m230TstategFYZuV9XuHgiFnE45wBuTur2Eh5+Usf26y0CStb4Ug7eN9LdANyVvINyDNy6SZ0T5io06SWpJjKFmWFVuGU5eUl3Ie7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731334642; c=relaxed/simple;
-	bh=8yQf4NvJsNA1/tp0933mk3NUBWO+E+lbBgxlNsXCkfs=;
+	bh=4qCEOFCu2qIajZVZjeSLxVHJEUHQfO7yC6sSb8M5q5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nbIi62v3Mco9O9JH3jlLRMSzWuP3QaNtH8QdhQg8zse5+DzVqoghZT+T8TF7MxdBGqmzpnMDOxMRbhSEab9SXNHZZ5AS6hIV74EnmT21Zlqnb1KkSfzJ1spU1HPPewZwRRFMt7HIp7GIMfGn9BaPcQkI8WKJRKJvFfAp0dgCcIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=W9dRqXsH; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=Ece6KLMVz0tIRuQGpXXNtc9sOeIEsSh8hJwuZtP+30qmgZ1OqUKUFaEaw27qvTnb0qWTb6lmuB6TPs+HXHQTMHNf88nWFmGmWu+LSiSTeETtQ+na+U7lXSaNl/xWxKGc01q3smEFB84ufejDy15DMhXjdtZ7tArsgi6XlsBlpyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=pq1aBRaA; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nDmtPL9C7TYTDpODA7ICoFwr1NgCb6ae14GVdS3YSvM=;
-	b=W9dRqXsH+9xaPfexb+BIas7Guk5HYU44B7G7WwoZF02dRz+7f4jJzI/quETVvt7yv29MP3
-	Os0lw9p8g4f3B7t+o7wdmNCbYYkGrVfBzH7mX13hmXoMri7e/jyLR5m9lQQRHeAZwWnOuf
-	nI0QQwteQf2Qm2DfbN+q42jWPlk/Uh2hyCMUWtlNZYy7UvOyDWrNkDiZmGkGnM2o4iEcl6
-	M42bjFaxYaHPJ4sDckeSlem7v+ViXaLmhYrMkF6LIw2wV0GdvJ4tSEu2O3CVoWf/G0ca5T
-	FyP3PMIOV7US7+yFDjrk5UfANBnA+0Iiq3kGfGjdau5f2pHQ6M9r2lf2Q1qTnQ==
+	bh=iD70GYzyUku4cZWsoZWoMmKmHLAlUXDUa7FcnUk6G3U=;
+	b=pq1aBRaAIYsxCAOvyucHrtjnxUr9jvvdY/+/znupHZi5GIVtDOq5FxZvmjrFhUf5zj8hfo
+	KG8yrSdryI08VLkRCEF7Ij9lTgk/cB3wbEnqbBtiodqoMRuIVyAF2J1TovmM7vi40LA9ne
+	jwqy6vz8JK6Rj2srzdraDbpEuNHG4yy2HVqFBYsj036INkFDmt38cVFMXnTzkfY+MTsp6O
+	vPoE8XSJSXi2zGNRbvI8C3bnpMcyTAFs4eEVjyN6WcQRbrN1JyU1TSnb9nWPdeMQ/K7arI
+	LfGRVGid1vfP5evb8uvygB1zb+75yE7IMXxWlxT0LKcRI4AEm78E3JmPHNzOxQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 17/47] libsemanage: drop casts to same type
-Date: Mon, 11 Nov 2024 15:16:36 +0100
-Message-ID: <20241111141706.38039-17-cgoettsche@seltendoof.de>
+Subject: [PATCH 18/47] libsemanage: fix asprintf error branch
+Date: Mon, 11 Nov 2024 15:16:37 +0100
+Message-ID: <20241111141706.38039-18-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,80 +64,30 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
+The content of the first argument after a failure of asprintf(3) is
+undefined and must not be used.
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/genhomedircon.c  | 10 +++++-----
- libsemanage/src/semanage_store.c |  8 ++++----
- 2 files changed, 9 insertions(+), 9 deletions(-)
+ libsemanage/src/boolean_record.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/libsemanage/src/genhomedircon.c b/libsemanage/src/genhomedircon.c
-index 31c9a5bf..29ff4259 100644
---- a/libsemanage/src/genhomedircon.c
-+++ b/libsemanage/src/genhomedircon.c
-@@ -472,10 +472,10 @@ static int HOME_DIR_PRED(const char *string)
- /* new names */
- static int USERNAME_CONTEXT_PRED(const char *string)
- {
--	return (int)(
--		(strstr(string, TEMPLATE_USERNAME) != NULL) ||
--		(strstr(string, TEMPLATE_USERID) != NULL)
--	);
-+	return
-+		strstr(string, TEMPLATE_USERNAME) != NULL ||
-+		strstr(string, TEMPLATE_USERID) != NULL
-+	;
- }
+diff --git a/libsemanage/src/boolean_record.c b/libsemanage/src/boolean_record.c
+index 40dc6545..7878b04d 100644
+--- a/libsemanage/src/boolean_record.c
++++ b/libsemanage/src/boolean_record.c
+@@ -107,8 +107,10 @@ int semanage_bool_set_name(semanage_handle_t * handle,
+ 	end++;
+ 	*end = '\0';
+ 	rc = asprintf(&newroot, "%s%s%s", prefix, olddir, storename);
+-	if (rc < 0)
++	if (rc < 0) {
++		newroot = NULL;
+ 		goto out;
++	}
  
- /* This will never match USER if USERNAME or USERID are found. */
-@@ -484,7 +484,7 @@ static int USER_CONTEXT_PRED(const char *string)
- 	if (USERNAME_CONTEXT_PRED(string))
- 		return 0;
- 
--	return (int)(strstr(string, TEMPLATE_USER) != NULL);
-+	return strstr(string, TEMPLATE_USER) != NULL;
- }
- 
- static int STR_COMPARATOR(const void *a, const void *b)
-diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
-index f5c19e00..fb3f3cc9 100644
---- a/libsemanage/src/semanage_store.c
-+++ b/libsemanage/src/semanage_store.c
-@@ -2656,7 +2656,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 			continue;
- 		}
- 
--		temp->path = (char *)strndup(&line_buf[start], regex_len);
-+		temp->path = strndup(&line_buf[start], regex_len);
- 		if (!temp->path) {
- 			ERR(sh, "Failure allocating memory.");
- 			semanage_fc_node_destroy(temp);
-@@ -2691,7 +2691,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 
- 			/* Record the inode type. */
- 			temp->file_type =
--			    (char *)strndup(&line_buf[i], type_len);
-+			    strndup(&line_buf[i], type_len);
- 			if (!temp->file_type) {
- 				ERR(sh, "Failure allocating memory.");
- 				semanage_fc_node_destroy(temp);
-@@ -2724,7 +2724,7 @@ int semanage_fc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 		finish = i;
- 		context_len = finish - start;
- 
--		temp->context = (char *)strndup(&line_buf[start], context_len);
-+		temp->context = strndup(&line_buf[start], context_len);
- 		if (!temp->context) {
- 			ERR(sh, "Failure allocating memory.");
- 			semanage_fc_node_destroy(temp);
-@@ -2963,7 +2963,7 @@ int semanage_nc_sort(semanage_handle_t * sh, const char *buf, size_t buf_len,
- 		}
- 
- 		node->rule =
--		    (char *)strndup(line_buf + offset, line_len - offset);
-+		    strndup(line_buf + offset, line_len - offset);
- 		node->rule_len = line_len - offset;
- 		node->next = NULL;
- 
+ 	if (strcmp(oldroot, newroot)) {
+ 		rc = selinux_set_policy_root(newroot);
 -- 
 2.45.2
 

@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2240-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2243-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE529C4086
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09CBA9C408D
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA6428267E
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60648B21AA5
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372881A00E7;
-	Mon, 11 Nov 2024 14:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 929A719F115;
+	Mon, 11 Nov 2024 14:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="efnsnbtw"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="Lc0pMHli"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777E61A00D1
-	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E06F132122
+	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334637; cv=none; b=iY/eQ8OJ00VI/OtZgFE5JkXq576JKikAM/NybYzI8K29AHfiWNi8nKjkUVyiVoq2DlzhacaZN1QtMtRrSbWFU2K7Kxd1vyo4Dx+zECzHmmJwKlYS5V96JvSug8hpxHFU4r6Jsz4bL1S6G/yjjUa6w/EObOMXK+n15Vsag8no5d0=
+	t=1731334639; cv=none; b=sWLdoaz4AcyvjuTjaN9Rd86rGiIu+9SYgP+Pk3S3xlbmWCri28HCjXSrlgU8/ycCSxB9HUyol9dggIyLHjK1ZIo6w5x5K4p8g+s7yxZnZcVetSpTTXy783LP56DfG0qAEZUP6U/4DwVwiL0i9gJyzIkydcjH9wMQQDua3I0su8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334637; c=relaxed/simple;
-	bh=BOPdcJiuEPcgtYZ3NOzt/A4/SNIg4wgXN1Vm9jE8Fuo=;
+	s=arc-20240116; t=1731334639; c=relaxed/simple;
+	bh=4Pmu3OL7SA+E5vaYHKPd4LO8e50Jcxi6GZG1oUJ5rTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=P3cyGGEAGuKnKfidXFxlYPaoSPl7M3N5JNJ58RV5Qv2UG+UYt3Lzllo4gobzVmGBNH8G7NXl9BO8rLZH0HgabO8SZ2VdeWa//Oq+1L/lxnzOm+1FrVHOXeGdR9CiYs/Sk2SEGRUgcZFFDCUYnov1MAJ2e2xad5yO3RvoH6hiHzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=efnsnbtw; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=VoXwMP2ELN3jqVBaaLPJs9pvouG0i6wMRdIuyBcL8oLyTysqnoIeMrTEmWqYmIz+wIVApb3Fipy+lS1x2dFvoMQWPQ9V8Kpb2zvnu7dSowkBBY5AQdNFMqjg4UK9hWdyirS7D/Q7XpmBpyRnlZw9GPFydurfDm7TKvvIbsQQmgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=Lc0pMHli; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cAWpzf3I85PnY/2YCUidZkA5CsUaMlpsCcnjpGD5xFA=;
-	b=efnsnbtwRBXDw2TNlk+DhLaz4oT+byeEYs52L/ujjSQkH+E1bmht3mIYPFpCWI5mT5tb6t
-	RYNZ83Ig/7WRISKF1I3koJ5dtSuh0t7IQ+mQKgAi00e92KsffplLtitcQoQBLjA4BsVo1L
-	FgqFY5HAK2OkyliawymrBEW0wPknpc1Zn7TH5IiDpbm/JpcR3iooaB+etqBOHWswfOWiLb
-	Yd1fUYHWWn9WCQNoGdkEtDeetxkCQfzFxJ1+LnMJAtqp7TYW7p/b35ja5D2To315duby7d
-	+ahFC0cap9z22vvwnnCkrwKo/1UqaZ1kA6hcKWrjd0AtfC39VRGJYiffFVNggg==
+	bh=BTc6ZjtaLYYGLTKVIne/dWpoTnZPwsq/+R10hwdE4T8=;
+	b=Lc0pMHlikToIHZFAmWGuLIwZ6jk6PU8J6fInATOWH4TWItus0N5dARxD5PwVdBSVzkQWxB
+	A6Pty7gcnE7AMqPr118fwOfUUaK1XMhYrFbVvV7OhGWpUU2Fc4J0Q3Por9I3IijBbOaO/v
+	82xZZ4Mej78DrhpL3Hab3dU9sjl6EDWUmkPNiZmv3Tbh9kgjUHTiDXdJIL4VwqFwJfJvtu
+	E6oBun/m6uFXk+pdfXixZTGW0MXV0DYFegzP4QcJdGl2eTFAudJa5cKTsRUkAxleyxcAi6
+	YJqqfc4y8h0HadkJcDA6zxeXmTIgPOcs8pBpK/V/MXcth8NCg/DKwhg874QXog==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 05/47] libsemanage: drop dead variable
-Date: Mon, 11 Nov 2024 15:16:24 +0100
-Message-ID: <20241111141706.38039-5-cgoettsche@seltendoof.de>
+Subject: [PATCH 06/47] libsemanage: drop unnecessary declarations
+Date: Mon, 11 Nov 2024 15:16:25 +0100
+Message-ID: <20241111141706.38039-6-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,40 +64,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Reported by clang-analyzer:
-
-    semanage_store.c:2206:9: warning: Although the value stored to 'retval' is used in the enclosing expression, the value is never actually read from 'retval' [deadcode.DeadStores]
-                            if ((retval =
-                                 ^
+semanage_remove_directory() is declared in "semanage_store.h" and
+semanage_rename() is defined before usage.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/semanage_store.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ libsemanage/src/semanage_store.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
-index 82c5a684..57295482 100644
+index 57295482..08e6fc1b 100644
 --- a/libsemanage/src/semanage_store.c
 +++ b/libsemanage/src/semanage_store.c
-@@ -2201,7 +2201,7 @@ int semanage_write_policydb(semanage_handle_t * sh, sepol_policydb_t * out,
- int semanage_verify_modules(semanage_handle_t * sh,
- 			    char **module_filenames, int num_modules)
- {
--	int i, retval;
-+	int i;
- 	semanage_conf_t *conf = sh->conf;
- 	if (conf->mod_prog == NULL) {
- 		return 0;
-@@ -2210,8 +2210,7 @@ int semanage_verify_modules(semanage_handle_t * sh,
- 		char *module = module_filenames[i];
- 		external_prog_t *e;
- 		for (e = conf->mod_prog; e != NULL; e = e->next) {
--			if ((retval =
--			     semanage_exec_prog(sh, e, module, "$<")) != 0) {
-+			if (semanage_exec_prog(sh, e, module, "$<") != 0) {
- 				return -1;
- 			}
- 		}
+@@ -696,8 +696,6 @@ int semanage_store_access_check(void)
+ 
+ /********************* other I/O functions *********************/
+ 
+-static int semanage_rename(semanage_handle_t * sh, const char *tmp, const char *dst);
+-int semanage_remove_directory(const char *path);
+ static int semanage_copy_dir_flags(const char *src, const char *dst, int flag);
+ 
+ /* Callback used by scandir() to select files. */
 -- 
 2.45.2
 

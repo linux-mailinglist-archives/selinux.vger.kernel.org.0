@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2263-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2259-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7DE9C409D
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17DA89C4099
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1386F2825FC
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF1611F22722
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CAC1A0AF1;
-	Mon, 11 Nov 2024 14:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61C71A0714;
+	Mon, 11 Nov 2024 14:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="rpy6TzVe"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="ROtQ5bd6"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F991A0721
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CEE1A0724
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334644; cv=none; b=SpdR9VsscKJzDJ1iSma7kMNUFi6JqcHSU5giL+BigZn23kstQDSYIz4zR+9G0iSYxKXD4PxC1KehGqnvE5zfpeoYGLB/NoiYA5bww9wPhpdGJPMUwof/x6ER7keLBsZTo614APNMY+GIgI9s6WGW1yyqcMWK4MfgiAB6Xec46Bw=
+	t=1731334643; cv=none; b=jz/NbThWg/+6g3sCwb7kQ9pTkw3e8IiBkWkERMq6cOeXenG9cYc2wVmfFkLaPRycxG3KDqm2HLw6aCQJLdpt4KdIAIG5AmDcQGS7PEUHTO0LIGesfyCFIK8FGFpAEqQmm2D75tUVEey7kX17AyU2FM/1qOimhU6unRbUXbynJEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334644; c=relaxed/simple;
-	bh=Gc/1q3VKbWRM/C3IwC9jUGDHohr3fYVYRU1NvUQtmB0=;
+	s=arc-20240116; t=1731334643; c=relaxed/simple;
+	bh=1gdGxskphYrF5dJA4o2/5iJc0jUN4f9BA+ThanKTGXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DrGxShc3VQvIBPfWt6TyKbCVTaJy2fKa5a+EGTr85DKo2lvLzPk7umuO4Rpm+3Vq0aQ5oFqsEprHJL6RO2ibaSxxtF6qUqkEIdT2SeOb1B6BLrX+QlUbe2L9BzFarl34m3RA0MGYnuvZSW96vMmfNgYxlaVkNQ8TDn8sgPCWknE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=rpy6TzVe; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=qJa20aGYhrtgJtLMXSvXeXRsF2zor9sowB+wfqD8MUV85GNEsHlKfgXLPeABK9d7VSRo61INqrJMb2dR3UvUymKdOHHMUwXvJGXbpN7USFQnvwqcswslfhINZGfw9Akf75shwdO2mYGZbXhYeRxo2Ks+36tA8TvaS3pSL9k4OH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=ROtQ5bd6; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=VZpBwwbly1+1nfkmJzE4u7V79GtAviKmPHPtUFNfR3Y=;
-	b=rpy6TzVeoCWqVfDqtZAQiXpx9sCdHmrxlkaiY+LFvp0/XS9LUy2TUiYcp1m1HUS4kZO48s
-	Pu70B9AdwqggBEqmMoz9+uti1g4Tjv+5hu4Icbf8CfdnJTo+Twa7GIr4kcceMiflyizWLr
-	7AVtYspIag+zEngD/X62cu74yEidaIEFuodKeRtDxahm1L7/QLZdgdr8Xq3+dlgFEwx6SX
-	wr/9ncG3iUPHQTGwZVGfSrygu9K7FbnJByQe1NneS8SUFWsdcuzdfLILqu+Cbrwz8/wueS
-	7LWXX//Nmhpr5qfxSc9mwNfjpO64wvCkhlCScda8T0R+5au2EroSsW8mM83gHg==
+	bh=GfcPvZ6nZNBC1kZFNVrFRGuEZ5TbDiUHKFx+d4jovDU=;
+	b=ROtQ5bd6EVT6GO2b32a+mbV0RT0ThGmI5AJVON9VGJMK1wgu+pxhtyV9LZh1elNBm4VP11
+	vReOBcP92AOwHNJUDToQfrlvboAaJunw88KUmEUI3cKrQ17Pl+oCL/eLcLrx5hsoniokCv
+	d9ykNU/mgyppbgn/vw/4FranUYdhVUcTveeLic3xrMZzQ/h/gkGzCAH0vSd6PWX9a+sJIZ
+	BfxQXA9q+bivx5quImZ9hQtWdNyHTamAozoaS/fhgCSXpGzDELGhAEcIMorLGM88kH7Ir9
+	dkKws0PFkvqU+pOeVEMXqxVwZ2Y1Yp9NPmQMqRUxkKsX9C9RVdGlKvWteevatQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 22/47] libsemanage: free ibdev names in semanage_ibendport_validate_local()
-Date: Mon, 11 Nov 2024 15:16:41 +0100
-Message-ID: <20241111141706.38039-22-cgoettsche@seltendoof.de>
+Subject: [PATCH 23/47] libsemanage: simplify malloc plus strcpy via strndup
+Date: Mon, 11 Nov 2024 15:16:42 +0100
+Message-ID: <20241111141706.38039-23-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -66,60 +66,29 @@ From: Christian Göttsche <cgzones@googlemail.com>
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/ibendports_local.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ libsemanage/src/parse_utils.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/libsemanage/src/ibendports_local.c b/libsemanage/src/ibendports_local.c
-index e696fdca..feebfa63 100644
---- a/libsemanage/src/ibendports_local.c
-+++ b/libsemanage/src/ibendports_local.c
-@@ -80,8 +80,8 @@ int semanage_ibendport_validate_local(semanage_handle_t *handle)
- 	semanage_ibendport_t **ibendports = NULL;
- 	unsigned int nibendports = 0;
- 	unsigned int i = 0, j = 0;
--	char *ibdev_name;
--	char *ibdev_name2;
-+	char *ibdev_name = NULL;
-+	char *ibdev_name2 = NULL;
- 	int port;
- 	int port2;
- 
-@@ -97,6 +97,8 @@ int semanage_ibendport_validate_local(semanage_handle_t *handle)
- 	while (i < nibendports) {
- 		int stop = 0;
- 
-+		free(ibdev_name);
-+		ibdev_name = NULL;
- 		if (STATUS_SUCCESS !=
- 				semanage_ibendport_get_ibdev_name(handle,
- 								  ibendports[i],
-@@ -114,6 +116,8 @@ int semanage_ibendport_validate_local(semanage_handle_t *handle)
- 			if (j == nibendports - 1)
- 				goto next;
- 			j++;
-+			free(ibdev_name2);
-+			ibdev_name2 = NULL;
- 			if (STATUS_SUCCESS !=
- 				semanage_ibendport_get_ibdev_name(handle,
- 								  ibendports[j],
-@@ -136,6 +140,8 @@ next:
- 		j = i;
+diff --git a/libsemanage/src/parse_utils.c b/libsemanage/src/parse_utils.c
+index d9b12763..d3bc148b 100644
+--- a/libsemanage/src/parse_utils.c
++++ b/libsemanage/src/parse_utils.c
+@@ -290,14 +290,12 @@ int parse_fetch_string(semanage_handle_t * handle,
+ 		goto err;
  	}
  
-+	free(ibdev_name);
-+	free(ibdev_name2);
- 	for (i = 0; i < nibendports; i++)
- 		semanage_ibendport_free(ibendports[i]);
- 	free(ibendports);
-@@ -145,6 +151,8 @@ err:
- 	ERR(handle, "could not complete ibendports validity check");
+-	tmp_str = (char *)malloc(len + 1);
++	tmp_str = strndup(start, len);
+ 	if (!tmp_str) {
+ 		ERR(handle, "out of memory");
+ 		goto err;
+ 	}
  
- invalid:
-+	free(ibdev_name);
-+	free(ibdev_name2);
- 	for (i = 0; i < nibendports; i++)
- 		semanage_ibendport_free(ibendports[i]);
- 	free(ibendports);
+-	strncpy(tmp_str, start, len);
+-	*(tmp_str + len) = '\0';
+ 	*str = tmp_str;
+ 	return STATUS_SUCCESS;
+ 
 -- 
 2.45.2
 

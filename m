@@ -1,55 +1,55 @@
-Return-Path: <selinux+bounces-2274-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2270-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BCA9C40A9
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 574F69C40A5
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA2441C203C1
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F1BF1F226F7
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7FD91A0BFF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E681A0AEA;
 	Mon, 11 Nov 2024 14:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="ne7KxuTx"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="drJXXdmm"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D571A08DC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C5619CC29
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334646; cv=none; b=QsPB4PKNHk9XibUUKgNu1w09gLaCpBEAY+xgIdgZgjgh5Abm/yLufmUjLHa/4VD1SWmCRAnZA0D7lk+b1DyM6aQwXQy9QFmsCPykX+2SzXa4+Bs6Wwrwg4LuWxQb1PloAuRg3ztG20Zwm22apYqZ8aw8mQMHTCs1siASn0hbECk=
+	t=1731334646; cv=none; b=q2A/oQZI1nNlagSBNuwDIO37QvYD4Bc3IrnJ3SlAUxKAohShqW81uJnCWfP4RkAIKq+eKAP5xPidH5CMky/H0mnbMtvOFp8RkiwWpNKmjgKhQFqF8cskqvdudq1bkI8okfrkjGFOxYycdDFHGdKaiwrJHUd5fO6c8t8faBaKFjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731334646; c=relaxed/simple;
-	bh=hQPS8/VRaTkf3QeNZYyCrah3TKJ3WCU7fjZsMUxRjCY=;
+	bh=fqZiJyAWqPM3AMSaj2cwuHsg5vUofSU8XyBerpvhpAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fHo24mPcxvxS5fJkcE0IYhs5syPRLcWOQzB3nQFelLszCG70mXobEYvycNrLxxcQIACAwKfIQGM6YAG7rv7aiOEvAxteWRnqqjgc3VWpEy20Go7zpYe28tn8pzSSHODvi6TDlCH2ox2tbERoSWJFo0GYeQ9h8I2DEgiH6a9CSdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=ne7KxuTx; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=pSQb62mLWXwBdV70FreNUxzKHt9QjvhQIeGFfNSbAJDlpi6nzXabaUZdqSSp/p0sQK/gZh89sYcvBORBR6GMXKgfnYOsa23POdWlhes5bUdbFXmzEQJ/vNlayNn3F3TYznT4D8/ey0NR2RlXHKGORxohgCDhLPPo3iSmVlh6kME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=drJXXdmm; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1731334638;
+	s=2023072701; t=1731334639;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jp5dLhtsqIDDx177LRXP2FSvQsHEoQY0e3nKm7F704U=;
-	b=ne7KxuTxT/uuSmoCvypdt6zIDSPU/dDeaIs2PqHPuEO7JT7g4CYGuGkEzX2RZcb3+/MmBW
-	tgQZ/v3DBrSQgvBlu1EvrRpbOlhlZsF0G6erVFoDkjVyVrB37wgwHZmDYd8hQerWaQG0Oi
-	Z4B+HojnOMkcOki5HCVWZtUQmPEAb0OnxfCjGpPcaAkcwRygX+i5AGpUvucEu/pMgrgU/y
-	LrV+Zu0C66K/pvMhdCA4CznlCDvBq1R+YTwqUq0vBeLlNP8TQiobot996xWVQBbIeyTtx+
-	5tbvIGFwIxwJqsYcduwaab8Tkt6IvJooMuSFSGTKAYVC1egXD0taSS4HSljPrw==
+	bh=5VdB24ENeIT5CWWSeTC2Eg/BlcS/cKwWvX3S4SRQcjs=;
+	b=drJXXdmmuBw7rb1sk8g6168QggGzulXHHnW3d+DGMA6GGRzP5Y6TOsZ1oOn0xHX3dJS139
+	B7vYQvsDK1xmt+2+sciCOgQ4vTZhFGOMHhVBhAhw1dIH894psbEEyg4fke5xEP88N32EQt
+	jOBDkJPcguFFmkRhdcFrQy7ZpwXawadA/4ofufELR5SKfykxh+AbZDpvKbdwsFRNwIOEUu
+	NwUVE9uK2f0PC/8UGaLiPhwsq1ncimk5W4dSJAIikl3BSzZoEh2Hd8kp708c6jonb4et5j
+	F2zzOJjXWRzatv3R8NBtbRQ/MM2/MDgfvJjTmvdjOp4os9xjZm+BjlMUpVWOaQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 32/47] libsemanage: use asprintf(3) to simplify code
-Date: Mon, 11 Nov 2024 15:16:51 +0100
-Message-ID: <20241111141706.38039-32-cgoettsche@seltendoof.de>
+Subject: [PATCH 33/47] libsemanage: use size_t for hash input sizes
+Date: Mon, 11 Nov 2024 15:16:52 +0100
+Message-ID: <20241111141706.38039-33-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,219 +64,82 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
+It's unlikely any input will every be bigger than 4G, but avoid any
+potential truncation regardless.
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/handle.c         | 26 ++--------
- libsemanage/src/semanage_store.c | 86 +++++++++-----------------------
- 2 files changed, 28 insertions(+), 84 deletions(-)
+ libsemanage/src/modules.c | 5 +----
+ libsemanage/src/sha256.c  | 4 ++--
+ libsemanage/src/sha256.h  | 4 ++--
+ 3 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/libsemanage/src/handle.c b/libsemanage/src/handle.c
-index 740bc83f..2f4121db 100644
---- a/libsemanage/src/handle.c
-+++ b/libsemanage/src/handle.c
-@@ -141,16 +141,14 @@ int semanage_get_hll_compiler_path(semanage_handle_t *sh,
- 				const char *lang_ext,
- 				char **compiler_path)
+diff --git a/libsemanage/src/modules.c b/libsemanage/src/modules.c
+index e6a47362..e569b98d 100644
+--- a/libsemanage/src/modules.c
++++ b/libsemanage/src/modules.c
+@@ -996,7 +996,6 @@ int semanage_module_compute_checksum(semanage_handle_t *sh,
+ 				     size_t *checksum_len)
  {
--	assert(sh != NULL);
--	assert(lang_ext != NULL);
--
--	int i;
-+	size_t i;
- 	int status = 0;
--	int num_printed = 0;
--	size_t len;
- 	char *compiler = NULL;
- 	char *lower_lang_ext = NULL;
+ 	semanage_module_info_t *extract_info = NULL;
+-	Sha256Context context;
+ 	SHA256_HASH sha256_hash;
+ 	char *checksum_str;
+ 	void *data;
+@@ -1018,9 +1017,7 @@ int semanage_module_compute_checksum(semanage_handle_t *sh,
+ 	semanage_module_info_destroy(sh, extract_info);
+ 	free(extract_info);
  
-+	assert(sh != NULL);
-+	assert(lang_ext != NULL);
-+
- 	lower_lang_ext = strdup(lang_ext);
- 	if (lower_lang_ext == NULL) {
- 		ERR(sh, "Could not create copy of lang_ext. Out of memory.\n");
-@@ -162,17 +160,7 @@ int semanage_get_hll_compiler_path(semanage_handle_t *sh,
- 		lower_lang_ext[i] = tolower(lower_lang_ext[i]);
- 	}
+-	Sha256Initialise(&context);
+-	Sha256Update(&context, data, data_len);
+-	Sha256Finalise(&context, &sha256_hash);
++	Sha256Calculate(data, data_len, &sha256_hash);
  
--	len = strlen(sh->conf->compiler_directory_path) + strlen("/") + strlen(lower_lang_ext) + 1;
--
--	compiler = malloc(len * sizeof(*compiler));
--	if (compiler == NULL) {
--		ERR(sh, "Error allocating space for compiler path.");
--		status = -1;
--		goto cleanup;
--	}
--
--	num_printed = snprintf(compiler, len, "%s/%s", sh->conf->compiler_directory_path, lower_lang_ext);
--	if (num_printed < 0 || (size_t)num_printed >= len) {
-+	if (asprintf(&compiler, "%s/%s", sh->conf->compiler_directory_path, lower_lang_ext) < 0) {
- 		ERR(sh, "Error creating compiler path.");
- 		status = -1;
- 		goto cleanup;
-@@ -183,10 +171,6 @@ int semanage_get_hll_compiler_path(semanage_handle_t *sh,
+ 	munmap(data, data_len);
  
- cleanup:
- 	free(lower_lang_ext);
--	if (status != 0) {
--		free(compiler);
--	}
--
- 	return status;
- }
- 
-diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
-index 937089b2..98ef2524 100644
---- a/libsemanage/src/semanage_store.c
-+++ b/libsemanage/src/semanage_store.c
-@@ -165,21 +165,17 @@ typedef struct semanage_netfilter_context_node {
-  */
- static int semanage_init_paths(const char *root)
+diff --git a/libsemanage/src/sha256.c b/libsemanage/src/sha256.c
+index 79664138..9daac285 100644
+--- a/libsemanage/src/sha256.c
++++ b/libsemanage/src/sha256.c
+@@ -180,7 +180,7 @@ void
+     (
+         Sha256Context*      Context,        // [in out]
+         void const*         Buffer,         // [in]
+-        uint32_t            BufferSize      // [in]
++        size_t              BufferSize      // [in]
+     )
  {
--	size_t len, prefix_len;
- 	int i;
- 
- 	if (!root)
- 		return -1;
- 
--	prefix_len = strlen(root);
--
- 	for (i = 0; i < SEMANAGE_NUM_FILES; i++) {
--		len = (strlen(semanage_relative_files[i]) + prefix_len);
--		semanage_files[i] = calloc(len + 1, sizeof(char));
--		if (!semanage_files[i])
-+		if (asprintf(&semanage_files[i], "%s%s",
-+			     root, semanage_relative_files[i]) < 0) {
-+			semanage_files[i] = NULL;
- 			return -1;
--		sprintf(semanage_files[i], "%s%s", root,
--			semanage_relative_files[i]);
-+		}
- 	}
- 
- 	return 0;
-@@ -191,28 +187,20 @@ static int semanage_init_paths(const char *root)
- static int semanage_init_store_paths(const char *root)
+     uint32_t n;
+@@ -282,7 +282,7 @@ void
+     Sha256Calculate
+     (
+         void  const*        Buffer,         // [in]
+-        uint32_t            BufferSize,     // [in]
++        size_t              BufferSize,     // [in]
+         SHA256_HASH*        Digest          // [in]
+     )
  {
- 	int i, j;
--	size_t len;
--	size_t prefix_len;
+diff --git a/libsemanage/src/sha256.h b/libsemanage/src/sha256.h
+index 406ed869..fbabd1f8 100644
+--- a/libsemanage/src/sha256.h
++++ b/libsemanage/src/sha256.h
+@@ -58,7 +58,7 @@ void
+     (
+         Sha256Context*      Context,        // [in out]
+         void const*         Buffer,         // [in]
+-        uint32_t            BufferSize      // [in]
++        size_t              BufferSize      // [in]
+     );
  
- 	if (!root)
- 		return -1;
- 
--	prefix_len = strlen(root);
--
- 	for (i = 0; i < SEMANAGE_NUM_STORES; i++) {
- 		for (j = 0; j < SEMANAGE_STORE_NUM_PATHS; j++) {
--			len = prefix_len + strlen(semanage_store_paths[i])
--			    + strlen(semanage_sandbox_paths[j]);
--			semanage_paths[i][j] = calloc(len + 1, sizeof(char));
--			if (!semanage_paths[i][j])
--				goto cleanup;
--			sprintf(semanage_paths[i][j], "%s%s%s", root,
--				semanage_store_paths[i],
--				semanage_sandbox_paths[j]);
-+			if (asprintf(&semanage_paths[i][j], "%s%s%s",
-+				     root, semanage_store_paths[i], semanage_sandbox_paths[j]) < 0) {
-+				semanage_paths[i][j] = NULL;
-+				return -1;
-+			}
- 		}
- 	}
- 
--      cleanup:
- 	return 0;
- }
- 
-@@ -222,48 +210,26 @@ static int semanage_init_final(semanage_handle_t *sh, const char *prefix)
- 	assert(prefix);
- 
- 	int status = 0;
--	size_t len;
- 	const char *store_path = sh->conf->store_path;
--	size_t store_len = strlen(store_path);
- 
- 	/* SEMANAGE_FINAL_TMP */
--	len = strlen(semanage_root()) +
--	      strlen(prefix) +
--	      strlen("/") +
--	      strlen(semanage_final_prefix[SEMANAGE_FINAL_TMP]) +
--	      store_len;
--	semanage_final[SEMANAGE_FINAL_TMP] = malloc(len + 1);
--	if (semanage_final[SEMANAGE_FINAL_TMP] == NULL) {
-+	if (asprintf(&semanage_final[SEMANAGE_FINAL_TMP], "%s%s%s/%s",
-+		     semanage_root(), prefix,
-+		     semanage_final_prefix[SEMANAGE_FINAL_TMP], store_path) < 0) {
-+		semanage_final[SEMANAGE_FINAL_TMP] = NULL;
- 		status = -1;
- 		goto cleanup;
- 	}
- 
--	sprintf(semanage_final[SEMANAGE_FINAL_TMP],
--		"%s%s%s/%s",
--		semanage_root(),
--		prefix,
--		semanage_final_prefix[SEMANAGE_FINAL_TMP],
--		store_path);
--
- 	/* SEMANAGE_FINAL_SELINUX */
--	const char *selinux_root = selinux_path();
--	len = strlen(semanage_root()) +
--	      strlen(selinux_root) +
--	      strlen(semanage_final_prefix[SEMANAGE_FINAL_SELINUX]) +
--	      store_len;
--	semanage_final[SEMANAGE_FINAL_SELINUX] = malloc(len + 1);
--	if (semanage_final[SEMANAGE_FINAL_SELINUX] == NULL) {
-+	if (asprintf(&semanage_final[SEMANAGE_FINAL_SELINUX], "%s%s%s%s",
-+		     semanage_root(), selinux_path(),
-+		     semanage_final_prefix[SEMANAGE_FINAL_SELINUX], store_path) < 0) {
-+		semanage_final[SEMANAGE_FINAL_SELINUX] = NULL;
- 		status = -1;
- 		goto cleanup;
- 	}
- 
--	sprintf(semanage_final[SEMANAGE_FINAL_SELINUX],
--		"%s%s%s%s",
--		semanage_root(),
--		selinux_root,
--		semanage_final_prefix[SEMANAGE_FINAL_SELINUX],
--		store_path);
--
- cleanup:
- 	if (status != 0) {
- 		int i;
-@@ -386,24 +352,18 @@ static int semanage_init_final_paths(semanage_handle_t *sh)
- {
- 	int status = 0;
- 	int i, j;
--	size_t len;
- 
- 	for (i = 0; i < SEMANAGE_FINAL_NUM; i++) {
- 		for (j = 0; j < SEMANAGE_FINAL_PATH_NUM; j++) {
--			len = 	  strlen(semanage_final[i])
--				+ strlen(semanage_final_suffix[j]);
--
--			semanage_final_paths[i][j] = malloc(len + 1);
--			if (semanage_final_paths[i][j] == NULL) {
-+			if (asprintf(&semanage_final_paths[i][j],
-+				 "%s%s",
-+				     semanage_final[i],
-+				     semanage_final_suffix[j]) < 0) {
-+				semanage_final_paths[i][j] = NULL;
- 				ERR(sh, "Unable to allocate space for policy final path.");
- 				status = -1;
- 				goto cleanup;
--			}
--
--			sprintf(semanage_final_paths[i][j],
--				"%s%s",
--				semanage_final[i],
--				semanage_final_suffix[j]);
-+				}
- 		}
- 	}
- 
+ ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@@ -84,6 +84,6 @@ void
+     Sha256Calculate
+     (
+         void  const*        Buffer,         // [in]
+-        uint32_t            BufferSize,     // [in]
++        size_t              BufferSize,     // [in]
+         SHA256_HASH*        Digest          // [in]
+     );
 -- 
 2.45.2
 

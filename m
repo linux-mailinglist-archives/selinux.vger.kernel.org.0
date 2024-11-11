@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2254-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2256-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728B69C4094
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 739E19C4097
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 379902823FE
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 383FE2820BE
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3510E1A0726;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749151A08B2;
 	Mon, 11 Nov 2024 14:17:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="h13jupHR"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="H/cx1t5v"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DEDB1A0711
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62A91A071C
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334643; cv=none; b=XgWcJgtPew77CoyHEui/dlMCK4PuUZG6SN4fckmv3+rkERS2y3/5aNWVIFy3Zc5W7UFu96r2e9yrsSRXLDRb3Y6UDPSMT/3vAta4iyr3ntecu8TzdcJWHm9C3KW0xCY2kE0Tr26rD1Y2X+GPsfjfGiEtqG4HHwtB5JG+eOFV5yM=
+	t=1731334643; cv=none; b=J7hmtp5XA5yJJ29UzsntfTiju80gX4oM0a17Ke/9XvggPhGa7aMse92x7vXPNZx81EDAdafSP7Psx9buyfpBlNXwAxHE8rYL3VhLuw1Iv+1BFFhgVkMqFqnu1TGEGY9xP1UK7YHjRwb1sdiJZB3/tjkxgDvP3KoZveu+6B2d/+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731334643; c=relaxed/simple;
-	bh=Hmm1SLGNV2jt8QBZ6erdSbVG6BulDJZVJWIB0HGeFN0=;
+	bh=6rC6sOK7Vkj10yqG76kesdjt7P3cxJwjq8rstCbiijA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X0HJStg/AzU3uLkTdmnQksv+MNZPaDDOPzh4/pCwK1vzb6nrOPpBBz+9HSbI2mDJZEiHvHMFGh3gGsNOPY8jXuiYa61mbwGAcJpvQ4h01c3jJfNVfKcXetORrEtwkEFzdUfNzRAzMwosvPYp7dm/I1BlntFK7MWULz2NRBqbkag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=h13jupHR; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=rObp4eqxk3fysjI7utbCrOGhQTjopCIau5ieJ/itURrU8S5ulQpf0NaNRyJwKAwDNC4/WJYp4syOtXBKZsGnyBZfMcZ/BaU6V2N5ECI+3rp+DUZN3qx1ESv/lQRI4BJDWhyrRRiZbCSi+JJ5518/IHkPoyUtIYnT20XZ5Vcq+ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=H/cx1t5v; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=C52vXDtb/i1K8dnwT0SVVTwgGruXJ6nrdy2IKOZ6nLg=;
-	b=h13jupHRGdLSKOmqLpBzD6x8ikunuqhoRLfK2L3mJWM//YOTnQAtjqtsdtEAv1aeDb47HK
-	EurhMlAQ62rWoUwUmLeqMIDbuWQKkah48z+hBUK6yYLhAUZ/wCWkxFxhLdWOUZRaNAIxGY
-	L0cMSKmQ08x72ItK32KhLTD9OqTfEVGrOW7tDoXzoIKjQ1l9c7DiybfEFSFvfClkT6AUKi
-	aoPx3gVoRmHc8pswQKtog8NcRB875Etfq2CgZluPOsxwYiKnpRMVFr9hY8nmoeL8RpjRk6
-	G3kSwMqeqBBjX0rpjx7gGORSlizeTkI7qwOhuQHu0cEvdg/Kmc6JHlvdUhSVMQ==
+	bh=HMKaJevcQ7ftGpNTFooubHh8N8H+ehR6m1b3JODiHf0=;
+	b=H/cx1t5vEzbZ9pkGSK83RWeCJ+lIfcYRsRMcZUIt54AcEqMEh/WOABchyN284zm34qocsu
+	XRBz9Ig+0NCMxOzrQvnx++5IeIIlUssSDyh9zlHedOb3+TDGZ0NglO7WrAoXhWaGmWu5aF
+	+/uI1M7PmhEg1okCL8cPqJkc+lS+3lfElWNwzru7mYGfT8Uvt5aEfgtkwrfX3E70kQT5y9
+	850kHOuvMK5VaUHd/xrk4Hw2B1Njyb5eyujH+8OwD5ZvcoRVeALBJmbdJO0nlHP2Lz2kA6
+	sT2iZzdRO6j9mDmTcyYlQeRmSh78Nq6MnqhwcCG0lbeoFF3s0Ec/4QqyaIg7Ig==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 19/47] libsemanage: avoid leak on realloc failure
-Date: Mon, 11 Nov 2024 15:16:38 +0100
-Message-ID: <20241111141706.38039-19-cgoettsche@seltendoof.de>
+Subject: [PATCH 20/47] libsemanage: use strtok_r for thread safety
+Date: Mon, 11 Nov 2024 15:16:39 +0100
+Message-ID: <20241111141706.38039-20-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,34 +64,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
+Use strtok_r(3) for thread safety, not only against concurrent usage
+within libsemanage but also other linked libraries in the application.
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/direct_api.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ libsemanage/src/genhomedircon.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/libsemanage/src/direct_api.c b/libsemanage/src/direct_api.c
-index 83addbee..66a6fa66 100644
---- a/libsemanage/src/direct_api.c
-+++ b/libsemanage/src/direct_api.c
-@@ -599,12 +599,16 @@ static int read_from_pipe_to_data(semanage_handle_t *sh, size_t initial_len, int
- 	while ((read_len = read(fd, data_read + data_read_len, max_len - data_read_len)) > 0) {
- 		data_read_len += read_len;
- 		if (data_read_len == max_len) {
-+			char *tmp;
-+
- 			max_len *= 2;
--			data_read = realloc(data_read, max_len);
--			if (data_read == NULL) {
-+			tmp = realloc(data_read, max_len);
-+			if (tmp == NULL) {
- 				ERR(sh, "Failed to realloc, out of memory.\n");
-+				free(data_read);
- 				return -1;
- 			}
-+			data_read = tmp;
- 		}
+diff --git a/libsemanage/src/genhomedircon.c b/libsemanage/src/genhomedircon.c
+index 29ff4259..5e7315d8 100644
+--- a/libsemanage/src/genhomedircon.c
++++ b/libsemanage/src/genhomedircon.c
+@@ -144,10 +144,10 @@ static void ignore_free(void) {
+ }
+ 
+ static int ignore_setup(char *ignoredirs) {
+-	char *tok;
++	char *tok, *saveptr = NULL;
+ 	ignoredir_t *ptr = NULL;
+ 
+-	tok = strtok(ignoredirs, ";");
++	tok = strtok_r(ignoredirs, ";", &saveptr);
+ 	while(tok) {
+ 		ptr = calloc(1, sizeof(ignoredir_t));
+ 		if (!ptr)
+@@ -159,7 +159,7 @@ static int ignore_setup(char *ignoredirs) {
+ 		ptr->next = ignore_head;
+ 		ignore_head = ptr;
+ 
+-		tok = strtok(NULL, ";");
++		tok = strtok_r(NULL, ";", &saveptr);
  	}
  
+ 	return 0;
 -- 
 2.45.2
 

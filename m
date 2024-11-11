@@ -1,103 +1,124 @@
-Return-Path: <selinux+bounces-2289-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2287-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D579C4541
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 19:50:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D6399C4519
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 19:38:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2CAFB2C313
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 18:35:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C368B2BB1F
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 18:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E27C1AA788;
-	Mon, 11 Nov 2024 18:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DCF1AB521;
+	Mon, 11 Nov 2024 18:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=defensec.nl header.i=@defensec.nl header.b="NQTOnG77"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="egKDUVBD"
 X-Original-To: selinux@vger.kernel.org
-Received: from markus.defensec.nl (markus.defensec.nl [45.80.168.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAC814EC55
-	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 18:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.80.168.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0101AB501
+	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 18:27:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731350126; cv=none; b=FCeBTJPN04bcJUyw1ajxBrenbBC9eAkJuiSXeb6mDh8zEhhhfVV4sqNe+YEnBul+SUPuGmU+P101vHVt+W8S4Prf5TdFNsVw3paduBJbHg8qh2XSXkkntOVwIRFTJZixbLz/DnSjHMWdB3dEcz7rKwXWGgCf5ZrtPkBgh8m/m7A=
+	t=1731349679; cv=none; b=tOHartSMDuc29x5cf+OxlkacW5P3D3cG2lr5brrOZqlBOLgHcpw7moG/VwxKVDVHq0cx0VkhQqc5k5OxB0UipN+rUN8bws9hekxOb2tJUX4ZBeSLj5jBq0aqOHp6QvGfZk8d8y3E50aFPHXSbA5sOIv5SYzQt9F9pSdYUUDA7MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731350126; c=relaxed/simple;
-	bh=FsepWrXP28decJzHy+s7O3Dg9Jci0wYGK0NWKJP0TLY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Q+maKvX+aehJ13JvOE6PShI6dVmmLunfeMDFR4jd63J9gw0p4OM+a9+z+PivOeZyV0gR5wvkqfAnX0RlqiEH0xroqfTnishyNMeVM1y7aYiG9TgqSp6edriQSQWxq8RfIO+dV6D1snqyuYPfCyq6gDldgRAMxtifWj5FxjsiJVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=defensec.nl; spf=pass smtp.mailfrom=defensec.nl; dkim=pass (1024-bit key) header.d=defensec.nl header.i=@defensec.nl header.b=NQTOnG77; arc=none smtp.client-ip=45.80.168.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=defensec.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=defensec.nl
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=defensec.nl;
-	s=default; t=1731349656;
-	bh=FsepWrXP28decJzHy+s7O3Dg9Jci0wYGK0NWKJP0TLY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=NQTOnG77Z/F4lYMl6XPvPVsMdfHaEJLH6nJ20UkteqAbXOioo2Xfmxdn/bLZQbSsy
-	 VI3p/HYUftd57sB1+gsVMZ0QfMG8kuYtM7P6Hmu5OBqFY7pWzL1kfOVNSccQlEma2t
-	 fP0zW9DKtBgCG9m8h6aqtt+Rfu+QYcMR7rDra1xE=
-Received: from nimbus (nimbus.lan [IPv6:2a10:3781:2099::514])
-	by markus.defensec.nl (Postfix) with ESMTPSA id CBC0EDF59D;
-	Mon, 11 Nov 2024 19:27:36 +0100 (CET)
-From: Dominick Grift <dominick.grift@defensec.nl>
-To: Ian Pilcher <arequipeno@gmail.com>
-Cc: SElinux list <selinux@vger.kernel.org>
-Subject: Re: Allow rule not having any effect?!
-In-Reply-To: <3df128ad-cd76-4fea-a905-60d7f02ca4ee@gmail.com> (Ian Pilcher's
-	message of "Mon, 11 Nov 2024 11:30:08 -0600")
-References: <3df128ad-cd76-4fea-a905-60d7f02ca4ee@gmail.com>
-Date: Mon, 11 Nov 2024 19:27:36 +0100
-Message-ID: <87pln18w2v.fsf@defensec.nl>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1731349679; c=relaxed/simple;
+	bh=Lg1KmTu4CP+ujYbYYnn4g2HSjXM04jtn276K7f8dWJI=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=OENetDFJx/sv32gruk6O98bC8boof/MjCsbLzRldB7fRlvkoAsoHWFS7vT/UiC0jpA+zsVIviuG1LgX59PlpteM5dXG/qG8RVH3H/R2hbFLCp3P5AFQEYR/UOwX6h+DgF38tkhxoM2y3ay8Akoi4B30oGo8S6L4ufsceE3jClhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=egKDUVBD; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3e5ffbc6acbso2868522b6e.3
+        for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 10:27:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731349677; x=1731954477; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bSrIYMkSjgBJbwohOII5KOi6OzEMAiOk0etEQMK5fRk=;
+        b=egKDUVBDpX74nZZR2ebM9mYsEpwfDCKjHwBtCkDV/wCL7nT0RGrONQYPt45H20lYZH
+         16qEUzujT2KF2l/uBCSOZb5t2rUw6HI2cQcRJCuE2TrbZA82qSBKW5LpGcedUs8XVxhv
+         1DqYZLu5Y0Fxd+U+uF7PgfkJpphxfgvr4YKdjhiBvN8mLXR66Q3XJorzejY4fkZaixoB
+         G2YU3l3dF+Xafb+6y9rYSPMESC/2hBcbziuPyztMm+SrHP70WBLPs5BwZykn3oN+XU5v
+         jqa/HR/VuImgsKYavRt/LozYTXhHoWsekawHY228lw1vcE+JtR701MQjO3kjh+wtoIZG
+         CexA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731349677; x=1731954477;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bSrIYMkSjgBJbwohOII5KOi6OzEMAiOk0etEQMK5fRk=;
+        b=qrlob7U+wIqpJXblQGEqsCPf4d3zLFDT38MY8eRoBiEvGtXrLHSODQANkEN3t2WjZ+
+         M0A2slktr/HwRywZWXS4HHFsrnOkStlAPQjzL1OU9UY7dplgzHmi829m+OTC1V97r8EN
+         VuUGgkGZo5OWzPK3+D/Kb2OB7GDoadqfBE36BB2sjKIoe/uJCXFgm81Fq5bXksXJzlLT
+         dvwnwiuWZNo6iyv318YOKkHtp4pybdvEw96cvjNtkc3VzidGo+Ebd0Vo7xnTml4O+R3/
+         sEGS37NqQBAenqc7/15u0NKneRJP9mQ6fMVAqmazC4uHDz4yT6eonIbdQPu3WS3edkTQ
+         adIA==
+X-Gm-Message-State: AOJu0YzzPu/+l1LNGhB3ZRARmufNIMB0mlIFDxo8q0/5WFKEjEq6gSSN
+	jyU43je0UXDot85YXT4NMBuI38rY9AizuMHdJ88gGgYnUVMpoYESIV42HRIN
+X-Google-Smtp-Source: AGHT+IFa58YQZEPT1KRIR7UI9YNwy8tWb5/65p1Vrozn7klMMqSnf9Mh1cuT1hSggwlqr0H6QG+jMw==
+X-Received: by 2002:a05:6808:3194:b0:3e7:5ab1:35b4 with SMTP id 5614622812f47-3e794706397mr12513453b6e.30.1731349676787;
+        Mon, 11 Nov 2024 10:27:56 -0800 (PST)
+Received: from [172.31.250.1] (syn-192-063-109-134.res.spectrum.com. [192.63.109.134])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3e78cc677bdsm2184413b6e.3.2024.11.11.10.27.54
+        for <selinux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Nov 2024 10:27:55 -0800 (PST)
+Message-ID: <9fae3474-2b18-4b4b-afc4-517b73548e6f@gmail.com>
+Date: Mon, 11 Nov 2024 12:27:54 -0600
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: SOLVED: Allow rule not having any effect?!
+From: Ian Pilcher <arequipeno@gmail.com>
+To: SElinux list <selinux@vger.kernel.org>
+References: <3df128ad-cd76-4fea-a905-60d7f02ca4ee@gmail.com>
+Content-Language: en-US
+In-Reply-To: <3df128ad-cd76-4fea-a905-60d7f02ca4ee@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Ian Pilcher <arequipeno@gmail.com> writes:
+Ran the AVC through audit2allow, just to see if it would give me any
+clues, and sure enough, it actually did.  The problem was that the
+SELinux users didn't match, i.e. system_u != unconfined_u.
 
+Ironically, I actually hit this exact same problem 8 years ago.
+
+https://selinux.tycho.nsa.narkive.com/lPRcuGbE/cannot-write-policy-to-allow-relabelto
+
+On 11/11/24 11:30 AM, Ian Pilcher wrote:
 > I'm either missing something incredibly obvious, or something really,
 > really weird is going on.
->
+> 
 > I have a policy module that includes this rule.
->
->   allow runcp_t etc_t:file { create write setattr };
->
+> 
+>    allow runcp_t etc_t:file { create write setattr };
+> 
 > And I can see that the rule is loaded.
->
->   $ sesearch --allow -s runcp_t -t etc_t -c file -ds -dt
->   allow runcp_t etc_t:file { create setattr write };
->
+> 
+>    $ sesearch --allow -s runcp_t -t etc_t -c file -ds -dt
+>    allow runcp_t etc_t:file { create setattr write };
+> 
 > Nonetheless, I am still getting this denial.
->
->   type=AVC msg=audit(1731345803.780:3765): avc:  denied  { create } for
->   pid=289668 comm="cp" name="config"
->   scontext=system_u:system_r:runcp_t:s0
->   tcontext=unconfined_u:object_r:etc_t:s0 tclass=file permissive=0
-
-I suspect cp is called with -a when copying that "config" file.
-It tries to create the file with an identity other than its own
-(unconfined_u versus system_u) and object identity changes are
-constrained by identity-based access control.
-
-echo '(typeattributeset can_change_object_identity runcp_t)' >
-mytest.cil && sudo semodule -i mytest.cil
-
-The above should lift the object identity change constrain.
-
->
+> 
+>    type=AVC msg=audit(1731345803.780:3765): avc:  denied  { create } for
+>    pid=289668 comm="cp" name="config"
+>    scontext=system_u:system_r:runcp_t:s0
+>    tcontext=unconfined_u:object_r:etc_t:s0 tclass=file permissive=0
+> 
 > AFAICT, this makes no sense at all.
->
+> 
 > Any ideas?
-
+> 
 -- 
-gpg --locate-keys dominick.grift@defensec.nl (wkd)
-Key fingerprint = FCD2 3660 5D6B 9D27 7FC6  E0FF DA7E 521F 10F6 4098
-Dominick Grift
-Mastodon: @kcinimod@defensec.nl
+========================================================================
+If your user interface is intuitive in retrospect ... it isn't intuitive
+========================================================================
 

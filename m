@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2276-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2283-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4C09C40AB
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2258B9C40B2
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:18:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6222282CE9
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDBC91F22811
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA5A1A2541;
-	Mon, 11 Nov 2024 14:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7311A0AFB;
+	Mon, 11 Nov 2024 14:17:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="CV1dZ7cl"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="FiPpzEcy"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2241A072A
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8861A0BC5
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334647; cv=none; b=PUBoKWRN6zqSk087kPdUeRxs2hrJGHzwTCOQ+nNBmDctFUxuJWa89JAiTUzLMR56unbH9qisaI+VerNaevf+ucW0f2OhHrG7lo95yxqL19hcGKPB2nvz8BFh+wkLfSXiTOuxcmjGOEi9I5okeFThBBO89o9SGhbrykzPpn0/nqY=
+	t=1731334649; cv=none; b=PGVziP03/MAkR0VXRPRj4v9lWddpLI3DJzsg/AOX4cF3BBl2AEwx92s8BHgVoU9WhcKTT386AhutHEvhX5HFBCdEYiIsI7OXdeHe2thJdkcYHKwwPFz4ggUBaJjR8yK50CtGSO1Kse6PZMgy6vhfwWEgD5jHBoycJXIhQ8g+6lQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731334647; c=relaxed/simple;
-	bh=tyr0jGzMXgry1xlE2Y8+wVlz4+AS/fdk+FMT9UutWvo=;
+	s=arc-20240116; t=1731334649; c=relaxed/simple;
+	bh=/Dh1leDHEVHyp6q17kdlvhUV80PCWSmPRvNlgnVZdtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VRQkM5D5YsvFManfoWPxW4uhTpXrFtjq4Y3HoQ/i9H8/t0TbmaTkm2Vmjtx6wa3aYrGV0WnMtu4GlfAb6Zhpmuzecb+Mpkz4Q5iD/fKuc4Azrl+QuckPuvkFZly1jIfY8Oi/LhMr8Zek2pmccO7dfZMSHC13M0zR8mn4qjiwhA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=CV1dZ7cl; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=fgLV98uoREK3MCgibxXmvfrkDNlXboM237nVJSCrn0bfYo3iFVzFhJ4bKp4SBILAw2Q3iMk5eaOkNMsEyjajLsbmNQKkh/6JHVWPM7KRed5SLCd4JzbF89C+Y85dnWy7VdPgAbqW43YKyJ055zwuJGRD5OA/nw0wQlkVIOST/pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=FiPpzEcy; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GaCHPYdCnicSEkwgNsh0Ck31jbuOQL6fkUIjXnPI6zg=;
-	b=CV1dZ7clfLNEZAQU55mLlUpLP9reaPKqmJ5soulq2kN9WZuWI81W6e47kwdqb10YZcKgqA
-	Z1caBMVEdSlet9YxgrC3X5h1wOWv23Xxykd3EuimPTGw7RJPKZotQv2HiytDouT9Fn5Hho
-	JSLQpvsGPzF4kLbiGGOUOEEa1hm8LjJW/PUmCESFRVrRWrj2+jzABtQ+UNmjdP15N7ov/3
-	z33pFznW8qQkzoyHAt63/F3TwmNEncepUNPpUd2vC7ByzKHmB0qehZsZKDf/HBOFjF7h6o
-	8P6EALclZ4v/CeX42E/py6aPs194O9aYt5L5SBC94zBi1DS7MGROfMWrcJf0yw==
+	bh=PYk4joFJW3ReicczbIQFVSseJYMsqWheTn/zNr7qYBo=;
+	b=FiPpzEcyG1eWXjWrYcyycviHSvfQ1MzZodn1cl4+HyVdg0Bod75446wvHjHpjxpdwf39dH
+	XGNIDJNv0J96cW27c7n+68Fhw7DK5mwgoQdWezxS2IYrnpxgL2jF9JNJ9IcathpPOnXooH
+	ZqvL9SDebhNI2IgxBDkd7DUf6nKEofofs8PPnkOkOaE1/DgtZk/uVq1cjqLJwOHaxLtXKN
+	2zRvBMCYyZVf30e/4D/7BO0IW/dMkO3ElqZCYhIe41oDAcCVGG54KKxlxxbuN+BtvKtrJC
+	W5SxP0BLZ/WQEnvFga5olOIGS54+0/+w1QnPQ2jha8NiQ5ItAUI54W05bZ1liQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 42/47] libsemanage: simplify file deletion
-Date: Mon, 11 Nov 2024 15:17:01 +0100
-Message-ID: <20241111141706.38039-42-cgoettsche@seltendoof.de>
+Subject: [PATCH 43/47] libsemanage: optimize policy by default
+Date: Mon, 11 Nov 2024 15:17:02 +0100
+Message-ID: <20241111141706.38039-43-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,63 +64,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Instead of checking if a file to be deleted exists, just try to delete
-it and ignore any error for it not existing in the first place.
+Fedora is setting optimize-policy to 1 by default, and there seem to be
+no bugs related to policy optimizations so far.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/direct_api.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ libsemanage/man/man5/semanage.conf.5 | 2 +-
+ libsemanage/src/conf-parse.y         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/libsemanage/src/direct_api.c b/libsemanage/src/direct_api.c
-index e4ca5f26..2a3cdee9 100644
---- a/libsemanage/src/direct_api.c
-+++ b/libsemanage/src/direct_api.c
-@@ -2761,7 +2761,6 @@ static int semanage_direct_install_info(semanage_handle_t *sh,
- 	int status = 0;
- 	int ret = 0;
- 	int type;
--	struct stat sb;
+diff --git a/libsemanage/man/man5/semanage.conf.5 b/libsemanage/man/man5/semanage.conf.5
+index e6e8e27a..7ac45c96 100644
+--- a/libsemanage/man/man5/semanage.conf.5
++++ b/libsemanage/man/man5/semanage.conf.5
+@@ -124,7 +124,7 @@ In order to compile the original HLL file into CIL, the same HLL file will need
+ .TP
+ .B optimize-policy
+ When set to "true", the kernel policy will be optimized upon rebuilds.
+-It can be set to either "true" or "false" and by default it is set to "false".
++It can be set to either "true" or "false" and by default it is set to "true".
  
- 	char path[PATH_MAX];
- 	mode_t mask = umask(0077);
-@@ -2862,13 +2861,11 @@ static int semanage_direct_install_info(semanage_handle_t *sh,
- 			goto cleanup;
- 		}
+ .SH "SEE ALSO"
+ .TP
+diff --git a/libsemanage/src/conf-parse.y b/libsemanage/src/conf-parse.y
+index 83aa3402..43179b9d 100644
+--- a/libsemanage/src/conf-parse.y
++++ b/libsemanage/src/conf-parse.y
+@@ -384,7 +384,7 @@ static int semanage_conf_init(semanage_conf_t * conf)
+ 	conf->bzip_small = 0;
+ 	conf->ignore_module_cache = 0;
+ 	conf->remove_hll = 0;
+-	conf->optimize_policy = 0;
++	conf->optimize_policy = 1;
  
--		if (stat(path, &sb) == 0) {
--			ret = unlink(path);
--			if (ret != 0) {
--				ERR(sh, "Error while removing cached CIL file %s.", path);
--				status = -3;
--				goto cleanup;
--			}
-+		ret = unlink(path);
-+		if (ret != 0 && errno != ENOENT) {
-+			ERR(sh, "Error while removing cached CIL file %s.", path);
-+			status = -3;
-+			goto cleanup;
- 		}
- 	}
- 
-@@ -2965,13 +2962,10 @@ static int semanage_direct_remove_key(semanage_handle_t *sh,
- 			goto cleanup;
- 		}
- 
--		struct stat sb;
--		if (stat(path, &sb) == 0) {
--			ret = unlink(path);
--			if (ret != 0) {
--				status = -1;
--				goto cleanup;
--			}
-+		ret = unlink(path);
-+		if (ret != 0 && errno != ENOENT) {
-+			status = -1;
-+			goto cleanup;
- 		}
- 	}
- 	else {
+ 	conf->save_previous = 0;
+ 	conf->save_linked = 0;
 -- 
 2.45.2
 

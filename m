@@ -1,55 +1,55 @@
-Return-Path: <selinux+bounces-2268-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2271-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 198019C40A4
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBC89C40A7
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 15:17:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 955A81F225BA
-	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6F428187A
+	for <lists+selinux@lfdr.de>; Mon, 11 Nov 2024 14:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC4161A0BDB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF93C1A0BF1;
 	Mon, 11 Nov 2024 14:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="X1lEeh2G"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="CW30iPxQ"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00D119F40B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31E21A0AFA
 	for <selinux@vger.kernel.org>; Mon, 11 Nov 2024 14:17:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731334646; cv=none; b=cF3KDxrA2tHlgsVujQsEnOoOhPZh9pgCr5rdw9RlSAt2f0L4Y5+ciajIf1UkpZIwF95dbSHWqjt2liidl3ZRe1b8EyOPSHjVivZiJhuLZupaw6SSB0nYgAlwrep0x7z93Kk9S20HNeVY460sQH2QOki5t/nmzaMboyS1YY5/1Kc=
+	t=1731334646; cv=none; b=DvmAKBrM9mb6tP2s81AXa558xa4MZFJo3//wb5f1n7qe7/CUEF+XWMQV4mUTL7Ygm4pR/GQBpmXbxYDoK1YihLkkt+qTyhBS/tJwcTF0O6mre8TgcODlLDuK0HWIuhBUHmkSdVhby3LwxD6bmex0uDFvfNNgVJiJJSpS4PgJTeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1731334646; c=relaxed/simple;
-	bh=Ew9T5vXFjGUbOfAcrJKejQe8vq4fj/cuGNmDS+zuZKE=;
+	bh=U4G+mP2sCgHQb1JFYaCWdEf/uSv7HUjJY6PU+8KIjg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WqiTBS7SRcs7HhzhTYjq2nv0hmO6cpV/n7MQb3jSNnX14RAoHA15rXhSGRsW3ijLpRTaM/Ne1OZ9ci5vnd5wd4ekyYb+R08wQ0Wr9ArwPZuihs5PKRSy1PS8S8cabF2ff8mGiH05e9i0krLDO2oM9KVLw+Cesw1v8iHt4qAU230=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=X1lEeh2G; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=WF7fxYHyO1CssN6mFSpRwpgRfH84MTRJUTwdpqFvvir4wL5KdqWFdhuGnSWubNplEam3cRnLoAL1335CsBNzETdndKFsA9dfj9d909Ooh7g/TUgbwA+CxnNQcJHAvsuSJnvOqyG0w+zxCqh+d+fR/o/skaNPCS1R44Yk5jLTZho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=CW30iPxQ; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1731334639;
+	s=2023072701; t=1731334640;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K3AzfBnbeSKlt8eXAwPxGIEqw+5cF/4EyhUIt/fuX4k=;
-	b=X1lEeh2GFMH0cGRJwbfiKVX6JgXhtiscR5/GTG/gloGUC0ztqbDZFlCb/6Xfizv+8ixjlj
-	mrmpt3GvKJr2VuyY7JqGrSBH4A+jbVLJToTZFJ0raiafjVeRiax2yJe4u+0L+nSKtTAKva
-	wrcboQaROvDRwmtWR207wZXMrIf9/yatVKwRDF/TidgL1jCvBFWwMwT/4zDA1nAsZlr3HT
-	vuaP2gffPpHPzkNEeV8YIytnoZbtagRNcnvoG9Emj+ft6+xwGM71tz91pmGcHh5wxxVohX
-	ZH3D/3+Kau1BQh+gM48OS4ZVNzc+aWzA0TZzgpW8It9SCxLlb2JwhdfXqkxOjQ==
+	bh=vjl50UKi5rhHt01L3BdcEnxDOBWRdPK/I3dGhkS4keE=;
+	b=CW30iPxQsDdkMN5p/w2+BEsN8XIJFMbRKKnqvJbrNE69JAsC1zWq+h1DeEV5lqW/v0gDxI
+	x+tszJakY/45NNPKgU8H3cuBjRPm3Bv68s+u/wUhxzmewMZa3uOJGiKv6XfJ1KjX6t4vFj
+	/8dkUEwo1Uw47yHulvA+t7naUZTz3okvdmW806DBZnGlUsOFbUxHQjJYi40N9JDAoAY/Te
+	wmiKPLeJMH6UkI30foCSsvbJOJBld9UYDzG7UrufenAzsbWFqOhdJf78LcpEjxyTw8ULLC
+	tWp+GAZqUdbfrT21Vv/Ih4E4F47Z1IKutNs2seeZRt4tmlcjmhMvr4o5uTFgcA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 37/47] libsemanage: preserve errno during internal logging
-Date: Mon, 11 Nov 2024 15:16:56 +0100
-Message-ID: <20241111141706.38039-37-cgoettsche@seltendoof.de>
+Subject: [PATCH 38/47] libsemanage: avoid strerror(3)
+Date: Mon, 11 Nov 2024 15:16:57 +0100
+Message-ID: <20241111141706.38039-38-cgoettsche@seltendoof.de>
 In-Reply-To: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 References: <20241111141706.38039-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,41 +64,46 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
+Use the %m printf modifier to format errno in a thread safe way.
+
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libsemanage/src/debug.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ libsemanage/src/debug.c          | 6 ++++--
+ libsemanage/src/semanage_store.c | 4 ++--
+ 2 files changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/libsemanage/src/debug.h b/libsemanage/src/debug.h
-index a18a95be..506b9db0 100644
---- a/libsemanage/src/debug.h
-+++ b/libsemanage/src/debug.h
-@@ -23,6 +23,7 @@
- #ifndef _SEMANAGE_INTERNAL_DEBUG_H_
- #define _SEMANAGE_INTERNAL_DEBUG_H_
+diff --git a/libsemanage/src/debug.c b/libsemanage/src/debug.c
+index 1e375694..a2708279 100644
+--- a/libsemanage/src/debug.c
++++ b/libsemanage/src/debug.c
+@@ -79,8 +79,10 @@ void semanage_msg_default_handler(void *varg __attribute__ ((unused)),
+ 	vfprintf(stream, fmt, ap);
+ 	va_end(ap);
  
-+#include <errno.h>
- #include <stdio.h>
- #include <semanage/debug.h>
- #include <sepol/debug.h>
-@@ -36,6 +37,8 @@
- 	          channel_arg, func_arg, ...) do {         \
- 	                                                   \
-         if ((handle_arg)->msg_callback) {                  \
-+                int errsv__ = errno;                       \
-+                                                           \
-                 (handle_arg)->msg_fname = func_arg;        \
-                 (handle_arg)->msg_channel = channel_arg;   \
-                 (handle_arg)->msg_level = level_arg;       \
-@@ -43,6 +46,8 @@
-                 (handle_arg)->msg_callback(                \
-                         (handle_arg)->msg_callback_arg,    \
-                         handle_arg, __VA_ARGS__);          \
-+                                                           \
-+                errno = errsv__;                           \
-         }                                                  \
- } while(0)
+-	if (errsv && errsv != ENOMEM)
+-		fprintf(stream, " (%s).", strerror(errsv));
++	if (errsv && errsv != ENOMEM) {
++		errno = errsv;
++		fprintf(stream, " (%m).");
++	}
  
+ 	fprintf(stream, "\n");
+ }
+diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
+index 98ef2524..68bc8c41 100644
+--- a/libsemanage/src/semanage_store.c
++++ b/libsemanage/src/semanage_store.c
+@@ -739,8 +739,8 @@ static int semanage_rename(semanage_handle_t * sh, const char *src, const char *
+ 		return retval;
+ 
+ 	/* we can't use rename() due to filesystem limitation, lets try to copy files manually */
+-	WARN(sh, "WARNING: rename(%s, %s) failed: %s, fall back to non-atomic semanage_copy_dir_flags()",
+-		 src, dst, strerror(errno));
++	WARN(sh, "WARNING: rename(%s, %s) failed: %m, fall back to non-atomic semanage_copy_dir_flags()",
++		 src, dst);
+ 	if (semanage_copy_dir_flags(src, dst, 1) == -1) {
+ 		return -1;
+ 	}
 -- 
 2.45.2
 

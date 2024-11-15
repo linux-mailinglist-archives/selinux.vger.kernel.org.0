@@ -1,63 +1,59 @@
-Return-Path: <selinux+bounces-2307-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2303-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A539E9CE038
-	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 14:38:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F39D89CE030
+	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 14:37:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BE1A1F24F1B
-	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 13:38:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9673282334
+	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 13:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197F61CEEBE;
-	Fri, 15 Nov 2024 13:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC011CDFD8;
+	Fri, 15 Nov 2024 13:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="ltN0Fd6C"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="mZ0E4jus"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473FD1CEAC9;
-	Fri, 15 Nov 2024 13:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0D71CDFC1;
+	Fri, 15 Nov 2024 13:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731677821; cv=none; b=aQPTl/zg9vgDdQPnoxXdD3WTyq6tEB6b579kAgcgGPURvuVfeHdSQ2uY7L/OKp9gtH3vg2Xl29w2ZPMMIwdabRvJeySRpkrU1OiKivrkam7AWGVFPQZHxbtFXbysbpDiEItnSCMAlUCiqO4I+lvRB/MSTgp0vlXkdG9pbaVonys=
+	t=1731677817; cv=none; b=PccLF5fAWTA03qnpk2axEblUzDy3tTQ/zCsDkUeU0xPB46SrNXhaCyFnW5NldU95vT/YiSTbLPxORCheNvT9GipojPik0tpCqsbbT0l9t8aWQemUvAT68LzRk5vfkANMmJIHZvs3X7OLAg5x5QY/Ww9P/M4402C3aabyo9UZJ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731677821; c=relaxed/simple;
-	bh=9n70bJPP3MOgRC7WkuNIfl9C1H4ut3X58hIJ0yBJnKQ=;
+	s=arc-20240116; t=1731677817; c=relaxed/simple;
+	bh=ouHDODVJurRyJEOkOhCj9pVvwAvdaE9uDibnZlcGZN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a+UO77M25RYMgl7pH16E/sTuR/JQMIt2lACA33YonEIOD/fo+05DLg3dhAejI7pL4zqxRNDGwhTBv0strVVAlygMLBpkhcDD+MfjMS7CKoHnTKvt4iEStjEac16EkSWoH19gtFE5NHgRhnWk0IWC6g0FGEyM6JCeMbJtYtq1UOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=ltN0Fd6C; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=N281GkLV1LOVNeobR0xPZnTKNH0+cLn7168MJGPJQLZQrPnL7eZwzCFLFoHs27v5pH4F2vidJBXHAjxw3ZBf50mTnAnG2JIlD5lgBRGXdGgHE560gvDV8nUQwQm9RqydRMPJLIly0LyweKUtDpRlwasTalZGNFW4LMMoImrkVJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=mZ0E4jus; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1731677811;
+	s=2023072701; t=1731677812;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ULwXJo7buuhUKIsoYp98ePbuFeAXn2366OdVFKSgj6c=;
-	b=ltN0Fd6Cc5ss7iKMIBZ8g6MnROCH7aOci8/hthDlzVs7cDV0G5EoFGiRxGqp6wptwVyOLm
-	XsIjXqC0MlaudtUwjElUqX8BNb/MOG+yB3GlxEISaHLk1rkqodEIIedM3PC8rPxveATIWq
-	2Fga1PzZIwHsNzCVsCxdftkyIbXN12AtJmKinVT2aLmOFmEkfdXSa4SjDxfEp3J7g41BzD
-	mG6z1aEypnQ0FYhvHNWY6uH+NlReYmAdj9pLFMfb2jRWHP68MdMMt4Sh0G+EUv3v2cLlKZ
-	NYV5GDQ1W6r56niEAYVmp0ov0XdT55Tmtg22IxjttQoH6ntGBkeh321TWj2tbQ==
+	bh=R2g5Wk+CWFl28MX4lhzXMKz3Oz2ct6jAzT7+Bkx0DJg=;
+	b=mZ0E4jus303HZmXIXmo5nMnPfRfDAYpDKy3jlgD+9mdaySPZqngn9u/9AppSwmLg+3wRuI
+	aBpvcGL5bqDrgu3p7VHIjPz4TQrbITWCgWQY0WpuF390xZ4bPhoYk142VSJ+hb36EfIWKD
+	Oo1ArTkrVdSH5TFv5lSW9AQoDrbg45+Z/4mrWs2emkO7r5E8HBKDm1v3vYU4LtS2FQyHbv
+	c8M5QBaFcffmqG3oDyCj9abvMXckp5Kn8SnUboo8cEPZAHYeA00+BIthHl2K79ArTgxJq+
+	L7pSAolgEfZmIFhoNxsnNIci20Gl86oFh1TyKSVGgb1nO2a+ru2PXUGYDHb/MA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
 	Paul Moore <paul@paul-moore.com>,
 	Stephen Smalley <stephen.smalley.work@gmail.com>,
 	Ondrej Mosnacek <omosnace@redhat.com>,
-	Casey Schaufler <casey@schaufler-ca.com>,
-	GUO Zihua <guozihua@huawei.com>,
-	Canfeng Guo <guocanfeng@uniontech.com>,
-	=?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 04/22] selinux: rework match_ipv6_addrmask()
-Date: Fri, 15 Nov 2024 14:35:23 +0100
-Message-ID: <20241115133619.114393-4-cgoettsche@seltendoof.de>
+Subject: [RFC PATCH 05/22] selinux: avoid nontransitive comparison
+Date: Fri, 15 Nov 2024 14:35:24 +0100
+Message-ID: <20241115133619.114393-5-cgoettsche@seltendoof.de>
 In-Reply-To: <20241115133619.114393-1-cgoettsche@seltendoof.de>
 References: <20241115133619.114393-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -72,42 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Constify parameters, add size hints, and simplify control flow.
-
-According to godbolt the same assembly is generated.
+Avoid using nontransitive comparison to prevent unexpected sorting
+results due to (well-defined) overflows.
+See https://www.qualys.com/2024/01/30/qsort.txt for a related issue in
+glibc's qsort(3).
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- security/selinux/ss/services.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ security/selinux/ss/policydb.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/security/selinux/ss/services.c b/security/selinux/ss/services.c
-index b7ef8ab06185..261a512528d5 100644
---- a/security/selinux/ss/services.c
-+++ b/security/selinux/ss/services.c
-@@ -2593,17 +2593,15 @@ int security_netif_sid(char *name, u32 *if_sid)
- 	return rc;
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 383f3ae82a73..d04d9ada3835 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -37,6 +37,8 @@
+ #include "mls.h"
+ #include "services.h"
+ 
++#define spaceship_cmp(a, b) (((a) > (b)) - ((a) < (b)))
++
+ #ifdef CONFIG_SECURITY_SELINUX_DEBUG
+ /* clang-format off */
+ static const char *const symtab_name[SYM_NUM] = {
+@@ -421,11 +423,11 @@ static int filenametr_cmp(const void *k1, const void *k2)
+ 	const struct filename_trans_key *ft2 = k2;
+ 	int v;
+ 
+-	v = ft1->ttype - ft2->ttype;
++	v = spaceship_cmp(ft1->ttype, ft2->ttype);
+ 	if (v)
+ 		return v;
+ 
+-	v = ft1->tclass - ft2->tclass;
++	v = spaceship_cmp(ft1->tclass, ft2->tclass);
+ 	if (v)
+ 		return v;
+ 
+@@ -456,15 +458,15 @@ static int rangetr_cmp(const void *k1, const void *k2)
+ 	const struct range_trans *key1 = k1, *key2 = k2;
+ 	int v;
+ 
+-	v = key1->source_type - key2->source_type;
++	v = spaceship_cmp(key1->source_type, key2->source_type);
+ 	if (v)
+ 		return v;
+ 
+-	v = key1->target_type - key2->target_type;
++	v = spaceship_cmp(key1->target_type, key2->target_type);
+ 	if (v)
+ 		return v;
+ 
+-	v = key1->target_class - key2->target_class;
++	v = spaceship_cmp(key1->target_class, key2->target_class);
+ 
+ 	return v;
+ }
+@@ -493,15 +495,15 @@ static int role_trans_cmp(const void *k1, const void *k2)
+ 	const struct role_trans_key *key1 = k1, *key2 = k2;
+ 	int v;
+ 
+-	v = key1->role - key2->role;
++	v = spaceship_cmp(key1->role, key2->role);
+ 	if (v)
+ 		return v;
+ 
+-	v = key1->type - key2->type;
++	v = spaceship_cmp(key1->type, key2->type);
+ 	if (v)
+ 		return v;
+ 
+-	return key1->tclass - key2->tclass;
++	return spaceship_cmp(key1->tclass, key2->tclass);
  }
  
--static int match_ipv6_addrmask(u32 *input, u32 *addr, u32 *mask)
-+static bool match_ipv6_addrmask(const u32 input[4], const u32 addr[4], const u32 mask[4])
- {
--	int i, fail = 0;
-+	int i;
- 
- 	for (i = 0; i < 4; i++)
--		if (addr[i] != (input[i] & mask[i])) {
--			fail = 1;
--			break;
--		}
-+		if (addr[i] != (input[i] & mask[i]))
-+			return false;
- 
--	return !fail;
-+	return true;
- }
- 
- /**
+ static const struct hashtab_key_params roletr_key_params = {
 -- 
 2.45.2
 

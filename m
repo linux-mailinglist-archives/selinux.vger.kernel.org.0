@@ -1,155 +1,122 @@
-Return-Path: <selinux+bounces-2324-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2326-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C169CE05F
-	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 14:43:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 690BA9CE0A3
+	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 14:51:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1643287678
-	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 13:43:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EFDC286915
+	for <lists+selinux@lfdr.de>; Fri, 15 Nov 2024 13:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43331D3193;
-	Fri, 15 Nov 2024 13:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151081DD0E1;
+	Fri, 15 Nov 2024 13:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="jI3grPGn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WWquuy8O"
 X-Original-To: selinux@vger.kernel.org
-Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384AF1D2F5C
-	for <selinux@vger.kernel.org>; Fri, 15 Nov 2024 13:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E201DC734
+	for <selinux@vger.kernel.org>; Fri, 15 Nov 2024 13:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731677846; cv=none; b=LDwjJKOLFM+72K3wLpRifyJ4dsmeloNKWACbZRYibV1fo06WotVv2dkpomYZc/XmKt4jMFZYVzQyIEI7nDK6acVpRSgXzvaZ7gqK6IvIr9vozpjJ6alSfIL02bBcriHT2sNVgZ7KMqXmEe9vD4qhDllnqj8BUi+6cHKORN2XpVE=
+	t=1731678369; cv=none; b=rGsf3OA4YbjWvzdc0ZJnAhqn9Z3qV0Z/XJM/ZkKgkg9Q0GWzd0tdOZnCj4oSVCFp1qpK8a8FF2P9XGF2AYWJ4xrrkKgeCnam1+NKeWvskj4VY5afk+gRK9sW1lmbG6xYM7KNqcZBYnx7ak8U5SUIssgsyWkmBhLc6TrkumHHGTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731677846; c=relaxed/simple;
-	bh=MOOrFFVd/j4LC4Clh7cGEsMw9B9tNUc5RDVtT6mAKCU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B04A0Ch4IE83Rfyv8ZW8u6/Az/pScV4Py1EMwqm60iDEGM2nTsMqeKy9qhDURyWZNxucVWfQjd9RCF9xqqteyDlIDrgPg8QUjgp0h1UlWJKikD8575cdMMkhAWMuODLKb9DNAyJ/u8Jb+JxvbxwQ75mAAK9vgff/TYsALTFn1m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=jI3grPGn; arc=none smtp.client-ip=168.119.48.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
-From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1731677843;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dpTEzepp26spiJ8ZHrDs3GRobaxeX2+/+GpXYw//a2U=;
-	b=jI3grPGnzu7K933a5sX52YUYRghn2d1G70mVaULL+nUW+q9dswk9vh2sANmS65VEalMA2Z
-	uulfxatXyNZiDX5nqwqu3dfJZrhqA0WSEndFMQLzxOxM5t2KqE5oODphHsWlp1Kk9JkxXM
-	S2vtG9Ru/oA/zw/BMIqx9KDIXCDcVF9mGo4jNPcM7YciUrzkw71lzMy7iSFT3Ka4TFyUrl
-	23CakCjyvyWS1d7ZFdM28S3Vf2ivTZxb2ZFOztGyQDe9h6aFbD8XW1HUwADGhLS1rc5o/B
-	82vHgzJFgLtxclu/KQJT6V5JmJyNAQdfXIgKQmWzfqSRFtF/z2L8ghgyxsi92w==
-To: selinux@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [RFC PATCH 00/22] selinux: harden against malformed policies
-Date: Fri, 15 Nov 2024 14:35:42 +0100
-Message-ID: <20241115133619.114393-23-cgoettsche@seltendoof.de>
-In-Reply-To: <20241115133619.114393-1-cgoettsche@seltendoof.de>
-References: <20241115133619.114393-1-cgoettsche@seltendoof.de>
-Reply-To: cgzones@googlemail.com
+	s=arc-20240116; t=1731678369; c=relaxed/simple;
+	bh=++QcQUMOkENKgCi0RRk6dDtv6oLs5z66MyVQ4gJ1hes=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=heAGJyVoGdDjacy42Mnro3LZecooTS/BY36SkpymOBmzEWMbukcqESM21HM8hS9JlnEUfkeMZx17WmgouOk9eZmSXOLdGD+IAB7CwMQqytHKPWgVsS6lmNPIlTJfMfR1kiJr/cZKCJ/eZ6h7h/h3aMnHNJCJQSL2zR55Xxl2aTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WWquuy8O; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7180cc146d8so909724a34.0
+        for <selinux@vger.kernel.org>; Fri, 15 Nov 2024 05:46:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1731678367; x=1732283167; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ruWkUgBm3HX4Li2zU65ga9FsfiYwcpASrllqSCM7kX0=;
+        b=WWquuy8OiBPsc3e8r4J9OOo2RmqHCptPAAklidbvfNBD5BqwGXASmEFK1Sd1z+NeqQ
+         zn1xcwu5fZ58bs5olcCvKNOe/zrDKdmPk2dVlyY3QadEPZgaFbTO+pgtXzMIsYyFPf8G
+         MkBkJxA4SMRR7WxOFsoOuwtjqIrssRuj1hG4oVxVXEEgwiQQZqFquMT2dh7pRwt+7nbV
+         wfU+B1CksgLxNK+Hc3Fo9MTtPHSAf7oectTXcpY8gCwylP2WIQAGifE8cJg7PThfHx7E
+         UzPhf0/FCDzeqUXXN6hjlJF4QEgrSpGZuOgttR2fc7jsJCioyJZ7lwgiuhiwm8sjOdK/
+         S0jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1731678367; x=1732283167;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ruWkUgBm3HX4Li2zU65ga9FsfiYwcpASrllqSCM7kX0=;
+        b=phbWWot3XkNhNnBRUFlTuYU5zcl1XV4pO7FSog855ICCjnYAKtSi8c9eUToZ2lh1Fj
+         razznWeCOZgULOaAHd3+1zg0U5hnkYZfTzGsw2hl+psAqKEezUIyyUZ7Vp0l1A4D+jrP
+         mgF1GTtjHPtGJ8dsYFRJ10wtVr5vzH7WH0LCa276WDal6eeMpFbT8GXn/KvHngn6K/2p
+         dniKifjVpItwhyNCDArqgl02ep/pNm3MVmJBWpCJCNJ2i54VyqQs+pTP8ArpQjPEIIMt
+         K980AcXyv4zLvQ2nX8wSwDd52RW+A4L5ZRyQ6ICLtTyiarshm7peggqZgyAmAUiTF1ZX
+         u/xA==
+X-Gm-Message-State: AOJu0Yw1vE4XuMgi2pyQhnFMnD9tFfwmjJ0FwOfnqvQYnkIHZTVMZBHP
+	R74BFHI2ZVMTDZlwzI+PoyxTNbndpiTfgxu79wC01JIOdO1pXk6899MQaHgiAfjPhPCopGiWgIq
+	y0RgY1E7NKQYJDh8rV731fPFz34RyJs+Y
+X-Google-Smtp-Source: AGHT+IFzZf8CK0UfF7mQKDcqaJHwI3zk+AWd3Bkrq8tCeZvs4JHMJ/UD4w+n+UW3o9iUoXLmJT0JhVo8MFgo43+rcuQ=
+X-Received: by 2002:a05:6830:6f06:b0:718:b83:8fb5 with SMTP id
+ 46e09a7af769-71a7792169dmr3670506a34.8.1731678366680; Fri, 15 Nov 2024
+ 05:46:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20241024084816.40872-1-fvogt@suse.de> <20241024084816.40872-2-fvogt@suse.de>
+In-Reply-To: <20241024084816.40872-2-fvogt@suse.de>
+From: James Carter <jwcart2@gmail.com>
+Date: Fri, 15 Nov 2024 08:45:55 -0500
+Message-ID: <CAP+JOzShz1aBwrgadZZM8nVV_dpK3vmz9DuZU9Ld_RS_m0xxHw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] restorecond: Set GLib IO channels to binary mode
+To: Fabian Vogt <fvogt@suse.de>
+Cc: SELinux List <selinux@vger.kernel.org>, Cathy Hu <cahu@suse.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Christian Göttsche <cgzones@googlemail.com>
+On Thu, Oct 24, 2024 at 4:48=E2=80=AFAM Fabian Vogt <fvogt@suse.de> wrote:
+>
+> By default, GIO channels use UTF-8 as encoding, which causes issues when
+> reading binary data such as inotify events.
+>
+> Signed-off-by: Fabian Vogt <fvogt@suse.de>
 
-With the SELinux namespace feature on the horizon it becomes important
-to identify and reject malformed policies at load time.  Otherwise
-memory corruptions can compromise the kernel or NULL-pointer dereferences
-and BUG() encounters can bring systems down.  Currently this is not a
-security relevant issue since loading a policy requires root privileges
-and permission of the current loaded SELinux policy, making it one of the
-most privileged operation.
+For these two patches:
+Acked-by: James Carter <jwcart2@gmail.com>
 
-The first 9 patches are cleanup commits with overseeable diffs.
-
-Patch 10 unifies the underlying type used for security class identifiers.
-
-Patch 11 to 21 add various checks at policy load time to reject malformed
-policies.
-
-Patch 22 needs some discussion:
-It limits the valid set of characters and the length for strings defined
-by policies.  Currently there are no restrictions, so control characters
-are accepted, e.g. Esc as part of a type name, and their length can be
-arbitrary.  Human formatted security contexts however must not be
-arbitrarily long, one example is they must fit in a page size for
-selinuxfs interaction and network associations.
-Thus the patch introduces the following restrictions:
-  * Disallow control characters
-  * Limit characters of identifiers to alphanumeric, underscore, dash,
-    and dot
-  * Limit identifiers in length to 128, expect types to 1024 and
-    categories to 32, characters (excluding NUL-terminator)
-    
-p.s.:
-On a related note to patch 10, the underlying type for types (and type-
-attributes) is also not consistent:
-In role, range and filename transitions, and the actual datum u32 is
-used, while avtables use u16, practically limiting the number of
-available types to 65534 (= U16_MAX - 2 (0 and U16_MAX are invalid)).
-
-Christian Göttsche (22):
-  selinux: supply missing field initializers
-  selinux: avoid using types indicating user space interaction
-  selinux: align and constify functions
-  selinux: rework match_ipv6_addrmask()
-  selinux: avoid nontransitive comparison
-  selinux: rename comparison functions for clarity
-  selinux: use known type instead of void pointer
-  selinux: avoid unnecessary indirection in struct level_datum
-  selinux: make use of str_read()
-  selinux: use u16 for security classes
-  selinux: more strict policy parsing
-  selinux: check length fields in policies
-  selinux: validate constraints
-  selinux: pre-validate conditional expressions
-  selinux: introduce ebitmap_highest_set_bit()
-  selinux: check type attr map overflows
-  selinux: reorder policydb_index()
-  selinux: beef up isvalid checks
-  selinux: validate symbols
-  selinux: more strict bounds check
-  selinux: check for simple types
-  selinux: restrict policy strings
-
- security/selinux/hooks.c               |   2 +-
- security/selinux/include/classmap.h    |   2 +-
- security/selinux/include/conditional.h |   2 +-
- security/selinux/include/security.h    |   4 +-
- security/selinux/selinuxfs.c           |   2 +-
- security/selinux/ss/avtab.c            |  67 ++-
- security/selinux/ss/avtab.h            |  12 +-
- security/selinux/ss/conditional.c      | 170 +++---
- security/selinux/ss/conditional.h      |   6 +-
- security/selinux/ss/constraint.h       |   2 +-
- security/selinux/ss/context.c          |   2 +-
- security/selinux/ss/context.h          |  10 +-
- security/selinux/ss/ebitmap.c          |  31 +-
- security/selinux/ss/ebitmap.h          |   6 +-
- security/selinux/ss/hashtab.h          |   4 +-
- security/selinux/ss/mls.c              |  70 ++-
- security/selinux/ss/mls.h              |   6 +-
- security/selinux/ss/policydb.c         | 698 +++++++++++++++++++------
- security/selinux/ss/policydb.h         |  68 ++-
- security/selinux/ss/services.c         |  82 +--
- security/selinux/ss/sidtab.c           |   2 +-
- security/selinux/ss/symtab.c           |   2 +-
- security/selinux/ss/symtab.h           |   2 +-
- 23 files changed, 895 insertions(+), 357 deletions(-)
-
--- 
-2.45.2
-
+> ---
+>  restorecond/user.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/restorecond/user.c b/restorecond/user.c
+> index 3ae3ebbb7230..7188c22e3119 100644
+> --- a/restorecond/user.c
+> +++ b/restorecond/user.c
+> @@ -238,6 +238,7 @@ static int local_server(void) {
+>         }
+>         /* watch for stdin/terminal going away */
+>         GIOChannel *in =3D g_io_channel_unix_new(0);
+> +       g_io_channel_set_encoding(in, NULL, NULL);
+>         g_io_add_watch_full( in,
+>                              G_PRIORITY_HIGH,
+>                              G_IO_IN|G_IO_ERR|G_IO_HUP,
+> @@ -282,6 +283,7 @@ int server(int master_fd, const char *watch_file) {
+>         set_matchpathcon_flags(MATCHPATHCON_NOTRANS);
+>
+>         GIOChannel *c =3D g_io_channel_unix_new(master_fd);
+> +       g_io_channel_set_encoding(c, NULL, NULL);
+>
+>         g_io_add_watch_full(c,
+>                             G_PRIORITY_HIGH,
+> --
+> 2.47.0
+>
+>
 

@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2333-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2338-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE299D13E8
-	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 16:05:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F579D146B
+	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 16:25:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B762D1F230DC
-	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 15:05:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C53DB319E3
+	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 15:06:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AEA1BBBC6;
-	Mon, 18 Nov 2024 15:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7C41C245C;
+	Mon, 18 Nov 2024 15:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="RWxscOZK"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="Eixq4JwX"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB521B0F0B
-	for <selinux@vger.kernel.org>; Mon, 18 Nov 2024 15:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D9C1BD508
+	for <selinux@vger.kernel.org>; Mon, 18 Nov 2024 15:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731942193; cv=none; b=L0hM36C0U6xWVH+4bTZpPhxLJxe7l1MLOduSwsSEf4zgw4kXbjF0KoIyikUsBQinfHZiFZyr0UBmVFqUVbz959QkuXbZjZP8NlSlN2CjFYPCZ42M1lC5p++S5V1rdiYuzXPzYu9OClZuoSU7VGywBoDod+upD0sz8Xh+chHd20Q=
+	t=1731942196; cv=none; b=K7qUiKea6df3yJOXmMcGA4JKlz9Vq/EzhvB4fbXmLo425wxCzoUj1/9gp21CGFAC87Auc3EofHAgVQICfillMkjAnQiwhOA3aP22QHImHpvX6bjcO3kmcK9jlQVH594z/tX/EhBzSxujMV3EDoR78zPD6OeESpjlAB77SoxNXy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731942193; c=relaxed/simple;
-	bh=faZRreWquVe700OZGYMSo0dSlhb7Uz0PJ11Md7W1r0s=;
+	s=arc-20240116; t=1731942196; c=relaxed/simple;
+	bh=Zs5RtfaX+Mr03PHFB3vLsqCQK8jZPid7gvY6zuq3EK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=snHTWHgO8TKATOy0IsaoS4/c7d/Vuk9PR17MAcOAbfg0n8Fhu7BVnhsadkSxTLYbVyJs5XjWLZSFpe5n84UXU4fONpHL23CFDUPGoeyYRuyp046ixd2D5AGiGGD7lZZFubQJXl7zXa5Zqd8WpFgAB5h4raxa0BRcYxuuoIBgm38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=RWxscOZK; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=vC5uf5gAy9l1ikGjokHrQbFdgfL3G8A05Sn6VUHsbq3gqkCGMqJN390c3cC75t4PKLmapCsG0DGsc0dzjc1x4795+/RH6Kz3fkrUSbCAkDkmwoVm4R2W+vYGKznY7hCDvTjo5eTjqDV+QiY+1atXnW4vw4iWfW1WcBCpSgVebzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=Eixq4JwX; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -38,17 +38,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IXSqTavrILkr8R4UvsKit71r/AdRNMGLzyGo5EHv1dQ=;
-	b=RWxscOZKeUc1RMFpFaAqMTa+oENw4o8ialrC2UG+m5fYlQIN9+2mcyQzzerFvKXrrbAoKk
-	KCBrC64H9ZdKHKynn2jgY5C2ny+M1hYRH5j6FwWyxEWIGfZJaf9jqXbYdcfU70S3en5bCL
-	hs9zMd9Ade7dK7kFurYKNmh311q2ZFIBr95w3YYZMATx1/j2eXClCVoJOWPsskLw7wrqa7
-	W7Ny7op3jUGPLk9feN+31zHNDSzTmrXzw80rzWJN/KGCPW/FEfpOB/mCnv/TYJV+Rg+pS8
-	F6hkwuVFVkK1BYfamF+onrF96Fm+n98/GK8dYF3+M3+Ek78XF+HHXSht0cC2Bg==
+	bh=v7yp73895MB08TReEH0j7Ox3CGe9oI3eZVz16p8vcCg=;
+	b=Eixq4JwXAG7ZdB5xeCEaG1Pr09IYpFNgfTHC71UosntOu/VFAziItGPBz96Ki9pGYiE1+T
+	foJVt0Ga7p4HgW0rujpnaCVsSHZsItjChB5mDO44ySkdO2uZ+Yad5XOshXqadMYs9NZhzo
+	6oWjUrdmv/6a347tEeHDLQHu+r/HAdqBqv0ZzmnGOQetlUtjdb+sZedIQ0InSJBPiwpkrv
+	ntMMbseeMh9G58vYR0vIj5i2vidtT2qTDeNj/7VLebm9UFmIR2maUWfAmdICT56pNxMety
+	P1cHhuWNVsuo1XqsUzF8QNl47ugZ6uFp2nLGf6Hu3+8gI8R4OrNjU9ntBWJRBg==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 04/17] tests: port scripts to sh and please shellcheck
-Date: Mon, 18 Nov 2024 16:02:26 +0100
-Message-ID: <20241118150256.135432-5-cgoettsche@seltendoof.de>
+Subject: [PATCH 05/17] tests: enable strictness for perl scripts
+Date: Mon, 18 Nov 2024 16:02:27 +0100
+Message-ID: <20241118150256.135432-6-cgoettsche@seltendoof.de>
 In-Reply-To: <20241118150256.135432-1-cgoettsche@seltendoof.de>
 References: <20241118150256.135432-1-cgoettsche@seltendoof.de>
 Precedence: bulk
@@ -62,90 +62,86 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Improve portability and avoid actual issues being hidden.
-
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- tests/kvercmp    | 16 +++++++++-------
- tests/os_detect  | 10 ++++++----
- tests/pol_detect | 12 +++++++-----
- 3 files changed, 22 insertions(+), 16 deletions(-)
+ tests/loop.pl        |  9 ++++++---
+ tests/nfsruntests.pl |  6 +++++-
+ tests/runtests.pl    | 16 ++++++++++------
+ 3 files changed, 21 insertions(+), 10 deletions(-)
 
-diff --git a/tests/kvercmp b/tests/kvercmp
-index 3742f16..4b1e345 100755
---- a/tests/kvercmp
-+++ b/tests/kvercmp
-@@ -1,15 +1,17 @@
--#!/bin/bash
-+#!/bin/sh
+diff --git a/tests/loop.pl b/tests/loop.pl
+index f5bf6ba..2c97b77 100644
+--- a/tests/loop.pl
++++ b/tests/loop.pl
+@@ -1,12 +1,15 @@
+ #!/usr/bin/perl
  
--function kvercmp()
-+set -eu
+-$count = shift || 1;
++use strict;
++use warnings;
 +
-+kvercmp()
- {
--	ver1=`echo $1 | sed 's/-/./'`
--	ver2=`echo $2 | sed 's/-/./'`
-+	ver1=$(echo "$1" | sed 's/-/./')
-+	ver2=$(echo "$2" | sed 's/-/./')
++my $count = shift || 1;
  
- 	ret=0
- 	i=1
--	while [ 1 ]; do
--		digit1=`echo $ver1 | cut -d . -f $i`
--		digit2=`echo $ver2 | cut -d . -f $i`
-+	while true; do
-+		digit1=$(echo "$ver1" | cut -d . -f $i)
-+		digit2=$(echo "$ver2" | cut -d . -f $i)
+ print "Running all tests $count times\n";
  
- 		if [ -z "$digit1" ]; then
- 			if [ -z "$digit2" ]; then
-diff --git a/tests/os_detect b/tests/os_detect
-index cddcb85..6b723f6 100755
---- a/tests/os_detect
-+++ b/tests/os_detect
-@@ -1,8 +1,10 @@
--#!/bin/bash
-+#!/bin/sh
- 
--if [[ -r /etc/redhat-release ]]; then
--	ver=$(cat /etc/redhat-release | sed -ne '/^Red Hat Enterprise Linux/p')
--	if [[ -n $ver ]]; then
-+set -eu
+-for ( $i = 0 ; $i < $count ; $i++ ) {
++for ( my $i = 0 ; $i < $count ; $i++ ) {
+     print "$i: ";
+-    $foo = `./runtests.pl`;
++    my $foo = `./runtests.pl`;
+     if ( $foo =~ m|All tests successful.\n| ) {
+         print $';
+     }
+diff --git a/tests/nfsruntests.pl b/tests/nfsruntests.pl
+index c3f0626..fa4e23a 100755
+--- a/tests/nfsruntests.pl
++++ b/tests/nfsruntests.pl
+@@ -1,5 +1,9 @@
+ #!/usr/bin/perl
 +
-+if [ -r /etc/redhat-release ]; then
-+	ver=$(sed -ne '/^Red Hat Enterprise Linux/p' /etc/redhat-release)
-+	if [ -n "$ver" ]; then
- 		echo "$ver" | \
- 			sed -e 's/Red Hat Enterprise Linux[ \ta-zA-Z]*\([0-9]\+\).*/RHEL\1/'
- 	fi
-diff --git a/tests/pol_detect b/tests/pol_detect
-index ba25b94..8c07997 100755
---- a/tests/pol_detect
-+++ b/tests/pol_detect
-@@ -1,4 +1,6 @@
--#!/bin/bash
-+#!/bin/sh
++use strict;
++use warnings;
 +
-+set -eu
+ use Test::Harness;
  
- if [ $# -ne 1 ]; then
- 	echo "Usage $0 <selinuxfs directory>"
-@@ -8,10 +10,10 @@ fi
- # This is heuristic but seems unlikely to be wrong,
- # the kernel initial sid should always be SystemHigh
- # and SystemHigh is normally s15
--level=$(cat $1/initial_contexts/kernel | tr '\0' '\n' | cut -d: -f4)
-+level=$(cat "$1/initial_contexts/kernel" | tr '\0' '\n' | cut -d: -f4)
+-@test = "$ARGV[0]";
++my @test = "$ARGV[0]";
+ runtests(@test);
+diff --git a/tests/runtests.pl b/tests/runtests.pl
+index a2ed7ea..7654a82 100755
+--- a/tests/runtests.pl
++++ b/tests/runtests.pl
+@@ -1,20 +1,24 @@
+ #!/usr/bin/perl
  
--if [ -z $level ]; then echo "NON-MLS"
--elif [ $level = 's0' ]; then echo "MCS"
--elif [ $level = 's15' ]; then echo "MLS"
-+if [ -z "$level" ]; then echo "NON-MLS"
-+elif [ "$level" = 's0' ]; then echo "MCS"
-+elif [ "$level" = 's15' ]; then echo "MLS"
- else echo "UNKNOWN"
- fi
++use strict;
++use warnings;
++
+ use Test::Harness;
+ 
+-@dirs = split( / /, $ENV{SUBDIRS} );
++my @dirs    = split( / /, $ENV{SUBDIRS} );
++my @scripts = ();
+ 
+ for (@dirs) {
+     push @scripts, "$_/test";
+ }
+ 
+-$output = `id`;
++my $output = `id`;
+ $output =~ /uid=\d+\((\w+)\).*context=(\w+):(\w+):(\w+)/
+   || die("Can't determine user's id\n");
+-$unixuser = $1;
+-$user     = $2;
+-$role     = $3;
+-$type     = $4;
++my $unixuser = $1;
++my $user     = $2;
++my $role     = $3;
++my $type     = $4;
+ 
+ print "Running as user $unixuser with context $2:$3:$4\n\n";
+ 
 -- 
 2.45.2
 

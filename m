@@ -1,152 +1,107 @@
-Return-Path: <selinux+bounces-2348-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2350-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8216D9D13FB
-	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 16:06:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1AF9D148C
+	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 16:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 498AD282F6A
-	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 15:06:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 714D628303D
+	for <lists+selinux@lfdr.de>; Mon, 18 Nov 2024 15:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87381C3052;
-	Mon, 18 Nov 2024 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74DB81B6D08;
+	Mon, 18 Nov 2024 15:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="sbQLdHs3"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="eM8cqUw1"
 X-Original-To: selinux@vger.kernel.org
-Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DE61C32FE
-	for <selinux@vger.kernel.org>; Mon, 18 Nov 2024 15:03:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B2F1B6CF3
+	for <selinux@vger.kernel.org>; Mon, 18 Nov 2024 15:35:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1731942199; cv=none; b=a1Kv26fQmfhYHKaiDJLPH7FCjKIc3b6t84X+lPjK+TszhwEa35G96Z/f7v5W4EsqbrDUmqrQF6+TQz1oh+3YHu2P2bANn8LhjcQCzU3YfgT1a7fTXUaxwmFlYlwllg2t3RWqaE47XXYyUbBSwJNW7yUFQg0EfPkC7B6pnBr6M6E=
+	t=1731944160; cv=none; b=QShTYqYo2z/Fwh/1SUBVw9XfgIuiU7j3NuHLOsaPXiFPwS6VMUgHo/7wBUw93YmQC0+ICDKMl5OvXq3ebEPCb7bMBf2BxsOCoORbNsF7RJ/zXMOVPXdEkfW4NojwpaWkQlVMLu0YYlHJRm9n7+stgEtVfS1RfoDI1sFBiY3HZN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1731942199; c=relaxed/simple;
-	bh=roKxq2qm1HPTtoOTcINosgKYHpaNA7Wl9W9zlllPTXQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X2kzNmiBoYv6ueEXy4XXZpw+CKYY227h4yJBMdg3sbzQQiQzctiZ6Zj4mj2giL/HmfY90zNbzpS092YIvUF1feJ1dXHPuYiJa+V7BV6oxQlbToDw2XyqRqlvw3Q8jphXYNrmwqBHt5uSveDZHUNWXgPb2h2RC1bJBlc3dFWr7Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=sbQLdHs3; arc=none smtp.client-ip=168.119.48.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
-From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1731942186;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GHn0t7MjlNNT4OrnjFyCPZDnzh8LV2FSdCWuLEJKd1Y=;
-	b=sbQLdHs3xwfXDbINiGhtifamE9t4jHR0IwJynJb40tN5wb60+80UNggBvIO//BN0C9dIh9
-	bYCWusoaSaDwGBptixn8u3rX5l2VXzWSg7i2Q1dPwQK82PimqekDlZo7frgJq1/HBKyE0w
-	zBsA9Wqsml5XUaXJUjd310P7I/i9mhOZ6NuLUYZ1LATR4+pw19Etq1O1oqCU8tgeRZ6Dmq
-	yVP9bkJdsBugDJbE6sjbETbiPACh+uc7RVbXmmivRt0dYDEXRAJBaaPQibgvp+1+sOgncQ
-	amU3GEAp7QfO8cYBdQd2ElC5pn7zeflIxLYZriHvj4OxreBLMy+FrVWLreDU3w==
-To: selinux@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 17/17] tests: drop headers from Makefile dependencies
-Date: Mon, 18 Nov 2024 16:02:39 +0100
-Message-ID: <20241118150256.135432-18-cgoettsche@seltendoof.de>
-In-Reply-To: <20241118150256.135432-1-cgoettsche@seltendoof.de>
-References: <20241118150256.135432-1-cgoettsche@seltendoof.de>
+	s=arc-20240116; t=1731944160; c=relaxed/simple;
+	bh=E2HjxNERFo24G8IUMG73YnBT6iNMO99le5YOdPOfEHU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=ev4sXQOhLLlULcSCKs+j+iOq6t0BbFCAc2B++2QxWnq/b6Si3n9bduUHqpOpR5YNsmBdxp3PCqipHo2RsFR1K0F6zye0MrcSz+8IiCAuuhYWVxC6aHT+YDl9rI07FPVF0w5JwT475gD8KO/XXyG7S/715u8Nt5iTUtBiYLadEY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=eM8cqUw1; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [192.168.1.13] (pool-96-241-22-207.washdc.fios.verizon.net [96.241.22.207])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 3B774206BCEC;
+	Mon, 18 Nov 2024 07:35:58 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3B774206BCEC
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1731944158;
+	bh=dAQT1PdEcsWCO7o+NU7bR0+MZGpQqqgrNDcE+7aQg5w=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=eM8cqUw1OTN3f+rPBMdcV4cVPTJ8rR9PJLOz7Iz8Md+q4faHIhPH6NJT+xxdKZY7i
+	 2uFYECbtKAG/l6iXwoxthWaW3B+rYy47ron1RyUIKhJAmC9+DBvNeUN2HSYOqblOKn
+	 GPXnVRUl/FCXNWLMmCJjyh1qtAfHpjm7K4BpA6Qo=
+Message-ID: <342b4afd-3a1a-41bd-8e2d-63eebb1fbcd2@linux.microsoft.com>
+Date: Mon, 18 Nov 2024 10:35:56 -0500
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/22] selinux: harden against malformed policies
+To: cgzones@googlemail.com, selinux@vger.kernel.org
+References: <20241115133619.114393-1-cgoettsche@seltendoof.de>
+ <20241115133619.114393-23-cgoettsche@seltendoof.de>
+Content-Language: en-US
+From: Daniel Burgener <dburgener@linux.microsoft.com>
+In-Reply-To: <20241115133619.114393-23-cgoettsche@seltendoof.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-From: Christian Göttsche <cgzones@googlemail.com>
+On 11/15/2024 8:35 AM, Christian Göttsche wrote:
+> From: Christian Göttsche <cgzones@googlemail.com>
+> 
+> With the SELinux namespace feature on the horizon it becomes important
+> to identify and reject malformed policies at load time.  Otherwise
+> memory corruptions can compromise the kernel or NULL-pointer dereferences
+> and BUG() encounters can bring systems down.  Currently this is not a
+> security relevant issue since loading a policy requires root privileges
+> and permission of the current loaded SELinux policy, making it one of the
+> most privileged operation.
+> 
+> The first 9 patches are cleanup commits with overseeable diffs.
+> 
+> Patch 10 unifies the underlying type used for security class identifiers.
+> 
+> Patch 11 to 21 add various checks at policy load time to reject malformed
+> policies.
+> 
+> Patch 22 needs some discussion:
+> It limits the valid set of characters and the length for strings defined
+> by policies.  Currently there are no restrictions, so control characters
+> are accepted, e.g. Esc as part of a type name, and their length can be
+> arbitrary.  Human formatted security contexts however must not be
+> arbitrarily long, one example is they must fit in a page size for
+> selinuxfs interaction and network associations.
+> Thus the patch introduces the following restrictions:
+>    * Disallow control characters
+>    * Limit characters of identifiers to alphanumeric, underscore, dash,
+>      and dot
+>    * Limit identifiers in length to 128, expect types to 1024 and
+>      categories to 32, characters (excluding NUL-terminator)
 
-Clang does not support header files included in the compile command:
+I believe that those first two restrictions match what CIL will do today 
+(https://github.com/SELinuxProject/selinux/blob/9b4eff9222b24d4b5f2784db281f4f53019263b0/libsepol/cil/src/cil_verify.c#L96), 
+but the length restriction in CIL is 2048.
 
-    clang -g -O2 -Werror -Wall -Wextra -Wno-error=unused-parameter -D_GNU_SOURCE -DHAVE_BPF -DHAVE_FS_WATCH_PERM -DHAVE_BPF    bpf_test.c bpf_common.c bpf_common.h  -lselinux -lbpf -o bpf_test
-    clang: error: cannot specify -o when generating multiple output files
+https://github.com/SELinuxProject/selinux/blob/9b4eff9222b24d4b5f2784db281f4f53019263b0/libsepol/cil/src/cil_internal.h#L49
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- tests/binder/Makefile    | 4 ++--
- tests/bpf/Makefile       | 2 +-
- tests/fdreceive/Makefile | 2 +-
- tests/keys/Makefile      | 2 --
- tests/tun_tap/Makefile   | 2 +-
- 5 files changed, 5 insertions(+), 7 deletions(-)
+I would think that we'd want to end up in a situation where the kernel 
+is either equally restrictive or less restrictive than CIL.
 
-diff --git a/tests/binder/Makefile b/tests/binder/Makefile
-index b89d4db..5c3a589 100644
---- a/tests/binder/Makefile
-+++ b/tests/binder/Makefile
-@@ -3,7 +3,7 @@ INCLUDEDIR ?= /usr/include
- 
- TARGETS = check_binder client manager service_provider
- LDLIBS += -lselinux -lrt
--DEPS = binder_common.c binder_common.h
-+DEPS = binder_common.c
- 
- ifeq ($(shell test -e $(INCLUDEDIR)/linux/android/binderfs.h && echo true),true)
- CFLAGS += -DHAVE_BINDERFS
-@@ -11,7 +11,7 @@ TARGETS += check_binderfs
- endif
- 
- ifneq (,$(findstring -DHAVE_BPF,$(CFLAGS)))
--	DEPS += ../bpf/bpf_common.c ../bpf/bpf_common.h
-+	DEPS += ../bpf/bpf_common.c
- 	LDLIBS += -lbpf
- endif
- 
-diff --git a/tests/bpf/Makefile b/tests/bpf/Makefile
-index 1ae8ce9..6b26ff9 100644
---- a/tests/bpf/Makefile
-+++ b/tests/bpf/Makefile
-@@ -1,5 +1,5 @@
- TARGETS = bpf_test
--DEPS = bpf_common.c bpf_common.h
-+DEPS = bpf_common.c
- LDLIBS += -lselinux -lbpf
- 
- # export so that BPF_ENABLED entries get built correctly on local build
-diff --git a/tests/fdreceive/Makefile b/tests/fdreceive/Makefile
-index d9f8927..4b1fb8c 100644
---- a/tests/fdreceive/Makefile
-+++ b/tests/fdreceive/Makefile
-@@ -1,7 +1,7 @@
- TARGETS = client server
- 
- ifneq (,$(findstring -DHAVE_BPF,$(CFLAGS)))
--	DEPS = ../bpf/bpf_common.c ../bpf/bpf_common.h
-+	DEPS = ../bpf/bpf_common.c
- 	LDLIBS += -lbpf
- endif
- 
-diff --git a/tests/keys/Makefile b/tests/keys/Makefile
-index d9f36ff..d3793db 100644
---- a/tests/keys/Makefile
-+++ b/tests/keys/Makefile
-@@ -1,8 +1,6 @@
- TARGETS = keyctl keyctl_relabel keyring_service request_keys
- LDLIBS += -lselinux -lkeyutils
- 
--$(TARGETS): keys_common.h
--
- all: $(TARGETS)
- 
- clean:
-diff --git a/tests/tun_tap/Makefile b/tests/tun_tap/Makefile
-index 11f5b03..f4b69d5 100644
---- a/tests/tun_tap/Makefile
-+++ b/tests/tun_tap/Makefile
-@@ -1,5 +1,5 @@
- TARGETS = tun_tap tun_relabel
--DEPS = tun_common.c tun_common.h
-+DEPS = tun_common.c
- LDLIBS += -lselinux
- 
- all: $(TARGETS)
--- 
-2.45.2
+-Daniel
+
+
 
 

@@ -1,187 +1,291 @@
-Return-Path: <selinux+bounces-2362-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2365-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C459D3A8A
-	for <lists+selinux@lfdr.de>; Wed, 20 Nov 2024 13:18:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8919D3A1A
+	for <lists+selinux@lfdr.de>; Wed, 20 Nov 2024 13:00:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 087FCB2CF27
-	for <lists+selinux@lfdr.de>; Wed, 20 Nov 2024 11:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC7ED1F20F65
+	for <lists+selinux@lfdr.de>; Wed, 20 Nov 2024 12:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5D91A3020;
-	Wed, 20 Nov 2024 11:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07CEF1A7255;
+	Wed, 20 Nov 2024 12:00:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CgWvGCsH"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="Fo1ULaPe"
 X-Original-To: selinux@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE3019F41D;
-	Wed, 20 Nov 2024 11:55:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD75A1A38D7
+	for <selinux@vger.kernel.org>; Wed, 20 Nov 2024 12:00:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732103738; cv=none; b=tAfag9V4oL1O1+kEQXKlwpXrT+Hmx7ctYt/3artevdK5lIKA3s1iiQg+Zp08AkIyLBg2TsPKHn+spnEAiZmcOeUPLgr1VvXLMVEEw1d9y2mEvrMRu92JWaRuTobq6D2bHVaqTpdXa70B/xwEhHX64tontnQOwuEeh0Tb8aOPiSs=
+	t=1732104009; cv=none; b=qlw8/d54zuFcji6gPNXL4xgtZE0uCguO0thVIfaafHetVe7fAtxAmx990XtboGiqEnU0Z0qrm4SH0NH9MDvQ/+5Bz6P5QAIcw9++y2SVZelZdjwQJKFM4TMMa5LcvT7MH73J9vIpj/NInjg3R8lewRuaAwqi+GtRd2UyT45SETQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732103738; c=relaxed/simple;
-	bh=4iNBk7LC9TBZYuo0MXULQ9ayjztNWrRDsjTo4k/+edQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IFeHM4W2PvTUk1536TKP5Uxm37Kwj6Uq8/mC7x2fpzMniDG0o+rEFk1VHMcCB4XRsiHLXrZfJRHDkExs6CzL+g0bfncOVefBFA1N5ic3o5/vB+RiNETxBsgOAbZgVNbeCcj7W/RbOSyKaj4lyf8/iB0uEyYF86+1d/Y8s6Tac2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CgWvGCsH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48165C4CECD;
-	Wed, 20 Nov 2024 11:55:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1732103738;
-	bh=4iNBk7LC9TBZYuo0MXULQ9ayjztNWrRDsjTo4k/+edQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=CgWvGCsHjyFVOTC96wfamrt4sOOgTlSoVorRBJ6/K1dombsbJkqD/MOFkhPecxZS/
-	 lu9zfHTuItNbK19LcgKaf+/imv5yAWabYtabqZQnWX1F5a51Zsf2qaf+8wCaxHf6kq
-	 xNmAF0uZpEt0qvo0SRHkvRMrwKRBPNwkBgl9LaV5gGCNT/zjbUMdwwlHNZTrkNxeCL
-	 DDGQNQ31ENSaO5bEAPqiqSqbr1WzoTY269ChZCcJArjbak0caAgdBquxAFweHp6xs+
-	 3gIjqMlWegWF1849MdnqdWx4pZIMTrssIet+O3Ajbgd6aBb7ST/XEJP1mVyZySfg7X
-	 BsPyVPAnSzyGQ==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-53d9ff8f1e4so5089485e87.2;
-        Wed, 20 Nov 2024 03:55:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVAh2Gd0xUJGBB6Xl/n751WiQTZR753kyUmRreHzjUJMjz2HvJRIwwnlX351rns3cVY3l0IF2zeEXbOrXA=@vger.kernel.org, AJvYcCVcUFS7B7LrcP40NnLr8KCigeOEkI/ZgAOSrAPay77IHYCxkOFSqN3qxMgWgFdgZy76Zmw7TAw2Y39eVIFh@vger.kernel.org, AJvYcCVkd/4aDyIq8h5+G8jRX+eNSSayHvkQqdwJ2hd1/y5EAq+CRy5IjCOvwuNKJ3+xJ2ToeHr7o/hqpA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxclzsF+KTxfO4K6jj5LSP9tcZHqBL/ICOyv2gbs/0KwfKTdqTx
-	I/l68fOVfQhyu4M3HyHxPymiuVGX54aquwKsgsxf/VYHV0Apdr5Fo/uVlTsoJ/mdbIt938A2PtD
-	vbL5mEYp/yu6ZDa+0SvboM9fLDk0=
-X-Google-Smtp-Source: AGHT+IHG318RoJAh5CCrn2UIYr+ZKfZsLdJ+iqL7RCmLwigjuBULnm1HPMkT53qRCaItAM3pDWyEF+zB7dD+9Cd7O08=
-X-Received: by 2002:a05:6512:10cd:b0:53d:a012:eed4 with SMTP id
- 2adb3069b0e04-53dc1374266mr1023236e87.52.1732103736977; Wed, 20 Nov 2024
- 03:55:36 -0800 (PST)
+	s=arc-20240116; t=1732104009; c=relaxed/simple;
+	bh=x4VwERCSGgTpesze+z2jQypdpReyQfia6STeVdXwDBM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SdwCadn0odLXhST5EKKTkYZQ3p3+cwlWyt99Y1fPZKyB35Q4N9cxPzuu1NW7Fq8Eq1Nbi9tkYkivCHb6t+xKO599WnBCOEAJHo91ZShtMq2FMzr4PTGarDP3ntvPtFLGzgm/auUf4dEOIGnKwWSBZkFB95jT3uvZkCKIotsD8M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=Fo1ULaPe; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1732103997;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=Ef9GiNZ3kX3/0t0gBTeX3bOyu9WehiuBcfDripo7MBs=;
+	b=Fo1ULaPeFmzQcE1k+dJP+72mO4k2A6baKiQSDJQJ03TKAWSTQW18xtTleHMaZmU8eNglj6
+	iOn/aYoOZJktHUf0G/NIaDXYlgO6pU1dYSTynb+c+HxJL/DtW0CDxssJVtDJvhXe67c2S2
+	GyVd0GXpxfmG4H2JFpCtG58AhAhHFuj+B+3ChPmalG4cAwb5ds0/YTQYt+tT3NTOBPoe/4
+	Kt7XZwepTzOnydgeX9gc7dA0VfCiVsCawH+uo5RMZm8Wxywv1uWF8FcGxVGJFJnaw70zkW
+	RTgTWwVR4pDSgmCJ/bBekiZVsBj+skv8npTtkTAQ9sY95yYAMUxUgLTTY6QNJQ==
+To: selinux@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [PATCH v2 1/3] libselinux: make use of calloc(3)
+Date: Wed, 20 Nov 2024 12:59:48 +0100
+Message-ID: <20241120115951.42445-1-cgoettsche@seltendoof.de>
+Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241120-selinux-clean-v1-1-68704e007f7a@linutronix.de>
-In-Reply-To: <20241120-selinux-clean-v1-1-68704e007f7a@linutronix.de>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 20 Nov 2024 20:55:00 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATUnCPt03BRFSKh1EH=+Sy0Q48wE4ER0BZdJqOb_44L8w@mail.gmail.com>
-Message-ID: <CAK7LNATUnCPt03BRFSKh1EH=+Sy0Q48wE4ER0BZdJqOb_44L8w@mail.gmail.com>
-Subject: Re: [PATCH] selinux: explicitly clean generated av_permissions.h
-To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-Cc: Paul Moore <paul@paul-moore.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, 
-	Ondrej Mosnacek <omosnace@redhat.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, selinux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: multipart/mixed; boundary="000000000000f51c87062756d36c"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
---000000000000f51c87062756d36c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Christian Göttsche <cgzones@googlemail.com>
 
-On Wed, Nov 20, 2024 at 6:15=E2=80=AFPM Thomas Wei=C3=9Fschuh
-<thomas.weissschuh@linutronix.de> wrote:
->
-> av_permissions.h is not declared as a target and therefore won't be
-> added to clean-files automatically by kbuild.
-> For details why it is not a target see the Makefile itself.
->
-> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
-> ---
->  security/selinux/Makefile | 3 +++
->  1 file changed, 3 insertions(+)
->
-> diff --git a/security/selinux/Makefile b/security/selinux/Makefile
-> index 86f0575f670da66a9dc57e13a236d6a5551af38e..58129a7c8cfa08f9caf5444f7=
-df776f41056b77a 100644
-> --- a/security/selinux/Makefile
-> +++ b/security/selinux/Makefile
-> @@ -41,5 +41,8 @@ targets +=3D flask.h
->  $(obj)/flask.h: $(obj)/genheaders FORCE
->         $(call if_changed,genhdrs)
->
-> +# see the note above, remove this line
-> +clean-files +=3D av_permissions.h
-> +
->  hostprogs :=3D genheaders
->  HOST_EXTRACFLAGS +=3D -I$(srctree)/security/selinux/include
+Use calloc(3) instead of calling malloc(3) plus a call to memset(3) or
+manual zero'ing.
 
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ libselinux/src/fgetfilecon.c         | 3 +--
+ libselinux/src/get_context_list.c    | 3 +--
+ libselinux/src/get_initial_context.c | 3 +--
+ libselinux/src/getfilecon.c          | 3 +--
+ libselinux/src/getpeercon.c          | 3 +--
+ libselinux/src/label_media.c         | 6 ++----
+ libselinux/src/label_x.c             | 6 ++----
+ libselinux/src/lgetfilecon.c         | 3 +--
+ libselinux/src/matchpathcon.c        | 3 +--
+ libselinux/src/procattr.c            | 3 +--
+ libselinux/src/setrans_client.c      | 5 ++---
+ 11 files changed, 14 insertions(+), 27 deletions(-)
 
+diff --git a/libselinux/src/fgetfilecon.c b/libselinux/src/fgetfilecon.c
+index d7051171..782861ed 100644
+--- a/libselinux/src/fgetfilecon.c
++++ b/libselinux/src/fgetfilecon.c
+@@ -39,10 +39,9 @@ int fgetfilecon_raw(int fd, char ** context)
+ 	ssize_t ret;
+ 
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
+ 		return -1;
+-	memset(buf, 0, size);
+ 
+ 	ret = fgetxattr_wrapper(fd, XATTR_NAME_SELINUX, buf, size - 1);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/get_context_list.c b/libselinux/src/get_context_list.c
+index 222b54c1..8d5ee6fb 100644
+--- a/libselinux/src/get_context_list.c
++++ b/libselinux/src/get_context_list.c
+@@ -481,12 +481,11 @@ int get_ordered_context_list(const char *user,
+ 	   the "failsafe" context to at least permit root login
+ 	   for emergency recovery if possible. */
+ 	freeconary(reachable);
+-	reachable = malloc(2 * sizeof(char *));
++	reachable = calloc(2, sizeof(char *));
+ 	if (!reachable) {
+ 		rc = -1;
+ 		goto out;
+ 	}
+-	reachable[0] = reachable[1] = 0;
+ 	rc = get_failsafe_context(user, &reachable[0]);
+ 	if (rc < 0) {
+ 		freeconary(reachable);
+diff --git a/libselinux/src/get_initial_context.c b/libselinux/src/get_initial_context.c
+index 0f25ba3f..fb774c82 100644
+--- a/libselinux/src/get_initial_context.c
++++ b/libselinux/src/get_initial_context.c
+@@ -39,12 +39,11 @@ int security_get_initial_context_raw(const char * name, char ** con)
+ 		return -1;
+ 
+ 	size = selinux_page_size;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf) {
+ 		ret = -1;
+ 		goto out;
+ 	}
+-	memset(buf, 0, size);
+ 	ret = read(fd, buf, size - 1);
+ 	if (ret < 0)
+ 		goto out2;
+diff --git a/libselinux/src/getfilecon.c b/libselinux/src/getfilecon.c
+index 4bee3137..31c9f0de 100644
+--- a/libselinux/src/getfilecon.c
++++ b/libselinux/src/getfilecon.c
+@@ -14,10 +14,9 @@ int getfilecon_raw(const char *path, char ** context)
+ 	ssize_t ret;
+ 
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
+ 		return -1;
+-	memset(buf, 0, size);
+ 
+ 	ret = getxattr(path, XATTR_NAME_SELINUX, buf, size - 1);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/getpeercon.c b/libselinux/src/getpeercon.c
+index a9dca73e..c7abd886 100644
+--- a/libselinux/src/getpeercon.c
++++ b/libselinux/src/getpeercon.c
+@@ -18,10 +18,9 @@ int getpeercon_raw(int fd, char ** context)
+ 	ssize_t ret;
+ 
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
+ 		return -1;
+-	memset(buf, 0, size);
+ 
+ 	ret = getsockopt(fd, SOL_SOCKET, SO_PEERSEC, buf, &size);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/label_media.c b/libselinux/src/label_media.c
+index 0510b5b1..be3df388 100644
+--- a/libselinux/src/label_media.c
++++ b/libselinux/src/label_media.c
+@@ -134,10 +134,9 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
+ 				status = 0;
+ 				goto finish;
+ 			}
+-			data->spec_arr = malloc(sizeof(spec_t)*data->nspec);
++			data->spec_arr = calloc(data->nspec, sizeof(spec_t));
+ 			if (data->spec_arr == NULL)
+ 				goto finish;
+-			memset(data->spec_arr, 0, sizeof(spec_t)*data->nspec);
+ 			maxnspec = data->nspec;
+ 
+ 			status = fseek(fp, 0L, SEEK_SET);
+@@ -230,10 +229,9 @@ int selabel_media_init(struct selabel_handle *rec,
+ {
+ 	struct saved_data *data;
+ 
+-	data = (struct saved_data *)malloc(sizeof(*data));
++	data = (struct saved_data *)calloc(1, sizeof(*data));
+ 	if (!data)
+ 		return -1;
+-	memset(data, 0, sizeof(*data));
+ 
+ 	rec->data = data;
+ 	rec->func_close = &close;
+diff --git a/libselinux/src/label_x.c b/libselinux/src/label_x.c
+index 1a5b9268..5b0e4063 100644
+--- a/libselinux/src/label_x.c
++++ b/libselinux/src/label_x.c
+@@ -161,10 +161,9 @@ static int init(struct selabel_handle *rec, const struct selinux_opt *opts,
+ 				status = 0;
+ 				goto finish;
+ 			}
+-			data->spec_arr = malloc(sizeof(spec_t)*data->nspec);
++			data->spec_arr = calloc(data->nspec, sizeof(spec_t));
+ 			if (data->spec_arr == NULL)
+ 				goto finish;
+-			memset(data->spec_arr, 0, sizeof(spec_t)*data->nspec);
+ 			maxnspec = data->nspec;
+ 
+ 			status = fseek(fp, 0L, SEEK_SET);
+@@ -255,10 +254,9 @@ int selabel_x_init(struct selabel_handle *rec, const struct selinux_opt *opts,
+ {
+ 	struct saved_data *data;
+ 
+-	data = (struct saved_data *)malloc(sizeof(*data));
++	data = (struct saved_data *)calloc(1, sizeof(*data));
+ 	if (!data)
+ 		return -1;
+-	memset(data, 0, sizeof(*data));
+ 
+ 	rec->data = data;
+ 	rec->func_close = &close;
+diff --git a/libselinux/src/lgetfilecon.c b/libselinux/src/lgetfilecon.c
+index d1fb821b..f0a3aa1a 100644
+--- a/libselinux/src/lgetfilecon.c
++++ b/libselinux/src/lgetfilecon.c
+@@ -14,10 +14,9 @@ int lgetfilecon_raw(const char *path, char ** context)
+ 	ssize_t ret;
+ 
+ 	size = INITCONTEXTLEN + 1;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf)
+ 		return -1;
+-	memset(buf, 0, size);
+ 
+ 	ret = lgetxattr(path, XATTR_NAME_SELINUX, buf, size - 1);
+ 	if (ret < 0 && errno == ERANGE) {
+diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
+index 967520e4..dbc11ee1 100644
+--- a/libselinux/src/matchpathcon.c
++++ b/libselinux/src/matchpathcon.c
+@@ -202,10 +202,9 @@ int matchpathcon_filespec_add(ino_t ino, int specind, const char *file)
+ 	struct stat sb;
+ 
+ 	if (!fl_head) {
+-		fl_head = malloc(sizeof(file_spec_t) * HASH_BUCKETS);
++		fl_head = calloc(HASH_BUCKETS, sizeof(file_spec_t));
+ 		if (!fl_head)
+ 			goto oom;
+-		memset(fl_head, 0, sizeof(file_spec_t) * HASH_BUCKETS);
+ 	}
+ 
+ 	h = (ino + (ino >> HASH_BITS)) & HASH_MASK;
+diff --git a/libselinux/src/procattr.c b/libselinux/src/procattr.c
+index b7a93a2b..ddcc7f8d 100644
+--- a/libselinux/src/procattr.c
++++ b/libselinux/src/procattr.c
+@@ -139,12 +139,11 @@ static int getprocattrcon_raw(char **context, pid_t pid, const char *attr,
+ 		return -1;
+ 
+ 	size = selinux_page_size;
+-	buf = malloc(size);
++	buf = calloc(1, size);
+ 	if (!buf) {
+ 		ret = -1;
+ 		goto out;
+ 	}
+-	memset(buf, 0, size);
+ 
+ 	do {
+ 		ret = read(fd, buf, size - 1);
+diff --git a/libselinux/src/setrans_client.c b/libselinux/src/setrans_client.c
+index d7dbc0ca..45cbe5c1 100644
+--- a/libselinux/src/setrans_client.c
++++ b/libselinux/src/setrans_client.c
+@@ -173,11 +173,10 @@ receive_response(int fd, uint32_t function, char **outdata, int32_t * ret_val)
+ 		return -1;
+ 	}
+ 
+-	data = malloc(data_size);
++	/* coveriety doesn't realize that data will be initialized in readv */
++	data = calloc(1, data_size);
+ 	if (!data)
+ 		return -1;
+-	/* coveriety doesn't realize that data will be initialized in readv */
+-	memset(data, 0, data_size);
+ 
+ 	resp_data.iov_base = data;
+ 	resp_data.iov_len = data_size;
+-- 
+2.45.2
 
-Presumably, the attached fixup.diff (comment in 'targets' assignment)
-would align with the intention of the maintainer of this Makefile
-because you can do
-
-  targets +=3D $(genhdrs)
-
-without the need of the grouped target feature.
-'make clean' removes files listed in 'targets'.
-
-
-
-BTW, the NOTE in this Makefile is not true.
-  https://github.com/torvalds/linux/blob/v6.12/security/selinux/Makefile#L7
-
-
-Even if you use GNU Make 4.3, the grouped target does not work with
-the if_changed macro.
-
-With GNU Make 4.4, it will work as a side-effect of commit
-fabb03eac412b5ea19f1a97be31dc8c6fa7fc047
-
-
-I asked about this behavior some time ago in GNU Make ML.
-
-https://lists.gnu.org/archive/html/help-make/2024-08/msg00001.html
-  or
-https://savannah.gnu.org/bugs/index.php?66073
-
-
-The combination of the grouped target and if_changed
-is working with GNU Make 4.4+, but I do not know if
-it is future promising.
-
-
-
-IMHO, I do not see much benefits for using the group target in this case
-because you can still generate flask.h and av_permissions.h
-separately.
-
-
-
-
-
-
->
-> ---
-> base-commit: bf9aa14fc523d2763fc9a10672a709224e8fcaf4
-> change-id: 20241120-selinux-clean-dfcd0e7a344b
->
-> Best regards,
-> --
-> Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
->
-
-
---=20
-Best Regards
-Masahiro Yamada
-
---000000000000f51c87062756d36c
-Content-Type: text/x-patch; charset="US-ASCII"; name="fixup.diff"
-Content-Disposition: attachment; filename="fixup.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_m3ptnxzt0>
-X-Attachment-Id: f_m3ptnxzt0
-
-ZGlmZiAtLWdpdCBhL3NlY3VyaXR5L3NlbGludXgvTWFrZWZpbGUgYi9zZWN1cml0eS9zZWxpbnV4
-L01ha2VmaWxlCmluZGV4IDg2ZjA1NzVmNjcwZC4uYmVkZWYwMzczZWY5IDEwMDY0NAotLS0gYS9z
-ZWN1cml0eS9zZWxpbnV4L01ha2VmaWxlCisrKyBiL3NlY3VyaXR5L3NlbGludXgvTWFrZWZpbGUK
-QEAgLTMzLDExICszMywxMCBAQCAkKGFkZHByZWZpeCAkKG9iaikvLCQoc2VsaW51eC15KSk6ICQo
-b2JqKS9mbGFzay5oCiBxdWlldF9jbWRfZ2VuaGRycyA9IEdFTiAgICAgJChhZGRwcmVmaXggJChv
-YmopLywkKGdlbmhkcnMpKQogICAgICAgY21kX2dlbmhkcnMgPSAkPCAkKGFkZHByZWZpeCAkKG9i
-aikvLCQoZ2VuaGRycykpCiAKLSMgc2VlIHRoZSBub3RlIGFib3ZlLCByZXBsYWNlIHRoZSAkdGFy
-Z2V0cyBhbmQgJ2ZsYXNrLmgnIHJ1bGUgd2l0aCB0aGUgbGluZXMKK3RhcmdldHMgKz0gJChnZW5o
-ZHJzKQorIyBzZWUgdGhlIG5vdGUgYWJvdmUsIHJlcGxhY2UgdGhlICdmbGFzay5oJyBydWxlIHdp
-dGggdGhlIGxpbmVzCiAjIGJlbG93OgotIyAgdGFyZ2V0cyArPSAkKGdlbmhkcnMpCiAjICAkKGFk
-ZHByZWZpeCAkKG9iaikvLCQoZ2VuaGRycykpICY6ICQob2JqKS9nZW5oZWFkZXJzIEZPUkNFCi10
-YXJnZXRzICs9IGZsYXNrLmgKICQob2JqKS9mbGFzay5oOiAkKG9iaikvZ2VuaGVhZGVycyBGT1JD
-RQogCSQoY2FsbCBpZl9jaGFuZ2VkLGdlbmhkcnMpCiAK
---000000000000f51c87062756d36c--
 

@@ -1,198 +1,155 @@
-Return-Path: <selinux+bounces-2393-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2395-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C890C9D8511
-	for <lists+selinux@lfdr.de>; Mon, 25 Nov 2024 13:08:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12E129D8B4A
+	for <lists+selinux@lfdr.de>; Mon, 25 Nov 2024 18:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E5D62891FB
-	for <lists+selinux@lfdr.de>; Mon, 25 Nov 2024 12:08:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE4A5B28D2B
+	for <lists+selinux@lfdr.de>; Mon, 25 Nov 2024 17:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92316199E9A;
-	Mon, 25 Nov 2024 12:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D956D1B6CFF;
+	Mon, 25 Nov 2024 17:26:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="bJ1cGFlR"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="lyYpqJ+K"
 X-Original-To: selinux@vger.kernel.org
-Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B7A194147
-	for <selinux@vger.kernel.org>; Mon, 25 Nov 2024 12:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE9B1B415F
+	for <selinux@vger.kernel.org>; Mon, 25 Nov 2024 17:26:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1732536517; cv=none; b=uo6FXohU8R6/Wfp8De33nmqJyUdwj1t8hBIHMo6S/Bnsd7rt+1exQTsCuBoTfrDP8jH6AtRDAJOJVgEk7rA4XfU11+cAgZuKHBN6VGbK1CXPtq0MzLp3zaLBuABEKbvgG9sGYR1Ev7RJXyj8oA8YHTHNddug5EK4LNN1Ywq0nko=
+	t=1732555608; cv=none; b=btXoTJcbJ2JExTypNzZ+TuFSgeFWX43QjePZM3zzNShdYVXuT4Dn8DPwdihYN/fJ8GPKGBv86FrJ5aBGQEeHAT4caCaRWADBREdIfFsO99Xn3L/X1sC06FB6e/w5rlFRVh8XocwIF1gAK9NK2FLq5ytqxem4oHzoqNAbyJ4dzSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1732536517; c=relaxed/simple;
-	bh=JsF6lm3ggRjrkpuKSwaU+gaiCpHsk+HBGLJcPNURidg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j3G7rD7QUTzblDTFk9NgQ5V49jJvEoK7a41B/IB3cswhF97ZzaiUp072VKqaB9cqQk720+kObf5NbrwKvaJ1TRBwCzD5ojPemBQDk6ux46VVyYjQ6WvvwQucuYpAVtbm9Cg+MEWW/JF/kVc3ci/e3aNuttQZRnW0wTlTO+fjxOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=bJ1cGFlR; arc=none smtp.client-ip=168.119.48.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
-From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1732536513;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CvHhuWWe6qNpVUt9hLhr8jmIl/FXKW2etr/IxnxXC0U=;
-	b=bJ1cGFlRLnGKaAN1UeUCq21Lfa4Ggw59wOT529TLhRBz5YoFx8JLtYgszB2Z3ogqtth2Zb
-	zWCunQ244h1UzOCvlfuibVc6QqaPodSos7l+2QVj+MMdA6T0l/zW+Ib8H5lUmxkncfrAVT
-	DFHL4usV3YWOvPUSIBOoIxFDno5bwEhFEmq9ozb5TcFtHqrUu7yW0lOsuc9aD7NdH9HvNt
-	NXWu8Hg8Zm7RZE5yi/QOwPdh9WXqSa5eORS6dDm2Aq+XP1TV2EE42L4T0ZKcsTEOHnaAWN
-	q/M5yl1vsNeizYwVEY5OcZZgunDb7sgxJoHX1kmHt38VB+YJn5Z01jAD/aD/4A==
-To: selinux@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH v2 3/3] libselinux: simplify string formatting
-Date: Mon, 25 Nov 2024 13:08:27 +0100
-Message-ID: <20241125120827.97332-3-cgoettsche@seltendoof.de>
-In-Reply-To: <20241125120827.97332-1-cgoettsche@seltendoof.de>
-References: <20241125120827.97332-1-cgoettsche@seltendoof.de>
-Reply-To: cgzones@googlemail.com
+	s=arc-20240116; t=1732555608; c=relaxed/simple;
+	bh=t73WbR3ab3rF0Q9RppmNDg+jLwz+yZEqwvg6KqtHwl4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AMi88eYT+RHNWNPFQy4tdoxrdsxT1BhhAAsPAkNhE7oPCylD1gxPdNsAqMadhQcDxGz7zKXkH/AWz51iDgrbxfT4O3EmLSFnij3hMjr5XDeowsDlfssq46fdCXRjYpjFETDosaAUFNwGKZ29f/pRHmATI6BYdKPDzyvTK604ruc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=lyYpqJ+K; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6eeb2680092so45662507b3.1
+        for <selinux@vger.kernel.org>; Mon, 25 Nov 2024 09:26:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1732555606; x=1733160406; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TzxgNxqaDGuk1IV5pj/Zv7sx7PZeGmYwY8RUgm1VgKg=;
+        b=lyYpqJ+KBsugKE9bMwElz91tdmNhZRPsoWajB0fwnFB9mP7DllvGwsJyIhpALNe+Tc
+         KjuJU0755Fw+NXRoErJi4CHa5mUixR+d+xxQ+gNsgVkJfHoF/9nfmvLDsq7AeYxiR8Lk
+         S13djs5Vqhj1u5JEgNl8bump1mf86HBasNEQxnZsPuD81LV/JPs+5dgmuogvxSVT18/d
+         04JNjTB/iVLzUPUJjlStnaF+Z+bpFuYhagmfZ9FYvryzGghWub/6nhGr+EWRa5aD7Vho
+         lcfKK9Y/zgkHB3sUxtpnQP6pUOc4O+Rih8bHSc6yt+/bbSXzB2nuSg3zld+5bWbjACw+
+         RDNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732555606; x=1733160406;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TzxgNxqaDGuk1IV5pj/Zv7sx7PZeGmYwY8RUgm1VgKg=;
+        b=IGAFp+c7ecxR11R66ecorrjQjnZ4MGSfJof+nb7Pkg6SeOkhuFGTylO8GyBF8qaSoL
+         /EsVUIe6NBpEmKZxifnjynLC1kH82Gtr2mswnu03U8V74eTNbzagTRnmulAJ53mTnsY2
+         hWMVbMhmaC0dbeMWQTmDPn3ZIDCsHsyjTPqEcqienN6iTe5ORyUP7y8wBnGLBjoByT1m
+         nFkb3CSkeP3HldGwjtDd/d/MYFDpCje2Bsb/UHJx6K9DPGuwfmRrr3ZaSCKLnpu02zwd
+         28S712dm+jCRS//tOfkpx7OoPbV2mawH6nmnAYqzPPCiJl4Sd7JtjyvkfACQNv8n9LRp
+         I+yg==
+X-Gm-Message-State: AOJu0YyzK1D1UPqseo15tl9SzA9QpkWQ/K2LTViPg0++3C0ZhaAjvmAT
+	TSMcD265q36pMv9rUNcemF1+rr01pbJqsnRIYWpt++Sb5YxfKBdCZ1ljL0B4v1d11ohEqCJ9Dyt
+	CBHNJyk+VJf6Eom9gNCbj1iDThvw0fiftx94=
+X-Gm-Gg: ASbGnctMzgsmDQAOtPZ/bJY9twb1USaxBE7OxDgUSBCkUXUlZdJ6SLGdzHQv0X7muSB
+	REglCdsQhMDc5tACKVYAuEBpDW2v9DjM+
+X-Google-Smtp-Source: AGHT+IF+UQsuO8ZW51g4f2XEayPf9CN5c7ZfkWRzb6SNlBf2q/jkygZddutiIwn8SHVQ/Sro8/QU3C+Gtsnr6SEobVY=
+X-Received: by 2002:a05:6902:124e:b0:e38:b767:4cd4 with SMTP id
+ 3f1490d57ef6-e38f8b22755mr11288332276.26.1732555606004; Mon, 25 Nov 2024
+ 09:26:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20241115133619.114393-1-cgoettsche@seltendoof.de>
+ <20241115133619.114393-23-cgoettsche@seltendoof.de> <342b4afd-3a1a-41bd-8e2d-63eebb1fbcd2@linux.microsoft.com>
+In-Reply-To: <342b4afd-3a1a-41bd-8e2d-63eebb1fbcd2@linux.microsoft.com>
+From: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Date: Mon, 25 Nov 2024 18:26:35 +0100
+Message-ID: <CAJ2a_DfU5yPQk11MLMuTLB43Z-xrQ8w_M6T1zgshydbcNY=KvQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 00/22] selinux: harden against malformed policies
+To: Daniel Burgener <dburgener@linux.microsoft.com>
+Cc: selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Christian Göttsche <cgzones@googlemail.com>
+On Mon, 18 Nov 2024 at 16:35, Daniel Burgener
+<dburgener@linux.microsoft.com> wrote:
+>
+> On 11/15/2024 8:35 AM, Christian G=C3=B6ttsche wrote:
+> > From: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> >
+> > With the SELinux namespace feature on the horizon it becomes important
+> > to identify and reject malformed policies at load time.  Otherwise
+> > memory corruptions can compromise the kernel or NULL-pointer dereferenc=
+es
+> > and BUG() encounters can bring systems down.  Currently this is not a
+> > security relevant issue since loading a policy requires root privileges
+> > and permission of the current loaded SELinux policy, making it one of t=
+he
+> > most privileged operation.
+> >
+> > The first 9 patches are cleanup commits with overseeable diffs.
+> >
+> > Patch 10 unifies the underlying type used for security class identifier=
+s.
+> >
+> > Patch 11 to 21 add various checks at policy load time to reject malform=
+ed
+> > policies.
+> >
+> > Patch 22 needs some discussion:
+> > It limits the valid set of characters and the length for strings define=
+d
+> > by policies.  Currently there are no restrictions, so control character=
+s
+> > are accepted, e.g. Esc as part of a type name, and their length can be
+> > arbitrary.  Human formatted security contexts however must not be
+> > arbitrarily long, one example is they must fit in a page size for
+> > selinuxfs interaction and network associations.
+> > Thus the patch introduces the following restrictions:
+> >    * Disallow control characters
+> >    * Limit characters of identifiers to alphanumeric, underscore, dash,
+> >      and dot
+> >    * Limit identifiers in length to 128, expect types to 1024 and
+> >      categories to 32, characters (excluding NUL-terminator)
+>
+> I believe that those first two restrictions match what CIL will do today
+> (https://github.com/SELinuxProject/selinux/blob/9b4eff9222b24d4b5f2784db2=
+81f4f53019263b0/libsepol/cil/src/cil_verify.c#L96),
+> but the length restriction in CIL is 2048.
+>
+> https://github.com/SELinuxProject/selinux/blob/9b4eff9222b24d4b5f2784db28=
+1f4f53019263b0/libsepol/cil/src/cil_internal.h#L49
 
-Instead of using asprintf(3) and heavy string formatting just manually
-concatenate the substitution string.
+My intent is to make it hard to reach the page size limit with a full
+context of `user:role:type:mls`.
+Also the current SECMARK limit for the security context length is
+*only* 256 characters, see
+https://elixir.bootlin.com/linux/v6.12/source/include/uapi/linux/netfilter/=
+nf_tables.h#L1379
+and https://elixir.bootlin.com/linux/v6.12/source/include/uapi/linux/netfil=
+ter/xt_SECMARK.h#L15
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
-v2: add patch
----
- libselinux/src/label_file.c | 38 +++++++++++++++++++++++++------------
- libselinux/src/label_file.h |  1 +
- 2 files changed, 27 insertions(+), 12 deletions(-)
+> I would think that we'd want to end up in a situation where the kernel
+> is either equally restrictive or less restrictive than CIL.
 
-diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
-index c91a91f7..523968a6 100644
---- a/libselinux/src/label_file.c
-+++ b/libselinux/src/label_file.c
-@@ -1130,9 +1130,9 @@ static void selabel_subs_fini(struct selabel_sub *subs, uint32_t num)
- 	free(subs);
- }
- 
--static char *selabel_apply_subs(const struct selabel_sub *subs, uint32_t num, const char *src)
-+static char *selabel_apply_subs(const struct selabel_sub *subs, uint32_t num, const char *src, size_t slen)
- {
--	char *dst;
-+	char *dst, *tmp;
- 	uint32_t len;
- 
- 	for (uint32_t i = 0; i < num; i++) {
-@@ -1146,8 +1146,14 @@ static char *selabel_apply_subs(const struct selabel_sub *subs, uint32_t num, co
- 					len = ptr->slen + 1;
- 				else
- 					len = ptr->slen;
--				if (asprintf(&dst, "%s%s", ptr->dst, &src[len]) < 0)
-+
-+				dst = malloc(ptr->dlen + slen - len + 1);
-+				if (!dst)
- 					return NULL;
-+
-+				tmp = mempcpy(dst, ptr->dst, ptr->dlen);
-+				tmp = mempcpy(tmp, &src[len], slen - len);
-+				*tmp = '\0';
- 				return dst;
- 			}
- 		}
-@@ -1183,7 +1189,7 @@ static int selabel_subs_init(const char *path, struct selabel_digest *digest,
- 		char *ptr;
- 		char *src = buf;
- 		char *dst;
--		size_t len;
-+		size_t slen, dlen;
- 
- 		while (*src && isspace((unsigned char)*src))
- 			src++;
-@@ -1204,8 +1210,14 @@ static int selabel_subs_init(const char *path, struct selabel_digest *digest,
- 		if (! *dst)
- 			continue;
- 
--		len = strlen(src);
--		if (len >= UINT32_MAX) {
-+		slen = strlen(src);
-+		if (slen >= UINT32_MAX) {
-+			errno = EINVAL;
-+			goto err;
-+		}
-+
-+		dlen = strlen(dst);
-+		if (dlen >= UINT32_MAX) {
- 			errno = EINVAL;
- 			goto err;
- 		}
-@@ -1224,8 +1236,9 @@ static int selabel_subs_init(const char *path, struct selabel_digest *digest,
- 
- 		tmp[tmp_num++] = (struct selabel_sub) {
- 			.src = src_cpy,
--			.slen = len,
-+			.slen = slen,
- 			.dst = dst_cpy,
-+			.dlen = dlen,
- 		};
- 		src_cpy = NULL;
- 		dst_cpy = NULL;
-@@ -1255,19 +1268,19 @@ err:
- }
- #endif
- 
--static char *selabel_sub_key(const struct saved_data *data, const char *key)
-+static char *selabel_sub_key(const struct saved_data *data, const char *key, size_t key_len)
- {
- 	char *ptr, *dptr;
- 
--	ptr = selabel_apply_subs(data->subs, data->subs_num, key);
-+	ptr = selabel_apply_subs(data->subs, data->subs_num, key, key_len);
- 	if (ptr) {
--		dptr = selabel_apply_subs(data->dist_subs, data->dist_subs_num, ptr);
-+		dptr = selabel_apply_subs(data->dist_subs, data->dist_subs_num, ptr, strlen(ptr));
- 		if (dptr) {
- 			free(ptr);
- 			ptr = dptr;
- 		}
- 	} else {
--		ptr = selabel_apply_subs(data->dist_subs, data->dist_subs_num, key);
-+		ptr = selabel_apply_subs(data->dist_subs, data->dist_subs_num, key, key_len);
- 	}
- 
- 	return ptr;
-@@ -1783,9 +1796,10 @@ FUZZ_EXTERN struct lookup_result *lookup_all(struct selabel_handle *rec,
- 
- 		clean_key[len - 1] = '\0';
- 		key = clean_key;
-+		len--;
- 	}
- 
--	sub = selabel_sub_key(data, key);
-+	sub = selabel_sub_key(data, key, len);
- 	if (sub)
- 		key = sub;
- 
-diff --git a/libselinux/src/label_file.h b/libselinux/src/label_file.h
-index 436982bf..122894a2 100644
---- a/libselinux/src/label_file.h
-+++ b/libselinux/src/label_file.h
-@@ -72,6 +72,7 @@ struct selabel_sub {
- 	char *src;				/* source path prefix */
- 	char *dst;				/* substituted path prefix */
- 	uint32_t slen;				/* length of source path prefix */
-+	uint32_t dlen;				/* length of substituted path prefix */
- };
- 
- /* A regular expression file security context specification */
--- 
-2.45.2
+Yes, i agree.
 
+>
+> -Daniel
+>
+>
+>
 

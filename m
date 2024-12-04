@@ -1,415 +1,209 @@
-Return-Path: <selinux+bounces-2446-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2449-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AD659E3CB7
-	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 15:31:00 +0100 (CET)
-Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4479E3D09
+	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 15:44:16 +0100 (CET)
+Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA16D167BE1
-	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 14:30:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAEB1B2578E
+	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 14:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F721F759E;
-	Wed,  4 Dec 2024 14:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DDC16BE20;
+	Wed,  4 Dec 2024 14:32:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WJJkZgVi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DfqM0FH/"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC41D1F7087
-	for <selinux@vger.kernel.org>; Wed,  4 Dec 2024 14:30:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9701F759E
+	for <selinux@vger.kernel.org>; Wed,  4 Dec 2024 14:32:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733322656; cv=none; b=nSJmEFTCxUc2uGp1m+ww2u0lZ4soOxLHYttcUpLgkIHEG9pujnr72pmFwrETLdeglrQ7xlqENfJnG2LYmIgqDFlpZO/kFqBjwIOw9migPceTQMrm8g0b6cBrVWEnEb6UR9oVeMRa528PEcqZ36/PqilP+Q74fJ1EJrxwyIlYkJQ=
+	t=1733322725; cv=none; b=QQpYA3rxK1tc9C0vvlnvGLipj/FEJCaP21A1zWUYeXLDyyZ/M3EJzNahToEOblNzXCF982Fb7VrK7S8hooP0VigC0RvJK7q0dZJgwtzUIvBEQm3IfwyKcZYnUTX9JZc8XV1T/zNs08Af+9K0tjC3gHZarkd2Qp4yTZksmcWV56w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733322656; c=relaxed/simple;
-	bh=Q+hG+hnBAQFWksV26NXVMdh6UDcG/8r/o/e0gu/B2Zs=;
+	s=arc-20240116; t=1733322725; c=relaxed/simple;
+	bh=RazehgSIMBn/VmkOVQQcyoWWPbXjEw6uxqJtWqQ1F+Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fNfkQScz9p2jVKrDYxugkqNQSPWgscUBRkW9ZwMiq6xQznnX/CJeROBqeHOAdZYRf5n7xv8h8QT2lVQxJOzQ2lOBf6F/28fnHgXzEVlxpnvcpnz+8/gC3svLXhjgYC8CgduhNyvdVNYfzP5tcAyCw4oobnxWNr+XyjOKhSj6RB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WJJkZgVi; arc=none smtp.client-ip=209.85.210.45
+	 To:Cc:Content-Type; b=MIQ2gKym+0TEuG2nw0k/j0/owuFUkW8bz3hX+8fT3i5WaUhdrgYKc+EKDCuj9f8DS9b2/rvMzUqiQOimwZUYwc13p3uKnKL85wmDYW0tpYY7IDQ6PwbTRtmf7Q7hVwK865DgUuoWfq7wJq4iYIgHu5XAvVed6Xpx4j87kbwDcFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DfqM0FH/; arc=none smtp.client-ip=209.85.210.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-71d47201b3fso2498862a34.2
-        for <selinux@vger.kernel.org>; Wed, 04 Dec 2024 06:30:54 -0800 (PST)
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-71d41932d32so3003416a34.0
+        for <selinux@vger.kernel.org>; Wed, 04 Dec 2024 06:32:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733322654; x=1733927454; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733322722; x=1733927522; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xOZ3tHKGKgdQ3jyWnZGaj85lEWkbnTLZN+TxO+bOkO4=;
-        b=WJJkZgViKi3OOlWB+qBh46cMjSPNgxG2mcO9SgGUnb0bS99tQqHCTApxe0M7UvmOe0
-         ftGVACdTG1d93mPqsLrhooQUp/3MNklLRKggWwfo8F6w4JRmgrNLuIsTQMXzHRiBQVaP
-         NCZrIizkNGGqUe/vCFhdmOwZ6tOjr3Dy3wUOawxiJbDuamz5nar14qnYbXiJ0/rB1+sQ
-         yF68ho2z22UV4iEZAdtUBV3SDOE3f3jNbF1LIhi7C9BRjH8BttITGUOUO7oyyBoVpV16
-         Z7kQCXmnC9eNt8faMKlcSXMtZbPh2U269Y4Rb3iOfqAe5G/14My9/e1/XfTFGqu1CTfr
-         zWTw==
+        bh=l88jlo59Uw7n1dsi2SL5pTb36hmW2JJUI3RX+gQRqyE=;
+        b=DfqM0FH/NAt5w47DHgUiqtQApu0FR8cuorgpEMklkS6PDVgOIbMFNQpbHos5iR0VBW
+         FCsgAh3JhLLXZ74XalU51AjjrJDMWwLihtF7YOv/v+1Nre8z8iHKrHTb0k85Xv5wUzLV
+         SsXeS0cX4uq8+dtBJ3j6CLoGLrsZ6GSw6QpoKTHCdPXK3f6mS/NSo/Ythh7zpXgUDzEh
+         pBLBKvc05nd+qA/qGUV8agGksclzumiQHSeyAanQkXJ8qrkcNIMYsiHG7sXe+sOe2g+o
+         jFRkkECiCc8DbsoHDAW2kFGL17hGMHNxmUvYc/mx1CsBPXlSWMf19FCQaH6FiCrX5zhg
+         BfOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733322654; x=1733927454;
+        d=1e100.net; s=20230601; t=1733322722; x=1733927522;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xOZ3tHKGKgdQ3jyWnZGaj85lEWkbnTLZN+TxO+bOkO4=;
-        b=WwOpSU9jXZtG6EJjMPszaG806MNf7H02/1fxtx3uHdB5GpvzJjAkhBhV/Yr/8p4o2q
-         rDD6KhEPX1Gv9Ri8cW9gqfS/z6tsqEQcVE5+u91KkEnpZbHWHY9FDmM/r88lgGfNMZUB
-         X8VNbUe37o+JhF7sGBq76piXPrjhad//wfOocCM2F+OPdGPCPCxpYXMOH7WGqRP2i5Kd
-         RnC1xUG41FG40tvGW0cusji/okuB6hrDZLthpM0TG8Bg68Ah5ulW/zDLVS+x/emPcriz
-         HPFBKzkJglOp44pk0f5CrecT45qGPjwLKJP7FG+bURMQcFESpdnDd3mESqZqAB1l6BGw
-         oGCw==
-X-Gm-Message-State: AOJu0YyWq88f5PSYO0uu7v1W8eXQ1BrSOIMJp8wJcgzYTF/DMbZ49TDU
-	vOvLb0p/23HXSxImbdpeJu/SrusOqs+/1WTCv9xNT9tuKJWofM7XzVdvgH5WiNVShLE8J4SJXsf
-	SJ9PeOFuCiAHGjpgQxrsA3H73jC8=
-X-Gm-Gg: ASbGnctd51BJulYXt7vjePoTWvTdhaUTrWOory6Jl6Udd07ZYPWQFbiiFsvg0jL4iOC
-	dkMculq11jrsQbjqGUUidbqVtFN8h/jI=
-X-Google-Smtp-Source: AGHT+IEtLIJaPnIBwk3Lb7mDL/DgNFgfjRRNMMbQPcv0tho/eJ1DfbQPPanK1qGLPvdPvPdINZrTv/HsuJTaNgnHweA=
-X-Received: by 2002:a05:6830:410d:b0:710:f38a:191c with SMTP id
- 46e09a7af769-71dad635c18mr5374622a34.11.1733322653665; Wed, 04 Dec 2024
- 06:30:53 -0800 (PST)
+        bh=l88jlo59Uw7n1dsi2SL5pTb36hmW2JJUI3RX+gQRqyE=;
+        b=hBIGnsW+s4/HwREF4t/qhdVpRkTEO7bCccEQ1twoScjI+QIvei2P0I6E/A2T09mJpu
+         mB+/LD+ekrz7ScSIORxPmaW5wGGSMUjlgP4JKkymbi61IpUvrlBg1duWKqe0+kCJNj7e
+         Ry5xCwP2pYJ/dU97sJxk+9pEXPumPpQZMONDRNCuFTwRZnipU/a50ilNfn6wcYmuGocT
+         +GMGJFo+tid5JbPySB8emkv/cpomta4mh72hPctbxTx+QGYKhK5b8vVzZWA4flRtMQJ0
+         rOLmzbFcR34NxDT2MdR/I5UPkejTSvSTmUbsRw7izLvHkRJXrXd7pRfkRCFLi+Bg/3BR
+         g/6A==
+X-Gm-Message-State: AOJu0YyuasRrlAAKLM4ejv52QIyyv9JhZUXlT/gdj7IK+gTHR5O0EXR2
+	NDyGKzd9gVfCu7iiW5VY+gJXOKp7OQAP7+zxo6mE3V5YljKJUTVQPryvP0V2TYjfFXLspJeV+OX
+	Fg7VGcM9f+QsVuOJnesoLLUje5f4=
+X-Gm-Gg: ASbGnct3G0n++vqlyIiWRmpSEFa1I4nVPETBEUJPcMlPn5Ly06aLh5vik3W7ixLikak
+	NoGGfzerCBXIQr5Q3QXiu4d9oS0VOo1M=
+X-Google-Smtp-Source: AGHT+IEHdvZ1wo3KzpGx6+ipe0P6kZnuhhC8rUZa8QNJdgShvCygrLksGY6w0M7XRJa24dulcx4RihksPmC8gtCHhcE=
+X-Received: by 2002:a05:6359:5f8b:b0:1c6:9280:c6f with SMTP id
+ e5c5f4694b2df-1caea7903camr589717355d.0.1733322722545; Wed, 04 Dec 2024
+ 06:32:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241126102621.20253-1-cgoettsche@seltendoof.de> <CAP+JOzSe-wfPdCXv4OKQ7eaXeH+qP7zDK=LiWp9HAjDW1uNG1Q@mail.gmail.com>
-In-Reply-To: <CAP+JOzSe-wfPdCXv4OKQ7eaXeH+qP7zDK=LiWp9HAjDW1uNG1Q@mail.gmail.com>
+References: <20241202110413.27032-1-cgoettsche@seltendoof.de> <CAP+JOzR0amsXLeL8oJ=daj_DK3Q0E4poMbD0Cumm5X8dzw2M+g@mail.gmail.com>
+In-Reply-To: <CAP+JOzR0amsXLeL8oJ=daj_DK3Q0E4poMbD0Cumm5X8dzw2M+g@mail.gmail.com>
 From: James Carter <jwcart2@gmail.com>
-Date: Wed, 4 Dec 2024 09:30:43 -0500
-Message-ID: <CAP+JOzR3G1cvmZPkAir9uGqhjQfBAFhmV6J1tj-vBAoRrsc95g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] libselinux: avoid memory allocation in common file
- label lookup
-To: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
-Cc: selinux@vger.kernel.org, =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Date: Wed, 4 Dec 2024 09:31:52 -0500
+Message-ID: <CAP+JOzTQU4i7gGs0KdNTEC6yQOpc3FsfTmKZpOLCcqb0m24VXA@mail.gmail.com>
+Subject: Re: [PATCH] checkpolicy: drop host bits in IPv6 CIDR address
+To: cgzones@googlemail.com
+Cc: selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 2, 2024 at 3:18=E2=80=AFPM James Carter <jwcart2@gmail.com> wro=
+On Mon, Dec 2, 2024 at 4:53=E2=80=AFPM James Carter <jwcart2@gmail.com> wro=
 te:
 >
-> On Tue, Nov 26, 2024 at 5:45=E2=80=AFAM Christian G=C3=B6ttsche
+> On Mon, Dec 2, 2024 at 6:27=E2=80=AFAM Christian G=C3=B6ttsche
 > <cgoettsche@seltendoof.de> wrote:
 > >
 > > From: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 > >
-> > Remove a memory allocation during a common file label lookup,
-> > e.g. requested by restorecon(8)/setfiles(8), by using a local stack
-> > buffer for a potential lookup result.
-> >
-> > Additional minor optimization tweaks.
+> > Drop the host bits in the IPV6 address defined via a CIDR notation in
+> > define_ipv6_cidr_node_context(), similar to
+> > define_ipv4_cidr_node_context().  Otherwise the kernel will never match
+> > this entry since the host bits from the actual address will be zeroed
+> > before comparison, see
+> > security/selinux/ss/services.c:match_ipv6_addrmask().
 > >
 > > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 >
-> For these three patches:
 > Acked-by: James Carter <jwcart2@gmail.com>
 >
 
-These three patches have been merged.
+Merged.
 Thanks,
 Jim
 
-
 > > ---
-> > v2: drop claim about this being the sole memory allocation, since
-> >     applying a substitution path allocates as well
+> > Note the traditional address+mask syntax does not drop the host bits as
+> > well, so they are also dead entries, but I refrained from changing
+> > this legacy behavior (the CIDR support is new) and checkpolicy nowadays
+> > also warns about host bits set (and fails with the option `-E`).
 > > ---
-> >  libselinux/src/label_file.c       | 103 +++++++++++++++++-------------
-> >  libselinux/src/selinux_internal.h |   8 +++
-> >  2 files changed, 68 insertions(+), 43 deletions(-)
+> >  checkpolicy/policy_define.c                        | 9 +++++++++
+> >  checkpolicy/tests/policy_allonce.conf              | 5 ++++-
+> >  checkpolicy/tests/policy_allonce.expected.conf     | 3 +++
+> >  checkpolicy/tests/policy_allonce.expected_opt.conf | 3 +++
+> >  4 files changed, 19 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
-> > index 189a5ed2..4e212aa4 100644
-> > --- a/libselinux/src/label_file.c
-> > +++ b/libselinux/src/label_file.c
-> > @@ -1467,12 +1467,30 @@ FUZZ_EXTERN void free_lookup_result(struct look=
-up_result *result)
+> > diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+> > index 4b0eca6b..2f811b67 100644
+> > --- a/checkpolicy/policy_define.c
+> > +++ b/checkpolicy/policy_define.c
+> > @@ -5709,6 +5709,14 @@ static void ipv6_cidr_bits_to_mask(unsigned long=
+ cidr_bits, struct in6_addr *mas
 > >         }
 > >  }
 > >
-> > -static struct lookup_result *lookup_check_node(struct spec_node *node,=
- const char *key, uint8_t file_kind, bool partial, bool find_all)
-> > +/**
-> > + * lookup_check_node() - Try to find a file context definition in the =
-given node or parents.
-> > + * @node:      The deepest specification node to match against. Parent=
- nodes are successively
-> > + *             searched on no match or when finding all matches.
-> > + * @key:       The absolute file path to look up.
-> > + * @file_kind: The kind of the file to look up (translated from file t=
-ype into LABEL_FILE_KIND_*).
-> > + * @partial:   Whether to partially match the given file path or compl=
-etely.
-> > + * @find_all:  Whether to find all file context definitions or just th=
-e most specific.
-> > + * @buf:       A pre-allocated buffer for a potential result to avoid =
-allocating it on the heap or
-> > + *             NULL. Mututal exclusive with @find_all.
-> > + *
-> > + * Return: A pointer to a file context definition if a match was found=
-. If @find_all was specified
-> > + *         its a linked list of all results. If @buf was specified it =
-is returned on a match found.
-> > + *         NULL is returned in case of no match found.
-> > + */
-> > +static struct lookup_result *lookup_check_node(struct spec_node *node,=
- const char *key, uint8_t file_kind,
-> > +                                              bool partial, bool find_=
-all, struct lookup_result *buf)
-> >  {
-> >         struct lookup_result *result =3D NULL;
-> >         struct lookup_result **next =3D &result;
-> >         size_t key_len =3D strlen(key);
-> >
-> > +       assert(!(find_all && buf !=3D NULL));
+> > +static void ipv6_apply_mask(struct in6_addr *restrict addr, const stru=
+ct in6_addr *restrict mask)
+> > +{
+> > +       unsigned i;
 > > +
-> >         for (struct spec_node *n =3D node; n; n =3D n->parent) {
-> >
-> >                 uint32_t literal_idx =3D search_literal_spec(n->literal=
-_specs, n->literal_specs_num, key, key_len, partial);
-> > @@ -1495,10 +1513,14 @@ static struct lookup_result *lookup_check_node(=
-struct spec_node *node, const cha
-> >                                                 return NULL;
-> >                                         }
-> >
-> > -                                       r =3D malloc(sizeof(*r));
-> > -                                       if (!r) {
-> > -                                               free_lookup_result(resu=
-lt);
-> > -                                               return NULL;
-> > +                                       if (likely(buf)) {
-> > +                                               r =3D buf;
-> > +                                       } else {
-> > +                                               r =3D malloc(sizeof(*r)=
-);
-> > +                                               if (!r) {
-> > +                                                       free_lookup_res=
-ult(result);
-> > +                                                       return NULL;
-> > +                                               }
-> >                                         }
-> >
-> >                                         *r =3D (struct lookup_result) {
-> > @@ -1510,11 +1532,11 @@ static struct lookup_result *lookup_check_node(=
-struct spec_node *node, const cha
-> >                                                 .next =3D NULL,
-> >                                         };
-> >
-> > +                                       if (likely(!find_all))
-> > +                                               return r;
+> > +       for (i =3D 0; i < 4; i++)
+> > +               addr->s6_addr32[i] &=3D mask->s6_addr32[i];
+> > +}
 > > +
-> >                                         *next =3D r;
-> >                                         next =3D &r->next;
-> > -
-> > -                                       if (!find_all)
-> > -                                               return result;
-> >                                 }
-> >
-> >                                 literal_idx++;
-> > @@ -1556,10 +1578,14 @@ static struct lookup_result *lookup_check_node(=
-struct spec_node *node, const cha
-> >                                         return NULL;
-> >                                 }
-> >
-> > -                               r =3D malloc(sizeof(*r));
-> > -                               if (!r) {
-> > -                                       free_lookup_result(result);
-> > -                                       return NULL;
-> > +                               if (likely(buf)) {
-> > +                                       r =3D buf;
-> > +                               } else {
-> > +                                       r =3D malloc(sizeof(*r));
-> > +                                       if (!r) {
-> > +                                               free_lookup_result(resu=
-lt);
-> > +                                               return NULL;
-> > +                                       }
-> >                                 }
-> >
-> >                                 *r =3D (struct lookup_result) {
-> > @@ -1571,12 +1597,12 @@ static struct lookup_result *lookup_check_node(=
-struct spec_node *node, const cha
-> >                                         .next =3D NULL,
-> >                                 };
-> >
-> > +                               if (likely(!find_all))
-> > +                                       return r;
-> > +
-> >                                 *next =3D r;
-> >                                 next =3D &r->next;
-> >
-> > -                               if (!find_all)
-> > -                                       return result;
-> > -
-> >                                 continue;
-> >                         }
-> >
-> > @@ -1692,7 +1718,8 @@ FUZZ_EXTERN struct lookup_result *lookup_all(stru=
-ct selabel_handle *rec,
-> >                                  const char *key,
-> >                                  int type,
-> >                                  bool partial,
-> > -                                bool find_all)
-> > +                                bool find_all,
-> > +                                struct lookup_result *buf)
+> >  static int insert_ipv6_node(ocontext_t *newc)
 > >  {
-> >         struct saved_data *data =3D (struct saved_data *)rec->data;
-> >         struct lookup_result *result =3D NULL;
-> > @@ -1704,18 +1731,18 @@ FUZZ_EXTERN struct lookup_result *lookup_all(st=
-ruct selabel_handle *rec,
-> >         unsigned int sofar =3D 0;
-> >         char *sub =3D NULL;
-> >
-> > -       if (!key) {
-> > +       if (unlikely(!key)) {
-> >                 errno =3D EINVAL;
-> >                 goto finish;
+> >         ocontext_t *c, *l;
+> > @@ -5884,6 +5892,7 @@ int define_ipv6_cidr_node_context(void)
+> >                 return -1;
 > >         }
 > >
-> > -       if (!data->num_specs) {
-> > +       if (unlikely(!data->num_specs)) {
-> >                 errno =3D ENOENT;
-> >                 goto finish;
-> >         }
+> > +       ipv6_apply_mask(&addr, &mask);
+> >         memcpy(&newc->u.node6.addr[0], &addr.s6_addr[0], 16);
+> >         memcpy(&newc->u.node6.mask[0], &mask.s6_addr[0], 16);
 > >
-> >         /* Remove duplicate slashes */
-> > -       if ((next_slash =3D strstr(key, "//"))) {
-> > +       if (unlikely(next_slash =3D strstr(key, "//"))) {
-> >                 clean_key =3D (char *) malloc(strlen(key) + 1);
-> >                 if (!clean_key)
-> >                         goto finish;
-> > @@ -1732,12 +1759,12 @@ FUZZ_EXTERN struct lookup_result *lookup_all(st=
-ruct selabel_handle *rec,
-> >
-> >         /* remove trailing slash */
-> >         len =3D strlen(key);
-> > -       if (len =3D=3D 0) {
-> > +       if (unlikely(len =3D=3D 0)) {
-> >                 errno =3D EINVAL;
-> >                 goto finish;
-> >         }
-> >
-> > -       if (len > 1 && key[len - 1] =3D=3D '/') {
-> > +       if (unlikely(len > 1 && key[len - 1] =3D=3D '/')) {
-> >                 /* reuse clean_key from above if available */
-> >                 if (!clean_key) {
-> >                         clean_key =3D (char *) malloc(len);
-> > @@ -1757,7 +1784,7 @@ FUZZ_EXTERN struct lookup_result *lookup_all(stru=
-ct selabel_handle *rec,
-> >
-> >         node =3D lookup_find_deepest_node(data->root, key);
-> >
-> > -       result =3D lookup_check_node(node, key, file_kind, partial, fin=
-d_all);
-> > +       result =3D lookup_check_node(node, key, file_kind, partial, fin=
-d_all, buf);
-> >
-> >  finish:
-> >         free(clean_key);
-> > @@ -1768,14 +1795,9 @@ finish:
-> >  static struct lookup_result *lookup_common(struct selabel_handle *rec,
-> >                                            const char *key,
-> >                                            int type,
-> > -                                          bool partial) {
-> > -       struct lookup_result *result =3D lookup_all(rec, key, type, par=
-tial, false);
-> > -       if (!result)
-> > -               return NULL;
-> > -
-> > -       free_lookup_result(result->next);
-> > -       result->next =3D NULL;
-> > -       return result;
-> > +                                          bool partial,
-> > +                                          struct lookup_result *buf) {
-> > +       return lookup_all(rec, key, type, partial, false, buf);
-> >  }
-> >
-> >  /*
-> > @@ -1835,7 +1857,7 @@ static bool hash_all_partial_matches(struct selab=
-el_handle *rec, const char *key
-> >  {
-> >         assert(digest);
-> >
-> > -       struct lookup_result *matches =3D lookup_all(rec, key, 0, true,=
- true);
-> > +       struct lookup_result *matches =3D lookup_all(rec, key, 0, true,=
- true, NULL);
-> >         if (!matches) {
-> >                 return false;
-> >         }
-> > @@ -1864,25 +1886,20 @@ static bool hash_all_partial_matches(struct sel=
-abel_handle *rec, const char *key
-> >  static struct selabel_lookup_rec *lookup(struct selabel_handle *rec,
-> >                                          const char *key, int type)
-> >  {
-> > -       struct lookup_result *result;
-> > -       struct selabel_lookup_rec *lookup_result;
-> > +       struct lookup_result buf, *result;
-> >
-> > -       result =3D lookup_common(rec, key, type, false);
-> > +       result =3D lookup_common(rec, key, type, false, &buf);
-> >         if (!result)
-> >                 return NULL;
-> >
-> > -       lookup_result =3D result->lr;
-> > -       free_lookup_result(result);
-> > -       return lookup_result;
-> > +       return result->lr;
-> >  }
-> >
-> >  static bool partial_match(struct selabel_handle *rec, const char *key)
-> >  {
-> > -       struct lookup_result *result =3D lookup_common(rec, key, 0, tru=
-e);
-> > -       bool ret =3D result;
-> > +       struct lookup_result buf;
-> >
-> > -       free_lookup_result(result);
-> > -       return ret;
-> > +       return !!lookup_common(rec, key, 0, true, &buf);
-> >  }
-> >
-> >  static struct selabel_lookup_rec *lookup_best_match(struct selabel_han=
-dle *rec,
-> > @@ -1904,7 +1921,7 @@ static struct selabel_lookup_rec *lookup_best_mat=
-ch(struct selabel_handle *rec,
-> >         results =3D calloc(n+1, sizeof(*results));
-> >         if (!results)
-> >                 return NULL;
-> > -       results[0] =3D lookup_common(rec, key, type, false);
-> > +       results[0] =3D lookup_common(rec, key, type, false, NULL);
-> >         if (results[0]) {
-> >                 if (!results[0]->has_meta_chars) {
-> >                         /* exact match on key */
-> > @@ -1915,7 +1932,7 @@ static struct selabel_lookup_rec *lookup_best_mat=
-ch(struct selabel_handle *rec,
-> >                 prefix_len =3D results[0]->prefix_len;
-> >         }
-> >         for (i =3D 1; i <=3D n; i++) {
-> > -               results[i] =3D lookup_common(rec, aliases[i-1], type, f=
-alse);
-> > +               results[i] =3D lookup_common(rec, aliases[i-1], type, f=
-alse, NULL);
-> >                 if (results[i]) {
-> >                         if (!results[i]->has_meta_chars) {
-> >                                 /* exact match on alias */
-> > diff --git a/libselinux/src/selinux_internal.h b/libselinux/src/selinux=
-_internal.h
-> > index 372837dd..964b8418 100644
-> > --- a/libselinux/src/selinux_internal.h
-> > +++ b/libselinux/src/selinux_internal.h
-> > @@ -142,4 +142,12 @@ static inline void fclose_errno_safe(FILE *stream)
-> >         errno =3D saved_errno;
-> >  }
-> >
-> > +#ifdef __GNUC__
-> > +# define likely(x)                     __builtin_expect(!!(x), 1)
-> > +# define unlikely(x)                   __builtin_expect(!!(x), 0)
-> > +#else
-> > +# define likely(x)                     (x)
-> > +# define unlikely(x)                   (x)
-> > +#endif /* __GNUC__ */
-> > +
-> >  #endif /* SELINUX_INTERNAL_H_ */
+> > diff --git a/checkpolicy/tests/policy_allonce.conf b/checkpolicy/tests/=
+policy_allonce.conf
+> > index 51a8c40a..95a0f265 100644
+> > --- a/checkpolicy/tests/policy_allonce.conf
+> > +++ b/checkpolicy/tests/policy_allonce.conf
+> > @@ -76,9 +76,12 @@ portcon tcp 80 USER1:ROLE1:TYPE1
+> >  portcon udp 100-200 USER1:ROLE1:TYPE1
+> >  netifcon lo USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
+> >  nodecon 127.0.0.1 255.255.255.255 USER1:ROLE1:TYPE1
+> > -nodecon 127.0.0.0/24 USER1:ROLE1:TYPE1
+> > +nodecon 192.168.42.0 255.255.0.0 USER1:ROLE1:TYPE1
+> > +nodecon 127.0.0.1/24 USER1:ROLE1:TYPE1
+> > +nodecon 192.168.41.0/16 USER1:ROLE1:TYPE1
+> >  nodecon ::ffff:127.0.0.1 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff USER1=
+:ROLE1:TYPE1
+> >  nodecon ff80::/16 USER1:ROLE1:TYPE1
+> > +nodecon ff00::1/8 USER1:ROLE1:TYPE1
+> >  # hex numbers will be turned in decimal ones
+> >  ibpkeycon fe80:: 0xFFFF USER1:ROLE1:TYPE1
+> >  ibpkeycon fe80:: 0-0x10 USER1:ROLE1:TYPE1
+> > diff --git a/checkpolicy/tests/policy_allonce.expected.conf b/checkpoli=
+cy/tests/policy_allonce.expected.conf
+> > index 355d9991..79d62319 100644
+> > --- a/checkpolicy/tests/policy_allonce.expected.conf
+> > +++ b/checkpolicy/tests/policy_allonce.expected.conf
+> > @@ -82,8 +82,11 @@ portcon udp 100-200 USER1:ROLE1:TYPE1
+> >  netifcon lo USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
+> >  nodecon 127.0.0.1 255.255.255.255 USER1:ROLE1:TYPE1
+> >  nodecon 127.0.0.0 255.255.255.0 USER1:ROLE1:TYPE1
+> > +nodecon 192.168.0.0 255.255.0.0 USER1:ROLE1:TYPE1
+> > +nodecon 192.168.42.0 255.255.0.0 USER1:ROLE1:TYPE1
+> >  nodecon ::ffff:127.0.0.1 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff USER1=
+:ROLE1:TYPE1
+> >  nodecon ff80:: ffff:: USER1:ROLE1:TYPE1
+> > +nodecon ff00:: ff00:: USER1:ROLE1:TYPE1
+> >  ibpkeycon fe80:: 65535 USER1:ROLE1:TYPE1
+> >  ibpkeycon fe80:: 0-16 USER1:ROLE1:TYPE1
+> >  ibendportcon mlx4_0 2 USER1:ROLE1:TYPE1
+> > diff --git a/checkpolicy/tests/policy_allonce.expected_opt.conf b/check=
+policy/tests/policy_allonce.expected_opt.conf
+> > index 74eec4ba..fa4e319b 100644
+> > --- a/checkpolicy/tests/policy_allonce.expected_opt.conf
+> > +++ b/checkpolicy/tests/policy_allonce.expected_opt.conf
+> > @@ -82,8 +82,11 @@ portcon udp 100-200 USER1:ROLE1:TYPE1
+> >  netifcon lo USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
+> >  nodecon 127.0.0.1 255.255.255.255 USER1:ROLE1:TYPE1
+> >  nodecon 127.0.0.0 255.255.255.0 USER1:ROLE1:TYPE1
+> > +nodecon 192.168.0.0 255.255.0.0 USER1:ROLE1:TYPE1
+> > +nodecon 192.168.42.0 255.255.0.0 USER1:ROLE1:TYPE1
+> >  nodecon ::ffff:127.0.0.1 ffff:ffff:ffff:ffff:ffff:ffff:ffff:ffff USER1=
+:ROLE1:TYPE1
+> >  nodecon ff80:: ffff:: USER1:ROLE1:TYPE1
+> > +nodecon ff00:: ff00:: USER1:ROLE1:TYPE1
+> >  ibpkeycon fe80:: 65535 USER1:ROLE1:TYPE1
+> >  ibpkeycon fe80:: 0-16 USER1:ROLE1:TYPE1
+> >  ibendportcon mlx4_0 2 USER1:ROLE1:TYPE1
 > > --
 > > 2.45.2
 > >

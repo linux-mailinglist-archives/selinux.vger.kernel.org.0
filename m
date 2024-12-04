@@ -1,171 +1,133 @@
-Return-Path: <selinux+bounces-2448-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2452-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 909359E3E0A
-	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 16:20:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB68B9E4548
+	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 21:05:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68C26B273B9
-	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 14:31:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85C902840D5
+	for <lists+selinux@lfdr.de>; Wed,  4 Dec 2024 20:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAD31F707D;
-	Wed,  4 Dec 2024 14:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A7391F03E9;
+	Wed,  4 Dec 2024 20:05:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NHkqF3PT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BZXugKX1"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DB9205AB3
-	for <selinux@vger.kernel.org>; Wed,  4 Dec 2024 14:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92911C3BFA
+	for <selinux@vger.kernel.org>; Wed,  4 Dec 2024 20:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1733322705; cv=none; b=CI4XSS9kmf27WoH+RIeLaVRJ3YEV7mDzyu0o5uGy0MvR5E40l9uT2rRLxVkVsfazRdC2bzC/h3BbIVU/aMPnlefPr+GMAmKS7GZ3tmGXivmX4fgZCc+Jic1bsAhNAKEXPV7ImOEnycxGOG36fSu+SNBaDHuyb00J4a/OVYYtBxw=
+	t=1733342720; cv=none; b=J+z8NTBX+BYyNVsfDavevNg1Qru1fudEV5gNeFXewSrigl2TQw0xE+/EDszJ30d80128j4Z1vxod8GeFEUc6Yr4ju4Ql8ixpBvoNWEJCPaxki06U9KhGGTajJAW6uCdxCZvXrVnyzXqLwzZHdYVsMQRav9ia8yhabhatm3bSgDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1733322705; c=relaxed/simple;
-	bh=p9xUTmS6HaJCoZoWL+P06H3PgBHk5cFBYNzvI74DzUc=;
+	s=arc-20240116; t=1733342720; c=relaxed/simple;
+	bh=DM7hS8ynXivxetDl3eO/2fKN/tN4Z+0TeBM8lVcCcG4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RrUcTXWqMtmama8fJFOqeu8OHa32iO7Qrkj0t3TyV4JjkmsvD3Ob0peRZxuf/6vXXO5vSIV9V3Ezv4PciUIVKYIN5cI8SXAn/lrXzMoUy+gMaL85rZFroxaEbDyVZ6XGBpG8NPmdeXHyoR8l+1eefiAUaCItjsqJ1bzy6ZMjFxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NHkqF3PT; arc=none smtp.client-ip=209.85.160.182
+	 To:Cc:Content-Type; b=XI/Gg5LvH5nFJYySSOYNNapAps49pJopgcpH4mvNDQsi5OINuMxc81GG5CnT7HIMXDSXHh07RK8zfZGZEE0gfD69GJGPfYhMdIRsUA6NBEPfwgLeatlC9HawDZkiLZgQV7OHSeWgMusS+10cWluxcYk6Y5Uu8eu9qa+oClL/BEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BZXugKX1; arc=none smtp.client-ip=209.85.210.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-46677ef6910so45488911cf.2
-        for <selinux@vger.kernel.org>; Wed, 04 Dec 2024 06:31:43 -0800 (PST)
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-71d56fe8240so137161a34.0
+        for <selinux@vger.kernel.org>; Wed, 04 Dec 2024 12:05:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733322703; x=1733927503; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1733342718; x=1733947518; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nuPAJjm+D1CsaLPYauHZGxfqzLl3Gy+xmM33b6ezBNw=;
-        b=NHkqF3PTD6AUYMTH/d6JISlHOI2umSYovR+ydT/COzCwU5mjNZVQ9cwBQz6JRfOyqz
-         Z3zZXg6QFhBXmPKjPy3arDaokrN+wUToQFnTWLmth9ECbRLUffcgRe24UAdbpsidYBns
-         5YrzDJaeGDdq6ZIwsLcE0NLQSanVrDdlA5oyNoCs0dW2hLfULII7ojg85v1aJ1fD3HT5
-         7szANYvMnvAiu4d70Ycw0FNP4kPG8PHLgZLMCGkuD/5Rt3dOCoUnNv3hlAeE2Bcjf+ZG
-         N16by23rofvORpl6g8DRWX4Ms5P2vacSvUUf4ii/2Mccxpxk9LuaHFjG1iLC7LgZipUT
-         mn3w==
+        bh=KOjoLFUmYtIZsu2k/3oGmhH8G+vMQgnrRqENgY/7c8A=;
+        b=BZXugKX1xIPDIzHrMrbEKXLAs+IfPX6x1yuMUFT3rbeTTwejPV1UHmmXJQKGyw0Tm3
+         IAUmiHZEilTlM+DZYyOYjEPTOXbxfe6L4dJCY7kx204+fB0ypFnzUY4Uf5UvcjuujoaF
+         YR33m22BQcBUIdXswYQKpgiFVnSyFAfS6Fla7dKSWX/WAno6ayUkmXfYnYqC2ay5B9XO
+         QtGVWi7u2cu0ci6L9pr4OnvlQzPtNk1hQLo13v65x9ADq+Kd92iB7OqFTRRTz6nXbfQE
+         JN0pmX4VVqMTtt5C+JrrAa3JgYyzAF7HsxbvbmdgZjVqGryj1lhS+qbCrjG73P5KSHMk
+         4sfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733322703; x=1733927503;
+        d=1e100.net; s=20230601; t=1733342718; x=1733947518;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nuPAJjm+D1CsaLPYauHZGxfqzLl3Gy+xmM33b6ezBNw=;
-        b=lSqac7mg3jTa9knybFd9SpzaU17pHqxN5TG4q16Muc91uxXr3khJDsLUw7Co6/G2oM
-         6gTJuOinioP7GCo8dufYPPsHWCzZQdcKnIxwFCfjH8/kaDX0XCp/4jL/G1JdIQYyw2kY
-         RCi9p5PkSR0bdKK80Dw7X8cD18LY6HG7WBJu2Yif/AbmsPmr1W9PbC4FnAtjOOeUdCdk
-         RyMypXHfzNJPMDiHmf+fsZZiSWiPVrn2Vz1jLHyawPAzQkOzNj8jUKnMGsUuSW02di0e
-         2v3UZcGimz/GrXJ3IWtE8P2WeP8fLVlZi47lSZkFMISTPC5YD/gDjNDOAeEVCS8r7snQ
-         19Vw==
-X-Gm-Message-State: AOJu0YwMGsiVLEzCjpcCtTOH+nu3JannhWl9zqc2k3gOqjbbfzTKTHfA
-	VQ7ootHN8ZF3cjW+ywbyyVKwa/xkkMqGZ/mK/xy15e2OQlBuJ+P/mnz3EB2CS9Gyvw6ZjAJ2O3V
-	K0DTPCpyakZ2as4x7PdIx313vsPQ=
-X-Gm-Gg: ASbGncuoX6F0P2DlBs1unU7kWXpMgfnIMKQcT/zHBF0nZOinMr7zi8tGfa5u/bC7Avl
-	+7S+MZUeuaw1wtljMhiHEM/NELQBSU9w=
-X-Google-Smtp-Source: AGHT+IEOQylrCUjVIQ4UnlybfnWr/OAsYNZDWB9cP1gDhzB4SyLhd23lNlfyDZZ8VaJRni3rz2yhRNDT146FGJCI2C0=
-X-Received: by 2002:a05:6214:19c8:b0:6d8:8256:41d7 with SMTP id
- 6a1803df08f44-6d8b742bcc4mr124128616d6.33.1733322703060; Wed, 04 Dec 2024
- 06:31:43 -0800 (PST)
+        bh=KOjoLFUmYtIZsu2k/3oGmhH8G+vMQgnrRqENgY/7c8A=;
+        b=IfwBQkzH9BEPES/RDvJM8GKv0QfaGsa1GT2rKpboVN/dsT/G+byWomlPsO5WDDWtFX
+         dQRmRj0/n4SQ06RJoTPR3xPVVxWbuJPgyY+byqKnOLUevLdB4YJEN3OdLYOh4NBcj2DT
+         RgeeabmP4mmVVGrF2UnlPfJQicHQyBMootl+7saf9zWF6MmMPaJhv5QFasbJybg9rMqM
+         DbpC6qq1Z2f0ZU04psi3oh0Q898o/sUJ0a0wuoRGxpdQAeRvHzDhKHkZ0riyJNQcRbbc
+         bvDYNyc83nh9Opj+UYsCX4wLRNWCeo7xwRxPsrJHRJgxNm+OtZppW8GytAiALZ1M5AL+
+         Gi0g==
+X-Gm-Message-State: AOJu0YywtV+ArdzbXCCe1uoZdqu8z3gLt+onEDgksAiCF/Zuhy1O3eRd
+	kUkhg/7E8ENY5oLC38OU3H82ICSCs2sUb06lgul41rhtekOV/fbwcT0aAzs4aosWpOTgz+s9MNg
+	D8OOtI2jHbq/GCl5ewfZJycfOsS8=
+X-Gm-Gg: ASbGnctJ3ZjSTCXdYbYV2aUX6tKwWORwr6zdW+8gbRgX70OlU19htOuQOVYA8PKk1gT
+	LhDAFhYoImfRXEG0h+T7xn/M34EjXT34=
+X-Google-Smtp-Source: AGHT+IHOWSSZyN+b4qkJPIGYZzNE+uWSqFVFwxoyQVPAJU0Qwt9H77CWJYodVwJ+qzLMz2DNEUhSZpQGc0NHRFHkGeI=
+X-Received: by 2002:a05:6358:938c:b0:1ca:9540:33d4 with SMTP id
+ e5c5f4694b2df-1caeac44a78mr702595655d.23.1733342717787; Wed, 04 Dec 2024
+ 12:05:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241128154034.23298-1-cgoettsche@seltendoof.de> <CAP+JOzRsJzQzn6f1_UZLaGg3GWNFn7HohyiAS0z6+BZcfkVELA@mail.gmail.com>
-In-Reply-To: <CAP+JOzRsJzQzn6f1_UZLaGg3GWNFn7HohyiAS0z6+BZcfkVELA@mail.gmail.com>
+References: <20241204140614.25879-1-cgoettsche@seltendoof.de>
+In-Reply-To: <20241204140614.25879-1-cgoettsche@seltendoof.de>
 From: James Carter <jwcart2@gmail.com>
-Date: Wed, 4 Dec 2024 09:31:32 -0500
-Message-ID: <CAP+JOzQDLqX6QuT5fPPbnwCfKLZ_Ot4T=eApqCfH-1GnbJL5Dw@mail.gmail.com>
-Subject: Re: [PATCH] libsepol: avoid unnecessary memset(3) calls in hashtab
+Date: Wed, 4 Dec 2024 15:05:07 -0500
+Message-ID: <CAP+JOzRL6S4fP-9u-CJ-O1n0+XQZKeZNqUTz+uGimzw=y5wuHg@mail.gmail.com>
+Subject: Re: [PATCH] libsepol: add missing word separators in error message
 To: cgzones@googlemail.com
 Cc: selinux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Dec 2, 2024 at 4:17=E2=80=AFPM James Carter <jwcart2@gmail.com> wro=
-te:
+On Wed, Dec 4, 2024 at 9:06=E2=80=AFAM Christian G=C3=B6ttsche
+<cgoettsche@seltendoof.de> wrote:
 >
-> On Fri, Nov 29, 2024 at 6:40=E2=80=AFAM Christian G=C3=B6ttsche
-> <cgoettsche@seltendoof.de> wrote:
-> >
-> > From: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> >
-> > Use struct initialization with designators to skip unnecessary memset(3=
-)
-> > calls.  Since libsepol is not a security boundary uninitialized padding
-> > is not a concern.
-> >
-> > Also drop the dead assignment of a region to be free'd in the next line=
-.
-> >
-> > Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> From: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 >
-> Acked-by: James Carter <jwcart2@gmail.com>
+> The concatenation of the multi line error messages misses a separating
+> space between the boundary words.
 >
+> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
 
-Merged.
-Thanks,
-Jim
+Acked-by: James Carter <jwcart2@gmail.com>
 
-> > ---
-> >  libsepol/src/hashtab.c | 23 ++++++++++++-----------
-> >  1 file changed, 12 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/libsepol/src/hashtab.c b/libsepol/src/hashtab.c
-> > index 399582b1..4c658588 100644
-> > --- a/libsepol/src/hashtab.c
-> > +++ b/libsepol/src/hashtab.c
-> > @@ -48,12 +48,14 @@ hashtab_t hashtab_create(unsigned int (*hash_value)=
- (hashtab_t h,
-> >         if (p =3D=3D NULL)
-> >                 return p;
-> >
-> > -       memset(p, 0, sizeof(hashtab_val_t));
-> > -       p->size =3D size;
-> > -       p->nel =3D 0;
-> > -       p->hash_value =3D hash_value;
-> > -       p->keycmp =3D keycmp;
-> > -       p->htable =3D (hashtab_ptr_t *) calloc(size, sizeof(hashtab_ptr=
-_t));
-> > +       *p =3D (hashtab_val_t) {
-> > +               .size =3D size,
-> > +               .nel =3D 0,
-> > +               .hash_value =3D hash_value,
-> > +               .keycmp =3D keycmp,
-> > +               .htable =3D (hashtab_ptr_t *) calloc(size, sizeof(hasht=
-ab_ptr_t)),
-> > +       };
-> > +
-> >         if (p->htable =3D=3D NULL) {
-> >                 free(p);
-> >                 return NULL;
-> > @@ -127,9 +129,10 @@ int hashtab_insert(hashtab_t h, hashtab_key_t key,=
- hashtab_datum_t datum)
-> >         newnode =3D (hashtab_ptr_t) malloc(sizeof(hashtab_node_t));
-> >         if (newnode =3D=3D NULL)
-> >                 return SEPOL_ENOMEM;
-> > -       memset(newnode, 0, sizeof(struct hashtab_node));
-> > -       newnode->key =3D key;
-> > -       newnode->datum =3D datum;
-> > +       *newnode =3D (hashtab_node_t) {
-> > +               .key =3D key,
-> > +               .datum =3D datum,
-> > +       };
-> >         if (prev) {
-> >                 newnode->next =3D prev->next;
-> >                 prev->next =3D newnode;
-> > @@ -223,8 +226,6 @@ void hashtab_destroy(hashtab_t h)
-> >         }
-> >
-> >         free(h->htable);
-> > -       h->htable =3D NULL;
-> > -
-> >         free(h);
-> >  }
-> >
-> > --
-> > 2.45.2
-> >
-> >
+> ---
+>  libsepol/src/write.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/libsepol/src/write.c b/libsepol/src/write.c
+> index 4ef98449..89c80e7e 100644
+> --- a/libsepol/src/write.c
+> +++ b/libsepol/src/write.c
+> @@ -231,13 +231,13 @@ static int avtab_write_item(policydb_t * p,
+>                 return POLICYDB_ERROR;
+>         if ((p->policyvers < POLICYDB_VERSION_XPERMS_IOCTL) &&
+>                         (cur->key.specified & AVTAB_XPERMS)) {
+> -               ERR(fp->handle, "policy version %u does not support exten=
+ded"
+> +               ERR(fp->handle, "policy version %u does not support exten=
+ded "
+>                                 "permissions rules and one was specified"=
+, p->policyvers);
+>                 return POLICYDB_ERROR;
+>         }
+>
+>         if (!policydb_has_cond_xperms_feature(p) && (cur->key.specified &=
+ AVTAB_XPERMS) && conditional) {
+> -               ERR(fp->handle, "policy version %u does not support exten=
+ded"
+> +               ERR(fp->handle, "policy version %u does not support exten=
+ded "
+>                                 "permissions rules in conditional policie=
+s and one was specified", p->policyvers);
+>                 return POLICYDB_ERROR;
+>         }
+> --
+> 2.45.2
+>
+>
 

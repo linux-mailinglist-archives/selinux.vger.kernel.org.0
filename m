@@ -1,52 +1,52 @@
-Return-Path: <selinux+bounces-2601-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2603-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B579FE6C7
-	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 15:03:34 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263289FE6CA
+	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 15:05:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 426E71604C1
-	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 14:03:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA30A7A0305
+	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 14:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058D61A3AB8;
-	Mon, 30 Dec 2024 14:03:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D011A840B;
+	Mon, 30 Dec 2024 14:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="M69fLe9j"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="BEWmsNF+"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E23B1C32
-	for <selinux@vger.kernel.org>; Mon, 30 Dec 2024 14:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214111C32
+	for <selinux@vger.kernel.org>; Mon, 30 Dec 2024 14:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735567410; cv=none; b=VnksWuFxzyx2YDDUR0i/x5SPsluhzz6BWwDgkBMjlxt/LCmHn+dfeKApCKuzQAgBUGmsZmG1K/QFtuTLojHrFrQ953GrYD31vMaIZNFdt86AIkWV+raO03VnVEzQHxnB4btM1WYKOOsbsJh4KopNgXBVoNG49TkhnmMvz8+nO90=
+	t=1735567536; cv=none; b=tk2QIazjK8EptBP7Mo9D8sStnJGVJQUBeQGb01BO3nM9q/P104Ffzr+8ni9x/GmQLslvmZEvGEgh0XzGM74XhUmoEgvailxoK0KdPl6qpqWHre9FNUqMZK/zRePqrFkPx4mXgNz210d066OJ7qSiL1fzUy1UJCOg7AfHTz6YTqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735567410; c=relaxed/simple;
-	bh=NpGmlg4qh8VMjoGMygMrH+p1VXQzg7p+VcYhCSVLN5s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HHyxHYG2JsvFaMu7Sle/VzwSKzKZwqclmlO0utkqSTxsKo4V0RIelxF0xcW54eGp8wz+VY6HIZQA3uwkihSwxoQX7Xmmv00FoSbZKjR8tpLjXWyGIRg3c0I8LPNStiNpRQ3I9kfGfPvkUY8i2RdZvzzCHWbSE01awNoivtfAtK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=M69fLe9j; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1735567536; c=relaxed/simple;
+	bh=7zt8iorEmIE3g8IPmjce1JcNR/LW0FwGKanFwx8DCIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kvCH3nvYA6uT0eh2Vn8kxl8u3DU8MoqQd9Gm49vfNtRx+jzYGE2APLOvHvJGPDps+e3oIfERigM+1haLzTXbzWUJSqfszN2tDfV2F/d589wpjoaGv7KkCpMIPXat+UaLNRfGtm8czK7YfJ5Ry+8Hh/MMuDkqTf5P/MNn4R8//uM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=BEWmsNF+; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1735567406;
+	s=2023072701; t=1735567530;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=1y7RLvvicEQVmkVOATy0lwg5RfIlmB6PpV+Qj7euyTA=;
-	b=M69fLe9j6na4uXmyxg0wZ+r7Mp7U0/TThOrs8HJluGmrblOQ/PF39GBUsF54xjVln7xTpe
-	czBhVVi4JZaezpjlAH2yPnXGYlk0zoFmy/GvtOZSiqvxvXDhUcPKMgeLH+EZQHgyfdV9Wa
-	+qTV84jOc3wb2MtABuHAdaH1FyyLkTSPboaBoovXl50uaPkJqlgK/SMw+kb0O7G2ZrWNQ4
-	JSTC/w9yMwV3j6+a7VWGKVFFS4AuwGSEGlwATRH7a/oNg+AGDf9mEyyb7WEPQw80o4rCSb
-	+HzCxuwgorS4kgYeWOvtGxOjWMFyF/MyHXLfKs00GSwu+RjYBuFYTYZlnJWZCQ==
+	bh=q7s7M5oHeTmJqWb48Z2cOEY0xgteRz4my6g5TanzvOA=;
+	b=BEWmsNF+GUnHrSZo/XvfYMRuhpiD5vgAHVM799bNwlzMfj7R5KPWX5Y9maf3M2JhDaxp9m
+	optP0naBnkJ6GtjmoBidoW0VR4+SurNVmk2RXJut69UP8Y3yXmEQYZKmiWYGwB4mK5/Gyo
+	smwn9heLEi4ayX5qoJfq4rBGrGhPwo3DzRHoS/6SZbEaV+fdZq9bfdnEvZkBCOZPSVOSyo
+	bhKGNcH/3AOXOviPOfk6Y5k1SgMo/Z1Mtfj04BFLI5+zZLoCm9Zn4iufSnknaZjARFXAY0
+	MHx6/mKFkL2uECL17Af4F7F4YQzISO/AHrozZVtBXc7HsJvU+V4s69dZPMIBXA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH] libselinux: avoid quadratic complexity for many regex specs validation
-Date: Mon, 30 Dec 2024 15:03:23 +0100
-Message-ID: <20241230140323.58852-1-cgoettsche@seltendoof.de>
+Subject: [PATCH 2/2] python: fix typos
+Date: Mon, 30 Dec 2024 15:05:22 +0100
+Message-ID: <20241230140523.60053-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -59,129 +59,106 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-In the degenerate case of many regular expression specifications in a
-single node switch to a n*log(n) algorithm (with allocation) instead of
-the default n^2 (without allocation) one.
+Found by codespell(1) and typos[1].
 
-See 2c7b71db ("libselinux: performance optimization for duplicate detection")
-for a predecessor.
+[1]: https://github.com/crate-ci/typos
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/label_file.c | 85 +++++++++++++++++++++++++++++++++++--
- 1 file changed, 82 insertions(+), 3 deletions(-)
+ python/sepolgen/src/sepolgen/module.py      | 2 +-
+ python/sepolgen/src/sepolgen/objectmodel.py | 2 +-
+ python/sepolgen/src/sepolgen/refpolicy.py   | 6 +++---
+ python/sepolicy/sepolicy/sepolicy.glade     | 6 +++---
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/libselinux/src/label_file.c b/libselinux/src/label_file.c
-index 56e20949..b1884e80 100644
---- a/libselinux/src/label_file.c
-+++ b/libselinux/src/label_file.c
-@@ -102,6 +102,38 @@ void sort_spec_node(struct spec_node *node, struct spec_node *parent)
- 		sort_spec_node(&node->children[i], node);
- }
+diff --git a/python/sepolgen/src/sepolgen/module.py b/python/sepolgen/src/sepolgen/module.py
+index 745364cd..b7d64627 100644
+--- a/python/sepolgen/src/sepolgen/module.py
++++ b/python/sepolgen/src/sepolgen/module.py
+@@ -111,7 +111,7 @@ class ModuleCompiler:
+      .semodule_package [string] Fully qualified path to the module
+                    packager. Defaults to /usr/bin/semodule_package.
+      .output       [file object] File object used to write verbose
+-                   output of the compililation and packaging process.
++                   output of the compilation and packaging process.
+     """
+     def __init__(self, output=None):
+         """Create a ModuleCompiler instance, optionally with an
+diff --git a/python/sepolgen/src/sepolgen/objectmodel.py b/python/sepolgen/src/sepolgen/objectmodel.py
+index ccce86c1..29c18ec8 100644
+--- a/python/sepolgen/src/sepolgen/objectmodel.py
++++ b/python/sepolgen/src/sepolgen/objectmodel.py
+@@ -59,7 +59,7 @@ implicitly_typed_objects = ["socket", "fd", "process", "file", "lnk_file", "fifo
+ # to and object ("write") or to a subject from an object ("read"). Read
+ # or write is described from the subject point-of-view. It is also possible
+ # for a permission to represent both a read and write (though the flow is
+-# typical asymettric in terms of bandwidth). It is also possible for
++# typical asymmetric in terms of bandwidth). It is also possible for
+ # permission to not flow information (meaning that the result is pure
+ # side-effect).
+ #
+diff --git a/python/sepolgen/src/sepolgen/refpolicy.py b/python/sepolgen/src/sepolgen/refpolicy.py
+index 32278896..78725397 100644
+--- a/python/sepolgen/src/sepolgen/refpolicy.py
++++ b/python/sepolgen/src/sepolgen/refpolicy.py
+@@ -324,7 +324,7 @@ class SecurityContext(Leaf):
+     def to_string(self, default_level=None):
+         """Return a string representing this security context.
  
-+static inline int compare_regex_spec(const void *p1, const void *p2)
-+{
-+	const struct regex_spec *r1 = p1;
-+	const struct regex_spec *r2 = p2;
-+	size_t regex_len1, regex_len2;
-+	int ret;
-+
-+	/* Order from high prefix length to low */
-+	ret = (r1->prefix_len < r2->prefix_len) - (r1->prefix_len > r2->prefix_len);
-+	if (ret)
-+		return ret;
-+
-+	/* Order from long total regex length to short */
-+	regex_len1 = strlen(r1->regex_str);
-+	regex_len2 = strlen(r2->regex_str);
-+	ret = (regex_len1 < regex_len2) - (regex_len1 > regex_len2);
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Order for no-duplicates check.
-+	 * Use reverse alphabetically order to retain the Fedora ordering of
-+	 * `/usr/(.* /)?lib(/.*)?` before `/usr/(.* /)?bin(/.*)?`.
-+	 */
-+	ret = strcmp(r1->regex_str, r2->regex_str);
-+	if (ret)
-+		return -ret;
-+
-+	/* Order wildcard mode (0) last */
-+	return (r1->file_kind < r2->file_kind) - (r1->file_kind > r2->file_kind);
-+}
-+
- /*
-  * Warn about duplicate specifications.
-  */
-@@ -143,10 +175,18 @@ static int nodups_spec_node(const struct spec_node *node, const char *path)
- 	}
+-        By default, the string will contiain a MCS / MLS level
++        By default, the string will contain a MCS / MLS level
+         potentially from the default which is passed in if none was
+         set.
  
- 	if (node->regex_specs_num > 1) {
--		for (uint32_t i = 0; i < node->regex_specs_num - 1; i++) {
--			for (uint32_t j = i; j < node->regex_specs_num - 1; j++) {
-+		if (node->regex_specs_num > 512) {
-+			uint32_t num = node->regex_specs_num;
-+			struct regex_spec *copy = malloc(num * sizeof(struct regex_spec));
-+			if (!copy)
-+				goto default_algo;
-+
-+			memcpy(copy, node->regex_specs, num * sizeof(struct regex_spec));
-+			qsort(copy, num, sizeof(struct regex_spec), compare_regex_spec);
-+
-+			for (uint32_t i = 0; i < node->regex_specs_num - 1; i++) {
- 				const struct regex_spec *node1 = &node->regex_specs[i];
--				const struct regex_spec *node2 = &node->regex_specs[j + 1];
-+				const struct regex_spec *node2 = &node->regex_specs[i + 1];
+@@ -333,7 +333,7 @@ class SecurityContext(Leaf):
+              empty string.
  
- 				if (node1->prefix_len != node2->prefix_len)
- 					continue;
-@@ -177,6 +217,45 @@ static int nodups_spec_node(const struct spec_node *node, const char *path)
- 							node1->regex_str);
- 				}
- 			}
-+
-+			free(copy);
-+		} else {
-+			default_algo:
-+			for (uint32_t i = 0; i < node->regex_specs_num - 1; i++) {
-+				for (uint32_t j = i; j < node->regex_specs_num - 1; j++) {
-+					const struct regex_spec *node1 = &node->regex_specs[i];
-+					const struct regex_spec *node2 = &node->regex_specs[j + 1];
-+
-+					if (node1->prefix_len != node2->prefix_len)
-+						continue;
-+
-+					if (strcmp(node1->regex_str, node2->regex_str) != 0)
-+						continue;
-+
-+					if (node1->file_kind != LABEL_FILE_KIND_ALL && node2->file_kind != LABEL_FILE_KIND_ALL && node1->file_kind != node2->file_kind)
-+						continue;
-+
-+					rc = -1;
-+					errno = EINVAL;
-+					if (strcmp(node1->lr.ctx_raw, node2->lr.ctx_raw) != 0) {
-+						COMPAT_LOG
-+							(SELINUX_ERROR,
-+								"%s: Multiple different specifications for %s %s  (%s and %s).\n",
-+								path,
-+								file_kind_to_string(node1->file_kind),
-+								node1->regex_str,
-+								node1->lr.ctx_raw,
-+								node2->lr.ctx_raw);
-+					} else {
-+						COMPAT_LOG
-+							(SELINUX_ERROR,
-+								"%s: Multiple same specifications for %s %s.\n",
-+								path,
-+								file_kind_to_string(node1->file_kind),
-+								node1->regex_str);
-+					}
-+				}
-+			}
- 		}
- 	}
- 
+         Returns:
+-           A string represening the security context in the form
++           A string representing the security context in the form
+               'user:role:type:level'.
+         """
+         fields = [self.user, self.role, self.type]
+@@ -609,7 +609,7 @@ class AVRule(Leaf):
+     def to_string(self):
+         """Return a string representation of the rule
+         that is a valid policy language representation (assuming
+-        that the types, object class, etc. are valie).
++        that the types, object class, etc. are valid).
+         """
+         if self.gen_cil:
+             s = ""
+diff --git a/python/sepolicy/sepolicy/sepolicy.glade b/python/sepolicy/sepolicy/sepolicy.glade
+index 30e7b03f..a9e4cb3a 100644
+--- a/python/sepolicy/sepolicy/sepolicy.glade
++++ b/python/sepolicy/sepolicy/sepolicy.glade
+@@ -235,7 +235,7 @@
+       <column type="gchararray"/>
+       <!-- column-name Label -->
+       <column type="gboolean"/>
+-      <!-- column-name Mislabled -->
++      <!-- column-name Mislabeled -->
+       <column type="gboolean"/>
+       <!-- column-name Cur -->
+       <column type="gchararray"/>
+@@ -392,7 +392,7 @@
+       <column type="gchararray"/>
+       <!-- column-name Fix -->
+       <column type="gboolean"/>
+-      <!-- column-name Mislabled -->
++      <!-- column-name Mislabeled -->
+       <column type="gboolean"/>
+       <!-- column-name Cur -->
+       <column type="gchararray"/>
+@@ -5538,7 +5538,7 @@ s0-s0:c1023</property>
+       <column type="gchararray"/>
+       <!-- column-name Label -->
+       <column type="gboolean"/>
+-      <!-- column-name Mislabled -->
++      <!-- column-name Mislabeled -->
+       <column type="gboolean"/>
+       <!-- column-name Cur -->
+       <column type="gchararray"/>
 -- 
 2.45.2
 

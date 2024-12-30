@@ -1,185 +1,180 @@
-Return-Path: <selinux+bounces-2598-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2600-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A1E69FE5B7
-	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 12:49:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9779FE6BA
+	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 14:57:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F0D3A2120
-	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 11:49:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D66E1881859
+	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 13:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 862F61A706A;
-	Mon, 30 Dec 2024 11:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5EB1A76DD;
+	Mon, 30 Dec 2024 13:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="UYSTflNo"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="LLPiNd20"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6001A0BF1
-	for <selinux@vger.kernel.org>; Mon, 30 Dec 2024 11:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3108325949E
+	for <selinux@vger.kernel.org>; Mon, 30 Dec 2024 13:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735559369; cv=none; b=XjNnAd3b/RR3EMCRRdeZ42+qGOUl3IvSLN6DetLV/MHIx0uPWRs5YvUZpCfLDqMedwTRnwySlmNcMFDTrgjefG0/LUSE2gOlXC1YpN5WYiy5wN+rA4hrHeDzUZZ84nCkyD5oYmj4cjgNQwDw0EBX2kGqy/bLetiFOdQrbiOmzyI=
+	t=1735567062; cv=none; b=k45XS+SSzhaVcP5eUhB44sk4Xp/2Dn6zKSUIIouULdgCCjCmYl/EYy9qgbN9oL5f4fPX7bXUwouKrKRNk590JEs/8cJk1Fx7e8GLSiR++Jy6OkcAUHM4TYUcLx9G4kwa/uvaoNNV2g0yZYlEQghq/y9DOFXvSCA+w0zThzg5Vak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735559369; c=relaxed/simple;
-	bh=yPHckcGt5AQbY4O1EoBubWHnyFJIr31nRjEqRdnoG+A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DEonX7dm8WB5C51L0gNA3Wr3OPgT4PGQPR3lkLlOEvoszSzKi768E/NftX7xJpT6PczqraHYSYWeSUoeC0ecOTNFFtftIu4L1ucKBDA+R5Q17FD3++UPRODBEiIPA3im6efiUMgh2ySrAg9YxzCYOlbdoKdgOm9WWRSt8D/nu5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=UYSTflNo; arc=none smtp.client-ip=209.85.219.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e5372a2fbddso11886493276.3
-        for <selinux@vger.kernel.org>; Mon, 30 Dec 2024 03:49:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1735559365; x=1736164165; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bw3IhXFBATGqJtlSQ0dGdrxGqYlLXu8zgwem7qJDXX4=;
-        b=UYSTflNoRR9zyWCLwJ7G0KtGHOqJ2S02tsOd2PnZShghWveNkNB/LwVEyIyhoz2KAH
-         j7FcHbp+HerhEYKIC9h1g1lreDNA2QAzqhzES8ofgmvHdFKtcv2WtBRZWe+whpa1qjiW
-         zfePqiPC93p3mHHSQFD6SBAbRJXl4BPyWolmBK2u+q8NqkuTbWR+YVj+3GSGtiljEfKV
-         x+G3VHHj56xc6/YY7AaIj9axjQu6WQxpjyQpqyQtJf36+gLPT3yVm5NVA7NveXHXVz2j
-         xJLnWU8fIZ4itfF0db90tcCHmr9T8A3cvfWLckJm7727KQNAAyhhLu36rT9ZEZMAoIUR
-         RXWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735559365; x=1736164165;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bw3IhXFBATGqJtlSQ0dGdrxGqYlLXu8zgwem7qJDXX4=;
-        b=s3jaBZ2DkbbjxoAVtQxJJs/5pqUUAJ2I/X4L/n9odwgXvgmt/ZMMVqObTSGx1vLe3v
-         25n6t5dDT9FFJrRFXDDTzbRBQ9HT9lcUyiwa7oqtU4QKJEuuTvXtUZM8GCwz3HWUelC3
-         QWPpMH4/gf+/5Z7MoLRo+uWKDsTWCYOMwPRC3wD05zR2vFY29FW3RSo2C6FSLsP32ia2
-         8+FJ73JNPS/fFn6x0hu6SCyiwsTrwFQwk0rQP8qxAyXEs+QgykLodCYriEcb1QzUeAl+
-         eJSK7P0ve28L7AKZCLSXgl9Hr9/N2cCWuWe1GOmwClOW4NAj4ttFr/N0Mi0jCDabH8d/
-         BFnQ==
-X-Gm-Message-State: AOJu0Yx4/q4nO1+ar0PNcPeXdE0SrAb/Rwi6VnU0uSGycTDfSQc+t6Cu
-	LplPJdAKvyBXB4yYit1sdf2N1xkzEd6z7kDC7VTs4GixUDKMcgHn8hTRJUV4grOfdIxKFtQgZm0
-	jF13xGi/FqqQ9Qb0aPQdiriAGE6E=
-X-Gm-Gg: ASbGncvTMuwzJg/Nl4WBM7n4z/G1J8AzhPcAJoa5uDyArM7/aT5MyVngIpAPsSYl08H
-	A9gJdpQYSqexJjVkXre6X65Rzgy+vutY5aAM=
-X-Google-Smtp-Source: AGHT+IHTmg+VGxBz+QeJAgoqhcEsc8xZq81zthQpCbnRbAsOh6iKxdmC3Ec7aIl8ITeWJ2q3hj/d2GKybGD2nv3qs94=
-X-Received: by 2002:a05:690c:6005:b0:6e2:ada7:ab3e with SMTP id
- 00721157ae682-6f3f821a3femr231820397b3.30.1735559365145; Mon, 30 Dec 2024
- 03:49:25 -0800 (PST)
+	s=arc-20240116; t=1735567062; c=relaxed/simple;
+	bh=7ORmchYkXlxdGfzbkr4UhxWF+lrUdqTxhOgmjkM9LNI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=c3Lxucy2HGHGBgLIKRIx6PD0r2I74Fp64Apuf/H8I0wSc06Envgh/50w883DhCgZevgeLiBUyKnEHqYHZueB5mmPfpQV4dzKIvBYgtwwRBzY4U82cTw/SAj2DwUiMt9QNP1HEkHG5Xj1llVTWJiaAWFGzxmJg+roW2TB7AgjF58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=LLPiNd20; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1735566638;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=Iq6luduMJrad+kLJ8pOlf5UfAkNy+dPUTkZtLWgfps8=;
+	b=LLPiNd202EDe2KlhxCxh+VbN/wQuXpmrNcrtz7LpjxqVVdt3UmRQSYtsVSrr/wD9A+C9Ew
+	ldTq3nNCfjkyl6Dz809PCDkrSF+I48vmYlqG4UKsK+RRBvVX23S0lgMW0McMTTD6i8Fs5h
+	bfo5yUbInuv7LV5Dfmli1oX8f6+GiOiz8cniwAgBGrR/mN4MHkd4zBXgZf6P4cX9xI9F5j
+	ZTsltSblZfFlL3QhrKB14C97adcL5JnbnRmOfi4/TRF3WKQfq/PAi9zAEjQms5AqDrmkSi
+	cDkaA8TvSD1RXALggDm3PTtLVnnRryyzLE+AmmZvy4n96UCumaKw2iQjTv+mFQ==
+To: selinux@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [PATCH] semanage: improve -e documentation and fix delete operation
+Date: Mon, 30 Dec 2024 14:50:33 +0100
+Message-ID: <20241230135033.41492-1-cgoettsche@seltendoof.de>
+Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20241217212752.23866-1-cgoettsche@seltendoof.de>
-In-Reply-To: <20241217212752.23866-1-cgoettsche@seltendoof.de>
-From: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date: Mon, 30 Dec 2024 12:49:14 +0100
-Message-ID: <CAJ2a_Dd+jLPdJUYqSpCepbUfC-fKCajYU+NBD6+LydB=ejDgRA@mail.gmail.com>
-Subject: Re: [PATCH] libselinux/fuzz: readjust load_mmap() update
-To: James Carter <jwcart2@gmail.com>
-Cc: selinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, 18 Dec 2024 at 09:06, Christian G=C3=B6ttsche
-<cgoettsche@seltendoof.de> wrote:
->
-> From: Christian G=C3=B6ttsche <cgzones@googlemail.com>
->
-> Update the fuzzers for the input number parameter addition.
+From: Christian Göttsche <cgzones@googlemail.com>
 
-Hi Jim,
+Improve the documentation around the -e/--equal option for semanage
+fcontext.
 
-could you please have a brief look at this patch and maybe merge it,
-so the fuzzer can get some runtime before the 3.8 release.
+Add support for entry deletion.
 
-Best regards,
-       Christian G=C3=B6ttsche
+Closes: https://github.com/SELinuxProject/selinux/issues/457
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ python/semanage/semanage            | 15 ++++++++-------
+ python/semanage/semanage-fcontext.8 |  6 +++---
+ python/semanage/seobject.py         | 13 +++++++++++++
+ 3 files changed, 24 insertions(+), 10 deletions(-)
 
->
-> Signed-off-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> ---
->  libselinux/fuzz/selabel_file_compiled-fuzzer.c | 6 +++---
->  libselinux/fuzz/selabel_file_text-fuzzer.c     | 2 +-
->  libselinux/src/label_file.h                    | 2 +-
->  3 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/libselinux/fuzz/selabel_file_compiled-fuzzer.c b/libselinux/=
-fuzz/selabel_file_compiled-fuzzer.c
-> index d1249a76..09fbddd1 100644
-> --- a/libselinux/fuzz/selabel_file_compiled-fuzzer.c
-> +++ b/libselinux/fuzz/selabel_file_compiled-fuzzer.c
-> @@ -195,7 +195,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_=
-t size)
->                 goto cleanup;
->
->         errno =3D 0;
-> -       rc =3D load_mmap(fp, fcontext_data1_len, &rec, MEMFD_FILE_NAME);
-> +       rc =3D load_mmap(fp, fcontext_data1_len, &rec, MEMFD_FILE_NAME, 0=
-);
->         if (rc) {
->                 assert(errno !=3D 0);
->                 goto cleanup;
-> @@ -208,7 +208,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_=
-t size)
->                 goto cleanup;
->
->         errno =3D 0;
-> -       rc =3D load_mmap(fp, fcontext_data2_len, &rec, MEMFD_FILE_NAME);
-> +       rc =3D load_mmap(fp, fcontext_data2_len, &rec, MEMFD_FILE_NAME, 1=
-);
->         if (rc) {
->                 assert(errno !=3D 0);
->                 goto cleanup;
-> @@ -221,7 +221,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_=
-t size)
->                 goto cleanup;
->
->         errno =3D 0;
-> -       rc =3D load_mmap(fp, fcontext_data3_len, &rec, MEMFD_FILE_NAME);
-> +       rc =3D load_mmap(fp, fcontext_data3_len, &rec, MEMFD_FILE_NAME, 2=
-);
->         if (rc) {
->                 assert(errno !=3D 0);
->                 goto cleanup;
-> diff --git a/libselinux/fuzz/selabel_file_text-fuzzer.c b/libselinux/fuzz=
-/selabel_file_text-fuzzer.c
-> index ed67ea25..1f8942dd 100644
-> --- a/libselinux/fuzz/selabel_file_text-fuzzer.c
-> +++ b/libselinux/fuzz/selabel_file_text-fuzzer.c
-> @@ -167,7 +167,7 @@ int LLVMFuzzerTestOneInput(const uint8_t *data, size_=
-t size)
->                 goto cleanup;
->
->         errno =3D 0;
-> -       rc =3D process_text_file(fp, /*prefix=3D*/ NULL, &rec, MEMFD_FILE=
-_NAME);
-> +       rc =3D process_text_file(fp, /*prefix=3D*/ NULL, &rec, MEMFD_FILE=
-_NAME, 0);
->         if (rc) {
->                 assert(errno !=3D 0);
->                 goto cleanup;
-> diff --git a/libselinux/src/label_file.h b/libselinux/src/label_file.h
-> index 597b756e..60ebbb47 100644
-> --- a/libselinux/src/label_file.h
-> +++ b/libselinux/src/label_file.h
-> @@ -60,7 +60,7 @@ struct lookup_result {
->         struct lookup_result *next;
->  };
->  #ifdef FUZZING_BUILD_MODE_UNSAFE_FOR_PRODUCTION
-> -extern int load_mmap(FILE *fp, const size_t len, struct selabel_handle *=
-rec, const char *path);
-> +extern int load_mmap(FILE *fp, const size_t len, struct selabel_handle *=
-rec, const char *path, uint8_t inputno);
->  extern int process_text_file(FILE *fp, const char *prefix, struct selabe=
-l_handle *rec, const char *path, uint8_t inputno);
->  extern void free_lookup_result(struct lookup_result *result);
->  extern struct lookup_result *lookup_all(struct selabel_handle *rec, cons=
-t char *key, int type, bool partial, bool find_all, struct lookup_result *b=
-uf);
-> --
-> 2.45.2
->
+diff --git a/python/semanage/semanage b/python/semanage/semanage
+index b269b9fc..ec6fa2dd 100644
+--- a/python/semanage/semanage
++++ b/python/semanage/semanage
+@@ -54,7 +54,7 @@ usage_login = "semanage login [-h] [-n] [-N] [-S STORE] ["
+ usage_login_dict = {' --add': ('-s SEUSER', '-r RANGE', 'LOGIN',), ' --modify': ('-s SEUSER', '-r RANGE', 'LOGIN',), ' --delete': ('LOGIN',), ' --list': ('-C',), ' --extract': ('',), ' --deleteall': ('',)}
+ 
+ usage_fcontext = "semanage fcontext [-h] [-n] [-N] [-S STORE] ["
+-usage_fcontext_dict = {' --add': ('(', '-t TYPE', '-f FTYPE', '-r RANGE', '-s SEUSER', '|', '-e EQUAL', ')', 'FILE_SPEC',), ' --delete': ('(', '-t TYPE', '-f FTYPE', '|', '-e EQUAL', ')', 'FILE_SPEC',), ' --modify': ('(', '-t TYPE', '-f FTYPE', '-r RANGE', '-s SEUSER', '|', '-e EQUAL', ')', 'FILE_SPEC',), ' --list': ('[-C]',), ' --extract': ('',), ' --deleteall': ('',)}
++usage_fcontext_dict = {' --add': ('(', '-t TYPE', '-f FTYPE', '-r RANGE', '-s SEUSER', '|', '-e TARGET_PATH', ')', 'FILE_SPEC',), ' --delete': ('(', '-t TYPE', '-f FTYPE', '|', '-e TARGET_PATH', ')', 'FILE_SPEC',), ' --modify': ('(', '-t TYPE', '-f FTYPE', '-r RANGE', '-s SEUSER', '|', '-e TARGET_PATH', ')', 'FILE_SPEC',), ' --list': ('[-C]',), ' --extract': ('',), ' --deleteall': ('',)}
+ 
+ usage_user = "semanage user [-h] [-n] [-N] [-S STORE] ["
+ usage_user_dict = {' --add': ('(', '-L LEVEL', '-R ROLES', '-r RANGE', 'SEUSER', ')'), ' --delete': ('SEUSER',), ' --modify': ('(', '-L LEVEL', '-R ROLES', '-r RANGE', '-s SEUSER', 'SEUSER', ')'), ' --list': ('-C',), ' --extract': ('',), ' --deleteall': ('',)}
+@@ -306,7 +306,7 @@ def setupLoginParser(subparsers):
+ def handleFcontext(args):
+     fcontext_args = {'list': [('equal', 'ftype', 'seuser', 'type'), ('')], 'add': [('locallist'), ('type', 'file_spec')], 'modify': [('locallist'), ('type', 'file_spec')], 'delete': [('locallist'), ('file_spec')], 'extract': [('locallist', 'equal', 'ftype', 'seuser', 'type'), ('')], 'deleteall': [('locallist'), ('')]}
+     # we can not use mutually for equal because we can define some actions together with equal
+-    fcontext_equal_args = {'equal': [('list', 'locallist', 'type', 'ftype', 'seuser', 'deleteall', 'extract'), ()]}
++    fcontext_equal_args = {'equal': [('list', 'locallist', 'type', 'ftype', 'seuser', 'deleteall', 'extract'), ('file_spec')]}
+ 
+     if args.action and args.equal:
+         handle_opts(args, fcontext_equal_args, "equal")
+@@ -327,7 +327,7 @@ def handleFcontext(args):
+             OBJECT.modify(args.file_spec, args.type, args.ftype, args.range, args.seuser)
+     if args.action == "delete":
+         if args.equal:
+-            OBJECT.delete(args.file_spec, args.equal)
++            OBJECT.delete_equal(args.file_spec, args.equal)
+         else:
+             OBJECT.delete(args.file_spec, args.ftype)
+     if args.action == "list":
+@@ -355,9 +355,10 @@ def setupFcontextParser(subparsers):
+     parser_add_extract(fcontext_action, "fcontext")
+     parser_add_deleteall(fcontext_action, "fcontext")
+ 
+-    fcontextParser.add_argument('-e', '--equal', help=_(
+-        'Substitute target path with sourcepath when generating default label. This is used with fcontext. Requires source and target \
+-path arguments. The context labeling for the target subtree is made equivalent to that defined for the source.'
++    fcontextParser.add_argument('-e', '--equal', metavar='TARGET_PATH' help=_(
++        'Substitute FILE_SPEC with TARGET_PATH for file label lookup. This is used with fcontext. Requires source and target \
++path arguments to be path prefixes and does not support regular expressions. \
++The context labeling for the target subtree is made equivalent to that defined for the source.'
+     ))
+     fcontextParser.add_argument('-f', '--ftype', default="", choices=["a", "f", "d", "c", "b", "s", "l", "p"], help=_(
+         'File Type. This is used with fcontext. Requires a file type as shown in the mode field by ls, e.g. use d to match only \
+@@ -368,7 +369,7 @@ If you do not specify a file type, the file type will default to "all files".'
+     parser_add_seuser(fcontextParser, "fcontext")
+     parser_add_type(fcontextParser, "fcontext")
+     parser_add_range(fcontextParser, "fcontext")
+-    fcontextParser.add_argument('file_spec', nargs='?', default=None, help=_('Path to be labeled (may be in the form of a Perl compatible regular expression)'))
++    fcontextParser.add_argument('file_spec', nargs='?', default=None, metavar='FILE_SPEC', help=_('Path to be labeled (may be in the form of a Perl compatible regular expression)'))
+     fcontextParser.set_defaults(func=handleFcontext)
+ 
+ 
+diff --git a/python/semanage/semanage-fcontext.8 b/python/semanage/semanage-fcontext.8
+index 3e327d88..3a96c62f 100644
+--- a/python/semanage/semanage-fcontext.8
++++ b/python/semanage/semanage-fcontext.8
+@@ -3,7 +3,7 @@
+ semanage\-fcontext \- SELinux Policy Management file context tool
+ 
+ .SH "SYNOPSIS"
+-.B semanage fcontext [\-h] [\-n] [\-N] [\-S STORE] [ \-\-add ( \-t TYPE \-f FTYPE \-r RANGE \-s SEUSER | \-e EQUAL ) FILE_SPEC | \-\-delete ( \-t TYPE \-f FTYPE | \-e EQUAL ) FILE_SPEC | \-\-deleteall  | \-\-extract  | \-\-list [\-C] | \-\-modify ( \-t TYPE \-f FTYPE \-r RANGE \-s SEUSER | \-e EQUAL ) FILE_SPEC ]
++.B semanage fcontext [\-h] [\-n] [\-N] [\-S STORE] [ \-\-add ( \-t TYPE \-f FTYPE \-r RANGE \-s SEUSER | \-e TARGET_PATH ) FILE_SPEC | \-\-delete ( \-t TYPE \-f FTYPE | \-e TARGET_PATH ) FILE_SPEC | \-\-deleteall  | \-\-extract  | \-\-list [\-C] | \-\-modify ( \-t TYPE \-f FTYPE \-r RANGE \-s SEUSER | \-e TARGET_PATH ) FILE_SPEC ]
+ 
+ .SH "DESCRIPTION"
+ semanage is used to configure certain elements of
+@@ -66,8 +66,8 @@ Extract customizable commands, for use within a transaction
+ .I   \-D, \-\-deleteall
+ Remove all local customizations
+ .TP
+-.I   \-e EQUAL, \-\-equal EQUAL
+-Substitute target path with sourcepath when generating default label. This is used with fcontext. Requires source and target path arguments. The context labeling for the target subtree is made equivalent to that defined for the source.
++.I   \-e TARGET_PATH, \-\-equal TARGET_PATH
++Substitute FILE_SPEC with TARGET_PATH for file label lookup. This is used with fcontext. Requires source and target path arguments to be path prefixes and does not support regular expressions. The context labeling for the target subtree is made equivalent to that defined for the source.
+ .TP
+ .I   \-f [{a,f,d,c,b,s,l,p}], \-\-ftype [{a,f,d,c,b,s,l,p}]
+ File Type. This is used with fcontext. Requires a file type as shown in the mode field by ls, e.g. use 'd' to match only directories or 'f' to match only regular files. The following file type options can be passed: f (regular file),d (directory),c (character device), b (block device),s (socket),l (symbolic link),p (named pipe).  If you do not specify a file type, the file type will default to "all files".
+diff --git a/python/semanage/seobject.py b/python/semanage/seobject.py
+index 10963e81..854381d4 100644
+--- a/python/semanage/seobject.py
++++ b/python/semanage/seobject.py
+@@ -2453,6 +2453,19 @@ class fcontextRecords(semanageRecords):
+ 
+         self.commit()
+ 
++    def delete_equal(self, target, substitute):
++        self.begin()
++        if target not in self.equiv.keys():
++            raise ValueError(_("Equivalence class for %s does not exist") % target)
++        if substitute != self.equiv[target]:
++            raise ValueError(_("Equivalence class for %s does not match %s but %s") % (target, substitute, self.equiv[target]))
++        del self.equiv[target]
++        self.equal_ind = True
++
++        self.mylog.log_change("resrc=fcontext op=delete-equal %s %s" % (audit.audit_encode_nv_string("sglob", target, 0), audit.audit_encode_nv_string("tglob", substitute, 0)))
++
++        self.commit()
++
+     def createcon(self, target, seuser="system_u"):
+         (rc, con) = semanage_context_create(self.sh)
+         if rc < 0:
+-- 
+2.45.2
+
 

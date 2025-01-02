@@ -1,120 +1,149 @@
-Return-Path: <selinux+bounces-2602-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2604-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965B09FE6C9
-	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 15:05:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5039FF9EF
+	for <lists+selinux@lfdr.de>; Thu,  2 Jan 2025 14:47:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D698D3A1DE6
-	for <lists+selinux@lfdr.de>; Mon, 30 Dec 2024 14:05:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B57E1616B2
+	for <lists+selinux@lfdr.de>; Thu,  2 Jan 2025 13:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BB31A8411;
-	Mon, 30 Dec 2024 14:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8E547483;
+	Thu,  2 Jan 2025 13:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="ApkYmbJp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q7Jpxz++"
 X-Original-To: selinux@vger.kernel.org
-Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4191A83E7
-	for <selinux@vger.kernel.org>; Mon, 30 Dec 2024 14:05:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DB9367
+	for <selinux@vger.kernel.org>; Thu,  2 Jan 2025 13:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735567535; cv=none; b=qROxEeGd5BAAmhu0m2nKT3YMEnPmfogmglOiej4UuV2MUR7zz5+Tp11ibH/YjfNfEnsTSnCoR1LpYEOC1D2EGVv+unj4blHDwk/mMU/a2j2tCiKzHw6zEuVji4Kh+GcK8PyzbTAIXG6AVhCLhsW6cdWlDXXr2cUf6PmP47J8c54=
+	t=1735825650; cv=none; b=a7ExTocK/OekwO6Zhcm6K9NL9az7Z2X4OzaxtYrHPYdiRymLWD8lwFhsMcCZKe+nabCogFvkJlthJOUQfE+1PoEt17cL1EciH+nXEYRoA6ojkSNnrRjOOPUAIsXia7YENV/r4URKoQ538FRUidsytTddJab8QNOFevEQ2eBn+xQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735567535; c=relaxed/simple;
-	bh=t9j0bou8E4Jpwa23Ft8QN4LCNDdloDHuQD3rkQ1XJIw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dz0Jt1sTmAL2TWRWJBS170gNONFETf2UtQF3OFmKq9plFRfsrdwMl/b/YydMVoYEjxIAWppIMnyGG1TMtE/JPCLKn62EQq5ZSAEAlYrxPyikhM+wQLTLrQq5XkWaZuegcVQNQSS0CBp6dFH/1Wn9f/dSORzNKBAWCb70x1uGzyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=ApkYmbJp; arc=none smtp.client-ip=168.119.48.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
-From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1735567531;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
+	s=arc-20240116; t=1735825650; c=relaxed/simple;
+	bh=qzUqWtQVSoaLgwNz4sVHJlynWXI00cVbxDts4YtKCgQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OwbcEBC7uVTv8LptOwz9bHuCu8/r5YQIH6EMZjo/2r1f/E+aY3HK927O4C9Dxv9dvPT+1rQ6OqIcTRVrZExqmwUHJGTYvAQSAOcC07GPhpVzI8F+r8EVtzPizaeMONBf/qkgcndYf++mA6wCAWM6119EB4l8ax8QbCY7968pIi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q7Jpxz++; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1735825647;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YRz0r+U4EnvKxFThMEJu3SMjpLoeSGHYqw9Uf8yKv8Q=;
-	b=ApkYmbJpttJaW4qSa02b4jzqge3PX1S0xwIkzTlbKaM6+USIF7vVaca8wo5O+MU9tKF0xH
-	B+0aOczQSUX779rrtmCJpBWsnl8mqfPAdIP24m6fJK7Tbv3eN4CwQwpCkLog05n8Y49Moz
-	zh9ITRTSP2n6tm0WwO1O3v221wz1Z2qo+8HnMxQQU4sYeLQPGHaFnksQhM7cX3KKMOXRt1
-	PGUYbJULgPXLqa5Fx90j5a3MzYxjAwlgik8L/F12JT4MB4uzt2DLv11YQfROrRfKLw02KS
-	1LY6gnL1BFn6aGUufvgeR8BnUgVTXoXicYTap9cZtznehUcL6Uqk/mfB+84QOQ==
-To: selinux@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 1/2] libsepol: fix typos
-Date: Mon, 30 Dec 2024 15:05:23 +0100
-Message-ID: <20241230140523.60053-2-cgoettsche@seltendoof.de>
-In-Reply-To: <20241230140523.60053-1-cgoettsche@seltendoof.de>
-References: <20241230140523.60053-1-cgoettsche@seltendoof.de>
-Reply-To: cgzones@googlemail.com
+	bh=NJwEQInCF7+OzVrp/eHnQB5hz7vloRmYHfbK30oz+6c=;
+	b=Q7Jpxz++8syo7CfX1LJoNY/UQe6WnMsgwEnaG4woMbH86KFFtjon0dSs6AQS3XrCfDdmoz
+	sOe+KgEpkeq5+bfONCAnvEAH7wzc5TcPCbv8H519CET9GrgyUyPDblelzlhJuHEbiHwu75
+	bSzXKRgyz/SL8vmYjr+Il9w6Th1c6dQ=
+Received: from mail-pj1-f72.google.com (mail-pj1-f72.google.com
+ [209.85.216.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-343-4rsFsM9yOrCp1WpKPYvw0Q-1; Thu, 02 Jan 2025 08:47:26 -0500
+X-MC-Unique: 4rsFsM9yOrCp1WpKPYvw0Q-1
+X-Mimecast-MFC-AGG-ID: 4rsFsM9yOrCp1WpKPYvw0Q
+Received: by mail-pj1-f72.google.com with SMTP id 98e67ed59e1d1-2eedd15c29eso15092685a91.3
+        for <selinux@vger.kernel.org>; Thu, 02 Jan 2025 05:47:26 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735825644; x=1736430444;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NJwEQInCF7+OzVrp/eHnQB5hz7vloRmYHfbK30oz+6c=;
+        b=Ob2y5xaQw3HFEQJOvO8ync7pj+mnk1jGT5NUMAUFe09PWtX3KQ3v5FPQRjWIsBlPXF
+         TVpERzAiecQDmtmIQ/WkH5HNKGtQ+uHCWq69QhC+4PgwlVHJiyqinvAhhRHSwfdi50vJ
+         sG0FRIAiSeYX0VVbZ1JCR4snhlFozVVPPEPeqwHWRTxBgu5nntfk2jqu4wFvRjK9ZlOY
+         1Z8n/CA7x6e88YuHYuRi+zzQAfYS2pLeab7TphYRpUm0QCyiQ9OLDDwuZ3tp5K8HXCX2
+         U2/65Dz6JGJx/lfqi4CJF3hdeYcgcCQnvJsFW8thEgdonm+K3kjc+RiRsQhBR3CxmwKI
+         Aukw==
+X-Gm-Message-State: AOJu0YzLGA5boqqVmXtNw+FSTD9C/AN//lTCpEfXk10IDbkrmvRd9cls
+	cGfpvpyy1SU/PXrhaOT9MP6Fy5laj8PyBNATH4LVvVNBhelu/1YhXlivHogl54AGRDMZTZiTqmY
+	18msrlniEXVCm74/jGVCrO3Ea7xVONeH/JEeoUpesRjxHkbA6nxTBZ0MuLCPY02YddEcH7Fx+Ir
+	xI4r3el+8TRMmQ6R0+g9vDGN4QH1oTDglDxF1gqkBV
+X-Gm-Gg: ASbGnctbBhtwoBZIf6xLbl9bAXKyrMdDzv4b5xsMJCiK5mS5oNq7bJOQOgYopP+RdoQ
+	s6Lp1jrtMokNrkAmcv2ZnP3Rbv9INvJiL4NxDAJjThc2DDDIYFtIF/Iqi+II/OuEeTmTFUC0=
+X-Received: by 2002:a17:90b:134d:b0:2ea:4c4f:bd20 with SMTP id 98e67ed59e1d1-2f452eed773mr61305746a91.32.1735825644536;
+        Thu, 02 Jan 2025 05:47:24 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEQw+xywn7KDxQR4m53pX61eTtILtRdGLT8losgIn6o4LYcwdoYfdD701ho4yJ6xgSxxavj8MUCsXNt0jcgeig=
+X-Received: by 2002:a17:90b:134d:b0:2ea:4c4f:bd20 with SMTP id
+ 98e67ed59e1d1-2f452eed773mr61305730a91.32.1735825644243; Thu, 02 Jan 2025
+ 05:47:24 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20241024182424.138616-1-paul@paul-moore.com>
+In-Reply-To: <20241024182424.138616-1-paul@paul-moore.com>
+From: Ondrej Mosnacek <omosnace@redhat.com>
+Date: Thu, 2 Jan 2025 14:47:13 +0100
+Message-ID: <CAFqZXNug_wX_d_qB=gkegoTwkQSM71b29Fxw7d09yZMTE+PbNg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] check-syntax: update arguments for astyle v3.2
+ (possibly earlier)
+To: Paul Moore <paul@paul-moore.com>
+Cc: selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Christian Göttsche <cgzones@googlemail.com>
+On Thu, Oct 24, 2024 at 8:24=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
+>
+> Update the astyle arguments in tools/check-syntax to work with modern
+> version of astyle.
+>
+> It is worth mentioning that astyle v3.6.3 appears to have a problem
+> with aligning/indenting continuation lines, preferring blind
+> indentation over alignment.
+>
+> Signed-off-by: Paul Moore <paul@paul-moore.com>
+> ---
+>  tools/check-syntax | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>
+> diff --git a/tools/check-syntax b/tools/check-syntax
+> index 2115a7960dd5..2775eb46c6c4 100755
+> --- a/tools/check-syntax
+> +++ b/tools/check-syntax
+> @@ -57,10 +57,9 @@ function tool_c_style() {
+>         astyle --options=3Dnone --lineend=3Dlinux --mode=3Dc \
+>                 --style=3Dlinux \
+>                 --indent=3Dforce-tab=3D8 \
+> -               --indent-preprocessor \
+>                 --indent-col1-comments \
+>                 --min-conditional-indent=3D0 \
+> -               --max-instatement-indent=3D80 \
+> +               --max-continuation-indent=3D80 \
+>                 --pad-oper \
+>                 --align-pointer=3Dname \
+>                 --align-reference=3Dname \
+> --
+> 2.47.0
+>
+>
 
-Found by codespell(1) and typos[1].
+Thanks! I applied these with some changes:
+1. I dropped patch 2 because I don't like the idea of filtering out
+known bad versions.
+2. I updated patch 3 with what astyle 3.6.6 enforces (this version is
+now in Fedora 41 and it finally doesn't have buggy behavior with the
+testsuite's inputs).
 
-[1]: https://github.com/crate-ci/typos
+The style-check job now passes successfully.
 
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
----
- libsepol/src/kernel_to_cil.c | 2 +-
- libsepol/src/module_to_cil.c | 2 +-
- libsepol/src/policydb.c      | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+https://github.com/SELinuxProject/selinux-testsuite/commit/0f3dec2ab35e8739=
+bb31bab8e6fcae51010c557c
+https://github.com/SELinuxProject/selinux-testsuite/commit/68ff0417fd8ac0e5=
+c9c5897a31dd3c7d17201306
 
-diff --git a/libsepol/src/kernel_to_cil.c b/libsepol/src/kernel_to_cil.c
-index 2d563e7d..ddca2b62 100644
---- a/libsepol/src/kernel_to_cil.c
-+++ b/libsepol/src/kernel_to_cil.c
-@@ -1802,7 +1802,7 @@ static char *avtab_node_to_str(struct policydb *pdb, avtab_key_t *key, avtab_dat
- 		} else if (datum->xperms->specified == AVTAB_XPERMS_NLMSG) {
- 			xperm = (char *) "nlmsg";
- 		} else {
--			ERR(NULL, "Unknown extended permssion");
-+			ERR(NULL, "Unknown extended permission");
- 			goto exit;
- 		}
- 		rule = create_str("(%s %s %s (%s %s (%s)))",
-diff --git a/libsepol/src/module_to_cil.c b/libsepol/src/module_to_cil.c
-index 0ede0c9b..ae9a2b5d 100644
---- a/libsepol/src/module_to_cil.c
-+++ b/libsepol/src/module_to_cil.c
-@@ -709,7 +709,7 @@ static int avrulex_to_cil(int indent, struct policydb *pdb, uint32_t type, const
- 	} else if (xperms->specified == AVTAB_XPERMS_NLMSG) {
- 		xperm = "nlmsg";
- 	} else {
--		ERR(NULL, "Unkown avrule xperms->specified: %i", xperms->specified);
-+		ERR(NULL, "Unknown avrule xperms->specified: %i", xperms->specified);
- 		rc = -1;
- 		goto exit;
- 	}
-diff --git a/libsepol/src/policydb.c b/libsepol/src/policydb.c
-index 0747e789..8443380b 100644
---- a/libsepol/src/policydb.c
-+++ b/libsepol/src/policydb.c
-@@ -1662,7 +1662,7 @@ int policydb_load_isids(policydb_t * p, sidtab_t * s)
-  *
-  * arguments:
-  *   policydb_t *pol       module policy to modify
-- *   uint32_t sym          the symbole table for insertion (SYM_*)
-+ *   uint32_t sym          the symbol table for insertion (SYM_*)
-  *   hashtab_key_t key     the key for the symbol - not cloned
-  *   hashtab_datum_t data  the data for the symbol - not cloned
-  *   scope                 scope of this symbol, either SCOPE_REQ or SCOPE_DECL
--- 
-2.45.2
+--
+Ondrej Mosnacek
+Senior Software Engineer, Linux Security - SELinux kernel
+Red Hat, Inc.
 
 

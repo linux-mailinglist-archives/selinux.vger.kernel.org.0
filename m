@@ -1,84 +1,84 @@
-Return-Path: <selinux+bounces-2621-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2623-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764469FFC20
-	for <lists+selinux@lfdr.de>; Thu,  2 Jan 2025 17:45:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 263CC9FFC21
+	for <lists+selinux@lfdr.de>; Thu,  2 Jan 2025 17:45:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44C133A1423
-	for <lists+selinux@lfdr.de>; Thu,  2 Jan 2025 16:45:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061EF3A125E
+	for <lists+selinux@lfdr.de>; Thu,  2 Jan 2025 16:45:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBED91547E8;
-	Thu,  2 Jan 2025 16:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C52E155C97;
+	Thu,  2 Jan 2025 16:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZSj9NPHs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TzWfZQQe"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820F0154BE4
-	for <selinux@vger.kernel.org>; Thu,  2 Jan 2025 16:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EE8149DF0
+	for <selinux@vger.kernel.org>; Thu,  2 Jan 2025 16:45:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1735836350; cv=none; b=f9m+6uG3hfbjAPVc16h117QIqgwcwa//dw7VLQykyMs6nBhQe1YOa9ikpniXvp7XvHtVu+5rQsx7LENpamTKjM9qV7gMe07qba7zWMi7TdYqtzeqronk6KQ5i5EVKOFW8pSHGCQu7rdffsTRy2CaPV2WEHjzvtwKnj6LdLNo3rE=
+	t=1735836351; cv=none; b=SgGQuGWunTJs4gpO/iLsq0ChWU8a/wqEo4b0co83ieqjewj47SH4nCexzG0mwVaL1/aYSkja260WtBfU1Q7hYoozwsZQUgGedEf0yVjrbvhQ+XnRqAhy02cYLWcekmnFWs+zlGunM1jXV2Fvz1Mh60/sKYnTT5O0tIyiyfuodcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1735836350; c=relaxed/simple;
-	bh=OvAnuEzack9VuIOgNEP6p07Pkeh5zPa4zXw/9LKuc/k=;
+	s=arc-20240116; t=1735836351; c=relaxed/simple;
+	bh=Cy9/HthkIqjdSOIrBIHNwm4iXYkN/R1eEXhd7G85CUI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=W+poBiFiIlB0dUr+B/l8n8wzzYQYh7/wvOJ0zEIeoPWGApcXWzmBPX+SvYB3RobBS6efu0aqW0Gg3rXR2OPxA1JPzVYdpbpgQtNYuetUHjtPZvHcZhL9qpaLU3XKrReFjChMRDC79X78OJt/sJ4qHdpAsBK8dF0U1Z/ntYYUm/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZSj9NPHs; arc=none smtp.client-ip=209.85.160.182
+	 MIME-Version; b=hCL051/htXSE0nrmvXc1gGtYsswUAreMchNbgEvkakAgeCsQSC5W0XrqAilVPyxDRs3QuBpWkD8R3iFPlBLHC7jmD5rCiJF2yLzxjcpEtJPFH9cMc49azKOn0BvWTdpSiZHW34BbPZ3+51qKv5IQPzaiIsID7/A2RNoOi4KKjsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TzWfZQQe; arc=none smtp.client-ip=209.85.160.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-467bc28277eso95725391cf.1
-        for <selinux@vger.kernel.org>; Thu, 02 Jan 2025 08:45:48 -0800 (PST)
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-467a3f1e667so66793831cf.0
+        for <selinux@vger.kernel.org>; Thu, 02 Jan 2025 08:45:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735836347; x=1736441147; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1735836348; x=1736441148; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ljkPvdOs9go0qhM3C/UzLvjdIhlm6hrSdhwd6AjIkGc=;
-        b=ZSj9NPHsL3vDf66KoGaGkgZJfCGeu/uJIeXoDVJsEaxGtEEpcv5Lw2xJ83qx3RfnsL
-         CQFsAsxYYXVntlfmY4IT+f0pBh9iKaCCpvJCCJ+8yh935eXyfJLPT99lie63gLUMfl7B
-         BqYGBeJQpTrsoiS6iHpc5r2bQyqZ5ung0EXrJzLp5tk/trihOSsZtxeQsrOozNYCJaXT
-         m5bSP1Hv0QyQtgJpc51Xuc9nSL01KVoWYUl/a6Y67X4DsvCG99PgfMBvHADx3CiWrLZw
-         hfza1DwfZjeiNf7VpXHMVw1e9Z7+Mf733EYsHKj0m+BjSOUbCRiv9lRrYMRPp9vngats
-         0J2Q==
+        bh=Bzv3ZX9wa+dFK2R6j7JkfEPqTQlLW0Nl6pQBz700Uq4=;
+        b=TzWfZQQerZD4ehr6UjA2/T6V+GQtZK/XWcE4S+bXHc0J9GA5QgUqtNC+NALSKqyoYA
+         3p4SR72NP4Ko/m6f5IsAOXKYYBox0OYKmvLr+i2jYyJ4Sc8hCCLfHIo69Hwb8Hlukeqm
+         8VmYqhahOrjuCd/ouE4TsxYSpgy8aTf8lSxFF6qAXtggCMu//KNf0S9sz+/tkZ287Ds+
+         n21gJpVat1du1fAKjRFiA+sxQjD1TOYzRLzqISRoaGDOdQjuPtELFYnqVBEyvmP/nh3A
+         aj4beIVdyMlZ5rKUr4VhiVqlQpyv4uiwXxzO549xDYSeu8s4r5Hx2ozVlsj2B0ib6gto
+         hJ+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735836347; x=1736441147;
+        d=1e100.net; s=20230601; t=1735836348; x=1736441148;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ljkPvdOs9go0qhM3C/UzLvjdIhlm6hrSdhwd6AjIkGc=;
-        b=MqG5n5Bf160IAYuuUFfAFXYA1rTq+xIENpfI5xBKVRaI1HYMur/z2/1rsaW86eT5q9
-         7gQYsXw65YCm+PJDxEWtHje+4s53awunxQ2h0Kfhv6xGfMcE5f9h5XxiYtyDyoUgAMbD
-         DpTS/ugwtUnCdiSVLq4DPN3XVb6U0jdJ4/UBNhKKd40GpvvgWIii5YZbVRPH9cMvuX81
-         VN8kTdTSsO10aL7dxT6opmx2w93VNMe0nt2ZQqTZwN0jab3VfEv4iab2FCxCype1YShn
-         v9PwDmsO4r9+K8PeEhEgvkF09zs22PBNU8yWk+fL3kr/1/LlumnlU9Al/U6+SAIDqhWJ
-         QknQ==
-X-Gm-Message-State: AOJu0YyjqB+FE3V57npIJ5nt44EFwUVgrNAxuz+iDRkspmtbRwaAsPJP
-	tDHQp7r/n+zn+GyXVE/fdHLUpmfvO9za/L1WZvElCdoF0HB3bD5aTo8iCw==
-X-Gm-Gg: ASbGncstjqcw8ep59S/Qe+tZUWe+WGTCEzYxVFyR9OOKtSwSNzzDPIg/P00AnAn4Auy
-	RnWrWDt7lSv7mO2p7Y8Z6mGWeTuEfX06JDto8p36yjKWcXjT9yzmrH795QHYe1cuw9qnVL2j6IH
-	kZ9f9bW0h4hBKtPrTGt75dQsF5trLSR7MuPJqnRSbhFD/7PdNx90n1uiulUH7QfZzEuiL22gTeU
-	ePB671I5LiHZ2USYZfzI2V7Faa0RLkjcvBe/brl4x1AzWBMrGFs64Gv8re/3FmbCn1HxRpuA8Kq
-	1DYFVkbFALHSUqXv+OrmPPv//Jmj/zQnEo5OPSDQFT3KIahHwegKkWBAQYfD7frsfrhhqQ==
-X-Google-Smtp-Source: AGHT+IERmRg3HJtOj99qZYJiBGYIuTwB2C/WoN0KADzX7cGSiVrx7NSQkwMDndwBx7AuZ9/DY5QWQA==
-X-Received: by 2002:a05:622a:1aa8:b0:467:5eb6:5153 with SMTP id d75a77b69052e-46a4a8e4669mr890063211cf.19.1735836346905;
-        Thu, 02 Jan 2025 08:45:46 -0800 (PST)
+        bh=Bzv3ZX9wa+dFK2R6j7JkfEPqTQlLW0Nl6pQBz700Uq4=;
+        b=twsxBoSJ8VABombHP8bgpVSav878SZ8g3Z5lcXVG31geEbaPV+V1cEDvX/TXjLUD3n
+         foXG4cHNK4XKDaYyQWNUIsAqWtrXnDxau9G3QiyvuBmD2epzLDBw35RgsMYzlf8uKOap
+         kbMCljpR9J7w3+nV6XEX4nAj3voDEJ1UTYAVKkpWORXYnu6jzPJ5nPZnr9361c0O0q2+
+         woa9pWLtWFxdQrqQuc++6zKFc6Il3t2LfrvODBckkWmpLuL0KNAru6699A5hgc8kLTH1
+         CS6fuRrCwMmBhvTGq6vo11mUcVyKrvudvAMXmsa6sbpALPhI+CJyeJMtZd2wYEgpmUA7
+         q2fQ==
+X-Gm-Message-State: AOJu0YwQDDiMMdu2DeO8y2T67EUc7Dn7daw/nJUbNEfBtGC5i3ZIbb84
+	cO8zbLVdQgTDIVGH2XIruff0p2UxvguhaW5KZGB5ZJWp+sZSgUh7Z2GdVQ==
+X-Gm-Gg: ASbGncvWPI6dsKJyb6j5O1POCtn6jgVWqVZd1GqekaWbp9XWNoKMRWkGW1jYNm9LTBh
+	BJPgY289RJ9Ga/QZrmQHBFocm5kQD99YbT9eAjZS+IUAVFsr6Yo3JGD7XJwq4m6iu3j/DfoVd0Z
+	3Ozq4257IFBLUmxXmfYIRk5jmmIiJsIq3iJA3WXVPirBB3ZxROgk74ZJHERJwRmWjTc+57UhJ2i
+	K6ISWUIH8IG8YqBWtbgdq8ZkpTZXjFgc53liUOf82Pu2gRAf7bnwRrEcKvUqjxZjaqld6QFDMgC
+	WkQ5ISkPaSU7v2c4p87Qio/FylboN/ocDd5FRA/pGJ6PPNuFQ33HbE2qyRb0ppctVNlxKQ==
+X-Google-Smtp-Source: AGHT+IFqFuy9VxUPpU4T0+7zVsCPyrLBr0Hvf2dOZNFrpUcmHj6f/QcJel6hBjMEMQdN5nZRts/Idw==
+X-Received: by 2002:a05:622a:1827:b0:467:70ce:75e9 with SMTP id d75a77b69052e-46a4a8e83d4mr806783191cf.23.1735836347991;
+        Thu, 02 Jan 2025 08:45:47 -0800 (PST)
 Received: from a-gady2p56i3do.evoforge.org (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3eb19684sm136795101cf.58.2025.01.02.08.45.46
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3eb19684sm136795101cf.58.2025.01.02.08.45.47
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 02 Jan 2025 08:45:46 -0800 (PST)
+        Thu, 02 Jan 2025 08:45:47 -0800 (PST)
 From: Stephen Smalley <stephen.smalley.work@gmail.com>
 To: selinux@vger.kernel.org
 Cc: paul@paul-moore.com,
 	omosnace@redhat.com,
 	Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [RFC PATCH 18/44] selinux: introduce task_obj_perm()
-Date: Thu,  2 Jan 2025 11:44:43 -0500
-Message-Id: <20250102164509.25606-19-stephen.smalley.work@gmail.com>
+Subject: [RFC PATCH 19/44] selinux: fix selinux_lsm_getattr() check
+Date: Thu,  2 Jan 2025 11:44:44 -0500
+Message-Id: <20250102164509.25606-20-stephen.smalley.work@gmail.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20250102164509.25606-1-stephen.smalley.work@gmail.com>
 References: <20250102164509.25606-1-stephen.smalley.work@gmail.com>
@@ -90,117 +90,38 @@ List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Introduce task_obj_perm() for namespace-aware permission checking
-between two tasks using the objective SID for both tasks and
-without assuming that either task is current.
-
-Convert the permission checks of this form in the hook functions
-to use this new helper.
+Fix the selinux_lsm_getattr() permission check to use
+cred_task_has_perm() instead of cred_has_perm() since we need
+to use the target task's SID in the same namespace as current.
 
 Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 ---
- security/selinux/avc.c         | 56 ++++++++++++++++++++++++++++++++++
- security/selinux/hooks.c       |  5 ++-
- security/selinux/include/avc.h |  3 ++
- 3 files changed, 61 insertions(+), 3 deletions(-)
+ security/selinux/hooks.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/security/selinux/avc.c b/security/selinux/avc.c
-index acf62dad064f..cc64dce0f061 100644
---- a/security/selinux/avc.c
-+++ b/security/selinux/avc.c
-@@ -1277,6 +1277,62 @@ int cred_task_has_perm(const struct cred *cred, const struct task_struct *p,
- 	return 0;
- }
- 
-+static const struct task_security_struct *task_security(
-+	const struct task_struct *p)
-+{
-+	const struct task_security_struct *tsec;
-+
-+	tsec = selinux_cred(__task_cred(p));
-+	while (tsec->state != current_selinux_state && tsec->parent_cred)
-+		tsec = selinux_cred(tsec->parent_cred);
-+	if (tsec->state != current_selinux_state)
-+		return NULL;
-+	return tsec;
-+}
-+
-+int task_obj_has_perm(const struct task_struct *s,
-+		      const struct task_struct *t,
-+		      u16 tclass, u32 requested,
-+		      struct common_audit_data *ad)
-+{
-+	const struct cred *cred;
-+	const struct task_security_struct *tsec;
-+	struct selinux_state *state;
-+	u32 ssid;
-+	u32 tsid;
-+	int rc;
-+
-+	state = current_selinux_state;
-+	rcu_read_lock();
-+	tsec = task_security(s);
-+	if (tsec)
-+		ssid = tsec->sid;
-+	else
-+		ssid = SECINITSID_UNLABELED;
-+	rcu_read_unlock();
-+
-+	do {
-+		tsid = task_sid_obj_for_state(t, state);
-+
-+		rc = avc_has_perm(state, ssid, tsid, tclass, requested, ad);
-+		if (rc)
-+			return rc;
-+
-+		cred = tsec->parent_cred;
-+		if (!cred)
-+			break;
-+
-+		rcu_read_lock();
-+		tsec = selinux_cred(cred);
-+		ssid = tsec->sid;
-+		state = tsec->state;
-+		rcu_read_unlock();
-+	} while (cred);
-+
-+	return 0;
-+}
-+
-+
- int cred_has_extended_perms(const struct cred *cred, u32 tsid, u16 tclass,
- 			    u32 requested, u8 driver, u8 xperm,
- 			    struct common_audit_data *ad)
 diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 028e94c6e396..a19cfef5325a 100644
+index a19cfef5325a..728a59aa52d6 100644
 --- a/security/selinux/hooks.c
 +++ b/security/selinux/hooks.c
-@@ -2116,9 +2116,8 @@ static int selinux_ptrace_access_check(struct task_struct *child,
+@@ -6448,14 +6448,14 @@ static int selinux_lsm_getattr(unsigned int attr, struct task_struct *p,
+ 	u32 len;
  
- static int selinux_ptrace_traceme(struct task_struct *parent)
- {
--	return avc_has_perm(current_selinux_state,
--			    task_sid_obj(parent), task_sid_obj(current),
--			    SECCLASS_PROCESS, PROCESS__PTRACE, NULL);
-+	return task_obj_has_perm(parent, current, SECCLASS_PROCESS,
-+				 PROCESS__PTRACE, NULL);
- }
- 
- static int selinux_capget(const struct task_struct *target, kernel_cap_t *effective,
-diff --git a/security/selinux/include/avc.h b/security/selinux/include/avc.h
-index ec40b856da91..e47b75819f4a 100644
---- a/security/selinux/include/avc.h
-+++ b/security/selinux/include/avc.h
-@@ -171,6 +171,9 @@ int cred_other_has_perm(const struct cred *cred, const struct cred *other,
- 			u16 tclass, u32 requested,
- 			struct common_audit_data *ad);
- 
-+int task_obj_has_perm(const struct task_struct *s, const struct task_struct *t,
-+		      u16 tclass, u32 requested, struct common_audit_data *ad);
-+
- u32 avc_policy_seqno(struct selinux_state *state);
- 
- #define AVC_CALLBACK_GRANT		1
+ 	rcu_read_lock();
+-	tsec = task_security(p);
+ 	if (p != current) {
+-		error = cred_has_perm(current_cred(), tsec->sid,
+-				      SECCLASS_PROCESS, PROCESS__GETATTR,
+-				      NULL);
++		error = cred_task_has_perm(current_cred(), p,
++					   SECCLASS_PROCESS,
++					   PROCESS__GETATTR, NULL);
+ 		if (error)
+ 			goto err_unlock;
+ 	}
++	tsec = task_security(p);
+ 	switch (attr) {
+ 	case LSM_ATTR_CURRENT:
+ 		sid = tsec->sid;
 -- 
 2.47.1
 

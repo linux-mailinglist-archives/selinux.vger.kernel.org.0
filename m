@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2668-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2672-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DA38A04110
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:46:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF155A04114
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:46:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03F3F1886E39
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:46:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8B061647EB
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A251F0E24;
-	Tue,  7 Jan 2025 13:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A651F12F4;
+	Tue,  7 Jan 2025 13:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="TUFRvKTf"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="lt6GuZ6r"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD6BC1F0E46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133821F03C2
 	for <selinux@vger.kernel.org>; Tue,  7 Jan 2025 13:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736257585; cv=none; b=SSVkydpsV2PMhuXdvmeqo9jcEA32ZBoCvoXL/3+VygwqkFwYx1x8okMqKRO3kO3YUt4Twro+Wkbk4OOi0nGVsAXU16hE+OTsae/ZiUIlxZUBPjzFlegjf0TGWAhsAirNqCSlatLgATts/AP1SYq2IYayWagMlav745/tztnyM5k=
+	t=1736257586; cv=none; b=SvVp7vaUPhXk8DZFHYfccP796LgHn9sUrJWCh+mhvQkN55B0D+Op+Ze+BN4l5LtSRiYiXuL/KsLg7RGNOgzQUQlZpydvEQnTt1aZJ+SpqyaWPq9cjwkpkO07WFH0bFQgI8r51gLbY9brxkDCyZSstpLeYV92oyTxMjdtRF5DjRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736257585; c=relaxed/simple;
-	bh=7+GdtblkCbLM4lpaUtDGhHp/+dshmcdooPw9ByEgetw=;
+	s=arc-20240116; t=1736257586; c=relaxed/simple;
+	bh=N9IJmBkn3nfPsuDmmuOLlzze6wEECvmAbP6D7O4cn18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pktCdUPqejZ0sjZRH/ZgKNnUzOG72216WK5SaGN+IHPWkihQ17TbuuN7wzO6lq7OUXSwUXtMZUpRrIffO3Z139xxsWvIWVK5/FCXdrZAxhkmYwGDuWrUtZP2gUeJHKCIq54rqlgQiClSIQeR6H2OLKvrEP3rhY+u1G0yAgSic48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=TUFRvKTf; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=Dw/YYfFH8iPQYVUCSbfC5P59ru4V0kTkrfgIWHKFjujs87OAOPr0W8NdOEcsevIvGDrZqiZ3qtFMdKm1o2UCmbNT30eJHNNy8ULwJ6FYBE9J+qttvRUUq4XEcnN4gd2P2q/9R9oGcp3YbNzmimQaTB/vob+2D/jqr7Nj47R+uFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=lt6GuZ6r; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Kk68S0wjF97uYCP0Agj7VdN7nnRK5PHjibC1P7a91J4=;
-	b=TUFRvKTfp+XaM9VR6W9tyeoOxfmpSmw1WXIJhKlKfUfZ7Qp5dQJMn495gJw59hGR1264jd
-	GILZkWzzKDq89dVEtDzJTUEkHAd718HpMeILk2mrB1rkuVj3pE7zjmwloF65F2GDJqXAdS
-	GmA6ZytGcHI75WuBHV6QvAxoFTKHtxX9X87kQqBlpr11PZ2Nz2i871JpMGO3gSlAVEjQFA
-	H/5GTZlUtyj4WnToTC9qj7/Rdn2SpEJLHVQw+5qJDrx/BGTMYdZgK9c3Tso8EbkUWWwqGH
-	eENrgsqqNEq6B/4H9jDH0259j7uj/XS4jn9AuUSK2OB0a/zT8BcfZ1btI+JSiQ==
+	bh=RFz9Uq3lDPnvKhXlYcpeT8kw62E/5Ik2BLrolGzg0IE=;
+	b=lt6GuZ6rUzkzpQfTl8D0FbeBMY3N/Cvd3CX5ycM9fNPrHQzDvZScNUwA9gDFmEj8SxnTVL
+	Jj/NzRGFbdAdoZIie1eUis6BCwsaIfS41HjG8X3WsrGU9qyZYsUXlxBryGHkTTyHsabTRb
+	gq725qHS3j1A+dBTEgPuDTaS1S2cPq+yktdoOo6PzPr9O2jI8ALEUBb3rWc7B/iWEzBIB+
+	a03b7+t1fNwkyFW5q0umNuaRliGQRq7I+TEg04pbLMDXKH0JoXv+OWxPMs78/0+lcGSJg4
+	VnkOWTH4Kt7hx9dUD1WRxXUoVHR9abG3OwGZxFsMgWxXBfEMSP/I1hq7AbA5UA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [RFC PATCH v2 09/17] tests/extended_socket_class: work with CONFIG_CRYPTO_USER_API disabled
-Date: Tue,  7 Jan 2025 14:45:57 +0100
-Message-ID: <20250107134606.37260-9-cgoettsche@seltendoof.de>
+Subject: [RFC PATCH v2 10/17] tests/tun_tap: skip if not supported
+Date: Tue,  7 Jan 2025 14:45:58 +0100
+Message-ID: <20250107134606.37260-10-cgoettsche@seltendoof.de>
 In-Reply-To: <20250107134606.37260-1-cgoettsche@seltendoof.de>
 References: <20250107134606.37260-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -66,68 +66,86 @@ From: Christian Göttsche <cgzones@googlemail.com>
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- tests/extended_socket_class/test | 28 +++++++++++++++++++---------
- 1 file changed, 19 insertions(+), 9 deletions(-)
+ tests/tun_tap/test         | 10 +++++++++-
+ tests/tun_tap/tun_common.c |  2 +-
+ tests/tun_tap/tun_tap.c    | 10 +++++++---
+ 3 files changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/tests/extended_socket_class/test b/tests/extended_socket_class/test
-index 1e6299f..f85243a 100755
---- a/tests/extended_socket_class/test
-+++ b/tests/extended_socket_class/test
-@@ -3,10 +3,11 @@
- use Test;
- 
- BEGIN {
--    $test_count     = 6;
-+    $test_count     = 4;
-     $test_bluetooth = 0;
-     $test_sctp      = 0;
-     $test_smc       = 0;
-+    $test_alg       = 0;
- 
-     # check if SCTP is enabled
-     if ( system("modprobe sctp 2>/dev/null && checksctp 2>/dev/null") eq 0 ) {
-@@ -26,6 +27,12 @@ BEGIN {
-         $test_smc = 1;
+diff --git a/tests/tun_tap/test b/tests/tun_tap/test
+index 3daf2eb..87956c5 100755
+--- a/tests/tun_tap/test
++++ b/tests/tun_tap/test
+@@ -16,7 +16,15 @@ BEGIN {
+         $v = " ";
      }
  
-+    # check if ALG is supported
-+    if ( system("modprobe af_alg 2>/dev/null") eq 0 ) {
-+        $test_count += 2;
-+        $test_alg = 1;
+-    plan tests => 14;
++    $result = system("runcon -t test_tun_tap_t $basedir/tun_tap $v -c 2>&1");
++
++    # check for TUN/TAP support - ENOENT
++    if ( $result >> 8 eq 2 ) {
++        plan skip_all => "No TUN/TAP support";
 +    }
-+
-     plan tests => $test_count;
++    else {
++        plan tests => 14;
++    }
  }
  
-@@ -127,17 +134,20 @@ if ($test_bluetooth) {
-     ok($result);
- }
+ ############ Test tun_socket TUN #############
+diff --git a/tests/tun_tap/tun_common.c b/tests/tun_tap/tun_common.c
+index 9a3c5de..86e41df 100644
+--- a/tests/tun_tap/tun_common.c
++++ b/tests/tun_tap/tun_common.c
+@@ -5,7 +5,7 @@ int open_dev(int *fd, char *test_str, bool verbose)
+ 	char *tun_dev = "/dev/net/tun";
  
--# Verify that test_alg_socket_t can create a Crypto API socket.
--$result = system(
-+if ($test_alg) {
-+
-+    # Verify that test_alg_socket_t can create a Crypto API socket.
-+    $result = system(
- "runcon -t test_alg_socket_t -- $basedir/sockcreate alg seqpacket default 2>&1"
--);
--ok( $result, 0 );
-+    );
-+    ok( $result, 0 );
+ 	*fd = open(tun_dev, O_RDWR);
+-	if (fd < 0) {
++	if (*fd < 0) {
+ 		fprintf(stderr, "Failed to open device: %s\n",
+ 			strerror(errno));
+ 		return errno;
+diff --git a/tests/tun_tap/tun_tap.c b/tests/tun_tap/tun_tap.c
+index a3db6c9..c1b8590 100644
+--- a/tests/tun_tap/tun_tap.c
++++ b/tests/tun_tap/tun_tap.c
+@@ -5,6 +5,7 @@ static void print_usage(char *progname)
+ 	fprintf(stderr,
+ 		"usage:  %s [-p] [-s ] [-v]\n"
+ 		"Where:\n\t"
++		"-c  Check if TUN/TAP features are available.\n\t"
+ 		"-p  Test TAP driver, default is TUN driver.\n\t"
+ 		"-s  If -v, then show TUN/TAP Features.\n\t"
+ 		"-v  Print information.\n", progname);
+@@ -16,14 +17,17 @@ int main(int argc, char *argv[])
+ 	char *context, *test_str;
+ 	int opt, result, fd, bit, count, test;
+ 	unsigned int features, f_switch;
+-	bool verbose = false, show = false;
++	bool verbose = false, show = false, check = false;
+ 	struct ifreq ifr;
  
--# Verify that test_no_alg_socket_t cannot create a Crypto API socket.
--$result = system(
-+    # Verify that test_no_alg_socket_t cannot create a Crypto API socket.
-+    $result = system(
- "runcon -t test_no_alg_socket_t -- $basedir/sockcreate alg seqpacket default 2>&1"
--);
--ok($result);
-+    );
-+    ok($result);
-+}
+ 	test = IFF_TUN;
+ 	test_str = "TUN";
  
- if ($test_smc) {
+-	while ((opt = getopt(argc, argv, "psv")) != -1) {
++	while ((opt = getopt(argc, argv, "cpsv")) != -1) {
+ 		switch (opt) {
++		case 'c':
++			check = true;
++			break;
+ 		case 'p':
+ 			test = IFF_TAP;
+ 			test_str = "TAP";
+@@ -52,7 +56,7 @@ int main(int argc, char *argv[])
  
+ 	/* Start TUN/TAP */
+ 	result = open_dev(&fd, test_str, verbose);
+-	if (result != 0)
++	if (check || result != 0)
+ 		exit(result);
+ 
+ 	if (verbose && show) {
 -- 
 2.47.1
 

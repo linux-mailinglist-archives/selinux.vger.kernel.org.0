@@ -1,125 +1,359 @@
-Return-Path: <selinux+bounces-2667-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2683-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B08ABA034B2
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 02:52:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC57A04141
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:53:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3061A3A4C9A
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 01:52:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FEEF3A1093
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A6A33FB1B;
-	Tue,  7 Jan 2025 01:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD2D39FF3;
+	Tue,  7 Jan 2025 13:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="iPbVo7QG"
 X-Original-To: selinux@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249C92B9BB;
-	Tue,  7 Jan 2025 01:52:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF191EF0B5
+	for <selinux@vger.kernel.org>; Tue,  7 Jan 2025 13:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736214762; cv=none; b=blv48TweyWGfH/5N2Y6F4dbQiESEmQm6MG9oJ0SDbf4hsc/tWaiko9f3MLyeqceBCPkL6bwOerTq0KesGb0mAb2W5dlLTjmgH9IMT5kBZZRA7NR1Io+z3OeILlxRELT8eqRsIBJxZJQty6xS2NoIgebe+kqTjsJXN9hDVcMdFVI=
+	t=1736257975; cv=none; b=SC49EIa+uXy5DinJqln/KPGQfVQshAsvROLo0xDTqq3MhlknImnooxMt5sfUM8ubwXLWZNsWXSI/hz4vu7AdyF2pNXdHmUNhGVzpK5D54YnUvZaH6NAMdxXJAgT0a8KwXvMlpr/Bp4DIgEzdKwJpsoBS4f3L/NBOHailRXy+ceI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736214762; c=relaxed/simple;
-	bh=AEnPaBzFIhS+YLKKrrx4VFXkfFBlGhnBDRxhcVNBsZo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rOrscAe9fqIc3lryzA4sqUSqA38Xjw08gYYrHqCRU8m9l6dx5LE/YMLoD4Tc6Y0mMzkYCj287ySm+ToDzEw4LX9y4lypwQxW7P8anbJO0bxcMzkTLroM0XF1Zk+Xq/uO//ncliycBCX/TFkMWmwaL4UWBxngRB+JMd+w5yIaWMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4YRvF04Dhxz4f3jqx;
-	Tue,  7 Jan 2025 09:52:20 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 83A331A14B3;
-	Tue,  7 Jan 2025 09:52:35 +0800 (CST)
-Received: from [10.67.108.244] (unknown [10.67.108.244])
-	by APP4 (Coremail) with SMTP id gCh0CgDHKl_iiHxn3HQDAQ--.39505S3;
-	Tue, 07 Jan 2025 09:52:35 +0800 (CST)
-Message-ID: <5603f99d-c643-4db1-917e-c42ea7bddfff@huaweicloud.com>
-Date: Tue, 7 Jan 2025 09:52:34 +0800
+	s=arc-20240116; t=1736257975; c=relaxed/simple;
+	bh=SIP7CxpILTpLLm7j+l7Al/jY0+BzUw6nFAVyG7O9RhE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fBxd3803yxpKn1d3t+3OXQ2nUPFfl2+X7pa/RQ60VmCFHHgf8jo90rPFIz3qt+8vAWauNo6bx9B2mvDQxlnvKFrZEk10Why1N9MNzWulSi0vNpiJVRS+SkgAKfdlB3elPciqaT+KaZJ6gD4DJSbQ3okFW7SxnljQvFxNKpDOzSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=iPbVo7QG; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1736257571;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=aRFI6E0lVHxBoyJm1WrpFzbJcyMc7WrXOwqff3s2An0=;
+	b=iPbVo7QGcYCkurVQSyRmebyCXqe+jzsA2+KxMt6eFbOsU6ev8jHM5vQVXbQo6U3+qkFH70
+	dxfCxhIdTLqmZG5hCENyh/YpXSQrViaOXXAnKuE+MEBb5pYOVYBoJtefinVZdlrb31PQp5
+	Z8QawVkg6wmTiMBzc4/n7ywCjdEI07n+ObGX7YCk0EhGsInAeaBiorok1wifWyR9zvf3TI
+	T5kQikU9zaNQrTdHq8g+cIwwqbIBl5DLUQ3GyB+2ajinmKZmy789R7GYJUzO/dWzgJNPl5
+	tDzEFhaMFjxEiiRIDlFG8bmQrzm5IM4SJX4TOySrr8LOJJ3H40ZIYr2Ec+1JdA==
+To: selinux@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [RFC PATCH v2 01/17] Fix typos
+Date: Tue,  7 Jan 2025 14:45:49 +0100
+Message-ID: <20250107134606.37260-1-cgoettsche@seltendoof.de>
+Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH linux-next 1/2] perf: Remove unnecessary parameter of
- security check
-Content-Language: en-US
-To: Paul Moore <paul@paul-moore.com>
-Cc: peterz@infradead.org, mingo@redhat.com, acme@kernel.org,
- namhyung@kernel.org, mark.rutland@arm.com,
- alexander.shishkin@linux.intel.com, jolsa@kernel.org, irogers@google.com,
- adrian.hunter@intel.com, kan.liang@linux.intel.com, tglx@linutronix.de,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- will@kernel.org, jmorris@namei.org, serge@hallyn.com, rostedt@goodmis.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
- stephen.smalley.work@gmail.com, omosnace@redhat.com,
- linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-security-module@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, selinux@vger.kernel.org
-References: <20241223070650.2810747-1-luogengkun@huaweicloud.com>
- <20241223070650.2810747-2-luogengkun@huaweicloud.com>
- <CAHC9VhRRu-UYEV_-0-QgOZ3ByVwp-ZdEphmsvy4NcdqynH_tDg@mail.gmail.com>
-From: Luo Gengkun <luogengkun@huaweicloud.com>
-In-Reply-To: <CAHC9VhRRu-UYEV_-0-QgOZ3ByVwp-ZdEphmsvy4NcdqynH_tDg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDHKl_iiHxn3HQDAQ--.39505S3
-X-Coremail-Antispam: 1UD129KBjvdXoW7Jw4UGw18CFWUKF4fZw43Jrb_yoWkurX_uF
-	9rArZ7Jrs2va4Sya43AFs3CF1q9rW8X3WrX3s3tr95Wr9xAF1UG3W8tFW8AwnxWF4IgF9F
-	k3ZxGryvvry5ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbxkYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26F4j6r4UJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8
-	RuWJUUUUU==
-X-CM-SenderInfo: 5oxrwvpqjn3046kxt4xhlfz01xgou0bp/
 
+From: Christian Göttsche <cgzones@googlemail.com>
 
-On 2025/1/5 10:45, Paul Moore wrote:
-> On Mon, Dec 23, 2024 at 1:57 AM Luo Gengkun <luogengkun@huaweicloud.com> wrote:
->> It seems that the attr parameter was never been used in security
->> checks since it was first introduced by:
->>
->> commit da97e18458fb ("perf_event: Add support for LSM and SELinux checks")
->>
->> so remove it.
->>
->> Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
->> ---
->>   arch/x86/events/intel/bts.c     |  2 +-
->>   arch/x86/events/intel/core.c    |  2 +-
->>   arch/x86/events/intel/p4.c      |  2 +-
->>   drivers/perf/arm_spe_pmu.c      |  4 ++--
->>   include/linux/lsm_hook_defs.h   |  2 +-
->>   include/linux/perf_event.h      | 10 +++++-----
->>   include/linux/security.h        |  5 ++---
->>   kernel/events/core.c            | 14 +++++++-------
->>   kernel/trace/trace_event_perf.c |  4 ++--
->>   security/security.c             |  5 ++---
->>   security/selinux/hooks.c        |  2 +-
->>   11 files changed, 25 insertions(+), 27 deletions(-)
-> This patch seems fine to me from a LSM and SELinux perspective, but
-> I'd want to see an ACK from the perf folks before I merge this.
->
-> I'll also leave patch 2/2 for the perf folks as it seems largely
-> unrelated to this patch.
+Found by codespell(1).
 
-Thanks for your review
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+ doc/tests/Makefile              | 2 +-
+ doc/tests/socket.sgml           | 2 +-
+ policy/test_capable_file.te     | 2 +-
+ policy/test_capable_net.te      | 2 +-
+ policy/test_capable_sys.te      | 2 +-
+ policy/test_mqueue.te           | 2 +-
+ tests/binder/service_provider.c | 2 +-
+ tests/bounds/test               | 4 ++--
+ tests/capable_net/test          | 2 +-
+ tests/capable_sys/test          | 2 +-
+ tests/file/test                 | 2 +-
+ tests/file/test_nofcntl.c       | 2 +-
+ tests/file/test_sigiotask.c     | 2 +-
+ tests/ioctl/test                | 4 ++--
+ tests/ioctl/test_noioctl.c      | 2 +-
+ tests/mqueue/mqmgr.c            | 2 +-
+ tests/mqueue/test               | 2 +-
+ tests/overlay/setup-overlay     | 2 +-
+ tests/task_setscheduler/test    | 2 +-
+ tests/userfaultfd/userfaultfd.c | 2 +-
+ 20 files changed, 22 insertions(+), 22 deletions(-)
 
-Gengkun
+diff --git a/doc/tests/Makefile b/doc/tests/Makefile
+index ead6af2..6b85905 100644
+--- a/doc/tests/Makefile
++++ b/doc/tests/Makefile
+@@ -10,7 +10,7 @@ TEX	:=	$(patsubst %.sgml, %.tex, $(TOP))
+ LOG	:=	$(patsubst %.sgml, %.log, $(TOP))
+ OUT	:=	$(patsubst %.sgml, %.out, $(TOP))
+ 
+-all: $(PS) $(PDF) $(HMTL)
++all: $(PS) $(PDF) $(HTML)
+ 
+ $(PS): $(ALL) custom.dsl
+ 	jw -f docbook -d custom.dsl -b ps $(TOP)
+diff --git a/doc/tests/socket.sgml b/doc/tests/socket.sgml
+index ca203ac..d1293ad 100644
+--- a/doc/tests/socket.sgml
++++ b/doc/tests/socket.sgml
+@@ -242,7 +242,7 @@ The socket scripts test the following hooks:
+ </para>
+ </sect2>
+ 
+-<sect2 id="socket_secure"><title>Secure Socket Sytem Call Tests</title>
++<sect2 id="socket_secure"><title>Secure Socket System Call Tests</title>
+ <para>
+ The tests in the <filename>socket_secure</filename> and
+ <filename>unix_secure</filename> subdirectories create a single server
+diff --git a/policy/test_capable_file.te b/policy/test_capable_file.te
+index 2377279..2ee5d8f 100644
+--- a/policy/test_capable_file.te
++++ b/policy/test_capable_file.te
+@@ -29,7 +29,7 @@ type test_nofcap_t;
+ typeattribute test_nofcap_t capabledomain;
+ testsuite_domain_type(test_nofcap_t)
+ 
+-# Allow these domains to create a temporay file.
++# Allow these domains to create a temporary file.
+ allow capabledomain test_file_t:file { setattr rw_file_perms };
+ allow capabledomain test_file_t:chr_file { create };
+ allow capabledomain test_file_t:dir { setattr rw_dir_perms };
+diff --git a/policy/test_capable_net.te b/policy/test_capable_net.te
+index a01ba8f..8ec4782 100644
+--- a/policy/test_capable_net.te
++++ b/policy/test_capable_net.te
+@@ -1,7 +1,7 @@
+ #################################
+ #
+ # Policy for testing network related capabilities. The test_capable_file.te
+-# policy is a prequisite for this file.
++# policy is a prerequisite for this file.
+ #
+ 
+ # Type for process that is allowed certain capabilities
+diff --git a/policy/test_capable_sys.te b/policy/test_capable_sys.te
+index 70717f1..05d6da5 100644
+--- a/policy/test_capable_sys.te
++++ b/policy/test_capable_sys.te
+@@ -1,7 +1,7 @@
+ #################################
+ #
+ # Policy for testing system related capabilities. The test_capable_file.te
+-# policy is a prequisite for this file.
++# policy is a prerequisite for this file.
+ #
+ 
+ # Type for process that is allowed certain capabilities
+diff --git a/policy/test_mqueue.te b/policy/test_mqueue.te
+index b938a6b..0d6df7a 100644
+--- a/policy/test_mqueue.te
++++ b/policy/test_mqueue.te
+@@ -18,7 +18,7 @@ testsuite_domain_type(test_mqreadop_t)
+ domain_obj_id_change_exemption(test_mqreadop_t)
+ typeattribute test_mqreadop_t mqopdomain;
+ 
+-# Domain for process that is allowed to wirte to write posix mqueues
++# Domain for process that is allowed to write the write posix mqueues
+ type test_mqwriteop_t;
+ testsuite_domain_type(test_mqwriteop_t)
+ domain_obj_id_change_exemption(test_mqwriteop_t)
+diff --git a/tests/binder/service_provider.c b/tests/binder/service_provider.c
+index f47365c..97c59dd 100644
+--- a/tests/binder/service_provider.c
++++ b/tests/binder/service_provider.c
+@@ -286,7 +286,7 @@ int main(int argc, char **argv)
+ 	if (fd_type == BPF_TEST)
+ 		exit(0);
+ 
+-	/* If BPF enabed, then need to set limits */
++	/* If BPF enabled, then need to set limits */
+ 	if (fd_type == BPF_MAP_FD || fd_type == BPF_PROG_FD)
+ 		bpf_setrlimit();
+ #else
+diff --git a/tests/bounds/test b/tests/bounds/test
+index dd41115..3bf1b6a 100755
+--- a/tests/bounds/test
++++ b/tests/bounds/test
+@@ -76,8 +76,8 @@ $result = system(
+ );
+ ok($result);
+ 
+-# It ensure the child domain shall be bounded to the parent.
+-# So, we expect all the alloed actiona are intersection with test_bounds_parent_t
++# It ensures the child domain shall be bounded to the parent.
++# So, we expect all the allowed actions are intersections with test_bounds_parent_t
+ 
+ $result = system(
+ "runcon -t test_bounds_child_t -- dd if=$basedir/bounds_file_red of=/dev/null count=1 2>&1 > /dev/null"
+diff --git a/tests/capable_net/test b/tests/capable_net/test
+index 8ef9ecc..dc0b57a 100755
+--- a/tests/capable_net/test
++++ b/tests/capable_net/test
+@@ -1,6 +1,6 @@
+ #!/usr/bin/perl
+ #
+-# This test performs checks for network-related capabilties.
++# This test performs checks for network-related capabilities.
+ #
+ 
+ use Test;
+diff --git a/tests/capable_sys/test b/tests/capable_sys/test
+index 34ed8c8..132c732 100755
+--- a/tests/capable_sys/test
++++ b/tests/capable_sys/test
+@@ -1,6 +1,6 @@
+ #!/usr/bin/perl
+ #
+-# This test performs checks for system-related capabilties.
++# This test performs checks for system-related capabilities.
+ #
+ 
+ use Test;
+diff --git a/tests/file/test b/tests/file/test
+index fa28b7c..64dc813 100755
+--- a/tests/file/test
++++ b/tests/file/test
+@@ -148,7 +148,7 @@ ok($result);
+ system "chcon -t nofileop_rw_file_t $basedir/temp_file2 2>&1 > /dev/null";
+ 
+ #
+-# Check the fcntl for the bad domain. This uses the read-only accessable file.
++# Check the fcntl for the bad domain. This uses the read-only accessible file.
+ #
+ $result = system
+   "runcon -t test_nofileop_t -- $basedir/test_nofcntl $basedir/temp_file3 2>&1";
+diff --git a/tests/file/test_nofcntl.c b/tests/file/test_nofcntl.c
+index 3554dec..40976c5 100644
+--- a/tests/file/test_nofcntl.c
++++ b/tests/file/test_nofcntl.c
+@@ -29,7 +29,7 @@ int main(int argc, char **argv)
+ 		exit(2);
+ 	}
+ 
+-	/* The next two acesses should fail, so if that happens, we return success. */
++	/* The next two accesses should fail, so if that happens, we return success. */
+ 
+ 	rc = fcntl(fd, F_SETFL, 0);
+ 	if( rc != -1 ) {
+diff --git a/tests/file/test_sigiotask.c b/tests/file/test_sigiotask.c
+index 97d343b..5a5efc5 100644
+--- a/tests/file/test_sigiotask.c
++++ b/tests/file/test_sigiotask.c
+@@ -18,7 +18,7 @@
+ /*
+  * Test the sigio operations by creating a child and registering that process
+  * for SIGIO signals for the terminal. The main process forces a SIGIO
+- * on the terminal by sending a charcter to that device.
++ * on the terminal by sending a character to that device.
+  */
+ int main(int argc, char **argv)
+ {
+diff --git a/tests/ioctl/test b/tests/ioctl/test
+index 84e9d35..4e2955c 100755
+--- a/tests/ioctl/test
++++ b/tests/ioctl/test
+@@ -37,14 +37,14 @@ $result = system "touch $basedir/temp_file 2>&1";
+ $result = system "chcon -t test_ioctl_file_t $basedir/temp_file 2>&1";
+ 
+ #
+-# Attempt to perform the ioctls on the temproary file as the good domain
++# Attempt to perform the ioctls on the temporary file as the good domain
+ #
+ $result = system
+   "runcon -t test_ioctl_t -- $basedir/test_ioctl $basedir/temp_file 2>&1";
+ ok( $result, 0 );
+ 
+ #
+-# Attempt to perform the ioctls on the temproary file as the bad domain
++# Attempt to perform the ioctls on the temporary file as the bad domain
+ # The test program, test_noioctl.c, determines success/failure for the
+ # individual calls, so we expect success always from that program.
+ #
+diff --git a/tests/ioctl/test_noioctl.c b/tests/ioctl/test_noioctl.c
+index 319d90f..ea9f120 100644
+--- a/tests/ioctl/test_noioctl.c
++++ b/tests/ioctl/test_noioctl.c
+@@ -18,7 +18,7 @@
+  * argument. This version of the program expects some of the ioctl()
+  * calls to fail, so if one does succeed, we exit with a bad return code.
+  * This program expects the domain it is running as to have only read
+- * acess to the given file.
++ * access to the given file.
+  */
+ int main(int argc, char **argv)
+ {
+diff --git a/tests/mqueue/mqmgr.c b/tests/mqueue/mqmgr.c
+index 5a08ce5..d03bf85 100644
+--- a/tests/mqueue/mqmgr.c
++++ b/tests/mqueue/mqmgr.c
+@@ -10,7 +10,7 @@
+ #include<errno.h>
+ 
+ /*
+- * Managed the creation and distruction of a posix mqueue.
++ * Managed the creation and destruction of a posix mqueue.
+  * The first argument is the name of the mqueue to be managed
+  * (including starting '/'). The second argument is the
+  * operation. '1' to create, '0' to remove.
+diff --git a/tests/mqueue/test b/tests/mqueue/test
+index 8334b9b..0cb9c22 100755
+--- a/tests/mqueue/test
++++ b/tests/mqueue/test
+@@ -8,7 +8,7 @@ use Test::More;
+ BEGIN {
+     # check if kernel supports posix mqueues file system is mounted
+     if ( system("mount | grep -q mqueue") ) {
+-        plan skip_all => "mqueue fileystem not supported/mounted";
++        plan skip_all => "mqueue filesystem not supported/mounted";
+     }
+     else {
+         plan tests => 13;
+diff --git a/tests/overlay/setup-overlay b/tests/overlay/setup-overlay
+index 3f33499..c08a3dd 100755
+--- a/tests/overlay/setup-overlay
++++ b/tests/overlay/setup-overlay
+@@ -29,7 +29,7 @@ setup () {
+     # (test_overlay_mounter_t, test_overlay_client_t)
+     chcon -R -t test_overlay_files_ro_t $BASEDIR/lower
+ 
+-    # Label noaccessfile and noaccessdir, with types not accessable to either the
++    # Label noaccessfile and noaccessdir, with types not accessible to either the
+     # mounter or the client types
+     chcon -t test_overlay_files_noaccess_t $BASEDIR/lower/noaccessfile $BASEDIR/lower/noaccessdir $BASEDIR/lower/null_noaccess
+     chcon -t test_overlay_mounter_files_t $BASEDIR/lower/mounterfile $BASEDIR/lower/mounterdir $BASEDIR/lower/null_mounter
+diff --git a/tests/task_setscheduler/test b/tests/task_setscheduler/test
+index c2fe8c6..3730ff7 100755
+--- a/tests/task_setscheduler/test
++++ b/tests/task_setscheduler/test
+@@ -23,7 +23,7 @@ close($f);
+ $cgroup_cpu = "/sys/fs/cgroup/cpu/tasks";
+ if ( -w $cgroup_cpu ) {
+ 
+-    # We can only set the scheduler policy fo SCHED_{RR,FIFO} in the root
++    # We can only set the scheduler policy to SCHED_{RR,FIFO} in the root
+     # cgroup so move our target process to the root cgroup.
+     open( my $fd, ">>", $cgroup_cpu );
+     print $fd $pid;
+diff --git a/tests/userfaultfd/userfaultfd.c b/tests/userfaultfd/userfaultfd.c
+index b788f72..2d58b08 100644
+--- a/tests/userfaultfd/userfaultfd.c
++++ b/tests/userfaultfd/userfaultfd.c
+@@ -177,7 +177,7 @@ int main (int argc, char *argv[])
+ 		return -1;
+ 	}
+ 
+-	/* Acces to the registered memory range should invoke the 'missing'
++	/* Access to the registered memory range should invoke the 'missing'
+ 	 * userfaultfd page fault, which should get handled by the thread
+ 	 * created above.
+ 	 */
+-- 
+2.47.1
 
 

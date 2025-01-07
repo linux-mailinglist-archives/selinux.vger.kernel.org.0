@@ -1,333 +1,178 @@
-Return-Path: <selinux+bounces-2680-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2686-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 106BDA0411D
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:46:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A9AA041DD
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 15:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A4DF7A2310
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:46:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 718ED3A6B42
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0D51F131C;
-	Tue,  7 Jan 2025 13:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984DC1F4703;
+	Tue,  7 Jan 2025 14:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="dOGStlON"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="Hl6XbHN2"
 X-Original-To: selinux@vger.kernel.org
-Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15401F0E59
-	for <selinux@vger.kernel.org>; Tue,  7 Jan 2025 13:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0B81F3D5D;
+	Tue,  7 Jan 2025 14:04:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736257591; cv=none; b=q8k0koec3Ir9CD+kK7tYiTTLHkEr+zgk/ZlyciRkXKqEsbblwhMTSOCViHoxI6Sl6q2G2nX9WhYcfsXW7t1LWhjLutU58gvelLmgUiS5NkVyNd5yaRnJunZopmZfn9Jo7BaQAi6zl7uWGruyhUQnOHEjuU7GIBLiUAFVfYdf8BQ=
+	t=1736258671; cv=none; b=oSTnKcqHuDMvudCwu4901wnQf5lcpYO5StnIF93jLLSOjbeUAluddVtx0LxI8PrvIrCJzkGNU6jj9iXSawHGaAhn81Vokb/0sPMZnhuGCT5no5jiPYtSSd+YgAauAF5ov+Ifm9F0oBFp7Md7gnov9WWvUKzQ6Cj8hDdRxHNDEbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736257591; c=relaxed/simple;
-	bh=uDLj7v25cYNZR9YM1c4uXYrX9DP3lAUZRCi4xvSynCI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pwCI8sWQbMDzjbnoLvLb/OXPN1Qio6WnjOi7ar82iEinUI/pD5IBcz8OEy6PFoyaZt6iJhuq/nFeua7oefXOGgp4u3VOSmWpRRVhOOcGnbOiJz96vJJ6OwEXJIhs5k5V2zmabK57cFbAXMxS3m/VJn0PAo0RLPnoOuOoj/RuSYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=dOGStlON; arc=none smtp.client-ip=168.119.48.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
-From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1736257577;
-	h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1WHrCvwXb+AXpp9oAC417Xb3lJyRJi6TaS/MlY9Bt4Q=;
-	b=dOGStlONtzVJ8MZ9OnT0u2Bg+qDw3KQLWb3nhqm3EZ8me+Ye9b2stiW4y/inAMoXYj6m4y
-	yRlwV2oWKD/o5WuO2svISE6oDTe10cWh/rpD0g4t2ARkUC5RVciD/tXteBOhnLoJafTDri
-	4hvSAvQI1/wcBHXI6hlqyZ3ZSic0ZChWz+5wd/f2pLVtmrB6Ito+dbrn0CxsgP9AniUEW5
-	0pprAJ/rKFW2AX+nH5EQmgU0wx0TNBu1kEgxiYVohJ7xEvIapcKTm7oJrrHlWKkMcDOxbH
-	NAOhzz5quaufVom8Gk4KVn+/acm4L2eoswM2ZE8tfubjfTMDN8mEwDrYpkxJBg==
-To: selinux@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [RFC PATCH v2 00/17] testsuite: misc fixes and virtme-ng support
-Date: Tue,  7 Jan 2025 14:46:06 +0100
-Message-ID: <20250107134606.37260-18-cgoettsche@seltendoof.de>
-In-Reply-To: <20250107134606.37260-1-cgoettsche@seltendoof.de>
-References: <20250107134606.37260-1-cgoettsche@seltendoof.de>
-Reply-To: cgzones@googlemail.com
+	s=arc-20240116; t=1736258671; c=relaxed/simple;
+	bh=my8BlkfcoQMNumyQLcWWzAGs+ACYNFadcrEy1nawm/o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MTjj5YMsxVy2lgwhUAj8ozNjXY/cQQwZhFb/wkdmQw8UNHc7S2yOGuawVipo8q3TXIEiDm8iSUq2fhR+ijmlGorlsHNDtj8kNG03kgGo6jSphtYC1iEOKR7EPMMt8fd9h5mmRiqYsAPKevtqwwefaG9CV/jZPXI2RqYxSgZgarY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=Hl6XbHN2; arc=none smtp.client-ip=209.85.219.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-e3c8ae3a3b2so18674675276.0;
+        Tue, 07 Jan 2025 06:04:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1736258667; x=1736863467; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=alPlDRFJ4s2zfqaiVuet99qmMSbEvlweaU9isG2zVDg=;
+        b=Hl6XbHN2sJagkYyyOUJ2pi5AcIk7Rd3GoaC7OIEceoPb+tian8WLkCDQ2jLS0Ch4qY
+         +HWb1tjDrz36gbnD0kHaXIzd4HrM7EbxGShNAB4WJ101eGL6uaU0pyX3eFrEgWUvwe4A
+         LYy31QWd1sr48+LDeFfTTE/1AH3L3L3WfhItArypmrWYVqWsUBr2d4aiur5ETmPnqmOz
+         clqvbTS3OX/477Rp4bXiF2WQwq7BhP20jKUip5htuP8qarRB0MTR7JQZEG+uCHt9VfBW
+         wja6avSSo7k9WyONVO6tZuzoOTYa+HFiSBIWAb0KARd1BJqQg1IUaLaaFGMaE3v0aztb
+         2ANA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736258667; x=1736863467;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=alPlDRFJ4s2zfqaiVuet99qmMSbEvlweaU9isG2zVDg=;
+        b=DPG8hPMH+PJUzF4Md35bi0iNPKlt+8ju1vGVlXWbgIdiQOptZ70n/GHWZ+/obDjoJc
+         +LmXQm/1Tmb4krfLXtFxUlW4guvtfL9jQbNZH1BUmK6WxCCwgEDU5WwPMxMlE8cPJYnC
+         Efzm+1QT4DJzUtlOBAiKyLytHqi6eNm0wE8jKM9DK/hlF4uK2DkLznkfacR4uFjhiuV2
+         3Yg0l4C9q5eHSrY+biLR4+f3pw3lIP2fsL1RFV7F6O7mErx7rTNTwV78i3TAF7+1a58L
+         dIzYMZlqZN2/y44tDot7eKZ1Bnry6ehAf94H2kFIWG/VBxulAtLGTWAmAdzT7A/UfSMI
+         rYug==
+X-Forwarded-Encrypted: i=1; AJvYcCUSFSW06MCO9CmNShKNYWk19bQL6pcHZKO8/G2N7WBCybVbuSI0H38zK6V5uTL5hNlHuhMQc4xRfu9Cprg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yynr3SzXVb7d1TuE0DBHZVipmj21VLUBB55YlJXuR+BGUSsKUkM
+	XQjeuTfBIh7EOcAykMNu/W3zs70JwlC3ZlbK/Wew1yGgZpJfd/mzZqaaqbwe+dIKFBcoXWtWlD4
+	dk1qTnbG5synOeY+PvSL3nYQoUGMT8oX2wsQ=
+X-Gm-Gg: ASbGncuwmwQuAKiCYDjhSW6PzXuMTE3WYBQm+ylDeRfTKssdrJHVOCfhSlpK1BAvfH7
+	fsan8+w23CiFIq6hV2vvCavC3EYtt57s0MQQ4
+X-Google-Smtp-Source: AGHT+IGb2kCfYQdMckl3G2TQzxilU2C4s/v7IV1Z5o4pTSNY2b+E8pQph4sMNWw6wXQNB/9GuUDDknrf5F4u4idHTdA=
+X-Received: by 2002:a05:690c:6d09:b0:6ef:a187:f377 with SMTP id
+ 00721157ae682-6f3f820e059mr477232917b3.34.1736258667137; Tue, 07 Jan 2025
+ 06:04:27 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20241216164055.96267-1-cgoettsche@seltendoof.de>
+ <20241216164055.96267-22-cgoettsche@seltendoof.de> <CAEjxPJ7NdTWu4dspY9cbPMtRsW_jERoRbKBsObbvsEnwgmZ8Ew@mail.gmail.com>
+ <EF4B3759-2C4C-4A15-A721-6B2D0FAFD84F@gmail.com>
+In-Reply-To: <EF4B3759-2C4C-4A15-A721-6B2D0FAFD84F@gmail.com>
+From: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
+Date: Tue, 7 Jan 2025 15:04:16 +0100
+Message-ID: <CAJ2a_Dcw3KQUNv1HQFp4qPOoZ972hjr6Qa2LAXTTv6SkV_Pd0A@mail.gmail.com>
+Subject: Re: [RFC PATCH v2 22/22] selinux: restrict policy strings
+To: selinux@vger.kernel.org
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>, Paul Moore <paul@paul-moore.com>, 
+	Ondrej Mosnacek <omosnace@redhat.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, =?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
+	=?UTF-8?Q?Bram_Bonn=C3=A9?= <brambonne@google.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+	Joe Nall <joenall@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Christian Göttsche <cgzones@googlemail.com>
+On Mon, 6 Jan 2025 at 00:26, Joe Nall <joenall@gmail.com> wrote:
+>
+>
+>
+> > On Jan 3, 2025, at 2:12=E2=80=AFPM, Stephen Smalley <stephen.smalley.wo=
+rk@gmail.com> wrote:
+> >
+> > On Mon, Dec 16, 2024 at 11:42=E2=80=AFAM Christian G=C3=B6ttsche
+> > <cgoettsche@seltendoof.de> wrote:
+> >>
+> >> From: Christian G=C3=B6ttsche <cgzones@googlemail.com>
+> >>
+> >> Validate the characters and the lengths of strings parsed from binary
+> >> policies.
+> Excellent idea.
+>
+> >>  * Disallow control characters
+> Fine here.
+>
+> >>  * Limit characters of identifiers to alphanumeric, underscore, dash,
+> >>    and dot
+> Fine again.
+>
+> >>  * Limit identifiers in length to 128,
+> Fine again, our longest
+>  - type is 51 characters
+>  - attribute is 31
+>  - boolean is 46
+>  - role is 12
+>
+> >> expect types to 1024 and
+> I don=E2=80=99t understand what this means.
 
-With the following patches the testsuite runs successfully in a virtme-ng environment.  A minimal virtme-ng default kernel configuration was used combined with the testsuite's included *defconfig*.
+Similar to your list of the length in you policy boolean, role, user,
+class, and permission identifiers are limited to 128 charatcers (not
+including NUL), types (and attributes, which are just special types)
+are limited to 1024 characters, and individual sensitivities and
+categories are limited to 32 characters.
 
-Also while working on failed testcases I tweaked some scripts and test code.
+>
+> >>    categories to 32, characters (excluding NUL-terminator)
+> One category or the whole category string? A single category longer than =
+7 characters seems pretty unlikely and 32 is wildly short for the whole str=
+ing.
 
-Test result:
-```
-Running as user root with context unconfined_u:unconfined_r:unconfined_t
-                                                                               
-domain_trans/test ........... ok   
-entrypoint/test ............. ok                                                                                                                              
-execshare/test .............. ok   
-exectrace/test .............. ok                         
-execute_no_trans/test ....... ok   
-fdreceive/test .............. ok                           
-inherit/test ................ ok   
-link/test ................... ok                                                                                                                              
-mkdir/test .................. ok                                                                                                                              
-msg/test .................... ok                                                                                                                              
-open/test ................... ok                                                                                                                              
-ptrace/test ................. ok                                                                                                                              
-readlink/test ............... ok                                                                                                                              
-relabel/test ................ ok                          
-rename/test ................. ok   
-rxdir/test .................. ok
-sem/test .................... ok     
-setattr/test ................ ok   
-setnice/test ................ ok   
-shm/test .................... ok     
-sigkill/test ................ ok     
-stat/test ................... ok   
-sysctl/test ................. ok   
-task_create/test ............ ok   
-task_setnice/test ........... ok   
-task_setscheduler/test ...... ok   
-task_getscheduler/test ...... ok   
-task_getsid/test ............ ok   
-task_getpgid/test ........... ok   
-task_setpgid/test ........... ok   
-file/test ................... ok     
-ioctl/test .................. ok   
-capable_file/test ........... ok     
-capable_net/test ............ ok   
-capable_sys/test ............ ok   
-dyntrans/test ............... ok   
-dyntrace/test ............... ok   
-bounds/test ................. ok     
-nnp_nosuid/test ............. ok     
-mmap/test ................... ok     
-unix_socket/test ............ ok     
-inet_socket/tcp/test ........ ok     
-inet_socket/udp/test ........ ok     
-overlay/test ................ skipped: overlayfs upperdir not supported on NFS and OverlayFS
-checkreqprot/test ........... ok   
-mqueue/test ................. skipped: mqueue filesystem not supported/mounted
-mac_admin/test .............. ok   
-atsecure/test ............... ok   
-infiniband_endport/test ..... skipped: test not configured
-infiniband_pkey/test ........ skipped: test not configured
-cap_userns/test ............. skipped: CLONE_NEWUSER not supported
-extended_socket_class/test .. ok   
-sctp/test ................... skipped: SCTP not supported
-netlink_socket/test ......... ok   
-prlimit/test ................ ok   
-binder/test ................. ok   
-bpf/test .................... ok     
-keys/test ................... ok     
-key_socket/test ............. ok   
-glblub/test ................. ok   
-cgroupfs_label/test ......... ok   
-notify/test ................. ok   
-module_load/test ............ ok   
-tun_tap/test ................ skipped: No TUN/TAP support
-perf_event/test ............. ok   
-filesystem/xfs/test ......... ok     
-filesystem/vfat/test ........ ok     
-fs_filesystem/xfs/test ...... ok     
-fs_filesystem/vfat/test ..... ok     
-watchkey/test ............... ok   
-userfaultfd/test ............ skipped: SELinux support for userfaultfd not present
-vsock_socket/test ........... skipped: vsock socket family not supported
-secretmem/test .............. ok
-inet_socket/mptcp/test ...... skipped: protocol mptcp not supported
-All tests successful.
-Files=74, Tests=673, 75 wallclock secs ( 0.24 usr  0.41 sys +  3.39 cusr 15.81 csys = 19.85 CPU)
-Result: PASS
-```
+This only affects individual sensitivities and categories, like "s9"
+or "c1023", not whole MCS/MLS parts.
 
-The included policy needs to be tweaked (not included in this pull request):
-```
-diff --git a/policy/test_global.te b/policy/test_global.te
-index 0078485..7125036 100644
---- a/policy/test_global.te
-+++ b/policy/test_global.te
-@@ -189,3 +189,26 @@ ifdef(`lockdown_defined', `allow $1 self:lockdown confidentiality;')
- define(`allow_userns_create',
- ifdef(`user_namespace_defined', `allow $1 self:user_namespace create;')
- )
-+
-+
-+# virtme
-+gen_require(`
-+       type kernel_t, unconfined_t, unlabeled_t, virtiofs_t;
-+')
-+
-+# tty since virtme starts with kernel_t after load_policy
-+kernel_use_fds(testsuite_domain)
-+
-+fs_search_tmpfs(testsuite_domain)
-+allow testsuite_domain virtiofs_t:dir search_dir_perms;
-+allow testsuite_domain virtiofs_t:file { entrypoint execute execute_no_trans map read_file_perms };
-+allow testsuite_domain virtiofs_t:lnk_file read_lnk_file_perms;
-+
-+fs_getattr_tmpfs(test_filesystem_t)
-+# fs_manage_tmpfs_dirs
-+allow test_overlay_mounter_t tmpfs_t:dir { read write };
-+
-+allow kernel_t self:capability2 mac_admin;
-+allow { kernel_t unconfined_t } virtiofs_t:system module_load;
-+
-+fs_associate_tmpfs(unlabeled_t)
-```
+> Joe
+>
+> > One option if we are concerned about breaking backward compatibility
+> > with policies in the wild would be to make these restrictions
+> > conditional on whether the policy is being loaded into a non-init
+> > SELinux namespace, similar to:
+> > https://lore.kernel.org/selinux/20250102164509.25606-38-stephen.smalley=
+.work@gmail.com/T/#u
+> >
+> > That said, it seems hard to imagine real-world policies that would
+> > exceed these limits, and likely could make them even smaller.
+> > But as Daniel said, we should make them consistently enforced in both
+> > userspace and kernel, and potentially these should all be #define'd
+> > symbols in a uapi header that can be referenced by both.
+> > Looks like you left the type limit at 1024 despite Daniel's
+> > observation that CIL uses 2048 as the limit, but as you noted, given
+> > the page size limit on the entire context by various kernel
+> > interfaces,
+> > this is likely fine.
 
-Also to speed up the development cycle I used the following two scripts:
+I interpreted Daniels comment more like a assessment what CIL
+currently constrains, not as a request for a change, maybe I
+misunderstood?
 
-*tools/vng_stage1.sh*
-```sh
-#!/bin/sh
+Exporting the limits via a public headers seems reasonable.
 
-set -eux
+Maybe for a smooth transition one could introduce a build time
+configuration (CONFIG_SELINUX_STRICT_IDENTIFIERS?).
+This configuration can be disabled by default, leading to identifiers
+not being rejected only logged.
+Than after two releases the default can change to reject instead of log.
+And after the next LTS release the configuration can be dropped again.
 
-SCRIPTDIR=$(dirname "$0")
-
-cd /
-
-load_policy -i
-
-setenforce 0
-
-restorecon -RF -T0 /dev
-
-# transition out of initial kernel sid
-runcon -u unconfined_u -r unconfined_r -t unconfined_t /bin/bash "${SCRIPTDIR}/vng_stage2.sh"
-```
-
-*tools/vng_stage2.sh*
-```sh
-#!/bin/sh
-
-set -eux
-
-SCRIPTDIR=$(dirname "$0")
-
-cd /
-
-setenforce 1
-
-# display some system status information
-dmesg | tail -n 40
-id
-sestatus
-
-cd "${SCRIPTDIR}/../"
-
-make test -j"$(nproc)" || true
-
-/bin/bash -i
-```
-
-
-v2:
-  - fix ioctl tests on NFS
-  - rebase onto latest changes
-
-v1: https://lore.kernel.org/selinux/20241118150256.135432-1-cgoettsche@seltendoof.de/
-
-
-Christian Göttsche (17):
-  Fix typos
-  Makefile: use $(MAKE) to pass options
-  tools: quote command to prevent word splitting
-  tests: port scripts to sh and please shellcheck
-  tests: enable strictness for perl scripts
-  Makefile: add PHONY targets
-  test: overlayfs related tweaks
-  tests/notify: work with CONFIG_FANOTIFY disabled
-  tests/extended_socket_class: work with CONFIG_CRYPTO_USER_API disabled
-  tests/tun_tap: skip if not supported
-  tests/inet_socket: skip mptcp if not supported
-  tests/filesystem: improve fsnotify check and preload loop module
-  defconfig: enable CONFIG_XFRM_USER
-  defconfig: enable CONFIG_NETFILTER_NETLINK_LOG
-  tests: test code tweaks
-  tests: fail on compiler warnings and enable Wextra
-  tests: drop headers from Makefile dependencies
-
- Makefile                             |  10 +-
- defconfig                            |   4 +
- doc/tests/Makefile                   |   2 +-
- doc/tests/socket.sgml                |   2 +-
- policy/Makefile                      |   2 +
- policy/test_capable_file.te          |   2 +-
- policy/test_capable_net.te           |   2 +-
- policy/test_capable_sys.te           |   2 +-
- policy/test_mqueue.te                |   2 +-
- tests/Makefile                       |   2 +-
- tests/binder/Makefile                |   4 +-
- tests/binder/client.c                |   2 +-
- tests/binder/manager.c               |   2 +-
- tests/binder/service_provider.c      |  14 ++-
- tests/bounds/test                    |   4 +-
- tests/bpf/Makefile                   |   2 +-
- tests/bpf/bpf_test.c                 |   2 +-
- tests/cap_userns/userns_child_exec.c |   6 +-
- tests/capable_net/test               |   2 +-
- tests/capable_sys/test               |   4 +-
- tests/execshare/parent.c             |   2 +-
- tests/extended_socket_class/test     |  28 +++--
- tests/fdreceive/Makefile             |   2 +-
- tests/fdreceive/server.c             |   3 +-
- tests/file/test                      |   2 +-
- tests/file/test_nofcntl.c            |   2 +-
- tests/file/test_sigiotask.c          |   2 +-
- tests/filesystem/Filesystem.pm       |   2 +-
- tests/filesystem/fs_relabel.c        |   2 +-
- tests/filesystem/grim_reaper.c       |   2 +-
- tests/filesystem/test                |   3 +
- tests/inet_socket/bind.c             |   1 +
- tests/inet_socket/connect.c          |   1 +
- tests/inet_socket/test               |   5 +-
- tests/inherit/parent.c               |   2 +-
- tests/ioctl/test                     |   4 +-
- tests/ioctl/test_ioctl.c             |  16 ++-
- tests/ioctl/test_noioctl.c           |  13 +-
- tests/key_socket/key_sock.c          |   2 +-
- tests/keys/Makefile                  |   2 -
- tests/kvercmp                        |  16 +--
- tests/loop.pl                        |   9 +-
- tests/module_load/init_load.c        |   2 +-
- tests/mqueue/mqmgr.c                 |   2 +-
- tests/mqueue/test                    |   2 +-
- tests/nfsruntests.pl                 |   6 +-
- tests/nnp_nosuid/execnnp.c           |   2 +-
- tests/notify/test                    | 172 ++++++++++++++++-----------
- tests/notify/test_fanotify.c         |  22 +++-
- tests/os_detect                      |  10 +-
- tests/overlay/setup-overlay          |   2 +-
- tests/overlay/test                   |   7 +-
- tests/pol_detect                     |  12 +-
- tests/prlimit/parent.c               |   2 +
- tests/runtests.pl                    |  16 ++-
- tests/sctp/sctp_common.c             |   4 +-
- tests/task_setscheduler/test         |   2 +-
- tests/tun_tap/Makefile               |   2 +-
- tests/tun_tap/test                   |  10 +-
- tests/tun_tap/tun_common.c           |   2 +-
- tests/tun_tap/tun_tap.c              |  10 +-
- tests/unix_socket/client.c           |   1 +
- tests/unix_socket/server.c           |   1 +
- tests/unix_socket/socketpair.c       |   1 +
- tests/userfaultfd/userfaultfd.c      |   2 +-
- tools/check-syntax                   |   2 +-
- 66 files changed, 304 insertions(+), 183 deletions(-)
-
--- 
-2.47.1
-
+> >
+>
 

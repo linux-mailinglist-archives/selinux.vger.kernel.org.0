@@ -1,55 +1,55 @@
-Return-Path: <selinux+bounces-2674-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2677-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E99A04116
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:46:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA3F0A04117
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3AE31886EB5
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:46:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1B9F1648F6
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 729B01F0E37;
-	Tue,  7 Jan 2025 13:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6941F12E3;
+	Tue,  7 Jan 2025 13:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="P5ofDScy"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="Yg6oiKAq"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133291EF0B7
-	for <selinux@vger.kernel.org>; Tue,  7 Jan 2025 13:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA281E3DF2
+	for <selinux@vger.kernel.org>; Tue,  7 Jan 2025 13:46:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736257587; cv=none; b=uQzbDF+hX9bZU6QhLJkma/L1Mv4nd/mIFKuaAFb4DSqNSHhcMGljPWvn6wDT3MAP4Jpp80kxVbPFo5ZD8qWs7uow9Zexpd0oJNisRoqVdrBF3BLqF/hEpFNv8hDZDgj3THBhktVh265+Efv9N08uWzzPf4NOqJ/yIDyP3qdotp4=
+	t=1736257588; cv=none; b=P2uzAC3IPlshgQX2XFrsJRqZ5lLXj7z6RUT+QgFDDjRPe5LePZatL2oUukdKEOjv1abbGzfALxx3amiVLGm9yVzTJhQFm4dmTNLPX+jf3FWIpdy2F0h4P+t0ejtUbZ80HH3gzCrhf7qeqqXSOEkS4VGF+7LxK2HSP9CF/pKzGNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736257587; c=relaxed/simple;
-	bh=XN8+VHKCjrLNcUjNZC6WEyqOZSyTuyha/+R/XHtk+9A=;
+	s=arc-20240116; t=1736257588; c=relaxed/simple;
+	bh=d+cBR0nPqh3j7UzYfMra9jPKIb/0VilWlb6UfxZjCPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DF4UOtKIMspLViiCU46mG05dyfyV25hlDYp99Hkp785tSJaQKpu83XZs4/cbI8QKZQ/S/EjMESf1M4RlPteMCkElcDVLZQrcZYdMydZB8PMDC57Q95F8AHk5x/GWXKQonMIiSK7w+d+wy4mqmS4iqJDaAlrwVrd3Kf0xJQcVYAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=P5ofDScy; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=YuzFK3J4+pxDE+aWEbJNyYRRiS6xi1AssGgdq62DSwleIIGt2USQ6l2pg3Mq1Jn3DqUdeJcsHYAL8y4TuYzu5ObDN3PLFHgxWShKKkaOSVHLaHa2e00I2ISz5PNSm9OlGselGstaGTjKJTdHFE8ZmVFJMClsAx3RZlfNP09cKwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=Yg6oiKAq; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1736257575;
+	s=2023072701; t=1736257576;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K2buxpvgNvi1xv1xbtyYsi1+3SpnFzu17Ui/rU0vLnA=;
-	b=P5ofDScy4BeKUN3whE14Vxf1EzbaEC2zu7HxXmvOtrpQIdUbRZCLk2D1n/etgDOO+RTMTD
-	TojdoQ9Qp8yek6V4+dj06gqm8s9z8Xy3Bhu7NMeBihPRJnRiDO9wbRHHVvwGYWvnU2rkex
-	F9Wa/XTHIONU+Vy8pt5Bs+3aLX/fHOht7vbHUPFaCxEDYtD8Tg5wnmeVv7iOnh/UbPEkRA
-	Bdg2KE/UXPL1Px9+f4XJSRUlARHFxDrNI0GHavGA+Zk4IyHy4QiQ7NYe3zSQKgehiGGTvU
-	P47TlIKEmYCE8W9dMuyThMyWak8PJ2Qx699UfHIv9VRvUF+i0NBChzD+0v0BXA==
+	bh=bm7Ijh2LR0L2AVVJLndbgQi8cXwLcclyfgfNHc6pUt4=;
+	b=Yg6oiKAqDjJhBG6N+ztoBe3XzUh29GdvJolmMPr3/EFfVqkVMJ6XHfVdNUv7qM7LkHh2Z8
+	pLrue9JlymJH29Q9vIgHRDwLqwX/qn6RcZU6WW94xTm13wuowq16OAkxfevbqnI73p9JS2
+	VkvQzMO2P2MsrRhzeANLGtfa/RwqqkLOGyYhklO9fsAz8JFl8ojiFDYoEPbOlitxL50XeU
+	1oaq+KviVaWimhLqB5T1fJNwtJ699IPhUe20spSVEvBfxgJJ2nS0ERXBeH24a3280vxH+m
+	vH8YqkJdK5C88G+ZseQYVA5wL8qag005sBL289fUwSZoOPS9Y8TGWGhsMRz4vg==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [RFC PATCH v2 13/17] defconfig: enable CONFIG_XFRM_USER
-Date: Tue,  7 Jan 2025 14:46:01 +0100
-Message-ID: <20250107134606.37260-13-cgoettsche@seltendoof.de>
+Subject: [RFC PATCH v2 14/17] defconfig: enable CONFIG_NETFILTER_NETLINK_LOG
+Date: Tue,  7 Jan 2025 14:46:02 +0100
+Message-ID: <20250107134606.37260-14-cgoettsche@seltendoof.de>
 In-Reply-To: <20250107134606.37260-1-cgoettsche@seltendoof.de>
 References: <20250107134606.37260-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,25 +64,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Required for inet_socket/tcp checks.
+Required for netlink_socket tests.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/defconfig b/defconfig
-index b2d4a90..b86a1dc 100644
+index b86a1dc..d4100c0 100644
 --- a/defconfig
 +++ b/defconfig
-@@ -10,6 +10,7 @@ CONFIG_SECURITY_SELINUX=y
- # For testing of labeled IPSEC, NetLabel, and SECMARK functionality.
- # Not strictly required for basic SELinux operation.
- CONFIG_SECURITY_NETWORK_XFRM=y
-+CONFIG_XFRM_USER=y
- CONFIG_NETLABEL=y
- CONFIG_IP_NF_SECURITY=m
- CONFIG_INET_XFRM_MODE_TRANSPORT=m
+@@ -20,6 +20,9 @@ CONFIG_INET6_AH=m
+ CONFIG_CRYPTO_SHA1=m # used for testing, could be updated if desired
+ CONFIG_NETWORK_SECMARK=y
+ CONFIG_NF_CONNTRACK_SECMARK=y
++CONFIG_NETFILTER=y
++CONFIG_NETFILTER_NETLINK=m
++CONFIG_NETFILTER_NETLINK_LOG=m
+ CONFIG_NETFILTER_XT_TARGET_CONNSECMARK=m
+ CONFIG_NETFILTER_XT_TARGET_SECMARK=m
+ CONFIG_NETFILTER_XT_MATCH_STATE=m
 -- 
 2.47.1
 

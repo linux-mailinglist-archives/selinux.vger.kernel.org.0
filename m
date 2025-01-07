@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-2669-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2679-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47FF2A04111
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:46:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD2F1A0411C
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 14:46:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABC623A487A
-	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:46:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DB1C7A238B
+	for <lists+selinux@lfdr.de>; Tue,  7 Jan 2025 13:46:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C2C1F12E0;
-	Tue,  7 Jan 2025 13:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1981F1302;
+	Tue,  7 Jan 2025 13:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="iP+LH8LV"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="HpiC7mqK"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAC01EBFEB
-	for <selinux@vger.kernel.org>; Tue,  7 Jan 2025 13:46:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80A081F0E43
+	for <selinux@vger.kernel.org>; Tue,  7 Jan 2025 13:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736257586; cv=none; b=tZLaHrIxYg8Wlvworlit43vs2W5Xs/Pwf2XfRRAxPBTwBSwlUDOZqW3R7m+VWCcIino4WijY9onjuvrBhS1gNSim+NuPtkhMnzpCptG/AqpF38S7V+DKsMzJmVq5h71CBmjDPcOghyYmpHBBptil6KYVvvvveWkuj+zT0Q805vs=
+	t=1736257591; cv=none; b=GvPoVY2L61kAQzis/yUnAUciQZo051OnoVu5QWAHmYhdbPpnF2vT4dO8xMtQDZNtk7QyxHUl+PscuXWsnXde62oUvzvKyQyaDbXNdM4l+znmFD3NqVD8VcieFodYJxePB6Wxcy10Rtjfk40cESDJ3mCkVqNRp/+8xA17nOALLtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736257586; c=relaxed/simple;
-	bh=3vvwlgtA6ZYnH1LCLWk/e+0fd6lEsDMiEVV+wsNtQlM=;
+	s=arc-20240116; t=1736257591; c=relaxed/simple;
+	bh=CaqiiZYzGlHjDug07HFX1gdVtGu63dL4ptdRSORiNJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oqya2teTyckhJr8Tg67Gs7FELfo6UZ2ZuNkVDWgJhJXljjG/isZPniRhnqHpWfp9Za3+iAjYhOccHRt5zC17GIa9CNvs7sr/mHTDMUt5HVXwwHKFZbiUMjBwV1axEFEUEb2dtcVzF5SoocHJQxKz/LoLuNjq3sUiUpgi3mUDBlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=iP+LH8LV; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=bVsSbCh1ewicVwnIStP+kyqNKN8jxrpLJdDGMUPoemon4X1Wcxb6fgbMEALKpHAUEvk80CDhtHheOcnpmGsltanCKQJFKpYIMYf/R1zQVloptI2rQnUKJ9d7wqcJLGBU0aC0YNSRPToKy7ByhEjQfOtFSX/j/qhlTA3S1jeyUxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=HpiC7mqK; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,17 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ms6eHJoOXgzW/jGMZ9czm+uUVXEbWPWjbYZMVFtJJ/g=;
-	b=iP+LH8LV6l+AZ1Iu3X0BDo+kDsmxViNMA9pzZsHR6lak8c3sz05XDtwz5nPoP0mpE/LSyK
-	Lhouwobx8TwteOA9BoGR+4wODDXTly/wYijy5esTIw8HQ8+to+fHRDVKhfKjbSgDEC857Y
-	uwC4mKWTxMAVp84IqLs9KkzuyGw85AvPNiaZAhJUpV8GRtOWnheFB5b6FAuvMmbvvNPmKX
-	ysRuIWNX0PVvOxh5+f34atqGYRw85dhnot10sGK/zbYeTzmgKmpHrYn8kOojCPAfLcJgoC
-	iHHueC7GxjOO5zDyeylaPDEa/wPHwMyPkiHpl6tHb9GvgeCEuNa6XQa93SoCnA==
+	bh=MCleUBSyKVUpIu4hNRxZIH+tgtEvF4lAKmkNc57uduk=;
+	b=HpiC7mqK5q3NFNLDJa7hkxjeAWqQvW8nRdhhM2sXaHPOYh9L+eGkj8W5oSq5aineSs0wGs
+	xTBElnb4Zmll7EyO/Baf2ZaprgwKGNY433QWC/TagH1fB6B1xY+1FD09QagsqP3oNgYvTh
+	kvZ7xJOqAvr7llOkHCFWARQGtPmCj4dJxV1H13rLotR1vsSbOeVKJlx6RGx2RnDVHTuwQP
+	ZATC9gfOE6xQyjScge1vYsBdGGBPlDMMZsXdgNcUXPk40aid6czNpVuGBoMKQePJj8FN3V
+	q76EANgIXKT9JjX6gxQaJI+hwc9VoZcgFFtJCCHmBb2FkfoYJrd2zVBhxgTg/w==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [RFC PATCH v2 15/17] tests: test code tweaks
-Date: Tue,  7 Jan 2025 14:46:03 +0100
-Message-ID: <20250107134606.37260-15-cgoettsche@seltendoof.de>
+Subject: [RFC PATCH v2 16/17] tests: fail on compiler warnings and enable Wextra
+Date: Tue,  7 Jan 2025 14:46:04 +0100
+Message-ID: <20250107134606.37260-16-cgoettsche@seltendoof.de>
 In-Reply-To: <20250107134606.37260-1-cgoettsche@seltendoof.de>
 References: <20250107134606.37260-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,414 +64,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Be more cautious on unexpected failures and input:
-
-  binder
-    Avoid returning garbage value from binder_parse() in case of an
-    unexpected (impossible?) empty buffer.
-    Store create_bpf_*() results temporarily in an int to actually
-    perform the error checks (they are currently no-ops on unsigned).
-
-  bpf
-    Initialize variable in case the program gets called without the
-    associated option.
-
-  cap_userns
-    Use appropriate types and casts to avoid implicit conversions.
-
-  execshare
-    Avoid use of void pointer arithmetic.
-
-  fdreceive
-    Do not call non async-safe exit(3) in signal handler.
-    Drop dead assignment.
-
-  filesystem
-    Initialize variables in case the programs get called without the
-    associated options.
-
-  inet_socket/unix_socket
-    Declare usage() as noreturn to help compilers avoid issuing
-    inaccurate warnings.
-
-  inherit
-    Use a large enough buffer for a potential huge PID.
-
-  key_socket
-    Avoid comparison of signed with unsigned integer.
-
-  module_load
-    Correctly check for an open(2) failure.
-
-  nnp_nosuid
-    Check if wait(2) succeeded before checking the child status.
-
-  notify
-    Check if opening file was successful.
-    Use appropriate type for read(2) return value.
-
-  prlimit
-    Set all members of the new limit structure.
-
-  sctp
-    Use appropriate iterator type.
+Warnings issued by -Wall and -Wextra most of the time point to actual
+issues in the code.  Treat the as error, so the resulting test run
+failure will be investigated and the issue handled.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- tests/binder/client.c                |  2 +-
- tests/binder/manager.c               |  2 +-
- tests/binder/service_provider.c      | 12 +++++++-----
- tests/bpf/bpf_test.c                 |  2 +-
- tests/cap_userns/userns_child_exec.c |  6 +++---
- tests/execshare/parent.c             |  2 +-
- tests/fdreceive/server.c             |  3 +--
- tests/filesystem/fs_relabel.c        |  2 +-
- tests/filesystem/grim_reaper.c       |  2 +-
- tests/inet_socket/bind.c             |  1 +
- tests/inet_socket/connect.c          |  1 +
- tests/inherit/parent.c               |  2 +-
- tests/key_socket/key_sock.c          |  2 +-
- tests/module_load/init_load.c        |  2 +-
- tests/nnp_nosuid/execnnp.c           |  2 +-
- tests/notify/test_fanotify.c         |  8 ++++++--
- tests/prlimit/parent.c               |  2 ++
- tests/sctp/sctp_common.c             |  4 ++--
- tests/unix_socket/client.c           |  1 +
- tests/unix_socket/server.c           |  1 +
- tests/unix_socket/socketpair.c       |  1 +
- 21 files changed, 36 insertions(+), 24 deletions(-)
+ tests/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tests/binder/client.c b/tests/binder/client.c
-index 4965563..220d37a 100644
---- a/tests/binder/client.c
-+++ b/tests/binder/client.c
-@@ -231,7 +231,7 @@ static void extract_handle_and_acquire(int fd,
- static int binder_parse(int fd, binder_uintptr_t ptr, binder_size_t size)
- {
- 	binder_uintptr_t end = ptr + size;
--	uint32_t cmd;
-+	uint32_t cmd = BR_DEAD_REPLY;
+diff --git a/tests/Makefile b/tests/Makefile
+index 35bb358..6af7651 100644
+--- a/tests/Makefile
++++ b/tests/Makefile
+@@ -6,7 +6,7 @@ INCLUDEDIR ?= $(PREFIX)/include
+ SELINUXFS ?= /sys/fs/selinux
+ FILESYSTEMS ?= ext4 xfs jfs vfat
  
- 	while (ptr < end) {
- 		cmd = *(uint32_t *)ptr;
-diff --git a/tests/binder/manager.c b/tests/binder/manager.c
-index 8e5f446..f7f1723 100644
---- a/tests/binder/manager.c
-+++ b/tests/binder/manager.c
-@@ -156,7 +156,7 @@ static void reply_with_handle(int fd, struct binder_transaction_data *txn_in)
- static int binder_parse(int fd, binder_uintptr_t ptr, binder_size_t size)
- {
- 	binder_uintptr_t end = ptr + size;
--	uint32_t cmd;
-+	uint32_t cmd = BR_DEAD_REPLY;
+-export CFLAGS+=-g -O0 -Wall -D_GNU_SOURCE
++export CFLAGS+=-g -O0 -Werror -Wall -Wextra -Wno-unused-parameter -D_GNU_SOURCE
  
- 	while (ptr < end) {
- 		cmd = *(uint32_t *)ptr;
-diff --git a/tests/binder/service_provider.c b/tests/binder/service_provider.c
-index 97c59dd..1e6b490 100644
---- a/tests/binder/service_provider.c
-+++ b/tests/binder/service_provider.c
-@@ -76,14 +76,16 @@ static void request_service_provider_fd(int fd,
- 		break;
- #if HAVE_BPF
- 	case BPF_MAP_FD:
--		obj.fd = create_bpf_map();
--		if (obj.fd < 0)
-+		result = create_bpf_map();
-+		if (result < 0)
- 			exit(70);
-+		obj.fd = result;
- 		break;
- 	case BPF_PROG_FD:
--		obj.fd = create_bpf_prog();
--		if (obj.fd < 0)
-+		result = create_bpf_prog();
-+		if (result < 0)
- 			exit(71);
-+		obj.fd = result;
- 		break;
- #else
- 	case BPF_MAP_FD:
-@@ -122,7 +124,7 @@ static void request_service_provider_fd(int fd,
- static int binder_parse(int fd, binder_uintptr_t ptr, binder_size_t size)
- {
- 	binder_uintptr_t end = ptr + size;
--	uint32_t cmd;
-+	uint32_t cmd = BR_DEAD_REPLY;
- 
- 	while (ptr < end) {
- 		cmd = *(uint32_t *)ptr;
-diff --git a/tests/bpf/bpf_test.c b/tests/bpf/bpf_test.c
-index 3c6a29c..f43440a 100644
---- a/tests/bpf/bpf_test.c
-+++ b/tests/bpf/bpf_test.c
-@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
- 	enum {
- 		MAP_FD = 1,
- 		PROG_FD
--	} bpf_fd_type;
-+	} bpf_fd_type = -1;
- 
- 	while ((opt = getopt(argc, argv, "mpv")) != -1) {
- 		switch (opt) {
-diff --git a/tests/cap_userns/userns_child_exec.c b/tests/cap_userns/userns_child_exec.c
-index cdbf120..e65e615 100644
---- a/tests/cap_userns/userns_child_exec.c
-+++ b/tests/cap_userns/userns_child_exec.c
-@@ -89,8 +89,8 @@ usage(char *pname)
- static void
- update_map(char *mapping, char *map_file)
- {
--	int fd, j;
--	size_t map_len;     /* Length of 'mapping' */
-+	int fd;
-+	size_t j, map_len;     /* Length of 'mapping' */
- 
- 	/* Replace commas in mapping string with newlines */
- 
-@@ -106,7 +106,7 @@ update_map(char *mapping, char *map_file)
- 		exit(EXIT_FAILURE);
- 	}
- 
--	if (write(fd, mapping, map_len) != map_len) {
-+	if (write(fd, mapping, map_len) != (ssize_t)map_len) {
- 		fprintf(stderr, "ERROR: write %s: %s\n", map_file,
- 			strerror(errno));
- 		exit(EXIT_FAILURE);
-diff --git a/tests/execshare/parent.c b/tests/execshare/parent.c
-index db2e127..a0e815b 100644
---- a/tests/execshare/parent.c
-+++ b/tests/execshare/parent.c
-@@ -43,7 +43,7 @@ int main(int argc, char **argv)
- 		perror("malloc");
- 		exit(-1);
- 	}
--	clone_stack = page + pagesize;
-+	clone_stack = (unsigned char *)page + pagesize;
- 
- 	rc = getcon(&context_tmp);
- 	if (rc < 0) {
-diff --git a/tests/fdreceive/server.c b/tests/fdreceive/server.c
-index ff91532..bbe1c63 100644
---- a/tests/fdreceive/server.c
-+++ b/tests/fdreceive/server.c
-@@ -9,7 +9,7 @@
- #include <stdlib.h>
- 
- char my_path[1024];
--#define CLEANUP_AND_EXIT do { unlink(my_path); exit(1); } while (0)
-+#define CLEANUP_AND_EXIT do { unlink(my_path); _exit(1); } while (0)
- 
- void handler(int sig)
- {
-@@ -43,7 +43,6 @@ int main(int argc, char **argv)
- 	}
- 
- 	sun.sun_family = AF_UNIX;
--	sunlen = sizeof(struct sockaddr_un);
- 	strcpy(sun.sun_path, argv[2]);
- 	sunlen = strlen(sun.sun_path) + 1 + sizeof(short);
- 	strcpy(my_path, sun.sun_path);
-diff --git a/tests/filesystem/fs_relabel.c b/tests/filesystem/fs_relabel.c
-index 4daf70c..229fcb5 100644
---- a/tests/filesystem/fs_relabel.c
-+++ b/tests/filesystem/fs_relabel.c
-@@ -27,7 +27,7 @@ int main(int argc, char **argv)
- {
- 	int opt, result, save_err;
- 	const char *newcon;
--	char *context, *fs_con = NULL, *base_dir, *type;
-+	char *context, *fs_con = NULL, *base_dir = NULL, *type = NULL;
- 	char fs_mount[PATH_MAX];
- 	bool verbose = false;
- 	context_t con_t;
-diff --git a/tests/filesystem/grim_reaper.c b/tests/filesystem/grim_reaper.c
-index 340546a..167441d 100644
---- a/tests/filesystem/grim_reaper.c
-+++ b/tests/filesystem/grim_reaper.c
-@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
- 	size_t len;
- 	ssize_t num;
- 	int opt, index = 0, i, result = 0;
--	char *mount_info[2], *buf = NULL, *item, *tgt;
-+	char *mount_info[2], *buf = NULL, *item, *tgt = NULL;
- 	bool verbose = false;
- 
- 	while ((opt = getopt(argc, argv, "t:v")) != -1) {
-diff --git a/tests/inet_socket/bind.c b/tests/inet_socket/bind.c
-index 389ca20..51dae02 100644
---- a/tests/inet_socket/bind.c
-+++ b/tests/inet_socket/bind.c
-@@ -12,6 +12,7 @@
- #define IPPROTO_MPTCP 262
- #endif
- 
-+__attribute__((noreturn))
- void usage(char *progname)
- {
- 	fprintf(stderr, "usage:  %s protocol port\n", progname);
-diff --git a/tests/inet_socket/connect.c b/tests/inet_socket/connect.c
-index e2d02da..c4defa6 100644
---- a/tests/inet_socket/connect.c
-+++ b/tests/inet_socket/connect.c
-@@ -15,6 +15,7 @@
- #define IPPROTO_MPTCP 262
- #endif
- 
-+__attribute__((noreturn))
- void usage(char *progname)
- {
- 	fprintf(stderr, "usage:  %s protocol port\n", progname);
-diff --git a/tests/inherit/parent.c b/tests/inherit/parent.c
-index d37bcfe..c218b42 100644
---- a/tests/inherit/parent.c
-+++ b/tests/inherit/parent.c
-@@ -66,7 +66,7 @@ int main(int argc, char **argv)
- 		fprintf(stderr, "%s:  out of memory\n", argv[0]);
- 		exit(-1);
- 	}
--	childargv[1] = malloc(6);
-+	childargv[1] = malloc(11);
- 	if (!childargv[1]) {
- 		fprintf(stderr, "%s:  out of memory\n", argv[0]);
- 		exit(-1);
-diff --git a/tests/key_socket/key_sock.c b/tests/key_socket/key_sock.c
-index 29beb0e..3333fa0 100644
---- a/tests/key_socket/key_sock.c
-+++ b/tests/key_socket/key_sock.c
-@@ -111,7 +111,7 @@ int main(int argc, char *argv[])
- 	    r_msg.sadb_msg_type != w_msg.sadb_msg_type ||
- 	    r_msg.sadb_msg_satype != w_msg.sadb_msg_satype ||
- 	    r_msg.sadb_msg_seq != w_msg.sadb_msg_seq ||
--	    r_msg.sadb_msg_pid != getpid()) {
-+	    (pid_t)r_msg.sadb_msg_pid != getpid()) {
- 		fprintf(stderr, "Failed to read correct sadb_msg data:\n");
- 		fprintf(stderr, "\tSent - ver: %d type: %d sa_type: %d seq: %d pid: %d\n",
- 			w_msg.sadb_msg_version, w_msg.sadb_msg_type,
-diff --git a/tests/module_load/init_load.c b/tests/module_load/init_load.c
-index 0422c19..821c4bd 100644
---- a/tests/module_load/init_load.c
-+++ b/tests/module_load/init_load.c
-@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
- 	}
- 
- 	fd = open(file_name, O_RDONLY);
--	if (!fd) {
-+	if (fd < 0) {
- 		fprintf(stderr, "Failed to open %s: %s\n",
- 			file_name, strerror(errno));
- 		exit(-1);
-diff --git a/tests/nnp_nosuid/execnnp.c b/tests/nnp_nosuid/execnnp.c
-index 78b5ab5..b4e4928 100644
---- a/tests/nnp_nosuid/execnnp.c
-+++ b/tests/nnp_nosuid/execnnp.c
-@@ -67,7 +67,7 @@ int main(int argc, char **argv)
- 	}
- 
- 	pid = wait(&status);
--	if (WIFEXITED(status)) {
-+	if (pid >= 0 && WIFEXITED(status)) {
- 		if (WEXITSTATUS(status) && nobounded) {
- 			printf("%s:  Kernels < v3.18 do not support bounded transitions under NNP.\n",
- 			       argv[0]);
-diff --git a/tests/notify/test_fanotify.c b/tests/notify/test_fanotify.c
-index fe89265..c771a8d 100644
---- a/tests/notify/test_fanotify.c
-+++ b/tests/notify/test_fanotify.c
-@@ -86,6 +86,10 @@ int main(int argc, char *argv[])
- 			FILE *f;
- 
- 			f = fopen(argv[optind], "r");  // open file for reading
-+			if (!f) {
-+				perror("test_fanotify:bad listen file");
-+				exit(1);
-+			}
- 			fgetc(f);                      // read char from file
- 
- 			fclose(f);
-@@ -100,9 +104,9 @@ int main(int argc, char *argv[])
- 					if (fds.revents & POLLIN) {
- 						struct fanotify_event_metadata buff[200];
- 
--						size_t len = read(fd, (void *)&buff, sizeof(buff));
-+						ssize_t len = read(fd, (void *)&buff, sizeof(buff));
- 						if (len == -1) {
--							perror("test_fanotify:can't open file");
-+							perror("test_fanotify:can't read file");
- 							exit(1);
- 						} else {
- 							listening = 0;
-diff --git a/tests/prlimit/parent.c b/tests/prlimit/parent.c
-index 649aecf..70daefb 100644
---- a/tests/prlimit/parent.c
-+++ b/tests/prlimit/parent.c
-@@ -138,12 +138,14 @@ int main(int argc, char **argv)
- 		newrlimp = &newrlim;
- 		if (soft) {
- 			newrlim.rlim_max = oldrlim.rlim_max;
-+			newrlim.rlim_cur = oldrlim.rlim_cur;
- 			if (newrlim.rlim_cur == RLIM_INFINITY)
- 				newrlim.rlim_cur = 1024;
- 			else
- 				newrlim.rlim_cur = oldrlim.rlim_cur / 2;
- 		} else {
- 			newrlim.rlim_cur = oldrlim.rlim_cur;
-+			newrlim.rlim_max = oldrlim.rlim_max;
- 			if (newrlim.rlim_max == RLIM_INFINITY)
- 				newrlim.rlim_max = 1024;
- 			else
-diff --git a/tests/sctp/sctp_common.c b/tests/sctp/sctp_common.c
-index d10225c..527cda3 100644
---- a/tests/sctp/sctp_common.c
-+++ b/tests/sctp/sctp_common.c
-@@ -105,9 +105,9 @@ void print_addr_info(struct sockaddr *sin, char *text)
- 
- char *get_ip_option(int fd, bool ipv4, socklen_t *opt_len)
- {
--	int result, i;
-+	int result;
- 	unsigned char ip_options[1024];
--	socklen_t len = sizeof(ip_options);
-+	socklen_t i, len = sizeof(ip_options);
- 	char *ip_optbuf;
- 
- 	if (ipv4)
-diff --git a/tests/unix_socket/client.c b/tests/unix_socket/client.c
-index 093c319..eaf83ee 100644
---- a/tests/unix_socket/client.c
-+++ b/tests/unix_socket/client.c
-@@ -11,6 +11,7 @@
- #include <errno.h>
- #include <selinux/selinux.h>
- 
-+__attribute__((noreturn))
- void usage(char *progname)
- {
- 	fprintf(stderr,
-diff --git a/tests/unix_socket/server.c b/tests/unix_socket/server.c
-index bd85e4c..1ec9db5 100644
---- a/tests/unix_socket/server.c
-+++ b/tests/unix_socket/server.c
-@@ -16,6 +16,7 @@
- #define SCM_SECURITY 0x03
- #endif
- 
-+__attribute__((noreturn))
- void usage(char *progname)
- {
- 	fprintf(stderr,
-diff --git a/tests/unix_socket/socketpair.c b/tests/unix_socket/socketpair.c
-index d547d10..a9ac873 100644
---- a/tests/unix_socket/socketpair.c
-+++ b/tests/unix_socket/socketpair.c
-@@ -17,6 +17,7 @@
- #define SCM_SECURITY 0x03
- #endif
- 
-+__attribute__((noreturn))
- void print_usage(char *progname)
- {
- 	fprintf(stderr,
+ DISTRO=$(shell ./os_detect)
+ SELINUXFS := $(shell cat /proc/mounts | grep selinuxfs | cut -f 2 -d ' ')
 -- 
 2.47.1
 

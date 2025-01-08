@@ -1,78 +1,78 @@
-Return-Path: <selinux+bounces-2701-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2703-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB726A0514D
-	for <lists+selinux@lfdr.de>; Wed,  8 Jan 2025 04:00:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F17A05151
+	for <lists+selinux@lfdr.de>; Wed,  8 Jan 2025 04:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBD863A2B83
-	for <lists+selinux@lfdr.de>; Wed,  8 Jan 2025 03:00:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371A03A2A85
+	for <lists+selinux@lfdr.de>; Wed,  8 Jan 2025 03:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B74B819CCF5;
-	Wed,  8 Jan 2025 03:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2713D189905;
+	Wed,  8 Jan 2025 03:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="FHc5WS79"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="N8N7u72Z"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230F419ABD8
-	for <selinux@vger.kernel.org>; Wed,  8 Jan 2025 02:59:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABB319CC29
+	for <selinux@vger.kernel.org>; Wed,  8 Jan 2025 03:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1736305201; cv=none; b=W1oBZraT8iY7M4O75w3Vprdpaz1t4MSUYsjNV0okmQgogd8HuO5cDZhYBi6faY7sJLoyUq5O6uHlF6z+l18cFj6jLYGFXpKUvb9mh4JCq5fvNSLcHTGVxX17g7EA9RlUKumQKGrMabA0+fqktU9d+IeCap8PPs83gAR1qVPSNkg=
+	t=1736305203; cv=none; b=Ctd5ZsSz44JLH61Z+UUdVAN9rLk4U0Oc/V1cHgz0/9YiiRzmy/91Fp+dSrVx3dUEVXz1yVHrnWWOm4MDa5h7mu/qKt5Zc+IfmvvvfyIHXo0JqzjZEZgtBGxU9sosfwQLSLAdtgo+oHZG+BK/cB26voGrfbWF3eRNlEA4ypgX2ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1736305201; c=relaxed/simple;
-	bh=x66hmIGILhwKaBIsLRM+S0y66E+k9BuE/weApjH/UBI=;
+	s=arc-20240116; t=1736305203; c=relaxed/simple;
+	bh=OATGo8aQcNYDw+H5AEmX2rtqICBX8uTSu1nPaZDpsng=;
 	h=Date:Message-ID:MIME-Version:Content-Type:From:To:Cc:Subject:
-	 References:In-Reply-To; b=TAklSb4hN2CUn9a653YTtVfev/JWyQTRWfJr6xyYMRGmfPe3FSgovfczYIepjV2NPk0Yk8zk+Nko0G+iyJQbWSMy0pFr9dgKG8RHjWvHdG9nF1V08yY9EIXghr7YXiXXAh2IIWerbbvkufj5JvqBDvspgms5eQ9NXU/wnSSmBmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=FHc5WS79; arc=none smtp.client-ip=209.85.160.177
+	 References:In-Reply-To; b=Fc2ZqEA4CSabfl2WLZI+zldcacU5S63KOLRhn3lMHONhODMmQjQro1C74fYvKah19hbcDBjyl44sDczMCYWD4rUQjhtv+oMRxYPv6A7gVqKQK+ULLpJUdoUTem6mU5UQBIiTpOvGc6TkC9eL8W93y+jiwsyLHRLS6GgitrWHCaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=N8N7u72Z; arc=none smtp.client-ip=209.85.160.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-46788c32a69so24249091cf.2
-        for <selinux@vger.kernel.org>; Tue, 07 Jan 2025 18:59:59 -0800 (PST)
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4679eacf2c5so153318391cf.0
+        for <selinux@vger.kernel.org>; Tue, 07 Jan 2025 19:00:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1736305199; x=1736909999; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1736305200; x=1736910000; darn=vger.kernel.org;
         h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
          :mime-version:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nTMN0fZnjdwbZaPCb5FrQLxLApwEte1/54lx0D/jILQ=;
-        b=FHc5WS7963UaXZcl8SqpWIKPU2rdYvVNgybFRint8zoSWSmZV9V0X2jBPlAS8dqMls
-         4ybZroqJ1q6yez49MSdNqM4IgV8T+NoLOS3jjtDPS4Am7PZ3ARWKZbuU3ID+/mxTF1fQ
-         YCgH9VEAweM03j3sToS9UN/vm07bzXmrTX4S68JnTreetAHL8BUH3alVAKsP3JPux6Mk
-         qDOJgQAycaSrLmjybERubJuz5l2EQ8tDrwjg3G4RWs3XO05lJZmnMcHX4QQUdONKJBTz
-         90YDT3nAb+9fJmTlrpxOzaVTKJ0f2B2BhpaMGUia/PMNHkP1cgmWbBBrrkipanWf7NBl
-         fUsA==
+        bh=mDJSexMwGrVR6YaQuKuB48uyMoRezKWjJmWZhA1XR24=;
+        b=N8N7u72ZTjLjtqTAixMc4Hh7ICuUHlPws23AUYi7Kzy2tCm+YnJ8e2FWBYDmEgWGKy
+         E6cc2U1Dw+Uq2o6zzLy9YXDZ+ANVPecovaD/F530DP/7ExkYI3/xgZ+QaEGpPFHIn5eM
+         FqN09wIRFnvHwM4SPZj4XuDTpkh+a+0zqs7ZkIIonjeAfI9HvGHd7IUcmRPsml2sU5Ez
+         Yc/M8/mruws6E0yIWsaXX9cnvLqCeY0IbhTmUFZwRYmsPtTL+zyQveYiWDHVRVamrSfB
+         3UfrWwzoQHGPPysVfcGK1QWP6h7VCfs8E+Kd0NNJMku+9OuWPj36uhdE73WTBCU0nWu3
+         9+4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736305199; x=1736909999;
+        d=1e100.net; s=20230601; t=1736305200; x=1736910000;
         h=in-reply-to:references:subject:cc:to:from:content-transfer-encoding
          :mime-version:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=nTMN0fZnjdwbZaPCb5FrQLxLApwEte1/54lx0D/jILQ=;
-        b=eyVyUbuU34eJCsyHaGmDKYBriaoQEz7E6uuwnRQLTP4VYVp68pEUCp09348ZWp0u9d
-         dOq9Rqp26JGDipSPDkCBdEiDLRd4cW7/WNva6Hzsv9oxv/vHXhmujV9ZoD5OsWzgSkZR
-         Bc8fg8V9P1W7OE6IikBr+/BuxOkPo7KD8kge55FAPRHiLDDLwVXE2CgxRtZZlmyqivOk
-         DSG6c5HHSnSC1VGs1umC7QXY81tIhk+uSl327v0DIDhwDBxn6fTeNHmf7EIEh6lzkDmm
-         f3lY1e2i5aVfMrsg2BylS7LUodqWllK9nky5vYmCzXtu6muwAlx7fbKRMhowwKxWHY1Y
-         eO6A==
-X-Forwarded-Encrypted: i=1; AJvYcCVYtMcr9hMrTkzWnJR6icICTG3WDVb1bzP0A8oO0qKTyj/P6xHYMYveyedEUzq9CAN9cZy4HCfV@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjZWSOd0U3lDHv0wILAM6APImioXQU9fTfL+pxHjv//X71Idov
-	vx4fYtVdVbsBnWsrBWXWNca+9MO3pPpzFpq3pOHITXooYph6NGpCAG8Akp7P6A==
-X-Gm-Gg: ASbGnctSI4aGBEjl7Iq9hKodNmHzNwBN1g9XLGvhXjtH+axKFbPam3wJFyJ1WzAzADj
-	rHRBOFW1Fq1Up7p7UmzBa0gQZ6nLhK2KWrac3YKvrBQqndD3hCBvzheUNfEi9+c+NciHRk7ivlB
-	z0ALiGbJsRbtzx7rdh4c+Y7qC3Bg1HqOyxcrcPyQry/O2xgH5NI1cKZ+0eGKA1y5nyd5M0JIoDG
-	/7ZXgAVCWEJjGkmk5LODpiIiBnkERw7skzp8ejcuTCvXXjb3JI=
-X-Google-Smtp-Source: AGHT+IEk9o+lqCx9JhOO2ZsHFc/qXlWJ0wAp87lFv1hIl4E+FwexInYRHy3Gb8LgewH65wTTxnEBVA==
-X-Received: by 2002:a05:622a:6082:b0:46c:726a:178c with SMTP id d75a77b69052e-46c726a18d8mr10961201cf.11.1736305199031;
-        Tue, 07 Jan 2025 18:59:59 -0800 (PST)
+        bh=mDJSexMwGrVR6YaQuKuB48uyMoRezKWjJmWZhA1XR24=;
+        b=rD4oZ9Ok+VN0DZ6Jw7e27aYv+VD8Xnmx8z6kZ2vNEfHS4drmMC5e3MxOt7NNn1ggkC
+         EXFqVmr9BDRh/tnARYP4OTq/2Echfbd4g6F2WNGpXNMf/+wxbbHA7wYS9Zqo059lzeFe
+         nJU0R0r/D46VgLcmiKO/BarOD8THHnQSQzIM71/3Q1/mm37o4ZZKmM3+yU+vGY7njQWv
+         y6nSIqnAVapaPtpFDOJ/DHN9DPULcZ8UppmSAvCnammrOlfb/nspqyqdNbvmJrR0q1r3
+         h1wzhgrKtAF7o3PT2SST9+rBjw/Zud7upwNA12wNYJvi/e0ri9BOIqGJ18CZBddbYiQa
+         47bQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUP3k9JjyQs+/rxD17cxXEnnMSv4k+mM3VpgnmYof6RxvU3SbsnbzGmeTK3Yo2mGNi3ohDA8dzl@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYaSEwoGULEbWv74Hpoeo/22PpQRBpDRNE6x07TYzjyik70oOz
+	P+6aIAq3jy7q8/uH03ZYVToDPmv8+5tXUFdSSmv3r8L2vyT/TURFLSsfoS/7cA==
+X-Gm-Gg: ASbGncvua9l3SkAZSbisxVPkilCM1e7TZz/R+HNsOqZ9UmTkUocpW/RmMhdfbaI3KFq
+	U1/38peEk9H0O7g1bUDgfQ+Ba+SpUJMg6c0K6CmZ0r3Ty52v2TCnH1KoE/N7A+zW2N7dDl7difJ
+	HE1KudaS7hVANR9NQ9gebyc6/fIgbfSwXWCtM0vKtRlJdIGDpWFgzHw1fZ6VMU29o9kpLZvg7Ld
+	n3O6/i6BA7dGUPvXSZpdtByzAELfnQBjZ6dAsK9CciVqIJwvv0=
+X-Google-Smtp-Source: AGHT+IEvu01NUR0GRR179mj45ii+bvHS1vbr47fBw9MkS6Z//pM+fOXYZIIfnSnV6RMGYeOm49gVMQ==
+X-Received: by 2002:ac8:58cf:0:b0:460:8f80:909a with SMTP id d75a77b69052e-46c710314ccmr23177491cf.32.1736305200113;
+        Tue, 07 Jan 2025 19:00:00 -0800 (PST)
 Received: from localhost ([70.22.175.108])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3e6892ddsm191617051cf.29.2025.01.07.18.59.58
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-46a3e653893sm191974381cf.1.2025.01.07.18.59.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 18:59:58 -0800 (PST)
-Date: Tue, 07 Jan 2025 21:59:58 -0500
-Message-ID: <0a1328b83f79fab79ded9e333240c6bd@paul-moore.com>
+        Tue, 07 Jan 2025 18:59:59 -0800 (PST)
+Date: Tue, 07 Jan 2025 21:59:59 -0500
+Message-ID: <01df64ed8f6eb9e6f2780b5b0aa3be5c@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -84,23 +84,42 @@ Content-Transfer-Encoding: 8bit
 X-Mailer: pstg-pwork:20250107_1610/pstg-lib:20250107_1603/pstg-pwork:20250107_1610
 From: Paul Moore <paul@paul-moore.com>
 To: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>, selinux@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, =?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>, =?UTF-8?q?Bram=20Bonn=C3=A9?= <brambonne@google.com>, Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, Casey Schaufler <casey@schaufler-ca.com>, Canfeng Guo <guocanfeng@uniontech.com>, John Johansen <john.johansen@canonical.com>, GUO Zihua <guozihua@huawei.com>
-Subject: Re: [PATCH RFC v2 4/22] selinux: rework match_ipv6_addrmask()
-References: <20241216164055.96267-4-cgoettsche@seltendoof.de>
-In-Reply-To: <20241216164055.96267-4-cgoettsche@seltendoof.de>
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>, Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, =?UTF-8?q?Thi=C3=A9baud=20Weksteen?= <tweek@google.com>, =?UTF-8?q?Bram=20Bonn=C3=A9?= <brambonne@google.com>, Masahiro Yamada <masahiroy@kernel.org>, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [PATCH RFC v2 5/22] selinux: avoid nontransitive comparison
+References: <20241216164055.96267-5-cgoettsche@seltendoof.de>
+In-Reply-To: <20241216164055.96267-5-cgoettsche@seltendoof.de>
 
 On Dec 16, 2024 =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de> wrote:
 > 
-> Constify parameters, add size hints, and simplify control flow.
-> 
-> According to godbolt the same assembly is generated.
+> Avoid using nontransitive comparison to prevent unexpected sorting
+> results due to (well-defined) overflows.
+> See https://www.qualys.com/2024/01/30/qsort.txt for a related issue in
+> glibc's qsort(3).
 > 
 > Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 > ---
->  security/selinux/ss/services.c | 12 +++++-------
->  1 file changed, 5 insertions(+), 7 deletions(-)
+>  security/selinux/ss/policydb.c | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+> index 3ba5506a3fff..eb944582d7a6 100644
+> --- a/security/selinux/ss/policydb.c
+> +++ b/security/selinux/ss/policydb.c
+> @@ -37,6 +37,8 @@
+>  #include "mls.h"
+>  #include "services.h"
+>  
+> +#define spaceship_cmp(a, b) (((a) > (b)) - ((a) < (b)))
 
-Merged into selinux/dev, thanks.
+I'll admit that it took me a while to figure out why you decided to
+name this macro "spaceship_cmp", and then I had a little laugh when
+I realized why it was called the "spaceship" operator :)
+
+Anyway, while the spaceship operator is likely familiar to people who
+have a Perl background, the kernel is still mostly a C project so I
+don't think we can expect a base understanding of Perl, especially
+these days as Perl isn't as popular as in the past.  Can we rename
+this to something else that makes more sense in the context of C?
 
 --
 paul-moore.com

@@ -1,55 +1,55 @@
-Return-Path: <selinux+bounces-2831-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2828-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1986EA24257
-	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 19:03:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5922CA24254
+	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 19:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9648D7A228D
-	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 18:02:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7749188880D
+	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 18:03:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219131F03F5;
-	Fri, 31 Jan 2025 18:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EA351F03D7;
+	Fri, 31 Jan 2025 18:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="BO/QihhZ"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="j79eEqkj"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1FA11C174E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1F3B42AA1
 	for <selinux@vger.kernel.org>; Fri, 31 Jan 2025 18:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738346589; cv=none; b=hGuzBziafbzMK2M7vJbh5E6KXxL+0JVbi+/0weAEXp9CqcrydsGTGcqSH1lWo5eSSJ188owFVyWupE4bWSIMADxAaXaaMlzGKMfA1mV2B30uLWoIfh9EpYs/24gl+mRfl1CnBANTZRKK3iF5QLjtHbZFXp2ZKA+HzYmdKjzT9u4=
+	t=1738346588; cv=none; b=mCXHnymPPlXPcOQoPLYFF1BwwSC3xsrIygIOpmDeYkDrjeg+CsEfQh8nhUVXto7DEtcKUI8NU4rubUh87SmhC34jNEEljwg3/We7u90zlqUlWQJ5i0s+m5Z6KWNQbImzZkhg3iLiI5d+b1scoI0B93HdyXKJ+S41RYSIccii0R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738346589; c=relaxed/simple;
-	bh=EFloP0hXZ9hWdaEZ2q028NNJdpuCQKEbrGwecCr6/is=;
+	s=arc-20240116; t=1738346588; c=relaxed/simple;
+	bh=Gsp+eWv/ooh2BV906VmWbsjfRLcHq8Km69BBI341dmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rdR/6XhyY1R27oYql0Mswi12CBRuTBVnNRsqimYqf6P0vfapgRh56/M4fJQuJiS9DVpTpCilqPcNRA0OXaGFEJzQnrfuEmhr7EeF0g9aoGlgIdgSB77t/6nxD9hilPov68ev4ibo3XJgvhz+9UvuefToyBwMNRsJ79NPGpr7ZQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=BO/QihhZ; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=EvbWrfEC6NwT5/H7G5o7SYXjjvzDmidZjQwG7giUQ8VWFwaXX1KSMVkg33vdecsDr11u6dcNoJmOIFJlqpZOsvFWpmoO8NyjY7byftLYt683CTHTqDR1+sqkNSnhNRC0GVxhbSOwX8h+4s1vXA8Z8M94XpDknRymBvjn8EzYK64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=j79eEqkj; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1738346161;
+	s=2023072701; t=1738346162;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7FbAa6sbcddsM+zDfU5IZNXedZa+5xN2UzAhbdYND3w=;
-	b=BO/QihhZKKnk7Q/020v4k9YXW0anZ6y3y778nJoRK8zovGpFdJClhVy1c803fYD+vEKWQc
-	cDnlmwQNubK8o3PFsecJWn0498/zQGMwsEzMH/1wUwV9bL/2yvfr9aD4tWm/JGewtgJme3
-	YfbasqPbuweYvHYH3rIqbNUoVUDWepWti35QiAqpxFmoYL6wcbLEYoYRz/ZYrcp6ewcAL6
-	e5iQR4TnfZ24KfDCJTUN+V4Qd2S74RgqiQjlKZwDdipDyBgXsRHvdR+i91/wB3ITQlF82o
-	tiNAxyhMMiHOakYZwd+5Mk3F47/K1LZ+xsVEYkmL+beqHfXdVpum4Ya/Tt8GLw==
+	bh=1eitghxm1A7gw8QF8qRkdLkAOEKgmS93NACVjLyz0NA=;
+	b=j79eEqkjCIrbesN3Au7G37kLErYE7R6+G50ZNSdSCDZpA2gC6xNqLZhDV8V6yq7bRJqjb7
+	xuaqdD9hsKtdhcY77hmtz8cUxHCcr+LedDDvbgG490go5QXgbo/RXTBfv3WWjBuO/BCG7I
+	3WAor4SKhkuHmFovccqiRu95XPGIOV3YL4tdAqd0eiWgL/XUnxZhbDkM6MbuPISB4t2Ug7
+	Od7M1em9flEz5+bodl94lMrwNqYgt/ex9b5/4gwNrZ9gvD5D0ob6SGx9YC8gNL6pjo74sM
+	r9TRRuaRTBVIEeT3bhGGb0q0pDzXISqFEeolrr72oHNo6ujxihzVkcwWkyNbiA==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 3/4] libselinux: initialize regex arch string in a thread safe way
-Date: Fri, 31 Jan 2025 18:55:55 +0100
-Message-ID: <20250131175556.21836-3-cgoettsche@seltendoof.de>
+Subject: [PATCH 4/4] libselinux: limit fcontext regex path length
+Date: Fri, 31 Jan 2025 18:55:56 +0100
+Message-ID: <20250131175556.21836-4-cgoettsche@seltendoof.de>
 In-Reply-To: <20250131175556.21836-1-cgoettsche@seltendoof.de>
 References: <20250131175556.21836-1-cgoettsche@seltendoof.de>
 Reply-To: cgzones@googlemail.com
@@ -64,76 +64,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Synchronize the initialization of the regex architecture string.
+Limit the length of regular expression paths in fcontext source
+definitions to reduce the worst case regex compilation time for abnormal
+inputs.
 
+Reported-by: oss-fuzz (issue 393203212)
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- libselinux/src/regex.c | 46 ++++++++++++++++++++++++------------------
- 1 file changed, 26 insertions(+), 20 deletions(-)
+ libselinux/src/label_file.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/libselinux/src/regex.c b/libselinux/src/regex.c
-index 182c8c89..976f00d4 100644
---- a/libselinux/src/regex.c
-+++ b/libselinux/src/regex.c
-@@ -30,32 +30,38 @@
- #endif
- 
- #ifdef USE_PCRE2
--char const *regex_arch_string(void)
-+static pthread_once_t once = PTHREAD_ONCE_INIT;
-+static char arch_string_buffer[32];
-+
-+static void regex_arch_string_init(void)
- {
--	static char arch_string_buffer[32];
--	static char const *arch_string = "";
--	char const *endianness = NULL;
-+	char const *endianness;
- 	int rc;
- 
--	if (arch_string[0] == '\0') {
--		if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
--			endianness = "el";
--		else if (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
--			endianness = "eb";
-+	if (__BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__)
-+		endianness = "el";
-+	else if (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-+		endianness = "eb";
-+	else {
-+		arch_string_buffer[0] = '\0';
-+		return;
+diff --git a/libselinux/src/label_file.h b/libselinux/src/label_file.h
+index ad7699e6..7a9834a0 100644
+--- a/libselinux/src/label_file.h
++++ b/libselinux/src/label_file.h
+@@ -434,6 +434,12 @@ static inline int compile_regex(struct regex_spec *spec, char *errbuf, size_t er
+ 	reg_buf = spec->regex_str;
+ 	/* Anchor the regular expression. */
+ 	len = strlen(reg_buf);
++	if (len >= 4096) {
++		__pthread_mutex_unlock(&spec->regex_lock);
++		snprintf(errbuf, errbuf_size, "regex of length %zu too long", len);
++		errno = EINVAL;
++		return -1;
 +	}
- 
--		if (!endianness)
--			return NULL;
-+	rc = snprintf(arch_string_buffer, sizeof(arch_string_buffer),
-+			"%zu-%zu-%s", sizeof(void *),
-+			sizeof(REGEX_ARCH_SIZE_T),
-+			endianness);
-+	if (rc < 0 || (size_t)rc >= sizeof(arch_string_buffer)) {
-+		arch_string_buffer[0] = '\0';
-+		return;
-+	}
-+}
- 
--		rc = snprintf(arch_string_buffer, sizeof(arch_string_buffer),
--				"%zu-%zu-%s", sizeof(void *),
--				sizeof(REGEX_ARCH_SIZE_T),
--				endianness);
--		if (rc < 0)
--			abort();
-+const char *regex_arch_string(void)
-+{
-+	__selinux_once(once, regex_arch_string_init);
- 
--		arch_string = &arch_string_buffer[0];
--	}
--	return arch_string;
-+	return arch_string_buffer[0] != '\0' ? arch_string_buffer : NULL;
- }
- 
- struct regex_data {
+ 	cp = anchored_regex = malloc(len + 3);
+ 	if (!anchored_regex) {
+ 		__pthread_mutex_unlock(&spec->regex_lock);
 -- 
 2.45.2
 

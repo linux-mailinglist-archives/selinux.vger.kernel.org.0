@@ -1,140 +1,108 @@
-Return-Path: <selinux+bounces-2827-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2829-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B49C0A23F8E
-	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 16:21:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2809A24256
+	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 19:03:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E0613A347D
-	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 15:21:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43EED7A1D0A
+	for <lists+selinux@lfdr.de>; Fri, 31 Jan 2025 18:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C7841DE88B;
-	Fri, 31 Jan 2025 15:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C531E32CB;
+	Fri, 31 Jan 2025 18:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bli4P22S"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="hB/k/xq/"
 X-Original-To: selinux@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 936191C1F29
-	for <selinux@vger.kernel.org>; Fri, 31 Jan 2025 15:21:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1EF61DFF0
+	for <selinux@vger.kernel.org>; Fri, 31 Jan 2025 18:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1738336895; cv=none; b=iuBFkgdeyjdSEWWKXUbzaXcEHhllrqCcvXHPtiEJpPdeR9rIfht7qC431hmAnjmYHajQGZzH6vEFTWFHZIgL1Rk9ALsyDsXLoTYuI+V2mNwlt7rFDMoxB3fMiwdtZoMHgvgKUHpZbVwfBznRu92NaSxO/mPFEb5D6z3mvkvPpqI=
+	t=1738346588; cv=none; b=HYMRYmxRnzvpu2XsHlrztN3xM7YLYooadD+tZtlvIdVLR70d8Oa294oTmZ6u+b//O6F3FYAxeShMu110NWqtXTivo8QqsuicTBrRT4ZI1pafIP3bvmqxFif8XKb44sd4v3PnmdpRGyVb6SAlYt00oWhs3OTch22wO6stPt8Iwjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1738336895; c=relaxed/simple;
-	bh=zn4Z4pMPynMlVikrZX8wXdT/aJXykUJe1vJ9GGYKtSw=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=fWSxg87rG3JAdaJHqm+4F7et/BoXQbVmxW9v4rt6hNwUB8b0MyloB7dOQXHO24kluuonGgTNb7/nsPAiX+qogs4Vqsgbw1MDETRcQWaxja6+HxOr9tW+FM426/Rr7pgx3ixSDAvczoBPRCySRTPhwIF5tUgOBr7+X5NS0lrHVUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bli4P22S; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1738336892;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kyKMLLrR63h7+vo8Zi40rjmdHWVCniaxJakMQGWaEPU=;
-	b=bli4P22S9CUqt355WlMI5KhMrlQmAzf2Lz7DpHsIJWWVmcrnHOTVaKf+nbe8YeHh5z/GYI
-	B2sgfC20X6EHXoK5ikipVAli/6sTmh/ep90+kOLo5etlOkvsPaHNb6mzoi2xG24r/qsA4B
-	U57fJBBSK2V96DjWE2f10AaGlKgEaHQ=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-107-cbC_XO8ENpervIC7GQrjOA-1; Fri, 31 Jan 2025 10:21:29 -0500
-X-MC-Unique: cbC_XO8ENpervIC7GQrjOA-1
-X-Mimecast-MFC-AGG-ID: cbC_XO8ENpervIC7GQrjOA
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4362f893bfaso10786265e9.1
-        for <selinux@vger.kernel.org>; Fri, 31 Jan 2025 07:21:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738336888; x=1738941688;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kyKMLLrR63h7+vo8Zi40rjmdHWVCniaxJakMQGWaEPU=;
-        b=BQeP0LW0ohWFGfFiIGcldY/EYbXKWhYtiOoriBJzdlG+FTa7Duzj/QKFSWw2mq/nUM
-         Qa58Z7Y2jbPAM28gDSJmybL0/FWYEl//2y9RnVyDeI+1VA0F6P6GY8bdZbMqPmp6EFt4
-         yC0Oj66wU3JD6Sq2U9Wg87Vd5lu8zPaySox6pVsej9vRz04ziL/atlI720XtSAkrW3gi
-         DtS0I+h8airnShFo2disSbpTmW4G2YakbkRiY9+1PONE3lB6gzTbhL4wB0ZqjEqMmzn/
-         urYfG2DDHgoinhl+zwSdwfF6SNiVYPUoqP7wdsm8Ec8Elegfhr68tDVDxlhVP7Ei2/bz
-         5k6Q==
-X-Gm-Message-State: AOJu0YwVVNd32QBiaqT014BYFU4KgGVPfvgQkMkohxBwFitKFZJB6n+F
-	l2LHA0zFXl+djSOz9j39kUazci25eM4mG4OKwLAnoQylp37Q3Mr9F1dGkz1vOpwwt9/r3MTNrDX
-	GxqnSrZf9pHmHSgATll0sbAO20qfFkjsx4fxoC06swOnEYVssPr+Ddbu6OpiQx89MXxC1btocyl
-	oIf59djdTNf6MLnL88kaxzI0EQS258uh2TCmxG81U=
-X-Gm-Gg: ASbGncvIMVGaRC53l8/n+BzqrcFcsrJsJ0QnlD3bn/0ndJ0O2jEPF9/OQ3qNv0gEU4t
-	pkGyIffvjSSEv2LZqm+yGnD0/IfnQ2v7frnLtJgecSGVifavI+BoXkQXlWKJtyxJUOPHy9kBwxm
-	lS7aMEyDGcPWfV8C4VC8vjksmi8En+Aj5mSY1hDCOE9QPWHHxeUsLxn7bo+aIO3kBy9CM2ClXDA
-	KKURgc6tVbVww0sCvFKk9sm1//QkiR/rEqJnR6ZB4ZCIZ4eqL0VFofuVI5dC8hTOaASvcrcBreF
-	kjaBFalSrnZC8dQ4f5IM
-X-Received: by 2002:a05:600c:3585:b0:435:192:63ca with SMTP id 5b1f17b1804b1-438dc3fc57cmr95058945e9.21.1738336888379;
-        Fri, 31 Jan 2025 07:21:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEku3+kqW6TUGq2l7i6Xll0m7E5PjaDjOWd2P6+57gVk6NlSmmdmf9vP2muaNB1lGW6pbXx/A==
-X-Received: by 2002:a05:600c:3585:b0:435:192:63ca with SMTP id 5b1f17b1804b1-438dc3fc57cmr95058745e9.21.1738336888017;
-        Fri, 31 Jan 2025 07:21:28 -0800 (PST)
-Received: from localhost.localdomain ([2a02:8308:b104:2c00:7718:da55:8b6:8dcc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-438e245f14esm57163495e9.34.2025.01.31.07.21.27
-        for <selinux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Jan 2025 07:21:27 -0800 (PST)
-From: Ondrej Mosnacek <omosnace@redhat.com>
+	s=arc-20240116; t=1738346588; c=relaxed/simple;
+	bh=h8+R/JHHlNjjCxsdntDlVlA5pjrZn6NU51OJMxSsewk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=f25y1ilJ4RrlVicrbQ2GtZU1oARGlWttLCHEHxwjKltnEquSWDBxm61bHcashMEmzdqjhwGGyz1VB3mvctk+FcFBLAPG7eewzEJQKkiW/DhPFANekUm1eRLwfSTO0rHl2a/ZEJYrKRV3XjNjGj1NjhjScUgqqIUjJ5W0RJEE98M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=hB/k/xq/; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1738346160;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=6XBeX7pPKKCqqC36QZCOplstPy3/W6QHvjEbjcLL0C8=;
+	b=hB/k/xq/89Zmo0q5A2Yev0V57SsgOOGHF+CONOrQ9vNT2IRAoipn3voHLMAaM8rFMZ4Iyf
+	Y4IaGtF4OA7LBIRVECNKBn/GgANlpQ2fSEv+QRZjOGsYvt6Hsnvpm3UPURLZp8yeHq5N6v
+	FV5U0Y1ilWaCCvmNU7Odh4mD5kg02CV5rvvzsoJTBKONdtnGzfZTiDIkvL9L2SPisf7LG9
+	d9vqfXvcAliohyxGLKv54p7fHevCl7UAoONHnEjqOSa6+OP2Tf9F9gBv4+oY+VHzEsDHCY
+	AFafXzgJQShdrrPheAjETTHG0hzgmXeM1TEgwovPSgx5PA64T4fvdpCi/hn4yQ==
 To: selinux@vger.kernel.org
-Subject: [PATCH testsuite] tests/inet_socket: enable MPTCP if it's disabled via sysctl
-Date: Fri, 31 Jan 2025 16:21:22 +0100
-Message-ID: <20250131152122.1452103-1-omosnace@redhat.com>
-X-Mailer: git-send-email 2.48.1
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [PATCH 1/4] libselinux: constify global strings
+Date: Fri, 31 Jan 2025 18:55:53 +0100
+Message-ID: <20250131175556.21836-1-cgoettsche@seltendoof.de>
+Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-In CentOS Stream 10 (and possibly other environments) the
-net.mptcp.enabled sysctl will be set to 0 by default. The testuite
-currently doesn't detect this and hangs when trying to run the MPTCP
-tests. Adjust the test to temporarily enable MPTCP during the test so
-that it can succeed in these conditions.
+From: Christian Göttsche <cgzones@googlemail.com>
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Declare the read-only encode table const.
+Drop the only once used global variable selinux_rootpath.
+
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- tests/inet_socket/test | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ libselinux/src/compute_create.c | 2 +-
+ libselinux/src/selinux_config.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tests/inet_socket/test b/tests/inet_socket/test
-index 08c7b1d..ae06ae7 100755
---- a/tests/inet_socket/test
-+++ b/tests/inet_socket/test
-@@ -91,6 +91,16 @@ sub server_end {
-     system("rm -f $basedir/flag");
+diff --git a/libselinux/src/compute_create.c b/libselinux/src/compute_create.c
+index d19baa0b..ff8553bc 100644
+--- a/libselinux/src/compute_create.c
++++ b/libselinux/src/compute_create.c
+@@ -33,7 +33,7 @@ static int object_name_encode(const char *objname, char *buffer, size_t buflen)
+ 				return -1;
+ 			buffer[offset++] = '+';
+ 		} else {
+-			static const char *table = "0123456789ABCDEF";
++			static const char *const table = "0123456789ABCDEF";
+ 			int	l = (code & 0x0f);
+ 			int	h = (code & 0xf0) >> 4;
+ 
+diff --git a/libselinux/src/selinux_config.c b/libselinux/src/selinux_config.c
+index 1d8cfb71..75db14ba 100644
+--- a/libselinux/src/selinux_config.c
++++ b/libselinux/src/selinux_config.c
+@@ -153,7 +153,6 @@ static int setpolicytype(const char *type)
  }
  
-+if ( $proto eq "mptcp" ) {
-+
-+    # Temporarily enable MPTCP if it's disabled by default
-+    $mptcp_enabled = `sysctl -n net.mptcp.enabled`;
-+    chomp($mptcp_enabled);
-+    if ( $mptcp_enabled ne "1" ) {
-+        system("sysctl -w net.mptcp.enabled=1");
-+    }
-+}
-+
- # Load NetLabel configuration for full CIPSO/IPv4 labeling over loopback.
- system "/bin/sh $basedir/cipso-fl-load";
+ static char *selinux_policyroot = NULL;
+-static const char *selinux_rootpath = SELINUXDIR;
  
-@@ -445,4 +455,10 @@ if ($test_calipso) {
-     system "/bin/sh $basedir/calipso-flush";
+ static void init_selinux_config(void)
+ {
+@@ -312,7 +311,7 @@ int selinux_set_policy_root(const char *path)
+ 
+ const char *selinux_path(void)
+ {
+-	return selinux_rootpath;
++	return SELINUXDIR;
  }
  
-+if ( $proto eq "mptcp" and $mptcp_enabled ne "1" ) {
-+
-+    # Reset net.mptcp.enabled if it was 0 before test
-+    system("sysctl -w net.mptcp.enabled=0");
-+}
-+
- exit;
+ 
 -- 
-2.48.1
+2.45.2
 
 

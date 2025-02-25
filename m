@@ -1,33 +1,34 @@
-Return-Path: <selinux+bounces-2905-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2907-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE6A3A442F2
-	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2025 15:37:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81436A442F5
+	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2025 15:37:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7A54188B097
-	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2025 14:33:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4ADE8189141F
+	for <lists+selinux@lfdr.de>; Tue, 25 Feb 2025 14:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81DD26B957;
-	Tue, 25 Feb 2025 14:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2D226B965;
+	Tue, 25 Feb 2025 14:33:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="eXd8SWdz"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="d/cqonnz"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317D71FCFD9
-	for <selinux@vger.kernel.org>; Tue, 25 Feb 2025 14:33:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA42A26981F
+	for <selinux@vger.kernel.org>; Tue, 25 Feb 2025 14:33:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740494011; cv=none; b=ABhBA2xO1x4TSFZa+Gg2Z0VaLEiYldtjC81BLHpH8NEcf63TkqgWQ/d4MMkMEONC6Y9aVBUQQl3Qm/f/Yi6psMpTX+wC97OX+dtvKZTtPY+J/tpc0C+f5saUwU4kzc0Idu7DRXO60kTUh8qAteqlBy11kvyDdNtNLwQMSRJBkN8=
+	t=1740494012; cv=none; b=JFDnKtFE+RwcbhIqYJRQQPq0xVxFC5ftK2dPyPyVvDwLHAMzWfqp33V1C8p1DRQMcoGR/H+ihzIhz6mzY+yDWVHwoZdAXRVuk9vS2pMYV2T1VyEQDmD0q0WcmExoX4Uhi9tff7HjWqGUe3dPnmSJy2qAfOIg0bRaIClrWMSkpkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740494011; c=relaxed/simple;
-	bh=MJOjnvAc/2XJRJnUd0gXSf3quU4fOODLSappYyYSOG4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=iQavTEGDj3kyilh8z8EUxhG5B9NwATxg6xtrCpLMWPfafL/gXzgo2J0n92kjhmG5b8SbDqQg50ZtRlo9PSv9zg2NagKtBASzg0jpS9Gdu9CMbfVeOWyvrGryV83hu3jDeWwAmyRGOG71u71Odv1Tz9JHb9UVu0oCXdnQvRx9GEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=eXd8SWdz; arc=none smtp.client-ip=168.119.48.163
+	s=arc-20240116; t=1740494012; c=relaxed/simple;
+	bh=2xcXVcUoDYMp7Ndhn3kTsu0e/mQaCRuDERA7e8hYAkI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=urwXWhfXIMfa71mWbQ3ehdEdsLjjE/OyEXVOsjp3n7IXjdr4jrs/CZ5qXKcHVRh8b5pJzsIfYRVip/817nue0f2TahvB0eCMg/4L/dW8Pwt7R0gG4nRLJxPTO4XEJkk+K95jCMkyAxqqFxBPLFwR0v9YUR5kkb+C8m+Gbo97zr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=d/cqonnz; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -35,18 +36,22 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	s=2023072701; t=1740494000;
 	h=from:from:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=IP8jQCXeMRlkXk6Et0h1aJ/qNT0ysPNweO4IpGnIKGc=;
-	b=eXd8SWdzhuWbRjaRiAf7B3P93CbrCedhvI8b75b1X227uUK/w+LfoBhk85v4nAVMGP7v8b
-	RfYUmlx90inDF0IlZpy37wJTUV0eh2rMsJq82kTP4BH3Nq7kscA06dcsv6IEdff2261/Yf
-	KZ3j3YdRhmeBdKIbgvGIyErFB0+yhc2FREQ4hRnO7IBxcRdbJWGTEFX1+pTQKJjs9J97yL
-	OdxV+XofW46qUbVkuurTvxrzHBR42//ZU4ZnXHtS3QHyC2QXqf2hUmNJ/c6ORGdGC2+lLa
-	a3vVjeb4vh1lUEM6SqnbM1j9Ai39K8JCDgtZe7vPTfjtp9cZQ5K1v72TazZLWg==
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QRojapvmBR5COPIkXxQy+PwjhG7/LlwGYyzCTKSRQto=;
+	b=d/cqonnz8oVEfyDTdGvjPymV5Xhj92JmcS6GdFnXtoCIo84dI7Qwyn8UXhGkrlTuISk8ef
+	B3ic+hhaP3SbdV1qXpnMAYkuhNqxmdbeEHn8ylzhHCjhB3KG0SE4ISf7kg+v0JtrFIqodw
+	P0qag/pQkeRsDAs9OOsw51KwjJwTutFDinY5E/M4/an1Hq6CdIh+zQuFSBvEHdy66gaHV8
+	bP7G4bQcj2oUV5x3bQLReWrAyhsaKxbD1Mu316EMihwnPZXYTHFM/9P8Yc/2Vomu3T8z8Y
+	wG2OddC4l+Df6BS/Le0RkXv6K6tElsiYfJYa/pWG8tVEcCluucopS5r6ShFkFQ==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 2/3] checkpolicy: abort on mismatched declarations
-Date: Tue, 25 Feb 2025 15:33:10 +0100
-Message-ID: <20250225143312.47755-1-cgoettsche@seltendoof.de>
+Subject: [PATCH 3/3] checkpolicy: perform cleanup on error in define_filename_trans()
+Date: Tue, 25 Feb 2025 15:33:11 +0100
+Message-ID: <20250225143312.47755-2-cgoettsche@seltendoof.de>
+In-Reply-To: <20250225143312.47755-1-cgoettsche@seltendoof.de>
+References: <20250225143312.47755-1-cgoettsche@seltendoof.de>
 Reply-To: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
@@ -59,36 +64,96 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-In case a type or role gets re-declared as an attribute abort parsing
-immediately. Since yyerror() is called the variable policydb_errors is
-increased and will signal an error later on.
+Cleanup the local resources in define_filename_trans() in error paths.
 
-Reported-by: oss-fuzz (issue 398527873)
+Reported-by: oss-fuzz (issue 398879931)
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
- checkpolicy/module_compiler.c | 2 ++
- 1 file changed, 2 insertions(+)
+ checkpolicy/policy_define.c | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/checkpolicy/module_compiler.c b/checkpolicy/module_compiler.c
-index 3a7ad1bb..efbcfa7d 100644
---- a/checkpolicy/module_compiler.c
-+++ b/checkpolicy/module_compiler.c
-@@ -291,6 +291,7 @@ static int create_role(uint32_t scope, unsigned char isattr, role_datum_t **role
- 		if (*role && (isattr != (*role)->flavor)) {
- 			yyerror2("Identifier %s used as both an attribute and a role",
- 				 id);
-+			*role = NULL;
- 			free(id);
- 			role_datum_destroy(datum);
- 			free(datum);
-@@ -428,6 +429,7 @@ static int create_type(uint32_t scope, unsigned char isattr, type_datum_t **type
- 		if (*type && (isattr != (*type)->flavor)) {
- 			yyerror2("Identifier %s used as both an attribute and a type",
- 				 id);
-+			*type = NULL;
- 			free(id);
- 			return -1;
+diff --git a/checkpolicy/policy_define.c b/checkpolicy/policy_define.c
+index 18654d00..b3cfc64d 100644
+--- a/checkpolicy/policy_define.c
++++ b/checkpolicy/policy_define.c
+@@ -3182,10 +3182,10 @@ static int set_roles(role_set_t * set, char *id)
+ int define_role_trans(int class_specified)
+ {
+ 	char *id;
+-	role_datum_t *role;
++	const role_datum_t *role;
+ 	role_set_t roles;
+ 	type_set_t types;
+-	class_datum_t *cladatum;
++	const class_datum_t *cladatum;
+ 	ebitmap_t e_types, e_roles, e_classes;
+ 	ebitmap_node_t *tnode, *rnode, *cnode;
+ 	struct role_trans *tr = NULL;
+@@ -3214,29 +3214,29 @@ int define_role_trans(int class_specified)
+ 
+ 	while ((id = queue_remove(id_queue))) {
+ 		if (set_roles(&roles, id))
+-			return -1;
++			goto bad;
+ 	}
+ 	add = 1;
+ 	while ((id = queue_remove(id_queue))) {
+ 		if (set_types(&types, id, &add, 0))
+-			return -1;
++			goto bad;
+ 	}
+ 
+ 	if (class_specified) {
+ 		if (read_classes(&e_classes))
+-			return -1;
++			goto bad;
+ 	} else {
+ 		cladatum = hashtab_search(policydbp->p_classes.table,
+ 					  "process");
+ 		if (!cladatum) {
+ 			yyerror2("could not find process class for "
+ 				 "legacy role_transition statement");
+-			return -1;
++			goto bad;
  		}
+ 
+ 		if (ebitmap_set_bit(&e_classes, cladatum->s.value - 1, TRUE)) {
+ 			yyerror("out of memory");
+-			return -1;
++			goto bad;
+ 		}
+ 	}
+ 
+@@ -3292,7 +3292,7 @@ int define_role_trans(int class_specified)
+ 				tr = malloc(sizeof(struct role_trans));
+ 				if (!tr) {
+ 					yyerror("out of memory");
+-					return -1;
++					goto bad;
+ 				}
+ 				memset(tr, 0, sizeof(struct role_trans));
+ 				tr->role = i + 1;
+@@ -3308,7 +3308,7 @@ int define_role_trans(int class_specified)
+ 	rule = malloc(sizeof(struct role_trans_rule));
+ 	if (!rule) {
+ 		yyerror("out of memory");
+-		return -1;
++		goto bad;
+ 	}
+ 	memset(rule, 0, sizeof(struct role_trans_rule));
+ 	rule->roles = roles;
+@@ -3324,6 +3324,11 @@ int define_role_trans(int class_specified)
+ 	return 0;
+ 
+       bad:
++	role_set_destroy(&roles);
++	type_set_destroy(&types);
++	ebitmap_destroy(&e_roles);
++	ebitmap_destroy(&e_types);
++	ebitmap_destroy(&e_classes);
+ 	return -1;
+ }
+ 
 -- 
 2.47.2
 

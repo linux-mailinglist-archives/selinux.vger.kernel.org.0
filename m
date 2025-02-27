@@ -1,218 +1,172 @@
-Return-Path: <selinux+bounces-2938-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2940-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEDFFA48A12
-	for <lists+selinux@lfdr.de>; Thu, 27 Feb 2025 21:47:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B4D9A48A9E
+	for <lists+selinux@lfdr.de>; Thu, 27 Feb 2025 22:34:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0FA616A9C3
-	for <lists+selinux@lfdr.de>; Thu, 27 Feb 2025 20:47:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BADD6188D055
+	for <lists+selinux@lfdr.de>; Thu, 27 Feb 2025 21:34:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64A926FA69;
-	Thu, 27 Feb 2025 20:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D4E271281;
+	Thu, 27 Feb 2025 21:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FHMEHhIL"
+	dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b="NXlxUqXZ"
 X-Original-To: selinux@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from tarta.nabijaczleweli.xyz (tarta.nabijaczleweli.xyz [139.28.40.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1951DE4C8;
-	Thu, 27 Feb 2025 20:47:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2FC26F460
+	for <selinux@vger.kernel.org>; Thu, 27 Feb 2025 21:34:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=139.28.40.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1740689231; cv=none; b=ngv66roNM1AniIGa4ZesLtaANj2SA7X+7Jrr8150XfuqGgQ6s9UiZJMabKVpASqPFPqEGJvRIUt259nTtAVACrR+p67zb2uAURCwCbN4LrVaDBxFS1vYWdnTfpqAvdFrZEICREFQFlo4Hk/+5xCouFUCR2jqBOePucE+b0qVcew=
+	t=1740692078; cv=none; b=unCTzVD3zNonU+OgjHeI2M1QlHLTZi1C+meIQG+q07Odie+cqOR0eyGmGLVueWMrGThcz4I6ZNl0XSTbo+DRTSoc23HH+jj2aT6Q2mn7qc1Ajs8YG9lmzOWzXWy2Pwvhbxc7ZLZmgBdAgmmbzX04hr269bZBs680GaUi1Sbk+rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1740689231; c=relaxed/simple;
-	bh=utQVCfMq3XX4+WH1ud4ZibztAqFiiIfTgmuA4Y+wqLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pwt0gPGk+xvlKcc9KN9opMWgo0jjd9YLXyEwm1yalkLdpPU2gLocq+n6APgSPAhAiKp06bAlZrWXVkq4lkM2H3NlDhGMCm/1l4N6PyyI68ySiLvoa8658qBiqFczXNpphcD6qvfux4OD1G6EUaAtlJjdZ9BwRKEXEiJRWS7mVXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FHMEHhIL; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740689229; x=1772225229;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=utQVCfMq3XX4+WH1ud4ZibztAqFiiIfTgmuA4Y+wqLA=;
-  b=FHMEHhIL+4WQIZcNE7nb2fe7Ohcr53/hcOhl6cnBDSOJGeWwt2YnYAuj
-   bY4CNP5mSr3ZvYLJY7tFjDBob5CFr6M81rjd+JUN74mFqcSfPPcIA7lii
-   e9YAH8KrBqPea0tSSLvICGvNVR8P+ptQ6xCe/LY/v0JX3zC36xBuWSBlT
-   /09Bjf+T3SZIbhLpkxaEtChz8Z5HCt/NC730XB74j/2hyiGbm0Dtjo/Jd
-   lE0XA2wNYAk9zeSGlssCeiNyorxJRxt7tDQxuTDzb2ZL1CUFolr33ADMo
-   Y5l1+WezXiY6RasquuXnZRYztdkeLOY5JJU0UMlCCkQ7/N0jq2jXVH99+
-   Q==;
-X-CSE-ConnectionGUID: osap7yFDS164lmwIYAnmmw==
-X-CSE-MsgGUID: s4dX6GsqT8OGb+cCHKR3bw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="40844740"
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="40844740"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 12:47:08 -0800
-X-CSE-ConnectionGUID: rGYSMAJhT1+XTk4WV27ENA==
-X-CSE-MsgGUID: SM0f+tdaRo2Ez/7u3JP6Sw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="117160740"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa006.jf.intel.com with ESMTP; 27 Feb 2025 12:47:01 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tnkmV-000E14-1N;
-	Thu, 27 Feb 2025 20:46:56 +0000
-Date: Fri, 28 Feb 2025 04:46:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Li Li <dualli@chromium.org>, dualli@google.com, corbet@lwn.net,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, donald.hunter@gmail.com,
-	gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
-	maco@android.com, joel@joelfernandes.org, brauner@kernel.org,
-	cmllamas@google.com, surenb@google.com, omosnace@redhat.com,
-	shuah@kernel.org, arnd@arndb.de, masahiroy@kernel.org,
-	bagasdotme@gmail.com, horms@kernel.org, tweek@google.com,
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
-	netdev@vger.kernel.org, selinux@vger.kernel.org, hridya@google.com
-Cc: oe-kbuild-all@lists.linux.dev, smoreland@google.com, ynaffit@google.com,
-	kernel-team@android.com
-Subject: Re: [PATCH v15 2/3] binder: report txn errors via generic netlink
-Message-ID: <202502280430.x785GFat-lkp@intel.com>
-References: <20250226192047.734627-3-dualli@chromium.org>
+	s=arc-20240116; t=1740692078; c=relaxed/simple;
+	bh=ya1qk9lYYTZfO9ff2Xk9gnLhfnlryoX7HPX0orHoh6c=;
+	h=Date:From:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=bOrtf94WwXetCgnFQut5gbx1Ml/rXIB3tQECuYCSqjNxwLuolg/F4+682sR0tQO5lY7DjX43/sQ58WtWztTsLSB+h2hGlcez00MyKvlQSJfmCMghvazOws628t10F8f2XnF6/8prInL0FCcj5iYd5+ShuSSOYN7TdDxNZhDjHnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz; spf=pass smtp.mailfrom=nabijaczleweli.xyz; dkim=pass (2048-bit key) header.d=nabijaczleweli.xyz header.i=@nabijaczleweli.xyz header.b=NXlxUqXZ; arc=none smtp.client-ip=139.28.40.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nabijaczleweli.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabijaczleweli.xyz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=nabijaczleweli.xyz;
+	s=202405; t=1740691931;
+	bh=ya1qk9lYYTZfO9ff2Xk9gnLhfnlryoX7HPX0orHoh6c=;
+	h=Date:From:Cc:Subject:From;
+	b=NXlxUqXZk5UnvDD+GTJMI/85znNYFwnKKk4O4lH+qN8MNLWJHYmD/iEE1cR8WY9XQ
+	 xW5/xWn4wMHSZrUDExoxgtsLH+sv7fOxSU+rFrZFjG9+eKwsit1kSj4UQOr6iBlQLy
+	 xghr5j9d2EThNpcNBT7RVkrqzkCxvzH4Z8U2UqZ+6ONUM5FWnayCmdLeW6QVcLkKCZ
+	 VPtZ6l5E607RbNe+v17tk0pZwiBdt/3AiCiluyePh+VPLeY2V+ATqhPAXk7v59Boap
+	 4aCHzHry/VgQroB/R3Eae9jN4A1qwXQeMwDRHKq28C7UlNWHLPmzqw0nqm311XjWNv
+	 +P+aC1R4y6+Sg==
+Received: from tarta.nabijaczleweli.xyz (unknown [192.168.1.250])
+	by tarta.nabijaczleweli.xyz (Postfix) with ESMTPSA id CCBC2A35E
+	for <selinux@vger.kernel.org>; Thu, 27 Feb 2025 22:32:11 +0100 (CET)
+Date: Thu, 27 Feb 2025 22:32:11 +0100
+From: =?utf-8?B?0L3QsNCx?= <nabijaczleweli@nabijaczleweli.xyz>
+Cc: selinux@vger.kernel.org
+Subject: [PATCH] Don't inject matchpathcon_filespec_add64() ifdef __x86_64__
+Message-ID: <jievtm5yb2pqqrn5p2idny7iipfoxnwn3gx5xtw6ycq6qqfgh5@tarta.nabijaczleweli.xyz>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="babbd5cjwadzhfob"
 Content-Disposition: inline
-In-Reply-To: <20250226192047.734627-3-dualli@chromium.org>
-
-Hi Li,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on 8433c776e1eb1371f5cd40b5fd3a61f9c7b7f3ad]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Li-Li/lsm-selinux-Add-setup_report-permission-to-binder/20250227-032351
-base:   8433c776e1eb1371f5cd40b5fd3a61f9c7b7f3ad
-patch link:    https://lore.kernel.org/r/20250226192047.734627-3-dualli%40chromium.org
-patch subject: [PATCH v15 2/3] binder: report txn errors via generic netlink
-config: arm-randconfig-001-20250227 (https://download.01.org/0day-ci/archive/20250228/202502280430.x785GFat-lkp@intel.com/config)
-compiler: arm-linux-gnueabi-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250228/202502280430.x785GFat-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502280430.x785GFat-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/android/binder.c: In function 'binder_nl_report_setup_doit':
->> drivers/android/binder.c:6479:15: error: implicit declaration of function 'security_binder_setup_report' [-Wimplicit-function-declaration]
-    6479 |         ret = security_binder_setup_report(current_cred());
-         |               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+User-Agent: NeoMutt/20231221-2-4202cf-dirty
 
 
-vim +/security_binder_setup_report +6479 drivers/android/binder.c
+--babbd5cjwadzhfob
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-  6462	
-  6463	/**
-  6464	 * binder_nl_report_setup_doit() - netlink .doit handler
-  6465	 * @skb:	the metadata struct passed from netlink driver
-  6466	 * @info:	the generic netlink struct passed from netlink driver
-  6467	 *
-  6468	 * Implements the .doit function to process binder netlink commands.
-  6469	 */
-  6470	int binder_nl_report_setup_doit(struct sk_buff *skb, struct genl_info *info)
-  6471	{
-  6472		struct binder_context *context = NULL;
-  6473		struct binder_device *device;
-  6474		struct binder_proc *proc;
-  6475		u32 flags, pid;
-  6476		void *hdr;
-  6477		int ret;
-  6478	
-> 6479		ret = security_binder_setup_report(current_cred());
-  6480		if (ret < 0) {
-  6481			NL_SET_ERR_MSG(info->extack, "Permission denied");
-  6482			return ret;
-  6483		}
-  6484	
-  6485		hlist_for_each_entry(device, &binder_devices, hlist) {
-  6486			if (!nla_strcmp(info->attrs[BINDER_A_CMD_CONTEXT],
-  6487					device->context.name)) {
-  6488				context = &device->context;
-  6489				break;
-  6490			}
-  6491		}
-  6492	
-  6493		if (!context) {
-  6494			NL_SET_ERR_MSG(info->extack, "Unknown binder context");
-  6495			return -EINVAL;
-  6496		}
-  6497	
-  6498		pid = nla_get_u32(info->attrs[BINDER_A_CMD_PID]);
-  6499		flags = nla_get_u32(info->attrs[BINDER_A_CMD_FLAGS]);
-  6500	
-  6501		if (!pid) {
-  6502			/* Set the global flags for the whole binder context */
-  6503			context->report_flags = flags;
-  6504		} else {
-  6505			/* Set the per-process flags */
-  6506			proc = binder_find_proc(pid);
-  6507			if (!proc) {
-  6508				NL_SET_ERR_MSG_FMT(info->extack,
-  6509						   "Invalid binder report pid %u",
-  6510						   pid);
-  6511				ret = -EINVAL;
-  6512				goto err_exit;
-  6513			}
-  6514	
-  6515			proc->report_flags = flags;
-  6516		}
-  6517	
-  6518		skb = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-  6519		if (!skb) {
-  6520			pr_err("Failed to alloc binder netlink reply message\n");
-  6521			ret = -ENOMEM;
-  6522			goto err_exit;
-  6523		}
-  6524	
-  6525		hdr = genlmsg_iput(skb, info);
-  6526		if (!hdr)
-  6527			goto free_skb;
-  6528	
-  6529		if (nla_put_string(skb, BINDER_A_CMD_CONTEXT, context->name) ||
-  6530		    nla_put_u32(skb, BINDER_A_CMD_PID, pid) ||
-  6531		    nla_put_u32(skb, BINDER_A_CMD_FLAGS, flags))
-  6532			goto cancel_skb;
-  6533	
-  6534		genlmsg_end(skb, hdr);
-  6535	
-  6536		if (genlmsg_reply(skb, info)) {
-  6537			pr_err("Failed to send binder netlink reply message\n");
-  6538			ret = -EFAULT;
-  6539			goto err_exit;
-  6540		}
-  6541	
-  6542		return 0;
-  6543	
-  6544	cancel_skb:
-  6545		pr_err("Failed to add reply attributes to binder netlink message\n");
-  6546		genlmsg_cancel(skb, hdr);
-  6547	free_skb:
-  6548		pr_err("Free binder netlink reply message on error\n");
-  6549		nlmsg_free(skb);
-  6550		ret = -EMSGSIZE;
-  6551	err_exit:
-  6552		return ret;
-  6553	}
-  6554	
+As the code notes, it wants to add an
+  /* ABI backwards-compatible shim for non-LFS 32-bit systems */
+it tries to detect these with
+  #if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS =3D=3D 64 && __BITS_P=
+ER_LONG < 64
+which is correct with the added precondition that the ino_t /without/
+-D_FILE_OFFSET_BITS=3D64 /was actually/ u32
+(i.e. it conflates /all/ ILP32 systems into being non-LFS).
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+This is not the case on x32, for example, which is LFS; thus, the
+  static_assert(sizeof(unsigned long) =3D=3D sizeof(__ino_t), "inode size m=
+ismatch");
+assertion fails (__ino_t is the "kernel ino_t" type,
+which generally corresponds to the kernel's ulong, which is u64 on x32).
+
+The correct spelling of the test for this is
+  #if (...) && sizeof(__ino_t) =3D=3D 4
+but this is not statically solvable with the preprocessor.
+
+Thus, we need to explcitly special-case this.
+__x86_64__ indicates one of two ABIs (LP64 (amd64) or ILP32 (x32)),
+both of which have ino_t=3Du64, and is the macro used for defining
+__INO_T_TYPE in the system headers, so it's the best fit here.
+
+Fixes: commit 9395cc0322 ("Always build for LFS mode on 32-bit archs.")
+Closes: #463
+Closes: Debian#1098481
+Signed-off-by: =D0=BD=D0=B0=D0=B1 <nabijaczleweli@nabijaczleweli.xyz>
+---
+ libselinux/include/selinux/selinux.h | 2 +-
+ libselinux/src/matchpathcon.c        | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/libselinux/include/selinux/selinux.h b/libselinux/include/seli=
+nux/selinux.h
+index f3cf5a20..318e273f 100644
+--- a/libselinux/include/selinux/selinux.h
++++ b/libselinux/include/selinux/selinux.h
+@@ -537,7 +537,7 @@ extern int matchpathcon_index(const char *path,
+    with the same inode (e.g. due to multiple hard links).  If so, then
+    use the latter of the two specifications based on their order in the=20
+    file contexts configuration.  Return the used specification index. */
+-#if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS =3D=3D 64 && __BITS_PE=
+R_LONG < 64
++#if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS =3D=3D 64 && __BITS_PE=
+R_LONG < 64 && !defined(__x86_64__)
+ #define matchpathcon_filespec_add matchpathcon_filespec_add64
+ #endif
+ extern int matchpathcon_filespec_add(ino_t ino, int specind, const char *f=
+ile);
+diff --git a/libselinux/src/matchpathcon.c b/libselinux/src/matchpathcon.c
+index 51f0e4ff..61f27274 100644
+--- a/libselinux/src/matchpathcon.c
++++ b/libselinux/src/matchpathcon.c
+@@ -261,7 +261,7 @@ int matchpathcon_filespec_add(ino_t ino, int specind, c=
+onst char *file)
+ 	return -1;
+ }
+=20
+-#if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS =3D=3D 64 && __BITS_PE=
+R_LONG < 64
++#if defined(_FILE_OFFSET_BITS) && _FILE_OFFSET_BITS =3D=3D 64 && __BITS_PE=
+R_LONG < 64 && !defined(__x86_64__)
+ /* alias defined in the public header but we undefine it here */
+ #undef matchpathcon_filespec_add
+=20
+@@ -282,7 +282,7 @@ int matchpathcon_filespec_add(unsigned long ino, int sp=
+ecind,
+ }
+ #else
+=20
+-static_assert(sizeof(unsigned long) =3D=3D sizeof(ino_t), "inode size mism=
+atch");
++static_assert(sizeof(uint64_t) =3D=3D sizeof(ino_t), "inode size mismatch"=
+);
+=20
+ #endif
+=20
+--=20
+2.39.5
+
+
+--babbd5cjwadzhfob
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEfWlHToQCjFzAxEFjvP0LAY0mWPEFAmfA2dsACgkQvP0LAY0m
+WPH+gA/8CBvD35o2ckqFZDeDZz0oiSsH9ye4zAP6xAUcj2r4PISmWt9uAO1XJNd8
+noEixTiQ9A2Q85z5Ryy4pU82O3j1ZGptBZ0luoPybPmJLtdfs3cszV1s8x+SwYPy
+X7kI4hRclrQRn1qzNTzAThxSaC6a9LYwQJ0ByZA1fak3ez/PJ1P4Kwbjd56wdk9c
+8SMCr6E4/xI98LZQgZBp/pyWPDxj9GsQStTHgTRw3eQt9dK8nm7vLY75v5QWl3UJ
+pqafWFWWYm3+sH2ZSxbmGlPOPBMzeIq2Kl0j0ZbUT+Ht+Ld/7mzLgACu6vOzA2ke
+2FwgMsCv/DkWzDVL4Qb4/faoIE3ZYqmfSJsXA8sJzPLxgHbTlFlg8ZUSbVwV+x/F
+k9elqXo9yV/vrGD0ZDuBr7P9CupfdsEsD1tpDQsii3prJqxxuaobm1tQyABqLQ50
++s82lhtOhOv4ZT8Dt0hMx7skSmLtMbwsAPSpAleNiQ5aefC9f0YTf9Jpm/qBz/2E
+yZ4wT8Bk4WkKTjcKjEEXHh9+4gJXXNp+K9Vy2L0aUGxPv/vvd5tlGq7yNelFprvo
+ub+AA1YAc3fwKMfnQSWQfNv6e3ZM/Ug2VpUhBvcZWExlL1jjun3FEu+184QWQCqZ
+EszSqGQp+MuLinCS7WG6BDETXT2BSHiRpHkM/kSmd5MZIb+0S4g=
+=sp9H
+-----END PGP SIGNATURE-----
+
+--babbd5cjwadzhfob--
 

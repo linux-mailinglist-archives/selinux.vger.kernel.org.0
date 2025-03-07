@@ -1,54 +1,92 @@
-Return-Path: <selinux+bounces-2977-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-2983-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42E8A5646A
-	for <lists+selinux@lfdr.de>; Fri,  7 Mar 2025 10:57:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B24A570C0
+	for <lists+selinux@lfdr.de>; Fri,  7 Mar 2025 19:47:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F46A16F797
-	for <lists+selinux@lfdr.de>; Fri,  7 Mar 2025 09:57:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 569A57A34D7
+	for <lists+selinux@lfdr.de>; Fri,  7 Mar 2025 18:46:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64494206F2E;
-	Fri,  7 Mar 2025 09:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93442405F6;
+	Fri,  7 Mar 2025 18:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="JW0AK+zL"
 X-Original-To: selinux@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic309-27.consmr.mail.ne1.yahoo.com (sonic309-27.consmr.mail.ne1.yahoo.com [66.163.184.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F7F1E1DEE;
-	Fri,  7 Mar 2025 09:57:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF87221714
+	for <selinux@vger.kernel.org>; Fri,  7 Mar 2025 18:47:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.184.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741341423; cv=none; b=anVeh6+etQfEvxaHW4gmdIhlQoUf9/cAbNln/39O7CtcAYSxKG79aOyQyOa4oKTYXpbulBpf0MDr4cMF40O64Ms0mTFUvPH+n0tnVYmZUb+sORsagN5pSHclXHeqnEXlI/YUSxS80B5IJ8Yko3rfQEHu+dOqZhLbSZJ/NE6Yunw=
+	t=1741373238; cv=none; b=rVQuNb5qtXP4gCaJhlWoBZu+ado1eBasP3W627Sksaamak28f98gaFaI20sjLr+KZgvdGOt+TlqvEbqZMZIh64xWlkxHPMQAVQXRWCv0DkqX2Einpi87Wc8R6ObZqhdcGTleNQfgRKY9YLmmkuAbMR8u7YrUC3e3YT/EVH93x2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741341423; c=relaxed/simple;
-	bh=0KzVUS9lS1mWOExLoBlUcB71/E5nvpGgJsLuWnzqLiw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WZ/AS0uUNntDvI6iprawRwBqrZ+kVF6c7kOUQ7U6yi0UloMk4sHVIRXRPo5gd1UeiNxqQTyXOFEO+ve9mO31Hg5vXWi8u3leMpZekY43GNvE6Si293PJMJZPTr7bFynp6MWL+qnStEPBQAW/1W0e/xgd5MNJIZ4KIirbpxhZJfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Z8M7N6kBwz6J7nJ;
-	Fri,  7 Mar 2025 17:53:52 +0800 (CST)
-Received: from frapeml500004.china.huawei.com (unknown [7.182.85.22])
-	by mail.maildlp.com (Postfix) with ESMTPS id E5113140B39;
-	Fri,  7 Mar 2025 17:56:52 +0800 (CST)
-Received: from smtpsde.huawei.com (10.221.117.194) by
- frapeml500004.china.huawei.com (7.182.85.22) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 7 Mar 2025 10:56:52 +0100
-From: Tim Schumacher <tim.schumacher1@huawei.com>
-To: Paul Moore <paul@paul-moore.com>, Stephen Smalley
-	<stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>,
-	Dominick Grift <dominick.grift@defensec.nl>
-CC: Tim Schumacher <tim.schumacher1@huawei.com>, Stephen Smalley
-	<sds@tycho.nsa.gov>, <selinux@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] selinux: Chain up tool resolving errors in install_policy.sh
-Date: Fri, 7 Mar 2025 10:56:43 +0100
-Message-ID: <20250307095645.326982-1-tim.schumacher1@huawei.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1741373238; c=relaxed/simple;
+	bh=zz3uBk48+7no25j+Ns24PzVLZrTPAcWmGdELG9brV9I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=knbMwWZJ8zT3GXNvXfjhZR4nfcO9ktN1145l20hk1NRB+/P66PRzT4p6kxI5yd1Tu/2tgcyfwSU2i5ptM8Aw459+drWK73aB69YxaZdrU55flov/mukTvhhlXbxRS/kbfHvXOMpoVagnVk5YWrl38GWLJ5GNJ+5lVi6jb36NPj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=JW0AK+zL; arc=none smtp.client-ip=66.163.184.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1741373236; bh=dR6sLeIF6x2BIfs1xnT3U5+B1dmWz+hDD8EKB1ZIw3c=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=JW0AK+zLCffOsqkQN/3VH3Xguv9R2HSkhMkNlYYnQfBi4sNqAJEtMm2wxt66WrVnVqetNiBNKU53m9N7x8qWzQ7WXIe9W3RSgGSTSEwKvyXCTXq7aJQQvfNjxN15Do23vZLDXFRxeEOTi5RumK8eZLPzQUlToO10QxGIVOwH6BqykaHyk9uu08mbqJgGG+cZFa6wsHUa1jsBFDOtxZNNA+iAM6aXOCi5tXqgGEoQJV4pSpRdItCbFPCTGQXmkyXHLOCK2qoXoO/TmbmlYEl7UPSWM/0blUtaotLvY4jzl6HvzQO7h6DUyQCH3zWz9DgTMuThS/iljJ1lkc2XujNFSA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1741373236; bh=QqbjRRLafcTwP4FuRCwXF+9WKtyw8KaB/nBID2yQ3tn=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=bS19YCfuIK88dqvct0uBDBTrKg7TWYxVBPKrz4XKWGRPR2M4jIE9oOTsBLl/1I4kUQ9gTaf0hRBbrnNpQcpwMP6mub9UXBGeAY/kFNOIFhNPTJI1Q3U1arEvJVtoygW9BCx3rBRJQqW0qEuz9aPUAUxHUyRxvpmdtavzYUvxBjmcpYuI39OwvvYDzLqbkZ5PreC0ftb6Q+0nGipO0oAMmUQFDNjheOc2iNCCJPznH7hTxgX+Cjb0MIbRgAPOVZ64ObZEzvvHsptCPW+wC8leKej9iz2DA6vW72j/nrOP9G1ufgUHk3/QljXew6thRUf/T0s8W7NZdRb8Hk9y+qir0g==
+X-YMail-OSG: fiDnTWsVM1n8p45s0EHmwAEbkem6XNTjPuFp3Zrm_5MKw3_HGV29AJwdKdwjIJo
+ IaIn7o1IsE3sf4en7wqgjYrZOjUv8tzW.5xPU6htXL9pP8tT1t13IqH9QF.9v7gkAk9UGaIWlGW0
+ dyaHLGGxgeXxQOW.2Hln3bnkljYiO4S5qDma1GD5afMIgufm7sR3kUoVkrrH4NR0EVVnfZdi0Q5w
+ dR1GQlPQtnqCsA1FDpG6t5L3JZS87NOR1maWdCTb_jMpBImAXIyS1luPiL60vgpwOGbC0_wKI0z5
+ 2gdJUmU8qyh3M4aBdaVeyLSdFcgbnw3MwnDSP6XZHEPmII8dIGGJw27s5jR48OSaTSPfSZHbTvk7
+ iEwzi.UkpZ_N.dAefv6f6qb2W337QusD.VSnbQnM6ND_kKZQaQ4yGdQgZuqcs6lG7dM9n4635KiU
+ TKSQl8Qsx9sc.bGCc20FsE1vt.YGga5vovwEBScTThBda9dZSMLcaNqsKcHVMTuC.R0agZAgtC6C
+ kmhayd4Sirh.1vx3hd2anAXctO_Qzz5lsWIHDrJHABNmmZXkk9vDrfmY80bx7UX5pK5G3evUzYx5
+ rYPyzmwJRY2Ko3plooof35Ezc80w6NwXkf7Q2FXEO._GhfhWMHRZuerU9bYYOErc6R3imbJ8xFuj
+ 5iwA0XhLeob7YIcTRdOUIsICJclQoxMCFX13THTkOJIHCip5medoA93.MF7zGKL2.8rC5YXsByFu
+ MhdwhqyI8UAz3Sduj21piVeZ_.6sIu4Ez8osBA6HDDxcmnqr5Y8gFHn2Lnfzz4EH1fdnre3.s6Rv
+ 42EN5YDb3VptkBdaTb9hUq30phVocxMafvL.2FeMC3KOtD6PBeDVhr_iWb4KDyeGp_mmS.SWUOm6
+ G7kn49jBOSXW59YXflRczK5z2AmW.N3oPBhIhFSk6EFVOK_YJC5rbvGV56s6X55a_p88qfaqYgvy
+ Sn5j.6oirqc3.J3i4nkxKm27OhxvE7MRKePbSxqL2cdly.OhQc5pfCdVqhO13mnZfFG.rjgADA_p
+ Obazzn_YpX_pM.BVLH2BeLK8QdTJD.80yM9d1j0w0L0wugiT8nLI29RMzbIzG8Bre1Y8DUDpeYl0
+ TYIkrueOlj2KeoUmSq4ughcFwVPuUHMeYwTrFGVz2LQ0Hvduar4Pwp_k6aZMoU4kfzuTCZ8zJ2CB
+ L9bG3DPrlKt0.fCN1VQuAlYFIvhKClOcvYSUr.QxeT0.mhtRWozdC19Fq4nyWD7qZPJX37wC5Ccs
+ 13fWD64QnggBpwxERMLsmHyJqJ5uFwjv7LGNp2SXzAK6bfOtbx6XxCq_zUYZt_m6olRQ1.F__JJn
+ ZKNNABNxs5ujnDEe_8Tv3dM7ACWDANf.55wgVqCDFirWzhVbY7WZIELKvabmvzY7E8tSb2HpLVvd
+ Tacu8Zr29FKbHLfZUq4r9tKXvzlFGjk48SmKVO4SUFPgY32kRs7a6kXBBDgBeVmQhdtWbI3jhYiV
+ 7EjvJCjWt3OPCFHrCcPsvgNbYGfGFu0jgxCHIqCSIo66qjiKkfzaMZl4DN4KL0trN_maByiN8lsC
+ owFNtspFy5raBu.LQByFD8WAslq7hLApgiRRGtBIR_RF8lzH5ChZpLmiF6Y0SQ2ra3l3AhM_jdr7
+ ZmINSXne3z4Dea.5ULVyvc1w3GwhJ6KUofoS.O1GaIcDySNiMn4FVPIfOEPoSvvvObJ.1cJx7p9i
+ gU3nHjMhY0gCKfPXuPJ4yhSbgFrM_BV9rIYoNwpfdoQen8cmP6V9Fg9gUeXKnGwYLYbrHlJXpuMa
+ 7wH4.TZTy_sVgsP1ieabGD17l0e_DA6s1oo1RFGnrlgzTzZi3c4tNbqzAfF6tYds534NQs8lim4M
+ 7rOB5QvT56ecMrUr_SRW3XLipRhKeoxOClre00QxTX7qkxLIpcQcUaEx4gLm2KsTvGJ2gJzI8BEZ
+ fIG8lOjP9ic0DL4DR53LptOMW18vdb3D9eeuAT8UqVGfUHsjO_EV04XWJMJeqZTzWSYOBawG0BGD
+ BlP6J5atJI.6s6dkITkAz.01hRBDsgKczjTU0LaariXLIJ6F6BmahoBJ06V__AxB.OeI4aXuGhjR
+ usOgLMBqFJWBIKjUdISBig0omF.bm6x3mpG4ECaLKimqN4Omm_P7IrqmotRvEhGhkYfIKU4bOgfh
+ g6MLYWJgbXDC1OS4WtGp9N0vDb_psixdrUTj2YU_JM2MwZJwzXEtrvlVhc63ooXTSaUwPUpojxEx
+ tz3TiLBrOdeXnBLOepibYvIVEar26fUDv3c_4Oo5AsCTtq2RwCzEmhrlBKluDCt90uGWVUi2hiG2
+ zspYSjUluTsi3uGDlWAtk74k-
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: fb54d543-40b2-4d78-bd7f-e5e71d482f8a
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic309.consmr.mail.ne1.yahoo.com with HTTP; Fri, 7 Mar 2025 18:47:16 +0000
+Received: by hermes--production-gq1-7d5f4447dd-9qjv2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9e6d6a2ea591e1dd2da3497c747300b1;
+          Fri, 07 Mar 2025 18:37:06 +0000 (UTC)
+From: Casey Schaufler <casey@schaufler-ca.com>
+To: casey@schaufler-ca.com,
+	paul@paul-moore.com,
+	eparis@redhat.com,
+	linux-security-module@vger.kernel.org,
+	audit@vger.kernel.org
+Cc: jmorris@namei.org,
+	serge@hallyn.com,
+	keescook@chromium.org,
+	john.johansen@canonical.com,
+	penguin-kernel@i-love.sakura.ne.jp,
+	stephen.smalley.work@gmail.com,
+	linux-kernel@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: [PATCH v2 0/6] Audit: Records for multiple security contexts
+Date: Fri,  7 Mar 2025 10:36:55 -0800
+Message-ID: <20250307183701.16970-1-casey@schaufler-ca.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -56,63 +94,61 @@ List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: frapeml500004.china.huawei.com (7.182.85.22) To
- frapeml500004.china.huawei.com (7.182.85.22)
+References: <20250307183701.16970-1-casey.ref@schaufler-ca.com>
 
-Subshell evaluations are not exempt from errexit, so if a command is
-not available, `which` will fail and exit the script as a whole.
-This causes the helpful error messages to not be printed if they are
-tacked on using a `$?` comparison.
+The Linux audit system includes LSM based security "context" information
+in its events. Historically, only one LSM that uses security contexts can
+be active on a system. One of the few obsticles to allowing multiple LSM
+support is the inability to report more than one security context in an
+audit event. This patchset provides a mechanism to provide supplimental
+records containing more than one security context for subjects and
+objects. 
+  
+The mechanism for reporting multiple security contexts inspired
+considerable discussion. It would have been possible to add multiple
+contexts to existing records using sophisticated formatting. This would
+have significant backward compatibility issues, and require additional
+parsing in user space code. Adding new records for an event that contain
+the contexts is more in keeping with the way audit events have been
+constructed in the past.
+ 
+Only audit events associated with system calls have required multiple
+records prior to this. Mechanism has been added allowing any event
+to be composed of multiple records. This should make it easier to
+add information to existing audit events without breaking backward
+compatability.
+ 
+v2:
+Maintain separate counts for LSMs using subject contexts and object
+contexts. AppArmor uses the former but not the latter.
+Correct error handling in object record creation.
 
-Resolve the issue by using chains of logical operators, which are not
-subject to the effects of errexit.
+https://github.com/cschaufler/lsm-stacking#audit-records-multiple-contexts-v2
 
-Fixes: e37c1877ba5b1 ("scripts/selinux: modernize mdp")
-Signed-off-by: Tim Schumacher <tim.schumacher1@huawei.com>
----
- scripts/selinux/install_policy.sh | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+Casey Schaufler (6):
+  Audit: Create audit_stamp structure
+  Audit: Allow multiple records in an audit_buffer
+  LSM: security_lsmblob_to_secctx module selection
+  Audit: Add record for multiple task security contexts
+  Audit: multiple subject lsm values for netlabel
+  Audit: Add record for multiple object contexts
 
-diff --git a/scripts/selinux/install_policy.sh b/scripts/selinux/install_policy.sh
-index 24086793b0d8..db40237e60ce 100755
---- a/scripts/selinux/install_policy.sh
-+++ b/scripts/selinux/install_policy.sh
-@@ -6,27 +6,24 @@ if [ `id -u` -ne 0 ]; then
- 	exit 1
- fi
- 
--SF=`which setfiles`
--if [ $? -eq 1 ]; then
-+SF=`which setfiles` || {
- 	echo "Could not find setfiles"
- 	echo "Do you have policycoreutils installed?"
- 	exit 1
--fi
-+}
- 
--CP=`which checkpolicy`
--if [ $? -eq 1 ]; then
-+CP=`which checkpolicy` || {
- 	echo "Could not find checkpolicy"
- 	echo "Do you have checkpolicy installed?"
- 	exit 1
--fi
-+}
- VERS=`$CP -V | awk '{print $1}'`
- 
--ENABLED=`which selinuxenabled`
--if [ $? -eq 1 ]; then
-+ENABLED=`which selinuxenabled` || {
- 	echo "Could not find selinuxenabled"
- 	echo "Do you have libselinux-utils installed?"
- 	exit 1
--fi
-+}
- 
- if selinuxenabled; then
-     echo "SELinux is already enabled"
+ include/linux/audit.h        |  13 ++
+ include/linux/lsm_hooks.h    |   4 +
+ include/linux/security.h     |   8 +-
+ include/uapi/linux/audit.h   |   2 +
+ kernel/audit.c               | 235 +++++++++++++++++++++++++++++------
+ kernel/audit.h               |  13 +-
+ kernel/auditsc.c             |  65 +++-------
+ net/netlabel/netlabel_user.c |   8 +-
+ security/apparmor/lsm.c      |   1 +
+ security/bpf/hooks.c         |   1 +
+ security/security.c          |  19 ++-
+ security/selinux/hooks.c     |   2 +
+ security/smack/smack_lsm.c   |   2 +
+ 13 files changed, 274 insertions(+), 99 deletions(-)
+
 -- 
-2.43.0
+2.47.0
 
 

@@ -1,194 +1,144 @@
-Return-Path: <selinux+bounces-3048-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3050-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5316A5E5F2
-	for <lists+selinux@lfdr.de>; Wed, 12 Mar 2025 22:03:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7488A5E67A
+	for <lists+selinux@lfdr.de>; Wed, 12 Mar 2025 22:23:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 542E3188BED3
-	for <lists+selinux@lfdr.de>; Wed, 12 Mar 2025 21:02:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C6B47A6BC3
+	for <lists+selinux@lfdr.de>; Wed, 12 Mar 2025 21:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9798C1F03CD;
-	Wed, 12 Mar 2025 20:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F641F03C5;
+	Wed, 12 Mar 2025 21:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Qi0dasUx"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="Rc1pNXbF"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30A371EF088
-	for <selinux@vger.kernel.org>; Wed, 12 Mar 2025 20:56:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D728F1EF09C
+	for <selinux@vger.kernel.org>; Wed, 12 Mar 2025 21:22:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1741813008; cv=none; b=PQZRg7FjxsJE+eJvoXiz2CowF4o9JKv5ZUP4fMxGoFJFQKYoYMKiPUuWByAEn3IK0QiQ/IzIlCZb4QQZb51x6oeOkgBlSNpPleb0ZyPaiOhvFI1t1fgk3O1lAwUl27H/EcC7iLUR3YycpIVBlxjafRSxwyltJM3xen/kWvcj450=
+	t=1741814578; cv=none; b=Xbq8Cj7gHLvLp0qDpwRykKj8w3iRBGLgQdlpajv2jbW+6cPF9FWA+f19kYGy16DoaqhicMtjeEEHhIyiiOjyuhuDNXlb1KvuMXBm4hPbk0Q4Rms1mnlZl3ICB/0ZD7Dc5d9ZuOQnBthm3MRZt8z5yz/Xlup53JXPDPq1IOfMt/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1741813008; c=relaxed/simple;
-	bh=/cLVu/i1J/npZ/UFxDKmVGIv97YHvczKzdlFovdn4U4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pPoYVhfyQ8uRPPQo2L7Judb0XsRUATidHQ/zdLxRZMkBkuZ9NG55UGqwdjp+8BWmDiZBaZ0ge1Axw99ZKXecABxG5OlW5zjJVsQOqaahP2N8XRhFuHLvFRY4gGsPBc65fJbu8GkXeTz8aaWLkigEX4u77BG1qb28tueb1lCEZzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Qi0dasUx; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-5498d2a8b89so264878e87.1
-        for <selinux@vger.kernel.org>; Wed, 12 Mar 2025 13:56:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1741813004; x=1742417804; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GrvETxTzEPANOEDl+dE9UqwlinAPB0E0IpXcGB+inLY=;
-        b=Qi0dasUxq1x9VsCH8pwLMM9wIPDwJKeOo2GKvPZTGkDa6G+3SsYGbbKKZWpnPFB+LP
-         Du2vp/qFMIwHKhI1NlHL90rBsymREqXVIJ4E98TAU/BnPR2/6qaZa3LIgYFsoZNeogy0
-         OzsmjACLuopczDpmH++aHe1uQUfOiiXZOW15M=
+	s=arc-20240116; t=1741814578; c=relaxed/simple;
+	bh=6cBhe/0J0x7XG16Ij8KWWPYPemaK8pVTxylYk+O6p0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BVRXbOKbvz2ZqDILgXm9LIjcPlGpjkM5kqQsTFkhpM0K3Dgqts9Bf6/XEYX7c/hfBR7Gug9377fEqYhFSIz5M/2Y+wv8OVZg+7XEp/+WPUSoOHDu3taDN0p07ZGqD1LhiQGfVvUGh2UovjFuDmyUXlS6bAzxorGm83P1IZeHoLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=Rc1pNXbF; arc=none smtp.client-ip=185.125.188.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com [209.85.216.70])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id E66953F2C4
+	for <selinux@vger.kernel.org>; Wed, 12 Mar 2025 21:22:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20210705; t=1741814563;
+	bh=UYHE7PfrFzAetCRzPVVNsPinECVfo2Zm0WG/ZDMIyJE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version;
+	b=Rc1pNXbFbnXXCbTzwMpSkrJv9F+x6BA5D2j9tVs9bxHaaOP4BoMneWMVkCzwLrRy8
+	 4WunHHnuh+eTZghZZI9PZXrKjPeVPfOOFB5V4ef0D05pbWwmbarOQ9u2c6bazz5A+O
+	 oLKtEWr7+pdiZEJrzWL/m9edy983t18LjHo8oZOVt0jpo4HnVFXmHmN2lMCgWoXU2N
+	 kpW8goWoxVlE9pY4GF5RIBymc4B5G2CIwLrMsnaNwM2ztsModpVt0S+x/JJkS590+G
+	 frN21DvvN4WsboKU4MixRfr7VXhM9xIZ3QJJr+9TfXvqJV9EGrU8ZHELYC4Pi31/J9
+	 qS0jv52lhsDCA==
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-3010db05acfso462951a91.3
+        for <selinux@vger.kernel.org>; Wed, 12 Mar 2025 14:22:43 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741813004; x=1742417804;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GrvETxTzEPANOEDl+dE9UqwlinAPB0E0IpXcGB+inLY=;
-        b=wFh40yK3IvpeXXIvRJTvYdgnIYpU0Am3rzxxayf5DDUa4TBO0Og6PKVU7p6dbIXzdr
-         gk3eJcfDun5l8lYnnS4+grwZBd4nw8xswgv8PuCeOSQDqYWAbFL77YLe4+C8AweFzKV/
-         ZdhCAjSHrnGdaqTqUSY5PUSW9RcytRAW2KVP1Qj1Sm+sNYGW1emyeNLT8lwGkl8Laku/
-         uqPgpmI796oSUjCf+5HVRNqfJZieXmbzl3Rz0Q/UihrhmEGbTgVp/4h+c3MzzC+wyxNp
-         c5DuHiDNGWkynENqcRf1A01JpdPgYjdJMnm8bg57uGMyiWxDCZqau74wrxPGpi4ZbfhL
-         7wlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNzzUgHvUNpFMnMHIx8W6UlFHyUAkhippmIggjFWR+fevwBIHGq3ccl8WL4y2v8a4parTzAr5/@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDoI26NNketppV7BjcYAavylBNhag4om+JBhbZT5TzfrpRDMsN
-	ANpRFgvVxxjCymKC9QphKDGTRzt56ev3Fx5EBXhOHB7XMTWK6zVOHw6ZnvFfvRyEn4W7PQ1B5/I
-	B7AIa9Z+ogXyMOsEk/0WziRHuM3lg+dlFqt03
-X-Gm-Gg: ASbGnctQMetCia7piUtTsrTY9IVjfU7XziM+XzaUgq5rCQ+ej35XGih0V1z10U/utX+
-	IejhTXMXAAuZIUmeD1eWQDeg07j+MySQOB8MTLtZNBFk6S+OdL+eyIEgLD6IkWkg4OR8RpGindY
-	kRsWWyqh4Oq1GTh47MyKeJDQbP4A==
-X-Google-Smtp-Source: AGHT+IHUkHHcbtyRAkWY2R1TLCWecAoP+9J2rTrtsm1A8/LiKJUZvmvewYlVLMFBlhjz6pjBCx/KuuT00faBLcXTdlw=
-X-Received: by 2002:a05:6512:3d27:b0:545:df9:5bb5 with SMTP id
- 2adb3069b0e04-54990ec8bd9mr9152703e87.45.1741813004171; Wed, 12 Mar 2025
- 13:56:44 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1741814562; x=1742419362;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UYHE7PfrFzAetCRzPVVNsPinECVfo2Zm0WG/ZDMIyJE=;
+        b=JGmcaaigXT9TxIYUp0kQHX90OlnqS4cnTBfGuw9j9oGBVsUFyUIiXe7S+Pk+Jp9SV6
+         BTtW6EQZSwMP0yDCNUyfjfqTweX4GifVP9YVZN/RTftveKwPtcl3ZlcXgabynlOqgi3Z
+         tL5OKztN7xg0DwsDIvskI84tknL62ACpA9AdbvrpuW8ukbU6hIhZUBqX1DWjKLqOXeBx
+         VulQglCnciErtxh85oezUGc2J/a3ikfqMhB7ur7paOVmLwoTmQXeg7aOF4LBuy+4JdWu
+         NGlUBnR8f1BItqYaWLVL7HWmrKT8Fv8tJFn9azGHAE7H0zpU2nmZ5ewybSBq7JZocePN
+         FxjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUiLO67RoFcIysB9M8nMxWVC8Ti68FuBkfqj4N6BkoSg8T5CfsobHttudpHJF2WxB5IWC6M2riZ@vger.kernel.org
+X-Gm-Message-State: AOJu0YwELHOtbL04dt2E0tT/BOC17jZEV1BueOjETziyC5xIwSGPSXm4
+	0q6X33l2v6/Nfa2bOoCv1ctuKt1o5GJQnZJEnyS0pKd86IY9NTccF1L/oc9FcVrAYP1HRe2m6Jv
+	Z2YDdkcg1tdqUHR/oEyeaskxzafK7SZYCEj5hXeIdpBGXvpvrxuE0ILHH5QZ4QVBhtOtCtJ0=
+X-Gm-Gg: ASbGncsNL4+msm43sBQq8ao0bOrsCzFoUqIA38/dzGRhsvHOICEbfddDViCH5sG2X/F
+	UTlNL+wSzRX8Jalmv7heCZtqfwHMZpHjYdgthSA1unrYw9xkSptmfULubpIKSLFmxCha+0hYEnW
+	NPaxLCpDqkN5zNl8ucVOkImS9/HkATtOIHEUbNoJN0uOVkacphxfuLedRGiqTs7klRSbk0Ye2UA
+	w+nVbTS7bV6mBy+XLceChyWkCY6Ev7UUr47MV1RbQB+q/YGcqkCONAJBfzahn+W4XZIwxcsqZUW
+	9j0jSLUTRoCTsVNpoh9WIJ/DAjfZOrseFu8E41y+ShUrlYh9/j33Fv9fNr8q3aG8aPSSl1o=
+X-Received: by 2002:a17:90b:1d8c:b0:2ee:f677:aa14 with SMTP id 98e67ed59e1d1-2ff7ce6ff9dmr33955134a91.13.1741814562178;
+        Wed, 12 Mar 2025 14:22:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IESqd74aQLaRYMlhUC52mOCTMPtX58VJpqPHYNlhWsmVgCtfWUR4bux5MtYAMon8vBiSS29gA==
+X-Received: by 2002:a17:90b:1d8c:b0:2ee:f677:aa14 with SMTP id 98e67ed59e1d1-2ff7ce6ff9dmr33955108a91.13.1741814561871;
+        Wed, 12 Mar 2025 14:22:41 -0700 (PDT)
+Received: from ryan-lee-laptop-13-amd.. (c-76-103-38-92.hsd1.ca.comcast.net. [76.103.38.92])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-301190b98b7sm2353887a91.32.2025.03.12.14.22.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 14:22:41 -0700 (PDT)
+From: Ryan Lee <ryan.lee@canonical.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	apparmor@lists.ubuntu.com,
+	linux-security-module@vger.kernel.org,
+	selinux@vger.kernel.org
+Cc: Ryan Lee <ryan.lee@canonical.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	John Johansen <john.johansen@canonical.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack@google.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Casey Schaufler <casey@schaufler-ca.com>,
+	Kentaro Takeda <takedakn@nttdata.co.jp>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Subject: [RFC PATCH 0/6] fs, lsm: mediate O_PATH fd creation in file_open hook
+Date: Wed, 12 Mar 2025 14:21:40 -0700
+Message-ID: <20250312212148.274205-1-ryan.lee@canonical.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250303200212.3294679-1-dualli@chromium.org> <20250303200212.3294679-3-dualli@chromium.org>
- <Z8-4SZv6plpyQUwf@google.com> <CANBPYPhR-C3VTv=ZHc1LJ0c7OG8-K2iGS62vXHmg9gcX0y89Cw@mail.gmail.com>
- <CANBPYPg5i5PhqV0-1foaKwNOaoKNoit6-cLUAqNu=2S0AUp==w@mail.gmail.com> <Z9HrEdbI5JYu0pwS@google.com>
-In-Reply-To: <Z9HrEdbI5JYu0pwS@google.com>
-From: Li Li <dualli@chromium.org>
-Date: Wed, 12 Mar 2025 13:56:32 -0700
-X-Gm-Features: AQ5f1JqD9a5qsP1mO79Ph7ePMU0QhGNiwP1z2NP0wllQAR2ToDs_LwX9Kwcahfc
-Message-ID: <CANBPYPi8sT0m4bj9JhVn38rrRBg7nV9kduc34QC_edwHS-wNZg@mail.gmail.com>
-Subject: Re: Fwd: [PATCH v16 2/3] binder: report txn errors via generic netlink
-To: Carlos Llamas <cmllamas@google.com>
-Cc: "Cc:" <dualli@google.com>, corbet@lwn.net, davem@davemloft.net, 
-	edumazet@google.com, Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com, 
-	donald.hunter@gmail.com, Greg KH <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, tkjos@android.com, 
-	maco@android.com, "Joel Fernandes (Google)" <joel@joelfernandes.org>, brauner@kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>, omosnace@redhat.com, shuah@kernel.org, arnd@arndb.de, 
-	masahiroy@kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>, 
-	Simon Horman <horms@kernel.org>, tweek@google.com, LKML <linux-kernel@vger.kernel.org>, 
-	linux-doc@vger.kernel.org, netdev@vger.kernel.org, selinux@vger.kernel.org, 
-	Hridya Valsaraju <hridya@google.com>, smoreland@google.com, ynaffit@google.com, 
-	Android Kernel Team <kernel-team@android.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 12, 2025 at 1:14=E2=80=AFPM Carlos Llamas <cmllamas@google.com>=
- wrote:
->
-> On Wed, Mar 12, 2025 at 11:49:02AM -0700, Li Li wrote:
-> > > > +     mutex_lock(&binder_procs_lock);
-> > > > +     hlist_for_each_entry(proc, &binder_procs, proc_node) {
-> > > > +             if (proc->pid =3D=3D pid)
-> > > > +                     break;
-> > >
-> > > Wait... can't there be multiple binder_proc instances matching the sa=
-me
-> > > pid? I know that binder_proc is a bit of a misnomer but what should y=
-ou
-> > > do in such case? Shouldn't you set the flags in _all_ matching pids?
-> > >
-> > > Furthermore, there could be a single task talking on multiple context=
-s,
-> > > so you could be returning the 'proc' that doesn't match the context t=
-hat
-> > > you are looking for right?
-> > >
-> >
-> > You're right. I should update this logic to search the process within a
-> > certain binder_context only.
->
-> Also, note the comment about multiple 'struct binder_proc' matching the
-> same desired pid.
->
+Calls to the openat(2) family of syscalls are mediated by the file_open LSM
+hook, but the opening of O_PATH file descriptors completely bypasses LSM
+mediation, preventing LSMs from initializing LSM file security context
+blobs for such file descriptors for use in other mediation hooks.
 
-Yes, multiple matching can be found when the context is not specified.
-I'll take care of that as well.
+This patchset enables mediation of O_PATH file descriptors through the
+file_open hook and updates the LSMs using that hook to unconditionally
+allow creation of O_PATH fds, in order to preserve the existing behavior.
+However, the LSM patches are primarily meant as a starting point for
+discussions on how each one wants to handle O_PATH fd creation.
 
-> > > > +static void binder_netlink_report(struct binder_context *context, =
-u32 err,
-> > > > +                               u32 pid, u32 tid, u32 to_pid, u32 t=
-o_tid,
-> > >
-> > > Instead of all these parameters, is there a way to pass the transacti=
-on
-> > > itself? Isn't this info already populated there? I think it even hold=
-s
-> > > the info you are looking for from the 'binder_transaction_data' below=
-.
-> > >
-> >
-> > The binder_transaction_data doesn't include all of pid, tid, to_pid and=
- to_tid.
->
-> I'm not referring to binder_transaction_data, I mean 'struct
-> binder_transaction'. I _think_ this should have all you need?
->
+Ryan Lee (6):
+  fs: invoke LSM file_open hook in do_dentry_open for O_PATH fds as well
+  apparmor: explicitly skip mediation of O_PATH file descriptors
+  landlock: explicitly skip mediation of O_PATH file descriptors
+  selinux: explicitly skip mediation of O_PATH file descriptors
+  smack: explicitly skip mediation of O_PATH file descriptors
+  tomoyo: explicitly skip mediation of O_PATH file descriptors
 
-Ah, yes, let me take a closer look and optimize this. Thanks!
+ fs/open.c                  |  7 ++++++-
+ security/apparmor/lsm.c    | 10 ++++++++++
+ security/landlock/fs.c     |  8 ++++++++
+ security/selinux/hooks.c   |  5 +++++
+ security/smack/smack_lsm.c |  4 ++++
+ security/tomoyo/file.c     |  4 ++++
+ 6 files changed, 37 insertions(+), 1 deletion(-)
 
-> > > > +     ret =3D genlmsg_multicast(&binder_nl_family, skb, 0, BINDER_N=
-LGRP_REPORT, GFP_KERNEL);
-> > >
-> > > Thanks for switching to multicast. On this topic, we can only have a
-> > > single global configuration at a time correct? e.g. context vs per-pr=
-oc.
-> > > So all listeners would ahve to work with the same setup?
-> > >
-> >
-> > We only have a single global configuration, which can include both
-> > context and proc setup.
-> > Yes, all listeners work with the same setup as we have only one
-> > multicast group defined.
-> > The user space code can demux it by checking the context field of the
-> > netlink messages.
->
-> Ack. I understand the demux solution. I was wondering if we'll need to
-> OR the different configurations (per-proc and flags) from each listener
-> in that case.
->
+-- 
+2.43.0
 
-They are already OR'ed from all listeners.
-
-> > > > +TRACE_EVENT(binder_netlink_report,
-> > > > +     TP_PROTO(const char *name, u32 err, u32 pid, u32 tid, u32 to_=
-pid,
-> > > > +              u32 to_tid, u32 reply, struct binder_transaction_dat=
-a *tr),
-> > >
-> > > Similarly here I think you could get away with passing 'struct
-> > > binder_transaction' instead of all the individual fields.
-> > >
-> >
-> > Same as above, the pid/tid fields are not in the struct
-> > binder_transaction (or redacted for oneway txns).
->
-> There is something off here. You have t->from_{pid|tid} and also
-> t->to_{proc|thead} that you can use. Isn't this what you are looking
-> for?
->
-> --
-> Carlos Llamas
 

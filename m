@@ -1,137 +1,145 @@
-Return-Path: <selinux+bounces-3310-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3305-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DF4A85128
-	for <lists+selinux@lfdr.de>; Fri, 11 Apr 2025 03:19:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC4F9A850EF
+	for <lists+selinux@lfdr.de>; Fri, 11 Apr 2025 03:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07451465AEF
-	for <lists+selinux@lfdr.de>; Fri, 11 Apr 2025 01:19:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E33963B5AFC
+	for <lists+selinux@lfdr.de>; Fri, 11 Apr 2025 01:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF169D299;
-	Fri, 11 Apr 2025 01:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621E726FA51;
+	Fri, 11 Apr 2025 01:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="uVi3WdGX"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3fYnMnVt"
 X-Original-To: selinux@vger.kernel.org
-Received: from sonic313-16.consmr.mail.ne1.yahoo.com (sonic313-16.consmr.mail.ne1.yahoo.com [66.163.185.39])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CC7946C
-	for <selinux@vger.kernel.org>; Fri, 11 Apr 2025 01:19:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D33A94F
+	for <selinux@vger.kernel.org>; Fri, 11 Apr 2025 01:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744334353; cv=none; b=B93gnlt2trcFvYlQulCxyJhR9gEaLcAhHUOSPF4KREf/hnxWuesqJpIIzVj+TP/ZIsN1gfu6viFekRQ4wo3YYUj24gYMvsZ0Xv9xOO7UkZStW+jvRgEHvv0KeDjvnvMoLO2BcQIx99EKpvV35Sv4dmazzWZKpqbwG2e813vhVEI=
+	t=1744333558; cv=none; b=j5HB7sOs2pgr2mhMd1g18O3R3YiCa8vLpMLq03fuAnNw+mowvvXbxEsGOkoL7lvkmYkQaxSM6oa+627uuFx3N/uQb0bSFFZQILlr5XfjbB5P0rabSZJ5glpS6OY5gvGvw+GZUcr/pgf4zubeZrMSYffgw4hPOaQ78ZpSRwnDZFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744334353; c=relaxed/simple;
-	bh=bGyPUyI2VTEZCCu4Gg2nbEgKRDX4SV2djzd8qMStHrE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HO0BkAH1f22CYddr/kjimS5DqSo09qSuIGi7yMxFTc0tu212IMANsEMHZderT0ggOOmGridSSlhDoVQK1fUVaXDJ6s3Zz2c1oizCMfrj/YoljsUEylTd3rh5KibxJs53xMYj2t0Yje+QkAwazgZlxugnrR7XpLhfdwaFzhJ2IB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=uVi3WdGX; arc=none smtp.client-ip=66.163.185.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744334350; bh=+gfBpPZikXi3DUtgUbivPiG8JP42rMRyPjo+JoS6oVg=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=uVi3WdGXNlAdOXRC9AbKobYFjxBdqk8Z9bhbnoi8ZM1QE9nvjXd0DOVVDnH/vdt2DVF645HslerW/QsxF+8onFHIjNJnZYGS0p/6TzLLLWTdkCslVfegPHOEc8gj37mDD8Pc54FwG17ano8blwwkiQTUmfHxch0yoN9Eqa3HhA9FDX/GRy8oh9aqSzzi1Ooxdt3TA1VW0mqiVc6vp5Rdzc5v+UPyA3SvP6sIJ7x2/5Rp1vx7AvpJSroa9E8RyEy+Z9GsXXUcxFgidKbKUHXsoX254SwHI9UwCMUwXo2OR7qBpS8he2oq5n5A+DSF1gvPULycSzPa67k2HkLpwiD3Fg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744334350; bh=rcgsT+u7/T9dPBEFkxC48H+DMGKGEpuqp3dxt+YuRRE=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=L0/Id6Oa/V4JfOPE3t+/6On+NGACJBJr1oYfD+QQnqt/U00LMYRHnnaJHyHhQv4scFl/44gFekrAzsF4Cwb8d8cDkYQsPf6mSP7qpy+20APTtv2uwABgEYg+KELREYbugwlyndVoaeoN174Ik3Rz/pkBWOuOX22JUlJIICwl9UYBvNbzazDmiDiKuTc14LYKYVf+EECXs8D6zwpyaSyNqX7hl5/LXMyC9PjrcOooMcLRHwvJZ3H0yiASTvgn+++U5xJeOtg9juk5ZrMZLCDRmzyeJVCLSklONEJAS2lRekMoli81a5jrkiV+XfP7CvZEv5rt0CFc/TKZ5J4S2OglEw==
-X-YMail-OSG: H6TaDp0VM1kjLMjzWBzpKFbx0WrV2HH7jQLw3QQ4xn2AyK23xoadF1ebeqpFxaV
- eaW6_YeCK.cE_jdd.4YjrSJQrtwql6kgYAI7DZXpciDbB84AEaRdyf0BFZlssCfjrCIO2QVA_pTh
- MaDY5etFZHp36_y_.pzc6YeI6X_nn8Xe.XSyOSZ7w7ESKR5gCs_0qMuMH6DQ1ug7uQD_rciOKGUQ
- d7Nuhc8zyDhVhL9lH62YcdbtaVwkb5NSZm4DKy.mGyjn2u8jmEsHAC7E5Fv4iAqwzDTleskspmhZ
- Cj.95gkOKFW50iaWKqh1G_x6rd848BCTcgeF6WxClR4YgjYf9J6fWgSgnGSyO0MwvJHvmXtmpaz6
- 7Y_UmheTp7DS9G4X4eeEFAF7kasTHnPvSDttHT19pP7i7frMQDsq2KMGfYk48qYRHkYsb1Q.mxF5
- L9JE7gNCOGaO_MtYacZA186tKz3K5xcDOECGr5ln9tZtjwgqIPUdE.BjDMJRw2wrdA7lcfeS1ahZ
- v3v_cE7.O2.g6_AEw8tXcXsnxBdMUgWcXsv6td3a6eJ8EUjjvU_HljOXYSdfOba0DzkkqcGUwKXO
- DwN.uuQULWoU6lv0fO7R4_CDJ8JlEr0ADTv7OQvd3i2aNAvXOyuxgJ9QvaJ0vNpqSykvYKk1SVpu
- k9yxOGwuECbbA8r7ORM3.9.VP6cCHEP9T6lEyVX1uH_C6qckZS6LrOx4CiqoCKjOF5VgxcU_GAL2
- qf5nPz8cwiEsptLez26heM0qQ_wMerUeWvzTDUiPdz773Y6pfal7ZoKTDEjJYKmgvwd6qTXM1w1Y
- LRi7pckOfjL5oyyUQuqsrloPrcwC.1OLWvOjMilPl4UtHLyYCqjAnRbmvOTp_N6poJtG_qCW58j1
- 1nwYssfKc3YrEvsw.sgLLXp7WOCGCAO.d5hpWviRDNFpRzbVevLLDcOJjb5INAdrJhItbBEx5cCs
- 7J152sobkJYP3hkpy_saDGPqn2TkBeIQiIH_3ZPeuSaUq_52VvrzI.svMCX73kHUlrNZPUHsnhUb
- fFTMs32UNOZqqUjBIU2w6XTMpOXc3lBVk1qlY.jQATkoFTcamCuC897P6y5aSQ4wKQx_YegL88r1
- u4sz65LBPfG5mwu.eZi4blAU_ZRvFqMPTp8B5RT.NvYdkVXl8E5jO_f1HF1iD8Z_5fzgAztKggyd
- EibHp0HEcW8tNaFVxnrF6vNt46eSnwLiagh_NiulNU3fVQ5wsSSnmtj2cv_ZnSPfV_BZOTzBao7t
- HmGKTD3f0pT1RAjxa.3cNTSzB7gZYL1Q3j0LYEBjbQqr7zGp1LgYv_IiAGYWES3i5GxwqEkj.52Y
- KwGwgERcSZGQEy7VM6fJCBa2j97QyFjz8OFsP866Jd0oO8Y0G8czgO.ywIoIuXQjqd5MyfDJ.MWf
- I9TOCRLFc7nB2WCaYbikVncCVK9WampNeI4phPZhh8doLPyiRPrBuNG7MYjOVt2lUujamodQ5Gpk
- g3YqFxW1N8yrPwN52EP4AR5CzsscPLiMe7s67TWDIfGq3ChvYnBm9ACcYPRlEbZmVkENmuwk81K3
- cg7ZzPXF4fIQ1K3uYTQrer0nSUThheOOUVoZ63YgZ.lnGLqAO8XcSIjgdef0GixITSxWyEZJLdju
- BPBVnnKzgdyG1LcsrEL8.pL9OXZQ7thFGI3zkCsbFw0ast3Yxxxn1UZP5Ze7_U1Ez3LvAyG9yAOJ
- c2bQEqPyAZHDscGO1Ti_Ld_sBr4hdSGgj7VXzUzPPC.qet3cx33TqjmaJGyHXaxBH8bhjKBIj6dj
- lMc6RFo8wcyCAkysEFOkEH3XEDIYAxvv9hOrVe6oczD7ygAXeCoZjH0iInxACl2bKDAu0g6uZxMt
- OqaJ2T3KnRy3T_UjrxUakYQUEij4InJ3BiDueBY1H_hSHu0TEXIe_T6vTCHCzB5pepAfPzy4b6bG
- 4WGKTUoHq8mtwwtKyktlmWwwOstovoEiOKPBcs2yCZMLUJeeXWZBMkrBVdKXCmnTIWiLXNenOH8.
- Ade1zCXGLlGSRypwel86BWKTDMAqzk77cHY8vTXwc3Iigji1e3KAQz6US0Elz90iB1n1AmSIQvzo
- BLkdXdl9rXpGBGKnTQYVJKkKE2WfDA6NL6ujq6hzf7MoU7CeP5.gIMZr_bW7Fm7aBC829qmUN8mg
- VP4Fg1BQEu.6HJ4j00VFmDBd9Xsea2c09cYs8JRAKEzCP7XdeXO5MO6BkNPHmrYb1HjX2el3ai19
- sxuj8AVZR6xJEVeKNlOqlLsJL4jNqWF0FjwuSiWJdQc_5ML3RSb3M276GPf0bR4dzuSSU5zOaUeT
- cXpCvZNeKE7dlXpWby9e.xMBevppOj0gq
-X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: 79ac8f6b-f216-4850-9c7e-a007caa7459f
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Fri, 11 Apr 2025 01:19:10 +0000
-Received: by hermes--production-gq1-6f8bfcd964-g7jn2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e936a47855da028a6f6000b5683c216e;
-          Fri, 11 Apr 2025 00:58:55 +0000 (UTC)
-Message-ID: <63b4c34d-94f5-4da6-88cc-98a808d418f7@schaufler-ca.com>
-Date: Thu, 10 Apr 2025 17:58:56 -0700
+	s=arc-20240116; t=1744333558; c=relaxed/simple;
+	bh=eMQ42uaCVgoQW6UEJex7zBUEe/rqSGyq/LDG4aLsMcg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=AG3MjUuj7wfHkIbXeRPvhKWSLOfjH71mWxr83g66SeFYEmWVGmAOUlTgMGbGTL7Qwr54W0H5R3Trtjc7aH5DjvllbX9sQ9C/RmFqOGwN8JOYR4WSf00+CcTHvyTD1IUz7RjAHVKrIwe2b7VPW4wHcFSo2f+u3Cyc6qNw6hhVz3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--inseob.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3fYnMnVt; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--inseob.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-2ff7cf599beso1437327a91.0
+        for <selinux@vger.kernel.org>; Thu, 10 Apr 2025 18:05:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1744333556; x=1744938356; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/tEtayjpNpg7l3rJrur7NWi3vgxYjam8ErRGY57K79A=;
+        b=3fYnMnVtTZm0ObbC6fO+WGwGUtYIC/Pq7sR346ZIIYpgYqv1OR/xSM7aQrK0ZZaeq/
+         jmEqapYXJ2NBiE8yHdwVwRjsyg8KkN7OhbH5sBcB0TTiiPVzVeI9kgX0ZCmSZxlTSiaW
+         0DxZrBOlLfrGM6Xzh+m96t99mUPlMuEW/fg4fRO/ODD8H8OAMJWY8VabmyJAWcQMBPGU
+         OLxR2m6/pNJ4LS3yPVOViTQaYZewgNNKIIKCdC5rPqHty1z+9XRJj96g5CTuAOioKYkJ
+         h3nKuKQnJSzkQRhqpM2/s+4Y9l9rvS0EAnKaYkT2snetbucTORfEsEz+sS9An4pvsngx
+         0Bag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744333556; x=1744938356;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/tEtayjpNpg7l3rJrur7NWi3vgxYjam8ErRGY57K79A=;
+        b=BSko2z/QQ+MlqCDQ8h2c1+mh2DW11F0SljseBNfA4bOT8ibiqKGfc0fSWIHm6zAQ1W
+         nYdHFCZxKFwdZUgUrqFKZg9LD9TfbVuyru9tdhggUlcxUtoCvzzW78CHpXRHoRvNUhPz
+         oibt4JANwHVca+c19F3iX0U5s/6ebqLcZAaAYfWfe2FfCz1XydK1a/T+tzkjDcGECdv4
+         dZPHhYV70NFuxpIOrxa00QrZgRgLhwvl7kPsWTkWbr0Ioq62iIsux4nkx0qB/42SZ3OB
+         B1jYg6FFs9DFL5Zbb7SanuuGnKmHWT5E/ZKfMXTZgwpqDslwO8iPxk6RWa04KtOeb8vv
+         AvBg==
+X-Gm-Message-State: AOJu0YzPn4pl1xJnxrI5lW1cqUk6jtEzRs7+oL1aN7YNa7sSjW23Kare
+	kJfofXe5X54BFVtGSmOv8llwet69x4iJ4GVZbKH4p7y0qF3ZnK+PsBP++QRFaXVtnj32mkbHaxT
+	3wYMNBbGrc0mZGnu8xdj1MxBu2LBGXsxRFiIoUH7vtDsDQuoIrR3bYA3eJBI91LUeBvdkc0xko4
+	oBFaWfIvgnfnxDj6ad9yzMPrQZTD6uwh7wdQ==
+X-Google-Smtp-Source: AGHT+IHShWJPsmzggxzVWjEe0vwkK/ITNLNfOwjk0G2XY3oPZuf/booo69dozfXgeNIVegjOl22rXvepg3o=
+X-Received: from pjbsh5.prod.google.com ([2002:a17:90b:5245:b0:2ea:5613:4d5d])
+ (user=inseob job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2804:b0:2fc:a3b7:108e
+ with SMTP id 98e67ed59e1d1-30823675ea4mr1567037a91.4.1744333555962; Thu, 10
+ Apr 2025 18:05:55 -0700 (PDT)
+Date: Fri, 11 Apr 2025 10:05:46 +0900
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 07/29] lsm: rework lsm_active_cnt and lsm_idlist[]
-To: Kees Cook <kees@kernel.org>, Paul Moore <paul@paul-moore.com>
-Cc: linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
- selinux@vger.kernel.org, John Johansen <john.johansen@canonical.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- Fan Wu <wufan@kernel.org>, =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?=
- <mic@digikod.net>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
- Micah Morton <mortonm@chromium.org>,
- Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
- Casey Schaufler <casey@schaufler-ca.com>
-References: <20250409185019.238841-31-paul@paul-moore.com>
- <20250409185019.238841-38-paul@paul-moore.com>
- <202504091603.107B41F4@keescook>
- <CAHC9VhT+yr=Pf=sSpFAO7RbAGejRgQhKPDLppCeOmydfhds5qQ@mail.gmail.com>
- <202504101524.827B6FE55@keescook>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <202504101524.827B6FE55@keescook>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.23665 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.604.gff1f9ca942-goog
+Message-ID: <20250411010549.1688614-1-inseob@google.com>
+Subject: [PATCH v3 1/4] libsepol: Allow booleanif to have info nodes
+From: Inseob Kim <inseob@google.com>
+To: selinux@vger.kernel.org
+Cc: tweek@google.com, jeffv@google.com, Inseob Kim <inseob@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/10/2025 3:25 PM, Kees Cook wrote:
-> On Thu, Apr 10, 2025 at 06:04:38PM -0400, Paul Moore wrote:
->> On Wed, Apr 9, 2025 at 7:06 PM Kees Cook <kees@kernel.org> wrote:
->>> On Wed, Apr 09, 2025 at 02:49:52PM -0400, Paul Moore wrote:
->> ...
->>
->>>> diff --git a/security/lsm_init.c b/security/lsm_init.c
->>>> index edf2f4140eaa..981ddb20f48e 100644
->>>> --- a/security/lsm_init.c
->>>> +++ b/security/lsm_init.c
->>>> @@ -22,8 +22,8 @@ static __initdata const char *lsm_order_cmdline;
->>>>  static __initdata const char *lsm_order_legacy;
->>>>
->>>>  /* Ordered list of LSMs to initialize. */
->>>> -static __initdata struct lsm_info *lsm_order[MAX_LSM_COUNT + 1];
->>>>  static __initdata struct lsm_info *lsm_exclusive;
->>>> +static __initdata struct lsm_info *lsm_order[MAX_LSM_COUNT + 1];
->>> I don't care either way, but why re-order these? Just local reverse
->>> xmas-tree?
->> Sure?
->>
->> Honestly can't say for certain, at this point in the development
->> process I had somewhat resigned myself to having a mess of a patchset
->> so I figured this was an opportunity to make it look "nice" (er?) in
->> my mind, and I suppose at that point that looked better to me ... ?
-> Understood. I think I ordered the original way because I was hopefully
-> we'd remove "exclusive" soon,
+Allowing more info nodes helps debuggability, especially neverallow
+failure reports.
 
-In the pipeline. Small values of "soon".
+Signed-off-by: Inseob Kim <inseob@google.com>
+---
+ libsepol/cil/src/cil_binary.c      | 1 +
+ libsepol/cil/src/cil_build_ast.c   | 1 +
+ libsepol/cil/src/cil_resolve_ast.c | 1 +
+ libsepol/cil/src/cil_verify.c      | 3 +++
+ 4 files changed, 6 insertions(+)
 
->  and it felt better to remove it from the
-> end of a list of variables. *shrug* yay code vibes
->
+diff --git a/libsepol/cil/src/cil_binary.c b/libsepol/cil/src/cil_binary.c
+index e84188a0..b0befda3 100644
+--- a/libsepol/cil/src/cil_binary.c
++++ b/libsepol/cil/src/cil_binary.c
+@@ -2153,6 +2153,7 @@ static int __cil_cond_to_policydb_helper(struct cil_tree_node *node, __attribute
+ 
+ 	case CIL_CALL:
+ 	case CIL_TUNABLEIF:
++	case CIL_SRC_INFO:
+ 		break;
+ 	default:
+ 		cil_tree_log(node, CIL_ERR, "Invalid statement within booleanif");
+diff --git a/libsepol/cil/src/cil_build_ast.c b/libsepol/cil/src/cil_build_ast.c
+index 072d2622..fc11758d 100644
+--- a/libsepol/cil/src/cil_build_ast.c
++++ b/libsepol/cil/src/cil_build_ast.c
+@@ -6164,6 +6164,7 @@ static int check_for_illegal_statement(struct cil_tree_node *parse_current, stru
+ 			parse_current->data != CIL_KEY_AUDITALLOW &&
+ 			parse_current->data != CIL_KEY_TYPETRANSITION &&
+ 			parse_current->data != CIL_KEY_TYPECHANGE &&
++			parse_current->data != CIL_KEY_SRC_INFO &&
+ 			parse_current->data != CIL_KEY_TYPEMEMBER &&
+ 			((args->db->policy_version < POLICYDB_VERSION_COND_XPERMS) ||
+ 			  (parse_current->data != CIL_KEY_ALLOWX &&
+diff --git a/libsepol/cil/src/cil_resolve_ast.c b/libsepol/cil/src/cil_resolve_ast.c
+index a8fa89df..392f03c7 100644
+--- a/libsepol/cil/src/cil_resolve_ast.c
++++ b/libsepol/cil/src/cil_resolve_ast.c
+@@ -3849,6 +3849,7 @@ static int __cil_resolve_ast_node_helper(struct cil_tree_node *node, uint32_t *f
+ 			node->flavor != CIL_AVRULE &&
+ 			node->flavor != CIL_TYPE_RULE &&
+ 			node->flavor != CIL_NAMETYPETRANSITION &&
++			node->flavor != CIL_SRC_INFO &&
+ 			((args->db->policy_version < POLICYDB_VERSION_COND_XPERMS) ||
+ 			 (node->flavor != CIL_AVRULEX))) {
+ 			rc = SEPOL_ERR;
+diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
+index 550b4542..cde9dd41 100644
+--- a/libsepol/cil/src/cil_verify.c
++++ b/libsepol/cil/src/cil_verify.c
+@@ -1176,6 +1176,9 @@ static int __cil_verify_booleanif_helper(struct cil_tree_node *node, __attribute
+ 		   booleanif statements if they don't have "*" as the file. We
+ 		   can't check that here. Or at least we won't right now. */
+ 		break;
++	case CIL_SRC_INFO:
++		//Fall through
++		break;
+ 	default: {
+ 		const char * flavor = cil_node_to_string(node);
+ 		if (bif->preserved_tunable) {
+-- 
+2.49.0.604.gff1f9ca942-goog
+
 

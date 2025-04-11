@@ -1,160 +1,137 @@
-Return-Path: <selinux+bounces-3304-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3310-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662FFA84FCA
-	for <lists+selinux@lfdr.de>; Fri, 11 Apr 2025 00:48:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52DF4A85128
+	for <lists+selinux@lfdr.de>; Fri, 11 Apr 2025 03:19:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE2071B62FCB
-	for <lists+selinux@lfdr.de>; Thu, 10 Apr 2025 22:47:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07451465AEF
+	for <lists+selinux@lfdr.de>; Fri, 11 Apr 2025 01:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF4C20F098;
-	Thu, 10 Apr 2025 22:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF169D299;
+	Fri, 11 Apr 2025 01:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="QBCRfGKZ"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="uVi3WdGX"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+Received: from sonic313-16.consmr.mail.ne1.yahoo.com (sonic313-16.consmr.mail.ne1.yahoo.com [66.163.185.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FF91D5ADE
-	for <selinux@vger.kernel.org>; Thu, 10 Apr 2025 22:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4CC7946C
+	for <selinux@vger.kernel.org>; Fri, 11 Apr 2025 01:19:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.185.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744325247; cv=none; b=eK88P7n/EbhQUh6cb1fvyEzIDErby7Z+ZVOiu3u272vWGyN3RxhE6aXZpgPGK3UXEMcE4xaT0TiWSA4Imc2AjBKpS6GwxsDp3QziGU2glVef7VKfSSiX8rRXXtA5wodH/NGhswzyHAUAZCJUaybuZR1ATRjxKn7W8JUw6b9tQ/Y=
+	t=1744334353; cv=none; b=B93gnlt2trcFvYlQulCxyJhR9gEaLcAhHUOSPF4KREf/hnxWuesqJpIIzVj+TP/ZIsN1gfu6viFekRQ4wo3YYUj24gYMvsZ0Xv9xOO7UkZStW+jvRgEHvv0KeDjvnvMoLO2BcQIx99EKpvV35Sv4dmazzWZKpqbwG2e813vhVEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744325247; c=relaxed/simple;
-	bh=t0WHWF9UD1DRoY8s+UFJorlWHrn+kwq7FR9h9tDwLbs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i81RivntL1GmxJV3/ISHdV0O/fRNSd6ooelp+q2R3jus0VcBr1G75alyIt2netHnicocDpSoN6F0wJn61AGvVKcgH51Upo1JZ//Wm73fLeIusTvY/9UW7HRBspMZ1HiEnlDvMBaVfEWMUmI9Arm3Iv7sYQNG7NzBCWqqkafqkrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=QBCRfGKZ; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-6ef9b8b4f13so13088477b3.2
-        for <selinux@vger.kernel.org>; Thu, 10 Apr 2025 15:47:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1744325244; x=1744930044; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4baDOK+hOnqwwRvcq0Pn8YBJYVT7qAO9stCuIJlFccU=;
-        b=QBCRfGKZ8Q2nF6vILxn8gBd26JMRe5mdu0/0y0Y48tfKlRnJiwOJtrHkVGzCs8pU/q
-         7C6kQFy0tCYukxeP9HUJxQcCCsfK5LGdltmoH+fD68RoDUmEUUxphHkDnscPnnZXfJUV
-         6A6+2POZBCoZbW8qedT5rZqZVuvmUxWYIcZDl13fJ/AkGswNOAuKTLocx40E1yYz30Zw
-         9+YJJ4qK/Lwo/OFAjONG3cPRlGJT0GFtEYmntWiemRWohh9iykpCcH0V3u744fSZQoGl
-         KgqI8Wpw8yf1T089P1DKysTHn/4sYtDG+FktKz347q/Dpn8v+/3EHustnFwQS/XoqXrN
-         d9hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744325244; x=1744930044;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4baDOK+hOnqwwRvcq0Pn8YBJYVT7qAO9stCuIJlFccU=;
-        b=SIDCuwv/zLBCN18u26UArlFfQiapjvFVlT8dGp5UORHkGNQItMvEWdnjFWuJ2O4kX0
-         8bJBSvSUkgKNGDO8XmrDpPArxfIZ98UKKZAoCmipTlxjFAkci8MwOD2I+MT1IDin+AbT
-         w6wjZEK9fa8Oolxd4CrEeI+8N/A7g3Sr5MMzeD2PgCov9QxcY/9y/XL3uK5b17EvcP9E
-         x/jrOX7JPgXNbsRD4YpWpijb2zFxArvQAs7NxAZEm87pUS7DKOC6fbfaPF6FwA/etC7D
-         dzmCle0xa+v+VqItQPG9h3Q5sOwPapUY8LIfN3sdQLls2wQyb3CWIFnNdcsoiUXiR1Q3
-         hyRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGymnLMr8wzXs4+KU1Pzot1ZXDewvRIS6j/D3u0aZtJLjjzN0fWGc92W/NLck9q+0+Ul4FqAn6@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtlhNuC8hoc/Cx4/hH3I3c2OiFsU0Q/Rf4UeJx8seHupZ5xlNo
-	2cRszesgNU1sN/JGi5ywoM+VsQCbNCsla80FGNrvgnlIPAtGNbMumQGbt0ejvW5x089wW1KyJux
-	jpXZ8lDbwyVcpLWg5U2ZnKDkKi7Hb9JLg/I6z
-X-Gm-Gg: ASbGncvxGVoRHYfvqs+iJhqGcMFSUVf7FKfZ8yRrcNFWjtZlUlOZT/1ue0RE2jnYldh
-	gN5nWKqRFAtqegbg/w/wdLiQmWijbZl0hVtfcEnNjfphfH9GCDv3MYljayXgVCStDdnKGpI3at1
-	H0+NLGvV/6DIs0gHpS8KmGuCmhAOe7uKFY
-X-Google-Smtp-Source: AGHT+IFgcMp7/WMc+kqP4e3WnS6Fg1zzj4n+C0a8bspl4n4V7LCbv5x6jMxmdOvw76kxObafg2bPEM2ljqeu7CQkIjo=
-X-Received: by 2002:a05:690c:6aca:b0:702:4fd1:aff with SMTP id
- 00721157ae682-705599ea13dmr12334217b3.20.1744325244291; Thu, 10 Apr 2025
- 15:47:24 -0700 (PDT)
+	s=arc-20240116; t=1744334353; c=relaxed/simple;
+	bh=bGyPUyI2VTEZCCu4Gg2nbEgKRDX4SV2djzd8qMStHrE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HO0BkAH1f22CYddr/kjimS5DqSo09qSuIGi7yMxFTc0tu212IMANsEMHZderT0ggOOmGridSSlhDoVQK1fUVaXDJ6s3Zz2c1oizCMfrj/YoljsUEylTd3rh5KibxJs53xMYj2t0Yje+QkAwazgZlxugnrR7XpLhfdwaFzhJ2IB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=uVi3WdGX; arc=none smtp.client-ip=66.163.185.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744334350; bh=+gfBpPZikXi3DUtgUbivPiG8JP42rMRyPjo+JoS6oVg=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=uVi3WdGXNlAdOXRC9AbKobYFjxBdqk8Z9bhbnoi8ZM1QE9nvjXd0DOVVDnH/vdt2DVF645HslerW/QsxF+8onFHIjNJnZYGS0p/6TzLLLWTdkCslVfegPHOEc8gj37mDD8Pc54FwG17ano8blwwkiQTUmfHxch0yoN9Eqa3HhA9FDX/GRy8oh9aqSzzi1Ooxdt3TA1VW0mqiVc6vp5Rdzc5v+UPyA3SvP6sIJ7x2/5Rp1vx7AvpJSroa9E8RyEy+Z9GsXXUcxFgidKbKUHXsoX254SwHI9UwCMUwXo2OR7qBpS8he2oq5n5A+DSF1gvPULycSzPa67k2HkLpwiD3Fg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1744334350; bh=rcgsT+u7/T9dPBEFkxC48H+DMGKGEpuqp3dxt+YuRRE=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=L0/Id6Oa/V4JfOPE3t+/6On+NGACJBJr1oYfD+QQnqt/U00LMYRHnnaJHyHhQv4scFl/44gFekrAzsF4Cwb8d8cDkYQsPf6mSP7qpy+20APTtv2uwABgEYg+KELREYbugwlyndVoaeoN174Ik3Rz/pkBWOuOX22JUlJIICwl9UYBvNbzazDmiDiKuTc14LYKYVf+EECXs8D6zwpyaSyNqX7hl5/LXMyC9PjrcOooMcLRHwvJZ3H0yiASTvgn+++U5xJeOtg9juk5ZrMZLCDRmzyeJVCLSklONEJAS2lRekMoli81a5jrkiV+XfP7CvZEv5rt0CFc/TKZ5J4S2OglEw==
+X-YMail-OSG: H6TaDp0VM1kjLMjzWBzpKFbx0WrV2HH7jQLw3QQ4xn2AyK23xoadF1ebeqpFxaV
+ eaW6_YeCK.cE_jdd.4YjrSJQrtwql6kgYAI7DZXpciDbB84AEaRdyf0BFZlssCfjrCIO2QVA_pTh
+ MaDY5etFZHp36_y_.pzc6YeI6X_nn8Xe.XSyOSZ7w7ESKR5gCs_0qMuMH6DQ1ug7uQD_rciOKGUQ
+ d7Nuhc8zyDhVhL9lH62YcdbtaVwkb5NSZm4DKy.mGyjn2u8jmEsHAC7E5Fv4iAqwzDTleskspmhZ
+ Cj.95gkOKFW50iaWKqh1G_x6rd848BCTcgeF6WxClR4YgjYf9J6fWgSgnGSyO0MwvJHvmXtmpaz6
+ 7Y_UmheTp7DS9G4X4eeEFAF7kasTHnPvSDttHT19pP7i7frMQDsq2KMGfYk48qYRHkYsb1Q.mxF5
+ L9JE7gNCOGaO_MtYacZA186tKz3K5xcDOECGr5ln9tZtjwgqIPUdE.BjDMJRw2wrdA7lcfeS1ahZ
+ v3v_cE7.O2.g6_AEw8tXcXsnxBdMUgWcXsv6td3a6eJ8EUjjvU_HljOXYSdfOba0DzkkqcGUwKXO
+ DwN.uuQULWoU6lv0fO7R4_CDJ8JlEr0ADTv7OQvd3i2aNAvXOyuxgJ9QvaJ0vNpqSykvYKk1SVpu
+ k9yxOGwuECbbA8r7ORM3.9.VP6cCHEP9T6lEyVX1uH_C6qckZS6LrOx4CiqoCKjOF5VgxcU_GAL2
+ qf5nPz8cwiEsptLez26heM0qQ_wMerUeWvzTDUiPdz773Y6pfal7ZoKTDEjJYKmgvwd6qTXM1w1Y
+ LRi7pckOfjL5oyyUQuqsrloPrcwC.1OLWvOjMilPl4UtHLyYCqjAnRbmvOTp_N6poJtG_qCW58j1
+ 1nwYssfKc3YrEvsw.sgLLXp7WOCGCAO.d5hpWviRDNFpRzbVevLLDcOJjb5INAdrJhItbBEx5cCs
+ 7J152sobkJYP3hkpy_saDGPqn2TkBeIQiIH_3ZPeuSaUq_52VvrzI.svMCX73kHUlrNZPUHsnhUb
+ fFTMs32UNOZqqUjBIU2w6XTMpOXc3lBVk1qlY.jQATkoFTcamCuC897P6y5aSQ4wKQx_YegL88r1
+ u4sz65LBPfG5mwu.eZi4blAU_ZRvFqMPTp8B5RT.NvYdkVXl8E5jO_f1HF1iD8Z_5fzgAztKggyd
+ EibHp0HEcW8tNaFVxnrF6vNt46eSnwLiagh_NiulNU3fVQ5wsSSnmtj2cv_ZnSPfV_BZOTzBao7t
+ HmGKTD3f0pT1RAjxa.3cNTSzB7gZYL1Q3j0LYEBjbQqr7zGp1LgYv_IiAGYWES3i5GxwqEkj.52Y
+ KwGwgERcSZGQEy7VM6fJCBa2j97QyFjz8OFsP866Jd0oO8Y0G8czgO.ywIoIuXQjqd5MyfDJ.MWf
+ I9TOCRLFc7nB2WCaYbikVncCVK9WampNeI4phPZhh8doLPyiRPrBuNG7MYjOVt2lUujamodQ5Gpk
+ g3YqFxW1N8yrPwN52EP4AR5CzsscPLiMe7s67TWDIfGq3ChvYnBm9ACcYPRlEbZmVkENmuwk81K3
+ cg7ZzPXF4fIQ1K3uYTQrer0nSUThheOOUVoZ63YgZ.lnGLqAO8XcSIjgdef0GixITSxWyEZJLdju
+ BPBVnnKzgdyG1LcsrEL8.pL9OXZQ7thFGI3zkCsbFw0ast3Yxxxn1UZP5Ze7_U1Ez3LvAyG9yAOJ
+ c2bQEqPyAZHDscGO1Ti_Ld_sBr4hdSGgj7VXzUzPPC.qet3cx33TqjmaJGyHXaxBH8bhjKBIj6dj
+ lMc6RFo8wcyCAkysEFOkEH3XEDIYAxvv9hOrVe6oczD7ygAXeCoZjH0iInxACl2bKDAu0g6uZxMt
+ OqaJ2T3KnRy3T_UjrxUakYQUEij4InJ3BiDueBY1H_hSHu0TEXIe_T6vTCHCzB5pepAfPzy4b6bG
+ 4WGKTUoHq8mtwwtKyktlmWwwOstovoEiOKPBcs2yCZMLUJeeXWZBMkrBVdKXCmnTIWiLXNenOH8.
+ Ade1zCXGLlGSRypwel86BWKTDMAqzk77cHY8vTXwc3Iigji1e3KAQz6US0Elz90iB1n1AmSIQvzo
+ BLkdXdl9rXpGBGKnTQYVJKkKE2WfDA6NL6ujq6hzf7MoU7CeP5.gIMZr_bW7Fm7aBC829qmUN8mg
+ VP4Fg1BQEu.6HJ4j00VFmDBd9Xsea2c09cYs8JRAKEzCP7XdeXO5MO6BkNPHmrYb1HjX2el3ai19
+ sxuj8AVZR6xJEVeKNlOqlLsJL4jNqWF0FjwuSiWJdQc_5ML3RSb3M276GPf0bR4dzuSSU5zOaUeT
+ cXpCvZNeKE7dlXpWby9e.xMBevppOj0gq
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 79ac8f6b-f216-4850-9c7e-a007caa7459f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ne1.yahoo.com with HTTP; Fri, 11 Apr 2025 01:19:10 +0000
+Received: by hermes--production-gq1-6f8bfcd964-g7jn2 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID e936a47855da028a6f6000b5683c216e;
+          Fri, 11 Apr 2025 00:58:55 +0000 (UTC)
+Message-ID: <63b4c34d-94f5-4da6-88cc-98a808d418f7@schaufler-ca.com>
+Date: Thu, 10 Apr 2025 17:58:56 -0700
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250409185019.238841-31-paul@paul-moore.com> <20250409185019.238841-39-paul@paul-moore.com>
- <202504091607.0A394D5EF@keescook>
-In-Reply-To: <202504091607.0A394D5EF@keescook>
-From: Paul Moore <paul@paul-moore.com>
-Date: Thu, 10 Apr 2025 18:47:12 -0400
-X-Gm-Features: ATxdqUEutKgeD2WmDngbQutC5jk-ZnYZE3BJM25bNgtT7teaIomg7a1L8VFk-FY
-Message-ID: <CAHC9VhS4nB2xV-zw+=eN2MYaetvCkParammXn1fPGsm-wuHtTw@mail.gmail.com>
-Subject: Re: [RFC PATCH 08/29] lsm: get rid of the lsm_names list and do some cleanup
-To: Kees Cook <kees@kernel.org>
-Cc: linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
-	selinux@vger.kernel.org, John Johansen <john.johansen@canonical.com>, 
-	Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>, 
-	Fan Wu <wufan@kernel.org>, =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Micah Morton <mortonm@chromium.org>, Casey Schaufler <casey@schaufler-ca.com>, 
-	Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 07/29] lsm: rework lsm_active_cnt and lsm_idlist[]
+To: Kees Cook <kees@kernel.org>, Paul Moore <paul@paul-moore.com>
+Cc: linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
+ selinux@vger.kernel.org, John Johansen <john.johansen@canonical.com>,
+ Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
+ Fan Wu <wufan@kernel.org>, =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?=
+ <mic@digikod.net>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
+ Micah Morton <mortonm@chromium.org>,
+ Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+ Casey Schaufler <casey@schaufler-ca.com>
+References: <20250409185019.238841-31-paul@paul-moore.com>
+ <20250409185019.238841-38-paul@paul-moore.com>
+ <202504091603.107B41F4@keescook>
+ <CAHC9VhT+yr=Pf=sSpFAO7RbAGejRgQhKPDLppCeOmydfhds5qQ@mail.gmail.com>
+ <202504101524.827B6FE55@keescook>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <202504101524.827B6FE55@keescook>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.23665 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Wed, Apr 9, 2025 at 7:13=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+On 4/10/2025 3:25 PM, Kees Cook wrote:
+> On Thu, Apr 10, 2025 at 06:04:38PM -0400, Paul Moore wrote:
+>> On Wed, Apr 9, 2025 at 7:06 PM Kees Cook <kees@kernel.org> wrote:
+>>> On Wed, Apr 09, 2025 at 02:49:52PM -0400, Paul Moore wrote:
+>> ...
+>>
+>>>> diff --git a/security/lsm_init.c b/security/lsm_init.c
+>>>> index edf2f4140eaa..981ddb20f48e 100644
+>>>> --- a/security/lsm_init.c
+>>>> +++ b/security/lsm_init.c
+>>>> @@ -22,8 +22,8 @@ static __initdata const char *lsm_order_cmdline;
+>>>>  static __initdata const char *lsm_order_legacy;
+>>>>
+>>>>  /* Ordered list of LSMs to initialize. */
+>>>> -static __initdata struct lsm_info *lsm_order[MAX_LSM_COUNT + 1];
+>>>>  static __initdata struct lsm_info *lsm_exclusive;
+>>>> +static __initdata struct lsm_info *lsm_order[MAX_LSM_COUNT + 1];
+>>> I don't care either way, but why re-order these? Just local reverse
+>>> xmas-tree?
+>> Sure?
+>>
+>> Honestly can't say for certain, at this point in the development
+>> process I had somewhat resigned myself to having a mess of a patchset
+>> so I figured this was an opportunity to make it look "nice" (er?) in
+>> my mind, and I suppose at that point that looked better to me ... ?
+> Understood. I think I ordered the original way because I was hopefully
+> we'd remove "exclusive" soon,
+
+In the pipeline. Small values of "soon".
+
+>  and it felt better to remove it from the
+> end of a list of variables. *shrug* yay code vibes
 >
-> On Wed, Apr 09, 2025 at 02:49:53PM -0400, Paul Moore wrote:
-> > The LSM currently has a lot of code to maintain a list of the
-> > currently active LSMs in a human readable string, with the only
-> > user being the "/sys/kernel/security/lsm" code.  Let's drop all
-> > of that code and generate the string on an as-needed basis when
-> > userspace reads "/sys/kernel/security/lsm".
-> >
-> > Signed-off-by: Paul Moore <paul@paul-moore.com>
-> > ---
-> >  include/linux/lsm_hooks.h |  1 -
-> >  security/inode.c          | 27 +++++++++++++++++++--
-> >  security/lsm_init.c       | 49 ---------------------------------------
-> >  3 files changed, 25 insertions(+), 52 deletions(-)
-
-...
-
-> > @@ -343,8 +345,29 @@ static struct dentry *lsm_dentry;
-> >  static ssize_t lsm_read(struct file *filp, char __user *buf, size_t co=
-unt,
-> >                       loff_t *ppos)
-> >  {
-> > -     return simple_read_from_buffer(buf, count, ppos, lsm_names,
-> > -             strlen(lsm_names));
-> > +     int i;
-> > +     char *str;
-> > +     ssize_t rc, len =3D 0;
-> > +
-> > +     for (i =3D 0; i < lsm_count; i++)
-> > +             /* the '+ 1' accounts for either a comma or a NUL termina=
-tor */
-> > +             len +=3D strlen(lsm_order[i]->id->name) + 1;
-> > +
-> > +     str =3D kmalloc(len, GFP_KERNEL);
-> > +     if (!str)
-> > +             return -ENOMEM;
-> > +     str[0] =3D '\0';
-> > +
-> > +     i =3D 0;
-> > +     while (i < lsm_count) {
-> > +             strcat(str, lsm_order[i]->id->name);
-> > +             if (++i < lsm_count)
-> > +                     strcat(str, ",");
-> > +     }
-> > +
-> > +     rc =3D simple_read_from_buffer(buf, count, ppos, str, len);
-> > +     kfree(str);
-> > +     return rc;
->
-> Hrm, at least cache it?
-
-Are you aware of a performance critical use of this?
-
-> Better yet, do this whole thing in a initcall after LSMs are loaded, and
-> both can gain __ro_after_init...
-
-I *really* disliked all the stuff we were having to do during boot,
-and all the redundant global state we were keeping around.  I'll go
-ahead and cache the lsm_read() result local to the function but that's
-probably all I'm going to accept at this point in time.
-
---=20
-paul-moore.com
 

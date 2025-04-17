@@ -1,114 +1,65 @@
-Return-Path: <selinux+bounces-3399-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3401-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FBA6A9102D
-	for <lists+selinux@lfdr.de>; Thu, 17 Apr 2025 02:21:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9AA1A91181
+	for <lists+selinux@lfdr.de>; Thu, 17 Apr 2025 04:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BD7B446F2E
-	for <lists+selinux@lfdr.de>; Thu, 17 Apr 2025 00:21:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50FF65A30E0
+	for <lists+selinux@lfdr.de>; Thu, 17 Apr 2025 02:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A3B1991CB;
-	Thu, 17 Apr 2025 00:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4250F1B043C;
+	Thu, 17 Apr 2025 02:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="F4zrrPWI"
+	dkim=pass (1024-bit key) header.d=midstall.com header.i=tristan.ross@midstall.com header.b="HYUZEDMi"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C25619AA5D
-	for <selinux@vger.kernel.org>; Thu, 17 Apr 2025 00:20:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1744849223; cv=none; b=FDfnrOL+9YXRKfaU3HUd7QGZ0C5U+XoGuZv8EM+a0wLSLKQjl1PnctvELynbL17stv5fLBlRVSc3t3xm8Aa/+YfPwszhCyeT4Xb9EBsqhMQu80+vQLAmWzc1iO7HKxTxWl1N/LTE9qCQlmX0v9aC5TptlI5pdWmdb0gws+yn85E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1744849223; c=relaxed/simple;
-	bh=VP42e3JZfKvbDI0ooyfOHhztdSFzkob0S0fpP+PH/Ik=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F611AB52F
+	for <selinux@vger.kernel.org>; Thu, 17 Apr 2025 02:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1744855830; cv=pass; b=KHvBYCtP6VutCn9HmAqr/eHaYcKzJ2bBvquMP8AKBNrzBuS+oyF8BwtX68yYZ2N+o2G6mThrS6d3aUJg5BYLJW02+imjpvvgGFDEzsAY7k57o7lEp8nhy5Vo/jR+9mEpGnKOm6zNhjAYeBoX7+pLu7IlhKfGhWkrsJNmwjL8XBI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1744855830; c=relaxed/simple;
+	bh=loL6F8Psg+Qoyy0GjQG2xDssyKqkHgjuR4jeQJWk0f0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Slvsp1doUX2WNBnuX9PLMkXn6vKTJa7LOSIInvru47EhO18DLL8dqidT1F0X0+8o5LVwhajZRljMP4HukyQtJy9Fqj72BwoATa6UO5TaU6rCsIum/kuPXVovWicYg1L2O7WfhIKpxQ9z7K7xqvGYzPE+HHzY4rHssOmL8R92jGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=F4zrrPWI; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-22438c356c8so2606345ad.1
-        for <selinux@vger.kernel.org>; Wed, 16 Apr 2025 17:20:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1744849220; x=1745454020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9d1zeenHo/WIdiHzlhPJ54CYp3ToWYLsArkbPVUXbsw=;
-        b=F4zrrPWIcguk6SioFjSVXIiXyEy1gtu7ZE2ypRomNPScixTqH2uAXuJ9jTZf87VCmk
-         Mh9p5vWCdxKR50xcZujHBmV1mC8RMhGpB6PBuX9zBON0wbo7Oa+J5Rbs2UzVH8zJnS1v
-         MhTTbEvU9KnUTXI/4VTdZIJ1DjLslX+pb9z10=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744849220; x=1745454020;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9d1zeenHo/WIdiHzlhPJ54CYp3ToWYLsArkbPVUXbsw=;
-        b=G3wyCSlGAKHYg7U8o/mC/MqDywVLD5V8yCt2u1mCjg5W7de49U6VOWzgQuayPGKWEe
-         Ey6c4NsKYbBzU1YmXOLggcB28ubXl0w/gmd9xNzg9oP411eZNXsmYApFXc/80kp4GJoj
-         D5viVJ6JqmK5u3MwkZeQNtsQJXdlfEGUpkMP99Q49prFZtx9JXT2XUw5yo6knQ7xH5Po
-         bBWUVHiThJqgQeKWctyu0AXDGHRERKDHEX/wZL7hBcw3WoZahZsvi93rouAsMzjl0fOt
-         hMXUVAlzA7xxQPDChI/QM12QeEqfMnW9nMCSk+ip9CzaOaTxVy/5VAkJcpxw67tPDB64
-         pmNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVIDzioEEvOK1Vznib7Z/5QimBZawffptIgDz3osSlaYdR8I/Ul+/d8rgYvibmoK7VC5RrdLvg5@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjKHs/tn6Awi89Ex1KTV3m8DX0Euf58AP6L3Q964JeV+anrxgr
-	ijtjQJFqIJmWaJbwC9b9ni+e+KRKnn8xPNZZ971Spj7aF7PW/JV3BzPkfvKoVw==
-X-Gm-Gg: ASbGncsDE6p6dQioN+n1wb+I/rxAK3dKkPwWO6AIx+yuJctwMMiFxrYXDSkZ7WTX4vF
-	3wptapCbjqltC0wokZbK8DThodIMzKq/yD5OufQZn6Oehh12m0vCJEO8INb3JWkW7qN2RayrQ+i
-	RPCh/bWrYk5X2DnX0ojTGDvsnWaLsO3iNesCL75V7Rgv6RCnjdeo4ETvhfjxMjoEJpkj3RcU/5G
-	UyLH0A4IUQbfUZmYJ0rcYBQNBYz84SxSmQ68UuSeFnBfD0W7gFpQKoqNF8w19jwVaRTsfwZ8udC
-	jlRdQztXhcljXDtF/yZKjtZl/qcc9BYODafThAs0CqmIbIHJN94Ii5cicmymau6SQUcF/F3bIqE
-	mprPmc8W2/0h5MrGqOUJhYHe/9B8kzPJu
-X-Google-Smtp-Source: AGHT+IFzYIV/9mXR0m0O/AxlmrF16OfOBFQ+0jrJUZKzp7v11JEoGIiIxamuwnoqAODi21WwPq6gSg==
-X-Received: by 2002:a17:903:19cf:b0:223:f9a4:3f99 with SMTP id d9443c01a7336-22c3591883bmr62046785ad.29.1744849220600;
-        Wed, 16 Apr 2025 17:20:20 -0700 (PDT)
-Received: from li-cloudtop.c.googlers.com.com (132.197.125.34.bc.googleusercontent.com. [34.125.197.132])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33f1cd87sm20719205ad.73.2025.04.16.17.20.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Apr 2025 17:20:20 -0700 (PDT)
-From: Li Li <dualli@chromium.org>
-To: dualli@google.com,
-	corbet@lwn.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	donald.hunter@gmail.com,
-	gregkh@linuxfoundation.org,
-	arve@android.com,
-	tkjos@android.com,
-	maco@android.com,
-	joel@joelfernandes.org,
-	brauner@kernel.org,
-	cmllamas@google.com,
-	surenb@google.com,
-	omosnace@redhat.com,
-	shuah@kernel.org,
-	arnd@arndb.de,
-	masahiroy@kernel.org,
-	bagasdotme@gmail.com,
-	horms@kernel.org,
-	tweek@google.com,
-	paul@paul-moore.com,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	netdev@vger.kernel.org,
-	selinux@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	hridya@google.com
-Cc: smoreland@google.com,
-	ynaffit@google.com,
-	kernel-team@android.com
-Subject: [PATCH RESEND v17 3/3] binder: transaction report binder_features flag
-Date: Wed, 16 Apr 2025 17:20:04 -0700
-Message-ID: <20250417002005.2306284-4-dualli@chromium.org>
-X-Mailer: git-send-email 2.49.0.805.g082f7c87e0-goog
-In-Reply-To: <20250417002005.2306284-1-dualli@chromium.org>
-References: <20250417002005.2306284-1-dualli@chromium.org>
+	 MIME-Version; b=f9CA+kCMiaSvt1CbAEEh31sHbCEmZi4EYEVldSzv7fBZ+vUsz4PjfDzy9FrB4Rnvpdd2PXeyaAeGxvgaP0g63I1/+qhiI5Qg22iH7/HrOeywSHVtbM1BP3dMWEsyhIsvaaRPPIY+F+chJOA+WaZVgdo00I4BGKkX+I6KyK0CfBE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=midstall.com; spf=pass smtp.mailfrom=midstall.com; dkim=pass (1024-bit key) header.d=midstall.com header.i=tristan.ross@midstall.com header.b=HYUZEDMi; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=midstall.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=midstall.com
+ARC-Seal: i=1; a=rsa-sha256; t=1744855824; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=aaWDpEuxjE1b4XY+ImVIxoyLZuWeR9wBP4dpLZ2GOL3AgT6BYouadvNNMrFg5G0nWRGSMDAfA6GzDU9ay0uWYUZUwsstUzu6qkweT9X3H1+eKRmccKbgxF6YQGe8zVyW0lQNe7sY8DRLYvLY66AtHCsCw3No0kDG0HN9IrhslpY=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1744855824; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=/NC5HRApEINUrtYjRyk9eN6B3fphxK+Yq8EhR9Yaz54=; 
+	b=egI1pMWUiQ/L4E4BqhIGO/65urI24GOTGR/yuvI1rH7uSrNgLXGc47fOwDCZXHDpT7ytPjxP5M3JwpC9JcGtYjEYnWittnIYENd5INjnY+c/aywt8gChtt6ENN7xTuDI4DIZLvgUq7FZMCAh6C/otZz24kWmmj6EB8kzLtrTJ40=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=midstall.com;
+	spf=pass  smtp.mailfrom=tristan.ross@midstall.com;
+	dmarc=pass header.from=<tristan.ross@midstall.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1744855824;
+	s=zmail; d=midstall.com; i=tristan.ross@midstall.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=/NC5HRApEINUrtYjRyk9eN6B3fphxK+Yq8EhR9Yaz54=;
+	b=HYUZEDMi6f+dCF8/J3YO4lXVaRff/5lhCmCxKM9fp0+hFxAmNEOE2dDCqd0MdFS+
+	3JQgxG8Cc4ZzfWC2eTd3D0EmrRE2TE7GIoeaVZm/XXeSEPHzuLBHe6z78w2yFKtINlP
+	X7z8JysBxMxRqOMl9lgNrlGg88I4DUe+hWNRKb7k=
+Received: by mx.zohomail.com with SMTPS id 1744855821259945.3317974238502;
+	Wed, 16 Apr 2025 19:10:21 -0700 (PDT)
+From: Tristan Ross <tristan.ross@midstall.com>
+To: selinux@vger.kernel.org
+Cc: Tristan Ross <tristan.ross@midstall.com>
+Subject: [PATCH] libsemanage: add relabel_store config option
+Date: Wed, 16 Apr 2025 19:10:00 -0700
+Message-ID: <20250417020959.43450-2-tristan.ross@midstall.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <CAP+JOzQtrLx8bS6_jb7pRaFzm=PXr9hm=Quy15qCMTFyHd8j9w@mail.gmail.com>
+References: <CAP+JOzQtrLx8bS6_jb7pRaFzm=PXr9hm=Quy15qCMTFyHd8j9w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -116,64 +67,112 @@ List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-From: Li Li <dualli@google.com>
+This flag allows for enabling or disabling automatic restorecon that
+semodule invokes. By default, we have it enabled to produce the same
+behavior as before. On NixOS, we need this as we're "baking" the module
+installation into a squashfs image and we cannot run restorecon inside
+the builder.
 
-Add a flag to binder_features to indicate that the transaction report
-feature via generic netlink is available.
-
-Signed-off-by: Li Li <dualli@google.com>
+Signed-off-by: Tristan Ross <tristan.ross@midstall.com>
 ---
- drivers/android/binderfs.c                                | 8 ++++++++
- .../selftests/filesystems/binderfs/binderfs_test.c        | 1 +
- 2 files changed, 9 insertions(+)
+ libsemanage/src/conf-parse.y     | 15 ++++++++++++++-
+ libsemanage/src/conf-scan.l      |  1 +
+ libsemanage/src/semanage_conf.h  |  1 +
+ libsemanage/src/semanage_store.c |  7 +++++--
+ 4 files changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
-index 98da8c4eea59..bf9c3becca1e 100644
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -59,6 +59,7 @@ struct binder_features {
- 	bool oneway_spam_detection;
- 	bool extended_error;
- 	bool freeze_notification;
-+	bool transaction_report;
- };
+diff --git a/libsemanage/src/conf-parse.y b/libsemanage/src/conf-parse.y
+index e1fc9f4f..b69ac75b 100644
+--- a/libsemanage/src/conf-parse.y
++++ b/libsemanage/src/conf-parse.y
+@@ -63,7 +63,7 @@ static int parse_errors;
  
- static const struct constant_table binderfs_param_stats[] = {
-@@ -76,6 +77,7 @@ static struct binder_features binder_features = {
- 	.oneway_spam_detection = true,
- 	.extended_error = true,
- 	.freeze_notification = true,
-+	.transaction_report = true,
- };
- 
- static inline struct binderfs_info *BINDERFS_SB(const struct super_block *sb)
-@@ -619,6 +621,12 @@ static int init_binder_features(struct super_block *sb)
- 	if (IS_ERR(dentry))
- 		return PTR_ERR(dentry);
- 
-+	dentry = binderfs_create_file(dir, "transaction_report",
-+				      &binder_features_fops,
-+				      &binder_features.transaction_report);
-+	if (IS_ERR(dentry))
-+		return PTR_ERR(dentry);
-+
- 	return 0;
+ %token MODULE_STORE VERSION EXPAND_CHECK FILE_MODE SAVE_PREVIOUS SAVE_LINKED TARGET_PLATFORM COMPILER_DIR IGNORE_MODULE_CACHE STORE_ROOT OPTIMIZE_POLICY MULTIPLE_DECLS
+ %token LOAD_POLICY_START SETFILES_START SEFCONTEXT_COMPILE_START DISABLE_GENHOMEDIRCON HANDLE_UNKNOWN USEPASSWD IGNOREDIRS
+-%token BZIP_BLOCKSIZE BZIP_SMALL REMOVE_HLL
++%token BZIP_BLOCKSIZE BZIP_SMALL RELABEL_STORE REMOVE_HLL
+ %token VERIFY_MOD_START VERIFY_LINKED_START VERIFY_KERNEL_START BLOCK_END
+ %token PROG_PATH PROG_ARGS
+ %token <s> ARG
+@@ -97,6 +97,7 @@ single_opt:     module_store
+ 	|	bzip_blocksize
+ 	|	bzip_small
+ 	|	remove_hll
++	|	relabel_store
+ 	|	optimize_policy
+ 	|	multiple_decls
+         ;
+@@ -291,6 +292,17 @@ remove_hll:  REMOVE_HLL'=' ARG {
+ 	free($3);
  }
  
-diff --git a/tools/testing/selftests/filesystems/binderfs/binderfs_test.c b/tools/testing/selftests/filesystems/binderfs/binderfs_test.c
-index 81db85a5cc16..39a68078a79b 100644
---- a/tools/testing/selftests/filesystems/binderfs/binderfs_test.c
-+++ b/tools/testing/selftests/filesystems/binderfs/binderfs_test.c
-@@ -65,6 +65,7 @@ static int __do_binderfs_test(struct __test_metadata *_metadata)
- 		"oneway_spam_detection",
- 		"extended_error",
- 		"freeze_notification",
-+		"transaction_report",
- 	};
++relabel_store:  RELABEL_STORE'=' ARG {
++	if (strcasecmp($3, "false") == 0) {
++		current_conf->relabel_store = 0;
++	} else if (strcasecmp($3, "true") == 0) {
++		current_conf->relabel_store = 1;
++	} else {
++		yyerror("relabel_store can only be 'true' or 'false'");
++	}
++	free($3);
++}
++
+ optimize_policy:  OPTIMIZE_POLICY '=' ARG {
+ 	if (strcasecmp($3, "false") == 0) {
+ 		current_conf->optimize_policy = 0;
+@@ -400,6 +412,7 @@ static int semanage_conf_init(semanage_conf_t * conf)
+ 	conf->bzip_small = 0;
+ 	conf->ignore_module_cache = 0;
+ 	conf->remove_hll = 0;
++	conf->relabel_store = 1;
+ 	conf->optimize_policy = 1;
+ 	conf->multiple_decls = 1;
  
- 	change_mountns(_metadata);
+diff --git a/libsemanage/src/conf-scan.l b/libsemanage/src/conf-scan.l
+index 64433f7b..c592fb63 100644
+--- a/libsemanage/src/conf-scan.l
++++ b/libsemanage/src/conf-scan.l
+@@ -54,6 +54,7 @@ handle-unknown    return HANDLE_UNKNOWN;
+ bzip-blocksize	return BZIP_BLOCKSIZE;
+ bzip-small	return BZIP_SMALL;
+ remove-hll	return REMOVE_HLL;
++relabel_store	return RELABEL_STORE;
+ optimize-policy return OPTIMIZE_POLICY;
+ multiple-decls return MULTIPLE_DECLS;
+ "[load_policy]"   return LOAD_POLICY_START;
+diff --git a/libsemanage/src/semanage_conf.h b/libsemanage/src/semanage_conf.h
+index 5db08f0c..2388faad 100644
+--- a/libsemanage/src/semanage_conf.h
++++ b/libsemanage/src/semanage_conf.h
+@@ -49,6 +49,7 @@ typedef struct semanage_conf {
+ 	int ignore_module_cache;
+ 	int optimize_policy;
+ 	int multiple_decls;
++	int relabel_store;
+ 	char *ignoredirs;	/* ";" separated of list for genhomedircon to ignore */
+ 	struct external_prog *load_policy;
+ 	struct external_prog *setfiles;
+diff --git a/libsemanage/src/semanage_store.c b/libsemanage/src/semanage_store.c
+index 307f27f9..1731c5e8 100644
+--- a/libsemanage/src/semanage_store.c
++++ b/libsemanage/src/semanage_store.c
+@@ -1823,8 +1823,11 @@ static int semanage_commit_sandbox(semanage_handle_t * sh)
+ 
+       cleanup:
+ 	semanage_release_active_lock(sh);
+-	sehandle = selinux_restorecon_default_handle();
+-	selinux_restorecon_set_sehandle(sehandle);
++
++	if (sh->conf->relabel_store) {
++		sehandle = selinux_restorecon_default_handle();
++		selinux_restorecon_set_sehandle(sehandle);
++	}
+ 	return retval;
+ }
+ 
 -- 
-2.49.0.805.g082f7c87e0-goog
+2.47.2
 
 

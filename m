@@ -1,152 +1,146 @@
-Return-Path: <selinux+bounces-3534-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3547-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AE4CAB1C38
-	for <lists+selinux@lfdr.de>; Fri,  9 May 2025 20:23:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6E3AB2A09
+	for <lists+selinux@lfdr.de>; Sun, 11 May 2025 19:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1E6F1C01ADE
-	for <lists+selinux@lfdr.de>; Fri,  9 May 2025 18:23:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8B2D3B975A
+	for <lists+selinux@lfdr.de>; Sun, 11 May 2025 17:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A7923C50E;
-	Fri,  9 May 2025 18:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F024925B67A;
+	Sun, 11 May 2025 17:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OwfdT17T"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="WjHjIAGb"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EA34239E94
-	for <selinux@vger.kernel.org>; Fri,  9 May 2025 18:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67118482FF;
+	Sun, 11 May 2025 17:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746815013; cv=none; b=PUQ1UFd+lvHaBb1lz3ThZgUMfp5spPo5BMglFgIyWx6CB+eoVRY05PT2X8fjwtSrT0GQ6cN+UGObYUWTmR2xniDuww0pcnSX2K67kBinQbcpfpK/6EMwyRLOwKggtv1ArVSDS7ENpmbYR3V8N06qRQO5GsEHYOn3vvNfD5tyjGo=
+	t=1746985154; cv=none; b=mI6K1Yd/zUc3N1Rbs50K7PJVhAUtod4OwCJKGOZtvToCuojVZqpsrJigvvc+OYzlvBU0f3d2JWyeitRg3/d8iOqAhtyNbPLPeTY7rqC73HSO0mTxpGQpLqwhGn4yidsfS7hHbsssnVUlW0bavUK+XulKQku4nQt4KERsxrBvsFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746815013; c=relaxed/simple;
-	bh=27QszuN/uHw7LYDCSP3ulUqy4wDRgv7+6ejhxAaBzjM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P0TaZd6bsxfBzqbwmKk2dXy724Dh2TyaqqID6qfWXZpZ3FYrpEWnr8o9N8Y/wvtJUlXox5ogLC1vE2qDt/b+vGmo917rouchf25d8CO7wkFZQMZHgS6xlfJhLuy1RWtApWczzd2vBPlNfQcADfgl1ZWsMqmNLFzMiUkkXFGt6Jg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OwfdT17T; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-30820167b47so2174320a91.0
-        for <selinux@vger.kernel.org>; Fri, 09 May 2025 11:23:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746815010; x=1747419810; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=27QszuN/uHw7LYDCSP3ulUqy4wDRgv7+6ejhxAaBzjM=;
-        b=OwfdT17TTWdoB48zhtHXWidetvHSPcv2vkXvrhGPMAPygjLCgzrGDihqHTopYTv9e5
-         TkTCdDM15ROOipVvP2PEZfz+MchRYAlRGJd8rHQbpd8RdG0jkHXwUKsVC6vU4G8Av+j8
-         pZ846f/wRw+voHNLo+fGJDU/LWpk97kCZlZRz3pT4M/RQ/Mie2vNOHQakS3oY5wXoG8m
-         90Dr8R0rSEs7uWNVuKaZHRJL05hQchZ23VwYimX+iV3GSrkhv+ynbT5jF30Hf8+hrpL8
-         4BdzDE3Y9ccf+Z1IWu1gQCbib5dfAhTMxCFj/9vcAspg9qp9u1SMNG88n974N++AY9NH
-         fh7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746815010; x=1747419810;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=27QszuN/uHw7LYDCSP3ulUqy4wDRgv7+6ejhxAaBzjM=;
-        b=JyMfGenpCGpyeGyFf5qTwCM9hGHtUBWSjGMuiKq0HQv4Yhz4AXsm5RfpvNYlyBBaL6
-         BgBUZVIol2CmdghZn7ic8XxbGZltUrfnwnDmQjxGrRDOMRe5e7IEUXigTUW1Y+GySaB1
-         9OA2993I2Dc7cXDCcg8WeFVw+F68FCSDHwmAnTg3Azu53/z3H9a/oEjvmMNK3pq3J+pF
-         dUymplrIE8vhNseYLYc0u1vx1MqgK0I0chIEYE1KmZn3CeRBNZ2XS66l0QERJ+IvxQOI
-         3YfkFsiha333V8rOH49/ilQJ8FE1Y+gGdFRUKa7QFtcTxqvhN/I0Gaq2GNyJG6+5HKiV
-         3BiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+LEJ97p54UYaDhcU+GOh06vDdXdU3IJgj0qAkaJTEzv6gfurO/ap8N4iLmXRr//FnbPkefVKW@vger.kernel.org
-X-Gm-Message-State: AOJu0YyE+lxSfKgzcN02Dh7FERxpBWAneDt9aV+0p1nPjpLrKeFoqCdx
-	OQXK2qVSd6xYL92vrWaOsdJ/DM/U1QOJvAvRdfFrm07dBsO+icK8acR6zpphDM6+3Vscq7WnzBx
-	7Z811YqdWNPg95fhPff1moUXXKbY=
-X-Gm-Gg: ASbGncsSoHzqywvPDyM0kRC9LENjZtp+3ZSBvMGNh8NLQgqmTFgRSI+1Ak+Qxl76KWM
-	HfnnlANHRSB+Gg0SYnJJYGhjTQAU+LUbEj8QYY55JPHVcb9F/7JcUK0Crc3gCIpwkDkCmnbM0TQ
-	dqz2pRo7TkFTtwSC5Fd4mcZKV5YiW/f8kM
-X-Google-Smtp-Source: AGHT+IH1m8uSkunT7ePfvR8SzyH+X4zL9cR741uSpLA3fNgOPN7h8PXyknr570+EePKFAkPhxGrG7ej6C2M9+i2b/ls=
-X-Received: by 2002:a17:90b:3f86:b0:2fa:2133:bc87 with SMTP id
- 98e67ed59e1d1-30adbf1150cmr12406675a91.6.1746815010327; Fri, 09 May 2025
- 11:23:30 -0700 (PDT)
+	s=arc-20240116; t=1746985154; c=relaxed/simple;
+	bh=rEjUtfu7K6jhAd6mynsfwhXtI77Hs9LzZroBcH2KefM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SIRXSoyocJzgQYMN8cOR0teXsq5xjA6sh/k7q4emphchTpcFSQNF9fTFxWBWtiytLnD9/RzheFKbCCLyb6JZX1eZj9Uw4hiSxtmqLpY3T6eA4eRilz0QkKSxMHOzPZXJlwugDCd5AXWb0f4YiSQgSIktRKtMVHR8PLzgEEc+sX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=WjHjIAGb; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1746984661;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=mkVC4MfGufb30zICByRypu/2WLJbw98VLc1Myk8zgOI=;
+	b=WjHjIAGb/FDY3owDSYsAvQyvgc8Vu+cEHGtZ7o5BisuzVe++BLTcETpQ7UyoGuljnVT826
+	jYgdipP0XJOiivDr+wsT4mefYvQSFvjvbszC7gR13LcNwNJXdCs5J/BAqAEcu2b5lNbiIx
+	UvYmNGN3mZY+HKF5ys185C0++8vQPEzcNQBr6aOwkAqNPYltTsVFPMhOi5M5EMEndZNWfP
+	LJfnRYZ8nLFarB5TJbxu8ZHYdACTdHjXhNdJrICTnTblS9vBtNEWD4WjZOcdeeaiTDuKS6
+	KkEliv3MefxmLcGSuF6O7vF9tlClH8+rOQP48r2IBzO9K8/fWNoUsjjMlQ97qQ==
+To: selinux@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 01/14] selinux: avoid nontransitive comparison
+Date: Sun, 11 May 2025 19:30:01 +0200
+Message-ID: <20250511173055.406906-1-cgoettsche@seltendoof.de>
+Reply-To: cgzones@googlemail.com
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAH9xa6eFqcLh=NSz+vFPr05yZjmn2ScDvVeFzib3DhY67SrP0A@mail.gmail.com>
-In-Reply-To: <CAH9xa6eFqcLh=NSz+vFPr05yZjmn2ScDvVeFzib3DhY67SrP0A@mail.gmail.com>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Fri, 9 May 2025 14:23:19 -0400
-X-Gm-Features: ATxdqUE9qwdSPUd09eCrGSRojgeofu9ytOsc-H69Relk1UVrs7kfKKW3BcOfMOA
-Message-ID: <CAEjxPJ7KWhJEkWB7s+kLyT+-yXE9vyNzYgfGUS_i1jF7FzujOQ@mail.gmail.com>
-Subject: Re: [RFC] selinux: Keep genfscon prefix match semantics in userspace
- for wildcard
-To: Takaya Saeki <takayas@chromium.org>
-Cc: Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org, 
-	=?UTF-8?Q?Thi=C3=A9baud_Weksteen?= <tweek@google.com>, 
-	Inseob Kim <inseob@google.com>, Daniel Burgener <dburgener@linux.microsoft.com>, 
-	Junichi Uekawa <uekawa@chromium.org>, Tatsuyuki Ishi <ishitatsuyuki@google.com>, 
-	James Carter <jwcart2@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 8, 2025 at 10:50=E2=80=AFPM Takaya Saeki <takayas@chromium.org>=
- wrote:
->
-> Hello Stephen, Paul, and all libselinux maintainers.
->
-> I'd like to ask your opinions about an idea to keep the semantics of genf=
-s in
-> the userspace, before sending a patch to expose the new genfs_seclabel_wi=
-ldcard
-> kernel capability to libselinux users in polcaps.h as
-> POLICYDB_CAP_GENFS_SECLABEL_WILDCARD.
->
-> As a background, we introduced the genfs wildcard feature to the kernel s=
-elinux
-> in https://lore.kernel.org/selinux/20250318083139.1515253-1-takayas@chrom=
-ium.org/
-> (Thank you for your help and reviews!)
-> That enabled libselinux to use wildcards in genfs rules. There we changed=
- the
-> semantics of genfs with the capability enabled in the kernel space from p=
-refix
-> match to exact match with wildcards for kernel implementation simplicity.
->
-> I'm wondering whether we can keep the user-facing semantics of (genfscon =
-...)
-> statements in CIL files in the following way.
->
-> When secilc compiles a (genfscon ...) statement to the kernel binary form=
-at, it
-> adds a following `*` to the compiled kernel genfscon statement if the inp=
-ut has
-> (policycap genfs_seclabel_wildcard). If the input doesn't have one, secil=
-c does
-> not add any following `*`. That keeps the behavior of (genfscon ...) in C=
-IL
-> from the user perspective with and without the new wildcard capability. T=
-his is
-> similar to what our first kernel patch did, but done in the userspace by =
-secilc
-> this time. So, the (genfscon ...) keeps the backward compatibility of pre=
-fix
-> match for libselinux users, while keeping the kernel implementation simpl=
-e.
-> That would allow users to keep existing rules without modification.
->
-> I'd like to hear your opinions.
+From: Christian Göttsche <cgzones@googlemail.com>
 
-(added James to cc for the secilc question)
+Avoid using nontransitive comparison to prevent unexpected sorting
+results due to (well-defined) overflows.
+See https://www.qualys.com/2024/01/30/qsort.txt for a related issue in
+glibc's qsort(3).
 
-I'm assuming you mean libsepol rather than libselinux. I could be
-wrong, but I believe that in general policy capabilities are only
-declared once in the policy and typically in the base module, and
-those settings are then applied globally to all policy modules. While
-you can put one in a non-base module, it still has a global effect on
-the final policy. Putting a policycap statement into every CIL module
-that wants this behavior would possibly trigger an error (not sure
-how/if libsepol/secilc handles duplicate policycap statements) and
-regardless would enable it for the entire policy.
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+v3: rename macro to cmp_int()
+---
+ security/selinux/ss/policydb.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
+
+diff --git a/security/selinux/ss/policydb.c b/security/selinux/ss/policydb.c
+index 9ea971943713..dc701a7f8652 100644
+--- a/security/selinux/ss/policydb.c
++++ b/security/selinux/ss/policydb.c
+@@ -37,6 +37,8 @@
+ #include "mls.h"
+ #include "services.h"
+ 
++#define cmp_int(a, b) (((a) > (b)) - ((a) < (b)))
++
+ #ifdef CONFIG_SECURITY_SELINUX_DEBUG
+ /* clang-format off */
+ static const char *const symtab_name[SYM_NUM] = {
+@@ -424,11 +426,11 @@ static int filenametr_cmp(const void *k1, const void *k2)
+ 	const struct filename_trans_key *ft2 = k2;
+ 	int v;
+ 
+-	v = ft1->ttype - ft2->ttype;
++	v = cmp_int(ft1->ttype, ft2->ttype);
+ 	if (v)
+ 		return v;
+ 
+-	v = ft1->tclass - ft2->tclass;
++	v = cmp_int(ft1->tclass, ft2->tclass);
+ 	if (v)
+ 		return v;
+ 
+@@ -459,15 +461,15 @@ static int rangetr_cmp(const void *k1, const void *k2)
+ 	const struct range_trans *key1 = k1, *key2 = k2;
+ 	int v;
+ 
+-	v = key1->source_type - key2->source_type;
++	v = cmp_int(key1->source_type, key2->source_type);
+ 	if (v)
+ 		return v;
+ 
+-	v = key1->target_type - key2->target_type;
++	v = cmp_int(key1->target_type, key2->target_type);
+ 	if (v)
+ 		return v;
+ 
+-	v = key1->target_class - key2->target_class;
++	v = cmp_int(key1->target_class, key2->target_class);
+ 
+ 	return v;
+ }
+@@ -496,15 +498,15 @@ static int role_trans_cmp(const void *k1, const void *k2)
+ 	const struct role_trans_key *key1 = k1, *key2 = k2;
+ 	int v;
+ 
+-	v = key1->role - key2->role;
++	v = cmp_int(key1->role, key2->role);
+ 	if (v)
+ 		return v;
+ 
+-	v = key1->type - key2->type;
++	v = cmp_int(key1->type, key2->type);
+ 	if (v)
+ 		return v;
+ 
+-	return key1->tclass - key2->tclass;
++	return cmp_int(key1->tclass, key2->tclass);
+ }
+ 
+ static const struct hashtab_key_params roletr_key_params = {
+-- 
+2.49.0
+
 

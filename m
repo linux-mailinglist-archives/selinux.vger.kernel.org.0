@@ -1,85 +1,85 @@
-Return-Path: <selinux+bounces-3697-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3690-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4E4AB878B
-	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 15:11:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CE7EAB8784
+	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 15:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 135C63AC9DE
-	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 13:10:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45BDE1B65C74
+	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 13:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC32129A9DA;
-	Thu, 15 May 2025 13:11:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3542029A9DD;
+	Thu, 15 May 2025 13:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZolfgFHs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S72qfVjR"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3C729A310
-	for <selinux@vger.kernel.org>; Thu, 15 May 2025 13:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E91729A9E5
+	for <selinux@vger.kernel.org>; Thu, 15 May 2025 13:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747314665; cv=none; b=ZqPnB5fHJCeMtaXTOIzbPcKLD1ryvA6C4CGojYLvxE7Cv3vlpela/QUeaN1vAh3fr1vvbTploqDEZp2hfsAHaYaUH4FVR3U4HGpgSRQldB20LzdrxWPPOncFTeboVwaTDRhsf1328ZGCLy/fks5YVIIRwOnfsz41Vvh197fJqKA=
+	t=1747314656; cv=none; b=arC74bSuFMH05U5kwmw1T3o9iBy0DS/RunTy3/xofB6xeGJ9w+3lbuvvVICHaeRJZ7XbY8ABe2Z9mZ9MHt8Os2RBF8IFESzqCLWhMoXZooDovXAY+197IMNOIWo33z40UM1RqOCH7jE+aC5NmspoAGg5t8cBV4UiLHmbERBLnwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747314665; c=relaxed/simple;
-	bh=MZikWshpkzszeHKMwrOX7MWr/ZNlkMGey2Hv0N7+5zc=;
+	s=arc-20240116; t=1747314656; c=relaxed/simple;
+	bh=WbzIU4hVrVXrnxkK1hrkPSyd44r1ivIogaJsSznFTnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NHbO9P3ZWLyeE4/oXKrQQ3e8D2Wo0O/JAeHkdDvy0UzShyorutxHvnF7x5pWJ+d5pvazaE4ypcppl7HcIzSUlybzK8r+ihTxxrGhcwuaGjLCEX/U1QaCtbOKb2Muf+gihWX+14xpqZA6+RNKZfCVBU/telpMe3gE0u4bWmf0iEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZolfgFHs; arc=none smtp.client-ip=209.85.217.41
+	 MIME-Version; b=pXEZJvFytbQGfbXHkoJ7hJFpQCrHEc94uLUadSdYzafCOeDYLFRJMeuxIfLDzG1SuUJTKyHqDcxRR0sfzRVRdDoCjbCtlKR3G9jyhOqF+zCYfiAJYldwpfPUFGgs8gIQ8fh5OKypzJ3HYrVK/QHCXro27l9BBrDsx4i2HOVW83s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S72qfVjR; arc=none smtp.client-ip=209.85.219.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-4ddb9d80bffso640112137.0
-        for <selinux@vger.kernel.org>; Thu, 15 May 2025 06:11:04 -0700 (PDT)
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6f0c30a1cb6so6322516d6.2
+        for <selinux@vger.kernel.org>; Thu, 15 May 2025 06:10:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747314663; x=1747919463; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1747314653; x=1747919453; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CQykNmSfG4kUMJ1LRpZp5PW+TIpoPyIWLRG4xoNzP9Q=;
-        b=ZolfgFHsOly3YQdV0SXq3nN06fJUyvwwlrMHrK0yT94vSZEGyJgFPjoM5Wpyx3DXq+
-         xBMkFHEztcHu3SVugsDww2/4ao9x6+dbV9Jj6KJZLpYZe2Qw0HwZV5iwkLpRVpO3ZPn/
-         yaXSPJXK/KcoO1qFwOA8UKA0HZW62EEt9H7Eh/4pW7am6xW0o3DRNK+R0SlK83XsIm8b
-         jaP61ei+EfpnuTmPRoU7NCPKdlzAHdvJxFNzLxXDPZi1Fjp4dhQk6HpzszF9QAkQiPZq
-         lAHE2PbKaVt5YhngXbEgJpFqUH6xYEnVf4xR0BS1FjtO5wbQWxA5stwWrvGsuJMgk73P
-         /5iQ==
+        bh=5mJKiBa7U1C1WSohnUzzxrVbwLytwLFquZAGxqFJMnc=;
+        b=S72qfVjR4J2S9AQUd369Gxx+cBGMv1f+Ipgl39ug1X8+Dh6RTcbsdyBYmjMLms+/GY
+         YFD7CQBeNLoh9OdCZotxndhqHPiwHe16mh4JRRq6gH2QVLEwlbDW/vEX9tuyfZZUjLCD
+         gnvVUY+ahgZGSNC2qAAON9mHTr0FnCRHjIurLYlV1CFUSWFJCvrqpWOdNhDyTxes7lHi
+         lSn1zolW5P4e5zzzfqvlcyRsBkh2aoEQnbK593+DyZWk9O9DEYZtVkp/ekjq2ONqkKav
+         GYte+36Zektlf42MSePQiFFzAUUiAXUoZw0861DH0dGnUqAjGrqaf2KbeKG/WDFI80Lo
+         /1bg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747314663; x=1747919463;
+        d=1e100.net; s=20230601; t=1747314653; x=1747919453;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CQykNmSfG4kUMJ1LRpZp5PW+TIpoPyIWLRG4xoNzP9Q=;
-        b=PY8azSY1IFyDp9dNobswigbbz1nR5lJmlvEq2M7x6cAG37R5f8Ap4DR1OQBgY7Ltcg
-         xhlRmoLOsLQ5xb8MbB6ulEvUEs9x7ncBw+jasv9XBPJvgtjC1YV1BbannmXk3JLe47xw
-         mfPI/r0lheNTfuMcpYm6bc1kqdMPHOI260iFt28fpLhqw9FtVFn0PL9MRgdNY1UvcCo0
-         V/wKwEdniqf25gID8mIPlQ9KqmnV5i+RsvEzPS/umccKsfQedQ8MVaqTqaxI4GFHEmzN
-         fdoJBUlDe8WiiqK/YIMA3fQ++ZFbkQSTi1E/yATcsJL+l92H5bDOQm5GcluMyTlIK8J6
-         jLbQ==
-X-Gm-Message-State: AOJu0Yz+l4VHdMxU0XERE0UsAh1vUTIOCkfz6Hr0ve6Qiu13na/ysB8i
-	OVDRWM7434kN1XdHq6X6sCnKv+B1h1HGeBOl2cBECDzzKosp9H08ul1T1Twmfw==
-X-Gm-Gg: ASbGncvpmGJAUDHpABcRrJ0fv/ucZa75Axzd+s2XxeIUEx3az8e5PUPoQka8iNkM+nl
-	MkvmpLMipsk62JErZKhreaP8wumnHgd8dz2Pa+RwOLfWVe9L5YhtsXbpAGD3506HVmiRNiSl5kv
-	jc+Pp7WHdyEZXw3nGMZwls9lKlk9kbtsViiWQ65IzbeN6mXo9Let0seXYsFW24Vmx6ctVCUKCLa
-	cz6+RA8bwG+CnRemzi/OhqWg6Ix9j4emhvWXMg1067x0r9e61n3oMEmhM51vSZCGXslgXE5CF15
-	Xu+MEI9kSBf1B1Hk+Y1R9py0sO/5D8/Q6fDnFHfuenr2qUeLwVJIohc4dEjGPO92cc5OlYGc58z
-	IGty8up1jCIxOeymNZSWl9DbiohZSfvAo6Qe52QqK+vnsikT4O7GVCA==
-X-Google-Smtp-Source: AGHT+IGpZHKEbdJHO1976w7An1D0jTWYgUwJo3zzeNkGq5Zb0BxPFcjQ29MCvaN7WVZ/51mrbeCxoQ==
-X-Received: by 2002:a05:6214:acb:b0:6f5:1064:edcc with SMTP id 6a1803df08f44-6f8a3210c45mr55200456d6.18.1747314652747;
-        Thu, 15 May 2025 06:10:52 -0700 (PDT)
+        bh=5mJKiBa7U1C1WSohnUzzxrVbwLytwLFquZAGxqFJMnc=;
+        b=WvebOyvh+/0pr2FxRhSoi5FDx43q8p83FSVX/3AGghO2euh3Th9ZZw65si2AaUZtDd
+         +sQtiFoxUsysb1F1cM2f4NvEYz9ce3j+IksGPo1e+ppwmsd35SwFugpcPc0Wp3CQ2n1g
+         EzQIkDm1hp48gyLo1hglXdMcqXUdAhhd2JaZTbNuZZEPi40l4TPtUha03y+E9YfyJiGA
+         Mm/plz91mxM8uczm4+sIaOymj1WW/sHGTMCbT+JAF9juYCEHISSL68bli62h2Z78az2U
+         FSNtKH2mlFvJpld+r63/pgZnbub32mqh/kwGRiKf7ho0I11uX5QVVjDft+YDtmX1155s
+         mDgw==
+X-Gm-Message-State: AOJu0YyC+o3YzzYkZTwuSDT2bS+ltzNIsEeCPdsR8kONKJ3p5+wM+z+f
+	IY2HK/2JB7OGqRBn1USA1hTOTwnzV6QtzKd5hlwFo6EaD5JxPMqHsUtXTw==
+X-Gm-Gg: ASbGnctvutVXk7kXrKAED00uTObko+2PBqmvApU3eSTNW/AFDOqfu4GQwpv54zSjKh2
+	BQ/pf1OQlVoI1RXNIjKV/qKY7ySD+IIgNsfTN8eQqkDZJfWPuZ9zTDCKsc6HU9trzJMvpalEi9g
+	icbDRRd0N3PcGHdt+Q0n4QkPEfBdsoJneMfRt/IxGnU7hrs8xaNu9Aj2ul/1pqG+24by3TfP7e/
+	6UsQNpVaet2mWRKivaFduf+2noalcw89pPiwH1npU1Lhjq/fL9mTWgfQ06q2fM9jvKbVeNvIDib
+	95XQdyYDxz9htUlyidaOml8BsPBYkxu4PwEk7/yNcyU9Es2mTsfGNLF5UgFYkkdPiK74txD24OH
+	136xzlaqONE3BOpqA2+oftd+o2MTqpCJhgwF8ACOMjtaNWr8/TV6NIA==
+X-Google-Smtp-Source: AGHT+IGNtrQnHmRSV70JUvn/ra+Ot7he2oSbCh23SaCaWy0wFZkNDnjFINM4Q+QECLeeIgnQm7zPFA==
+X-Received: by 2002:ad4:5def:0:b0:6e6:6089:4978 with SMTP id 6a1803df08f44-6f896e35fc7mr100516266d6.24.1747314653325;
+        Thu, 15 May 2025 06:10:53 -0700 (PDT)
 Received: from fedora.. (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
         by smtp.gmail.com with ESMTPSA id d75a77b69052e-49452583e88sm91723891cf.63.2025.05.15.06.10.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 May 2025 06:10:52 -0700 (PDT)
+        Thu, 15 May 2025 06:10:53 -0700 (PDT)
 From: Stephen Smalley <stephen.smalley.work@gmail.com>
 To: selinux@vger.kernel.org
 Cc: paul@paul-moore.com,
 	omosnace@redhat.com,
 	Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v2 46/49] selinux: acquire/release SELinux state properly in socket hooks
-Date: Thu, 15 May 2025 09:09:44 -0400
-Message-ID: <20250515130947.52806-47-stephen.smalley.work@gmail.com>
+Subject: [PATCH v2 47/49] selinux: update cred_tsid_has_perm_noaudit() to return the combined avd
+Date: Thu, 15 May 2025 09:09:45 -0400
+Message-ID: <20250515130947.52806-48-stephen.smalley.work@gmail.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250515130947.52806-1-stephen.smalley.work@gmail.com>
 References: <20250515130947.52806-1-stephen.smalley.work@gmail.com>
@@ -91,55 +91,79 @@ List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Several SELinux socket hook functions were not properly accounting
-for the release of any previously set SELinux state and acquiring
-the reference to the new SELinux state if the state differed.
+cred_tsid_has_perm_noaudit() currently just returns the last computed
+av_decision (avd) structure, which in the case of multiple SELinux
+namespaces will only contain the decisions from the init SELinux
+namespace. Generally this has no effect since a permission denial
+by any namespace will cause an immediate error return with -EACCES,
+but in the case where permission is allowed and the caller caches
+the avd itself for later reuse, it could lead to the caller
+incorrectly only using the cached decisions from the init namespace.
+Change cred_tsid_has_perm_noaudit() to combine the results from any
+avc_has_perm_noaudit() calls to produce the final avd that is returned
+to the caller to avoid this problem. The combining logic varies
+for different fields of the avd, e.g. intersection for allowed
+and flags (per-domain permissive), union for auditallow and auditdeny,
+and the seqno is always set from the current namespace only.
 
 Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
 ---
- security/selinux/hooks.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ security/selinux/avc.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
 
-diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-index 113242c4cb87..a9b5879cdd62 100644
---- a/security/selinux/hooks.c
-+++ b/security/selinux/hooks.c
-@@ -5606,7 +5606,10 @@ static void selinux_sk_clone_security(const struct sock *sk, struct sock *newsk)
- 	newsksec->sid = sksec->sid;
- 	newsksec->peer_sid = sksec->peer_sid;
- 	newsksec->sclass = sksec->sclass;
--	newsksec->state = get_selinux_state(sksec->state);
-+	if (newsksec->state != sksec->state) {
-+		put_selinux_state(newsksec->state);
-+		newsksec->state = get_selinux_state(sksec->state);
+diff --git a/security/selinux/avc.c b/security/selinux/avc.c
+index 24263b0b8e03..9a76266e8305 100644
+--- a/security/selinux/avc.c
++++ b/security/selinux/avc.c
+@@ -1557,28 +1557,38 @@ int cred_tsid_has_perm_noaudit(const struct cred *cred, u32 tsid, u16 tclass,
+ {
+ 	struct task_security_struct *tsec;
+ 	struct selinux_state *state;
++	struct av_decision tmp_avd;
+ 	u32 ssid;
+ 	int rc;
+ 
+-	do {
++	tsec = selinux_cred(cred);
++	ssid = tsec->sid;
++	state = tsec->state;
++
++	rc = avc_has_perm_noaudit(state, ssid, tsid, tclass,
++				requested, 0, avd);
++	if (rc)
++		return rc;
++
++	cred = tsec->parent_cred;
++	while (cred) {
+ 		tsec = selinux_cred(cred);
+ 		ssid = tsec->sid;
+ 		state = tsec->state;
+ 
+-		/*
+-		 * TODO Do we need to use a tmp avd for each
+-		 * avc_has_perm_noaudit() call and intersect/union
+-		 * the sets as appropriate as we go? Or can we
+-		 * simply use the last result since we generally
+-		 * only care when there is a denial?
+-		 */
+ 		rc = avc_has_perm_noaudit(state, ssid, tsid, tclass,
+-					  requested, 0, avd);
++					  requested, 0, &tmp_avd);
++
++		avd->allowed &= tmp_avd.allowed;
++		avd->auditallow |= tmp_avd.auditallow;
++		avd->auditdeny |= tmp_avd.auditdeny;
++		avd->flags &= tmp_avd.flags;
++
+ 		if (rc)
+ 			return rc;
+ 
+ 		cred = tsec->parent_cred;
+-	} while (cred);
 +	}
  
- 	selinux_netlbl_sk_security_reset(newsksec);
+ 	return 0;
  }
-@@ -5845,7 +5848,10 @@ static void selinux_sctp_sk_clone(struct sctp_association *asoc, struct sock *sk
- 	newsksec->sid = asoc->secid;
- 	newsksec->peer_sid = asoc->peer_secid;
- 	newsksec->sclass = sksec->sclass;
--	newsksec->state = sksec->state;
-+	if (newsksec->state != sksec->state) {
-+		put_selinux_state(newsksec->state);
-+		newsksec->state = get_selinux_state(sksec->state);
-+	}
- 	selinux_netlbl_sctp_sk_clone(sk, newsk);
- }
- 
-@@ -5856,7 +5862,10 @@ static int selinux_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
- 
- 	ssksec->sclass = sksec->sclass;
- 	ssksec->sid = sksec->sid;
--	ssksec->state = sksec->state;
-+	if (ssksec->state != sksec->state) {
-+		put_selinux_state(ssksec->state);
-+		ssksec->state = get_selinux_state(sksec->state);
-+	}
- 
- 	/* replace the existing subflow label deleting the existing one
- 	 * and re-recreating a new label using the updated context
 -- 
 2.49.0
 

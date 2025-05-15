@@ -1,146 +1,284 @@
-Return-Path: <selinux+bounces-3693-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3698-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B28DAB878A
-	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 15:11:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F84AB8827
+	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 15:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C32A4C3A5C
-	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 13:11:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4DAD1BC43F8
+	for <lists+selinux@lfdr.de>; Thu, 15 May 2025 13:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1221529A33B;
-	Thu, 15 May 2025 13:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820F41DF73D;
+	Thu, 15 May 2025 13:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZSo8pF9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hzTLwsM/"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F2629A9E5
-	for <selinux@vger.kernel.org>; Thu, 15 May 2025 13:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1AC1D86F2
+	for <selinux@vger.kernel.org>; Thu, 15 May 2025 13:35:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747314659; cv=none; b=WyXdhMRVDRJX+hhv9Z+aLVoyi2zcflny+HWWGdIakyOZlvgCbVMzm8xhGYM7sWzyCbJFQKPDnv+GGYJ3EgkNwMHH5r8hRc6a9pN2xZlXkbTMTfrX42MyrodjzO1z6Nsr6YtQWuIi0m6599qUQoTrB1EQPXLsWg9Vw9f7TKi2XpA=
+	t=1747316133; cv=none; b=TH6noXBQYq3KtjNzZfRN/B22hKnMM7SUSIH2qHoKmE77+kU4Yr7EwGkBgVZt7i5kG7NP16R9RMjtGvP/bzlzuQ7aDnBb9zfTcfXmu59Vk6MwIu2SQhkR4kk1Ig5gFggunaOhi8dUQHSiVo5+GW0RVTPH03YFAu36635D159KsTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747314659; c=relaxed/simple;
-	bh=YGdFNX1Ldn5e1LvQRMP7uEC7rN26zt/CvUm9vCNrLwE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lc+r/cr/j6TY1lTTmTUlViLnA5HhmCQLRG4irSIGjaQtFITNMbU24dCyXim26qgkcUZa7VtKTd5bp9XBbRmmiOpBcGwAI+pkrYtdFRX6CFtBUDs9hYInVZb8QoPRdC3mprmKPAgqLKKgU0Aw2gRlzDVpk7ZQtqcSlCkdGwGruEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZSo8pF9; arc=none smtp.client-ip=209.85.219.47
+	s=arc-20240116; t=1747316133; c=relaxed/simple;
+	bh=tCcOUINWbZ0B6V7GAhRYbpgrM3wdU1K7HZk1jD4Iu8M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WTotUnWxXysLBF5KGy0QAu41Em/Ge2SsK4Kn9uRxyWgk3kPsj6jmQ/C2/g2Lvlx2QTi9Of3aU2XuLs7F/G/+ecpY5zhAXHQ5iSC7KGDKlorfwCMZtp+G4xmVnCM5kd16R57jh62EQlP3/i1llAAun8j+wg3IQtQw9OuL5sogN/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hzTLwsM/; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6f8a954ff6bso3910826d6.0
-        for <selinux@vger.kernel.org>; Thu, 15 May 2025 06:10:57 -0700 (PDT)
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-30a99e2bdd4so825596a91.0
+        for <selinux@vger.kernel.org>; Thu, 15 May 2025 06:35:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747314656; x=1747919456; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1747316131; x=1747920931; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZF70hMZ4c9hTg7Wy+OOnAp9o1FmPPUxd/mIYkXLA27A=;
-        b=fZSo8pF9+vIiItqLxtqq85I6qDRaArIrosfj11FMkY6E84s3RbKiJBe2T5fwKJXT06
-         +CEwI4dBWHFYLCuT8SKAG8zpfNglmZuUb3AHiJwclT/EZLXJvIyowAOLlBkhSGOJh8TI
-         sQEW5f84/g3kRHz7hp3MYFbvqT7R8Ch0/+xQ6BhkCsFOMfZNFa1FQeV11P7TvPGwjkT/
-         mwMq6YrQLs9uOHdzjUU7SSBRwW9cWhgaC53SaEAbilOJodwYeovXB7UKoYt5b7Dlxexa
-         TAam4GSc4IbI5TYpj2lUcJLcmkufSjA2xZ1oV/tQpo7sGIltHwop0BwjyPt2Jqda/Xla
-         NwJg==
+        bh=kNg/uW6hRJ+eWfrzk4REtM2vF76XGMd0XZEwA7k5pBs=;
+        b=hzTLwsM//AGE4yKNqYCCmXuw9q/jl1Jj5ljKS/521+5eIniPfKyKafZknh1ju4n+JB
+         Qai2sSW1KbPoueNX2tsZ9B2HwNW5q75BSp6Wt0AlyImsHRRqDgUEheCJ22+Lah5rnG2T
+         U5TS0LG/VZTW4TjKWR3HUNUgQN2l37W2yTmuaAjmOvfg6XfoVxTrMznwfdDSxIiGoyi2
+         /QA+eF5RtJ9OkJoqE5ltqzIY9JBS5ZbUs6osi/41axmCFWNaibKDnzxsE7mlblnVV1fi
+         1qIL3gWE1NB2FtWxvV0sitD2o/QEAc8UJLpdoFgFSE12mGaxeAL4iO95iiwEvboEXZUN
+         xqlA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747314656; x=1747919456;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1747316131; x=1747920931;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZF70hMZ4c9hTg7Wy+OOnAp9o1FmPPUxd/mIYkXLA27A=;
-        b=qeOd2QchkNzyhTqqxflTdMFok9q+qDvfr3tfFtY9HViDk9qiZB8Sdk417YqCVJL52K
-         m5EAaEpTWqu3jEEhhr7bWydAkJ5Pzz8V3E3u+9oeyZR3hdWsK5RBxD3zp8eRXUyGnDDW
-         Th4aLU72xdCyp5v1DMIAqoqf73eE3Ea6D4GSYiM6dyQHcGC/hVXL0NKUOzTBddputMcT
-         PE5JFw7d4ZmWJojXbGUndab+4dqvyw96ceSFsaD2TBaEheaIpjkOFu91KPM/cjz/oHvf
-         ZzFFrLC4/PuC2BzQWf6alJrwolhPaAYD8arKcZLkVRLtyAVkrcjox+WTj8dAvX0T0hwx
-         hecg==
-X-Gm-Message-State: AOJu0Yz2QaywmtALujF9durGHxfxGho7Osnr2T7bDdKZ2KD20SncNmo1
-	n2tPoul52XseV2tsrF0WKxAah5hLlX5oyw/fkWl+ObHx67QcvqNUyqMM8iOqYA==
-X-Gm-Gg: ASbGncuB2BwbfADYxRIn8U6lTub3+IuRmuKVaBhEDncqPUQIC52ezIBYQY4AcCyJOys
-	8ly3qx6Hx2uU55dGllxDubPcCAB551mXVHhudsXh4JnFvq9g3gcLgwel/zMduMkkTSe+gNGitpk
-	eAcfAqSZS5+MkHord2jCtrT38oUulCTleNPQ8jfLrnUIKKnMxT4TsPoVwmJCwHxwfnZI8TVsOSp
-	hkn8/X8Lb0bg4R5mm7TzFOS8cDu0W9fBf4n5AXt50A2vkeCb8cdKE5WjD+o5AS2gPqQlkkquy/e
-	mvBKdJtlFjhKjxQaqMgBRTDUvsfE5vvb1wpg9H6kcoKXNKhQd0n81WMAmbllSz1udaeuJxFxybi
-	UFvaPjrewk+VdfKfQrqTBspk/AE/FzuazWFSwq7SCVgIlOdyQuTPzxRezgtNsXNjI
-X-Google-Smtp-Source: AGHT+IHagpd5GKV1FcILRn+JBTRl1ir/BoHhisGrnF2knCSj6+iBDVjg+t6hvf+gX1h1wX0QcBnMUg==
-X-Received: by 2002:a05:6214:e88:b0:6e8:f296:5f57 with SMTP id 6a1803df08f44-6f8a3226240mr53526976d6.20.1747314654772;
-        Thu, 15 May 2025 06:10:54 -0700 (PDT)
-Received: from fedora.. (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-49452583e88sm91723891cf.63.2025.05.15.06.10.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 May 2025 06:10:54 -0700 (PDT)
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-To: selinux@vger.kernel.org
-Cc: paul@paul-moore.com,
-	omosnace@redhat.com,
-	Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v2 49/49] selinux: style cleanups for node_sid prototypes
-Date: Thu, 15 May 2025 09:09:47 -0400
-Message-ID: <20250515130947.52806-50-stephen.smalley.work@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250515130947.52806-1-stephen.smalley.work@gmail.com>
-References: <20250515130947.52806-1-stephen.smalley.work@gmail.com>
+        bh=kNg/uW6hRJ+eWfrzk4REtM2vF76XGMd0XZEwA7k5pBs=;
+        b=JXYwnDJk3qmvgyEYNSa7ZmYRX46hwvoxjkwEbq9NjWCrNwpzgGUeVwb8X6zI88zWBV
+         l9XQRm9ESa3hHuhzzA4/wrCoVQaFeoFULN1FYafcrdcKM4+WnYOTTDWfTflyA1xgCb4A
+         NBMU93WJENd08yuEhbcDUjhqv6tfG/1sri9SYy059KXJ9OFmyu4envJEv/KlskKYdTKr
+         l6R9a4DtstNCFhrYlsSYQSNQ3dpGSk2QqUZYyXErnCMwUDhomydQ41tIMaxufBui/PX4
+         WrFldeSgWo5rzDXK/IOdeiXD/4iO7nEgbx3wvxiUksN5u7bY01vuJ86eZj6wrlEAo0AL
+         jOsQ==
+X-Gm-Message-State: AOJu0Yz339rpqMMEETYrDuYRyCPylDN18L9S7hQZQZl/jHU90ZyIbZ6+
+	A2admTneHL1mPMPpMqWb2VrfyqKBv8zwLKU/WtLs/S1CJ/FrE6bPFRiKknk1HD5CG7aJVVtqvQC
+	OFt20fbLhyNfI31uZ+cIOBqlJOana15ZO
+X-Gm-Gg: ASbGncvlCGyl9iS+A5cjP1HFPDxZKBuDpcf5Rp5jTo9vAtvsWW+wXRwK54cBLEpFH/J
+	2gGgk5iV1oC+PH76+P/rcbMfOyaUzHAKlLPGCA6oEKQI7EprrfKr9Rb6DIKqTJior/XW/UUfKj1
+	KznvyatHNWjoX26Ar4JvL8qNW8Mn/V6Jen
+X-Google-Smtp-Source: AGHT+IGgpbJxsw8usBfXWG8WTabxHSHByW9knObnwFZjv3Ivsoqya0uz47QL7coaTRZ2Cd9CWxZG8A8F3/4B9xB+CXI=
+X-Received: by 2002:a17:90b:2749:b0:305:2d27:7cb0 with SMTP id
+ 98e67ed59e1d1-30e51787597mr3304042a91.21.1747316130742; Thu, 15 May 2025
+ 06:35:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250515130947.52806-1-stephen.smalley.work@gmail.com>
+In-Reply-To: <20250515130947.52806-1-stephen.smalley.work@gmail.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
+Date: Thu, 15 May 2025 09:35:10 -0400
+X-Gm-Features: AX0GCFsCmFz57X98YIMYpsLOFTw4cPxYCATI5MFFLs9xfszkqq_gVof-At3ARQI
+Message-ID: <CAEjxPJ5Tt_xPiFQ5ftfMjRwCLZ9T-MiAaPfE8hsd3YyD5OTLZA@mail.gmail.com>
+Subject: Re: [PATCH v2 00/49] SELinux namespace support
+To: selinux@vger.kernel.org
+Cc: paul@paul-moore.com, omosnace@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Some style cleanups for the security_node_sid() and
-selinux_ss_node_sid() function prototypes.
+On Thu, May 15, 2025 at 9:10=E2=80=AFAM Stephen Smalley
+<stephen.smalley.work@gmail.com> wrote:
+>
+> This series introduces support for a SELinux namespace, i.e.
+> the ability to namespace the SELinux policy, AVC, and
+> enforcing mode. This support can be leveraged by Linux
+> container runtimes to establish a private SELinux namespace
+> for each container, enabling the container to load and
+> enforce its own policy while still remaining bound by the
+> host OS policy (if any). More information about SELinux
+> namespaces can be found at the following URL:
+>         https://github.com/stephensmalley/selinuxns
 
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
----
- security/selinux/include/security.h   | 7 +++----
- security/selinux/include/selinux_ss.h | 4 ++--
- 2 files changed, 5 insertions(+), 6 deletions(-)
+NB Some of the later patches could potentially be moved up and
+squashed into earlier ones before merge if desired.
+I've identified a few candidates below. I've left some separate for
+ease of review or because they are
+somewhat sticky to untangle from intermediate commits and because I
+don't have a sense as to which
+parts might be deemed mergeable at this time. That said, given the
+performance data which I've shared
+privately (happy to post on list), I don't see any performance-related
+concerns with any of the patches
+especially when CONFIG_SECURITY_SELINUX_NS=3Dn which would be the default.
 
-diff --git a/security/selinux/include/security.h b/security/selinux/include/security.h
-index d1f65e0741a8..22de64287b4d 100644
---- a/security/selinux/include/security.h
-+++ b/security/selinux/include/security.h
-@@ -400,8 +400,8 @@ int security_ib_endport_sid(struct selinux_state *state, const char *dev_name,
- int security_netif_sid(struct selinux_state *state, const char *name,
- 		       u32 *if_sid);
- 
--int security_node_sid(struct selinux_state *state, u16 domain,
--		      const void *addr, u32 addrlen, u32 *out_sid);
-+int security_node_sid(struct selinux_state *state, u16 domain, const void *addr,
-+		      u32 addrlen, u32 *out_sid);
- 
- int security_validate_transition(struct selinux_state *state, u32 oldsid,
- 				 u32 newsid, u32 tasksid, u16 tclass);
-@@ -534,8 +534,7 @@ static inline int security_netif_sid(struct selinux_state *state,
- }
- 
- static inline int security_node_sid(struct selinux_state *state, u16 domain,
--				    const void *addr, u32 addrlen,
--				    u32 *out_sid)
-+				    const void *addr, u32 addrlen, u32 *out_sid)
- {
- 	return selinux_ss_node_sid(state, domain, addr, addrlen, out_sid);
- }
-diff --git a/security/selinux/include/selinux_ss.h b/security/selinux/include/selinux_ss.h
-index e7b5346d2b49..0c3c6df88f5d 100644
---- a/security/selinux/include/selinux_ss.h
-+++ b/security/selinux/include/selinux_ss.h
-@@ -76,8 +76,8 @@ int selinux_ss_ib_endport_sid(struct selinux_state *state, const char *dev_name,
- int selinux_ss_netif_sid(struct selinux_state *state, const char *name,
- 			 u32 *if_sid);
- 
--int selinux_ss_node_sid(struct selinux_state *state, u16 domain, const void *addr,
--			u32 addrlen, u32 *out_sid);
-+int selinux_ss_node_sid(struct selinux_state *state, u16 domain,
-+			const void *addr, u32 addrlen, u32 *out_sid);
- 
- int selinux_ss_validate_transition(struct selinux_state *state, u32 oldsid,
- 				   u32 newsid, u32 tasksid, u16 tclass);
--- 
-2.49.0
+>
+> Stephen Smalley (49):
+>   selinux: restore passing of selinux_state
+>   selinux: introduce current_selinux_state
+>   selinux: support multiple selinuxfs instances
+>   selinux: dynamically allocate selinux namespace
+>   netstate,selinux: create the selinux netlink socket per network
+>     namespace
 
+I likely should have copied the net namespace maintainers on this one,
+will do so in later submissions.
+Regardless, it would make sense to squash the later "selinux: limit
+selinux netlink notifications to init namespace"
+commit into this one since it addresses the concern noted in the patch
+description.
+
+>   selinux: support per-task/cred selinux namespace
+>   selinux: introduce cred_selinux_state() and use it
+>   selinux: add a selinuxfs interface to unshare selinux namespace
+>   selinuxfs: restrict write operations to the same selinux namespace
+>   selinux: introduce a global SID table
+>   selinux: wrap security server interfaces to use the global SID table
+>   selinux: update hook functions to use correct selinux namespace
+>   selinux: introduce cred_task_has_perm()
+>   selinux: introduce cred_has_extended_perms()
+>   selinux: introduce cred_self_has_perm()
+>   selinux: introduce cred_has_perm()
+>   selinux: introduce cred_ssid_has_perm() and cred_other_has_perm()
+>   selinux: introduce task_obj_perm()
+>   selinux: fix selinux_lsm_getattr() check
+
+This could be squashed into the original commit where I first convert
+this check.
+
+>   selinux: update bprm hooks for selinux namespaces
+>   selinux: add kerneldoc to new permission checking functions
+
+Could be split up and squashed into the commits that introduce those functi=
+ons.
+
+>   selinux: convert selinux_file_send_sigiotask() to namespace-aware
+>     helper
+>   selinux: rename cred_has_perm*() to cred_tsid_has_perm*()
+
+Could be squashed into the original commit so that it always uses this name=
+.
+
+>   selinux: convert additional checks to cred_ssid_has_perm()
+>   selinux: introduce selinux_state_has_perm()
+>   selinux: annotate selinuxfs permission checks
+>   selinux: annotate process transition permission checks
+>   selinux: convert xfrm and netlabel permission checks
+>   selinux: switch selinux_lsm_setattr() checks to current namespace
+
+Could be squashed into earlier commits converting these checks.
+
+>   selinux: add limits for SELinux namespaces
+>   selinux: fix namespace creation
+
+Could be squashed into the original commit introducing namespace creation.
+
+>   selinux: limit selinux netlink notifications to init namespace
+>   selinux: refactor selinux_state_create()
+
+Could be squashed into the original commit introducing this function.
+
+>   selinux: make open_perms namespace-aware
+>   selinux: split cred_ssid_has_perm() into two cases
+>   selinux: set initial SID context for init to "kernel" in global SID
+>     table
+>   selinux: disallow writes to /sys/fs/selinux/user in non-init
+>     namespaces
+>   selinux: convert nlmsg_sock_has_extended_perms() to namespace-aware
+>   selinux: init inode from nearest initialized namespace
+>   selinux: allow userspace to detect non-init SELinux namespace
+>   selinux: exempt creation of init SELinux namespace from limits
+
+Could be squashed into original commit introducing limits.
+
+>   selinux: introduce a Kconfig option for SELinux namespaces
+>   selinux: eliminate global SID table if !CONFIG_SECURITY_SELINUX_NS
+
+Both could be moved earlier in the series.
+
+>   selinux: maintain a small cache in the global SID table
+>   selinux: change /sys/fs/selinux/unshare to check current process state
+
+Could be squashed into original commit introducing /sys/fs/selinux/unshare.
+
+>   selinux: acquire/release SELinux state properly in socket hooks
+
+Could be squashed into original commit introducing the state field of
+the sock security blob.
+
+>   selinux: update cred_tsid_has_perm_noaudit() to return the combined
+>     avd
+
+Could be squashed into the original commit introducing this function.
+
+>   selinux: repair security_fs_use() interface and its users
+
+Could be squashed into the original commit introducing the wrapper function=
+s.
+
+>   selinux: style cleanups for node_sid prototypes
+
+Could be squashed into the original commit introducing the wrapper function=
+s.
+
+>
+>  include/net/net_namespace.h                   |    3 +
+>  security/selinux/Kconfig                      |   65 +
+>  security/selinux/Makefile                     |    1 +
+>  security/selinux/avc.c                        |  782 ++++++++--
+>  security/selinux/global_sidtab.c              |  810 ++++++++++
+>  security/selinux/hooks.c                      | 1339 +++++++++++------
+>  security/selinux/ibpkey.c                     |    2 +-
+>  security/selinux/ima.c                        |   37 +-
+>  security/selinux/include/audit.h              |    8 +
+>  security/selinux/include/avc.h                |   77 +-
+>  security/selinux/include/avc_ss.h             |    3 +-
+>  security/selinux/{ss =3D> include}/avtab.h      |    0
+>  security/selinux/include/classmap.h           |    2 +-
+>  security/selinux/include/conditional.h        |    4 +-
+>  security/selinux/{ss =3D> include}/constraint.h |    0
+>  security/selinux/{ss =3D> include}/context.h    |    0
+>  security/selinux/{ss =3D> include}/ebitmap.h    |    0
+>  security/selinux/include/global_sidtab.h      |   26 +
+>  security/selinux/{ss =3D> include}/hashtab.h    |    0
+>  security/selinux/include/ima.h                |   11 +-
+>  security/selinux/{ss =3D> include}/mls.h        |    0
+>  security/selinux/{ss =3D> include}/mls_types.h  |    0
+>  security/selinux/include/netif.h              |    4 +-
+>  security/selinux/include/netlabel.h           |   14 +-
+>  security/selinux/include/netnode.h            |    4 +-
+>  security/selinux/include/objsec.h             |   43 +-
+>  security/selinux/{ss =3D> include}/policydb.h   |    0
+>  security/selinux/include/security.h           |  473 +++++-
+>  security/selinux/include/selinux_ss.h         |  119 ++
+>  security/selinux/{ss =3D> include}/sidtab.h     |   34 +
+>  security/selinux/{ss =3D> include}/symtab.h     |    0
+>  security/selinux/include/xfrm.h               |    8 +-
+>  security/selinux/netif.c                      |   31 +-
+>  security/selinux/netlabel.c                   |   32 +-
+>  security/selinux/netlink.c                    |   42 +-
+>  security/selinux/netnode.c                    |   26 +-
+>  security/selinux/netport.c                    |    2 +-
+>  security/selinux/selinuxfs.c                  |  551 ++++++-
+>  security/selinux/ss/services.c                |  453 +++---
+>  security/selinux/ss/services.h                |    1 +
+>  security/selinux/ss/sidtab.c                  |  105 +-
+>  security/selinux/status.c                     |   44 +-
+>  security/selinux/xfrm.c                       |   47 +-
+>  43 files changed, 4071 insertions(+), 1132 deletions(-)
+>  create mode 100644 security/selinux/global_sidtab.c
+>  rename security/selinux/{ss =3D> include}/avtab.h (100%)
+>  rename security/selinux/{ss =3D> include}/constraint.h (100%)
+>  rename security/selinux/{ss =3D> include}/context.h (100%)
+>  rename security/selinux/{ss =3D> include}/ebitmap.h (100%)
+>  create mode 100644 security/selinux/include/global_sidtab.h
+>  rename security/selinux/{ss =3D> include}/hashtab.h (100%)
+>  rename security/selinux/{ss =3D> include}/mls.h (100%)
+>  rename security/selinux/{ss =3D> include}/mls_types.h (100%)
+>  rename security/selinux/{ss =3D> include}/policydb.h (100%)
+>  create mode 100644 security/selinux/include/selinux_ss.h
+>  rename security/selinux/{ss =3D> include}/sidtab.h (81%)
+>  rename security/selinux/{ss =3D> include}/symtab.h (100%)
+>
+> --
+> 2.49.0
+>
 

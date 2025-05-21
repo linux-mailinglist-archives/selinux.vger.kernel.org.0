@@ -1,138 +1,136 @@
-Return-Path: <selinux+bounces-3770-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3772-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4222FABE88A
-	for <lists+selinux@lfdr.de>; Wed, 21 May 2025 02:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BC25ABEAD6
+	for <lists+selinux@lfdr.de>; Wed, 21 May 2025 06:15:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4EC07A79A5
-	for <lists+selinux@lfdr.de>; Wed, 21 May 2025 00:32:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C6104E0549
+	for <lists+selinux@lfdr.de>; Wed, 21 May 2025 04:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12EE242A9D;
-	Wed, 21 May 2025 00:32:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BED22F77E;
+	Wed, 21 May 2025 04:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="FlL6H96v"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vJeMBgbI"
 X-Original-To: selinux@vger.kernel.org
-Received: from smtp-fw-6002.amazon.com (smtp-fw-6002.amazon.com [52.95.49.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B5C17E;
-	Wed, 21 May 2025 00:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.95.49.90
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B41922F763
+	for <selinux@vger.kernel.org>; Wed, 21 May 2025 04:13:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747787551; cv=none; b=s2Me1q3jiPl+tir0NvoXWmLxAhVXMryXvdME79i7Kj/SrhqhDSIfx2GeSNOH5uE21spvlHUVK1tOLkhzNAiYJpfusb7dAaaChr5E+g2+Ilfj7pyrraQV/HulLQrcIFJAKX3CJ33a+WIQXGUHhrevqgnhO4F1ZnLzFxyKK1yiLbM=
+	t=1747800790; cv=none; b=mAtQVA2984yv+n9I+noJqnvGLOJJbIsX7QT3zJhj4bQdo6yLy+FopVjWJPcO5eepcACoW8X8cflBEvsup/BO+JFPCoWL1mByb2zHyvS8SKXsSPMXBzLHf5wDydI2jfdZFgTkDqg3qPifmvI274msiliidoqDj2dEAaZS2hzsxls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747787551; c=relaxed/simple;
-	bh=fGWSogIpp3TKjPGsD6G2U2naE/ASQSOoM2byNJmS9SA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MEVh1lpuRZ7OtduetdGQAWFKYYByT42+jSCxZB3ZxaYgfE3iSeBVj0qxqm6ZoAiz1RmlpFkBlOXmc2XE6TjwLguzptejeOfiu7tnfEWQdKDS+WixBVCBDg9FhR5jya0Z/7OoBauoWZOE689+zJyOMI06rgpC+0+ni//2sFyroyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.jp; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=FlL6H96v; arc=none smtp.client-ip=52.95.49.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.jp
+	s=arc-20240116; t=1747800790; c=relaxed/simple;
+	bh=CzZplifB4yM9E8aHgw+DcCEuudnsO+hd8IgPL+dvMFI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TtIY56UygdBptKnRNw6OXOneE+dv6PHN/SMBT3jsKmXq+TEn+4hH39wBv7s4y7qsiipCXSBCa87Nx7QUywwkhhLCarqk2XI8cpLbuGlXiNjLhmNWDcGewvUJzMYG0DmP7Xo1XkUihblp+MGQhfkEcCMwg0an+lNS3wP/Vuhe4d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vJeMBgbI; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-231f61dc510so934885ad.0
+        for <selinux@vger.kernel.org>; Tue, 20 May 2025 21:13:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1747787551; x=1779323551;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xEI+3cw+m02lVsLKZ/U/Cq3BXMtRGmsEPyJIbqzNDXo=;
-  b=FlL6H96vTSwPcHCOlHJTb2ER9EtMAhLtUv1aZG16YzhtZQWj+vwjoWcQ
-   vmVyJZ98s6F63xzqv1SjH6C9mJ5+azViUike2eQvOX2K+Q0r2ehoehcWv
-   FyATtm00h0gSneREIIqZ/XUQCHZXpbaKIH7/soHZuDwksIN49T0TxAzYY
-   UcXlUl/Vkpc3bayD6kEM/rWlQa1gjeq0FaJITC2XO7N1G80wePmgalqfo
-   vUy6CC52QpWf6QaXldfDfckoOAnb/rdSKlwdcArrolKZFyW6hueH6AMli
-   RRznZcNJFsiYrvphha5ntbsManVYEqtohxlMYhr777DjsqQJuWqMQxI3I
-   A==;
-X-IronPort-AV: E=Sophos;i="6.15,303,1739836800"; 
-   d="scan'208";a="500790503"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-6002.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2025 00:32:26 +0000
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.7.35:46847]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.55.122:2525] with esmtp (Farcaster)
- id 8fe77178-6a7e-4a39-aa1b-6b78976c9145; Wed, 21 May 2025 00:32:25 +0000 (UTC)
-X-Farcaster-Flow-ID: 8fe77178-6a7e-4a39-aa1b-6b78976c9145
-Received: from EX19D004ANA001.ant.amazon.com (10.37.240.138) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 21 May 2025 00:32:24 +0000
-Received: from 6c7e67bfbae3.amazon.com (10.187.171.41) by
- EX19D004ANA001.ant.amazon.com (10.37.240.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 21 May 2025 00:32:20 +0000
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
-To: <stephen.smalley.work@gmail.com>
-CC: <anna@kernel.org>, <brauner@kernel.org>, <casey@schaufler-ca.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <horms@kernel.org>,
-	<jack@suse.cz>, <jmorris@namei.org>, <kuba@kernel.org>, <kuniyu@amazon.com>,
-	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-nfs@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <omosnace@redhat.com>, <pabeni@redhat.com>,
-	<paul@paul-moore.com>, <selinux@vger.kernel.org>, <serge@hallyn.com>,
-	<trondmy@kernel.org>, <viro@zeniv.linux.org.uk>, <willemb@google.com>
-Subject: Re: [PATCH v2] security,fs,nfs,net: update security_inode_listsecurity() interface
-Date: Tue, 20 May 2025 17:31:49 -0700
-Message-ID: <20250521003211.8847-1-kuniyu@amazon.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250428195022.24587-2-stephen.smalley.work@gmail.com>
-References: <20250428195022.24587-2-stephen.smalley.work@gmail.com>
+        d=google.com; s=20230601; t=1747800788; x=1748405588; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=0KXv+Ko44cUZ/uyfsrxurypyzmWgliBU+Xqfak3IgNs=;
+        b=vJeMBgbIDUjoMk8WV+GeAeDtczqdYt2ij1K91uXNqX8G/PBmtDW3CAalL0YuqpIDyJ
+         DYoygFip8oVlnkVFJnz8fVWDKFnp9jh8h8JHH2+eKC1nBHFULqye7efNuD6bu+EH8MQ+
+         3nzTrV0PZqFS4g+BxDq1UISGMGfnM9RRh9W/nkxWwwH9l+g0sAI3tl1QdyTddpMgBtxu
+         dq6qDx/bhdyMGWGecOGswFLQCNvRDvFaMzbGeBZhnJhOtp8in2bmiz77uQTNw9TGlfyz
+         fohzslr72KgBXez014CdxdnvtuSTdKLMFWFOuBIY+Cnc8pV2jcxZvBubZ8UtvWUlVgsM
+         HIrg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747800788; x=1748405588;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0KXv+Ko44cUZ/uyfsrxurypyzmWgliBU+Xqfak3IgNs=;
+        b=JQn1lof4dbslaxy/YPEHFfMYjcWRzkgxwDoKBYdkg4k2f3+49RkNnv4NLtvYfi2e3Z
+         jIuJKQGw0GDQUzdGePuq+GKwiZknhOnP7IMGz+s/+cvkwEnZyYxNiLFA7z6d6Ffsv1xS
+         GknT47NG1PMAJ6FZAnjlzVq9JO5QMZM3qkrWkQ416gy9TFK8QhVs4Zl5MmFa13UmioJH
+         IualvkZR26okDkKq8LJ2dMY9ACm+TC4KlZ+eBYBnCBzHDrqtcxsgXIXPB6S6kqFX0dIM
+         wsCh4OqxRGfmjL0PvhjgOOMg7+aHc7JqH8Wt5LTQVSC33pRyPQ+jWOr+Cr9DVOVLfWAS
+         GPDg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDdnCfGJxwFnLN6SjgvWDjjRtGzrfkySup9cUGLvQO3bObgSNgEglnxUVoPxAx2OaMtKkUgdUm@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN+mS6SZ/1OxY1Y+mJR8L7KWCPhckd22fK40RhaSSZ3Mnx1ADl
+	lN8XdeEuRAVTgjHz34hEng5ZDW6baoAwI+OuEpBpkLdhl4/ykRxbw5j8BDiQtLcVQA==
+X-Gm-Gg: ASbGncsz+LlFlODJOmZjedjAG+TGA4BZ8AWMY42nVQM3Bz7JRcMpVWgjllgP4tbCnq/
+	Y0/zpKRAd0XTTP/dFd2vv3jD+nAwn8jeY1iy7TJc0BdCARqK/xVeq9RO9aIvZn55bQD6xVDUq9N
+	E0HhQ2+7GQEof7DdmTZpvBS6KgYoWaZMn2ZqXfgByAb1hTDy9WVS/GcoJOyjWxU0FR1viEj5jvT
+	2WaEYsuFrzxo3/iNjJMcxOhdXi0fG5GJF8sO2MHxSYMc878kIvO92Fmg+9Fnf3hURmKcNt8OvNP
+	f5HtuKJbjPBaPp7IIVzHyiwabFR64mI17VHpTzsGiy4ZHz6alA06CZ0GujCvC26AVER6eQVr/tk
+	BAP/jyDnQyNCjn2/WRA0=
+X-Google-Smtp-Source: AGHT+IEqOpF5edfEWArOiOQhVink5JvyoS5B9Tf3hRBGfOIcPhNGaN33iWUyuNmrSOLpeFbUNtsvcA==
+X-Received: by 2002:a17:902:d54f:b0:231:d0ef:e8fb with SMTP id d9443c01a7336-231ffd0e311mr9558595ad.10.1747800787099;
+        Tue, 20 May 2025 21:13:07 -0700 (PDT)
+Received: from google.com (3.32.125.34.bc.googleusercontent.com. [34.125.32.3])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eb0a032esm8594503a12.65.2025.05.20.21.13.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 May 2025 21:13:06 -0700 (PDT)
+Date: Wed, 21 May 2025 04:13:01 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Paul Moore <paul@paul-moore.com>
+Cc: Li Li <dualli@chromium.org>, dualli@google.com, corbet@lwn.net,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, donald.hunter@gmail.com,
+	gregkh@linuxfoundation.org, arve@android.com, tkjos@android.com,
+	maco@android.com, joel@joelfernandes.org, brauner@kernel.org,
+	surenb@google.com, omosnace@redhat.com, shuah@kernel.org,
+	arnd@arndb.de, masahiroy@kernel.org, bagasdotme@gmail.com,
+	horms@kernel.org, tweek@google.com, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, netdev@vger.kernel.org,
+	selinux@vger.kernel.org, linux-security-module@vger.kernel.org,
+	hridya@google.com, smoreland@google.com, ynaffit@google.com,
+	kernel-team@android.com
+Subject: Re: [PATCH v17 1/3] lsm, selinux: Add setup_report permission to
+ binder
+Message-ID: <aC1SzdCwT90j1ajv@google.com>
+References: <20250417002005.2306284-2-dualli@chromium.org>
+ <eb68761b5a2d53702f4d6b80fe2a6457@paul-moore.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D043UWC001.ant.amazon.com (10.13.139.202) To
- EX19D004ANA001.ant.amazon.com (10.37.240.138)
+In-Reply-To: <eb68761b5a2d53702f4d6b80fe2a6457@paul-moore.com>
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Mon, 28 Apr 2025 15:50:19 -0400
-> Update the security_inode_listsecurity() interface to allow
-> use of the xattr_list_one() helper and update the hook
-> implementations.
+On Tue, May 20, 2025 at 05:15:59PM -0400, Paul Moore wrote:
+> On Apr 16, 2025 Li Li <dualli@chromium.org> wrote:
+> > 
+> > Introduce a new permission "setup_report" to the "binder" class.
+> > This persmission controls the ability to set up the binder generic
+> > netlink driver to report certain binder transactions.
+> > 
+> > Signed-off-by: Thiébaud Weksteen <tweek@google.com>
+> > Signed-off-by: Li Li <dualli@google.com>
+> > ---
+> >  include/linux/lsm_hook_defs.h       |  1 +
+> >  include/linux/security.h            |  6 ++++++
+> >  security/security.c                 | 13 +++++++++++++
+> >  security/selinux/hooks.c            |  7 +++++++
+> >  security/selinux/include/classmap.h |  3 ++-
+> >  5 files changed, 29 insertions(+), 1 deletion(-)
 > 
-> Link: https://lore.kernel.org/selinux/20250424152822.2719-1-stephen.smalley.work@gmail.com/
-> 
-> Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-[...]
-> diff --git a/net/socket.c b/net/socket.c
-> index 9a0e720f0859..bbcaa3371fcd 100644
-> --- a/net/socket.c
-> +++ b/net/socket.c
-> @@ -560,17 +560,14 @@ static ssize_t sockfs_listxattr(struct dentry *dentry, char *buffer,
->  				size_t size)
->  {
->  	ssize_t len;
-> -	ssize_t used = 0;
-> +	ssize_t used, remaining;
-> +	int err;
+> When possible, it is helpful to include at least one caller in the patch
+> which adds a new LSM hook as it helps put the hook in context.  With that
+> in mind, I think it would be best to reorder this patchset so that patch
+> 2/3 comes first and this patch comes second, with this patch including
+> the change to binder_nl_report_setup_doit() which adds the call to the
+> new LSM hook.
 
-Paul: Could you sort this in the reverse xmas tree order before merging ?
-https://docs.kernel.org/process/maintainer-netdev.html#local-variable-ordering-reverse-xmas-tree-rcs
+Ok, I can take care for this. I'll be taking over Li's patchset now, so
+next version I'll reorder the series and add the caller. Thanks!
 
-otherwise the socket part looks good to me:
-
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-
-
->  
-> -	len = security_inode_listsecurity(d_inode(dentry), buffer, size);
-> -	if (len < 0)
-> -		return len;
-> -	used += len;
-> -	if (buffer) {
-> -		if (size < used)
-> -			return -ERANGE;
-> -		buffer += len;
-> -	}
-> +	err = security_inode_listsecurity(d_inode(dentry), &buffer,
-> +					  &remaining);
-> +	if (err)
-> +		return err;
-> +	used = size - remaining;
->  
->  	len = (XATTR_NAME_SOCKPROTONAME_LEN + 1);
->  	used += len;
+--
+Carlos Llamas
 

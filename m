@@ -1,117 +1,148 @@
-Return-Path: <selinux+bounces-3769-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3771-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6320ABE85B
-	for <lists+selinux@lfdr.de>; Wed, 21 May 2025 01:59:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCE7ABE8A1
+	for <lists+selinux@lfdr.de>; Wed, 21 May 2025 02:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70024173183
-	for <lists+selinux@lfdr.de>; Tue, 20 May 2025 23:59:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43DE37A84C0
+	for <lists+selinux@lfdr.de>; Wed, 21 May 2025 00:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA672561CC;
-	Tue, 20 May 2025 23:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5274454918;
+	Wed, 21 May 2025 00:43:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="gd5/sTzG"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="Eggz90L1"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from sonic303-28.consmr.mail.ne1.yahoo.com (sonic303-28.consmr.mail.ne1.yahoo.com [66.163.188.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D7D25E47F
-	for <selinux@vger.kernel.org>; Tue, 20 May 2025 23:59:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F4279D2
+	for <selinux@vger.kernel.org>; Wed, 21 May 2025 00:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747785586; cv=none; b=N7M5Q4wycwF9pie46QKozlTt05BNmiHL0ePhJiuR+D1a5mRKL/JQO42tGRT0tN6SWul2nF2wOMZS7GINpsER9Bw5oyAtF+3oMdJ+6fw6psIVFTipgZg4Ln2UglysZ929H1ZmTlDLqp/8aFR3lSH9AD/8eY8IVu0sJxHzVmXxuFU=
+	t=1747788181; cv=none; b=mu+Qd8lQDT+w6R5ptateWyIoFOZ4CAraWgf76Jmm28AJZcS4N8NhwfnKz/GlsJMtvw1Q5dQVizsUNqFmonWWZjRyq8Hr3dewIXsJAbi4zO5OnHt2k/8lGH6JbfJscUZyM2UcjTJ/aoeqluQcUhN58/EwZlR1CW39Tj7oYGAFutA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747785586; c=relaxed/simple;
-	bh=eUHj9fSbxSc1k4Z3XHlz4iuWHnWkwDcrvltnIccCgzY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZG48Kt0MkUtarO/mXPGH4sO3rln6tC6zQBYSr8Oszj7I5oWk8lsZtEJ4dsMYzJ/Io3MwH0Bdu5KrEpzTCpYbjxgvkiMQS2MZlunaDVGcG4B0SJ4kBdUvRI+9TRIBApYDsu/VR9AxPDhKS5Jkk1ck/91IfUdwFVbecsJpiZXAl4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=gd5/sTzG; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-70ca2888e99so39818827b3.0
-        for <selinux@vger.kernel.org>; Tue, 20 May 2025 16:59:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1747785584; x=1748390384; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t1nG72rXdkIhAo7FLE6YAhqTM0G+iygF5sC4VEEhEp8=;
-        b=gd5/sTzGuLbkaCUBx0cBrXbp2bjUJARPNFhnd8QxeKDavp3XrYB8ii3Vd998xNnRa9
-         y4EvmbFZgPtvOUBVjg4Kw6YqhD6hfJKTgYf+wmwYB/f1naXXbr1pEwOP010zXULvWVS8
-         QcBimstOxXjkw1ye6X68EgOTIuerhBN92OHTNOTkM9Jib9aC6yc5Ionxxt1Kj5F0Y08j
-         lhox7wdcyG7DJdxBNdA21va564G3S0uf8Ph+Y1EtinITgdLkUOItrpSsJYcMCntNN55Y
-         dJCa4V09BBMF1ftZa7OGF4A2jBPjYetTXZ+uotbhxNXhaqTeSvMJfBBvMJfKx0HxcHyv
-         ngvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747785584; x=1748390384;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t1nG72rXdkIhAo7FLE6YAhqTM0G+iygF5sC4VEEhEp8=;
-        b=lL2huQILoeZluOGFdFHLZFk5Bx23LDGZjXg5fYqBpmdMc6VinhR+hVuN4OAMlSwmVO
-         jtyYDtUKPefcduNzZ+BeAsNEKxvpRDPa4/LQcv+gVR2/nQBU0PiNqlbEf9en0h4rP/Ag
-         rPGrUyrx/3EpqBqs2SbKNZ4cZcEhpIPDboPiNcJ6KZRomFJDBFuJEP8jaRe4oXLYvqZc
-         iSMBsLCwTbIi0R59o4KZqbyS3TrzsNvmNiVA3Y9SQjobGFKm3In6248BZlptPHy7VNud
-         ZZZMGp6IwZ9jlpFWZath++NrNm3Q9a+k4uWrMaGe3lpKTvirCnRX5ebjyZ1g7nlWEOFo
-         Aq+g==
-X-Forwarded-Encrypted: i=1; AJvYcCUlQwAy4mCBWJxfI+UXPxDQx47nSrqcIxm8Lf/GXANZAgJrQtJ0e4qCnPqWXDlPxoz5IUl4kWRE@vger.kernel.org
-X-Gm-Message-State: AOJu0YyFTF7BW+3o3UD90T6Zq38pQhdCILnYqVMTTh1SOb4hsXLLDq6B
-	XhRRHfHGA/a0piVj+fRxuHmsVUOTv+XgLFo2gkdqFt3FhNJIzx0hkT7lD6ChOS1tnZeavkn/1ak
-	+82LV+2c2+y5WlVqR+bgwYOEYS47ZDlR71irSpLF3
-X-Gm-Gg: ASbGnctk/xaTh+44Qde0q8kP1G7eAuSU655H1bGlo4Tp1zb2p/OtFaQ8euCAo73auYw
-	TNAwF/e3qoz+PJbVrA8sqjbRcn0wcQIUiK2IXFMCWIONmyFcHM/bbXScfLBooYEBywY5nv7PVxz
-	insUedq8vgVyrBM3uu91t5VUJKurudOCPhnZZnYWQ6Uo4=
-X-Google-Smtp-Source: AGHT+IFi+IZ01q+HOPY1Ma+AGZsFDJtAdfmu1RjW4Fjy7LQNI5ccrRqq9xG0xCbDVRNVk5IfeVOu+go2CwJxrS774I0=
-X-Received: by 2002:a05:690c:740a:b0:700:a913:854 with SMTP id
- 00721157ae682-70ca79574b3mr229077797b3.5.1747785583931; Tue, 20 May 2025
- 16:59:43 -0700 (PDT)
+	s=arc-20240116; t=1747788181; c=relaxed/simple;
+	bh=T0RbOaBwczPSyR6MtoU31hIYUwk641zg+6X5zZah544=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oSIZemqil4eFie/AZAmAphFaGAsh5UaAA5Jhdxl4wEcM6LM8v9Y9SkEnNPfYvwMaIAQrq3BcYOU+G8AOQGbufcTjQkl/rA9axCr6oLmh/1pNioXvoAFdN+SvtlsxclqgvXGeGkOU/meb1EcMcML/Q4+d67/OnOyGDy66RT2lY90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=Eggz90L1; arc=none smtp.client-ip=66.163.188.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747788178; bh=cx3YGvuPA+vDPKU0fnjGtN1JBtOZiqAYEf/p/WyoWqc=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=Eggz90L11PVp9ZHD77yfiSnbsbdkar7ly/ftcYmEefcDBZ0afhXvfIuI7ak37nlVoHKn61DzottarzfacyVMbBGIAuhQwwzieR1024KaZnr/bBp23zOc9dY6FMaCGc6DmIq6F+583EBRybH2eP5slIo70QjU/9DjpCNb4qKtAV6QJfNCCICIQ/GyxaG/q9p8tpE5wXqc9uXG/rqxPgYwQ/VxuvuX9zkwREtfnVUCpcSUbpf5VYLXjIOZd/XsJM06H/CBBc5i/dqe2YvnCQ2r4PqZrJr+7XsNo/Y77aRwjWOeqv0ZswzxUujlMrxLTZGCicqR7QFZDl7Zlw5/mcj4Qw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747788178; bh=FKjQkbW+QH3r54fF6wpuBptNavoIB63Ca+eCL0hUhSD=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=DJs0CWBmrFz3HJzWWY8eCQspgErEra42/Dco/JzkV8YNZzNLHLQfUA+QNMoRTUyp6kxiBUpbHtqjIZwNXLbWF/LCDq8qkINewyvb58orJ0RL8zQRE+DTUKAnDRd3AiQmrA8Yz1VxpRXwqkguRJKKAXTpbNsYPbUyMTtlNWaK1iwgujlNQ2FVgBf7ZVvrBMVgb80yx4Vj0GWO2jK4gEEyVwSXEPP3ETjPViyUqWwHk0fdfh7xHjdH2J/gI5qLJZn15if3yxY9DGeBAuJbzz60OsfO8mxAAT0jyg6fKnI47OSBUIbal2yK3MOaPz3FQEyYMYwZxV7c/XPlpruyemyErA==
+X-YMail-OSG: oJxqVeIVM1kG4i3jzx86a6TgdP.0sTad.diCSsPSpVtwno5YOcf4L8zlUdZEOX3
+ 8A0thCmq_VigcvCdJvgaCkckZOOYvUdKewrkAPP9aJk_p0xPyf.jgIizuH685NVoGGEsZXLdFdug
+ KsfNyN6u27wSgiw3EA5NT7LiZYqzGRdq8MvhtXvWJH2GTrywTeQi5mpHSTIF9O4.lueZUO8G_yCB
+ GimCgBre7Pq4hh.Tix3Db25Mz558v8DjALQKQPjYGb3y3bOObaQGrYhlQbd_YzYTOLHbffbFa1h.
+ VdUS7oeb3_W4v7kW8uf3MMgikkLUPy5_N3NTcw.vXv.vcpoBno2jD6PC6pAArBx5LrniAONVF5NL
+ DNZ0lbX8RFTB3abN4z.nTduuzKkvxe2l3BVnJRQNjJKTU1LFybufTbbMEDwu5baGKA958c_lo6jl
+ Ki_Jyn0rD1.JYTtnoIx96NHid4bqeOGjoluxMzSGcOH4e2mF_eyHTOuHE.GVwW.MGjBGrL7Mn4OF
+ EroLwnRvazI2LY23GfsrCi1PeEYCF8axRd.0_VRs9TTJpaaA4nYaxO4m9F19ZCezmQTdCrzLkKWR
+ pHB5e53Uj_cUROztu93urkHbS3_YRBavUDhRgU0Ek7TPFMvHLQyXEaWP4e4Ws_RbFfREN93xNLos
+ Kc9ZLb0PCg_u6eH99NHXjewZP2eUMo_86VIZpWX8NGQy7Lfk4YsbmFB5aUnIjyBq48PG_dTrKk5z
+ AIcl72aBX1WgvRnc3a2sBEzK21PuEsJAw.fB27faktiFQjnVbeFuoMCHu0ILPa5_KBW1NaiTO8X8
+ hkclaeaIGx.EQyLDm6mokUOUEjibE0RA2lb8hKRjkGd4mJZ1vFN5lCXmgcqv3CwxobcFqjXEQGGd
+ eIFyISiS6t9k6_HDvzhqseZOZCOL_ZH78coh6bDqJRMDU1FLT1bYMsFJTSpgZZ_i72sY3Xt0wwzO
+ ac9jVZzzRY_jHkMkZap.1.6sUZc_oQT7_Blgdr_XkwJF9CDdY08db7uqthjEdLm21rrPRpg.i02B
+ 9UCyw0rKb7uKTcpI7iay83Ra.S3FxdZxYfQ4MG.nqQXOBF5AmysxwGThRwU3Qs1.lB_EEXhVBhIf
+ o0pQcQFJhk_0EeWe7n2XI9Asjm4opRYMi6kgSMOH0wyHCgHUgAd6jsdoGx2opwPzfDbNRS82kt5W
+ 8LLAwkv5aXfmymlYCEPSF5eIT8KjjGPuSKP8MZYrzCTyj.zICKHTcZz069JvMfHhuZfWUusHArIK
+ F6faHelbx.nKw.w3hLLRGUw2bKZ_5jPcBiw4Rb8_Qp_CVrhX5GTTB0IhSrdtcvXrhXFf0QlQfZwH
+ BPiiMFgERCzxMSPQcPMSN4Og7wB4eLnwwEvx2TLV9P5WFkHMbrveeHWcx1s2kEq4fmPdAnfzKFob
+ UiD7eshjXza87WTGI1UQLG6JVAPIWUwx3B9iZgY2A.xc5GqLO6K4k.rA19yy5mL5v4xOq9P.C5WZ
+ 4DSMxHUoMsHAGwI6dozCO9.lpwHSuodsKl6Pr5r93iBJUALbm_3mJaXVD03SJ7TPS68w8gZfyFup
+ pwVB2QxpPhaF6Yf1PB.ovCH9q73ez77wvnCe50bi7AQAATJNXC_KaA8WWq_4cwcfp7iCyD6RaOmz
+ X5U297wVCeTgwGBnUfEktpe8TUMwVhXECIHtvrGKdEdynadWwxb3nzP2X_vYppH7m4R86zYxopFe
+ cZIJ7R1cehKHgf4JFUBM5XpArdLOJ9twLQOkPDhsVlTQ0wOPVDnhh8tFpfvZ44VqL6PB_gDo4XpY
+ ztEy7mqEY_apSmXbbR_7YqfponqTx11ZCR2UXG8V3UdlDp8sdyuHEtmxlp7RIsFF0eLr1EwA.sCX
+ pHTuKxJrhEtg5tVLifxeNsc3KwO5m0Q8AfATYhuiN8XFAXU9umYuKmeX34YIVBcDUvmazY10a5.u
+ YILlbIcdhEPqdXcmT5sf13Swx_mWqG_WyPJAUAETwQuMK3FDaYw22i11vFSdcwLRV94ShbChwy3j
+ vnIFzE_eiqSUz947iwzHYTofvN.O5yQ8kTsYH0sX1O_6o26G11NgQ8QNS9Uq1qfn23DNEaJ7dtxo
+ NQPhXykgxXpt41pz94MSknLke9XTiYFenqiICsMFPItuw.3g0by6b3piWRUpv44IPi0rueVKqVya
+ 7HhOBENFFJHsuaU0D8NRbui9XPywUHPkPofkB.UW20Df18q76w1jwNWVnrt574YMbGHpi22t01My
+ ShhwmxybpA87YsB6Le3OIj8pKMxaCCxfzCCQ_W4s8TwbYjYk00qgdkk9Npz4tNAdJKHgEPsYtODB
+ wjzcaWg--
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: fa6019c4-8c81-48f7-9087-f9292112f967
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Wed, 21 May 2025 00:42:58 +0000
+Received: by hermes--production-gq1-74d64bb7d7-5qmwx (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 22b51d61e1487a2ad2d4a72f676939f8;
+          Wed, 21 May 2025 00:22:40 +0000 (UTC)
+Message-ID: <f4842839-20e9-4ff3-8551-3e33d1c87e44@schaufler-ca.com>
+Date: Tue, 20 May 2025 17:22:38 -0700
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502170450.27160-3-stephen.smalley.work@gmail.com> <a0842c097e2b73c93954e2a414b3fad2@paul-moore.com>
-In-Reply-To: <a0842c097e2b73c93954e2a414b3fad2@paul-moore.com>
-From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 20 May 2025 19:59:33 -0400
-X-Gm-Features: AX0GCFvHP14rA2lgS9TQi8p1G4V9fwfTukMijd7ytj-OjcQHTa8HGh9mf-WJ9_E
-Message-ID: <CAHC9VhQusHFyzkHHYwi2=6-HRBZ8VnRWO6NXdjEjD6PRPe3U+w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] selinux: optimize selinux_inode_getattr/permission()
- based on neveraudit|permissive
-To: Stephen Smalley <stephen.smalley.work@gmail.com>, selinux@vger.kernel.org
-Cc: omosnace@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] security,fs,nfs,net: update
+ security_inode_listsecurity() interface
+To: Paul Moore <paul@paul-moore.com>, Trond Myklebust <trondmy@kernel.org>,
+ Anna Schumaker <anna@kernel.org>, Jakub Kicinski <kuba@kernel.org>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@amazon.com>,
+ Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>,
+ "David S. Miller" <davem@davemloft.net>, Simon Horman <horms@kernel.org>,
+ Ondrej Mosnacek <omosnace@redhat.com>, linux-nfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, netdev@vger.kernel.org,
+ selinux@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>
+References: <20250428195022.24587-2-stephen.smalley.work@gmail.com>
+ <CAHC9VhQfrMe7EY3_bvW6PcLdaW7tPMgv6WZuePxd1RrbhyZv-g@mail.gmail.com>
+ <CAHC9VhQyDX+NgWipgm5DGMewfVTBe3DkLbe_AANRiuAj40bA1w@mail.gmail.com>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <CAHC9VhQyDX+NgWipgm5DGMewfVTBe3DkLbe_AANRiuAj40bA1w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.23840 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Tue, May 20, 2025 at 7:38=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
-ote:
+On 5/20/2025 2:31 PM, Paul Moore wrote:
+> On Tue, Apr 29, 2025 at 7:34 PM Paul Moore <paul@paul-moore.com> wrote:
+>> On Mon, Apr 28, 2025 at 4:15 PM Stephen Smalley
+>> <stephen.smalley.work@gmail.com> wrote:
+>>> Update the security_inode_listsecurity() interface to allow
+>>> use of the xattr_list_one() helper and update the hook
+>>> implementations.
+>>>
+>>> Link: https://lore.kernel.org/selinux/20250424152822.2719-1-stephen.smalley.work@gmail.com/
+>>>
+>>> Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+
+Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+
+I haven't been able to test the change in Smack, but it appears reasonable.
+
+>>> ---
+>>> This patch is relative to the one linked above, which in theory is on
+>>> vfs.fixes but doesn't appear to have been pushed when I looked.
+>>>
+>>>  fs/nfs/nfs4proc.c             | 10 ++++++----
+>>>  fs/xattr.c                    | 19 +++++++------------
+>>>  include/linux/lsm_hook_defs.h |  4 ++--
+>>>  include/linux/security.h      |  5 +++--
+>>>  net/socket.c                  | 17 +++++++----------
+>>>  security/security.c           | 16 ++++++++--------
+>>>  security/selinux/hooks.c      | 10 +++-------
+>>>  security/smack/smack_lsm.c    | 13 ++++---------
+>>>  8 files changed, 40 insertions(+), 54 deletions(-)
+>> Thanks Stephen.  Once we get ACKs from the NFS, netdev, and Smack
+>> folks I can pull this into the LSM tree.
+> Gentle ping for Trond, Anna, Jakub, and Casey ... can I get some ACKs
+> on this patch?  It's a little late for the upcoming merge window, but
+> I'd like to merge this via the LSM tree after the merge window closes.
 >
-> The second thing is that since we have this logic in at least one other
-> place there may be some value in encapsulting it in a static inline:
+> Link to the patch if you can't find it in your inbox:
+> https://lore.kernel.org/linux-security-module/20250428195022.24587-2-stephen.smalley.work@gmail.com/
 >
->   static inline bool task_avdcache_permnoaudit(tsec)
->   {
->     if (tsec->sid =3D=3D tsec->avdcache.sid &&
->         tsec->avdcache.seqno =3D=3D avc_policy_seqno() &&
->         tsec->avdcache.permissive_neveraudit)
->       return true;
->     return false;
->   }
-
-As a little birdie just mentioned off-list, this could be simplified
-to the following:
-
-  static inline bool task_avdcache_permnoaudit(tsec)
-  {
-    return (tsec->sid =3D=3D tsec->avdcache.sid &&
-            tsec->avdcache.seqno =3D=3D avc_policy_seqno() &&
-            tsec->avdcache.permissive_neveraudit)
-  }
-
---=20
-paul-moore.com
+> --
+> paul-moore.com
+>
 

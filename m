@@ -1,54 +1,54 @@
-Return-Path: <selinux+bounces-3815-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3818-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53C56AC8D37
-	for <lists+selinux@lfdr.de>; Fri, 30 May 2025 13:54:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2697FAC8D3A
+	for <lists+selinux@lfdr.de>; Fri, 30 May 2025 13:54:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C05D1BA6C3F
-	for <lists+selinux@lfdr.de>; Fri, 30 May 2025 11:54:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3CAD4E6262
+	for <lists+selinux@lfdr.de>; Fri, 30 May 2025 11:54:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2761A202981;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F268A22A80F;
 	Fri, 30 May 2025 11:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="GLcVI5wQ"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="EbCIR3EA"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3D1224AFE
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F48222A1FA
 	for <selinux@vger.kernel.org>; Fri, 30 May 2025 11:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1748606062; cv=none; b=jh4y2MCFWGWTAiWS57oI/s/vYuF/nrEhTnlfEUyoDV9oOyVKrfOiIYYT60Kz7rUAi61TVtwu6Kz7S31kifKykK83rMkjRwjtnBlKpyZnzyfzKhOB3JnQmBX9Ju4jeCQORTCBLrq/Y8XWzuKaDo7/eFwpwl/W8sm1L2ZbqWfoAMo=
+	t=1748606062; cv=none; b=YkcPNvg/+yqBBRwCZ+TmyUVE70iALj8liIruCwLT30trDUZ3rcqetHer4yjujKjcZhkZ4d8dWIzmXHUzk/vPba5gnGESTyeR7FpvZJ2PUf7HolVM3Jxn6lpVqClskFPIW0kTVDzc3kejedUkGXz4tYxs59GxfNS9laj+rLlBP7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1748606062; c=relaxed/simple;
-	bh=0DmOBSkGt5cVxh0tHMJ4+EUfiSoOPVe3mQwYVS8w+E0=;
+	bh=42oySbpUJudndt3nwCGVXXFS4uvTsEXD57GzbRaU8Fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H6tLGxjs1cltLG+GE9SJxXNaQkXONuyuyuxnJTh6JCd6YPwjZ2TjANxWR/yA5cjERWcUQ1lKVHxW8eI+/WYwapxKsumMQOl+cXjIgyczUI5gFrODyIrS7l9hNPT17iS9HEf6UAm1RrKm9/6x9iYzwJR49mu4r0534DdH7/AIwFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=GLcVI5wQ; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=SOT49XOA9PnJiPKFWRL54D0XMjg1KkXaZHl7V4yzgME4LAUB9OSs9cst1OeYaYmDEAQj/+87dmZWGEaJeAx5R3AuL02dpFStoYsUi5fddrUvQRZd7llAlA5SspRzz3uDdlE+f5VfiVoCvHaJzzRCKg0yUM8nAh0r38xhJjtwkck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=EbCIR3EA; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
-	s=2023072701; t=1748605726;
+	s=2023072701; t=1748605727;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YWPIkJqw9uPkbepOvcoYgc9p2opDyOkDc0zXlyEZYXI=;
-	b=GLcVI5wQa+URE70nqHHN6iqvP0M0eC00g5DCuoN7+VC/nwvl5gfMW3Far/+rn4MopEwZpF
-	pBVR69R7jBZ7/KvGu8FrhMjm7XBm/AF/5YMnfXYojUwuje6JvrZ/pUVqg92v2KT6bLUqAX
-	GuXN4wVUVMGsw7dF09xjYoNe4UYZFmU7znaFnDAVjuXQxHN6MY3eY0yWyJf9LE/jXnt/8C
-	X6atSjuZ4Qm5FSihwfAEpb1V+lb+CPH0F72KtT5JH/mDkHyJyM/rJl0QrdyCanE25Gpq1R
-	VmPkVvOnbC73ccTyLmclGwUs6kwwRsbVR1OQsrUTMejrZOqzdPCG1ZXqcMGjAw==
+	bh=pE7kbtLQynSXazpoAgA3N2rUdamps1fppYMPbWob8+8=;
+	b=EbCIR3EA48eoIVMQdPh31e161IRUuLo31p3X36olV9XKu79hhQsC8kn1aSW93KKqZ1v4zA
+	uCUBH45kZFIb7FbZNfooKHHMae8aJ6OI3N0qXSqVdV0NCj8PTVsLSD5BdqAACClRbudvKy
+	6fIaypDyQyEfCssQj0hUn8vAmK0fm+OLZSwDTTVgyhrsOC+j0xtPRNSKvqQbUuB7wl6AqB
+	JMesVfVrsGIQudbcEdceyf6dR8nth6Kp0qGlhQpnJLS4lEsM9SbW/TERImPFvSEMNvDLLk
+	/ZstqbCmN+omU76UJ8xmbEZqV8GexqRoYCAr8rg38vRp+9h2PdhWyxBkM+CyYg==
 To: selinux@vger.kernel.org
 Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
-Subject: [PATCH 2/4] libsepol: add netif_wildcard polcap
-Date: Fri, 30 May 2025 13:48:34 +0200
-Message-ID: <20250530114836.30643-2-cgoettsche@seltendoof.de>
+Subject: [PATCH 3/4] checkpolicy: add support for wildcard netifcon names
+Date: Fri, 30 May 2025 13:48:35 +0200
+Message-ID: <20250530114836.30643-3-cgoettsche@seltendoof.de>
 In-Reply-To: <20250530114836.30643-1-cgoettsche@seltendoof.de>
 References: <20250530114836.30643-1-cgoettsche@seltendoof.de>
 Precedence: bulk
@@ -62,41 +62,107 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-The kernel supports wildcard in network interface names with a new
-policy capability 'netif_wildcard'.
+Support network interface names containing wildcards.
 
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
-v2: add patch
----
- libsepol/include/sepol/policydb/polcaps.h | 1 +
- libsepol/src/polcaps.c                    | 1 +
- 2 files changed, 2 insertions(+)
+ checkpolicy/policy_parse.y                         | 8 +++++++-
+ checkpolicy/policy_scan.l                          | 1 +
+ checkpolicy/tests/policy_allonce.conf              | 4 ++++
+ checkpolicy/tests/policy_allonce.expected.conf     | 4 ++++
+ checkpolicy/tests/policy_allonce.expected_opt.conf | 4 ++++
+ 5 files changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/libsepol/include/sepol/policydb/polcaps.h b/libsepol/include/sepol/policydb/polcaps.h
-index 1aa9b30a..7bebe4da 100644
---- a/libsepol/include/sepol/policydb/polcaps.h
-+++ b/libsepol/include/sepol/policydb/polcaps.h
-@@ -17,6 +17,7 @@ enum {
- 	POLICYDB_CAP_IOCTL_SKIP_CLOEXEC,
- 	POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT,
- 	POLICYDB_CAP_NETLINK_XPERM,
-+	POLICYDB_CAP_NETIF_WILDCARD,
- 	__POLICYDB_CAP_MAX
- };
- #define POLICYDB_CAP_MAX (__POLICYDB_CAP_MAX - 1)
-diff --git a/libsepol/src/polcaps.c b/libsepol/src/polcaps.c
-index 6b28c84e..ec6c902d 100644
---- a/libsepol/src/polcaps.c
-+++ b/libsepol/src/polcaps.c
-@@ -16,6 +16,7 @@ static const char * const polcap_names[POLICYDB_CAP_MAX + 1] = {
- 	[POLICYDB_CAP_IOCTL_SKIP_CLOEXEC]		= "ioctl_skip_cloexec",
- 	[POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT]	= "userspace_initial_context",
- 	[POLICYDB_CAP_NETLINK_XPERM]			= "netlink_xperm",
-+	[POLICYDB_CAP_NETIF_WILDCARD]			= "netif_wildcard",
- };
- 
- int sepol_polcap_getnum(const char *name)
+diff --git a/checkpolicy/policy_parse.y b/checkpolicy/policy_parse.y
+index 7e117222..f9181eaf 100644
+--- a/checkpolicy/policy_parse.y
++++ b/checkpolicy/policy_parse.y
+@@ -153,6 +153,7 @@ typedef int (* require_func_t)(int pass);
+ %token POLICYCAP
+ %token PERMISSIVE
+ %token FILESYSTEM
++%token NETIFNAME
+ %token DEFAULT_USER DEFAULT_ROLE DEFAULT_TYPE DEFAULT_RANGE
+ %token LOW_HIGH LOW HIGH GLBLUB
+ %token INVALID_CHAR
+@@ -748,7 +749,7 @@ opt_netif_contexts      : netif_contexts
+ netif_contexts		: netif_context_def
+ 			| netif_contexts netif_context_def
+ 			;
+-netif_context_def	: NETIFCON identifier security_context_def security_context_def
++netif_context_def	: NETIFCON netifname security_context_def security_context_def
+ 			{if (define_netif_context()) YYABORT;}
+ 			;
+ opt_node_contexts       : node_contexts 
+@@ -901,6 +902,11 @@ path     		: PATH
+ filename		: FILENAME
+ 			{ yytext[strlen(yytext) - 1] = '\0'; if (insert_id(yytext + 1,0)) YYABORT; }
+ 			;
++netifname		: NETIFNAME
++			{ if (insert_id(yytext,0)) YYABORT; }
++                        | IDENTIFIER
++			{ if (insert_id(yytext,0)) YYABORT; }
++                        ;
+ number			: NUMBER 
+ 			{ unsigned long x;
+ 			  errno = 0;
+diff --git a/checkpolicy/policy_scan.l b/checkpolicy/policy_scan.l
+index 7bdea427..0076062d 100644
+--- a/checkpolicy/policy_scan.l
++++ b/checkpolicy/policy_scan.l
+@@ -298,6 +298,7 @@ GLBLUB				{ return(GLBLUB); }
+ {hexval}{0,4}":"{hexval}{0,4}":"({hexval}|[:.])*  { return(IPV6_ADDR); }
+ {hexval}{0,4}":"{hexval}{0,4}":"({hexval}|[:.])*"/"{digit}{1,3}	{ return(IPV6_CIDR); }
+ {digit}+(\.({alnum}|[_.])*)?    { return(VERSION_IDENTIFIER); }
++({alnum}({alnum}|[\*\?_]){0,15}|[\*\?]({alnum}|[\*\?_]){1,15})	{ return(NETIFNAME); }
+ #line[ ]{digit}+[ ]\"[^\n]*\"	{ set_source_line_and_file(yytext+6); }
+ #line[ ]{digit}+	        {
+ 				  errno = 0;
+diff --git a/checkpolicy/tests/policy_allonce.conf b/checkpolicy/tests/policy_allonce.conf
+index 95a0f265..469eb9b6 100644
+--- a/checkpolicy/tests/policy_allonce.conf
++++ b/checkpolicy/tests/policy_allonce.conf
+@@ -74,6 +74,10 @@ genfscon proc "/file1" -- USER1:ROLE1:TYPE1
+ genfscon proc "/path/to/file" USER1:ROLE1:TYPE1
+ portcon tcp 80 USER1:ROLE1:TYPE1
+ portcon udp 100-200 USER1:ROLE1:TYPE1
++netifcon net? USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net* USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon netx* USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
+ netifcon lo USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
+ nodecon 127.0.0.1 255.255.255.255 USER1:ROLE1:TYPE1
+ nodecon 192.168.42.0 255.255.0.0 USER1:ROLE1:TYPE1
+diff --git a/checkpolicy/tests/policy_allonce.expected.conf b/checkpolicy/tests/policy_allonce.expected.conf
+index 79d62319..b3a51bef 100644
+--- a/checkpolicy/tests/policy_allonce.expected.conf
++++ b/checkpolicy/tests/policy_allonce.expected.conf
+@@ -80,6 +80,10 @@ genfscon proc "/path/to/file" USER1:ROLE1:TYPE1
+ portcon tcp 80 USER1:ROLE1:TYPE1
+ portcon udp 100-200 USER1:ROLE1:TYPE1
+ netifcon lo USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon netx* USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net? USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net* USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
+ nodecon 127.0.0.1 255.255.255.255 USER1:ROLE1:TYPE1
+ nodecon 127.0.0.0 255.255.255.0 USER1:ROLE1:TYPE1
+ nodecon 192.168.0.0 255.255.0.0 USER1:ROLE1:TYPE1
+diff --git a/checkpolicy/tests/policy_allonce.expected_opt.conf b/checkpolicy/tests/policy_allonce.expected_opt.conf
+index fa4e319b..a7914c64 100644
+--- a/checkpolicy/tests/policy_allonce.expected_opt.conf
++++ b/checkpolicy/tests/policy_allonce.expected_opt.conf
+@@ -80,6 +80,10 @@ genfscon proc "/path/to/file" USER1:ROLE1:TYPE1
+ portcon tcp 80 USER1:ROLE1:TYPE1
+ portcon udp 100-200 USER1:ROLE1:TYPE1
+ netifcon lo USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon netx* USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net? USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
++netifcon net* USER1:ROLE1:TYPE1 USER1:ROLE1:TYPE1
+ nodecon 127.0.0.1 255.255.255.255 USER1:ROLE1:TYPE1
+ nodecon 127.0.0.0 255.255.255.0 USER1:ROLE1:TYPE1
+ nodecon 192.168.0.0 255.255.0.0 USER1:ROLE1:TYPE1
 -- 
 2.49.0
 

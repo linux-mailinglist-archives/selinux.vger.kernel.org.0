@@ -1,226 +1,118 @@
-Return-Path: <selinux+bounces-3863-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-3865-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE2AAD2110
-	for <lists+selinux@lfdr.de>; Mon,  9 Jun 2025 16:36:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203F8AD293A
+	for <lists+selinux@lfdr.de>; Tue, 10 Jun 2025 00:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD53A3A18D9
-	for <lists+selinux@lfdr.de>; Mon,  9 Jun 2025 14:36:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8AE318828E2
+	for <lists+selinux@lfdr.de>; Mon,  9 Jun 2025 22:14:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECF9E1E5702;
-	Mon,  9 Jun 2025 14:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB50D22488B;
+	Mon,  9 Jun 2025 22:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="X2jU0fxp"
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="ZY8QTrUI"
 X-Original-To: selinux@vger.kernel.org
-Received: from smtpweb146.aruba.it (smtpweb146.aruba.it [62.149.158.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D412F37
-	for <selinux@vger.kernel.org>; Mon,  9 Jun 2025 14:36:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE60A2940D
+	for <selinux@vger.kernel.org>; Mon,  9 Jun 2025 22:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1749479801; cv=none; b=hCG3KMdSG6As1xjMunLJDtRAb6iBdZUB85aISWT5mQvrfCzYjJGCp+nyBObTt9Y8Rcj9jGNRjy7x3wV12mHgt0m82zyL1OPc9RjQ9nRXFyd3LZbWMtSsTk4sDOxohiJQ8ssKhLM8WcN+42Szc4P5oQtR22ljynozYVUS/Royyek=
+	t=1749507216; cv=none; b=prlbQp9oEecis2cFhUB/T3rRqhwr7/h32RvvRs3XJbNvqt8j+bZmxvC1nHblopzLLNQyuyawDTs4mf51WvRCCNzr9KHz2N56yqd2NY1CEGjI6TzmbdPkR6RflK4i7qKDfg5mr6gh+JPv5xe1oyHHnt84+l3yQeXN6qS5gV+etaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1749479801; c=relaxed/simple;
-	bh=7grurnE0qTjPAouCK8AxwhVUtkrNyD7X8y6Wi1g1A0Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Mime-Version; b=Axnn2iXNRXsDoiQ4ktNYL4iY2QMXoy82Gb9OvEd9OCv429KDRZqneZ5Y92CYxgEx+xG2A1YN8TrXhfQdzShBVq0Y6+JBW29UII/i+IBhU4FHZw5YpWpLyNjXn5qb5Ta9p6a2QjlbOwJexfiJT6jDF6GdI4fs6UGvjfsJeNcoFaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trentalancia.com; spf=pass smtp.mailfrom=trentalancia.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=X2jU0fxp; arc=none smtp.client-ip=62.149.158.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trentalancia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trentalancia.com
-Received: from [192.168.43.2] ([109.54.140.89])
-	by Aruba SMTP with ESMTPSA
-	id Odc2uD9wf2QPuOdc3uahkO; Mon, 09 Jun 2025 16:36:35 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1749479795; bh=7grurnE0qTjPAouCK8AxwhVUtkrNyD7X8y6Wi1g1A0Q=;
-	h=Subject:From:To:Date:Content-Type:Mime-Version;
-	b=X2jU0fxpdYWuVuUXq4QdygXYZsYVO0187HgjUScPuK9k0FJkJnM556zgHktsuh1R6
-	 Z2+x5EwsKMdaJgJLtQBmdGrTPrp/D/9Gfp3m2MTTxXHAk8g/p5573C4GnHbw6oZLi9
-	 TF45bOv4Atg+Bh0kwvNz4VOQbBYBEOJKpfdb1z2xFZLDs2oFiJfiUz55945Rx/wH0S
-	 7nw+RyvU4VmOZ3F7g/5BKuCPU9USs+Q3pXeIZ7id76s+Kdw8r9iqe+87u3U2x27igR
-	 aqSbcZsXBXLvjMH9n2P3BYVMmkzS/Jpp7lTMZIClNE9cGTyDLblpWZgHF2G0ahTxbk
-	 iDO2eo4G+xqAw==
-Message-ID: <1749479794.6137.4.camel@trentalancia.com>
-Subject: Re: [PATCH] selinux: fix security context comparison on execve(2)
-From: Guido Trentalancia <guido@trentalancia.com>
-To: Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek
-	 <omosnace@redhat.com>
-Cc: Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org
-Date: Mon, 09 Jun 2025 16:36:34 +0200
-In-Reply-To: <CAEjxPJ4YiUQpFNwxhAix3CZnXF9Vkbn5Vbs8_Kp7zDxCoevouQ@mail.gmail.com>
-References: <20250609065841.1164578-1-omosnace@redhat.com>
-	 <CAEjxPJ4YiUQpFNwxhAix3CZnXF9Vkbn5Vbs8_Kp7zDxCoevouQ@mail.gmail.com>
-X-Priority: 1
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
+	s=arc-20240116; t=1749507216; c=relaxed/simple;
+	bh=gZkcKnTZzTK5dRAMql+V4IkTMWc/eE7gjPQHElVNbaI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=TL5ipJNPifQyLZW2LMmk784mc/E1lzX0lMCa5NeekM+u2DmVwpNjIQnwL72mu5+o7/kZeUlXzQ7tRevXZAarW0Qv1BiA0xlXfUYBEZoryUojYsZn+0V+TBXdQajll6PryE1TauwGVYc9LLbW4T/r9VRYQcAI0C3zOR7qY/ZHzK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=ZY8QTrUI; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-70e447507a0so38318567b3.0
+        for <selinux@vger.kernel.org>; Mon, 09 Jun 2025 15:13:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore.com; s=google; t=1749507213; x=1750112013; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rtRWGjdkVmRl+DqjlcUaDM4d966mGKRqnyveJTKh9Kc=;
+        b=ZY8QTrUInL48pnK0C3HrFMoU9crUWTcnWGdsyVsHpwX5qF5MfJJM77DpbOfzi4X1Nd
+         RLN18i9UfKLykjC0rV4TBtDEDigEEHLnBFPyQQuwaSJergGs0y11rU5Lw9UkDGijcWYH
+         NGh3cYfabvR16472KPpqV/NWqtgJ2PFar/eBaDblOgz9KYyNRLD9jQFeWqWSQBGRvfI7
+         f8TDQJUCV4q4s6DjhBhhXo+fpR2Cf/HydgHSGGtZ1adsJ7zB/O5IwB5GdmYqjZ1F6COH
+         3wqb3cwIgURlv2RVqYeqS9VZqYAbLm/zGMuGJIVNlTSqwJX2jz90KkCD/3r2SQfVEx3d
+         Gu3A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1749507213; x=1750112013;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rtRWGjdkVmRl+DqjlcUaDM4d966mGKRqnyveJTKh9Kc=;
+        b=EtGlCKYaAYemNZ8yHuN6igkr+xe9uRa+JKlpAK9tW07kFyctb3GOa+3lVw3SiH75Z8
+         iqR5JAfxBQw/PSPNpZ5dHRYvacb4DsSqfNcip794aONbm/3gLKM4GerihbjwEEsLaTmg
+         tc3fHj20lDo2LUL0etsvOLESrb9GVVh5VF0wsxLwunxb/nuJ+2nefpEgfjPYNzwnn2Gj
+         Y8CRIEJAC4A77W7+0sy5SmOh61Iz7aMblsiXptv4E3FqBFuIB07ffJUr0i5hpOUlHKX4
+         NLB/h2shUxkr+1zF+9koUwPVAu3T7z+g2wdiXXS74x3DAKAhEk91wN7Q22uLn8We5ejO
+         HXEA==
+X-Gm-Message-State: AOJu0YxkTaV8JbDESnPuvFTswgqHKUFWr+5iEqFL1CstKEgOcm5FBzV4
+	biwZb4GetBzO1ob3lx+6P3AOuiu8kLjrrvKS7lbq70Ejbw3Fsjh1/svNI+qrE2deK8WqycOSYMT
+	YU2Mwd6wEIbLgLbq/IQqz/HUPjJqKGmqy9AejSY4iELfzaEJnH0o=
+X-Gm-Gg: ASbGncv82x8S7dr7aVMp58cVaGPeUvzqt/sre+S5DgBNkqJ+A5WscAj0wk+w+gf3PhS
+	p/DU/WfkY1rc+gOH3TsN1RraTMpUOscd8g7OoPclGWZ4/IrxjB1T4BfWsF/JzKWlIMO9i1uol3h
+	P5yG56LVl9dbJN6CLbZLZ4rtBSZKB4/sCwZuFYTnvXVy4=
+X-Google-Smtp-Source: AGHT+IHxKU3vNZL/nWup4eH5rbMHQ+sn6smCvaXMtcv1VDedG55+A+40joWgHmq1IaJW8O8PZuLUXs1Bg8pa+53blU4=
+X-Received: by 2002:a05:690c:7241:b0:70e:16a3:ce96 with SMTP id
+ 00721157ae682-710f76ffff3mr224273627b3.26.1749507213585; Mon, 09 Jun 2025
+ 15:13:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfPGBcXKisEMhM3geyeVqLdHte9jxUO0kStQO1XWhIa1RTczIsRhOH1gT3nq/xTx1lmmljKbdd7VY1Of6dUUmpduTDD4GujdHzqLl9tPb0VKdcw+vNgAR
- hmUYioAcFpLFcGt//nUp49a3t3Ix8JUgJVKNf6gIBI4abmLydLLulBbGHFm09fzCPnObrv1JW+lyh1H64MepZrDuSb/ZLuMsRXqUBWuMu5ub14Zyc62Sx44P
- ZlpQxAaO4Ir5tjTnzfLRP91sHRM+iZBGRsuPIt4VPlphuEexzHKocL0LjMSS1FQuCdp0dgFUczbgaX4UGVQJGA==
+MIME-Version: 1.0
+References: <20250501192347.189307-2-paul@paul-moore.com> <CAHC9VhTD6Yw4dbHdmUfj+2muDMG9pdbW864m2SH8yH558kkE=g@mail.gmail.com>
+In-Reply-To: <CAHC9VhTD6Yw4dbHdmUfj+2muDMG9pdbW864m2SH8yH558kkE=g@mail.gmail.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Mon, 9 Jun 2025 18:13:22 -0400
+X-Gm-Features: AX0GCFtN08dayfLej26ScaBLheDSFsLTalzwFeZXC2VM-hCHg81pgwp-JawjJMU
+Message-ID: <CAHC9VhRTQkMrzJEeOPZ1yVi8jUzVeN=W+f-DMZnkc3j663fx2Q@mail.gmail.com>
+Subject: Re: [PATCH] selinux: add a 5 second sleep to /sys/fs/selinux/user
+To: selinux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I have created a v2 patch following Stephen's advice. It keeps the boot
-process successful on sysvinit with the dracut selinux module enabled.
-
-Can you please check if it also works on other setups ?
-
-The patch has been posted with its original subject + v2 tag added.
-
-[PATCH v2] Only set the initial SID for early-boot userspace tasks if
-the policy supports the new capability
-
-Thanks,
-
-Guido
-
-On Mon, 09/06/2025 at 08.45 -0400, Stephen Smalley wrote:
-> On Mon, Jun 9, 2025 at 2:58 AM Ondrej Mosnacek <omosnace@redhat.com>
-> wrote:
-> > 
-> > selinux_bprm_creds_for_exec() needs to compare the old and new SIDs
-> > to
-> > determine if the execve(2) operation is transitioning into a new
-> > context
-> > (where process { transition } and file { entrypoint } permissions
-> > would
-> > be checked) or not (file { execute_no_trans } would be checked). It
-> > does
-> > so by just comparing their numeric values.
-> > 
-> > However, after ae254858ce07 ("selinux: introduce an initial SID for
-> > early boot processes"), we can now easily get into a situation
-> > where the
-> > SID numbers differ, but the context is the same for both.
-> > Specifically
-> > when the policy assigns the same context for SECINITSID_KERNEL and
-> > SECINITSID_INIT - in this case when a process labeled with
-> > SECINITSID_INIT does execve(2) without a transition,
-> > security_transition_sid() will translate the unchanged context to
-> > the
-> > first matching SID number, which is SECINITSID_KERNEL, not
-> > SECINITSID_INIT. Thus the kernel thinks that a transition has
-> > happened
-> > and unexpectedly tests for the file { entrypoint } permission.
-> > 
-> > Fix this by checking the SID equality more carefully, trying
-> > context_equal() on the underlying contexts when it is necessary -
-> > in the
-> > rare case that the SIDs differ, but both are "initial" SIDs.
-> 
-> We check for SID equality elsewhere as well, e.g. file_has_perm() and
-> selinux_binder_transfer_file(), ioctl_has_perm(), and
-> selinux_kernel_load_from_file() to decide whether to check fd use
-> permission, selinux_file_permission() to decide whether we need to
-> revalidate permissions, selinux_binder_transaction() to decide
-> whether
-> to check binder impersonate permission, task_avdcache_search() to
-> decide whether we can use the avdcache. I'm wondering if we wouldn't
-> be better off just ensuring that security_transition_sid() returns
-> SECINITSID_INIT when called with SECINITSID_INIT and there is no
-> transition defined.
-> 
-> > 
-> > Reported-by: Guido Trentalancia <guido@trentalancia.com>
-> > Fixes: ae254858ce07 ("selinux: introduce an initial SID for early
-> > boot processes")
-> > Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+On Tue, May 20, 2025 at 5:22=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
+> On Thu, May 1, 2025 at 3:24=E2=80=AFPM Paul Moore <paul@paul-moore.com> w=
+rote:
+> >
+> > Commit d7b6918e22c7 ("selinux: Deprecate /sys/fs/selinux/user") started
+> > the deprecation process for /sys/fs/selinux/user:
+> >
+> >   The selinuxfs "user" node allows userspace to request a list
+> >   of security contexts that can be reached for a given SELinux
+> >   user from a given starting context. This was used by libselinux
+> >   when various login-style programs requested contexts for
+> >   users, but libselinux stopped using it in 2020.
+> >   Kernel support will be removed no sooner than Dec 2025.
+> >
+> > A pr_warn() message has been in place since Linux v6.13, this patch
+> > adds a five second sleep to /sys/fs/selinux/user to help make the
+> > deprecation and upcoming removal more noticeable.
+> >
+> > Signed-off-by: Paul Moore <paul@paul-moore.com>
 > > ---
-> >  security/selinux/hooks.c            |  2 +-
-> >  security/selinux/include/security.h |  2 ++
-> >  security/selinux/ss/services.c      | 35
-> > +++++++++++++++++++++++++++++
-> >  3 files changed, 38 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
-> > index b8115df536abd..be95e6e83f1d0 100644
-> > --- a/security/selinux/hooks.c
-> > +++ b/security/selinux/hooks.c
-> > @@ -2369,7 +2369,7 @@ static int selinux_bprm_creds_for_exec(struct
-> > linux_binprm *bprm)
-> >         ad.type = LSM_AUDIT_DATA_FILE;
-> >         ad.u.file = bprm->file;
-> > 
-> > -       if (new_tsec->sid == old_tsec->sid) {
-> > +       if (security_sids_equal(new_tsec->sid, old_tsec->sid)) {
-> >                 rc = avc_has_perm(old_tsec->sid, isec->sid,
-> >                                   SECCLASS_FILE,
-> > FILE__EXECUTE_NO_TRANS, &ad);
-> >                 if (rc)
-> > diff --git a/security/selinux/include/security.h
-> > b/security/selinux/include/security.h
-> > index 278c144c22d60..c3ed350718d1d 100644
-> > --- a/security/selinux/include/security.h
-> > +++ b/security/selinux/include/security.h
-> > @@ -299,6 +299,8 @@ int security_context_to_sid_default(const char
-> > *scontext, u32 scontext_len,
-> >  int security_context_to_sid_force(const char *scontext, u32
-> > scontext_len,
-> >                                   u32 *sid);
-> > 
-> > +bool security_sids_equal(u32 sid1, u32 sid2);
-> > +
-> >  int security_get_user_sids(u32 fromsid, const char *username, u32
-> > **sids, u32 *nel);
-> > 
-> >  int security_port_sid(u8 protocol, u16 port, u32 *out_sid);
-> > diff --git a/security/selinux/ss/services.c
-> > b/security/selinux/ss/services.c
-> > index 7becf3808818a..297317763f6d4 100644
-> > --- a/security/selinux/ss/services.c
-> > +++ b/security/selinux/ss/services.c
-> > @@ -1448,6 +1448,41 @@ int security_sid_to_context_inval(u32 sid,
-> >                                             scontext_len, 1, 1);
-> >  }
-> > 
-> > +/**
-> > + * security_sids_equal - Determine if two SIDs map to the same
-> > context.
-> > + * @sid1: first SID
-> > + * @sid2: second SID
-> > + */
-> > +bool security_sids_equal(u32 sid1, u32 sid2)
-> > +{
-> > +       struct context *c1, *c2;
-> > +       struct selinux_policy *policy;
-> > +       struct sidtab *sidtab;
-> > +       bool res;
-> > +
-> > +       if (!selinux_initialized())
-> > +               return sid1 == sid2;
-> > +
-> > +       if (sid1 == sid2)
-> > +               return true;
-> > +
-> > +       if (sid1 > SECINITSID_NUM || sid2 > SECINITSID_NUM)
-> > +               return false;
-> > +
-> > +       /* Initial SIDs may map to the same context, so do a full
-> > comparison */
-> > +       rcu_read_lock();
-> > +       policy = rcu_dereference(selinux_state.policy);
-> > +       sidtab = policy->sidtab;
-> > +       c1 = sidtab_search(sidtab, sid1);
-> > +       c2 = sidtab_search(sidtab, sid2);
-> > +       if (!c1 || !c2)
-> > +               res = false;
-> > +       else
-> > +               res = context_equal(c1, c2);
-> > +       rcu_read_unlock();
-> > +       return res;
-> > +}
-> > +
-> >  /*
-> >   * Caveat:  Mutates scontext.
-> >   */
-> > --
-> > 2.49.0
-> > 
+> >  security/selinux/selinuxfs.c | 1 +
+> >  1 file changed, 1 insertion(+)
+>
+> Merged into selinux/dev-staging with the expectation of moving this to
+> selinux/dev after the upcoming merge window.
+
+This is now in selinux/dev.
+
+--=20
+paul-moore.com
 

@@ -1,131 +1,100 @@
-Return-Path: <selinux+bounces-4003-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-4005-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D38ADB4F0
-	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 17:09:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C00ADB586
+	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 17:34:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2F447A5F6D
-	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 15:05:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F10A07AA2FF
+	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 15:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B56B21CA10;
-	Mon, 16 Jun 2025 15:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971822417EE;
+	Mon, 16 Jun 2025 15:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="WxOJBxvT"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="qzOgnJAB"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E42217F40
-	for <selinux@vger.kernel.org>; Mon, 16 Jun 2025 15:06:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA3B1CB31D
+	for <selinux@vger.kernel.org>; Mon, 16 Jun 2025 15:30:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750086389; cv=none; b=ArcMaCv8WVBgMFK6ZACpQJaJYdZpxltQT3Vblakpt7zDsnOL+iAZWhaBYqyoL6uQ2hjS/jPY+1LL7miEkrGPMobcs9uUBVMSm0Fej1dIFUqUYaNjvK0BKdE6pruLytdT+6gChmPRN12yYRa60iDnBoB9/ugTk2jq+ESbznfpdBY=
+	t=1750087863; cv=none; b=Bei+vRFbQny6iySSJx7jZRtlYumSnwpny00ZIHf/EKgI11yGm3tgYReF2TvMq1kboil8BFhRWkXdNtKH3ZMC5kpzUPatdFjv4q2OkCakpWE7zScJaxzow2RZlzLrI9YFAFF0SaRpl0p1Bkv9LDZVkRGj5DU8+JqmfYSwEMlUe24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750086389; c=relaxed/simple;
-	bh=Ds8VH4yesKz2jb02aD+1iR1iNFcpUPacGgvXypizP+0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Q4e9gC6E0eivX8WY8yQacIJB2Ntr4a0iqlKchSH6p831kg/Z4wK9yb7+BLzVS8q2ulrpEyNbhDRgy6hCXnv/suIVGjuLsX8jZrp0w2G8cI51yWw4D5RTVy/wExINfx67UxF45BTnLixUdgMcxBZMwnR3n7UuescisNk3ORygOxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=WxOJBxvT; arc=none smtp.client-ip=209.85.219.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-e73e9e18556so4306325276.0
-        for <selinux@vger.kernel.org>; Mon, 16 Jun 2025 08:06:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1750086386; x=1750691186; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wrRnZ9pyC8XqqZtxmYq5AS5+2UIIVm7E+jUkLig2gk8=;
-        b=WxOJBxvTPP0VYdh5BzqEx0uQpjtpEhTurR1QfOOtw/p84C+zeE9tIDrNgXb7ldkvKP
-         WqDi5FcocWwkZBEr8W2H3m3TKVc6ZOjcdjtO1+gcGfrJyk8DRpW8WgiU9wyvH+0i4TML
-         LMbkVYx37qfOa96PHhqVMTpoZD5tcMWKpNrF1gWMvs8CDuhTX1u4ZPBKY8uC6UvhBRDR
-         z7DukqXhqGdxz7zHeU0YrMMrMl98IVYGHF5TeJi0vL94/YleEl9fPcUAdZNXk2FukoIT
-         e3qxLLjzy7wcmqsQBrdtln6hzbADXN5quXG5CZk+Bae9GhLx0a+I02vGsOf9j8GQ3Rpl
-         tB7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750086386; x=1750691186;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wrRnZ9pyC8XqqZtxmYq5AS5+2UIIVm7E+jUkLig2gk8=;
-        b=ix214bbrqx56iha2VGiJCLtXgx1225AHmvw+cF8guN/mdoX/zFexg/CSt/ensHqIsn
-         +Gf8DHC1r3zul0CjQpm0hg/i/00rYlzCH6qwTirPIgqPrbHEkoV5zYMIGxlsCx9WC2Th
-         N8XEvU1NGRpCw59AANkbsHdfgfrjaiDs24csf/atMk/e+CK62+8Z0/F0Cj2Auap3oOp/
-         NjXUbLtyvXNKLJPUwxJQRWAsZyYjysBrYYBP86qxRxpWf59N0bNZTOhTcIZw+bGUG3lx
-         gGUOLZFYRJAoPNeF7vxN8v5te9x/Xs6UYd8nfmpdAN+54BSixjDl57nu7BO9Umq1+MY0
-         5iXQ==
-X-Gm-Message-State: AOJu0Yzeqd3tSgmMb/09lAyQZ4WT+P+YIqdDn2tKi4Jz/lVpGHCfFCmT
-	2LICesPRfBlHXV4ieF7tor+eHkwCOBxzVWw3v2zx2IZwsTOWizhT7tT9YBmCkuZwubRHjfKVCEN
-	xDHJUVWuiDxHruDq0yxNyXr2smuVnwKQ=
-X-Gm-Gg: ASbGncvHqwNyqhK6qhlH3pteubRLyRHkrex4tZSqwPOc8+6fJdzRxzVTZ90cvtsOKar
-	3ccvEw5nSnY1bkY0WL+LHy4fHlGhmbvIw5HASRBLVhBgHGorB+D0Z0YkoZI3qvOGU8T6w9SEuWH
-	HTQOSwA4Nex3jgKgDUE8HYCwCIeiUBLpdjpG4uHLR+O7++
-X-Google-Smtp-Source: AGHT+IHd4Lik29Uo/FVkwlb17DEa6NOsJ6YCqd7q4tcnc2LC8jlbDzQFrTdmmM/dPqQJtxGyX/LyrJd2VZnA5vKNves=
-X-Received: by 2002:a05:6902:2687:b0:e81:84ac:cb1 with SMTP id
- 3f1490d57ef6-e822abf5ce4mr13748559276.8.1750086386260; Mon, 16 Jun 2025
- 08:06:26 -0700 (PDT)
+	s=arc-20240116; t=1750087863; c=relaxed/simple;
+	bh=0DmOBSkGt5cVxh0tHMJ4+EUfiSoOPVe3mQwYVS8w+E0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rHU/ghXGKNhGxFELl9NXUT3UO9K6MDGHmZeW1seYPLgom0p6mI1kHWTVRj4/HEOJzNYXRt20mkVuo64A9r0jBo+EL3qfi42wlaFrwc+yiKQDSdoLwFAa8rKJt0hn3McpWpSFIY68031iW7jdOkXM3Ud/Oi5c8GPUrxSPt6jiB30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=qzOgnJAB; arc=none smtp.client-ip=168.119.48.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
+From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
+	s=2023072701; t=1750087543;
+	h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
+	bh=YWPIkJqw9uPkbepOvcoYgc9p2opDyOkDc0zXlyEZYXI=;
+	b=qzOgnJABQEdORyvNJK7P2ItIVZMlE4ock/KlMtrBSCwHeENc5Ye/q0KzJYKT9kwBDyw4Qr
+	gWQ9GBQgiVI6pEkVX3Wk2tT6mIMpJi6q00u2lKPXAE8of3MegH1tSIrij0uzK79Rh/Uotm
+	tb/wBJ+ieub9Tfu5HxiHFkNq+ioQpFBrToHF61rS4YujgEGz9kcpaer4FgdhFlJT1Xk4j0
+	JWS7YFkUYl3ciBg8zhWM/ijKOPFV6ge5L2KgqlfShgUprFuGPE3EWaKK8K5Xm4mEY9Jsdz
+	Nr7NUo5BQqQ5BVLPS6Vkdhu6SMpuqhf/8qBnTaO85LxZC7c2rG7B0k7azbLUgw==
+To: selinux@vger.kernel.org
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [PATCH v3 2/5] libsepol: add netif_wildcard polcap
+Date: Mon, 16 Jun 2025 17:25:30 +0200
+Message-ID: <20250616152534.26053-1-cgoettsche@seltendoof.de>
+Reply-To: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250613193704.12261-2-stephen.smalley.work@gmail.com>
-In-Reply-To: <20250613193704.12261-2-stephen.smalley.work@gmail.com>
-From: =?UTF-8?Q?Christian_G=C3=B6ttsche?= <cgzones@googlemail.com>
-Date: Mon, 16 Jun 2025 17:06:15 +0200
-X-Gm-Features: AX0GCFs5jumAKHr0o_69nriYgbSUOmR0VGaPMgVsG5OoqhM0GYYv69jqshDJRuc
-Message-ID: <CAJ2a_DdvyHHbqjd9cR7cWkdYx_LcwX3NSMPF_80oFZdxNvvgFQ@mail.gmail.com>
-Subject: Re: [PATCH] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
-To: Stephen Smalley <stephen.smalley.work@gmail.com>
-Cc: selinux@vger.kernel.org, paul@paul-moore.com, omosnace@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, 13 Jun 2025 at 21:37, Stephen Smalley
-<stephen.smalley.work@gmail.com> wrote:
->
-> We should count the terminating NUL byte as part of the ctx_len.
-> Otherwise, UBSAN logs a warning:
->   UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
->   index 60 is out of range for type 'char [*]'
->
-> The allocation itself is correct so there is no actual out of bounds
-> indexing, just a warning.
+From: Christian Göttsche <cgzones@googlemail.com>
 
-Seems reasonable.
-Should also fix not copying the NUL terminator in selinux_xfrm_policy_clone=
-():
+The kernel supports wildcard in network interface names with a new
+policy capability 'netif_wildcard'.
 
-     new_ctx =3D kmemdup(old_ctx, sizeof(*old_ctx) + old_ctx->ctx_len,
-                         GFP_ATOMIC);
+Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+---
+v2: add patch
+---
+ libsepol/include/sepol/policydb/polcaps.h | 1 +
+ libsepol/src/polcaps.c                    | 1 +
+ 2 files changed, 2 insertions(+)
 
-> Suggested-by: Christian G=C3=B6ttsche <cgzones@googlemail.com>
-> Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBV=
-R6zbrg+_w3ZZbM3A@mail.gmail.com/
-> Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-> ---
->  security/selinux/xfrm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/security/selinux/xfrm.c b/security/selinux/xfrm.c
-> index 90ec4ef1b082..61d56b0c2be1 100644
-> --- a/security/selinux/xfrm.c
-> +++ b/security/selinux/xfrm.c
-> @@ -94,7 +94,7 @@ static int selinux_xfrm_alloc_user(struct xfrm_sec_ctx =
-**ctxp,
->
->         ctx->ctx_doi =3D XFRM_SC_DOI_LSM;
->         ctx->ctx_alg =3D XFRM_SC_ALG_SELINUX;
-> -       ctx->ctx_len =3D str_len;
-> +       ctx->ctx_len =3D str_len + 1;
->         memcpy(ctx->ctx_str, &uctx[1], str_len);
->         ctx->ctx_str[str_len] =3D '\0';
->         rc =3D security_context_to_sid(ctx->ctx_str, str_len,
-> --
-> 2.49.0
->
+diff --git a/libsepol/include/sepol/policydb/polcaps.h b/libsepol/include/sepol/policydb/polcaps.h
+index 1aa9b30a..7bebe4da 100644
+--- a/libsepol/include/sepol/policydb/polcaps.h
++++ b/libsepol/include/sepol/policydb/polcaps.h
+@@ -17,6 +17,7 @@ enum {
+ 	POLICYDB_CAP_IOCTL_SKIP_CLOEXEC,
+ 	POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT,
+ 	POLICYDB_CAP_NETLINK_XPERM,
++	POLICYDB_CAP_NETIF_WILDCARD,
+ 	__POLICYDB_CAP_MAX
+ };
+ #define POLICYDB_CAP_MAX (__POLICYDB_CAP_MAX - 1)
+diff --git a/libsepol/src/polcaps.c b/libsepol/src/polcaps.c
+index 6b28c84e..ec6c902d 100644
+--- a/libsepol/src/polcaps.c
++++ b/libsepol/src/polcaps.c
+@@ -16,6 +16,7 @@ static const char * const polcap_names[POLICYDB_CAP_MAX + 1] = {
+ 	[POLICYDB_CAP_IOCTL_SKIP_CLOEXEC]		= "ioctl_skip_cloexec",
+ 	[POLICYDB_CAP_USERSPACE_INITIAL_CONTEXT]	= "userspace_initial_context",
+ 	[POLICYDB_CAP_NETLINK_XPERM]			= "netlink_xperm",
++	[POLICYDB_CAP_NETIF_WILDCARD]			= "netif_wildcard",
+ };
+ 
+ int sepol_polcap_getnum(const char *name)
+-- 
+2.49.0
+
 

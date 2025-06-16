@@ -1,34 +1,34 @@
-Return-Path: <selinux+bounces-4006-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-4008-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51D49ADB57D
-	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 17:33:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CEDEADB573
+	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 17:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EBD33AEEC8
-	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 15:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492B416ACF1
+	for <lists+selinux@lfdr.de>; Mon, 16 Jun 2025 15:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9729925291B;
-	Mon, 16 Jun 2025 15:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF22238C25;
+	Mon, 16 Jun 2025 15:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="UsNK2VOI"
+	dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b="lGE6Q7/r"
 X-Original-To: selinux@vger.kernel.org
 Received: from server02.seltendoof.de (server02.seltendoof.de [168.119.48.163])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB63214A94
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB0C20F09A
 	for <selinux@vger.kernel.org>; Mon, 16 Jun 2025 15:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.48.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750087863; cv=none; b=nmbDJWc4LlVdws120s4izOmxbFA6ZM+sWp1GeMkaXfteq9mAv/hZyRaynP64aual/KeIF9LtRWxYZxTHAdi/HSR0c1k8m/fFhhx/+KgcGKWNe9k40W1H4MAL7wsck+Q7P/D86z7Yf9AZwSM/5RbATRV4KQ/2baIbWxMUAQXSTc0=
+	t=1750087864; cv=none; b=alJmiJPOqWtudGzzpWwojWw+BD9EIo8C4gQDj+croJOQ7CZ4nQlDCnyEjI8EtrcuZDSM8rgdDw2zXpg//mwhAEqcUMVYHeMT9hH9B39NB/0uAQiinMy0Cq5B5AXDK6hGYCpcjoNPGXoOaKe2MevZszUNRv5kdE165IK1G4VAPTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750087863; c=relaxed/simple;
-	bh=VlWLUt2hjMuSvMaWWGsiOCD1Q6FJGAS+EIqxmjzVIgs=;
+	s=arc-20240116; t=1750087864; c=relaxed/simple;
+	bh=0odkK11T83/b2IEgQtchS+akMpDOFd5Dov+w8Ov1NYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IXHu6E4a1SLj2Iq/Sa+1oXvuR0OvEf1RyZm5jBxaRMGAtBxHgx/RHgJFh32f1YK59KryLWlNhODQTOFiKgqUC/RXU6GsjzwsH3z2wTBrkjqqnfk94DLc7Uvzh6MSB1ClAQNqQLlW4iZ22VRLMuliZ/QJA+FypwNfTcm/vey9fCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=UsNK2VOI; arc=none smtp.client-ip=168.119.48.163
+	 MIME-Version:Content-Type; b=FFQ4lGyUT+jXxhDh/pK2t5kcZ/6HeF6i6EHw4reCn9tED6DkhhRjuuYkP+kd7vcteLvWK3Xed3+LGIYw54vBAZotf8fmK5Ku65oes6wcQ2lPBEBgYhvEQzlUzmvEuzREwnJPHNtg0krLuN3uXuF9DaQ+T7vR4QdDkakfRUMU3wE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de; spf=pass smtp.mailfrom=seltendoof.de; dkim=pass (2048-bit key) header.d=seltendoof.de header.i=@seltendoof.de header.b=lGE6Q7/r; arc=none smtp.client-ip=168.119.48.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=seltendoof.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seltendoof.de
 From: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgoettsche@seltendoof.de>
@@ -39,18 +39,17 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=seltendoof.de;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SZv+QsxXv/00YNNF6XzDkjeuqw5MvP2wlJhMo5+nfSc=;
-	b=UsNK2VOIF7AP0PUCtG07CgJCWhbSMHNIeFB7zGamHOzGNPoOMGwI5Flt0GLTqe+/C3GXzy
-	TPbCDXOxNhRwsQg9wVJzBB4C0xq1EmOHz9DU2qdRlqIaNFmVg1rOBpJ+5BxQtcGTGtR9gR
-	4V7mIxatAGYrPSLcBnyvdW+szcRR+zxR/DZL2C3S7+VVxKtfc5TE+FjWAWFoDRnxV4fr8v
-	hMthad+eNTgHxKkAiHTqGGLZdoooOkw23MNTxAnchBZCjkgfUmldKc4CqUb68UUnJBPyke
-	V3/JwFrTPUi4QvlJzvfkUk+ABjqES0UpfgFQegSSsXB91y1dE+eRmRX3GTYlAQ==
+	bh=q6+iyovX8+0oVklz0igQ1H4Y8mFqwkanGxPJx30gsbo=;
+	b=lGE6Q7/r2djWHvLlXh6mO1GjF8F5hWbRdZ3RIJW2tC4ovGAErKJemXy4DML+dpBMwqU67M
+	UNMzK+sr2pzG4SBHlRZ/TLVpAuf94y0afqjBTA85fxsb1AxQ6TFVfoUsY/pDQEv1vacnKe
+	Jm3+nhtt38d8WhqpaMr43/EzzdtnHCLNDPFzBxaPBF8lpWK6Lt5fNBxkztNdBmRzyivs8x
+	Teelq5Zz1wKqAsb55sQn3g8mFXhry/tU+T/xEOvUfRtHKYlts4xqC5SlvVH0Ma0Kl6BfGW
+	SuOSGgQ0HtZ3FcCfNRBsHizwZK9n9vCdKyoi67TRY1OoSP5BJjNNvEfi5uu2vw==
 To: selinux@vger.kernel.org
-Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	James Carter <jwcart2@gmail.com>
-Subject: [PATCH v3 5/5] libsepol/cil: reject wildcard only network interface names
-Date: Mon, 16 Jun 2025 17:25:33 +0200
-Message-ID: <20250616152534.26053-4-cgoettsche@seltendoof.de>
+Cc: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
+Subject: [PATCH v3 1/5] libsepol: update sort order for netifcon definitions
+Date: Mon, 16 Jun 2025 17:25:34 +0200
+Message-ID: <20250616152534.26053-5-cgoettsche@seltendoof.de>
 In-Reply-To: <20250616152534.26053-1-cgoettsche@seltendoof.de>
 References: <20250616152534.26053-1-cgoettsche@seltendoof.de>
 Reply-To: =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>
@@ -65,33 +64,111 @@ Content-Transfer-Encoding: 8bit
 
 From: Christian Göttsche <cgzones@googlemail.com>
 
-Like checkpolicy reject the network interface names "*" and "?".
-These patterns are already covered by the netif initial SID.
+Order netifcon definitions with a wildcard interface name last in object
+contexts, so the kernel tries to match literal names first.
 
-Suggested-by: James Carter <jwcart2@gmail.com>
 Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
 ---
-v3: add patch
----
- libsepol/cil/src/cil_verify.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ libsepol/cil/src/cil_post.c     | 36 ++++++++++++++++++++++++++++++---
+ libsepol/src/kernel_to_common.c | 36 ++++++++++++++++++++++++++++++---
+ 2 files changed, 66 insertions(+), 6 deletions(-)
 
-diff --git a/libsepol/cil/src/cil_verify.c b/libsepol/cil/src/cil_verify.c
-index cde9dd41..9654d71d 100644
---- a/libsepol/cil/src/cil_verify.c
-+++ b/libsepol/cil/src/cil_verify.c
-@@ -1242,6 +1242,11 @@ static int __cil_verify_netifcon(struct cil_db *db, struct cil_tree_node *node)
- 		}
- 	}
+diff --git a/libsepol/cil/src/cil_post.c b/libsepol/cil/src/cil_post.c
+index d63a5496..70e5b734 100644
+--- a/libsepol/cil/src/cil_post.c
++++ b/libsepol/cil/src/cil_post.c
+@@ -316,10 +316,40 @@ int cil_post_genfscon_compare(const void *a, const void *b)
  
-+	if (strcmp(netif->interface_str, "?") == 0 ||
-+	    strcmp(netif->interface_str, "*") == 0) {
-+		goto exit;
-+	}
+ int cil_post_netifcon_compare(const void *a, const void *b)
+ {
+-	struct cil_netifcon *anetifcon = *(struct cil_netifcon**)a;
+-	struct cil_netifcon *bnetifcon = *(struct cil_netifcon**)b;
++	/* keep in sync with kernel_to_common.c:netif_data_cmp() */
++	const struct cil_netifcon *anetifcon = *(struct cil_netifcon**)a;
++	const struct cil_netifcon *bnetifcon = *(struct cil_netifcon**)b;
++	const char *a_name = anetifcon->interface_str;
++	const char *b_name = bnetifcon->interface_str;
++	size_t a_stem = strcspn(a_name, "*?");
++	size_t b_stem = strcspn(b_name, "*?");
++	size_t a_len = strlen(a_name);
++	size_t b_len = strlen(b_name);
++	int a_iswildcard = a_stem != a_len;
++	int b_iswildcard = b_stem != b_len;
++	int rc;
 +
- 	return SEPOL_OK;
++	/* order non-wildcards first */
++	rc = spaceship_cmp(a_iswildcard, b_iswildcard);
++	if (rc)
++		return rc;
++
++	/* order non-wildcards alphabetically */
++	if (!a_iswildcard)
++		return strcmp(a_name, b_name);
++
++	/* order by decreasing stem length */
++	rc = spaceship_cmp(a_stem, b_stem);
++	if (rc)
++		return -rc;
++
++	/* order '?' (0x3f) before '*' (0x2A) */
++	rc = spaceship_cmp(a_name[a_stem], b_name[b_stem]);
++	if (rc)
++		return -rc;
  
- exit:
+-	return  strcmp(anetifcon->interface_str, bnetifcon->interface_str);
++	/* order alphabetically */
++	return strcmp(a_name, b_name);
+ }
+ 
+ int cil_post_ibendportcon_compare(const void *a, const void *b)
+diff --git a/libsepol/src/kernel_to_common.c b/libsepol/src/kernel_to_common.c
+index 44f0be23..e4338ec6 100644
+--- a/libsepol/src/kernel_to_common.c
++++ b/libsepol/src/kernel_to_common.c
+@@ -441,10 +441,40 @@ static int portcon_data_cmp(const void *a, const void *b)
+ 
+ static int netif_data_cmp(const void *a, const void *b)
+ {
+-	struct ocontext *const *aa = a;
+-	struct ocontext *const *bb = b;
++	/* keep in sync with cil_post.c:cil_post_netifcon_compare() */
++	const struct ocontext *const *aa = a;
++	const struct ocontext *const *bb = b;
++	const char *a_name = (*aa)->u.name;
++	const char *b_name = (*bb)->u.name;
++	size_t a_stem = strcspn(a_name, "*?");
++	size_t b_stem = strcspn(b_name, "*?");
++	size_t a_len = strlen(a_name);
++	size_t b_len = strlen(b_name);
++	int a_iswildcard = a_stem != a_len;
++	int b_iswildcard = b_stem != b_len;
++	int rc;
+ 
+-	return strcmp((*aa)->u.name, (*bb)->u.name);
++	/* order non-wildcards first */
++	rc = spaceship_cmp(a_iswildcard, b_iswildcard);
++	if (rc)
++		return rc;
++
++	/* order non-wildcards alphabetically */
++	if (!a_iswildcard)
++		return strcmp(a_name, b_name);
++
++	/* order by decreasing stem length */
++	rc = spaceship_cmp(a_stem, b_stem);
++	if (rc)
++		return -rc;
++
++	/* order '?' (0x3f) before '*' (0x2A) */
++	rc = spaceship_cmp(a_name[a_stem], b_name[b_stem]);
++	if (rc)
++		return -rc;
++
++	/* order alphabetically */
++	return strcmp(a_name, b_name);
+ }
+ 
+ static int node_data_cmp(const void *a, const void *b)
 -- 
 2.49.0
 

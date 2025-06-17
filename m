@@ -1,85 +1,91 @@
-Return-Path: <selinux+bounces-4058-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-4060-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C10EDADD021
-	for <lists+selinux@lfdr.de>; Tue, 17 Jun 2025 16:40:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9441FADDDB5
+	for <lists+selinux@lfdr.de>; Tue, 17 Jun 2025 23:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF3B9161410
-	for <lists+selinux@lfdr.de>; Tue, 17 Jun 2025 14:40:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 733833ACBBC
+	for <lists+selinux@lfdr.de>; Tue, 17 Jun 2025 21:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BB11FBCA1;
-	Tue, 17 Jun 2025 14:39:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55BA42EF9CB;
+	Tue, 17 Jun 2025 21:11:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OllbdpJi"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="GehDkvdi"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+Received: from sonic303-28.consmr.mail.ne1.yahoo.com (sonic303-28.consmr.mail.ne1.yahoo.com [66.163.188.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F632EF665
-	for <selinux@vger.kernel.org>; Tue, 17 Jun 2025 14:39:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9239E2E719C
+	for <selinux@vger.kernel.org>; Tue, 17 Jun 2025 21:11:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750171193; cv=none; b=ID2NXmt6T8jyIL8yWxbPN0Kd4cBqCCIZ5IBBwsQm1tf33+3C3rcOz8BV5dlMZap2yYYZFo1vnpME77OTov6cjBZPloCzGOLHkL3aC9EPpFgUE4OlJ78IYG331It2jZWvUxhI2Ut5WYB6o2mlhixTyhFhaHLcy5ni40bjivaD8aI=
+	t=1750194685; cv=none; b=j+GEdEs+IIsbnURmNx4twMl3hdtay9xZlGbG5zMfanB08ddJjRm8SMDXqudAWxXQSJ0zo3sfVFT9nZGE1u5qiFhEzHfXPZIGXSdyralmj5EP7GK0cxNAs4DeJ+heDHwFpTDN0J8jEySfedNRUCG7Yxo1lQCuvGFW5Nz/KXTOFkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750171193; c=relaxed/simple;
-	bh=LRkmpPSzaUUeGnTXOWoHZMoItgfIQsY8lBTYW400EOw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eW7WMcNEfFzEVI9Vl4zb3/ZueSoZn3opXYq+5XcwyKhYlu2ILk9LF76EfOuka+WlLRWMVO/eByRZPG7c4Gbm3PGPQKBx2ROaZUbB+x/IRJMRhe/80uM9GabVuCu0GhvkyQDYuzQv8w+JJAE3+yU3MBcK9G5T3VbD43Oodgtdml8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OllbdpJi; arc=none smtp.client-ip=209.85.219.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-6fb0a05b56cso113362206d6.3
-        for <selinux@vger.kernel.org>; Tue, 17 Jun 2025 07:39:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750171191; x=1750775991; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1MQs8NUmsdbMtsrZMdUAh7CuToa3L5lHMdco9XdmbEE=;
-        b=OllbdpJitilkJUBkD2ZnzK7xt7GqyYzMRs4x5AZwA0kSMDBxCgEy9t1sH3YQNxYxF3
-         9TWw83+opb8g5HPZBQbJOGJoDgRzD0ekIUvC2GAaRQWvHDqiJ80c9E0HoP5ZZvKJEsab
-         ivmPaWT9NHlrdmK3sTHm8AH05WvqAchEM+guJq8g3tq4QtU5nnZeAhOFcIryUKgXb8KL
-         zBje5cXQCfXvttllG4fNgPr1YlnKOsFriCCaksBsC+BxG1LCJX0xPV5JBliEFrXELzZw
-         FWL3ULEelzSWofmwtQsm98AZgPDo6ICX91rlTqCEzLi8hzDO1z4Gw7usPRyE06L4Sd9Z
-         6quw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750171191; x=1750775991;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1MQs8NUmsdbMtsrZMdUAh7CuToa3L5lHMdco9XdmbEE=;
-        b=P0AyBkAfFbStG/Crlk7vx13RPtskuNo7vwBGqcDBt1OPpLAxbrgyJiKP6zVvpDxscz
-         z/YcUWm6Xr8Mswtjv80RORFX/HbgzIWr8yIyaFDEIHspV+2Zyh5DwNkQTwkd65cc0qhC
-         YM8mpqfB0I83ZxSmBTYPNm6b5kEZCCGrerLZIF1PsK6umDMVNFmm+XFzTTvfO1uXND36
-         Yr2zGGes0dARiVARrKFiNa+lOhwaIDcfmKcYI3uS+J47FDVJxJwGyce+MhAx6cvbRfDr
-         /2AbMlOyngDqeM3GnI3KDaWAKBlkl3tUf6aZYAMDML7ji95hHGAC7hEIMVALnbZTEj4F
-         71nQ==
-X-Gm-Message-State: AOJu0YzQ4wZ7A/U06TJLDAWKKZC2kiPL2LiQZzbeIppx3tvI+BHf0Vfu
-	RkaxomWOpY6F8V1oss0oNjjE1K/KTPakS82hWHZAl4uUuH6SPd2kdRBdiD3+5Q==
-X-Gm-Gg: ASbGncsumlezoEEQlN/c6Tzao8y4Npv2QI5mIZ4VLqsKo/tWUNFAlWjBv2rNKO2jsvC
-	qr84MDzCLypUiz5JbOmINv/uOSvS4E5evYQ6i1qpYKcIM1/1j/UvdeCBok0gaCY2W39bPYTPYQ5
-	UjipKxEBD9KusiXkxXBjDxTyrud4EIGpAz89n0AbwxFmyDUHWtWBkVy7Uus8/TACArWyqWXtegO
-	i7zWIpERKxRnI0TaTsQ6zLDC1cnHY1Hlpe7Ufc6n6NhKkXaN8DtSb12SzOVvljnt1DgFqmqPC+Z
-	aUEVQS2WwoViS9UJbMKHrJOuEvScQX/gvxUPRk3nke7Si1HJA6nmN/2CqWYtRHsN5j3fFf3s+f3
-	/z1OQsz8RU5SHfOIyPHh3lk3nXAImKeO3JODHTMzB/LucxiCfJuU11lvXQvp58hQi2rqIkiGVCK
-	74c6ESJbBKAteN6kM=
-X-Google-Smtp-Source: AGHT+IE8I+M/FrER9TRGRsL8Eh+1DHXAqjEFaVsQaTTPb7qlMujWXhQ+VSwDtaFwKTd28tQmUFVZnA==
-X-Received: by 2002:a05:6214:2509:b0:6e8:ddf6:d11e with SMTP id 6a1803df08f44-6fb477d9a0dmr191418686d6.21.1750171190899;
-        Tue, 17 Jun 2025 07:39:50 -0700 (PDT)
-Received: from fuse-fed34-svr.evoforge.org (ec2-52-70-167-183.compute-1.amazonaws.com. [52.70.167.183])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6fb35b20abasm63006436d6.1.2025.06.17.07.39.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Jun 2025 07:39:50 -0700 (PDT)
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-To: selinux@vger.kernel.org
-Cc: paul@paul-moore.com,
-	omosnace@redhat.com,
-	Stephen Smalley <stephen.smalley.work@gmail.com>
-Subject: [PATCH v2] Documentation/admin-guide/LSM/SELinux.rst: add links to resources
-Date: Tue, 17 Jun 2025 10:39:07 -0400
-Message-ID: <20250617143906.22706-2-stephen.smalley.work@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1750194685; c=relaxed/simple;
+	bh=tCT/IkQxcE0Vbq14CwG/Hp5G6xxf/831Jyydl3V67Zw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=nLcCmiSf3d4T3UF1G0OZMlLoCHl5ZANaJ5t94YM+hc/dOHnRuhtbt4GZ48PtloBMJeOMAZ0jEDU26ZtB9JJZvLFxm7GLztakRV34ELKXZX6/8J1e/brh/9ceA94feQsbXNM4KnapeGNevZiIVwZ8z+xZ7iDcB512FYYKIbojagQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=GehDkvdi; arc=none smtp.client-ip=66.163.188.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1750194682; bh=AK3vqdHMB3C88L5thv0zFgtAigMgw0Q4QfxeUz6vjpE=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=GehDkvdiEYxw6cCBCZ64pQ/I+8a52zdIih9MdhwCWfboiHM7GfCXPz/Ao7hRsW8qbjZdz9Ht9gqxd34cTMqNghnM9Yzqg4H09V4Iu0C0vqX/lc5D5+hBNyGog702W+G9crUY5SMM3IooahejfoBi+SHxgPBbQVq+rnsc8lxGze8B1rK00hQZzU2ePXhR1y3A48w+5XUI4C6CO0koN/vwsPJQcbO6xK6VDzcFZkQbAAxqGA83nKy1ofoIN9btygznrgfzywFtEV6M2kaa54woIkuIdu+c/O+rZ9mxlJfb01FzcMl7N7s3fdGWfdR+1kZ1Vo+zo6cKmebDCtngtIez9Q==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1750194682; bh=ZjkGokEkxW1DqBxVKYiSYeI8CkZ3WsfIRu077hPZK1f=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=kt4F/oluG4SAiLDGcHz5xSHrF44XhoB/2wP2iyU3vgAFXmGsMmGQN+e+qfv8ePgk7FDFi/3MNcfA4RoSkARJ+LmnVbgNPaPS2sk+4ok6TNk6xqIcnqIt8Ty4vgeEwBuHCQp0XTynFFLFH289ANRIRakq8foM14uBvFdKLVyTFwLM0wZ85gNIx+3jRg/fBcmGyb7fcoAyqXkm/fyytQTE/kVQ3/ayksWOOfv79V9bcjIhOpkCmBSdlpIxYusu80t1Az2KgeM1XBuAZeJmoE/oNHs3droLv7XFgT5oBR3RhFebo5Ewzh7e2GxI3hQjALonC4nf39gC9BNS6B5U5vNYgA==
+X-YMail-OSG: _hgOV7kVM1n4ZMKNDdy4PekzRCpTxDP9kddLdxBfz_qoLBkpRVTQxWTTc7adBQg
+ JSANU4Mq1AeCT7Pq.P.Oq1xmQ5osBNuXz3yAH2wtTwPt4O0OEVv7qJ83Er0e5FcWRsH4HKExPm4z
+ ikc1lhEaJjaXYWKMqa5stGcHPHLVun4IUHQZdS5FZWs3EGHPjpuSl.tLx64WylX2P6RBd1s0gNmK
+ 2dmisQu_arHAbxBz3MMMHdQWsyEn05wZIm4sCyukdceu2CD9BYCu3ks_5jt0HRO9jZkWF1mPMazQ
+ 3WM8ha.7b7FFJZ7b8dRq0NoJp4TiNix0VU.lpAMzyUKEQ4M.gtKCq2qnGX21ANMCLBBXa3mLjsQv
+ rLt3ulFnkNsykJCMxzHapi_tm2y.LYmSKBM1XnEEN.eS1_du2hnvk0X34wuOVpb8WGzvKqFkoXMb
+ 9p_fb_7L3HbOOi55kWS16FDV6w1NbCR2QaQyDG2PUjfkL_LXwlA2MlDuMOsmyclxlt7JlEPXa8JO
+ rkZ7v8A6nddkG7p6TNFPb0Ok0TPunTZCuW9tFER4_paFwRG3T76sL7f7FSYDw8NtkQ9SujzcN9lW
+ YzLZoiPsN_Zc9ujvcLaBA7.0.Qn72OtoJ8mapePAtesWmZWcm3pekz5MluyTI_q8G.TLJCUiWoeN
+ 9sBT1bHfHl7HxP74MEdXXl8NOuILcMMyLMDYB7FxH.ju3VHFVza_TWpG1dKKPBkJiz7RHoXLuJbU
+ HgtZduGxhNxbHn1lyCtQ2pznmkKwNps77.wn5efDXGNSyMY5.4GrcQjm.povo64ZpAg_iujvpbPt
+ T3JV4PnavJ2ben__G.6Xofcw3cPh6HqXYScTcxfMl4Rjsrh4bRvZrTh6Lit1vnozoOIfSicKxBnd
+ btoz55lDNPZshLiIfVEi1B1VT9RzQG_P6A4DRBC1TImRnOHPbsZQ4RFXAl9B2v1ToOiRVDRuM1u0
+ YsSgNxV7dePB4mJqN.1dUVP3w1wy2Zc5MmrtA35oCgpQYPl2lPRBtlO.hyvxe7VtVhVuUfw1.lIB
+ W0XbDAhYS5Yk1xgNB9mKqEgR0A.qgLT0sQVJB.Ng9dPNKw1VmbccoJhbji4RqxypHcVGy23Jn7aW
+ TbfW7xZOWVgf6NVG37hrS4KrrqjyE4_QwePWd20SJ4ryUdxxtaqMa.hkwjCeG9A0RXzsXif5wdgR
+ 8Wqo.TZLNeQhes2T4TTqJAbe_UK9zORGnEgaeOrUndQ9atrFi9tYCturZdvVFgL9yL03d8cVJubF
+ .GqVCTjZE4RG7oi1tKD3_CgDC3xL8SSzq2Uv6p.PqfWvWv4DJBiyxnkRtN4ZjIP5VVqdrhAoMgEl
+ nxSWtkDfgmbMOZ.oJbjqbfCHvIquxBknfapiUo149anlvpr3SQO0s87iXU6JBLHYIgDz5gyoz.mR
+ NyQ.teUdlb_ghkBm7w.hyUKXmS4PydTUOkUzQKAQeu.ApvxV_U3grkY2tg7s191vRsqWbZpmhq9L
+ uLS_52Z0cQK9Zwb.of7GjEAJXF5v_guITiUvBJRzow6LpIsEJM9xhVZZE_W5dWsf_PUMsaMZe_fj
+ a_ybaGis9WujqtMxrssOVXdzYPLmw8.PXBfWBoBc0vRiMAZtBIJDgb3D1zQ.99sLtkwHBX8uYCaK
+ JhvNC0KzbPgO4RahJfR4D3hmfpYuoXmYHftkJ4Z9Feb8L3ZfzhvonvG8BRRHnAWtxxK3u1hg5s6n
+ vywNEoNOuajKtigOwyI1jrELBzvFTdIVELm.V5SP0nIUbREk5znILTTXxq7Yvd4BVa6alTsZO8pu
+ 5MIXbDHr2PGL237sqn4rwFTfqRCl9.Zi5NydwvU8Cy2JCA0ieZt1gTaR97AaLEwU9Wq5WhiN2sBq
+ bEKH.AuPAIMDoUH4.MsKYdazp_2Y0ZrYK7qhD7sqdtEWUDG.1wmo0b4OhEUHilYg28j9MNETloRN
+ 1BARNFrn6UR_0KhAFE0dDhJwkpWdQ9pXYj86aehGzjNub9GxdXECB11b9zY8QoNjSpF5pxWm_HWK
+ x85ncHnnULOOugYJOUQXIs79WYbe1nwnVYd53gbpxKfZBIFDtC6mp.l9BsZ05XFYcUqb2HDjAOBi
+ lBgFFA6rL.68ImcUtPFIK9fpGVcYJfcIsoj_YcQpNQGxS2FypEsbe6Zf.qQiLcDt5KQ56HzOVQew
+ LbY24tDaeFZ0xRPaIDiCFu_kyD5o.goZb0yIoN1jzX_6HF4D6.rp0jnxMSrj16cRZWhvh.An.Jw3
+ Tu95kNjX704vnyMPKJxd40hcgomJcQTnIhxBa4TOYsLyGPKSxEPX4zHMXndL3FR.K35aWvdmaIEg
+ q7O9RFuEPihKTw2qEXmCM.A--
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: bbaa3d12-d970-4f7f-8d3e-d76350235311
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Tue, 17 Jun 2025 21:11:22 +0000
+Received: by hermes--production-gq1-74d64bb7d7-f4j4n (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 5c2f63bee58180d330568dcd5f1b3323;
+          Tue, 17 Jun 2025 21:01:09 +0000 (UTC)
+From: Casey Schaufler <casey@schaufler-ca.com>
+To: casey@schaufler-ca.com,
+	paul@paul-moore.com,
+	eparis@redhat.com,
+	linux-security-module@vger.kernel.org
+Cc: jmorris@namei.org,
+	serge@hallyn.com,
+	keescook@chromium.org,
+	john.johansen@canonical.com,
+	penguin-kernel@i-love.sakura.ne.jp,
+	stephen.smalley.work@gmail.com,
+	linux-kernel@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: [PATCH 0/3] LSM: Multiple LSM mount options
+Date: Tue, 17 Jun 2025 14:01:02 -0700
+Message-ID: <20250617210105.17479-1-casey@schaufler-ca.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
@@ -87,41 +93,32 @@ List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+References: <20250617210105.17479-1-casey.ref@schaufler-ca.com>
 
-Add links to the SELinux kernel subsystem README.md file, the
-SELinux kernel wiki, and the SELinux userspace wiki to the
-SELinux guide.
+Linux Security Module (LSM) that support mount options, currently SELinux
+and Smack, allocate their own data for those options. This patch set
+moves the handling of mount option data out of the individual LSMs and
+into the LSM infrastructure. This allows for multiple LSMs to support
+mount options at the same time.
 
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
----
-v2 adds a link to the SELinux userspace wiki as well.
+https://github.com/cschaufler/lsm-stacking#mount-opts-6.16-rc1
 
- Documentation/admin-guide/LSM/SELinux.rst | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Based on patches Paul Moore's LSM initialization patchset.
+https://lore.kernel.org/all/20250409185019.238841-31-paul@paul-moore.com/v3
 
-diff --git a/Documentation/admin-guide/LSM/SELinux.rst b/Documentation/admin-guide/LSM/SELinux.rst
-index 520a1c2c6fd2..22b9f91b220d 100644
---- a/Documentation/admin-guide/LSM/SELinux.rst
-+++ b/Documentation/admin-guide/LSM/SELinux.rst
-@@ -2,6 +2,17 @@
- SELinux
- =======
- 
-+Information about the SELinux kernel subsystem can be found at the
-+following links:
-+
-+	  https://git.kernel.org/pub/scm/linux/kernel/git/pcmoore/selinux.git/tree/README.md
-+
-+	  https://github.com/selinuxproject/selinux-kernel/wiki
-+
-+Information about the SELinux userspace can be found at
-+
-+	    https://github.com/SELinuxProject/selinux/wiki
-+
- If you want to use SELinux, chances are you will want
- to use the distro-provided policies, or install the
- latest reference policy release from
+Casey Schaufler (3):
+  LSM: Add mount opts blob size tracking
+  LSM: allocate mnt_opts blobs instead of module specific data
+  LSM: Infrastructure management of the mnt_opts security blob
+
+ include/linux/lsm_hooks.h  |  2 ++
+ security/lsm_init.c        |  2 ++
+ security/security.c        | 26 ++++++++++-----
+ security/selinux/hooks.c   | 65 +++++++++++++++++++++++++-------------
+ security/smack/smack_lsm.c | 62 +++++++++++++++++++++++++-----------
+ 5 files changed, 108 insertions(+), 49 deletions(-)
+
 -- 
-2.49.0
+2.47.0
 
 

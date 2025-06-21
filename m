@@ -1,269 +1,163 @@
-Return-Path: <selinux+bounces-4139-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-4141-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C12AE2A6E
-	for <lists+selinux@lfdr.de>; Sat, 21 Jun 2025 19:01:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F351BAE2A85
+	for <lists+selinux@lfdr.de>; Sat, 21 Jun 2025 19:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DB0E176C71
-	for <lists+selinux@lfdr.de>; Sat, 21 Jun 2025 17:01:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B47E7A4C14
+	for <lists+selinux@lfdr.de>; Sat, 21 Jun 2025 17:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F3A157A67;
-	Sat, 21 Jun 2025 17:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAD9221FB2;
+	Sat, 21 Jun 2025 17:19:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="b7Mn62e1"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="UvZGBRdS"
 X-Original-To: selinux@vger.kernel.org
-Received: from smtpweb146.aruba.it (smtpweb146.aruba.it [62.149.158.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic311-30.consmr.mail.ne1.yahoo.com (sonic311-30.consmr.mail.ne1.yahoo.com [66.163.188.211])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2B14207A
-	for <selinux@vger.kernel.org>; Sat, 21 Jun 2025 17:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E232B2F42
+	for <selinux@vger.kernel.org>; Sat, 21 Jun 2025 17:19:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750525279; cv=none; b=G1Bhsh5qWZAIV1ReFYsPZJUAr6wiD6JDI/Jbg9+T6ihg7YITcwZc7R4r56x8P/6MgbDOTCVOex1vThCH/8zGiDIoN8+sWg3M+XZajxnm3XdG95ac2/BuJ1Qbi5nONhNPzkcBIH2dPEGtB+TgwCG5wlg9pdMTLjQskMXDzNQHvb8=
+	t=1750526347; cv=none; b=oM3+Xoj9vxPeB+vomucEwLMmUagJW7b0v9BaCf7CchCeSECeI/SGhX+8mJtz6A0jp90uJ8kxmEvqv1fUBDIwKL2aMQgFTmY0TwVTqzZZK3OUkFqTOHxK4y7shEjfHDNLSBaLoXGiBVabEhzmQpOLfma/6Myg6PSkgPvDIbE8UXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750525279; c=relaxed/simple;
-	bh=JXVaNDf6SKSSYzkWaqfbzmmsUuAu04juoMTbGtVTdPQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:Mime-Version; b=tpbs8PNjIR1ich9xAv2p4WOJL36pNsU9+mVvCDrCm+BIy54jOE7mqeyIOB2vjrvIjlBnkbZHWnaHS5b5AK2F0UmZGmuXewzVWX4l/5wUreOdc/4WH4FO3KJ1WDVbds62in/a/Vpau2m5n6dr2onELhYBaTJiB4JKO5VPiEyFcuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trentalancia.com; spf=pass smtp.mailfrom=trentalancia.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=b7Mn62e1; arc=none smtp.client-ip=62.149.158.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=trentalancia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trentalancia.com
-Received: from [192.168.43.2] ([109.54.112.128])
-	by Aruba SMTP with ESMTPSA
-	id T1XZu4sRS2QPuT1XZuDcN1; Sat, 21 Jun 2025 18:58:05 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
-	t=1750525085; bh=JXVaNDf6SKSSYzkWaqfbzmmsUuAu04juoMTbGtVTdPQ=;
-	h=Subject:From:To:Date:Content-Type:Mime-Version;
-	b=b7Mn62e1v9dRKoq+JyAS4rk+YD0EZ0+P8GAdZBfCA7bTsjJZtcnnVthU5N02HvDR0
-	 klAMAl9x8q+JUM43sApNyj3B3TuRAYXSXasHAe6nlI4EK51oTZ3eUqYQMA1yGQqjoN
-	 A/gyraY6CPFrZTmB/zIVdVZkI+KkEZIMUVsBJNgF6sSLdrSho81sGE0mXm/fqFmscs
-	 Gl1gVyi36UUCrdxGFshZhLDKs5YVi5XdfVcadatXgKTctfGPeiuB66Li0DnNjmEVCL
-	 CLTv0+QyJXbZpVJq3lxJrUUeuG8qjopMIe6QxoEO5o6caK92V3tZYkmUPyZ5OBdGRa
-	 X3fZUg0T6tJng==
-Message-ID: <1750525084.6235.11.camel@trentalancia.com>
-Subject: [PATCH 2/2] selinux: when computing the SID before policy load take
- into account the socket class case (was [PATCH v2] selinux: change
- security_compute_sid to return the ssid or tsid on match)
-From: Guido Trentalancia <guido@trentalancia.com>
-To: Paul Moore <paul@paul-moore.com>, selinux@vger.kernel.org
-Date: Sat, 21 Jun 2025 18:58:04 +0200
-In-Reply-To: <CAHC9VhTFww3khVjjd1Tci6Qx+MnM+v9_u7vANWNqE0vwTW=Ftw@mail.gmail.com>
-References: <20250610194826.80606-2-stephen.smalley.work@gmail.com>
-	 <1749647531.6091.5.camel@trentalancia.com>
-	 <CAHC9VhTjwOcwzKdiq5m=QyWo8=-a6E-2bW4gKJoDtij7kEmxeA@mail.gmail.com>
-	 <1749670408.6186.15.camel@trentalancia.com>
-	 <CAEjxPJ58ZSqhYaXr+fOLwbN=bBb7+WGRQf59vv9c-UWDBnyZMQ@mail.gmail.com>
-	 <1749671000.6186.18.camel@trentalancia.com>
-	 <CAHC9VhTFww3khVjjd1Tci6Qx+MnM+v9_u7vANWNqE0vwTW=Ftw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.6 
+	s=arc-20240116; t=1750526347; c=relaxed/simple;
+	bh=noJk4BiepOb3lVQ04gp/89jM/44GoTx1QuGjHuXHIWU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=mjYFNjPZSm+sTiA/aiXALV7eFWFzxuVIItnmT+QxosvoRkjeB7Vr2i71FRAgC0H/uvxFjLLK+EUdk6m42nHNk9nxYULTOt1h08PjYCApFMMhz95wYbvH+kltoUK2kI4ONQJKiD4MdGJ3u1TEu9gYXtRivC4bM3WYWq2hCU8Zhk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=UvZGBRdS; arc=none smtp.client-ip=66.163.188.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1750526336; bh=f/j3CK3RJdMWlT73UzsrQTZQ4X5MO9hJbzn+JxABBmM=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=UvZGBRdS09fq8Hh6HjYfTj9GOCwfQhLdChXZoY49VKSq5eE8dmXAGIsgfLI5CW8Ynn2tEssrVbKFGzL/IQiwCCx8JK1VqBT/vrGEVyk818Z2JTenuMYH8Br+wAVnCVO/spGlBpsb95/cOyFTUebMQK8x354TV8z/DmmpW8sOVy+lWE+pQGjrj3R7vOrZMLa+tSIcbl8S9qeJpCHUnDQUzGwKwZBXQ8xFF4XUqoTpyPrxdRtcDldnuLDhiLIYAHV6Con7Jsoqvj8hDM/+5lJsXzaKtE+uml3rTo6+WoFSRCKgZ5hO50MEw18ugkeTBlm8nTTQu61EMALOLcT2b7UFUw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1750526336; bh=75j5Rpm3u7DSVaa1oefZ5gcAMel8vUd49prKIIGOza6=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=FIwd/MtFaJlJa0WLVDFWiHYq1RrG+8JHM98R42FumuaVLKerHNnY+fXkX1XqMQQCXXwVOcgbamdAUa7kfqbvIMgKvJlIf+HYXKUO318Pi6DsBIBsWyn98i6xIvbVln8TWecZokTZnm7ygZoQ5t91MxjQHetkevezcH0NnYHHiZyARSk6JNeBY0qLT3O98tfh0eGlvCeAuD1h19sIuAi/7zv74mUN7zVK/rnbG2h034gj87fTE3vfRfkApzPjkDN/b5edFBuJjHdbXcNqPxYkt+FxgSakmI8/8Xjw3GMFsBOggpEszWWOwSlAYLGb2K/CMfayodd84FJvxDgEDoa95A==
+X-YMail-OSG: Tp.hPl0VM1lIf.zl5VehtGfN1JXMJZfSQ2_IN3UEFulQCwgLcYe3FfKpUizE1Qs
+ sattV47Z1jESJyRJ5b5Cx7hiNc_2T2Mx7nN7djlQB0Nqrd_mvAezZzUaRBOkyTq5KPyUr_gV0.Yf
+ TYkzh9nVQuN9_x0pvHNFYu0_FSVqKs2XBPoA9ZxJ6mBGteruBeIcZOkLwDB1PATPerRrl_inldXH
+ u9PBm4qxpscedHMu1XyeXqsSuyAePIfn.lAwex02JZB1.wg25sTicKp4J9sRQlKKqBLf51_U7IFD
+ z9E6JowuC3aQGWOhSwTLXy8n4dVzi1nZrEkCsGeiNv_e69RKD.N4JVZlXmtcbqLoMTvMAs4TsKKX
+ 1iq6azc7V5QuWxSHgYiVbz2M7mauKmBwR3Fze4EigAu1Jj6NqzLG4I66dW0HXSCAzM5zupjnWJhI
+ CLv6zMLnpk9UAvW0QC28bpABfRXB7UZK5aNhonODoU36QBeMe4ehf6CoLzmXG6fWoI9NJa0e7yiY
+ lfHUSxBsQEMNz_cFoXwV5RXyAR_KCkgR7NritoTnZX02WBTpWCsJF9AUEycQeLPsAscVFPmTZPbF
+ Qh6SZ81YG.OXVCc4Wvrtg5mxfYg_V5r6hKW2VlR4LuKtDhsNInV_xYbaHKeknv1iJIdDn01APUfS
+ gzXbTywXdOGdMnXlyBmeTcQm_rYETDEWcF5xMdZ.Hy0G322hI1YRlNA_QxOKU76uX4OW9pGe2PPF
+ Ey0ScxXJbcM0BN3HYAv0YT9qD5iiaMMaVZLT4A6wGvAhzME75GXD4WemqT56xG3e3loqUDtkOYRG
+ RLzucSp55EJ.p_YAy.8VRGqKEoUTW5ESy9lqVwK3.vtoP2XOSzore80qet0RuuZ_JLG9PYBc4jE_
+ G9u75PaQRA8ToNzlGN6LdTzd8uEM2QHQjHfaPwWPwihhzolWrYMQO_S0WIMUoQUi9iNbOddjgN6P
+ htJ9Qb1G7RFvE_unvLuE7SC.yfSsVjGRD2iMYA_5KxExuec7ThwFPjFP6AmgnY9Z1s0OHC0ZzD1h
+ wJ4JcBL_QLKOxzJQ1XXIgXH0v.bXHygyFDs06NCFtSyY7nxleqgwYwww0.dfJyQEhLda1MrraRwH
+ weckV.nAWBqWcjljjNUGeSuC.hbHNNoobKCaNCaPu7uv9RYnlRdp7AG6_EeFzbnbOcOPakWt7WqU
+ irisEkvBczXmsdYWIRy8lT9aBWIG_YDiT_Aza4JOytUTSrGU6JsL1AM_UXFdmZQTOU9q.4OwoDA1
+ 8MRegy83oqBKuiiTg67NrNw2kyANPtsweBJJzamAeSOn4VdYNVFa3.bmFFVGqKIMPRVB8Gb0Dbxc
+ SmQDbiM9O3kpMieOG2PJ1NwLOYp0uI2oYejU1Q7zhE_Xktq2Ad8LGGeeMak13tEmFzBFXjrclENP
+ xaP_ps.C7OrtDF05CZFHtE687D2cVlo2sqy_XFzOAwgDGyMfAH5DL6WneKGUm1mp3zwVW57CWdPH
+ 0mtRQjdT6vE1V5pCo2MAuG70aYdZTz5Y9EKhBL9Tbi7mKUZE9Ae1G.maKljHl.Ber6Fg9fYLGbCg
+ dg5N9RK3_ELiLxsn5LphEy7gMGzDFzxu8KNkf337piS10JApIH.bm0l4tV5ZbkMSZbwQvyhJRO_c
+ 23.2v1lPZDdQJrfcaz1dOETozk0EiIt6xsGFyRSk81FiYhqTSLd2jm9WBEw1VeN0Zx17mi9BOQij
+ L1gZW4KWaGh4m82BHdVgAKYhPo2Eu.Ncfqb0V5YGqrMPFf9ZYXnrxtxwl00HQodsNmEzu9fxUsXY
+ VW93_yIPefG8jeN0MZgwr7WlDfbLaVTmzmuLAvPxyt3g4rPcjabHbemgAMjP3OOR8nUyLWsg0L3I
+ i8qvVIQGZ627.IrV5WJtLufd1wWPuAuLr3PXBH02MvPHDtLesFW6t8BnvsMlnW7rJd0XQGPS0Fw5
+ wCk0JOjRBnRCiACpMFbK5jAFmG4jX9gnBqqx2.VSySVygFIe79HiG4u6vywwNDz21MVmfk1l8Y9C
+ Ka9uReXr1yMY_pSsoPJBEXcjsFAuzwhNVb7BP87D1BxCf0R0e9BxR3L4T.lyF44LDV2mOUTgV69K
+ uivWuREsT4ccKIgIhgDKIRaDkSwZ_0Z7m.vpE.imig_pyd.ZyO0_KjXGh1vQ7SAAAn_CYKs_u1H7
+ b1uPCqJVPviXJfDJamvJON7rpv7rTAVe7PzIMza3EYWdJQt2ha7UIjp9GCNZOyhdJZ0olMcrzjE7
+ tZexiqHfzoqfm0m4.TjWwmTOpoyOL18Tcbh4MZPDgrc72_2raJ9xQAxQpGdqdh8qIcFra7G4tqSJ
+ McOO9IzO0uxZ1xIpMEmrQtQ--
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 6251a79c-2b83-4ba1-bddc-8c30cde94e3b
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Sat, 21 Jun 2025 17:18:56 +0000
+Received: by hermes--production-gq1-74d64bb7d7-fddgg (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 250c349a2671887e65e0396b7ea9bbf4;
+          Sat, 21 Jun 2025 17:18:54 +0000 (UTC)
+From: Casey Schaufler <casey@schaufler-ca.com>
+To: casey@schaufler-ca.com,
+	paul@paul-moore.com,
+	eparis@redhat.com,
+	linux-security-module@vger.kernel.org,
+	audit@vger.kernel.org
+Cc: jmorris@namei.org,
+	serge@hallyn.com,
+	keescook@chromium.org,
+	john.johansen@canonical.com,
+	penguin-kernel@i-love.sakura.ne.jp,
+	stephen.smalley.work@gmail.com,
+	linux-kernel@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: [RFC PATCH 00/15] LSM: No exclusive LSMs
+Date: Sat, 21 Jun 2025 10:18:35 -0700
+Message-ID: <20250621171851.5869-1-casey@schaufler-ca.com>
+X-Mailer: git-send-email 2.47.0
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CMAE-Envelope: MS4xfGOPgm30JdB5YSuG7N0qByOBfyNdP4TwBj/8Gri0TGcfgW9PMshBmKI2N8M8p//wR1YQrLF7pNd3iYLjFyP1YRE9c48kZq4geac9tmYe2bCVCSKXk5Nk
- Ei/NbrwBGgWVWVN5HGinwgTNO36PVObyWCw9d1/Itha+8ccySX0ajo9ZQB5vKslavuSO+mw+dwcEtLhGssu+m0qEVpp7FXa45gW+6Ts1DRzVqHouucKo86B3
+References: <20250621171851.5869-1-casey.ref@schaufler-ca.com>
 
-When computing the SID before the policy is loaded,
-take into account not only the case of the process
-class, but also the case of sockets classes.
+Remove all constraints that require Linux Security Modules to
+be marked as "exclusive".
 
-Signed-off-by: Guido Trentalancia <guido@trentalancia.com>
----
- security/selinux/ss/services.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+This RFC includes variants of two other patch sets:
+https://github.com/cschaufler/lsm-stacking#audit-6.14-rc1-v4
+https://github.com/cschaufler/lsm-stacking#mount-opts-6.16-rc1
 
---- a/security/selinux/ss/services.c	2025-06-21 14:50:05.168301991 +0200
-+++ b/security/selinux/ss/services.c	2025-06-21 15:12:52.656293645 +0200
-@@ -1750,6 +1750,12 @@ static int security_compute_sid(u32 ssid
- 	bool sock;
- 
- 	if (!selinux_initialized()) {
-+		sock = security_is_socket_class(orig_tclass);
-+		if (sock) {
-+			*out_sid = ssid;
-+			goto out;
-+		}
-+
- 		switch (orig_tclass) {
- 		case SECCLASS_PROCESS: /* kernel value */
- 			*out_sid = ssid;
+Based on patches Paul Moore's LSM initialization patchset.
+https://lore.kernel.org/all/20250409185019.238841-31-paul@paul-moore.com/v3
 
-On Wed, 18/06/2025 at 17.56 -0400, Paul Moore wrote:
-> On Wed, Jun 11, 2025 at 3:43 PM Guido Trentalancia
-> <guido@trentalancia.com> wrote:
-> > 
-> > Ok then, as long as it passes the testsuite it should be
-> > sufficiently
-> > tested for most purposes, I suppose.
-> > 
-> > You can add the Tested-by line, if you like...
-> 
-> Thanks Guido.
-> 
-> I'm thinking this might be a good candidate for stable, what do
-> others think?
-> 
-> > On Wed, 11/06/2025 at 15.37 -0400, Stephen Smalley wrote:
-> > > On Wed, Jun 11, 2025 at 3:33 PM Guido Trentalancia
-> > > <guido@trentalancia.com> wrote:
-> > > > 
-> > > > I have very little time to look at the underlying problem and,
-> > > > as
-> > > > already explained, I have only tested that it solves dracut-ng
-> > > > issue
-> > > > 377.
-> > > > 
-> > > > This change has widened the scope considerably compared to the
-> > > > other
-> > > > proposed patch, I cannot so easily certify that it does not
-> > > > introduce
-> > > > regressions or problems in other scenarios.
-> > > > 
-> > > > The main point is that the offending code in ae254858ce07 is
-> > > > only
-> > > > executed when the policy has not been loaded yet (and it sets
-> > > > the
-> > > > SID
-> > > > to SECINITSID_INIT).
-> > > > 
-> > > > On the other hand, when the policy is not loaded
-> > > > security_compute_sid()
-> > > > is reduced to:
-> > > > 
-> > > > switch (orig_tclass) {
-> > > >                 case SECCLASS_PROCESS: /* kernel value */
-> > > >                         *out_sid = ssid;
-> > > >                         break;
-> > > >                 goto out;
-> > > > return rc;
-> > > > 
-> > > > In other words, when the policy has not been loaded yet (which
-> > > > is
-> > > > when
-> > > > the problem is introduced), the code in this change is not
-> > > > reached
-> > > > and
-> > > > security_compute_sid() simply returns ssid (when called with
-> > > > SECCLASS_PROCESS). So, the mechanism of action of this change
-> > > > on
-> > > > the
-> > > > problem appears to be indirect in some way.
-> > > > 
-> > > > Moreover, security_compute_sid() is called by several other
-> > > > functions
-> > > > rather than simply by security_transition_sid(), so without
-> > > > proper
-> > > > extensive testing in multiple use cases (read multiple code
-> > > > paths)
-> > > > it's
-> > > > very difficult to say the change is fully tested...
-> > > > 
-> > > > I would recommend more extensive testing.
-> > > 
-> > > It passes the selinux-testsuite without any problems, FWIW.
-> > > 
-> > > > 
-> > > > Guido
-> > > > 
-> > > > On Wed, 11/06/2025 at 12.27 -0400, Paul Moore wrote:
-> > > > > On Wed, Jun 11, 2025 at 9:12 AM Guido Trentalancia
-> > > > > <guido@trentalancia.com> wrote:
-> > > > > > 
-> > > > > > Hello,
-> > > > > > 
-> > > > > > I have just tested Stephen's patch and it solves the
-> > > > > > problem as
-> > > > > > an
-> > > > > > alternative to the dracut patch and other patches posted
-> > > > > > here
-> > > > > > along
-> > > > > > with the issue description:
-> > > > > > 
-> > > > > > https://github.com/dracut-ng/dracut-ng/issues/377
-> > > > > > 
-> > > > > > Please note that I have only tested the success of the boot
-> > > > > > process
-> > > > > > with sysvinit and not other aspects of the system
-> > > > > > functionality,
-> > > > > > other
-> > > > > > init daemons or regressions that might be caused as a
-> > > > > > result of
-> > > > > > applying this patch.
-> > > > > 
-> > > > > Understood, thanks for the testing you've done.
-> > > > > 
-> > > > > Would you be okay if I added your "Tested-by:" tag to the
-> > > > > patch?
-> > > > > 
-> > > > > > On Tue, 10/06/2025 at 15.48 -0400, Stephen Smalley wrote:
-> > > > > > > If the end result of a security_compute_sid() computation
-> > > > > > > matches
-> > > > > > > the
-> > > > > > > ssid or tsid, return that SID rather than looking it up
-> > > > > > > again.
-> > > > > > > This
-> > > > > > > avoids the problem of multiple initial SIDs that map to
-> > > > > > > the
-> > > > > > > same
-> > > > > > > context.
-> > > > > > > 
-> > > > > > > Reported-by: Guido Trentalancia <guido@trentalancia.com>
-> > > > > > > Fixes: ae254858ce07 ("selinux: introduce an initial SID
-> > > > > > > for
-> > > > > > > early
-> > > > > > > boot processes")
-> > > > > > > Signed-off-by: Stephen Smalley <stephen.smalley.work@gmai
-> > > > > > > l.co
-> > > > > > > m>
-> > > > > > > ---
-> > > > > > > v2 fixes a compiler error.
-> > > > > > > 
-> > > > > > >  security/selinux/ss/services.c | 16 +++++++++++-----
-> > > > > > >  1 file changed, 11 insertions(+), 5 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/security/selinux/ss/services.c
-> > > > > > > b/security/selinux/ss/services.c
-> > > > > > > index 7becf3808818..d185754c2786 100644
-> > > > > > > --- a/security/selinux/ss/services.c
-> > > > > > > +++ b/security/selinux/ss/services.c
-> > > > > > > @@ -1909,11 +1909,17 @@ static int
-> > > > > > > security_compute_sid(u32
-> > > > > > > ssid,
-> > > > > > >                       goto out_unlock;
-> > > > > > >       }
-> > > > > > >       /* Obtain the sid for the context. */
-> > > > > > > -     rc = sidtab_context_to_sid(sidtab, &newcontext,
-> > > > > > > out_sid);
-> > > > > > > -     if (rc == -ESTALE) {
-> > > > > > > -             rcu_read_unlock();
-> > > > > > > -             context_destroy(&newcontext);
-> > > > > > > -             goto retry;
-> > > > > > > +     if (context_equal(scontext, &newcontext))
-> > > > > > > +             *out_sid = ssid;
-> > > > > > > +     else if (context_equal(tcontext, &newcontext))
-> > > > > > > +             *out_sid = tsid;
-> > > > > > > +     else {
-> > > > > > > +             rc = sidtab_context_to_sid(sidtab,
-> > > > > > > &newcontext,
-> > > > > > > out_sid);
-> > > > > > > +             if (rc == -ESTALE) {
-> > > > > > > +                     rcu_read_unlock();
-> > > > > > > +                     context_destroy(&newcontext);
-> > > > > > > +                     goto retry;
-> > > > > > > +             }
-> > > > > > >       }
-> > > > > > >  out_unlock:
-> > > > > > >       rcu_read_unlock();
-> > > > > 
-> > > > > 
-> 
-> 
-> 
+There are three components to this change. Patches 01-04
+implement a mechanism to provide auxiliary audit records
+and uses it to supply new records for multiple subject and
+object security contexts. Patches 09-11 allow mount options
+to be supported by multiple LSMs. The remaining patches
+address mechanisms that cannot be used safely by more than
+one LSM.
+
+Testing has been done using SELinux, Smack and AppArmor on
+Fedora and using AppArmor and Smack on Ubuntu. Using SELinux
+and Smack on Fedora requires a systemd change.
+
+Casey Schaufler (15):
+  Audit: Create audit_stamp structure
+  LSM: security_lsmblob_to_secctx module selection
+  Audit: Add record for multiple task security contexts
+  Audit: Add record for multiple object contexts
+  LSM: Single calls in secid hooks
+  LSM: Exclusive secmark usage
+  Audit: Call only the first of the audit rule hooks
+  AppArmor: Remove the exclusive flag
+  LSM: Add mount opts blob size tracking
+  LSM: allocate mnt_opts blobs instead of module specific data
+  LSM: Infrastructure management of the mnt_opts security blob
+  LSM: Allow reservation of netlabel
+  LSM: restrict security_cred_getsecid() to a single LSM
+  Smack: Remove LSM_FLAG_EXCLUSIVE
+  LSM: Remove exclusive LSM flag
+
+ include/linux/audit.h               |  23 +++
+ include/linux/lsm_hooks.h           |   5 +-
+ include/linux/security.h            |   6 +-
+ include/uapi/linux/audit.h          |   2 +
+ kernel/audit.c                      | 274 ++++++++++++++++++++++++----
+ kernel/audit.h                      |  13 +-
+ kernel/auditsc.c                    |  65 ++-----
+ net/netlabel/netlabel_user.c        |   8 +-
+ security/apparmor/include/net.h     |   5 +
+ security/apparmor/lsm.c             |  12 +-
+ security/lsm.h                      |   4 -
+ security/lsm_init.c                 |  36 ++--
+ security/security.c                 | 103 ++++++++---
+ security/selinux/hooks.c            |  82 ++++++---
+ security/selinux/include/netlabel.h |   5 +
+ security/selinux/netlabel.c         |   4 +-
+ security/smack/smack.h              |  10 +
+ security/smack/smack_lsm.c          | 107 ++++++++---
+ security/smack/smack_netfilter.c    |  10 +-
+ security/smack/smackfs.c            |  20 +-
+ 20 files changed, 585 insertions(+), 209 deletions(-)
+
+-- 
+2.47.0
+
 

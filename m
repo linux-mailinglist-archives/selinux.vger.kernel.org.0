@@ -1,121 +1,199 @@
-Return-Path: <selinux+bounces-4234-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-4230-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D8EAEFDBC
-	for <lists+selinux@lfdr.de>; Tue,  1 Jul 2025 17:13:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F79AEF9BA
+	for <lists+selinux@lfdr.de>; Tue,  1 Jul 2025 15:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAFA31889EDE
-	for <lists+selinux@lfdr.de>; Tue,  1 Jul 2025 15:10:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 948863B0F3D
+	for <lists+selinux@lfdr.de>; Tue,  1 Jul 2025 13:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68EB275B04;
-	Tue,  1 Jul 2025 15:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B4B2749E7;
+	Tue,  1 Jul 2025 13:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nrWaEk8c"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="EdGMfebH";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="3x0vMWhi";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="geOJrmOA";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="s+W8pYUV"
 X-Original-To: selinux@vger.kernel.org
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EAB27780D
-	for <selinux@vger.kernel.org>; Tue,  1 Jul 2025 15:10:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B5E2741A1
+	for <selinux@vger.kernel.org>; Tue,  1 Jul 2025 13:06:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1751382608; cv=none; b=iNJ7cqEJ7xgyyzd3oLdbhnLmtwooMR3JX1UgagZlerJbylbHRJeR8h1uthtZ3mfgzU9Ql78k4Uza7BTykcSP7c4DOK2TiiFm1o3B6VvKiaYVhKzFj1RnIboEizvr6OPOmAZ6XwkTytkI8RwregiAr1pJKODR4kF0b7zxqgw5d/Y=
+	t=1751375195; cv=none; b=Zg5GC4P7b2MUro+d3aRPIE6SoWS+8KBrjcQWcGZkgO5Jt1FLjPZhEnGcWrNNYZPyZeNEZ1zQf8vzVCM1nePugxMY5c4npD+UAq0EyoRPxQXDwD1XrRHE3+fUg9+LPKruXbouho+vIGtS5Rx94ubTTDrcKQnrGpj5tlDWYjn9uPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1751382608; c=relaxed/simple;
-	bh=Nn0YE79pKTEK/gCdLZbpFTBww2Ymlsq17B99r5lPGE0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZzD++k47dMQW18KMP31y/LA4B38QNiGhyXJbE6rLAKw9GdNoRU2X9BsKxxk+mkiNCo3z76YvyxfYahGxleDweE1li0FnchpVVx/I4DgU2wHpVvrJv0rJMnA08+OdVjzwiR33M6slvJYqmBpU5WLlMFN9JqZUSHRKYLh+6+hX/RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nrWaEk8c; arc=none smtp.client-ip=209.85.160.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4a589b7dd5fso99391821cf.0
-        for <selinux@vger.kernel.org>; Tue, 01 Jul 2025 08:10:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1751382605; x=1751987405; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v+K88RU6Uvi5mtG0KtikXJMhN3ijgLXpEzQu84uPsNM=;
-        b=nrWaEk8cXrpPdlrkvEULPcshmaiwyTIjg/IoNuacVifNuJrxIDfdpGlOpQOodpzQAS
-         wkHLFzEI3D1XgQ3SgbU3weou+dIN6RjT508mzg197R+HaTeNOms5o27UIXWpmskevb8c
-         tKPtQuJ8r933QBgVBotZ9NnUnKNB+vetNMrXTm56zWekgBqATEcCYxaSYD0p4vKtH2XE
-         082iNlah2i/PrAKagaKzwo1xMor7QIU9V2ev4EiXizsaTsIGXwbZtydBtaVAoQBk6en/
-         KtBgpcG4q6HCv5EVskhHAqWfI1huZ5GjUk2biTRqcBeH9bQK//qtjdWRiIZjTpdvloFV
-         fmXg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1751382605; x=1751987405;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v+K88RU6Uvi5mtG0KtikXJMhN3ijgLXpEzQu84uPsNM=;
-        b=sHlb5Q/vvTvZAmaaAdL7tm5jQdgyt4exSG710WSNz2OFiYnyfPqvb2Kq8ZmI881S29
-         ICsElmF6DeJYFJt8ym+hSPSMTVi7hOCeXdcDq6rSO3Sc0HKod05ZC7dfpyKsIwk+/vlE
-         tdJyAKOgicSC58q4CKhsJDRw6aPgYQ2PHg3FZph5jGrR2rCqOqanvWpPNa5xfPk/ATtP
-         64Z9M6V46Rwy69BQcNrGixnIxI4I3t9kM/o4QHkfu/DftNc5eJ6xWL9hwuXOx6fGfayy
-         m2UrbWEV9O3mcScYBP2LAQ+3wD8P93nps7igscNs2sEZ6zyxyz9D09tAhWq8Y2wdzvqm
-         Ev2Q==
-X-Gm-Message-State: AOJu0YzG2qq45hrzY2yWB0YRPIUOChh7dbODSpN5km5bvMT9+jzupoep
-	XnpOzbQhMR7hxWjnXIVPOvzBEz2b0r+NqDmCdzQzoTVoHG0dru5RbzFFtNhjRw==
-X-Gm-Gg: ASbGncs+RnpcdHMuvt+vWCKDPZJBjvigtz8bLqRNB5LryBo73Pon0LLaw6GOSJJJu6b
-	WbaAGTbpzi0oRKnOAvQTABzedkOBbfqb4BwEmcCmsvh+CK+j3ttNz9pIpYY9wOoVZLfDiXGlYDJ
-	j+pTyI4CiWoLfphIn9C1j/mqD9/U1uuJH+lizN1qYA+ADrUWq6TknNtqsvDDmaPN5s4mcsgCyk2
-	mFwuD6AJ3gcRalkC843UJ/SsZGTo3RafI0StkAhvuEy4RCLpw1DOyQBrXo6YRlOYUzGBd0ogR2P
-	jmlU16J4QBU4BqCejd9+bZMY9dYPx1EOc/xMcjF4E+VjDNk5wUOylsIWis0Mt+ecei8I6LM=
-X-Google-Smtp-Source: AGHT+IFLDAEXc8VQ5px4IsK3v+6LRCb26LMaF/Yq/hKO60QraNbS8QmA57EcCvamrWpkvRB3Z4W8RQ==
-X-Received: by 2002:a05:620a:3954:b0:7d4:63a0:e0c2 with SMTP id af79cd13be357-7d463a0e39fmr733232985a.15.1751382604637;
-        Tue, 01 Jul 2025 08:10:04 -0700 (PDT)
-Received: from fedora ([144.51.8.27])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7d44313695dsm782887385a.1.2025.07.01.08.10.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Jul 2025 08:10:04 -0700 (PDT)
-From: James Carter <jwcart2@gmail.com>
-To: selinux@vger.kernel.org
-Cc: James Carter <jwcart2@gmail.com>
-Subject: [PATCH] Policycoreutils: Make pkg-config work for more types of builds
-Date: Tue,  1 Jul 2025 09:03:09 -0400
-Message-ID: <20250701130309.260015-1-jwcart2@gmail.com>
-X-Mailer: git-send-email 2.50.0
+	s=arc-20240116; t=1751375195; c=relaxed/simple;
+	bh=W7rUKWuRShXYZWdR3lbH69HaoFiUBNiFvvaqP4xwyDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MWp+I38LRXLPIq5FRo0shRCrkmHZKce0fFhKFPm5J4LaCXxfc3MKW7VYaYhj41IxFlXs7ASQUM1rH+92EuwwbhLlSY0wb8EDVMh5Ip7br0ZBuohxrVOmbatUxfp6usKo0FFQ5BuPR1bsMV3JChZt035b+QFu6B6GbGy8IXoVySc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=EdGMfebH; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=3x0vMWhi; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=geOJrmOA; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=s+W8pYUV; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id BEBD921170;
+	Tue,  1 Jul 2025 13:06:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1751375191; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=STYBJ6/y5eb9NB4ntQPCGfmPLPuwaWN8f9mtVL8NvMg=;
+	b=EdGMfebH3HfaMC+wTG450iQ0AqNqkQK2x3LTfqHIyaxGakrWaElBk4jiFb97QC9greGvMb
+	1Q2xk36efRgz/+u2VPFudK5v7WktCIB9TXWbVU365dA5CFyyKqqsG+TyhF/PK4noIgvbFU
+	gIIzt/wLiRG3tHbJ1PPlyZ5aIaaVLxQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1751375191;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=STYBJ6/y5eb9NB4ntQPCGfmPLPuwaWN8f9mtVL8NvMg=;
+	b=3x0vMWhikqcewo3C3hWxU5aK+XA0gmHYzYUMtbcyo3XMMzkUPN7HqeYjuDVGotgUH/7nT9
+	WYjfVnf+l+7+BJCg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=geOJrmOA;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=s+W8pYUV
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1751375190; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=STYBJ6/y5eb9NB4ntQPCGfmPLPuwaWN8f9mtVL8NvMg=;
+	b=geOJrmOArR76ltL85cdfmNDlnZRQboQgEh3JdADE3BE/XoMASiodgc85nEO2poaahBsTbR
+	6TsOO8XPpj6vjLQHTWNcFVeCs7b5FZ0tkAqM1GvV9KdlGUymKy0OSwq8t3ZtuhJb81ixdw
+	zZiMmjTn702bFgTQhDHKwvYearwVEeI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1751375190;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=STYBJ6/y5eb9NB4ntQPCGfmPLPuwaWN8f9mtVL8NvMg=;
+	b=s+W8pYUVnV1//Tnb9TCUTjf1HZWDSft6YUh3W+enyBIkfmUOKmDP+dAP18U6L/rk9PkBuq
+	wyFZaxtYgN+DunCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AE9E613890;
+	Tue,  1 Jul 2025 13:06:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 66CeKlbdY2j4dAAAD6G6ig
+	(envelope-from <jack@suse.cz>); Tue, 01 Jul 2025 13:06:30 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id C3A14A0A23; Tue,  1 Jul 2025 15:06:25 +0200 (CEST)
+Date: Tue, 1 Jul 2025 15:06:25 +0200
+From: Jan Kara <jack@suse.cz>
+To: Andrey Albershteyn <aalbersh@redhat.com>
+Cc: Amir Goldstein <amir73il@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Casey Schaufler <casey@schaufler-ca.com>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, Paul Moore <paul@paul-moore.com>, linux-api@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	selinux@vger.kernel.org, Andrey Albershteyn <aalbersh@kernel.org>
+Subject: Re: [PATCH v6 5/6] fs: prepare for extending file_get/setattr()
+Message-ID: <kxl5mwdql2f7i6mlvgitmquhci6oab5dluihc22x5w7y3cko4h@fig54f3dyidj>
+References: <20250630-xattrat-syscall-v6-0-c4e3bc35227b@kernel.org>
+ <20250630-xattrat-syscall-v6-5-c4e3bc35227b@kernel.org>
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250630-xattrat-syscall-v6-5-c4e3bc35227b@kernel.org>
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: BEBD921170
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[gmail.com,arndb.de,schaufler-ca.com,kernel.org,suse.cz,paul-moore.com,vger.kernel.org];
+	RCVD_COUNT_THREE(0.00)[3];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Spam-Score: -4.01
+X-Spam-Level: 
 
-To support static builds, pkg-config is used to add the libraries
-needed for libselinux and libsemanage during the build. Unforunately,
-pkg-config will always use the installed pc files for libselinux and
-libsemanage.
+On Mon 30-06-25 18:20:15, Andrey Albershteyn wrote:
+> From: Amir Goldstein <amir73il@gmail.com>
+> 
+> We intend to add support for more xflags to selective filesystems and
+> We cannot rely on copy_struct_from_user() to detect this extension.
+> 
+> In preparation of extending the API, do not allow setting xflags unknown
+> by this kernel version.
+> 
+> Also do not pass the read-only flags and read-only field fsx_nextents to
+> filesystem.
+> 
+> These changes should not affect existing chattr programs that use the
+> ioctl to get fsxattr before setting the new values.
+> 
+> Link: https://lore.kernel.org/linux-fsdevel/20250216164029.20673-4-pali@kernel.org/
+> Cc: Pali Rohár <pali@kernel.org>
+> Cc: Andrey Albershteyn <aalbersh@redhat.com>
+> Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+> Signed-off-by: Andrey Albershteyn <aalbersh@kernel.org>
 
-Instead set PKG_CONFIG_PATH when invoking pkg-config so that
-it searches in order:
-1) The directory specified by PKG_CONFIG_PATH, if already set.
-2) The local src directories of libselinux and libsemaange.
-3) The default directories specified by the system.
+Looks good. Feel free to add:
 
-Signed-off-by: James Carter <jwcart2@gmail.com>
----
- policycoreutils/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-diff --git a/policycoreutils/Makefile b/policycoreutils/Makefile
-index 0f3d62f2..7c9706e3 100644
---- a/policycoreutils/Makefile
-+++ b/policycoreutils/Makefile
-@@ -2,8 +2,8 @@ SUBDIRS = setfiles load_policy newrole run_init secon sestatus semodule setseboo
- 
- PKG_CONFIG ?= pkg-config
- 
--LIBSELINUX_LDLIBS := $(shell $(PKG_CONFIG) --libs libselinux)
--LIBSEMANAGE_LDLIBS := $(shell $(PKG_CONFIG) --libs libsemanage)
-+LIBSELINUX_LDLIBS := $(shell PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):../libselinux/src" $(PKG_CONFIG) --libs libselinux)
-+LIBSEMANAGE_LDLIBS := $(shell PKG_CONFIG_PATH="$(PKG_CONFIG_PATH):../libsemanage/src" $(PKG_CONFIG) --libs libsemanage)
- export LIBSELINUX_LDLIBS LIBSEMANAGE_LDLIBS
- 
- all install relabel clean indent:
+I'd just note that:
+
+> @@ -118,11 +119,16 @@ static int copy_fsxattr_from_user(struct fileattr *fa,
+>  				  struct fsxattr __user *ufa)
+>  {
+>  	struct fsxattr xfa;
+> +	__u32 mask = FS_XFLAGS_MASK;
+>  
+>  	if (copy_from_user(&xfa, ufa, sizeof(xfa)))
+>  		return -EFAULT;
+>  
+> +	if (xfa.fsx_xflags & ~mask)
+> +		return -EINVAL;
+> +
+>  	fileattr_fill_xflags(fa, xfa.fsx_xflags);
+> +	fa->fsx_xflags &= ~FS_XFLAG_RDONLY_MASK;
+
+This means that the two flags in FS_XFLAG_RDONLY_MASK cannot easily become
+writeable in the future due to this. I think it is a sensible compromise
+but I wanted to mention it.
+
+								Honza
 -- 
-2.50.0
-
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 

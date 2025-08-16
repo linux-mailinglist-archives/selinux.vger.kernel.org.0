@@ -1,178 +1,169 @@
-Return-Path: <selinux+bounces-4656-lists+selinux=lfdr.de@vger.kernel.org>
+Return-Path: <selinux+bounces-4660-lists+selinux=lfdr.de@vger.kernel.org>
 X-Original-To: lists+selinux@lfdr.de
 Delivered-To: lists+selinux@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F954B28536
-	for <lists+selinux@lfdr.de>; Fri, 15 Aug 2025 19:36:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3618FB28F90
+	for <lists+selinux@lfdr.de>; Sat, 16 Aug 2025 18:43:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CD2C7B7462
-	for <lists+selinux@lfdr.de>; Fri, 15 Aug 2025 17:34:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 880F75C56C7
+	for <lists+selinux@lfdr.de>; Sat, 16 Aug 2025 16:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 015DB3176F2;
-	Fri, 15 Aug 2025 17:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C992F8BE9;
+	Sat, 16 Aug 2025 16:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="JfQY+vxY"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="nEl8U3Ex"
 X-Original-To: selinux@vger.kernel.org
-Received: from sonic315-26.consmr.mail.ne1.yahoo.com (sonic315-26.consmr.mail.ne1.yahoo.com [66.163.190.152])
+Received: from sonic303-27.consmr.mail.ne1.yahoo.com (sonic303-27.consmr.mail.ne1.yahoo.com [66.163.188.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC9A3176E9
-	for <selinux@vger.kernel.org>; Fri, 15 Aug 2025 17:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.190.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B622F60B5
+	for <selinux@vger.kernel.org>; Sat, 16 Aug 2025 16:42:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1755279366; cv=none; b=nUp+iY6sRUq/NgDjq5Mv6x/FSJQRsP/QB+rxTZzKOKJSLIwxJ5wtxKr0W0NI4aV8XcVUz0TOCM55FkXAqe2EoPN5TEdH76iy9Xtt5hlXDzc5G2Csbi5PVfVnIBBty47k4ApCxKh9l3x7w+rjz8XcrYLcnr+ZYKhQcUr2D32cZUg=
+	t=1755362525; cv=none; b=cG3gqdOWJ0zmWZXimBc7+mo98Vnbyp2pn5opGvt2S4lK8BR7C9vW1jtFLHWU7BkNqibSNXVnJghLFCkIKsEnGwI7wPgfP2GKDTZUCXctuef9Gw7+kuaYJf/gCFQJefxTVTHCZx3+FOxB0+f4T9xCh9Nbsq106P6mSnhyyK95+bU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1755279366; c=relaxed/simple;
-	bh=PVH45VaS2/Kv67LXl0wYjUW6dY2Wo1zUVDbWzOFnvC8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KjWvTlA35hSD3pIn3oFyqUfahCE5fyu/zYtliEdBd+TSlMFwhhKipjRAcHZeNvtwsNZMTTw7kE5GUsSmb96Xt29znvIPbqXaDftCOepYVoyOliqM/xS8e5QvniM6BvbaU5MOXxyq5k2LCBz6ni1cUj4+dmgmDvDnS8jzVmLRX/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=JfQY+vxY; arc=none smtp.client-ip=66.163.190.152
+	s=arc-20240116; t=1755362525; c=relaxed/simple;
+	bh=LzUCl3hoJEExpToziP9fTxrE872KV3dSO1feighJNnM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=X8LuRJ2MqhHqHkom7PwgIKcc68Y45X1USiWOh3K7XCDGYhyT04gCPZPb25aVhoUQovirJScqmGYMEoNNfxr3TWFfUGJj8t/IVgfxeDSS5tCH86d1ZI4NblvmWW0begY0NZJFxz9uNukl/ToKX20kQIzH8ivBUhW8EwcAiYTxRws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=nEl8U3Ex; arc=none smtp.client-ip=66.163.188.153
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755279363; bh=DL8npqFMRALAXsPWptJDF7/QCDl8ai9/3F6574Gpphg=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=JfQY+vxYFNCFGt5tID04mqom6DKm/RorX6uIDCLMNlkjZcw+lijy8FfaMLk9r6DiI0XzXwHqvH9tyFA9Q8AyCUcZvlqxviyZzHj+cuD1bpWovWryY+0b4Q+A3xs25IhY3nB3RYOWw/NCXOkdKm1vi46OFPLh6POes8uoolucHF0rranQGas1e0dVfEkO4V5Zz8e53ADjNKKN0EeR+DqeupH8+m+/aEQUq6gTstjBCNqUvVeAjvs9JYocqKIJotlZq339IKGDJWiLTz4xl2mKve5evi3NQqbELmJeFEvBdACX70yy2lfSBllLs0Q3msrNQy3MYAUlOcKWikogz6RFlg==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755279363; bh=IEqq4Z4BCCEI53Pz4jDWU7T4lB1czuw4qYzi7oV8s1o=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=jvgGQzxgRC1yIBqivSbD9qsiOOELGGZPuUPWRI7SKmI3W8mrLlhz/pyoaokGUr3UdWtEpSR3/kxIrCkcgOCPw8TzbSRuPEsKGvjxHb+2/5L2zM/Jaj5zCrvo9RDwISvdHQi3CYTDcsH+cTtd5PFnhNkFxxO4ZKpZgVr1QYRucy514fY+T+JdnZsDBuBY3M9/DML9ZeA2hoHl8pR0XWM3EVX9DTISXcQ/d5dEJUAV+mFFjKHDX80/cVo3w0JmoW27DCc0vuXGfTy8mpLcxpjEGTRryg9JSBBs9a3Noo6L1s9yrxCQBFaM0X3SEU6G/s9aiWgmLo5vM0oFByw8jvkKxA==
-X-YMail-OSG: W5d9Qc4VM1mGMGKwhQY3lF2i08xMkZk41KGqAsFWM0Zpgq5ekAiksIeuG.cmyLa
- I0oeYNyrM9OlHsgp0RkdWRxWzoUgIAb4jkxP9KvPYoz3vHQhDMRGfZhOFgIdj3SJrxbQjXFQl0og
- 1kWu2syuTJVyLs.yF2eftKTEYrelaGShpppnIILSEWYtwWIGbH9t5xwxByq3rksCObSG0BlAf_GO
- r1yOTy0sAWbZYyu5fN.8vnGhHIpsawS2f5oCes_8iEUbZO3VUFpubkXtpF9vCD0G1HIO4EryRbW0
- zVydDv9DqId99UF1tPbiHwR90fS4gjmTccDJ79KTi1usXPPFG6S4n7SZtvv4v5btN3xRrwAOz6cl
- kMdLeqU_ewPvpR9NLV73GiBjarRfk.dHAmJl_XJpyob3QbdWteEGFCGPTvl6CQo1KlfOSXrm5LQ5
- SkLQILozeSO97x1HWh.8eis1OLxaMtfHqsCUTQ7k_vSnLFdqIc7uiQOeJk.Ew8lUIaTAkWij0Rm2
- _dtYlIpwK0yml94UkyK0Ve_SnB57Gire8bZtFAaLp81.rNZ5Y8vVLva3Wqvf3Wm2WACptaJbBYjT
- IhK7sQ.DnmImq9WSbXOMKgzOHkWcLTXCVPyRfUXNrbGa6sgXeS8Nw5s7Bw2gMKT4oRf907aa49tH
- z3SnW_Lfq_j_dO4b7TfZ4l.mOVNQxB8494DC5DqvNMkaAafWS_IOq4L6SChCX_RqUYFRn0VB.Z96
- wbCMoaQSAcF3y8dLjQ5SNEbJ3.8GxJvxRrnGgpeW2kGR4tkaw5_5sh6cfC5sTzLyx.fizx_mnm_b
- GnLwh5Q0GId3loysZMr8yNwnGkE5U7t49_fMuSXu6Fe_gHMt0AZj_Dv4v0xn9EwaiRr.gjgCLiEq
- Edlyv1iYTkqtvwk41Gjr9PhOkFSxrqeRNaMra3x4OM3DTIzJfSsdOopXCS4kIp3UMMpRREbZfslx
- kllG4uKj9esggdtEQ_Cv51gQdorDzV8uiDWbS7Grf86gYys3aUSGo_tZxjKizg5Gky1eSgJR6vff
- wohltwOsuiyIvBYLr8NxtASM5OJXCbrao9mdSsN2wuP3Y1gYqK2wVJWHsgjx83us8i9dAwKvYI4r
- rPkJz2l8dLeCsbFdZIUyh6IT8CYmJReRG7BhXUCqiNFGNWtB0no1aMfCa3mHgwtXf5jrsBxh7xzb
- AYBeIdRCn66JUgOaiAG0JZJqUl9iYrfLb0VbkWmH46p0z7kUg_wPFwGs7JlOyGYjxMp7RP_aYtXx
- ZoaW_LzTAkHNKLZYDvC33ByPgeCJwbPBNJkD6vmzwQ7EQm_MbbxYuUY_u5DfKLckpHlCOQkTdS9g
- yMObAdDmJCwxrol2R6DgkAqZ_b1_zWvg.cxrQLe4Ow.tRmBfU95S4VMBnTyr_VuoMg40hacYnt9I
- uwE2X0UjGRCkjolTUZL7BrW6JIgWArfkywf2N0QyqyWzV6jsqPOVKSmStNaxt9P0W2AGiQcUPhyZ
- l4xXL1_WSwb0CZnWLlWkkJLl0Tquq99p0p8ZssJKtsfqZryyab8XVpV7BsHgN9mtjqJbu0fmtQdN
- pLwi_RI_Wpd63mkF8Uhvrr03iXv5OkEyBRlRYgr7HVTZB_n0k4QkgS7_nx3tjaaWq5NADopHzruP
- RSVyu_Eg3WTlOdCKe7qxi_CLUsjoph67MsPI4XQMENx1OWMAnCBYvrFRjXQ_Iqm6yw.AVoJr8heR
- iFVEpvDImTJaFM3E6J3_CJRJmJa0V28uLX2Yx42dny7_S7qaSPJ2rLUWhU7QynVwJgcCdRcThX8X
- gRnp1eCapCdX7TUTe_Gp9DeADjvEB.Dj0VCkU4J7LHQqVwMNL97LDC877R2aztRePr97lZCR4VWW
- tLh6n8n6fdn6tFFjEd2WmYeW7baU94C9Z8gbUqL973ICXYDR5Ax9hnJlkrSOCTxqRSWfq5n9QgJl
- .tBAyqADhnaeJwzX6SKLSyfEkiWcpGxp3Yh59VV0wsAaMFN4TJ2qKyjCtsPIEz11yAe4JwfhY8PT
- CB73wSIREJ1WUzT60_wknycJnftK45m.AL5mJX_Xq8PvObw2SozS6icdW3ebZs98tmfAcrOvRaIC
- axpQ2wg772b6CoGa4jlNs.JHxqt00P46tmPerLc0IW2eEs1jD8uD0Q7qrQkopms.GYZTqoxt1LFc
- 3TPKAMfQ7mtWNIVhMcdlvCfZ98CzFZSnJCaxycp72jkrugTAXcDVl93EaBzAu8CXsF8gnZWyKPyI
- gTKYPFPvj4fY1m_PnVk9NQak9je2lrls5ftaJ8MR4xobpkA2UwmYgtF2zbamBBd6v1mz2NIilyXQ
- pLt66jozoOM9VeNUzjvXaUFYZtanGnwh7
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755362517; bh=D+A4s2puEKRfCvZ3mdVLmiFNlIwcfme6AV7KlzI6Syc=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=nEl8U3ExyK8q2NDtm2QbVM8k9Mh2f8ErwLoPHsgBfwj9ZquUhShNF1Z9+fUwDVpw5tATwj821Eac7Wk6QlksrM9x2QVEUq9W8kmeSgKKF0Bke+70hxnRfR4E9MdDBa71z3moNHZ1sG01DApjeoInKd1boUhQrkeLIk98AgncLDNxMgR0pGmDI3q7UTWbCSAgCLi0g+4wucN9xrB9X9yEZsl24qqyYu4vVEuFposaZEU5hjZOHw1jL1ZE0DNqCGSCcSP7BbsaUr9FJhvu7ss+Q55itcapSWD3WjXhBAeWMEGB8mPjvPBeKV92s9kXJgZ3qQJ8b5TBVI3j9WuMsFJpvw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1755362517; bh=PyNE3QwL6ADIqBMJz37yIKeZixQ2H0LcsDPEfsz5rQu=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=lkcWvrVicrSQOZv9DOSYaUKPbzBtlQXm41XMcvBHDixNnykECtyKr0NNEzvsF4F3TBIQ+lcxxuiL3vejFX3FqZkjYThxGe5b+0RpbY5X1gRSZujpMKIhhI3E6CMt4e6tIZmACD/zWQ5wtSDMVHEQQ58MefxFyud4KGL/JvbXMAA0wMddpRYNnd3RNHfBZsCCogNM1gYyPAhlLJn0QZTFurjoIjKHm//j/e7ewDPJ2Dx/acdA8k66NUGho0iOyV79s8fXbFNPOvj8z9+Y9cJrZs3e5V0dBjy9CTbVFuwvVEp6WWtOx+1pptxE1tVF0u8ox5FV71vuR8XLtp7856I5/w==
+X-YMail-OSG: .trXr3YVM1kHaebagFcoRlPYoa2pr3slXNsZnTUQaWMTSognFXPfX41WNbK.XcM
+ Gi4LmTtxfSy0jV_AOzB_5gssLq0Yjyy.9.0HtdQeFLFs7i.pz5fZr3EAJeMJGbfm0J37IBNn6RSU
+ xAeq0Ma5f7fHRP1Wh_DdCk4BWddmG.W7rEicsTSG20wlUsCaI0LZk2RwOqFqy9.w0ddDu90bQHiu
+ E0CvkJfg3PXD61Rindz2FkHEjKWHK2h_yOOdHcAC6uCo1wR.1bxzbOL_btrckvlWsmc.cbCOJiBj
+ dRhM0D7CXryK8Rg4h0vwmGo1tEnymj64.3aFXpCHR4qVOpdjYN_MJhEU6mcSbjJP9jovTw6ZJcFO
+ yABuQg.CCfostoCthijgwMLx.XRDuW3gcacRyXekFqUTU_FScMXyBzAcgvjqKK7tFzmmAQDC01CK
+ 2_Jd48zOkHpzh3b2.xlfstDZ_l6OCGswkZXLaKHekLYOU4fDABC.ZNfowqAQuL6CfzbcwmrctgYW
+ SkwuZ9BpxGnuJA5j9ZGaPSTJLBahNhpnmX7Te1rFXOjJsFXPNmIByIXZq9k1Xpwd0ZGlyAip4H3_
+ pkn7Fc748fxov3GJTQ_kLFcXFuo7fNHSqqckRpHOoyxHlUl4XwoyjLrHTNHEtMThdiK.iG8w3Iub
+ wcB.uPcsoGYCDKI8DU5YimPYJsXKJ_Kb8On8fJt7gXZ3amKEHdJIL9l0DPBlCyWQsmaTtK4XWWnY
+ jrkPj99ya9ABqSVICx8QSwFc5PY7rlyeOPYUvZR3Op1EbvjcCu5fP4yDYlIO5kVaqTgC064Anq58
+ 9sS5MQaSMlBizTmRJkl0lGCm.h.b1gH3b8V7g6NiNB8VE_sVVgcT350droO.LIK34KuuOcbr_xX1
+ Cinsx0ZkQPRKZmBW9al7ngLcUn47MnvUDm.sQdRFMr.7i7k1VpjoZmpp_eGPyhxGyUK0qLYuaZ9B
+ hlOVjxyDwWXkA_NOL2Ok4LQ.71oKVWbAsAfsQfeioTnRVcvvhjApas9ZqihwAe4q.ZzIYcO6MYZB
+ fcatzob6e7cE3xinYxiYTLUX7ihl4axQADD3UKu7JnpcgJreFSqZZnv1quomgqnk0Kle8u8dN40V
+ rHx9YHQclf.PkBhvzUSXhEDQJitKUxmopDbSxQ3Ct4Q4ES.oYJarI7qV_Vse751LFbQtbLqUM7xo
+ hCG8L5CoBAv0eK4GQj3Uju01ykhlW_iQLjubWi1Kj8VznztecemKImAjC.rg7jpVL8Vz61ZA4XCs
+ KZ3HY3CH4Ouyae5Z43vilGkXb3ndzq2_Nd59hyU4DSOWhdjTWZ1k1.mg1n6U8Thz0AZH8DCmy6_l
+ RrrMPPrbabebJ6ExnQaQbRDBejnfAn0OYxVRcnZuoommg.B9g6tvCNtOoUGxG9_cX08CgAH33k3R
+ ZgKs7hVsuDtqFRqolHv4h5v87Id2H6cVm.M30ocofGxHH3hyKEhI2ZnicPSvBIjOi4fiMgn.mHOU
+ qn1zOm5Q0cIHax1bmSgQJcfvlvPuhQKrfZSRU8Wlc9CrhAbehTYjjkUCvzWf1reglVQVVYFBlMzd
+ X8vIryOpuZCbqCWugCllMoumuwZIyRtMg.Djz.KHTZDeNrejdh.hvHMlXz19u9.8tGjVoqlsewup
+ wzueaAjwn.OYaVTfNr1EMwHP0PsoTx1LFP2UVs6R.2863swW6P991DI.lzbQToI8JOeUtla2ONIF
+ dm6YqdEJzo4fX0_4E3j3spwtoCh3deCpEzjMppgVORUQgXQwDinEs1Am._8KaDSkHu.rVKeJ1Hg0
+ mxDkWWUDXX12ZdUrySxsZHSN88IaEtxSYIurbwJax8tqHC96xV539U0XvrL68IFmGo0XUVzZVlz8
+ k_fvcw5DUbErPsMZUSNcmf.z5k_mE8v5ABMwiiX_Dk1BWfDHdIwEBNO9QHeYzYuPEoVHpZPv5znm
+ FbQQz3rxQfJ3qf00SxvmQu4yuxXyQ4tKS1uuFwmSbgLxMQPGCZ5i1sTJxEO4V32Z.rbC_ehehDDU
+ P7tN3XGdYbkbENnaC28FYZr1UhtQWGVV5.U34ztu3oIzw_fJxcWZ85rQX9gfSpOA3Xmkf9gJvFUq
+ ZnqNF94iw2OuXbawYRxGPVRKSTv.rz9_3uIHO1L9qAi4lkpsTor7KG4Vki4GBA0kBPPL_WlpnXmp
+ LvsRMM5cUfRUManKcRZmeuxzlj9KnuQ8WqweXbwuzCHzvmrwLcXUNLf0kpmsctO81_QGD8dLGPR.
+ ARZydcG6In9qc2Vi8QhilN568E8OQJUG.M7NwysKfeYgaT_gojBFyOG4A7hFnambfx2LKDL32mcI
+ eTGmWz.qxnfERF.mj9vCq
 X-Sonic-MF: <casey@schaufler-ca.com>
-X-Sonic-ID: dcf2e2fc-0877-4593-a14d-ec376e2d4843
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic315.consmr.mail.ne1.yahoo.com with HTTP; Fri, 15 Aug 2025 17:36:03 +0000
-Received: by hermes--production-gq1-74d64bb7d7-74ntb (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 23cae23c023c7587df965e14b25c3afe;
-          Fri, 15 Aug 2025 17:05:39 +0000 (UTC)
-Message-ID: <72224da0-46d1-4366-819c-c5e0d9b507e9@schaufler-ca.com>
-Date: Fri, 15 Aug 2025 10:05:37 -0700
+X-Sonic-ID: 9e61bf04-052a-4a3a-9223-318438cb2654
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic303.consmr.mail.ne1.yahoo.com with HTTP; Sat, 16 Aug 2025 16:41:57 +0000
+Received: by hermes--production-gq1-74d64bb7d7-5qmwx (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 12cf07a2fbb9800c7a9ea9632f3a0835;
+          Sat, 16 Aug 2025 16:41:52 +0000 (UTC)
+From: Casey Schaufler <casey@schaufler-ca.com>
+To: casey@schaufler-ca.com,
+	paul@paul-moore.com,
+	eparis@redhat.com,
+	linux-security-module@vger.kernel.org,
+	audit@vger.kernel.org
+Cc: jmorris@namei.org,
+	serge@hallyn.com,
+	keescook@chromium.org,
+	john.johansen@canonical.com,
+	penguin-kernel@i-love.sakura.ne.jp,
+	stephen.smalley.work@gmail.com,
+	linux-kernel@vger.kernel.org,
+	selinux@vger.kernel.org
+Subject: [PATCH v5 0/5] Audit: Records for multiple security contexts
+Date: Sat, 16 Aug 2025 09:41:35 -0700
+Message-ID: <20250816164140.6045-1-casey@schaufler-ca.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: selinux@vger.kernel.org
 List-Id: <selinux.vger.kernel.org>
 List-Subscribe: <mailto:selinux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:selinux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 17/34] lsm: cleanup initialize_lsm() and rename to
- lsm_init_single()
-To: Paul Moore <paul@paul-moore.com>, linux-security-module@vger.kernel.org,
- linux-integrity@vger.kernel.org, selinux@vger.kernel.org
-Cc: John Johansen <john.johansen@canonical.com>,
- Mimi Zohar <zohar@linux.ibm.com>, Roberto Sassu <roberto.sassu@huawei.com>,
- Fan Wu <wufan@kernel.org>, =?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?=
- <mic@digikod.net>, =?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
- Kees Cook <kees@kernel.org>, Micah Morton <mortonm@chromium.org>,
- Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
- Nicolas Bouchinet <nicolas.bouchinet@oss.cyber.gouv.fr>,
- Xiu Jianfeng <xiujianfeng@huawei.com>,
- Casey Schaufler <casey@schaufler-ca.com>
-References: <20250814225159.275901-36-paul@paul-moore.com>
- <20250814225159.275901-53-paul@paul-moore.com>
-Content-Language: en-US
-From: Casey Schaufler <casey@schaufler-ca.com>
-In-Reply-To: <20250814225159.275901-53-paul@paul-moore.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Mailer: WebService/1.1.24338 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+Content-Transfer-Encoding: 8bit
+References: <20250816164140.6045-1-casey.ref@schaufler-ca.com>
 
-On 8/14/2025 3:50 PM, Paul Moore wrote:
-> Rename initialize_lsm() to be more consistent with the rest of the LSM
-> initialization changes and rework the function itself to better fit
-> with the "exit on fail" coding pattern.
->
-> Reviewed-by: Kees Cook <kees@kernel.org>
-> Reviewed-by: John Johansen <john.johansen@canonical.com>
-> Signed-off-by: Paul Moore <paul@paul-moore.com>
+The Linux audit system includes LSM based security "context" information
+in its events. Historically, only one LSM that uses security contexts can
+be active on a system. One of the few obsticles to allowing multiple LSM
+support is the inability to report more than one security context in an
+audit event. This patchset provides a mechanism to provide supplimental
+records containing more than one security context for subjects and
+objects.
 
-Reviewed-by: Casey Schaufler <casey@schaufler-ca.com>
+The mechanism for reporting multiple security contexts inspired
+considerable discussion. It would have been possible to add multiple
+contexts to existing records using sophisticated formatting. This would
+have significant backward compatibility issues, and require additional
+parsing in user space code. Adding new records for an event that contain
+the contexts is more in keeping with the way audit events have been
+constructed in the past.
 
-> ---
->  security/lsm_init.c | 25 +++++++++++++++----------
->  1 file changed, 15 insertions(+), 10 deletions(-)
->
-> diff --git a/security/lsm_init.c b/security/lsm_init.c
-> index 5249aa044d9d..1f64222925c1 100644
-> --- a/security/lsm_init.c
-> +++ b/security/lsm_init.c
-> @@ -169,6 +169,7 @@ static void __init lsm_order_append(struct lsm_info *lsm, const char *src)
->  		   lsm_is_enabled(lsm) ? "enabled" : "disabled");
->  }
->  
-> +
->  /**
->   * lsm_blob_size_update - Update the LSM blob size and offset information
->   * @sz_req: the requested additional blob size
-> @@ -225,16 +226,20 @@ static void __init lsm_prepare(struct lsm_info *lsm)
->  	lsm_blob_size_update(&blobs->lbs_bpf_token, &blob_sizes.lbs_bpf_token);
->  }
->  
-> -/* Initialize a given LSM, if it is enabled. */
-> -static void __init initialize_lsm(struct lsm_info *lsm)
-> +/**
-> + * lsm_init_single - Initialize a given LSM
-> + * @lsm: LSM definition
-> + */
-> +static void __init lsm_init_single(struct lsm_info *lsm)
->  {
-> -	if (lsm_is_enabled(lsm)) {
-> -		int ret;
-> +	int ret;
->  
-> -		init_debug("initializing %s\n", lsm->id->name);
-> -		ret = lsm->init();
-> -		WARN(ret, "%s failed to initialize: %d\n", lsm->id->name, ret);
-> -	}
-> +	if (!lsm_is_enabled(lsm))
-> +		return;
-> +
-> +	init_debug("initializing %s\n", lsm->id->name);
-> +	ret = lsm->init();
-> +	WARN(ret, "%s failed to initialize: %d\n", lsm->id->name, ret);
->  }
->  
->  /**
-> @@ -379,7 +384,7 @@ static void __init lsm_init_ordered(void)
->  		panic("%s: early task alloc failed.\n", __func__);
->  
->  	lsm_order_for_each(lsm) {
-> -		initialize_lsm(*lsm);
-> +		lsm_init_single(*lsm);
->  	}
->  }
->  
-> @@ -429,7 +434,7 @@ int __init early_security_init(void)
->  		lsm_enabled_set(lsm, true);
->  		lsm_order_append(lsm, "early");
->  		lsm_prepare(lsm);
-> -		initialize_lsm(lsm);
-> +		lsm_init_single(lsm);
->  	}
->  
->  	return 0;
+Only audit events associated with system calls have required multiple
+records prior to this. Mechanism has been added allowing any event
+to be composed of multiple records. This should make it easier to
+add information to existing audit events without breaking backward
+compatability.
+
+v5:
+Comment on the LSM_ID_UNDEF behavior in security_secid_to_secctx().
+Change some names to better reflect their purpose.
+Move alignment changes into a separate patch.
+v4:
+Use LSM_ID_UNDEF when checking for valid LSM IDs in
+security_lsmprop_to_secctx().
+Fix the object record to include only those for LSMs that use them.
+Squash the two patches dealing with subject contexts.
+Base the patches on Paul Moore's LSM initialization patchset.
+https://lore.kernel.org/all/20250409185019.238841-31-paul@paul-moore.com/
+v3:
+Rework how security modules identify that they provide security
+contexts to the audit system. Maintain a list within the audit
+system of the security modules that provide security contexts.
+Revert the separate counts of subject and object contexts.
+v2:
+Maintain separate counts for LSMs using subject contexts and object
+contexts. AppArmor uses the former but not the latter.
+Correct error handling in object record creation.
+
+https://github.com/cschaufler/lsm-stacking#audit-6.16-rc4-v5
+
+Casey Schaufler (5):
+  Audit: Create audit_stamp structure
+  LSM: security_lsmblob_to_secctx module selection
+  Audit: Add record for multiple task security contexts
+  Audit: Fix indentation in audit_log_exit
+  Audit: Add record for multiple object contexts
+
+ include/linux/audit.h        |  23 +++
+ include/linux/security.h     |   6 +-
+ include/uapi/linux/audit.h   |   2 +
+ kernel/audit.c               | 274 ++++++++++++++++++++++++++++++-----
+ kernel/audit.h               |  13 +-
+ kernel/auditsc.c             |  65 +++------
+ net/netlabel/netlabel_user.c |   8 +-
+ security/apparmor/lsm.c      |   3 +
+ security/lsm.h               |   4 -
+ security/lsm_init.c          |   5 -
+ security/security.c          |  21 ++-
+ security/selinux/hooks.c     |   5 +
+ security/smack/smack_lsm.c   |   5 +
+ 13 files changed, 325 insertions(+), 109 deletions(-)
+
+-- 
+2.50.1
+
 
